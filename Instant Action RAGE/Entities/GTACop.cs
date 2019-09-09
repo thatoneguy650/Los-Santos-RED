@@ -17,16 +17,14 @@ class GTACop
     {
 
     }
-    public GTACop(Ped _Cop,String _TaskName,bool _canSeePlayer)
+    public GTACop(Ped _Cop,bool _canSeePlayer)
     {
         CopPed = _Cop;
-        //TaskName = _TaskName;
         canSeePlayer = _canSeePlayer;
     }
-    public GTACop(Ped _Cop, String _TaskName, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer)
+    public GTACop(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer)
     {
         CopPed = _Cop;
-        //TaskName = _TaskName;
         canSeePlayer = _canSeePlayer;
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
         PositionLastSeenPlayer = _positionLastSeenPlayer;
@@ -46,10 +44,27 @@ class GTACop
     public Vector3 PositionLastSeenPlayer { get; set; }
     public bool isPursuitPrimary { get; set; } = false;
     public bool HurtByPlayer { get; set; } = false;
-    public bool isK9Handler { get; set; } = false;
+   // public bool isK9Handler { get; set; } = false;
     public GameFiber TaskFiber { get; set; }
-    public Ped K9 { get; set; }
-   // public string K9TaskName { get; set; }
+    public bool SetTazer { get; set; } = false;
+    public bool SetUnarmed { get; set; } = false;
+    public bool SetDeadly { get; set; } = false;
+
+    public uint GameTimeLastWeaponCheck { get; set; }
+    public bool NeedsWeaponCheck
+    {
+        get
+        {
+            if (GameTimeLastWeaponCheck == 0)
+                return true;
+            else if (Game.GameTime > GameTimeLastWeaponCheck + 1000)
+                return true;
+            else
+                return false;
+        }       
+    }
+    // public Ped K9 { get; set; }
+    // public string K9TaskName { get; set; }
     public bool RecentlySeenPlayer()
     {
         if (canSeePlayer)

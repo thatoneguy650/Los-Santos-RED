@@ -46,16 +46,6 @@ namespace Instant_Action_RAGE.Systems
 
                     NativeFunction.Natives.x9DC711BC69C548DF("selector");
                     GameFiber.Yield();
-
-
-
-
-                    if (Game.IsKeyDown(Keys.E)) // Our menu on/off switch.
-                    {
-                        
-                        Game.LogTrivial("Hello from the respawn stopper!");
-
-                    }
                 }
             });
         }

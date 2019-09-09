@@ -42,7 +42,7 @@ namespace ExtensionsMethods
                 return false;
             else if (Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)
                 return false;
-            else if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != (WeaponHash)2725352035 || Game.LocalPlayer.Character.Inventory.EquippedWeapon != (WeaponHash)966099553)
+            else if (Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)2725352035 || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)966099553)
                 return false;
             else
                 return true;
