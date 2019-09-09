@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class GTACop
+public class GTACop
 {
     static GTACop()
     {
@@ -49,6 +49,7 @@ class GTACop
     public bool SetTazer { get; set; } = false;
     public bool SetUnarmed { get; set; } = false;
     public bool SetDeadly { get; set; } = false;
+    public bool WasInVehicle { get; set; } = false;
 
     public uint GameTimeLastWeaponCheck { get; set; }
     public bool NeedsWeaponCheck
@@ -57,7 +58,7 @@ class GTACop
         {
             if (GameTimeLastWeaponCheck == 0)
                 return true;
-            else if (Game.GameTime > GameTimeLastWeaponCheck + 1000)
+            else if (Game.GameTime > GameTimeLastWeaponCheck + 500)
                 return true;
             else
                 return false;
