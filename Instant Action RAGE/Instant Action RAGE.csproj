@@ -53,6 +53,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="RAGENativeUI">
       <HintPath>D:\Steam Library\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
@@ -83,16 +87,22 @@
     <Compile Include="Entities\Ped Variation\PedComponent.cs" />
     <Compile Include="Entities\Ped Variation\PedVariation.cs" />
     <Compile Include="Entities\Ped Variation\PropComponent.cs" />
+    <Compile Include="Entities\PoliceTask.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="InstantAction.cs" />
     <Compile Include="Memory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RespawnStopper.cs" />
+    <Compile Include="Scanner.cs" />
+    <Compile Include="Systems\DispatchAudioSystem.cs" />
     <Compile Include="Systems\Menus.cs" />
     <Compile Include="Systems\PoliceScanningSystem.cs" />
     <Compile Include="Systems\RespawnSystem.cs" />
     <Compile Include="Systems\VehicleEngineSystem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

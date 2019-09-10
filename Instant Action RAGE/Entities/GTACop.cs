@@ -50,7 +50,7 @@ public class GTACop
     public bool SetUnarmed { get; set; } = false;
     public bool SetDeadly { get; set; } = false;
     public bool WasInVehicle { get; set; } = false;
-
+    public bool TaskIsQueued { get; set; } = false;
     public uint GameTimeLastWeaponCheck { get; set; }
     public bool NeedsWeaponCheck
     {
