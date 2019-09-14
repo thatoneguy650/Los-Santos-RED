@@ -77,7 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomOptions.cs" />
+    <Compile Include="Old\CustomOptions.cs" />
     <Compile Include="Entities\EmergencyLocation.cs" />
     <Compile Include="Entities\GTACop.cs" />
     <Compile Include="Entities\GTAGetawayCar.cs" />
@@ -99,7 +99,7 @@
     <Compile Include="Systems\Menus.cs" />
     <Compile Include="Systems\PoliceScanningSystem.cs" />
     <Compile Include="Systems\RespawnSystem.cs" />
-    <Compile Include="Systems\VehicleEngineSystem.cs" />
+    <Compile Include="Old\VehicleEngineSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

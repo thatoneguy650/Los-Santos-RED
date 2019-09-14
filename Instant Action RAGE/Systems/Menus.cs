@@ -358,7 +358,11 @@ namespace Instant_Action_RAGE.Systems
             {
                 if (selectedItem == menuDeathUndie)
                 {
-                    InstantAction.RespawnInPlace(false);
+                    InstantAction.RespawnInPlace(true);
+                }
+                else if (selectedItem == menuDeathHospitalRespawn)
+                {
+                    InstantAction.RespawnAtHospital();
                 }
                 else if (selectedItem == menuDeathTakeoverNearestPed)
                 {
@@ -394,7 +398,7 @@ namespace Instant_Action_RAGE.Systems
                 }
                 else if (selectedItem == menuBustedSurrender)
                 {
-                    InstantAction.BribePolice(3500);
+                    InstantAction.Surrender();
                 }
                 else if (selectedItem == menuBustedTakeoverNearestPed)
                 {
@@ -415,15 +419,28 @@ namespace Instant_Action_RAGE.Systems
                 {
                     if (Game.IsKeyDown(Keys.F10)) // Our menu on/off switch.
                     {
-                        mainMenu.Visible = !mainMenu.Visible;
+                        if (InstantAction.isDead)
+                        {
+                            bustedMenu.Visible = false;
+                            mainMenu.Visible = false;
+                            deathMenu.Visible = !deathMenu.Visible;
+                        }
+                        else if (InstantAction.isBusted)
+                        {
+                            deathMenu.Visible = false;
+                            mainMenu.Visible = false;
+                            bustedMenu.Visible = !bustedMenu.Visible;
+                        }
+                        else
+                        {
+                            bustedMenu.Visible = false;
+                            deathMenu.Visible = false;
+                            mainMenu.Visible = !mainMenu.Visible;
+                        }
                     }
                     else if (Game.IsKeyDown(Keys.F11)) // Our menu on/off switch.
                     {
                         debugMenu.Visible = !debugMenu.Visible;
-                    }
-                    else if (Game.IsKeyDown(Keys.F12)) // Our menu on/off switch.
-                    {
-                        deathMenu.Visible = !deathMenu.Visible;
                     }
 
                     menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse. 

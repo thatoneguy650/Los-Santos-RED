@@ -14,7 +14,9 @@ using System.Threading.Tasks;
             Chase = 0,
             Arrest = 1,
             Untask = 2,
-        }
+            SimpleArrest = 3,
+            SimpleChase = 4,
+    }
 
         public PoliceTask(GTACop _CopToAssign,Task _TaskToAssign)
         {

@@ -14,7 +14,7 @@ namespace Instant_Action_RAGE.Systems
         public static bool IsRunning { get; set; } = true;
         public static void Initialize()
         {
-            MainLoop();
+            //MainLoop();
         }
         public static void MainLoop()
         {
