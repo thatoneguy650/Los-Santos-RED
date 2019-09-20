@@ -29,17 +29,18 @@ public class GTACop
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
         PositionLastSeenPlayer = _positionLastSeenPlayer;
     }
-    public bool isTasked()
-    {
-        if (this.TaskFiber == null)
-            return false;
-        else
-            return true;
-    }
+    //public bool isTasked()
+    //{
+    //    if (TaskFiber == null)
+    //        return false;
+    //    else
+    //        return true;
+    //}
     private static Random rnd;
     public Ped CopPed { get; set; }
-   // public string TaskName { get; set; }
+    public string SimpleTaskName { get; set; }
     public bool canSeePlayer { get; set; }
+    public bool isTasked { get; set; } = false;
     public uint GameTimeLastSeenPlayer { get; set; }
     public Vector3 PositionLastSeenPlayer { get; set; }
     public bool isPursuitPrimary { get; set; } = false;
@@ -52,6 +53,7 @@ public class GTACop
     public bool WasInVehicle { get; set; } = false;
     public bool TaskIsQueued { get; set; } = false;
     public uint GameTimeLastWeaponCheck { get; set; }
+    public uint GameTimeLastTask { get; set; }
     public bool NeedsWeaponCheck
     {
         get

@@ -93,13 +93,13 @@
     <Compile Include="InstantAction.cs" />
     <Compile Include="Memory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RespawnStopper.cs" />
     <Compile Include="Scanner.cs" />
     <Compile Include="Systems\DispatchAudioSystem.cs" />
     <Compile Include="Systems\Menus.cs" />
     <Compile Include="Systems\PoliceScanningSystem.cs" />
     <Compile Include="Systems\RespawnSystem.cs" />
     <Compile Include="Old\VehicleEngineSystem.cs" />
+    <Compile Include="Systems\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

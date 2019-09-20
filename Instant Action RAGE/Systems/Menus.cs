@@ -32,6 +32,7 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuItem menuDebugKillPlayer;
         private static UIMenuListItem menuDebugRandomWeapon;
         private static UIMenuListItem menuDebugScreenEffect;
+        private static UIMenuCheckboxItem menuDebugEnabled;
         private static UIMenuItem menuDeathUndie;
         private static UIMenuItem menuDeathRespawnInPlace;
         private static UIMenuListItem menuDeathRandomCrime;
@@ -59,6 +60,7 @@ namespace Instant_Action_RAGE.Systems
         private static int RandomWeaponLevel = 0;
         private static int BribeAmount = 2000;
         private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
+        private static List<int> UndieLimit = new List<int> { 0,1,2,3,4,5 };
         private static string CurrentScreenEffect = "Rampage";
         private static float TakeoverRadius = 500f;
         public static bool IsRunning { get; set; } = true;
@@ -90,9 +92,9 @@ namespace Instant_Action_RAGE.Systems
             menuPool.Add(optionsMenu);
 
             //
-            menuMainRandomCrime = new UIMenuListItem("Start Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" }, 0);
+            menuMainRandomCrime = new UIMenuListItem("Start Random Crime","Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
             menuMainTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
-            menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", new List<dynamic> { "20 M", "40 M", "60 M", "100 M", "500 M" }, 0, "Takes over a random pedestrian around the player.");
+            menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "20 M", "40 M", "60 M", "100 M", "500 M" } );
             menuMainOptions = new UIMenuItem("Options", "Change options");
 
             mainMenu.AddItem(menuMainRandomCrime);
@@ -100,32 +102,34 @@ namespace Instant_Action_RAGE.Systems
             mainMenu.AddItem(menuMainTakeoverRandomPed);
             mainMenu.AddItem(menuMainOptions);
 
-            //
-            //menuOptionsAutoRespawn = new UIMenuCheckboxItem("AutoRespawn Enabled", mySettings.AutoRespawn, "Sets if the game will automatically handle the respawn logic or show the options menu.");
-            //menuOptionsRandomEvents = new UIMenuCheckboxItem("Random Events", mySettings.RandomEvents, "Can Generate Randome crimes in the world");
-            //menuOptionsAllowBust = new UIMenuCheckboxItem("Allow Bust Opportunities", mySettings.BetterChasesAllowBustOportunity, "Adds features to BetterChases Bust Opportunities feature");
-            //menuOptionsPoliceEnhancements = new UIMenuCheckboxItem("Police Enhancements", mySettings.PoliceEnhancements, "Adds some features to the police AI");
-            //menuOptionsUndieLimit = new UIMenuListItem("Undie Limit", new List<dynamic> { "0", "1", "2", "3", "4", "5" }, mySettings.UndieLimit, "Limit how many times you can Undie as the same character, set to 0 for unlimited");
-            //menuOptionsReplacePlayerWithPed = new UIMenuCheckboxItem("Replace Player with Ped", mySettings.ReplacePlayerWithPed, "If true, it will trick the game into thinking your player ped is one of the main characters.You have money and can go to shops");
-            //menuOptionsReplacePlayerWithPedCharacter = new UIMenuListItem("Replace Ped with:", new List<dynamic> { "Michael", "Franklin", "Trevor" }, mySettings.IntReplacePlayerWithPedCharacter, "Select to Change Hash Now. Options: Michael, Trevor, Franklin");
-            //menuOptionsReplacePlayerWithPedRandomMoney = new UIMenuCheckboxItem("Random Money On Takeover", mySettings.ReplacePlayerWithPedRandomMoney, "If true, will reset the players money on each takeover");
-            //menuOptionsDebug = new UIMenuCheckboxItem("Debug Enabled", mySettings.Debug, "Debug for testing");
 
-            //optionsMenu.AddItem(menuOptionsAutoRespawn);
-            //optionsMenu.AddItem(menuOptionsRandomEvents);
-            //optionsMenu.AddItem(menuOptionsAllowBust);
-            //optionsMenu.AddItem(menuOptionsPoliceEnhancements);
-            //optionsMenu.AddItem(menuOptionsUndieLimit);
-            //optionsMenu.AddItem(menuOptionsReplacePlayerWithPed);
-            //optionsMenu.AddItem(menuOptionsReplacePlayerWithPedCharacter);
-            //optionsMenu.AddItem(menuOptionsReplacePlayerWithPedRandomMoney);
-            //optionsMenu.AddItem(menuOptionsDebug);
+            menuOptionsAutoRespawn = new UIMenuCheckboxItem("AutoRespawn Enabled", Settings.AutoRespawn, "Sets if the game will automatically handle the respawn logic or show the options menu.");
+            menuOptionsRandomEvents = new UIMenuCheckboxItem("Random Events", Settings.RandomEvents, "Can Generate Randome crimes in the world");
+            menuOptionsAllowBust = new UIMenuCheckboxItem("Allow Bust Opportunities", Settings.BetterChasesAllowBustOportunity, "Adds features to BetterChases Bust Opportunities feature");
+            menuOptionsPoliceEnhancements = new UIMenuCheckboxItem("Police Enhancements", Settings.PoliceEnhancements, "Adds some features to the police AI");
 
-            //
+
+            menuOptionsUndieLimit = new UIMenuListItem("Undie Limit", "Limit how many times you can Undie as the same character, set to 0 for unlimited", new List<dynamic> { "0", "1", "2", "3", "4", "5" });
+            menuOptionsReplacePlayerWithPed = new UIMenuCheckboxItem("Replace Player with Ped", Settings.ReplacePlayerWithPed, "If true, it will trick the game into thinking your player ped is one of the main characters.You have money and can go to shops");
+            menuOptionsReplacePlayerWithPedCharacter = new UIMenuListItem("Replace Ped with:", "Select to Change Hash Now. Options: Michael, Trevor, Franklin", new List<dynamic> { "Michael", "Franklin", "Trevor" });
+            menuOptionsReplacePlayerWithPedRandomMoney = new UIMenuCheckboxItem("Random Money On Takeover", Settings.ReplacePlayerWithPedRandomMoney, "If true, will reset the players money on each takeover");
+            menuOptionsDebug = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
+
+            optionsMenu.AddItem(menuOptionsAutoRespawn);
+            optionsMenu.AddItem(menuOptionsRandomEvents);
+            optionsMenu.AddItem(menuOptionsAllowBust);
+            optionsMenu.AddItem(menuOptionsPoliceEnhancements);
+            optionsMenu.AddItem(menuOptionsUndieLimit);
+            optionsMenu.AddItem(menuOptionsReplacePlayerWithPed);
+            optionsMenu.AddItem(menuOptionsReplacePlayerWithPedCharacter);
+            optionsMenu.AddItem(menuOptionsReplacePlayerWithPedRandomMoney);
+            optionsMenu.AddItem(menuOptionsDebug);
+
+
             menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
             menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
-            menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", new List<dynamic> { "Level 0", "Level 1", "Level 2", "Level 3", "Level 4" }, 0, "Gives the Player a random weapon and ammo.");
-            menuDebugScreenEffect = new UIMenuListItem("Play Screen Effect", new List<dynamic> { "SwitchHUDIn",
+            menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", new List<dynamic> { "Level 0", "Level 1", "Level 2", "Level 3", "Level 4" } );
+            menuDebugScreenEffect = new UIMenuListItem("Play Screen Effect", "", new List<dynamic> { "SwitchHUDIn",
         "SwitchHUDOut",
         "FocusIn",
         "FocusOut",
@@ -205,21 +209,23 @@ namespace Instant_Action_RAGE.Systems
         "SniperOverlay",
         "RampageOut",
         "Rampage",
-        "Dont_tazeme_bro" }, 0, "");
+        "Dont_tazeme_bro" });
+            menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
 
             debugMenu.AddItem(menuDebugResetCharacter);
             debugMenu.AddItem(menuDebugKillPlayer);
             debugMenu.AddItem(menuDebugRandomWeapon);
             debugMenu.AddItem(menuDebugScreenEffect);
+            debugMenu.AddItem(menuDebugEnabled);
 
             //
             menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
             menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
             menuDeathHospitalRespawn = new UIMenuItem("Give Up", "Respawn at the nearest hospital. Lose $5K and your guns.");
-            menuDeathRandomCrime = new UIMenuListItem("Start Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" }, 0);
+            menuDeathRandomCrime = new UIMenuListItem("Start Random Crime", "Start Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
             menuDeathNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the hospital (standard game logc).");
             menuDeathTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
-            menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", new List<dynamic> { "20 M", "40 M", "60 M", "100 M", "500 M" }, 0, "Takes over a random pedestrian around the player.");
+            menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "20 M", "40 M", "60 M", "100 M", "500 M" });
 
             deathMenu.AddItem(menuDeathUndie);
             //DeathMenu.AddItem(menuDeathRespawnInPlace);
@@ -231,13 +237,13 @@ namespace Instant_Action_RAGE.Systems
 
             //
             menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
-            menuBustedBribe = new UIMenuListItem("Bribe Police", new List<dynamic> { 250, 500, 1000, 1250, 1750, 2000, 3500 }, 500, "Bribe the police to let you go. Don't be cheap.");
+            menuBustedBribe = new UIMenuListItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.",new List<dynamic> { 250, 500, 1000, 1250, 1750, 2000, 3500 } );
             menuBustedSurrender = new UIMenuItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.");
             menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-            menuBustedRandomCrime = new UIMenuListItem("Start Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" }, 0);
+            menuBustedRandomCrime = new UIMenuListItem("Start Random Crime", "Start Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
             menuBustedNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the police station (standard game logc).");
             menuBustedTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
-            menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", new List<dynamic> { "20 M", "40 M", "60 M", "100 M", "500 M" }, 0, "Takes over a random pedestrian around the player.");
+            menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.",new List<dynamic> { "20 M", "40 M", "60 M", "100 M", "500 M" } );
 
             bustedMenu.AddItem(menuBustedResistArrest);
             bustedMenu.AddItem(menuBustedBribe);
@@ -264,13 +270,55 @@ namespace Instant_Action_RAGE.Systems
             ProcessLoop();
 
         }
-        public static void OnItemChange(UIMenu sender, int index)
-        {
-
-        }
         public static void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
         {
-
+            if (sender == optionsMenu)
+            {
+                if (checkbox == menuOptionsAutoRespawn)
+                {
+                    Settings.AutoRespawn = Checked;
+                    RespawnSystem.IsRunning = !Checked;
+                    Settings.WriteSettings("AutoRespawn", Settings.AutoRespawn.ToString());
+                }
+                else if (checkbox == menuOptionsDebug)
+                {
+                    Settings.Debug = Checked;
+                    Settings.WriteSettings("Debug", Settings.Debug.ToString());
+                }
+                else if (checkbox == menuOptionsRandomEvents)
+                {
+                    Settings.RandomEvents = Checked;
+                    Settings.WriteSettings("RandomEvents", Settings.RandomEvents.ToString());
+                }
+                else if (checkbox == menuOptionsAllowBust)
+                {
+                    Settings.BetterChasesAllowBustOportunity = Checked;
+                    Settings.WriteSettings("BetterChasesAllowBustOportunity", Settings.BetterChasesAllowBustOportunity.ToString());
+                }
+                else if (checkbox == menuOptionsPoliceEnhancements)
+                {
+                    Settings.PoliceEnhancements = Checked;
+                    Settings.WriteSettings("PoliceEnhancements", Settings.PoliceEnhancements.ToString());
+                }
+                else if (checkbox == menuOptionsReplacePlayerWithPed)
+                {
+                    Settings.ReplacePlayerWithPed = Checked;
+                    Settings.WriteSettings("ReplacePlayerWithPed", Settings.ReplacePlayerWithPed.ToString());
+                }
+                else if (checkbox == menuOptionsReplacePlayerWithPedRandomMoney)
+                {
+                    Settings.ReplacePlayerWithPedRandomMoney = Checked;
+                    Settings.WriteSettings("ReplacePlayerWithPedRandomMoney", Settings.ReplacePlayerWithPedRandomMoney.ToString());
+                }
+            }
+            else if (sender == debugMenu)
+            {
+                if (checkbox == menuDebugEnabled)
+                {
+                    Settings.Debug = Checked;
+                    Settings.WriteSettings("Debug", Settings.Debug.ToString());
+                }
+            }
         }
         public static void OnListChange(UIMenu sender, UIMenuListItem list, int index)
         {
@@ -312,32 +360,32 @@ namespace Instant_Action_RAGE.Systems
                     }
                 }
             }
-            //else if (sender == optionsMenu)
-            //{
-            //    if (list == menuOptionsReplacePlayerWithPedCharacter)
-            //    {
-            //        String Char = "Michael";
-            //        if (index == 0)
-            //            Char = "Michael";
-            //        else if (index == 1)
-            //            Char = "Franklin";
-            //        else if (index == 2)
-            //            Char = "Trevor";
-            //        mySettings.ReplacePlayerWithPedCharacter = Char;
-            //        mySettings.WriteSettings("ReplacePlayerWithPedCharacter", mySettings.ReplacePlayerWithPedCharacter);
-            //    }
-            //    else if (item == menuOptionsUndieLimit)
-            //    {
-            //        mySettings.UndieLimit = item.Index;
-            //        mySettings.WriteSettings("UndieLimit", mySettings.UndieLimit.ToString());
-            //    }
-            //}
+            else if (sender == optionsMenu)
+            {
+                if (list == menuOptionsReplacePlayerWithPedCharacter)
+                {
+                    String Char = "Michael";
+                    if (index == 0)
+                        Char = "Michael";
+                    else if (index == 1)
+                        Char = "Franklin";
+                    else if (index == 2)
+                        Char = "Trevor";
+                    Settings.ReplacePlayerWithPedCharacter = Char;
+                    Settings.WriteSettings("ReplacePlayerWithPedCharacter", Settings.ReplacePlayerWithPedCharacter);
+                }
+                else if (list == menuOptionsUndieLimit)
+                {
+                    Settings.UndieLimit = list.Index;
+                    Settings.WriteSettings("UndieLimit", Settings.UndieLimit.ToString());
+                }
+            }
             else if (sender == debugMenu)
             {
                 if (list == menuDebugScreenEffect)
-                    CurrentScreenEffect = list.IndexToItem(index).ToString();
+                    CurrentScreenEffect = list.Collection[index].ToString();
                 if (list == menuDebugRandomWeapon)
-                    RandomWeaponLevel = list.Index + 1;
+                    RandomWeaponLevel = list.Index;
             }
         }
         public static void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -383,6 +431,10 @@ namespace Instant_Action_RAGE.Systems
                 else if (selectedItem == menuMainTakeoverRandomPed)
                 {
                     InstantAction.TakeoverPed(InstantAction.GetPedestrian(TakeoverRadius, false), true, false);
+                }
+                else if (selectedItem == menuMainOptions)
+                {
+                    optionsMenu.Visible = true;
                 }
                 mainMenu.Visible = false;
             }

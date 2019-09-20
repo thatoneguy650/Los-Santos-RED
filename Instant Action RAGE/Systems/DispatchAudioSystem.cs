@@ -25,11 +25,11 @@ using System.Windows.Forms;
                 while (IsRunning)
                 {                       
 
-                    if (Game.IsKeyDown(Keys.NumPad5))
-                    {
-                        List<string> myList = new List<string>(new string[] { Scanner.Resident.DISPATCH_INTRO_01.Value, Scanner.AssistanceRequired.AssistanceRequiredRandom(), Scanner.Crimes.CRIME_10_99_DAVID_01.Value, Scanner.Resident.OUTRO_01.Value });
-                        PlayAudioList(myList);
-                    }
+                    //if (Game.IsKeyDown(Keys.NumPad5))
+                    //{
+                    //    List<string> myList = new List<string>(new string[] { Scanner.Resident.DISPATCH_INTRO_01.Value, Scanner.AssistanceRequired.AssistanceRequiredRandom(), Scanner.Crimes.CRIME_10_99_DAVID_01.Value, Scanner.Resident.OUTRO_01.Value });
+                    //    PlayAudioList(myList);
+                    //}
 
                     GameFiber.Yield();
                 }
