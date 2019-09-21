@@ -698,16 +698,17 @@ namespace Instant_Action_RAGE.Systems
         {
             foreach (GTACop Cop in CopPeds)
             {
-                if (Cop.TaskFiber != null && Cop.TaskFiber.IsAlive)
-                {
-                    if (Cop.CopPed.Exists())
-                    { 
-                        Cop.CopPed.Tasks.Clear();
-                        Cop.CopPed.BlockPermanentEvents = false;
-                    }
+                //if (Cop.TaskFiber != null && Cop.TaskFiber.IsAlive)
+                //{
+                //    if (Cop.CopPed.Exists())
+                //    { 
+                //        Cop.CopPed.Tasks.Clear();
+                //        Cop.CopPed.BlockPermanentEvents = false;
+                //    }
+                if(Cop.isTasked)
                     AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
                    
-                }
+                //}
             }
             WriteToLog("UntaskAll", "");
         }

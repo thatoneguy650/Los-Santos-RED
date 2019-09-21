@@ -7,14 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Zones;
 
-
-    internal static class DispatchAudioSystem
+internal static class DispatchAudioSystem
     {
         private static WaveOutEvent outputDevice;
         private static AudioFileReader audioFile;
-        public static bool IsRunning { get; set; } = true;
-        public static void Initialize()
+        private static Random rnd;
+
+         public static bool IsRunning { get; set; } = true;
+        static DispatchAudioSystem()
+        {
+            rnd = new Random();
+        }
+    public static void Initialize()
         {
             MainLoop();
         }
@@ -23,13 +29,12 @@ using System.Windows.Forms;
             GameFiber.StartNew(delegate
             {
                 while (IsRunning)
-                {                       
+                {
 
-                    //if (Game.IsKeyDown(Keys.NumPad5))
-                    //{
-                    //    List<string> myList = new List<string>(new string[] { Scanner.Resident.DISPATCH_INTRO_01.Value, Scanner.AssistanceRequired.AssistanceRequiredRandom(), Scanner.Crimes.CRIME_10_99_DAVID_01.Value, Scanner.Resident.OUTRO_01.Value });
-                    //    PlayAudioList(myList);
-                    //}
+                    if (Game.IsKeyDown(Keys.NumPad5))
+                    {
+                        ReportShotsFired(true);
+                    }
 
                     GameFiber.Yield();
                 }
@@ -52,8 +57,9 @@ using System.Windows.Forms;
     }
     private static void PlayAudioList(List<String> SoundsToPlay)
     {
-        //GameFiber.StartNew(delegate
-        //{
+        GameFiber.Sleep(rnd.Next(1000, 2000));
+        GameFiber.StartNew(delegate
+        {            
             while (outputDevice != null)
                 GameFiber.Yield();
             foreach (String audioname in SoundsToPlay)
@@ -62,7 +68,7 @@ using System.Windows.Forms;
                 while (outputDevice != null)
                     GameFiber.Yield();
             }
-        //});
+        });
     }
     private static void OnPlaybackStopped(object sender, StoppedEventArgs args)
     {
@@ -70,6 +76,105 @@ using System.Windows.Forms;
         outputDevice = null;
         audioFile.Dispose();
         audioFile = null;
+    }
+    public static void ReportShotsFired(bool Near)
+    {
+        List<string> myList = new List<string>(new string[]
+        {
+            Scanner.Resident.DISPATCH_INTRO_01.Value,
+            Scanner.WeHave.OfficersReportRandom(),
+            Scanner.Crimes.CRIME_SHOTS_FIRED_AT_AN_OFFICER_01.Value,
+        });
+
+        Vector3 Pos = Game.LocalPlayer.Character.Position;
+        Zone MyZone = Zones.GetZoneName(Pos);
+        if(MyZone != null)
+        {
+            InstantAction.WriteToLog("ReportShotsFired", MyZone.TextName);
+            myList.Add(Scanner.Conjunctives.NEAR_01.Value);
+            myList.Add(MyZone.ScannerValue);
+        }
+        myList.Add(Scanner.Resident.OUTRO_01.Value);
+        PlayAudioList(myList);
+    }
+    public static void ReportCarryingWeapon(bool Near)
+    {
+        List<string> myList = new List<string>(new string[]
+        {
+            Scanner.Resident.DISPATCH_INTRO_01.Value,
+            Scanner.WeHave.OfficersReportRandom(),
+            Scanner.Crimes.CRIME_BRANDISHING_WEAPON_01.Value,
+        });
+
+        Vector3 Pos = Game.LocalPlayer.Character.Position;
+        Zone MyZone = Zones.GetZoneName(Pos);
+        if (MyZone != null)
+        {
+            InstantAction.WriteToLog("ReportCarryingWeapon", MyZone.TextName);
+            myList.Add(Scanner.Conjunctives.NEAR_01.Value);
+            myList.Add(MyZone.ScannerValue);
+        }
+        myList.Add(Scanner.Resident.OUTRO_01.Value);
+        PlayAudioList(myList);
+    }
+    public static void ReportAssualtOnOfficer(bool Near)
+    {
+        List<string> myList = new List<string>(new string[]
+        {
+            Scanner.Resident.DISPATCH_INTRO_01.Value,
+            Scanner.WeHave.OfficersReportRandom(),
+            Scanner.Crimes.CrimeAssaultPeaceOfficerRandom(),
+        });
+
+        Vector3 Pos = Game.LocalPlayer.Character.Position;
+        Zone MyZone = Zones.GetZoneName(Pos);
+        if (MyZone != null)
+        {
+            InstantAction.WriteToLog("ReportAssualtOnOfficer", MyZone.TextName);
+            myList.Add(Scanner.Conjunctives.NEAR_01.Value);
+            myList.Add(MyZone.ScannerValue);
+        }
+        myList.Add(Scanner.Resident.OUTRO_01.Value);
+        PlayAudioList(myList);
+    }
+    public static void ReportThreateningWithFirearm(bool Near)
+    {
+        List<string> myList = new List<string>(new string[]
+        {
+            Scanner.Resident.DISPATCH_INTRO_01.Value,
+            Scanner.WeHave.OfficersReportRandom(),
+            Scanner.Crimes.CRIME_THREATEN_OFFICER_WITH_FIREARM_01.Value,
+        });
+
+        Vector3 Pos = Game.LocalPlayer.Character.Position;
+        Zone MyZone = Zones.GetZoneName(Pos);
+        if (MyZone != null)
+        {
+            InstantAction.WriteToLog("ReportAssualtOnOfficer", MyZone.TextName);
+            myList.Add(Scanner.Conjunctives.NEAR_01.Value);
+            myList.Add(MyZone.ScannerValue);
+        }
+        myList.Add(Scanner.Resident.OUTRO_01.Value);
+        PlayAudioList(myList);
+    }
+    public static void ReportSuspectLastSeen(bool Near)
+    {
+        List<string> myList = new List<string>(new string[]
+        {
+            Scanner.Resident.DISPATCH_INTRO_01.Value,
+            Scanner.Suspect.SUSPECT_LAST_SEEN_01.Value,
+        });
+
+        Vector3 Pos = Game.LocalPlayer.Character.Position;
+        Zone MyZone = Zones.GetZoneName(Pos);
+        if (MyZone != null)
+        {
+            InstantAction.WriteToLog("ReportAssualtOnOfficer", MyZone.TextName);
+            myList.Add(Scanner.Conjunctives.NEAR_01.Value);
+            myList.Add(MyZone.ScannerValue);
+        }
+        myList.Add(Scanner.Resident.OUTRO_01.Value);
+        PlayAudioList(myList);
     }
 }
 

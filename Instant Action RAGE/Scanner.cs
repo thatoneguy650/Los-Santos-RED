@@ -494,6 +494,18 @@ public class Scanner
         public static Scanner CRIME_AMBULANCE_REQUESTED_03 { get { return new Scanner("CRIMES\\CRIME_AMBULANCE_REQUESTED_03"); } }
         public static Scanner CRIME_ASSAULT_01 { get { return new Scanner("CRIMES\\CRIME_ASSAULT_01"); } }
         public static Scanner CRIME_ASSAULT_02 { get { return new Scanner("CRIMES\\CRIME_ASSAULT_02"); } }
+        public static String CrimeAssaultPeaceOfficerRandom()
+        {
+            int rnd = random.Next(1, 4);
+            if (rnd == 1)
+                return Scanner.Crimes.CRIME_ASSAULT_PEACE_OFFICER_01.Value;
+            else if (rnd == 2)
+                return Scanner.Crimes.CRIME_ASSAULT_PEACE_OFFICER_02.Value;
+            else if (rnd == 3)
+                return Scanner.Crimes.CRIME_ASSAULT_PEACE_OFFICER_03.Value;
+            else
+                return Scanner.Crimes.CRIME_ASSAULT_PEACE_OFFICER_04.Value;
+        }
         public static Scanner CRIME_ASSAULT_PEACE_OFFICER_01 { get { return new Scanner("CRIMES\\CRIME_ASSAULT_PEACE_OFFICER_01"); } }
         public static Scanner CRIME_ASSAULT_PEACE_OFFICER_02 { get { return new Scanner("CRIMES\\CRIME_ASSAULT_PEACE_OFFICER_02"); } }
         public static Scanner CRIME_ASSAULT_PEACE_OFFICER_03 { get { return new Scanner("CRIMES\\CRIME_ASSAULT_PEACE_OFFICER_03"); } }

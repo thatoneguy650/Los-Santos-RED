@@ -100,6 +100,7 @@
     <Compile Include="Systems\RespawnSystem.cs" />
     <Compile Include="Old\VehicleEngineSystem.cs" />
     <Compile Include="Systems\Settings.cs" />
+    <Compile Include="Zones.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

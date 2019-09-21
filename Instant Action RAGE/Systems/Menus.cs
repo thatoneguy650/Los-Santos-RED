@@ -398,7 +398,8 @@ namespace Instant_Action_RAGE.Systems
                 }
                 if (selectedItem == menuDebugRandomWeapon)
                 {
-                    Game.LocalPlayer.Character.Inventory.GiveNewWeapon(WeaponHash.Pistol,20,true);
+                    GTAWeapon myGun = InstantAction.GetRandomWeapon(index);
+                    Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Type, myGun.AmmoAmount,true);
                 }
                 debugMenu.Visible = false;
             }
