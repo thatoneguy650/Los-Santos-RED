@@ -453,6 +453,20 @@ public class Scanner
     }
     public class Conjunctives
     {
+        public static String NearAtCloseTo()
+        {
+            int rnd = random.Next(1, 5);
+            if (rnd == 1)
+                return Scanner.Conjunctives.NEAR_01.Value;
+            else if (rnd == 2)
+                return Scanner.Conjunctives.AT_01.Value;
+            else if (rnd == 3)
+                return Scanner.Conjunctives.AT_02.Value;
+            else if (rnd == 4)
+                return Scanner.Conjunctives.CLOSE_TO_02.Value;
+            else
+                return Scanner.Conjunctives.CLOSE_TO_01.Value;
+        }
         public static Scanner AN_01 { get { return new Scanner("CONJUNCTIVES\\AN_01"); } }
         public static Scanner AN_02 { get { return new Scanner("CONJUNCTIVES\\AN_02"); } }
         public static Scanner AT_01 { get { return new Scanner("CONJUNCTIVES\\AT_01"); } }

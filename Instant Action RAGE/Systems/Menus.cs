@@ -352,12 +352,12 @@ namespace Instant_Action_RAGE.Systems
                     BribeAmount = BribeList[list.Index];// + 1;
                     if (BribeAmount > Game.LocalPlayer.Character.GetCash("Michael"))
                     {
-                        menuBustedBribe.Enabled = false;
+                        BribeAmount = 0;
                     }
-                    else
-                    {
-                        menuBustedBribe.Enabled = true;
-                    }
+                    //else
+                    //{
+                    //    menuBustedBribe.Enabled = true;
+                    //}
                 }
             }
             else if (sender == optionsMenu)

@@ -29,13 +29,7 @@ public class GTACop
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
         PositionLastSeenPlayer = _positionLastSeenPlayer;
     }
-    //public bool isTasked()
-    //{
-    //    if (TaskFiber == null)
-    //        return false;
-    //    else
-    //        return true;
-    //}
+
     private static Random rnd;
     public Ped CopPed { get; set; }
     public string SimpleTaskName { get; set; }
@@ -45,7 +39,6 @@ public class GTACop
     public Vector3 PositionLastSeenPlayer { get; set; }
     public bool isPursuitPrimary { get; set; } = false;
     public bool HurtByPlayer { get; set; } = false;
-   // public bool isK9Handler { get; set; } = false;
     public GameFiber TaskFiber { get; set; }
     public bool SetTazer { get; set; } = false;
     public bool SetUnarmed { get; set; } = false;
@@ -54,6 +47,7 @@ public class GTACop
     public bool TaskIsQueued { get; set; } = false;
     public uint GameTimeLastWeaponCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
+    public uint GameTimeLastSpoke { get; set; }
     public bool NeedsWeaponCheck
     {
         get
@@ -66,8 +60,18 @@ public class GTACop
                 return false;
         }       
     }
-    // public Ped K9 { get; set; }
-    // public string K9TaskName { get; set; }
+    public bool CanSpeak
+    {
+        get
+        {
+            if (GameTimeLastSpoke == 0)
+                return true;
+            else if (Game.GameTime > GameTimeLastSpoke + 15000)
+                return true;
+            else
+                return false;
+        }
+    }
     public bool RecentlySeenPlayer()
     {
         if (canSeePlayer)

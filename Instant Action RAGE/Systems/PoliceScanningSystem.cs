@@ -172,8 +172,8 @@ namespace Instant_Action_RAGE.Systems
                         canSee = true;
 
                     GTACop myCop = new GTACop(Cop, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f));
-                    //if (rnd.Next(0, 100) <= 15 && myCop.CopPed.IsInAnyVehicle(false) && K9Peds.Count < 2)
-                    //    CreateK9(myCop);
+                    if (rnd.Next(0, 100) <= 15 && Game.LocalPlayer.WantedLevel > 0 && myCop.CopPed.IsInAnyVehicle(false) && K9Peds.Count < 2)
+                        CreateK9(myCop);
                     Cop.IsPersistent = false;
                     CopPeds.Add(myCop);
 
@@ -408,7 +408,6 @@ namespace Instant_Action_RAGE.Systems
                     {
                         if (Cop.isPursuitPrimary && _locrangeTo <= 25f && LocalTaskName != "CarJack")
                         {
-                            Cop.CopPed.PlayAmbientSpeech("GENERIC_INSULT_HIGH");
                             Cop.CopPed.CanRagdoll = false;
                             NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2f, 9);
                             Cop.CopPed.KeepTasks = true;
@@ -422,7 +421,6 @@ namespace Instant_Action_RAGE.Systems
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Arrest";
-                            //WriteToLog("TaskChasing", "Cop SubTasked with Arresting");
                         }
 
                     }
@@ -430,8 +428,6 @@ namespace Instant_Action_RAGE.Systems
                     {
                         if (LocalTaskName != "Arrest" && (InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait || (InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase && _locrangeTo <= 15f)))
                             {
-                                //if (rnd.Next(0, 100) <= 35)
-                                //    Cop.CopPed.PlayAmbientSpeech("FIGHT");
                                 unsafe
                                 {
                                     int lol = 0;
@@ -453,46 +449,42 @@ namespace Instant_Action_RAGE.Systems
                             }
                             else if (LocalTaskName != "GotoShooting" && InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase && _locrangeTo <= 7f)
                             {
-                                //if (rnd.Next(0, 100) <= 10)
-                                //    Cop.CopPed.PlayAmbientSpeech("FIGHT");
                                 Cop.CopPed.CanRagdoll = true;
                                 NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, Game.LocalPlayer.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                                 Cop.CopPed.KeepTasks = true;
                                 TaskTime = Game.GameTime;
                                 LocalTaskName = "GotoShooting";
-                               // WriteToLog("TaskChasing", "Cop SubTasked with Shooting");
                             }
                             else if (LocalTaskName != "Goto" && (InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase) && _locrangeTo >= 15) //was 15f
                             {
-                                //if (rnd.Next(0, 100) <= 10)
-                                //    Cop.CopPed.PlayAmbientSpeech("CHALLENGE_THREATEN");
                                 Cop.CopPed.CanRagdoll = true;
                                 NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
                                 Cop.CopPed.KeepTasks = true;
                                 TaskTime = Game.GameTime;
                                 LocalTaskName = "Goto";
-                               // WriteToLog("TaskChasing", "Cop SubTasked with GoTo");
                             }
 
                         }
 
-                        if (Cop.isPursuitPrimary && LocalTaskName == "CarJack" && Cop.CopPed.IsInAnyVehicle(false))
+                        if (LocalTaskName == "CarJack" && Cop.CopPed.IsInAnyVehicle(true))
                         {
                             WriteToLog("TaskChasing", "GET OUT DUMMY!");
-                            Cop.CopPed.Tasks.LeaveVehicle(Cop.CopPed.CurrentVehicle, LeaveVehicleFlags.LeaveDoorOpen); // Get Out
+                            Cop.CopPed.Tasks.Clear();
+                            //Cop.CopPed.Tasks.LeaveVehicle(Cop.CopPed.CurrentVehicle, LeaveVehicleFlags.LeaveDoorOpen); // Get Out
                             LocalTaskName = "";
                         }
 
                         if ((InstantAction.areHandsUp || Game.LocalPlayer.Character.IsStunned) && !InstantAction.isBusted && _locrangeTo <= 4f)
                             InstantAction.SurrenderBust = true;
 
-                        //if (CopPeds.Where(x => x.isTasked).Count() >= 6)
-                        //{
-                        //    GameFiber.Sleep(5000);//reaction time?
-                        //    break;
-                        //}
+                        if (Cop.CanSpeak && rnd.Next(0, 100) <= 10)
+                        {
+                            Cop.GameTimeLastSpoke = Game.GameTime;
+                            Cop.CopPed.PlayAmbientSpeech("CHALLENGE_THREATEN");
+                            WriteToLog("TaskChasing", "Cop Spoke!");
+                        }
 
-                        if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && (_locrangeTo >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 25))
+                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && (_locrangeTo >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 25))
                         {
                             GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
                             break;
