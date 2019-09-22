@@ -48,6 +48,8 @@ public class GTACop
     public uint GameTimeLastWeaponCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
+    public bool isDriveTasked { get; set; } = false;
+    public string DriveTaskName { get; set; }
     public bool NeedsWeaponCheck
     {
         get

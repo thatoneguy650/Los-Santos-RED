@@ -9,6 +9,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Obfuscate|Any CPU = Obfuscate|Any CPU
+		Obfuscate|x64 = Obfuscate|x64
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
@@ -17,6 +19,10 @@ Global
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug|x64.ActiveCfg = Debug|x64
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug|x64.Build.0 = Debug|x64
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Obfuscate|Any CPU.ActiveCfg = Obfuscate|Any CPU
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Obfuscate|Any CPU.Build.0 = Obfuscate|Any CPU
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Obfuscate|x64.ActiveCfg = Obfuscate|x64
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Obfuscate|x64.Build.0 = Obfuscate|x64
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Release|x64.ActiveCfg = Release|x64

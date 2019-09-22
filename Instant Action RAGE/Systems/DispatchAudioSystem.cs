@@ -34,7 +34,7 @@ internal static class DispatchAudioSystem
 
                     if (Game.IsKeyDown(Keys.NumPad5))
                     {
-                        ReportShotsFired(true);
+                        ReportThreateningWithFirearm(true);
                     }
 
                     GameFiber.Yield();
@@ -50,7 +50,8 @@ internal static class DispatchAudioSystem
         }
         if (audioFile == null)
         {
-            audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\audio\\scanner\\{0}.wav", _Audio));
+            //audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\audio\\scanner\\{0}.wav", _Audio));
+            audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\scanner\\{0}", _Audio));
             audioFile.Volume = 0.4f;
             outputDevice.Init(audioFile);
         }
@@ -59,8 +60,8 @@ internal static class DispatchAudioSystem
     private static void PlayAudioList(List<String> SoundsToPlay,bool CheckSight)
     {
         GameFiber.Sleep(rnd.Next(1000, 2000));
-        if(CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
-                return;
+        if (CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
+            return;
 
         GameFiber.StartNew(delegate
         {            
@@ -81,121 +82,87 @@ internal static class DispatchAudioSystem
         audioFile.Dispose();
         audioFile = null;
     }
-    public static void ReportShotsFired(bool Near)
+    private static void ReportGenericStart(List<string> myList)
     {
         if (!PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
             return;
-
-        List<string> myList = new List<string>(new string[]
+        myList.Add(ScannerAudio.AudioBeeps.AudioStart());
+        myList.Add(ScannerAudio.we_have.OfficersReport());
+    }
+    private static void ReportGenericEnd(List<string> myList,bool Near)
+    {
+        if(Near)
         {
-            Scanner.Resident.DISPATCH_INTRO_01.Value,
-            Scanner.WeHave.OfficersReportRandom(),
-            Scanner.Crimes.CRIME_SHOTS_FIRED_AT_AN_OFFICER_01.Value,
-        });
-
-        Vector3 Pos = Game.LocalPlayer.Character.Position;
-        Zone MyZone = Zones.GetZoneName(Pos);
-        if(MyZone != null)
-        {
-            InstantAction.WriteToLog("ReportShotsFired", MyZone.TextName);
-            myList.Add(Scanner.Conjunctives.NearAtCloseTo());
-            myList.Add(MyZone.ScannerValue);
+            Vector3 Pos = Game.LocalPlayer.Character.Position;
+            Zone MyZone = Zones.GetZoneName(Pos);
+            if (MyZone != null)
+            {
+                myList.Add(ScannerAudio.conjunctives.NearGenericRandom());
+                myList.Add(MyZone.ScannerValue);
+            }
         }
-        myList.Add(Scanner.Resident.OUTRO_01.Value);
-        PlayAudioList(myList,true);
+        myList.Add(ScannerAudio.AudioBeeps.Radio_End_1.FileName);
+    }
+    public static void ReportShotsFired(bool Near)
+    {
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ScannerList);
+        ScannerList.Add(ScannerAudio.crime_shots_fired_at_an_officer.Shotsfiredatanofficer.FileName);
+        ReportGenericEnd(ScannerList, true);
+        PlayAudioList(ScannerList, true);
     }
     public static void ReportCarryingWeapon(bool Near)
     {
-        if (!PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
-            return;
-        List<string> myList = new List<string>(new string[]
-        {
-            Scanner.Resident.DISPATCH_INTRO_01.Value,
-            Scanner.WeHave.OfficersReportRandom(),
-            Scanner.Crimes.CRIME_BRANDISHING_WEAPON_01.Value,
-        });
-
-        Vector3 Pos = Game.LocalPlayer.Character.Position;
-        Zone MyZone = Zones.GetZoneName(Pos);
-        if (MyZone != null)
-        {
-            InstantAction.WriteToLog("ReportCarryingWeapon", MyZone.TextName);
-            myList.Add(Scanner.Conjunctives.NearAtCloseTo());
-            myList.Add(MyZone.ScannerValue);
-        }
-        myList.Add(Scanner.Resident.OUTRO_01.Value);
-        PlayAudioList(myList,true);
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ScannerList);
+        ScannerList.Add(ScannerAudio.carrying_weapon.Carryingafirearm.FileName);
+        ReportGenericEnd(ScannerList, true);
+        PlayAudioList(ScannerList, true);
     }
     public static void ReportAssualtOnOfficer(bool Near)
     {
-        if (!PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
-            return;
-        List<string> myList = new List<string>(new string[]
-        {
-            Scanner.Resident.DISPATCH_INTRO_01.Value,
-            Scanner.WeHave.OfficersReportRandom(),
-            Scanner.Crimes.CrimeAssaultPeaceOfficerRandom(),
-        });
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ScannerList);
+        ScannerList.Add(ScannerAudio.crime_assault_on_an_officer.Anassaultonanofficer.FileName);
+        ReportGenericEnd(ScannerList, true);
 
-        Vector3 Pos = Game.LocalPlayer.Character.Position;
-        Zone MyZone = Zones.GetZoneName(Pos);
-        if (MyZone != null)
-        {
-            InstantAction.WriteToLog("ReportAssualtOnOfficer", MyZone.TextName);
-            myList.Add(Scanner.Conjunctives.NearAtCloseTo());
-            myList.Add(MyZone.ScannerValue);
-        }
-        myList.Add(Scanner.Resident.OUTRO_01.Value);
-        PlayAudioList(myList,true);
+        PlayAudioList(ScannerList, true);
     }
     public static void ReportThreateningWithFirearm(bool Near)
     {
-        List<string> myList = new List<string>(new string[]
-        {
-            Scanner.Resident.DISPATCH_INTRO_01.Value,
-            Scanner.WeHave.OfficersReportRandom(),
-            Scanner.Crimes.CRIME_THREATEN_OFFICER_WITH_FIREARM_01.Value,
-        });
-
-        Vector3 Pos = Game.LocalPlayer.Character.Position;
-        Zone MyZone = Zones.GetZoneName(Pos);
-        if (MyZone != null)
-        {
-            InstantAction.WriteToLog("ReportAssualtOnOfficer", MyZone.TextName);
-            myList.Add(Scanner.Conjunctives.NearAtCloseTo());
-            myList.Add(MyZone.ScannerValue);
-        }
-        myList.Add(Scanner.Resident.OUTRO_01.Value);
-        PlayAudioList(myList,true);
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ScannerList);
+        ScannerList.Add(ScannerAudio.crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName);
+        ReportGenericEnd(ScannerList, true);
+        PlayAudioList(ScannerList, true);
     }
     public static void ReportSuspectLastSeen(bool Near)
     {
-        List<string> myList = new List<string>(new string[]
-        {
-            Scanner.Resident.DISPATCH_INTRO_01.Value,
-            Scanner.Suspect.SUSPECT_LAST_SEEN_01.Value,
-        });
-
-        Vector3 Pos = Game.LocalPlayer.Character.Position;
-        Zone MyZone = Zones.GetZoneName(Pos);
-        if (MyZone != null)
-        {
-            InstantAction.WriteToLog("ReportAssualtOnOfficer", MyZone.TextName);
-            myList.Add(Scanner.Conjunctives.NearAtCloseTo());
-            myList.Add(MyZone.ScannerValue);
-        }
-        myList.Add(Scanner.Resident.OUTRO_01.Value);
-        PlayAudioList(myList,false);
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ScannerList);
+        ScannerList.Add(ScannerAudio.suspect_last_seen.TargetLastSeen.FileName);
+        ReportGenericEnd(ScannerList, true);
+        PlayAudioList(ScannerList, false);
     }
     public static void ReportSuspectArrested()
     {
         List<string> myList = new List<string>(new string[]
         {
-            Scanner.Resident.DISPATCH_INTRO_01.Value,
-            Scanner.CrookArrested.CrookArrestedRandom()
+            ScannerAudio.AudioBeeps.AudioStart(),
+            ScannerAudio.crook_arrested.CrookArrestedRandom()
         }) ;
-        myList.Add(Scanner.Resident.OUTRO_01.Value);
-        PlayAudioList(myList,false);
+        myList.Add(ScannerAudio.AudioBeeps.AudioEnd());
+        PlayAudioList(myList,true);
+    }
+    public static void ReportSuspectWasted()
+    {
+        List<string> myList = new List<string>(new string[]
+        {
+            ScannerAudio.AudioBeeps.AudioStart(),
+            ScannerAudio.crook_killed.CrookKilledRandom()
+        });
+        myList.Add(ScannerAudio.AudioBeeps.AudioEnd());
+        PlayAudioList(myList, true);
     }
 }
 
