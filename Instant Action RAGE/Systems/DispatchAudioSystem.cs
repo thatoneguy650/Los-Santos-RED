@@ -32,10 +32,10 @@ internal static class DispatchAudioSystem
                 while (IsRunning)
                 {
 
-                    if (Game.IsKeyDown(Keys.NumPad5))
-                    {
-                        ReportThreateningWithFirearm(true);
-                    }
+                    //if (Game.IsKeyDown(Keys.NumPad5))
+                    //{
+                    //    ReportThreateningWithFirearm(true);
+                    //}
 
                     GameFiber.Yield();
                 }
@@ -43,19 +43,26 @@ internal static class DispatchAudioSystem
         }
     private static void PlayAudio(String _Audio)
     {
-        if (outputDevice == null)
+        try
         {
-            outputDevice = new WaveOutEvent();
-            outputDevice.PlaybackStopped += OnPlaybackStopped;
+            if (outputDevice == null)
+            {
+                outputDevice = new WaveOutEvent();
+                outputDevice.PlaybackStopped += OnPlaybackStopped;
+            }
+            if (audioFile == null)
+            {
+                //audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\audio\\scanner\\{0}.wav", _Audio));
+                audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\scanner\\{0}", _Audio));
+                audioFile.Volume = 0.4f;
+                outputDevice.Init(audioFile);
+            }
+            outputDevice.Play();
         }
-        if (audioFile == null)
+        catch(Exception e)
         {
-            //audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\audio\\scanner\\{0}.wav", _Audio));
-            audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\scanner\\{0}", _Audio));
-            audioFile.Volume = 0.4f;
-            outputDevice.Init(audioFile);
+            Game.Console.Print(e.Message);
         }
-        outputDevice.Play();
     }
     private static void PlayAudioList(List<String> SoundsToPlay,bool CheckSight)
     {
@@ -115,7 +122,29 @@ internal static class DispatchAudioSystem
     {
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
-        ScannerList.Add(ScannerAudio.carrying_weapon.Carryingafirearm.FileName);
+
+        int Num = rnd.Next(1, 4);
+        if(Num == 1)
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithafirearm.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithagat.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Carryingafirearm.FileName);
+        }
+        else
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Carryingagat.FileName);
+        }
+        
         ReportGenericEnd(ScannerList, true);
         PlayAudioList(ScannerList, true);
     }
@@ -123,15 +152,36 @@ internal static class DispatchAudioSystem
     {
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
-        ScannerList.Add(ScannerAudio.crime_assault_on_an_officer.Anassaultonanofficer.FileName);
+        int Num = rnd.Next(1, 4);
+        if (Num == 1)
+        {
+            ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            ScannerList.Add(ScannerAudio.crime_assault.Apossibleassault1.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            ScannerList.Add(ScannerAudio.crime_assault.Apossibleassault.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            ScannerList.Add(ScannerAudio.crime_assault_on_an_officer.Anassaultonanofficer.FileName);
+        }
+        else
+        {
+            ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            ScannerList.Add(ScannerAudio.crime_assault_on_an_officer.Anofficerassault.FileName);
+        }
+    
         ReportGenericEnd(ScannerList, true);
-
         PlayAudioList(ScannerList, true);
     }
     public static void ReportThreateningWithFirearm(bool Near)
     {
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
+        ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
         ScannerList.Add(ScannerAudio.crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName);
         ReportGenericEnd(ScannerList, true);
         PlayAudioList(ScannerList, true);
@@ -140,7 +190,25 @@ internal static class DispatchAudioSystem
     {
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
-        ScannerList.Add(ScannerAudio.suspect_last_seen.TargetLastSeen.FileName);
+
+        int Num = rnd.Next(1, 4);
+        if (Num == 1)
+        {
+            ScannerList.Add(ScannerAudio.suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(ScannerAudio.suspect_eluded_pt_1.OfficiersHaveLostVisualOnSuspect.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(ScannerAudio.suspect_last_seen.TargetLastReported.FileName);
+        }
+        else
+        {
+            ScannerList.Add(ScannerAudio.suspect_last_seen.TargetLastSeen.FileName);
+        }
+        
         ReportGenericEnd(ScannerList, true);
         PlayAudioList(ScannerList, false);
     }
@@ -148,9 +216,29 @@ internal static class DispatchAudioSystem
     {
         List<string> myList = new List<string>(new string[]
         {
-            ScannerAudio.AudioBeeps.AudioStart(),
-            ScannerAudio.crook_arrested.CrookArrestedRandom()
+            ScannerAudio.AudioBeeps.AudioStart()
         }) ;
+
+        int Num = rnd.Next(1, 4);
+        if (Num == 1)
+        {
+            myList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            myList.Add(ScannerAudio.crook_arrested.Asuspectincustody1.FileName);
+        }
+        else if (Num == 2)
+        {
+            myList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            myList.Add(ScannerAudio.crook_arrested.Asuspectapprehended.FileName);
+        }
+        else if (Num == 3)
+        {
+            myList.Add(ScannerAudio.crook_arrested.Officershaveapprehendedsuspect.FileName);
+        }
+        else
+        {
+            myList.Add(ScannerAudio.crook_arrested.Officershaveapprehendedsuspect1.FileName);
+        }
+
         myList.Add(ScannerAudio.AudioBeeps.AudioEnd());
         PlayAudioList(myList,true);
     }
@@ -158,11 +246,130 @@ internal static class DispatchAudioSystem
     {
         List<string> myList = new List<string>(new string[]
         {
-            ScannerAudio.AudioBeeps.AudioStart(),
-            ScannerAudio.crook_killed.CrookKilledRandom()
+            ScannerAudio.AudioBeeps.AudioStart()
+            
         });
+
+        int Num = rnd.Next(1, 10);
+        if (Num == 1)
+        {
+            myList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            myList.Add(ScannerAudio.crook_killed.Acriminaldown.FileName);
+        }
+        else if (Num == 2)
+        {
+            myList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            myList.Add(ScannerAudio.crook_killed.Asuspectdown.FileName);
+        }
+        else if (Num == 3)
+        {
+            myList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            myList.Add(ScannerAudio.crook_killed.Asuspectdown2.FileName);
+        }
+        else if (Num == 4)
+        {
+            myList.Add(ScannerAudio.we_have.We_Have_2.FileName);
+            myList.Add(ScannerAudio.crook_killed.Asuspectdown1.FileName);
+        }
+        else if (Num == 5)
+        {
+            myList.Add(ScannerAudio.crook_killed.Criminaldown.FileName);
+        }
+        else if (Num == 6)
+        {
+            myList.Add(ScannerAudio.crook_killed.Suspectdown.FileName);
+        }
+        else if (Num == 7)
+        {
+            myList.Add(ScannerAudio.crook_killed.Suspectneutralized.FileName);
+        }
+        else if (Num == 8)
+        {
+            myList.Add(ScannerAudio.crook_killed.Suspectdownmedicalexaminerenroute.FileName);
+        }
+        else if (Num == 9)
+        {
+            myList.Add(ScannerAudio.crook_killed.Suspectdowncoronerenroute.FileName);
+        }
+        else
+        {
+            myList.Add(ScannerAudio.crook_killed.Officershavepacifiedsuspect.FileName);
+        }
+
+
+
         myList.Add(ScannerAudio.AudioBeeps.AudioEnd());
         PlayAudioList(myList, true);
+    }
+    public static void ReportLethalForceAuthorized()
+    {
+        List<string> ScannerList = new List<string>();
+        // ReportGenericStart(ScannerList);
+
+        ScannerList.Add(ScannerAudio.AudioBeeps.AudioStart());
+        ScannerList.Add(ScannerAudio.attention_all_units_gen.Allunits.FileName);
+
+        int Num = rnd.Next(1, 5);
+        if (Num == 1)
+        {
+            ScannerList.Add(ScannerAudio.attention_all_units_gen.Allunits.FileName);
+            ScannerList.Add(ScannerAudio.lethal_force.Useofdeadlyforceauthorized.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(ScannerAudio.attention_all_units_gen.Attentionallunits.FileName);
+            ScannerList.Add(ScannerAudio.lethal_force.Useofdeadlyforceisauthorized.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(ScannerAudio.attention_all_units_gen.Attentionallunits1.FileName);
+            ScannerList.Add(ScannerAudio.lethal_force.Useofdeadlyforceisauthorized1.FileName);
+        }
+        else if (Num == 4)
+        {
+            ScannerList.Add(ScannerAudio.attention_all_units_gen.Attentionallunits2.FileName);
+            ScannerList.Add(ScannerAudio.lethal_force.Useoflethalforceisauthorized.FileName);
+        }
+        else
+        {
+            ScannerList.Add(ScannerAudio.attention_all_units_gen.Attentionallunits3.FileName);
+            ScannerList.Add(ScannerAudio.lethal_force.Useofdeadlyforcepermitted1.FileName);
+        }
+
+        ReportGenericEnd(ScannerList, false);
+        PlayAudioList(ScannerList, false);
+    }
+    public static void ReportSuspectLost()
+    {
+        List<string> ScannerList = new List<string>();
+        // ReportGenericStart(ScannerList);
+
+        ScannerList.Add(ScannerAudio.AudioBeeps.AudioStart());
+
+        int Num = rnd.Next(1, 5);
+        if (Num == 1)
+        {
+            ScannerList.Add(ScannerAudio.suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(ScannerAudio.suspect_eluded_pt_2.AllUnitsStandby.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(ScannerAudio.suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName);
+        }
+        else if (Num == 4)
+        {
+            ScannerList.Add(ScannerAudio.suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName);
+        }
+        else
+        {
+            ScannerList.Add(ScannerAudio.suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName);
+        }
+
+        ReportGenericEnd(ScannerList, false);
+        PlayAudioList(ScannerList, false);
     }
 }
 

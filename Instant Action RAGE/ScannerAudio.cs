@@ -3406,23 +3406,23 @@ public class suspects_last_seen
 }
 public class suspect_arrested
 {
-    public static ScannerFile HASH0C51EC8C { get { return new ScannerFile("01_suspect_arrested\\0x0C51EC8C.wav", "0x0C51EC8C", "suspect_arrested"); } }
-    public static ScannerFile HASH1627003A { get { return new ScannerFile("01_suspect_arrested\\0x1627003A.wav", "0x1627003A", "suspect_arrested"); } }
-    public static ScannerFile HASH1A944911 { get { return new ScannerFile("01_suspect_arrested\\0x1A944911.wav", "0x1A944911", "suspect_arrested"); } }
-    public static ScannerFile HASH1EC51175 { get { return new ScannerFile("01_suspect_arrested\\0x1EC51175.wav", "0x1EC51175", "suspect_arrested"); } }
+    public static ScannerFile SuspectIncustody { get { return new ScannerFile("01_suspect_arrested\\0x0C51EC8C.wav", "Suspect in custody", "suspect_arrested"); } }
+    public static ScannerFile SuspectApprehended { get { return new ScannerFile("01_suspect_arrested\\0x1627003A.wav", "Suspect Aprehended", "suspect_arrested"); } }
+    public static ScannerFile SuspectIsTenFifteen { get { return new ScannerFile("01_suspect_arrested\\0x1A944911.wav", "Suspect is 10-15", "suspect_arrested"); } }
+    public static ScannerFile TenFifteenSuspectInCustody { get { return new ScannerFile("01_suspect_arrested\\0x1EC51175.wav", "10-15 Suspect in Custody", "suspect_arrested"); } }
 }
 public class suspect_eluded_pt_1
 {
-    public static ScannerFile HASH036E44E1 { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x036E44E1.wav", "0x036E44E1", "suspect_eluded_pt_1"); } }
-    public static ScannerFile HASH105E9EC1 { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x105E9EC1.wav", "0x105E9EC1", "suspect_eluded_pt_1"); } }
-    public static ScannerFile HASH15A02945 { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x15A02945.wav", "0x15A02945", "suspect_eluded_pt_1"); } }
-    public static ScannerFile HASH1FD43DAC { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x1FD43DAC.wav", "0x1FD43DAC", "suspect_eluded_pt_1"); } }
+    public static ScannerFile SuspectLost { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x036E44E1.wav", "Suspect Lost", "suspect_eluded_pt_1"); } }
+    public static ScannerFile SuspectHasEvadedOfficers { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x105E9EC1.wav", "Suspect Has Evaded Officers", "suspect_eluded_pt_1"); } }
+    public static ScannerFile SuspectEvadedPursuingOfficiers { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x15A02945.wav", "Suspect Evaded Pursuing Officiers", "suspect_eluded_pt_1"); } }
+    public static ScannerFile OfficiersHaveLostVisualOnSuspect { get { return new ScannerFile("01_suspect_eluded_pt_1\\0x1FD43DAC.wav", "Officiers Have Lost Visual on Suspect", "suspect_eluded_pt_1"); } }
 }
 public class suspect_eluded_pt_2
 {
-    public static ScannerFile HASH05A6E31C { get { return new ScannerFile("01_suspect_eluded_pt_2\\0x05A6E31C.wav", "0x05A6E31C", "suspect_eluded_pt_2"); } }
-    public static ScannerFile HASH145D808B { get { return new ScannerFile("01_suspect_eluded_pt_2\\0x145D808B.wav", "0x145D808B", "suspect_eluded_pt_2"); } }
-    public static ScannerFile HASH1EBB5543 { get { return new ScannerFile("01_suspect_eluded_pt_2\\0x1EBB5543.wav", "0x1EBB5543", "suspect_eluded_pt_2"); } }
+    public static ScannerFile AllUnitsStayInTheArea { get { return new ScannerFile("01_suspect_eluded_pt_2\\0x05A6E31C.wav", "All Units stay in the area", "suspect_eluded_pt_2"); } }
+    public static ScannerFile AllUnitsRemainOnAlert { get { return new ScannerFile("01_suspect_eluded_pt_2\\0x145D808B.wav", "All Units Remain on alert", "suspect_eluded_pt_2"); } }
+    public static ScannerFile AllUnitsStandby { get { return new ScannerFile("01_suspect_eluded_pt_2\\0x1EBB5543.wav", "All Units Standby", "suspect_eluded_pt_2"); } }
 }
 public class suspect_has
 {

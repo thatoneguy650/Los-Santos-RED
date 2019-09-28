@@ -350,13 +350,13 @@ namespace Instant_Action_RAGE.Systems
                 if (list == menuBustedBribe)
                 {
                     BribeAmount = BribeList[list.Index];// + 1;
-                    if (BribeAmount > Game.LocalPlayer.Character.GetCash("Michael"))
-                    {
-                        BribeAmount = 0;
-                    }
+                    //if (BribeAmount > Game.LocalPlayer.Character.GetCash("Michael"))
+                    //{
+                    //    menuBustedBribe.Enabled = false;
+                    //}
                     //else
                     //{
-                    //    menuBustedBribe.Enabled = true;
+                    //    menuBustedBribe. = true;
                     //}
                 }
             }
@@ -398,7 +398,7 @@ namespace Instant_Action_RAGE.Systems
                 }
                 if (selectedItem == menuDebugRandomWeapon)
                 {
-                    GTAWeapon myGun = InstantAction.GetRandomWeapon(index);
+                    GTAWeapon myGun = InstantAction.GetRandomWeapon(RandomWeaponLevel);
                     Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Type, myGun.AmmoAmount,true);
                 }
                 debugMenu.Visible = false;
