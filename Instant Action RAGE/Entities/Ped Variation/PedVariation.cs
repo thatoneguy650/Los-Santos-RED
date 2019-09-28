@@ -12,5 +12,6 @@ using System.Threading.Tasks;
 
         }
     public List<PedComponent> myPedComponents;
+    public List<PropComponent> myPedProps;
 }
 

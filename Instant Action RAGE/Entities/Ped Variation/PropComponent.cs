@@ -6,23 +6,17 @@ using System.Threading.Tasks;
 
 class PropComponent
 {
-    public int ComponentID { get; set; }
+    public int PropID { get; set; }
     public int DrawableID { get; set; }
     public int TextureID { get; set; }
-    public int PaletteID { get; set; }
     public PropComponent()
     {
 
     }
-    public PropComponent(int _ComponentID)
+    public PropComponent(int _PropID,int _DrawableID, int _TextureID)
     {
-        ComponentID = _ComponentID;
-    }
-    public PropComponent(int _ComponentID, int _DrawableID, int _TextureID, int _PaletteID)
-    {
-        ComponentID = _ComponentID;
+        PropID = _PropID;
         DrawableID = _DrawableID;
         TextureID = _TextureID;
-        PaletteID = _PaletteID;
     }
 }

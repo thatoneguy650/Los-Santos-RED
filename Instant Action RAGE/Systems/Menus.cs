@@ -350,6 +350,7 @@ namespace Instant_Action_RAGE.Systems
                 if (list == menuBustedBribe)
                 {
                     BribeAmount = BribeList[list.Index];// + 1;
+                    InstantAction.WriteToLog("Bribe Changed", String.Format("Bribe: {0}", BribeAmount));
                     //if (BribeAmount > Game.LocalPlayer.Character.GetCash("Michael"))
                     //{
                     //    menuBustedBribe.Enabled = false;
@@ -447,7 +448,10 @@ namespace Instant_Action_RAGE.Systems
                 }
                 else if (selectedItem == menuBustedBribe)
                 {
-                    InstantAction.BribePolice(3500);
+                    int CurrentCash = Game.LocalPlayer.Character.GetCash(Settings.ReplacePlayerWithPedCharacter);
+                    if (CurrentCash < BribeAmount)
+                        return;
+                    InstantAction.BribePolice(BribeAmount);
                 }
                 else if (selectedItem == menuBustedSurrender)
                 {
@@ -495,6 +499,10 @@ namespace Instant_Action_RAGE.Systems
                     {
                         debugMenu.Visible = !debugMenu.Visible;
                     }
+                    //else if (Game.IsKeyDown(Keys.F12)) // Our menu on/off switch.
+                    //{
+                    //    bustedMenu.Visible = !bustedMenu.Visible;
+                    //}
 
                     menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse. 
                     GameFiber.Yield();

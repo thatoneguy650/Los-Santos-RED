@@ -109,6 +109,7 @@ public static class InstantAction
             RespawnSystem.Initialize();
             PoliceScanningSystem.Initialize();
             DispatchAudioSystem.Initialize();
+            CustomOptions.Initialize();
             while (IsRunning)
             {
                 StateTick();
@@ -203,7 +204,8 @@ public static class InstantAction
                 {
                     try
                     {
-                        MoveGhostCopToPlayer();
+                        //MoveGhostCopToPlayer();
+                        Game.LocalPlayer.Character.GiveCash(5000, "Michael");
                         //MoveGhostCopToPlayer();
                     }
                     catch (Exception e)
@@ -326,6 +328,19 @@ public static class InstantAction
 
         bool AnyRecentlySeen = PoliceScanningSystem.CopPeds.Any(x => x.SeenPlayerSince(RecentlySeenTime));
         PlayerStarsGreyedOut = NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
+
+
+        //if(Game.LocalPlayer.WantedLevel > 0)
+        //{
+        //    NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
+        //    NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false); // No Radar or police blips
+        //}
+        //else
+        //{
+        //    NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+        //    NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
+        //}
+
 
         foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.isInVehicle && !x.isInHelicopter))
         {
@@ -594,7 +609,7 @@ public static class InstantAction
     {
         if (Game.LocalPlayer.WantedLevel == 0)//Just Removed
         {
-            NativeFunction.CallByName<bool>("SET_FAKE_WANTED_LEVEL", 0);
+            //NativeFunction.CallByName<bool>("SET_FAKE_WANTED_LEVEL", 0);
             DispatchAudioSystem.ReportSuspectLost();
             CurrentPoliceState = PoliceState.Normal;
         }
@@ -877,7 +892,7 @@ public static class InstantAction
             DispatchAudioSystem.ReportSuspectArrested();
         }
 
-        NativeFunction.CallByName<uint>("DISPLAY_HUD", true);
+        //NativeFunction.CallByName<uint>("DISPLAY_HUD", true);
 
         if (Game.LocalPlayer.WantedLevel > PreviousWantedLevel)
             PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
@@ -1172,9 +1187,14 @@ public static class InstantAction
         {
             myPedVariation = new PedVariation();
             myPedVariation.myPedComponents = new List<PedComponent>();
-            for (int ComponentNumber = 0; ComponentNumber <= 12; ComponentNumber++)
+            myPedVariation.myPedProps = new List<PropComponent>();
+            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
                 myPedVariation.myPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
+            }
+            for(int PropNumber = 0; PropNumber < 8;PropNumber++)
+            {
+                myPedVariation.myPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
             }
         }
         catch (Exception e)
@@ -1189,6 +1209,10 @@ public static class InstantAction
             foreach (PedComponent Component in myPedVariation.myPedComponents)
             {
                 NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", myPed, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
+            }
+            foreach (PropComponent Prop in myPedVariation.myPedProps)
+            {
+                NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", myPed, Prop.PropID, Prop.DrawableID, Prop.TextureID,false);
             }
         }
         catch (Exception e)
@@ -1325,8 +1349,8 @@ public static class InstantAction
     }
     public static void RespawnAtHospital()
     {
-        Game.FadeScreenOut(2500);
-        GameFiber.Wait(2500);
+        Game.FadeScreenOut(1500);
+        GameFiber.Wait(1500);
         isDead = false;
         isBusted = false;
         CurrentPoliceState = PoliceState.Normal;
@@ -1342,18 +1366,18 @@ public static class InstantAction
         Game.LocalPlayer.Character.Position = ClosestPolice.Location;
         Game.LocalPlayer.Character.Heading = ClosestPolice.Heading;
 
-        
 
-        // Game.Player.Character.Task.GoTo(Game.Player.Character.GetOffsetInWorldCoords(new Vector3(0, 3f, 0)));
-        Game.FadeScreenIn(2500);
-        //if (mySettings.ReplacePlayerWithPedRandomMoney)
-        //{
-            int CurrentCash = Game.LocalPlayer.Character.GetCash("Michael");
+        GameFiber.Wait(1500);
+        Game.FadeScreenIn(1500);
+
+        if (Settings.ReplacePlayerWithPedRandomMoney)
+        {
+            int CurrentCash = Game.LocalPlayer.Character.GetCash(Settings.ReplacePlayerWithPedCharacter);
             if (CurrentCash < 5000)
-                Game.LocalPlayer.Character.SetCash(0, "Michael"); // Stop it from removing and adding cash, you cant go negative.
+                Game.LocalPlayer.Character.SetCash(0, Settings.ReplacePlayerWithPedCharacter); // Stop it from removing and adding cash, you cant go negative.
             else
-                Game.LocalPlayer.Character.GiveCash(-5000, "Michael");
-        //}
+                Game.LocalPlayer.Character.GiveCash(-5000, Settings.ReplacePlayerWithPedCharacter);
+        }
     }
     public static void ResistArrest()
     {
@@ -1388,7 +1412,7 @@ public static class InstantAction
 
         CurrentPoliceState = PoliceState.Normal;
         Game.FadeScreenIn(2500);
-        //UI.Notify("You are out on bail, try to stay out of trouble");
+        Game.DisplayNotification("You are out on bail, try to stay out of trouble");
         if (Settings.ReplacePlayerWithPedRandomMoney)
             Game.LocalPlayer.Character.GiveCash(MaxWantedLastLife * -750, Settings.ReplacePlayerWithPedCharacter);
 
@@ -1398,20 +1422,16 @@ public static class InstantAction
     {
         if (Amount < PreviousWantedLevel * 500)
         {
-            //WriteToLog("BribePolice", String.Format("Bribe Failed. required Amount: {0}, Amount Sent: {1}", Amount.ToString(), (PreviousWantedLevel * 500).ToString()));
-            //UI.Notify("Thats it? Thanks for the cash, but you're going downtown.");
-            //Game.Player.Character.GiveCash(-1 * Amount, mySettings.ReplacePlayerWithPedCharacter);
-            //UI.Notify(String.Format("Current Cash: ${0}", Game.Player.Character.GetCash(mySettings.ReplacePlayerWithPedCharacter)));
+            Game.DisplayNotification("Thats it? Thanks for the cash, but you're going downtown.");
+            Game.LocalPlayer.Character.GiveCash(-1 * Amount, Settings.ReplacePlayerWithPedCharacter);
             return;
         }
         else
         {
             BeingArrested = false;
             isBusted = false;
-            //WriteToLog("BribePolice", String.Format("Bribe Worked. required Amount: {0}, Amount Sent: {1}", Amount.ToString(), (PreviousWantedLevel * 500).ToString()));
-            //UI.Notify("Thanks for the cash, now beat it.");
-            //Game.Player.Character.GiveCash(-1 * Amount, mySettings.ReplacePlayerWithPedCharacter);
-            //UI.Notify(String.Format("Current Cash: ${0}", Game.Player.Character.GetCash(mySettings.ReplacePlayerWithPedCharacter)));
+            Game.DisplayNotification("Thanks for the cash, now beat it.");
+            Game.LocalPlayer.Character.GiveCash(-1 * Amount, Settings.ReplacePlayerWithPedCharacter);
         }
         CurrentPoliceState = PoliceState.Normal;
         firedWeapon = false;
@@ -1424,7 +1444,6 @@ public static class InstantAction
         ResetPlayer(true, false);
 
         PoliceScanningSystem.UntaskAll();
-
 
     }
     public static void WriteToLog(String ProcedureString, String TextToLog)

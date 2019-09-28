@@ -99,7 +99,8 @@ namespace Instant_Action_RAGE.Systems
                     //if (!PlayerHurtPolice || !PlayerKilledPolice)
                     //    CheckDamage();
 
-                    DebugLoop();
+                    if(Settings.Debug)
+                        DebugLoop();
 
                     GameFiber.Yield();
                 }
@@ -423,7 +424,8 @@ namespace Instant_Action_RAGE.Systems
                         _policeTask.CopToAssign.TaskIsQueued = false;
                         CopsToTask.RemoveAt(0);
                     }
-                    GameFiber.Sleep(100);
+                    //GameFiber.Sleep(100);
+                    GameFiber.Sleep(250);
                 }
             });
         }
@@ -474,7 +476,7 @@ namespace Instant_Action_RAGE.Systems
                         if (DistanceToPlayer > 100f)
                             break;
 
-                        if (PlayerInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 25)
+                        if (PlayerInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 15)
                         {
                             if (Cop.isPursuitPrimary && DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
                             {
