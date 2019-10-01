@@ -29,6 +29,7 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuCheckboxItem menuOptionsDebug;
 
         private static UIMenuItem menuDebugResetCharacter;
+        private static UIMenuItem menuMainSuicide;
         private static UIMenuItem menuDebugKillPlayer;
         private static UIMenuListItem menuDebugRandomWeapon;
         private static UIMenuListItem menuDebugScreenEffect;
@@ -92,6 +93,7 @@ namespace Instant_Action_RAGE.Systems
             menuPool.Add(optionsMenu);
 
             //
+            menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
             menuMainRandomCrime = new UIMenuListItem("Start Random Crime","Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
             menuMainTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
             menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "20 M", "40 M", "60 M", "100 M", "500 M" } );
@@ -100,6 +102,7 @@ namespace Instant_Action_RAGE.Systems
             mainMenu.AddItem(menuMainRandomCrime);
             mainMenu.AddItem(menuMainTakeoverNearestPed);
             mainMenu.AddItem(menuMainTakeoverRandomPed);
+            mainMenu.AddItem(menuMainSuicide);
             mainMenu.AddItem(menuMainOptions);
 
 
@@ -437,6 +440,10 @@ namespace Instant_Action_RAGE.Systems
                 else if (selectedItem == menuMainOptions)
                 {
                     optionsMenu.Visible = true;
+                }
+                else if (selectedItem == menuMainSuicide)
+                {
+                    InstantAction.CommitSuicide(Game.LocalPlayer.Character);
                 }
                 mainMenu.Visible = false;
             }

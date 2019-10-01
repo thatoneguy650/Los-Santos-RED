@@ -11,7 +11,11 @@ namespace Instant_Action_RAGE.Systems
 {
     internal static class CustomOptions
     {
+        private static bool SpeedModeBombActive = false;
+        private static Vehicle SpeedBus;
         public static bool IsRunning { get; set; } = true;
+        public static bool SpeedModeEnabled { get; private set; } = true;
+
         public static void Initialize()
         {
             MainLoop();
@@ -22,17 +26,44 @@ namespace Instant_Action_RAGE.Systems
             {
                 while (IsRunning)
                 {
+                    NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false); // No Radar or police blips
 
-                    if (Game.LocalPlayer.WantedLevel > 0)
+
+
+                    if (SpeedModeEnabled)
                     {
-                        NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
-                        NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false); // No Radar or police blips
+                        if(SpeedModeBombActive)
+                        {
+                            if (!SpeedBus.Exists())
+                            {
+                                SpeedModeBombActive = false;
+                            }
+                            if (SpeedBus.Speed < 24.5872f)
+                            {
+                                SpeedBus.Explode();
+                                SpeedModeBombActive = false;
+                                Game.DisplaySubtitle("BOOM");
+                            }
+                        }
+                        else if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Model.Name == "BUS" && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 24.5872f)
+                        {
+                            SpeedBus = Game.LocalPlayer.Character.CurrentVehicle;
+                            SpeedModeBombActive = true;
+                            Game.DisplaySubtitle("Bomb Activated, Don't Drop Below 55 MPH");
+                        }
                     }
-                    else
-                    {
-                        NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
-                        NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
-                    }
+
+
+                    //if (Game.LocalPlayer.WantedLevel > 0)
+                    //{
+                    //   // NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
+                    //    NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false); // No Radar or police blips
+                    //}
+                    //else
+                    //{
+                    //    //NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+                    //    NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
+                    //}
 
 
                     //NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);

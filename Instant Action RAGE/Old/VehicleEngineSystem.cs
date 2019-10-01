@@ -18,7 +18,6 @@ namespace Instant_Action_RAGE.Systems
         private static bool WasinVehicle;
         private static bool needsHotwiring;
         private static bool needsToUnlock;
-        private static Random rnd;
 
         public static bool AutoTune { get; private set; } = true;
         public static bool SetLoud { get; private set; } = true;

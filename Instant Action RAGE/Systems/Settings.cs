@@ -34,6 +34,7 @@ static class Settings
     public static Keys MenuKey = Keys.F10;
     public static Keys BetterChasesSurrenderKey = Keys.E;
     public static Keys DropWeaponKey = Keys.G;
+    public static float DispatchAudioVolume = 0.4f;
 
     public static void Initialize()
     {
@@ -43,16 +44,12 @@ static class Settings
     {
         return "Settings:\n" +
                $"AutoRespawn: {AutoRespawn}\n" +
-               $"BetterChasesAllowBustOportunity: {BetterChasesAllowBustOportunity}\n" +
                $"ReplacePlayerWithPed: {ReplacePlayerWithPed}\n" +
                $"ReplacePlayerWithPedCharacter: {ReplacePlayerWithPedCharacter}\n" +
                $"ReplacePlayerWithPedRandomMoney: {ReplacePlayerWithPedRandomMoney}\n" +
-               $"PoliceEnhancements: {PoliceEnhancements}\n" +
                $"UndieLimit: {UndieLimit}\n" +
                $"Debug: {Debug}\n" +
-               $"RandomEvents: {RandomEvents}\n" +
                $"MenuKey: {MenuKey}\n" +
-               $"BetterChasesSurrenderKey: {BetterChasesSurrenderKey}\n" +
                $"DropWeaponKey: {DropWeaponKey}";
     }
     public static void ReadSettings()
@@ -65,14 +62,12 @@ static class Settings
                 xmlDocument.Load("Plugins\\InstantAction\\InstantAction.xml");
                 XmlElement documentElement = xmlDocument.DocumentElement;
                 MenuKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//MenuKey").InnerText, true);
-                BetterChasesSurrenderKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//BetterChasesSurrenderKey").InnerText, true);
+                BetterChasesSurrenderKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//BustKey").InnerText, true);
                 DropWeaponKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//DropWeaponKey").InnerText, true);
                 AutoRespawn = bool.Parse(documentElement.SelectSingleNode("//AutoRespawn").InnerText);
-                BetterChasesAllowBustOportunity = bool.Parse(documentElement.SelectSingleNode("//BetterChasesAllowBustOportunity").InnerText);
                 ReplacePlayerWithPed = bool.Parse(documentElement.SelectSingleNode("//ReplacePlayerWithPed").InnerText);
                 ReplacePlayerWithPedCharacter = documentElement.SelectSingleNode("//ReplacePlayerWithPedCharacter").InnerText;
                 ReplacePlayerWithPedRandomMoney = bool.Parse(documentElement.SelectSingleNode("//ReplacePlayerWithPedRandomMoney").InnerText);
-                PoliceEnhancements = bool.Parse(documentElement.SelectSingleNode("//PoliceEnhancements").InnerText);
                 Debug = bool.Parse(documentElement.SelectSingleNode("//Debug").InnerText);
                 RandomEvents = bool.Parse(documentElement.SelectSingleNode("//RandomEvents").InnerText);
                 UndieLimit = int.Parse(documentElement.SelectSingleNode("//UndieLimit").InnerText);
@@ -109,9 +104,6 @@ static class Settings
                 MenuKeyElement.AppendChild(xmlDocument.CreateTextNode(MenuKey.ToString()));
                 xmlDocument.DocumentElement.AppendChild(MenuKeyElement);
 
-                XmlElement BetterChasesSurrenderKeyElement = xmlDocument.CreateElement(string.Empty, "BetterChasesSurrenderKey", string.Empty);
-                BetterChasesSurrenderKeyElement.AppendChild(xmlDocument.CreateTextNode(BetterChasesSurrenderKey.ToString()));
-                xmlDocument.DocumentElement.AppendChild(BetterChasesSurrenderKeyElement);
 
                 XmlElement DropWeaponKeyElement = xmlDocument.CreateElement(string.Empty, "DropWeaponKey", string.Empty);
                 DropWeaponKeyElement.AppendChild(xmlDocument.CreateTextNode(DropWeaponKey.ToString()));
@@ -120,10 +112,6 @@ static class Settings
                 XmlElement AutoRespawnElement = xmlDocument.CreateElement(string.Empty, "AutoRespawn", string.Empty);
                 AutoRespawnElement.AppendChild(xmlDocument.CreateTextNode(AutoRespawn.ToString()));
                 xmlDocument.DocumentElement.AppendChild(AutoRespawnElement);
-
-                XmlElement BetterChasesAllowBustOportunityElement = xmlDocument.CreateElement(string.Empty, "BetterChasesAllowBustOportunity", string.Empty);
-                BetterChasesAllowBustOportunityElement.AppendChild(xmlDocument.CreateTextNode(BetterChasesAllowBustOportunity.ToString()));
-                xmlDocument.DocumentElement.AppendChild(BetterChasesAllowBustOportunityElement);
 
                 XmlElement ReplacePlayerWithPedElement = xmlDocument.CreateElement(string.Empty, "ReplacePlayerWithPed", string.Empty);
                 ReplacePlayerWithPedElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPed.ToString()));
@@ -137,17 +125,11 @@ static class Settings
                 ReplacePlayerWithPedRandomMoneyElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPedRandomMoney.ToString()));
                 xmlDocument.DocumentElement.AppendChild(ReplacePlayerWithPedRandomMoneyElement);
 
-                XmlElement PoliceEnhancementsElement = xmlDocument.CreateElement(string.Empty, "PoliceEnhancements", string.Empty);
-                PoliceEnhancementsElement.AppendChild(xmlDocument.CreateTextNode(PoliceEnhancements.ToString()));
-                xmlDocument.DocumentElement.AppendChild(PoliceEnhancementsElement);
 
                 XmlElement DebugElement = xmlDocument.CreateElement(string.Empty, "Debug", string.Empty);
                 DebugElement.AppendChild(xmlDocument.CreateTextNode(Debug.ToString()));
                 xmlDocument.DocumentElement.AppendChild(DebugElement);
 
-                XmlElement RandomEventsElement = xmlDocument.CreateElement(string.Empty, "RandomEvents", string.Empty);
-                RandomEventsElement.AppendChild(xmlDocument.CreateTextNode(RandomEvents.ToString()));
-                xmlDocument.DocumentElement.AppendChild(RandomEventsElement);
 
                 XmlElement UndieLimitElement = xmlDocument.CreateElement(string.Empty, "UndieLimit", string.Empty);
                 UndieLimitElement.AppendChild(xmlDocument.CreateTextNode(UndieLimit.ToString()));
