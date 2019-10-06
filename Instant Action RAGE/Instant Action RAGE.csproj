@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DispatchScanner.cs" />
+    <Compile Include="Entities\StolenVehicle.cs" />
     <Compile Include="Old\CustomOptions.cs" />
     <Compile Include="Entities\EmergencyLocation.cs" />
     <Compile Include="Entities\GTACop.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Systems\DispatchAudioSystem.cs" />
     <Compile Include="Systems\Menus.cs" />
     <Compile Include="Systems\PoliceScanningSystem.cs" />
+    <Compile Include="Systems\PoliceSpeechSystem.cs" />
     <Compile Include="Systems\RespawnSystem.cs" />
     <Compile Include="Old\VehicleEngineSystem.cs" />
     <Compile Include="Systems\Settings.cs" />

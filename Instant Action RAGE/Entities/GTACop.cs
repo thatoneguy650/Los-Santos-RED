@@ -49,7 +49,7 @@ public class GTACop
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
     public bool isDriveTasked { get; set; } = false;
-    public string DriveTaskName { get; set; }
+    public string SubTaskName { get; set; }
     public bool isInVehicle { get; set; } = false;
     public bool isInHelicopter { get; set; } = false;
     public bool isOnBike { get; set; } = false;

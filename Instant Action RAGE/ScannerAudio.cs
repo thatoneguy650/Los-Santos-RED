@@ -1865,140 +1865,163 @@ public class lp_letters_low
     public static ScannerFile HASH1ED86465 { get { return new ScannerFile("01_lp_letters_low\\0x1ED86465.wav", "0x1ED86465", "lp_letters_low"); } }
     public static ScannerFile HASH1F7AA846 { get { return new ScannerFile("01_lp_letters_low\\0x1F7AA846.wav", "0x1F7AA846", "lp_letters_low"); } }
 }
-//public class lp_numbers { public static ScannerFile 0 { get {return new ScannerFile("01_lp_numbers\\0x001F8998.wav","0","lp_numbers"); } }
-//public static ScannerFile 6 { get {return new ScannerFile("01_lp_numbers\\0x00717979.wav","6","lp_numbers"); } }
-//public static ScannerFile 9 { get {return new ScannerFile("01_lp_numbers\\0x0083267E.wav","9","lp_numbers"); } }
-//public static ScannerFile 8 { get {return new ScannerFile("01_lp_numbers\\0x00896952.wav","8","lp_numbers"); } }
-//public static ScannerFile 7 { get {return new ScannerFile("01_lp_numbers\\0x009E8E85.wav","7","lp_numbers"); } }
-//public static ScannerFile HASH0100252F { get { return new ScannerFile("01_lp_numbers\\0x0100252F.wav", "0x0100252F", "lp_numbers"); } }
-//public static ScannerFile HASH01C22022 { get { return new ScannerFile("01_lp_numbers\\0x01C22022.wav", "0x01C22022", "lp_numbers"); } }
-//public static ScannerFile HASH020E8A21 { get { return new ScannerFile("01_lp_numbers\\0x020E8A21.wav", "0x020E8A21", "lp_numbers"); } }
-//public static ScannerFile HASH02267CBE { get { return new ScannerFile("01_lp_numbers\\0x02267CBE.wav", "0x02267CBE", "lp_numbers"); } }
-//public static ScannerFile HASH0250392E { get { return new ScannerFile("01_lp_numbers\\0x0250392E.wav", "0x0250392E", "lp_numbers"); } }
-//public static ScannerFile HASH02886760 { get { return new ScannerFile("01_lp_numbers\\0x02886760.wav", "0x02886760", "lp_numbers"); } }
-//public static ScannerFile HASH02A288B0 { get { return new ScannerFile("01_lp_numbers\\0x02A288B0.wav", "0x02A288B0", "lp_numbers"); } }
-//public static ScannerFile HASH02E5EEC0 { get { return new ScannerFile("01_lp_numbers\\0x02E5EEC0.wav", "0x02E5EEC0", "lp_numbers"); } }
-//public static ScannerFile HASH034F92AA { get { return new ScannerFile("01_lp_numbers\\0x034F92AA.wav", "0x034F92AA", "lp_numbers"); } }
-//public static ScannerFile HASH03B8B23A { get { return new ScannerFile("01_lp_numbers\\0x03B8B23A.wav", "0x03B8B23A", "lp_numbers"); } }
-//public static ScannerFile HASH03BEB046 { get { return new ScannerFile("01_lp_numbers\\0x03BEB046.wav", "0x03BEB046", "lp_numbers"); } }
-//public static ScannerFile HASH03C3D7A1 { get { return new ScannerFile("01_lp_numbers\\0x03C3D7A1.wav", "0x03C3D7A1", "lp_numbers"); } }
-//public static ScannerFile HASH03C6BD7E { get { return new ScannerFile("01_lp_numbers\\0x03C6BD7E.wav", "0x03C6BD7E", "lp_numbers"); } }
-//public static ScannerFile HASH041D81A4 { get { return new ScannerFile("01_lp_numbers\\0x041D81A4.wav", "0x041D81A4", "lp_numbers"); } }
-//public static ScannerFile HASH04391135 { get { return new ScannerFile("01_lp_numbers\\0x04391135.wav", "0x04391135", "lp_numbers"); } }
-//public static ScannerFile HASH04E10A53 { get { return new ScannerFile("01_lp_numbers\\0x04E10A53.wav", "0x04E10A53", "lp_numbers"); } }
-//public static ScannerFile HASH04E9AB5B { get { return new ScannerFile("01_lp_numbers\\0x04E9AB5B.wav", "0x04E9AB5B", "lp_numbers"); } }
-//public static ScannerFile HASH04F3CC0F { get { return new ScannerFile("01_lp_numbers\\0x04F3CC0F.wav", "0x04F3CC0F", "lp_numbers"); } }
-//public static ScannerFile HASH056635CE { get { return new ScannerFile("01_lp_numbers\\0x056635CE.wav", "0x056635CE", "lp_numbers"); } }
-//public static ScannerFile HASH057A4C20 { get { return new ScannerFile("01_lp_numbers\\0x057A4C20.wav", "0x057A4C20", "lp_numbers"); } }
-//public static ScannerFile HASH060BDED7 { get { return new ScannerFile("01_lp_numbers\\0x060BDED7.wav", "0x060BDED7", "lp_numbers"); } }
-//public static ScannerFile HASH0702944B { get { return new ScannerFile("01_lp_numbers\\0x0702944B.wav", "0x0702944B", "lp_numbers"); } }
-//public static ScannerFile HASH072B44F1 { get { return new ScannerFile("01_lp_numbers\\0x072B44F1.wav", "0x072B44F1", "lp_numbers"); } }
-//public static ScannerFile HASH0738B2AC { get { return new ScannerFile("01_lp_numbers\\0x0738B2AC.wav", "0x0738B2AC", "lp_numbers"); } }
-//public static ScannerFile HASH07DC8B99 { get { return new ScannerFile("01_lp_numbers\\0x07DC8B99.wav", "0x07DC8B99", "lp_numbers"); } }
-//public static ScannerFile HASH08193D1F { get { return new ScannerFile("01_lp_numbers\\0x08193D1F.wav", "0x08193D1F", "lp_numbers"); } }
-//public static ScannerFile HASH084F6895 { get { return new ScannerFile("01_lp_numbers\\0x084F6895.wav", "0x084F6895", "lp_numbers"); } }
-//public static ScannerFile HASH0866698B { get { return new ScannerFile("01_lp_numbers\\0x0866698B.wav", "0x0866698B", "lp_numbers"); } }
-//public static ScannerFile HASH08A07389 { get { return new ScannerFile("01_lp_numbers\\0x08A07389.wav", "0x08A07389", "lp_numbers"); } }
-//public static ScannerFile HASH08DA0642 { get { return new ScannerFile("01_lp_numbers\\0x08DA0642.wav", "0x08DA0642", "lp_numbers"); } }
-//public static ScannerFile HASH0945F55C { get { return new ScannerFile("01_lp_numbers\\0x0945F55C.wav", "0x0945F55C", "lp_numbers"); } }
-//public static ScannerFile HASH09B8F8B2 { get { return new ScannerFile("01_lp_numbers\\0x09B8F8B2.wav", "0x09B8F8B2", "lp_numbers"); } }
-//public static ScannerFile HASH09E3959A { get { return new ScannerFile("01_lp_numbers\\0x09E3959A.wav", "0x09E3959A", "lp_numbers"); } }
-//public static ScannerFile HASH0A21BD3A { get { return new ScannerFile("01_lp_numbers\\0x0A21BD3A.wav", "0x0A21BD3A", "lp_numbers"); } }
-//public static ScannerFile HASH0A44E2A4 { get { return new ScannerFile("01_lp_numbers\\0x0A44E2A4.wav", "0x0A44E2A4", "lp_numbers"); } }
-//public static ScannerFile HASH0A520191 { get { return new ScannerFile("01_lp_numbers\\0x0A520191.wav", "0x0A520191", "lp_numbers"); } }
-//public static ScannerFile HASH0AB5A365 { get { return new ScannerFile("01_lp_numbers\\0x0AB5A365.wav", "0x0AB5A365", "lp_numbers"); } }
-//public static ScannerFile HASH0AC34F2D { get { return new ScannerFile("01_lp_numbers\\0x0AC34F2D.wav", "0x0AC34F2D", "lp_numbers"); } }
-//public static ScannerFile HASH0AC5F426 { get { return new ScannerFile("01_lp_numbers\\0x0AC5F426.wav", "0x0AC5F426", "lp_numbers"); } }
-//public static ScannerFile HASH0B053108 { get { return new ScannerFile("01_lp_numbers\\0x0B053108.wav", "0x0B053108", "lp_numbers"); } }
-//public static ScannerFile HASH0B06D7D8 { get { return new ScannerFile("01_lp_numbers\\0x0B06D7D8.wav", "0x0B06D7D8", "lp_numbers"); } }
-//public static ScannerFile HASH0B0CEFA0 { get { return new ScannerFile("01_lp_numbers\\0x0B0CEFA0.wav", "0x0B0CEFA0", "lp_numbers"); } }
-//public static ScannerFile HASH0B111513 { get { return new ScannerFile("01_lp_numbers\\0x0B111513.wav", "0x0B111513", "lp_numbers"); } }
-//public static ScannerFile HASH0B193882 { get { return new ScannerFile("01_lp_numbers\\0x0B193882.wav", "0x0B193882", "lp_numbers"); } }
-//public static ScannerFile HASH0B624017 { get { return new ScannerFile("01_lp_numbers\\0x0B624017.wav", "0x0B624017", "lp_numbers"); } }
-//public static ScannerFile HASH0BA6ADB6 { get { return new ScannerFile("01_lp_numbers\\0x0BA6ADB6.wav", "0x0BA6ADB6", "lp_numbers"); } }
-//public static ScannerFile HASH0BC33189 { get { return new ScannerFile("01_lp_numbers\\0x0BC33189.wav", "0x0BC33189", "lp_numbers"); } }
-//public static ScannerFile HASH0BD3DC4A { get { return new ScannerFile("01_lp_numbers\\0x0BD3DC4A.wav", "0x0BD3DC4A", "lp_numbers"); } }
-//public static ScannerFile HASH0BDF3B4E { get { return new ScannerFile("01_lp_numbers\\0x0BDF3B4E.wav", "0x0BDF3B4E", "lp_numbers"); } }
-//public static ScannerFile HASH0C475100 { get { return new ScannerFile("01_lp_numbers\\0x0C475100.wav", "0x0C475100", "lp_numbers"); } }
-//public static ScannerFile HASH0D0A9A07 { get { return new ScannerFile("01_lp_numbers\\0x0D0A9A07.wav", "0x0D0A9A07", "lp_numbers"); } }
-//public static ScannerFile HASH0E059625 { get { return new ScannerFile("01_lp_numbers\\0x0E059625.wav", "0x0E059625", "lp_numbers"); } }
-//public static ScannerFile HASH0E326A5E { get { return new ScannerFile("01_lp_numbers\\0x0E326A5E.wav", "0x0E326A5E", "lp_numbers"); } }
-//public static ScannerFile HASH0E5738DB { get { return new ScannerFile("01_lp_numbers\\0x0E5738DB.wav", "0x0E5738DB", "lp_numbers"); } }
-//public static ScannerFile HASH0E5D7871 { get { return new ScannerFile("01_lp_numbers\\0x0E5D7871.wav", "0x0E5D7871", "lp_numbers"); } }
-//public static ScannerFile HASH0F57708C { get { return new ScannerFile("01_lp_numbers\\0x0F57708C.wav", "0x0F57708C", "lp_numbers"); } }
-//public static ScannerFile HASH0F5C49C5 { get { return new ScannerFile("01_lp_numbers\\0x0F5C49C5.wav", "0x0F5C49C5", "lp_numbers"); } }
-//public static ScannerFile HASH0F684FCA { get { return new ScannerFile("01_lp_numbers\\0x0F684FCA.wav", "0x0F684FCA", "lp_numbers"); } }
-//public static ScannerFile HASH0F6A7978 { get { return new ScannerFile("01_lp_numbers\\0x0F6A7978.wav", "0x0F6A7978", "lp_numbers"); } }
-//public static ScannerFile HASH0FA44161 { get { return new ScannerFile("01_lp_numbers\\0x0FA44161.wav", "0x0FA44161", "lp_numbers"); } }
-//public static ScannerFile HASH0FF332A5 { get { return new ScannerFile("01_lp_numbers\\0x0FF332A5.wav", "0x0FF332A5", "lp_numbers"); } }
-//public static ScannerFile HASH1005A74F { get { return new ScannerFile("01_lp_numbers\\0x1005A74F.wav", "0x1005A74F", "lp_numbers"); } }
-//public static ScannerFile HASH100925CC { get { return new ScannerFile("01_lp_numbers\\0x100925CC.wav", "0x100925CC", "lp_numbers"); } }
-//public static ScannerFile HASH1047F6FB { get { return new ScannerFile("01_lp_numbers\\0x1047F6FB.wav", "0x1047F6FB", "lp_numbers"); } }
-//public static ScannerFile HASH105D245D { get { return new ScannerFile("01_lp_numbers\\0x105D245D.wav", "0x105D245D", "lp_numbers"); } }
-//public static ScannerFile HASH109F8A35 { get { return new ScannerFile("01_lp_numbers\\0x109F8A35.wav", "0x109F8A35", "lp_numbers"); } }
-//public static ScannerFile HASH118D3334 { get { return new ScannerFile("01_lp_numbers\\0x118D3334.wav", "0x118D3334", "lp_numbers"); } }
-//public static ScannerFile HASH11A62DC2 { get { return new ScannerFile("01_lp_numbers\\0x11A62DC2.wav", "0x11A62DC2", "lp_numbers"); } }
-//public static ScannerFile HASH11D9ED0F { get { return new ScannerFile("01_lp_numbers\\0x11D9ED0F.wav", "0x11D9ED0F", "lp_numbers"); } }
-//public static ScannerFile HASH12154D1F { get { return new ScannerFile("01_lp_numbers\\0x12154D1F.wav", "0x12154D1F", "lp_numbers"); } }
-//public static ScannerFile HASH12657A9F { get { return new ScannerFile("01_lp_numbers\\0x12657A9F.wav", "0x12657A9F", "lp_numbers"); } }
-//public static ScannerFile HASH1326514D { get { return new ScannerFile("01_lp_numbers\\0x1326514D.wav", "0x1326514D", "lp_numbers"); } }
-//public static ScannerFile HASH134D0ED7 { get { return new ScannerFile("01_lp_numbers\\0x134D0ED7.wav", "0x134D0ED7", "lp_numbers"); } }
-//public static ScannerFile HASH140BA943 { get { return new ScannerFile("01_lp_numbers\\0x140BA943.wav", "0x140BA943", "lp_numbers"); } }
-//public static ScannerFile HASH14215F58 { get { return new ScannerFile("01_lp_numbers\\0x14215F58.wav", "0x14215F58", "lp_numbers"); } }
-//public static ScannerFile HASH146411BD { get { return new ScannerFile("01_lp_numbers\\0x146411BD.wav", "0x146411BD", "lp_numbers"); } }
-//public static ScannerFile HASH14692C3D { get { return new ScannerFile("01_lp_numbers\\0x14692C3D.wav", "0x14692C3D", "lp_numbers"); } }
-//public static ScannerFile HASH146FE1F7 { get { return new ScannerFile("01_lp_numbers\\0x146FE1F7.wav", "0x146FE1F7", "lp_numbers"); } }
-//public static ScannerFile HASH14789B9E { get { return new ScannerFile("01_lp_numbers\\0x14789B9E.wav", "0x14789B9E", "lp_numbers"); } }
-//public static ScannerFile HASH148662B3 { get { return new ScannerFile("01_lp_numbers\\0x148662B3.wav", "0x148662B3", "lp_numbers"); } }
-//public static ScannerFile HASH14C60314 { get { return new ScannerFile("01_lp_numbers\\0x14C60314.wav", "0x14C60314", "lp_numbers"); } }
-//public static ScannerFile HASH1504CC53 { get { return new ScannerFile("01_lp_numbers\\0x1504CC53.wav", "0x1504CC53", "lp_numbers"); } }
-//public static ScannerFile HASH151F0732 { get { return new ScannerFile("01_lp_numbers\\0x151F0732.wav", "0x151F0732", "lp_numbers"); } }
-//public static ScannerFile HASH158DD629 { get { return new ScannerFile("01_lp_numbers\\0x158DD629.wav", "0x158DD629", "lp_numbers"); } }
-//public static ScannerFile HASH15BA4CFC { get { return new ScannerFile("01_lp_numbers\\0x15BA4CFC.wav", "0x15BA4CFC", "lp_numbers"); } }
-//public static ScannerFile HASH15BB0EA5 { get { return new ScannerFile("01_lp_numbers\\0x15BB0EA5.wav", "0x15BB0EA5", "lp_numbers"); } }
-//public static ScannerFile HASH15FED6C9 { get { return new ScannerFile("01_lp_numbers\\0x15FED6C9.wav", "0x15FED6C9", "lp_numbers"); } }
-//public static ScannerFile HASH161DACCC { get { return new ScannerFile("01_lp_numbers\\0x161DACCC.wav", "0x161DACCC", "lp_numbers"); } }
-//public static ScannerFile HASH1657B158 { get { return new ScannerFile("01_lp_numbers\\0x1657B158.wav", "0x1657B158", "lp_numbers"); } }
-//public static ScannerFile HASH1669BA1A { get { return new ScannerFile("01_lp_numbers\\0x1669BA1A.wav", "0x1669BA1A", "lp_numbers"); } }
-//public static ScannerFile HASH16A14539 { get { return new ScannerFile("01_lp_numbers\\0x16A14539.wav", "0x16A14539", "lp_numbers"); } }
-//public static ScannerFile HASH16BEAFA4 { get { return new ScannerFile("01_lp_numbers\\0x16BEAFA4.wav", "0x16BEAFA4", "lp_numbers"); } }
-//public static ScannerFile HASH16ECC442 { get { return new ScannerFile("01_lp_numbers\\0x16ECC442.wav", "0x16ECC442", "lp_numbers"); } }
-//public static ScannerFile HASH18093005 { get { return new ScannerFile("01_lp_numbers\\0x18093005.wav", "0x18093005", "lp_numbers"); } }
-//public static ScannerFile HASH182B594D { get { return new ScannerFile("01_lp_numbers\\0x182B594D.wav", "0x182B594D", "lp_numbers"); } }
-//public static ScannerFile HASH188A2706 { get { return new ScannerFile("01_lp_numbers\\0x188A2706.wav", "0x188A2706", "lp_numbers"); } }
-//public static ScannerFile HASH188F221E { get { return new ScannerFile("01_lp_numbers\\0x188F221E.wav", "0x188F221E", "lp_numbers"); } }
-//public static ScannerFile HASH18A43F66 { get { return new ScannerFile("01_lp_numbers\\0x18A43F66.wav", "0x18A43F66", "lp_numbers"); } }
-//public static ScannerFile HASH1900D63B { get { return new ScannerFile("01_lp_numbers\\0x1900D63B.wav", "0x1900D63B", "lp_numbers"); } }
-//public static ScannerFile HASH192C90F3 { get { return new ScannerFile("01_lp_numbers\\0x192C90F3.wav", "0x192C90F3", "lp_numbers"); } }
-//public static ScannerFile HASH1952F85E { get { return new ScannerFile("01_lp_numbers\\0x1952F85E.wav", "0x1952F85E", "lp_numbers"); } }
-//public static ScannerFile HASH195A091D { get { return new ScannerFile("01_lp_numbers\\0x195A091D.wav", "0x195A091D", "lp_numbers"); } }
-//public static ScannerFile HASH196A34A7 { get { return new ScannerFile("01_lp_numbers\\0x196A34A7.wav", "0x196A34A7", "lp_numbers"); } }
-//public static ScannerFile HASH1970FBA7 { get { return new ScannerFile("01_lp_numbers\\0x1970FBA7.wav", "0x1970FBA7", "lp_numbers"); } }
-//public static ScannerFile HASH197574B5 { get { return new ScannerFile("01_lp_numbers\\0x197574B5.wav", "0x197574B5", "lp_numbers"); } }
-//public static ScannerFile HASH19984137 { get { return new ScannerFile("01_lp_numbers\\0x19984137.wav", "0x19984137", "lp_numbers"); } }
-//public static ScannerFile HASH19E87FDC { get { return new ScannerFile("01_lp_numbers\\0x19E87FDC.wav", "0x19E87FDC", "lp_numbers"); } }
-//public static ScannerFile HASH1A41A730 { get { return new ScannerFile("01_lp_numbers\\0x1A41A730.wav", "0x1A41A730", "lp_numbers"); } }
-//public static ScannerFile HASH1A580D70 { get { return new ScannerFile("01_lp_numbers\\0x1A580D70.wav", "0x1A580D70", "lp_numbers"); } }
-//public static ScannerFile HASH1A9A4FD7 { get { return new ScannerFile("01_lp_numbers\\0x1A9A4FD7.wav", "0x1A9A4FD7", "lp_numbers"); } }
-//public static ScannerFile HASH1AF8440B { get { return new ScannerFile("01_lp_numbers\\0x1AF8440B.wav", "0x1AF8440B", "lp_numbers"); } }
-//public static ScannerFile HASH1B3B522D { get { return new ScannerFile("01_lp_numbers\\0x1B3B522D.wav", "0x1B3B522D", "lp_numbers"); } }
-//public static ScannerFile HASH1B5AC892 { get { return new ScannerFile("01_lp_numbers\\0x1B5AC892.wav", "0x1B5AC892", "lp_numbers"); } }
-//public static ScannerFile HASH1B5E13AF { get { return new ScannerFile("01_lp_numbers\\0x1B5E13AF.wav", "0x1B5E13AF", "lp_numbers"); } }
-//public static ScannerFile HASH1C30743F { get { return new ScannerFile("01_lp_numbers\\0x1C30743F.wav", "0x1C30743F", "lp_numbers"); } }
-//public static ScannerFile HASH1CCC3889 { get { return new ScannerFile("01_lp_numbers\\0x1CCC3889.wav", "0x1CCC3889", "lp_numbers"); } }
-//public static ScannerFile HASH1D20A337 { get { return new ScannerFile("01_lp_numbers\\0x1D20A337.wav", "0x1D20A337", "lp_numbers"); } }
-//public static ScannerFile HASH1D3F9FF7 { get { return new ScannerFile("01_lp_numbers\\0x1D3F9FF7.wav", "0x1D3F9FF7", "lp_numbers"); } }
-//public static ScannerFile HASH1D49BE35 { get { return new ScannerFile("01_lp_numbers\\0x1D49BE35.wav", "0x1D49BE35", "lp_numbers"); } }
-//public static ScannerFile HASH1DA41775 { get { return new ScannerFile("01_lp_numbers\\0x1DA41775.wav", "0x1DA41775", "lp_numbers"); } }
-//public static ScannerFile HASH1DC8568D { get { return new ScannerFile("01_lp_numbers\\0x1DC8568D.wav", "0x1DC8568D", "lp_numbers"); } }
-//public static ScannerFile HASH1DEE5E25 { get { return new ScannerFile("01_lp_numbers\\0x1DEE5E25.wav", "0x1DEE5E25", "lp_numbers"); } }
-//public static ScannerFile HASH1DF45254 { get { return new ScannerFile("01_lp_numbers\\0x1DF45254.wav", "0x1DF45254", "lp_numbers"); } }
-//public static ScannerFile HASH1E1EA590 { get { return new ScannerFile("01_lp_numbers\\0x1E1EA590.wav", "0x1E1EA590", "lp_numbers"); } }
-//public static ScannerFile HASH1E3F03C2 { get { return new ScannerFile("01_lp_numbers\\0x1E3F03C2.wav", "0x1E3F03C2", "lp_numbers"); } }
-//public static ScannerFile HASH1E7FA242 { get { return new ScannerFile("01_lp_numbers\\0x1E7FA242.wav", "0x1E7FA242", "lp_numbers"); } }
-//public static ScannerFile HASH1EF897F4 { get { return new ScannerFile("01_lp_numbers\\0x1EF897F4.wav", "0x1EF897F4", "lp_numbers"); } }
-//public static ScannerFile HASH1F858981 { get { return new ScannerFile("01_lp_numbers\\0x1F858981.wav", "0x1F858981", "lp_numbers"); } }
-//public static ScannerFile HASH1F869BAC { get { return new ScannerFile("01_lp_numbers\\0x1F869BAC.wav", "0x1F869BAC", "lp_numbers"); } }}
+public class lp_numbers
+    {
+        public static ScannerFile Zero { get { return new ScannerFile("01_lp_numbers\\0x04F3CC0F.wav", "0", "lp_numbers"); } }  
+        public static ScannerFile Zero1 { get { return new ScannerFile("01_lp_numbers\\0x02A288B0.wav", "0", "lp_numbers"); } }
+        public static ScannerFile Zero2 { get { return new ScannerFile("01_lp_numbers\\0x03B8B23A.wav", "0", "lp_numbers"); } }
+        public static ScannerFile Zero3 { get { return new ScannerFile("01_lp_numbers\\0x001F8998.wav", "0", "lp_numbers"); } }
+        public static ScannerFile Zero4 { get { return new ScannerFile("01_lp_numbers\\0x0BA6ADB6.wav", "0", "lp_numbers"); } }
+
+        public static ScannerFile One { get { return new ScannerFile("01_lp_numbers\\0x0100252F.wav", "1", "lp_numbers"); } }
+        public static ScannerFile One1 { get { return new ScannerFile("01_lp_numbers\\0x0945F55C.wav", "1", "lp_numbers"); } }
+        public static ScannerFile One2 { get { return new ScannerFile("01_lp_numbers\\0x0A44E2A4.wav", "1", "lp_numbers"); } }
+        public static ScannerFile One3 { get { return new ScannerFile("01_lp_numbers\\0x0AB5A365.wav", "1", "lp_numbers"); } }
+        public static ScannerFile One4 { get { return new ScannerFile("01_lp_numbers\\0x0B053108.wav", "1", "lp_numbers"); } }
+        public static ScannerFile One5 { get { return new ScannerFile("01_lp_numbers\\0x0B0CEFA0.wav", "1", "lp_numbers"); } }
+
+        public static ScannerFile Two { get { return new ScannerFile("01_lp_numbers\\0x02E5EEC0.wav", "2", "lp_numbers"); } }
+        public static ScannerFile Two1 { get { return new ScannerFile("01_lp_numbers\\0x03BEB046.wav", "2", "lp_numbers"); } }
+        public static ScannerFile Two2 { get { return new ScannerFile("01_lp_numbers\\0x03C6BD7E.wav", "2", "lp_numbers"); } }
+        public static ScannerFile Two3 { get { return new ScannerFile("01_lp_numbers\\0x09B8F8B2.wav", "2", "lp_numbers"); } }
+        public static ScannerFile Two4 { get { return new ScannerFile("01_lp_numbers\\0x09E3959A.wav", "2", "lp_numbers"); } }
+        public static ScannerFile Two5 { get { return new ScannerFile("01_lp_numbers\\0x0A21BD3A.wav", "2", "lp_numbers"); } }
+
+        public static ScannerFile Three { get { return new ScannerFile("01_lp_numbers\\0x060BDED7.wav", "3", "lp_numbers"); } }
+        public static ScannerFile Three1 { get { return new ScannerFile("01_lp_numbers\\0x0866698B.wav", "3", "lp_numbers"); } }
+        public static ScannerFile Three2 { get { return new ScannerFile("01_lp_numbers\\0x0B624017.wav", "3", "lp_numbers"); } }
+
+        public static ScannerFile Four { get { return new ScannerFile("01_lp_numbers\\0x02886760.wav", "4", "lp_numbers"); } }
+        public static ScannerFile Four1 { get { return new ScannerFile("01_lp_numbers\\0x03C3D7A1.wav", "4", "lp_numbers"); } }
+        public static ScannerFile Four2 { get { return new ScannerFile("01_lp_numbers\\0x041D81A4.wav", "4", "lp_numbers"); } }
+        public static ScannerFile Four3 { get { return new ScannerFile("01_lp_numbers\\0x04E9AB5B.wav", "4", "lp_numbers"); } }
+        public static ScannerFile Four4 { get { return new ScannerFile("01_lp_numbers\\0x08A07389.wav", "4", "lp_numbers"); } }
+        public static ScannerFile Four5 { get { return new ScannerFile("01_lp_numbers\\0x0AC34F2D.wav", "4", "lp_numbers"); } }
+        public static ScannerFile Four6 { get { return new ScannerFile("01_lp_numbers\\0x0B193882.wav", "4", "lp_numbers"); } }
+
+        public static ScannerFile Five { get { return new ScannerFile("01_lp_numbers\\0x034F92AA.wav", "5", "lp_numbers"); } }
+        public static ScannerFile Five1 { get { return new ScannerFile("01_lp_numbers\\0x057A4C20.wav", "5", "lp_numbers"); } }
+        public static ScannerFile Five2 { get { return new ScannerFile("01_lp_numbers\\0x07DC8B99.wav", "5", "lp_numbers"); } }
+        public static ScannerFile Five3 { get { return new ScannerFile("01_lp_numbers\\0x084F6895.wav", "5", "lp_numbers"); } }
+
+        public static ScannerFile Six { get {return new ScannerFile("01_lp_numbers\\0x00717979.wav","6","lp_numbers"); } }
+        public static ScannerFile Six1 { get { return new ScannerFile("01_lp_numbers\\0x01C22022.wav", "6", "lp_numbers"); } }
+        public static ScannerFile Six2 { get { return new ScannerFile("01_lp_numbers\\0x056635CE.wav", "6", "lp_numbers"); } }
+        public static ScannerFile Six3 { get { return new ScannerFile("01_lp_numbers\\0x072B44F1.wav", "6", "lp_numbers"); } }
+        public static ScannerFile Six4 { get { return new ScannerFile("01_lp_numbers\\0x0BC33189.wav", "6", "lp_numbers"); } }
+
+        public static ScannerFile Seven { get { return new ScannerFile("01_lp_numbers\\0x009E8E85.wav", "7", "lp_numbers"); } }
+        public static ScannerFile Seven1 { get { return new ScannerFile("01_lp_numbers\\0x0250392E.wav", "7", "lp_numbers"); } }
+        public static ScannerFile Seven2 { get { return new ScannerFile("01_lp_numbers\\0x08193D1F.wav", "7", "lp_numbers"); } }
+        public static ScannerFile Seven3 { get { return new ScannerFile("01_lp_numbers\\0x08DA0642.wav", "7", "lp_numbers"); } }
+        public static ScannerFile Seven4 { get { return new ScannerFile("01_lp_numbers\\0x0A520191.wav", "7", "lp_numbers"); } }
+
+        public static ScannerFile Eight { get { return new ScannerFile("01_lp_numbers\\0x00896952.wav", "8", "lp_numbers"); } }
+        public static ScannerFile Eight1 { get { return new ScannerFile("01_lp_numbers\\0x020E8A21.wav", "8", "lp_numbers"); } }
+        public static ScannerFile Eight2 { get { return new ScannerFile("01_lp_numbers\\0x02267CBE.wav", "8", "lp_numbers"); } }
+        public static ScannerFile Eight3 { get { return new ScannerFile("01_lp_numbers\\0x0702944B.wav", "8", "lp_numbers"); } }
+        public static ScannerFile Eight4 { get { return new ScannerFile("01_lp_numbers\\0x0738B2AC.wav", "8", "lp_numbers"); } }
+        public static ScannerFile Eight5 { get { return new ScannerFile("01_lp_numbers\\0x0B06D7D8.wav", "8", "lp_numbers"); } }
+
+        public static ScannerFile Nine { get {return new ScannerFile("01_lp_numbers\\0x0083267E.wav","9","lp_numbers"); } }
+        public static ScannerFile Niner { get { return new ScannerFile("01_lp_numbers\\0x04391135.wav", "Niner", "lp_numbers"); } }
+        public static ScannerFile Niner1 { get { return new ScannerFile("01_lp_numbers\\0x04E10A53.wav", "Niner", "lp_numbers"); } }
+        public static ScannerFile Niner2 { get { return new ScannerFile("01_lp_numbers\\0x0AC5F426.wav", "Niner", "lp_numbers"); } }
+        public static ScannerFile Niner3 { get { return new ScannerFile("01_lp_numbers\\0x0B111513.wav", "Niner", "lp_numbers"); } }
+
+
+
+
+
+
+
+        
+        
+        
+        
+        public static ScannerFile HASH0BD3DC4A { get { return new ScannerFile("01_lp_numbers\\0x0BD3DC4A.wav", "0x0BD3DC4A", "lp_numbers"); } }
+        public static ScannerFile HASH0BDF3B4E { get { return new ScannerFile("01_lp_numbers\\0x0BDF3B4E.wav", "0x0BDF3B4E", "lp_numbers"); } }
+        public static ScannerFile HASH0C475100 { get { return new ScannerFile("01_lp_numbers\\0x0C475100.wav", "0x0C475100", "lp_numbers"); } }
+        public static ScannerFile HASH0D0A9A07 { get { return new ScannerFile("01_lp_numbers\\0x0D0A9A07.wav", "0x0D0A9A07", "lp_numbers"); } }
+        public static ScannerFile HASH0E059625 { get { return new ScannerFile("01_lp_numbers\\0x0E059625.wav", "0x0E059625", "lp_numbers"); } }
+        public static ScannerFile HASH0E326A5E { get { return new ScannerFile("01_lp_numbers\\0x0E326A5E.wav", "0x0E326A5E", "lp_numbers"); } }
+        public static ScannerFile HASH0E5738DB { get { return new ScannerFile("01_lp_numbers\\0x0E5738DB.wav", "0x0E5738DB", "lp_numbers"); } }
+        public static ScannerFile HASH0E5D7871 { get { return new ScannerFile("01_lp_numbers\\0x0E5D7871.wav", "0x0E5D7871", "lp_numbers"); } }
+        public static ScannerFile HASH0F57708C { get { return new ScannerFile("01_lp_numbers\\0x0F57708C.wav", "0x0F57708C", "lp_numbers"); } }
+        public static ScannerFile HASH0F5C49C5 { get { return new ScannerFile("01_lp_numbers\\0x0F5C49C5.wav", "0x0F5C49C5", "lp_numbers"); } }
+        public static ScannerFile HASH0F684FCA { get { return new ScannerFile("01_lp_numbers\\0x0F684FCA.wav", "0x0F684FCA", "lp_numbers"); } }
+        public static ScannerFile HASH0F6A7978 { get { return new ScannerFile("01_lp_numbers\\0x0F6A7978.wav", "0x0F6A7978", "lp_numbers"); } }
+        public static ScannerFile HASH0FA44161 { get { return new ScannerFile("01_lp_numbers\\0x0FA44161.wav", "0x0FA44161", "lp_numbers"); } }
+        public static ScannerFile HASH0FF332A5 { get { return new ScannerFile("01_lp_numbers\\0x0FF332A5.wav", "0x0FF332A5", "lp_numbers"); } }
+        public static ScannerFile HASH1005A74F { get { return new ScannerFile("01_lp_numbers\\0x1005A74F.wav", "0x1005A74F", "lp_numbers"); } }
+        public static ScannerFile HASH100925CC { get { return new ScannerFile("01_lp_numbers\\0x100925CC.wav", "0x100925CC", "lp_numbers"); } }
+        public static ScannerFile HASH1047F6FB { get { return new ScannerFile("01_lp_numbers\\0x1047F6FB.wav", "0x1047F6FB", "lp_numbers"); } }
+        public static ScannerFile HASH105D245D { get { return new ScannerFile("01_lp_numbers\\0x105D245D.wav", "0x105D245D", "lp_numbers"); } }
+        public static ScannerFile HASH109F8A35 { get { return new ScannerFile("01_lp_numbers\\0x109F8A35.wav", "0x109F8A35", "lp_numbers"); } }
+        public static ScannerFile HASH118D3334 { get { return new ScannerFile("01_lp_numbers\\0x118D3334.wav", "0x118D3334", "lp_numbers"); } }
+        public static ScannerFile HASH11A62DC2 { get { return new ScannerFile("01_lp_numbers\\0x11A62DC2.wav", "0x11A62DC2", "lp_numbers"); } }
+        public static ScannerFile HASH11D9ED0F { get { return new ScannerFile("01_lp_numbers\\0x11D9ED0F.wav", "0x11D9ED0F", "lp_numbers"); } }
+        public static ScannerFile HASH12154D1F { get { return new ScannerFile("01_lp_numbers\\0x12154D1F.wav", "0x12154D1F", "lp_numbers"); } }
+        public static ScannerFile HASH12657A9F { get { return new ScannerFile("01_lp_numbers\\0x12657A9F.wav", "0x12657A9F", "lp_numbers"); } }
+        public static ScannerFile HASH1326514D { get { return new ScannerFile("01_lp_numbers\\0x1326514D.wav", "0x1326514D", "lp_numbers"); } }
+        public static ScannerFile HASH134D0ED7 { get { return new ScannerFile("01_lp_numbers\\0x134D0ED7.wav", "0x134D0ED7", "lp_numbers"); } }
+        public static ScannerFile HASH140BA943 { get { return new ScannerFile("01_lp_numbers\\0x140BA943.wav", "0x140BA943", "lp_numbers"); } }
+        public static ScannerFile HASH14215F58 { get { return new ScannerFile("01_lp_numbers\\0x14215F58.wav", "0x14215F58", "lp_numbers"); } }
+        public static ScannerFile HASH146411BD { get { return new ScannerFile("01_lp_numbers\\0x146411BD.wav", "0x146411BD", "lp_numbers"); } }
+        public static ScannerFile HASH14692C3D { get { return new ScannerFile("01_lp_numbers\\0x14692C3D.wav", "0x14692C3D", "lp_numbers"); } }
+        public static ScannerFile HASH146FE1F7 { get { return new ScannerFile("01_lp_numbers\\0x146FE1F7.wav", "0x146FE1F7", "lp_numbers"); } }
+        public static ScannerFile HASH14789B9E { get { return new ScannerFile("01_lp_numbers\\0x14789B9E.wav", "0x14789B9E", "lp_numbers"); } }
+        public static ScannerFile HASH148662B3 { get { return new ScannerFile("01_lp_numbers\\0x148662B3.wav", "0x148662B3", "lp_numbers"); } }
+        public static ScannerFile HASH14C60314 { get { return new ScannerFile("01_lp_numbers\\0x14C60314.wav", "0x14C60314", "lp_numbers"); } }
+        public static ScannerFile HASH1504CC53 { get { return new ScannerFile("01_lp_numbers\\0x1504CC53.wav", "0x1504CC53", "lp_numbers"); } }
+        public static ScannerFile HASH151F0732 { get { return new ScannerFile("01_lp_numbers\\0x151F0732.wav", "0x151F0732", "lp_numbers"); } }
+        public static ScannerFile HASH158DD629 { get { return new ScannerFile("01_lp_numbers\\0x158DD629.wav", "0x158DD629", "lp_numbers"); } }
+        public static ScannerFile HASH15BA4CFC { get { return new ScannerFile("01_lp_numbers\\0x15BA4CFC.wav", "0x15BA4CFC", "lp_numbers"); } }
+        public static ScannerFile HASH15BB0EA5 { get { return new ScannerFile("01_lp_numbers\\0x15BB0EA5.wav", "0x15BB0EA5", "lp_numbers"); } }
+        public static ScannerFile HASH15FED6C9 { get { return new ScannerFile("01_lp_numbers\\0x15FED6C9.wav", "0x15FED6C9", "lp_numbers"); } }
+        public static ScannerFile HASH161DACCC { get { return new ScannerFile("01_lp_numbers\\0x161DACCC.wav", "0x161DACCC", "lp_numbers"); } }
+        public static ScannerFile HASH1657B158 { get { return new ScannerFile("01_lp_numbers\\0x1657B158.wav", "0x1657B158", "lp_numbers"); } }
+        public static ScannerFile HASH1669BA1A { get { return new ScannerFile("01_lp_numbers\\0x1669BA1A.wav", "0x1669BA1A", "lp_numbers"); } }
+        public static ScannerFile HASH16A14539 { get { return new ScannerFile("01_lp_numbers\\0x16A14539.wav", "0x16A14539", "lp_numbers"); } }
+        public static ScannerFile HASH16BEAFA4 { get { return new ScannerFile("01_lp_numbers\\0x16BEAFA4.wav", "0x16BEAFA4", "lp_numbers"); } }
+        public static ScannerFile HASH16ECC442 { get { return new ScannerFile("01_lp_numbers\\0x16ECC442.wav", "0x16ECC442", "lp_numbers"); } }
+        public static ScannerFile HASH18093005 { get { return new ScannerFile("01_lp_numbers\\0x18093005.wav", "0x18093005", "lp_numbers"); } }
+        public static ScannerFile HASH182B594D { get { return new ScannerFile("01_lp_numbers\\0x182B594D.wav", "0x182B594D", "lp_numbers"); } }
+        public static ScannerFile HASH188A2706 { get { return new ScannerFile("01_lp_numbers\\0x188A2706.wav", "0x188A2706", "lp_numbers"); } }
+        public static ScannerFile HASH188F221E { get { return new ScannerFile("01_lp_numbers\\0x188F221E.wav", "0x188F221E", "lp_numbers"); } }
+        public static ScannerFile HASH18A43F66 { get { return new ScannerFile("01_lp_numbers\\0x18A43F66.wav", "0x18A43F66", "lp_numbers"); } }
+        public static ScannerFile HASH1900D63B { get { return new ScannerFile("01_lp_numbers\\0x1900D63B.wav", "0x1900D63B", "lp_numbers"); } }
+        public static ScannerFile HASH192C90F3 { get { return new ScannerFile("01_lp_numbers\\0x192C90F3.wav", "0x192C90F3", "lp_numbers"); } }
+        public static ScannerFile HASH1952F85E { get { return new ScannerFile("01_lp_numbers\\0x1952F85E.wav", "0x1952F85E", "lp_numbers"); } }
+        public static ScannerFile HASH195A091D { get { return new ScannerFile("01_lp_numbers\\0x195A091D.wav", "0x195A091D", "lp_numbers"); } }
+        public static ScannerFile HASH196A34A7 { get { return new ScannerFile("01_lp_numbers\\0x196A34A7.wav", "0x196A34A7", "lp_numbers"); } }
+        public static ScannerFile HASH1970FBA7 { get { return new ScannerFile("01_lp_numbers\\0x1970FBA7.wav", "0x1970FBA7", "lp_numbers"); } }
+        public static ScannerFile HASH197574B5 { get { return new ScannerFile("01_lp_numbers\\0x197574B5.wav", "0x197574B5", "lp_numbers"); } }
+        public static ScannerFile HASH19984137 { get { return new ScannerFile("01_lp_numbers\\0x19984137.wav", "0x19984137", "lp_numbers"); } }
+        public static ScannerFile HASH19E87FDC { get { return new ScannerFile("01_lp_numbers\\0x19E87FDC.wav", "0x19E87FDC", "lp_numbers"); } }
+        public static ScannerFile HASH1A41A730 { get { return new ScannerFile("01_lp_numbers\\0x1A41A730.wav", "0x1A41A730", "lp_numbers"); } }
+        public static ScannerFile HASH1A580D70 { get { return new ScannerFile("01_lp_numbers\\0x1A580D70.wav", "0x1A580D70", "lp_numbers"); } }
+        public static ScannerFile HASH1A9A4FD7 { get { return new ScannerFile("01_lp_numbers\\0x1A9A4FD7.wav", "0x1A9A4FD7", "lp_numbers"); } }
+        public static ScannerFile HASH1AF8440B { get { return new ScannerFile("01_lp_numbers\\0x1AF8440B.wav", "0x1AF8440B", "lp_numbers"); } }
+        public static ScannerFile HASH1B3B522D { get { return new ScannerFile("01_lp_numbers\\0x1B3B522D.wav", "0x1B3B522D", "lp_numbers"); } }
+        public static ScannerFile HASH1B5AC892 { get { return new ScannerFile("01_lp_numbers\\0x1B5AC892.wav", "0x1B5AC892", "lp_numbers"); } }
+        public static ScannerFile HASH1B5E13AF { get { return new ScannerFile("01_lp_numbers\\0x1B5E13AF.wav", "0x1B5E13AF", "lp_numbers"); } }
+        public static ScannerFile HASH1C30743F { get { return new ScannerFile("01_lp_numbers\\0x1C30743F.wav", "0x1C30743F", "lp_numbers"); } }
+        public static ScannerFile HASH1CCC3889 { get { return new ScannerFile("01_lp_numbers\\0x1CCC3889.wav", "0x1CCC3889", "lp_numbers"); } }
+        public static ScannerFile HASH1D20A337 { get { return new ScannerFile("01_lp_numbers\\0x1D20A337.wav", "0x1D20A337", "lp_numbers"); } }
+        public static ScannerFile HASH1D3F9FF7 { get { return new ScannerFile("01_lp_numbers\\0x1D3F9FF7.wav", "0x1D3F9FF7", "lp_numbers"); } }
+        public static ScannerFile HASH1D49BE35 { get { return new ScannerFile("01_lp_numbers\\0x1D49BE35.wav", "0x1D49BE35", "lp_numbers"); } }
+        public static ScannerFile HASH1DA41775 { get { return new ScannerFile("01_lp_numbers\\0x1DA41775.wav", "0x1DA41775", "lp_numbers"); } }
+        public static ScannerFile HASH1DC8568D { get { return new ScannerFile("01_lp_numbers\\0x1DC8568D.wav", "0x1DC8568D", "lp_numbers"); } }
+        public static ScannerFile HASH1DEE5E25 { get { return new ScannerFile("01_lp_numbers\\0x1DEE5E25.wav", "0x1DEE5E25", "lp_numbers"); } }
+        public static ScannerFile HASH1DF45254 { get { return new ScannerFile("01_lp_numbers\\0x1DF45254.wav", "0x1DF45254", "lp_numbers"); } }
+        public static ScannerFile HASH1E1EA590 { get { return new ScannerFile("01_lp_numbers\\0x1E1EA590.wav", "0x1E1EA590", "lp_numbers"); } }
+        public static ScannerFile HASH1E3F03C2 { get { return new ScannerFile("01_lp_numbers\\0x1E3F03C2.wav", "0x1E3F03C2", "lp_numbers"); } }
+        public static ScannerFile HASH1E7FA242 { get { return new ScannerFile("01_lp_numbers\\0x1E7FA242.wav", "0x1E7FA242", "lp_numbers"); } }
+        public static ScannerFile HASH1EF897F4 { get { return new ScannerFile("01_lp_numbers\\0x1EF897F4.wav", "0x1EF897F4", "lp_numbers"); } }
+        public static ScannerFile HASH1F858981 { get { return new ScannerFile("01_lp_numbers\\0x1F858981.wav", "0x1F858981", "lp_numbers"); } }
+        public static ScannerFile HASH1F869BAC { get { return new ScannerFile("01_lp_numbers\\0x1F869BAC.wav", "0x1F869BAC", "lp_numbers"); } }
+}
 public class manufacturer
 {
     public static ScannerFile Thrifter { get { return new ScannerFile("01_manufacturer\\0x0A69F4AC.wav", "Thrifter(?)", "manufacturer"); } }
@@ -3483,7 +3506,7 @@ public class suspect_license_plate
     public static ScannerFile HASH123C7746 { get { return new ScannerFile("01_suspect_license_plate\\0x123C7746.wav", "0x123C7746", "suspect_license_plate"); } }
     public static ScannerFile HASH15A1BE11 { get { return new ScannerFile("01_suspect_license_plate\\0x15A1BE11.wav", "0x15A1BE11", "suspect_license_plate"); } }
     public static ScannerFile HASH17AB4229 { get { return new ScannerFile("01_suspect_license_plate\\0x17AB4229.wav", "0x17AB4229", "suspect_license_plate"); } }
-    public static ScannerFile HASH1E8D8FEE { get { return new ScannerFile("01_suspect_license_plate\\0x1E8D8FEE.wav", "0x1E8D8FEE", "suspect_license_plate"); } }
+    public static ScannerFile SuspectsLicensePlate { get { return new ScannerFile("01_suspect_license_plate\\0x1E8D8FEE.wav", "Suspects Licens ePlate", "suspect_license_plate"); } }
 }
 public class suspect_wasted
 {

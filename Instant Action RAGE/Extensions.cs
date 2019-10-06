@@ -3,6 +3,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -193,6 +194,79 @@ namespace ExtensionsMethods
                 return false;
 
         }
+
+
+        public static T PickRandom<T>(this IEnumerable<T> source)
+        {
+            if (source.Count() == 0)
+                return default(T);
+            else
+                return source.PickRandom(1).Single();
+        }
+
+        public static IEnumerable<T> PickRandom<T>(this IEnumerable<T> source, int count)
+        {
+            return source.Shuffle().Take(count);
+        }
+
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
+        {
+            return source.OrderBy(x => Guid.NewGuid());
+        }
+        public static int closestColor1(List<Color> colors, Color target)
+        {
+            var hue1 = target.GetHue();
+            var diffs = colors.Select(n => getHueDistance(n.GetHue(), hue1));
+            var diffMin = diffs.Min(n => n);
+            return diffs.ToList().FindIndex(n => n == diffMin);
+        }
+
+        // closed match in RGB space
+        public static int closestColor2(List<Color> colors, Color target)
+        {
+            var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
+            return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
+        }
+
+
+        // weighed distance using hue, saturation and brightness
+        public static int closestColor3(List<Color> colors, Color target)
+        {
+            float hue1 = target.GetHue();
+            var num1 = ColorNum(target);
+            var diffs = colors.Select(n => Math.Abs(ColorNum(n) - num1) +
+                                           getHueDistance(n.GetHue(), hue1));
+            var diffMin = diffs.Min(x => x);
+            return diffs.ToList().FindIndex(n => n == diffMin);
+        }
+
+        // color brightness as perceived:
+        public static float getBrightness(Color c)
+        { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
+
+        // distance between two hues:
+        public static float getHueDistance(float hue1, float hue2)
+        {
+            float d = Math.Abs(hue1 - hue2); return d > 180 ? 360 - d : d;
+        }
+
+        //  weighed only by saturation and brightness (from my trackbars)
+        public static float ColorNum(Color c)
+        {
+            return c.GetSaturation() * 1 +
+                        getBrightness(c) * 1;
+        }
+
+        // distance in RGB space
+        public static int ColorDiff(Color c1, Color c2)
+        {
+            return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
+                                   + (c1.G - c2.G) * (c1.G - c2.G)
+                                   + (c1.B - c2.B) * (c1.B - c2.B));
+        }
+
+
+
         //public static bool IsInFront(this Ped myPed)
         //{
         //    /// <summary>        /// Determine the dot vector product between source and target ped       
