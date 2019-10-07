@@ -17,18 +17,21 @@ public class GTACop
     {
 
     }
-    public GTACop(Ped _Cop,bool _canSeePlayer)
+    public GTACop(Ped _Cop,bool _canSeePlayer, int _Health)
     {
         CopPed = _Cop;
         canSeePlayer = _canSeePlayer;
+        Health = _Health;
     }
-    public GTACop(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer)
+    public GTACop(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health)
     {
         CopPed = _Cop;
         canSeePlayer = _canSeePlayer;
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
         PositionLastSeenPlayer = _positionLastSeenPlayer;
+        Health = _Health;
     }
+    public int Health { get; set; }
 
     private static Random rnd;
     public Ped CopPed { get; set; }

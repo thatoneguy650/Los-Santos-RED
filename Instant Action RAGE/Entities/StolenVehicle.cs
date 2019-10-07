@@ -19,6 +19,8 @@ public class StolenVehicle
     public bool WasJacked = false;
     public uint GameTimeToReportStolen;
     public uint ReportInterval = 30000;
+    public Ped PreviousOwner = null;
+    public bool PreviousOwnerDied = false;
     public bool ShouldReportStolen
     {
         get
@@ -35,13 +37,42 @@ public class StolenVehicle
     {
         rnd = new Random();
     }
-    public StolenVehicle(Vehicle _Vehicle,uint _GameTimeStolen,bool _WasJacked, bool _WasAlarmed)
+    public void WatchForDeath(Ped Pedestrian)
+    {
+        GameFiber.StartNew(delegate
+        {
+            while(Pedestrian.Exists())
+            {
+                if(Pedestrian.IsDead)
+                {
+                    WillBeReportedStolen = false;
+                    PreviousOwnerDied = true;
+                    InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDied {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
+                    break;
+                }
+                GameFiber.Yield();
+            }
+        });
+    }
+    public StolenVehicle(Vehicle _Vehicle,uint _GameTimeStolen,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner)
     {
         VehicleEnt = _Vehicle;
         GameTimeStolen = _GameTimeStolen;
         WasJacked = _WasJacked;
         WasAlarmed = _WasAlarmed;
-        WillBeReportedStolen = true;
+        PreviousOwner = _PrevIousOwner;
+        if (PreviousOwner != null)
+        {
+            if (PreviousOwner.IsDead)
+            {
+                WillBeReportedStolen = false;
+            }
+            WatchForDeath(PreviousOwner);
+        }
+        else
+        {
+            WillBeReportedStolen = true;
+        }
 
         if (WasJacked)
             ReportInterval = 15000;
@@ -50,7 +81,9 @@ public class StolenVehicle
         else
             ReportInterval = 600000;
 
-        InstantAction.WriteToLog("StolenVehicles", string.Format("Stolen Vehicle Created: Handle {0},GameTimeStolen {1},WasJacked {2},WasAlarmed {3},ReportInterval {4}", VehicleEnt.Handle,GameTimeStolen,WasJacked,WasAlarmed,ReportInterval));
+        
+
+        InstantAction.WriteToLog("StolenVehicles", string.Format("Stolen Vehicle Created: Handle {0},GameTimeStolen {1},WasJacked {2},WasAlarmed {3},ReportInterval {4},WillBeReportedStolen {5}", VehicleEnt.Handle,GameTimeStolen,WasJacked,WasAlarmed,ReportInterval,WillBeReportedStolen));
     }
 
 }

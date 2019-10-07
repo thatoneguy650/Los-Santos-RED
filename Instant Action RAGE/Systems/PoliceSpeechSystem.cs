@@ -64,38 +64,38 @@ internal static class PoliceSpeechSystem
                     if (InstantAction.isBusted && Cop.DistanceToPlayer <= 20f)
                     {
                         Cop.CopPed.PlayAmbientSpeech("ARREST_PLAYER");
-                        InstantAction.WriteToLog("CheckSpeech", "ARREST_PLAYER");
+                       // InstantAction.WriteToLog("CheckSpeech", "ARREST_PLAYER");
                     }
                     else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase)
                     {
                         string Speech = UnarmedChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        InstantAction.WriteToLog("CheckSpeech", Speech);
+                       // InstantAction.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase)
                     {
                         string Speech = CautiousChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        InstantAction.WriteToLog("CheckSpeech", Speech);
+                       // InstantAction.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait)
                     {
                         string Speech = ArrestedWaitSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        InstantAction.WriteToLog("CheckSpeech", Speech);
+                       // InstantAction.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
                     {
                         string Speech = DeadlyChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        InstantAction.WriteToLog("CheckSpeech", Speech);
+                        //InstantAction.WriteToLog("CheckSpeech", Speech);
                     }
                     else //Normal State
                     {
                         if(Cop.DistanceToPlayer <= 4f)
                         {
                             Cop.CopPed.PlayAmbientSpeech("CRIMINAL_WARNING");
-                            InstantAction.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
+                            //InstantAction.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
                         }
                     }
                 }
@@ -105,7 +105,7 @@ internal static class PoliceSpeechSystem
                     {
                         string Speech = PlayerDeadSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        InstantAction.WriteToLog("CheckSpeech", Speech);
+                        //InstantAction.WriteToLog("CheckSpeech", Speech);
                     }
                 }
                 Cop.GameTimeLastSpoke = Game.GameTime - (uint)rnd.Next(500,1000);

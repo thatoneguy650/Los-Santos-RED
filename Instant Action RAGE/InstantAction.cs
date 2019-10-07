@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ public static class InstantAction
     private static int PrevWantedLevel = 0;
     public static bool SurrenderBust = false;
     private static uint LastBust;
-   // private static uint GameTimeLastReTasked = 0;
+    // private static uint GameTimeLastReTasked = 0;
     private static int ForceSurrenderTime;
     private static Model CopModel = new Model("s_m_y_cop_01");
     private static List<EmergencyLocation> EmergencyLocations = new List<EmergencyLocation>();
@@ -52,6 +53,11 @@ public static class InstantAction
 
 
     //traffic
+    private static bool ViolationDrivingAgainstTraffic = false;
+    private static bool ViolationDrivingOnPavement = false;
+    private static bool ViolationRanRedLight = false;
+    private static bool IsRunningRedLight = false;
+    private static bool PrevIsRunningRedLight = false;
 
     private static bool CanReportLastSeen;
     private static uint GameTimeLastGreyedOut;
@@ -63,6 +69,13 @@ public static class InstantAction
     private static int PrevCopsKilledByPlayer = 0;
     public static bool ReportedStolenVehicle;
     private static bool JackedCurrentVehicle;
+    private static bool ViolationHitPed = false;
+    private static bool ViolationHitVehicle = false;
+    private static uint GameTimeInterval;
+    public static bool PlayerInVehicle = false;
+    private static bool ViolationsSpeeding = false;
+    private static int PrevTimeSincePlayerLastHitAnyVehicle;
+    private static int PrevTimeSincePlayerLastHitAnyPed;
 
     private static bool IsRunning { get; set; } = true;
     public static PoliceState CurrentPoliceState { get; set; }
@@ -98,6 +111,9 @@ public static class InstantAction
         CopModel.LoadCollisionAndWait();
 
         Game.LocalPlayer.Character.CanBePulledOutOfVehicles = true;
+
+        while (Game.IsLoading)
+            GameFiber.Yield();
         setupLocations();
         MainLoop();
     }
@@ -121,6 +137,12 @@ public static class InstantAction
                 PoliceTick();
                 DebugLoop();
                 TestLoop();
+
+                if (Game.GameTime > GameTimeInterval + 500)
+                {
+                    TrafficViolationsTick();
+                    GameTimeInterval = Game.GameTime;
+                }
                 GameFiber.Yield();
             }
 
@@ -137,6 +159,8 @@ public static class InstantAction
         //NativeFunction.CallByName<bool>("SET_AUDIO_FLAG", "WantedMusicDisabled", true);
 
         NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
+        NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
+        //DISPLAY_HUD
         //NativeFunction.CallByName<bool>("SET_PED_MOVE_RATE_OVERRIDE", GhostCop, 0f);
 
         //if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null)
@@ -177,6 +201,77 @@ public static class InstantAction
     }
     private static void DebugLoop()
     {
+
+
+
+        //Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 50f, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        //List<TrafficVehicle> TrafficVehicles = new List<TrafficVehicle>();
+
+        //foreach (Vehicle vehicle in Vehicles)
+        //{
+        //    float Result = Extensions.getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, vehicle);
+        //    bool StoppedatTraffic = NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", vehicle);
+        //    TrafficVehicles.Add(new TrafficVehicle(vehicle, StoppedatTraffic, Result));
+
+        //    //Extensions.getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, vehicle);
+
+
+        //    //Color VehicleColor = Color.Yellow;
+        //    //if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", vehicle))
+        //    //{
+        //    //    VehicleColor = Color.Red;
+        //    //    if (vehicle.PlayerVehicleIsInFront())
+        //    //    {
+        //    //        IsRunningRedLight = true;
+        //    //        VehicleColor = Color.Black;
+        //    //        break;
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    //    IsRunningRedLight = false;
+        //    //    VehicleColor = Color.Green;
+        //    //}
+
+
+            
+        //}
+
+        //foreach (TrafficVehicle tv in TrafficVehicles)
+        //{
+        //    Color VehicleColor;
+            
+        //    if (tv.DotProductResult > 0)
+        //        VehicleColor = Color.Black;
+        //    else if (tv.DotProductResult < 0)
+        //        VehicleColor = Color.Blue;
+        //    //else if (tv.WaitingAtRedLight)
+        //    //    VehicleColor = Color.Red;
+        //    else
+        //        VehicleColor = Color.Yellow;
+        //    Debug.DrawArrowDebug(new Vector3(tv.VehicleEntity.Position.X, tv.VehicleEntity.Position.Y, tv.VehicleEntity.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, VehicleColor);
+        //}
+
+
+
+
+        //if (PrevIsRunningRedLight != IsRunningRedLight)
+        //{
+        //    WriteToLog("IsRunningRedLight", string.Format("IsRunningRedLight: {0}", IsRunningRedLight));
+        //    PrevIsRunningRedLight = IsRunningRedLight;
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
         if (Game.IsKeyDown(Keys.NumPad0))
         {
             Game.LocalPlayer.Character.IsInvincible = false;
@@ -262,57 +357,132 @@ public static class InstantAction
         //}
         if (Game.IsKeyDown(Keys.NumPad5))
         {
-            try
+            //try
+            //{
+            WriteToLog("Local Stuff", string.Format("Model {0}", Game.LocalPlayer.Character.CurrentVehicle.Model.Name));
+            WriteToLog("Local Stuff", string.Format("Color {0}", Game.LocalPlayer.Character.CurrentVehicle.PrimaryColor.Name));
+
+            //Rage.Graphics Device = args.Graphics;
+
+            //Device.DrawRectangle(new RectangleF(GetMappedPoint("Base"), GetMappedSize("Base")), Color.FromArgb(200, 40, 40, 40));
+
+            //Device.DrawText(Name, "Arial", 17.0F, GetMappedPoint("Name"), Color.FromArgb(255, 255, 255));
+
+
+            Color ClosestColor = DispatchAudioSystem.GetBaseColor(Game.LocalPlayer.Character.CurrentVehicle.PrimaryColor);
+
+            WriteToLog("Local Stuff", string.Format("ClosestColor {0}", ClosestColor));
+
+            var output = Regex.Replace(Game.LocalPlayer.Character.CurrentVehicle.Model.Name.ToUpper(), @"[\d-]", string.Empty);
+            DispatchAudioSystem.VehicleModelNameLookup LookupModel = DispatchAudioSystem.ModelNameLookup.Where(x => x.ModelName.Contains(output)).PickRandom();
+            DispatchAudioSystem.ColorLookup LookupColor = DispatchAudioSystem.ColorLookups.Where(x => x.BaseColor == ClosestColor).PickRandom();
+
+            if (LookupModel != null)
             {
-                WriteToLog("Local Stuff", string.Format("Model {0}", Game.LocalPlayer.Character.CurrentVehicle.Model.Name));
-                WriteToLog("Local Stuff", string.Format("Color {0}", Game.LocalPlayer.Character.CurrentVehicle.PrimaryColor.Name));
-
-
-
-
-                Color ClosestColor = DispatchAudioSystem.GetBaseColor(Game.LocalPlayer.Character.CurrentVehicle.PrimaryColor);
-
-                WriteToLog("Local Stuff", string.Format("ClosestColor {0}", ClosestColor));
-
-                var output = Regex.Replace(Game.LocalPlayer.Character.CurrentVehicle.Model.Name.ToUpper(), @"[\d-]", string.Empty);
-                DispatchAudioSystem.VehicleModelNameLookup LookupModel = DispatchAudioSystem.ModelNameLookup.Where(x => x.ModelName.Contains(output)).PickRandom();
-                DispatchAudioSystem.ColorLookup LookupColor = DispatchAudioSystem.ColorLookups.Where(x => x.BaseColor == ClosestColor).PickRandom();
-
-                if (LookupModel != null)
-                {
-                    WriteToLog("Car stuff", string.Format("Lookup Model {0}, ScannerFile {1}",LookupModel.ModelName,LookupModel.ScannerFile));
-                }
-
-                if (LookupColor != null)
-                {
-                    WriteToLog("Car stuff", string.Format("Lookup Color {0}, ScannerFile {1}", LookupColor.BaseColor, LookupColor.ScannerFile));
-                }
-
-
-                //WriteToLog("KeyDown", string.Format("ModelName: {0}", Game.LocalPlayer.Character.CurrentVehicle.Model.Name));
-                //WriteToLog("KeyDown", string.Format("SPeed: {0}", Game.LocalPlayer.Character.CurrentVehicle.Speed));
-
-                //RequestAnimationDictionay("veh@busted_std");
-                //RequestAnimationDictionay("busted");
-
-                //Vehicle oldVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@busted_std", "get_out_car_crim", 2.0f, -2.0f, 2500, 50, 0, false, false, false);
-                //GameFiber.Wait(2500);
-
-                //NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", Game.LocalPlayer.Character, oldVehicle, 256);
-
-                // SetArrestedAnimation(Game.LocalPlayer.Character, false);
-
-
-
-                //MoveGhostCopToPlayer();
-                //Game.LocalPlayer.Character.GiveCash(5000, "Michael");
-                //MoveGhostCopToPlayer();
+                WriteToLog("Car stuff", string.Format("Lookup Model {0}, ScannerFile {1}", LookupModel.ModelName, LookupModel.ScannerFile));
             }
-            catch (Exception e)
+
+            if (LookupColor != null)
             {
-                WriteToLog("Car stuff", e.Message);
+                WriteToLog("Car stuff", string.Format("Lookup Color {0}, ScannerFile {1}", LookupColor.BaseColor, LookupColor.ScannerFile));
             }
+
+            float SpeedLimit = GetSpeedLimit();
+                string street = GetCurrentStreet();
+            float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+            WriteToLog("Car stuff", string.Format("StreetName {0}, Speed Limit {1}, CurrentSpeed MPH {2}", street, SpeedLimit, VehicleSpeedMPH));
+
+            //Game.HandleRespawn();
+
+
+            //Vehicle[] Vehicles2 = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+            //List<TrafficVehicle> TrafficVehicles2 = new List<TrafficVehicle>();
+
+            //foreach (Vehicle vehicle in Vehicles2)
+            //{
+            //    float Result = Extensions.getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, vehicle);
+            //    bool StoppedatTraffic = NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", vehicle);
+            //    TrafficVehicles2.Add(new TrafficVehicle(vehicle, StoppedatTraffic, Result));
+
+            //    //Extensions.getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, vehicle);
+
+
+            //    //Color VehicleColor = Color.Yellow;
+            //    //if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", vehicle))
+            //    //{
+            //    //    VehicleColor = Color.Red;
+            //    //    if (vehicle.PlayerVehicleIsInFront())
+            //    //    {
+            //    //        IsRunningRedLight = true;
+            //    //        VehicleColor = Color.Black;
+            //    //        break;
+            //    //    }
+            //    //}
+            //    //else
+            //    //{
+            //    //    IsRunningRedLight = false;
+            //    //    VehicleColor = Color.Green;
+            //    //}
+
+
+                
+            //}
+
+            //foreach (TrafficVehicle TV in TrafficVehicles2)
+            //{
+
+            //    WriteToLog("Car stuff", string.Format("Handle {0}, Stopped {1}, DotResult {2}, Distance To: {3}", TV.VehicleEntity.Handle, TV.WaitingAtRedLight, TV.DotProductResult,Game.LocalPlayer.Character.DistanceTo(TV.VehicleEntity.Position)));
+            //}
+
+
+
+
+
+
+            //Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+            //foreach (Vehicle vehicle in Vehicles)
+            //{
+            //    if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", vehicle))
+            //    {
+            //        if (vehicle.PlayerVehicleIsBehind())
+            //        {
+            //            WriteToLog("Behind", string.Format("You are behind {0}, they are stopped at a traffic light, they are facing: {1}", vehicle.Handle, vehicle.Heading));
+            //        }
+            //    }
+            //    else
+            //    {
+            //        WriteToLog("Behind", string.Format("Other {0}, Not Stopped, they are facing: {1}", vehicle.Handle, vehicle.Heading));
+            //    }
+            //}
+
+
+
+
+
+            //WriteToLog("KeyDown", string.Format("ModelName: {0}", Game.LocalPlayer.Character.CurrentVehicle.Model.Name));
+            //WriteToLog("KeyDown", string.Format("SPeed: {0}", Game.LocalPlayer.Character.CurrentVehicle.Speed));
+
+            //RequestAnimationDictionay("veh@busted_std");
+            //RequestAnimationDictionay("busted");
+
+            //Vehicle oldVehicle = Game.LocalPlayer.Character.CurrentVehicle;
+            //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@busted_std", "get_out_car_crim", 2.0f, -2.0f, 2500, 50, 0, false, false, false);
+            //GameFiber.Wait(2500);
+
+            //NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", Game.LocalPlayer.Character, oldVehicle, 256);
+
+            // SetArrestedAnimation(Game.LocalPlayer.Character, false);
+
+
+
+            //MoveGhostCopToPlayer();
+            //Game.LocalPlayer.Character.GiveCash(5000, "Michael");
+            //MoveGhostCopToPlayer();
+            //}
+            //catch (Exception e)
+            //{
+            //    WriteToLog("Car stuff", e.Message);
+            //}
         }
         if (Game.IsKeyDown(Keys.NumPad6))
         {
@@ -320,8 +490,13 @@ public static class InstantAction
             {
                 //WriteToLog("KeyDown", string.Format("ModelName: {0}", Game.LocalPlayer.Character.CurrentVehicle.Model.Name));
                 //WriteToLog("KeyDown", string.Format("SPeed: {0}", Game.LocalPlayer.Character.CurrentVehicle.Speed));
+              ResetTrafficViolations();
 
-                UnSetArrestedAnimation(Game.LocalPlayer.Character);
+
+                Game.LocalPlayer.Character.GiveCash(5000, "Michael");
+                //Game.HandleRespawn();
+                //   DispatchAudioSystem.ReportVehicleHitAndRun(Game.LocalPlayer.Character.CurrentVehicle);
+                //UnSetArrestedAnimation(Game.LocalPlayer.Character);
 
 
                 //MoveGhostCopToPlayer();
@@ -334,10 +509,6 @@ public static class InstantAction
             }
         }
     }
-
-
-
-
 
     //Police
     private static void GetPoliceState()
@@ -379,32 +550,22 @@ public static class InstantAction
         {
             if (TimeAimedAtPolice == 0)
                 WriteToLog("Started Aiming at Police", "");
-            TimeAimedAtPolice++;           
+            TimeAimedAtPolice++;
         }
         else
         {
             if (TimeAimedAtPolice != 0)
                 WriteToLog("Stopped Aiming at Police", "");
             TimeAimedAtPolice = 0;
-            
+
         }
 
-        if(TimeAimedAtPolice >= 100 && Game.LocalPlayer.WantedLevel < 3)
+        if (TimeAimedAtPolice >= 100 && Game.LocalPlayer.WantedLevel < 3)
         {
             WriteToLog("AimedAt Police", "");
             Game.LocalPlayer.WantedLevel = 3;
             aimedAtPolice = true;
         }
-
-        //if(PlayerInStolenVehicle && ReportedStolenVehicle && PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
-        //{
-
-        //    if (Game.LocalPlayer.WantedLevel < 2)
-        //    {
-        //        WriteToLog("Caught Driving Stolen Vehicle", "");
-        //        Game.LocalPlayer.WantedLevel = 2;
-        //    }
-        //}
 
         if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
         {
@@ -419,7 +580,7 @@ public static class InstantAction
         PoliceScanningSystem.UpdatePolice();
         GetPoliceState();
 
-             
+
         bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         int RecentlySeenTime = 10000;
         if (PlayerInVehicle)
@@ -532,6 +693,7 @@ public static class InstantAction
             if (StolenVehicles.Any(x => x.WasReportedStolen && x.VehicleEnt.Handle == Game.LocalPlayer.Character.CurrentVehicle.Handle) && Game.LocalPlayer.WantedLevel < 2)
             {
                 Game.LocalPlayer.WantedLevel = 2;
+                DispatchAudioSystem.ReportSpottedStolenCar(Game.LocalPlayer.Character.CurrentVehicle);
                 WriteToLog("StolenVehicles", "Caught In Stolen Vehicle");
             }
             if (Game.LocalPlayer.WantedLevel > 0)
@@ -617,22 +779,136 @@ public static class InstantAction
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z);
         }
     }
-
-    private static void PlayerJackingChanged(bool isJacking)
+    private static void TrafficViolationsTick()
     {
-        if (isJacking)
+        if (CurrentPoliceState != PoliceState.Normal)
+            return;
+        bool AnyCanSeePlayer = PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer && x.isInVehicle && !x.isInHelicopter);
+        PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+
+        if (PlayerInVehicle)
         {
-            JackedCurrentVehicle = true;
+            float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+            Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
+            if (AnyCanSeePlayer && !ViolationDrivingAgainstTraffic && Game.LocalPlayer.IsDrivingAgainstTraffic)
+            {
+                ViolationDrivingAgainstTraffic = true;
+                Game.LocalPlayer.WantedLevel = 1;
+                DispatchAudioSystem.ReportRecklessDriver(CurrVehicle);
+                WriteToLog("TrafficViolationsTick", string.Format("ViolationDrivingAgainstTraffic: {0}", ViolationDrivingAgainstTraffic));
+            }
+            if (AnyCanSeePlayer && !ViolationDrivingOnPavement && Game.LocalPlayer.IsDrivingOnPavement)
+            {
+                ViolationDrivingOnPavement = true;
+                Game.LocalPlayer.WantedLevel = 1;
+                DispatchAudioSystem.ReportRecklessDriver(CurrVehicle);
+                WriteToLog("TrafficViolationsTick", string.Format("ViolationDrivingOnPavement: {0}", ViolationDrivingOnPavement));
+            }
+
+            float SpeedLimit  = GetSpeedLimit();
+            if (AnyCanSeePlayer && AnyCanSeePlayer && !ViolationsSpeeding && VehicleSpeedMPH > SpeedLimit + 20)
+            {
+                ViolationsSpeeding = true;
+                Game.LocalPlayer.WantedLevel = 1;
+                DispatchAudioSystem.ReportFelonySpeeding(CurrVehicle);
+                WriteToLog("TrafficViolationsTick", string.Format("ViolationsSpeeding: {0}", ViolationsSpeeding));
+            }
+            int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
+            if (AnyCanSeePlayer && !ViolationHitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
+            {
+                ViolationHitPed = true;
+                Game.LocalPlayer.WantedLevel = 2;
+                DispatchAudioSystem.ReportPedHitAndRun(CurrVehicle);
+                WriteToLog("TrafficViolationsTick", string.Format("ViolationHitPed: {0}", ViolationHitPed));
+            }
+            int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
+            if (AnyCanSeePlayer && !ViolationHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
+            {
+                ViolationHitVehicle = true;
+                Game.LocalPlayer.WantedLevel = 1;
+                DispatchAudioSystem.ReportVehicleHitAndRun(CurrVehicle);
+                WriteToLog("TrafficViolationsTick", string.Format("ViolationHitVehicle: {0}", ViolationHitVehicle));
+            }
+
+            //if(RunningRedLight())
+            //{
+            //    WriteToLog("TrafficViolationsTick", string.Format("Running Red light: {0}", ViolationHitVehicle));
+            //}
+
+
+
         }
-        PrevPlayerIsJacking = isJacking;
     }
+
+    private static bool RunningRedLight()
+    {
+
+        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        foreach(Vehicle vehicle in Vehicles)
+        {
+            if(NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", vehicle))
+            {
+                if(vehicle.PlayerVehicleIsBehind())
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+
+
+        //this.vehs = World.GetNearbyVehicles(((Entity)Game.get_Player().get_Character()).get_Position(), 9f);
+        //if (this.vehs.Length == 0)
+        //    return false;
+        //for (int index = 0; index < this.vehs.Length; ++index)
+        //{
+        //    if (this.autolista.Count == 0)
+        //        this.autolista.Add(this.vehs[index]);
+        //    else if (!this.autolista.Contains(this.vehs[index]))
+        //        this.autolista.Add(this.vehs[index]);
+        //}
+        //if (this.autolista.Count == 0)
+        //    return false;
+        //for (int index = 0; index < this.autolista.Count; ++index)
+        //{
+        //    if ((double)Vector3.Distance(((Entity)this.autolista[index]).get_Position(), ((Entity)Game.get_Player().get_Character()).get_Position()) > 35.0)
+        //        this.autolista.Remove(this.autolista[index]);
+        //}
+        //for (int index = 0; index < this.autolista.Count; ++index)
+        //{
+        //    if (Function.Call<bool>((Hash)2979683755510794905L, new InputArgument[1]
+        //    {
+        //  InputArgument.op_Implicit(this.autolista[index])
+        //    }) != 0)
+        //    {
+        //        float num = Vector3.Angle(((Entity)this.autolista[index]).get_ForwardVector(), ((Entity)Game.get_Player().get_Character()).get_ForwardVector());
+        //        if ((double)num <= 35.0 && ((double)num <= 35.0 && (double)Vector3.Distance(((Entity)this.autolista[index]).get_Position(), ((Entity)Game.get_Player().get_Character()).get_Position()) > 30.0 && (double)Vector3.Angle(Vector3.op_Subtraction(((Entity)this.autolista[index]).get_Position(), ((Entity)Game.get_Player().get_Character()).get_Position()), ((Entity)Game.get_Player().get_Character()).get_ForwardVector()) > 150.0))
+        //            return true;
+        //    }
+        //}
+        //return false;
+    }
+    private static void ResetTrafficViolations()
+    {
+        ViolationDrivingOnPavement = false;
+        ViolationDrivingAgainstTraffic = false;
+        ViolationHitPed = false;
+        ViolationsSpeeding = false;
+        ViolationHitVehicle = false;
+    }
+    private static void PullOver(GTACop Cop, Ped PullOverTarget)
+    {
+
+    }
+
 
     private static void PoliceTickNormal()
     {
         foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.isTasked && !x.TaskIsQueued))
         {
             Cop.TaskIsQueued = true;
-            PoliceScanningSystem.CopsToTask.Add(new PoliceTask(Cop,PoliceTask.Task.Untask));
+            PoliceScanningSystem.CopsToTask.Add(new PoliceTask(Cop, PoliceTask.Task.Untask));
         }
 
     }
@@ -649,7 +925,7 @@ public static class InstantAction
             if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && PoliceScanningSystem.CopPeds.Where(x => x.isTasked || x.TaskIsQueued).Count() <= 4 && !Cop.isInVehicle && Cop.DistanceToPlayer <= 55f && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed <= 5f))
             {
                 Cop.TaskIsQueued = true;
-                PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop,PoliceTask.Task.Chase));
+                PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Chase));
             }
         }
 
@@ -686,8 +962,13 @@ public static class InstantAction
                     Cop.GameTimeLastTask = Game.GameTime;
                     PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest)); //retask the arrest
                 }
-            }           
+            }
         }
+        //foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.isTasked)) // Exist/Dead Check
+        //{
+        //    if (Cop.SetTazer)
+        //        SetCopTazer(Cop);
+        //}
         Game.LocalPlayer.WantedLevel = MaxWantedLastLife;
 
         if (PoliceScanningSystem.CopPeds.Any(x => x.DistanceToPlayer <= 4f) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !isBusted)
@@ -810,10 +1091,13 @@ public static class InstantAction
         if (Game.LocalPlayer.WantedLevel == 0)//Just Removed
         {
             //NativeFunction.CallByName<bool>("SET_FAKE_WANTED_LEVEL", 0);
-            if(AnySeenThisWanted && MaxWantedLastLife > 0)
+            if (AnySeenThisWanted && MaxWantedLastLife > 0)
                 DispatchAudioSystem.ReportSuspectLost();
             CurrentPoliceState = PoliceState.Normal;
             AnySeenThisWanted = false;
+            ResetTrafficViolations();
+
+            DispatchAudioSystem.ResetReportedItems();
         }
         NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z);
         WantedLevelStartTime = Game.GameTime;
@@ -828,7 +1112,7 @@ public static class InstantAction
     private static void PlayerHurtPoliceChanged()
     {
         WriteToLog("ValueChecker", String.Format("PlayerHurtPolice Changed to: {0}", PoliceScanningSystem.PlayerHurtPolice));
-        if(PoliceScanningSystem.PlayerHurtPolice)
+        if (PoliceScanningSystem.PlayerHurtPolice)
             DispatchAudioSystem.ReportAssualtOnOfficer();
         PrevPlayerHurtPolice = PoliceScanningSystem.PlayerHurtPolice;
     }
@@ -851,9 +1135,9 @@ public static class InstantAction
     private static void PlayerInVehicleChanged(bool playerInVehicle)
     {
         WriteToLog("ValueChecker", String.Format("playerInVehicle Changed to: {0}", playerInVehicle));
-        if(playerInVehicle)
+        if (playerInVehicle)
         {
-            
+
             Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
 
             if (!StolenVehicles.Any(x => x.VehicleEnt.Handle == CurrVehicle.Handle))
@@ -864,7 +1148,7 @@ public static class InstantAction
                 }
                 else
                 {
-                    StolenVehicles.Add(new StolenVehicle(CurrVehicle, Game.GameTime, JackedCurrentVehicle, CurrVehicle.IsAlarmSounding));
+                    StolenVehicles.Add(new StolenVehicle(CurrVehicle, Game.GameTime, JackedCurrentVehicle, CurrVehicle.IsAlarmSounding,CurrVehicle.GetPreviousPedOnSeat(-1)));
                 }
             }
         }
@@ -872,7 +1156,16 @@ public static class InstantAction
         {
             JackedCurrentVehicle = false;
         }
+        PlayerInVehicle = playerInVehicle;
         PrevPlayerInVehicle = playerInVehicle;
+    }
+    private static void PlayerJackingChanged(bool isJacking)
+    {
+        if (isJacking)
+        {
+            JackedCurrentVehicle = true;
+        }
+        PrevPlayerIsJacking = isJacking;
     }
     private static void PlayerStarsGreyedOutChanged(bool AnyRecentlySeen)
     {
@@ -917,7 +1210,7 @@ public static class InstantAction
 
         if (CurrentPoliceState == PoliceState.DeadlyChase)
         {
-            if(PrevPoliceState != PoliceState.ArrestedWait)
+            if (PrevPoliceState != PoliceState.ArrestedWait)
                 DispatchAudioSystem.ReportLethalForceAuthorized();
         }
 
@@ -954,7 +1247,7 @@ public static class InstantAction
         }
         else
         {
-            if(GhostCop != null)
+            if (GhostCop != null)
                 GhostCop.Position = new Vector3(0f, 0f, 0f);
             GhostCopFollow = false;
         }
@@ -965,24 +1258,6 @@ public static class InstantAction
             PoliceScanningSystem.UntaskAll();
         }
     }
-    //private static void RemoveGhostCop()
-    //{
-    //    if (GhostCop.Exists())
-    //        GhostCop.Delete();
-    //}
-    //private static void MoveGhostCopToPlayer()
-    //{
-    //    if (!GhostCop.Exists())
-    //        CreateGhostCop();
-    //    else
-    //    {
-    //        GhostCop.Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 1f));
-    //        GhostCop.Heading = Game.LocalPlayer.Character.Heading;
-    //    }
-
-    //    WriteToLog("CreateGhostCop", "Ghost Cop Moved");
-    //    GameTimeLastReTasked = Game.GameTime;
-    //}
     private static void CreateGhostCop()
     {
         GhostCop = new Ped(CopModel, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), Game.LocalPlayer.Character.Heading);
@@ -991,7 +1266,7 @@ public static class InstantAction
         GhostCop.IsCollisionEnabled = false;
         GhostCop.IsVisible = false;
         Blip myBlip = GhostCop.GetAttachedBlip();
-        if(myBlip != null)
+        if (myBlip != null)
             myBlip.Delete();
         GhostCop.VisionRange = 100f;
         GhostCop.HearingRange = 100f;
@@ -999,7 +1274,7 @@ public static class InstantAction
         const ulong SetPedMute = 0x7A73D05A607734C7;
         NativeFunction.CallByHash<uint>(SetPedMute, GhostCop);
 
-        NativeFunction.CallByName<uint>("SET_PED_CONFIG_FLAG", GhostCop, 69,true);
+        NativeFunction.CallByName<uint>("SET_PED_CONFIG_FLAG", GhostCop, 69, true);
 
         NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, (uint)2725352035, true); //Unequip weapon so you don't get shot
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
@@ -1052,8 +1327,8 @@ public static class InstantAction
 
         if (!Cop.CopPed.Inventory.Weapons.Contains(WeaponHash.Pistol))
             Cop.CopPed.Inventory.GiveNewWeapon(WeaponHash.Pistol, -1, true);
-        
-        if((Cop.CopPed.Inventory.EquippedWeapon == null || Cop.CopPed.Inventory.EquippedWeapon.Hash == WeaponHash.StunGun) && Game.LocalPlayer.WantedLevel >= 0)
+
+        if ((Cop.CopPed.Inventory.EquippedWeapon == null || Cop.CopPed.Inventory.EquippedWeapon.Hash == WeaponHash.StunGun) && Game.LocalPlayer.WantedLevel >= 0)
             Cop.CopPed.Inventory.GiveNewWeapon(WeaponHash.Pistol, -1, true);
 
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, true);
@@ -1098,7 +1373,7 @@ public static class InstantAction
             Game.LocalPlayer.Character.Kill();
             Game.LocalPlayer.Character.Health = 0;
             Game.LocalPlayer.Character.IsInvincible = true;
-            Game.LocalPlayer.WantedLevel = 0;         
+            Game.LocalPlayer.WantedLevel = 0;
             Game.TimeScale = .4f;
             Menus.deathMenu.Visible = true;
 
@@ -1148,7 +1423,7 @@ public static class InstantAction
     {
         if (Game.IsKeyDownRightNow(Keys.E) && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
         {
-            
+
             if (!areHandsUp && !isBusted)
             {
                 if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
@@ -1176,7 +1451,7 @@ public static class InstantAction
     }
     private static void RaiseHands()
     {
-        if(Game.LocalPlayer.WantedLevel > 0)
+        if (Game.LocalPlayer.WantedLevel > 0)
             CurrentPoliceState = PoliceState.ArrestedWait;
 
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
@@ -1193,7 +1468,7 @@ public static class InstantAction
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
         }
-        
+
     }
 
     public static void RequestAnimationDictionay(String sDict)
@@ -1242,7 +1517,7 @@ public static class InstantAction
             {
                 Game.LocalPlayer.Character.Inventory.Weapons.Clear();
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
-               // Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+                // Game.LocalPlayer.Character.Inventory.Weapons.Clear();
                 //Game.LocalPlayer.Character.Inventory.GiveNewWeapon(WeaponDescriptor., 0, true, true);
                 //if (mySettings.ReplacePlayerWithPed && mySettings.ReplacePlayerWithPedRandomMoney)
                 //    Game.Player.Character.SetCash(0, mySettings.ReplacePlayerWithPedCharacter);
@@ -1268,7 +1543,7 @@ public static class InstantAction
     }
     public static Ped GetPedestrian(float Radius, bool Nearest)
     {
-        Ped PedToReturn = null;   
+        Ped PedToReturn = null;
         Ped[] closestPed = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, Radius, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAllPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
         if (Nearest)
             PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
@@ -1392,7 +1667,7 @@ public static class InstantAction
 
 
             SetPlayerOffset();
-            ChangeModel("player_zero");          
+            ChangeModel("player_zero");
             ChangeModel(LastModelHash);
 
 
@@ -1410,7 +1685,7 @@ public static class InstantAction
                 Game.LocalPlayer.Character.IsCollisionEnabled = true;
             }
 
-            Game.LocalPlayer.Character.SetCash(rnd.Next(500, 4000),"Michael");
+            Game.LocalPlayer.Character.SetCash(rnd.Next(500, 4000), "Michael");
 
 
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
@@ -1438,7 +1713,7 @@ public static class InstantAction
             {
                 myPedVariation.myPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
             }
-            for(int PropNumber = 0; PropNumber < 8;PropNumber++)
+            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
             {
                 myPedVariation.myPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
             }
@@ -1458,7 +1733,7 @@ public static class InstantAction
             }
             foreach (PropComponent Prop in myPedVariation.myPedProps)
             {
-                NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", myPed, Prop.PropID, Prop.DrawableID, Prop.TextureID,false);
+                NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", myPed, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
             }
         }
         catch (Exception e)
@@ -1480,7 +1755,7 @@ public static class InstantAction
         UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
 
         //if (mySettings.ReplacePlayerWithPedCharacter == "Michael")
-            GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
+        GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
         //else if (mySettings.ReplacePlayerWithPedCharacter == "Franklin")
         //    GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
         //else if (mySettings.ReplacePlayerWithPedCharacter == "Trevor")
@@ -1521,6 +1796,7 @@ public static class InstantAction
         {
             RequestAnimationDictionay("veh@busted_std");
             RequestAnimationDictionay("busted");
+            RequestAnimationDictionay("ped");
 
             if (!PedToArrest.Exists())
                 return;
@@ -1535,18 +1811,28 @@ public static class InstantAction
             {
                 Vehicle oldVehicle = PedToArrest.CurrentVehicle;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "veh@busted_std", "get_out_car_crim", 2.0f, -2.0f, 2500, 50, 0, false, false, false);
-                GameFiber.Wait(2500);
+                GameFiber.Sleep(2500);
                 if (PedToArrest.Exists() && oldVehicle.Exists())
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
             }
             if (PedToArrest == Game.LocalPlayer.Character && !isBusted)
                 return;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 2.0f, -8.0f, 5000, 2, 0, false, false, false);
-            GameFiber.Wait(5000);
-            if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !isBusted))
-                return;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+
+
+            if (MaxWantedLastLife < 3)
+            {
+                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+            }
+            else
+            {
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 2.0f, -8.0f, 5000, 2, 0, false, false, false);
+                GameFiber.Sleep(5000);
+                if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !isBusted))
+                    return;
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+            }
             PedToArrest.KeepTasks = true;
+
             if (MarkAsNoLongerNeeded)
                 PedToArrest.IsPersistent = false;
         });
@@ -1557,12 +1843,17 @@ public static class InstantAction
         GameFiber.StartNew(delegate
         {
             RequestAnimationDictionay("random@arrests");
-        RequestAnimationDictionay("busted");
+            RequestAnimationDictionay("busted");
+            RequestAnimationDictionay("ped");
 
-        if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 1) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 1))
-        {
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
-        }
+            if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 1) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 1))
+            {
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
+            }
+            else if(NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 1))
+            {
+                PedToArrest.Tasks.Clear();
+            }
         });
     }
     public static void CommitSuicide(Ped PedToSuicide)
@@ -1593,12 +1884,13 @@ public static class InstantAction
         if (Cop == null)
             return false;
         else
-        {   GameFiber TaskFiber = 
+        {
+            GameFiber TaskFiber =
             GameFiber.StartNew(delegate
             {
                 RequestAnimationDictionay("random@arrests");
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Cop.CopPed, "random@arrests", "generic_radio_enter", 2.0f, -2.0f, 2500, 16, 0, false, false, false);
-                
+
             });
             GameFiber AudioFiber =
             GameFiber.StartNew(delegate
@@ -1700,7 +1992,7 @@ public static class InstantAction
         CurrentPoliceState = PoliceState.Normal;
         UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-        if(Game.LocalPlayer.Character.LastVehicle.Exists())
+        if (Game.LocalPlayer.Character.LastVehicle.Exists())
             NativeFunction.CallByName<bool>("SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER", Game.LocalPlayer.Character.LastVehicle, true);
         ResetPlayer(true, false);
 
@@ -1810,7 +2102,492 @@ public static class InstantAction
         }
     }
 
+    private static string GetCurrentStreet()
+    {
+        //string[] streets = new string[1];
+
+        Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
+
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        unsafe
+        {
+            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, &StreetHash, &CrossingHash);
+        }
+
+        string StreetName = string.Empty;
+        string CrossStreetName = string.Empty;
+        Vector3 Position = Game.LocalPlayer.Character.Position;
+        if (StreetHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+
+                StreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+        }
+
+        //if (CrossingHash != 0)
+        //{
+        //    unsafe
+        //    {
+        //        IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", CrossingHash);
+
+        //        CrossStreetName = Marshal.PtrToStringAnsi(ptr);
+        //    }
+        //}
+        //WriteToLog("GetSpeedLimit", string.Format("Street Name: {0}, Cross Street Name: {`}", StreetName, CrossStreetName));
+        //streets[0] = StreetName;
+        //streets[1] = CrossStreetName;
+        //return streets;
+        return StreetName;
+    }
+    private static float GetSpeedLimit()
+    {
+        string StreetName = GetCurrentStreet();
+
+        int SpeedLimit;
+
+        if (StreetName == "Joshua Rd")
+            SpeedLimit = 50;
+        else if (StreetName == "East Joshua Road")
+            SpeedLimit = 50;
+        else if (StreetName == "Marina Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Alhambra Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Niland Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Zancudo Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Armadillo Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Algonquin Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "Mountain View Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Cholla Springs Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Panorama Dr")
+            SpeedLimit = 40;
+        else if (StreetName == "Lesbos Ln")
+            SpeedLimit = 35;
+        else if (StreetName == "Calafia Rd")
+            SpeedLimit = 30;
+        else if (StreetName == "North Calafia Way")
+            SpeedLimit = 30;
+        else if (StreetName == "Cassidy Trail")
+            SpeedLimit = 25;
+        else if (StreetName == "Seaview Rd")
+            SpeedLimit = 35;
+        else if (StreetName == "Grapeseed Main St")
+            SpeedLimit = 35;
+        else if (StreetName == "Grapeseed Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Joad Ln")
+            SpeedLimit = 35;
+        else if (StreetName == "Union Rd")
+            SpeedLimit = 40;
+        else if (StreetName == "O'Neil Way")
+            SpeedLimit = 25;
+        else if (StreetName == "Senora Fwy")
+            SpeedLimit = 65;
+        else if (StreetName == "Catfish View")
+            SpeedLimit = 35;
+        else if (StreetName == "Great Ocean Hwy")
+            SpeedLimit = 60;
+        else if (StreetName == "Paleto Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "Duluoz Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Procopio Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Cascabel Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Procopio Promenade")
+            SpeedLimit = 25;
+        else if (StreetName == "Pyrite Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Fort Zancudo Approach Rd")
+            SpeedLimit = 25;
+        else if (StreetName == "Barbareno Rd")
+            SpeedLimit = 30;
+        else if (StreetName == "Ineseno Road")
+            SpeedLimit = 30;
+        else if (StreetName == "West Eclipse Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "Playa Vista")
+            SpeedLimit = 30;
+        else if (StreetName == "Bay City Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Del Perro Fwy")
+            SpeedLimit = 65;
+        else if (StreetName == "Equality Way")
+            SpeedLimit = 30;
+        else if (StreetName == "Red Desert Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Magellan Ave")
+            SpeedLimit = 25;
+        else if (StreetName == "Sandcastle Way")
+            SpeedLimit = 30;
+        else if (StreetName == "Vespucci Blvd")
+            SpeedLimit = 40;
+        else if (StreetName == "Prosperity St")
+            SpeedLimit = 30;
+        else if (StreetName == "San Andreas Ave")
+            SpeedLimit = 40;
+        else if (StreetName == "North Rockford Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "South Rockford Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Marathon Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Boulevard Del Perro")
+            SpeedLimit = 35;
+        else if (StreetName == "Cougar Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Liberty St")
+            SpeedLimit = 30;
+        else if (StreetName == "Bay City Incline")
+            SpeedLimit = 40;
+        else if (StreetName == "Conquistador St")
+            SpeedLimit = 25;
+        else if (StreetName == "Cortes St")
+            SpeedLimit = 25;
+        else if (StreetName == "Vitus St")
+            SpeedLimit = 25;
+        else if (StreetName == "Aguja St")
+            SpeedLimit = 25;
+        else if (StreetName == "Goma St")
+            SpeedLimit = 25;
+        else if (StreetName == "Melanoma St")
+            SpeedLimit = 25;
+        else if (StreetName == "Palomino Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Invention Ct")
+            SpeedLimit = 25;
+        else if (StreetName == "Imagination Ct")
+            SpeedLimit = 25;
+        else if (StreetName == "Rub St")
+            SpeedLimit = 25;
+        else if (StreetName == "Tug St")
+            SpeedLimit = 25;
+        else if (StreetName == "Ginger St")
+            SpeedLimit = 30;
+        else if (StreetName == "Lindsay Circus")
+            SpeedLimit = 30;
+        else if (StreetName == "Calais Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Adam's Apple Blvd")
+            SpeedLimit = 40;
+        else if (StreetName == "Alta St")
+            SpeedLimit = 40;
+        else if (StreetName == "Integrity Way")
+            SpeedLimit = 30;
+        else if (StreetName == "Swiss St")
+            SpeedLimit = 30;
+        else if (StreetName == "Strawberry Ave")
+            SpeedLimit = 40;
+        else if (StreetName == "Capital Blvd")
+            SpeedLimit = 30;
+        else if (StreetName == "Crusade Rd")
+            SpeedLimit = 30;
+        else if (StreetName == "Innocence Blvd")
+            SpeedLimit = 40;
+        else if (StreetName == "Davis Ave")
+            SpeedLimit = 40;
+        else if (StreetName == "Little Bighorn Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Roy Lowenstein Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "Jamestown St")
+            SpeedLimit = 30;
+        else if (StreetName == "Carson Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Grove St")
+            SpeedLimit = 30;
+        else if (StreetName == "Brouge Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Covenant Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Dutch London St")
+            SpeedLimit = 40;
+        else if (StreetName == "Signal St")
+            SpeedLimit = 30;
+        else if (StreetName == "Elysian Fields Fwy")
+            SpeedLimit = 50;
+        else if (StreetName == "Plaice Pl")
+            SpeedLimit = 30;
+        else if (StreetName == "Chum St")
+            SpeedLimit = 40;
+        else if (StreetName == "Chupacabra St")
+            SpeedLimit = 30;
+        else if (StreetName == "Miriam Turner Overpass")
+            SpeedLimit = 30;
+        else if (StreetName == "Autopia Pkwy")
+            SpeedLimit = 35;
+        else if (StreetName == "Exceptionalists Way")
+            SpeedLimit = 35;
+        else if (StreetName == "La Puerta Fwy")
+            SpeedLimit = 60;
+        else if (StreetName == "New Empire Way")
+            SpeedLimit = 30;
+        else if (StreetName == "Runway1")
+            SpeedLimit = 90;
+        else if (StreetName == "Greenwich Pkwy")
+            SpeedLimit = 35;
+        else if (StreetName == "Kortz Dr")
+            SpeedLimit = 30;
+        else if (StreetName == "Banham Canyon Dr")
+            SpeedLimit = 40;
+        else if (StreetName == "Buen Vino Rd")
+            SpeedLimit = 40;
+        else if (StreetName == "Route 68")
+            SpeedLimit = 55;
+        else if (StreetName == "Zancudo Grande Valley")
+            SpeedLimit = 40;
+        else if (StreetName == "Zancudo Barranca")
+            SpeedLimit = 40;
+        else if (StreetName == "Galileo Rd")
+            SpeedLimit = 40;
+        else if (StreetName == "Mt Vinewood Dr")
+            SpeedLimit = 40;
+        else if (StreetName == "Marlowe Dr")
+            SpeedLimit = 40;
+        else if (StreetName == "Milton Rd")
+            SpeedLimit = 35;
+        else if (StreetName == "Kimble Hill Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Normandy Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Hillcrest Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Hillcrest Ridge Access Rd")
+            SpeedLimit = 35;
+        else if (StreetName == "North Sheldon Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Lake Vinewood Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Lake Vinewood Est")
+            SpeedLimit = 35;
+        else if (StreetName == "Baytree Canyon Rd")
+            SpeedLimit = 40;
+        else if (StreetName == "North Conker Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Wild Oats Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Whispymound Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Didion Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Cox Way")
+            SpeedLimit = 35;
+        else if (StreetName == "Picture Perfect Drive")
+            SpeedLimit = 35;
+        else if (StreetName == "South Mo Milton Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Cockingend Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Mad Wayne Thunder Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Hangman Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Dunstable Ln")
+            SpeedLimit = 35;
+        else if (StreetName == "Dunstable Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Greenwich Way")
+            SpeedLimit = 35;
+        else if (StreetName == "Greenwich Pl")
+            SpeedLimit = 35;
+        else if (StreetName == "Hardy Way")
+            SpeedLimit = 35;
+        else if (StreetName == "Richman St")
+            SpeedLimit = 35;
+        else if (StreetName == "Ace Jones Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Los Santos Freeway")
+            SpeedLimit = 65;
+        else if (StreetName == "Senora Rd")
+            SpeedLimit = 40;
+        else if (StreetName == "Nowhere Rd")
+            SpeedLimit = 25;
+        else if (StreetName == "Smoke Tree Rd")
+            SpeedLimit = 35;
+        else if (StreetName == "Cholla Rd")
+            SpeedLimit = 35;
+        else if (StreetName == "Cat-Claw Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Senora Way")
+            SpeedLimit = 40;
+        else if (StreetName == "Palomino Fwy")
+            SpeedLimit = 60;
+        else if (StreetName == "Shank St")
+            SpeedLimit = 25;
+        else if (StreetName == "Macdonald St")
+            SpeedLimit = 35;
+        else if (StreetName == "Route 68 Approach")
+            SpeedLimit = 55;
+        else if (StreetName == "Vinewood Park Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Vinewood Blvd")
+            SpeedLimit = 40;
+        else if (StreetName == "Mirror Park Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "Glory Way")
+            SpeedLimit = 35;
+        else if (StreetName == "Bridge St")
+            SpeedLimit = 35;
+        else if (StreetName == "West Mirror Drive")
+            SpeedLimit = 35;
+        else if (StreetName == "Nikola Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "East Mirror Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Nikola Pl")
+            SpeedLimit = 25;
+        else if (StreetName == "Mirror Pl")
+            SpeedLimit = 35;
+        else if (StreetName == "El Rancho Blvd")
+            SpeedLimit = 40;
+        else if (StreetName == "Olympic Fwy")
+            SpeedLimit = 60;
+        else if (StreetName == "Fudge Ln")
+            SpeedLimit = 25;
+        else if (StreetName == "Amarillo Vista")
+            SpeedLimit = 25;
+        else if (StreetName == "Labor Pl")
+            SpeedLimit = 35;
+        else if (StreetName == "El Burro Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "Sustancia Rd")
+            SpeedLimit = 45;
+        else if (StreetName == "South Shambles St")
+            SpeedLimit = 30;
+        else if (StreetName == "Hanger Way")
+            SpeedLimit = 30;
+        else if (StreetName == "Orchardville Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Popular St")
+            SpeedLimit = 40;
+        else if (StreetName == "Buccaneer Way")
+            SpeedLimit = 45;
+        else if (StreetName == "Abattoir Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Voodoo Place")
+            SpeedLimit = 30;
+        else if (StreetName == "Mutiny Rd")
+            SpeedLimit = 35;
+        else if (StreetName == "South Arsenal St")
+            SpeedLimit = 35;
+        else if (StreetName == "Forum Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Morningwood Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "Dorset Dr")
+            SpeedLimit = 40;
+        else if (StreetName == "Caesars Place")
+            SpeedLimit = 25;
+        else if (StreetName == "Spanish Ave")
+            SpeedLimit = 30;
+        else if (StreetName == "Portola Dr")
+            SpeedLimit = 30;
+        else if (StreetName == "Edwood Way")
+            SpeedLimit = 25;
+        else if (StreetName == "San Vitus Blvd")
+            SpeedLimit = 40;
+        else if (StreetName == "Eclipse Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "Gentry Lane")
+            SpeedLimit = 30;
+        else if (StreetName == "Las Lagunas Blvd")
+            SpeedLimit = 40;
+        else if (StreetName == "Power St")
+            SpeedLimit = 40;
+        else if (StreetName == "Mt Haan Rd")
+            SpeedLimit = 40;
+        else if (StreetName == "Elgin Ave")
+            SpeedLimit = 40;
+        else if (StreetName == "Hawick Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Meteor St")
+            SpeedLimit = 30;
+        else if (StreetName == "Alta Pl")
+            SpeedLimit = 30;
+        else if (StreetName == "Occupation Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Carcer Way")
+            SpeedLimit = 40;
+        else if (StreetName == "Eastbourne Way")
+            SpeedLimit = 30;
+        else if (StreetName == "Rockford Dr")
+            SpeedLimit = 35;
+        else if (StreetName == "Abe Milton Pkwy")
+            SpeedLimit = 35;
+        else if (StreetName == "Laguna Pl")
+            SpeedLimit = 30;
+        else if (StreetName == "Sinners Passage")
+            SpeedLimit = 30;
+        else if (StreetName == "Atlee St")
+            SpeedLimit = 30;
+        else if (StreetName == "Sinner St")
+            SpeedLimit = 30;
+        else if (StreetName == "Supply St")
+            SpeedLimit = 30;
+        else if (StreetName == "Amarillo Way")
+            SpeedLimit = 35;
+        else if (StreetName == "Tower Way")
+            SpeedLimit = 35;
+        else if (StreetName == "Decker St")
+            SpeedLimit = 35;
+        else if (StreetName == "Tackle St")
+            SpeedLimit = 25;
+        else if (StreetName == "Low Power St")
+            SpeedLimit = 35;
+        else if (StreetName == "Clinton Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Fenwell Pl")
+            SpeedLimit = 35;
+        else if (StreetName == "Utopia Gardens")
+            SpeedLimit = 25;
+        else if (StreetName == "Cavalry Blvd")
+            SpeedLimit = 35;
+        else if (StreetName == "South Boulevard Del Perro")
+            SpeedLimit = 35;
+        else if (StreetName == "Americano Way")
+            SpeedLimit = 25;
+        else if (StreetName == "Sam Austin Dr")
+            SpeedLimit = 25;
+        else if (StreetName == "East Galileo Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Galileo Park")
+            SpeedLimit = 35;
+        else if (StreetName == "West Galileo Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Tongva Dr")
+            SpeedLimit = 40;
+        else if (StreetName == "Zancudo Rd")
+            SpeedLimit = 35;
+        else if (StreetName == "Movie Star Way")
+            SpeedLimit = 35;
+        else if (StreetName == "Heritage Way")
+            SpeedLimit = 35;
+        else if (StreetName == "Perth St")
+            SpeedLimit = 25;
+        else if (StreetName == "Chianski Passage")
+            SpeedLimit = 30;
+        else if (StreetName == "Lolita Ave")
+            SpeedLimit = 35;
+        else if (StreetName == "Meringue Ln")
+            SpeedLimit = 35;
+        else if (StreetName == "Strangeways Dr")
+            SpeedLimit = 30;
+        else
+            SpeedLimit = 50;
 
 
+        return SpeedLimit;
+
+    }
 }
-

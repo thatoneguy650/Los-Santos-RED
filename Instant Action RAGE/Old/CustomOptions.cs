@@ -29,6 +29,17 @@ namespace Instant_Action_RAGE.Systems
                     NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false); // No Radar or police blips
 
 
+                    NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+
+
+
+
+
+                    NativeFunction.CallByName<bool>("DISPLAY_HUD", true);
+                    NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
+
+
+
 
                     if (SpeedModeEnabled)
                     {

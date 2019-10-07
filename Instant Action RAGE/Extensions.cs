@@ -185,6 +185,15 @@ namespace ExtensionsMethods
             }
             else return -1.0f;
         }
+        public static float getDotVectorResult(Vehicle source, Vehicle target)
+        {
+            if (source.Exists() && target.Exists())
+            {
+                Vector3 dir = (target.Position - source.Position).ToNormalized();
+                return Vector3.Dot(dir, source.ForwardVector);
+            }
+            else return -1.0f;
+        }
         public static bool PlayerIsInFront(this Ped myPed)
         {
             float Result = getDotVectorResult(myPed, Game.LocalPlayer.Character);
@@ -194,7 +203,24 @@ namespace ExtensionsMethods
                 return false;
 
         }
+        public static bool PlayerVehicleIsBehind(this Vehicle myVehicle)
+        {
+            float Result = getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, myVehicle);
+            if (Result > 0)
+                return true;
+            else
+                return false;
 
+        }
+        public static bool PlayerVehicleIsInFront(this Vehicle myvehicle)
+        {
+            float Result = getDotVectorResult(myvehicle, Game.LocalPlayer.Character.CurrentVehicle);
+            if (Result > 0)
+                return true;
+            else
+                return false;
+
+        }
 
         public static T PickRandom<T>(this IEnumerable<T> source)
         {
