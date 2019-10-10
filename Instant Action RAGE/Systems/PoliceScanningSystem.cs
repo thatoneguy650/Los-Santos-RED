@@ -215,6 +215,12 @@ namespace Instant_Action_RAGE.Systems
 
                     GTACop myCop = new GTACop(Cop, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f),Cop.Health);
                     Cop.IsPersistent = false;
+
+
+                    NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
+
+
+
                     if (InstantAction.GhostCop != null && InstantAction.GhostCop.Handle == Cop.Handle)
                         continue;
                     CopPeds.Add(myCop);
@@ -238,6 +244,11 @@ namespace Instant_Action_RAGE.Systems
             {
                 if(Cop.CopPed.IsDead)
                 {
+                    if(PlayerHurtPed(Cop))
+                    {
+                        Cop.HurtByPlayer = true;
+                        PlayerHurtPolice = true;
+                    }
                     if(PlayerKilledPed(Cop))
                     {
                         CopsKilledByPlayer++;
@@ -285,7 +296,7 @@ namespace Instant_Action_RAGE.Systems
                 Doggo.RelationshipGroup = "COPDOGS";
                 Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
                 Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
-
+                //Doggo.Health = 50;
 
                 Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
                 Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
@@ -357,8 +368,11 @@ namespace Instant_Action_RAGE.Systems
             catch (Exception e)
             {
                 Game.LogTrivial(e.Message);
-                WriteToLog("PlayerKilledPed", string.Format("Cop got killed by unknow, attributing it to you must be GSW2?: {0}", Cop.CopPed.Handle));
-                return false;
+                WriteToLog("PlayerKilledPed", string.Format("Cop got killed by unknow, attributing it to you must be GSW2?{0}, DId you hurt them?: {1}", Cop.CopPed.Handle, Cop.HurtByPlayer));
+                if (Cop.HurtByPlayer)
+                    return true;
+                else
+                    return false;
             }
         }
         private static void CheckLOS(bool PlayerInVehicle)
@@ -686,17 +700,15 @@ namespace Instant_Action_RAGE.Systems
                 while (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
                 {
                     NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.CopPed, 1.5f);
-                    if (Game.GameTime - TaskTime >= 1000)
+                    Cop.CopPed.KeepTasks = true;
+                    if (Game.GameTime - TaskTime >= 500)
                     {
-                        float _locrangeTo = Cop.CopPed.RangeTo(Game.LocalPlayer.Character.Position);
-                        //if (_locrangeTo >= 65f)
-                        //    break;
 
-                        //NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.CopPed, 1.3f);
+                        float _locrangeTo = Cop.CopPed.RangeTo(Game.LocalPlayer.Character.Position);
                         if (LocalTaskName != "Exit" && Cop.CopPed.IsInAnyVehicle(false) && Cop.CopPed.CurrentVehicle.Speed <= 5 && !Cop.CopPed.CurrentVehicle.HasDriver && _locrangeTo <= 75f)
                         {
                             NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", Cop.CopPed, Cop.CopPed.CurrentVehicle, 16);
-                            Cop.CopPed.Heading = Game.LocalPlayer.Character.Heading;
+                            //Cop.CopPed.Heading = Game.LocalPlayer.Character.Heading;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Exit";
                             WriteToLog("TaskK9Chasing", "Cop SubTasked with Exit");
@@ -708,16 +720,20 @@ namespace Instant_Action_RAGE.Systems
                             LocalTaskName = "Arrest";
                             WriteToLog("TaskK9Chasing", "Cop SubTasked with Arresting");
                         }
-                        else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "GotoFighting" && _locrangeTo <= 15f) //was 10f
+                        else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "GotoFighting" && _locrangeTo <= 10f) //was 10f
                         {
-                            NativeFunction.CallByName<bool>("TASK_COMBAT_PED", Cop.CopPed, Game.LocalPlayer.Character, 0, 16);
+                            Cop.CopPed.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                            //NativeFunction.CallByName<bool>("TASK_COMBAT_PED", Cop.CopPed, Game.LocalPlayer.Character, 0, 16);
+                            Cop.CopPed.KeepTasks = true;
+                            //Cop.CopPed.BlockPermanentEvents = false;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "GotoFighting";
                             WriteToLog("TaskK9Chasing", "Cop SubTasked with Fighting");
                         }
-                        else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "Goto" && _locrangeTo >= 50f) //was 15f
+                        else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "Goto" && _locrangeTo >= 45f && (LocalTaskName != "GotoFighting" || Game.GameTime - TaskTime >= 15000)) //was 15f
                         {
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
+                            Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Goto";
                             WriteToLog("TaskK9Chasing", "Cop SubTasked with GoTo");

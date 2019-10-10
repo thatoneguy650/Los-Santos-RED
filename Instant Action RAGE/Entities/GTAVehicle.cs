@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class StolenVehicle
+public class GTAVehicle
 {
     private static Random rnd;
 
@@ -33,7 +33,7 @@ public class StolenVehicle
                 return false;
         }
     }
-    static StolenVehicle()
+    static GTAVehicle()
     {
         rnd = new Random();
     }
@@ -54,13 +54,24 @@ public class StolenVehicle
             }
         });
     }
-    public StolenVehicle(Vehicle _Vehicle,uint _GameTimeStolen,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner)
+    public GTAVehicle(Vehicle _Vehicle,uint _GameTimeStolen,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner)
     {
         VehicleEnt = _Vehicle;
         GameTimeStolen = _GameTimeStolen;
         WasJacked = _WasJacked;
         WasAlarmed = _WasAlarmed;
         PreviousOwner = _PrevIousOwner;
+
+
+        if(!WasJacked && !WasAlarmed && PreviousOwner == null)
+        {
+            WillBeReportedStolen = false;
+        }
+        else
+        {
+            WillBeReportedStolen = true;
+        }
+
         if (PreviousOwner != null)
         {
             if (PreviousOwner.IsDead)
@@ -69,10 +80,7 @@ public class StolenVehicle
             }
             WatchForDeath(PreviousOwner);
         }
-        else
-        {
-            WillBeReportedStolen = true;
-        }
+
 
         if (WasJacked)
             ReportInterval = 15000;
@@ -83,7 +91,7 @@ public class StolenVehicle
 
         
 
-        InstantAction.WriteToLog("StolenVehicles", string.Format("Stolen Vehicle Created: Handle {0},GameTimeStolen {1},WasJacked {2},WasAlarmed {3},ReportInterval {4},WillBeReportedStolen {5}", VehicleEnt.Handle,GameTimeStolen,WasJacked,WasAlarmed,ReportInterval,WillBeReportedStolen));
+        InstantAction.WriteToLog("GTAVehicleS", string.Format("Stolen Vehicle Created: Handle {0},GameTimeStolen {1},WasJacked {2},WasAlarmed {3},ReportInterval {4},WillBeReportedStolen {5},WillWatchLastOwner {6}", VehicleEnt.Handle,GameTimeStolen,WasJacked,WasAlarmed,ReportInterval,WillBeReportedStolen, PreviousOwner != null));
     }
 
 }
