@@ -11,7 +11,8 @@ public class GTAVehicle
     private static Random rnd;
 
     public Vehicle VehicleEnt = null;
-    public uint GameTimeStolen;
+    
+    public uint GameTimeEntered;
     public bool WillBeReportedStolen = false;
     public bool WasReportedStolen = false;
     public bool CopWillRecognize = false;
@@ -21,13 +22,15 @@ public class GTAVehicle
     public uint ReportInterval = 30000;
     public Ped PreviousOwner = null;
     public bool PreviousOwnerDied = false;
+    public bool IsPlayersVehicle = false;
+    public bool IsStolen = false;
     public bool ShouldReportStolen
     {
         get
         {
             if (WasReportedStolen)
                 return false;
-            else if (WillBeReportedStolen && Game.GameTime - GameTimeStolen >= ReportInterval && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == VehicleEnt.Handle)
+            else if (WillBeReportedStolen && Game.GameTime >= GameTimeToReportStolen && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == VehicleEnt.Handle)
                 return true;
             else
                 return false;
@@ -54,44 +57,34 @@ public class GTAVehicle
             }
         });
     }
-    public GTAVehicle(Vehicle _Vehicle,uint _GameTimeStolen,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner)
+    public GTAVehicle(Vehicle _Vehicle,uint _GameTimeEntered,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsPlayersVehicle, bool _IsStolen)
     {
         VehicleEnt = _Vehicle;
-        GameTimeStolen = _GameTimeStolen;
+        GameTimeEntered = _GameTimeEntered;
         WasJacked = _WasJacked;
         WasAlarmed = _WasAlarmed;
         PreviousOwner = _PrevIousOwner;
+        IsStolen = _IsStolen;
+        IsPlayersVehicle = _IsPlayersVehicle;
 
+        if (IsPlayersVehicle)
+            IsStolen = false;
 
-        if(!WasJacked && !WasAlarmed && PreviousOwner == null)
-        {
-            WillBeReportedStolen = false;
-        }
-        else
-        {
+        if (IsStolen)
             WillBeReportedStolen = true;
-        }
 
-        if (PreviousOwner != null)
-        {
-            if (PreviousOwner.IsDead)
-            {
-                WillBeReportedStolen = false;
-            }
+        if (IsStolen && WillBeReportedStolen && PreviousOwner != null && PreviousOwner.Handle != Game.LocalPlayer.Character.Handle)
             WatchForDeath(PreviousOwner);
-        }
-
 
         if (WasJacked)
-            ReportInterval = 15000;
-        else if (WasAlarmed)
-            ReportInterval = 30000;
+            GameTimeToReportStolen = GameTimeEntered + 15000;
+        else if(WasAlarmed)
+            GameTimeToReportStolen = GameTimeEntered + 30000;
         else
-            ReportInterval = 600000;
+            GameTimeToReportStolen = GameTimeEntered + 600000;
 
-        
 
-        InstantAction.WriteToLog("GTAVehicleS", string.Format("Stolen Vehicle Created: Handle {0},GameTimeStolen {1},WasJacked {2},WasAlarmed {3},ReportInterval {4},WillBeReportedStolen {5},WillWatchLastOwner {6}", VehicleEnt.Handle,GameTimeStolen,WasJacked,WasAlarmed,ReportInterval,WillBeReportedStolen, PreviousOwner != null));
+        InstantAction.WriteToLog("GTAVehicleS", string.Format("Vehicle Created: Handle {0},GameTimeEntered,{1},GameTimeToReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WillBeReportedStolen {6},WillWatchLastOwner {7}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, WillBeReportedStolen, PreviousOwner != null));
     }
 
 }

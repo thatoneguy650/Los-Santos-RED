@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 
     public class GTAWeapon
     {
-    public GTAWeapon(WeaponHash _Type, short _AmmoAmount, string _Category, int _WeaponLevel)
+    public GTAWeapon(String _Name, short _AmmoAmount, string _Category, int _WeaponLevel, ulong _Hash)
     {
-        Type = _Type;
+        Name = _Name;
         AmmoAmount = _AmmoAmount;
         Category = _Category;
         WeaponLevel = _WeaponLevel;
+        Hash = _Hash;
     }
-    public WeaponHash Type;
+    public string Name;
     public short AmmoAmount;
     public string Category;
     public int WeaponLevel;
+    public ulong Hash;
+    public string ScannerFile;
 }
 

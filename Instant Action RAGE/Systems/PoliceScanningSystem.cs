@@ -95,8 +95,8 @@ namespace Instant_Action_RAGE.Systems
                     }
                     if (Game.GameTime > K9Interval + 5000) // was 2000
                     {
-                        if (Game.LocalPlayer.WantedLevel > 0 && !PlayerInVehicle && K9Peds.Count < 3)
-                            CreateK9();
+                        //if (Game.LocalPlayer.WantedLevel > 0 && !PlayerInVehicle && K9Peds.Count < 3)
+                        //    CreateK9();
 
                         //MoveK9s();
                         
@@ -722,21 +722,27 @@ namespace Instant_Action_RAGE.Systems
                         }
                         else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "GotoFighting" && _locrangeTo <= 10f) //was 10f
                         {
-                            Cop.CopPed.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                            //NativeFunction.CallByName<bool>("TASK_COMBAT_PED", Cop.CopPed, Game.LocalPlayer.Character, 0, 16);
+                            NativeFunction.CallByName<bool>("TASK_COMBAT_PED", Cop.CopPed, Game.LocalPlayer.Character, 0, 16);
                             Cop.CopPed.KeepTasks = true;
                             //Cop.CopPed.BlockPermanentEvents = false;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "GotoFighting";
+                            GameFiber.Sleep(25000);
                             WriteToLog("TaskK9Chasing", "Cop SubTasked with Fighting");
                         }
-                        else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "Goto" && _locrangeTo >= 45f && (LocalTaskName != "GotoFighting" || Game.GameTime - TaskTime >= 15000)) //was 15f
+                        else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "Goto" && _locrangeTo >= 45f) //was 15f
                         {
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Goto";
                             WriteToLog("TaskK9Chasing", "Cop SubTasked with GoTo");
+                        }
+
+                        if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.Normal || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
+                        {
+                            GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
+                            break;
                         }
                     }
                     GameFiber.Yield();
@@ -757,6 +763,14 @@ namespace Instant_Action_RAGE.Systems
         public static void UntaskAll()
         {
             foreach (GTACop Cop in CopPeds)
+            {
+                if (Cop.isTasked && !Cop.TaskIsQueued)
+                {
+                    Cop.TaskIsQueued = true;
+                    AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
+                }
+            }
+            foreach (GTACop Cop in K9Peds)
             {
                 if (Cop.isTasked && !Cop.TaskIsQueued)
                 {

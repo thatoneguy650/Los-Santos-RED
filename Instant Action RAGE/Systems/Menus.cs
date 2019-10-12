@@ -403,7 +403,7 @@ namespace Instant_Action_RAGE.Systems
                 if (selectedItem == menuDebugRandomWeapon)
                 {
                     GTAWeapon myGun = InstantAction.GetRandomWeapon(RandomWeaponLevel);
-                    Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Type, myGun.AmmoAmount,true);
+                    Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount,true);
                 }
                 debugMenu.Visible = false;
             }

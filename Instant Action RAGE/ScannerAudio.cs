@@ -3061,36 +3061,36 @@ public class stand_down
 public class status_message
 {
     public static ScannerFile HASH01B72847 { get { return new ScannerFile("01_status_message\\0x01B72847.wav", "0x01B72847", "status_message"); } }
-    public static ScannerFile HASH01E7B2E2 { get { return new ScannerFile("01_status_message\\0x01E7B2E2.wav", "0x01E7B2E2", "status_message"); } }
+    public static ScannerFile CarryingSmallArms { get { return new ScannerFile("01_status_message\\0x01E7B2E2.wav", "Carrying small arms", "status_message"); } }
     public static ScannerFile HASH02E79882 { get { return new ScannerFile("01_status_message\\0x02E79882.wav", "0x02E79882", "status_message"); } }
     public static ScannerFile HASH04904F02 { get { return new ScannerFile("01_status_message\\0x04904F02.wav", "0x04904F02", "status_message"); } }
     public static ScannerFile HASH04F26EBD { get { return new ScannerFile("01_status_message\\0x04F26EBD.wav", "0x04F26EBD", "status_message"); } }
     public static ScannerFile HASH0717B309 { get { return new ScannerFile("01_status_message\\0x0717B309.wav", "0x0717B309", "status_message"); } }
-    public static ScannerFile HASH0A14A6DC { get { return new ScannerFile("01_status_message\\0x0A14A6DC.wav", "0x0A14A6DC", "status_message"); } }
-    public static ScannerFile HASH0A3658CA { get { return new ScannerFile("01_status_message\\0x0A3658CA.wav", "0x0A3658CA", "status_message"); } }
-    public static ScannerFile HASH0B291B46 { get { return new ScannerFile("01_status_message\\0x0B291B46.wav", "0x0B291B46", "status_message"); } }
-    public static ScannerFile HASH0C00BCDC { get { return new ScannerFile("01_status_message\\0x0C00BCDC.wav", "0x0C00BCDC", "status_message"); } }
+    public static ScannerFile ArmedWithExplosives { get { return new ScannerFile("01_status_message\\0x0A14A6DC.wav", "Armed with Explosives", "status_message"); } }
+    public static ScannerFile ExtremelyAgitated { get { return new ScannerFile("01_status_message\\0x0A3658CA.wav", "Extremely Agitated", "status_message"); } }
+    public static ScannerFile FleeingTheSceneOfTheCrime { get { return new ScannerFile("01_status_message\\0x0B291B46.wav", "Fleeing the scene of the crime", "status_message"); } }
+    public static ScannerFile ApparentlyWounded { get { return new ScannerFile("01_status_message\\0x0C00BCDC.wav", "Apparently Wounded", "status_message"); } }
     public static ScannerFile HASH0C5A6D4D { get { return new ScannerFile("01_status_message\\0x0C5A6D4D.wav", "0x0C5A6D4D", "status_message"); } }
     public static ScannerFile HASH0DDD2FA0 { get { return new ScannerFile("01_status_message\\0x0DDD2FA0.wav", "0x0DDD2FA0", "status_message"); } }
-    public static ScannerFile HASH0E412264 { get { return new ScannerFile("01_status_message\\0x0E412264.wav", "0x0E412264", "status_message"); } }
+    public static ScannerFile HeavilyArmedAndDangerous { get { return new ScannerFile("01_status_message\\0x0E412264.wav", "Heavily armed and dangerous", "status_message"); } }
     public static ScannerFile HASH0FAD644B { get { return new ScannerFile("01_status_message\\0x0FAD644B.wav", "0x0FAD644B", "status_message"); } }
     public static ScannerFile HASH11C92887 { get { return new ScannerFile("01_status_message\\0x11C92887.wav", "0x11C92887", "status_message"); } }
     public static ScannerFile HASH11CEF782 { get { return new ScannerFile("01_status_message\\0x11CEF782.wav", "0x11CEF782", "status_message"); } }
     public static ScannerFile HASH12EEEBBF { get { return new ScannerFile("01_status_message\\0x12EEEBBF.wav", "0x12EEEBBF", "status_message"); } }
     public static ScannerFile HASH1325155D { get { return new ScannerFile("01_status_message\\0x1325155D.wav", "0x1325155D", "status_message"); } }
-    public static ScannerFile HASH13F6EE1F { get { return new ScannerFile("01_status_message\\0x13F6EE1F.wav", "0x13F6EE1F", "status_message"); } }
+    public static ScannerFile ArmedWithAssaultWeapon { get { return new ScannerFile("01_status_message\\0x13F6EE1F.wav", "Armed with assault weapon", "status_message"); } }
     public static ScannerFile HASH14078CE8 { get { return new ScannerFile("01_status_message\\0x14078CE8.wav", "0x14078CE8", "status_message"); } }
     public static ScannerFile HASH16997FE5 { get { return new ScannerFile("01_status_message\\0x16997FE5.wav", "0x16997FE5", "status_message"); } }
     public static ScannerFile HASH16BAF1D4 { get { return new ScannerFile("01_status_message\\0x16BAF1D4.wav", "0x16BAF1D4", "status_message"); } }
     public static ScannerFile HASH1704B3DA { get { return new ScannerFile("01_status_message\\0x1704B3DA.wav", "0x1704B3DA", "status_message"); } }
-    public static ScannerFile HASH1A13548C { get { return new ScannerFile("01_status_message\\0x1A13548C.wav", "0x1A13548C", "status_message"); } }
+    public static ScannerFile HeavilyArmed { get { return new ScannerFile("01_status_message\\0x1A13548C.wav", "Heavily armed", "status_message"); } }
     public static ScannerFile HASH1AA2C9DE { get { return new ScannerFile("01_status_message\\0x1AA2C9DE.wav", "0x1AA2C9DE", "status_message"); } }
     public static ScannerFile HASH1ABEDA57 { get { return new ScannerFile("01_status_message\\0x1ABEDA57.wav", "0x1ABEDA57", "status_message"); } }
     public static ScannerFile HASH1BF83C4F { get { return new ScannerFile("01_status_message\\0x1BF83C4F.wav", "0x1BF83C4F", "status_message"); } }
-    public static ScannerFile HASH1D60077B { get { return new ScannerFile("01_status_message\\0x1D60077B.wav", "0x1D60077B", "status_message"); } }
+    public static ScannerFile ArmedWithRocketLauncher { get { return new ScannerFile("01_status_message\\0x1D60077B.wav", "Armed with rocket launcher", "status_message"); } }
     public static ScannerFile HASH1D77FFE3 { get { return new ScannerFile("01_status_message\\0x1D77FFE3.wav", "0x1D77FFE3", "status_message"); } }
     public static ScannerFile HASH1DDE80AE { get { return new ScannerFile("01_status_message\\0x1DDE80AE.wav", "0x1DDE80AE", "status_message"); } }
-    public static ScannerFile HASH1E0B81F9 { get { return new ScannerFile("01_status_message\\0x1E0B81F9.wav", "0x1E0B81F9", "status_message"); } }
+    public static ScannerFile ArmedAndDangerous { get { return new ScannerFile("01_status_message\\0x1E0B81F9.wav", "Armed and dangerous", "status_message"); } }
     public static ScannerFile HASH1FFCD3D4 { get { return new ScannerFile("01_status_message\\0x1FFCD3D4.wav", "0x1FFCD3D4", "status_message"); } }
 }
 public class streets

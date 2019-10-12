@@ -475,52 +475,139 @@ internal static class DispatchAudioSystem
     {
         if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
             return;
+
+        ReportedShotsFired = true;
+
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
         ScannerList.Add(ScannerAudio.crime_shots_fired_at_an_officer.Shotsfiredatanofficer.FileName);
         ReportGenericEnd(ScannerList, true);
-        ReportedShotsFired = true;
+        
         PlayAudioList(ScannerList, true);
         
     }
-    public static void ReportCarryingWeapon()
+    public static void ReportCarryingWeapon(GTAWeapon CarryingWeapon)
     {
         if (ReportedOfficerDown || ReportedLethalForceAuthorized || ReportedAssaultOnOfficer || InstantAction.isBusted || InstantAction.isDead)
             return;
+
+        ReportedCarryingWeapon = true;
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
 
-        int Num = rnd.Next(1, 5);
-        if(Num == 1)
+        if (CarryingWeapon == null)
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Carryingaweapon.FileName);
+        }
+        else if (CarryingWeapon.Name == "weapon_rpg")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.ArmedwithanRPG.FileName);
+        }
+        else if (CarryingWeapon.Name == "weapon_bat")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithabat.FileName);
+        }
+        else if (CarryingWeapon.Name == "weapon_grenadelauncher" || CarryingWeapon.Name == "weapon_grenadelauncher_smoke" || CarryingWeapon.Name == "weapon_compactlauncher")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithagrenadelauncher.FileName);
+        }
+        else if (CarryingWeapon.Name == "weapon_dagger" || CarryingWeapon.Name == "weapon_knife" || CarryingWeapon.Name == "weapon_switchblade")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithaknife.FileName);
+        }
+        else if (CarryingWeapon.Name == "weapon_minigun")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithaminigun.FileName);
+        }
+        else if (CarryingWeapon.Name == "weapon_sawnoffshotgun")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithasawedoffshotgun.FileName);
+        }
+        else if (CarryingWeapon.Category == "LMG")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithamachinegun.FileName);
+        }
+        else if (CarryingWeapon.Category == "PISTOL")
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithafirearm.FileName);
         }
-        else if (Num == 2)
+        else if (CarryingWeapon.Category == "SHOTGUN")
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
-            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithagat.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithashotgun.FileName);
         }
-        else if (Num == 3)
+        else if (CarryingWeapon.Category == "SMG")
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
-            ScannerList.Add(ScannerAudio.carrying_weapon.Carryingafirearm.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithasubmachinegun.FileName);
+        }
+        else if (CarryingWeapon.Category == "AR")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Carryinganassaultrifle.FileName);
+        }
+        else if (CarryingWeapon.Category == "SNIPER")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithasniperrifle.FileName);
+        }
+        else if (CarryingWeapon.Category == "HEAVY")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.status_message.HeavilyArmed.FileName);
+        }
+        else if (CarryingWeapon.Category == "MELEE")
+        {
+            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+            ScannerList.Add(ScannerAudio.carrying_weapon.Carryingaweapon.FileName);
         }
         else
         {
-            ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
-            ScannerList.Add(ScannerAudio.carrying_weapon.Carryingagat.FileName);
+            int Num = rnd.Next(1, 5);
+            if (Num == 1)
+            {
+                ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+                ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithafirearm.FileName);
+            }
+            else if (Num == 2)
+            {
+                ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+                ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithagat.FileName);
+            }
+            else if (Num == 3)
+            {
+                ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+                ScannerList.Add(ScannerAudio.carrying_weapon.Carryingafirearm.FileName);
+            }
+            else
+            {
+                ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
+                ScannerList.Add(ScannerAudio.carrying_weapon.Carryingagat.FileName);
+            }
         }
         
-        ReportGenericEnd(ScannerList, true);
-        ReportedCarryingWeapon = true;
+        ReportGenericEnd(ScannerList, true);   
         PlayAudioList(ScannerList, true);
     }
 
     public static void ReportOfficerDown()
     {
-        if (InstantAction.isBusted || InstantAction.isDead)
+        if (InstantAction.isBusted || InstantAction.isDead || ReportedOfficerDown)
             return;
+
+        ReportedOfficerDown = true;
+
+        bool locReportedLethalForceAuthorized = ReportedLethalForceAuthorized;
+        ReportedLethalForceAuthorized = true;
 
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
@@ -595,7 +682,7 @@ internal static class DispatchAudioSystem
             }
         }
 
-        if (!ReportedLethalForceAuthorized)
+        if (!locReportedLethalForceAuthorized)
         {
             int Num3 = rnd.Next(1, 5);
             if (Num3 == 1)
@@ -621,14 +708,14 @@ internal static class DispatchAudioSystem
         }
 
         ReportGenericEnd(ScannerList, false);
-        ReportedLethalForceAuthorized = true;
-        ReportedOfficerDown = true;
         PlayAudioList(ScannerList, false);
     }
     public static void ReportAssualtOnOfficer()
     {
         if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
             return;
+
+        ReportedAssaultOnOfficer = true;
 
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
@@ -654,7 +741,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(ScannerAudio.crime_assault_on_an_officer.Anofficerassault.FileName);
         }
         ReportGenericEnd(ScannerList, true);
-        ReportedAssaultOnOfficer = true;
+        
         PlayAudioList(ScannerList, true);
     }
     public static void ReportThreateningWithFirearm()
@@ -662,12 +749,14 @@ internal static class DispatchAudioSystem
         if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
             return;
 
+        ReportedThreateningWithAFirearm = true;
+
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ScannerList);
         ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
         ScannerList.Add(ScannerAudio.crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName);
         ReportGenericEnd(ScannerList, true);
-        ReportedThreateningWithAFirearm = true;
+        
         PlayAudioList(ScannerList, true);
     }
     public static void ReportSuspectLastSeen(bool Near)
@@ -795,6 +884,8 @@ internal static class DispatchAudioSystem
         if (InstantAction.isBusted || InstantAction.isDead || ReportedLethalForceAuthorized)
             return;
 
+        ReportedLethalForceAuthorized = true;
+
         List<string> ScannerList = new List<string>();
         // ReportGenericStart(ScannerList);
 
@@ -892,16 +983,17 @@ internal static class DispatchAudioSystem
             ScannerList.Add(DispatchFileName);
         }
 
-
-
-
         ReportGenericEnd(ScannerList, false);
         PlayAudioList(ScannerList, false);
-        //GameFiber.Sleep(2500);
-        GameFiber.Sleep(20000);
+        GameFiber.StartNew(delegate
+        {
+            GameFiber.Sleep(15000);
+            stolenVehicle.WasReportedStolen = true;
+            InstantAction.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", stolenVehicle.VehicleEnt.Handle));
+        });
 
-        stolenVehicle.WasReportedStolen = true;
-        InstantAction.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen",stolenVehicle.VehicleEnt.Handle));
+        
+        
     }
     public static void ReportSuspectLost()
     {
