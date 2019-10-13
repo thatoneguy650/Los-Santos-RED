@@ -1,4 +1,5 @@
 ﻿using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +25,12 @@ public class GTAVehicle
     public bool PreviousOwnerDied = false;
     public bool IsPlayersVehicle = false;
     public bool IsStolen = false;
+    public bool QuedeReportedStolen = false;
     public bool ShouldReportStolen
     {
         get
         {
-            if (WasReportedStolen)
+            if (WasReportedStolen || QuedeReportedStolen)
                 return false;
             else if (WillBeReportedStolen && Game.GameTime >= GameTimeToReportStolen && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == VehicleEnt.Handle)
                 return true;
@@ -44,13 +46,28 @@ public class GTAVehicle
     {
         GameFiber.StartNew(delegate
         {
+            uint GameTimeStolen = Game.GameTime;
             while(Pedestrian.Exists())
             {
-                if(Pedestrian.IsDead)
+                WillBeReportedStolen = false;
+
+                if (Pedestrian.IsDead)
                 {
                     WillBeReportedStolen = false;
                     PreviousOwnerDied = true;
                     InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDied {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
+                    break;
+                }
+                else if(Game.GameTime - GameTimeStolen > 20000 && !Pedestrian.IsRagdoll)
+                {
+                    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", Pedestrian, 10000);
+                    Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
+                    GameFiber.Sleep(5000);
+                    if (Pedestrian.Exists() && !Pedestrian.IsDead && !Pedestrian.IsRagdoll)
+                    {
+                        WillBeReportedStolen = true;
+                    }
+                    InstantAction.WriteToLog("StolenVehicles", string.Format("WillBeReportedStolen {0}", WillBeReportedStolen));
                     break;
                 }
                 GameFiber.Yield();
@@ -74,7 +91,10 @@ public class GTAVehicle
             WillBeReportedStolen = true;
 
         if (IsStolen && WillBeReportedStolen && PreviousOwner != null && PreviousOwner.Handle != Game.LocalPlayer.Character.Handle)
+        {
+            InstantAction.WriteToLog("StolenVehicles","Previous Owner is alive, will watch for death");
             WatchForDeath(PreviousOwner);
+        }
 
         if (WasJacked)
             GameTimeToReportStolen = GameTimeEntered + 15000;
@@ -84,7 +104,7 @@ public class GTAVehicle
             GameTimeToReportStolen = GameTimeEntered + 600000;
 
 
-        InstantAction.WriteToLog("GTAVehicleS", string.Format("Vehicle Created: Handle {0},GameTimeEntered,{1},GameTimeToReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WillBeReportedStolen {6},WillWatchLastOwner {7}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, WillBeReportedStolen, PreviousOwner != null));
+        InstantAction.WriteToLog("GTAVehicle", string.Format("Vehicle Created: Handle {0},GTEntered,{1},GTReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WillBeRptdStoln {6},WatchLastOwner {7}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, WillBeReportedStolen, PreviousOwner != null));
     }
 
 }

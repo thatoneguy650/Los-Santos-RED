@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using Instant_Action_RAGE.Entities.Weapon_Variation;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,21 @@ using System.Threading.Tasks;
         WeaponLevel = _WeaponLevel;
         Hash = _Hash;
     }
+    public GTAWeapon(String _Name, short _AmmoAmount, string _Category, int _WeaponLevel, ulong _Hash, bool _isPoliceIssue)
+    {
+        Name = _Name;
+        AmmoAmount = _AmmoAmount;
+        Category = _Category;
+        WeaponLevel = _WeaponLevel;
+        Hash = _Hash;
+        isPoliceIssue = _isPoliceIssue;
+    }
     public string Name;
     public short AmmoAmount;
     public string Category;
     public int WeaponLevel;
     public ulong Hash;
     public string ScannerFile;
+    public bool isPoliceIssue = false;
 }
 

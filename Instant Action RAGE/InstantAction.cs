@@ -82,6 +82,7 @@ public static class InstantAction
     private static bool PrevPlayerInVehicle = false;
     private static int PrevWantedLevel = 0;
     private static bool PrevaimedAtPolice;
+    private static bool DroppingWeapon = false;
 
     public static bool AnyPoliceCanSeePlayer { get; set; } = false;
     public static bool AnyPoliceRecentlySeenPlayer { get; set; } = false;
@@ -219,6 +220,7 @@ public static class InstantAction
         if (Game.IsKeyDown(Keys.NumPad0))
         {
             Game.LocalPlayer.Character.IsInvincible = false;
+
         }
         if (Game.IsKeyDown(Keys.NumPad1))
         {
@@ -259,7 +261,15 @@ public static class InstantAction
       
         if (Game.IsKeyDown(Keys.NumPad5))
         {
-           
+            try
+            {
+                isBusted = true;
+                SetArrestedAnimation(Game.LocalPlayer.Character, false);
+            }
+            catch (Exception e)
+            {
+                WriteToLog("Car stuff", e.Message);
+            }
         }
         if (Game.IsKeyDown(Keys.NumPad6))
         {
@@ -268,30 +278,30 @@ public static class InstantAction
                 //WriteToLog("KeyDown", string.Format("ModelName: {0}", Game.LocalPlayer.Character.CurrentVehicle.Model.Name));
                 //WriteToLog("KeyDown", string.Format("SPeed: {0}", Game.LocalPlayer.Character.CurrentVehicle.Speed));
                 // ResetTrafficViolations();
-                Game.LocalPlayer.Character.GiveCash(5000, "Michael");
-                ulong myHash = (ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
-                WriteToLog("CurrentWeapon", string.Format("CurrentWeapon is: {0}", myHash));
+                //Game.LocalPlayer.Character.GiveCash(5000, "Michael");
+                //ulong myHash = (ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
+                //WriteToLog("CurrentWeapon", string.Format("CurrentWeapon is: {0}", myHash));
 
-                GTAWeapon MatchedWeapon = Weapons.Where(x => x.Hash == myHash).FirstOrDefault();
-
-
-                if (MatchedWeapon != null)
-                {
-                    WriteToLog("CurrentWeapon", string.Format("Matched {0}, Category {1}, Level {2}", MatchedWeapon.Name, MatchedWeapon.Category, MatchedWeapon.WeaponLevel));
-                }
+                //GTAWeapon MatchedWeapon = Weapons.Where(x => x.Hash == myHash).FirstOrDefault();
 
 
+                //if (MatchedWeapon != null)
+                //{
+                //    WriteToLog("CurrentWeapon", string.Format("Matched {0}, Category {1}, Level {2}", MatchedWeapon.Name, MatchedWeapon.Category, MatchedWeapon.WeaponLevel));
+                //}
 
-                //InstantAction.Weapons.Where(x => x.Name == Game.LocalPlayer.Character.Inventory.EquippedWeapon.Asset.nam)
+                ResetPlayer(true, true);
+
+                ////InstantAction.Weapons.Where(x => x.Name == Game.LocalPlayer.Character.Inventory.EquippedWeapon.Asset.nam)
 
 
 
 
-                WriteToLog("GameTime", string.Format("GameTime is: {0}", Game.GameTime));
-                foreach (GTAVehicle EnteredVehicle in EnteredVehicles)
-                {
-                    InstantAction.WriteToLog("GTAVehicleS", string.Format("Vehicle Created: Handle {0},GameTimeEntered,{1},GameTimeToReportStolen {2},IsStolen {3},WillBeReportedStolen {4},WasReportedStolen {5}", EnteredVehicle.VehicleEnt.Handle, EnteredVehicle.GameTimeEntered, EnteredVehicle.GameTimeToReportStolen, EnteredVehicle.IsStolen, EnteredVehicle.WillBeReportedStolen, EnteredVehicle.WasReportedStolen));
-                }
+                //WriteToLog("GameTime", string.Format("GameTime is: {0}", Game.GameTime));
+                //foreach (GTAVehicle EnteredVehicle in EnteredVehicles)
+                //{
+                //    InstantAction.WriteToLog("GTAVehicleS", string.Format("Vehicle Created: Handle {0},GameTimeEntered,{1},GameTimeToReportStolen {2},IsStolen {3},WillBeReportedStolen {4},WasReportedStolen {5}", EnteredVehicle.VehicleEnt.Handle, EnteredVehicle.GameTimeEntered, EnteredVehicle.GameTimeToReportStolen, EnteredVehicle.IsStolen, EnteredVehicle.WillBeReportedStolen, EnteredVehicle.WasReportedStolen));
+                //}
                 // WriteToLog("KeyDown", string.Format("SPeed: {0}", Game.LocalPlayer.Character.CurrentVehicle.Speed));
 
                 //Game.LocalPlayer.Character.GiveCash(5000, "Michael");
@@ -326,7 +336,20 @@ public static class InstantAction
                     stolen = false;
 
                 CurrVehicle.IsStolen = stolen;
-                EnteredVehicles.Add(new GTAVehicle(CurrVehicle, Game.GameTime, PlayerIsJacking, CurrVehicle.IsAlarmSounding, CurrVehicle.GetPreviousPedOnSeat(-1), !stolen, stolen));
+                bool AmStealingCarFromPrerson = PlayerIsJacking;
+                Ped PreviousOwner;
+
+                if (CurrVehicle.HasDriver && CurrVehicle.Driver.Handle != Game.LocalPlayer.Character.Handle)
+                    PreviousOwner = CurrVehicle.Driver;
+                else
+                    PreviousOwner = CurrVehicle.GetPreviousPedOnSeat(-1);
+
+                if(PreviousOwner != null && PreviousOwner.DistanceTo2D(Game.LocalPlayer.Character) <= 20f && PreviousOwner.Handle != Game.LocalPlayer.Character.Handle)
+                {
+                    AmStealingCarFromPrerson = true;
+                }
+
+                EnteredVehicles.Add(new GTAVehicle(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding, PreviousOwner, !stolen, stolen));
             }
         }
 
@@ -395,7 +418,10 @@ public static class InstantAction
             if (ChangedWanted)
             {
                 WriteToLog("Caught with a gun", string.Format("Type {0},{1}", MatchedWeapon.Name, MatchedWeapon.Category));
-                DispatchAudioSystem.ReportCarryingWeapon(MatchedWeapon);
+                DispatchAudioSystem.DispatchQueueItem CarryingWeapon = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportCarryingWeapon, 3, false);
+                CarryingWeapon.WeaponToReport = MatchedWeapon;
+                DispatchAudioSystem.AddDispatchToQueue(CarryingWeapon);
+                //DispatchAudioSystem.ReportCarryingWeapon(MatchedWeapon);
             }
         }
 
@@ -468,14 +494,20 @@ public static class InstantAction
             {
                 ViolationDrivingAgainstTraffic = true;
                 Game.LocalPlayer.WantedLevel = 1;
-                DispatchAudioSystem.ReportRecklessDriver(CurrVehicle);
+                //DispatchAudioSystem.ReportRecklessDriver(CurrVehicle);
+                DispatchAudioSystem.DispatchQueueItem RecklessDriver = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportRecklessDriver, 10, false);
+                RecklessDriver.VehicleToReport = new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                DispatchAudioSystem.AddDispatchToQueue(RecklessDriver);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationDrivingAgainstTraffic: {0}", ViolationDrivingAgainstTraffic));
             }
             if (AnyCanSeePlayer && !ViolationDrivingOnPavement && Game.LocalPlayer.IsDrivingOnPavement)
             {
                 ViolationDrivingOnPavement = true;
                 Game.LocalPlayer.WantedLevel = 1;
-                DispatchAudioSystem.ReportRecklessDriver(CurrVehicle);
+                //DispatchAudioSystem.ReportRecklessDriver(CurrVehicle);
+                DispatchAudioSystem.DispatchQueueItem RecklessDriver = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportRecklessDriver, 10, false);
+                RecklessDriver.VehicleToReport = new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                DispatchAudioSystem.AddDispatchToQueue(RecklessDriver);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationDrivingOnPavement: {0}", ViolationDrivingOnPavement));
             }
 
@@ -493,7 +525,10 @@ public static class InstantAction
             {
                 ViolationsSpeeding = true;
                 Game.LocalPlayer.WantedLevel = 1;
-                DispatchAudioSystem.ReportFelonySpeeding(CurrVehicle);
+                //DispatchAudioSystem.ReportFelonySpeeding(CurrVehicle);
+                DispatchAudioSystem.DispatchQueueItem FelonySpeeding = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportFelonySpeeding, 10, false);
+                FelonySpeeding.VehicleToReport = new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                DispatchAudioSystem.AddDispatchToQueue(FelonySpeeding);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationsSpeeding: {0}", ViolationsSpeeding));
             }
             int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
@@ -501,7 +536,10 @@ public static class InstantAction
             {
                 ViolationHitPed = true;
                 Game.LocalPlayer.WantedLevel = 2;
-                DispatchAudioSystem.ReportPedHitAndRun(CurrVehicle);
+                //DispatchAudioSystem.ReportPedHitAndRun(CurrVehicle);
+                DispatchAudioSystem.DispatchQueueItem PedHitAndRun = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportPedHitAndRun, 10, false);
+                PedHitAndRun.VehicleToReport = new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                DispatchAudioSystem.AddDispatchToQueue(PedHitAndRun);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationHitPed: {0}", ViolationHitPed));
             }
             int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
@@ -509,7 +547,10 @@ public static class InstantAction
             {
                 ViolationHitVehicle = true;
                 Game.LocalPlayer.WantedLevel = 1;
-                DispatchAudioSystem.ReportVehicleHitAndRun(CurrVehicle);
+                //DispatchAudioSystem.ReportVehicleHitAndRun(CurrVehicle);
+                DispatchAudioSystem.DispatchQueueItem VehicleHitAndRun = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportVehicleHitAndRun, 10, false);
+                VehicleHitAndRun.VehicleToReport = new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                DispatchAudioSystem.AddDispatchToQueue(VehicleHitAndRun);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationHitVehicle: {0}", ViolationHitVehicle));
             }
 
@@ -744,10 +785,6 @@ public static class InstantAction
                 WriteToLog("PoliceTickDeadlyChase", "Queued An Untask");
                 PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
             }
-            //if (Cop.CopPed.Tasks.CurrentTaskStatus != Rage.TaskStatus.None)
-            //{
-            //    Cop.CopPed.BlockPermanentEvents = false;
-            //}
         }
         foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => !x.isTasked && x.isInHelicopter))
         {
@@ -755,6 +792,13 @@ public static class InstantAction
                 SetCopDeadly(Cop);
             else
                 SetUnarmed(Cop);
+        }
+
+        if (PoliceScanningSystem.CopsKilledByPlayer >= 5 && Game.LocalPlayer.WantedLevel < 4)
+        {
+            Game.LocalPlayer.WantedLevel = 4;
+            DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportWeaponsFree, 2, false));
+            WriteToLog("Value Checker", "Killed too many police, wanted level going up");
         }
 
         if (SurrenderBust && !isBustTimeOut())
@@ -821,9 +865,13 @@ public static class InstantAction
             {
                 if (StolenCar.ShouldReportStolen)
                 {
-                    StolenCar.WasReportedStolen = true;
+                    //StolenCar.WasReportedStolen = true;
+                    StolenCar.QuedeReportedStolen = true;
                     WriteToLog("StolenVehicles", "ReportStolenVehicle");
-                    DispatchAudioSystem.ReportStolenVehicle(StolenCar);
+                    // DispatchAudioSystem.ReportStolenVehicle(StolenCar);
+                    DispatchAudioSystem.DispatchQueueItem StolenVehicle = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportStolenVehicle, 10, false);
+                    StolenVehicle.VehicleToReport = StolenCar;
+                    DispatchAudioSystem.AddDispatchToQueue(StolenVehicle);
                 }
             }
         }
@@ -834,7 +882,9 @@ public static class InstantAction
             {
 
                 Game.LocalPlayer.WantedLevel = 2;
-                DispatchAudioSystem.ReportSpottedStolenCar(Game.LocalPlayer.Character.CurrentVehicle);
+                //DispatchAudioSystem.ReportSpottedStolenCar(Game.LocalPlayer.Character.CurrentVehicle);
+                DispatchAudioSystem.DispatchQueueItem StolenVehicle = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSpottedStolenCar, 10, false);
+                StolenVehicle.VehicleToReport = new GTAVehicle(Game.LocalPlayer.Character.CurrentVehicle,0,false,false,null,true,false);
                 WriteToLog("StolenVehicles", "Caught In Stolen Vehicle");
             }
             if (Game.LocalPlayer.WantedLevel > 0)
@@ -842,14 +892,16 @@ public static class InstantAction
                 foreach (GTAVehicle stolenVehicle in EnteredVehicles.Where(x => !x.WasReportedStolen))
                 {
                     stolenVehicle.WasReportedStolen = true;
-                    WriteToLog("StolenVehicles", "Cops Saw your stolen vehicle already on chase, no need to report it");
+                    DispatchAudioSystem.DispatchQueueItem StolenVehicle = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSpottedStolenCar, 10, false);
+                    StolenVehicle.VehicleToReport = new GTAVehicle(Game.LocalPlayer.Character.CurrentVehicle, 0, false, false, null, true, false);
+                    WriteToLog("StolenVehicles", "Cops Saw your stolen vehicle already on chase");
                 }
             }
         }
     }
     private static void WantedLevelTick()
     {
-        if (Game.GameTime - WantedLevelStartTime > 180000 && AnyPoliceRecentlySeenPlayer && Game.LocalPlayer.WantedLevel > 0 && Game.LocalPlayer.WantedLevel <= 3)
+        if (Game.GameTime - WantedLevelStartTime > 180000 && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && Game.LocalPlayer.WantedLevel > 0 && Game.LocalPlayer.WantedLevel <= 3)
         {
             Game.LocalPlayer.WantedLevel++;
             WriteToLog("WantedLevelStartTime", "Wanted Level Increased Over Time");
@@ -861,7 +913,8 @@ public static class InstantAction
             if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 4000 && AnyPoliceSeenPlayerThisWanted)
             {
                 WriteToLog("ReportSuspectLastSeen", "ReportSuspectLastSeen");
-                DispatchAudioSystem.ReportSuspectLastSeen(rnd.NextDouble() > 0.5);
+                //DispatchAudioSystem.ReportSuspectLastSeen(rnd.NextDouble() > 0.5);
+                DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSuspectLastSeen, 10, false));
                 CanReportLastSeen = false;
             }
         }
@@ -934,11 +987,14 @@ public static class InstantAction
         {
             //NativeFunction.CallByName<bool>("SET_FAKE_WANTED_LEVEL", 0);
             if (AnyPoliceSeenPlayerThisWanted && MaxWantedLastLife > 0)
-                DispatchAudioSystem.ReportSuspectLost();
+            {
+                DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSuspectLost, 10, false));
+                //DispatchAudioSystem.ReportSuspectLost();
+            }
             CurrentPoliceState = PoliceState.Normal;
             AnyPoliceSeenPlayerThisWanted = false;
             ResetTrafficViolations();
-
+            WantedLevelStartTime = 0;
             DispatchAudioSystem.ResetReportedItems();
         }
         NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z);
@@ -956,11 +1012,8 @@ public static class InstantAction
         WriteToLog("ValueChecker", String.Format("PlayerHurtPolice Changed to: {0}", PoliceScanningSystem.PlayerHurtPolice));
         if (PoliceScanningSystem.PlayerHurtPolice)
         {
-            GameFiber.StartNew(delegate
-            {
-                GameFiber.Sleep(5000);
-                DispatchAudioSystem.ReportAssualtOnOfficer();
-            });
+            //DispatchAudioSystem.ReportAssualtOnOfficer();
+            DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportAssualtOnOfficer, 3, true));
         }
             
         PrevPlayerHurtPolice = PoliceScanningSystem.PlayerHurtPolice;
@@ -969,7 +1022,10 @@ public static class InstantAction
     {
         WriteToLog("ValueChecker", String.Format("PlayerKilledPolice Changed to: {0}", PoliceScanningSystem.PlayerKilledPolice));
         if (PoliceScanningSystem.PlayerKilledPolice)
-            DispatchAudioSystem.ReportOfficerDown();
+        {
+            //DispatchAudioSystem.ReportOfficerDown();
+            DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportOfficerDown, 1, true));
+        }
         PrevPlayerKilledPolice = PoliceScanningSystem.PlayerKilledPolice;
     }
     private static void FiredWeaponChanged()
@@ -977,37 +1033,20 @@ public static class InstantAction
         WriteToLog("ValueChecker", String.Format("firedWeapon Changed to: {0}", firedWeapon));
         if (firedWeapon)
         {
-            DispatchAudioSystem.ReportShotsFired();
+            //DispatchAudioSystem.ReportShotsFired();
+            DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportShotsFired, 2, true));
         }
         PrevfiredWeapon = firedWeapon;
     }
     private static void PlayerInVehicleChanged(bool playerInVehicle)
     {
-        WriteToLog("ValueChecker", String.Format("playerInVehicle Changed to: {0}", playerInVehicle));
         if (playerInVehicle)
         {
 
-            Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-
-            if (!EnteredVehicles.Any(x => x.VehicleEnt.Handle == CurrVehicle.Handle))
-            {
-                if (OwnedCar != null && OwnedCar.Handle == CurrVehicle.Handle)
-                {
-                    //CurrVehicle.IsStolen = false;
-                    EnteredVehicles.Add(new GTAVehicle(CurrVehicle, Game.GameTime, PlayerIsJacking, CurrVehicle.IsAlarmSounding, CurrVehicle.GetPreviousPedOnSeat(-1), true, false));
-                    WriteToLog("PlayerInVehicleChanged", "This is your own car, it will not be reported stolen");
-                }
-                else
-                {
-                    //CurrVehicle.IsStolen = true;
-                    EnteredVehicles.Add(new GTAVehicle(CurrVehicle, Game.GameTime, PlayerIsJacking, CurrVehicle.IsAlarmSounding,CurrVehicle.GetPreviousPedOnSeat(-1), false, true));
-                    WriteToLog("PlayerInVehicleChanged", "This is NOT your own car, it WILL be reported stolen");
-                }
-            }
         }
         else
         {
-            //JackedCurrentVehicle = false;
+
         }
         PlayerInVehicle = playerInVehicle;
         PrevPlayerInVehicle = playerInVehicle;
@@ -1046,7 +1085,8 @@ public static class InstantAction
         WriteToLog("ValueChecker", String.Format("aimedAtPolice Changed to: {0}", aimedAtPolice));
         if (aimedAtPolice)
         {
-            DispatchAudioSystem.ReportThreateningWithFirearm();
+            //DispatchAudioSystem.ReportThreateningWithFirearm();
+            DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportThreateningWithFirearm, 2, true));
         }
         PrevaimedAtPolice = aimedAtPolice;
     }
@@ -1069,11 +1109,8 @@ public static class InstantAction
         {
             if (PrevPoliceState != PoliceState.ArrestedWait)
             {
-                GameFiber.StartNew(delegate
-                {
-                    GameFiber.Sleep(5000);
-                    DispatchAudioSystem.ReportLethalForceAuthorized();
-                });
+                DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportLethalForceAuthorized, 1, true));
+                //DispatchAudioSystem.ReportLethalForceAuthorized();
             }
 
 
@@ -1180,8 +1217,8 @@ public static class InstantAction
         Cop.CopPed.Accuracy = 10;
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.CopPed, 30);
         //Cop.CopPed.BlockPermanentEvents = false;
-        if (!Cop.CopPed.Inventory.Weapons.Contains(WeaponHash.Pistol))
-            Cop.CopPed.Inventory.GiveNewWeapon(WeaponHash.Pistol, -1, false);
+        if (!Cop.CopPed.Inventory.Weapons.Contains(Cop.IssuedPistol.Name))
+            Cop.CopPed.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, false);
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, true);
         Cop.SetTazer = false;
         Cop.SetUnarmed = false;
@@ -1199,11 +1236,11 @@ public static class InstantAction
         //TargetCop.Inventory.GiveNewWeapon(WeaponHash.Pistol, 100, true);
 
 
-        if (!Cop.CopPed.Inventory.Weapons.Contains(WeaponHash.Pistol))
-            Cop.CopPed.Inventory.GiveNewWeapon(WeaponHash.Pistol, -1, true);
+        if (!Cop.CopPed.Inventory.Weapons.Contains(Cop.IssuedPistol.Name))
+            Cop.CopPed.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, true);
 
         if ((Cop.CopPed.Inventory.EquippedWeapon == null || Cop.CopPed.Inventory.EquippedWeapon.Hash == WeaponHash.StunGun) && Game.LocalPlayer.WantedLevel >= 0)
-            Cop.CopPed.Inventory.GiveNewWeapon(WeaponHash.Pistol, -1, true);
+            Cop.CopPed.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, true);
 
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, true);
         Cop.SetTazer = false;
@@ -1252,7 +1289,10 @@ public static class InstantAction
             Menus.deathMenu.Visible = true;
 
             if (PrevWantedLevel > 0 || PoliceScanningSystem.CopPeds.Any(x => x.isTasked))
-                DispatchAudioSystem.ReportSuspectWasted();
+            {
+                //DispatchAudioSystem.ReportSuspectWasted();
+                DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSuspectWasted, 5, false));
+            }
         }
 
         // Busted
@@ -1279,7 +1319,8 @@ public static class InstantAction
             areHandsUp = false;
             Menus.bustedMenu.Visible = true;
             SetArrestedAnimation(Game.LocalPlayer.Character, false);
-            DispatchAudioSystem.ReportSuspectArrested();
+            //DispatchAudioSystem.ReportSuspectArrested();
+            DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSuspectArrested, 5, false));
         }
 
         //NativeFunction.CallByName<uint>("DISPLAY_HUD", true);
@@ -1329,10 +1370,28 @@ public static class InstantAction
                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
             }
         }
+
+        if(Game.IsKeyDownRightNow(Keys.G) && !DroppingWeapon && !PlayerInVehicle && Game.LocalPlayer.Character.isConsideredArmed())
+        {
+            DroppingWeapon = true;
+            //Game.LocalPlayer.Character.Inventory.EquippedWeapon.DropToGround();
+            //GameFiber.Sleep(500);
+            DropWeaponAnimation();
+            if (Game.LocalPlayer.Character.IsRunning)
+                GameFiber.Sleep(500);
+            else
+                GameFiber.Sleep(250);
+
+            NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
+            if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
+            WriteToLog("DroppingWeapon", "Dropped your gun");
+            DroppingWeapon = false;
+        }
     }
     private static void RaiseHands()
     {
-        if (Game.LocalPlayer.WantedLevel > 0)
+        if (Game.LocalPlayer.WantedLevel > 0 && PoliceScanningSystem.CopsKilledByPlayer < 5)
             CurrentPoliceState = PoliceState.ArrestedWait;
 
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
@@ -1661,6 +1720,7 @@ public static class InstantAction
                 {
                     WriteToLog("SetArrestedAnimation", "Tasked to leave the vehicle");
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
+                    GameFiber.Sleep(2500);
                 }
             }
             if (PedToArrest == Game.LocalPlayer.Character && !isBusted)
@@ -1685,6 +1745,16 @@ public static class InstantAction
                 PedToArrest.IsPersistent = false;
         });
 
+    }
+    private static void DropWeaponAnimation()
+    {
+        GameFiber.StartNew(delegate
+        {
+            RequestAnimationDictionay("pickup_object");
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "pickup_object", "pickup_low", 8.0f, -2.0f, -1, 56, 0, false, false, false);
+
+        });
+        //Function.Call(Hash.TASK_PLAY_ANIM, Game.Player.Character, sDict, "putdown_low", 8.0, -8.0, -1, 50, 1.0, false, false, false);
     }
     private static void UnSetArrestedAnimation(Ped PedToArrest)
     {
@@ -1931,15 +2001,15 @@ public static class InstantAction
         Weapons.Add(new GTAWeapon("weapon_poolcue", 0, "MELEE", 0, 0x94117305));
         Weapons.Add(new GTAWeapon("weapon_stone_hatchet", 0, "MELEE", 0, 0x3813FC08));
         //Pistol
-        Weapons.Add(new GTAWeapon("weapon_pistol", 60, "PISTOL", 1, 453432689));
-        Weapons.Add(new GTAWeapon("weapon_pistol_mk2", 60, "PISTOL", 1, 0xBFE256D4));
-        Weapons.Add(new GTAWeapon("weapon_combatpistol", 60, "PISTOL", 1, 1593441988));
+        Weapons.Add(new GTAWeapon("weapon_pistol", 60, "PISTOL", 1, 453432689,true));
+        Weapons.Add(new GTAWeapon("weapon_pistol_mk2", 60, "PISTOL", 1, 0xBFE256D4,true));
+        Weapons.Add(new GTAWeapon("weapon_combatpistol", 60, "PISTOL", 1, 1593441988,true));
         Weapons.Add(new GTAWeapon("weapon_appistol", 60, "PISTOL", 1, 584646201));
         Weapons.Add(new GTAWeapon("weapon_stungun", 0, "PISTOL", 1, 911657153));
         Weapons.Add(new GTAWeapon("weapon_pistol50", 60, "PISTOL", 1, 2578377531));
         Weapons.Add(new GTAWeapon("weapon_snspistol", 60, "PISTOL", 1, 3218215474));
         Weapons.Add(new GTAWeapon("weapon_snspistol_mk2", 60, "PISTOL", 1, 0x88374054));
-        Weapons.Add(new GTAWeapon("weapon_heavypistol", 60, "PISTOL", 1, 3523564046));
+        Weapons.Add(new GTAWeapon("weapon_heavypistol", 60, "PISTOL", 1, 3523564046,true));
         Weapons.Add(new GTAWeapon("weapon_vintagepistol", 60, "PISTOL", 1, 137902532));
         Weapons.Add(new GTAWeapon("weapon_flaregun", 60, "PISTOL", 1, 1198879012));
         Weapons.Add(new GTAWeapon("weapon_marksmanpistol", 60, "PISTOL", 1, 3696079510));
@@ -1948,10 +2018,10 @@ public static class InstantAction
         Weapons.Add(new GTAWeapon("weapon_doubleaction", 60, "PISTOL", 1, 0x97EA20B8));
         Weapons.Add(new GTAWeapon("weapon_raypistol", 60, "PISTOL", 1, 0xAF3696A1));
         //Shotgun
-        Weapons.Add(new GTAWeapon("weapon_pumpshotgun", 32, "SHOTGUN", 2, 487013001));
-        Weapons.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, "SHOTGUN", 2, 0x555AF99A));
+        Weapons.Add(new GTAWeapon("weapon_pumpshotgun", 32, "SHOTGUN", 2, 487013001,true));
+        Weapons.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, "SHOTGUN", 2, 0x555AF99A,true));
         Weapons.Add(new GTAWeapon("weapon_sawnoffshotgun", 32, "SHOTGUN", 2, 2017895192));
-        Weapons.Add(new GTAWeapon("weapon_assaultshotgun", 32, "SHOTGUN", 2, 3800352039));
+        Weapons.Add(new GTAWeapon("weapon_assaultshotgun", 32, "SHOTGUN", 2, 3800352039,true));
         Weapons.Add(new GTAWeapon("weapon_bullpupshotgun", 32, "SHOTGUN", 2, 2640438543));
         Weapons.Add(new GTAWeapon("weapon_musket", 32, "SHOTGUN", 2, 2828843422));
         Weapons.Add(new GTAWeapon("weapon_heavyshotgun", 32, "SHOTGUN", 2, 984333226));
@@ -1962,15 +2032,15 @@ public static class InstantAction
         Weapons.Add(new GTAWeapon("weapon_smg", 32, "SMG", 2, 736523883));
         Weapons.Add(new GTAWeapon("weapon_smg_mk2", 32, "SMG", 2, 0x78A97CD0));
         Weapons.Add(new GTAWeapon("weapon_assaultsmg", 32, "SMG", 2, 4024951519));
-        Weapons.Add(new GTAWeapon("weapon_combatpdw", 32, "SMG", 2, 171789620));
+        Weapons.Add(new GTAWeapon("weapon_combatpdw", 32, "SMG", 2, 171789620,true));
         Weapons.Add(new GTAWeapon("weapon_machinepistol", 32, "SMG", 2, 3675956304));
         Weapons.Add(new GTAWeapon("weapon_minismg", 32, "SMG", 2, 3173288789));
         Weapons.Add(new GTAWeapon("weapon_raycarbine", 32, "SMG", 2, 0x476BF155));
         //AR
         Weapons.Add(new GTAWeapon("weapon_assaultrifle", 120, "AR", 3, 3220176749));
         Weapons.Add(new GTAWeapon("weapon_assaultrifle_mk2", 120, "AR", 3, 0x394F415C));
-        Weapons.Add(new GTAWeapon("weapon_carbinerifle", 120, "AR", 3, 2210333304));
-        Weapons.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, "AR", 3, 0xFAD1F1C9));
+        Weapons.Add(new GTAWeapon("weapon_carbinerifle", 120, "AR", 3, 2210333304,true));
+        Weapons.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, "AR", 3, 0xFAD1F1C9,true));
         Weapons.Add(new GTAWeapon("weapon_advancedrifle", 120, "AR", 3, 2937143193));
         Weapons.Add(new GTAWeapon("weapon_specialcarbine", 120, "AR", 3, 3231910285));
         Weapons.Add(new GTAWeapon("weapon_specialcarbine_mk2", 120, "AR", 3, 0x969C3D67));

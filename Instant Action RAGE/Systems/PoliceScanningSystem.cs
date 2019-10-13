@@ -216,21 +216,15 @@ namespace Instant_Action_RAGE.Systems
                     GTACop myCop = new GTACop(Cop, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f),Cop.Health);
                     Cop.IsPersistent = false;
 
-
+                    Cop.Inventory.Weapons.Clear();
+                    IssueCopPistol(myCop);
                     NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
-
-
-
                     if (InstantAction.GhostCop != null && InstantAction.GhostCop.Handle == Cop.Handle)
                         continue;
                     CopPeds.Add(myCop);
 
                     if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
-                    {
-                        if (rnd.Next(0, 100) <= 85)
-                            Cop.Inventory.GiveNewWeapon(WeaponHash.CarbineRifle, 90, true); // AR-15
-                        //Cop.Health = 100; // Body armor?
-                    }
+                        IssueCopHeavyWeapon(myCop);
                 }
             }
             CopPeds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
@@ -284,6 +278,33 @@ namespace Instant_Action_RAGE.Systems
                 Cop.DistanceToPlayer = Cop.CopPed.RangeTo(Game.LocalPlayer.Character.Position);
             }
             CopPeds.RemoveAll(x => x.CopPed.IsDead);
+        }
+        public static void IssueCopPistol(GTACop Cop)
+        {
+            GTAWeapon Pistol;
+            Pistol = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "PISTOL").PickRandom();
+            Cop.IssuedPistol = Pistol;
+            Cop.CopPed.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, true);
+            WriteToLog("ScanForPolice", string.Format("Cop Issued Pistol: {0}", Pistol.Name));
+        }
+        public static void IssueCopHeavyWeapon(GTACop Cop)
+        {
+            GTAWeapon IssuedHeavy;
+            int Num = rnd.Next(1, 5);
+            if (Num == 1)
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "AR").PickRandom();
+            else if (Num == 2)
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "SHOTGUN").PickRandom();
+            else if (Num == 3)
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "SMG").PickRandom();
+            else if (Num == 4)
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "AR").PickRandom();
+            else
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "AR").PickRandom();
+
+            Cop.IssuedHeavyWeapon = IssuedHeavy;
+            Cop.CopPed.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
+            WriteToLog("ScanForPolice", string.Format("Cop Issued Heavy Weapon: {0}", IssuedHeavy.Name));
         }
         private static void CreateK9()
         {
