@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-class PedComponent
+public class PedComponent
 {
     public int ComponentID { get; set; }
     public int DrawableID { get; set; }

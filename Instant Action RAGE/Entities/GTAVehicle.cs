@@ -49,6 +49,7 @@ public class GTAVehicle
             uint GameTimeStolen = Game.GameTime;
             while(Pedestrian.Exists())
             {
+                Pedestrian.IsPersistent = true;
                 WillBeReportedStolen = false;
 
                 if (Pedestrian.IsDead)
@@ -66,10 +67,12 @@ public class GTAVehicle
                     if (Pedestrian.Exists() && !Pedestrian.IsDead && !Pedestrian.IsRagdoll)
                     {
                         WillBeReportedStolen = true;
+                        Pedestrian.IsPersistent = false;
                     }
                     InstantAction.WriteToLog("StolenVehicles", string.Format("WillBeReportedStolen {0}", WillBeReportedStolen));
                     break;
                 }
+
                 GameFiber.Yield();
             }
         });

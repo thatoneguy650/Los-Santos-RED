@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="DispatchScanner.cs" />
     <Compile Include="Entities\GTAVehicle.cs" />
+    <Compile Include="Entities\TakenOverPed.cs" />
     <Compile Include="Entities\TrafficVehicle.cs" />
     <Compile Include="Entities\Weapon Variation\WeaponComponent.cs" />
     <Compile Include="Entities\Weapon Variation\ModdedWeapon.cs" />

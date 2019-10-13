@@ -419,11 +419,11 @@ namespace Instant_Action_RAGE.Systems
                 }
                 else if (selectedItem == menuDeathTakeoverNearestPed)
                 {
-                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(500f, true), true, false);
+                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(500f, true), false, false);
                 }
                 else if (selectedItem == menuDeathTakeoverRandomPed)
                 {
-                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(TakeoverRadius, false), true, false);
+                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(TakeoverRadius, false), false, false);
                 }
                 deathMenu.Visible = false;
             }
@@ -431,11 +431,11 @@ namespace Instant_Action_RAGE.Systems
             {
                 if (selectedItem == menuMainTakeoverNearestPed)
                 {
-                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(500f, true), true, false);
+                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(500f, true), false, false);
                 }
                 else if (selectedItem == menuMainTakeoverRandomPed)
                 {
-                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(TakeoverRadius, false), true, false);
+                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(TakeoverRadius, false), false, false);
                 }
                 else if (selectedItem == menuMainOptions)
                 {
@@ -466,11 +466,11 @@ namespace Instant_Action_RAGE.Systems
                 }
                 else if (selectedItem == menuBustedTakeoverNearestPed)
                 {
-                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(500f, true), true, false);
+                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(500f, true), false, true);
                 }
                 else if (selectedItem == menuBustedTakeoverRandomPed)
                 {
-                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(TakeoverRadius, false), true, false);
+                    InstantAction.TakeoverPed(InstantAction.GetPedestrian(TakeoverRadius, false), false, true);
                 }
                 bustedMenu.Visible = false;
             }

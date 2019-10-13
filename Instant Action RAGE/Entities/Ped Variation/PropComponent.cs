@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-class PropComponent
+public class PropComponent
 {
     public int PropID { get; set; }
     public int DrawableID { get; set; }

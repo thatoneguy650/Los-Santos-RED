@@ -32,6 +32,8 @@ public static class InstantAction
     private static PoliceState HandsUpPreviousPoliceState;
     public static List<GTAWeapon> Weapons = new List<GTAWeapon>();
     public static bool PlayerIsJacking = false;
+    public static List<TakenOverPed> TakenOverPeds = new List<TakenOverPed>();
+    public static Model OriginalModel;
 
     //Police Items
     private static int TimeAimedAtPolice = 0;
@@ -263,8 +265,24 @@ public static class InstantAction
         {
             try
             {
-                isBusted = true;
-                SetArrestedAnimation(Game.LocalPlayer.Character, false);
+                foreach (TakenOverPed myPed in TakenOverPeds)
+                {
+                    WriteToLog("TakenOverPedList", string.Format("Ped OHandle {0}, OModel{1} ",  myPed.OriginalHandle,myPed.OriginalModel.Name));
+                }
+
+
+                //TakenOverPed LastTakeover = TakenOverPeds.OrderByDescending(x => x.GameTimeTakenover).FirstOrDefault();
+
+                //if(LastTakeover != null)
+                //{
+                //    WriteToLog("TakenOverPedList", string.Format("Ped OHandle {0}, OModel{1} ", Game.LocalPlayer.Character.Handle, Game.LocalPlayer.Character.Model.Name));
+                //}
+
+                //WriteToLog("TakenOverPedList", string.Format("OriginalModel OModel{0} ", OriginalModel.Name));
+
+                //WriteToLog("TakenOverPedList", string.Format("Ped OHandle {0}, OModel{1} ", Game.LocalPlayer.Character.Handle, Game.LocalPlayer.Character.Model.Name));
+                //isBusted = true;
+                //SetArrestedAnimation(Game.LocalPlayer.Character, false);
             }
             catch (Exception e)
             {
@@ -290,7 +308,7 @@ public static class InstantAction
                 //    WriteToLog("CurrentWeapon", string.Format("Matched {0}, Category {1}, Level {2}", MatchedWeapon.Name, MatchedWeapon.Category, MatchedWeapon.WeaponLevel));
                 //}
 
-                ResetPlayer(true, true);
+               //ResetPlayer(true, true);
 
                 ////InstantAction.Weapons.Where(x => x.Name == Game.LocalPlayer.Character.Inventory.EquippedWeapon.Asset.nam)
 
@@ -650,6 +668,10 @@ public static class InstantAction
         {
             Cop.TaskIsQueued = true;
             PoliceScanningSystem.CopsToTask.Add(new PoliceTask(Cop, PoliceTask.Task.Untask));
+        }
+        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.SetDeadly || x.SetTazer || x.SetUnarmed))
+        {
+            ResetCopWeapons(Cop);
         }
 
     }
@@ -1095,7 +1117,7 @@ public static class InstantAction
         WriteToLog("ValueChecker", String.Format("PoliceState Changed to: {0}", CurrentPoliceState));
         WriteToLog("ValueChecker", String.Format("PreviousPoliceState Changed to: {0}", PrevPoliceState));
 
-        if (CurrentPoliceState == PoliceState.Normal)
+        if (CurrentPoliceState == PoliceState.Normal && !isDead)
         {
             ResetPoliceStats();
         }
@@ -1526,6 +1548,21 @@ public static class InstantAction
             if (TargetPed == null)
                 return;
 
+            bool AlreadyTakenOver = false;
+
+            if(TakenOverPeds.Count > 0)
+            {
+                if (TargetPed.Model.Hash == 225514697)
+                {
+                    AlreadyTakenOver = true;
+                }
+            }
+
+            OriginalModel = TargetPed.Model;
+            TakenOverPed PedTakenOver = new TakenOverPed(TargetPed, TargetPed.Handle, GetPedVariation(TargetPed),TargetPed.Model,Game.GameTime);
+            AddPedToTakenOverPeds(PedTakenOver);
+
+
             if (TargetPed.Model.Hash == 225514697)
                 WriteToLog("TakeoverPed", "TargetPed.Model.Hash: " + TargetPed.Model.Hash.ToString());
             else
@@ -1553,19 +1590,21 @@ public static class InstantAction
 
             if (DeleteOld)
                 CurrentPed.Delete();
-            //else if (ArrestOld)
-            //    SetArrestedAnimation(CurrentPed, true);
-            //else
-            //    AITakeoverPlayer(CurrentPed);
+            else if (ArrestOld)
+                SetArrestedAnimation(CurrentPed, true);
+            else
+                AITakeoverPlayer(CurrentPed);
 
 
 
             NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
 
-
-            SetPlayerOffset();
-            ChangeModel("player_zero");
-            ChangeModel(LastModelHash);
+            if (!AlreadyTakenOver)
+            {
+                SetPlayerOffset();
+                ChangeModel("player_zero");
+                ChangeModel(LastModelHash);
+            }
 
 
             if (!Game.LocalPlayer.Character.isMainCharacter())
@@ -1606,20 +1645,32 @@ public static class InstantAction
             WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message);
         }
     }
+    private static void AddPedToTakenOverPeds(TakenOverPed MyPed)
+    {
+        if(!TakenOverPeds.Any(x => x.OriginalHandle == MyPed.Pedestrian.Handle))
+        {
+            TakenOverPeds.Add(MyPed);
+            WriteToLog("AddPedToTakenOverPeds", string.Format("Added Ped to List {0} ", MyPed.Pedestrian.Handle));
+        }
+        else
+        {
+            WriteToLog("AddPedToTakenOverPeds", string.Format("Ped already in list {0} ", MyPed.Pedestrian.Handle));
+        }
+    }
     private static void CopyPedComponentVariation(Ped myPed)
     {
         try
         {
             myPedVariation = new PedVariation();
-            myPedVariation.myPedComponents = new List<PedComponent>();
-            myPedVariation.myPedProps = new List<PropComponent>();
+            myPedVariation.MyPedComponents = new List<PedComponent>();
+            myPedVariation.MyPedProps = new List<PropComponent>();
             for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
-                myPedVariation.myPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
+                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
             }
             for (int PropNumber = 0; PropNumber < 8; PropNumber++)
             {
-                myPedVariation.myPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
+                myPedVariation.MyPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
             }
         }
         catch (Exception e)
@@ -1627,15 +1678,38 @@ public static class InstantAction
             WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
         }
     }
+    private static PedVariation GetPedVariation(Ped myPed)
+    {
+        try
+        {
+            myPedVariation = new PedVariation();
+            myPedVariation.MyPedComponents = new List<PedComponent>();
+            myPedVariation.MyPedProps = new List<PropComponent>();
+            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
+            {
+                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
+            }
+            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
+            {
+                myPedVariation.MyPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
+            }
+            return myPedVariation;
+        }
+        catch (Exception e)
+        {
+            WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            return null;
+        }
+    }
     private static void ReplacePedComponentVariation(Ped myPed)
     {
         try
         {
-            foreach (PedComponent Component in myPedVariation.myPedComponents)
+            foreach (PedComponent Component in myPedVariation.MyPedComponents)
             {
                 NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", myPed, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
             }
-            foreach (PropComponent Prop in myPedVariation.myPedProps)
+            foreach (PropComponent Prop in myPedVariation.MyPedProps)
             {
                 NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", myPed, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
             }
@@ -1665,6 +1739,43 @@ public static class InstantAction
         //else if (mySettings.ReplacePlayerWithPedCharacter == "Trevor")
         //    GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
 
+    }
+    private static void UnSetPlayerOffset()
+    {
+        const int WORLD_OFFSET = 8;
+        const int SECOND_OFFSET = 0x20;
+        const int THIRD_OFFSET = 0x18;
+
+        Memory GTA = new Memory("GTA5");
+        UInt64 WorldFlirtPointer = GTA.PointerScan("48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07");
+        UInt64 World = GTA.ReadRelativeAddress(WorldFlirtPointer);
+        UInt64 Player = GTA.Read<UInt64>(World, new int[] { WORLD_OFFSET });
+        UInt64 Second = GTA.Read<UInt64>(Player + SECOND_OFFSET);
+        UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
+
+        //if (mySettings.ReplacePlayerWithPedCharacter == "Michael")
+        GTA.Write<uint>(Player + SECOND_OFFSET, OriginalModel.Hash, new int[] { THIRD_OFFSET });
+        //else if (mySettings.ReplacePlayerWithPedCharacter == "Franklin")
+        //    GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
+        //else if (mySettings.ReplacePlayerWithPedCharacter == "Trevor")
+        //    GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
+
+    }
+    private static void AITakeoverPlayer(Ped FormerPlayer)
+    {
+        if (FormerPlayer.IsDead)
+        {
+            return;
+        }
+        if (FormerPlayer.IsInAnyVehicle(false))
+        {
+            FormerPlayer.Tasks.CruiseWithVehicle(FormerPlayer.CurrentVehicle, 30f, VehicleDrivingFlags.Normal); //normal driving style
+        }
+        else
+        {
+            FormerPlayer.Tasks.ClearImmediately();
+            FormerPlayer.Tasks.Wander();
+        }
     }
     private static void ChangeModel(String ModelRequested)
     {
@@ -1929,18 +2040,16 @@ public static class InstantAction
         isDead = false;
         isBusted = false;
         BeingArrested = false;
-        firedWeapon = false;
-        aimedAtPolice = false;
-        CaughtWithWeapon = false;
-        PoliceScanningSystem.PlayerHurtPolice = false;
-        PoliceScanningSystem.PlayerKilledPolice = false;
-        ResetTrafficViolations();
-        ResetPoliceStats();
+
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
         Game.TimeScale = 1f;
         if (ClearWanted)
+        {
             Game.LocalPlayer.WantedLevel = 0;
+            ResetPoliceStats();
+            ResetTrafficViolations();        
+        }
 
         //ResetCamera();
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;

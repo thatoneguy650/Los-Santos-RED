@@ -57,6 +57,7 @@ namespace Instant_Action_RAGE.Systems
         public static GTACop PrimaryPursuer { get; set; }
         public static int CopsKilledByPlayer { get; set; } = 0;
         private static Model K9Model = new Model("a_c_shepherd");
+        private static Ped TempK9;
 
         public static void Initialize()
         {
@@ -143,12 +144,68 @@ namespace Instant_Action_RAGE.Systems
             }
             if (Game.IsKeyDown(Keys.NumPad6)) // Our menu on/off switch.
             {
-                PrimaryPursuer.CopPed.PlayAmbientSpeech("s_m_y_cop_01_white_full_01","DRAW_GUN",1,SpeechModifier.Force);
+
+                Ped Doggo = new Ped("a_c_rottweiler", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), 180);
+                Doggo.BlockPermanentEvents = true;
+                Doggo.IsPersistent = false;
+                //Doggo.RelationshipGroup = "COPDOGS";
+                //Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
+                //Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
+                //Doggo.Health = 50;
+
+                //Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
+                //Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
+
+                TempK9 = Doggo;
+                //NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", Doggo, 75f, 0);
+
+
+
+
+
+                Doggo.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                //Doggo.KeepTasks = true;
+
+                ////PrimaryPursuer.CopPed.PlayAmbientSpeech("s_m_y_cop_01_white_full_01","DRAW_GUN",1,SpeechModifier.Force);
+                //CreateK9();
+                //GTACop K9 = K9Peds.FirstOrDefault();
+                //K9.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f));
+
+
+                //K9.CopPed.BlockPermanentEvents = true;
+
+
+
+
+
+
+                //unsafe
+                //{
+                //    int lol = 0;
+                //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                //   // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 20f, 500f, 1073741824, 1); //Original and works ok
+                //    NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Game.LocalPlayer.Character, 1, 16);
+                //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", K9.CopPed, lol);
+                //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                //}
+
+
+
+
+
+                //K9.CopPed.Tasks.FightAgainst(Game.LocalPlayer.Character,90000);
+
+                //NativeFunction.CallByName<bool>("TASK_COMBAT_PED", K9.CopPed, Game.LocalPlayer.Character, 0, 16);
+
             }
             if (Game.IsKeyDown(Keys.NumPad7)) // Our menu on/off switch.
             {
-                InstantAction.CurrentPoliceState = InstantAction.PoliceState.Normal;
-                InstantAction.ResetPlayer(true, true);
+                TempK9.Delete();
+                K9Peds.ForEach(x => x.CopPed.Delete());
+                //InstantAction.CurrentPoliceState = InstantAction.PoliceState.Normal;
+                //InstantAction.ResetPlayer(true, true);
             }
             if (Game.IsKeyDown(Keys.NumPad8)) // Our menu on/off switch.
             {
@@ -162,43 +219,55 @@ namespace Instant_Action_RAGE.Systems
             {
                 foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
                 {
-                    //if (Cop.TaskFiber != null && Cop.TaskFiber.Name == "Chase")
-                    //    Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
-                    //else if(Cop.TaskFiber != null && Cop.TaskFiber.Name == "Arrest")
-                    //    Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
-                    //else
-                    //    Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
-
-
-
                     if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
                         Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
                     else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
                         Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Purple);
                     else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
                         Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.White);
-
                     else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
                         Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
-
                     else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
                         Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
-
-
                     else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
                         Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
                     else if (Cop == PrimaryPursuer)
                         Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Brown);
+                    else
+                        Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+                }
 
 
+                foreach (GTACop Cop in K9Peds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
+                {
+                    if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
+                        Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
+                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
+                        Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Purple);
+                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
+                        Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.White);
+                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+                        Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
+                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
+                        Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
+                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
+                        Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
+                    else if (Cop == PrimaryPursuer)
+                        Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Brown);
                     else
                         Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
 
 
-                    //if (Cop.CopPed.Exists())
-                    //    Cop.CopPed.BlockPermanentEvents = true;
+
+                    if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+                    {
+                        NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", Cop.CopPed, 75f, 0);
+                        WriteToLog("CreateK9", "Retasked");
+                    }
+                   // Cop.CopPed.Tasks.FightAgainst(Game.LocalPlayer.Character, 90000);
 
                 }
+
                 Debug.DrawArrowDebug(new Vector3(PlacePlayerLastSeen.X, PlacePlayerLastSeen.Y, PlacePlayerLastSeen.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
             }
         }
@@ -284,8 +353,8 @@ namespace Instant_Action_RAGE.Systems
             GTAWeapon Pistol;
             Pistol = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "PISTOL").PickRandom();
             Cop.IssuedPistol = Pistol;
-            Cop.CopPed.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, true);
-            WriteToLog("ScanForPolice", string.Format("Cop Issued Pistol: {0}", Pistol.Name));
+            Cop.CopPed.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
+            //WriteToLog("ScanForPolice", string.Format("Cop Issued Pistol: {0}", Pistol.Name));
         }
         public static void IssueCopHeavyWeapon(GTACop Cop)
         {
@@ -304,7 +373,7 @@ namespace Instant_Action_RAGE.Systems
 
             Cop.IssuedHeavyWeapon = IssuedHeavy;
             Cop.CopPed.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
-            WriteToLog("ScanForPolice", string.Format("Cop Issued Heavy Weapon: {0}", IssuedHeavy.Name));
+            //WriteToLog("ScanForPolice", string.Format("Cop Issued Heavy Weapon: {0}", IssuedHeavy.Name));
         }
         private static void CreateK9()
         {
@@ -323,9 +392,9 @@ namespace Instant_Action_RAGE.Systems
                 Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
 
                 GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health);
-                PutK9InCar(DoggoCop, ClosestDriver);
+                //PutK9InCar(DoggoCop, ClosestDriver);
                 K9Peds.Add(DoggoCop);
-                TaskK9(DoggoCop);
+                //TaskK9(DoggoCop);
                 WriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
             }
 

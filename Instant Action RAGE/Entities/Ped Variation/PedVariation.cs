@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-    class PedVariation
+   public class PedVariation
     {
 
         public PedVariation()
         {
 
         }
-    public List<PedComponent> myPedComponents;
-    public List<PropComponent> myPedProps;
+    public List<PedComponent> MyPedComponents;
+    public List<PropComponent> MyPedProps;
+
 }
 

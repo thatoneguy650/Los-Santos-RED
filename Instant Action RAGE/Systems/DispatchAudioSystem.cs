@@ -500,6 +500,12 @@ internal static class DispatchAudioSystem
                     InstantAction.WriteToLog("PlayDispatchQueue", "DeadlyChase: Removed Some Low priority Items");
                 }
 
+                if(DispatchQueue.Any(x => x.Priority <= 1) && DispatchQueue.Any(x => x.Priority > 1))
+                {
+                    DispatchQueue.RemoveAll(x => x.Priority > 1);
+                    InstantAction.WriteToLog("PlayDispatchQueue", "High Priority Message: Removed Some Low priority Items");
+                }
+
                 if (DispatchQueue.Any(x => x.ResultsInLethalForce))
                 {
                     DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLethalForceAuthorized);
@@ -556,7 +562,7 @@ internal static class DispatchAudioSystem
             });
         }
     }
-    private static void ReportGenericStart(List<string> myList)
+    private static void ReportGenericStart(ref List<string> myList)
     {
         if (!PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
             return;
@@ -586,7 +592,7 @@ internal static class DispatchAudioSystem
         ReportedLethalForceAuthorized = true;
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
         ScannerList.Add(crime_shots_fired_at_an_officer.Shotsfiredatanofficer.FileName);
         AddLethalForceAuthorized(ref ScannerList);
         ReportGenericEnd(ScannerList, true);
@@ -600,7 +606,7 @@ internal static class DispatchAudioSystem
 
         ReportedCarryingWeapon = true;
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
 
         if (CarryingWeapon == null)
         {
@@ -716,7 +722,7 @@ internal static class DispatchAudioSystem
         ReportedLethalForceAuthorized = true;
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
         bool addRespondCode = true;
         int Num = rnd.Next(1, 6);
         if (Num == 1)
@@ -825,7 +831,7 @@ internal static class DispatchAudioSystem
         ReportedLethalForceAuthorized = true;
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
         int Num = rnd.Next(1, 5);
         if (Num == 1)
         {
@@ -861,7 +867,7 @@ internal static class DispatchAudioSystem
         ReportedLethalForceAuthorized = true;
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
         ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
         ScannerList.Add(ScannerAudio.crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName);
         AddLethalForceAuthorized(ref ScannerList);
@@ -875,7 +881,7 @@ internal static class DispatchAudioSystem
             return;
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
 
         int Num = rnd.Next(1, 5);
         bool near = false;
@@ -935,7 +941,7 @@ internal static class DispatchAudioSystem
     public static void ReportSuspectWasted()
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
 
         int Num = rnd.Next(1, 11);
         if (Num == 1)
@@ -1192,7 +1198,7 @@ internal static class DispatchAudioSystem
             return;
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
 
         int Num = rnd.Next(1, 5);
         if (Num == 1)
@@ -1224,7 +1230,7 @@ internal static class DispatchAudioSystem
     {
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
 
         int Num = rnd.Next(1, 5);
         if (Num == 1)
@@ -1256,7 +1262,7 @@ internal static class DispatchAudioSystem
     {
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
 
         int Num = rnd.Next(1, 5);
         if (Num == 1)
@@ -1287,7 +1293,7 @@ internal static class DispatchAudioSystem
     public static void ReportRecklessDriver(Vehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
         ScannerList.Add(ScannerAudio.crime_reckless_driver.Arecklessdriver.FileName);
         AddVehicleDescription(vehicle, ref ScannerList);
         ReportGenericEnd(ScannerList, true);
@@ -1296,7 +1302,7 @@ internal static class DispatchAudioSystem
     public static void ReportWeaponsFree()
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
         ScannerList.Add(ScannerAudio.custom_wanted_level_line.Suspectisarmedanddangerousweaponsfree.FileName);
         ReportGenericEnd(ScannerList, false);
         PlayAudioList(ScannerList, false);
@@ -1304,7 +1310,7 @@ internal static class DispatchAudioSystem
     public static void ReportFelonySpeeding(Vehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ScannerList);
+        ReportGenericStart(ref ScannerList);
         ScannerList.Add(ScannerAudio.crime_speeding_felony.Aspeedingfelony.FileName);
         AddVehicleDescription(vehicle, ref ScannerList);
         ReportGenericEnd(ScannerList, true);
