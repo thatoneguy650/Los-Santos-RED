@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-    class PoliceTask
+    public class PoliceTask
     {
         public Task TaskToAssign { get; set; }
         public GTACop CopToAssign { get; set; }
@@ -16,6 +16,8 @@ using System.Threading.Tasks;
             Untask = 2,
             SimpleArrest = 3,
             SimpleChase = 4,
+            VehicleChase = 5,
+            NoTask = 6,
     }
 
         public PoliceTask(GTACop _CopToAssign,Task _TaskToAssign)

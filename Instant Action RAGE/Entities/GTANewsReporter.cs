@@ -7,25 +7,25 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GTACop
+public class GTANewsReporter
 {
-    static GTACop()
+    static GTANewsReporter()
     {
         rnd = new Random();
     }
-    public GTACop()
+    public GTANewsReporter()
     {
 
     }
-    public GTACop(Ped _Cop,bool _canSeePlayer, int _Health)
+    public GTANewsReporter(Ped _Cop, bool _canSeePlayer, int _Health)
     {
-        CopPed = _Cop;
+        ReporterPed = _Cop;
         canSeePlayer = _canSeePlayer;
         Health = _Health;
     }
-    public GTACop(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health)
+    public GTANewsReporter(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer, Vector3 _positionLastSeenPlayer, int _Health)
     {
-        CopPed = _Cop;
+        ReporterPed = _Cop;
         canSeePlayer = _canSeePlayer;
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
         PositionLastSeenPlayer = _positionLastSeenPlayer;
@@ -34,14 +34,13 @@ public class GTACop
     public int Health { get; set; }
 
     private static Random rnd;
-    public Ped CopPed { get; set; }
+    public Ped ReporterPed { get; set; }
     public string SimpleTaskName { get; set; }
     public bool canSeePlayer { get; set; }
     public bool isTasked { get; set; } = false;
     public uint GameTimeLastSeenPlayer { get; set; }
     public Vector3 PositionLastSeenPlayer { get; set; }
     public bool isPursuitPrimary { get; set; } = false;
-    public PoliceTask.Task TaskType { get; set; }
     public bool HurtByPlayer { get; set; } = false;
     public GameFiber TaskFiber { get; set; }
     public bool SetTazer { get; set; } = false;
@@ -58,20 +57,6 @@ public class GTACop
     public bool isInHelicopter { get; set; } = false;
     public bool isOnBike { get; set; } = false;
     public float DistanceToPlayer { get; set; }
-    public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, "PISTOL", 1, 453432689, true);
-    public GTAWeapon IssuedHeavyWeapon { get; set; }
-    public bool NeedsWeaponCheck
-    {
-        get
-        {
-            if (GameTimeLastWeaponCheck == 0)
-                return true;
-            else if (Game.GameTime > GameTimeLastWeaponCheck + 500)
-                return true;
-            else
-                return false;
-        }       
-    }
     public bool CanSpeak
     {
         get

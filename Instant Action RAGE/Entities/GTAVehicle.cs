@@ -59,7 +59,7 @@ public class GTAVehicle
                     InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDied {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
                     break;
                 }
-                else if(Game.GameTime - GameTimeStolen > 20000 && !Pedestrian.IsRagdoll)
+                else if(Game.GameTime - GameTimeStolen > 15000 && !Pedestrian.IsRagdoll)
                 {
                     NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", Pedestrian, 10000);
                     Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
@@ -72,9 +72,10 @@ public class GTAVehicle
                     InstantAction.WriteToLog("StolenVehicles", string.Format("WillBeReportedStolen {0}", WillBeReportedStolen));
                     break;
                 }
-
+                
                 GameFiber.Yield();
             }
+            InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDisappeared? Died {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
         });
     }
     public GTAVehicle(Vehicle _Vehicle,uint _GameTimeEntered,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsPlayersVehicle, bool _IsStolen)

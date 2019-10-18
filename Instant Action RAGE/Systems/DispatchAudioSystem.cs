@@ -448,7 +448,7 @@ internal static class DispatchAudioSystem
     }
     private static void PlayAudioList(List<String> SoundsToPlay, bool CheckSight)
     {
-        GameFiber.Sleep(rnd.Next(250, 670));
+        //GameFiber.Sleep(rnd.Next(250, 670));
         if (CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
             return;
 
@@ -474,7 +474,7 @@ internal static class DispatchAudioSystem
 
     public static void AddDispatchToQueue(DispatchQueueItem _ItemToAdd)
     {
-        if (!DispatchQueue.Contains(_ItemToAdd))
+        if (!DispatchQueue.Any(x => x.Type == _ItemToAdd.Type))
             DispatchQueue.Add(_ItemToAdd);
     }
     private static void PlayDispatchQueue()
@@ -491,16 +491,16 @@ internal static class DispatchAudioSystem
                 // Remove and order items
                 if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
                 {
-                    foreach (DispatchQueueItem Item in DispatchQueue.Where(x => x.Priority > 3))
+                    foreach (DispatchQueueItem Item in DispatchQueue.Where(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted))
                     {
                         InstantAction.WriteToLog("PlayDispatchQueue", string.Format("DeadlyChase: Removed {0}", Item.Type.ToString()));
                     }
                     
-                    DispatchQueue.RemoveAll(x => x.Priority > 3);
+                    DispatchQueue.RemoveAll(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted);
                     InstantAction.WriteToLog("PlayDispatchQueue", "DeadlyChase: Removed Some Low priority Items");
                 }
 
-                if(DispatchQueue.Any(x => x.Priority <= 1) && DispatchQueue.Any(x => x.Priority > 1))
+                if(DispatchQueue.Any(x => x.Priority <= 1) && DispatchQueue.Any(x => x.Priority > 1 && x.Type == ReportDispatch.ReportLethalForceAuthorized))
                 {
                     DispatchQueue.RemoveAll(x => x.Priority > 1);
                     InstantAction.WriteToLog("PlayDispatchQueue", "High Priority Message: Removed Some Low priority Items");
@@ -564,8 +564,8 @@ internal static class DispatchAudioSystem
     }
     private static void ReportGenericStart(ref List<string> myList)
     {
-        if (!PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
-            return;
+        //if (!PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
+        //    return;
         myList.Add(ScannerAudio.AudioBeeps.AudioStart());
         myList.Add(ScannerAudio.we_have.OfficersReport());
     }
@@ -854,7 +854,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(ScannerAudio.crime_assault_on_an_officer.Anofficerassault.FileName);
         }
         AddLethalForceAuthorized(ref ScannerList);
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, false);
 
         PlayAudioList(ScannerList, true);
     }
@@ -871,7 +871,7 @@ internal static class DispatchAudioSystem
         ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
         ScannerList.Add(ScannerAudio.crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName);
         AddLethalForceAuthorized(ref ScannerList);
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, false);
 
         PlayAudioList(ScannerList, true);
     }
