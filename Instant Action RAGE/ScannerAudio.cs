@@ -606,8 +606,8 @@ public class conjunctives
     public static ScannerFile A02 { get { return new ScannerFile("01_conjunctives\\A_02.wav", "A_02", "conjunctives"); } }
     public static ScannerFile FAN2BJAD01 { get { return new ScannerFile("01_conjunctives\\FAN2_BJAD_01.wav", "FAN2_BJAD_01", "conjunctives"); } }
     public static ScannerFile Inuhh { get { return new ScannerFile("01_conjunctives\\IN_01.wav", "In, uhh...", "conjunctives"); } }
-    public static ScannerFile In_4 { get { return new ScannerFile("01_conjunctives\\IN_02.wav", "In...", "conjunctives"); } }
-    public static ScannerFile IN03 { get { return new ScannerFile("01_conjunctives\\IN_03.wav", "IN_03", "conjunctives"); } }
+    public static ScannerFile Inuhh2 { get { return new ScannerFile("01_conjunctives\\IN_02.wav", "In...", "conjunctives"); } }
+    public static ScannerFile Inuhh3 { get { return new ScannerFile("01_conjunctives\\IN_03.wav", "IN_03", "conjunctives"); } }
     public static ScannerFile INA01 { get { return new ScannerFile("01_conjunctives\\IN_A_01.wav", "IN_A_01", "conjunctives"); } }
     public static ScannerFile INA02 { get { return new ScannerFile("01_conjunctives\\IN_A_02.wav", "IN_A_02", "conjunctives"); } }
     public static ScannerFile INA03 { get { return new ScannerFile("01_conjunctives\\IN_A_03.wav", "IN_A_03", "conjunctives"); } }

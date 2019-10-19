@@ -151,34 +151,34 @@ namespace Instant_Action_RAGE.Systems
             if (Game.IsKeyDown(Keys.NumPad6)) // Our menu on/off switch.
             {
 
-                Ped Doggo = new Ped("a_c_rottweiler", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), 180);
-                Doggo.BlockPermanentEvents = true;
-                Doggo.IsPersistent = false;
-                //Doggo.RelationshipGroup = "COPDOGS";
-                //Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
-                //Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
-                //Doggo.Health = 50;
+                //Ped Doggo = new Ped("a_c_rottweiler", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), 180);
+                //Doggo.BlockPermanentEvents = true;
+                //Doggo.IsPersistent = false;
+                ////Doggo.RelationshipGroup = "COPDOGS";
+                ////Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
+                ////Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
+                ////Doggo.Health = 50;
 
-                //Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
-                //Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
+                ////Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
+                ////Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
 
-                TempK9 = Doggo;
-                //NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", Doggo, 75f, 0);
-
-
+                //TempK9 = Doggo;
+                ////NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", Doggo, 75f, 0);
 
 
 
-                Doggo.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                //Doggo.KeepTasks = true;
-
-                ////PrimaryPursuer.CopPed.PlayAmbientSpeech("s_m_y_cop_01_white_full_01","DRAW_GUN",1,SpeechModifier.Force);
-                //CreateK9();
-                //GTACop K9 = K9Peds.FirstOrDefault();
-                //K9.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f));
 
 
-                //K9.CopPed.BlockPermanentEvents = true;
+                //Doggo.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                ////Doggo.KeepTasks = true;
+
+                //////PrimaryPursuer.CopPed.PlayAmbientSpeech("s_m_y_cop_01_white_full_01","DRAW_GUN",1,SpeechModifier.Force);
+                ////CreateK9();
+                ////GTACop K9 = K9Peds.FirstOrDefault();
+                ////K9.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f));
+
+
+                ////K9.CopPed.BlockPermanentEvents = true;
 
 
 
@@ -208,8 +208,8 @@ namespace Instant_Action_RAGE.Systems
             }
             if (Game.IsKeyDown(Keys.NumPad7)) // Our menu on/off switch.
             {
-                TempK9.Delete();
-                K9Peds.ForEach(x => x.CopPed.Delete());
+                //TempK9.Delete();
+                //K9Peds.ForEach(x => x.CopPed.Delete());
                 //InstantAction.CurrentPoliceState = InstantAction.PoliceState.Normal;
                 //InstantAction.ResetPlayer(true, true);
             }
@@ -293,7 +293,7 @@ namespace Instant_Action_RAGE.Systems
 
                     GTACop myCop = new GTACop(Cop, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f),Cop.Health);
                     Cop.IsPersistent = false;
-
+                    Cop.Accuracy = 10;
                     Cop.Inventory.Weapons.Clear();
                     IssueCopPistol(myCop);
                     NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
@@ -382,6 +382,7 @@ namespace Instant_Action_RAGE.Systems
 
             Cop.IssuedHeavyWeapon = IssuedHeavy;
             Cop.CopPed.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
+            Cop.CopPed.Accuracy = 10;
             //WriteToLog("ScanForPolice", string.Format("Cop Issued Heavy Weapon: {0}", IssuedHeavy.Name));
         }
         private static void CreateK9()
@@ -492,6 +493,10 @@ namespace Instant_Action_RAGE.Systems
             {
                 if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
                 {
+                    if (Cop.GameTimeContinuoslySeenPlayerSince == 0)
+                    {
+                        Cop.GameTimeContinuoslySeenPlayerSince = Game.GameTime;
+                    }
                     Cop.canSeePlayer = true;
                     Cop.GameTimeLastSeenPlayer = Game.GameTime;
                     Cop.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
@@ -501,6 +506,7 @@ namespace Instant_Action_RAGE.Systems
                 }
                 else
                 {
+                    Cop.GameTimeContinuoslySeenPlayerSince = 0;
                     Cop.canSeePlayer = false;
                 }
             }
@@ -508,6 +514,10 @@ namespace Instant_Action_RAGE.Systems
             {
                 if (Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 250f) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Cop.CopPed, EntityToCheck, 17)) //was 55f
                 {
+                    if (Cop.GameTimeContinuoslySeenPlayerSince == 0)
+                    {
+                        Cop.GameTimeContinuoslySeenPlayerSince = Game.GameTime;
+                    }
                     Cop.canSeePlayer = true;
                     Cop.GameTimeLastSeenPlayer = Game.GameTime;
                     Cop.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
@@ -515,6 +525,7 @@ namespace Instant_Action_RAGE.Systems
                 }
                 else
                 {
+                    Cop.GameTimeContinuoslySeenPlayerSince = 0;
                     Cop.canSeePlayer = false;
                 }
             }
@@ -522,6 +533,10 @@ namespace Instant_Action_RAGE.Systems
             {
                 if (Reporter.ReporterPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 250f) && !Reporter.ReporterPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Reporter.ReporterPed, EntityToCheck, 17)) //was 55f
                 {
+                    if (Reporter.GameTimeContinuoslySeenPlayerSince == 0)
+                    {
+                        Reporter.GameTimeContinuoslySeenPlayerSince = Game.GameTime;
+                    }
                     Reporter.canSeePlayer = true;
                     Reporter.GameTimeLastSeenPlayer = Game.GameTime;
                     Reporter.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
@@ -529,6 +544,7 @@ namespace Instant_Action_RAGE.Systems
                 }
                 else
                 {
+                    Reporter.GameTimeContinuoslySeenPlayerSince = 0;
                     Reporter.canSeePlayer = false;
                 }
             }
@@ -671,8 +687,8 @@ namespace Instant_Action_RAGE.Systems
                         _policeTask.CopToAssign.TaskIsQueued = false;
                         CopsToTask.RemoveAt(0);
                     }
-                    GameFiber.Sleep(100);
-                   // GameFiber.Sleep(250);
+                  //  GameFiber.Sleep(100);
+                    GameFiber.Sleep(250);
                 }
             });
         }
@@ -957,6 +973,11 @@ namespace Instant_Action_RAGE.Systems
                        TaskTime = Game.GameTime;
                    }
                    GameFiber.Yield();
+                   if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.Normal || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait)
+                   {
+                       GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
+                       break;
+                   }
                }
                if (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
                {
@@ -1074,10 +1095,6 @@ namespace Instant_Action_RAGE.Systems
         }
         public static void Untask(GTACop Cop)
         {
-            Cop.TaskType = PoliceTask.Task.NoTask;
-            Cop.SimpleTaskName = "";
-            Cop.isTasked = false;
-
             if (Cop.CopPed.Exists())
             {
                 if (Cop.TaskFiber != null)
@@ -1093,6 +1110,10 @@ namespace Instant_Action_RAGE.Systems
 
                 WriteToLog("Untask", string.Format("Untasked: {0}", Cop.CopPed.Handle));
             }
+
+            Cop.TaskType = PoliceTask.Task.NoTask;
+            Cop.SimpleTaskName = "";
+            Cop.isTasked = false;
         }
 
         private static void WriteToLog(String ProcedureString, String TextToLog)

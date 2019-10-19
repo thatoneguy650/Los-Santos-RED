@@ -39,6 +39,7 @@ public class GTANewsReporter
     public bool canSeePlayer { get; set; }
     public bool isTasked { get; set; } = false;
     public uint GameTimeLastSeenPlayer { get; set; }
+    public uint GameTimeContinuoslySeenPlayerSince { get; set; }
     public Vector3 PositionLastSeenPlayer { get; set; }
     public bool isPursuitPrimary { get; set; } = false;
     public bool HurtByPlayer { get; set; } = false;
@@ -57,6 +58,16 @@ public class GTANewsReporter
     public bool isInHelicopter { get; set; } = false;
     public bool isOnBike { get; set; } = false;
     public float DistanceToPlayer { get; set; }
+    public uint HasSeenPlayerFor//seconds
+    {
+        get
+        {
+            if (GameTimeContinuoslySeenPlayerSince == 0)
+                return 0;
+            else
+                return (Game.GameTime - GameTimeContinuoslySeenPlayerSince);
+        }
+    }
     public bool CanSpeak
     {
         get

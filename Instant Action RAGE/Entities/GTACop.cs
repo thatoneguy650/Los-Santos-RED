@@ -39,6 +39,7 @@ public class GTACop
     public bool canSeePlayer { get; set; }
     public bool isTasked { get; set; } = false;
     public uint GameTimeLastSeenPlayer { get; set; }
+    public uint GameTimeContinuoslySeenPlayerSince { get; set; }
     public Vector3 PositionLastSeenPlayer { get; set; }
     public bool isPursuitPrimary { get; set; } = false;
     public PoliceTask.Task TaskType { get; set; }
@@ -71,6 +72,16 @@ public class GTACop
             else
                 return false;
         }       
+    }
+    public uint HasSeenPlayerFor//seconds
+    {
+        get
+        {
+            if (GameTimeContinuoslySeenPlayerSince == 0)
+                return 0;
+            else
+                return (Game.GameTime - GameTimeContinuoslySeenPlayerSince);
+        }
     }
     public bool CanSpeak
     {

@@ -512,6 +512,13 @@ internal static class DispatchAudioSystem
                     InstantAction.WriteToLog("PlayDispatchQueue", "ResultsInLethalForce: Removed ReportLethalForceAuthorized");
                 }
 
+
+                if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSpottedStolenCar))
+                {
+                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSpottedStolenCar);
+                    InstantAction.WriteToLog("PlayDispatchQueue", "ResultsInStolenCarSpotted: Removed ReportSpottedStolenCar");
+                }
+
                 foreach (DispatchQueueItem Item in DispatchQueue)
                 {
                     InstantAction.WriteToLog("PlayDispatchQueue", string.Format("Items To Play: {0}", Item.Type.ToString()));
@@ -525,15 +532,15 @@ internal static class DispatchAudioSystem
                     else if (Item.Type == ReportDispatch.ReportCarryingWeapon)
                         ReportCarryingWeapon(Item.WeaponToReport);
                     else if (Item.Type == ReportDispatch.ReportFelonySpeeding)
-                        ReportFelonySpeeding(Item.VehicleToReport.VehicleEnt);
+                        ReportFelonySpeeding(Item.VehicleToReport.VehicleEnt,Item.VehicleToReport.IsStolen);
                     else if (Item.Type == ReportDispatch.ReportLethalForceAuthorized)
                         ReportLethalForceAuthorized();
                     else if (Item.Type == ReportDispatch.ReportOfficerDown)
                         ReportOfficerDown();
                     else if (Item.Type == ReportDispatch.ReportPedHitAndRun)
-                        ReportPedHitAndRun(Item.VehicleToReport.VehicleEnt);
+                        ReportPedHitAndRun(Item.VehicleToReport.VehicleEnt, Item.VehicleToReport.IsStolen);
                     else if (Item.Type == ReportDispatch.ReportRecklessDriver)
-                        ReportRecklessDriver(Item.VehicleToReport.VehicleEnt);
+                        ReportRecklessDriver(Item.VehicleToReport.VehicleEnt, Item.VehicleToReport.IsStolen);
                     else if (Item.Type == ReportDispatch.ReportShotsFired)
                         ReportShotsFired();
                     else if (Item.Type == ReportDispatch.ReportSpottedStolenCar)
@@ -551,7 +558,7 @@ internal static class DispatchAudioSystem
                     else if (Item.Type == ReportDispatch.ReportThreateningWithFirearm)
                         ReportThreateningWithFirearm();
                     else if (Item.Type == ReportDispatch.ReportVehicleHitAndRun)
-                        ReportVehicleHitAndRun(Item.VehicleToReport.VehicleEnt);
+                        ReportVehicleHitAndRun(Item.VehicleToReport.VehicleEnt, Item.VehicleToReport.IsStolen);
                     else if (Item.Type == ReportDispatch.ReportWeaponsFree)
                         ReportWeaponsFree();
                     else
@@ -878,6 +885,9 @@ internal static class DispatchAudioSystem
     public static void ReportSuspectLastSeen(bool Near)
     {
         if (InstantAction.isBusted || InstantAction.isDead)
+            return;
+
+        if (PoliceScanningSystem.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1226,7 +1236,7 @@ internal static class DispatchAudioSystem
         ReportGenericEnd(ScannerList, false);
         PlayAudioList(ScannerList, false);
     }
-    public static void ReportPedHitAndRun(Vehicle vehicle)
+    public static void ReportPedHitAndRun(Vehicle vehicle,bool IsStolen)
     {
 
         List<string> ScannerList = new List<string>();
@@ -1253,12 +1263,15 @@ internal static class DispatchAudioSystem
         {
             ScannerList.Add(ScannerAudio.crime_reckless_driver.Arecklessdriver.FileName);
         }
-
+        if (IsStolen)
+        {
+            AddStolenVehicle(ref ScannerList);
+        }
         AddVehicleDescription(vehicle, ref ScannerList);
         ReportGenericEnd(ScannerList, true);
         PlayAudioList(ScannerList, false);
     }
-    public static void ReportVehicleHitAndRun(Vehicle vehicle)
+    public static void ReportVehicleHitAndRun(Vehicle vehicle, bool IsStolen)
     {
 
         List<string> ScannerList = new List<string>();
@@ -1285,33 +1298,47 @@ internal static class DispatchAudioSystem
         {
             ScannerList.Add(ScannerAudio.crime_reckless_driver.Arecklessdriver.FileName);
         }
-
+        if (IsStolen)
+        {
+            AddStolenVehicle(ref ScannerList);
+        }
         AddVehicleDescription(vehicle, ref ScannerList);
         ReportGenericEnd(ScannerList, true);
         PlayAudioList(ScannerList, false);
     }
-    public static void ReportRecklessDriver(Vehicle vehicle)
+    public static void ReportRecklessDriver(Vehicle vehicle, bool IsStolen)
     {
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ref ScannerList);
         ScannerList.Add(ScannerAudio.crime_reckless_driver.Arecklessdriver.FileName);
+        if (IsStolen)
+        {
+            AddStolenVehicle(ref ScannerList);
+        }
         AddVehicleDescription(vehicle, ref ScannerList);
         ReportGenericEnd(ScannerList, true);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportWeaponsFree()
     {
+        if (InstantAction.isBusted || InstantAction.isDead)
+            return;
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ref ScannerList);
-        ScannerList.Add(ScannerAudio.custom_wanted_level_line.Suspectisarmedanddangerousweaponsfree.FileName);
+        ScannerList.Add(AudioBeeps.AudioStart());
+        ScannerList.Add(attention_all_units_gen.Attentionallunits.FileName);
+        ScannerList.Add(custom_wanted_level_line.Suspectisarmedanddangerousweaponsfree.FileName);
         ReportGenericEnd(ScannerList, false);
         PlayAudioList(ScannerList, false);
     }
-    public static void ReportFelonySpeeding(Vehicle vehicle)
+    public static void ReportFelonySpeeding(Vehicle vehicle, bool IsStolen)
     {
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ref ScannerList);
         ScannerList.Add(ScannerAudio.crime_speeding_felony.Aspeedingfelony.FileName);
+        if(IsStolen)
+        {
+            AddStolenVehicle(ref ScannerList);
+        }
         AddVehicleDescription(vehicle, ref ScannerList);
         ReportGenericEnd(ScannerList, true);
         PlayAudioList(ScannerList, false);
@@ -1356,6 +1383,23 @@ internal static class DispatchAudioSystem
                 ScannerList.Add(LookupModel.ManufacturerScannerFile);
             ScannerList.Add(LookupModel.ScannerFile);
         }
+    }
+    public static void AddStolenVehicle(ref List<string> ScannerList)
+    {       
+        int Num = rnd.Next(1, 3);
+        if (Num == 1)
+        {
+            ScannerList.Add(ScannerAudio.conjunctives.Inuhh.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(ScannerAudio.conjunctives.Inuhh2.FileName);
+        }
+        else
+        {
+            ScannerList.Add(ScannerAudio.conjunctives.Inuhh3.FileName);
+        }
+        ScannerList.Add(ScannerAudio.crime_stolen_vehicle.Apossiblestolenvehicle.FileName);
     }
     public static Color GetBaseColor(Color PrimaryColor)
     {
@@ -1407,6 +1451,7 @@ internal static class DispatchAudioSystem
         public ReportDispatch Type { get; set; }
         public int Priority { get; set; } = 0;
         public bool ResultsInLethalForce { get; set; } = false;
+        public bool ResultsInStolenCarSpotted { get; set; } = false;
         public GTAWeapon WeaponToReport { get; set; }
         public GTAVehicle VehicleToReport { get; set; }
         public DispatchQueueItem(ReportDispatch _Type,int _Priority, bool _ResultsInLethalForce)
@@ -1414,6 +1459,13 @@ internal static class DispatchAudioSystem
             Type = _Type;
             Priority = _Priority;
             ResultsInLethalForce = _ResultsInLethalForce;
+        }
+        public DispatchQueueItem(ReportDispatch _Type, int _Priority, bool _ResultsInLethalForce,bool _ResultsInStolenCarSpotted)
+        {
+            Type = _Type;
+            Priority = _Priority;
+            ResultsInLethalForce = _ResultsInLethalForce;
+            ResultsInStolenCarSpotted = _ResultsInStolenCarSpotted;
         }
     }
 
