@@ -44,6 +44,7 @@ namespace Instant_Action_RAGE.Systems
             DOA = 2,
             FIB = 3,
             IAA = 4,
+            SAPR = 5,
         }
         public static List<GTACop> CopPeds { get; private set; }
         public static List<GTACop> K9Peds { get; private set; }
@@ -140,16 +141,60 @@ namespace Instant_Action_RAGE.Systems
 
                     if(SpawnRandomCops && Game.GameTime > RandomCopInterval + 5000)
                     {
-                        if(Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() <= 5)
+
+                        //Zones.Zone MyZone = Zones.GetZoneName(Game.LocalPlayer.Character.Position);
+                        //WriteToLog("Zones", string.Format("GameName {0},Cops {1}, TextName {2}", MyZone.GameName,MyZone.CopsTypeToDispatch,MyZone.TextName));
+
+                        if(Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() <= 8)
                             SpawnRandomCop(true);
                         RemoveFarAwayRandomlySpawnedCops();
                         RandomCopInterval = Game.GameTime;
+
+
+                        
+
                     }
 
 
 
-                    //if (Settings.Debug)
-                    //   DebugLoop();
+
+
+                    //foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
+                    //{
+                    //    if (Cop.InChasingLoop)
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
+                    //    else
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
+                    //}
+
+
+
+
+                    //foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
+                    //{
+                    //    if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
+                    //    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Purple);
+                    //    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.White);
+                    //    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
+                    //    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
+                    //    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
+                    //    else if (Cop == PrimaryPursuer)
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Brown);
+                    //    else
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+                    //}
+
+
+
+
+                    if (Settings.Debug)
+                       DebugLoop();
 
 
                     stopwatch.Stop();
@@ -157,7 +202,7 @@ namespace Instant_Action_RAGE.Systems
 
                     //if (FrameTimes.Count >= 100)
                     //{
-                    //    WriteToLog("PoliceScanningTick", string.Format("             Avg of Last 100 Ticks {0} ms,Max {1},TotalCops {2}", FrameTimes.Average(), FrameTimes.Max(),CopPeds.Count()));
+                    //    WriteToLog("PoliceScanningTick", string.Format("             Avg of Last 100 Ticks {0} ms,Max {1},TotalCops {2}", FrameTimes.Average(), FrameTimes.Max(), CopPeds.Count()));
                     //    FrameTimes.Clear();
                     //}
                     if (stopwatch.ElapsedMilliseconds >= 20)
@@ -410,7 +455,7 @@ namespace Instant_Action_RAGE.Systems
         public static void IssueCopPistol(GTACop Cop)
         {
             GTAWeapon Pistol;
-            Pistol = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "PISTOL").PickRandom();
+            Pistol = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
             Cop.IssuedPistol = Pistol;
             Cop.CopPed.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
             //WriteToLog("ScanForPolice", string.Format("Cop Issued Pistol: {0}", Pistol.Name));
@@ -420,15 +465,15 @@ namespace Instant_Action_RAGE.Systems
             GTAWeapon IssuedHeavy;
             int Num = rnd.Next(1, 5);
             if (Num == 1)
-                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "AR").PickRandom();
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
             else if (Num == 2)
-                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "SHOTGUN").PickRandom();
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Shotgun).PickRandom();
             else if (Num == 3)
-                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "SMG").PickRandom();
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.SMG).PickRandom();
             else if (Num == 4)
-                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "AR").PickRandom();
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
             else
-                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == "AR").PickRandom();
+                IssuedHeavy = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
 
             Cop.IssuedHeavyWeapon = IssuedHeavy;
             Cop.CopPed.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
@@ -703,30 +748,37 @@ namespace Instant_Action_RAGE.Systems
         }
         public static void SpawnRandomCop(bool InVehicle)
         {
-            Zones.Zone ZoneName = Zones.GetZoneName(Game.LocalPlayer.Character.Position);
+            Vector3 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(500f));
+            Zones.Zone ZoneName = Zones.GetZoneName(SpawnLocation);
+            if (ZoneName == null)
+                return;
             if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.LSPD)
             {
                 int Value = rnd.Next(1, 11);
                 if (Value <= 7)
-                    SpawnCop(PoliceAgencies.LSPD);
+                    SpawnCop(PoliceAgencies.LSPD, SpawnLocation);
                 else if (Value == 8)
-                    SpawnCop(PoliceAgencies.DOA);
+                    SpawnCop(PoliceAgencies.DOA, SpawnLocation);
                 else if (Value == 9)
-                    SpawnCop(PoliceAgencies.FIB);
+                    SpawnCop(PoliceAgencies.FIB, SpawnLocation);
                 else
-                    SpawnCop(PoliceAgencies.IAA);
+                    SpawnCop(PoliceAgencies.IAA, SpawnLocation);
             }
-            else if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.LSPD)
+            else if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.Sheriff)
             {
                 int Value = rnd.Next(1, 11);
                 if (Value <= 9)
-                    SpawnCop(PoliceAgencies.LSSD);
+                    SpawnCop(PoliceAgencies.LSSD, SpawnLocation);
                 else
-                    SpawnCop(PoliceAgencies.DOA);
+                    SpawnCop(PoliceAgencies.DOA, SpawnLocation);
+            }
+            else if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.SAPR)
+            {
+                SpawnCop(PoliceAgencies.SAPR, SpawnLocation);
             }
             else
             {
-                SpawnCop(PoliceAgencies.LSPD);
+                SpawnCop(PoliceAgencies.LSPD, SpawnLocation);
             }
         }
         public static void RemoveFarAwayRandomlySpawnedCops()
@@ -757,10 +809,10 @@ namespace Instant_Action_RAGE.Systems
                 }
             }
         }
-        public static void SpawnCop(PoliceAgencies _Agency)
+        public static void SpawnCop(PoliceAgencies _Agency, Vector3 SpawnLocation)
         {
             Ped Cop = SpawnCopPed(_Agency);
-            Vehicle CopCar = SpawnCopCruiser(_Agency);
+            Vehicle CopCar = SpawnCopCruiser(_Agency, SpawnLocation);
             Cop.WarpIntoVehicle(CopCar, -1);
             Cop.IsPersistent = true;
             CopCar.IsPersistent = true;
@@ -769,9 +821,39 @@ namespace Instant_Action_RAGE.Systems
             IssueCopPistol(MyNewCop);
             MyNewCop.WasRandomSpawn = true;
 
-            Blip myBip = Cop.AttachBlip();
-            if (_Agency != PoliceAgencies.LSSD && _Agency != PoliceAgencies.LSPD)
-                myBip.Color = Color.Blue;
+
+            bool AddPartner = rnd.Next(1, 11) <= 5;
+            if(AddPartner)
+            {
+                Ped PartnerCop = SpawnCopPed(_Agency);
+                PartnerCop.WarpIntoVehicle(CopCar, 0);
+                PartnerCop.IsPersistent = true;
+                GTACop MyNewPartnerCop = new GTACop(PartnerCop, false, PartnerCop.Health);
+                IssueCopPistol(MyNewPartnerCop);
+                MyNewPartnerCop.WasRandomSpawn = true;
+                CopPeds.Add(MyNewPartnerCop);
+            }
+
+            //Blip myBlip = Cop.AttachBlip();
+            //Color BlipColor = Color.Black;
+            //if(_Agency == PoliceAgencies.LSPD)
+            //    BlipColor = Color.Black;
+            //else if (_Agency == PoliceAgencies.DOA)
+            //    BlipColor = Color.Green;
+            //else if (_Agency == PoliceAgencies.FIB)
+            //    BlipColor = Color.White;
+            //else if (_Agency == PoliceAgencies.IAA)
+            //    BlipColor = Color.Purple;
+            //else if (_Agency == PoliceAgencies.LSSD)
+            //    BlipColor = Color.Brown;
+            //else if (_Agency == PoliceAgencies.SAPR)
+            //    BlipColor = Color.Blue;
+            //else
+            //    BlipColor = Color.Black;
+
+
+            //myBlip.Color = BlipColor;
+
             CopPeds.Add(MyNewCop);
         }
         public static Ped SpawnCopPed(PoliceAgencies _Agency)
@@ -791,6 +873,13 @@ namespace Instant_Action_RAGE.Systems
                     PedModel = "s_m_y_sheriff_01";
                 else
                     PedModel = "s_f_y_sheriff_01";
+            }
+            else if (_Agency == PoliceAgencies.SAPR)
+            {
+                if (isMale)
+                    PedModel = "s_m_y_ranger_01";
+                else
+                    PedModel = "s_f_y_ranger_01";
             }
             else if (_Agency == PoliceAgencies.DOA)
             {
@@ -825,11 +914,10 @@ namespace Instant_Action_RAGE.Systems
 
             return Cop;
         }
-        public static Vehicle SpawnCopCruiser(PoliceAgencies _Agency)
+        public static Vehicle SpawnCopCruiser(PoliceAgencies _Agency,Vector3 SpawnLocation)
         {
-            Vector3 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(500f));
             string CarModel;
-            int RandomValue = rnd.Next(1, 10);
+            int RandomValue = rnd.Next(1, 11);
             if (_Agency == PoliceAgencies.LSPD)
             {
                 if (RandomValue <= 4)
@@ -849,6 +937,10 @@ namespace Instant_Action_RAGE.Systems
             else if (_Agency == PoliceAgencies.DOA)
             {
                 CarModel = "police4";
+            }
+            else if (_Agency == PoliceAgencies.SAPR)
+            {
+                CarModel = "pranger";
             }
             else if (_Agency == PoliceAgencies.FIB)
             {
@@ -908,8 +1000,8 @@ namespace Instant_Action_RAGE.Systems
                         _policeTask.CopToAssign.TaskIsQueued = false;
                         CopsToTask.RemoveAt(0);
                     }
-                   GameFiber.Sleep(100);
-                  //  GameFiber.Sleep(250);
+                   //GameFiber.Sleep(100);
+                    GameFiber.Sleep(250);
                 }
             });
         }
@@ -933,7 +1025,7 @@ namespace Instant_Action_RAGE.Systems
             GameFiber.StartNew(delegate
             {
                 WriteToLog("Task Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
-                uint TaskTime = Game.GameTime;
+                uint TaskTime = 0;// = Game.GameTime;
                 string LocalTaskName = "GoTo";
                 Cop.SimpleTaskName = "Chase";
                 NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_CLIMBOVERS", Cop.CopPed, true);
@@ -947,18 +1039,25 @@ namespace Instant_Action_RAGE.Systems
                     Cop.CopPed.BlockPermanentEvents = true;
 
                     NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.CopPed, 1.1f);
-                    if (Game.GameTime - TaskTime >= 500)//250
+                    if (TaskTime == 0 || Game.GameTime - TaskTime >= 250)//250
                     {
                         ArmCopAppropriately(Cop);
                         if (Cop.DistanceToPlayer > 100f)
                             break;
+
+                        Cop.InChasingLoop = true;
+
 
                         if (InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 2.5f)
                         {
                             if (Cop.isPursuitPrimary && Cop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
                             {
                                 Cop.CopPed.CanRagdoll = false;
-                                NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 500f);
+                                //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2f, 9);
+
+                                NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 10f);
+
+
                                 Cop.CopPed.KeepTasks = true;
                                 TaskTime = Game.GameTime;
                                 Cop.SubTaskName = "CarJack";
@@ -972,7 +1071,27 @@ namespace Instant_Action_RAGE.Systems
                                 TaskTime = Game.GameTime;
                                 Cop.SubTaskName = "Arrest";
                                 LocalTaskName = "Arrest";
+                                WriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest, {0}", Cop.CopPed.Handle));
                             }
+                            //if (Cop.RecentlySeenPlayer() && Cop.DistanceToPlayer <= 25f && Game.GameTime - TaskTime > 3500 && (LocalTaskName != "CarJack" || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)) //if (Cop.isPursuitPrimary && Cop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
+                            //{
+                            //    Cop.CopPed.CanRagdoll = false;
+                            //    NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 500f);
+                            //    Cop.CopPed.KeepTasks = true;
+                            //    TaskTime = Game.GameTime;
+                            //    Cop.SubTaskName = "CarJack";
+                            //    LocalTaskName = "CarJack";
+                            //    WriteToLog("TaskChasing", string.Format("Cop SubTasked with CarJack, {0}", Cop.CopPed.Handle));
+                            //}
+                            //else if (Cop.RecentlySeenPlayer() && Game.GameTime - TaskTime > 3500 && (LocalTaskName != "Arrest" || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask))
+                            //{
+                            //    NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.CopPed, Game.LocalPlayer.Character, 3f, 20f);
+                            //    Cop.CopPed.KeepTasks = true;
+                            //    TaskTime = Game.GameTime;
+                            //    Cop.SubTaskName = "Arrest";
+                            //    LocalTaskName = "Arrest";
+                            //    WriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest, {0}", Cop.CopPed.Handle));
+                            //}
 
                         }
                         else
@@ -1023,6 +1142,9 @@ namespace Instant_Action_RAGE.Systems
                         if ((InstantAction.areHandsUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f)
                             InstantAction.SurrenderBust = true;
 
+                        if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f)
+                            InstantAction.SurrenderBust = true;
+
                         if (InstantAction.PlayerInVehicle && (Cop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f))
                         {
                             GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
@@ -1050,6 +1172,9 @@ namespace Instant_Action_RAGE.Systems
                 Cop.SimpleTaskName = "";
                 if (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
                     Cop.CopPed.CanRagdoll = true;
+
+
+                Cop.InChasingLoop = false;
 
             }, "Chase");
         }
@@ -1506,8 +1631,6 @@ namespace Instant_Action_RAGE.Systems
 
         private static void WriteToLog(String ProcedureString, String TextToLog)
         {
-            if (ProcedureString != "PoliceScanningTick")
-                return;
             StringBuilder sb = new StringBuilder();
             sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog + System.Environment.NewLine);
             File.AppendAllText("Plugins\\InstantAction\\" + "log.txt", sb.ToString());

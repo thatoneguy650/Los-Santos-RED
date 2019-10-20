@@ -650,42 +650,42 @@ internal static class DispatchAudioSystem
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithasawedoffshotgun.FileName);
         }
-        else if (CarryingWeapon.Category == "LMG")
+        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.LMG)
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithamachinegun.FileName);
         }
-        else if (CarryingWeapon.Category == "PISTOL")
+        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Pistol)
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithafirearm.FileName);
         }
-        else if (CarryingWeapon.Category == "SHOTGUN")
+        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Shotgun)
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithashotgun.FileName);
         }
-        else if (CarryingWeapon.Category == "SMG")
+        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.SMG)
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithasubmachinegun.FileName);
         }
-        else if (CarryingWeapon.Category == "AR")
+        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.AR)
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Carryinganassaultrifle.FileName);
         }
-        else if (CarryingWeapon.Category == "SNIPER")
+        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Sniper)
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Armedwithasniperrifle.FileName);
         }
-        else if (CarryingWeapon.Category == "HEAVY")
+        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Heavy)
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.status_message.HeavilyArmed.FileName);
         }
-        else if (CarryingWeapon.Category == "MELEE")
+        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Melee)
         {
             ScannerList.Add(ScannerAudio.suspect_is.SuspectIs.FileName);
             ScannerList.Add(ScannerAudio.carrying_weapon.Carryingaweapon.FileName);

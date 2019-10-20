@@ -84,6 +84,7 @@ public static class InstantAction
     private static int PrevCountWeapons = 1;
     private static bool PrevAnyCanRecognizePlayer;
     private static List<long> FrameTimes = new List<long>();
+    private static WeaponHash LastWeapon = 0;
 
     public static bool AnyPoliceCanSeePlayer { get; set; } = false;
     public static bool AnyPoliceCanRecognizePlayer { get; set; } = false;
@@ -127,7 +128,8 @@ public static class InstantAction
         DeadlyChase = 3,
         ArrestedWait = 4,
     }
-    
+
+
     //Header Items
     static InstantAction()
     {
@@ -295,6 +297,14 @@ public static class InstantAction
             BeingArrested = false;
             NativeFunction.Natives.xB4EDDC19532BFB85();
 
+
+
+            //Blip[] MyBlips = World.GetAllBlips();
+            //foreach(Blip myblip in MyBlips)
+            //{
+            //    myblip.Delete();
+            //}
+
         }
       
         if (Game.IsKeyDown(Keys.NumPad5))
@@ -363,7 +373,7 @@ public static class InstantAction
 
 
                 //WriteToLog("PoliceScanningTick", "Start Spawn Cop");
-                PoliceScanningSystem.SpawnCop(PoliceScanningSystem.PoliceAgencies.DOA);
+                //PoliceScanningSystem.SpawnCop(PoliceScanningSystem.PoliceAgencies.DOA);
 
                 //GameFiber.Sleep(5000);
 
@@ -445,7 +455,7 @@ public static class InstantAction
                     AmStealingCarFromPrerson = true;
                     if(rnd.Next(1,5) <= 5)
                     {
-                        GTAWeapon GunToGive = Weapons.Where(x => x.Category == "PISTOL" || x.Category == "MELEE").PickRandom();
+                        GTAWeapon GunToGive = Weapons.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol || x.Category == GTAWeapon.WeaponCategory.Melee).PickRandom();
                         WriteToLog("UpdatePlayer", string.Format("Turned Ped into Trump Supported gave them: {0}", GunToGive.Name));
                         PreviousOwner.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
                         PreviousOwner.Tasks.FightAgainst(Game.LocalPlayer.Character);
@@ -496,6 +506,15 @@ public static class InstantAction
         PlayerStarsGreyedOut = NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
         if (!AnyPoliceSeenPlayerThisWanted && AnyPoliceRecentlySeenPlayer)
             AnyPoliceSeenPlayerThisWanted = true;
+
+
+
+        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash != LastWeapon)
+        {
+            WriteToLog("WeaponChange", string.Format("Last Weapon Changed to: {0}", LastWeapon.ToString()));
+            LastWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
+        }
+
     }
     private static void StateTick()
     {
@@ -768,17 +787,34 @@ public static class InstantAction
             int TotalFootChaseTasked = PoliceScanningSystem.CopPeds.Where(x => (x.isTasked || x.TaskIsQueued) && x.TaskType == PoliceTask.Task.Chase).Count();
             //int TotalVehicleChaseTasked = PoliceScanningSystem.CopPeds.Where(x => x.isTasked && x.TaskType == PoliceTask.Task.VehicleChase).Count();
 
-            if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked <= 4 && !Cop.isInVehicle && Cop.DistanceToPlayer <= 55f && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed <= 5f))
+            if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked <= 4 && !Cop.CopPed.IsInAnyVehicle(false) && Cop.DistanceToPlayer <= 55f && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed <= 5f))
             {
                 Cop.TaskIsQueued = true;
                 PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Chase));
             }
+
+            //else if (!Cop.TaskIsQueued && (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing) && (Cop.RecentlySeenPlayer() || Cop.DistanceToPlayer <= 65f))
+            //{
+            //    Cop.TaskIsQueued = true;
+            //    Cop.GameTimeLastTask = Game.GameTime;
+            //    PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest));
+            //}
+            //else if (!Cop.TaskIsQueued && Game.GameTime - Cop.GameTimeLastTask > 3500 && Cop.RecentlySeenPlayer() && Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress && Cop.DistanceToPlayer > 45f)
+            //{
+            //    Cop.TaskIsQueued = true;
+            //    Cop.GameTimeLastTask = Game.GameTime;
+            //    PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest)); //retask the arrest
+            //}
+
+
             //if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked > 0 && TotalVehicleChaseTasked <= 1 && Cop.isInVehicle && Cop.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
             //{
             //    Cop.TaskIsQueued = true;
             //    PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.VehicleChase));
             //}
         }
+        if (PoliceScanningSystem.CopPeds.Any(x => x.DistanceToPlayer <= 4f) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 4.0f) && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !isBusted)
+            SurrenderBust = true;
 
         if (SurrenderBust && !isBustTimeOut())
             SurrenderBustEvent();
@@ -801,7 +837,7 @@ public static class InstantAction
                     Cop.TaskIsQueued = true;
                     PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Arrest));
                 }
-                else if (!Cop.TaskIsQueued && (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing) && (Cop.RecentlySeenPlayer() || Cop.DistanceToPlayer <= 65f))
+                else if (!Cop.TaskIsQueued && (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted) && (Cop.RecentlySeenPlayer() || Cop.DistanceToPlayer <= 65f))
                 {
                     Cop.TaskIsQueued = true;
                     Cop.GameTimeLastTask = Game.GameTime;
@@ -2060,9 +2096,42 @@ public static class InstantAction
     private static void PlayerJackingChanged(bool isJacking)
     {
         PlayerIsJacking = isJacking;
-        WriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to: {0}", PlayerIsJacking));
+        WriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to HELLO!: {0}", PlayerIsJacking));
         if (PlayerIsJacking)
         {
+            if(Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
+                Ped Jacktarget = Game.LocalPlayer.Character.JackingTarget;
+                //GameFiber.Sleep(1000);
+                uint GameTimeStartedJacking = Game.GameTime;
+                bool WantToShootPed = false;
+
+                while(!Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                {
+                    if(Game.IsControlJustPressed(2,GameControl.Attack))
+                    {
+                        //WantToShootPed = true;
+                        //break;
+
+                        Vector3 HeadCoordinated = Jacktarget.GetBonePosition(PedBoneId.Head);
+                        NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
+
+
+                    }
+                    GameFiber.Yield();
+                }
+                //WriteToLog("ValueChecker", String.Format("You want to shoot the ped: {0}", WantToShootPed));
+
+                //if (Jacktarget == null || !WantToShootPed || !Jacktarget.Exists() || Jacktarget.IsDead)
+                //        return;
+
+                //Vector3 HeadCoordinated = Jacktarget.GetBonePosition(PedBoneId.Head);
+                //NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
+
+            }
+
+
             //JackedCurrentVehicle = true;
         }
         PrevPlayerIsJacking = PlayerIsJacking;
@@ -2198,16 +2267,23 @@ public static class InstantAction
             if (!PedToSuicide.IsInAnyVehicle(false))
             {
                 RequestAnimationDictionay("mp_suicide");
-                if (PedToSuicide.Inventory.EquippedWeapon != null && PedToSuicide.Inventory.EquippedWeapon.Hash == WeaponHash.Pistol)
+
+                GTAWeapon CurrentGun = null;
+                if(PedToSuicide.Inventory.EquippedWeapon != null)
+                    CurrentGun = Weapons.Where(x => (WeaponHash)x.Hash == PedToSuicide.Inventory.EquippedWeapon.Hash && x.CanPistolSuicide).FirstOrDefault();
+
+                if (CurrentGun != null)
                 {
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToSuicide, "mp_suicide", "pistol", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                     GameFiber.Wait(750);
+                    Vector3 HeadCoordinated = PedToSuicide.GetBonePosition(PedBoneId.Head);
+                    NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", PedToSuicide, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
                 }
                 else
                 {
                     NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", PedToSuicide, (uint)2725352035, true);
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToSuicide, "mp_suicide", "pill", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-                    GameFiber.Wait(2500);
+                    GameFiber.Wait(6000);
                 }
             }
             PedToSuicide.Kill();
@@ -2693,91 +2769,100 @@ public static class InstantAction
     private static void setupWeapons()
     {
         //Melee
-        Weapons.Add(new GTAWeapon("weapon_dagger", 0, "MELEE", 0, 2460120199));
-        Weapons.Add(new GTAWeapon("weapon_bat", 0, "MELEE", 0, 2508868239));
-        Weapons.Add(new GTAWeapon("weapon_bottle", 0, "MELEE", 0, 4192643659));
-        Weapons.Add(new GTAWeapon("weapon_crowbar", 0, "MELEE", 0, 2227010557));
-        Weapons.Add(new GTAWeapon("weapon_flashlight", 0, "MELEE", 0, 2343591895));
-        Weapons.Add(new GTAWeapon("weapon_golfclub", 0, "MELEE", 0, 1141786504));
-        Weapons.Add(new GTAWeapon("weapon_hammer", 0, "MELEE", 0, 1317494643));
-        Weapons.Add(new GTAWeapon("weapon_hatchet", 0, "MELEE", 0, 4191993645));
-        Weapons.Add(new GTAWeapon("weapon_knuckle", 0, "MELEE", 0, 3638508604));
-        Weapons.Add(new GTAWeapon("weapon_knife", 0, "MELEE", 0, 2578778090));
-        Weapons.Add(new GTAWeapon("weapon_machete", 0, "MELEE", 0, 3713923289));
-        Weapons.Add(new GTAWeapon("weapon_switchblade", 0, "MELEE", 0, 3756226112));
-        Weapons.Add(new GTAWeapon("weapon_nightstick", 0, "MELEE", 0, 1737195953));
-        Weapons.Add(new GTAWeapon("weapon_wrench", 0, "MELEE", 0, 0x19044EE0));
-        Weapons.Add(new GTAWeapon("weapon_battleaxe", 0, "MELEE", 0, 3441901897));
-        Weapons.Add(new GTAWeapon("weapon_poolcue", 0, "MELEE", 0, 0x94117305));
-        Weapons.Add(new GTAWeapon("weapon_stone_hatchet", 0, "MELEE", 0, 0x3813FC08));
+        Weapons.Add(new GTAWeapon("weapon_dagger", 0, GTAWeapon.WeaponCategory.Melee, 0, 2460120199));
+        Weapons.Add(new GTAWeapon("weapon_bat", 0, GTAWeapon.WeaponCategory.Melee, 0, 2508868239));
+        Weapons.Add(new GTAWeapon("weapon_bottle", 0, GTAWeapon.WeaponCategory.Melee, 0, 4192643659));
+        Weapons.Add(new GTAWeapon("weapon_crowbar", 0, GTAWeapon.WeaponCategory.Melee, 0, 2227010557));
+        Weapons.Add(new GTAWeapon("weapon_flashlight", 0, GTAWeapon.WeaponCategory.Melee, 0, 2343591895));
+        Weapons.Add(new GTAWeapon("weapon_golfclub", 0, GTAWeapon.WeaponCategory.Melee, 0, 1141786504));
+        Weapons.Add(new GTAWeapon("weapon_hammer", 0, GTAWeapon.WeaponCategory.Melee, 0, 1317494643));
+        Weapons.Add(new GTAWeapon("weapon_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 4191993645));
+        Weapons.Add(new GTAWeapon("weapon_knuckle", 0, GTAWeapon.WeaponCategory.Melee, 0, 3638508604));
+        Weapons.Add(new GTAWeapon("weapon_knife", 0, GTAWeapon.WeaponCategory.Melee, 0, 2578778090));
+        Weapons.Add(new GTAWeapon("weapon_machete", 0, GTAWeapon.WeaponCategory.Melee, 0, 3713923289));
+        Weapons.Add(new GTAWeapon("weapon_switchblade", 0, GTAWeapon.WeaponCategory.Melee, 0, 3756226112));
+        Weapons.Add(new GTAWeapon("weapon_nightstick", 0, GTAWeapon.WeaponCategory.Melee, 0, 1737195953));
+        Weapons.Add(new GTAWeapon("weapon_wrench", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x19044EE0));
+        Weapons.Add(new GTAWeapon("weapon_battleaxe", 0, GTAWeapon.WeaponCategory.Melee, 0, 3441901897));
+        Weapons.Add(new GTAWeapon("weapon_poolcue", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x94117305));
+        Weapons.Add(new GTAWeapon("weapon_stone_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x3813FC08));
         //Pistol
-        Weapons.Add(new GTAWeapon("weapon_pistol", 60, "PISTOL", 1, 453432689, true));
-        Weapons.Add(new GTAWeapon("weapon_pistol_mk2", 60, "PISTOL", 1, 0xBFE256D4, true));
-        Weapons.Add(new GTAWeapon("weapon_combatpistol", 60, "PISTOL", 1, 1593441988, true));
-        Weapons.Add(new GTAWeapon("weapon_appistol", 60, "PISTOL", 1, 584646201));
-        Weapons.Add(new GTAWeapon("weapon_stungun", 0, "PISTOL", 1, 911657153));
-        Weapons.Add(new GTAWeapon("weapon_pistol50", 60, "PISTOL", 1, 2578377531));
-        Weapons.Add(new GTAWeapon("weapon_snspistol", 60, "PISTOL", 1, 3218215474));
-        Weapons.Add(new GTAWeapon("weapon_snspistol_mk2", 60, "PISTOL", 1, 0x88374054));
-        Weapons.Add(new GTAWeapon("weapon_heavypistol", 60, "PISTOL", 1, 3523564046, true));
-        Weapons.Add(new GTAWeapon("weapon_vintagepistol", 60, "PISTOL", 1, 137902532));
-        Weapons.Add(new GTAWeapon("weapon_flaregun", 60, "PISTOL", 1, 1198879012));
-        Weapons.Add(new GTAWeapon("weapon_marksmanpistol", 60, "PISTOL", 1, 3696079510));
-        Weapons.Add(new GTAWeapon("weapon_revolver", 60, "PISTOL", 1, 3249783761));
-        Weapons.Add(new GTAWeapon("weapon_revolver_mk2", 60, "PISTOL", 1, 0xCB96392F));
-        Weapons.Add(new GTAWeapon("weapon_doubleaction", 60, "PISTOL", 1, 0x97EA20B8));
-        Weapons.Add(new GTAWeapon("weapon_raypistol", 60, "PISTOL", 1, 0xAF3696A1));
+        Weapons.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true));
+        Weapons.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true));
+        Weapons.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true));
+        Weapons.Add(new GTAWeapon("weapon_appistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 584646201));
+        Weapons.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153));
+        Weapons.Add(new GTAWeapon("weapon_pistol50", 60, GTAWeapon.WeaponCategory.Pistol, 1, 2578377531));
+        Weapons.Add(new GTAWeapon("weapon_snspistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3218215474));
+        Weapons.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054));
+        Weapons.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true));
+        Weapons.Add(new GTAWeapon("weapon_vintagepistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 137902532));
+        Weapons.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012));
+        Weapons.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510));
+        Weapons.Add(new GTAWeapon("weapon_revolver", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3249783761));
+        Weapons.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F));
+        Weapons.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8));
+        Weapons.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1));
         //Shotgun
-        Weapons.Add(new GTAWeapon("weapon_pumpshotgun", 32, "SHOTGUN", 2, 487013001, true));
-        Weapons.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, "SHOTGUN", 2, 0x555AF99A, true));
-        Weapons.Add(new GTAWeapon("weapon_sawnoffshotgun", 32, "SHOTGUN", 2, 2017895192));
-        Weapons.Add(new GTAWeapon("weapon_assaultshotgun", 32, "SHOTGUN", 2, 3800352039));
-        Weapons.Add(new GTAWeapon("weapon_bullpupshotgun", 32, "SHOTGUN", 2, 2640438543));
-        Weapons.Add(new GTAWeapon("weapon_musket", 32, "SHOTGUN", 2, 2828843422));
-        Weapons.Add(new GTAWeapon("weapon_heavyshotgun", 32, "SHOTGUN", 2, 984333226));
-        Weapons.Add(new GTAWeapon("weapon_dbshotgun", 32, "SHOTGUN", 2, 4019527611));
-        Weapons.Add(new GTAWeapon("weapon_autoshotgun", 32, "SHOTGUN", 2, 317205821));
+        Weapons.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true));
+        Weapons.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 0x555AF99A, true));
+        Weapons.Add(new GTAWeapon("weapon_sawnoffshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2017895192));
+        Weapons.Add(new GTAWeapon("weapon_assaultshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 3800352039));
+        Weapons.Add(new GTAWeapon("weapon_bullpupshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2640438543));
+        Weapons.Add(new GTAWeapon("weapon_musket", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2828843422));
+        Weapons.Add(new GTAWeapon("weapon_heavyshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 984333226));
+        Weapons.Add(new GTAWeapon("weapon_dbshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 4019527611));
+        Weapons.Add(new GTAWeapon("weapon_autoshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 317205821));
         //SMG
-        Weapons.Add(new GTAWeapon("weapon_microsmg", 32, "SMG", 2, 324215364));
-        Weapons.Add(new GTAWeapon("weapon_smg", 32, "SMG", 2, 736523883));
-        Weapons.Add(new GTAWeapon("weapon_smg_mk2", 32, "SMG", 2, 0x78A97CD0));
-        Weapons.Add(new GTAWeapon("weapon_assaultsmg", 32, "SMG", 2, 4024951519));
-        Weapons.Add(new GTAWeapon("weapon_combatpdw", 32, "SMG", 2, 171789620, true));
-        Weapons.Add(new GTAWeapon("weapon_machinepistol", 32, "SMG", 2, 3675956304));
-        Weapons.Add(new GTAWeapon("weapon_minismg", 32, "SMG", 2, 3173288789));
-        Weapons.Add(new GTAWeapon("weapon_raycarbine", 32, "SMG", 2, 0x476BF155));
+        Weapons.Add(new GTAWeapon("weapon_microsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 324215364));
+        Weapons.Add(new GTAWeapon("weapon_smg", 32, GTAWeapon.WeaponCategory.SMG, 2, 736523883));
+        Weapons.Add(new GTAWeapon("weapon_smg_mk2", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x78A97CD0));
+        Weapons.Add(new GTAWeapon("weapon_assaultsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 4024951519));
+        Weapons.Add(new GTAWeapon("weapon_combatpdw", 32, GTAWeapon.WeaponCategory.SMG, 2, 171789620, true));
+        Weapons.Add(new GTAWeapon("weapon_machinepistol", 32, GTAWeapon.WeaponCategory.SMG, 2, 3675956304));
+        Weapons.Add(new GTAWeapon("weapon_minismg", 32, GTAWeapon.WeaponCategory.SMG, 2, 3173288789));
+        Weapons.Add(new GTAWeapon("weapon_raycarbine", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x476BF155));
         //AR
-        Weapons.Add(new GTAWeapon("weapon_assaultrifle", 120, "AR", 3, 3220176749));
-        Weapons.Add(new GTAWeapon("weapon_assaultrifle_mk2", 120, "AR", 3, 0x394F415C));
-        Weapons.Add(new GTAWeapon("weapon_carbinerifle", 120, "AR", 3, 2210333304, true));
-        Weapons.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, "AR", 3, 0xFAD1F1C9, true));
-        Weapons.Add(new GTAWeapon("weapon_advancedrifle", 120, "AR", 3, 2937143193));
-        Weapons.Add(new GTAWeapon("weapon_specialcarbine", 120, "AR", 3, 3231910285));
-        Weapons.Add(new GTAWeapon("weapon_specialcarbine_mk2", 120, "AR", 3, 0x969C3D67));
-        Weapons.Add(new GTAWeapon("weapon_bullpuprifle", 120, "AR", 3, 2132975508));
-        Weapons.Add(new GTAWeapon("weapon_bullpuprifle_mk2", 120, "AR", 3, 0x84D6FAFD));
-        Weapons.Add(new GTAWeapon("weapon_compactrifle", 120, "AR", 3, 1649403952));
+        Weapons.Add(new GTAWeapon("weapon_assaultrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 3220176749));
+        Weapons.Add(new GTAWeapon("weapon_assaultrifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x394F415C));
+        Weapons.Add(new GTAWeapon("weapon_carbinerifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2210333304, true));
+        Weapons.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0xFAD1F1C9, true));
+        Weapons.Add(new GTAWeapon("weapon_advancedrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2937143193));
+        Weapons.Add(new GTAWeapon("weapon_specialcarbine", 120, GTAWeapon.WeaponCategory.AR, 3, 3231910285));
+        Weapons.Add(new GTAWeapon("weapon_specialcarbine_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x969C3D67));
+        Weapons.Add(new GTAWeapon("weapon_bullpuprifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2132975508));
+        Weapons.Add(new GTAWeapon("weapon_bullpuprifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x84D6FAFD));
+        Weapons.Add(new GTAWeapon("weapon_compactrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 1649403952));
         //LMG
-        Weapons.Add(new GTAWeapon("weapon_mg", 200, "LMG", 4, 2634544996));
-        Weapons.Add(new GTAWeapon("weapon_combatmg", 200, "LMG", 4, 2144741730));
-        Weapons.Add(new GTAWeapon("weapon_combatmg_mk2", 200, "LMG", 4, 0xDBBD7280));
-        Weapons.Add(new GTAWeapon("weapon_gusenberg", 200, "LMG", 4, 1627465347));
+        Weapons.Add(new GTAWeapon("weapon_mg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2634544996));
+        Weapons.Add(new GTAWeapon("weapon_combatmg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2144741730));
+        Weapons.Add(new GTAWeapon("weapon_combatmg_mk2", 200, GTAWeapon.WeaponCategory.LMG, 4, 0xDBBD7280));
+        Weapons.Add(new GTAWeapon("weapon_gusenberg", 200, GTAWeapon.WeaponCategory.LMG, 4, 1627465347));
         //Sniper
-        Weapons.Add(new GTAWeapon("weapon_sniperrifle", 40, "SNIPER", 4, 100416529));
-        Weapons.Add(new GTAWeapon("weapon_heavysniper", 40, "SNIPER", 4, 205991906));
-        Weapons.Add(new GTAWeapon("weapon_heavysniper_mk2", 40, "SNIPER", 4, 0xA914799));
-        Weapons.Add(new GTAWeapon("weapon_marksmanrifle", 40, "SNIPER", 4, 3342088282));
-        Weapons.Add(new GTAWeapon("weapon_marksmanrifle_mk2", 40, "SNIPER", 4, 0x6A6C02E0));
+        Weapons.Add(new GTAWeapon("weapon_sniperrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 100416529));
+        Weapons.Add(new GTAWeapon("weapon_heavysniper", 40, GTAWeapon.WeaponCategory.Sniper, 4, 205991906));
+        Weapons.Add(new GTAWeapon("weapon_heavysniper_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0xA914799));
+        Weapons.Add(new GTAWeapon("weapon_marksmanrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 3342088282));
+        Weapons.Add(new GTAWeapon("weapon_marksmanrifle_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0x6A6C02E0));
         //Heavy
-        Weapons.Add(new GTAWeapon("weapon_rpg", 3, "HEAVY", 4, 2982836145));
-        Weapons.Add(new GTAWeapon("weapon_grenadelauncher", 32, "HEAVY", 4, 2726580491));
-        Weapons.Add(new GTAWeapon("weapon_grenadelauncher_smoke", 32, "HEAVY", 4, 1305664598));
-        Weapons.Add(new GTAWeapon("weapon_minigun", 500, "HEAVY", 4, 1119849093));
-        Weapons.Add(new GTAWeapon("weapon_firework", 20, "HEAVY", 4, 0x7F7497E5));
-        Weapons.Add(new GTAWeapon("weapon_railgun", 50, "HEAVY", 4, 0x6D544C99));
-        Weapons.Add(new GTAWeapon("weapon_hominglauncher", 3, "HEAVY", 4, 0x63AB0442));
-        Weapons.Add(new GTAWeapon("weapon_compactlauncher", 10, "HEAVY", 4, 125959754));
-        Weapons.Add(new GTAWeapon("weapon_rayminigun", 50, "HEAVY", 4, 0xB62D1F67));
+        Weapons.Add(new GTAWeapon("weapon_rpg", 3, GTAWeapon.WeaponCategory.Heavy, 4, 2982836145));
+        Weapons.Add(new GTAWeapon("weapon_grenadelauncher", 32, GTAWeapon.WeaponCategory.Heavy, 4, 2726580491));
+        Weapons.Add(new GTAWeapon("weapon_grenadelauncher_smoke", 32, GTAWeapon.WeaponCategory.Heavy, 4, 1305664598));
+        Weapons.Add(new GTAWeapon("weapon_minigun", 500, GTAWeapon.WeaponCategory.Heavy, 4, 1119849093));
+        Weapons.Add(new GTAWeapon("weapon_firework", 20, GTAWeapon.WeaponCategory.Heavy, 4, 0x7F7497E5));
+        Weapons.Add(new GTAWeapon("weapon_railgun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0x6D544C99));
+        Weapons.Add(new GTAWeapon("weapon_hominglauncher", 3, GTAWeapon.WeaponCategory.Heavy, 4, 0x63AB0442));
+        Weapons.Add(new GTAWeapon("weapon_compactlauncher", 10, GTAWeapon.WeaponCategory.Heavy, 4, 125959754));
+        Weapons.Add(new GTAWeapon("weapon_rayminigun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0xB62D1F67));
+
+        foreach(GTAWeapon Weapon in Weapons.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol))
+        {
+            if (Weapon.Name == "weapon_marksmanpistol" || Weapon.Name == "weapon_stungun" || Weapon.Name == "weapon_flaregun" || Weapon.Name == "weapon_raypistol")
+                Weapon.CanPistolSuicide = false;
+            else
+                Weapon.CanPistolSuicide = true;
+        }
+
     }
 
     //Other
@@ -2814,9 +2899,6 @@ public static class InstantAction
     }
     public static void WriteToLog(String ProcedureString, String TextToLog)
     {
-        if (ProcedureString != "InstantActionTick")
-            return;
-
         StringBuilder sb = new StringBuilder();
         sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog + System.Environment.NewLine);
         File.AppendAllText("Plugins\\InstantAction\\" + "log.txt", sb.ToString());

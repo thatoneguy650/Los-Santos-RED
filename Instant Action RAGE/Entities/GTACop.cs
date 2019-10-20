@@ -59,8 +59,9 @@ public class GTACop
     public bool isInVehicle { get; set; } = false;
     public bool isInHelicopter { get; set; } = false;
     public bool isOnBike { get; set; } = false;
+    public bool InChasingLoop { get; set; } = false;
     public float DistanceToPlayer { get; set; }
-    public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, "PISTOL", 1, 453432689, true);
+    public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public bool NeedsWeaponCheck
     {
