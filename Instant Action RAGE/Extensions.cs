@@ -141,41 +141,7 @@ namespace ExtensionsMethods
         {
             return Math.Abs(Vector3.Subtract(myPed.Position, position).Length());
         }
-        //public static bool IS_ANY_PED_IN_LOS(List<Ped> peds, float minAngle, bool withOcclusion = true, bool includeDead = false)
-        //{
-        //    foreach (Ped ped in peds)
-        //    {
-        //        if (ped.Exists())
-        //        {
-        //            if (ped.IsDead && !includeDead)
-        //            {
-        //                continue;
-        //            }
-        //            if (withOcclusion) // with obstacle detection                
-        //            {
-        //                if (HAS_ENTITY_CLEAR_LOS_TO_ENTITY(ped, Game.LocalPlayer.Character)) // No Obstacles?   
-        //                {
-        //                    float dot = getDotVectorResult(ped, Game.LocalPlayer.Character);
-        //                    if (dot > minAngle) // Is in acceptable range for dot product?     
-        //                    {
-        //                        return true;
-        //                    }
-        //                }
-
-
-        //            }
-        //            else // without obstacle detection     
-        //            {
-        //                float dot = getDotVectorResult(ped, Game.LocalPlayer.Character);
-        //                if (dot > minAngle) // Is in acceptable range for dot product?   
-        //                {
-        //                    return true;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
+     
         public static float getDotVectorResult(Ped source, Ped target)
         {
             if (source.Exists() && target.Exists())
@@ -290,59 +256,5 @@ namespace ExtensionsMethods
                                    + (c1.G - c2.G) * (c1.G - c2.G)
                                    + (c1.B - c2.B) * (c1.B - c2.B));
         }
-
-
-
-        //public static bool IsInFront(this Ped myPed)
-        //{
-        //    /// <summary>        /// Determine the dot vector product between source and target ped       
-        //    /// 
-        //    /// 
-        //    /// /// </summary>        /// <param name="source"></param>        /// <param name="target"></param>      
-        //    /// /// <returns>float in range -1.0 to 1.0, negative value if source is behind target, positive value if source is in front of target, 0 if source is orthogonal to target, 1 if directly in front of target, -1 if directly behind target</returns>       
-        //    public static float getDotVectorResult(Ped source, Ped target)
-        //    {
-        //        if (source.Exists() && target.Exists())
-        //        {
-        //            Vector3 dir = (target.Position - source.Position).Normalized;
-        //            return Vector3.Dot(dir, source.ForwardVector);
-        //        }            else                return -1.0f;
-        //    }        
-        //    /// <summary>  
-        //    /// /// Determine if any of given peds is in line of sight to the player   
-        //    /// /// </summary>   
-        //    /// /// <param name="peds">List of peds to check for</param>    
-        //    /// /// <param name="minAngle">the value of the dot product at which a ped is considered not in LoS</param>   
-        //    /// /// <param name="withOcclusion">true if occlusion check should be included, false otherwise</param> 
-        //    /// /// <param name="includeDead">true if dead peds should be included, false otherwise</param>
-        //    /// /// <returns>true if at least one ped was in los, false otherwise</returns>  
-        //    public static bool IS_ANY_PED_IN_LOS(List<Ped> peds, float minAngle, bool withOcclusion = true, bool includeDead = false)
-        //    {            foreach (Ped ped in peds)
-        //        {                if (ped.Exists())
-        //            {
-        //                if (ped.IsDead && !includeDead)
-        //                {
-        //                    continue;
-        //                }
-        //                if (withOcclusion) // with obstacle detection              
-        //                {
-        //                    if (HAS_ENTITY_CLEAR_LOS_TO_ENTITY(ped, Game.Player.Character)) // No Obstacles?          
-        //                    {
-        //                        float dot = getDotVectorResult(ped, Game.Player.Character);
-        //                        if (dot > minAngle) // Is in acceptable range for dot product?       
-        //                        {                                return true;
-        //                        }                        }
-        //                }                    else // without obstacle detection        
-        //                {
-        //                    float dot = getDotVectorResult(ped, Game.Player.Character);
-        //                    if (dot > minAngle) // Is in acceptable range for dot product?      
-        //                    {                            return true;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        return false;
-        //    }
-        //}
     }
 }

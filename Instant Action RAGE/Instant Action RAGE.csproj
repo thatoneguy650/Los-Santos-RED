@@ -106,6 +106,7 @@
     <Compile Include="Entities\TrafficVehicle.cs" />
     <Compile Include="Entities\Weapon Variation\WeaponComponent.cs" />
     <Compile Include="Entities\Weapon Variation\ModdedWeapon.cs" />
+    <Compile Include="MySettings.cs" />
     <Compile Include="Old\CustomOptions.cs" />
     <Compile Include="Entities\EmergencyLocation.cs" />
     <Compile Include="Entities\GTACop.cs" />

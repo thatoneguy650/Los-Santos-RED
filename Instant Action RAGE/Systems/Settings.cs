@@ -3,18 +3,41 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 
 static class Settings
 {
-    public static bool AutoRespawn = false;
-    public static bool BetterChasesAllowBustOportunity = true;
-    public static bool ReplacePlayerWithPed = true;
-    public static string ReplacePlayerWithPedCharacter = "Michael";
+    public static bool AliasPedAsMainCharacter = true;
+    public static string MainCharacterToAlias = "Michael";
+    public static bool RandomizeMoneyOnTakeover = true;
+    public static int RandomizeMoneyLowValue = 500;
+    public static int RandomizeMoneyHighValue = 5000;
+
+    public static int UndieLimit = 0;
+    public static bool Debug = false;
+    public static Keys MenuKey = Keys.F10;
+    public static Keys SurrenderKey = Keys.E;
+    public static Keys DropWeaponKey = Keys.G;
+    public static float DispatchAudioVolume = 0.4f;
+    public static string MainCharacterToAliasModelName
+    {
+        get
+        {
+            if (MainCharacterToAlias == "Michael")
+                return "player_zero";
+            else if (MainCharacterToAlias == "Franklin")
+                return "player_one";
+            else if (MainCharacterToAlias == "Trevor")
+                return "player_two";
+            else
+                return "player_zero";
+        }
+    }
     public static int IntReplacePlayerWithPedCharacter
     {
         get
         {
-            switch (ReplacePlayerWithPedCharacter)
+            switch (MainCharacterToAlias)
             {
                 case "Michael":
                     return 0;
@@ -26,16 +49,6 @@ static class Settings
             return 1;
         }
     }
-    public static bool ReplacePlayerWithPedRandomMoney = true;
-    public static bool PoliceEnhancements = true;
-    public static int UndieLimit = 0;
-    public static bool Debug = false;
-    public static bool RandomEvents = false;
-    public static Keys MenuKey = Keys.F10;
-    public static Keys BetterChasesSurrenderKey = Keys.E;
-    public static Keys DropWeaponKey = Keys.G;
-    public static float DispatchAudioVolume = 0.4f;
-
     public static void Initialize()
     {
         ReadSettings();
@@ -43,10 +56,10 @@ static class Settings
     public static string PrintSettings()
     {
         return "Settings:\n" +
-               $"AutoRespawn: {AutoRespawn}\n" +
-               $"ReplacePlayerWithPed: {ReplacePlayerWithPed}\n" +
-               $"ReplacePlayerWithPedCharacter: {ReplacePlayerWithPedCharacter}\n" +
-               $"ReplacePlayerWithPedRandomMoney: {ReplacePlayerWithPedRandomMoney}\n" +
+            //   $"AutoRespawn: {AutoRespawn}\n" +
+            //   $"ReplacePlayerWithPed: {ReplacePlayerWithPed}\n" +
+            //   $"ReplacePlayerWithPedCharacter: {ReplacePlayerWithPedCharacter}\n" +
+             //  $"ReplacePlayerWithPedRandomMoney: {ReplacePlayerWithPedRandomMoney}\n" +
                $"UndieLimit: {UndieLimit}\n" +
                $"Debug: {Debug}\n" +
                $"MenuKey: {MenuKey}\n" +
@@ -62,14 +75,13 @@ static class Settings
                 xmlDocument.Load("Plugins\\InstantAction\\InstantAction.xml");
                 XmlElement documentElement = xmlDocument.DocumentElement;
                 MenuKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//MenuKey").InnerText, true);
-                BetterChasesSurrenderKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//BustKey").InnerText, true);
+               // BetterChasesSurrenderKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//BustKey").InnerText, true);
                 DropWeaponKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//DropWeaponKey").InnerText, true);
-                AutoRespawn = bool.Parse(documentElement.SelectSingleNode("//AutoRespawn").InnerText);
-                ReplacePlayerWithPed = bool.Parse(documentElement.SelectSingleNode("//ReplacePlayerWithPed").InnerText);
-                ReplacePlayerWithPedCharacter = documentElement.SelectSingleNode("//ReplacePlayerWithPedCharacter").InnerText;
-                ReplacePlayerWithPedRandomMoney = bool.Parse(documentElement.SelectSingleNode("//ReplacePlayerWithPedRandomMoney").InnerText);
+               // AutoRespawn = bool.Parse(documentElement.SelectSingleNode("//AutoRespawn").InnerText);
+               // ReplacePlayerWithPed = bool.Parse(documentElement.SelectSingleNode("//ReplacePlayerWithPed").InnerText);
+               // ReplacePlayerWithPedCharacter = documentElement.SelectSingleNode("//ReplacePlayerWithPedCharacter").InnerText;
+               // ReplacePlayerWithPedRandomMoney = bool.Parse(documentElement.SelectSingleNode("//ReplacePlayerWithPedRandomMoney").InnerText);
                 Debug = bool.Parse(documentElement.SelectSingleNode("//Debug").InnerText);
-                RandomEvents = bool.Parse(documentElement.SelectSingleNode("//RandomEvents").InnerText);
                 UndieLimit = int.Parse(documentElement.SelectSingleNode("//UndieLimit").InnerText);
             }
             catch (Exception e)
@@ -110,19 +122,19 @@ static class Settings
                 xmlDocument.DocumentElement.AppendChild(DropWeaponKeyElement);
 
                 XmlElement AutoRespawnElement = xmlDocument.CreateElement(string.Empty, "AutoRespawn", string.Empty);
-                AutoRespawnElement.AppendChild(xmlDocument.CreateTextNode(AutoRespawn.ToString()));
+                //AutoRespawnElement.AppendChild(xmlDocument.CreateTextNode(AutoRespawn.ToString()));
                 xmlDocument.DocumentElement.AppendChild(AutoRespawnElement);
 
                 XmlElement ReplacePlayerWithPedElement = xmlDocument.CreateElement(string.Empty, "ReplacePlayerWithPed", string.Empty);
-                ReplacePlayerWithPedElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPed.ToString()));
+                //ReplacePlayerWithPedElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPed.ToString()));
                 xmlDocument.DocumentElement.AppendChild(ReplacePlayerWithPedElement);
 
                 XmlElement ReplacePlayerWithPedCharacterElement = xmlDocument.CreateElement(string.Empty, "ReplacePlayerWithPedCharacter", string.Empty);
-                ReplacePlayerWithPedCharacterElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPedCharacter.ToString()));
+                //ReplacePlayerWithPedCharacterElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPedCharacter.ToString()));
                 xmlDocument.DocumentElement.AppendChild(ReplacePlayerWithPedCharacterElement);
 
                 XmlElement ReplacePlayerWithPedRandomMoneyElement = xmlDocument.CreateElement(string.Empty, "ReplacePlayerWithPedRandomMoney", string.Empty);
-                ReplacePlayerWithPedRandomMoneyElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPedRandomMoney.ToString()));
+               // ReplacePlayerWithPedRandomMoneyElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPedRandomMoney.ToString()));
                 xmlDocument.DocumentElement.AppendChild(ReplacePlayerWithPedRandomMoneyElement);
 
 
@@ -135,7 +147,7 @@ static class Settings
                 UndieLimitElement.AppendChild(xmlDocument.CreateTextNode(UndieLimit.ToString()));
                 xmlDocument.DocumentElement.AppendChild(UndieLimitElement);
 
-                xmlDocument.Save("scripts\\InstantAction\\InstantAction.xml");
+                xmlDocument.Save("Plugins\\InstantAction\\InstantAction.xml");
 
             }
         }

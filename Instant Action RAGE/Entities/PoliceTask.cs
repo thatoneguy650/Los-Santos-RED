@@ -24,6 +24,7 @@ using System.Threading.Tasks;
         {
             CopToAssign = _CopToAssign;
             TaskToAssign = _TaskToAssign;
+            CopToAssign.TaskType = _TaskToAssign;
         }
     }
 
