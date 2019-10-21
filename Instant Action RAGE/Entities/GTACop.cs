@@ -61,6 +61,7 @@ public class GTACop
     public bool isOnBike { get; set; } = false;
     public bool InChasingLoop { get; set; } = false;
     public float DistanceToPlayer { get; set; }
+    public bool WasMarkedNonPersistent { get; set; } = false;
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public bool NeedsWeaponCheck

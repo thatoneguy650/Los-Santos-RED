@@ -49,7 +49,6 @@ public static class InstantAction
     private static List<EmergencyLocation> EmergencyLocations = new List<EmergencyLocation>();
     public static Ped GhostCop;
     private static uint WantedLevelStartTime;
-
     private static bool CanReportLastSeen;
     private static uint GameTimeLastGreyedOut;
     private static bool GhostCopFollow;
@@ -147,6 +146,10 @@ public static class InstantAction
         setupLocations();
         setupWeapons();
         MainLoop();
+    }
+    public static void Dispose()
+    {
+        IsRunning = false;
     }
     public static void MainLoop()
     {
@@ -248,9 +251,14 @@ public static class InstantAction
     private static void DebugLoop()
     {
 
+        if (Game.IsKeyDown(Keys.NumPad9))
+        {
+            Game.DisplayNotification("Instant Action Deactivated");
+            PoliceScanningSystem.Dispose();
+            Dispose();
+        }
 
-
-        if (Game.IsKeyDown(Keys.NumPad0))
+            if (Game.IsKeyDown(Keys.NumPad0))
         {
             //Game.LocalPlayer.Character.IsInvincible = false;
 
@@ -298,6 +306,9 @@ public static class InstantAction
             NativeFunction.Natives.xB4EDDC19532BFB85();
 
 
+            PoliceScanningSystem.RemoveAllCreatedEntities();
+
+
 
             //Blip[] MyBlips = World.GetAllBlips();
             //foreach(Blip myblip in MyBlips)
@@ -311,6 +322,37 @@ public static class InstantAction
         {
             try
             {
+
+
+
+
+
+
+                RequestAnimationDictionay("veh@jacking@2h");
+                Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));// World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles);
+                Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).First();
+                if (ClosestVehicle != null)
+                {
+
+
+
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 //foreach (TakenOverPed myPed in TakenOverPeds)
                 //{
                 //    WriteToLog("TakenOverPedList", string.Format("Ped OHandle {0}, OModel{1} ",  myPed.OriginalHandle,myPed.OriginalModel.Name));
@@ -453,14 +495,9 @@ public static class InstantAction
                 if(PreviousOwner != null && PreviousOwner.DistanceTo2D(Game.LocalPlayer.Character) <= 20f && PreviousOwner.Handle != Game.LocalPlayer.Character.Handle)
                 {
                     AmStealingCarFromPrerson = true;
-                    if(rnd.Next(1,5) <= 5)
+                    if(Game.LocalPlayer.WantedLevel == 0 && rnd.Next(1,20) <= 3)
                     {
-                        GTAWeapon GunToGive = Weapons.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol || x.Category == GTAWeapon.WeaponCategory.Melee).PickRandom();
-                        WriteToLog("UpdatePlayer", string.Format("Turned Ped into Trump Supported gave them: {0}", GunToGive.Name));
-                        PreviousOwner.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
-                        PreviousOwner.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                        PreviousOwner.BlockPermanentEvents = true;
-                        PreviousOwner.KeepTasks = true;
+                        GiveGunAndAttackPlayer(PreviousOwner);
                     }
                 }
 
@@ -1011,6 +1048,7 @@ public static class InstantAction
     private static void CheckPoliceEvents()
     {
         bool isJacking = Game.LocalPlayer.Character.IsJacking;
+        
         if (PrevPlayerIsJacking != isJacking)
             PlayerJackingChanged(isJacking);
 
@@ -2099,40 +2137,46 @@ public static class InstantAction
         WriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to HELLO!: {0}", PlayerIsJacking));
         if (PlayerIsJacking)
         {
+            //Vehicle JackingVehicle = Game.LocalPlayer.Character.VehicleTryingToEnter;
+            //Game.LocalPlayer.Character.Tasks.ClearImmediately();
+            //RequestAnimationDictionay("veh@jacking@2h");
+            //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+            //GameFiber.Sleep(1000);
+            //WriteToLog("ValueChecker", String.Format("Tasks.ClearImmediately! VehicleHandle: {0}", JackingVehicle.Handle));
+            //Game.LocalPlayer.Character.Tasks.ClearImmediately();
+            //GameFiber.Sleep(50);
+            //Game.LocalPlayer.Character.Tasks.EnterVehicle(JackingVehicle, -1, EnterVehicleFlags.AllowJacking);
+
+            //return;
+
+
+
+
             if(Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
                 Ped Jacktarget = Game.LocalPlayer.Character.JackingTarget;
-                //GameFiber.Sleep(1000);
-                uint GameTimeStartedJacking = Game.GameTime;
-                bool WantToShootPed = false;
-
+                bool FiredGun;
                 while(!Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 {
                     if(Game.IsControlJustPressed(2,GameControl.Attack))
                     {
-                        //WantToShootPed = true;
-                        //break;
-
-                        Vector3 HeadCoordinated = Jacktarget.GetBonePosition(PedBoneId.Head);
+                        Vector3 HeadCoordinated = Jacktarget.GetBonePosition(PedBoneId.Spine);
                         NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
+
+                        if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced))))
+                        {
+                            Game.LocalPlayer.WantedLevel = 2;
+                            firedWeapon = true;
+                            WriteToLog("Fired weapon", "");
+                        }
+
 
 
                     }
                     GameFiber.Yield();
                 }
-                //WriteToLog("ValueChecker", String.Format("You want to shoot the ped: {0}", WantToShootPed));
-
-                //if (Jacktarget == null || !WantToShootPed || !Jacktarget.Exists() || Jacktarget.IsDead)
-                //        return;
-
-                //Vector3 HeadCoordinated = Jacktarget.GetBonePosition(PedBoneId.Head);
-                //NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
-
             }
-
-
-            //JackedCurrentVehicle = true;
         }
         PrevPlayerIsJacking = PlayerIsJacking;
     }
@@ -2907,6 +2951,14 @@ public static class InstantAction
     public static GTAWeapon GetRandomWeapon(int RequestedLevel)
     {
         return Weapons.OrderBy(s => rnd.Next()).Where(s => s.WeaponLevel == RequestedLevel).First();
+    }
+    public static void GiveGunAndAttackPlayer(Ped Attacker)
+    {
+        GTAWeapon GunToGive = Weapons.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
+        Attacker.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
+        Attacker.Tasks.FightAgainst(Game.LocalPlayer.Character);
+        Attacker.BlockPermanentEvents = true;
+        Attacker.KeepTasks = true;
     }
 
 }
