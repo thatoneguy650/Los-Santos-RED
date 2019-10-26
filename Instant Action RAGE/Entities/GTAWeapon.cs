@@ -36,6 +36,17 @@ public class GTAWeapon
         Hash = _Hash;
         isPoliceIssue = _isPoliceIssue;
     }
+    public GTAWeapon(String _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, ulong _Hash, bool _isPoliceIssue, bool _IsOneHanded, bool _IsTwoHanded)
+    {
+        Name = _Name;
+        AmmoAmount = _AmmoAmount;
+        Category = _Category;
+        WeaponLevel = _WeaponLevel;
+        Hash = _Hash;
+        isPoliceIssue = _isPoliceIssue;
+        IsOneHanded = _IsOneHanded;
+        IsTwoHanded = _IsTwoHanded;
+    }
     public string Name;
     public short AmmoAmount;
     public WeaponCategory Category;
@@ -44,5 +55,9 @@ public class GTAWeapon
     public string ScannerFile;
     public bool isPoliceIssue = false;
     public bool CanPistolSuicide = false;
+    public bool IsTwoHanded = false;
+    public bool IsOneHanded = false;
+    public List<WeaponVariation> PoliceVariations = new List<WeaponVariation>();
+
 }
 

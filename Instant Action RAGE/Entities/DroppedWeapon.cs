@@ -13,15 +13,21 @@ public class DroppedWeapon
     public Vector3 CoordinatedDropped { get; set; }
     public uint GameTimeDropped { get; set; }
     public int Tint { get; set; }
-    public uint Hash { get; set; }
+    //public uint Hash { get; set; }
 
-    public List<WeaponComponent> Components = new List<WeaponComponent>();
+    public WeaponVariation Variation { get; set; }
     public int Ammo { get; set; }
 
     public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped)
     {
         Weapon = _Weapon;
         CoordinatedDropped = _CoordinatedDropped;
+    }
+    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped,WeaponVariation _Variation)
+    {
+        Weapon = _Weapon;
+        CoordinatedDropped = _CoordinatedDropped;
+        Variation = _Variation;
     }
 }
 

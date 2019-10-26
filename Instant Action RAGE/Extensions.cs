@@ -141,7 +141,12 @@ namespace ExtensionsMethods
         {
             return Math.Abs(Vector3.Subtract(myPed.Position, position).Length());
         }
-     
+        public static double GetRandomNumber(double minimum, double maximum)
+        {
+            Random random = new Random();
+            return random.NextDouble() * (maximum - minimum) + minimum;
+        }
+
         public static float getDotVectorResult(Ped source, Ped target)
         {
             if (source.Exists() && target.Exists())

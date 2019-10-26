@@ -82,6 +82,7 @@ namespace Instant_Action_RAGE.Systems
         private static Vehicle NewsChopper;
         private static List<long> FrameTimes = new List<long>();
         private static uint RandomCopInterval;
+        private static bool DebugBool1 = false;
 
         public static void Initialize()
         {
@@ -158,7 +159,7 @@ namespace Instant_Action_RAGE.Systems
                     }
 
 
-                    if(SpawnRandomCops && Game.GameTime > RandomCopInterval + 5000)
+                    if(SpawnRandomCops && Game.GameTime > RandomCopInterval + 2000)
                     {
 
                         //Zones.Zone MyZone = Zones.GetZoneName(Game.LocalPlayer.Character.Position);
@@ -254,6 +255,7 @@ namespace Instant_Action_RAGE.Systems
 
         private static void DebugLoop()
         {
+            bool _LocCool = false;
             if (Game.IsKeyDown(Keys.NumPad4) & Game.IsAltKeyDownRightNow) // Our menu on/off switch.
             {
                 //WriteToLog("KeyDown", "==========");
@@ -264,64 +266,50 @@ namespace Instant_Action_RAGE.Systems
                 //WriteToLog("KeyDown", "==========");
                 //WriteToLog("KeyDown", string.Format("Total Cops: {0}", PoliceScanningSystem.CopPeds.Where(x => x.CopPed.Exists()).Count()));
             }
-            if (Game.IsKeyDown(Keys.NumPad6)) // Our menu on/off switch.
-            {
+            //if (Game.IsKeyDown(Keys.NumPad6)) // Our menu on/off switch.
+            //{
 
-                //Ped Doggo = new Ped("a_c_rottweiler", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), 180);
-                //Doggo.BlockPermanentEvents = true;
-                //Doggo.IsPersistent = false;
-                ////Doggo.RelationshipGroup = "COPDOGS";
-                ////Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
-                ////Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
-                ////Doggo.Health = 50;
-
-                ////Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
-                ////Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
-
-                //TempK9 = Doggo;
-                ////NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", Doggo, 75f, 0);
+            //    Ped TestPed = new Ped("a_m_y_beachvesp_01", Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading);
+            //    uint GameTimeStarted = Game.GameTime;
+            //    TestPed.Inventory.GiveNewWeapon("weapon_pistol", 50, true);
 
 
+            //    //Game.LocalPlayer.Character.Tasks.AimWeaponAt(TestPed, 5000);
+            //    //Game.LocalPlayer.Character.KeepTasks = true;
+
+            //    Game.LocalPlayer.Character.BlockPermanentEvents = true;
+            //    TestPed.BlockPermanentEvents = true;
 
 
+            //    Game.LocalPlayer.Character.PlayAmbientSpeech("TAKE_COVER");
+            //    //TestPed.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
 
-                //Doggo.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                ////Doggo.KeepTasks = true;
+            //    //NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", TestPed, Game.LocalPlayer.Character, 5000, false);
 
-                //////PrimaryPursuer.CopPed.PlayAmbientSpeech("s_m_y_cop_01_white_full_01","DRAW_GUN",1,SpeechModifier.Force);
-                ////CreateK9();
-                ////GTACop K9 = K9Peds.FirstOrDefault();
-                ////K9.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f));
+            //    //while (Game.GameTime - GameTimeStarted <= 5000)
+            //    //{
+            //    //    //Game.LocalPlayer.Character.Tasks.AimWeaponAt(TestPed, 5000);
+            //    //    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", Game.LocalPlayer.Character, TestPed, 500, false);
+            //    //    WriteToLog("DebugLoop", "Task Aim At");
+            //    //    GameFiber.Sleep(500);
+            //    //}
+            //    // NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", Game.LocalPlayer.Character,TestPed, 10000, false);
 
-
-                ////K9.CopPed.BlockPermanentEvents = true;
-
-
-
-
-
-
-                //unsafe
-                //{
-                //    int lol = 0;
-                //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                //   // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 20f, 500f, 1073741824, 1); //Original and works ok
-                //    NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Game.LocalPlayer.Character, 1, 16);
-                //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", K9.CopPed, lol);
-                //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                //}
+            //   // NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", TestPed, Game.LocalPlayer.Character, 5000, false);
+            //    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", Game.LocalPlayer.Character, TestPed, 5000, false);
+            //    //GameFiber.Sleep(1000);
 
 
 
 
 
-                //K9.CopPed.Tasks.FightAgainst(Game.LocalPlayer.Character,90000);
 
-                //NativeFunction.CallByName<bool>("TASK_COMBAT_PED", K9.CopPed, Game.LocalPlayer.Character, 0, 16);
 
-            }
+            //    GameFiber.Sleep(5000);
+            //    if (TestPed.Exists())
+            //        TestPed.Delete();
+
+            //}
             if (Game.IsKeyDown(Keys.NumPad7)) // Our menu on/off switch.
             {
                 //TempK9.Delete();
@@ -331,70 +319,273 @@ namespace Instant_Action_RAGE.Systems
             }
             if (Game.IsKeyDown(Keys.NumPad8)) // Our menu on/off switch.
             {
-                //Game.LocalPlayer.WantedLevel--;
-               // SpawnNewsChopper();
-                //SpawnNewsVan();
+                DebugBool1 = !DebugBool1;
             }
+            if (DebugBool1)
+            {
+
+
+
+
+
+                Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));// World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles);
+                if (NearbyVehicles.Count() == 0)
+                    return;
+                Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).First();
+                if (ClosestVehicle != null)
+                {
+
+                    Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
+
+
+                    Vector3 AnimationStartPosition = Vector3.Add(ClosestVehicle.RightVector * -0.5f,GameEntryPosition);
+                    AnimationStartPosition = Vector3.Add(ClosestVehicle.ForwardVector * -1.5f, AnimationStartPosition);
+
+                    if (AnimationStartPosition == new Vector3(0f, 0f, 0f))
+                        return;
+                    //Game.LocalPlayer.Character.Position = EntryPos;//ClosestVehicle.GetBonePosition("door_dside_f");
+                    //// ClosestVehicle.GetBonePosition("door_dside_f").
+                    ///
+                    if (Game.IsKeyDown(Keys.NumPad7)) // Our menu on/off switch.
+                    {
+                        //Ped Driver = ClosestVehicle.Driver;
+                        //if (Driver == null)
+                        //    return;
+
+                        GameFiber.StartNew(delegate
+                        {
+
+                            Game.LocalPlayer.Character.Position = AnimationStartPosition;
+                            //Game.LocalPlayer.Character.Heading = ClosestVehicle.Heading + -40f;
+
+
+                            Ped Driver = ClosestVehicle.CreateRandomDriver();
+                            Driver.BlockPermanentEvents = true;
+                            //GTAWeapon MyWeapon = InstantAction.GetCurrentWeapon();
+                            //if (MyWeapon != null)
+                            //{
+
+                            //    if (MyWeapon.IsOneHanded)
+                            //    {
+                            //        InstantAction.RequestAnimationDictionay("veh@jacking@1h");
+                            //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@1h", "std_perp_ds", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+                            //    }
+                            //    else if (MyWeapon.IsTwoHanded)
+                            //    {
+                            //        InstantAction.RequestAnimationDictionay("veh@jacking@2h");
+                            //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    WriteToLog("AnimationStartPosition", "Couldnt find weapon");
+                            //}
+                            NativeFunction.CallByName<uint>("TASK_LOOK_AT_ENTITY", Game.LocalPlayer.Character, Driver, ClosestVehicle, -1,2048,3);
+                            GameFiber.Sleep(500);
+                            Game.LocalPlayer.Character.Tasks.AimWeaponAt(Driver, 2000);
+                            //Game.LocalPlayer.Character.KeepTasks = true;
+
+                            GameFiber.Sleep(200);
+                            ClosestVehicle.Doors[0].Open(false);
+                            NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", Driver, ClosestVehicle, 256);
+
+                            while (Driver.IsInAnyVehicle(false))
+                                GameFiber.Yield();
+
+
+
+                            WriteToLog("Jacking", "Driver got out");
+
+
+                            Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+
+                            //GameFiber.Sleep(2000);
+
+
+                            GameFiber.Sleep(1000);
+                            Game.LocalPlayer.Character.Tasks.Clear();
+                            Game.LocalPlayer.Character.Tasks.EnterVehicle(ClosestVehicle, -1);
+
+
+                            // GameFiber.Sleep(5000);
+
+
+                            if (Driver.Exists())
+                                Driver.Delete();
+                        });
+
+                    }
+
+
+                    ////WriteToLog("", string.Format("Right {0},{1},{2}  Forward {3},{4},{5}  Up {6},{7},{8}", Right.X, Right.Y, Right.Z, Forward.X, Forward.Y, Forward.Z, Up.X, Up.Y, Up.Z));
+                    ////WriteToLog("", string.Format("FrontDoorPosition {0},{1},{2}", FrontDoorPosition.X, FrontDoorPosition.Y, FrontDoorPosition.Z));
+
+
+                    Rage.Debug.DrawArrowDebug(new Vector3(AnimationStartPosition.X, AnimationStartPosition.Y, AnimationStartPosition.Z), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+                }
+
+            }
+
+
+            //if(DebugBool1)
+            //{
+
+
+
+
+
+            //    Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));// World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles);
+            //    if (NearbyVehicles.Count() == 0)
+            //        return;
+            //    Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).First();
+            //    if (ClosestVehicle != null)
+            //    {
+            //        Vector3 AnimationStartPosition = InstantAction.GetJackingAnimationPosition(ClosestVehicle);
+
+            //        if (AnimationStartPosition == new Vector3(0f, 0f, 0f))
+            //            return;
+            //        //Game.LocalPlayer.Character.Position = EntryPos;//ClosestVehicle.GetBonePosition("door_dside_f");
+            //        //// ClosestVehicle.GetBonePosition("door_dside_f").
+            //        ///
+            //        if (Game.IsKeyDown(Keys.NumPad7)) // Our menu on/off switch.
+            //        {
+            //            //Ped Driver = ClosestVehicle.Driver;
+            //            //if (Driver == null)
+            //            //    return;
+
+            //            GameFiber.StartNew(delegate 
+            //            { 
+
+            //                Game.LocalPlayer.Character.Position = AnimationStartPosition;
+            //                Game.LocalPlayer.Character.Heading = ClosestVehicle.Heading + -40f;
+
+
+            //               Ped Driver = ClosestVehicle.CreateRandomDriver();
+            //                Driver.BlockPermanentEvents = true;
+            //                GTAWeapon MyWeapon = InstantAction.GetCurrentWeapon();
+            //                if (MyWeapon != null)
+            //                {
+
+            //                    if (MyWeapon.IsOneHanded)
+            //                    {
+            //                        InstantAction.RequestAnimationDictionay("veh@jacking@1h");
+            //                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@1h", "std_perp_ds", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+            //                    }
+            //                    else if (MyWeapon.IsTwoHanded)
+            //                    {
+            //                        InstantAction.RequestAnimationDictionay("veh@jacking@2h");
+            //                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    WriteToLog("AnimationStartPosition", "Couldnt find weapon");
+            //                }
+
+
+            //                GameFiber.Sleep(200);
+            //                ClosestVehicle.Doors[0].Open(false);
+            //                NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", Driver, ClosestVehicle, 256);
+
+            //                while (Driver.IsInAnyVehicle(false))
+            //                    GameFiber.Yield();
+
+
+            //                Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+
+            //                //GameFiber.Sleep(2000);
+
+
+            //                GameFiber.Sleep(1000);
+            //                Game.LocalPlayer.Character.Tasks.Clear();
+            //                Game.LocalPlayer.Character.Tasks.EnterVehicle(ClosestVehicle, -1);
+
+
+            //                // GameFiber.Sleep(5000);
+
+
+            //                if (Driver.Exists())
+            //                    Driver.Delete();
+            //            });
+
+            //        }
+
+
+            //        ////WriteToLog("", string.Format("Right {0},{1},{2}  Forward {3},{4},{5}  Up {6},{7},{8}", Right.X, Right.Y, Right.Z, Forward.X, Forward.Y, Forward.Z, Up.X, Up.Y, Up.Z));
+            //        ////WriteToLog("", string.Format("FrontDoorPosition {0},{1},{2}", FrontDoorPosition.X, FrontDoorPosition.Y, FrontDoorPosition.Z));
+
+
+            //        Rage.Debug.DrawArrowDebug(new Vector3(AnimationStartPosition.X, AnimationStartPosition.Y, AnimationStartPosition.Z), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+            //    }
+
+            //}
+
+
+
+
+
+
+
             if (Game.IsKeyDown(Keys.NumPad9)) // Our menu on/off switch.
             {
                // DeleteNewsTeam();
                 //Game.LocalPlayer.WantedLevel++;
             }
-            if (Settings.Debug)
-            {
-                foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
-                {
-                    if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Purple);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.White);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
-                    else if (Cop == PrimaryPursuer)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Brown);
-                    else
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
-                }
+            //if (Settings.Debug)
+            //{
+            //    foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
+            //    {
+            //        if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Purple);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.White);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
+            //        else if (Cop == PrimaryPursuer)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Brown);
+            //        else
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+            //    }
 
 
-                foreach (GTACop Cop in K9Peds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
-                {
-                    if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Purple);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.White);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
-                    else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
-                    else if (Cop == PrimaryPursuer)
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Brown);
-                    else
-                        Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+            //    foreach (GTACop Cop in K9Peds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
+            //    {
+            //        if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Purple);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.White);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
+            //        else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
+            //        else if (Cop == PrimaryPursuer)
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Brown);
+            //        else
+            //            Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
 
 
 
-                    if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-                    {
-                        NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", Cop.CopPed, 75f, 0);
-                        WriteToLog("CreateK9", "Retasked");
-                    }
-                   // Cop.CopPed.Tasks.FightAgainst(Game.LocalPlayer.Character, 90000);
+            //        if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+            //        {
+            //            NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", Cop.CopPed, 75f, 0);
+            //            WriteToLog("CreateK9", "Retasked");
+            //        }
+            //       // Cop.CopPed.Tasks.FightAgainst(Game.LocalPlayer.Character, 90000);
 
-                }
+            //    }
 
-                Rage.Debug.DrawArrowDebug(new Vector3(PlacePlayerLastSeen.X, PlacePlayerLastSeen.Y, PlacePlayerLastSeen.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
-            }
+            //    Rage.Debug.DrawArrowDebug(new Vector3(PlacePlayerLastSeen.X, PlacePlayerLastSeen.Y, PlacePlayerLastSeen.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+            //}
         }
         private static void ScanForPolice()
         {
@@ -479,6 +670,9 @@ namespace Instant_Action_RAGE.Systems
             Pistol = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
             Cop.IssuedPistol = Pistol;
             Cop.CopPed.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
+
+            InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)Pistol.Hash, Pistol.PoliceVariations.PickRandom());
+
             //WriteToLog("ScanForPolice", string.Format("Cop Issued Pistol: {0}", Pistol.Name));
         }
         public static void IssueCopHeavyWeapon(GTACop Cop)
@@ -499,6 +693,7 @@ namespace Instant_Action_RAGE.Systems
             Cop.IssuedHeavyWeapon = IssuedHeavy;
             Cop.CopPed.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
             Cop.CopPed.Accuracy = 10;
+            InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)IssuedHeavy.Hash, IssuedHeavy.PoliceVariations.PickRandom());
             //WriteToLog("ScanForPolice", string.Format("Cop Issued Heavy Weapon: {0}", IssuedHeavy.Name));
         }
         private static void CreateK9()
@@ -780,7 +975,7 @@ namespace Instant_Action_RAGE.Systems
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 20f)
                 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.GetOffsetPositionFront(200f).Around2D(100f,200f));
             else
-                SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(250f, 350f));
+                SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(350f, 450f));
 
             Zones.Zone ZoneName = Zones.GetZoneName(SpawnLocation);
             if (ZoneName == null)
@@ -972,19 +1167,23 @@ namespace Instant_Action_RAGE.Systems
         public static Vehicle SpawnCopCruiser(PoliceAgencies _Agency,Vector3 SpawnLocation)
         {
             string CarModel;
-            int RandomValue = rnd.Next(1, 11);
+            int RandomValue = rnd.Next(1, 20);
             if (_Agency == PoliceAgencies.LSPD)
             {
-                if (RandomValue <= 4)
+                if (RandomValue <= 5)
                     CarModel = "police3";
-                else if (RandomValue <= 8)
+                else if (RandomValue <= 10)
                     CarModel = "police2";
+                else if(RandomValue <= 12)
+                    CarModel = "police4";
+                else if (RandomValue <= 15)
+                    CarModel = "fbi2";
                 else
                     CarModel = "police";
             }
             else if (_Agency == PoliceAgencies.LSSD)
             {
-                if (RandomValue <= 8)
+                if (RandomValue <= 10)
                     CarModel = "sheriff2";
                 else
                     CarModel = "sheriff";
@@ -999,7 +1198,7 @@ namespace Instant_Action_RAGE.Systems
             }
             else if (_Agency == PoliceAgencies.FIB)
             {
-                if (RandomValue <= 8)
+                if (RandomValue <= 10)
                     CarModel = "fbi";
                 else
                     CarModel = "fbi2";
@@ -1010,7 +1209,7 @@ namespace Instant_Action_RAGE.Systems
             }
             else
             {
-                if (RandomValue <= 8)
+                if (RandomValue <= 10)
                     CarModel = "police3";
                 else
                     CarModel = "police2";
@@ -1082,6 +1281,8 @@ namespace Instant_Action_RAGE.Systems
                 WriteToLog("Task Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
                 uint TaskTime = 0;// = Game.GameTime;
                 string LocalTaskName = "GoTo";
+                double cool = rnd.NextDouble() * (1.22 - 1.1) + 1.1;
+                float MoveRate = (float)cool;
                 Cop.SimpleTaskName = "Chase";
                 NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_CLIMBOVERS", Cop.CopPed, true);
                 NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_LADDERS", Cop.CopPed, true);
@@ -1093,7 +1294,7 @@ namespace Instant_Action_RAGE.Systems
                 {
                     Cop.CopPed.BlockPermanentEvents = true;
 
-                    NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.CopPed, 1.1f);
+                    NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.CopPed, MoveRate);
                     if (TaskTime == 0 || Game.GameTime - TaskTime >= 250)//250
                     {
                         ArmCopAppropriately(Cop);

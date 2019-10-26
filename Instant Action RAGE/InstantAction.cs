@@ -32,6 +32,7 @@ public static class InstantAction
     private static Vector3 PositionOfDeath;
     private static PoliceState HandsUpPreviousPoliceState;
     public static List<GTAWeapon> Weapons = new List<GTAWeapon>();
+    public static List<WeaponVariation.WeaponComponent> WeaponComponentsLookup = new List<WeaponVariation.WeaponComponent>();
     public static bool PlayerIsJacking = false;
     public static List<TakenOverPed> TakenOverPeds = new List<TakenOverPed>();
     public static Model OriginalModel;
@@ -46,12 +47,13 @@ public static class InstantAction
     private static uint LastBust;
     private static int ForceSurrenderTime;
     private static Model CopModel = new Model("s_m_y_cop_01");
-    private static List<EmergencyLocation> EmergencyLocations = new List<EmergencyLocation>();
+    private static List<GTALocation> Locations = new List<GTALocation>();
     public static Ped GhostCop;
     private static uint WantedLevelStartTime;
     private static bool CanReportLastSeen;
     private static uint GameTimeLastGreyedOut;
     private static bool GhostCopFollow;
+    public static List<Blip> CreatedBlips = new List<Blip>();
 
     //traffic
     public static List<GTAVehicle> EnteredVehicles = new List<GTAVehicle>();
@@ -72,6 +74,7 @@ public static class InstantAction
     private static int PrevCopsKilledByPlayer = 0;
     private static bool PrevPlayerStarsGreyedOut;
     public static bool PrevPlayerIsJacking = false;
+    private static uint GameTimePoliceStateStart;
     public static PoliceState PrevPoliceState = PoliceState.Normal;
     public static PoliceState LastPoliceState = PoliceState.Normal;
     private static bool PrevfiredWeapon = false;
@@ -84,6 +87,7 @@ public static class InstantAction
     private static bool PrevAnyCanRecognizePlayer;
     private static List<long> FrameTimes = new List<long>();
     private static WeaponHash LastWeapon = 0;
+    private static bool PrevGettingIntoVehicle = false;
 
     public static bool AnyPoliceCanSeePlayer { get; set; } = false;
     public static bool AnyPoliceCanRecognizePlayer { get; set; } = false;
@@ -91,6 +95,10 @@ public static class InstantAction
     private static bool IsRunning { get; set; } = true;
     public static PoliceState CurrentPoliceState { get; set; }
     public static bool PlayerInVehicle { get; set; } = false;
+
+    private static bool PlayerIsGettingIntoVehicle;
+    private static bool PrevPlayerIsGettingIntoVehicle;
+
     public static bool PlayerStarsGreyedOut { get; set; } = false;
     public static bool AnyPoliceSeenPlayerThisWanted { get; set; } = false;
     public static bool IsHardToSeeInWeather
@@ -149,7 +157,13 @@ public static class InstantAction
     }
     public static void Dispose()
     {
+
         IsRunning = false;
+
+        foreach(Blip myBlip in CreatedBlips)
+        {
+            myBlip.Delete();
+        }
     }
     public static void MainLoop()
     {
@@ -247,9 +261,155 @@ public static class InstantAction
         //        NativeFunction.Natives.SetVehicleRadioEnabled(Game.LocalPlayer.Character.CurrentVehicle, true);
         //    }
         //}
+
+
+
+
+
+
+
+        //bool GettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
+
+        //if(PrevGettingIntoVehicle != GettingIntoVehicle)
+        //{
+        //    //WriteToLog("", string.Format("GettingIntoVehicle {0}", GettingIntoVehicle));
+        //    PrevGettingIntoVehicle = GettingIntoVehicle;
+
+        //    if (GettingIntoVehicle)
+        //    {
+                
+                
+
+        //        RequestAnimationDictionay("veh@jacking@2h");
+        //        Vehicle TryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
+        //        if (TryingToEnter == null)
+        //            return;
+
+        //        //while (Game.LocalPlayer.Character.Speed >= 1f) //walking or moving to door
+        //        //    GameFiber.Yield();
+
+        //        while (!Game.LocalPlayer.Character.IsInAnyVehicle(true) && !TryingToEnter.Doors[0].IsOpen)
+        //            GameFiber.Yield();
+
+        //        Game.LocalPlayer.Character.Tasks.ClearImmediately();
+        //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 2.0f, -2.0f, -1, 0, 0, false, false, false);
+        //        GameFiber.Sleep(200);
+        //        TryingToEnter.Doors[0].Open(true,false);
+
+        //        Ped Driver = TryingToEnter.Driver;
+        //        if (Driver != null)
+        //        {
+        //            Driver.BlockPermanentEvents = true;
+        //            Driver.Tasks.LeaveVehicle(LeaveVehicleFlags.BailOut);
+        //            while (Driver.IsInAnyVehicle(false))
+        //                GameFiber.Yield();
+
+        //            Driver.Tasks.Flee(Game.LocalPlayer.Character, 50f, 20000);
+        //        }
+        //        GameFiber.Sleep(2000);
+        //        Game.LocalPlayer.Character.Tasks.Clear();
+        //        Game.LocalPlayer.Character.Tasks.EnterVehicle(TryingToEnter, -1);
+        //    }
+
+        //}
+
+
+        // if (Game.LocalPlayer.Character.IsGettingIntoVehicle)
+        //    {
+        //    RequestAnimationDictionay("veh@jacking@2h");
+        //    Vehicle TryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
+        //    if (TryingToEnter == null)
+        //        return;
+        //    Vector3 EntryPos = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TryingToEnter, 0);
+        //    WriteToLog("", string.Format("EntryPos {0},{1},{2}", EntryPos.X, EntryPos.Y, EntryPos.Z));
+        //    //if (TryingToEnter.HasDriver)
+        //    //{ }
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, 2000, 0, 1, false, false, false);
+        //    GameFiber.Sleep(200);
+        //    TryingToEnter.Doors[0].Open(false);
+        //    GameFiber.Sleep(2000);
+        //    Game.LocalPlayer.Character.Tasks.Clear();
+        //    Game.LocalPlayer.Character.Tasks.EnterVehicle(TryingToEnter, -1);
+
+
+        //    // Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));// World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles);
+        //    // Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).First();
+        //    //if (ClosestVehicle != null)
+        //    //{
+        //    //    //handle_dside_f
+        //    //    Vector3 FrontDoorPosition = ClosestVehicle.GetBonePosition("door_dside_f");
+        //    //    Vector3 Right;
+        //    //    Vector3 Forward;
+        //    //    Vector3 Up;
+        //    //    ClosestVehicle.GetBoneAxes("door_dside_f", out Right, out Forward, out Up);
+        //    //    WriteToLog("", string.Format("Right {0},{1},{2}  Forward {3},{4},{5}  Up {6},{7},{8}", Right.X, Right.Y, Right.Z, Forward.X, Forward.Y, Forward.Z, Up.X, Up.Y, Up.Z));
+        //    //    WriteToLog("", string.Format("FrontDoorPosition {0},{1},{2}", FrontDoorPosition.X, FrontDoorPosition.Y, FrontDoorPosition.Z));
+        //    //    WriteToLog("", string.Format("Player Pre Position {0},{1},{2}", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
+
+        //    //    Vector3 EntryPos = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
+        //    //    WriteToLog("", string.Format("EntryPos {0},{1},{2}", EntryPos.X, EntryPos.Y, EntryPos.Z));
+
+
+        //    //    //Game.LocalPlayer.Character.Position = EntryPos;//ClosestVehicle.GetBonePosition("door_dside_f");
+        //    //    // ClosestVehicle.GetBonePosition("door_dside_f").
+
+
+        //    //    //WriteToLog("", string.Format("Right {0},{1},{2}  Forward {3},{4},{5}  Up {6},{7},{8}", Right.X, Right.Y, Right.Z, Forward.X, Forward.Y, Forward.Z, Up.X, Up.Y, Up.Z));
+        //    //    //WriteToLog("", string.Format("FrontDoorPosition {0},{1},{2}", FrontDoorPosition.X, FrontDoorPosition.Y, FrontDoorPosition.Z));
+        //    //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+        //    //    GameFiber.Sleep(200);
+        //    //    ClosestVehicle.Doors[0].Open(false);
+        //    //    GameFiber.Sleep(2000);
+        //    //    Game.LocalPlayer.Character.Tasks.Clear();
+        //    //    Game.LocalPlayer.Character.Tasks.EnterVehicle(ClosestVehicle, -1);
+
+
+        //}
+
+           // }
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
     private static void DebugLoop()
     {
+
+
+        //Ped[] Pedestrians = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 20f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));
+        //foreach (Ped MyPed in Pedestrians.Where(s => s.Exists() && !s.IsDead && !s.isPoliceArmy() && s.IsVisible))
+        //{
+           
+        //        if (MyPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
+        //            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);
+        //        else if (MyPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
+        //            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Purple);
+        //        else if (MyPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
+        //            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.White);
+        //        else if (MyPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+        //            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
+        //        else if (MyPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
+        //            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
+        //        else if (MyPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
+        //            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Black);
+        //        else
+        //            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+        //}
+
+
+
+
 
         if (Game.IsKeyDown(Keys.NumPad9))
         {
@@ -324,20 +484,122 @@ public static class InstantAction
             {
 
 
-
-
-
-
-                RequestAnimationDictionay("veh@jacking@2h");
-                Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));// World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles);
-                Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).First();
-                if (ClosestVehicle != null)
+                GameFiber.StartNew(delegate
                 {
+                    RequestAnimationDictionay("veh@jacking@2h");
+                    //RequestAnimationDictionay("veh@jacking@0h@p_m_one@");
+                    Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+                    Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f),0f);
+                    Driver.WarpIntoVehicle(MyCar, -1);
+
+
+                    //Driver.BlockPermanentEvents = true;
+                    Vector3 EntryPos = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, MyCar, 0);
+                    GameFiber.Sleep(1000);
+                    Vector3 DriverSeatCoordinates = MyCar.GetBonePosition("seat_dside_f");
+                    //Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 50000);
+                    //int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", EntryPos.X, EntryPos.Y, EntryPos.Z-0.1f, 0.0f, 0.0f, 0f, 2);//270f
+                    int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", EntryPos.X + 0.15f, EntryPos.Y , EntryPos.Z - 0.1f, 0.0f, 0.0f,270f, 2);//270f
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
+                    //NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, Scene1, "veh@jacking@0h@p_m_one@", "std_perp_ds", 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, Scene1, "veh@jacking@2h", "std_perp_ds_a", 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene1, 0.0f);
+
+                    int Scene2 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverSeatCoordinates.X, DriverSeatCoordinates.Y, DriverSeatCoordinates.Z, 0.0f, 0.0f, 0f, 2);//270f
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene2, false);
+                    //NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver, Scene2, "veh@jacking@0h@p_m_one@", "std_victim_ds", 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+                    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver, Scene2, "veh@jacking@2h", "std_victim_ds_a", 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene2, 0.0f);
 
 
 
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-                }
+                    
+                    GameFiber.Sleep(200);
+                    MyCar.Doors[0].Open(false);
+
+                    while(NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 1.0f)
+                    {
+                        GameFiber.Sleep(50);
+                    }
+                    //Driver.Tasks.Clear();
+
+                    //Driver.Position = Driver.Position;
+
+
+                    //Driver.Tasks.Flee(Game.LocalPlayer.Character, 20f, 50000);
+
+                    //Driver.Tasks.ClearSecondary();
+                    //  Driver.Tasks.Flee(Game.LocalPlayer.Character, 20f, 50000);
+                    // Driver.IsRagdoll = true;
+                    //GameFiber.Sleep(200);
+
+                    Game.LocalPlayer.Character.WarpIntoVehicle(MyCar, -1);
+
+
+                    Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
+                    NativeFunction.CallByName<bool>("ADD_SHOCKING_EVENT_FOR_ENTITY", 108, Driver, 10000f);
+
+                    // Driver.Tasks.Clear();
+                    GameFiber.Sleep(200);
+                   // Driver.IsRagdoll = false;
+                    GameFiber.Sleep(8000);
+                    NativeFunction.CallByHash<bool>(0xCD9CC7E200A52A6F, Scene1);
+                    NativeFunction.CallByHash<bool>(0xCD9CC7E200A52A6F, Scene2);
+
+
+                    
+                    GameFiber.Sleep(3000);
+                    if (MyCar.Exists())
+                        MyCar.Delete();
+
+                    if (Driver.Exists())
+                        Driver.Delete();
+                });
+
+
+
+
+
+
+
+                //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));// World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles);
+                //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).First();
+                //if (ClosestVehicle != null)
+                //{
+                //    //handle_dside_f
+                //    Vector3 FrontDoorPosition = ClosestVehicle.GetBonePosition("door_dside_f");
+                //    Vector3 Right;
+                //    Vector3 Forward;
+                //    Vector3 Up;
+                //    ClosestVehicle.GetBoneAxes("door_dside_f", out Right,out Forward,out Up);
+                //    WriteToLog("", string.Format("Right {0},{1},{2}  Forward {3},{4},{5}  Up {6},{7},{8}", Right.X, Right.Y, Right.Z, Forward.X, Forward.Y, Forward.Z, Up.X, Up.Y, Up.Z));
+                //    WriteToLog("", string.Format("FrontDoorPosition {0},{1},{2}", FrontDoorPosition.X, FrontDoorPosition.Y, FrontDoorPosition.Z));
+                //    WriteToLog("", string.Format("Player Pre Position {0},{1},{2}", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
+
+                //    Vector3 EntryPos = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
+                //    WriteToLog("", string.Format("EntryPos {0},{1},{2}", EntryPos.X, EntryPos.Y, EntryPos.Z));
+
+
+                //    Game.LocalPlayer.Character.Position = EntryPos;//ClosestVehicle.GetBonePosition("door_dside_f");
+                //    // ClosestVehicle.GetBonePosition("door_dside_f").
+
+                //    if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
+                //    {
+                //        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
+                //    }
+
+
+                //        //WriteToLog("", string.Format("Right {0},{1},{2}  Forward {3},{4},{5}  Up {6},{7},{8}", Right.X, Right.Y, Right.Z, Forward.X, Forward.Y, Forward.Z, Up.X, Up.Y, Up.Z));
+                //        //WriteToLog("", string.Format("FrontDoorPosition {0},{1},{2}", FrontDoorPosition.X, FrontDoorPosition.Y, FrontDoorPosition.Z));
+                //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                //    GameFiber.Sleep(200);
+                //    ClosestVehicle.Doors[0].Open(false);
+                //    GameFiber.Sleep(2000);
+                //    Game.LocalPlayer.Character.Tasks.Clear();
+                //    Game.LocalPlayer.Character.Tasks.EnterVehicle(ClosestVehicle, -1);
+
+                    
+                //}
 
 
 
@@ -393,24 +655,36 @@ public static class InstantAction
             try
             {
 
-                uint TimeToRecongize = 2000;
+                //uint TimeToRecongize = 2000;
 
-                IsNightTime = false;
-                int HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+                //IsNightTime = false;
+                //int HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
 
-                if (HourOfDay >= 18 || HourOfDay <= 5)
-                    IsNightTime = true;
-                if (IsNightTime)
-                    TimeToRecongize = 3500;
-                else if (PlayerInVehicle)
-                    TimeToRecongize = 1500;
-                else
-                    TimeToRecongize = 2000;
-
-
+                //if (HourOfDay >= 18 || HourOfDay <= 5)
+                //    IsNightTime = true;
+                //if (IsNightTime)
+                //    TimeToRecongize = 3500;
+                //else if (PlayerInVehicle)
+                //    TimeToRecongize = 1500;
+                //else
+                //    TimeToRecongize = 2000;
 
 
-                WriteToLog("KeyDown", string.Format("TimeToRecongize: {0},HourOfDay: {1},IsNightTime: {2}", TimeToRecongize, HourOfDay, IsNightTime));
+                GTAWeapon CurrentWeapon = Weapons.Where(x => x.Hash == (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash).First();
+                if(CurrentWeapon != null)
+                {
+                    ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)CurrentWeapon.Hash, CurrentWeapon.PoliceVariations.PickRandom());
+                }
+
+
+
+                WeaponVariation DroppedGunVariation = GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+                foreach (WeaponVariation.WeaponComponent Comp in DroppedGunVariation.Components)
+                {
+                    WriteToLog("GetWeaponVariation", string.Format("Name: {0},HashKey: {1},Hash: {2}", Comp.Name,Comp.HashKey,Comp.Hash));
+                }
+                WriteToLog("GetWeaponVariation", string.Format("Tint: {0}", DroppedGunVariation.Tint));
+
 
 
 
@@ -472,6 +746,12 @@ public static class InstantAction
     private static void UpdatePlayer()
     {
         PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+        PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
+
+        if(PrevPlayerIsGettingIntoVehicle != PlayerIsGettingIntoVehicle)
+        {
+            PlayerIsGettingIntoVehicleChanged();
+        }
 
         if (PlayerInVehicle)
         {
@@ -495,10 +775,10 @@ public static class InstantAction
                 if(PreviousOwner != null && PreviousOwner.DistanceTo2D(Game.LocalPlayer.Character) <= 20f && PreviousOwner.Handle != Game.LocalPlayer.Character.Handle)
                 {
                     AmStealingCarFromPrerson = true;
-                    if(Game.LocalPlayer.WantedLevel == 0 && rnd.Next(1,20) <= 3)
-                    {
-                        GiveGunAndAttackPlayer(PreviousOwner);
-                    }
+                    //if(Game.LocalPlayer.WantedLevel == 0 && rnd.Next(1,20) <= 3)
+                    //{
+                    //    GiveGunAndAttackPlayer(PreviousOwner);
+                    //}
                 }
 
                 EnteredVehicles.Add(new GTAVehicle(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding, PreviousOwner, !stolen, stolen));
@@ -553,6 +833,7 @@ public static class InstantAction
         }
 
     }
+
     private static void StateTick()
     {
 
@@ -662,8 +943,8 @@ public static class InstantAction
             else
                 GameFiber.Sleep(250);
 
-
-            DroppedWeapons.Add(new DroppedWeapon(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f))));
+            WeaponVariation DroppedGunVariation = GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            DroppedWeapons.Add(new DroppedWeapon(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation));
 
             NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
             if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
@@ -680,6 +961,51 @@ public static class InstantAction
         aimedAtPolice = false;
         firedWeapon = false;
         DispatchAudioSystem.ResetReportedItems();
+    }
+    public static WeaponVariation GetWeaponVariation(Ped WeaponOwner, uint WeaponHash)
+    {
+        int Tint = NativeFunction.CallByName<int>("GET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash);
+        GTAWeapon MyGun = Weapons.Where(x => x.Hash == WeaponHash).First();
+        if(MyGun == null)
+            return new WeaponVariation(Tint);
+
+        WeaponComponentsLookup.Where(x => x.BaseWeapon == MyGun.Name);
+
+        if(!WeaponComponentsLookup.Any())
+            return new WeaponVariation(Tint);
+
+        List<WeaponVariation.WeaponComponent> Components = new List<WeaponVariation.WeaponComponent>();
+
+        foreach (WeaponVariation.WeaponComponent PossibleComponent in WeaponComponentsLookup.Where(x => x.BaseWeapon == MyGun.Name))
+        {
+            if(NativeFunction.CallByName<bool>("HAS_PED_GOT_WEAPON_COMPONENT",WeaponOwner, WeaponHash, PossibleComponent.Hash))
+            {
+                Components.Add(new WeaponVariation.WeaponComponent(PossibleComponent.Name, PossibleComponent.HashKey, PossibleComponent.Hash,true));
+            }
+
+        }
+        return new WeaponVariation(Tint,Components);
+
+    }
+    public static void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, WeaponVariation _WeaponVariation)
+    {
+        if (_WeaponVariation == null)
+            return;
+        NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, _WeaponVariation.Tint);
+        GTAWeapon LookupGun = Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
+        if (LookupGun == null)
+            return;
+        List<WeaponVariation.WeaponComponent> PossibleComponents = WeaponComponentsLookup.Where(x => x.BaseWeapon == LookupGun.Name).ToList();
+        foreach (WeaponVariation.WeaponComponent ToRemove in PossibleComponents)
+        {
+            NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, WeaponHash, ToRemove.Hash);
+        }
+
+
+        foreach (WeaponVariation.WeaponComponent ToAdd in _WeaponVariation.Components)
+        {
+            NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, ToAdd.Hash);
+        }
     }
 
     //Police
@@ -809,6 +1135,14 @@ public static class InstantAction
         //{
         //    ResetCopWeapons(Cop);
         //}
+        if(Game.GameTime - GameTimePoliceStateStart >= 8000)
+        {
+            foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.SetDeadly || x.SetTazer || x.SetUnarmed))
+            {
+                ResetCopWeapons(Cop);
+            }
+        }
+
 
     }
     private static void PoliceTickUnarmedChase()
@@ -822,7 +1156,7 @@ public static class InstantAction
                 SetCopTazer(Cop);
 
             int TotalFootChaseTasked = PoliceScanningSystem.CopPeds.Where(x => (x.isTasked || x.TaskIsQueued) && x.TaskType == PoliceTask.Task.Chase).Count();
-            //int TotalVehicleChaseTasked = PoliceScanningSystem.CopPeds.Where(x => x.isTasked && x.TaskType == PoliceTask.Task.VehicleChase).Count();
+            int TotalVehicleChaseTasked = PoliceScanningSystem.CopPeds.Where(x => x.isTasked && x.TaskType == PoliceTask.Task.VehicleChase).Count();
 
             if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked <= 4 && !Cop.CopPed.IsInAnyVehicle(false) && Cop.DistanceToPlayer <= 55f && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed <= 5f))
             {
@@ -830,25 +1164,11 @@ public static class InstantAction
                 PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Chase));
             }
 
-            //else if (!Cop.TaskIsQueued && (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing) && (Cop.RecentlySeenPlayer() || Cop.DistanceToPlayer <= 65f))
-            //{
-            //    Cop.TaskIsQueued = true;
-            //    Cop.GameTimeLastTask = Game.GameTime;
-            //    PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest));
-            //}
-            //else if (!Cop.TaskIsQueued && Game.GameTime - Cop.GameTimeLastTask > 3500 && Cop.RecentlySeenPlayer() && Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress && Cop.DistanceToPlayer > 45f)
-            //{
-            //    Cop.TaskIsQueued = true;
-            //    Cop.GameTimeLastTask = Game.GameTime;
-            //    PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest)); //retask the arrest
-            //}
-
-
-            //if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked > 0 && TotalVehicleChaseTasked <= 1 && Cop.isInVehicle && Cop.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
-            //{
-            //    Cop.TaskIsQueued = true;
-            //    PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.VehicleChase));
-            //}
+            if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked > 0 && TotalVehicleChaseTasked == 0 && Cop.isInVehicle && Cop.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            {
+                Cop.TaskIsQueued = true;
+                PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.VehicleChase));
+            }
         }
         if (PoliceScanningSystem.CopPeds.Any(x => x.DistanceToPlayer <= 4f) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 4.0f) && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !isBusted)
             SurrenderBust = true;
@@ -1337,7 +1657,8 @@ public static class InstantAction
                 ViolationDrivingAgainstTraffic = true;
                 Game.LocalPlayer.WantedLevel = 1;
                 DispatchAudioSystem.DispatchQueueItem RecklessDriver = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportRecklessDriver, 10, false,true);
-                RecklessDriver.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();//new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                RecklessDriver.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
+                RecklessDriver.IsTrafficViolation = true;
                 DispatchAudioSystem.AddDispatchToQueue(RecklessDriver);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationDrivingAgainstTraffic: {0}", ViolationDrivingAgainstTraffic));
             }
@@ -1346,13 +1667,14 @@ public static class InstantAction
                 ViolationDrivingOnPavement = true;
                 Game.LocalPlayer.WantedLevel = 1;
                 DispatchAudioSystem.DispatchQueueItem RecklessDriver = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportRecklessDriver, 10, false,true);
-                RecklessDriver.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();//new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                RecklessDriver.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
+                RecklessDriver.IsTrafficViolation = true;
                 DispatchAudioSystem.AddDispatchToQueue(RecklessDriver);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationDrivingOnPavement: {0}", ViolationDrivingOnPavement));
             }
 
             float SpeedLimit  = GetSpeedLimit();
-            bool ViolationSpeedLimit = VehicleSpeedMPH > SpeedLimit + 20;
+            bool ViolationSpeedLimit = VehicleSpeedMPH > SpeedLimit + 25;
             if(ViolationSpeedLimit)
             {
                 IsViolationSpeedLimit = true;
@@ -1366,7 +1688,8 @@ public static class InstantAction
                 ViolationsSpeeding = true;
                 Game.LocalPlayer.WantedLevel = 1;
                 DispatchAudioSystem.DispatchQueueItem FelonySpeeding = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportFelonySpeeding, 10, false,true);
-                FelonySpeeding.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();//new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                FelonySpeeding.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
+                FelonySpeeding.IsTrafficViolation = true;
                 DispatchAudioSystem.AddDispatchToQueue(FelonySpeeding);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationsSpeeding: {0}", ViolationsSpeeding));
             }
@@ -1375,8 +1698,9 @@ public static class InstantAction
             {
                 ViolationHitPed = true;
                 Game.LocalPlayer.WantedLevel = 2;
-                DispatchAudioSystem.DispatchQueueItem PedHitAndRun = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportPedHitAndRun, 10, false,true);
-                PedHitAndRun.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();//new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                DispatchAudioSystem.DispatchQueueItem PedHitAndRun = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportPedHitAndRun, 8, false,true);
+                PedHitAndRun.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
+                PedHitAndRun.IsTrafficViolation = true;
                 DispatchAudioSystem.AddDispatchToQueue(PedHitAndRun);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationHitPed: {0}", ViolationHitPed));
             }
@@ -1385,9 +1709,9 @@ public static class InstantAction
             {
                 ViolationHitVehicle = true;
                 Game.LocalPlayer.WantedLevel = 1;
-                DispatchAudioSystem.DispatchQueueItem VehicleHitAndRun = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportVehicleHitAndRun, 10, false,true);
-                EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
-                VehicleHitAndRun.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();//new GTAVehicle(CurrVehicle, 0, false, false, null, true, false);
+                DispatchAudioSystem.DispatchQueueItem VehicleHitAndRun = new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportVehicleHitAndRun, 9, false,true);
+                VehicleHitAndRun.VehicleToReport = EnteredVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
+                VehicleHitAndRun.IsTrafficViolation = true;
                 DispatchAudioSystem.AddDispatchToQueue(VehicleHitAndRun);
                 WriteToLog("TrafficViolationsTick", string.Format("ViolationHitVehicle: {0}", ViolationHitVehicle));
             }
@@ -2111,11 +2435,42 @@ public static class InstantAction
 
 
         }
-
+        GameTimePoliceStateStart = Game.GameTime;
         PrevPoliceState = CurrentPoliceState;
     }
 
     //Player Events
+    private static void PlayerIsGettingIntoVehicleChanged()
+    {
+        if (PlayerIsGettingIntoVehicle)
+        {
+            Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
+            int SeatIndex = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
+            if (TargetVeh != null && SeatIndex == -1)
+            {
+                Vector3 AnimationStartPosition = GetJackingAnimationPosition(TargetVeh);  
+                Ped Driver = TargetVeh.Driver;
+                if (Driver != null && Driver.IsAlive && AnimationStartPosition != new Vector3(0f,0f,0f))
+                {
+                    //GivePlayerLastWeaponIfUnarmed();
+                    //CarJacking(AnimationStartPosition, Driver, TargetVeh);
+
+
+                    WriteToLog("EnterVehicle", "CarJacking");
+                }
+                else
+                {
+                    WriteToLog("EnterVehicle", "Regular Enter No Driver");
+                }
+            }
+            else
+            {
+                WriteToLog("EnterVehicle", "Regular Enter");
+            }
+
+        }
+        PrevPlayerIsGettingIntoVehicle = PlayerIsGettingIntoVehicle;
+    }
     private static void PlayerInVehicleChanged(bool playerInVehicle)
     {
         if (playerInVehicle)
@@ -2137,61 +2492,76 @@ public static class InstantAction
         WriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to HELLO!: {0}", PlayerIsJacking));
         if (PlayerIsJacking)
         {
-            //Vehicle JackingVehicle = Game.LocalPlayer.Character.VehicleTryingToEnter;
-            //Game.LocalPlayer.Character.Tasks.ClearImmediately();
-            //RequestAnimationDictionay("veh@jacking@2h");
-            //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-            //GameFiber.Sleep(1000);
-            //WriteToLog("ValueChecker", String.Format("Tasks.ClearImmediately! VehicleHandle: {0}", JackingVehicle.Handle));
-            //Game.LocalPlayer.Character.Tasks.ClearImmediately();
-            //GameFiber.Sleep(50);
-            //Game.LocalPlayer.Character.Tasks.EnterVehicle(JackingVehicle, -1, EnterVehicleFlags.AllowJacking);
+            //GiveWeaponDuringJacking();
+            //Vehicle CarjackingVehicle = Game.LocalPlayer.Character.VehicleTryingToEnter;
+            //Vector3 AnimationStartPosition = GetJackingAnimationPosition(CarjackingVehicle);
+            //CarjackingAnimation(AnimationStartPosition,CarjackingVehicle.Driver,CarjackingVehicle);
+        }
+        PrevPlayerIsJacking = PlayerIsJacking;
+    }
+    private static void GiveWeaponDuringJacking()
+    {
+        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
+        {
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
+            Ped Jacktarget = Game.LocalPlayer.Character.JackingTarget;
 
-            //return;
+            if (Jacktarget == null)
+                return;
 
-
-
-
-            if(Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
+            GameFiber.StartNew(delegate
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
-                Ped Jacktarget = Game.LocalPlayer.Character.JackingTarget;
-                bool FiredGun;
-                while(!Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                while (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 {
-                    if(Game.IsControlJustPressed(2,GameControl.Attack))
+                    if (!Jacktarget.Exists())
+                        return;
+
+                    if (Game.IsControlJustPressed(2, GameControl.Attack))
                     {
                         Vector3 HeadCoordinated = Jacktarget.GetBonePosition(PedBoneId.Spine);
                         NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
 
-                        if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced))))
+                        if (!firedWeapon && (PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced))))
                         {
                             Game.LocalPlayer.WantedLevel = 2;
                             firedWeapon = true;
-                            WriteToLog("Fired weapon", "");
                         }
-
-
-
                     }
                     GameFiber.Yield();
                 }
-            }
+            });
         }
-        PrevPlayerIsJacking = PlayerIsJacking;
     }
     private static void WeaponInventoryChanged(int weaponCount)
     {
         if (weaponCount > PrevCountWeapons) //Added Weapon
         {
-
+            WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
+            foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
+            {
+                if (PlayerWeapons.Contains(MyOldGuns.Weapon.Hash) && Game.LocalPlayer.Character.Position.DistanceTo2D(MyOldGuns.CoordinatedDropped) <= 2f)
+                {
+                    WriteToLog("WeaponInventoryChanged", string.Format("Just picked up an old weapon {0}", MyOldGuns.Weapon.Hash));
+                    ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.Weapon.Hash, MyOldGuns.Variation);
+                }
+            }
+            DroppedWeapons.RemoveAll(x => PlayerWeapons.Contains(x.Weapon.Hash) && Game.LocalPlayer.Character.Position.DistanceTo2D(x.CoordinatedDropped) <= 2f);
         }
         else //Lost Weapon
         {
 
         }
-        WriteToLog("WeaponInventoryChanged", string.Format("Previous Weapon Count {0}, Current {1}", PrevCountWeapons, weaponCount));
+        WriteToLog("WeaponInventoryChanged", string.Format("Previous Weapon Count {0}, Current {1}, Total Dropped Weapons {2}", PrevCountWeapons, weaponCount, DroppedWeapons.Count()));
         PrevCountWeapons = weaponCount;
+    }
+    public static void GivePlayerLastWeaponIfUnarmed()
+    {
+        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)
+            return;
+        else if (LastWeapon == 0)
+            return;
+        else
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
     }
 
     //Animations
@@ -2333,6 +2703,243 @@ public static class InstantAction
             PedToSuicide.Kill();
         });
     }
+    public static Vector3 GetJackingAnimationPosition(Vehicle myVehicle)
+    {
+        Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, myVehicle, 0);
+        Vector3 AnimationStartPosition = Vector3.Add(myVehicle.RightVector * -0.5f, GameEntryPosition);
+        AnimationStartPosition = Vector3.Add(myVehicle.ForwardVector * -1.5f, AnimationStartPosition);
+        return AnimationStartPosition;
+
+        //handle_dside_f
+        //if (!myVehicle.HasBone("door_dside_f"))
+        //    return new Vector3(0f, 0f, 0f);
+
+        //if (myVehicle.Doors[0].IsOpen)
+        //{
+        //    Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, myVehicle, 0);
+        //    return GameEntryPosition;
+        //}
+        //    Vector3 FrontDoorPosition = myVehicle.GetBonePosition("door_dside_f");
+        //Vector3 Right;
+        //Vector3 Forward;
+        //Vector3 Up;
+        //myVehicle.GetBoneAxes("door_dside_f", out Right, out Forward, out Up);
+
+        //Vector3 AddedVector = Vector3.Add(Right * -0.25f, FrontDoorPosition);
+        //AddedVector = Vector3.Add(Forward * -1.75f, AddedVector);
+
+
+
+        ////Vector3 AddedVector = Vector3.Add(Right * -0.5f, FrontDoorPosition);
+        ////AddedVector = Vector3.Add(Forward * -2.0f, AddedVector);
+        //return AddedVector;
+    }
+    public static GTAWeapon GetCurrentWeapon()
+    {
+        WeaponDescriptor MyWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
+        if (MyWeapon == null)
+            return null;
+
+        GTAWeapon CurrentGun = Weapons.Where(x => (WeaponHash)x.Hash == MyWeapon.Hash).FirstOrDefault();
+        if (CurrentGun != null)
+            return CurrentGun;
+        else
+            return null;
+    }
+    public static void CarJacking(Vector3 AnimationStartPosition, Ped Driver, Vehicle TargetVehicle)
+    {
+        Driver.BlockPermanentEvents = true;
+        Driver.Tasks.Clear();
+        GameFiber.StartNew(delegate
+        {
+           // NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+            Driver.BlockPermanentEvents = true;
+            Game.LocalPlayer.Character.Position = AnimationStartPosition;
+            Game.LocalPlayer.Character.Heading = TargetVehicle.Heading + -75f;//-50f;
+            //TargetVehicle.Doors[0].Open(false);
+            Game.LocalPlayer.Character.PlayAmbientSpeech("GENERIC_CURSE_HIGH");
+
+            //GameFiber.StartNew(delegate
+            //{
+            //    while (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            //    {
+            //        if (!Driver.Exists() || Driver.IsDead || Game.LocalPlayer.Character.Position != AnimationStartPosition)
+            //            return;
+
+            //        if (Game.IsControlJustPressed(2, GameControl.Attack))
+            //        {
+            //            Vector3 HeadCoordinated = Driver.GetBonePosition(PedBoneId.Spine);
+            //            NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
+            //        }
+            //        GameFiber.Yield();
+            //    }
+            //});
+            NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", Driver, TargetVehicle, 256); //4160);// 256);
+            NativeFunction.CallByName<uint>("SET_BLOCKING_OF_NON_TEMPORARY_EVENTS", Driver, true);
+            Game.LocalPlayer.Character.Tasks.AimWeaponAt(Driver, 2000);
+
+           // Driver.KeepTasks = true;
+           // Driver.BlockPermanentEvents = true;
+
+            while (Driver.IsInAnyVehicle(false) && Driver.IsAlive)//
+                GameFiber.Yield();
+
+           // GameFiber.Sleep(500);
+           // Game.LocalPlayer.Character.Tasks.Clear();
+
+
+            if (Driver.IsInAnyVehicle(false))
+            {
+                WriteToLog("CarjackAnimation", "Driver In Vehicle");
+                return;
+            }
+            else
+            {
+                WriteToLog("CarjackAnimation", "Driver Out of Vehicle");
+               // Driver.ClearLastVehicle();
+                //Driver.BlockPermanentEvents = true;
+               // Driver.Tasks.PutHandsUp(3000, Game.LocalPlayer.Character);
+                Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, -1);
+               // Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, -1);
+            }
+        });
+
+    }
+    //public static void CarjackingAnimation_Old(Vector3 AnimationStartPosition,Ped Driver,Vehicle TargetVehicle)
+    //{
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+    //        Driver.BlockPermanentEvents = true;
+    //        Game.LocalPlayer.Character.Position = AnimationStartPosition;
+    //        Game.LocalPlayer.Character.Heading = TargetVehicle.Heading + -75f;//-50f;
+    //        //TargetVehicle.Doors[0].Open(false);
+    //        GTAWeapon MyWeapon = InstantAction.GetCurrentWeapon();
+    //        if (MyWeapon == null)
+    //            return;
+
+    //        if (MyWeapon.IsOneHanded)
+    //        {
+    //            RequestAnimationDictionay("veh@jacking@1h");
+    //            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@1h", "std_perp_ds", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+    //        }
+    //        else if (MyWeapon.IsTwoHanded)
+    //        {
+    //            RequestAnimationDictionay("veh@jacking@2h");
+    //            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+    //        }
+
+    //        GameFiber.StartNew(delegate
+    //        {
+    //            while (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
+    //            {
+    //                if (!Driver.Exists())
+    //                    return;
+
+    //                if (Game.IsControlJustPressed(2, GameControl.Attack))
+    //                {
+    //                    Vector3 HeadCoordinated = Driver.GetBonePosition(PedBoneId.Spine);
+    //                    NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
+    //                }
+    //                GameFiber.Yield();
+    //            }
+    //        });
+    //        uint GameTimeLeave = Game.GameTime;
+    //        //GameFiber.Sleep(200);
+    //        NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", Driver, TargetVehicle, 256); //4160);// 256);
+
+    //        //while()
+
+    //        while (Game.GameTime - GameTimeLeave <= 2000 && Driver.IsInAnyVehicle(false) && Driver.IsAlive)//
+    //            GameFiber.Yield();
+
+    //        // GameFiber.Sleep(2000);
+
+
+    //        GameFiber.Sleep(500);
+    //        Game.LocalPlayer.Character.Tasks.Clear();
+
+
+    //        if (Driver.IsInAnyVehicle(false))
+    //        {
+    //            WriteToLog("CarjackAnimation", "Driver In Vehicle");
+    //            return;
+    //        }
+    //        else
+    //        {
+    //            WriteToLog("CarjackAnimation", "Driver Out of Vehicle");
+    //            Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+    //            Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, -1);
+    //        }
+
+
+    //        //while (Driver.IsInAnyVehicle(false))
+    //        //{
+    //        //    GameFiber.Yield();
+    //        //}
+
+    //        //GameFiber.Sleep(20);
+
+
+    //        //GameFiber.Sleep(2000);
+
+
+    //        //GameFiber.Sleep(500);
+    //        //Game.LocalPlayer.Character.Tasks.Clear();
+    //        //Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, -1);
+
+
+    //        // GameFiber.Sleep(5000);
+
+
+    //        //if (Driver.Exists())
+    //        //    Driver.Delete();
+    //    });
+    //    //GameFiber.StartNew(delegate
+    //    //{
+    //    //    Driver.BlockPermanentEvents = true;
+    //    //    Game.LocalPlayer.Character.Position = AnimationStartPosition;
+    //    //    Game.LocalPlayer.Character.Heading = TargetVehicle.Heading + -40f;
+
+    //    //    GTAWeapon MyWeapon = InstantAction.GetCurrentWeapon();
+    //    //    if (MyWeapon == null)
+    //    //        return;
+
+    //    //    if (MyWeapon.IsOneHanded)
+    //    //    {
+    //    //        RequestAnimationDictionay("veh@jacking@1h");
+    //    //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@1h", "std_perp_ds", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+    //    //    }
+    //    //    else if (MyWeapon.IsTwoHanded)
+    //    //    {
+    //    //        RequestAnimationDictionay("veh@jacking@2h");
+    //    //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@2h", "std_perp_ds_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+    //    //    }
+    //    //    GameFiber.Sleep(200);
+    //    //    TargetVehicle.Doors[0].Open(false);
+    //    //    NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", Driver, TargetVehicle, 256);
+
+    //    //    while (Driver.IsInAnyVehicle(false))
+    //    //        GameFiber.Yield();
+
+    //    //    //GameFiber.Sleep(20);
+    //    //    Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+
+    //    //    //GameFiber.Sleep(2000);
+
+
+    //    //    GameFiber.Sleep(500);
+    //    //    Game.LocalPlayer.Character.Tasks.Clear();
+    //    //    Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, -1);
+
+
+    //    //    // GameFiber.Sleep(5000);
+
+
+    //    //    //if (Driver.Exists())
+    //    //    //    Driver.Delete();
+    //    //});
+    //}
 
     //Respawn
     public static void BribePolice(int Amount)
@@ -2372,7 +2979,7 @@ public static class InstantAction
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         RespawnInPlace(true);
         Game.LocalPlayer.WantedLevel = 0;
-        EmergencyLocation ClosestPolice = EmergencyLocations.Where(x => x.Type == EmergencyLocation.EmergencyLocationType.Hospital).OrderBy(s => Game.LocalPlayer.Character.Position.DistanceTo2D(s.Location)).FirstOrDefault();
+        GTALocation ClosestPolice = Locations.Where(x => x.Type == GTALocation.LocationType.Hospital).OrderBy(s => Game.LocalPlayer.Character.Position.DistanceTo2D(s.Location)).FirstOrDefault();
 
         Game.LocalPlayer.Character.Position = ClosestPolice.Location;
         Game.LocalPlayer.Character.Heading = ClosestPolice.Heading;
@@ -2409,7 +3016,7 @@ public static class InstantAction
         RaiseHands();
         ResetPlayer(true, true);
         NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-        EmergencyLocation ClosestPolice = EmergencyLocations.Where(x => x.Type == EmergencyLocation.EmergencyLocationType.Police).OrderBy(s => Game.LocalPlayer.Character.Position.DistanceTo2D(s.Location)).FirstOrDefault();
+        GTALocation ClosestPolice = Locations.Where(x => x.Type == GTALocation.LocationType.Police).OrderBy(s => Game.LocalPlayer.Character.Position.DistanceTo2D(s.Location)).FirstOrDefault();
         Game.LocalPlayer.Character.Position = ClosestPolice.Location;
         Game.LocalPlayer.Character.Heading = ClosestPolice.Heading;
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
@@ -2779,125 +3386,659 @@ public static class InstantAction
     //Lists
     private static void setupLocations()
     {
+        //Hospital
+        GTALocation PillBoxHillHospital = new GTALocation(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, GTALocation.LocationType.Hospital, "Pill Box Hill Hospital");
+        GTALocation CentralLosStantosHospital = new GTALocation(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, GTALocation.LocationType.Hospital, "Central Los Santos Hospital");
+        GTALocation SandyShoresHospital = new GTALocation(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, GTALocation.LocationType.Hospital, "Sandy Shores Hospital");
+        GTALocation PaletoBayHospital = new GTALocation(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, GTALocation.LocationType.Hospital, "Paleto Bay Hospital");
 
-        EmergencyLocation PillBoxHillHospital = new EmergencyLocation(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, EmergencyLocation.EmergencyLocationType.Hospital, "Pill Box Hill Hospital");
-        EmergencyLocation CentralLosStantosHospital = new EmergencyLocation(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, EmergencyLocation.EmergencyLocationType.Hospital, "Central Los Santos Hospital");
-        EmergencyLocation SandyShoresHospital = new EmergencyLocation(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, EmergencyLocation.EmergencyLocationType.Hospital, "Sandy Shores Hospital");
-        EmergencyLocation PaletoBayHospital = new EmergencyLocation(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, EmergencyLocation.EmergencyLocationType.Hospital, "Paleto Bay Hospital");
+        Locations.Add(PillBoxHillHospital);
+        Locations.Add(CentralLosStantosHospital);
+        Locations.Add(SandyShoresHospital);
+        Locations.Add(PaletoBayHospital);
 
-        EmergencyLocations.Add(PillBoxHillHospital);
-        EmergencyLocations.Add(CentralLosStantosHospital);
-        EmergencyLocations.Add(SandyShoresHospital);
-        EmergencyLocations.Add(PaletoBayHospital);
+        //Police
+        GTALocation DavisPolice = new GTALocation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, GTALocation.LocationType.Police, "Davis Police Station");
+        GTALocation SandyShoresPolice = new GTALocation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f, GTALocation.LocationType.Police, "Sandy Shores Police Station");
+        GTALocation PaletoBayPolice = new GTALocation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, GTALocation.LocationType.Police, "Paleto Bay Police Station");
+        GTALocation MissionRowPolice = new GTALocation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, GTALocation.LocationType.Police, "Mission Row Police Station");
+        GTALocation LasMesaPolice = new GTALocation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, GTALocation.LocationType.Police, "La Mesa Police Station");
+        GTALocation VinewoodPolice = new GTALocation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f, GTALocation.LocationType.Police, "Vinewood Police Station");
+        GTALocation RockfordHillsPolice = new GTALocation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, GTALocation.LocationType.Police, "Vinewood Police Station");
+        GTALocation VespucciPolice = new GTALocation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, GTALocation.LocationType.Police, "Vinewood Police Station");
+
+        Locations.Add(DavisPolice);
+        Locations.Add(SandyShoresPolice);
+        Locations.Add(PaletoBayPolice);
+        Locations.Add(MissionRowPolice);
+        Locations.Add(LasMesaPolice);
+        Locations.Add(VinewoodPolice);
+        Locations.Add(RockfordHillsPolice);
+        Locations.Add(VespucciPolice);
+
+        //Stores
+        GTALocation LTDGasLIttleSeoul = new GTALocation(new Vector3(-709.68f, -923.198f, 19.0193f), 22.23846f, GTALocation.LocationType.ConvenienceStore, "LTD Gas - Little Seoul");
+        GTALocation RobsLiquors = new GTALocation(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f, GTALocation.LocationType.ConvenienceStore, "Rob's Liquors");
+        GTALocation Store1 = new GTALocation(new Vector3(1725f, 6410f, 35f), 22.23846f, GTALocation.LocationType.ConvenienceStore, "24/7 Store");
+        GTALocation Store2 = new GTALocation(new Vector3(2560f, 385f, 107f), 22.23846f, GTALocation.LocationType.ConvenienceStore, "24/7 Store");
+        GTALocation Store3 = new GTALocation(new Vector3(547f, 2678f, 41f), 22.23846f, GTALocation.LocationType.ConvenienceStore, "24/7 Store");
 
 
-        EmergencyLocation DavisPolice = new EmergencyLocation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, EmergencyLocation.EmergencyLocationType.Police, "Davis Police Station");
-        EmergencyLocation SandyShoresPolice = new EmergencyLocation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f, EmergencyLocation.EmergencyLocationType.Police, "Sandy Shores Police Station");
-        EmergencyLocation PaletoBayPolice = new EmergencyLocation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, EmergencyLocation.EmergencyLocationType.Police, "Paleto Bay Police Station");
-        EmergencyLocation MissionRowPolice = new EmergencyLocation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, EmergencyLocation.EmergencyLocationType.Police, "Mission Row Police Station");
-        EmergencyLocation LasMesaPolice = new EmergencyLocation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, EmergencyLocation.EmergencyLocationType.Police, "La Mesa Police Station");
-        EmergencyLocation VinewoodPolice = new EmergencyLocation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f, EmergencyLocation.EmergencyLocationType.Police, "Vinewood Police Station");
-        EmergencyLocation RockfordHillsPolice = new EmergencyLocation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, EmergencyLocation.EmergencyLocationType.Police, "Vinewood Police Station");
-        EmergencyLocation VespucciPolice = new EmergencyLocation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, EmergencyLocation.EmergencyLocationType.Police, "Vinewood Police Station");
-
-        EmergencyLocations.Add(DavisPolice);
-        EmergencyLocations.Add(SandyShoresPolice);
-        EmergencyLocations.Add(PaletoBayPolice);
-        EmergencyLocations.Add(MissionRowPolice);
-        EmergencyLocations.Add(LasMesaPolice);
-        EmergencyLocations.Add(VinewoodPolice);
-        EmergencyLocations.Add(RockfordHillsPolice);
-        EmergencyLocations.Add(VespucciPolice);
+        Locations.Add(LTDGasLIttleSeoul);
+        Locations.Add(RobsLiquors);
+        Locations.Add(Store1);
+        Locations.Add(Store2);
+        Locations.Add(Store3);
 
     }
     private static void setupWeapons()
     {
         //Melee
-        Weapons.Add(new GTAWeapon("weapon_dagger", 0, GTAWeapon.WeaponCategory.Melee, 0, 2460120199));
-        Weapons.Add(new GTAWeapon("weapon_bat", 0, GTAWeapon.WeaponCategory.Melee, 0, 2508868239));
-        Weapons.Add(new GTAWeapon("weapon_bottle", 0, GTAWeapon.WeaponCategory.Melee, 0, 4192643659));
-        Weapons.Add(new GTAWeapon("weapon_crowbar", 0, GTAWeapon.WeaponCategory.Melee, 0, 2227010557));
-        Weapons.Add(new GTAWeapon("weapon_flashlight", 0, GTAWeapon.WeaponCategory.Melee, 0, 2343591895));
-        Weapons.Add(new GTAWeapon("weapon_golfclub", 0, GTAWeapon.WeaponCategory.Melee, 0, 1141786504));
-        Weapons.Add(new GTAWeapon("weapon_hammer", 0, GTAWeapon.WeaponCategory.Melee, 0, 1317494643));
-        Weapons.Add(new GTAWeapon("weapon_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 4191993645));
-        Weapons.Add(new GTAWeapon("weapon_knuckle", 0, GTAWeapon.WeaponCategory.Melee, 0, 3638508604));
-        Weapons.Add(new GTAWeapon("weapon_knife", 0, GTAWeapon.WeaponCategory.Melee, 0, 2578778090));
-        Weapons.Add(new GTAWeapon("weapon_machete", 0, GTAWeapon.WeaponCategory.Melee, 0, 3713923289));
-        Weapons.Add(new GTAWeapon("weapon_switchblade", 0, GTAWeapon.WeaponCategory.Melee, 0, 3756226112));
-        Weapons.Add(new GTAWeapon("weapon_nightstick", 0, GTAWeapon.WeaponCategory.Melee, 0, 1737195953));
-        Weapons.Add(new GTAWeapon("weapon_wrench", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x19044EE0));
-        Weapons.Add(new GTAWeapon("weapon_battleaxe", 0, GTAWeapon.WeaponCategory.Melee, 0, 3441901897));
-        Weapons.Add(new GTAWeapon("weapon_poolcue", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x94117305));
-        Weapons.Add(new GTAWeapon("weapon_stone_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x3813FC08));
+        Weapons.Add(new GTAWeapon("weapon_dagger", 0, GTAWeapon.WeaponCategory.Melee, 0, 2460120199,false,false,false));
+        Weapons.Add(new GTAWeapon("weapon_bat", 0, GTAWeapon.WeaponCategory.Melee, 0, 2508868239, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_bottle", 0, GTAWeapon.WeaponCategory.Melee, 0, 4192643659, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_crowbar", 0, GTAWeapon.WeaponCategory.Melee, 0, 2227010557, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_flashlight", 0, GTAWeapon.WeaponCategory.Melee, 0, 2343591895, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_golfclub", 0, GTAWeapon.WeaponCategory.Melee, 0, 1141786504, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_hammer", 0, GTAWeapon.WeaponCategory.Melee, 0, 1317494643, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 4191993645, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_knuckle", 0, GTAWeapon.WeaponCategory.Melee, 0, 3638508604, false, false, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Base Model", "COMPONENT_KNUCKLE_VARMOD_BASE", 0xF3462F33, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The Pimp", "COMPONENT_KNUCKLE_VARMOD_PIMP", 0xC613F685, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The Ballas", "COMPONENT_KNUCKLE_VARMOD_BALLAS", 0xEED9FD63, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The Hustler", "COMPONENT_KNUCKLE_VARMOD_DOLLAR", 0x50910C31, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The Rock", "COMPONENT_KNUCKLE_VARMOD_DIAMOND", 0x9761D9DC, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The Hater", "COMPONENT_KNUCKLE_VARMOD_HATE", 0x7DECFE30, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The Lover", "COMPONENT_KNUCKLE_VARMOD_LOVE", 0x3F4E8AA6, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The Player", "COMPONENT_KNUCKLE_VARMOD_PLAYER", 0x8B808BB, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The King", "COMPONENT_KNUCKLE_VARMOD_KING", 0xE28BABEF, false, "weapon_knuckle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("The Vagos", "COMPONENT_KNUCKLE_VARMOD_VAGOS", 0x7AF3F785, false, "weapon_knuckle"));
+        Weapons.Add(new GTAWeapon("weapon_knife", 0, GTAWeapon.WeaponCategory.Melee, 0, 2578778090, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_machete", 0, GTAWeapon.WeaponCategory.Melee, 0, 3713923289, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_switchblade", 0, GTAWeapon.WeaponCategory.Melee, 0, 3756226112, false, false, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Handle", "COMPONENT_SWITCHBLADE_VARMOD_BASE", 0x9137A500, false, "weapon_switchblade"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("VIP Variant", "COMPONENT_SWITCHBLADE_VARMOD_VAR1", 0x5B3E7DB6, false, "weapon_switchblade"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Bodyguard Variant", "COMPONENT_SWITCHBLADE_VARMOD_VAR2", 0xE7939662, false, "weapon_switchblade"));
+        Weapons.Add(new GTAWeapon("weapon_nightstick", 0, GTAWeapon.WeaponCategory.Melee, 0, 1737195953, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_wrench", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x19044EE0, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_battleaxe", 0, GTAWeapon.WeaponCategory.Melee, 0, 3441901897, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_poolcue", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x94117305, false, false, false));
+        Weapons.Add(new GTAWeapon("weapon_stone_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x3813FC08, false, false, false));
         //Pistol
-        Weapons.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true));
-        Weapons.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true));
-        Weapons.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true));
-        Weapons.Add(new GTAWeapon("weapon_appistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 584646201));
-        Weapons.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153));
-        Weapons.Add(new GTAWeapon("weapon_pistol50", 60, GTAWeapon.WeaponCategory.Pistol, 1, 2578377531));
-        Weapons.Add(new GTAWeapon("weapon_snspistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3218215474));
-        Weapons.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054));
-        Weapons.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true));
-        Weapons.Add(new GTAWeapon("weapon_vintagepistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 137902532));
-        Weapons.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012));
-        Weapons.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510));
-        Weapons.Add(new GTAWeapon("weapon_revolver", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3249783761));
-        Weapons.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F));
-        Weapons.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8));
-        Weapons.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1));
+        Weapons.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_PISTOL_CLIP_01", 0xFED0FD71, false, "weapon_pistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_CLIP_02", 0xED265A1C, false, "weapon_pistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_pistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_PISTOL_VARMOD_LUXE", 0xD7391086, false, "weapon_pistol"));
+        Weapons.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true,true,false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_PISTOL_MK2_CLIP_01", 0x94F42D62, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_MK2_CLIP_02", 0x5ED6C128, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_PISTOL_MK2_CLIP_TRACER", 0x25CAAEAF, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_PISTOL_MK2_CLIP_INCENDIARY", 0x2BBD7A3A, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Hollow Point Rounds", "COMPONENT_PISTOL_MK2_CLIP_HOLLOWPOINT", 0x85FEA109, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_PISTOL_MK2_CLIP_FMJ", 0x4F37DF2A, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Mounted Scope", "COMPONENT_AT_PI_RAIL", 0x8ED4BB70, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH_02", 0x43FD595B, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Compensator", "COMPONENT_AT_PI_COMP", 0x21E34793, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO", 0x5C6C749C, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_PISTOL_MK2_CAMO_02", 0x15F7A390, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_PISTOL_MK2_CAMO_03", 0x968E24DB, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_PISTOL_MK2_CAMO_04", 0x17BFA99, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_PISTOL_MK2_CAMO_05", 0xF2685C72, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_PISTOL_MK2_CAMO_06", 0xDD2231E6, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_PISTOL_MK2_CAMO_07", 0xBB43EE76, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_PISTOL_MK2_CAMO_08", 0x4D901310, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_PISTOL_MK2_CAMO_09", 0x5F31B653, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_PISTOL_MK2_CAMO_10", 0x697E19A0, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_PISTOL_MK2_CAMO_IND_01", 0x930CB951, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_SLIDE", 0xB4FC92B0, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_02_SLIDE", 0x1A1F1260, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_03_SLIDE", 0xE4E00B70, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_04_SLIDE", 0x2C298B2B, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_05_SLIDE", 0xDFB79725, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_06_SLIDE", 0x6BD7228C, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_07_SLIDE", 0x9DDBCF8C, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_08_SLIDE", 0xB319A52C, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_09_SLIDE", 0xC6836E12, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_10_SLIDE", 0x43B1B173, false, "weapon_pistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_PISTOL_MK2_CAMO_IND_01_SLIDE", 0x4ABDA3FA, false, "weapon_pistol_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true, true,false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMBATPISTOL_CLIP_01", 0x721B079, false, "weapon_combatpistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATPISTOL_CLIP_02", 0xD67B4F2D, false, "weapon_combatpistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_combatpistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_combatpistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_COMBATPISTOL_VARMOD_LOWRIDER", 0xC6654D72, false, "weapon_combatpistol"));
+        Weapons.Add(new GTAWeapon("weapon_appistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 584646201, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_APPISTOL_CLIP_01", 0x31C4B22A, false, "weapon_appistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_APPISTOL_CLIP_02", 0x249A17D5, false, "weapon_appistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_appistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_appistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_APPISTOL_VARMOD_LUXE", 0x9B76C72C, false, "weapon_appistol"));
+        Weapons.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153, false, true, false));
+        Weapons.Add(new GTAWeapon("weapon_pistol50", 60, GTAWeapon.WeaponCategory.Pistol, 1, 2578377531, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_PISTOL50_CLIP_01", 0x2297BE19, false, "weapon_pistol50"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL50_CLIP_02", 0xD9D3AC92, false, "weapon_pistol50"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_pistol50"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_pistol50"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Platinum Pearl Deluxe Finish", "COMPONENT_PISTOL50_VARMOD_LUXE", 0x77B8AB2F, false, "weapon_pistol50"));
+        Weapons.Add(new GTAWeapon("weapon_snspistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3218215474, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SNSPISTOL_CLIP_01", 0xF8802ED9, false, "weapon_snspistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SNSPISTOL_CLIP_02", 0x7B0033B3, false, "weapon_snspistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_SNSPISTOL_VARMOD_LOWRIDER", 0x8033ECAF, false, "weapon_snspistol"));
+        Weapons.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SNSPISTOL_MK2_CLIP_01", 0x1466CE6, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SNSPISTOL_MK2_CLIP_02", 0xCE8C0772, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_SNSPISTOL_MK2_CLIP_TRACER", 0x902DA26E, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_SNSPISTOL_MK2_CLIP_INCENDIARY", 0xE6AD5F79, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Hollow Point Rounds", "COMPONENT_SNSPISTOL_MK2_CLIP_HOLLOWPOINT", 0x8D107402, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_SNSPISTOL_MK2_CLIP_FMJ", 0xC111EB26, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH_03", 0x4A4965F3, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Mounted Scope", "COMPONENT_AT_PI_RAIL_02", 0x47DE9258, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Compensator", "COMPONENT_AT_PI_COMP_02", 0xAA8283BF, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_SNSPISTOL_MK2_CAMO", 0xF7BEEDD, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_SNSPISTOL_MK2_CAMO_02", 0x8A612EF6, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_SNSPISTOL_MK2_CAMO_03", 0x76FA8829, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_SNSPISTOL_MK2_CAMO_04", 0xA93C6CAC, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_SNSPISTOL_MK2_CAMO_05", 0x9C905354, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_SNSPISTOL_MK2_CAMO_06", 0x4DFA3621, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_SNSPISTOL_MK2_CAMO_07", 0x42E91FFF, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_SNSPISTOL_MK2_CAMO_08", 0x54A8437D, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_SNSPISTOL_MK2_CAMO_09", 0x68C2746, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_SNSPISTOL_MK2_CAMO_10", 0x2366E467, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_SNSPISTOL_MK2_CAMO_IND_01", 0x441882E6, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_SNSPISTOL_MK2_CAMO_SLIDE", 0xE7EE68EA, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_SNSPISTOL_MK2_CAMO_02_SLIDE", 0x29366D21, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_SNSPISTOL_MK2_CAMO_03_SLIDE", 0x3ADE514B, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_SNSPISTOL_MK2_CAMO_04_SLIDE", 0xE64513E9, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_SNSPISTOL_MK2_CAMO_05_SLIDE", 0xCD7AEB9A, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_SNSPISTOL_MK2_CAMO_06_SLIDE", 0xFA7B27A6, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_SNSPISTOL_MK2_CAMO_07_SLIDE", 0xE285CA9A, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_SNSPISTOL_MK2_CAMO_08_SLIDE", 0x2B904B19, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_SNSPISTOL_MK2_CAMO_09_SLIDE", 0x22C24F9C, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_SNSPISTOL_MK2_CAMO_10_SLIDE", 0x8D0D5ECD, false, "weapon_snspistol_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_SNSPISTOL_MK2_CAMO_IND_01_SLIDE", 0x1F07150A, false, "weapon_snspistol_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true,true,false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYPISTOL_CLIP_01", 0xD4A969A, false, "weapon_heavypistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_HEAVYPISTOL_CLIP_02", 0x64F9C62B, false, "weapon_heavypistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_heavypistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_heavypistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", 0x7A6A7B7B, false, "weapon_heavypistol"));
+        Weapons.Add(new GTAWeapon("weapon_vintagepistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 137902532, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_VINTAGEPISTOL_CLIP_01", 0x45A3B6BB, false, "weapon_vintagepistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_VINTAGEPISTOL_CLIP_02", 0x33BA12E8, false, "weapon_vintagepistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_vintagepistol"));
+        Weapons.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012, false, true, false));
+        Weapons.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510, false, true, false));
+        Weapons.Add(new GTAWeapon("weapon_revolver", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3249783761, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("VIP Variant", "COMPONENT_REVOLVER_VARMOD_BOSS", 0x16EE3040, false, "weapon_revolver"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Bodyguard Variant", "COMPONENT_REVOLVER_VARMOD_GOON", 0x9493B80D, false, "weapon_revolver"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_REVOLVER_CLIP_01", 0xE9867CE3, false, "weapon_revolver"));
+        Weapons.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Rounds", "COMPONENT_REVOLVER_MK2_CLIP_01", 0xBA23D8BE, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_REVOLVER_MK2_CLIP_TRACER", 0xC6D8E476, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_REVOLVER_MK2_CLIP_INCENDIARY", 0xEFBF25, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Hollow Point Rounds", "COMPONENT_REVOLVER_MK2_CLIP_HOLLOWPOINT", 0x10F42E8F, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_REVOLVER_MK2_CLIP_FMJ", 0xDC8BA3F, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Small Scope", "COMPONENT_AT_SCOPE_MACRO_MK2", 0x49B2945, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Compensator", "COMPONENT_AT_PI_COMP_03", 0x27077CCB, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_REVOLVER_MK2_CAMO", 0xC03FED9F, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_REVOLVER_MK2_CAMO_02", 0xB5DE24, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_REVOLVER_MK2_CAMO_03", 0xA7FF1B8, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_REVOLVER_MK2_CAMO_04", 0xF2E24289, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_REVOLVER_MK2_CAMO_05", 0x11317F27, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_REVOLVER_MK2_CAMO_06", 0x17C30C42, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_REVOLVER_MK2_CAMO_07", 0x257927AE, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_REVOLVER_MK2_CAMO_08", 0x37304B1C, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_REVOLVER_MK2_CAMO_09", 0x48DAEE71, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_REVOLVER_MK2_CAMO_10", 0x20ED9B5B, false, "weapon_revolver_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_REVOLVER_MK2_CAMO_IND_01", 0xD951E867, false, "weapon_revolver_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8, false, true, false));
+        Weapons.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Festive tint", "COMPONENT_RAYPISTOL_VARMOD_XMAS18", 0xD7DBF707, false, "weapon_raypistol"));
         //Shotgun
-        Weapons.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true));
-        Weapons.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 0x555AF99A, true));
-        Weapons.Add(new GTAWeapon("weapon_sawnoffshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2017895192));
-        Weapons.Add(new GTAWeapon("weapon_assaultshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 3800352039));
-        Weapons.Add(new GTAWeapon("weapon_bullpupshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2640438543));
-        Weapons.Add(new GTAWeapon("weapon_musket", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2828843422));
-        Weapons.Add(new GTAWeapon("weapon_heavyshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 984333226));
-        Weapons.Add(new GTAWeapon("weapon_dbshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 4019527611));
-        Weapons.Add(new GTAWeapon("weapon_autoshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 317205821));
+        Weapons.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true,false,true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_SR_SUPP", 0xE608B35E, false, "weapon_pumpshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_PUMPSHOTGUN_VARMOD_LOWRIDER", 0xA2D79DDB, false, "weapon_pumpshotgun"));
+        Weapons.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 0x555AF99A, true,false,true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Shells", "COMPONENT_PUMPSHOTGUN_MK2_CLIP_01", 0xCD940141, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Dragon's Breath Shells", "COMPONENT_PUMPSHOTGUN_MK2_CLIP_INCENDIARY", 0x9F8A1BF5, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Steel Buckshot Shells", "COMPONENT_PUMPSHOTGUN_MK2_CLIP_ARMORPIERCING", 0x4E65B425, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flechette Shells", "COMPONENT_PUMPSHOTGUN_MK2_CLIP_HOLLOWPOINT", 0xE9582927, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Explosive Slugs", "COMPONENT_PUMPSHOTGUN_MK2_CLIP_EXPLOSIVE", 0x3BE4465D, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Small Scope", "COMPONENT_AT_SCOPE_MACRO_MK2", 0x49B2945, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Medium Scope", "COMPONENT_AT_SCOPE_SMALL_MK2", 0x3F3C8181, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_SR_SUPP_03", 0xAC42DF71, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Squared Muzzle Brake", "COMPONENT_AT_MUZZLE_08", 0x5F7DCE4D, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PUMPSHOTGUN_MK2_CAMO", 0xE3BD9E44, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_02", 0x17148F9B, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_03", 0x24D22B16, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_04", 0xF2BEC6F0, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_05", 0x85627D, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_06", 0xDC2919C5, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_07", 0xE184247B, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_08", 0xD8EF9356, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_09", 0xEF29BFCA, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_10", 0x67AEB165, false, "weapon_pumpshotgun_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_IND_01", 0x46411A1D, false, "weapon_pumpshotgun_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_sawnoffshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2017895192, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_SAWNOFFSHOTGUN_VARMOD_LUXE", 0x85A64DF9, false, "weapon_sawnoffshotgun"));
+        Weapons.Add(new GTAWeapon("weapon_assaultshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 3800352039, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTSHOTGUN_CLIP_01", 0x94E81BC7, false, "weapon_assaultshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ASSAULTSHOTGUN_CLIP_02", 0x86BD7F72, false, "weapon_assaultshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_assaultshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_assaultshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_assaultshotgun"));
+        Weapons.Add(new GTAWeapon("weapon_bullpupshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2640438543, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_bullpupshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_bullpupshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_bullpupshotgun"));
+        Weapons.Add(new GTAWeapon("weapon_musket", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2828843422, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_heavyshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 984333226, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYSHOTGUN_CLIP_01", 0x324F2D5F, false, "weapon_heavyshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_HEAVYSHOTGUN_CLIP_02", 0x971CF6FD, false, "weapon_heavyshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_HEAVYSHOTGUN_CLIP_03", 0x88C7DA53, false, "weapon_heavyshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_heavyshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_heavyshotgun"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_heavyshotgun"));
+        Weapons.Add(new GTAWeapon("weapon_dbshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 4019527611, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_autoshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 317205821, false, false, true));
         //SMG
-        Weapons.Add(new GTAWeapon("weapon_microsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 324215364));
-        Weapons.Add(new GTAWeapon("weapon_smg", 32, GTAWeapon.WeaponCategory.SMG, 2, 736523883));
-        Weapons.Add(new GTAWeapon("weapon_smg_mk2", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x78A97CD0));
-        Weapons.Add(new GTAWeapon("weapon_assaultsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 4024951519));
-        Weapons.Add(new GTAWeapon("weapon_combatpdw", 32, GTAWeapon.WeaponCategory.SMG, 2, 171789620, true));
-        Weapons.Add(new GTAWeapon("weapon_machinepistol", 32, GTAWeapon.WeaponCategory.SMG, 2, 3675956304));
-        Weapons.Add(new GTAWeapon("weapon_minismg", 32, GTAWeapon.WeaponCategory.SMG, 2, 3173288789));
-        Weapons.Add(new GTAWeapon("weapon_raycarbine", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x476BF155));
+        Weapons.Add(new GTAWeapon("weapon_microsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 324215364, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MICROSMG_CLIP_01", 0xCB48AEF0, false, "weapon_microsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MICROSMG_CLIP_02", 0x10E6BA2B, false, "weapon_microsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_microsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MACRO", 0x9D2FBF29, false, "weapon_microsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_microsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_MICROSMG_VARMOD_LUXE", 0x487AAE09, false, "weapon_microsmg"));
+        Weapons.Add(new GTAWeapon("weapon_smg", 32, GTAWeapon.WeaponCategory.SMG, 2, 736523883, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SMG_CLIP_01", 0x26574997, false, "weapon_smg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SMG_CLIP_02", 0x350966FB, false, "weapon_smg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_SMG_CLIP_03", 0x79C77076, false, "weapon_smg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_smg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MACRO_02", 0x3CC6BA57, false, "weapon_smg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_smg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_SMG_VARMOD_LUXE", 0x27872C90, false, "weapon_smg"));
+        Weapons.Add(new GTAWeapon("weapon_smg_mk2", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x78A97CD0, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SMG_MK2_CLIP_01", 0x4C24806E, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SMG_MK2_CLIP_02", 0xB9835B2E, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_SMG_MK2_CLIP_TRACER", 0x7FEA36EC, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_SMG_MK2_CLIP_INCENDIARY", 0xD99222E5, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Hollow Point Rounds", "COMPONENT_SMG_MK2_CLIP_HOLLOWPOINT", 0x3A1BD6FA, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_SMG_MK2_CLIP_FMJ", 0xB5A715F, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS_SMG", 0x9FDB5652, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Small Scope", "COMPONENT_AT_SCOPE_MACRO_02_SMG_MK2", 0xE502AB6B, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Medium Scope", "COMPONENT_AT_SCOPE_SMALL_SMG_MK2", 0x3DECC7DA, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flat Muzzle Brake", "COMPONENT_AT_MUZZLE_01", 0xB99402D4, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tactical Muzzle Brake", "COMPONENT_AT_MUZZLE_02", 0xC867A07B, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Fat-End Muzzle Brake", "COMPONENT_AT_MUZZLE_03", 0xDE11CBCF, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Precision Muzzle Brake", "COMPONENT_AT_MUZZLE_04", 0xEC9068CC, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Duty Muzzle Brake", "COMPONENT_AT_MUZZLE_05", 0x2E7957A, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Slanted Muzzle Brake", "COMPONENT_AT_MUZZLE_06", 0x347EF8AC, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Split-End Muzzle Brake", "COMPONENT_AT_MUZZLE_07", 0x4DB62ABE, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Barrel", "COMPONENT_AT_SB_BARREL_01", 0xD9103EE1, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Barrel", "COMPONENT_AT_SB_BARREL_02", 0xA564D78B, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_SMG_MK2_CAMO", 0xC4979067, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_SMG_MK2_CAMO_02", 0x3815A945, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_SMG_MK2_CAMO_03", 0x4B4B4FB0, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_SMG_MK2_CAMO_04", 0xEC729200, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_SMG_MK2_CAMO_05", 0x48F64B22, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_SMG_MK2_CAMO_06", 0x35992468, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_SMG_MK2_CAMO_07", 0x24B782A5, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_SMG_MK2_CAMO_08", 0xA2E67F01, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_SMG_MK2_CAMO_09", 0x2218FD68, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_SMG_MK2_CAMO_10", 0x45C5C3C5, false, "weapon_smg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_SMG_MK2_CAMO_IND_01", 0x399D558F, false, "weapon_smg_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_assaultsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 4024951519, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTSMG_CLIP_01", 0x8D1307B0, false, "weapon_assaultsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ASSAULTSMG_CLIP_02", 0xBB46E417, false, "weapon_assaultsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_assaultsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MACRO", 0x9D2FBF29, false, "weapon_assaultsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_assaultsmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_ASSAULTSMG_VARMOD_LOWRIDER", 0x278C78AF, false, "weapon_assaultsmg"));
+        Weapons.Add(new GTAWeapon("weapon_combatpdw", 32, GTAWeapon.WeaponCategory.SMG, 2, 171789620, true,false,true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMBATPDW_CLIP_01", 0x4317F19E, false, "weapon_combatpdw"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATPDW_CLIP_02", 0x334A5203, false, "weapon_combatpdw"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_COMBATPDW_CLIP_03", 0x6EB8C8DB, false, "weapon_combatpdw"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_combatpdw"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw"));
+        Weapons.Add(new GTAWeapon("weapon_machinepistol", 32, GTAWeapon.WeaponCategory.SMG, 2, 3675956304, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MACHINEPISTOL_CLIP_01", 0x476E85FF, false, "weapon_machinepistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MACHINEPISTOL_CLIP_02", 0xB92C6979, false, "weapon_machinepistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_MACHINEPISTOL_CLIP_03", 0xA9E9CAF4, false, "weapon_machinepistol"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_machinepistol"));
+        Weapons.Add(new GTAWeapon("weapon_minismg", 32, GTAWeapon.WeaponCategory.SMG, 2, 3173288789, false, true, false));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MINISMG_CLIP_01", 0x84C8B2D3, false, "weapon_minismg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MINISMG_CLIP_02", 0x937ED0B7, false, "weapon_minismg"));
+        Weapons.Add(new GTAWeapon("weapon_raycarbine", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x476BF155, false, true, false));
         //AR
-        Weapons.Add(new GTAWeapon("weapon_assaultrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 3220176749));
-        Weapons.Add(new GTAWeapon("weapon_assaultrifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x394F415C));
-        Weapons.Add(new GTAWeapon("weapon_carbinerifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2210333304, true));
-        Weapons.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0xFAD1F1C9, true));
-        Weapons.Add(new GTAWeapon("weapon_advancedrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2937143193));
-        Weapons.Add(new GTAWeapon("weapon_specialcarbine", 120, GTAWeapon.WeaponCategory.AR, 3, 3231910285));
-        Weapons.Add(new GTAWeapon("weapon_specialcarbine_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x969C3D67));
-        Weapons.Add(new GTAWeapon("weapon_bullpuprifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2132975508));
-        Weapons.Add(new GTAWeapon("weapon_bullpuprifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x84D6FAFD));
-        Weapons.Add(new GTAWeapon("weapon_compactrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 1649403952));
+        Weapons.Add(new GTAWeapon("weapon_assaultrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 3220176749, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTRIFLE_CLIP_01", 0xBE5EEA16, false, "weapon_assaultrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ASSAULTRIFLE_CLIP_02", 0xB1214F9B, false, "weapon_assaultrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_ASSAULTRIFLE_CLIP_03", 0xDBF0A53D, false, "weapon_assaultrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_assaultrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MACRO", 0x9D2FBF29, false, "weapon_assaultrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_assaultrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_assaultrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_ASSAULTRIFLE_VARMOD_LUXE", 0x4EAD7533, false, "weapon_assaultrifle"));
+        Weapons.Add(new GTAWeapon("weapon_assaultrifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x394F415C, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_01", 0x8610343F, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_02", 0xD12ACA6F, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_TRACER", 0xEF2C78C1, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_INCENDIARY", 0xFB70D853, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Armor Piercing Rounds", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_ARMORPIERCING", 0xA7DD1E58, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_FMJ", 0x63E0A098, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Small Scope", "COMPONENT_AT_SCOPE_MACRO_MK2", 0x49B2945, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Large Scope", "COMPONENT_AT_SCOPE_MEDIUM_MK2", 0xC66B6542, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flat Muzzle Brake", "COMPONENT_AT_MUZZLE_01", 0xB99402D4, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tactical Muzzle Brake", "COMPONENT_AT_MUZZLE_02", 0xC867A07B, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Fat-End Muzzle Brake", "COMPONENT_AT_MUZZLE_03", 0xDE11CBCF, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Precision Muzzle Brake", "COMPONENT_AT_MUZZLE_04", 0xEC9068CC, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Duty Muzzle Brake", "COMPONENT_AT_MUZZLE_05", 0x2E7957A, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Slanted Muzzle Brake", "COMPONENT_AT_MUZZLE_06", 0x347EF8AC, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Split-End Muzzle Brake", "COMPONENT_AT_MUZZLE_07", 0x4DB62ABE, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Barrel", "COMPONENT_AT_AR_BARREL_01", 0x43A49D26, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Barrel", "COMPONENT_AT_AR_BARREL_02", 0x5646C26A, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_ASSAULTRIFLE_MK2_CAMO", 0x911B24AF, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_02", 0x37E5444B, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_03", 0x538B7B97, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_04", 0x25789F72, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_05", 0xC5495F2D, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_06", 0xCF8B73B1, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_07", 0xA9BB2811, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_08", 0xFC674D54, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_09", 0x7C7FCD9B, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_10", 0xA5C38392, false, "weapon_assaultrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_IND_01", 0xB9B15DB0, false, "weapon_assaultrifle_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_carbinerifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2210333304, true,false,true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_CARBINERIFLE_CLIP_01", 0x9FBE33EC, false, "weapon_carbinerifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_CARBINERIFLE_CLIP_02", 0x91109691, false, "weapon_carbinerifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Box Magazine", "COMPONENT_CARBINERIFLE_CLIP_03", 0xBA62E935, false, "weapon_carbinerifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_carbinerifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MEDIUM", 0xA0D89C42, false, "weapon_carbinerifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_carbinerifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_carbinerifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_CARBINERIFLE_VARMOD_LUXE", 0xD89B9658, false, "weapon_carbinerifle"));
+        Weapons.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0xFAD1F1C9, true,false,true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_CARBINERIFLE_MK2_CLIP_01", 0x4C7A391E, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_CARBINERIFLE_MK2_CLIP_02", 0x5DD5DBD5, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_CARBINERIFLE_MK2_CLIP_TRACER", 0x1757F566, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_CARBINERIFLE_MK2_CLIP_INCENDIARY", 0x3D25C2A7, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Armor Piercing Rounds", "COMPONENT_CARBINERIFLE_MK2_CLIP_ARMORPIERCING", 0x255D5D57, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_CARBINERIFLE_MK2_CLIP_FMJ", 0x44032F11, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Small Scope", "COMPONENT_AT_SCOPE_MACRO_MK2", 0x49B2945, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Large Scope", "COMPONENT_AT_SCOPE_MEDIUM_MK2", 0xC66B6542, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flat Muzzle Brake", "COMPONENT_AT_MUZZLE_01", 0xB99402D4, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tactical Muzzle Brake", "COMPONENT_AT_MUZZLE_02", 0xC867A07B, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Fat-End Muzzle Brake", "COMPONENT_AT_MUZZLE_03", 0xDE11CBCF, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Precision Muzzle Brake", "COMPONENT_AT_MUZZLE_04", 0xEC9068CC, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Duty Muzzle Brake", "COMPONENT_AT_MUZZLE_05", 0x2E7957A, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Slanted Muzzle Brake", "COMPONENT_AT_MUZZLE_06", 0x347EF8AC, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Split-End Muzzle Brake", "COMPONENT_AT_MUZZLE_07", 0x4DB62ABE, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Barrel", "COMPONENT_AT_CR_BARREL_01", 0x833637FF, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Barrel", "COMPONENT_AT_CR_BARREL_02", 0x8B3C480B, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_CARBINERIFLE_MK2_CAMO", 0x4BDD6F16, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_CARBINERIFLE_MK2_CAMO_02", 0x406A7908, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_CARBINERIFLE_MK2_CAMO_03", 0x2F3856A4, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_CARBINERIFLE_MK2_CAMO_04", 0xE50C424D, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_CARBINERIFLE_MK2_CAMO_05", 0xD37D1F2F, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_CARBINERIFLE_MK2_CAMO_06", 0x86268483, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_CARBINERIFLE_MK2_CAMO_07", 0xF420E076, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_CARBINERIFLE_MK2_CAMO_08", 0xAAE14DF8, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_CARBINERIFLE_MK2_CAMO_09", 0x9893A95D, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_CARBINERIFLE_MK2_CAMO_10", 0x6B13CD3E, false, "weapon_carbinerifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_CARBINERIFLE_MK2_CAMO_IND_01", 0xDA55CD3F, false, "weapon_carbinerifle_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_advancedrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2937143193, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ADVANCEDRIFLE_CLIP_01", 0xFA8FA10F, false, "weapon_advancedrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ADVANCEDRIFLE_CLIP_02", 0x8EC1C979, false, "weapon_advancedrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_advancedrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_advancedrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_advancedrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_ADVANCEDRIFLE_VARMOD_LUXE", 0x377CD377, false, "weapon_advancedrifle"));
+        Weapons.Add(new GTAWeapon("weapon_specialcarbine", 120, GTAWeapon.WeaponCategory.AR, 3, 3231910285, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SPECIALCARBINE_CLIP_01", 0xC6C7E581, false, "weapon_specialcarbine"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SPECIALCARBINE_CLIP_02", 0x7C8BD10E, false, "weapon_specialcarbine"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_SPECIALCARBINE_CLIP_03", 0x6B59AEAA, false, "weapon_specialcarbine"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_specialcarbine"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MEDIUM", 0xA0D89C42, false, "weapon_specialcarbine"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_specialcarbine"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_specialcarbine"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Etched Gun Metal Finish", "COMPONENT_SPECIALCARBINE_VARMOD_LOWRIDER", 0x730154F2, false, "weapon_specialcarbine"));
+        Weapons.Add(new GTAWeapon("weapon_specialcarbine_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x969C3D67, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SPECIALCARBINE_MK2_CLIP_01", 0x16C69281, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SPECIALCARBINE_MK2_CLIP_02", 0xDE1FA12C, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_SPECIALCARBINE_MK2_CLIP_TRACER", 0x8765C68A, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_SPECIALCARBINE_MK2_CLIP_INCENDIARY", 0xDE011286, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Armor Piercing Rounds", "COMPONENT_SPECIALCARBINE_MK2_CLIP_ARMORPIERCING", 0x51351635, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_SPECIALCARBINE_MK2_CLIP_FMJ", 0x503DEA90, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Small Scope", "COMPONENT_AT_SCOPE_MACRO_MK2", 0x49B2945, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Large Scope", "COMPONENT_AT_SCOPE_MEDIUM_MK2", 0xC66B6542, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flat Muzzle Brake", "COMPONENT_AT_MUZZLE_01", 0xB99402D4, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tactical Muzzle Brake", "COMPONENT_AT_MUZZLE_02", 0xC867A07B, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Fat-End Muzzle Brake", "COMPONENT_AT_MUZZLE_03", 0xDE11CBCF, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Precision Muzzle Brake", "COMPONENT_AT_MUZZLE_04", 0xEC9068CC, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Duty Muzzle Brake", "COMPONENT_AT_MUZZLE_05", 0x2E7957A, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Slanted Muzzle Brake", "COMPONENT_AT_MUZZLE_06", 0x347EF8AC, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Split-End Muzzle Brake", "COMPONENT_AT_MUZZLE_07", 0x4DB62ABE, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Barrel", "COMPONENT_AT_SC_BARREL_01", 0xE73653A9, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Barrel", "COMPONENT_AT_SC_BARREL_02", 0xF97F783B, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_SPECIALCARBINE_MK2_CAMO", 0xD40BB53B, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_SPECIALCARBINE_MK2_CAMO_02", 0x431B238B, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_SPECIALCARBINE_MK2_CAMO_03", 0x34CF86F4, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_SPECIALCARBINE_MK2_CAMO_04", 0xB4C306DD, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_SPECIALCARBINE_MK2_CAMO_05", 0xEE677A25, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_SPECIALCARBINE_MK2_CAMO_06", 0xDF90DC78, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_SPECIALCARBINE_MK2_CAMO_07", 0xA4C31EE, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_SPECIALCARBINE_MK2_CAMO_08", 0x89CFB0F7, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_SPECIALCARBINE_MK2_CAMO_09", 0x7B82145C, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_SPECIALCARBINE_MK2_CAMO_10", 0x899CAF75, false, "weapon_specialcarbine_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_SPECIALCARBINE_MK2_CAMO_IND_01", 0x5218C819, false, "weapon_specialcarbine_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_bullpuprifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2132975508, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_BULLPUPRIFLE_CLIP_01", 0xC5A12F80, false, "weapon_bullpuprifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_BULLPUPRIFLE_CLIP_02", 0xB3688B0F, false, "weapon_bullpuprifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_bullpuprifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_bullpuprifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_bullpuprifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_bullpuprifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_BULLPUPRIFLE_VARMOD_LOW", 0xA857BC78, false, "weapon_bullpuprifle"));
+        Weapons.Add(new GTAWeapon("weapon_bullpuprifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x84D6FAFD, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_01", 0x18929DA, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_02", 0xEFB00628, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_TRACER", 0x822060A9, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_INCENDIARY", 0xA99CF95A, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Armor Piercing Rounds", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_ARMORPIERCING", 0xFAA7F5ED, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_FMJ", 0x43621710, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Small Scope", "COMPONENT_AT_SCOPE_MACRO_02_MK2", 0xC7ADD105, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Medium Scope", "COMPONENT_AT_SCOPE_SMALL_MK2", 0x3F3C8181, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Barrel", "COMPONENT_AT_BP_BARREL_01", 0x659AC11B, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Barrel", "COMPONENT_AT_BP_BARREL_02", 0x3BF26DC7, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flat Muzzle Brake", "COMPONENT_AT_MUZZLE_01", 0xB99402D4, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tactical Muzzle Brake", "COMPONENT_AT_MUZZLE_02", 0xC867A07B, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Fat-End Muzzle Brake", "COMPONENT_AT_MUZZLE_03", 0xDE11CBCF, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Precision Muzzle Brake", "COMPONENT_AT_MUZZLE_04", 0xEC9068CC, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Duty Muzzle Brake", "COMPONENT_AT_MUZZLE_05", 0x2E7957A, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Slanted Muzzle Brake", "COMPONENT_AT_MUZZLE_06", 0x347EF8AC, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Split-End Muzzle Brake", "COMPONENT_AT_MUZZLE_07", 0x4DB62ABE, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_BULLPUPRIFLE_MK2_CAMO", 0xAE4055B7, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_02", 0xB905ED6B, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_03", 0xA6C448E8, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_04", 0x9486246C, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_05", 0x8A390FD2, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_06", 0x2337FC5, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_07", 0xEFFFDB5E, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_08", 0xDDBDB6DA, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_09", 0xCB631225, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_10", 0xA87D541E, false, "weapon_bullpuprifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_IND_01", 0xC5E9AE52, false, "weapon_bullpuprifle_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_compactrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 1649403952, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMPACTRIFLE_CLIP_01", 0x513F0A63, false, "weapon_compactrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMPACTRIFLE_CLIP_02", 0x59FF9BF8, false, "weapon_compactrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_COMPACTRIFLE_CLIP_03", 0xC607740E, false, "weapon_compactrifle"));
         //LMG
-        Weapons.Add(new GTAWeapon("weapon_mg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2634544996));
-        Weapons.Add(new GTAWeapon("weapon_combatmg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2144741730));
-        Weapons.Add(new GTAWeapon("weapon_combatmg_mk2", 200, GTAWeapon.WeaponCategory.LMG, 4, 0xDBBD7280));
-        Weapons.Add(new GTAWeapon("weapon_gusenberg", 200, GTAWeapon.WeaponCategory.LMG, 4, 1627465347));
+        Weapons.Add(new GTAWeapon("weapon_mg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2634544996, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MG_CLIP_01", 0xF434EF84, false, "weapon_mg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MG_CLIP_02", 0x82158B47, false, "weapon_mg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL_02", 0x3C00AFED, false, "weapon_mg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_MG_VARMOD_LOWRIDER", 0xD6DABABE, false, "weapon_mg"));
+        Weapons.Add(new GTAWeapon("weapon_combatmg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2144741730, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMBATMG_CLIP_01", 0xE1FFB34A, false, "weapon_combatmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATMG_CLIP_02", 0xD6C59CD6, false, "weapon_combatmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MEDIUM", 0xA0D89C42, false, "weapon_combatmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatmg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Etched Gun Metal Finish", "COMPONENT_COMBATMG_VARMOD_LOWRIDER", 0x92FECCDD, false, "weapon_combatmg"));
+        Weapons.Add(new GTAWeapon("weapon_combatmg_mk2", 200, GTAWeapon.WeaponCategory.LMG, 4, 0xDBBD7280, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMBATMG_MK2_CLIP_01", 0x492B257C, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATMG_MK2_CLIP_02", 0x17DF42E9, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_COMBATMG_MK2_CLIP_TRACER", 0xF6649745, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_COMBATMG_MK2_CLIP_INCENDIARY", 0xC326BDBA, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Armor Piercing Rounds", "COMPONENT_COMBATMG_MK2_CLIP_ARMORPIERCING", 0x29882423, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_COMBATMG_MK2_CLIP_FMJ", 0x57EF1CC8, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Medium Scope", "COMPONENT_AT_SCOPE_SMALL_MK2", 0x3F3C8181, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Large Scope", "COMPONENT_AT_SCOPE_MEDIUM_MK2", 0xC66B6542, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flat Muzzle Brake", "COMPONENT_AT_MUZZLE_01", 0xB99402D4, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tactical Muzzle Brake", "COMPONENT_AT_MUZZLE_02", 0xC867A07B, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Fat-End Muzzle Brake", "COMPONENT_AT_MUZZLE_03", 0xDE11CBCF, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Precision Muzzle Brake", "COMPONENT_AT_MUZZLE_04", 0xEC9068CC, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Duty Muzzle Brake", "COMPONENT_AT_MUZZLE_05", 0x2E7957A, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Slanted Muzzle Brake", "COMPONENT_AT_MUZZLE_06", 0x347EF8AC, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Split-End Muzzle Brake", "COMPONENT_AT_MUZZLE_07", 0x4DB62ABE, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Barrel", "COMPONENT_AT_MG_BARREL_01", 0xC34EF234, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Barrel", "COMPONENT_AT_MG_BARREL_02", 0xB5E2575B, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_COMBATMG_MK2_CAMO", 0x4A768CB5, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_COMBATMG_MK2_CAMO_02", 0xCCE06BBD, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_COMBATMG_MK2_CAMO_03", 0xBE94CF26, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_COMBATMG_MK2_CAMO_04", 0x7609BE11, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_COMBATMG_MK2_CAMO_05", 0x48AF6351, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_COMBATMG_MK2_CAMO_06", 0x9186750A, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_COMBATMG_MK2_CAMO_07", 0x84555AA8, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_COMBATMG_MK2_CAMO_08", 0x1B4C088B, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_COMBATMG_MK2_CAMO_09", 0xE046DFC, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_COMBATMG_MK2_CAMO_10", 0x28B536E, false, "weapon_combatmg_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_COMBATMG_MK2_CAMO_IND_01", 0xD703C94D, false, "weapon_combatmg_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_gusenberg", 200, GTAWeapon.WeaponCategory.LMG, 4, 1627465347, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_GUSENBERG_CLIP_01", 0x1CE5A6A5, false, "weapon_gusenberg"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_GUSENBERG_CLIP_02", 0xEAC8C270, false, "weapon_gusenberg"));
         //Sniper
-        Weapons.Add(new GTAWeapon("weapon_sniperrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 100416529));
-        Weapons.Add(new GTAWeapon("weapon_heavysniper", 40, GTAWeapon.WeaponCategory.Sniper, 4, 205991906));
-        Weapons.Add(new GTAWeapon("weapon_heavysniper_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0xA914799));
-        Weapons.Add(new GTAWeapon("weapon_marksmanrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 3342088282));
-        Weapons.Add(new GTAWeapon("weapon_marksmanrifle_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0x6A6C02E0));
+        Weapons.Add(new GTAWeapon("weapon_sniperrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 100416529, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SNIPERRIFLE_CLIP_01", 0x9BC64089, false, "weapon_sniperrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_sniperrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_LARGE", 0xD2443DDC, false, "weapon_sniperrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Advanced Scope", "COMPONENT_AT_SCOPE_MAX", 0xBC54DA77, false, "weapon_sniperrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_SNIPERRIFLE_VARMOD_LUXE", 0x4032B5E7, false, "weapon_sniperrifle"));
+        Weapons.Add(new GTAWeapon("weapon_heavysniper", 40, GTAWeapon.WeaponCategory.Sniper, 4, 205991906, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYSNIPER_CLIP_01", 0x476F52F4, false, "weapon_heavysniper"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_LARGE", 0xD2443DDC, false, "weapon_heavysniper"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Advanced Scope", "COMPONENT_AT_SCOPE_MAX", 0xBC54DA77, false, "weapon_heavysniper"));
+        Weapons.Add(new GTAWeapon("weapon_heavysniper_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0xA914799, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYSNIPER_MK2_CLIP_01", 0xFA1E1A28, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_HEAVYSNIPER_MK2_CLIP_02", 0x2CD8FF9D, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_HEAVYSNIPER_MK2_CLIP_INCENDIARY", 0xEC0F617, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Armor Piercing Rounds", "COMPONENT_HEAVYSNIPER_MK2_CLIP_ARMORPIERCING", 0xF835D6D4, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_HEAVYSNIPER_MK2_CLIP_FMJ", 0x3BE948F6, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Explosive Rounds", "COMPONENT_HEAVYSNIPER_MK2_CLIP_EXPLOSIVE", 0x89EBDAA7, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zoom Scope", "COMPONENT_AT_SCOPE_LARGE_MK2", 0x82C10383, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Advanced Scope", "COMPONENT_AT_SCOPE_MAX", 0xBC54DA77, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Night Vision Scope", "COMPONENT_AT_SCOPE_NV", 0xB68010B0, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Thermal Scope", "COMPONENT_AT_SCOPE_THERMAL", 0x2E43DA41, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_SR_SUPP_03", 0xAC42DF71, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Squared Muzzle Brake", "COMPONENT_AT_MUZZLE_08", 0x5F7DCE4D, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Bell-End Muzzle Brake", "COMPONENT_AT_MUZZLE_09", 0x6927E1A1, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Barrel", "COMPONENT_AT_SR_BARREL_01", 0x909630B7, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Barrel", "COMPONENT_AT_SR_BARREL_02", 0x108AB09E, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_HEAVYSNIPER_MK2_CAMO", 0xF8337D02, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_HEAVYSNIPER_MK2_CAMO_02", 0xC5BEDD65, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_HEAVYSNIPER_MK2_CAMO_03", 0xE9712475, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_HEAVYSNIPER_MK2_CAMO_04", 0x13AA78E7, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_HEAVYSNIPER_MK2_CAMO_05", 0x26591E50, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_HEAVYSNIPER_MK2_CAMO_06", 0x302731EC, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_HEAVYSNIPER_MK2_CAMO_07", 0xAC722A78, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_HEAVYSNIPER_MK2_CAMO_08", 0xBEA4CEDD, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_HEAVYSNIPER_MK2_CAMO_09", 0xCD776C82, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_HEAVYSNIPER_MK2_CAMO_10", 0xABC5ACC7, false, "weapon_heavysniper_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_HEAVYSNIPER_MK2_CAMO_IND_01", 0x6C32D2EB, false, "weapon_heavysniper_mk2"));
+        Weapons.Add(new GTAWeapon("weapon_marksmanrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 3342088282, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MARKSMANRIFLE_CLIP_01", 0xD83B4141, false, "weapon_marksmanrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MARKSMANRIFLE_CLIP_02", 0xCCFD2AC5, false, "weapon_marksmanrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_LARGE_FIXED_ZOOM", 0x1C221B1A, false, "weapon_marksmanrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_marksmanrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_marksmanrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_marksmanrifle"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_MARKSMANRIFLE_VARMOD_LUXE", 0x161E9241, false, "weapon_marksmanrifle"));
+        Weapons.Add(new GTAWeapon("weapon_marksmanrifle_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0x6A6C02E0, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_01", 0x94E12DCE, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_02", 0xE6CFD1AA, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_TRACER", 0xD77A22D2, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_INCENDIARY", 0x6DD7A86E, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Armor Piercing Rounds", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_ARMORPIERCING", 0xF46FD079, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Full Metal Jacket Rounds", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_FMJ", 0xE14A9ED3, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Large Scope", "COMPONENT_AT_SCOPE_MEDIUM_MK2", 0xC66B6542, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zoom Scope", "COMPONENT_AT_SCOPE_LARGE_FIXED_ZOOM_MK2", 0x5B1C713C, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flat Muzzle Brake", "COMPONENT_AT_MUZZLE_01", 0xB99402D4, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Tactical Muzzle Brake", "COMPONENT_AT_MUZZLE_02", 0xC867A07B, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Fat-End Muzzle Brake", "COMPONENT_AT_MUZZLE_03", 0xDE11CBCF, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Precision Muzzle Brake", "COMPONENT_AT_MUZZLE_04", 0xEC9068CC, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Duty Muzzle Brake", "COMPONENT_AT_MUZZLE_05", 0x2E7957A, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Slanted Muzzle Brake", "COMPONENT_AT_MUZZLE_06", 0x347EF8AC, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Split-End Muzzle Brake", "COMPONENT_AT_MUZZLE_07", 0x4DB62ABE, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Barrel", "COMPONENT_AT_MRFL_BARREL_01", 0x381B5D89, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Heavy Barrel", "COMPONENT_AT_MRFL_BARREL_02", 0x68373DDC, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_MARKSMANRIFLE_MK2_CAMO", 0x9094FBA0, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Brushstroke Camo", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_02", 0x7320F4B2, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Woodland Camo", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_03", 0x60CF500F, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Skull", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_04", 0xFE668B3F, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Sessanta Nove", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_05", 0xF3757559, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Perseus", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_06", 0x193B40E8, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Leopard", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_07", 0x107D2F6C, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Zebra", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_08", 0xC4E91841, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_09", 0x9BB1C5D3, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_10", 0x3B61040B, false, "weapon_marksmanrifle_mk2"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_IND_01", 0xB7A316DA, false, "weapon_marksmanrifle_mk2"));
         //Heavy
-        Weapons.Add(new GTAWeapon("weapon_rpg", 3, GTAWeapon.WeaponCategory.Heavy, 4, 2982836145));
-        Weapons.Add(new GTAWeapon("weapon_grenadelauncher", 32, GTAWeapon.WeaponCategory.Heavy, 4, 2726580491));
-        Weapons.Add(new GTAWeapon("weapon_grenadelauncher_smoke", 32, GTAWeapon.WeaponCategory.Heavy, 4, 1305664598));
-        Weapons.Add(new GTAWeapon("weapon_minigun", 500, GTAWeapon.WeaponCategory.Heavy, 4, 1119849093));
-        Weapons.Add(new GTAWeapon("weapon_firework", 20, GTAWeapon.WeaponCategory.Heavy, 4, 0x7F7497E5));
-        Weapons.Add(new GTAWeapon("weapon_railgun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0x6D544C99));
-        Weapons.Add(new GTAWeapon("weapon_hominglauncher", 3, GTAWeapon.WeaponCategory.Heavy, 4, 0x63AB0442));
-        Weapons.Add(new GTAWeapon("weapon_compactlauncher", 10, GTAWeapon.WeaponCategory.Heavy, 4, 125959754));
-        Weapons.Add(new GTAWeapon("weapon_rayminigun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0xB62D1F67));
+        Weapons.Add(new GTAWeapon("weapon_rpg", 3, GTAWeapon.WeaponCategory.Heavy, 4, 2982836145, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_grenadelauncher", 32, GTAWeapon.WeaponCategory.Heavy, 4, 2726580491, false, false, true));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_GRENADELAUNCHER_CLIP_01", 0x11AE5C97, false, "weapon_grenadelauncher"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_grenadelauncher"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_grenadelauncher"));
+        WeaponComponentsLookup.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_grenadelauncher"));
+        Weapons.Add(new GTAWeapon("weapon_grenadelauncher_smoke", 32, GTAWeapon.WeaponCategory.Heavy, 4, 1305664598, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_minigun", 500, GTAWeapon.WeaponCategory.Heavy, 4, 1119849093, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_firework", 20, GTAWeapon.WeaponCategory.Heavy, 4, 0x7F7497E5, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_railgun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0x6D544C99, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_hominglauncher", 3, GTAWeapon.WeaponCategory.Heavy, 4, 0x63AB0442, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_compactlauncher", 10, GTAWeapon.WeaponCategory.Heavy, 4, 125959754, false, false, true));
+        Weapons.Add(new GTAWeapon("weapon_rayminigun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0xB62D1F67, false, false, true));
 
         foreach(GTAWeapon Weapon in Weapons.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol))
         {
@@ -2905,8 +4046,192 @@ public static class InstantAction
                 Weapon.CanPistolSuicide = false;
             else
                 Weapon.CanPistolSuicide = true;
+
+
+
+
+            if(Weapon.Name == "weapon_pistol")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_pistol"));
+                Weapon.PoliceVariations.Add(Police2);
+
+                WeaponVariation Police3 = new WeaponVariation(0);
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_CLIP_02", 0xED265A1C, true, "weapon_pistol"));
+                Weapon.PoliceVariations.Add(Police3);
+
+                WeaponVariation Police4 = new WeaponVariation(0);
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_pistol"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_CLIP_02", 0xED265A1C, true, "weapon_pistol"));
+                Weapon.PoliceVariations.Add(Police4);
+            }
+            if (Weapon.Name == "weapon_pistol_mk2")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH_02", 0x43FD595B, true, "weapon_pistol_mk2"));
+                Weapon.PoliceVariations.Add(Police2);
+
+                WeaponVariation Police3 = new WeaponVariation(0);
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_MK2_CLIP_02", 0x5ED6C128, true, "weapon_pistol_mk2"));
+                Weapon.PoliceVariations.Add(Police3);
+
+                WeaponVariation Police4 = new WeaponVariation(0);
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH_02", 0x43FD595B, true, "weapon_pistol_mk2"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_MK2_CLIP_02", 0x5ED6C128, true, "weapon_pistol_mk2"));
+                Weapon.PoliceVariations.Add(Police4);
+            }
+            if (Weapon.Name == "weapon_combatpistol")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_combatpistol"));
+                Weapon.PoliceVariations.Add(Police2);
+
+                WeaponVariation Police3 = new WeaponVariation(0);
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATPISTOL_CLIP_02", 0xD67B4F2D, true, "weapon_combatpistol"));
+                Weapon.PoliceVariations.Add(Police3);
+
+                WeaponVariation Police4 = new WeaponVariation(0);
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_combatpistol"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATPISTOL_CLIP_02", 0xD67B4F2D, true, "weapon_combatpistol"));
+                Weapon.PoliceVariations.Add(Police4);
+            }
+            if (Weapon.Name == "weapon_heavypistol")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", 0x7A6A7B7B, true, "weapon_heavypistol"));
+                Weapon.PoliceVariations.Add(Police2);
+
+                WeaponVariation Police3 = new WeaponVariation(0);
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_heavypistol"));
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_HEAVYPISTOL_CLIP_02", 0x64F9C62B, true, "weapon_heavypistol"));
+                Weapon.PoliceVariations.Add(Police3);
+
+                WeaponVariation Police4 = new WeaponVariation(0);
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_heavypistol"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", 0x7A6A7B7B, true, "weapon_heavypistol"));
+                Weapon.PoliceVariations.Add(Police4);
+            }
+
+
+
+        }
+        foreach (GTAWeapon Weapon in Weapons.Where(x => x.Category == GTAWeapon.WeaponCategory.AR))
+        {
+            if (Weapon.Name == "weapon_carbinerifle")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, true, "weapon_carbinerifle"));
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, true, "weapon_carbinerifle"));
+                Weapon.PoliceVariations.Add(Police2);
+
+                WeaponVariation Police3 = new WeaponVariation(0);
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MEDIUM", 0xA0D89C42, true, "weapon_carbinerifle"));
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, true, "weapon_carbinerifle"));
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_CARBINERIFLE_CLIP_02", 0x91109691, true, "weapon_carbinerifle"));
+                Weapon.PoliceVariations.Add(Police3);
+
+                WeaponVariation Police4 = new WeaponVariation(0);
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MEDIUM", 0xA0D89C42, true, "weapon_carbinerifle"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, true, "weapon_carbinerifle"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, true, "weapon_carbinerifle"));
+                Weapon.PoliceVariations.Add(Police4);
+            }
+            if (Weapon.Name == "weapon_carbinerifle_mk2")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, true, "weapon_carbinerifle_mk2"));
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, true, "weapon_carbinerifle_mk2"));
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, true, "weapon_carbinerifle_mk2"));
+                Weapon.PoliceVariations.Add(Police2);
+
+                WeaponVariation Police3 = new WeaponVariation(0);
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, true, "weapon_carbinerifle_mk2"));
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, true, "weapon_carbinerifle_mk2"));
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_CARBINERIFLE_MK2_CLIP_02", 0x5DD5DBD5, true, "weapon_carbinerifle_mk2"));
+                Weapon.PoliceVariations.Add(Police3);
+
+                WeaponVariation Police4 = new WeaponVariation(0);
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Large Scope", "COMPONENT_AT_SCOPE_MEDIUM_MK2", 0xC66B6542, true, "weapon_carbinerifle_mk2"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, true, "weapon_carbinerifle_mk2"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, true, "weapon_carbinerifle_mk2"));
+                Weapon.PoliceVariations.Add(Police4);
+            }
+        }
+        foreach (GTAWeapon Weapon in Weapons.Where(x => x.Category == GTAWeapon.WeaponCategory.SMG))
+        {
+            if (Weapon.Name == "weapon_combatpdw")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw"));
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"));
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_combatpdw"));
+                Weapon.PoliceVariations.Add(Police2);
+
+                WeaponVariation Police3 = new WeaponVariation(0);
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw"));
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"));
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATPDW_CLIP_02", 0x334A5203, false, "weapon_combatpdw"));
+                Weapon.PoliceVariations.Add(Police3);
+
+                WeaponVariation Police4 = new WeaponVariation(0);
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_combatpdw"));
+                Weapon.PoliceVariations.Add(Police4);
+            }
         }
 
+        foreach (GTAWeapon Weapon in Weapons.Where(x => x.Category == GTAWeapon.WeaponCategory.Shotgun))
+        {
+            if (Weapon.Name == "weapon_pumpshotgun")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun"));
+                Weapon.PoliceVariations.Add(Police2);
+            }
+            if (Weapon.Name == "weapon_pumpshotgun_mk2")
+            {
+                WeaponVariation Police1 = new WeaponVariation(0);
+                Weapon.PoliceVariations.Add(Police1);
+
+                WeaponVariation Police2 = new WeaponVariation(0);
+                Police2.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun_mk2"));
+                Weapon.PoliceVariations.Add(Police2);
+
+                WeaponVariation Police3 = new WeaponVariation(0);
+                Police3.Components.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_pumpshotgun_mk2"));
+                Weapon.PoliceVariations.Add(Police3);
+
+                WeaponVariation Police4 = new WeaponVariation(0);
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_pumpshotgun_mk2"));
+                Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun_mk2"));
+                Weapon.PoliceVariations.Add(Police4);
+            }
+        }
     }
 
     //Other
@@ -2943,6 +4268,8 @@ public static class InstantAction
     }
     public static void WriteToLog(String ProcedureString, String TextToLog)
     {
+        //if (ProcedureString != "")
+        //    return;
         StringBuilder sb = new StringBuilder();
         sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog + System.Environment.NewLine);
         File.AppendAllText("Plugins\\InstantAction\\" + "log.txt", sb.ToString());

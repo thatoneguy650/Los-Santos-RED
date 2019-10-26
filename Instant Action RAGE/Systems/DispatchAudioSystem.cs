@@ -519,9 +519,26 @@ internal static class DispatchAudioSystem
                     InstantAction.WriteToLog("PlayDispatchQueue", "ResultsInStolenCarSpotted: Removed ReportSpottedStolenCar");
                 }
 
+                if(DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
+                {
+                    DispatchQueueItem HighestItem = DispatchQueue.Where(x => x.IsTrafficViolation).OrderBy(x => x.Priority).FirstOrDefault();
+                    DispatchQueue.RemoveAll(x => x.IsTrafficViolation);
+                    if (HighestItem != null)
+                    {
+                        DispatchQueue.Add(HighestItem);
+                    }
+                    InstantAction.WriteToLog("PlayDispatchQueue", "IsTrafficViolation: Removed IsTrafficViolation except highest");
+                }
+
                 foreach (DispatchQueueItem Item in DispatchQueue)
                 {
                     InstantAction.WriteToLog("PlayDispatchQueue", string.Format("Items To Play: {0}", Item.Type.ToString()));
+                }
+
+
+                foreach(DispatchQueueItem Item in DispatchQueue)
+                {
+
                 }
 
                 while (DispatchQueue.Count > 0)
@@ -1452,6 +1469,7 @@ internal static class DispatchAudioSystem
         public int Priority { get; set; } = 0;
         public bool ResultsInLethalForce { get; set; } = false;
         public bool ResultsInStolenCarSpotted { get; set; } = false;
+        public bool IsTrafficViolation { get; set; } = false;
         public GTAWeapon WeaponToReport { get; set; }
         public GTAVehicle VehicleToReport { get; set; }
         public DispatchQueueItem(ReportDispatch _Type,int _Priority, bool _ResultsInLethalForce)
