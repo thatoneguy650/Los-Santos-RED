@@ -2,6 +2,7 @@
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,8 @@ public class GTAVehicle
     public bool IsPlayersVehicle = false;
     public bool IsStolen = false;
     public bool QuedeReportedStolen = false;
+    public string OriginalLicensePlate;
+    public Color OriginalColor;
     public bool ShouldReportStolen
     {
         get
@@ -33,6 +36,16 @@ public class GTAVehicle
             if (WasReportedStolen || QuedeReportedStolen)
                 return false;
             else if (WillBeReportedStolen && Game.GameTime >= GameTimeToReportStolen && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == VehicleEnt.Handle)
+                return true;
+            else
+                return false;
+        }
+    }
+    public bool MatchesOriginalDescription
+    {
+        get
+        {
+            if (VehicleEnt.PrimaryColor == OriginalColor && VehicleEnt.LicensePlate == OriginalLicensePlate)
                 return true;
             else
                 return false;
@@ -56,6 +69,7 @@ public class GTAVehicle
                 {
                     WillBeReportedStolen = false;
                     PreviousOwnerDied = true;
+                    Pedestrian.IsPersistent = false;
                     InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDied {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
                     break;
                 }
@@ -87,6 +101,9 @@ public class GTAVehicle
         PreviousOwner = _PrevIousOwner;
         IsStolen = _IsStolen;
         IsPlayersVehicle = _IsPlayersVehicle;
+
+        OriginalColor = _Vehicle.PrimaryColor;
+        OriginalLicensePlate = _Vehicle.LicensePlate;
 
         if (IsPlayersVehicle)
             IsStolen = false;
