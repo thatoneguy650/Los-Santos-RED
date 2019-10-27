@@ -580,6 +580,9 @@ namespace Instant_Action_RAGE.Systems
             else
                 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(350f, 450f));
 
+            if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 150f)
+                return;
+
             Zones.Zone ZoneName = Zones.GetZoneName(SpawnLocation);
             if (ZoneName == null)
                 return;
@@ -617,7 +620,7 @@ namespace Instant_Action_RAGE.Systems
         public static void RemoveFarAwayRandomlySpawnedCops()
         {
             //Zones.Zone CurrentZone = Zones.GetZoneName(Game.LocalPlayer.Character.Position);
-            foreach (GTACop Cop in CopPeds.Where(x => x.WasRandomSpawn))
+            foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() &&  x.WasRandomSpawn))
             {
                 if (Cop.DistanceToPlayer >= 750f)
                 {
@@ -641,9 +644,9 @@ namespace Instant_Action_RAGE.Systems
         }
         public static void RemoveAllRandomlySpawnedCops()
         {
-            foreach (GTACop Cop in CopPeds.Where(x => x.WasRandomSpawn))
+            foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && x.WasRandomSpawn))
             {
-                if (Cop.DistanceToPlayer >= 150f)
+                if (Cop.DistanceToPlayer >= 250f)
                 {
                     if (Cop.CopPed.IsInAnyVehicle(false))
                         Cop.CopPed.CurrentVehicle.IsPersistent = false;
@@ -663,7 +666,8 @@ namespace Instant_Action_RAGE.Systems
             Cop.WarpIntoVehicle(CopCar, -1);
             Cop.IsPersistent = true;
             CopCar.IsPersistent = true;
-            Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
+           // Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
+            Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections);
             GTACop MyNewCop = new GTACop(Cop, false, Cop.Health);
             IssueCopPistol(MyNewCop);
             MyNewCop.WasRandomSpawn = true;

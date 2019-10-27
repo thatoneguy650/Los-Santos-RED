@@ -33,6 +33,8 @@ internal static class DispatchAudioSystem
     private static List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
     public static List<VehicleModelNameLookup> ModelNameLookup = new List<VehicleModelNameLookup>();
     public static List<ColorLookup> ColorLookups = new List<ColorLookup>();
+
+    public static List<string> DamagedScannerAliases = new List<string>();
     public static bool IsRunning { get; set; } = true;
     public enum ReportDispatch
     {
@@ -53,6 +55,9 @@ internal static class DispatchAudioSystem
         ReportRecklessDriver = 14,
         ReportFelonySpeeding = 15,
         ReportWeaponsFree = 16,
+        ReportSuspiciousActivity = 17,
+        ReportSuspiciousVehicle = 18,
+        ReportGrandTheftAuto = 19,
     }
     static DispatchAudioSystem()
     {
@@ -178,6 +183,16 @@ internal static class DispatchAudioSystem
         ColorLookups.Add(new ColorLookup(colour.COLORSILVER01.FileName, Color.Silver));
         ColorLookups.Add(new ColorLookup(colour.COLORWHITE01.FileName, Color.White));
         ColorLookups.Add(new ColorLookup(colour.COLORYELLOW01.FileName, Color.Yellow));
+
+
+
+        DamagedScannerAliases.Add(extra_prefix.Battered.FileName);
+        DamagedScannerAliases.Add(extra_prefix.Beatup.FileName);
+        DamagedScannerAliases.Add(extra_prefix.Damaged.FileName);
+        DamagedScannerAliases.Add(extra_prefix.Dented.FileName);
+        DamagedScannerAliases.Add(extra_prefix.Distressed.FileName);
+        DamagedScannerAliases.Add(extra_prefix.Rundown.FileName);
+        DamagedScannerAliases.Add(extra_prefix.Rundown1.FileName);
 
         //ModelNameLookup.Add(new VehicleModelNameLookup(model.MODELADDER01.FileName, "ADDER_01", manufacturer.MANUFACTURERTRUFFADE01.FileName));
         //ModelNameLookup.Add(new VehicleModelNameLookup(model.MODELAIRSHIP01.FileName, "AIRSHIP_01"));
@@ -581,6 +596,12 @@ internal static class DispatchAudioSystem
                         ReportVehicleHitAndRun(Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportWeaponsFree)
                         ReportWeaponsFree();
+                    else if (Item.Type == ReportDispatch.ReportSuspiciousActivity)
+                        ReportSuspiciousActivity();
+                    else if (Item.Type == ReportDispatch.ReportSuspiciousVehicle)
+                        ReportSuspiciousVehicle(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportGrandTheftAuto)
+                        ReportGrandTheftAuto();     
                     else
                         ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
@@ -602,7 +623,7 @@ internal static class DispatchAudioSystem
         {
             Vector3 Pos = Game.LocalPlayer.Character.Position;
             Zone MyZone = Zones.GetZoneName(Pos);
-            if (MyZone != null)
+            if (MyZone != null && MyZone.ScannerValue != "")
             {
                 myList.Add(ScannerAudio.conjunctives.NearGenericRandom());
                 myList.Add(MyZone.ScannerValue);
@@ -943,7 +964,7 @@ internal static class DispatchAudioSystem
     }
     public static void ReportSuspectArrested()
     {
-        List<string> myList = new List<string>(new string[]
+        List<string> ScannerList = new List<string>(new string[]
         {
             ScannerAudio.AudioBeeps.AudioStart()
         });
@@ -951,25 +972,25 @@ internal static class DispatchAudioSystem
         int Num = rnd.Next(1, 5);
         if (Num == 1)
         {
-            myList.Add(ScannerAudio.we_have.We_Have_1.FileName);
-            myList.Add(ScannerAudio.crook_arrested.Asuspectincustody1.FileName);
+            ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            ScannerList.Add(ScannerAudio.crook_arrested.Asuspectincustody1.FileName);
         }
         else if (Num == 2)
         {
-            myList.Add(ScannerAudio.we_have.We_Have_1.FileName);
-            myList.Add(ScannerAudio.crook_arrested.Asuspectapprehended.FileName);
+            ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
+            ScannerList.Add(ScannerAudio.crook_arrested.Asuspectapprehended.FileName);
         }
         else if (Num == 3)
         {
-            myList.Add(ScannerAudio.crook_arrested.Officershaveapprehendedsuspect.FileName);
+            ScannerList.Add(ScannerAudio.crook_arrested.Officershaveapprehendedsuspect.FileName);
         }
         else
         {
-            myList.Add(ScannerAudio.crook_arrested.Officershaveapprehendedsuspect1.FileName);
+            ScannerList.Add(ScannerAudio.crook_arrested.Officershaveapprehendedsuspect1.FileName);
         }
 
-        myList.Add(ScannerAudio.AudioBeeps.AudioEnd());
-        PlayAudioList(myList, true);
+        ScannerList.Add(ScannerAudio.AudioBeeps.AudioEnd());
+        PlayAudioList(ScannerList, true);
     }
     public static void ReportSuspectWasted()
     {
@@ -1108,32 +1129,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(crime_stolen_vehicle.Apossiblestolenvehicle.FileName);
         }
 
-
-        //var output = Regex.Replace(stolenVehicle.VehicleEnt.Model.Name.ToUpper(), @"[\d-]", string.Empty);
-        //VehicleModelNameLookup LookupModel = ModelNameLookup.Where(x => x.ModelName.Contains(output)).PickRandom();
-
-        //Color BaseColor = GetBaseColor(stolenVehicle.OriginalColor);
-        //ColorLookup LookupColor = ColorLookups.Where(x => x.BaseColor == BaseColor).PickRandom();
-
-        //if (LookupModel != null && LookupColor != null)
-        //{
-        //    ScannerList.Add(conjunctives.A01.FileName);
-        //    ScannerList.Add(LookupColor.ScannerFile);
-        //    if (LookupModel.ManufacturerScannerFile != "")
-        //        ScannerList.Add(LookupModel.ManufacturerScannerFile);
-        //    ScannerList.Add(LookupModel.ScannerFile);
-        //}
-
-        //ScannerList.Add(ScannerAudio.suspect_license_plate.SuspectsLicensePlate.FileName); //
-
-        //foreach (char c in stolenVehicle.VehicleEnt.LicensePlate)
-        //{
-        //    string DispatchFileName = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).PickRandom().ScannerFile;
-        //    ScannerList.Add(DispatchFileName);
-        //}
-
         AddVehicleDescription(stolenVehicle, ref ScannerList,true);
-
         ReportGenericEnd(ScannerList, false);
         PlayAudioList(ScannerList, false);
         GameFiber.StartNew(delegate
@@ -1145,6 +1141,107 @@ internal static class DispatchAudioSystem
 
 
 
+    }
+    public static void ReportSuspiciousActivity()
+    {
+        if (InstantAction.isBusted || InstantAction.isDead || ReportedLethalForceAuthorized)
+            return;
+
+        List<string> ScannerList = new List<string>();
+
+        ScannerList.Add(AudioBeeps.AudioStart());
+        ScannerList.Add(attention_all_units_gen.Allunits.FileName);
+
+        int Num = rnd.Next(1, 5);
+        if (Num == 1)
+        {
+            ScannerList.Add(we_have.CitizensReport_1.FileName);
+            ScannerList.Add(crime_suspicious_activity.Suspiciousactivity.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(we_have.CitizensReport_2.FileName);
+            ScannerList.Add(crime_theft.Apossibletheft.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(we_have.CitizensReport_3.FileName);
+            ScannerList.Add(crime_person_attempting_to_steal_a_car.Apersonattemptingtostealacar.FileName);
+        }
+        else if (Num == 4)
+        {
+            ScannerList.Add(we_have.CitizensReport_2.FileName);
+            ScannerList.Add(crime_suspicious_activity.Suspiciousactivity.FileName);
+        }
+        else
+        {
+            ScannerList.Add(we_have.CitizensReport_3.FileName);
+            ScannerList.Add(crime_suspicious_activity.Suspiciousactivity.FileName);
+        }
+
+        ReportGenericEnd(ScannerList, true);
+        PlayAudioList(ScannerList, false);
+
+    }
+
+    public static void ReportGrandTheftAuto()
+    {
+        if (ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
+            return;
+
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ref ScannerList);
+        int Num = rnd.Next(1, 5);
+        if (Num == 1)
+        {
+            ScannerList.Add(crime_grand_theft_auto.Agrandtheftauto.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(crime_grand_theft_auto.Agrandtheftautoinprogress.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(crime_grand_theft_auto.AGTAinprogress.FileName);
+        }
+        else
+        {
+            ScannerList.Add(crime_grand_theft_auto.AGTAinprogress1.FileName);
+        }
+        ReportGenericEnd(ScannerList, true);
+        PlayAudioList(ScannerList, false);
+
+    }
+
+    public static void ReportSuspiciousVehicle(GTAVehicle myCar)
+    {
+        if (ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
+            return;
+
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ref ScannerList);
+        int Num = rnd.Next(1, 5);
+        if (Num == 1)
+        {
+            ScannerList.Add(ScannerAudio.crime_suspicious_vehicle.Asuspiciousvehicle.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(ScannerAudio.crime_suspicious_vehicle.Asuspiciousvehicle.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(ScannerAudio.crime_suspicious_vehicle.Asuspiciousvehicle.FileName);
+        }
+        else
+        {
+            ScannerList.Add(ScannerAudio.crime_suspicious_vehicle.Asuspiciousvehicle.FileName);
+        }
+
+        AddVehicleDescription(myCar, ref ScannerList, false);
+        ReportGenericEnd(ScannerList, true);
+
+        PlayAudioList(ScannerList, false);
     }
     public static void ReportSuspectLost()
     {
@@ -1399,19 +1496,29 @@ internal static class DispatchAudioSystem
         ColorLookup LookupColor = ColorLookups.Where(x => x.BaseColor == BaseColor).PickRandom();
         VehicleInfo VehicleInformation = InstantAction.GetVehicleInfo(VehicleDescription);
         string ManufacturerScannerFile;
+        string VehicleClassScannerFile;
         if (VehicleInformation != null)
         {
             ManufacturerScannerFile = GetManufacturerScannerFile(VehicleInformation.Manufacturer);
-
-            if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != ""))
+            VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
+            if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != "" || VehicleClassScannerFile != ""))
             {
                 ScannerList.Add(conjunctives.A01.FileName);
+
+                if(VehicleDescription.VehicleEnt.IsDamaged())
+                {
+                    ScannerList.Add(DamagedScannerAliases.PickRandom());
+                }
+
                 ScannerList.Add(LookupColor.ScannerFile);
 
                 if(ManufacturerScannerFile != "")
                     ScannerList.Add(ManufacturerScannerFile);
+
                 if(VehicleInformation.ModelScannerFile != "")
                     ScannerList.Add(VehicleInformation.ModelScannerFile);
+                else if(VehicleClassScannerFile != "")
+                    ScannerList.Add(VehicleClassScannerFile);
             }
         }
 
@@ -1641,6 +1748,59 @@ internal static class DispatchAudioSystem
             return "";
         else if (manufacturer == Manufacturer.Zirconium)
             return ScannerAudio.manufacturer.ZIRCONIUM01.FileName;
+        else
+            return "";
+    }
+    public static string GetVehicleClassScannerFile(VehicleLookup.VehicleClass myVehicleClass)
+    {
+        if (myVehicleClass == VehicleLookup.VehicleClass.Boat)
+            return vehicle_category.Boat01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Commercial)
+            return "";
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Compact)
+            return vehicle_category.Sedan02.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Coupe)
+            return vehicle_category.Coupe01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Cycle)
+            return vehicle_category.Bicycle01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Emergency)
+            return "";
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Helicopter)
+            return vehicle_category.Helicopter01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Industrial)
+            return vehicle_category.IndustrialVehicle01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Military)
+            return "";
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Motorcycle)
+            return vehicle_category.Motorcycle01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Muscle)
+            return vehicle_category.MuscleCar01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.OffRoad)
+            return vehicle_category.OffRoad01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Plane)
+            return "";
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Sedan)
+            return vehicle_category.Sedan02.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Service)
+            return vehicle_category.Service01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Sports)
+            return vehicle_category.SportsCar01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.SportsClassic)
+            return vehicle_category.Classic01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Super)
+            return vehicle_category.PerformanceCar01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.SUV)
+            return vehicle_category.SUV01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Trailer)
+            return "";
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Train)
+            return vehicle_category.Train01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Unknown)
+            return "";
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Utility)
+            return vehicle_category.UtilityVehicle01.FileName;
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Van)
+            return vehicle_category.Van01.FileName;
         else
             return "";
     }

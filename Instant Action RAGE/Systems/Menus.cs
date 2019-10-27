@@ -30,6 +30,8 @@ namespace Instant_Action_RAGE.Systems
 
         private static UIMenuItem menuDebugResetCharacter;
         private static UIMenuItem menuMainSuicide;
+        private static UIMenuItem menuMainChangeLicensePlate;
+        private static UIMenuItem menuMainRemoveLicensePlate;
         private static UIMenuItem menuDebugKillPlayer;
         private static UIMenuListItem menuDebugRandomWeapon;
         private static UIMenuListItem menuDebugScreenEffect;
@@ -64,6 +66,7 @@ namespace Instant_Action_RAGE.Systems
         private static List<int> UndieLimit = new List<int> { 0,1,2,3,4,5 };
         private static string CurrentScreenEffect = "Rampage";
         private static float TakeoverRadius = -1f;
+        public static int ChangePlateIndex = 0;
         public static bool IsRunning { get; set; } = true;
         public static void MainLoop()
         {
@@ -92,18 +95,8 @@ namespace Instant_Action_RAGE.Systems
             //optionsMenu = new UIMenu("Instant Action", "Change Options");
             //menuPool.Add(optionsMenu);
 
-            //
-            menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
-           // menuMainRandomCrime = new UIMenuListItem("Start Random Crime","Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
-            //menuMainTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
-            menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-            //menuMainOptions = new UIMenuItem("Options", "Change options");
-
-           // mainMenu.AddItem(menuMainRandomCrime);
-           //mainMenu.AddItem(menuMainTakeoverNearestPed);
-            mainMenu.AddItem(menuMainTakeoverRandomPed);
-            mainMenu.AddItem(menuMainSuicide);
-           // mainMenu.AddItem(menuMainOptions);
+            CreateMainMenu();
+            // mainMenu.AddItem(menuMainOptions);
 
 
             //menuOptionsAutoRespawn = new UIMenuCheckboxItem("AutoRespawn Enabled", Settings.AutoRespawn, "Sets if the game will automatically handle the respawn logic or show the options menu.");
@@ -273,6 +266,29 @@ namespace Instant_Action_RAGE.Systems
             ProcessLoop();
 
         }
+        public static void CreateMainMenu()
+        {
+            //
+            menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
+            // menuMainRandomCrime = new UIMenuListItem("Start Random Crime","Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
+            //menuMainTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
+            menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
+            //menuMainOptions = new UIMenuItem("Options", "Change options");
+            menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", InstantAction.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
+            menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
+            // mainMenu.AddItem(menuMainRandomCrime);
+            //mainMenu.AddItem(menuMainTakeoverNearestPed);
+            mainMenu.AddItem(menuMainTakeoverRandomPed);
+            mainMenu.AddItem(menuMainSuicide);
+            mainMenu.AddItem(menuMainChangeLicensePlate);
+            mainMenu.AddItem(menuMainRemoveLicensePlate);
+            // mainMenu.AddItem(menuMainOptions);
+        }
+        public static void UpdateLists()
+        {
+            mainMenu.Clear();
+            CreateMainMenu();
+        }
         public static void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
         {
             if (sender == debugMenu)
@@ -305,7 +321,12 @@ namespace Instant_Action_RAGE.Systems
                     else if (index == 5)
                         TakeoverRadius = 500f;
                 }
+                if(list == menuMainChangeLicensePlate)
+                {
+                    ChangePlateIndex = index;
+                }
             }
+
             else if (sender == bustedMenu)
             {
                 if (list == menuBustedBribe)
@@ -336,6 +357,14 @@ namespace Instant_Action_RAGE.Systems
                 else if (selectedItem == menuMainSuicide)
                 {
                     InstantAction.CommitSuicide(Game.LocalPlayer.Character);
+                }
+                else if (selectedItem == menuMainChangeLicensePlate)
+                {
+                    InstantAction.ChangeNearestLicensePlate();
+                }
+                else if (selectedItem == menuMainRemoveLicensePlate)
+                {
+                    InstantAction.RemoveNearestLicensePlate();
                 }
                 mainMenu.Visible = false;
             }

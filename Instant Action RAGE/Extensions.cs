@@ -146,6 +146,71 @@ namespace ExtensionsMethods
             Random random = new Random();
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
+        public static bool IsRoadWorthy(this Vehicle myCar)
+        {
+            bool LightsOn;
+            bool HighbeamsOn;
+            if (InstantAction.IsNightTime)
+            {
+                unsafe
+                {
+                    NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", myCar, &LightsOn, &HighbeamsOn);
+                }
+                if (!LightsOn)
+                    return false;
+                if (HighbeamsOn)
+                    return false;
+
+
+
+                if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                    return false;
+            }
+
+            if (myCar.LicensePlate == "        ")
+                return false;
+
+            return true;
+        }
+        public static bool IsDamaged(this Vehicle myCar)
+        {
+            if (myCar.Health <= 700 || myCar.EngineHealth <= 700)
+                return true;
+
+            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar))
+                return true;
+
+            VehicleDoor[] CarDoors = myCar.GetDoors();
+
+            foreach (VehicleDoor myDoor in CarDoors)
+            {
+                if (myDoor.IsDamaged)
+                    return true;
+            }
+
+            if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 0, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 1, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 2, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 3, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 4, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 5, false))
+                return true;
+
+            return false;
+        }
 
         public static float getDotVectorResult(Ped source, Ped target)
         {
