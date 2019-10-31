@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using ExtensionsMethods;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,7 @@ public class GTAVehicle
     private static Random rnd;
 
     public Vehicle VehicleEnt = null;
-    
-    public uint GameTimeEntered;
+    public uint GameTimeEntered = 0;
     public bool WillBeReportedStolen = false;
     public bool WasReportedStolen = false;
     public bool CopWillRecognize = false;
@@ -27,8 +27,18 @@ public class GTAVehicle
     public bool IsPlayersVehicle = false;
     public bool IsStolen = false;
     public bool QuedeReportedStolen = false;
-    public string OriginalLicensePlate;
-    public Color OriginalColor;
+    public Color DescriptionColor;
+    public GTALicensePlate CarPlate;
+    public bool PlayerHasEntered
+    {
+        get
+        {
+            if (GameTimeEntered == 0)
+                return false;
+            else
+                return true;
+        }
+    }
     public bool ShouldReportStolen
     {
         get
@@ -45,7 +55,17 @@ public class GTAVehicle
     {
         get
         {
-            if (VehicleEnt.PrimaryColor == OriginalColor && VehicleEnt.LicensePlate == OriginalLicensePlate)
+            if (VehicleEnt.PrimaryColor == DescriptionColor && CarPlate.IsWanted)//VehicleEnt.LicensePlate == Desc)
+                return true;
+            else
+                return false;
+        }
+    }
+    public bool ColorMatchesDescription
+    {
+        get
+        {
+            if (VehicleEnt.PrimaryColor == DescriptionColor)
                 return true;
             else
                 return false;
@@ -92,7 +112,14 @@ public class GTAVehicle
             InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDisappeared? Died {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
         });
     }
-    public GTAVehicle(Vehicle _Vehicle,uint _GameTimeEntered,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsPlayersVehicle, bool _IsStolen)
+    public GTAVehicle(Vehicle _Vehicle, bool _IsPlayersVehicle, bool _IsStolen, GTALicensePlate _CarPlate)
+    {
+        VehicleEnt = _Vehicle;
+        IsStolen = _IsStolen;
+        IsPlayersVehicle = _IsPlayersVehicle;
+        CarPlate = _CarPlate;
+    }
+    public GTAVehicle(Vehicle _Vehicle,uint _GameTimeEntered,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsPlayersVehicle, bool _IsStolen, GTALicensePlate _CarPlate)
     {
         VehicleEnt = _Vehicle;
         GameTimeEntered = _GameTimeEntered;
@@ -102,8 +129,8 @@ public class GTAVehicle
         IsStolen = _IsStolen;
         IsPlayersVehicle = _IsPlayersVehicle;
 
-        OriginalColor = _Vehicle.PrimaryColor;
-        OriginalLicensePlate = _Vehicle.LicensePlate;
+        DescriptionColor = _Vehicle.PrimaryColor;
+        CarPlate = _CarPlate;
 
         if (IsPlayersVehicle)
             IsStolen = false;
@@ -111,21 +138,43 @@ public class GTAVehicle
         if (IsStolen)
             WillBeReportedStolen = true;
 
+
+
         if (IsStolen && WillBeReportedStolen && PreviousOwner != null && PreviousOwner.Handle != Game.LocalPlayer.Character.Handle)
         {
-            InstantAction.WriteToLog("StolenVehicles","Previous Owner is alive, will watch for death");
-            WatchForDeath(PreviousOwner);
+            if (PreviousOwner.isPoliceArmy())
+            {
+                InstantAction.WriteToLog("StolenVehicles", "Previous Owner is Cop reported immediately");
+                WillBeReportedStolen = true;
+            }
+            else
+            {
+                InstantAction.WriteToLog("StolenVehicles", "Previous Owner is alive, will watch for death");
+                WatchForDeath(PreviousOwner);
+            }
         }
 
         if (WasJacked)
             GameTimeToReportStolen = GameTimeEntered + 15000;
-        else if(WasAlarmed)
-            GameTimeToReportStolen = GameTimeEntered + 30000;
+        else if (WasAlarmed)
+            GameTimeToReportStolen = GameTimeEntered + 100000;
         else
             GameTimeToReportStolen = GameTimeEntered + 600000;
 
 
         InstantAction.WriteToLog("GTAVehicle", string.Format("Vehicle Created: Handle {0},GTEntered,{1},GTReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WillBeRptdStoln {6},WatchLastOwner {7}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, WillBeReportedStolen, PreviousOwner != null));
+    }
+    public GTAVehicle(Vehicle _Vehicle, bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsPlayersVehicle, bool _IsStolen, GTALicensePlate _CarPlate)
+    {
+        VehicleEnt = _Vehicle;
+        WasJacked = _WasJacked;
+        WasAlarmed = _WasAlarmed;
+        PreviousOwner = _PrevIousOwner;
+        IsStolen = _IsStolen;
+        IsPlayersVehicle = _IsPlayersVehicle;
+
+        DescriptionColor = _Vehicle.PrimaryColor;
+        CarPlate = _CarPlate;
     }
 
 }

@@ -62,11 +62,17 @@ namespace Instant_Action_RAGE.Systems
         private static int RandomCrimeLevel = 1;
         private static int RandomWeaponLevel = 0;
         private static int BribeAmount = 2000;
+        private static Vector3 WorldPos = new Vector3(0f, 0f, 0f);
+        private static Entity EntityToHighlight;
         private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
         private static List<int> UndieLimit = new List<int> { 0,1,2,3,4,5 };
         private static string CurrentScreenEffect = "Rampage";
         private static float TakeoverRadius = -1f;
         public static int ChangePlateIndex = 0;
+        private static int PrevMainMenuCurrentSelection;
+        private static bool PrevMainMenuVisible;
+        private static bool MainMenuVisible;
+
         public static bool IsRunning { get; set; } = true;
         public static void MainLoop()
         {
@@ -279,9 +285,15 @@ namespace Instant_Action_RAGE.Systems
             // mainMenu.AddItem(menuMainRandomCrime);
             //mainMenu.AddItem(menuMainTakeoverNearestPed);
             mainMenu.AddItem(menuMainTakeoverRandomPed);
+
+
             mainMenu.AddItem(menuMainSuicide);
-            mainMenu.AddItem(menuMainChangeLicensePlate);
-            mainMenu.AddItem(menuMainRemoveLicensePlate);
+
+            if (!InstantAction.PlayerInVehicle)
+            {
+                mainMenu.AddItem(menuMainChangeLicensePlate);
+                mainMenu.AddItem(menuMainRemoveLicensePlate);
+            }
             // mainMenu.AddItem(menuMainOptions);
         }
         public static void UpdateLists()
@@ -427,6 +439,20 @@ namespace Instant_Action_RAGE.Systems
                 debugMenu.Visible = false;
             }   
         }
+        public static void MainMenuSelectionChanged()
+        {
+            if (mainMenu.CurrentSelection == 3)
+            {
+                Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+                Vehicle ClosestVehicle = NearbyVehicles.Where(x => x.LicensePlate != "        ").OrderBy(x => InstantAction.GetLicensePlateChangePosition(x).DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+                if (ClosestVehicle != null)
+                {
+                    EntityToHighlight = ClosestVehicle;
+                    WorldPos = ClosestVehicle.Position;
+                }
+            }
+            PrevMainMenuCurrentSelection = mainMenu.CurrentSelection;
+        }
         public static void ProcessLoop()
         {
             GameFiber.StartNew(delegate
@@ -449,6 +475,7 @@ namespace Instant_Action_RAGE.Systems
                         }
                         else
                         {
+                            UpdateLists();
                             bustedMenu.Visible = false;
                             deathMenu.Visible = false;
                             mainMenu.Visible = !mainMenu.Visible;
@@ -464,10 +491,38 @@ namespace Instant_Action_RAGE.Systems
                     //}
 
                     menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse. 
+
+                    MainMenuVisible = mainMenu.Visible;
+                    if (PrevMainMenuVisible != MainMenuVisible)
+                    {
+                        //UpdateLists();
+                        InstantAction.WriteToLog("Menus", "Main Menu is visible");
+                        PrevMainMenuVisible = MainMenuVisible;
+                    }
+
+                    //if(mainMenu.Visible)
+                    //{
+                    //    if (PrevMainMenuCurrentSelection != mainMenu.CurrentSelection)
+                    //        MainMenuSelectionChanged();
+
+                    //    if (EntityToHighlight != null)
+                    //    {
+                    //        Vector3 PositionToMark = EntityToHighlight.Position;
+                    //        Rage.Debug.DrawArrowDebug(new Vector3(PositionToMark.X, PositionToMark.Y, PositionToMark.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, System.Drawing.Color.Yellow);
+                    //    }
+
+                    //}
+                    //else
+                    //{
+                    //    PrevMainMenuCurrentSelection = -1;
+                    //    WorldPos = new Vector3(0f, 0f, 0f);
+                    //    EntityToHighlight = null;
+                    //}
                     GameFiber.Yield();
                 }
             });
         }
+        
 
     }
 

@@ -102,7 +102,7 @@
     <Compile Include="Entities\GTANewsReporter.cs" />
     <Compile Include="Entities\GTAVehicle.cs" />
     <Compile Include="Entities\PlayerWeapon.cs" />
-    <Compile Include="Entities\StolenLicensePlates.cs" />
+    <Compile Include="Entities\GTALicensePlate.cs" />
     <Compile Include="Entities\TakenOverPed.cs" />
     <Compile Include="Entities\TrafficVehicle.cs" />
     <Compile Include="Entities\Weapon Variation\WeaponComponent.cs" />

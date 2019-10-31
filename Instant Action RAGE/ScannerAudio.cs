@@ -3582,7 +3582,7 @@ public class vehicle_category
     public static ScannerFile Classic01 { get { return new ScannerFile("01_vehicle_category\\0x0DB9439E.wav", "Classic", "vehicle_category"); } }
     public static ScannerFile HASH0DB9C91E { get { return new ScannerFile("01_vehicle_category\\0x0DB9C91E.wav", "0x0DB9C91E", "vehicle_category"); } }
     public static ScannerFile HASH0E4D13AD { get { return new ScannerFile("01_vehicle_category\\0x0E4D13AD.wav", "0x0E4D13AD", "vehicle_category"); } }
-    public static ScannerFile HASH0E63C9AE { get { return new ScannerFile("01_vehicle_category\\0x0E63C9AE.wav", "0x0E63C9AE", "vehicle_category"); } }
+    public static ScannerFile Sedan { get { return new ScannerFile("01_vehicle_category\\0x0E63C9AE.wav", "Sedan", "vehicle_category"); } }
     public static ScannerFile HASH0E826F9B { get { return new ScannerFile("01_vehicle_category\\0x0E826F9B.wav", "0x0E826F9B", "vehicle_category"); } }
     public static ScannerFile HASH0E82768B { get { return new ScannerFile("01_vehicle_category\\0x0E82768B.wav", "0x0E82768B", "vehicle_category"); } }
     public static ScannerFile IndustrialVehicle01 { get { return new ScannerFile("01_vehicle_category\\0x0E970FAF.wav", "industrail vehicle", "vehicle_category"); } }
@@ -3628,7 +3628,7 @@ public class vehicle_category
     public static ScannerFile HASH1C9760CF { get { return new ScannerFile("01_vehicle_category\\0x1C9760CF.wav", "0x1C9760CF", "vehicle_category"); } }
     public static ScannerFile HASH1CA6D8EC { get { return new ScannerFile("01_vehicle_category\\0x1CA6D8EC.wav", "0x1CA6D8EC", "vehicle_category"); } }
     public static ScannerFile PerformanceCar01 { get { return new ScannerFile("01_vehicle_category\\0x1D525CE1.wav", "Performance car", "vehicle_category"); } }
-    public static ScannerFile Sedan02 { get { return new ScannerFile("01_vehicle_category\\0x1D8877D8.wav", "Sedan", "vehicle_category"); } }
+    public static ScannerFile Bulldozer { get { return new ScannerFile("01_vehicle_category\\0x1D8877D8.wav", "Bulldozer", "vehicle_category"); } }
     public static ScannerFile HASH1DBED504 { get { return new ScannerFile("01_vehicle_category\\0x1DBED504.wav", "0x1DBED504", "vehicle_category"); } }
     public static ScannerFile HASH1DBFB566 { get { return new ScannerFile("01_vehicle_category\\0x1DBFB566.wav", "0x1DBFB566", "vehicle_category"); } }
     public static ScannerFile HASH1DCAAC3C { get { return new ScannerFile("01_vehicle_category\\0x1DCAAC3C.wav", "0x1DCAAC3C", "vehicle_category"); } }
@@ -3636,7 +3636,8 @@ public class vehicle_category
     public static ScannerFile HASH1E8CEE5F { get { return new ScannerFile("01_vehicle_category\\0x1E8CEE5F.wav", "0x1E8CEE5F", "vehicle_category"); } }
     public static ScannerFile Bike01 { get { return new ScannerFile("01_vehicle_category\\0x1FCD9DA9.wav", "Bike", "vehicle_category"); } }
     public static ScannerFile HASH1FD2B13F { get { return new ScannerFile("01_vehicle_category\\0x1FD2B13F.wav", "0x1FD2B13F", "vehicle_category"); } }
-}
+    public static ScannerFile Stolen01 { get { return new ScannerFile("01_vehicle_category\\Stolen.wav", "Stolen (custom)", "vehicle_category"); } }
+    }
 public class we_have
 {
     public static string OfficersReport()

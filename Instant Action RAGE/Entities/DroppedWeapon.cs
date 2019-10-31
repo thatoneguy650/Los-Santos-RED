@@ -23,11 +23,18 @@ public class DroppedWeapon
         Weapon = _Weapon;
         CoordinatedDropped = _CoordinatedDropped;
     }
-    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped,WeaponVariation _Variation)
+    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped, WeaponVariation _Variation)
     {
         Weapon = _Weapon;
         CoordinatedDropped = _CoordinatedDropped;
         Variation = _Variation;
+    }
+    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped, WeaponVariation _Variation,int _Ammo)
+    {
+        Weapon = _Weapon;
+        CoordinatedDropped = _CoordinatedDropped;
+        Variation = _Variation;
+        Ammo = _Ammo;
     }
 }
 

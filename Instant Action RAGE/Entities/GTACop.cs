@@ -22,6 +22,7 @@ public class GTACop
         CopPed = _Cop;
         canSeePlayer = _canSeePlayer;
         Health = _Health;
+        SetAccuracyAndSightRange();
     }
     public GTACop(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health)
     {
@@ -30,6 +31,7 @@ public class GTACop
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
         PositionLastSeenPlayer = _positionLastSeenPlayer;
         Health = _Health;
+        SetAccuracyAndSightRange();
     }
     public int Health { get; set; }
 
@@ -66,6 +68,12 @@ public class GTACop
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public WeaponVariation PistolVariation { get; set; }
     public WeaponVariation HeavyVariation { get; set; }
+    public void SetAccuracyAndSightRange()
+    {
+        CopPed.VisionRange = 55f;
+        CopPed.HearingRange = 25;
+        CopPed.Accuracy = 10;
+    }
     public bool NeedsWeaponCheck
     {
         get

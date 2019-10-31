@@ -513,7 +513,7 @@ public static class VehicleLookup
         Vehicles.Add(new VehicleInfo("police", 0x79FBB0C5, Manufacturer.Unknown, VehicleClass.Emergency, ScannerAudio.model.POLICECAR01.FileName));
         Vehicles.Add(new VehicleInfo("police2", 0x9F05F101, Manufacturer.Bravado, VehicleClass.Emergency, ScannerAudio.model.POLICECAR01.FileName));
         Vehicles.Add(new VehicleInfo("police3", 0x71FA16EA, Manufacturer.Unknown, VehicleClass.Emergency, ScannerAudio.model.POLICECAR01.FileName));
-        Vehicles.Add(new VehicleInfo("police4", 0x8A63C7B9, Manufacturer.Unknown, VehicleClass.Emergency, ScannerAudio.model.MINIVAN01.FileName));
+        Vehicles.Add(new VehicleInfo("police4", 0x8A63C7B9, Manufacturer.Unknown, VehicleClass.Emergency, ScannerAudio.model.POLICECAR01.FileName));
         Vehicles.Add(new VehicleInfo("policeb", 0xFDEFAEC3, Manufacturer.Unknown, VehicleClass.Emergency, ScannerAudio.model.POLICECAR01.FileName));
         Vehicles.Add(new VehicleInfo("policeold1", 0xA46462F7, Manufacturer.Unknown, VehicleClass.Emergency, ScannerAudio.model.POLICECAR01.FileName));
         Vehicles.Add(new VehicleInfo("policeold2", 0x95F4C618, Manufacturer.Albany, VehicleClass.Emergency, ScannerAudio.model.POLICECAR01.FileName));
@@ -780,7 +780,7 @@ public static class VehicleLookup
         public uint Hash { get; set; }
         public Manufacturer Manufacturer { get; set; }
         public VehicleClass VehicleClass { get; set; }
-        public String ModelScannerFile { get; set; } = "";
+        public string ModelScannerFile { get; set; } = "";
         public VehicleInfo()
         {
 

@@ -158,8 +158,8 @@ namespace ExtensionsMethods
                 }
                 if (!LightsOn)
                     return false;
-                if (HighbeamsOn)
-                    return false;
+                //if (HighbeamsOn)
+                //    return false;
 
 
 
@@ -188,8 +188,11 @@ namespace ExtensionsMethods
                     return true;
             }
 
-            if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
-                return true;
+            if (InstantAction.IsNightTime)
+            {
+                if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                    return true;
+            }
 
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 0, false))
                 return true;
@@ -211,8 +214,20 @@ namespace ExtensionsMethods
 
             return false;
         }
-
+        public static bool IsWithin(this float value, float minimum, float maximum)
+        {
+            return value >= minimum && value <= maximum;
+        }
         public static float getDotVectorResult(Ped source, Ped target)
+        {
+            if (source.Exists() && target.Exists())
+            {
+                Vector3 dir = (target.Position - source.Position).ToNormalized();
+                return Vector3.Dot(dir, source.ForwardVector);
+            }
+            else return -1.0f;
+        }
+        public static float getDotVectorResult(Entity source, Entity target)
         {
             if (source.Exists() && target.Exists())
             {
@@ -256,6 +271,50 @@ namespace ExtensionsMethods
             else
                 return false;
 
+        }
+        public static bool InFrontOf(this Vehicle Source,Vehicle Target)
+        {
+            float Result = getDotVectorResult(Target, Source);
+            if (Result > 0)
+                return true;
+            else
+                return false;
+
+        }
+        public static float Dot(Vector3 left, Vector3 right)
+        {
+            return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
+        }
+        public static float Angle(Vector3 from, Vector3 to)
+        {
+            from.Normalize();
+            to.Normalize();
+            double dot = Dot(from, to);
+            return (float)(System.Math.Acos((dot)) * (180.0 / System.Math.PI));
+        }
+        public static bool FacingSameDirection(this Entity Entity1,Entity Entity2)
+        {
+            float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
+            if (MyAngle <= 40f)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool FacingOppositeDirection(this Entity Entity1, Entity Entity2)
+        {
+            float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
+            if (MyAngle >= 140f && MyAngle <= 220f)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static T PickRandom<T>(this IEnumerable<T> source)
@@ -326,5 +385,7 @@ namespace ExtensionsMethods
                                    + (c1.G - c2.G) * (c1.G - c2.G)
                                    + (c1.B - c2.B) * (c1.B - c2.B));
         }
+
+
     }
 }
