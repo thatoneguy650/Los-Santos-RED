@@ -2434,7 +2434,13 @@ public static class InstantAction
 
                 bool Continue = true;
                 ToEnter.MustBeHotwired = true;
-                Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ToEnter, 0);
+
+
+
+                //Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ToEnter, 0); //old
+                Vector3 GameEntryPosition = ToEnter.GetBonePosition("handle_dside_f");
+
+
                 Vector3 CarPosition = ToEnter.Position;
                 //Game.LocalPlayer.Character.Tasks.GoStraightToPosition(GameEntryPosition, 1f, ToEnter.Heading, 1f, 10000);
                 //uint GameTimeStartedWalking = Game.GameTime;
@@ -2546,7 +2552,7 @@ public static class InstantAction
     }
 
     //Car Jacking
-    public static void CarJackPedWithWeapon(Vehicle TargetVehicle,Ped Driver,int SeatTryingToEnter)
+    public static void CarJackPedWithWeaponBad(Vehicle TargetVehicle,Ped Driver,int SeatTryingToEnter)
     {
         if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
             return;
@@ -2634,29 +2640,79 @@ public static class InstantAction
 
                 RequestAnimationDictionay(dict);
 
-                GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
-                Vector3 DriverSeatCoordinates = TargetVehicle.GetBonePosition("seat_dside_f");
+                //GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);//old
+                //GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
+
+                if(TargetVehicle.HasBone("handle_dside_f") && 1== 0)
+                {
+                    GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
+                    WriteToLog("CarJackPedWithWeapon", string.Format("Handle Pos: {0}", GameEntryPosition));
+                }
+                else
+                {
+                    GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
+                    WriteToLog("CarJackPedWithWeapon", string.Format("Game Entry Pos: {0}", GameEntryPosition));
+                }
+
+                //Vector3 DriverSeatCoordinates = TargetVehicle.GetBonePosition("seat_dside_f");// Old
+
+
+                //Driver.HasBone()
+                //Vector3 DriverSeatCoordinates = Driver.GetBonePosition("SKEL_ROOT");//SKEL_Spine0//NO WORK!
+
+                int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
+                Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+
+
+
+
+
+
+
+
+
+
+
+                WriteToLog("CarJackPedWithWeapon", string.Format("Armed Driver Pos: {0}", DriverSeatCoordinates));
+
+
+
                 float DriverHeading = Driver.Heading;
-                int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X + 0.15f, GameEntryPosition.Y, GameEntryPosition.Z - 0.1f, 0.0f, 0.0f, DesiredHeading, 2);//270f
-                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
-                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, Scene1, dict, PerpAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
-                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene1, 0.0f);
+                //int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
+                //   int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X , GameEntryPosition.Y, GameEntryPosition.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f
 
-                int Scene2 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverSeatCoordinates.X, DriverSeatCoordinates.Y, DriverSeatCoordinates.Z + 0.1f, 0.0f, 0.0f, DriverHeading, 2);//270f
-                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene2, false);
-                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver, Scene2, dict, VictimAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
-                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene2, 0.0f);
 
-                //GameFiber.Sleep(200);
-                //TargetVehicle.Doors[0].Open(true,true);
-                //NativeFunction.CallByName<float>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 3, 0.5f);
+
+
+
+
+                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, dict, PerpAnim, 8.0f, -8.0f, -1, 0, 1.0f, false, false, false);
+                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Driver, dict, VictimAnim, 8.0f, -8.0f, -1, 0, 1.0f, false, false, false);
+
+
+                Game.LocalPlayer.Character.Tasks.PlayAnimation(dict, PerpAnim, 8.0f, AnimationFlags.None);
+                Driver.Tasks.PlayAnimation(dict, VictimAnim, 8.0f, AnimationFlags.None);
+
+
+
+
+                //NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
+                //NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, Scene1, dict, PerpAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                //NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene1, 0.0f);
+
+                //int Scene2 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverSeatCoordinates.X, DriverSeatCoordinates.Y, DriverSeatCoordinates.Z, 0.0f, 0.0f, DriverHeading, 2);//270f
+                //NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene2, false);
+                //NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver, Scene2, dict, VictimAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+                //NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene2, 0.0f);
+
+
                 NativeFunction.CallByName<float>("SET_VEHICLE_DOOR_OPEN", TargetVehicle, 0, false, false);
-                //TargetVehicle.Doors[0].Open(true);
+
                 PlayerBreakingIntoCar = true;
 
 
                 GameTimeStarted = Game.GameTime;
-                while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene2) < 1.0f && Driver.IsAlive)//&& Game.GameTime - GameTimeStarted <= 5000 && Driver.IsAlive)
+                while (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME",Driver, dict, VictimAnim) < 1.0f && Driver.Exists() && Driver.IsAlive)//&& Game.GameTime - GameTimeStarted <= 5000 && Driver.IsAlive)
                 {                        
                     GameFiber.Yield();
                     if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
@@ -2671,9 +2727,9 @@ public static class InstantAction
                         NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
                     }
                 }
-                float Scene2Phase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene2);
+                float Scene2Phase = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Driver, dict, VictimAnim);
                 TargetVehicle.Doors[0].Open(true);
-                if (Driver.IsDead)
+                if (Driver.Exists() && Driver.IsDead)
                 {
                     if(Scene2Phase <= 0.3f)
                     {
@@ -2691,15 +2747,10 @@ public static class InstantAction
                 else
                 {
             
-                    //Driver.IsRagdoll = true;
                 }
-                //Driver.Tasks.Clear();
 
 
-                //BRING_VEHICLE_TO_HALT
-
-
-                while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 1.0f)//&& Game.GameTime - GameTimeStarted <= 5000 && Driver.IsAlive)
+                while (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Driver, dict, PerpAnim) < 0.9f)//&& Game.GameTime - GameTimeStarted <= 5000 && Driver.IsAlive)
                 {
                     GameFiber.Yield();
                     if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
@@ -2709,16 +2760,15 @@ public static class InstantAction
                     }
                     if (Game.LocalPlayer.Character.isConsideredArmed() && Game.IsControlJustPressed(2, GameControl.Attack))
                     {
-                        Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Spine);
-                        NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
+                        NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, true);
                     }
                 }
-
+                NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, false);
                 WriteToLog("CarJackPedWithWeapon", "Scene phase is over?");
 
                 if (!Continue)
                 {
-                    if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) <= 0.75f)
+                    if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Driver, dict, PerpAnim) <= 0.75f)
                     {
                         Game.LocalPlayer.Character.Tasks.Clear();
                     }
@@ -2740,7 +2790,6 @@ public static class InstantAction
                 else
                 {
                     WriteToLog("CarjackAnimation", "Driver Out of Vehicle");
-                   // GameFiber.Sleep(1000);
                     Driver.IsRagdoll = false;
                     Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
                 }
@@ -2758,6 +2807,455 @@ public static class InstantAction
             WriteToLog("UnlockCarDoor", e.Message);
         }
     }
+
+    public static void CarJackPedWithWeapon(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter) //New
+    {
+        if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
+            return;
+        try
+        {
+            if (SeatTryingToEnter != -1)
+                return;
+
+            GTAWeapon myGun = GetCurrentWeapon();
+            if (myGun == null)
+                return;
+
+            GameFiber.StartNew(delegate
+            {
+                bool Continue = true;
+
+
+                if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
+                }
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+                Driver.BlockPermanentEvents = true;
+
+                Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
+                Vector3 CarPosition = TargetVehicle.Position;
+                float DesiredHeading = TargetVehicle.Heading - 90f;
+                NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Game.LocalPlayer.Character, GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, DesiredHeading, 3000);
+                uint GameTimeStarted = Game.GameTime;
+                while (Game.GameTime - GameTimeStarted <= 1000)
+                {
+                    GameFiber.Yield();
+                    if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
+                    {
+                        Continue = false;
+                        break;
+                    }
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+                }
+
+                NativeFunction.CallByName<int>("TASK_ACHIEVE_HEADING", Game.LocalPlayer.Character, DesiredHeading, 1500);
+                uint GameTimeStartedHeading = Game.GameTime;
+                while (Game.LocalPlayer.Character.Heading.IsWithin(DesiredHeading - 5f, DesiredHeading + 5f) && Game.GameTime - GameTimeStartedHeading < 500 && TargetVehicle.Position.DistanceTo2D(CarPosition) <= .5f)
+                {
+                    GameFiber.Yield();
+                    if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
+                    {
+                        Continue = false;
+                        break;
+                    }
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+                }
+
+                if (TargetVehicle.Position.DistanceTo2D(CarPosition) > .5f)
+                {
+                    Game.LocalPlayer.Character.Tasks.Clear();
+                    return;
+                }
+
+                string dict = "";
+                string PerpAnim = "";
+                string VictimAnim = "";
+                if (myGun.IsTwoHanded)
+                {
+                    dict = "veh@jacking@2h";
+                    PerpAnim = "std_perp_ds_a";
+                    VictimAnim = "std_victim_ds_a";
+                }
+                else if (myGun.IsOneHanded)
+                {
+                    dict = "veh@jacking@1h";
+                    PerpAnim = "std_perp_ds";
+                    VictimAnim = "std_victim_ds";
+                }
+                else
+                {
+                    Game.LocalPlayer.Character.Tasks.Clear();
+                    Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+                    return;
+                }
+
+                RequestAnimationDictionay(dict);
+
+                if (TargetVehicle.HasBone("handle_dside_f") && 1 == 0)
+                {
+                    GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
+                    WriteToLog("CarJackPedWithWeapon", string.Format("Handle Pos: {0}", GameEntryPosition));
+                }
+                else
+                {
+                    GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
+                    WriteToLog("CarJackPedWithWeapon", string.Format("Game Entry Pos: {0}", GameEntryPosition));
+                }
+
+                //NativeFunction.CallByName<float>("SET_VEHICLE_DOOR_OPEN", TargetVehicle, 0, false, false);
+                //NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0.5f);
+                TargetVehicle.Doors[0].Open(false, false);
+
+                int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 57597);//11816
+                Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+                WriteToLog("CarJackPedWithWeapon", string.Format("Armed Driver Pos: {0}", DriverSeatCoordinates));
+
+                float DriverHeading = Driver.Heading;
+                int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
+                                                                                                                                                                                       //   int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X , GameEntryPosition.Y, GameEntryPosition.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f
+
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
+                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, Scene1, dict, PerpAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene1, 0.0f);
+
+                int Scene2 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverSeatCoordinates.X, DriverSeatCoordinates.Y, DriverSeatCoordinates.Z, 0.0f, 0.0f, DriverHeading, 2);//270f
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene2, false);
+                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver, Scene2, dict, VictimAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene2, 0.0f);
+
+                // NativeFunction.CallByName<float>("SET_VEHICLE_DOOR_OPEN", TargetVehicle, 0, false, false);
+                PlayerBreakingIntoCar = true;
+
+                while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 0.75f)//&& Game.GameTime - GameTimeStarted <= 5000 && Driver.IsAlive)
+                {
+                    GameFiber.Yield();
+                    if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
+                    {
+                        Continue = false;
+                        break;
+                    }
+                    if (Game.LocalPlayer.Character.isConsideredArmed() && Game.IsControlPressed(2, GameControl.Attack))
+                    {
+                        Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
+                        NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
+
+                        if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) <= 0.35f)
+                        {
+                            Driver.WarpIntoVehicle(TargetVehicle, -1);
+                            Game.LocalPlayer.Character.Tasks.Clear();
+                            NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, true);
+                            break;
+                        }
+                    }
+                    if (Game.LocalPlayer.Character.isConsideredArmed() && Game.IsControlJustPressed(2, GameControl.Aim))
+                    {
+                        if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) <= 0.4f)
+                        {
+                            Driver.WarpIntoVehicle(TargetVehicle, -1);
+                            Game.LocalPlayer.Character.Tasks.Clear();
+                            NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, true);
+                            break;
+                        }
+                    }
+                }
+
+
+                float Scene1Phase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
+                if(Scene1Phase <= 0.4f)
+                {
+                    if(Driver.IsDead)
+                    {
+                        Driver.WarpIntoVehicle(TargetVehicle, -1);
+                        Game.LocalPlayer.Character.Tasks.Clear();
+                    }
+                }
+                else
+                {
+                    Game.LocalPlayer.Character.WarpIntoVehicle(TargetVehicle, -1);
+                }
+
+                if(TargetVehicle.Doors[0].IsValid())
+                    NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
+
+                WriteToLog("CarJackPedWithWeapon", string.Format("Scene1 Phase: {0}", Scene1Phase));
+
+                if (Driver.IsInAnyVehicle(false))
+                {
+                    WriteToLog("CarjackAnimation", "Driver In Vehicle");
+                    //return;
+                }
+                else
+                {
+                    WriteToLog("CarjackAnimation", "Driver Out of Vehicle");
+                    // GameFiber.Sleep(1000);
+                    Driver.IsRagdoll = false;
+                    Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+                }
+                GameFiber.Sleep(5000);
+
+                PlayerBreakingIntoCar = false;
+            });
+        }
+        catch (Exception e)
+        {
+            foreach (Rage.Object obj in CreatedObjects.Where(x => x.Exists()))
+                obj.Delete();
+            CreatedObjects.Clear();
+            PlayerBreakingIntoCar = false;
+            WriteToLog("UnlockCarDoor", e.Message);
+        }
+    }
+    public static void CarJackPedWithWeaponOriginal(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
+    {
+        if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
+            return;
+        try
+        {
+            if (SeatTryingToEnter != -1)
+                return;
+
+            GTAWeapon myGun = GetCurrentWeapon();
+            if (myGun == null)
+                return;
+
+            GameFiber.StartNew(delegate
+            {
+                bool Continue = true;
+
+
+                if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
+                }
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+                Driver.BlockPermanentEvents = true;
+
+                Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
+                Vector3 CarPosition = TargetVehicle.Position;
+                float DesiredHeading = TargetVehicle.Heading - 90f;
+                NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Game.LocalPlayer.Character, GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, DesiredHeading, 3000);
+                uint GameTimeStarted = Game.GameTime;
+                while (Game.GameTime - GameTimeStarted <= 1000)
+                {
+                    GameFiber.Yield();
+                    if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
+                    {
+                        Continue = false;
+                        break;
+                    }
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+                }
+
+                NativeFunction.CallByName<int>("TASK_ACHIEVE_HEADING", Game.LocalPlayer.Character, DesiredHeading, 1500);
+                uint GameTimeStartedHeading = Game.GameTime;
+                while (Game.LocalPlayer.Character.Heading.IsWithin(DesiredHeading - 5f, DesiredHeading + 5f) && Game.GameTime - GameTimeStartedHeading < 500 && TargetVehicle.Position.DistanceTo2D(CarPosition) <= .5f)
+                {
+                    GameFiber.Yield();
+                    if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
+                    {
+                        Continue = false;
+                        break;
+                    }
+                    NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+                }
+
+                if (TargetVehicle.Position.DistanceTo2D(CarPosition) > .5f)
+                {
+                    Game.LocalPlayer.Character.Tasks.Clear();
+                    return;
+                }
+
+
+                //RequestAnimationDictionay("veh@jacking@1h");
+                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@jacking@1h", "std_perp_ds", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+
+                string dict = "";
+                string PerpAnim = "";
+                string VictimAnim = "";
+                if (myGun.IsTwoHanded)
+                {
+                    dict = "veh@jacking@2h";
+                    PerpAnim = "std_perp_ds_a";
+                    VictimAnim = "std_victim_ds_a";
+                }
+                else if (myGun.IsOneHanded)
+                {
+                    dict = "veh@jacking@1h";
+                    PerpAnim = "std_perp_ds";
+                    VictimAnim = "std_victim_ds";
+                }
+                else
+                {
+                    Game.LocalPlayer.Character.Tasks.Clear();
+                    Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+                    return;
+                }
+
+                RequestAnimationDictionay(dict);
+
+                //GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);//old
+                //GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
+
+                if (TargetVehicle.HasBone("handle_dside_f") && 1 == 0)
+                {
+                    GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
+                    WriteToLog("CarJackPedWithWeapon", string.Format("Handle Pos: {0}", GameEntryPosition));
+                }
+                else
+                {
+                    GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
+                    WriteToLog("CarJackPedWithWeapon", string.Format("Game Entry Pos: {0}", GameEntryPosition));
+                }
+
+                //Vector3 DriverSeatCoordinates = TargetVehicle.GetBonePosition("seat_dside_f");// Old
+
+
+                //Driver.HasBone()
+                //Vector3 DriverSeatCoordinates = Driver.GetBonePosition("SKEL_ROOT");//SKEL_Spine0//NO WORK!
+
+                int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
+                Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+
+
+
+
+
+
+
+
+
+
+
+                WriteToLog("CarJackPedWithWeapon", string.Format("Armed Driver Pos: {0}", DriverSeatCoordinates));
+
+
+
+                float DriverHeading = Driver.Heading;
+                int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
+                                                                                                                                                                                                         //   int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X , GameEntryPosition.Y, GameEntryPosition.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f
+
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
+                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, Scene1, dict, PerpAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene1, 0.0f);
+
+                int Scene2 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverSeatCoordinates.X, DriverSeatCoordinates.Y, DriverSeatCoordinates.Z, 0.0f, 0.0f, DriverHeading, 2);//270f
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene2, false);
+                NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver, Scene2, dict, VictimAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene2, 0.0f);
+
+                //GameFiber.Sleep(200);
+                //TargetVehicle.Doors[0].Open(true,true);
+                //NativeFunction.CallByName<float>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 3, 0.5f);
+                NativeFunction.CallByName<float>("SET_VEHICLE_DOOR_OPEN", TargetVehicle, 0, false, false);
+                //TargetVehicle.Doors[0].Open(true);
+                PlayerBreakingIntoCar = true;
+
+
+                GameTimeStarted = Game.GameTime;
+                while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene2) < 1.0f && Driver.Exists() && Driver.IsAlive)//&& Game.GameTime - GameTimeStarted <= 5000 && Driver.IsAlive)
+                {
+                    GameFiber.Yield();
+                    if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
+                    {
+                        Continue = false;
+                        break;
+                    }
+
+                    if (Game.LocalPlayer.Character.isConsideredArmed() && Game.IsControlJustPressed(2, GameControl.Attack))
+                    {
+                        Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Spine);
+                        NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
+                    }
+                }
+                float Scene2Phase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene2);
+                TargetVehicle.Doors[0].Open(true);
+                if (Driver.Exists() && Driver.IsDead)
+                {
+                    if (Scene2Phase <= 0.3f)
+                    {
+                        Driver.WarpIntoVehicle(TargetVehicle, -1);
+                    }
+                    else
+                    {
+                        Driver.IsRagdoll = true;
+                    }
+
+                    Game.LocalPlayer.Character.Tasks.Clear();
+                    PlayerBreakingIntoCar = false;
+                    return;
+                }
+                else
+                {
+
+                    //Driver.IsRagdoll = true;
+                }
+                //Driver.Tasks.Clear();
+
+
+                //BRING_VEHICLE_TO_HALT
+
+
+                while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 0.75f)//&& Game.GameTime - GameTimeStarted <= 5000 && Driver.IsAlive)
+                {
+                    GameFiber.Yield();
+                    if (Game.IsControlJustPressed(2, GameControl.MoveUp) || Game.IsControlJustPressed(2, GameControl.MoveRight) || Game.IsControlJustPressed(2, GameControl.MoveDown) || Game.IsControlJustPressed(2, GameControl.MoveLeft))
+                    {
+                        Continue = false;
+                        break;
+                    }
+                    if (Game.LocalPlayer.Character.isConsideredArmed() && Game.IsControlJustPressed(2, GameControl.Attack))
+                    {
+                        //Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Spine);
+                        //NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
+                        NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, true);
+                    }
+                }
+                NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, false);
+                WriteToLog("CarJackPedWithWeapon", "Scene phase is over?");
+
+                if (!Continue)
+                {
+                    if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) <= 0.75f)
+                    {
+                        Game.LocalPlayer.Character.Tasks.Clear();
+                    }
+                    else
+                    {
+                        Game.LocalPlayer.Character.WarpIntoVehicle(TargetVehicle, -1);
+                    }
+                    PlayerBreakingIntoCar = false;
+                }
+
+                if (Continue)
+                    Game.LocalPlayer.Character.WarpIntoVehicle(TargetVehicle, -1);
+
+                if (Driver.IsInAnyVehicle(false))
+                {
+                    WriteToLog("CarjackAnimation", "Driver In Vehicle");
+                    //return;
+                }
+                else
+                {
+                    WriteToLog("CarjackAnimation", "Driver Out of Vehicle");
+                    // GameFiber.Sleep(1000);
+                    Driver.IsRagdoll = false;
+                    Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+                }
+                GameFiber.Sleep(5000);
+
+                PlayerBreakingIntoCar = false;
+            });
+        }
+        catch (Exception e)
+        {
+            foreach (Rage.Object obj in CreatedObjects.Where(x => x.Exists()))
+                obj.Delete();
+            CreatedObjects.Clear();
+            PlayerBreakingIntoCar = false;
+            WriteToLog("UnlockCarDoor", e.Message);
+        }
+    } //Original
 
     //Respawn
     public static void BribePolice(int Amount)
@@ -4432,28 +4930,7 @@ public static class InstantAction
 
         PoliceScanningSystem.RemoveAllCreatedEntities();
     }
-    private static void DebugApplyPoliceVariation()
-    {
-        try
-        {
-            GTAWeapon CurrentWeapon = Weapons.Where(x => x.Hash == (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash).First();
-            if (CurrentWeapon != null)
-            {
-                ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)CurrentWeapon.Hash, CurrentWeapon.PoliceVariations.PickRandom());
-            }
-
-            WeaponVariation DroppedGunVariation = GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-            foreach (WeaponVariation.WeaponComponent Comp in DroppedGunVariation.Components)
-            {
-                WriteToLog("GetWeaponVariation", string.Format("Name: {0},HashKey: {1},Hash: {2}", Comp.Name, Comp.HashKey, Comp.Hash));
-            }
-            WriteToLog("GetWeaponVariation", string.Format("Tint: {0}", DroppedGunVariation.Tint));
-        }
-        catch (Exception e)
-        {
-            WriteToLog("DebugApplyPoliceVariation", e.Message);
-        }
-    }
+   
     private static void DebugTest1()
     {
         try
@@ -4467,50 +4944,106 @@ public static class InstantAction
     }
     private static void DebugNumpad4()
     {
-        //GameFiber.StartNew(delegate
-        //{
-        //    Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
-        //    Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
-        //    Driver.WarpIntoVehicle(MyCar, -1);
-        //    uint GameTimeStarted = Game.GameTime;
-        //    while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
-        //        GameFiber.Yield();
+        PoliceScanningSystem.RemoveAllCreatedEntities();
 
-        //    CarJackPedWithWeapon(MyCar, Driver, -1);
-        //    GameFiber.Sleep(20000);
-        //    if (Driver.Exists())
-        //        Driver.Delete();
 
-        //    if (MyCar.Exists())
-        //        MyCar.Delete();
+        GameFiber.StartNew(delegate
+        {
+            VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass == VehicleLookup.VehicleClass.Coupe || x.VehicleClass == VehicleLookup.VehicleClass.Sedan || x.VehicleClass == VehicleLookup.VehicleClass.Sports || x.VehicleClass == VehicleLookup.VehicleClass.SUV || x.VehicleClass == VehicleLookup.VehicleClass.Compact).PickRandom();
+            Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+            Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
+            PoliceScanningSystem.CreatedEntities.Add(MyCar);
+            PoliceScanningSystem.CreatedEntities.Add(Driver);
+            Driver.WarpIntoVehicle(MyCar, -1);
+            uint GameTimeStarted = Game.GameTime;
+            //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
+            //  GameFiber.Yield();
 
-        //});
+            WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
+            WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
 
+            // CarJackPedWithWeapon(MyCar, Driver, -1);
+            GameFiber.Sleep(20000);
+            if (Driver.Exists())
+                Driver.Delete();
+
+            if (MyCar.Exists())
+                MyCar.Delete();
+
+        });
+        //Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
         //Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
-
         //Driver.BlockPermanentEvents = true;
+
+        //Driver.WarpIntoVehicle(MyCar, -1);
+
+        ////uint GameTimeStarted = Game.GameTime;
+        ////while (Game.GameTime - GameTimeStarted <= 10000)
+        ////{
+        ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
+        ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        ////    GameFiber.Yield();
+        ////}
+        //GameFiber.Sleep(3000);
+
+        //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
+        //Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+
+
+
         //uint GameTimeStarted = Game.GameTime;
-        //while (Game.GameTime - GameTimeStarted <= 10000)
-        //{
-        //    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
-        //    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-        //    GameFiber.Yield();
-        //}
+        ////while (Game.GameTime - GameTimeStarted <= 10000)
+        ////{
+        ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
+        ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        ////    GameFiber.Yield();
+        ////}
+
+
+
+        //Driver.Position = DriverSeatCoordinates;
+
+        //GameFiber.Sleep(3000);
+
+        //Driver.WarpIntoVehicle(MyCar, -1);
+
+        //GameFiber.Sleep(3000);
 
         ////GameFiber.Sleep(3000);
 
+        //if (MyCar.Exists())
+        //    MyCar.Delete();
+
         //if (Driver.Exists())
-        //     Driver.Delete();
+        //    Driver.Delete();
 
 
 
-        foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
-        {
+        //foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
+        //{
 
-            WriteToLog("WeaponInventoryChanged", string.Format("Dropped Gun {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
+        //    WriteToLog("WeaponInventoryChanged", string.Format("Dropped Gun {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
 
-        }
+        //}
 
+
+
+
+        //List<string> Bones = new List<string> { "SKEL_ROOT", "skel_root", "SKEL_Pelvis", "SKEL_PELVIS", "skel_pelvis", "SKEL_Spine_Root", "SKEL_SPINE_ROOT", "skel_spine_root", "SKEL_Spine0","SKEL_SPINE0","skel_spine0" };
+
+
+        //foreach(string Stuff in Bones)
+        //{
+        //    if(Game.LocalPlayer.Character.HasBone(Stuff))
+        //    {
+        //        WriteToLog("Bones", string.Format("I have bone: {0}", Stuff));
+        //    }
+        //}
+
+
+        //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0);
+        //Vector3 MyPosition = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Game.LocalPlayer.Character, BoneIndexSpine, 0f, 0f, 0f);
+       // WriteToLog("Bones", string.Format("Spine Bone?: {0}", MyPosition));
 
         //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
         //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
@@ -4660,7 +5193,40 @@ public static class InstantAction
 
                 //FoodBag.Delete();
                 //camera.Delete();
+    }
+    private static void DebugNumpad6()
+    {
+        try
+        {
+            GTAWeapon CurrentWeapon = Weapons.Where(x => x.Hash == (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash).First();
+
+            if (CurrentWeapon != null)
+            {
+                WeaponVariation.WeaponComponent myComponent = WeaponComponentsLookup.Where(x => x.BaseWeapon == CurrentWeapon.Name && x.Name == "Suppressor").FirstOrDefault();
+                if (myComponent == null)
+                {
+                    WriteToLog("DebugNumpad6", "No Component Found");
+                    return;
+                }
+
+                WeaponVariation Cool = new WeaponVariation(0);
+                Cool.Components.Add(myComponent);
+
+                ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)CurrentWeapon.Hash, Cool);
             }
+
+            WeaponVariation DroppedGunVariation = GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            foreach (WeaponVariation.WeaponComponent Comp in DroppedGunVariation.Components)
+            {
+                WriteToLog("GetWeaponVariation", string.Format("Name: {0},HashKey: {1},Hash: {2}", Comp.Name, Comp.HashKey, Comp.Hash));
+            }
+            WriteToLog("GetWeaponVariation", string.Format("Tint: {0}", DroppedGunVariation.Tint));
+        }
+        catch (Exception e)
+        {
+            WriteToLog("DebugApplyPoliceVariation", e.Message);
+        }
+    }
     public static string RandomString(int length)
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -4696,7 +5262,7 @@ public static class InstantAction
         }
         if (Game.IsKeyDown(Keys.NumPad6))
         {
-            DebugApplyPoliceVariation();
+            DebugNumpad6();
         }
         if (Game.IsKeyDown(Keys.NumPad7))
         {

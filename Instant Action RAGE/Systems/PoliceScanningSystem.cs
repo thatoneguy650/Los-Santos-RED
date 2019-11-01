@@ -22,7 +22,7 @@ namespace Instant_Action_RAGE.Systems
         public static List<PoliceTask> CopsToTask = new List<PoliceTask>();
         private static uint K9Interval;
         public static List<Entity> NewsTeam = new List<Entity>();
-        private static List<Entity> CreatedEntities = new List<Entity>();
+        public static List<Entity> CreatedEntities = new List<Entity>();
 
         static PoliceScanningSystem()
         {
@@ -55,7 +55,7 @@ namespace Instant_Action_RAGE.Systems
         public static float ScanningRange { get; private set; }
         public static float InnocentScanningRange { get; private set; }
         public static bool InnocentsNear { get; private set; }
-        public static bool SpawnRandomCops { get; set; } = true;
+        public static bool SpawnRandomCops { get; set; } = false;
         public static bool Enabled { get; set; } = true;
         public static bool PlayerHurtPolice { get; set; } = false;
         public static bool PlayerKilledPolice { get; set; } = false;
