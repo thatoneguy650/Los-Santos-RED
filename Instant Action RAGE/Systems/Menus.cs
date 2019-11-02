@@ -435,6 +435,8 @@ namespace Instant_Action_RAGE.Systems
                 {
                     GTAWeapon myGun = InstantAction.GetRandomWeapon(RandomWeaponLevel);
                     Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+                    if (myGun.PlayerVariations.Any())
+                        InstantAction.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
                 }
                 debugMenu.Visible = false;
             }   

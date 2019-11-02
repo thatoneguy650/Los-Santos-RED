@@ -1140,6 +1140,8 @@ internal static class DispatchAudioSystem
         {
             GameFiber.Sleep(15000);
             stolenVehicle.WasReportedStolen = true;
+            if(stolenVehicle.CarPlate.PlateNumber == stolenVehicle.OriginalLicensePlate.PlateNumber) //if you changed it between when it was reported, dont count it
+                stolenVehicle.CarPlate.IsWanted = true;
             InstantAction.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", stolenVehicle.VehicleEnt.Handle));
         });
 

@@ -29,6 +29,7 @@ public class GTAVehicle
     public bool QuedeReportedStolen = false;
     public Color DescriptionColor;
     public GTALicensePlate CarPlate;
+    public GTALicensePlate OriginalLicensePlate;
     public bool PlayerHasEntered
     {
         get
@@ -90,7 +91,7 @@ public class GTAVehicle
                     WillBeReportedStolen = false;
                     PreviousOwnerDied = true;
                     Pedestrian.IsPersistent = false;
-                    InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDied {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
+                    //InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDied {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
                     break;
                 }
                 else if(Game.GameTime - GameTimeStolen > 15000 && !Pedestrian.IsRagdoll)
@@ -118,6 +119,7 @@ public class GTAVehicle
         IsStolen = _IsStolen;
         IsPlayersVehicle = _IsPlayersVehicle;
         CarPlate = _CarPlate;
+        OriginalLicensePlate = _CarPlate;
     }
     public GTAVehicle(Vehicle _Vehicle,uint _GameTimeEntered,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsPlayersVehicle, bool _IsStolen, GTALicensePlate _CarPlate)
     {
@@ -131,6 +133,7 @@ public class GTAVehicle
 
         DescriptionColor = _Vehicle.PrimaryColor;
         CarPlate = _CarPlate;
+        OriginalLicensePlate = _CarPlate;
 
         if (IsPlayersVehicle)
             IsStolen = false;
@@ -175,6 +178,7 @@ public class GTAVehicle
 
         DescriptionColor = _Vehicle.PrimaryColor;
         CarPlate = _CarPlate;
+        OriginalLicensePlate = _CarPlate;
     }
 
 }

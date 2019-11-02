@@ -58,6 +58,7 @@ public class GTAWeapon
     public bool IsTwoHanded = false;
     public bool IsOneHanded = false;
     public List<WeaponVariation> PoliceVariations = new List<WeaponVariation>();
+    public List<WeaponVariation> PlayerVariations = new List<WeaponVariation>();
 
 }
 
