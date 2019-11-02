@@ -273,7 +273,7 @@ namespace ExtensionsMethods
                 return false;
 
         }
-        public static bool InFrontOf(this Vehicle Source,Vehicle Target)
+        public static bool InFrontOf(this Vehicle Source, Vehicle Target)
         {
             float Result = getDotVectorResult(Target, Source);
             if (Result > 0)
@@ -293,7 +293,7 @@ namespace ExtensionsMethods
             double dot = Dot(from, to);
             return (float)(System.Math.Acos((dot)) * (180.0 / System.Math.PI));
         }
-        public static bool FacingSameDirection(this Entity Entity1,Entity Entity2)
+        public static bool FacingSameDirection(this Entity Entity1, Entity Entity2)
         {
             float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
             if (MyAngle <= 40f)
@@ -392,6 +392,12 @@ namespace ExtensionsMethods
             return new Regex(@"\A" + new Regex(@"\.|\$|\^|\{|\[|\(|\||\)|\*|\+|\?|\\").Replace(toFind, ch => @"\" + ch).Replace('_', '.').Replace("%", ".*") + @"\z", RegexOptions.Singleline).IsMatch(toSearch);
         }
 
-
+        public static bool IsMoveControlPressed()
+        {
+            if (Game.IsControlPressed(2, GameControl.MoveUp) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDown) || Game.IsControlPressed(2, GameControl.MoveLeft))
+                return true;
+            else
+                return false;
+        }
     }
 }

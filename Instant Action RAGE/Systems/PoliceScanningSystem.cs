@@ -55,7 +55,7 @@ namespace Instant_Action_RAGE.Systems
         public static float ScanningRange { get; private set; }
         public static float InnocentScanningRange { get; private set; }
         public static bool InnocentsNear { get; private set; }
-        public static bool SpawnRandomCops { get; set; } = false;
+        public static bool SpawnRandomCops { get; set; } = true;
         public static bool Enabled { get; set; } = true;
         public static bool PlayerHurtPolice { get; set; } = false;
         public static bool PlayerKilledPolice { get; set; } = false;
@@ -208,7 +208,6 @@ namespace Instant_Action_RAGE.Systems
                 {
                     //if (!Civilians.Any(x => x == Pedestrian))
                     //{
-                    //    NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 256);
                     //    Civilians.Add(Pedestrian);
                     //}
 
@@ -710,48 +709,54 @@ namespace Instant_Action_RAGE.Systems
         //Cop Spawning
         public static void SpawnRandomCop(bool InVehicle)
         {
-            Vector3 SpawnLocation;
-
-            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 20f)
-                SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.GetOffsetPositionFront(300f).Around2D(100f,200f));
-            else
-                SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(350f, 450f));
-
-            if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 150f)
-                return;
-
-            Zones.Zone ZoneName = Zones.GetZoneName(SpawnLocation);
-            if (ZoneName == null)
-                return;
-            if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.LSPD)
+            try
             {
-                int Value = rnd.Next(1, 11);
-                if (Value <= 7)
+                Vector3 SpawnLocation;
+
+                if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 20f)
+                    SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.GetOffsetPositionFront(300f).Around2D(100f, 200f));
+                else
+                    SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(350f, 450f));
+
+                if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 150f)
+                    return;
+
+                Zones.Zone ZoneName = Zones.GetZoneName(SpawnLocation);
+                if (ZoneName == null)
+                    return;
+                if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.LSPD)
+                {
+                    int Value = rnd.Next(1, 11);
+                    if (Value <= 7)
+                        SpawnCop(PoliceAgencies.LSPD, SpawnLocation);
+                    else if (Value == 8)
+                        SpawnCop(PoliceAgencies.DOA, SpawnLocation);
+                    else if (Value == 9)
+                        SpawnCop(PoliceAgencies.FIB, SpawnLocation);
+                    else
+                        SpawnCop(PoliceAgencies.IAA, SpawnLocation);
+                }
+                else if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.Sheriff)
+                {
+                    int Value = rnd.Next(1, 11);
+                    if (Value <= 9)
+                        SpawnCop(PoliceAgencies.LSSD, SpawnLocation);
+                    else
+                        SpawnCop(PoliceAgencies.DOA, SpawnLocation);
+                }
+                else if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.SAPR)
+                {
+                    SpawnCop(PoliceAgencies.SAPR, SpawnLocation);
+                }
+                else
+                {
                     SpawnCop(PoliceAgencies.LSPD, SpawnLocation);
-                else if (Value == 8)
-                    SpawnCop(PoliceAgencies.DOA, SpawnLocation);
-                else if (Value == 9)
-                    SpawnCop(PoliceAgencies.FIB, SpawnLocation);
-                else
-                    SpawnCop(PoliceAgencies.IAA, SpawnLocation);
+                }
             }
-            else if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.Sheriff)
+            catch(Exception e)
             {
-                int Value = rnd.Next(1, 11);
-                if (Value <= 9)
-                    SpawnCop(PoliceAgencies.LSSD, SpawnLocation);
-                else
-                    SpawnCop(PoliceAgencies.DOA, SpawnLocation);
+                InstantAction.WriteToLog("SpawnRandomCop", e.Message);
             }
-            else if (ZoneName.CopsTypeToDispatch == Zones.PoliceDispatchType.SAPR)
-            {
-                SpawnCop(PoliceAgencies.SAPR, SpawnLocation);
-            }
-            else
-            {
-                SpawnCop(PoliceAgencies.LSPD, SpawnLocation);
-            }
-
             
         }
         public static void RemoveFarAwayRandomlySpawnedCops()
@@ -825,26 +830,29 @@ namespace Instant_Action_RAGE.Systems
                 CopPeds.Add(MyNewPartnerCop);
             }
 
-            Blip myBlip = Cop.AttachBlip();
-            Color BlipColor = Color.Black;
-            if (_Agency == PoliceAgencies.LSPD)
-                BlipColor = Color.Black;
-            else if (_Agency == PoliceAgencies.DOA)
-                BlipColor = Color.Green;
-            else if (_Agency == PoliceAgencies.FIB)
-                BlipColor = Color.White;
-            else if (_Agency == PoliceAgencies.IAA)
-                BlipColor = Color.Purple;
-            else if (_Agency == PoliceAgencies.LSSD)
-                BlipColor = Color.Brown;
-            else if (_Agency == PoliceAgencies.SAPR)
-                BlipColor = Color.Blue;
-            else
-                BlipColor = Color.Black;
+            if (Settings.Debug)
+            {
+                Blip myBlip = Cop.AttachBlip();
+                Color BlipColor = Color.Black;
+                if (_Agency == PoliceAgencies.LSPD)
+                    BlipColor = Color.Black;
+                else if (_Agency == PoliceAgencies.DOA)
+                    BlipColor = Color.Green;
+                else if (_Agency == PoliceAgencies.FIB)
+                    BlipColor = Color.White;
+                else if (_Agency == PoliceAgencies.IAA)
+                    BlipColor = Color.Purple;
+                else if (_Agency == PoliceAgencies.LSSD)
+                    BlipColor = Color.Brown;
+                else if (_Agency == PoliceAgencies.SAPR)
+                    BlipColor = Color.Blue;
+                else
+                    BlipColor = Color.Black;
 
 
-            myBlip.Color = BlipColor;
-            myBlip.Scale = 0.6f;
+                myBlip.Color = BlipColor;
+                myBlip.Scale = 0.6f;
+            }
 
             CopPeds.Add(MyNewCop);
 
@@ -1025,7 +1033,7 @@ namespace Instant_Action_RAGE.Systems
                 InstantAction.WriteToLog("Task Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
                 uint TaskTime = 0;// = Game.GameTime;
                 string LocalTaskName = "GoTo";
-                double cool = rnd.NextDouble() * (1.22 - 1.1) + 1.1;
+                double cool = rnd.NextDouble() * (1.175 - 1.1) + 1.1;
                 float MoveRate = (float)cool;
                 Cop.SimpleTaskName = "Chase";
                 NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_CLIMBOVERS", Cop.CopPed, true);
