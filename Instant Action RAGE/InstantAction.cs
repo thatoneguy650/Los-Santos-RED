@@ -30,8 +30,9 @@ public static class InstantAction
     private static int PreviousWantedLevel;
     private static Random rnd;
     private static string LastModelHash;
-    private static PedVariation myPedVariation;
+    public static PedVariation myPedVariation;
     private static Vector3 PositionOfDeath;
+    public static bool PedOriginallyHadHelmet = false;
     private static PoliceState HandsUpPreviousPoliceState;
     public static List<GTAWeapon> Weapons = new List<GTAWeapon>();
     public static List<WeaponVariation.WeaponComponent> WeaponComponentsLookup = new List<WeaponVariation.WeaponComponent>();
@@ -118,6 +119,17 @@ public static class InstantAction
 
     public static bool PlayerStarsGreyedOut { get; set; } = false;
     public static bool AnyPoliceSeenPlayerThisWanted { get; set; } = false;
+    public static bool PlayerWasJustJacking
+    {
+        get
+        {
+            if (GameTimeLastStartedJacking == 0)
+                return false;
+            else
+                return Game.GameTime - GameTimeLastStartedJacking >= 5000;
+        }
+    } 
+    public static uint GameTimeLastStartedJacking = 0;
     public static bool IsHardToSeeInWeather
     {
         get
@@ -477,6 +489,7 @@ public static class InstantAction
         }
 
     }
+
     private static void ControlTick()
     {
         if (Game.IsKeyDownRightNow(Keys.E) && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
@@ -519,6 +532,10 @@ public static class InstantAction
         PoliceScanningSystem.PlayerHurtPolice = false;
         PoliceScanningSystem.PlayerKilledPolice = false;
         PoliceScanningSystem.PlayerKilledCivilians = false;
+        foreach(GTACop Cop in PoliceScanningSystem.CopPeds)
+        {
+            Cop.HurtByPlayer = false;
+        }
         aimedAtPolice = false;
         firedWeapon = false;
         DispatchAudioSystem.ResetReportedItems();
@@ -793,7 +810,7 @@ public static class InstantAction
             SetUnarmed(Cop);
         }
 
-        if (PoliceScanningSystem.CopPeds.Any(x => x.DistanceToPlayer <= 8f) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !isBusted)
+        if (PoliceScanningSystem.CopPeds.Any(x => x.DistanceToPlayer <= 8f) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !isBusted && !PlayerWasJustJacking)
             ForceSurrenderTime++;
         else
             ForceSurrenderTime = 0;
@@ -2018,6 +2035,38 @@ public static class InstantAction
 
     private static void RunningRedTick()
     {
+        Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
+        Vector3 MyOutput;
+        int Density;
+        int Flag;
+        int NodeID = 0;
+
+        unsafe
+        {
+            NativeFunction.CallByName<bool>("GET_VEHICLE_NODE_PROPERTIES", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, &Density, &Flag);
+        }
+
+        Text(string.Format("Node Flag: {0}", Flag), 0.5f, 0.5f, 0.5f, true);
+
+
+        if (Flag > 128)// intersection like stuff? seems to be a bit that add up? 2 lanes + 128 for intersection = 130?
+        {
+            // Text("Closest Node is intersection!!", 0.95f, 0.95f, 0.5f, true);
+
+
+            NodeID = NativeFunction.CallByName<int>("GET_NTH_CLOSEST_VEHICLE_NODE_ID", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 1, 0, 300f, 300f);
+            unsafe
+            {
+                NativeFunction.CallByName<bool>("GET_VEHICLE_NODE_POSITION", NodeID, &MyOutput);
+            }
+
+
+            Rage.Debug.DrawArrowDebug(new Vector3(MyOutput.X, MyOutput.Y, MyOutput.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
+        }
+
+
+
+
         //Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
 
         //int NodeID = 0;
@@ -2265,7 +2314,7 @@ public static class InstantAction
         WriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to: {0}", PlayerIsJacking));
         if (PlayerIsJacking)
         {
-
+            GameTimeLastStartedJacking = Game.GameTime;
         }
         PrevPlayerIsJacking = PlayerIsJacking;
     }
@@ -3541,6 +3590,13 @@ public static class InstantAction
             ResetTrafficViolations();
             ResetPoliceStats();
             GameTimeLastTakenOver = Game.GameTime;
+
+
+
+            if(Game.LocalPlayer.Character.IsWearingHelmet)
+            {
+                PedOriginallyHadHelmet = true;
+            }
         }
         catch (Exception e3)
         {
@@ -4670,6 +4726,28 @@ public static class InstantAction
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
         }
     }
+    internal static void AddRemovePlayerHelmet()
+    {
+        if (Game.LocalPlayer.Character.IsWearingHelmet)
+            Game.LocalPlayer.Character.RemoveHelmet(false);
+        else
+        {
+            if (PedOriginallyHadHelmet)
+            {
+                PropComponent MyPropComponent = InstantAction.myPedVariation.MyPedProps.Where(x => x.PropID == 0).FirstOrDefault();
+                if (MyPropComponent == null)
+                    return;
+
+                Game.LocalPlayer.Character.GiveHelmet(true, (Rage.HelmetTypes)MyPropComponent.DrawableID, MyPropComponent.TextureID);
+                WriteToLog("AddRemovePlayerHelmet", "Original");
+            }
+            else
+            {
+                Game.LocalPlayer.Character.GiveHelmet(true, HelmetTypes.RegularMotorcycleHelmet, 0);
+                WriteToLog("AddRemovePlayerHelmet", "Not Original");
+            }
+        }
+    }
 
     //Debug
     private static void DebugCopReset()
@@ -5071,17 +5149,20 @@ public static class InstantAction
         }
         if (Game.IsKeyDown(Keys.NumPad7))
         {
-            Game.LocalPlayer.WantedLevel--;
+            Settings.Debug = true;
+            bool prestate = Logging;
+            Logging = true;
+            foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CopPed.Exists() && x.CopPed.IsAlive))
+            {
+                WriteToLog("Debug",string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11}", 
+                        Cop.CopPed.Handle,Cop.CopPed.Model.Name,Cop.isTasked,Cop.canSeePlayer,Cop.DistanceToPlayer,Cop.HurtByPlayer,Cop.IssuedHeavyWeapon,Cop.TaskIsQueued,Cop.TaskType,Cop.WasRandomSpawn,Cop.TaskFiber,Cop.CopPed.Tasks.CurrentTaskStatus));
+            }
+            Logging = prestate;
         }
-
-        if (Game.IsKeyDown(Keys.NumPad8) && Game.IsAltKeyDownRightNow)
+        if (Game.IsKeyDown(Keys.NumPad8))
         {
             Logging = !Logging;
             Game.DisplayNotification(string.Format("Logging {0}", Logging));
-        }
-        else if (Game.IsKeyDown(Keys.NumPad8))
-        {
-            Game.LocalPlayer.WantedLevel++;
         }
 
         if (Game.IsKeyDown(Keys.NumPad9))

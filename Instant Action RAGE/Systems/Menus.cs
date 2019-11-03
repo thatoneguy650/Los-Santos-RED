@@ -32,6 +32,7 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuItem menuMainSuicide;
         private static UIMenuItem menuMainChangeLicensePlate;
         private static UIMenuItem menuMainRemoveLicensePlate;
+        private static UIMenuItem menuMainChangeHelmet;
         private static UIMenuItem menuDebugKillPlayer;
         private static UIMenuListItem menuDebugRandomWeapon;
         private static UIMenuListItem menuDebugScreenEffect;
@@ -51,6 +52,7 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuListItem menuBustedTakeoverRandomPed;
         private static UIMenuItem menuBustedSurrender;
         private static UIMenuItem menuDeathHospitalRespawn;
+        private static UIMenuItem menuDebugGiveMoney;
 
         private static MenuPool menuPool;
         public static UIMenu mainMenu;
@@ -213,13 +215,14 @@ namespace Instant_Action_RAGE.Systems
         "Rampage",
         "Dont_tazeme_bro" });
             menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
+            menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
 
             debugMenu.AddItem(menuDebugResetCharacter);
             debugMenu.AddItem(menuDebugKillPlayer);
             debugMenu.AddItem(menuDebugRandomWeapon);
             debugMenu.AddItem(menuDebugScreenEffect);
             debugMenu.AddItem(menuDebugEnabled);
-
+            debugMenu.AddItem(menuDebugGiveMoney);
             //
             menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
             menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
@@ -282,6 +285,7 @@ namespace Instant_Action_RAGE.Systems
             //menuMainOptions = new UIMenuItem("Options", "Change options");
             menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", InstantAction.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
             menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
+            menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
             // mainMenu.AddItem(menuMainRandomCrime);
             //mainMenu.AddItem(menuMainTakeoverNearestPed);
             mainMenu.AddItem(menuMainTakeoverRandomPed);
@@ -293,6 +297,7 @@ namespace Instant_Action_RAGE.Systems
             {
                 mainMenu.AddItem(menuMainChangeLicensePlate);
                 mainMenu.AddItem(menuMainRemoveLicensePlate);
+                //mainMenu.AddItem(menuMainChangeHelmet); //doesnt work fully so far, and only on certain peds
             }
             // mainMenu.AddItem(menuMainOptions);
         }
@@ -378,6 +383,10 @@ namespace Instant_Action_RAGE.Systems
                 {
                     InstantAction.RemoveNearestLicensePlate();
                 }
+                else if (selectedItem == menuMainChangeHelmet)
+                {
+                    InstantAction.AddRemovePlayerHelmet();                
+                }          
                 mainMenu.Visible = false;
             }
             else if (sender == bustedMenu)
@@ -438,6 +447,13 @@ namespace Instant_Action_RAGE.Systems
                     if (myGun.PlayerVariations.Any())
                         InstantAction.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
                 }
+                if (selectedItem == menuDebugGiveMoney)
+                {
+                    Game.LocalPlayer.Character.GiveCash(5000, Settings.MainCharacterToAlias);
+                }
+
+                
+
                 debugMenu.Visible = false;
             }   
         }

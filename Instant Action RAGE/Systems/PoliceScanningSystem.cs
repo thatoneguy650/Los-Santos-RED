@@ -198,6 +198,13 @@ namespace Instant_Action_RAGE.Systems
                         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
                         if (InstantAction.GhostCop != null && InstantAction.GhostCop.Handle == Pedestrian.Handle)
                             continue;
+
+                        //Experiment to see iff this makes them better chasers
+                        if (Pedestrian.IsInAnyVehicle(false) && Pedestrian.CurrentVehicle.Driver.Handle == Pedestrian.Handle)
+                        {
+                            Pedestrian.Tasks.CruiseWithVehicle(Pedestrian.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
+                        }
+
                         CopPeds.Add(myCop);
 
                         if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
@@ -1147,10 +1154,10 @@ namespace Instant_Action_RAGE.Systems
 
                         }
 
-                        if ((InstantAction.areHandsUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f)
+                        if ((InstantAction.areHandsUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f && !InstantAction.PlayerWasJustJacking)
                             InstantAction.SurrenderBust = true;
 
-                        if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f)
+                        if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f && !InstantAction.PlayerWasJustJacking)
                             InstantAction.SurrenderBust = true;
 
                         if (InstantAction.PlayerInVehicle && (Cop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f))
@@ -1515,6 +1522,7 @@ namespace Instant_Action_RAGE.Systems
         {
             foreach (GTACop Cop in CopPeds)
             {
+                
                 if (Cop.isTasked && !Cop.TaskIsQueued)
                 {
                     Cop.TaskIsQueued = true;
