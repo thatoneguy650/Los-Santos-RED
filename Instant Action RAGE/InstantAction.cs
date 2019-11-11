@@ -32,6 +32,7 @@ public static class InstantAction
     private static string LastModelHash;
     public static PedVariation myPedVariation;
     private static Vector3 PositionOfDeath;
+    private static Vector3 LastWantedCenterPosition = Vector3.Zero;
     public static bool PedOriginallyHadHelmet = false;
     private static PoliceState HandsUpPreviousPoliceState;
     public static List<GTAWeapon> Weapons = new List<GTAWeapon>();
@@ -64,6 +65,7 @@ public static class InstantAction
     public static bool PlayerChangingPlate = false;
     public static uint GameTimeLastWantedEnded;
     public static bool PlayerArtificiallyShooting = false;
+    public static Vector3 PlaceWantedStarted;
 
     //traffic
     public static List<GTAVehicle> TrackedVehicles = new List<GTAVehicle>();
@@ -102,6 +104,7 @@ public static class InstantAction
 
     public static bool AnyPoliceCanSeePlayer { get; set; } = false;
     public static bool AnyPoliceCanRecognizePlayer { get; set; } = false;
+    public static bool AnyPoliceCanRecognizePlayerAfterWanted { get; set; } = false;
     public static bool AnyPoliceRecentlySeenPlayer { get; set; } = false;
     private static bool IsRunning { get; set; } = true;
     public static PoliceState CurrentPoliceState { get; set; }
@@ -114,9 +117,12 @@ public static class InstantAction
     private static bool ViolationNonRoadworthy;
     private static bool Logging = true;
     private static bool PlayerIsSpeeding = false;
+    private static float CurrentSpeedLimit;
     private static int PrevCiviliansKilledByPlayer;
     private static bool PrevIsRunningRedLight;
 
+    private static Blip LastWantedCenterBlip;
+    private static Blip CurrentWantedCenterBlip;
     public static bool PlayerStarsGreyedOut { get; set; } = false;
     public static bool AnyPoliceSeenPlayerThisWanted { get; set; } = false;
     public static bool PlayerWasJustJacking
@@ -130,6 +136,10 @@ public static class InstantAction
         }
     } 
     public static uint GameTimeLastStartedJacking = 0;
+    private static uint GameTimeAbandonVehicleCheck;
+    private static bool PrevAnyPoliceRecentlySeenPlayer;
+    private static uint GameTimeLastTriedCarJacking;
+
     public static bool IsHardToSeeInWeather
     {
         get
@@ -203,6 +213,8 @@ public static class InstantAction
             GameFiber.Yield();
         setupLocations();
         setupWeapons();
+
+
         MainLoop();
 
 
@@ -218,15 +230,29 @@ public static class InstantAction
 
 
         SpareLicensePlates.Add(new GTALicensePlate(StartingPlateOptions.PickRandom(), 1, 1,false));
+
+
+
+
+
+
+
+
+
+
+
+
     }
     public static void Dispose()
     {
 
         IsRunning = false;
+        VehicleEngineSystem.IsRunning = false;
 
         foreach(Blip myBlip in CreatedBlips)
         {
-            myBlip.Delete();
+            if(myBlip.Exists())
+                myBlip.Delete();
         }
     }
     public static void MainLoop()
@@ -242,6 +268,7 @@ public static class InstantAction
             CustomOptions.Initialize();
             PoliceSpeechSystem.Initialize();
             VehicleLookup.Initialize();
+            VehicleEngineSystem.Initialize();
             while (IsRunning)
             {
                 stopwatch.Start();
@@ -285,16 +312,16 @@ public static class InstantAction
         //
         // PlayerIsRunningRedLight = IsRunningRedNew();
 
-        RunningRedTick();
+       // RunningRedTick();
 
-        if (PlayerInVehicle && PlayerIsSpeeding && Game.LocalPlayer.WantedLevel == 0)
-            Text("Speeding!", 0.95f, 0.95f, 0.5f,true);
+        //if (PlayerInVehicle && PlayerIsSpeeding && Game.LocalPlayer.WantedLevel == 0)
+        //    Text("Speeding!", 0.95f, 0.95f, 0.5f,true, Color.DarkRed);
 
-        if (PlayerInVehicle && PlayerIsRunningRedLight)
-            Text("Running Red Light!", 0.5f, 0.5f, 1.0f, true);
+        //if (PlayerInVehicle && PlayerIsRunningRedLight)
+        //    Text("Running Red Light!", 0.5f, 0.5f, 1.0f, true,Color.DarkRed);
         //NativeFunction.CallByHash<bool>(0xCD015E5BB0D96A57, 0.0f, 0.0f);//END_TEXT_COMMAND_DISPLAY_TEXT
     }
-    internal static void Text(string text, float x, float y, float scale,bool center)
+    internal static void Text(string text, float x, float y, float scale,bool center,Color TextColor)
     {
         //Game.Console.Print("Invoke font");
         NativeFunction.Natives.SetTextFont(4);
@@ -303,7 +330,7 @@ public static class InstantAction
         //Game.Console.Print("Calling color ref");
         NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", new NativeArgument[]
         {
-               (int)Color.DarkRed.R, (int)Color.DarkRed.G, (int)Color.DarkRed.B, 255
+               (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255
         });
         //Game.Console.Print("Set wrap");
         NativeFunction.Natives.SetTextWrap((float)0.0, (float)1.0);
@@ -374,7 +401,7 @@ public static class InstantAction
 
         int RecentlySeenTime = 10000;
         if (PlayerInVehicle)
-            RecentlySeenTime = 30000;
+            RecentlySeenTime = 15000;//30000
 
         int WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
         if (PrevCountWeapons != WeaponCount)
@@ -385,6 +412,18 @@ public static class InstantAction
 
         AnyPoliceCanSeePlayer = PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer);
         AnyPoliceRecentlySeenPlayer = PoliceScanningSystem.CopPeds.Any(x => x.SeenPlayerSince(RecentlySeenTime));
+
+
+        if(PrevAnyPoliceRecentlySeenPlayer != AnyPoliceRecentlySeenPlayer)
+        {
+            AnyPoliceRecentlySeenPlayerChanged();
+        }
+
+
+
+
+
+
 
         uint TimeToRecongize = 2000;
 
@@ -400,6 +439,18 @@ public static class InstantAction
         else
             TimeToRecongize = 2000;
         AnyPoliceCanRecognizePlayer = PoliceScanningSystem.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecongize || (x.canSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
+
+        
+        if (PlayerInVehicle)
+            TimeToRecongize = 6000;
+        else
+            TimeToRecongize = 4000;
+
+        if (IsNightTime)
+            TimeToRecongize = TimeToRecongize + 6000;
+
+        AnyPoliceCanRecognizePlayerAfterWanted = PoliceScanningSystem.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecongize || (x.canSeePlayer && x.DistanceToPlayer <= 12f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
+
 
         if (PrevAnyCanRecognizePlayer != AnyPoliceCanRecognizePlayer)
         {
@@ -419,7 +470,33 @@ public static class InstantAction
             LastWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
         }
 
+        Vector3 CurrentWantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+        if (Game.LocalPlayer.WantedLevel > 0)
+        {      
+            if (CurrentWantedCenter != Vector3.Zero)
+            {
+                LastWantedCenterPosition = CurrentWantedCenter;
+                AddUpdateCurrentWantedBlip(CurrentWantedCenter);
+            }
+        }
+        else
+        {
+            if (!LastWantedCenterBlip.Exists())
+                AddUpdateLastWantedBlip(LastWantedCenterPosition);
+        }
+
     }
+
+    private static void AnyPoliceRecentlySeenPlayerChanged()
+    {
+        //if(AnyPoliceSeenPlayerThisWanted && PlayerStarsGreyedOut && PoliceScanningSystem.CopPeds.Any(x => x.isTasked))
+        //{
+        //    PoliceScanningSystem.UntaskAll();
+        //}
+        PrevAnyPoliceRecentlySeenPlayer = AnyPoliceRecentlySeenPlayer;
+        WriteToLog("AnyPoliceRecentlySeenPlayer", string.Format("AnyPoliceRecentlySeenPlayer Changed to: {0}", AnyPoliceRecentlySeenPlayer));
+    }
+
     private static void StateTick()
     {
 
@@ -488,6 +565,20 @@ public static class InstantAction
             Game.LocalPlayer.WantedLevel = 0;
         }
 
+
+        if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.WantedLevel == 0 && CurrentSpeedLimit != 0)
+        {
+            float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+            if (PlayerIsSpeeding)
+            {
+                Text(string.Format("{0} MPH Over Limit", Math.Round(VehicleSpeedMPH - CurrentSpeedLimit,MidpointRounding.AwayFromZero)), 0.9f, 0.8f, 0.5f, true, Color.DarkRed);
+            }
+            else
+            {
+                Text(string.Format("Speed Limit {0} MPH", CurrentSpeedLimit), 0.9f, 0.8f, 0.5f, true, Color.White);
+            }
+        }
+
     }
 
     private static void ControlTick()
@@ -499,6 +590,7 @@ public static class InstantAction
             {
                 //if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
                 //    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true); //Unequip weapon so you don't get shot
+                SetPedUnarmed(Game.LocalPlayer.Character, false);
                 HandsUpPreviousPoliceState = CurrentPoliceState;
                 areHandsUp = true;
                 //vehicleEngineSystem.TurnOffEngine();
@@ -532,7 +624,7 @@ public static class InstantAction
         PoliceScanningSystem.PlayerHurtPolice = false;
         PoliceScanningSystem.PlayerKilledPolice = false;
         PoliceScanningSystem.PlayerKilledCivilians = false;
-        foreach(GTACop Cop in PoliceScanningSystem.CopPeds)
+        foreach (GTACop Cop in PoliceScanningSystem.CopPeds)
         {
             Cop.HurtByPlayer = false;
         }
@@ -669,6 +761,23 @@ public static class InstantAction
             WriteToLog("Cops caught you breaking into a car", "");
         }
 
+        if (PlayerWantedLevel == 0 && AnyPoliceCanRecognizePlayerAfterWanted && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000)
+        {
+            Game.LocalPlayer.WantedLevel = 3;
+            AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectSpotted, 3, false));
+            WriteToLog("Cops Reacquired after losing them", "");
+        }
+        if (PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= 250f)
+        {
+            Game.LocalPlayer.WantedLevel = 3;
+            AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectSpotted, 3, false));
+            WriteToLog("Cops Reacquired after losing them in the same area", "");
+        }
+        if (PlayerHasBeenNotWantedFor >= 120000)
+        {
+            if (LastWantedCenterBlip != null)
+                LastWantedCenterBlip.Delete();
+        }
     }
     private static void PoliceTickNormal()
     {
@@ -710,7 +819,7 @@ public static class InstantAction
                 PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Chase));
             }
 
-            if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked > 0 && TotalVehicleChaseTasked == 0 && Cop.isInVehicle && Cop.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked > 0 && TotalVehicleChaseTasked == 0 && Cop.isInVehicle && !Cop.isInHelicopter && Cop.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
             {
                 Cop.TaskIsQueued = true;
                 PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.VehicleChase));
@@ -859,6 +968,31 @@ public static class InstantAction
         if (SurrenderBust && !isBustTimeOut())
             SurrenderBustEvent();
     }
+    private static void PoliceTickSearchMode()
+    {
+        if(AnyPoliceSeenPlayerThisWanted)
+            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PoliceScanningSystem.PlacePlayerLastSeen.X, PoliceScanningSystem.PlacePlayerLastSeen.Y, PoliceScanningSystem.PlacePlayerLastSeen.Z);
+        else
+            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlaceWantedStarted.X, PlaceWantedStarted.Y, PlaceWantedStarted.Z);
+
+
+        //if (!AnyPoliceRecentlySeenPlayer)
+        //{
+        //    foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CopPed.Exists() && (!x.isTasked || x.TaskType == PoliceTask.Task.GoToWantedCenter) && !x.TaskIsQueued && x.CopPed.DistanceTo2D(PoliceScanningSystem.PlacePlayerLastSeen) <= 30f))
+        //    {
+        //        Cop.TaskIsQueued = true;
+        //        PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleInvestigate));
+
+        //    }
+        //}
+
+        if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 10000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000)
+        {
+            WriteToLog("ReportSuspectLastSeen", "ReportSuspectLastSeen");
+            DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSuspectLastSeen, 10, false));
+            CanReportLastSeen = false;
+        }
+    }
     private static void PoliceVehicleTick()
     {
         foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.isInVehicle && !x.isInHelicopter))
@@ -965,12 +1099,12 @@ public static class InstantAction
 
 
         }
-
+        int PlayerWantedLevel = Game.LocalPlayer.WantedLevel;
         if (PlayerInVehicle)
         {
             Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
             GTAVehicle CurrTrackedVehicle = TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
-            int PlayerWantedLevel = Game.LocalPlayer.WantedLevel;
+            
 
             if (AnyPoliceCanRecognizePlayer)
             {
@@ -1001,6 +1135,34 @@ public static class InstantAction
                 Menus.UpdateLists();
             }
         }
+        else
+        {
+            if(PlayerWantedLevel > 0 && PlayerStarsGreyedOut)
+            {
+                if (Game.GameTime > GameTimeAbandonVehicleCheck + 1000) // was 2000
+                {
+                    Vehicle LastVehicle = Game.LocalPlayer.Character.LastVehicle;
+                    if (LastVehicle == null)
+                        return;
+                    GTAVehicle CurrTrackedVehicle = TrackedVehicles.Where(x => x.VehicleEnt.Handle == LastVehicle.Handle).FirstOrDefault();
+
+
+                    if (CurrTrackedVehicle != null)
+                    {
+                        if (CurrTrackedVehicle.IsStolen && CurrTrackedVehicle.WasReportedStolen && CurrTrackedVehicle.MatchesOriginalDescription && !CurrTrackedVehicle.WasSpottedAbandoned && PoliceScanningSystem.PoliceCanSeeEntity(CurrTrackedVehicle.VehicleEnt))
+                        {
+                            CurrTrackedVehicle.WasSpottedAbandoned = true;
+                            WriteToLog("TrackedVehiclesTick", "Cops spotted your abandoned vehicle, updated wanted cetner"); //Cops gave up 
+                            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, CurrTrackedVehicle.VehicleEnt.Position.X, CurrTrackedVehicle.VehicleEnt.Position.Y, CurrTrackedVehicle.VehicleEnt.Position.Z);  
+                        }
+                        
+                    }
+                    GameTimeAbandonVehicleCheck = Game.GameTime;
+                }
+
+
+            }
+        }
 
 
     }
@@ -1027,25 +1189,27 @@ public static class InstantAction
 
         if (PlayerStarsGreyedOut && PoliceScanningSystem.CopPeds.All(x => !x.RecentlySeenPlayer()))
         {
-            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PoliceScanningSystem.PlacePlayerLastSeen.X, PoliceScanningSystem.PlacePlayerLastSeen.Y, PoliceScanningSystem.PlacePlayerLastSeen.Z);
-            if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 10000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000)
-            {
-                WriteToLog("ReportSuspectLastSeen", "ReportSuspectLastSeen");
-                DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSuspectLastSeen, 10, false));
-                CanReportLastSeen = false;
-            }
+            PoliceTickSearchMode();
+            //NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PoliceScanningSystem.PlacePlayerLastSeen.X, PoliceScanningSystem.PlacePlayerLastSeen.Y, PoliceScanningSystem.PlacePlayerLastSeen.Z);
+            //if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 10000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000)
+            //{
+            //    WriteToLog("ReportSuspectLastSeen", "ReportSuspectLastSeen");
+            //    DispatchAudioSystem.AddDispatchToQueue(new DispatchAudioSystem.DispatchQueueItem(DispatchAudioSystem.ReportDispatch.ReportSuspectLastSeen, 10, false));
+            //    CanReportLastSeen = false;
+            //}
         }
 
         if (AnyPoliceRecentlySeenPlayer)
         {
+            PoliceScanningSystem.PlacePlayerLastSeen = Game.LocalPlayer.Character.Position;
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z);
         }
 
 
-        if(Game.LocalPlayer.WantedLevel > 0)
-        {
-            PoliceScanningSystem.RemoveAllRandomlySpawnedCops();
-        }
+        //if(Game.LocalPlayer.WantedLevel > 0)
+        //{
+        //    PoliceScanningSystem.RemoveAllRandomlySpawnedCops();
+        //}
     }
     private static bool isBustTimeOut()
     {
@@ -1143,13 +1307,17 @@ public static class InstantAction
 
             //GhostCop.Position = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 1f));
             Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 1f));
-            Vector3 PlacedPosition;
+            Vector3 PlacedPosition = Vector3.Zero;
             bool FoundPlace = false;
             unsafe
             {
                 FoundPlace = NativeFunction.CallByName<bool>("GET_SAFE_COORD_FOR_PED", DesiredPosition.X, DesiredPosition.Y, DesiredPosition.Z, false, &PlacedPosition, 16);
             }
-            GhostCop.Position = PlacedPosition;
+
+            if(FoundPlace)
+                GhostCop.Position = PlacedPosition;
+            else
+                GhostCop.Position = DesiredPosition;
 
 
             Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
@@ -1171,10 +1339,10 @@ public static class InstantAction
         }
 
 
-        if (NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer) && !PoliceScanningSystem.CopPeds.Any(x => x.RecentlySeenPlayer()) && PoliceScanningSystem.CopPeds.Any(x => x.isTasked && !x.TaskIsQueued))
-        {
-            PoliceScanningSystem.UntaskAll();
-        }
+        //if (NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer) && !PoliceScanningSystem.CopPeds.Any(x => x.RecentlySeenPlayer()) && PoliceScanningSystem.CopPeds.Any(x => x.isTasked && !x.TaskIsQueued))
+        //{
+        //    PoliceScanningSystem.UntaskAll();
+        //}
     }
     private static void CreateGhostCop()
     {
@@ -1282,7 +1450,10 @@ public static class InstantAction
             float SpeedLimit  = GetSpeedLimit();
             bool ViolationSpeedLimit = VehicleSpeedMPH > SpeedLimit + 25;
             PlayerIsSpeeding = ViolationSpeedLimit;
-            if(ViolationSpeedLimit)
+            CurrentSpeedLimit = SpeedLimit;
+
+
+            if (ViolationSpeedLimit)
             {
                 IsViolationSpeedLimit = true;
             }
@@ -2046,24 +2217,33 @@ public static class InstantAction
             NativeFunction.CallByName<bool>("GET_VEHICLE_NODE_PROPERTIES", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, &Density, &Flag);
         }
 
-        Text(string.Format("Node Flag: {0}", Flag), 0.5f, 0.5f, 0.5f, true);
 
+
+        string s = Convert.ToString(Flag, 2); //Convert to binary in a string
+
+        int[] bits = s.PadLeft(10, '0') // Add 0's from left
+                     .Select(c => int.Parse(c.ToString())) // convert each char to int
+                     .ToArray(); // Convert IEnumerable from select to Array
+
+
+
+        Text(string.Format("Node Flag: {0}, {1}", Flag, string.Join("",bits)), 0.5f, 0.5f, 0.5f, true,Color.Yellow);
+
+
+        NodeID = NativeFunction.CallByName<int>("GET_NTH_CLOSEST_VEHICLE_NODE_ID", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 1, 0, 300f, 300f);
+        unsafe
+        {
+            NativeFunction.CallByName<bool>("GET_VEHICLE_NODE_POSITION", NodeID, &MyOutput);
+        }
 
         if (Flag > 128)// intersection like stuff? seems to be a bit that add up? 2 lanes + 128 for intersection = 130?
         {
-            // Text("Closest Node is intersection!!", 0.95f, 0.95f, 0.5f, true);
-
-
-            NodeID = NativeFunction.CallByName<int>("GET_NTH_CLOSEST_VEHICLE_NODE_ID", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 1, 0, 300f, 300f);
-            unsafe
-            {
-                NativeFunction.CallByName<bool>("GET_VEHICLE_NODE_POSITION", NodeID, &MyOutput);
-            }
-
-
-            Rage.Debug.DrawArrowDebug(new Vector3(MyOutput.X, MyOutput.Y, MyOutput.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Orange);
+            Rage.Debug.DrawArrowDebug(new Vector3(MyOutput.X, MyOutput.Y, MyOutput.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Red);
         }
-
+        else
+        {    
+            Rage.Debug.DrawArrowDebug(new Vector3(MyOutput.X, MyOutput.Y, MyOutput.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Green);          
+        }
 
 
 
@@ -2110,11 +2290,9 @@ public static class InstantAction
     {
         if (Game.LocalPlayer.WantedLevel == 0)//Just Removed
         {
-            //NativeFunction.CallByName<bool>("SET_FAKE_WANTED_LEVEL", 0);
             if (AnyPoliceSeenPlayerThisWanted && MaxWantedLastLife > 0)
             {
-                DispatchAudioSystem.AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectLost, 10, false));
-                //DispatchAudioSystem.ReportSuspectLost();
+                AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectLost, 5, false));
             }
             CurrentPoliceState = PoliceState.Normal;
             AnyPoliceSeenPlayerThisWanted = false;
@@ -2123,6 +2301,12 @@ public static class InstantAction
             GameTimeWantedStarted = 0;
             DispatchAudioSystem.ResetReportedItems();
             GameTimeLastWantedEnded = Game.GameTime;
+
+            if (CurrentWantedCenterBlip.Exists())
+                CurrentWantedCenterBlip.Delete();
+            AddUpdateLastWantedBlip(LastWantedCenterPosition);
+
+            PoliceScanningSystem.UntaskAll(false);
         }
         else
         {
@@ -2131,6 +2315,19 @@ public static class InstantAction
         if(PrevWantedLevel == 0 && Game.LocalPlayer.WantedLevel > 0)
         {
             GameTimeWantedStarted = Game.GameTime;
+            PlaceWantedStarted = Game.LocalPlayer.Character.Position;
+
+            if (LastWantedCenterBlip.Exists())
+                LastWantedCenterBlip.Delete();
+
+            PoliceScanningSystem.UntaskAllRandomSpawns(false);
+
+            //foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CopPed.Exists() && !x.isTasked && !x.TaskIsQueued && x.DistanceToPlayer >= 75f))
+            //{
+            //    Cop.TaskIsQueued = true;
+            //    PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.GoToWantedCenter));
+            //}
+
         }
         NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z);
         WantedLevelStartTime = Game.GameTime;
@@ -2254,7 +2451,7 @@ public static class InstantAction
             int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
 
 
-            //LockCarDoor(TargetVeh);
+            LockCarDoor(TargetVeh);
 
             int LockStatus = (int)TargetVeh.LockStatus;
 
@@ -2614,7 +2811,7 @@ public static class InstantAction
                 }
 
                 ToEnter.LockStatus = VehicleLockStatus.Unlocked;
-                ToEnter.Doors[DoorIndex].Open(false, false);
+                ToEnter.Doors[DoorIndex].Open(true, false);
 
                 //GameFiber.Sleep(500);
 
@@ -2783,27 +2980,36 @@ public static class InstantAction
     }
     private static void LockCarDoor(Vehicle ToLock)
     {
-        if (ToLock.LockStatus != VehicleLockStatus.Unlocked)
+        WriteToLog("LockCarDoor", string.Format("Go To Start, Lock Status {0}", ToLock.LockStatus));
+        if (ToLock.LockStatus != (VehicleLockStatus)1) //unlocked
             return;
+        WriteToLog("LockCarDoor", "1");
         if (ToLock.HasDriver)//If they have a driver 
             return;
-        foreach(VehicleDoor myDoor in ToLock.GetDoors())
+        WriteToLog("LockCarDoor", "2");
+        foreach (VehicleDoor myDoor in ToLock.GetDoors())
         {
             if (!myDoor.IsValid() || myDoor.IsOpen)
                 return;//invalid doors make the car not locked
         }
+        WriteToLog("LockCarDoor", "3");
         if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
             return;//broken windows == not locked
-
+        WriteToLog("LockCarDoor", "4");
         if (TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
             return; //previously entered vehicle arent locked
-        ToLock.LockStatus = VehicleLockStatus.LockedButCanBeBrokenInto;
+
+
+        WriteToLog("LockCarDoor", "Locked");
+        ToLock.LockStatus = (VehicleLockStatus)7;
     }
 
     //Car Jacking
     public static void CarJackPedWithWeapon(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter) 
     {
         if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
+            return;
+        if (Game.GameTime - GameTimeLastTriedCarJacking <= 5000)
             return;
         try
         {
@@ -2822,40 +3028,33 @@ public static class InstantAction
 
                 Vector3 GameEntryPosition = GetHandlePosition(TargetVehicle);
                 float DesiredHeading = TargetVehicle.Heading - 90f;
-                bool MovedPed = MovePedToCarPosition(TargetVehicle, Game.LocalPlayer.Character, DesiredHeading, GameEntryPosition,true,false);
 
-                if (!MovedPed)
-                {
-                    Game.LocalPlayer.Character.Tasks.Clear();
-                    return;
-                }
 
                 string dict = "";
                 string PerpAnim = "";
                 string VictimAnim = "";
-                if (myGun.IsTwoHanded)
+                int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 57597);//11816
+                Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+
+                GameTimeLastTriedCarJacking = Game.GameTime;
+
+                if (!GetCarjackingAnimations(TargetVehicle, DriverSeatCoordinates, myGun, ref dict, ref PerpAnim, ref VictimAnim))//couldnt find animations
                 {
-                    dict = "veh@jacking@2h";
-                    PerpAnim = "std_perp_ds_a";
-                    VictimAnim = "std_victim_ds_a";
-                }
-                else if (myGun.IsOneHanded)
-                {
-                    dict = "veh@jacking@1h";
-                    PerpAnim = "std_perp_ds";
-                    VictimAnim = "std_victim_ds";
-                }
-                else
-                {
-                    Game.LocalPlayer.Character.Tasks.Clear();
+                    Game.LocalPlayer.Character.Tasks.ClearImmediately();
+                    GameFiber.Sleep(200);
                     Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     return;
                 }
 
+                if (!MovePedToCarPosition(TargetVehicle, Game.LocalPlayer.Character, DesiredHeading, GameEntryPosition, true, false))
+                {
+                    Game.LocalPlayer.Character.Tasks.Clear();
+                    return;
+                }
+
+
                 RequestAnimationDictionay(dict);
 
-                int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 57597);//11816
-                Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
                 float DriverHeading = Driver.Heading;
                 int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
                 NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
@@ -2881,7 +3080,7 @@ public static class InstantAction
                         break;
                     }
 
-                    if(!locOpenDoor && ScenePhase > .1f && !TargetVehicle.Doors[0].IsFullyOpen)
+                    if(!locOpenDoor && ScenePhase > .1f && TargetVehicle.Doors[0].IsValid() && !TargetVehicle.Doors[0].IsFullyOpen)
                     {
                         locOpenDoor = true;
                         TargetVehicle.Doors[0].Open(false, false);
@@ -2920,6 +3119,7 @@ public static class InstantAction
                 {
                     if (Cancel || Driver.IsDead)
                     {
+                        Driver.BlockPermanentEvents = false;
                         Driver.WarpIntoVehicle(TargetVehicle, -1);
                         Game.LocalPlayer.Character.Tasks.Clear();
                     }
@@ -2928,6 +3128,7 @@ public static class InstantAction
                 {
                     if (Cancel)
                     {
+                        Driver.BlockPermanentEvents = false;
                         Driver.WarpIntoVehicle(TargetVehicle, -1);
                         Game.LocalPlayer.Character.Tasks.Clear();
                     }
@@ -2954,7 +3155,16 @@ public static class InstantAction
                     // GameFiber.Sleep(1000);
                     Driver.IsRagdoll = false;
                     Driver.BlockPermanentEvents = false;
-                    //Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+
+                    if (rnd.Next(1, 11) >= 11)
+                    {
+                        GiveGunAndAttackPlayer(Driver);
+                    }
+                    else
+                    {
+                        Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+                    }
+                    
                 }
                 GameFiber.Sleep(5000);
 
@@ -2969,6 +3179,119 @@ public static class InstantAction
             PlayerBreakingIntoCar = false;
             WriteToLog("UnlockCarDoor", e.Message);
         }
+    }
+    public static bool GetCarjackingAnimations(Vehicle TargetVehicle,Vector3 DriverSeatCoordinates, GTAWeapon MyGun, ref string Dictionary,ref string PerpAnimation,ref string VictimAnimation)
+    {
+        if (MyGun == null || (!MyGun.IsTwoHanded && !MyGun.IsOneHanded))
+            return false;
+
+        int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
+        VehicleLookup.VehicleClass VehicleClass = (VehicleLookup.VehicleClass)intVehicleClass;
+
+
+        if (!TargetVehicle.Doors[0].IsValid())
+            return false;
+
+        float? GroundZ = World.GetGroundZ(DriverSeatCoordinates, true, false);
+        if (GroundZ == null)
+            GroundZ = 0f;
+        float DriverDistanceToGround = DriverSeatCoordinates.Z - (float)GroundZ;
+        WriteToLog("GetCarjackingAnimations", string.Format("VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
+        if (VehicleClass == VehicleLookup.VehicleClass.Vans)
+        {
+            if (MyGun.IsTwoHanded)
+            {
+                Dictionary = "veh@jacking@2h";
+                PerpAnimation = "van_perp_ds_a";
+                VictimAnimation = "van_victim_ds_a";
+            }
+            else if (MyGun.IsOneHanded)
+            {
+                Dictionary = "veh@jacking@1h";
+                PerpAnimation = "van_perp_ds_a";
+                VictimAnimation = "van_victim_ds_a";
+            }
+        }
+        else if (VehicleClass == VehicleLookup.VehicleClass.Helicopters)
+        {
+            if (MyGun.IsTwoHanded)
+            {
+                Dictionary = "veh@jacking@2h";
+                PerpAnimation = "heli_perp_ds_a";
+                VictimAnimation = "heli_victim_ds_a";
+            }
+            else if (MyGun.IsOneHanded)
+            {
+                Dictionary = "veh@jacking@1h";
+                PerpAnimation = "heli_perp_ds_a";
+                VictimAnimation = "heli_victim_ds_a";
+            }
+        }
+        else if (VehicleClass == VehicleLookup.VehicleClass.Commercial)
+        {
+            if (MyGun.IsTwoHanded)
+            {
+                Dictionary = "veh@jacking@2h";
+                PerpAnimation = "truck_perp_ds_a";
+                VictimAnimation = "truck_victim_ds_a";
+            }
+            else if (MyGun.IsOneHanded)
+            {
+                Dictionary = "veh@jacking@1h";
+                PerpAnimation = "truck_perp_ds_a";
+                VictimAnimation = "truck_victim_ds_a";
+            }
+        }
+        else if (DriverDistanceToGround > 1.5f)
+        {
+            if (MyGun.IsTwoHanded)
+            {
+                Dictionary = "veh@jacking@2h";
+                PerpAnimation = "truck_perp_ds_a";
+                VictimAnimation = "truck_victim_ds_a";
+            }
+            else if (MyGun.IsOneHanded)
+            {
+                Dictionary = "veh@jacking@1h";
+                PerpAnimation = "truck_perp_ds_a";
+                VictimAnimation = "truck_victim_ds_a";
+            }
+        }
+        else if (DriverDistanceToGround <0.5f)
+        {
+            if (MyGun.IsTwoHanded)
+            {
+                Dictionary = "veh@jacking@2h";
+                PerpAnimation = "low_perp_ds_a";
+                VictimAnimation = "low_victim_ds_a";
+            }
+            else if (MyGun.IsOneHanded)
+            {
+                Dictionary = "veh@jacking@1h";
+                PerpAnimation = "low_perp_ds_a";
+                VictimAnimation = "low_victim_ds_a";
+            }
+        }
+        else if(VehicleClass == VehicleLookup.VehicleClass.Motorcycles)
+        {
+            return false;
+        }
+        else
+        {
+            if (MyGun.IsTwoHanded)
+            {
+                Dictionary = "veh@jacking@2h";
+                PerpAnimation = "std_perp_ds_a";
+                VictimAnimation = "std_victim_ds_a";
+            }
+            else if (MyGun.IsOneHanded)
+            {
+                Dictionary = "veh@jacking@1h";
+                PerpAnimation = "std_perp_ds";
+                VictimAnimation = "std_victim_ds";
+            }
+        }
+        return true;
     }
 
     //License Plate Changing
@@ -3034,6 +3357,9 @@ public static class InstantAction
 
                 if (!Moved)
                     return;
+
+                Game.LocalPlayer.Character.Position = ChangeSpot;
+                Game.LocalPlayer.Character.Heading = VehicleToChange.VehicleEnt.Heading;
 
                 PlayerChangingPlate = true;
 
@@ -3221,6 +3547,8 @@ public static class InstantAction
             return Vector3.Zero;
     }
 
+
+
     //Respawn
     public static void BribePolice(int Amount)
     {
@@ -3243,8 +3571,10 @@ public static class InstantAction
         if (Game.LocalPlayer.Character.LastVehicle.Exists())
             NativeFunction.CallByName<bool>("SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER", Game.LocalPlayer.Character.LastVehicle, true);
         ResetPlayer(true, false);
-
-        PoliceScanningSystem.UntaskAll();
+        LastWantedCenterPosition = Vector3.Zero;
+        if (LastWantedCenterBlip.Exists())
+            LastWantedCenterBlip.Delete();
+        PoliceScanningSystem.UntaskAll(true);
 
     }
     public static void RespawnAtHospital()
@@ -3284,7 +3614,7 @@ public static class InstantAction
         UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
-        PoliceScanningSystem.UntaskAll();
+        PoliceScanningSystem.UntaskAll(true);
     }
     public static void Surrender()
     {
@@ -3307,7 +3637,7 @@ public static class InstantAction
         Game.FadeScreenIn(2500);
         Game.DisplayNotification("You are out on bail, try to stay out of trouble");
         Game.LocalPlayer.Character.GiveCash(MaxWantedLastLife * -750, Settings.MainCharacterToAlias);
-        PoliceScanningSystem.UntaskAll();
+        PoliceScanningSystem.UntaskAll(true);
     }
     internal static void KillPlayer()
     {
@@ -3370,6 +3700,7 @@ public static class InstantAction
                 //MaxWantedLastLife = 0;
                 Game.LocalPlayer.WantedLevel = MaxWantedLastLife;
                 ++TimesDied;
+                DispatchAudioSystem.AbortAllAudio();
             }
             else
             {
@@ -3385,6 +3716,14 @@ public static class InstantAction
                 MaxWantedLastLife = 0;
                 ResetPoliceStats();
                 DispatchAudioSystem.ResetReportedItems();
+
+
+
+                LastWantedCenterPosition = Vector3.Zero;
+                if (LastWantedCenterBlip.Exists())
+                    LastWantedCenterBlip.Delete();
+
+
             }
             Game.TimeScale = 1f;
             DiedInVehicle = false;
@@ -3582,7 +3921,18 @@ public static class InstantAction
             Game.TimeScale = 1f;
             Game.LocalPlayer.WantedLevel = 0;
             NativeFunction.Natives.xB4EDDC19532BFB85();
+
+
+
             Game.HandleRespawn();
+
+
+            NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
+            NativeFunction.Natives.xC0AA53F866B3134D();
+
+
+
+            LastWantedCenterPosition = Vector3.Zero;
             isDead = false;
             isBusted = false;
             CurrentPoliceState = PoliceState.Normal;
@@ -4699,7 +5049,7 @@ public static class InstantAction
     {
         if (!Logging)
             return;
-        //if (ProcedureString != "")
+        //if (ProcedureString != "GetCarjackingAnimations")
         //    return;
         StringBuilder sb = new StringBuilder();
         sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog + System.Environment.NewLine);
@@ -4748,13 +5098,55 @@ public static class InstantAction
             }
         }
     }
+    private static void AddUpdateLastWantedBlip(Vector3 Position)
+    {
+        if(Position == Vector3.Zero)
+        {
+            if(LastWantedCenterBlip.Exists())
+                LastWantedCenterBlip.Delete();
+            return;
+        }
+        if (!LastWantedCenterBlip.Exists())
+        {
+            LastWantedCenterBlip = new Blip(LastWantedCenterPosition, 250f);
+            LastWantedCenterBlip.Name = "Last Wanted Center Position";
+            LastWantedCenterBlip.Color = Color.Yellow;
+            LastWantedCenterBlip.Alpha = 0.5f;
+
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastWantedCenterBlip.Handle, true);
+            CreatedBlips.Add(LastWantedCenterBlip);
+        }
+        if (LastWantedCenterBlip.Exists())
+            LastWantedCenterBlip.Position = Position;
+    }
+    private static void AddUpdateCurrentWantedBlip(Vector3 Position)
+    {
+        if (Position == Vector3.Zero)
+        {
+            if(CurrentWantedCenterBlip.Exists())
+                CurrentWantedCenterBlip.Delete();
+            return;
+        }
+        if (!CurrentWantedCenterBlip.Exists())
+        {
+            CurrentWantedCenterBlip = new Blip(Position, 100f);
+            CurrentWantedCenterBlip.Name = "Current Wanted Center Position";
+            CurrentWantedCenterBlip.Color = Color.Red;
+            CurrentWantedCenterBlip.Alpha = 0.5f;
+
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)CurrentWantedCenterBlip.Handle, true);
+            CreatedBlips.Add(CurrentWantedCenterBlip);
+        }
+        if (CurrentWantedCenterBlip.Exists())
+            CurrentWantedCenterBlip.Position = Position;
+    }
 
     //Debug
     private static void DebugCopReset()
     {
         CurrentPoliceState = PoliceState.Normal;
         Game.LocalPlayer.WantedLevel = 0;
-        PoliceScanningSystem.UntaskAll();
+        PoliceScanningSystem.UntaskAll(true);
 
 
         foreach (GTACop Cop in PoliceScanningSystem.K9Peds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead && !x.CopPed.IsInHelicopter))
@@ -4804,6 +5196,39 @@ public static class InstantAction
         PoliceScanningSystem.RemoveAllCreatedEntities();
 
 
+
+
+
+        GameFiber.StartNew(delegate
+        {
+            VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass != VehicleLookup.VehicleClass.Utility).PickRandom();
+            Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+            Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
+            PoliceScanningSystem.CreatedEntities.Add(MyCar);
+            PoliceScanningSystem.CreatedEntities.Add(Driver);
+            Driver.WarpIntoVehicle(MyCar, -1);
+            uint GameTimeStarted = Game.GameTime;
+            //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
+            //  GameFiber.Yield();
+
+            WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
+            WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
+
+            // CarJackPedWithWeapon(MyCar, Driver, -1);
+            while(Game.GameTime - GameTimeStarted <= 20000)
+            {
+                //Text(myLookup.VehicleClass.ToString(), 0.5f, 0.5f, 0.75f, true, Color.Black);
+                GameFiber.Yield();
+            }
+
+            if (Driver.Exists())
+                Driver.Delete();
+
+            if (MyCar.Exists())
+                MyCar.Delete();
+
+        });
+
         //GameFiber.StartNew(delegate
         //{
         //    VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass == VehicleLookup.VehicleClass.Coupe || x.VehicleClass == VehicleLookup.VehicleClass.Sedan || x.VehicleClass == VehicleLookup.VehicleClass.Sports || x.VehicleClass == VehicleLookup.VehicleClass.SUV || x.VehicleClass == VehicleLookup.VehicleClass.Compact).PickRandom();
@@ -4834,12 +5259,19 @@ public static class InstantAction
 
 
 
-        Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-        Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-        if (ClosestVehicle != null)
-        {
-            ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
-        }
+        //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+        //if (ClosestVehicle != null)
+        //{
+        //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
+        //}
+
+
+
+
+
+
+        //DispatchAudioSystem.AbortAllAudio();
 
 
 
@@ -4847,120 +5279,113 @@ public static class InstantAction
 
 
 
+        //Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+        //Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
+        //Driver.BlockPermanentEvents = true;
+
+        //Driver.WarpIntoVehicle(MyCar, -1);
+
+        ////uint GameTimeStarted = Game.GameTime;
+        ////while (Game.GameTime - GameTimeStarted <= 10000)
+        ////{
+        ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
+        ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        ////    GameFiber.Yield();
+        ////}
+        //GameFiber.Sleep(3000);
+
+        //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
+        //Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+
+
+
+        //uint GameTimeStarted = Game.GameTime;
+        ////while (Game.GameTime - GameTimeStarted <= 10000)
+        ////{
+        ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
+        ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        ////    GameFiber.Yield();
+        ////}
+
+
+
+        //Driver.Position = DriverSeatCoordinates;
+
+        //GameFiber.Sleep(3000);
+
+        //Driver.WarpIntoVehicle(MyCar, -1);
+
+        //GameFiber.Sleep(3000);
+
+        ////GameFiber.Sleep(3000);
+
+        //if (MyCar.Exists())
+        //    MyCar.Delete();
+
+        //if (Driver.Exists())
+        //    Driver.Delete();
+
+
+
+        //foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
+        //{
+
+        //    WriteToLog("WeaponInventoryChanged", string.Format("Dropped Gun {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
+
+        //}
+
+
+
+
+        //List<string> Bones = new List<string> { "SKEL_ROOT", "skel_root", "SKEL_Pelvis", "SKEL_PELVIS", "skel_pelvis", "SKEL_Spine_Root", "SKEL_SPINE_ROOT", "skel_spine_root", "SKEL_Spine0","SKEL_SPINE0","skel_spine0" };
+
+
+        //foreach(string Stuff in Bones)
+        //{
+        //    if(Game.LocalPlayer.Character.HasBone(Stuff))
+        //    {
+        //        WriteToLog("Bones", string.Format("I have bone: {0}", Stuff));
+        //    }
+        //}
+
+
+        //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0);
+        //Vector3 MyPosition = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Game.LocalPlayer.Character, BoneIndexSpine, 0f, 0f, 0f);
+        // WriteToLog("Bones", string.Format("Spine Bone?: {0}", MyPosition));
+
+        //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+        //if (ClosestVehicle != null)
+        //{
+        //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
+
+
+
+
+        //    //Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
+        //    //Vector3 CarPosition = ClosestVehicle.Position;
+        //    //float DesiredHeading = ClosestVehicle.Heading - 90f;
+        //    ////NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Game.LocalPlayer.Character, GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, DesiredHeading, 3000);
+
+        //    //uint GameTimeStarted = Game.GameTime;
+
+        //    //while (Game.GameTime - GameTimeStarted <= 10000)
+        //    //{
+        //    //    Rage.Debug.DrawArrowDebug(new Vector3(GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+        //    //    GameFiber.Yield();
+        //    //}
+
+
+        //   // GameFiber.Sleep(3000);
+
+        //}
 
 
 
 
 
 
-
-            //Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
-            //Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
-            //Driver.BlockPermanentEvents = true;
-
-            //Driver.WarpIntoVehicle(MyCar, -1);
-
-            ////uint GameTimeStarted = Game.GameTime;
-            ////while (Game.GameTime - GameTimeStarted <= 10000)
-            ////{
-            ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
-            ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-            ////    GameFiber.Yield();
-            ////}
-            //GameFiber.Sleep(3000);
-
-            //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
-            //Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
-
-
-
-            //uint GameTimeStarted = Game.GameTime;
-            ////while (Game.GameTime - GameTimeStarted <= 10000)
-            ////{
-            ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
-            ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-            ////    GameFiber.Yield();
-            ////}
-
-
-
-            //Driver.Position = DriverSeatCoordinates;
-
-            //GameFiber.Sleep(3000);
-
-            //Driver.WarpIntoVehicle(MyCar, -1);
-
-            //GameFiber.Sleep(3000);
-
-            ////GameFiber.Sleep(3000);
-
-            //if (MyCar.Exists())
-            //    MyCar.Delete();
-
-            //if (Driver.Exists())
-            //    Driver.Delete();
-
-
-
-            //foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
-            //{
-
-            //    WriteToLog("WeaponInventoryChanged", string.Format("Dropped Gun {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
-
-            //}
-
-
-
-
-            //List<string> Bones = new List<string> { "SKEL_ROOT", "skel_root", "SKEL_Pelvis", "SKEL_PELVIS", "skel_pelvis", "SKEL_Spine_Root", "SKEL_SPINE_ROOT", "skel_spine_root", "SKEL_Spine0","SKEL_SPINE0","skel_spine0" };
-
-
-            //foreach(string Stuff in Bones)
-            //{
-            //    if(Game.LocalPlayer.Character.HasBone(Stuff))
-            //    {
-            //        WriteToLog("Bones", string.Format("I have bone: {0}", Stuff));
-            //    }
-            //}
-
-
-            //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0);
-            //Vector3 MyPosition = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Game.LocalPlayer.Character, BoneIndexSpine, 0f, 0f, 0f);
-            // WriteToLog("Bones", string.Format("Spine Bone?: {0}", MyPosition));
-
-            //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-            //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-            //if (ClosestVehicle != null)
-            //{
-            //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
-
-
-
-
-            //    //Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
-            //    //Vector3 CarPosition = ClosestVehicle.Position;
-            //    //float DesiredHeading = ClosestVehicle.Heading - 90f;
-            //    ////NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Game.LocalPlayer.Character, GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, DesiredHeading, 3000);
-
-            //    //uint GameTimeStarted = Game.GameTime;
-
-            //    //while (Game.GameTime - GameTimeStarted <= 10000)
-            //    //{
-            //    //    Rage.Debug.DrawArrowDebug(new Vector3(GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
-            //    //    GameFiber.Yield();
-            //    //}
-
-
-            //   // GameFiber.Sleep(3000);
-
-            //}
-
-
-
-
-
-
-        }
+    }
     private static void DebugNonInvincible()
     {
         Game.LocalPlayer.Character.IsInvincible = false;
@@ -4975,6 +5400,19 @@ public static class InstantAction
     }
     private static void DebugNumpad5()
     {
+
+
+
+        Vector3 CurrentWantedLevelPosition = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+        float DistanceToPlayer = Game.LocalPlayer.Character.DistanceTo2D(CurrentWantedLevelPosition);
+        float DistanceToPlacePlayerLastSeen = Game.LocalPlayer.Character.DistanceTo2D(PoliceScanningSystem.PlacePlayerLastSeen);
+        WriteToLog("WantedLevel", string.Format("CenterPosition: {0},DistanceToPlayer: {1},PlacePlayerLastSeen: {2},DistanceToPlacePlayerLastSeen: {3}", CurrentWantedLevelPosition,DistanceToPlayer,PoliceScanningSystem.PlacePlayerLastSeen, DistanceToPlacePlayerLastSeen));
+
+        WriteToLog("WantedLevel2", string.Format("LastWantedCenterPosition: {0}", LastWantedCenterPosition));
+
+       // DispatchAudioSystem.ReportSuspiciousActivity();
+
+
 
         if (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
             return;
@@ -5127,7 +5565,10 @@ public static class InstantAction
         }
         if (Game.IsKeyDown(Keys.NumPad2))
         {
-            RemoveNearestLicensePlate();
+            if (Game.LocalPlayer.WantedLevel > 0)
+                Game.LocalPlayer.WantedLevel = 0;
+            else
+                Game.LocalPlayer.WantedLevel = 2;
 
             //ChangeLicensePlate();
         }
@@ -5173,8 +5614,8 @@ public static class InstantAction
         }
 
 
-
-        if(Settings.Debug)
+        if (Settings.Debug)
+        {
             foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
             {
                 if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
@@ -5192,8 +5633,12 @@ public static class InstantAction
                 else
                     Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
             }
-
-
+            if (Game.LocalPlayer.WantedLevel > 0)
+            {
+                Vector3 CurrentWantedLevelPosition = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                Rage.Debug.DrawArrowDebug(new Vector3(CurrentWantedLevelPosition.X, CurrentWantedLevelPosition.Y, CurrentWantedLevelPosition.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Blue);
+            }
+        }
 
     }
 

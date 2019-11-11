@@ -26,7 +26,10 @@ namespace Instant_Action_RAGE.Systems
             {
                 while (IsRunning)
                 {
-                    NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false); // No Radar or police blips
+                    if(Settings.Debug)
+                        NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
+                    else
+                        NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false); // No police blips
 
 
                     NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);

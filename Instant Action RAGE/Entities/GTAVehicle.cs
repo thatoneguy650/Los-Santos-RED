@@ -27,6 +27,8 @@ public class GTAVehicle
     public bool IsPlayersVehicle = false;
     public bool IsStolen = false;
     public bool QuedeReportedStolen = false;
+    public bool WasSpottedAbandoned = false;
+    public bool CopsCanSee = false;
     public Color DescriptionColor;
     public GTALicensePlate CarPlate;
     public GTALicensePlate OriginalLicensePlate;

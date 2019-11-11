@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
 using static ScannerAudio;
 using static VehicleLookup;
 using static Zones;
@@ -21,6 +23,9 @@ internal static class DispatchAudioSystem
     private static AudioFileReader audioFile;
     private static Random rnd;
     private static bool ExecutingQueue = false;
+    private static GameFiber QueueFiber;
+    private static bool AudioPlaying = false;
+    private static SoundPlayer MySoundPlayer;
 
     public static bool ReportedOfficerDown { get; set; } = false;
     public static bool ReportedShotsFired { get; set; } = false;
@@ -58,6 +63,7 @@ internal static class DispatchAudioSystem
         ReportSuspiciousActivity = 17,
         ReportSuspiciousVehicle = 18,
         ReportGrandTheftAuto = 19,
+        ReportSuspectSpotted = 20,
     }
     static DispatchAudioSystem()
     {
@@ -159,30 +165,30 @@ internal static class DispatchAudioSystem
         LettersAndNumbersLookup.Add(new DispatchLettersNumber('9', lp_numbers.Niner2.FileName));
         LettersAndNumbersLookup.Add(new DispatchLettersNumber('0', lp_numbers.Zero2.FileName));
 
-        ColorLookups.Add(new ColorLookup(colour.COLORRED01.FileName, Color.Red));
-        ColorLookups.Add(new ColorLookup(colour.COLORAQUA01.FileName, Color.Aqua));
-        ColorLookups.Add(new ColorLookup(colour.COLORBEIGE01.FileName, Color.Beige));
-        ColorLookups.Add(new ColorLookup(colour.COLORBLACK01.FileName, Color.Black));
-        ColorLookups.Add(new ColorLookup(colour.COLORBLUE01.FileName, Color.Blue));
-        ColorLookups.Add(new ColorLookup(colour.COLORBROWN01.FileName, Color.Brown));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKBLUE01.FileName, Color.DarkBlue));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKGREEN01.FileName, Color.DarkGreen));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKGREY01.FileName, Color.DarkGray));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKORANGE01.FileName, Color.DarkOrange));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKRED01.FileName, Color.DarkRed));
-        ColorLookups.Add(new ColorLookup(colour.COLORGOLD01.FileName, Color.Gold));
-        ColorLookups.Add(new ColorLookup(colour.COLORGREEN01.FileName, Color.Green));
-        ColorLookups.Add(new ColorLookup(colour.COLORGREY01.FileName, Color.Gray));
-        ColorLookups.Add(new ColorLookup(colour.COLORGREY02.FileName, Color.Gray));
-        ColorLookups.Add(new ColorLookup(colour.COLORLIGHTBLUE01.FileName, Color.LightBlue));
-        ColorLookups.Add(new ColorLookup(colour.COLORMAROON01.FileName, Color.Maroon));
-        ColorLookups.Add(new ColorLookup(colour.COLORORANGE01.FileName, Color.Orange));
-        ColorLookups.Add(new ColorLookup(colour.COLORPINK01.FileName, Color.Pink));
-        ColorLookups.Add(new ColorLookup(colour.COLORPURPLE01.FileName, Color.Purple));
-        ColorLookups.Add(new ColorLookup(colour.COLORRED01.FileName, Color.Red));
-        ColorLookups.Add(new ColorLookup(colour.COLORSILVER01.FileName, Color.Silver));
-        ColorLookups.Add(new ColorLookup(colour.COLORWHITE01.FileName, Color.White));
-        ColorLookups.Add(new ColorLookup(colour.COLORYELLOW01.FileName, Color.Yellow));
+        ColorLookups.Add(new ColorLookup(colour.COLORRED01.FileName, System.Drawing.Color.Red));
+        ColorLookups.Add(new ColorLookup(colour.COLORAQUA01.FileName, System.Drawing.Color.Aqua));
+        ColorLookups.Add(new ColorLookup(colour.COLORBEIGE01.FileName, System.Drawing.Color.Beige));
+        ColorLookups.Add(new ColorLookup(colour.COLORBLACK01.FileName, System.Drawing.Color.Black));
+        ColorLookups.Add(new ColorLookup(colour.COLORBLUE01.FileName, System.Drawing.Color.Blue));
+        ColorLookups.Add(new ColorLookup(colour.COLORBROWN01.FileName, System.Drawing.Color.Brown));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKBLUE01.FileName, System.Drawing.Color.DarkBlue));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKGREEN01.FileName, System.Drawing.Color.DarkGreen));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKGREY01.FileName, System.Drawing.Color.DarkGray));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKORANGE01.FileName, System.Drawing.Color.DarkOrange));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKRED01.FileName, System.Drawing.Color.DarkRed));
+        ColorLookups.Add(new ColorLookup(colour.COLORGOLD01.FileName, System.Drawing.Color.Gold));
+        ColorLookups.Add(new ColorLookup(colour.COLORGREEN01.FileName, System.Drawing.Color.Green));
+        ColorLookups.Add(new ColorLookup(colour.COLORGREY01.FileName, System.Drawing.Color.Gray));
+        ColorLookups.Add(new ColorLookup(colour.COLORGREY02.FileName, System.Drawing.Color.Gray));
+        ColorLookups.Add(new ColorLookup(colour.COLORLIGHTBLUE01.FileName, System.Drawing.Color.LightBlue));
+        ColorLookups.Add(new ColorLookup(colour.COLORMAROON01.FileName, System.Drawing.Color.Maroon));
+        ColorLookups.Add(new ColorLookup(colour.COLORORANGE01.FileName, System.Drawing.Color.Orange));
+        ColorLookups.Add(new ColorLookup(colour.COLORPINK01.FileName, System.Drawing.Color.Pink));
+        ColorLookups.Add(new ColorLookup(colour.COLORPURPLE01.FileName, System.Drawing.Color.Purple));
+        ColorLookups.Add(new ColorLookup(colour.COLORRED01.FileName, System.Drawing.Color.Red));
+        ColorLookups.Add(new ColorLookup(colour.COLORSILVER01.FileName, System.Drawing.Color.Silver));
+        ColorLookups.Add(new ColorLookup(colour.COLORWHITE01.FileName, System.Drawing.Color.White));
+        ColorLookups.Add(new ColorLookup(colour.COLORYELLOW01.FileName, System.Drawing.Color.Yellow));
 
 
 
@@ -440,6 +446,61 @@ internal static class DispatchAudioSystem
             }
         });
     }
+    private static void PlayAudioNEW(string AudioFile)
+    {
+        try
+        {
+            if (AudioFile == "")
+                return;
+            string FullPath = String.Format("Plugins\\InstantAction\\scanner\\{0}", AudioFile);
+           // SoundPlayer MySoundPlayer = new SoundPlayer(FullPath);
+            AudioPlaying = true;
+
+
+
+
+            MediaPlayer Sound2 = new MediaPlayer();
+            Sound2.MediaEnded += OnPlaybackStopped2;
+            Sound2.Open(new Uri(FullPath));
+            Sound2.Play();
+            
+
+            //QueueFiber = GameFiber.StartNew(delegate
+            //{
+            //    MySoundPlayer.PlaySync();
+            //    MySoundPlayer.Dispose();
+            //    AudioPlaying = false;
+            //}, "AudioPlayFiber");
+
+        }
+        catch (Exception e)
+        {
+            Game.Console.Print(e.Message);
+        }
+    }
+
+    private static void OnPlaybackStopped2(object sender, EventArgs e)
+    {
+        AudioPlaying = false;
+    }
+
+    private static void PlayAudioListNEW(List<String> SoundsToPlay, bool CheckSight)
+    {
+        if (CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
+            return;
+
+        QueueFiber = GameFiber.StartNew(delegate
+        {
+            while (AudioPlaying)
+                GameFiber.Yield();
+            foreach (String audioname in SoundsToPlay)
+            {
+                PlayAudio(audioname);
+                while (AudioPlaying)
+                    GameFiber.Yield();
+            }
+        }, "AudioQueue2");
+    }
     private static void PlayAudio(String _Audio)
     {
         try
@@ -470,7 +531,7 @@ internal static class DispatchAudioSystem
         if (CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
             return;
 
-        GameFiber.StartNew(delegate
+        QueueFiber = GameFiber.StartNew(delegate
         {
             while (outputDevice != null)
                 GameFiber.Yield();
@@ -480,7 +541,7 @@ internal static class DispatchAudioSystem
                 while (outputDevice != null)
                     GameFiber.Yield();
             }
-        });
+        },"AudioQueue");
     }
     private static void OnPlaybackStopped(object sender, StoppedEventArgs args)
     {
@@ -558,11 +619,6 @@ internal static class DispatchAudioSystem
                 }
 
 
-                foreach(DispatchQueueItem Item in DispatchQueue)
-                {
-
-                }
-
                 while (DispatchQueue.Count > 0)
                 {
                     DispatchQueueItem Item = DispatchQueue[0];
@@ -605,13 +661,33 @@ internal static class DispatchAudioSystem
                     else if (Item.Type == ReportDispatch.ReportSuspiciousVehicle)
                         ReportSuspiciousVehicle(Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportGrandTheftAuto)
-                        ReportGrandTheftAuto();     
+                        ReportGrandTheftAuto();
+                    else if (Item.Type == ReportDispatch.ReportSuspectSpotted)
+                        ReportSuspectSpotted();
                     else
                         ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
                 }
                 ExecutingQueue = false;
             });
+        }
+    }
+    public static void AbortAllAudio()
+    {
+        if(QueueFiber != null)
+            QueueFiber.Abort();
+        if (outputDevice == null)
+        {
+            DispatchQueue.Clear();
+        }
+        else
+        {
+            outputDevice.Stop();
+            DispatchQueue.Clear();
+
+
+            PlayAudio(ScannerAudio.AudioBeeps.AudioEnd());
+
         }
     }
     private static void ReportGenericStart(ref List<string> myList)
@@ -939,7 +1015,7 @@ internal static class DispatchAudioSystem
             return;
 
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ref ScannerList);
+        ScannerList.Add(ScannerAudio.AudioBeeps.AudioStart());
 
         int Num = rnd.Next(1, 5);
         bool near = false;
@@ -953,16 +1029,16 @@ internal static class DispatchAudioSystem
         }
         else if (Num == 3)
         {
-            ScannerList.Add(ScannerAudio.suspect_last_seen.TargetLastReported.FileName);
+            ScannerList.Add(ScannerAudio.we_have.OfficersReport());
+            ScannerList.Add(ScannerAudio.suspect_last_seen.TargetLastSeen.FileName);
             near = true;
         }
         else
         {
+            ScannerList.Add(ScannerAudio.we_have.OfficersReport());
             ScannerList.Add(ScannerAudio.suspect_last_seen.TargetLastSeen.FileName);
             near = true;
         }
-
-
         ReportGenericEnd(ScannerList, near);
         PlayAudioList(ScannerList, false);
     }
@@ -1243,7 +1319,8 @@ internal static class DispatchAudioSystem
         }
 
         AddVehicleDescription(myCar, ref ScannerList, false);
-        ScannerList.Add(ScannerAudio.proceed_with_caution.Approachwithcaution.FileName);
+        if(myCar.IsStolen)
+            ScannerList.Add(ScannerAudio.proceed_with_caution.Approachwithcaution.FileName);
         ReportGenericEnd(ScannerList, true);
 
         PlayAudioList(ScannerList, false);
@@ -1281,6 +1358,41 @@ internal static class DispatchAudioSystem
         }
 
         ReportGenericEnd(ScannerList, false);
+        PlayAudioList(ScannerList, false);
+    }
+    public static void ReportSuspectSpotted()
+    {
+        if (InstantAction.isBusted || InstantAction.isDead)
+            return;
+
+        List<string> ScannerList = new List<string>();
+        // ReportGenericStart(ScannerList);
+
+        ScannerList.Add(ScannerAudio.AudioBeeps.AudioStart());
+
+        int Num = rnd.Next(1, 5);
+        if (Num == 1)
+        {
+            ScannerList.Add(ScannerAudio.suspect_last_seen.SuspectSpotted.FileName);
+        }
+        else if (Num == 2)
+        {
+            ScannerList.Add(ScannerAudio.suspect_last_seen.TargetSpotted.FileName);
+        }
+        else if (Num == 3)
+        {
+            ScannerList.Add(ScannerAudio.suspect_last_seen.SuspectSpotted.FileName);
+        }
+        else if (Num == 4)
+        {
+            ScannerList.Add(ScannerAudio.suspect_last_seen.TargetSpotted.FileName);
+        }
+        else
+        {
+            ScannerList.Add(ScannerAudio.suspect_last_seen.SuspectSpotted.FileName);
+        }
+
+        ReportGenericEnd(ScannerList, true);
         PlayAudioList(ScannerList, false);
     }
     public static void ResetReportedItems()
@@ -1497,7 +1609,7 @@ internal static class DispatchAudioSystem
     public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList,bool IncludeLicensePlate)
     {
         VehicleInfo VehicleInformation = InstantAction.GetVehicleInfo(VehicleDescription);
-        Color BaseColor = GetBaseColor(VehicleDescription.DescriptionColor);
+        System.Drawing.Color BaseColor = GetBaseColor(VehicleDescription.DescriptionColor);
         ColorLookup LookupColor = ColorLookups.Where(x => x.BaseColor == BaseColor).PickRandom();
 
 
@@ -1561,33 +1673,33 @@ internal static class DispatchAudioSystem
         ScannerList.Add(ScannerAudio.crime_stolen_vehicle.Apossiblestolenvehicle.FileName);
 
     }
-    public static Color GetBaseColor(Color PrimaryColor)
+    public static System.Drawing.Color GetBaseColor(System.Drawing.Color PrimaryColor)
     {
-        List<Color> BaseColorList = new List<Color>();
-        BaseColorList.Add(Color.Red);
-        BaseColorList.Add(Color.Aqua);
-        BaseColorList.Add(Color.Beige);
-        BaseColorList.Add(Color.Black);
-        BaseColorList.Add(Color.Blue);
-        BaseColorList.Add(Color.Brown);
-        BaseColorList.Add(Color.DarkBlue);
-        BaseColorList.Add(Color.DarkGreen);
-        BaseColorList.Add(Color.DarkGray);
-        BaseColorList.Add(Color.DarkOrange);
-        BaseColorList.Add(Color.DarkRed);
-        BaseColorList.Add(Color.Gold);
-        BaseColorList.Add(Color.Green);
-        BaseColorList.Add(Color.Gray);
-        BaseColorList.Add(Color.LightBlue);
-        BaseColorList.Add(Color.Maroon);
-        BaseColorList.Add(Color.Orange);
-        BaseColorList.Add(Color.Pink);
-        BaseColorList.Add(Color.Purple);
-        BaseColorList.Add(Color.Silver);
-        BaseColorList.Add(Color.White);
-        BaseColorList.Add(Color.Yellow);
+        List<System.Drawing.Color> BaseColorList = new List<System.Drawing.Color>();
+        BaseColorList.Add(System.Drawing.Color.Red);
+        BaseColorList.Add(System.Drawing.Color.Aqua);
+        BaseColorList.Add(System.Drawing.Color.Beige);
+        BaseColorList.Add(System.Drawing.Color.Black);
+        BaseColorList.Add(System.Drawing.Color.Blue);
+        BaseColorList.Add(System.Drawing.Color.Brown);
+        BaseColorList.Add(System.Drawing.Color.DarkBlue);
+        BaseColorList.Add(System.Drawing.Color.DarkGreen);
+        BaseColorList.Add(System.Drawing.Color.DarkGray);
+        BaseColorList.Add(System.Drawing.Color.DarkOrange);
+        BaseColorList.Add(System.Drawing.Color.DarkRed);
+        BaseColorList.Add(System.Drawing.Color.Gold);
+        BaseColorList.Add(System.Drawing.Color.Green);
+        BaseColorList.Add(System.Drawing.Color.Gray);
+        BaseColorList.Add(System.Drawing.Color.LightBlue);
+        BaseColorList.Add(System.Drawing.Color.Maroon);
+        BaseColorList.Add(System.Drawing.Color.Orange);
+        BaseColorList.Add(System.Drawing.Color.Pink);
+        BaseColorList.Add(System.Drawing.Color.Purple);
+        BaseColorList.Add(System.Drawing.Color.Silver);
+        BaseColorList.Add(System.Drawing.Color.White);
+        BaseColorList.Add(System.Drawing.Color.Yellow);
 
-        Color MyColor = PrimaryColor;
+        System.Drawing.Color MyColor = PrimaryColor;
 
         int Index = Extensions.closestColor2(BaseColorList, MyColor);
 
@@ -1724,53 +1836,53 @@ internal static class DispatchAudioSystem
     }
     public static string GetVehicleClassScannerFile(VehicleLookup.VehicleClass myVehicleClass)
     {
-        if (myVehicleClass == VehicleLookup.VehicleClass.Boat)
+        if (myVehicleClass == VehicleLookup.VehicleClass.Boats)
             return vehicle_category.Boat01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Commercial)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Compact)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Compacts)
             return vehicle_category.Sedan.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Coupe)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Coupes)
             return vehicle_category.Coupe01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Cycle)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Cycles)
             return vehicle_category.Bicycle01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Emergency)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Helicopter)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Helicopters)
             return vehicle_category.Helicopter01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Industrial)
             return vehicle_category.IndustrialVehicle01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Military)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Motorcycle)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Motorcycles)
             return vehicle_category.Motorcycle01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Muscle)
             return vehicle_category.MuscleCar01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.OffRoad)
             return vehicle_category.OffRoad01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Plane)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Planes)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Sedan)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Sedans)
             return vehicle_category.Sedan.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Service)
             return vehicle_category.Service01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Sports)
             return vehicle_category.SportsCar01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.SportsClassic)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.SportsClassics)
             return vehicle_category.Classic01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Super)
             return vehicle_category.PerformanceCar01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.SUV)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.SUVs)
             return vehicle_category.SUV01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Trailer)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Train)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Trains)
             return vehicle_category.Train01.FileName;
         else if (myVehicleClass == VehicleLookup.VehicleClass.Unknown)
             return "";
         else if (myVehicleClass == VehicleLookup.VehicleClass.Utility)
             return vehicle_category.UtilityVehicle01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Van)
+        else if (myVehicleClass == VehicleLookup.VehicleClass.Vans)
             return vehicle_category.Van01.FileName;
         else
             return "";
@@ -1841,10 +1953,10 @@ internal static class DispatchAudioSystem
     }
     public class ColorLookup
     {
-        public Color BaseColor { get; set; }
+        public System.Drawing.Color BaseColor { get; set; }
         public string ScannerFile { get; set; }
 
-        public ColorLookup(string _ScannerFile, Color _BaseColor)
+        public ColorLookup(string _ScannerFile, System.Drawing.Color _BaseColor)
         {
             BaseColor = _BaseColor;
             ScannerFile = _ScannerFile;

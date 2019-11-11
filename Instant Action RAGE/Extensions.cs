@@ -255,6 +255,15 @@ namespace ExtensionsMethods
                 return false;
 
         }
+        public static bool IsInFront(this Entity Target,Entity Source)
+        {
+            float Result = getDotVectorResult(Target, Source);
+            if (Result > 0)
+                return true;
+            else
+                return false;
+
+        }
         public static bool PlayerVehicleIsBehind(this Vehicle myVehicle)
         {
             float Result = getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, myVehicle);

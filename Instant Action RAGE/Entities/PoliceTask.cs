@@ -18,6 +18,8 @@ using System.Threading.Tasks;
             SimpleChase = 4,
             VehicleChase = 5,
             NoTask = 6,
+            SimpleInvestigate = 7,
+        GoToWantedCenter = 8,
     }
 
         public PoliceTask(GTACop _CopToAssign,Task _TaskToAssign)
