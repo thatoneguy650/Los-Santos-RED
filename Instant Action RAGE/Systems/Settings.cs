@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -9,9 +12,6 @@ static class Settings
 {
     public static bool AliasPedAsMainCharacter = true;
     public static string MainCharacterToAlias = "Michael";
-    public static bool RandomizeMoneyOnTakeover = true;
-    public static int RandomizeMoneyLowValue = 500;
-    public static int RandomizeMoneyHighValue = 5000;
 
     public static int UndieLimit = 0;
     public static bool Debug = false;
@@ -19,6 +19,50 @@ static class Settings
     public static Keys SurrenderKey = Keys.E;
     public static Keys DropWeaponKey = Keys.G;
     public static float DispatchAudioVolume = 0.4f;
+
+    public static bool TrafficViolations = true;
+    public static bool TrafficViolationsExemptCode3 = true;
+    public static bool TrafficViolationsSpeeding = true;
+    public static float TrafficViolationsSpeedingOverLimitThreshold = 25f;
+
+    public static bool TrafficViolationsHitPed = true;
+    public static bool TrafficViolationsHitVehicle = true;
+    public static bool TrafficViolationsDrivingAgainstTraffic = true;
+    public static bool TrafficViolationsDrivingOnPavement = true;
+    public static bool TrafficViolationsNotRoadworthy = true;
+
+    public static bool TrafficViolationsUI = true;
+    public static bool TrafficViolationsUIOnlyWhenSpeeding = false;
+    public static float TrafficViolationsUIPositionX = 0.9f;
+    public static float TrafficViolationsUIPositionY = 0.8f;
+    public static float TrafficViolationsUIScale = 0.5f;
+
+    public static bool SpawnPoliceK9 = true;
+    public static bool SpawnRandomPolice = true;
+    public static int SpawnRandomPoliceLimit = 5;
+
+    public static bool IssuePoliceHeavyWeapons = true;
+
+    public static int PoliceKilledSurrenderLimit = 5;
+
+    public static bool OverridePoliceAccuracy = true;
+    public static int PoliceGeneralAccuracy = 10;
+    public static int PoliceTazerAccuracy = 30;
+    public static int PoliceHeavyAccuracy = 10;
+
+    public static bool SpawnNewsChopper = true;
+    public static bool WantedLevelIncreasesOverTime = true;
+
+    public static int PoliceBribeWantedLevelScale = 500;
+    public static int PoliceBailWantedLevelScale = 750;
+    public static int HospitalFee = 5000;
+
+    public static bool PedTakeoverSetRandomMoney = true;
+    public static int PedTakeoverRandomMoneyMin = 500;
+    public static int PedTakeoverRandomMoneyMax = 5000;
+    public static bool DispatchAudio = true;
+    public static bool DispatchAudioOnlyHighPriority = false;
+
     public static string MainCharacterToAliasModelName
     {
         get
@@ -53,41 +97,52 @@ static class Settings
     {
         ReadSettings();
     }
-    public static string PrintSettings()
-    {
-        return "Settings:\n" +
-            //   $"AutoRespawn: {AutoRespawn}\n" +
-            //   $"ReplacePlayerWithPed: {ReplacePlayerWithPed}\n" +
-            //   $"ReplacePlayerWithPedCharacter: {ReplacePlayerWithPedCharacter}\n" +
-             //  $"ReplacePlayerWithPedRandomMoney: {ReplacePlayerWithPedRandomMoney}\n" +
-               $"UndieLimit: {UndieLimit}\n" +
-               $"Debug: {Debug}\n" +
-               $"MenuKey: {MenuKey}\n" +
-               $"DropWeaponKey: {DropWeaponKey}";
-    }
     public static void ReadSettings()
     {
-        if (File.Exists("Plugins\\InstantAction\\InstantAction.xml"))
+        try
         {
-            try
-            {
+            if (File.Exists("Plugins\\InstantAction\\InstantAction.xml"))
+            { 
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load("Plugins\\InstantAction\\InstantAction.xml");
                 XmlElement documentElement = xmlDocument.DocumentElement;
-                MenuKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//MenuKey").InnerText, true);
-               // BetterChasesSurrenderKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//BustKey").InnerText, true);
-                DropWeaponKey = (Keys)Enum.Parse(typeof(Keys), documentElement.SelectSingleNode("//DropWeaponKey").InnerText, true);
-               // AutoRespawn = bool.Parse(documentElement.SelectSingleNode("//AutoRespawn").InnerText);
-               // ReplacePlayerWithPed = bool.Parse(documentElement.SelectSingleNode("//ReplacePlayerWithPed").InnerText);
-               // ReplacePlayerWithPedCharacter = documentElement.SelectSingleNode("//ReplacePlayerWithPedCharacter").InnerText;
-               // ReplacePlayerWithPedRandomMoney = bool.Parse(documentElement.SelectSingleNode("//ReplacePlayerWithPedRandomMoney").InnerText);
-                Debug = bool.Parse(documentElement.SelectSingleNode("//Debug").InnerText);
-                UndieLimit = int.Parse(documentElement.SelectSingleNode("//UndieLimit").InnerText);
+                FieldInfo[] myFields = Type.GetType("Settings", false).GetFields();          
+                foreach(XmlNode myNode in documentElement.ChildNodes)
+                {
+                    FieldInfo MyField = myFields.Where(x => x.Name == myNode.Name).FirstOrDefault();
+                    if (MyField == null)
+                        continue;
+                    if (MyField.FieldType == typeof(bool))
+                    {
+                        MyField.SetValue(null, bool.Parse(myNode.InnerText));
+                    }
+                    else if (MyField.FieldType == typeof(int))
+                    {
+                        MyField.SetValue(null, int.Parse(myNode.InnerText));
+                    }
+                    else if (MyField.FieldType == typeof(float))
+                    {
+                        MyField.SetValue(null, float.Parse(myNode.InnerText));
+                    }
+                    else if (MyField.FieldType == typeof(Keys))
+                    {
+                        MyField.SetValue(null, (Keys)Enum.Parse(typeof(Keys), myNode.InnerText, true));
+                    }
+                    else
+                    {
+                        MyField.SetValue(null, myNode.InnerText);
+                    }
+                }
+
             }
-            catch (Exception e)
+            else
             {
-                WriteToLog("ReadSettings", e.Message.ToString());
+                CreateSettingsFile();
             }
+        }
+        catch (Exception e)
+        {
+            InstantAction.WriteToLog("ReadSettings", e.Message.ToString());
         }
     }
     public static void WriteSettings(String Setting, String Value)
@@ -104,64 +159,30 @@ static class Settings
             }
             else
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                XmlDeclaration xmlDeclaration = xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
-                XmlElement root = xmlDocument.DocumentElement;
-                xmlDocument.InsertBefore(xmlDeclaration, root);
-
-                XmlElement element1 = xmlDocument.CreateElement(string.Empty, "InstantAction", string.Empty);
-                xmlDocument.AppendChild(element1);
-
-                XmlElement MenuKeyElement = xmlDocument.CreateElement(string.Empty, "MenuKey", string.Empty);
-                MenuKeyElement.AppendChild(xmlDocument.CreateTextNode(MenuKey.ToString()));
-                xmlDocument.DocumentElement.AppendChild(MenuKeyElement);
-
-
-                XmlElement DropWeaponKeyElement = xmlDocument.CreateElement(string.Empty, "DropWeaponKey", string.Empty);
-                DropWeaponKeyElement.AppendChild(xmlDocument.CreateTextNode(DropWeaponKey.ToString()));
-                xmlDocument.DocumentElement.AppendChild(DropWeaponKeyElement);
-
-                XmlElement AutoRespawnElement = xmlDocument.CreateElement(string.Empty, "AutoRespawn", string.Empty);
-                //AutoRespawnElement.AppendChild(xmlDocument.CreateTextNode(AutoRespawn.ToString()));
-                xmlDocument.DocumentElement.AppendChild(AutoRespawnElement);
-
-                XmlElement ReplacePlayerWithPedElement = xmlDocument.CreateElement(string.Empty, "ReplacePlayerWithPed", string.Empty);
-                //ReplacePlayerWithPedElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPed.ToString()));
-                xmlDocument.DocumentElement.AppendChild(ReplacePlayerWithPedElement);
-
-                XmlElement ReplacePlayerWithPedCharacterElement = xmlDocument.CreateElement(string.Empty, "ReplacePlayerWithPedCharacter", string.Empty);
-                //ReplacePlayerWithPedCharacterElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPedCharacter.ToString()));
-                xmlDocument.DocumentElement.AppendChild(ReplacePlayerWithPedCharacterElement);
-
-                XmlElement ReplacePlayerWithPedRandomMoneyElement = xmlDocument.CreateElement(string.Empty, "ReplacePlayerWithPedRandomMoney", string.Empty);
-               // ReplacePlayerWithPedRandomMoneyElement.AppendChild(xmlDocument.CreateTextNode(ReplacePlayerWithPedRandomMoney.ToString()));
-                xmlDocument.DocumentElement.AppendChild(ReplacePlayerWithPedRandomMoneyElement);
-
-
-                XmlElement DebugElement = xmlDocument.CreateElement(string.Empty, "Debug", string.Empty);
-                DebugElement.AppendChild(xmlDocument.CreateTextNode(Debug.ToString()));
-                xmlDocument.DocumentElement.AppendChild(DebugElement);
-
-
-                XmlElement UndieLimitElement = xmlDocument.CreateElement(string.Empty, "UndieLimit", string.Empty);
-                UndieLimitElement.AppendChild(xmlDocument.CreateTextNode(UndieLimit.ToString()));
-                xmlDocument.DocumentElement.AppendChild(UndieLimitElement);
-
-                xmlDocument.Save("Plugins\\InstantAction\\InstantAction.xml");
-
+                CreateSettingsFile();
             }
         }
         catch (Exception e2)
         {
-            WriteToLog("WriteSettings", e2.Message);
+            InstantAction.WriteToLog("WriteSettings", e2.Message);
         }
     }
-    private static void WriteToLog(String ProcedureString, String TextToLog)
+    public static void CreateSettingsFile()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog + System.Environment.NewLine);
-        File.AppendAllText("Plugins\\InstantAction\\" + "log.txt", sb.ToString());
-        sb.Clear();
+        XmlDocument xmlDocument = new XmlDocument();
+        XmlDeclaration xmlDeclaration = xmlDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
+        XmlElement root = xmlDocument.DocumentElement;
+        xmlDocument.InsertBefore(xmlDeclaration, root);
+
+        XmlElement element1 = xmlDocument.CreateElement(string.Empty, "InstantAction", string.Empty);
+        xmlDocument.AppendChild(element1);
+        foreach (FieldInfo fi in Type.GetType("Settings", false).GetFields())
+        {
+            XmlElement NewElement = xmlDocument.CreateElement(string.Empty, fi.Name, string.Empty);
+            NewElement.AppendChild(xmlDocument.CreateTextNode(fi.GetValue(null).ToString()));
+            xmlDocument.DocumentElement.AppendChild(NewElement);
+        }
+        xmlDocument.Save("Plugins\\InstantAction\\InstantAction.xml");
     }
 }
 

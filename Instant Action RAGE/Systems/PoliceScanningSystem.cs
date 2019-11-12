@@ -55,7 +55,6 @@ namespace Instant_Action_RAGE.Systems
         public static float ScanningRange { get; private set; }
         public static float InnocentScanningRange { get; private set; }
         public static bool InnocentsNear { get; private set; }
-        public static bool SpawnRandomCops { get; set; } = true;
         public static bool Enabled { get; set; } = true;
         public static bool PlayerHurtPolice { get; set; } = false;
         public static bool PlayerKilledPolice { get; set; } = false;
@@ -133,7 +132,6 @@ namespace Instant_Action_RAGE.Systems
                     stopwatch.Start();
                     bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
                     int losInterval = 500;
-
                     if (Game.GameTime > GameTimeInterval + ScanningInterval)
                     {
                         ScanForPolice();                        
@@ -146,23 +144,17 @@ namespace Instant_Action_RAGE.Systems
                         UpdatePlacePlayerLastSeen();
                         LOSInterval = Game.GameTime;
                     }
-                    if (Game.GameTime > K9Interval + 5555) // was 2000
+                    if (Settings.SpawnPoliceK9 && Game.GameTime > K9Interval + 5555) // was 2000
                     {
-                        //if (Game.LocalPlayer.WantedLevel > 0 && !PlayerInVehicle && K9Peds.Count < 3)
-                        //    CreateK9();
-
-                        //MoveK9s();
-                        RemoveFarAwayRandomlySpawnedCops();
-
+                        if (Game.LocalPlayer.WantedLevel > 0 && !PlayerInVehicle && K9Peds.Count < 3)
+                            CreateK9();
+                        MoveK9s();
                         K9Interval = Game.GameTime;
                     }
-
-
-                    if(SpawnRandomCops && Game.GameTime > RandomCopInterval + 2000)
+                    if(Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
                     {
-                        if(Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() < 5)
+                        if(Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
                             SpawnRandomCop(true);
-
                         RemoveFarAwayRandomlySpawnedCops();
                         RandomCopInterval = Game.GameTime;
                     }
@@ -193,7 +185,8 @@ namespace Instant_Action_RAGE.Systems
 
                         GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health);
                         Pedestrian.IsPersistent = false;
-                        Pedestrian.Accuracy = 10;
+                        if (Settings.OverridePoliceAccuracy)
+                            Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
                         Pedestrian.Inventory.Weapons.Clear();
                         IssueCopPistol(myCop);
                         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
@@ -208,7 +201,7 @@ namespace Instant_Action_RAGE.Systems
 
                         CopPeds.Add(myCop);
 
-                        if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
+                        if (Settings.IssuePoliceHeavyWeapons && InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
                             IssueCopHeavyWeapon(myCop);
                     }
                 }
@@ -501,11 +494,11 @@ namespace Instant_Action_RAGE.Systems
 
             Cop.IssuedHeavyWeapon = IssuedHeavy;
             Cop.CopPed.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
-            Cop.CopPed.Accuracy = 10;
+            if (Settings.OverridePoliceAccuracy)
+                Cop.CopPed.Accuracy = Settings.PoliceHeavyAccuracy;
             WeaponVariation MyVariation = IssuedHeavy.PoliceVariations.PickRandom();
             Cop.HeavyVariation = MyVariation;
             InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)IssuedHeavy.Hash, MyVariation);
-            //InstantAction.WriteToLog("ScanForPolice", string.Format("Cop Issued Heavy Weapon: {0}", IssuedHeavy.Name));
         }
         public static Vector3 UpdatePlacePlayerLastSeen()
         {
@@ -519,26 +512,33 @@ namespace Instant_Action_RAGE.Systems
         //K9 Spawning
         private static void CreateK9()
         {
-            GTACop ClosestDriver = CopPeds.Where(x => x.CopPed.IsInAnyVehicle(false) && !x.isInHelicopter && x.CopPed.CurrentVehicle.Driver == x.CopPed && x.CopPed.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-            if (ClosestDriver != null)
+            try
             {
-                Ped Doggo = new Ped("a_c_shepherd", ClosestDriver.CopPed.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
-                CreatedEntities.Add(Doggo);
-                Doggo.BlockPermanentEvents = true;
-                Doggo.IsPersistent = false;
-                Doggo.RelationshipGroup = "COPDOGS";
-                Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
-                Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
-                //Doggo.Health = 50;
+                GTACop ClosestDriver = CopPeds.Where(x => x.CopPed.IsInAnyVehicle(false) && !x.isInHelicopter && x.CopPed.CurrentVehicle.Driver == x.CopPed && x.CopPed.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                if (ClosestDriver != null)
+                {
+                    Ped Doggo = new Ped("a_c_shepherd", ClosestDriver.CopPed.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
+                    CreatedEntities.Add(Doggo);
+                    Doggo.BlockPermanentEvents = true;
+                    Doggo.IsPersistent = false;
+                    Doggo.RelationshipGroup = "COPDOGS";
+                    Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
+                    Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
+                    //Doggo.Health = 50;
 
-                Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
-                Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
+                    Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
+                    Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
 
-                GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health);
-                //PutK9InCar(DoggoCop, ClosestDriver);
-                K9Peds.Add(DoggoCop);
-                //TaskK9(DoggoCop);
-                InstantAction.WriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
+                    GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health);
+                    //PutK9InCar(DoggoCop, ClosestDriver);
+                    K9Peds.Add(DoggoCop);
+                    //TaskK9(DoggoCop);
+                    InstantAction.WriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
+                }
+            }
+            catch(Exception e)
+            {
+                InstantAction.WriteToLog("CreateK9", e.Message);
             }
 
         }
@@ -597,6 +597,7 @@ namespace Instant_Action_RAGE.Systems
                         if (LocalTaskName != "Exit" && Cop.CopPed.IsInAnyVehicle(false) && Cop.CopPed.CurrentVehicle.Speed <= 5 && !Cop.CopPed.CurrentVehicle.HasDriver && _locrangeTo <= 75f)
                         {
                             NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", Cop.CopPed, Cop.CopPed.CurrentVehicle, 16);
+                            Cop.CopPed.FaceEntity(Game.LocalPlayer.Character);
                             //Cop.CopPed.Heading = Game.LocalPlayer.Character.Heading;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Exit";
@@ -742,13 +743,18 @@ namespace Instant_Action_RAGE.Systems
             try
             {
                 Vector3 SpawnLocation;
+                
+                //if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 20f)
+                //    SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.GetOffsetPositionFront(300f).Around2D(100f, 200f));
+                //else
+                //    SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(350f, 450f));
 
-                if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 20f)
-                    SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.GetOffsetPositionFront(300f).Around2D(100f, 200f));
-                else
-                    SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(350f, 450f));
+                SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(750f, 1500f));
 
-                if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 150f)
+                if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 250f)
+                    return;
+
+                if (CopPeds.Any(x => x.CopPed.DistanceTo2D(SpawnLocation) <= 500f))
                     return;
 
                 Zones.Zone ZoneName = Zones.GetZoneName(SpawnLocation);
@@ -792,9 +798,9 @@ namespace Instant_Action_RAGE.Systems
         public static void RemoveFarAwayRandomlySpawnedCops()
         {
             //Zones.Zone CurrentZone = Zones.GetZoneName(Game.LocalPlayer.Character.Position);
-            foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() &&  x.WasRandomSpawn))
+            foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && x.WasRandomSpawn))
             {
-                if (Cop.DistanceToPlayer >= 750f)
+                if (Cop.DistanceToPlayer >= 2000f)//750f
                 {
                     if (Cop.CopPed.IsInAnyVehicle(false))
                         Cop.CopPed.CurrentVehicle.Delete();
@@ -802,13 +808,12 @@ namespace Instant_Action_RAGE.Systems
                     Cop.WasMarkedNonPersistent = false;
                     InstantAction.WriteToLog("SpawnCop", string.Format("Cop Deleted: Handled {0}", Cop.CopPed.Handle));
                 }
-                else if (Cop.WasMarkedNonPersistent && Cop.DistanceToPlayer >= 500f)
+                else if (Cop.WasMarkedNonPersistent && Cop.DistanceToPlayer >= 1750f)//500f
                 {
                     if (Cop.CopPed.IsInAnyVehicle(false))
                         Cop.CopPed.CurrentVehicle.IsPersistent = false;
                     Cop.CopPed.IsPersistent = false;
                     Cop.WasMarkedNonPersistent = false;
-
                     InstantAction.WriteToLog("SpawnCop", string.Format("CopMarkedNonPersistant: Handled {0}", Cop.CopPed.Handle));
                     break;
                 }
@@ -1018,7 +1023,7 @@ namespace Instant_Action_RAGE.Systems
                     if (_ToTask > 0)
                     {
                         InstantAction.WriteToLog("TaskQueue", string.Format("Cops To Task: {0}", _ToTask));
-                        PoliceTask _policeTask = CopsToTask[0];
+                        PoliceTask _policeTask = CopsToTask.OrderBy(x => x.CopToAssign.DistanceToPlayer).FirstOrDefault();
                         _policeTask.CopToAssign.isTasked = true;
                         if (_policeTask.TaskToAssign == PoliceTask.Task.Arrest)
                             TaskChasing(_policeTask.CopToAssign);

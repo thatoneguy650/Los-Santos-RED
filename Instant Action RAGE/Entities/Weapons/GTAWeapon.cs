@@ -1,4 +1,4 @@
-﻿using Instant_Action_RAGE.Entities.Weapon_Variation;
+﻿
 using Rage;
 using System;
 using System.Collections.Generic;

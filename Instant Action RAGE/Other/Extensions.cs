@@ -291,6 +291,11 @@ namespace ExtensionsMethods
                 return false;
 
         }
+        public static void FaceEntity(this Entity Source,Entity Target)
+        {
+            Vector3 Resultant = Vector3.Subtract(Target.Position, Source.Position);
+            Source.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        }
         public static float Dot(Vector3 left, Vector3 right)
         {
             return left.X * right.X + left.Y * right.Y + left.Z * right.Z;

@@ -5,6 +5,7 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +17,9 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuListItem menuMainRandomCrime;
         private static UIMenuItem menuMainTakeoverNearestPed;
         private static UIMenuListItem menuMainTakeoverRandomPed;
-       // private static UIMenuItem menuMainOptions;
+        private static UIMenuItem menuMainReloadSettings;
+
+        // private static UIMenuItem menuMainOptions;
 
         private static UIMenuCheckboxItem menuOptionsAutoRespawn;
         private static UIMenuCheckboxItem menuOptionsRandomEvents;
@@ -105,7 +108,7 @@ namespace Instant_Action_RAGE.Systems
 
             CreateMainMenu();
             // mainMenu.AddItem(menuMainOptions);
-
+            CreateOptionsMenu();
 
             //menuOptionsAutoRespawn = new UIMenuCheckboxItem("AutoRespawn Enabled", Settings.AutoRespawn, "Sets if the game will automatically handle the respawn logic or show the options menu.");
             //menuOptionsRandomEvents = new UIMenuCheckboxItem("Random Events", Settings.RandomEvents, "Can Generate Randome crimes in the world");
@@ -275,19 +278,21 @@ namespace Instant_Action_RAGE.Systems
             ProcessLoop();
 
         }
+
+        private static void CreateOptionsMenu()
+        {
+
+        }
+
         public static void CreateMainMenu()
         {
             //
             menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
-            // menuMainRandomCrime = new UIMenuListItem("Start Random Crime","Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
-            //menuMainTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
             menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-            //menuMainOptions = new UIMenuItem("Options", "Change options");
+            menuMainReloadSettings = new UIMenuItem("Reload Settings", "Reloads settings from XML");
             menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", InstantAction.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
             menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
             menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
-            // mainMenu.AddItem(menuMainRandomCrime);
-            //mainMenu.AddItem(menuMainTakeoverNearestPed);
             mainMenu.AddItem(menuMainTakeoverRandomPed);
 
 
@@ -299,6 +304,7 @@ namespace Instant_Action_RAGE.Systems
                 mainMenu.AddItem(menuMainRemoveLicensePlate);
                 //mainMenu.AddItem(menuMainChangeHelmet); //doesnt work fully so far, and only on certain peds
             }
+            mainMenu.AddItem(menuMainReloadSettings);
             // mainMenu.AddItem(menuMainOptions);
         }
         public static void UpdateLists()
@@ -386,7 +392,11 @@ namespace Instant_Action_RAGE.Systems
                 else if (selectedItem == menuMainChangeHelmet)
                 {
                     InstantAction.AddRemovePlayerHelmet();                
-                }          
+                }
+                else if (selectedItem == menuMainReloadSettings)
+                {
+                    Settings.ReadSettings();
+                }
                 mainMenu.Visible = false;
             }
             else if (sender == bustedMenu)
@@ -518,25 +528,38 @@ namespace Instant_Action_RAGE.Systems
                         PrevMainMenuVisible = MainMenuVisible;
                     }
 
-                    //if(mainMenu.Visible)
-                    //{
-                    //    if (PrevMainMenuCurrentSelection != mainMenu.CurrentSelection)
-                    //        MainMenuSelectionChanged();
+                    if (Settings.UndieLimit == 0)
+                    {
+                        menuDeathUndie.Enabled = true;
+                    }
+                    else if (InstantAction.TimesDied < Settings.UndieLimit)
+                    {
+                        menuDeathUndie.Enabled = true;
+                    }
+                    else
+                    {
+                        menuDeathUndie.Enabled = false;
+                    }
 
-                    //    if (EntityToHighlight != null)
-                    //    {
-                    //        Vector3 PositionToMark = EntityToHighlight.Position;
-                    //        Rage.Debug.DrawArrowDebug(new Vector3(PositionToMark.X, PositionToMark.Y, PositionToMark.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, System.Drawing.Color.Yellow);
-                    //    }
+                        //if(mainMenu.Visible)
+                        //{
+                        //    if (PrevMainMenuCurrentSelection != mainMenu.CurrentSelection)
+                        //        MainMenuSelectionChanged();
 
-                    //}
-                    //else
-                    //{
-                    //    PrevMainMenuCurrentSelection = -1;
-                    //    WorldPos = new Vector3(0f, 0f, 0f);
-                    //    EntityToHighlight = null;
-                    //}
-                    GameFiber.Yield();
+                        //    if (EntityToHighlight != null)
+                        //    {
+                        //        Vector3 PositionToMark = EntityToHighlight.Position;
+                        //        Rage.Debug.DrawArrowDebug(new Vector3(PositionToMark.X, PositionToMark.Y, PositionToMark.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, System.Drawing.Color.Yellow);
+                        //    }
+
+                        //}
+                        //else
+                        //{
+                        //    PrevMainMenuCurrentSelection = -1;
+                        //    WorldPos = new Vector3(0f, 0f, 0f);
+                        //    EntityToHighlight = null;
+                        //}
+                        GameFiber.Yield();
                 }
             });
         }

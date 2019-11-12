@@ -1,4 +1,4 @@
-﻿using Instant_Action_RAGE.Entities.Weapon_Variation;
+﻿
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,6 @@ public class DroppedWeapon
     public Vector3 CoordinatedDropped { get; set; }
     public uint GameTimeDropped { get; set; }
     public int Tint { get; set; }
-    //public uint Hash { get; set; }
 
     public WeaponVariation Variation { get; set; }
     public int Ammo { get; set; }

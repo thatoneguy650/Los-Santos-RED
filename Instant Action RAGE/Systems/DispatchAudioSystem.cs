@@ -441,7 +441,10 @@ internal static class DispatchAudioSystem
         {
             while (IsRunning)
             {
-                PlayDispatchQueue();
+                if (Settings.DispatchAudio)
+                    PlayDispatchQueue();
+                else
+                    DispatchQueue.Clear();
                 GameFiber.Yield();
             }
         });
@@ -478,12 +481,10 @@ internal static class DispatchAudioSystem
             Game.Console.Print(e.Message);
         }
     }
-
     private static void OnPlaybackStopped2(object sender, EventArgs e)
     {
         AudioPlaying = false;
     }
-
     private static void PlayAudioListNEW(List<String> SoundsToPlay, bool CheckSight)
     {
         if (CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
@@ -611,6 +612,11 @@ internal static class DispatchAudioSystem
                         DispatchQueue.Add(HighestItem);
                     }
                     InstantAction.WriteToLog("PlayDispatchQueue", "IsTrafficViolation: Removed IsTrafficViolation except highest");
+                }
+
+                if(Settings.DispatchAudioOnlyHighPriority)
+                {
+                    DispatchQueue.RemoveAll(x => x.Priority < 3);
                 }
 
                 foreach (DispatchQueueItem Item in DispatchQueue)

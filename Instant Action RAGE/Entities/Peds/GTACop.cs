@@ -72,7 +72,8 @@ public class GTACop
     {
         CopPed.VisionRange = 55f;
         CopPed.HearingRange = 25;
-        CopPed.Accuracy = 10;
+        if(Settings.OverridePoliceAccuracy)
+            CopPed.Accuracy = Settings.PoliceGeneralAccuracy;
     }
     public bool NeedsWeaponCheck
     {
