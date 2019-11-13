@@ -45,7 +45,7 @@ public class GTACop
     public uint GameTimeContinuoslySeenPlayerSince { get; set; }
     public Vector3 PositionLastSeenPlayer { get; set; }
     public bool isPursuitPrimary { get; set; } = false;
-    public PoliceTask.Task TaskType { get; set; }
+    public PoliceTask.Task TaskType { get; set; } = PoliceTask.Task.NoTask;
     public bool HurtByPlayer { get; set; } = false;
     public GameFiber TaskFiber { get; set; }
     public bool SetTazer { get; set; } = false;

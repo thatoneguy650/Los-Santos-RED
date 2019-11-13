@@ -140,6 +140,7 @@ public static class InstantAction
     private static uint GameTimeAbandonVehicleCheck;
     private static bool PrevAnyPoliceRecentlySeenPlayer;
     private static uint GameTimeLastTriedCarJacking;
+    private static bool PlayerIsPersonOfInterest = false;
 
     public static bool IsHardToSeeInWeather
     {
@@ -421,10 +422,10 @@ public static class InstantAction
 
         if (Game.LocalPlayer.WantedLevel > MaxWantedLastLife) // The max wanted level i saw in the last life, not just right before being busted
             MaxWantedLastLife = Game.LocalPlayer.WantedLevel;
-        else if (Game.LocalPlayer.WantedLevel == 0 && MaxWantedLastLife > 0 && !isBusted && !isDead)
-            MaxWantedLastLife = 0;
+        //else if (Game.LocalPlayer.WantedLevel == 0 && MaxWantedLastLife > 0 && !isBusted && !isDead)
+        //    MaxWantedLastLife = 0;
 
-
+        NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
         NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
 
@@ -611,20 +612,25 @@ public static class InstantAction
             WriteToLog("Cops caught you breaking into a car", "");
         }
 
-        if (PlayerWantedLevel == 0 && AnyPoliceCanRecognizePlayerAfterWanted && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000)
-        {
-            Game.LocalPlayer.WantedLevel = 3;
-            AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectSpotted, 3, false));
-            WriteToLog("Cops Reacquired after losing them", "");
-        }
-        if (PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= 250f)
-        {
-            Game.LocalPlayer.WantedLevel = 3;
-            AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectSpotted, 3, false));
-            WriteToLog("Cops Reacquired after losing them in the same area", "");
-        }
+
+
+        //if (PlayerIsPersonOfInterest && PlayerWantedLevel == 0 && AnyPoliceCanRecognizePlayerAfterWanted && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000)
+        //{
+        //    Game.LocalPlayer.WantedLevel = 3;
+        //    AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectSpotted, 3, false));
+        //    WriteToLog("Cops Reacquired after losing them", "");
+        //}
+        //if (PlayerIsPersonOfInterest && PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= 250f)
+        //{
+        //    Game.LocalPlayer.WantedLevel = 3;
+        //    AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectSpotted, 3, false));
+        //    WriteToLog("Cops Reacquired after losing them in the same area", "");
+        //}
+
+
         if (PlayerHasBeenNotWantedFor >= 120000)
         {
+            PlayerIsPersonOfInterest = false;
             if (LastWantedCenterBlip.Exists())
                 LastWantedCenterBlip.Delete();
         }
@@ -661,15 +667,14 @@ public static class InstantAction
                 SetCopTazer(Cop);
 
             int TotalFootChaseTasked = PoliceScanningSystem.CopPeds.Where(x => (x.isTasked || x.TaskIsQueued) && x.TaskType == PoliceTask.Task.Chase).Count();
-            int TotalVehicleChaseTasked = PoliceScanningSystem.CopPeds.Where(x => x.isTasked && x.TaskType == PoliceTask.Task.VehicleChase).Count();
+            int TotalVehicleChaseTasked = PoliceScanningSystem.CopPeds.Where(x => (x.isTasked || x.TaskIsQueued) && x.TaskType == PoliceTask.Task.VehicleChase).Count();
 
             if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked <= 4 && !Cop.CopPed.IsInAnyVehicle(false) && Cop.DistanceToPlayer <= 55f && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed <= 5f))
             {
                 Cop.TaskIsQueued = true;
                 PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Chase));
             }
-
-            if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked > 0 && TotalVehicleChaseTasked == 0 && Cop.isInVehicle && !Cop.isInHelicopter && Cop.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            else if (!isBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked > 0 && TotalVehicleChaseTasked <= 5 && Cop.isInVehicle && !Cop.isInHelicopter && Cop.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
             {
                 Cop.TaskIsQueued = true;
                 PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.VehicleChase));
@@ -1328,8 +1333,7 @@ public static class InstantAction
 
             if (CurrentWantedCenterBlip.Exists())
                 CurrentWantedCenterBlip.Delete();
-            
-
+           
             PoliceScanningSystem.UntaskAll(false);
         }
         else
@@ -1345,13 +1349,7 @@ public static class InstantAction
                 LastWantedCenterBlip.Delete();
 
             PoliceScanningSystem.UntaskAllRandomSpawns(false);
-
-            //foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CopPed.Exists() && !x.isTasked && !x.TaskIsQueued && x.DistanceToPlayer >= 75f))
-            //{
-            //    Cop.TaskIsQueued = true;
-            //    PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.GoToWantedCenter));
-            //}
-
+            PlayerIsPersonOfInterest = true;
         }
         WantedLevelStartTime = Game.GameTime;
         WriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}", Game.LocalPlayer.WantedLevel));
@@ -1648,7 +1646,7 @@ public static class InstantAction
 
             if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 1) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 1))
             {
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
             }
             else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 1))
             {
@@ -2437,6 +2435,9 @@ public static class InstantAction
     //Respawn
     public static void BribePolice(int Amount)
     {
+        if (Game.LocalPlayer.Character.GetCash(Settings.MainCharacterToAlias) < Amount)
+            return;
+
         if (Amount < PreviousWantedLevel * Settings.PoliceBribeWantedLevelScale)
         {
             Game.DisplayNotification("Thats it? Thanks for the cash, but you're going downtown.");
@@ -2450,15 +2451,14 @@ public static class InstantAction
             Game.DisplayNotification("Thanks for the cash, now beat it.");
             Game.LocalPlayer.Character.GiveCash(-1 * Amount, Settings.MainCharacterToAlias);
         }
+        PlayerIsPersonOfInterest = false;
         CurrentPoliceState = PoliceState.Normal;
         UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-        if (Game.LocalPlayer.Character.LastVehicle.Exists())
-            NativeFunction.CallByName<bool>("SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER", Game.LocalPlayer.Character.LastVehicle, true);
+        //if (Game.LocalPlayer.Character.LastVehicle.Exists())
+        //    NativeFunction.CallByName<bool>("SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER", Game.LocalPlayer.Character.LastVehicle, true);
         ResetPlayer(true, false);
-        LastWantedCenterPosition = Vector3.Zero;
-        if (LastWantedCenterBlip.Exists())
-            LastWantedCenterBlip.Delete();
+
         PoliceScanningSystem.UntaskAll(true);
 
     }
@@ -2469,6 +2469,7 @@ public static class InstantAction
         isDead = false;
         isBusted = false;
         CurrentPoliceState = PoliceState.Normal;
+        PlayerIsPersonOfInterest = false;
         ResetPlayer(true, true);
 
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
@@ -2481,15 +2482,8 @@ public static class InstantAction
 
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
-        LastWantedCenterPosition = Vector3.Zero;
-        if (LastWantedCenterBlip.Exists())
-            LastWantedCenterBlip.Delete();
-        int CurrentCash = Game.LocalPlayer.Character.GetCash(Settings.MainCharacterToAlias);
-        if (CurrentCash < Settings.HospitalFee)
-            Game.LocalPlayer.Character.SetCash(0, Settings.MainCharacterToAlias); // Stop it from removing and adding cash, you cant go negative.
-        else
-            Game.LocalPlayer.Character.GiveCash(-1 * Settings.HospitalFee, Settings.MainCharacterToAlias);
-        
+        Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in Hospital fees.", Settings.HospitalFee));
+        Game.LocalPlayer.Character.GiveCash(-1 * Settings.HospitalFee, Settings.MainCharacterToAlias);     
     }
     public static void ResistArrest()
     {
@@ -2504,36 +2498,32 @@ public static class InstantAction
     }
     public static void Surrender()
     {
-        Game.FadeScreenOut(2500);
-        GameFiber.Wait(2500);
+        Game.FadeScreenOut(1500);
+        GameFiber.Wait(1500);
+
+        int bailMoney = MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
         BeingArrested = false;
         isBusted = false;
         Game.LocalPlayer.WantedLevel = 0;
+        PlayerIsPersonOfInterest = false;
         RaiseHands();
         ResetPlayer(true, true);
         NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         GTALocation ClosestPolice = Locations.Where(x => x.Type == GTALocation.LocationType.Police).OrderBy(s => Game.LocalPlayer.Character.Position.DistanceTo2D(s.Location)).FirstOrDefault();
+
         Game.LocalPlayer.Character.Position = ClosestPolice.Location;
         Game.LocalPlayer.Character.Heading = ClosestPolice.Heading;
+
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon((WeaponHash)2725352035, -1, true);
         ResetPlayer(true, true);
         CurrentPoliceState = PoliceState.Normal;
-        Game.FadeScreenIn(2500);
-        Game.DisplayNotification("You are out on bail, try to stay out of trouble");
-        int bailMoney = MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
-        int CurrentCash = Game.LocalPlayer.Character.GetCash(Settings.MainCharacterToAlias);
-        if (CurrentCash < bailMoney)
-            Game.LocalPlayer.Character.SetCash(0, Settings.MainCharacterToAlias); // Stop it from removing and adding cash, you cant go negative.
-        else
-            Game.LocalPlayer.Character.GiveCash(-1 * bailMoney, Settings.MainCharacterToAlias);
+        GameFiber.Wait(1500);
+        Game.FadeScreenIn(1500);   
+        Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in bail money, try to stay out of trouble.", bailMoney));
+        Game.LocalPlayer.Character.GiveCash(-1 * bailMoney, Settings.MainCharacterToAlias);
         PoliceScanningSystem.UntaskAll(true);
-    }
-    internal static void KillPlayer()
-    {
-        Game.LocalPlayer.Character.Kill();
-        //isDead = true;
     }
     public static void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {
@@ -2549,6 +2539,10 @@ public static class InstantAction
             Game.LocalPlayer.WantedLevel = 0;
             ResetPoliceStats();
             ResetTrafficViolations();
+
+            LastWantedCenterPosition = Vector3.Zero;
+            if (LastWantedCenterBlip.Exists())
+                LastWantedCenterBlip.Delete();
         }
 
         //ResetCamera();
@@ -2788,6 +2782,7 @@ public static class InstantAction
             BeingArrested = false;
             ResetTrafficViolations();
             ResetPoliceStats();
+            PlayerIsPersonOfInterest = false;
             GameTimeLastTakenOver = Game.GameTime;
 
             if(Game.LocalPlayer.Character.IsWearingHelmet)

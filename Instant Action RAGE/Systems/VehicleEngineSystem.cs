@@ -166,7 +166,8 @@ namespace Instant_Action_RAGE.Systems
             else
             {
                 InstantAction.WriteToLog("EnterExitVehicleEvent", "You got out of a vehicle");
-                Game.LocalPlayer.Character.LastVehicle.IsEngineOn = EngineRunning;
+                if(Game.LocalPlayer.Character.LastVehicle.Exists())
+                    Game.LocalPlayer.Character.LastVehicle.IsEngineOn = EngineRunning;
             }
             WasinVehicle = PlayerInVehicle;
         }

@@ -1,11 +1,13 @@
 ﻿using ExtensionsMethods;
 using Rage;
+using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,19 +20,7 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuItem menuMainTakeoverNearestPed;
         private static UIMenuListItem menuMainTakeoverRandomPed;
         private static UIMenuItem menuMainReloadSettings;
-
-        // private static UIMenuItem menuMainOptions;
-
-        private static UIMenuCheckboxItem menuOptionsAutoRespawn;
-        private static UIMenuCheckboxItem menuOptionsRandomEvents;
-        private static UIMenuCheckboxItem menuOptionsAllowBust;
-        private static UIMenuCheckboxItem menuOptionsPoliceEnhancements;
-        private static UIMenuListItem menuOptionsUndieLimit;
-        private static UIMenuCheckboxItem menuOptionsReplacePlayerWithPed;
-        private static UIMenuListItem menuOptionsReplacePlayerWithPedCharacter;
-        private static UIMenuCheckboxItem menuOptionsReplacePlayerWithPedRandomMoney;
-        private static UIMenuCheckboxItem menuOptionsDebug;
-
+        private static UIMenuItem menuMainOptions;
         private static UIMenuItem menuDebugResetCharacter;
         private static UIMenuItem menuMainSuicide;
         private static UIMenuItem menuMainChangeLicensePlate;
@@ -47,7 +37,7 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuItem menuDeathTakeoverNearestPed;
         private static UIMenuListItem menuDeathTakeoverRandomPed;
         private static UIMenuItem menuBustedResistArrest;
-        private static UIMenuListItem menuBustedBribe;
+        private static UIMenuItem menuBustedBribe;
         private static UIMenuItem menuBustedRespawnInPlace;
         private static UIMenuListItem menuBustedRandomCrime;
         private static UIMenuItem menuBustedNormalRespawn;
@@ -66,7 +56,6 @@ namespace Instant_Action_RAGE.Systems
 
         private static int RandomCrimeLevel = 1;
         private static int RandomWeaponLevel = 0;
-        private static int BribeAmount = 2000;
         private static Vector3 WorldPos = new Vector3(0f, 0f, 0f);
         private static Entity EntityToHighlight;
         private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
@@ -103,34 +92,8 @@ namespace Instant_Action_RAGE.Systems
             bustedMenu = new UIMenu("Instant Action", "Choose Respawn (Busted)");
             menuPool.Add(bustedMenu);
 
-            //optionsMenu = new UIMenu("Instant Action", "Change Options");
-            //menuPool.Add(optionsMenu);
-
             CreateMainMenu();
-            // mainMenu.AddItem(menuMainOptions);
-            CreateOptionsMenu();
 
-            //menuOptionsAutoRespawn = new UIMenuCheckboxItem("AutoRespawn Enabled", Settings.AutoRespawn, "Sets if the game will automatically handle the respawn logic or show the options menu.");
-            //menuOptionsRandomEvents = new UIMenuCheckboxItem("Random Events", Settings.RandomEvents, "Can Generate Randome crimes in the world");
-            //menuOptionsAllowBust = new UIMenuCheckboxItem("Allow Bust Opportunities", Settings.BetterChasesAllowBustOportunity, "Adds features to BetterChases Bust Opportunities feature");
-            //menuOptionsPoliceEnhancements = new UIMenuCheckboxItem("Police Enhancements", Settings.PoliceEnhancements, "Adds some features to the police AI");
-
-
-            //menuOptionsUndieLimit = new UIMenuListItem("Undie Limit", "Limit how many times you can Undie as the same character, set to 0 for unlimited", new List<dynamic> { "0", "1", "2", "3", "4", "5" });
-            //menuOptionsReplacePlayerWithPed = new UIMenuCheckboxItem("Replace Player with Ped", Settings.ReplacePlayerWithPed, "If true, it will trick the game into thinking your player ped is one of the main characters.You have money and can go to shops");
-            //menuOptionsReplacePlayerWithPedCharacter = new UIMenuListItem("Replace Ped with:", "Select to Change Hash Now. Options: Michael, Trevor, Franklin", new List<dynamic> { "Michael", "Franklin", "Trevor" });
-            //menuOptionsReplacePlayerWithPedRandomMoney = new UIMenuCheckboxItem("Random Money On Takeover", Settings.ReplacePlayerWithPedRandomMoney, "If true, will reset the players money on each takeover");
-            //menuOptionsDebug = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
-
-            //optionsMenu.AddItem(menuOptionsAutoRespawn);
-            //optionsMenu.AddItem(menuOptionsRandomEvents);
-            //optionsMenu.AddItem(menuOptionsAllowBust);
-            //optionsMenu.AddItem(menuOptionsPoliceEnhancements);
-            //optionsMenu.AddItem(menuOptionsUndieLimit);
-            //optionsMenu.AddItem(menuOptionsReplacePlayerWithPed);
-            //optionsMenu.AddItem(menuOptionsReplacePlayerWithPedCharacter);
-            //optionsMenu.AddItem(menuOptionsReplacePlayerWithPedRandomMoney);
-            //optionsMenu.AddItem(menuOptionsDebug);
 
 
             menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
@@ -226,40 +189,27 @@ namespace Instant_Action_RAGE.Systems
             debugMenu.AddItem(menuDebugScreenEffect);
             debugMenu.AddItem(menuDebugEnabled);
             debugMenu.AddItem(menuDebugGiveMoney);
-            //
+
             menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
             menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-            menuDeathHospitalRespawn = new UIMenuItem("Give Up", "Respawn at the nearest hospital. Lose $5K and your guns.");
-           // menuDeathRandomCrime = new UIMenuListItem("Start Random Crime", "Start Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
+            menuDeathHospitalRespawn = new UIMenuItem("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.");
             menuDeathNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the hospital (standard game logc).");
-            //menuDeathTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
             menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
             deathMenu.AddItem(menuDeathUndie);
-            //DeathMenu.AddItem(menuDeathRespawnInPlace);
             deathMenu.AddItem(menuDeathHospitalRespawn);
-            //deathMenu.AddItem(menuDeathRandomCrime);
-            //DeathMenu.AddItem(menuDeathNormalRespawn);
-           //deathMenu.AddItem(menuDeathTakeoverNearestPed);
             deathMenu.AddItem(menuDeathTakeoverRandomPed);
 
-            //
             menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
-            menuBustedBribe = new UIMenuListItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.",new List<dynamic> { 250, 500, 1000, 1250, 1750, 2000, 3500 } );
+            //menuBustedBribe = new UIMenuListItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.",new List<dynamic> { 250, 500, 1000, 1250, 1750, 2000, 3500 } );
+            menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
             menuBustedSurrender = new UIMenuItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.");
             menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-            menuBustedRandomCrime = new UIMenuListItem("Start Random Crime", "Start Random Crime", new List<dynamic> { "Level 1", "Level 2", "Level 3" });
-            menuBustedNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the police station (standard game logc).");
-            menuBustedTakeoverNearestPed = new UIMenuItem("Takeover Nearest Pedestrian", "Takes over the nearest pedestrian to the player.");
             menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
             bustedMenu.AddItem(menuBustedResistArrest);
             bustedMenu.AddItem(menuBustedBribe);
             bustedMenu.AddItem(menuBustedSurrender);
-            //BustedMenu.AddItem(menuBustedRespawnInPlace);
-           // bustedMenu.AddItem(menuBustedRandomCrime);
-            //BustedMenu.AddItem(menuBustedNormalRespawn);
-           // bustedMenu.AddItem(menuBustedTakeoverNearestPed);
             bustedMenu.AddItem(menuBustedTakeoverRandomPed);
 
             mainMenu.OnItemSelect += OnItemSelect;
@@ -272,55 +222,66 @@ namespace Instant_Action_RAGE.Systems
             debugMenu.OnItemSelect += OnItemSelect;
             debugMenu.OnListChange += OnListChange;
             debugMenu.OnCheckboxChange += OnCheckboxChange;
-            //optionsMenu.OnItemSelect += OnItemSelect;
-            //optionsMenu.OnListChange += OnListChange;
-            //optionsMenu.OnCheckboxChange += OnCheckboxChange;
+
             ProcessLoop();
 
         }
 
         private static void CreateOptionsMenu()
         {
-
+            optionsMenu = menuPool.AddSubMenu(mainMenu, "Options");
+            UIMenuItem ReloadSettings = new UIMenuItem("Reload Settings", "Reload settings from XML");
+            optionsMenu.AddItem(ReloadSettings);
+            foreach (FieldInfo fi in Type.GetType("Settings", false).GetFields())
+            {
+                if (fi.FieldType == typeof(bool))
+                {
+                    UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(null));
+                    optionsMenu.AddItem(MySetting);
+                }
+                if (fi.FieldType == typeof(int) || fi.FieldType == typeof(string) || fi.FieldType == typeof(float))
+                {
+                    UIMenuItem MySetting = new UIMenuItem(string.Format("{0}: {1}",fi.Name, fi.GetValue(null)));
+                    optionsMenu.AddItem(MySetting);
+                }
+            }
+            optionsMenu.OnItemSelect += OnItemSelect;
+            optionsMenu.OnListChange += OnListChange;
+            optionsMenu.OnCheckboxChange += OnCheckboxChange;
+            optionsMenu.RefreshIndex();
         }
 
         public static void CreateMainMenu()
         {
-            //
+            mainMenu.Clear();
             menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
             menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-            menuMainReloadSettings = new UIMenuItem("Reload Settings", "Reloads settings from XML");
             menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", InstantAction.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
             menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
             menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
+
             mainMenu.AddItem(menuMainTakeoverRandomPed);
-
-
             mainMenu.AddItem(menuMainSuicide);
-
             if (!InstantAction.PlayerInVehicle)
             {
                 mainMenu.AddItem(menuMainChangeLicensePlate);
                 mainMenu.AddItem(menuMainRemoveLicensePlate);
                 //mainMenu.AddItem(menuMainChangeHelmet); //doesnt work fully so far, and only on certain peds
             }
-            mainMenu.AddItem(menuMainReloadSettings);
-            // mainMenu.AddItem(menuMainOptions);
+            CreateOptionsMenu();
         }
         public static void UpdateLists()
-        {
-            mainMenu.Clear();
+        {         
             CreateMainMenu();
         }
         public static void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
         {
-            if (sender == debugMenu)
+            if (sender == optionsMenu)
             {
-                if (checkbox == menuDebugEnabled)
-                {
-                    Settings.Debug = Checked;
-                    Settings.WriteSettings("Debug", Settings.Debug.ToString());
-                }
+                FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
+                FieldInfo MySetting = MyFields.Where(x => x.Name == checkbox.Text).FirstOrDefault();
+                MySetting.SetValue(null, Checked);
+                Settings.WriteSettings();
             }
         }
         public static void OnListChange(UIMenu sender, UIMenuListItem list, int index)
@@ -350,14 +311,14 @@ namespace Instant_Action_RAGE.Systems
                 }
             }
 
-            else if (sender == bustedMenu)
-            {
-                if (list == menuBustedBribe)
-                {
-                    BribeAmount = BribeList[list.Index];// + 1;
-                    InstantAction.WriteToLog("Bribe Changed", String.Format("Bribe: {0}", BribeAmount));
-                }
-            }
+            //else if (sender == bustedMenu)
+            //{
+            //    if (list == menuBustedBribe)
+            //    {
+            //        BribeAmount = BribeList[list.Index];// + 1;
+            //        InstantAction.WriteToLog("Bribe Changed", String.Format("Bribe: {0}", BribeAmount));
+            //    }
+            //}
             else if (sender == debugMenu)
             {
                 if (list == menuDebugScreenEffect)
@@ -407,10 +368,11 @@ namespace Instant_Action_RAGE.Systems
                 }
                 else if (selectedItem == menuBustedBribe)
                 {
-                    int CurrentCash = Game.LocalPlayer.Character.GetCash(Settings.MainCharacterToAlias);
-                    if (CurrentCash < BribeAmount)
-                        return;
-                    InstantAction.BribePolice(BribeAmount);
+                    int BribeAmount;
+                    if (int.TryParse(GetKeyboardInput(), out BribeAmount))
+                    {
+                        InstantAction.BribePolice(BribeAmount);
+                    }
                 }
                 else if (selectedItem == menuBustedSurrender)
                 {
@@ -448,7 +410,7 @@ namespace Instant_Action_RAGE.Systems
             {
                 if (selectedItem == menuDebugKillPlayer)
                 {
-                    InstantAction.KillPlayer();
+                    Game.LocalPlayer.Character.Kill();
                 }
                 if (selectedItem == menuDebugRandomWeapon)
                 {
@@ -461,25 +423,43 @@ namespace Instant_Action_RAGE.Systems
                 {
                     Game.LocalPlayer.Character.GiveCash(5000, Settings.MainCharacterToAlias);
                 }
-
-                
-
                 debugMenu.Visible = false;
-            }   
-        }
-        public static void MainMenuSelectionChanged()
-        {
-            if (mainMenu.CurrentSelection == 3)
+            }  
+            else if(sender == optionsMenu)
             {
-                Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-                Vehicle ClosestVehicle = NearbyVehicles.Where(x => x.LicensePlate != "        ").OrderBy(x => InstantAction.GetLicensePlateChangePosition(x).DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-                if (ClosestVehicle != null)
+                string mySettingName = selectedItem.Text.Split(':')[0];
+                FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
+                FieldInfo MySetting = MyFields.Where(x => x.Name == mySettingName).FirstOrDefault();
+
+                string Value = GetKeyboardInput();
+                if(MySetting.FieldType == typeof(float))
                 {
-                    EntityToHighlight = ClosestVehicle;
-                    WorldPos = ClosestVehicle.Position;
+                    float myFloat;
+                    if(float.TryParse(Value,out myFloat))
+                    {
+                        MySetting.SetValue(null, myFloat);
+                        selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+                        Settings.WriteSettings();
+                    }
                 }
+                else if (MySetting.FieldType == typeof(int))
+                {
+                    int myInt;
+                    if (int.TryParse(Value, out myInt))
+                    {
+                        MySetting.SetValue(null, myInt);
+                        selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+                        Settings.WriteSettings();
+                    }
+                }
+                else if (MySetting.FieldType == typeof(string))
+                {
+                    MySetting.SetValue(null, Value);
+                    selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+                    Settings.WriteSettings();
+                }
+
             }
-            PrevMainMenuCurrentSelection = mainMenu.CurrentSelection;
         }
         public static void ProcessLoop()
         {
@@ -501,6 +481,10 @@ namespace Instant_Action_RAGE.Systems
                             mainMenu.Visible = false;
                             bustedMenu.Visible = !bustedMenu.Visible;
                         }
+                        else if(optionsMenu.Visible)
+                        {
+
+                        }
                         else
                         {
                             UpdateLists();
@@ -513,20 +497,7 @@ namespace Instant_Action_RAGE.Systems
                     {
                         debugMenu.Visible = !debugMenu.Visible;
                     }
-                    //else if (Game.IsKeyDown(Keys.F12)) // Our menu on/off switch.
-                    //{
-                    //    bustedMenu.Visible = !bustedMenu.Visible;
-                    //}
-
                     menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse. 
-
-                    MainMenuVisible = mainMenu.Visible;
-                    if (PrevMainMenuVisible != MainMenuVisible)
-                    {
-                        //UpdateLists();
-                        InstantAction.WriteToLog("Menus", "Main Menu is visible");
-                        PrevMainMenuVisible = MainMenuVisible;
-                    }
 
                     if (Settings.UndieLimit == 0)
                     {
@@ -540,28 +511,25 @@ namespace Instant_Action_RAGE.Systems
                     {
                         menuDeathUndie.Enabled = false;
                     }
-
-                        //if(mainMenu.Visible)
-                        //{
-                        //    if (PrevMainMenuCurrentSelection != mainMenu.CurrentSelection)
-                        //        MainMenuSelectionChanged();
-
-                        //    if (EntityToHighlight != null)
-                        //    {
-                        //        Vector3 PositionToMark = EntityToHighlight.Position;
-                        //        Rage.Debug.DrawArrowDebug(new Vector3(PositionToMark.X, PositionToMark.Y, PositionToMark.Z + 2f), Vector3.Zero, Rage.Rotator.Zero, 1f, System.Drawing.Color.Yellow);
-                        //    }
-
-                        //}
-                        //else
-                        //{
-                        //    PrevMainMenuCurrentSelection = -1;
-                        //    WorldPos = new Vector3(0f, 0f, 0f);
-                        //    EntityToHighlight = null;
-                        //}
-                        GameFiber.Yield();
+                    GameFiber.Yield();
                 }
             });
+        }
+        public static string GetKeyboardInput()
+        {
+            NativeFunction.CallByName<bool>("DISPLAY_ONSCREEN_KEYBOARD", true, "FMMC_KEY_TIP8", "", "", "", "", "", 255 + 1);
+
+            while (NativeFunction.CallByName<int>("UPDATE_ONSCREEN_KEYBOARD") == 0)
+            {
+                GameFiber.Sleep(500);
+            }
+            string Value = "";
+            unsafe
+            {
+                IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_ONSCREEN_KEYBOARD_RESULT");
+                Value = Marshal.PtrToStringAnsi(ptr);
+            }
+            return Value;
         }
         
 

@@ -145,7 +145,7 @@ static class Settings
             InstantAction.WriteToLog("ReadSettings", e.Message.ToString());
         }
     }
-    public static void WriteSettings(String Setting, String Value)
+    public static void WriteSettings()
     {
         try
         {
@@ -153,8 +153,12 @@ static class Settings
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load("Plugins\\InstantAction\\InstantAction.xml");
-                XmlNode xmlNode = xmlDocument.SelectSingleNode("//" + Setting);
-                xmlNode.InnerText = Value;
+
+                foreach (FieldInfo fi in Type.GetType("Settings", false).GetFields())
+                {
+                    XmlNode xmlNode = xmlDocument.SelectSingleNode("//" + fi.Name);
+                    xmlNode.InnerText = fi.GetValue(null).ToString();
+                }
                 xmlDocument.Save("Plugins\\InstantAction\\InstantAction.xml");
             }
             else
