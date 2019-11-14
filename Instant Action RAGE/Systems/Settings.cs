@@ -33,9 +33,7 @@ static class Settings
 
     public static bool TrafficViolationsUI = true;
     public static bool TrafficViolationsUIOnlyWhenSpeeding = false;
-    public static float TrafficViolationsUIPositionX = 0.9f;
-    public static float TrafficViolationsUIPositionY = 0.8f;
-    public static float TrafficViolationsUIScale = 0.5f;
+
 
     public static bool SpawnPoliceK9 = true;
     public static bool SpawnRandomPolice = true;
@@ -52,6 +50,8 @@ static class Settings
 
     public static bool SpawnNewsChopper = true;
     public static bool WantedLevelIncreasesOverTime = true;
+    public static uint WantedLevelIncreaseTime = 180000;
+    public static uint WantedLevelInceaseOverTimeLimit = 4;
 
     public static int PoliceBribeWantedLevelScale = 500;
     public static int PoliceBailWantedLevelScale = 750;
@@ -62,6 +62,19 @@ static class Settings
     public static int PedTakeoverRandomMoneyMax = 5000;
     public static bool DispatchAudio = true;
     public static bool DispatchAudioOnlyHighPriority = false;
+    public static int PoliceRecentlySeenTime = 10000;
+    public static bool DisableAmbientScanner = true;
+    public static bool WantedMusicDisable = true;
+    public static bool AlwaysShowHUD = true;
+    public static bool ShowPoliceRadarBlips = false;
+    public static bool AlwaysShowCash = true;
+    public static bool Keanu = true;
+    public static bool AllowPoliceWeaponVariations = true;
+    public static bool TrafficInfoUI = true;
+    public static float TrafficInfoUIPositionX = 0.92f;
+    public static float TrafficInfoUIPositionY = 0.16f;
+    public static float TrafficInfoUISpacing = 0.02f;
+    public static float TrafficInfoUIScale = 0.35f;
 
     public static string MainCharacterToAliasModelName
     {

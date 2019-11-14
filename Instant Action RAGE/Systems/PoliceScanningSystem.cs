@@ -83,6 +83,7 @@ namespace Instant_Action_RAGE.Systems
         private static bool DebugBool1 = false;
         public static bool PlayerKilledCivilians;
         public static int CiviliansKilledByPlayer = 0;
+        private static bool SkipRestOfFrame = false;
 
         public static void Initialize()
         {
@@ -128,7 +129,7 @@ namespace Instant_Action_RAGE.Systems
             {
                 while (IsRunning)
                 {
-                     CheckKilled();
+                    CheckKilled();
                     stopwatch.Start();
                     bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
                     int losInterval = 500;
@@ -136,6 +137,7 @@ namespace Instant_Action_RAGE.Systems
                     {
                         ScanForPolice();                        
                         GameTimeInterval = Game.GameTime;
+                        SkipRestOfFrame = true;
                     }
                     if (Game.GameTime > LOSInterval + losInterval) // was 2000
                     {
@@ -472,10 +474,12 @@ namespace Instant_Action_RAGE.Systems
             Pistol = InstantAction.Weapons.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
             Cop.IssuedPistol = Pistol;
             Cop.CopPed.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
-
-            WeaponVariation MyVariation = Pistol.PoliceVariations.PickRandom();
-            Cop.PistolVariation = MyVariation;
-            InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)Pistol.Hash, MyVariation);
+            if (Settings.AllowPoliceWeaponVariations)
+            {
+                WeaponVariation MyVariation = Pistol.PoliceVariations.PickRandom();
+                Cop.PistolVariation = MyVariation;
+                InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)Pistol.Hash, MyVariation);
+            }
         }
         public static void IssueCopHeavyWeapon(GTACop Cop)
         {
@@ -496,9 +500,12 @@ namespace Instant_Action_RAGE.Systems
             Cop.CopPed.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
             if (Settings.OverridePoliceAccuracy)
                 Cop.CopPed.Accuracy = Settings.PoliceHeavyAccuracy;
-            WeaponVariation MyVariation = IssuedHeavy.PoliceVariations.PickRandom();
-            Cop.HeavyVariation = MyVariation;
-            InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)IssuedHeavy.Hash, MyVariation);
+            if (Settings.AllowPoliceWeaponVariations)
+            {
+                WeaponVariation MyVariation = IssuedHeavy.PoliceVariations.PickRandom();
+                Cop.HeavyVariation = MyVariation;
+                InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)IssuedHeavy.Hash, MyVariation);
+            }
         }
         public static Vector3 UpdatePlacePlayerLastSeen()
         {

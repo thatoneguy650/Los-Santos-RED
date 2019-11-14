@@ -39,33 +39,12 @@ namespace Instant_Action_RAGE.Systems
 
 
                     NativeFunction.CallByName<bool>("DISPLAY_HUD", true);
-                    NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
 
 
 
 
-                    if (SpeedModeEnabled)
-                    {
-                        if(SpeedModeBombActive)
-                        {
-                            if (!SpeedBus.Exists())
-                            {
-                                SpeedModeBombActive = false;
-                            }
-                            if (SpeedBus.Speed < 24.5872f)
-                            {
-                                SpeedBus.Explode();
-                                SpeedModeBombActive = false;
-                                Game.DisplaySubtitle("BOOM");
-                            }
-                        }
-                        else if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Model.Name == "BUS" && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 24.5872f)
-                        {
-                            SpeedBus = Game.LocalPlayer.Character.CurrentVehicle;
-                            SpeedModeBombActive = true;
-                            Game.DisplaySubtitle("Bomb Activated, Don't Drop Below 55 MPH");
-                        }
-                    }
+
+
 
 
                     //if (Game.LocalPlayer.WantedLevel > 0)
