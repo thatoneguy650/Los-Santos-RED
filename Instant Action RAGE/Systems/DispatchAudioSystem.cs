@@ -548,7 +548,10 @@ internal static class DispatchAudioSystem
     {
         outputDevice.Dispose();
         outputDevice = null;
-        audioFile.Dispose();
+        if (audioFile != null)
+        {
+            audioFile.Dispose();
+        }
         audioFile = null;
     }
     public static void AddDispatchToQueue(DispatchQueueItem _ItemToAdd)

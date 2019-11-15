@@ -1030,7 +1030,7 @@ namespace Instant_Action_RAGE.Systems
                     if (_ToTask > 0)
                     {
                         InstantAction.WriteToLog("TaskQueue", string.Format("Cops To Task: {0}", _ToTask));
-                        PoliceTask _policeTask = CopsToTask.OrderBy(x => x.CopToAssign.DistanceToPlayer).FirstOrDefault();
+                        PoliceTask _policeTask = CopsToTask[0];// CopsToTask.OrderBy(x => x.CopToAssign.DistanceToPlayer).FirstOrDefault();
                         _policeTask.CopToAssign.isTasked = true;
                         if (_policeTask.TaskToAssign == PoliceTask.Task.Arrest)
                             TaskChasing(_policeTask.CopToAssign);
@@ -1050,7 +1050,7 @@ namespace Instant_Action_RAGE.Systems
                             TaskGoToWantedCenter(_policeTask.CopToAssign);
 
                         _policeTask.CopToAssign.TaskIsQueued = false;
-                        CopsToTask.Remove(_policeTask);
+                        CopsToTask.RemoveAt(0);//CopsToTask.Remove(_policeTask);
                     }
                    GameFiber.Sleep(100);
                    // GameFiber.Sleep(250);

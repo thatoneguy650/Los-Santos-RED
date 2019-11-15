@@ -242,6 +242,7 @@ public static class InstantAction
             PoliceSpeechSystem.Initialize();
             VehicleLookup.Initialize();
             VehicleEngineSystem.Initialize();
+           // Transmission.Initialize();
             while (IsRunning)
             {
                 stopwatch.Start();
@@ -539,7 +540,7 @@ public static class InstantAction
                 SpeedDisplay = string.Format("~r~{0} ~s~MPH ({1})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerCurrentStreetSpeedLimit);
             else
                 SpeedDisplay = string.Format("{0} MPH ({1})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerCurrentStreetSpeedLimit);
-            Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White);
+            Text(SpeedDisplay + " - " + Transmission.CurrentGear, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White);
         }
     }
     private static string GetCompassHeading()
@@ -2697,7 +2698,7 @@ public static class InstantAction
             {
                 Game.LocalPlayer.WantedLevel = MaxWantedLastLife;
                 ++TimesDied;
-                DispatchAudioSystem.AbortAllAudio();
+               // DispatchAudioSystem.AbortAllAudio();
             }
             else
             {

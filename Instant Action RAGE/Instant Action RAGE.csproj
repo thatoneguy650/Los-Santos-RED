@@ -126,6 +126,7 @@
     <Compile Include="Systems\PoliceScanningSystem.cs" />
     <Compile Include="Systems\PoliceSpeechSystem.cs" />
     <Compile Include="Systems\RespawnSystem.cs" />
+    <Compile Include="Systems\Transmission.cs" />
     <Compile Include="Systems\VehicleEngineSystem.cs" />
     <Compile Include="Systems\Settings.cs" />
     <Compile Include="Lookups\VehicleLookup.cs" />
