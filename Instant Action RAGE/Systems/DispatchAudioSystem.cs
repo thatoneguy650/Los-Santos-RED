@@ -519,6 +519,10 @@ internal static class DispatchAudioSystem
                 audioFile.Volume = Settings.DispatchAudioVolume;
                 outputDevice.Init(audioFile);
             }
+            else
+            {
+                outputDevice.Init(audioFile);
+            }
             outputDevice.Play();
         }
         catch (Exception e)

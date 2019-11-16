@@ -46,6 +46,7 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuItem menuBustedSurrender;
         private static UIMenuItem menuDeathHospitalRespawn;
         private static UIMenuItem menuDebugGiveMoney;
+        private static UIMenuItem menuDebugHealthAndArmor;
 
         private static MenuPool menuPool;
         public static UIMenu mainMenu;
@@ -182,6 +183,7 @@ namespace Instant_Action_RAGE.Systems
         "Dont_tazeme_bro" });
             menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
             menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
+            menuDebugHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
 
             debugMenu.AddItem(menuDebugResetCharacter);
             debugMenu.AddItem(menuDebugKillPlayer);
@@ -189,6 +191,7 @@ namespace Instant_Action_RAGE.Systems
             debugMenu.AddItem(menuDebugScreenEffect);
             debugMenu.AddItem(menuDebugEnabled);
             debugMenu.AddItem(menuDebugGiveMoney);
+            debugMenu.AddItem(menuDebugHealthAndArmor);
 
             menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
             menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
@@ -423,6 +426,17 @@ namespace Instant_Action_RAGE.Systems
                 {
                     Game.LocalPlayer.Character.GiveCash(5000, Settings.MainCharacterToAlias);
                 }
+                if (selectedItem == menuDebugScreenEffect)
+                {
+                    NativeFunction.Natives.xB4EDDC19532BFB85();
+                }
+                if (selectedItem == menuDebugHealthAndArmor)
+                {
+                    Game.LocalPlayer.Character.Health = 100;
+                    Game.LocalPlayer.Character.Armor = 100;
+                }
+
+                
                 debugMenu.Visible = false;
             }  
             else if(sender == optionsMenu)

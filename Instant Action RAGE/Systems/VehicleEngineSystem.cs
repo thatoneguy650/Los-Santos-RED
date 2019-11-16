@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using ExtensionsMethods;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace Instant_Action_RAGE.Systems
         public static bool SetLoud { get; private set; } = true;
         public static RadioStation AutoTuneStation { get; private set; } = RadioStation.SelfRadio;
         public static Keys EngineToggleKey { get; private set; } = Keys.R;
+        public static List<string> strRadioStations;
         public static bool Enabled { get; set; } = true;
         public static bool IsRunning { get; set; } = true;
         public static bool IsHotwiring
@@ -37,7 +39,7 @@ namespace Instant_Action_RAGE.Systems
             {
                 if (GameTimeStartedHotwiring == 0)
                     return false;
-                else if (Game.GameTime - GameTimeStartedHotwiring <= 12000)
+                else if (Game.GameTime - GameTimeStartedHotwiring <= 4000)
                     return true;
                 else
                     return false;
@@ -53,7 +55,8 @@ namespace Instant_Action_RAGE.Systems
             AutoTuneStation = RadioStation.SelfRadio;
             AutoTune = true;
             EngineToggleKey = Keys.R;
-            MainLoop();
+            strRadioStations = new List<string> { "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
+            MainLoop();         
         }
         public static void MainLoop()
         {
@@ -73,51 +76,35 @@ namespace Instant_Action_RAGE.Systems
 
                         if (PlayerInVehicle)
                         {
+                            if (Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
+                            {                        
+                                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
+                            }
 
                             if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))
                             {
                                 ToggleEngine(true,false);
                             }
-                            if (!EngineRunning)
-                            {
-                                Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
-                            }
-                            else
-                            {
-                                Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
-                                Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
-                            }
 
-
-                            bool MustBeHotwired = Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired;
-                            if (PrevMustBeHotwired != MustBeHotwired)
+                            if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
                             {
-                                if (MustBeHotwired)
+                                if (!EngineRunning)
                                 {
-                                    GameTimeStartedHotwiring = Game.GameTime;
+                                    Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
                                 }
                                 else
                                 {
-                                    EngineRunning = true;
-                                    GameTimeStartedHotwiring = 0;
+                                    Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
+                                    Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
+                                    if (InstantAction.PlayerWantedLevel > 0)
+                                        NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "RADIO_19_USER");
                                 }
-                                PrevMustBeHotwired = MustBeHotwired;
-                                InstantAction.WriteToLog("ToggleEngine", string.Format("MustBeHotwired: {0}", MustBeHotwired));
                             }
-
-;
-                            if (PrevIsHotwiring != IsHotwiring)
-                            {
-
-                                PrevIsHotwiring = IsHotwiring;
-                                InstantAction.WriteToLog("ToggleEngine", string.Format("IsHotwiring: {0}", IsHotwiring));
-                            }
-
-
                         }
                         else
                         {
                             GameTimeStartedHotwiring = 0;
+                            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                         }                     
                         if (PrevEngineRunning != EngineRunning)
                         {
@@ -139,7 +126,6 @@ namespace Instant_Action_RAGE.Systems
             InstantAction.WriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",EngineRunning));
             PrevEngineRunning = EngineRunning;
         }
-
         public static void EnterExitVehicleEvent(bool PlayerInVehicle)
         {
             if(PlayerInVehicle)
@@ -157,6 +143,7 @@ namespace Instant_Action_RAGE.Systems
 
                     if(Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
                     {
+                        GameTimeStartedHotwiring = Game.GameTime;
                         InstantAction.WriteToLog("EnterExitVehicleEvent", "The Engine was off and Needed Hotwire");
                     }
 
@@ -170,82 +157,7 @@ namespace Instant_Action_RAGE.Systems
                     Game.LocalPlayer.Character.LastVehicle.IsEngineOn = EngineRunning;
             }
             WasinVehicle = PlayerInVehicle;
-        }
-
-
-        public static void MainLoopOLD()
-        {
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    while (IsRunning)
-                    {
-                        if (Game.IsKeyDown(EngineToggleKey))
-                            ToggleEngine(false,false);
-
-
-
-                        //if (Game.IsKeyDown(Keys.NumPad4))
-                        //    InstantAction.WriteToLog("Button Press", string.Format("IsInAnyVehicle Currently : {0}", Game.LocalPlayer.Character.IsInAnyVehicle(true)));
-
-                        //if (Game.IsKeyDown(Keys.NumPad5))
-                        //    InstantAction.WriteToLog("Button Press", "What?");
-
-                        if (Game.LocalPlayer.Character.IsGettingIntoVehicle)
-                        {
-                            if (Game.LocalPlayer.Character.VehicleTryingToEnter == null)
-                                return;
-                            if (Game.LocalPlayer.Character.VehicleTryingToEnter.IsEngineOn)
-                                EngineRunning = true;
-                            if (Game.LocalPlayer.Character.VehicleTryingToEnter.MustBeHotwired)
-                                needsHotwiring = true;
-                            if (Game.LocalPlayer.Character.VehicleTryingToEnter.LockStatus == VehicleLockStatus.LockedButCanBeBrokenInto)
-                                needsToUnlock = true;
-                        }
-
-                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
-                        {
-                            //if (Game.LocalPlayer.Character.CurrentVehicle == null)
-                            //    return;
-
-                            if (Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn != EngineRunning)
-                                Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = EngineRunning;
-                            if (SetLoud)
-                                NativeFunction.CallByName<bool>("SET_VEHICLE_RADIO_LOUD", Game.LocalPlayer.Character.CurrentVehicle, !EngineRunning);
-                            if (!EngineRunning)
-                            {
-                                //Game.LocalPlayer.Character.CurrentVehicle.RadioStation = RadioStation.Off;
-                                Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
-                            }
-                            else
-                            {
-                                if (AutoTune)
-                                    Game.LocalPlayer.Character.CurrentVehicle.RadioStation = AutoTuneStation;
-
-                                Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
-                            }
-                        }
-
-                        if (WasinVehicle != Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
-                            VehicleExitEnterEvent();
-
-                        //if (WasGettingInVehicle != Game.LocalPlayer.Character.IsGettingIntoVehicle && Game.LocalPlayer.Character.IsGettingIntoVehicle)
-                        //    VehiclePreEnterEvent();
-
-                        WasGettingInVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
-
-
-
-                        GameFiber.Yield();
-                    }
-                }
-                catch (Exception e)
-                {
-                    InstantAction.WriteToLog("ToggleEngine", e.Message);
-                }
-            });
-        }
+        }  
         private static void ToggleEngine(bool _animation,bool OnlyOff)
         {                 
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
@@ -259,84 +171,43 @@ namespace Instant_Action_RAGE.Systems
                 if (!Game.LocalPlayer.Character.IsOnBike && _animation)
                 {
                     TogglingEngine = true;
-                    StartEngineAnimation();
+                    if(!StartEngineAnimation())
+                        return;
                 }
-
-                if (OnlyOff)
-                    EngineRunning = false;
-                else
-                    EngineRunning = !Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
+                if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                {
+                    if (OnlyOff)
+                        EngineRunning = false;
+                    else
+                        EngineRunning = !Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
+                }
             }
             InstantAction.WriteToLog("ToggleEngine", "toggled");
             TogglingEngine = false;
         }
-       
-
-        private static void StartEngineAnimation()
+        private static bool StartEngineAnimation()
         {
             var sDict = "veh@van@ds@base";
             NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
             while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
                 GameFiber.Yield();
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
-            GameFiber.Sleep(1000);// is there a way to wait for the animation to finish?
-        }
-        private static void VehicleExitEnterEvent()
-        {
-            if (WasinVehicle) //Just got out
+
+            uint GameTimeStartedAnimation = Game.GameTime;
+            while(Game.GameTime - GameTimeStartedAnimation <= 1000)
             {
-                EngineRunning = false; // set to false/unknown state
-                InstantAction.WriteToLog("VehicleExitEnterEvent", "Got Out");
-            }
-            else
-            {
-                if (needsHotwiring)
+                if(Game.IsControlJustPressed(0,GameControl.VehicleExit))
                 {
-                    //GameFiber.Sleep(3500); // Let the hotwire animation play
-                    EngineRunning = true;
-                    needsHotwiring = false;
+                    NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
+                    TogglingEngine = false;
+                    return false;
                 }
-                InstantAction.WriteToLog("VehicleExitEnterEvent", "Got In");
+                GameFiber.Sleep(200);
             }
-
-            InstantAction.WriteToLog("VehicleExitEnterEvent", string.Format("Currently : {0}", Game.LocalPlayer.Character.IsInAnyVehicle(false)));
-            InstantAction.WriteToLog("VehicleExitEnterEvent", string.Format("Previously : {0}",WasinVehicle));
-
-
-
-            WasinVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+            return true;
+            //GameFiber.Sleep(1000);// is there a way to wait for the animation to finish?
         }
-        public static void AfterPedTakeover()
-        {
-            EngineRunning = true;
-        }
-        private static void VehiclePreEnterEvent()
-        {
-            if (needsToUnlock && Game.LocalPlayer.WantedLevel == 0)
-            {
-                InstantAction.WriteToLog("VehiclePreEnterEvent", "Needs to Unlock");
-                Vehicle AttemptingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
-                AttemptingToEnter.LockStatus = VehicleLockStatus.Unlocked;
-                GameFiber.Sleep(100);
-
-                Game.LocalPlayer.Character.Tasks.EnterVehicle(AttemptingToEnter, 0);
-                GameFiber.Sleep(500);
-                Game.LocalPlayer.Character.Tasks.ClearImmediately();
-
-
-                var sDict = "veh@break_in@0h@p_m_one@";
-                NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
-                while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
-                    GameFiber.Yield();
-
-                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "std_force_entry_ps", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-                GameFiber.Sleep(1500);
-
-                Game.LocalPlayer.Character.Tasks.EnterVehicle(AttemptingToEnter, 0);
-                InstantAction.WriteToLog("VehiclePreEnterEvent", "Done");
-                needsToUnlock = false;
-            }
-        }
+       
 
     }
 }

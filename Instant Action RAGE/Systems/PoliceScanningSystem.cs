@@ -1662,6 +1662,18 @@ namespace Instant_Action_RAGE.Systems
                     Cop.TaskFiber.Abort();
                     Cop.TaskFiber = null;
                 }
+                int seatIndex = 0;
+                Vehicle CurrentVehicle = null;
+                bool WasInVehicle = false;
+                if(Cop.WasRandomSpawn && Cop.CopPed.IsInAnyVehicle(false))
+                {
+                    WasInVehicle = true;
+                    CurrentVehicle = Cop.CopPed.CurrentVehicle;
+                    seatIndex = Cop.CopPed.SeatIndex;
+                }
+
+
+
                // if(Cop.isTasked || Cop.SimpleTaskName != "")
                     Cop.CopPed.Tasks.Clear();
 
@@ -1670,7 +1682,16 @@ namespace Instant_Action_RAGE.Systems
                 if(!Cop.WasRandomSpawn)
                     Cop.CopPed.IsPersistent = false;
 
-                InstantAction.WriteToLog("Untask", string.Format("Untasked: {0}", Cop.CopPed.Handle));
+                if(Cop.WasRandomSpawn && WasInVehicle && !Cop.CopPed.IsInAnyVehicle(false) && CurrentVehicle != null)
+                {
+                    Cop.CopPed.WarpIntoVehicle(CurrentVehicle, seatIndex);
+
+                }
+
+                if(WasInVehicle)
+                    InstantAction.WriteToLog("Untask", string.Format("Untasked: {0} in vehicle", Cop.CopPed.Handle));
+                else
+                    InstantAction.WriteToLog("Untask", string.Format("Untasked: {0}", Cop.CopPed.Handle));
             }
 
             Cop.TaskType = PoliceTask.Task.NoTask;
