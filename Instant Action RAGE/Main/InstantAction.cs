@@ -52,8 +52,8 @@ public static class InstantAction
     private static uint LastBust;
     private static int ForceSurrenderTime;
     private static Model CopModel = new Model("s_m_y_cop_01");
-    private static List<GTALocation> Locations = new List<GTALocation>();
-    private static List<GTAStreet> Streets = new List<GTAStreet>();
+    public static List<GTALocation> Locations = new List<GTALocation>();
+    public static List<GTAStreet> Streets = new List<GTAStreet>();
     public static Ped GhostCop;
     private static uint WantedLevelStartTime;
     private static bool CanReportLastSeen;
@@ -146,8 +146,8 @@ public static class InstantAction
     private static bool PrevAnyPoliceRecentlySeenPlayer;
     private static uint GameTimeLastTriedCarJacking;
     private static bool PlayerIsPersonOfInterest = false;
-    private static string PlayerCurrentStreet;
-    private static string PlayerCurrentCrossStreet;
+    public static string PlayerCurrentStreet;
+    public static string PlayerCurrentCrossStreet;
     private static float PlayerCurrentStreetSpeedLimit;
     private static float PlayerCurrentCrossStreetSpeedLimit;
     private static Zones.Zone PlayerCurrentZone;
@@ -543,7 +543,7 @@ public static class InstantAction
             Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White);
         }
     }
-    private static string GetCompassHeading()
+    public static string GetCompassHeading()
     {
         float Heading = Game.LocalPlayer.Character.Heading;
         string Abbreviation = "";
@@ -583,6 +583,49 @@ public static class InstantAction
             else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "NbW"; }
             else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
             else { Abbreviation = ""; }
+
+        return Abbreviation;
+    }
+    public static string GetSimpleCompassHeading()
+    {
+        float Heading = Game.LocalPlayer.Character.Heading;
+        string Abbreviation = "";
+
+        //yeah could be simpler, whatever idk computers are fast
+        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
+        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
+        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
+        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
+        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
+        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
+        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
+        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
+        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
+        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
+        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
+        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
+        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
+        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
+        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
+        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
+        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
+        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
+        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
+        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
+        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
+        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
+        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
+        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
+        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
+        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
+        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
+        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
+        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
+        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
+        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
+        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else { Abbreviation = ""; }
 
         return Abbreviation;
     }
@@ -1470,6 +1513,7 @@ public static class InstantAction
                 CurrentWantedCenterBlip.Delete();
            
             PoliceScanningSystem.UntaskAll(false);
+            PoliceScanningSystem.RetaskAllRandomSpawns();
         }
         else
         {
@@ -1485,6 +1529,10 @@ public static class InstantAction
 
             PoliceScanningSystem.UntaskAllRandomSpawns(false);
             PlayerIsPersonOfInterest = true;
+
+            Game.LocalPlayer.Character.PlayAmbientSpeech("GENERIC_CURSE");
+            if (PlayerInVehicle)
+                VehicleEngineSystem.WantedLevelTune = true;
         }
         WantedLevelStartTime = Game.GameTime;
         WriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}", Game.LocalPlayer.WantedLevel));
@@ -1574,6 +1622,7 @@ public static class InstantAction
         {
             ResetPoliceStats();
             PoliceScanningSystem.DeleteNewsTeam();
+            //PoliceScanningSystem.RetaskAllRandomSpawns();
         }
 
         if (CurrentPoliceState == PoliceState.DeadlyChase)
@@ -4246,223 +4295,223 @@ public static class InstantAction
     }
     private static void setupStreets()
     {
-        Streets.Add(new GTAStreet("Joshua Rd", 50f));
-        Streets.Add(new GTAStreet("East Joshua Road", 50f));
-        Streets.Add(new GTAStreet("Marina Dr", 35f));
-        Streets.Add(new GTAStreet("Alhambra Dr", 35f));
-        Streets.Add(new GTAStreet("Niland Ave", 35f));
-        Streets.Add(new GTAStreet("Zancudo Ave", 35f));
-        Streets.Add(new GTAStreet("Armadillo Ave", 35f));
-        Streets.Add(new GTAStreet("Algonquin Blvd", 35f));
-        Streets.Add(new GTAStreet("Mountain View Dr", 35f));
-        Streets.Add(new GTAStreet("Cholla Springs Ave", 35f));
-        Streets.Add(new GTAStreet("Panorama Dr", 40f));
-        Streets.Add(new GTAStreet("Lesbos Ln", 35f));
-        Streets.Add(new GTAStreet("Calafia Rd", 30f));
-        Streets.Add(new GTAStreet("North Calafia Way", 30f));
-        Streets.Add(new GTAStreet("Cassidy Trail", 25f));
-        Streets.Add(new GTAStreet("Seaview Rd", 35f));
-        Streets.Add(new GTAStreet("Grapeseed Main St", 35f));
-        Streets.Add(new GTAStreet("Grapeseed Ave", 35f));
-        Streets.Add(new GTAStreet("Joad Ln", 35f));
-        Streets.Add(new GTAStreet("Union Rd", 40f));
-        Streets.Add(new GTAStreet("O'Neil Way", 25f));
-        Streets.Add(new GTAStreet("Senora Fwy", 65f));
-        Streets.Add(new GTAStreet("Catfish View", 35f));
-        Streets.Add(new GTAStreet("Great Ocean Hwy", 60f));
-        Streets.Add(new GTAStreet("Paleto Blvd", 35f));
-        Streets.Add(new GTAStreet("Duluoz Ave", 35f));
-        Streets.Add(new GTAStreet("Procopio Dr", 35f));
+        Streets.Add(new GTAStreet("Joshua Rd", 50f, ScannerAudio.streets.JoshuaRoad.FileName));
+        Streets.Add(new GTAStreet("East Joshua Road", 50f, ScannerAudio.streets.EastJoshuaRoad.FileName));
+        Streets.Add(new GTAStreet("Marina Dr", 35f, ScannerAudio.streets.MarinaDrive.FileName));
+        Streets.Add(new GTAStreet("Alhambra Dr", 35f, ScannerAudio.streets.ElHamberDrive.FileName));
+        Streets.Add(new GTAStreet("Niland Ave", 35f, ScannerAudio.streets.NeelanAve.FileName));
+        Streets.Add(new GTAStreet("Zancudo Ave", 35f, ScannerAudio.streets.ZancudoAve.FileName));
+        Streets.Add(new GTAStreet("Armadillo Ave", 35f, ScannerAudio.streets.ArmadilloAve.FileName));
+        Streets.Add(new GTAStreet("Algonquin Blvd", 35f, ScannerAudio.streets.AlgonquinBlvd.FileName));
+        Streets.Add(new GTAStreet("Mountain View Dr", 35f, ScannerAudio.streets.MountainViewDrive.FileName));
+        Streets.Add(new GTAStreet("Cholla Springs Ave", 35f, ScannerAudio.streets.ChollaSpringsAve.FileName));
+        Streets.Add(new GTAStreet("Panorama Dr", 40f, ScannerAudio.streets.PanoramaDrive.FileName));
+        Streets.Add(new GTAStreet("Lesbos Ln", 35f, ScannerAudio.streets.LesbosLane.FileName));
+        Streets.Add(new GTAStreet("Calafia Rd", 30f, ScannerAudio.streets.CalapiaRoad.FileName));
+        Streets.Add(new GTAStreet("North Calafia Way", 30f, ScannerAudio.streets.NorthKalafiaWay.FileName));
+        Streets.Add(new GTAStreet("Cassidy Trail", 25f, ScannerAudio.streets.CassidyTrail.FileName));
+        Streets.Add(new GTAStreet("Seaview Rd", 35f,ScannerAudio.streets.SeaviewRd.FileName));
+        Streets.Add(new GTAStreet("Grapeseed Main St", 35f, ScannerAudio.streets.GrapseedMainStreet.FileName));
+        Streets.Add(new GTAStreet("Grapeseed Ave", 35f, ScannerAudio.streets.GrapeseedAve.FileName));
+        Streets.Add(new GTAStreet("Joad Ln", 35f, ScannerAudio.streets.JilledLane.FileName));
+        Streets.Add(new GTAStreet("Union Rd", 40f, ScannerAudio.streets.UnionRoad.FileName));
+        Streets.Add(new GTAStreet("O'Neil Way", 25f, ScannerAudio.streets.OneilWay.FileName));
+        Streets.Add(new GTAStreet("Senora Fwy", 65f, ScannerAudio.streets.SonoraFreeway.FileName));
+        Streets.Add(new GTAStreet("Catfish View", 35f, ScannerAudio.streets.CatfishView.FileName));
+        Streets.Add(new GTAStreet("Great Ocean Hwy", 60f, ScannerAudio.streets.GreatOceanHighway.FileName));
+        Streets.Add(new GTAStreet("Paleto Blvd", 35f, ScannerAudio.streets.PaletoBlvd.FileName));
+        Streets.Add(new GTAStreet("Duluoz Ave", 35f, ScannerAudio.streets.DelouasAve.FileName));
+        Streets.Add(new GTAStreet("Procopio Dr", 35f, ScannerAudio.streets.ProcopioDrive.FileName));
         Streets.Add(new GTAStreet("Cascabel Ave", 30f));
-        Streets.Add(new GTAStreet("Procopio Promenade", 25f));
-        Streets.Add(new GTAStreet("Pyrite Ave", 30f));
-        Streets.Add(new GTAStreet("Fort Zancudo Approach Rd", 25f));
-        Streets.Add(new GTAStreet("Barbareno Rd", 30f));
-        Streets.Add(new GTAStreet("Ineseno Road", 30f));
-        Streets.Add(new GTAStreet("West Eclipse Blvd", 35f));
-        Streets.Add(new GTAStreet("Playa Vista", 30f));
-        Streets.Add(new GTAStreet("Bay City Ave", 30f));
-        Streets.Add(new GTAStreet("Del Perro Fwy", 65f));
-        Streets.Add(new GTAStreet("Equality Way", 30f));
-        Streets.Add(new GTAStreet("Red Desert Ave", 30f));
-        Streets.Add(new GTAStreet("Magellan Ave", 25f));
-        Streets.Add(new GTAStreet("Sandcastle Way", 30f));
-        Streets.Add(new GTAStreet("Vespucci Blvd", 40f));
-        Streets.Add(new GTAStreet("Prosperity St", 30f));
-        Streets.Add(new GTAStreet("San Andreas Ave", 40f));
-        Streets.Add(new GTAStreet("North Rockford Dr", 35f));
-        Streets.Add(new GTAStreet("South Rockford Dr", 35f));
-        Streets.Add(new GTAStreet("Marathon Ave", 30f));
-        Streets.Add(new GTAStreet("Boulevard Del Perro", 35f));
-        Streets.Add(new GTAStreet("Cougar Ave", 30f));
-        Streets.Add(new GTAStreet("Liberty St", 30f));
-        Streets.Add(new GTAStreet("Bay City Incline", 40f));
-        Streets.Add(new GTAStreet("Conquistador St", 25f));
-        Streets.Add(new GTAStreet("Cortes St", 25f));
-        Streets.Add(new GTAStreet("Vitus St", 25f));
-        Streets.Add(new GTAStreet("Aguja St", 25f));
-        Streets.Add(new GTAStreet("Goma St", 25f));
-        Streets.Add(new GTAStreet("Melanoma St", 25f));
-        Streets.Add(new GTAStreet("Palomino Ave", 35f));
-        Streets.Add(new GTAStreet("Invention Ct", 25f));
-        Streets.Add(new GTAStreet("Imagination Ct", 25f));
-        Streets.Add(new GTAStreet("Rub St", 25f));
-        Streets.Add(new GTAStreet("Tug St", 25f));
-        Streets.Add(new GTAStreet("Ginger St", 30f));
-        Streets.Add(new GTAStreet("Lindsay Circus", 30f));
-        Streets.Add(new GTAStreet("Calais Ave", 35f));
-        Streets.Add(new GTAStreet("Adam's Apple Blvd", 40f));
-        Streets.Add(new GTAStreet("Alta St", 40f));
-        Streets.Add(new GTAStreet("Integrity Way", 30f));
-        Streets.Add(new GTAStreet("Swiss St", 30f));
-        Streets.Add(new GTAStreet("Strawberry Ave", 40f));
-        Streets.Add(new GTAStreet("Capital Blvd", 30f));
-        Streets.Add(new GTAStreet("Crusade Rd", 30f));
-        Streets.Add(new GTAStreet("Innocence Blvd", 40f));
-        Streets.Add(new GTAStreet("Davis Ave", 40f));
-        Streets.Add(new GTAStreet("Little Bighorn Ave", 35f));
-        Streets.Add(new GTAStreet("Roy Lowenstein Blvd", 35f));
-        Streets.Add(new GTAStreet("Jamestown St", 30f));
-        Streets.Add(new GTAStreet("Carson Ave", 35f));
-        Streets.Add(new GTAStreet("Grove St", 30f));
+        Streets.Add(new GTAStreet("Procopio Promenade", 25f, ScannerAudio.streets.ProcopioPromenade.FileName));
+        Streets.Add(new GTAStreet("Pyrite Ave", 30f, ScannerAudio.streets.PyriteAve.FileName));
+        Streets.Add(new GTAStreet("Fort Zancudo Approach Rd", 25f, ScannerAudio.streets.FortZancudoApproachRoad.FileName));
+        Streets.Add(new GTAStreet("Barbareno Rd", 30f, ScannerAudio.streets.BarbarinoRoad.FileName));
+        Streets.Add(new GTAStreet("Ineseno Road", 30f, ScannerAudio.streets.EnecinoRoad.FileName));
+        Streets.Add(new GTAStreet("West Eclipse Blvd", 35f, ScannerAudio.streets.WestEclipseBlvd.FileName));
+        Streets.Add(new GTAStreet("Playa Vista", 30f, ScannerAudio.streets.PlayaVista.FileName));
+        Streets.Add(new GTAStreet("Bay City Ave", 30f, ScannerAudio.streets.BaseCityAve.FileName));
+        Streets.Add(new GTAStreet("Del Perro Fwy", 65f, ScannerAudio.streets.DelPierroFreeway.FileName));
+        Streets.Add(new GTAStreet("Equality Way", 30f, ScannerAudio.streets.EqualityWay.FileName));
+        Streets.Add(new GTAStreet("Red Desert Ave", 30f, ScannerAudio.streets.RedDesertAve.FileName));
+        Streets.Add(new GTAStreet("Magellan Ave", 25f, ScannerAudio.streets.MagellanAve.FileName));
+        Streets.Add(new GTAStreet("Sandcastle Way", 30f, ScannerAudio.streets.SandcastleWay.FileName));
+        Streets.Add(new GTAStreet("Vespucci Blvd", 40f, ScannerAudio.streets.VespucciBlvd.FileName));
+        Streets.Add(new GTAStreet("Prosperity St", 30f, ScannerAudio.streets.ProsperityStreet.FileName));
+        Streets.Add(new GTAStreet("San Andreas Ave", 40f, ScannerAudio.streets.SanAndreasAve.FileName));
+        Streets.Add(new GTAStreet("North Rockford Dr", 35f, ScannerAudio.streets.NorthRockfordDrive.FileName));
+        Streets.Add(new GTAStreet("South Rockford Dr", 35f, ScannerAudio.streets.SouthRockfordDrive.FileName));
+        Streets.Add(new GTAStreet("Marathon Ave", 30f, ScannerAudio.streets.MarathonAve.FileName));
+        Streets.Add(new GTAStreet("Boulevard Del Perro", 35f, ScannerAudio.streets.BlvdDelPierro.FileName));
+        Streets.Add(new GTAStreet("Cougar Ave", 30f, ScannerAudio.streets.CougarAve.FileName));
+        Streets.Add(new GTAStreet("Liberty St", 30f, ScannerAudio.streets.LibertyStreet.FileName));
+        Streets.Add(new GTAStreet("Bay City Incline", 40f, ScannerAudio.streets.BaseCityIncline.FileName));
+        Streets.Add(new GTAStreet("Conquistador St", 25f, ScannerAudio.streets.ConquistadorStreet.FileName));
+        Streets.Add(new GTAStreet("Cortes St", 25f, ScannerAudio.streets.CortezStreet.FileName));
+        Streets.Add(new GTAStreet("Vitus St", 25f, ScannerAudio.streets.VitasStreet.FileName));
+        Streets.Add(new GTAStreet("Aguja St", 25f, ScannerAudio.streets.ElGouhaStreet.FileName));/////maytbe????!?!?!
+        Streets.Add(new GTAStreet("Goma St", 25f, ScannerAudio.streets.GomezStreet.FileName));
+        Streets.Add(new GTAStreet("Melanoma St", 25f, ScannerAudio.streets.MelanomaStreet.FileName));
+        Streets.Add(new GTAStreet("Palomino Ave", 35f, ScannerAudio.streets.PalaminoAve.FileName));
+        Streets.Add(new GTAStreet("Invention Ct", 25f, ScannerAudio.streets.InventionCourt.FileName));
+        Streets.Add(new GTAStreet("Imagination Ct", 25f, ScannerAudio.streets.ImaginationCourt.FileName));
+        Streets.Add(new GTAStreet("Rub St", 25f, ScannerAudio.streets.RubStreet.FileName));
+        Streets.Add(new GTAStreet("Tug St", 25f, ScannerAudio.streets.TugStreet.FileName));
+        Streets.Add(new GTAStreet("Ginger St", 30f, ScannerAudio.streets.GingerStreet.FileName));
+        Streets.Add(new GTAStreet("Lindsay Circus", 30f, ScannerAudio.streets.LindsayCircus.FileName));
+        Streets.Add(new GTAStreet("Calais Ave", 35f, ScannerAudio.streets.CaliasAve.FileName));
+        Streets.Add(new GTAStreet("Adam's Apple Blvd", 40f, ScannerAudio.streets.AdamsAppleBlvd.FileName));
+        Streets.Add(new GTAStreet("Alta St", 40f, ScannerAudio.streets.AlterStreet.FileName));
+        Streets.Add(new GTAStreet("Integrity Way", 30f,ScannerAudio.streets.IntergrityWy.FileName));
+        Streets.Add(new GTAStreet("Swiss St", 30f, ScannerAudio.streets.SwissStreet.FileName));
+        Streets.Add(new GTAStreet("Strawberry Ave", 40f, ScannerAudio.streets.StrawberryAve.FileName));
+        Streets.Add(new GTAStreet("Capital Blvd", 30f, ScannerAudio.streets.CapitalBlvd.FileName));
+        Streets.Add(new GTAStreet("Crusade Rd", 30f, ScannerAudio.streets.CrusadeRoad.FileName));
+        Streets.Add(new GTAStreet("Innocence Blvd", 40f, ScannerAudio.streets.InnocenceBlvd.FileName));
+        Streets.Add(new GTAStreet("Davis Ave", 40f, ScannerAudio.streets.DavisAve.FileName));
+        Streets.Add(new GTAStreet("Little Bighorn Ave", 35f, ScannerAudio.streets.LittleBighornAve.FileName));
+        Streets.Add(new GTAStreet("Roy Lowenstein Blvd", 35f, ScannerAudio.streets.RoyLowensteinBlvd.FileName));
+        Streets.Add(new GTAStreet("Jamestown St", 30f, ScannerAudio.streets.JamestownStreet.FileName));
+        Streets.Add(new GTAStreet("Carson Ave", 35f, ScannerAudio.streets.CarsonAve.FileName));
+        Streets.Add(new GTAStreet("Grove St", 30f, ScannerAudio.streets.GroveStreet.FileName));
         Streets.Add(new GTAStreet("Brouge Ave", 30f));
-        Streets.Add(new GTAStreet("Covenant Ave", 30f));
-        Streets.Add(new GTAStreet("Dutch London St", 40f));
-        Streets.Add(new GTAStreet("Signal St", 30f));
-        Streets.Add(new GTAStreet("Elysian Fields Fwy", 50f));
+        Streets.Add(new GTAStreet("Covenant Ave", 30f, ScannerAudio.streets.CovenantAve.FileName));
+        Streets.Add(new GTAStreet("Dutch London St", 40f, ScannerAudio.streets.DutchLondonStreet.FileName));
+        Streets.Add(new GTAStreet("Signal St", 30f, ScannerAudio.streets.SignalStreet.FileName));
+        Streets.Add(new GTAStreet("Elysian Fields Fwy", 50f, ScannerAudio.streets.ElysianFieldsFreeway.FileName));
         Streets.Add(new GTAStreet("Plaice Pl", 30f));
-        Streets.Add(new GTAStreet("Chum St", 40f));
+        Streets.Add(new GTAStreet("Chum St", 40f, ScannerAudio.streets.ChumStreet.FileName));
         Streets.Add(new GTAStreet("Chupacabra St", 30f));
-        Streets.Add(new GTAStreet("Miriam Turner Overpass", 30f));
-        Streets.Add(new GTAStreet("Autopia Pkwy", 35f));
-        Streets.Add(new GTAStreet("Exceptionalists Way", 35f));
+        Streets.Add(new GTAStreet("Miriam Turner Overpass", 30f, ScannerAudio.streets.MiriamTurnerOverpass.FileName));
+        Streets.Add(new GTAStreet("Autopia Pkwy", 35f, ScannerAudio.streets.AltopiaParkway.FileName));
+        Streets.Add(new GTAStreet("Exceptionalists Way", 35f, ScannerAudio.streets.ExceptionalistWay.FileName));
         Streets.Add(new GTAStreet("La Puerta Fwy", 60f));
-        Streets.Add(new GTAStreet("New Empire Way", 30f));
-        Streets.Add(new GTAStreet("Runway1", 90f));
-        Streets.Add(new GTAStreet("Greenwich Pkwy", 35f));
-        Streets.Add(new GTAStreet("Kortz Dr", 30f));
-        Streets.Add(new GTAStreet("Banham Canyon Dr", 40f));
+        Streets.Add(new GTAStreet("New Empire Way", 30f, ScannerAudio.streets.NewEmpireWay.FileName));
+        Streets.Add(new GTAStreet("Runway1", 90f, ScannerAudio.streets.RunwayOne.FileName));
+        Streets.Add(new GTAStreet("Greenwich Pkwy", 35f, ScannerAudio.streets.GrenwichParkway.FileName));
+        Streets.Add(new GTAStreet("Kortz Dr", 30f, ScannerAudio.streets.KortzDrive.FileName));
+        Streets.Add(new GTAStreet("Banham Canyon Dr", 40f, ScannerAudio.streets.BanhamCanyonDrive.FileName));
         Streets.Add(new GTAStreet("Buen Vino Rd", 40f));
-        Streets.Add(new GTAStreet("Route 68", 55f));
-        Streets.Add(new GTAStreet("Zancudo Grande Valley", 40f));
-        Streets.Add(new GTAStreet("Zancudo Barranca", 40f));
-        Streets.Add(new GTAStreet("Galileo Rd", 40f));
-        Streets.Add(new GTAStreet("Mt Vinewood Dr", 40f));
+        Streets.Add(new GTAStreet("Route 68", 55f, ScannerAudio.streets.Route68.FileName));
+        Streets.Add(new GTAStreet("Zancudo Grande Valley", 40f, ScannerAudio.streets.ZancudoGrandeValley.FileName));
+        Streets.Add(new GTAStreet("Zancudo Barranca", 40f, ScannerAudio.streets.ZancudoBaranca.FileName));
+        Streets.Add(new GTAStreet("Galileo Rd", 40f, ScannerAudio.streets.GallileoRoad.FileName));
+        Streets.Add(new GTAStreet("Mt Vinewood Dr", 40f, ScannerAudio.streets.MountVinewoodDrive.FileName));
         Streets.Add(new GTAStreet("Marlowe Dr", 40f));
-        Streets.Add(new GTAStreet("Milton Rd", 35f));
-        Streets.Add(new GTAStreet("Kimble Hill Dr", 35f));
-        Streets.Add(new GTAStreet("Normandy Dr", 35f));
-        Streets.Add(new GTAStreet("Hillcrest Ave", 35f));
-        Streets.Add(new GTAStreet("Hillcrest Ridge Access Rd", 35f));
-        Streets.Add(new GTAStreet("North Sheldon Ave", 35f));
-        Streets.Add(new GTAStreet("Lake Vinewood Dr", 35f));
-        Streets.Add(new GTAStreet("Lake Vinewood Est", 35f));
-        Streets.Add(new GTAStreet("Baytree Canyon Rd", 40f));
-        Streets.Add(new GTAStreet("North Conker Ave", 35f));
-        Streets.Add(new GTAStreet("Wild Oats Dr", 35f));
-        Streets.Add(new GTAStreet("Whispymound Dr", 35f));
-        Streets.Add(new GTAStreet("Didion Dr", 35f));
-        Streets.Add(new GTAStreet("Cox Way", 35f));
-        Streets.Add(new GTAStreet("Picture Perfect Drive", 35f));
-        Streets.Add(new GTAStreet("South Mo Milton Dr", 35f));
-        Streets.Add(new GTAStreet("Cockingend Dr", 35f));
-        Streets.Add(new GTAStreet("Mad Wayne Thunder Dr", 35f));
-        Streets.Add(new GTAStreet("Hangman Ave", 35f));
-        Streets.Add(new GTAStreet("Dunstable Ln", 35f));
-        Streets.Add(new GTAStreet("Dunstable Dr", 35f));
-        Streets.Add(new GTAStreet("Greenwich Way", 35f));
-        Streets.Add(new GTAStreet("Greenwich Pl", 35f));
+        Streets.Add(new GTAStreet("Milton Rd", 35f, ScannerAudio.streets.MiltonRoad.FileName));
+        Streets.Add(new GTAStreet("Kimble Hill Dr", 35f, ScannerAudio.streets.KimbalHillDrive.FileName));
+        Streets.Add(new GTAStreet("Normandy Dr", 35f, ScannerAudio.streets.NormandyDrive.FileName));
+        Streets.Add(new GTAStreet("Hillcrest Ave", 35f, ScannerAudio.streets.HillcrestAve.FileName));
+        Streets.Add(new GTAStreet("Hillcrest Ridge Access Rd", 35f, ScannerAudio.streets.HillcrestRidgeAccessRoad.FileName));
+        Streets.Add(new GTAStreet("North Sheldon Ave", 35f, ScannerAudio.streets.NorthSheldonAve.FileName));
+        Streets.Add(new GTAStreet("Lake Vinewood Dr", 35f,ScannerAudio.streets.LakeVineWoodDrive.FileName));
+        Streets.Add(new GTAStreet("Lake Vinewood Est", 35f, ScannerAudio.streets.LakeVinewoodEstate.FileName));
+        Streets.Add(new GTAStreet("Baytree Canyon Rd", 40f, ScannerAudio.streets.BaytreeCanyonRoad.FileName));
+        Streets.Add(new GTAStreet("North Conker Ave", 35f, ScannerAudio.streets.NorthConkerAve.FileName));
+        Streets.Add(new GTAStreet("Wild Oats Dr", 35f, ScannerAudio.streets.WildOatsDrive.FileName));
+        Streets.Add(new GTAStreet("Whispymound Dr", 35f, ScannerAudio.streets.WispyMoundDrive.FileName));
+        Streets.Add(new GTAStreet("Didion Dr", 35f, ScannerAudio.streets.DiedianDrive.FileName));
+        Streets.Add(new GTAStreet("Cox Way", 35f, ScannerAudio.streets.CoxWay.FileName));
+        Streets.Add(new GTAStreet("Picture Perfect Drive", 35f, ScannerAudio.streets.PicturePerfectDrive.FileName));
+        Streets.Add(new GTAStreet("South Mo Milton Dr", 35f, ScannerAudio.streets.SouthMoMiltonDrive.FileName));
+        Streets.Add(new GTAStreet("Cockingend Dr", 35f, ScannerAudio.streets.CockandGinDrive.FileName));
+        Streets.Add(new GTAStreet("Mad Wayne Thunder Dr", 35f, ScannerAudio.streets.MagwavevendorDrive.FileName));
+        Streets.Add(new GTAStreet("Hangman Ave", 35f, ScannerAudio.streets.HangmanAve.FileName));
+        Streets.Add(new GTAStreet("Dunstable Ln", 35f, ScannerAudio.streets.DunstableLane.FileName));
+        Streets.Add(new GTAStreet("Dunstable Dr", 35f, ScannerAudio.streets.DunstableDrive.FileName));
+        Streets.Add(new GTAStreet("Greenwich Way", 35f, ScannerAudio.streets.GrenwichWay.FileName));
+        Streets.Add(new GTAStreet("Greenwich Pl", 35f, ScannerAudio.streets.GrunnichPlace.FileName));
         Streets.Add(new GTAStreet("Hardy Way", 35f));
-        Streets.Add(new GTAStreet("Richman St", 35f));
-        Streets.Add(new GTAStreet("Ace Jones Dr", 35f));
+        Streets.Add(new GTAStreet("Richman St", 35f, ScannerAudio.streets.RichmondStreet.FileName));
+        Streets.Add(new GTAStreet("Ace Jones Dr", 35f, ScannerAudio.streets.AceJonesDrive.FileName));
         Streets.Add(new GTAStreet("Los Santos Freeway", 65f));
-        Streets.Add(new GTAStreet("Senora Rd", 40f));
-        Streets.Add(new GTAStreet("Nowhere Rd", 25f));
-        Streets.Add(new GTAStreet("Smoke Tree Rd", 35f));
-        Streets.Add(new GTAStreet("Cholla Rd", 35f));
-        Streets.Add(new GTAStreet("Cat-Claw Ave", 35f));
-        Streets.Add(new GTAStreet("Senora Way", 40f));
-        Streets.Add(new GTAStreet("Palomino Fwy", 60f));
-        Streets.Add(new GTAStreet("Shank St", 25f));
-        Streets.Add(new GTAStreet("Macdonald St", 35f));
-        Streets.Add(new GTAStreet("Route 68 Approach", 55f));
-        Streets.Add(new GTAStreet("Vinewood Park Dr", 35f));
-        Streets.Add(new GTAStreet("Vinewood Blvd", 40f));
-        Streets.Add(new GTAStreet("Mirror Park Blvd", 35f));
-        Streets.Add(new GTAStreet("Glory Way", 35f));
-        Streets.Add(new GTAStreet("Bridge St", 35f));
-        Streets.Add(new GTAStreet("West Mirror Drive", 35f));
-        Streets.Add(new GTAStreet("Nikola Ave", 35f));
-        Streets.Add(new GTAStreet("East Mirror Dr", 35f));
-        Streets.Add(new GTAStreet("Nikola Pl", 25f));
-        Streets.Add(new GTAStreet("Mirror Pl", 35f));
-        Streets.Add(new GTAStreet("El Rancho Blvd", 40f));
-        Streets.Add(new GTAStreet("Olympic Fwy", 60f));
-        Streets.Add(new GTAStreet("Fudge Ln", 25f));
-        Streets.Add(new GTAStreet("Amarillo Vista", 25f));
-        Streets.Add(new GTAStreet("Labor Pl", 35f));
-        Streets.Add(new GTAStreet("El Burro Blvd", 35f));
-        Streets.Add(new GTAStreet("Sustancia Rd", 45f));
-        Streets.Add(new GTAStreet("South Shambles St", 30f));
-        Streets.Add(new GTAStreet("Hanger Way", 30f));
-        Streets.Add(new GTAStreet("Orchardville Ave", 30f));
-        Streets.Add(new GTAStreet("Popular St", 40f));
-        Streets.Add(new GTAStreet("Buccaneer Way", 45f));
-        Streets.Add(new GTAStreet("Abattoir Ave", 35f));
+        Streets.Add(new GTAStreet("Senora Rd", 40f, ScannerAudio.streets.SonoraRoad.FileName));
+        Streets.Add(new GTAStreet("Nowhere Rd", 25f, ScannerAudio.streets.NowhereRoad.FileName));
+        Streets.Add(new GTAStreet("Smoke Tree Rd", 35f, ScannerAudio.streets.SmokeTreeRoad.FileName));
+        Streets.Add(new GTAStreet("Cholla Rd", 35f, ScannerAudio.streets.ChollaRoad.FileName));
+        Streets.Add(new GTAStreet("Cat-Claw Ave", 35f, ScannerAudio.streets.CatClawAve.FileName));
+        Streets.Add(new GTAStreet("Senora Way", 40f, ScannerAudio.streets.SonoraWay.FileName));
+        Streets.Add(new GTAStreet("Palomino Fwy", 60f, ScannerAudio.streets.PaliminoFreeway.FileName));
+        Streets.Add(new GTAStreet("Shank St", 25f, ScannerAudio.streets.ShankStreet.FileName));
+        Streets.Add(new GTAStreet("Macdonald St", 35f, ScannerAudio.streets.McDonaldStreet.FileName));
+        Streets.Add(new GTAStreet("Route 68 Approach", 55f, ScannerAudio.streets.Route68.FileName));
+        Streets.Add(new GTAStreet("Vinewood Park Dr", 35f, ScannerAudio.streets.VinewoodParkDrive.FileName));
+        Streets.Add(new GTAStreet("Vinewood Blvd", 40f, ScannerAudio.streets.VinewoodBlvd.FileName));
+        Streets.Add(new GTAStreet("Mirror Park Blvd", 35f, ScannerAudio.streets.MirrorParkBlvd.FileName));
+        Streets.Add(new GTAStreet("Glory Way", 35f, ScannerAudio.streets.GloryWay.FileName));
+        Streets.Add(new GTAStreet("Bridge St", 35f, ScannerAudio.streets.BridgeStreet.FileName));
+        Streets.Add(new GTAStreet("West Mirror Drive", 35f, ScannerAudio.streets.WestMirrorDrive.FileName));
+        Streets.Add(new GTAStreet("Nikola Ave", 35f, ScannerAudio.streets.NicolaAve.FileName));
+        Streets.Add(new GTAStreet("East Mirror Dr", 35f, ScannerAudio.streets.EastMirrorDrive.FileName));
+        Streets.Add(new GTAStreet("Nikola Pl", 25f, ScannerAudio.streets.NikolaPlace.FileName));
+        Streets.Add(new GTAStreet("Mirror Pl", 35f, ScannerAudio.streets.MirrorPlace.FileName));
+        Streets.Add(new GTAStreet("El Rancho Blvd", 40f, ScannerAudio.streets.ElRanchoBlvd.FileName));
+        Streets.Add(new GTAStreet("Olympic Fwy", 60f, ScannerAudio.streets.OlympicFreeway.FileName));
+        Streets.Add(new GTAStreet("Fudge Ln", 25f, ScannerAudio.streets.FudgeLane.FileName));
+        Streets.Add(new GTAStreet("Amarillo Vista", 25f,ScannerAudio.streets.AmarilloVista.FileName));
+        Streets.Add(new GTAStreet("Labor Pl", 35f, ScannerAudio.streets.ForceLaborPlace.FileName));
+        Streets.Add(new GTAStreet("El Burro Blvd", 35f, ScannerAudio.streets.ElBurroBlvd.FileName));
+        Streets.Add(new GTAStreet("Sustancia Rd", 45f, ScannerAudio.streets.SustanciaRoad.FileName));
+        Streets.Add(new GTAStreet("South Shambles St", 30f, ScannerAudio.streets.SouthShambleStreet.FileName));
+        Streets.Add(new GTAStreet("Hanger Way", 30f, ScannerAudio.streets.HangarWay.FileName));
+        Streets.Add(new GTAStreet("Orchardville Ave", 30f, ScannerAudio.streets.OrchidvilleAve.FileName));
+        Streets.Add(new GTAStreet("Popular St", 40f, ScannerAudio.streets.PopularStreet.FileName));
+        Streets.Add(new GTAStreet("Buccaneer Way", 45f, ScannerAudio.streets.BuccanierWay.FileName));
+        Streets.Add(new GTAStreet("Abattoir Ave", 35f, ScannerAudio.streets.AvatorAve.FileName));
         Streets.Add(new GTAStreet("Voodoo Place", 30f));
-        Streets.Add(new GTAStreet("Mutiny Rd", 35f));
-        Streets.Add(new GTAStreet("South Arsenal St", 35f));
-        Streets.Add(new GTAStreet("Forum Dr", 35f));
-        Streets.Add(new GTAStreet("Morningwood Blvd", 35f));
-        Streets.Add(new GTAStreet("Dorset Dr", 40f));
-        Streets.Add(new GTAStreet("Caesars Place", 25f));
-        Streets.Add(new GTAStreet("Spanish Ave", 30f));
-        Streets.Add(new GTAStreet("Portola Dr", 30f));
-        Streets.Add(new GTAStreet("Edwood Way", 25f));
-        Streets.Add(new GTAStreet("San Vitus Blvd", 40f));
-        Streets.Add(new GTAStreet("Eclipse Blvd", 35f));
+        Streets.Add(new GTAStreet("Mutiny Rd", 35f, ScannerAudio.streets.MutineeRoad.FileName));
+        Streets.Add(new GTAStreet("South Arsenal St", 35f, ScannerAudio.streets.SouthArsenalStreet.FileName));
+        Streets.Add(new GTAStreet("Forum Dr", 35f, ScannerAudio.streets.ForumDrive.FileName));
+        Streets.Add(new GTAStreet("Morningwood Blvd", 35f, ScannerAudio.streets.MorningwoodBlvd.FileName));
+        Streets.Add(new GTAStreet("Dorset Dr", 40f, ScannerAudio.streets.DorsetDrive.FileName));
+        Streets.Add(new GTAStreet("Caesars Place", 25f, ScannerAudio.streets.CaesarPlace.FileName));
+        Streets.Add(new GTAStreet("Spanish Ave", 30f, ScannerAudio.streets.SpanishAve.FileName));
+        Streets.Add(new GTAStreet("Portola Dr", 30f, ScannerAudio.streets.PortolaDrive.FileName));
+        Streets.Add(new GTAStreet("Edwood Way", 25f, ScannerAudio.streets.EdwardWay.FileName));
+        Streets.Add(new GTAStreet("San Vitus Blvd", 40f,ScannerAudio.streets.SanVitusBlvd.FileName));
+        Streets.Add(new GTAStreet("Eclipse Blvd", 35f, ScannerAudio.streets.EclipseBlvd.FileName));
         Streets.Add(new GTAStreet("Gentry Lane", 30f));
-        Streets.Add(new GTAStreet("Las Lagunas Blvd", 40f));
-        Streets.Add(new GTAStreet("Power St", 40f));
-        Streets.Add(new GTAStreet("Mt Haan Rd", 40f));
-        Streets.Add(new GTAStreet("Elgin Ave", 40f));
-        Streets.Add(new GTAStreet("Hawick Ave", 35f));
-        Streets.Add(new GTAStreet("Meteor St", 30f));
-        Streets.Add(new GTAStreet("Alta Pl", 30f));
-        Streets.Add(new GTAStreet("Occupation Ave", 35f));
-        Streets.Add(new GTAStreet("Carcer Way", 40f));
-        Streets.Add(new GTAStreet("Eastbourne Way", 30f));
-        Streets.Add(new GTAStreet("Rockford Dr", 35f));
-        Streets.Add(new GTAStreet("Abe Milton Pkwy", 35f));
-        Streets.Add(new GTAStreet("Laguna Pl", 30f));
-        Streets.Add(new GTAStreet("Sinners Passage", 30f));
-        Streets.Add(new GTAStreet("Atlee St", 30f));
-        Streets.Add(new GTAStreet("Sinner St", 30f));
-        Streets.Add(new GTAStreet("Supply St", 30f));
-        Streets.Add(new GTAStreet("Amarillo Way", 35f));
-        Streets.Add(new GTAStreet("Tower Way", 35f));
-        Streets.Add(new GTAStreet("Decker St", 35f));
-        Streets.Add(new GTAStreet("Tackle St", 25f));
-        Streets.Add(new GTAStreet("Low Power St", 35f));
-        Streets.Add(new GTAStreet("Clinton Ave", 35f));
-        Streets.Add(new GTAStreet("Fenwell Pl", 35f));
-        Streets.Add(new GTAStreet("Utopia Gardens", 25f));
+        Streets.Add(new GTAStreet("Las Lagunas Blvd", 40f, ScannerAudio.streets.LasLegunasBlvd.FileName));
+        Streets.Add(new GTAStreet("Power St", 40f, ScannerAudio.streets.PowerStreet.FileName));
+        Streets.Add(new GTAStreet("Mt Haan Rd", 40f, ScannerAudio.streets.MtHaanRoad.FileName));
+        Streets.Add(new GTAStreet("Elgin Ave", 40f, ScannerAudio.streets.ElginAve.FileName));
+        Streets.Add(new GTAStreet("Hawick Ave", 35f,ScannerAudio.streets.HawickAve.FileName));
+        Streets.Add(new GTAStreet("Meteor St", 30f, ScannerAudio.streets.MeteorStreet.FileName));
+        Streets.Add(new GTAStreet("Alta Pl", 30f, ScannerAudio.streets.AltaPlace.FileName));
+        Streets.Add(new GTAStreet("Occupation Ave", 35f, ScannerAudio.streets.OccupationAve.FileName));
+        Streets.Add(new GTAStreet("Carcer Way", 40f, ScannerAudio.streets.CarcerWay.FileName));
+        Streets.Add(new GTAStreet("Eastbourne Way", 30f,ScannerAudio.streets.EastbourneWay.FileName));
+        Streets.Add(new GTAStreet("Rockford Dr", 35f, ScannerAudio.streets.RockfordDrive.FileName));
+        Streets.Add(new GTAStreet("Abe Milton Pkwy", 35f, ScannerAudio.streets.EightMiltonParkway.FileName));
+        Streets.Add(new GTAStreet("Laguna Pl", 30f, ScannerAudio.streets.LagunaPlace.FileName));
+        Streets.Add(new GTAStreet("Sinners Passage", 30f, ScannerAudio.streets.SinnersPassage.FileName));
+        Streets.Add(new GTAStreet("Atlee St", 30f, ScannerAudio.streets.AtleyStreet.FileName));
+        Streets.Add(new GTAStreet("Sinner St", 30f, ScannerAudio.streets.SinnerStreet.FileName));
+        Streets.Add(new GTAStreet("Supply St", 30f, ScannerAudio.streets.SupplyStreet.FileName));
+        Streets.Add(new GTAStreet("Amarillo Way", 35f, ScannerAudio.streets.AmarilloWay.FileName));
+        Streets.Add(new GTAStreet("Tower Way", 35f, ScannerAudio.streets.TowerWay.FileName));
+        Streets.Add(new GTAStreet("Decker St", 35f, ScannerAudio.streets.DeckerStreet.FileName));
+        Streets.Add(new GTAStreet("Tackle St", 25f, ScannerAudio.streets.TackleStreet.FileName));
+        Streets.Add(new GTAStreet("Low Power St", 35f, ScannerAudio.streets.LowPowerStreet.FileName));
+        Streets.Add(new GTAStreet("Clinton Ave", 35f, ScannerAudio.streets.ClintonAve.FileName));
+        Streets.Add(new GTAStreet("Fenwell Pl", 35f, ScannerAudio.streets.FenwellPlace.FileName));
+        Streets.Add(new GTAStreet("Utopia Gardens", 25f, ScannerAudio.streets.UtopiaGardens.FileName));
         Streets.Add(new GTAStreet("Cavalry Blvd", 35f));
-        Streets.Add(new GTAStreet("South Boulevard Del Perro", 35f));
-        Streets.Add(new GTAStreet("Americano Way", 25f));
-        Streets.Add(new GTAStreet("Sam Austin Dr", 25f));
-        Streets.Add(new GTAStreet("East Galileo Ave", 35f));
+        Streets.Add(new GTAStreet("South Boulevard Del Perro", 35f, ScannerAudio.streets.SouthBlvdDelPierro.FileName));
+        Streets.Add(new GTAStreet("Americano Way", 25f, ScannerAudio.streets.AmericanoWay.FileName));
+        Streets.Add(new GTAStreet("Sam Austin Dr", 25f, ScannerAudio.streets.SamAustinDrive.FileName));
+        Streets.Add(new GTAStreet("East Galileo Ave", 35f, ScannerAudio.streets.EastGalileoAve.FileName));
         Streets.Add(new GTAStreet("Galileo Park", 35f));
-        Streets.Add(new GTAStreet("West Galileo Ave", 35f));
-        Streets.Add(new GTAStreet("Tongva Dr", 40f));
-        Streets.Add(new GTAStreet("Zancudo Rd", 35f));
-        Streets.Add(new GTAStreet("Movie Star Way", 35f));
-        Streets.Add(new GTAStreet("Heritage Way", 35f));
-        Streets.Add(new GTAStreet("Perth St", 25f));
+        Streets.Add(new GTAStreet("West Galileo Ave", 35f, ScannerAudio.streets.WestGalileoAve.FileName));
+        Streets.Add(new GTAStreet("Tongva Dr", 40f, ScannerAudio.streets.TongvaDrive.FileName));
+        Streets.Add(new GTAStreet("Zancudo Rd", 35f, ScannerAudio.streets.ZancudoRoad.FileName));
+        Streets.Add(new GTAStreet("Movie Star Way", 35f, ScannerAudio.streets.MovieStarWay.FileName));
+        Streets.Add(new GTAStreet("Heritage Way", 35f, ScannerAudio.streets.HeritageWay.FileName));
+        Streets.Add(new GTAStreet("Perth St", 25f, ScannerAudio.streets.PerfStreet.FileName));
         Streets.Add(new GTAStreet("Chianski Passage", 30f));
-        Streets.Add(new GTAStreet("Lolita Ave", 35f));
-        Streets.Add(new GTAStreet("Meringue Ln", 35f));
-        Streets.Add(new GTAStreet("Strangeways Dr", 30f));
+        Streets.Add(new GTAStreet("Lolita Ave", 35f, ScannerAudio.streets.LolitaAve.FileName));
+        Streets.Add(new GTAStreet("Meringue Ln", 35f, ScannerAudio.streets.MirangeLane.FileName));
+        Streets.Add(new GTAStreet("Strangeways Dr", 30f, ScannerAudio.streets.StrangeWaysDrive.FileName));
     }
     private static void setupLicensePlates()
     {
@@ -5013,10 +5062,10 @@ public static class InstantAction
         //     return;
         //if (ProcedureString != "GetCarjackingAnimations")
         //    return;
-        StringBuilder sb = new StringBuilder();
-        sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog + System.Environment.NewLine);
-        File.AppendAllText("Plugins\\InstantAction\\" + "log.txt", sb.ToString());
-        sb.Clear();
+        //StringBuilder sb = new StringBuilder();
+        //sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog + System.Environment.NewLine);
+        //File.AppendAllText("Plugins\\InstantAction\\" + "log.txt", sb.ToString());
+        //sb.Clear();
 
         Game.Console.Print(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog);
     }
@@ -5105,45 +5154,35 @@ public static class InstantAction
     private static void DebugNumpad4()
     {
 
-        PoliceScanningSystem.RemoveAllCreatedEntities();
+
+        //TestStreetCall();
 
 
+        //PoliceScanningSystem.RemoveAllCreatedEntities();
 
-
-
-        GameFiber.StartNew(delegate
+        PoliceScanningSystem.SpawnCop(PoliceScanningSystem.PoliceAgencies.LSPD, Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
+        GTACop MyCop = PoliceScanningSystem.CopPeds.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(MyCop != null)
         {
-            VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass != VehicleLookup.VehicleClass.Utility).PickRandom();
-            Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
-            Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
-            PoliceScanningSystem.CreatedEntities.Add(MyCar);
-            PoliceScanningSystem.CreatedEntities.Add(Driver);
-            Driver.WarpIntoVehicle(MyCar, -1);
-            uint GameTimeStarted = Game.GameTime;
-            //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
-            //  GameFiber.Yield();
 
-            WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
-            WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
+            MyCop.CopPed.Tasks.LeaveVehicle(MyCop.CopPed.CurrentVehicle, LeaveVehicleFlags.None);
+            GameFiber.Sleep(4000);
+            PoliceScanningSystem.Untask(MyCop);
 
-            // CarJackPedWithWeapon(MyCar, Driver, -1);
-            while(Game.GameTime - GameTimeStarted <= 20000)
-            {
-                //Text(myLookup.VehicleClass.ToString(), 0.5f, 0.5f, 0.75f, true, Color.Black);
-                GameFiber.Yield();
-            }
+            GameFiber.Sleep(4000);
 
-            if (Driver.Exists())
-                Driver.Delete();
+            PoliceScanningSystem.RandomSpawnIdle(MyCop);
 
-            if (MyCar.Exists())
-                MyCar.Delete();
+        }
 
-        });
+
+
+
+
 
         //GameFiber.StartNew(delegate
         //{
-        //    VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass == VehicleLookup.VehicleClass.Coupe || x.VehicleClass == VehicleLookup.VehicleClass.Sedan || x.VehicleClass == VehicleLookup.VehicleClass.Sports || x.VehicleClass == VehicleLookup.VehicleClass.SUV || x.VehicleClass == VehicleLookup.VehicleClass.Compact).PickRandom();
+        //    VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass != VehicleLookup.VehicleClass.Utility).PickRandom();
         //    Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
         //    Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
         //    PoliceScanningSystem.CreatedEntities.Add(MyCar);
@@ -5153,144 +5192,174 @@ public static class InstantAction
         //    //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
         //    //  GameFiber.Yield();
 
-        //    WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
-        //    WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
+            //    WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
+            //    WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
 
-        //    // CarJackPedWithWeapon(MyCar, Driver, -1);
-        //    GameFiber.Sleep(20000);
-        //    if (Driver.Exists())
-        //        Driver.Delete();
+            //    // CarJackPedWithWeapon(MyCar, Driver, -1);
+            //    while(Game.GameTime - GameTimeStarted <= 20000)
+            //    {
+            //        //Text(myLookup.VehicleClass.ToString(), 0.5f, 0.5f, 0.75f, true, Color.Black);
+            //        GameFiber.Yield();
+            //    }
 
-        //    if (MyCar.Exists())
-        //        MyCar.Delete();
+            //    if (Driver.Exists())
+            //        Driver.Delete();
 
-        //});
+            //    if (MyCar.Exists())
+            //        MyCar.Delete();
 
+            //});
 
+            //GameFiber.StartNew(delegate
+            //{
+            //    VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass == VehicleLookup.VehicleClass.Coupe || x.VehicleClass == VehicleLookup.VehicleClass.Sedan || x.VehicleClass == VehicleLookup.VehicleClass.Sports || x.VehicleClass == VehicleLookup.VehicleClass.SUV || x.VehicleClass == VehicleLookup.VehicleClass.Compact).PickRandom();
+            //    Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+            //    Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
+            //    PoliceScanningSystem.CreatedEntities.Add(MyCar);
+            //    PoliceScanningSystem.CreatedEntities.Add(Driver);
+            //    Driver.WarpIntoVehicle(MyCar, -1);
+            //    uint GameTimeStarted = Game.GameTime;
+            //    //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
+            //    //  GameFiber.Yield();
 
+            //    WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
+            //    WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
 
+            //    // CarJackPedWithWeapon(MyCar, Driver, -1);
+            //    GameFiber.Sleep(20000);
+            //    if (Driver.Exists())
+            //        Driver.Delete();
 
+            //    if (MyCar.Exists())
+            //        MyCar.Delete();
 
-        //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-        //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-        //if (ClosestVehicle != null)
-        //{
-        //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
-        //}
-
-
-
-
-
-
-        //DispatchAudioSystem.AbortAllAudio();
-
-
-
-
-
-
-
-        //Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
-        //Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
-        //Driver.BlockPermanentEvents = true;
-
-        //Driver.WarpIntoVehicle(MyCar, -1);
-
-        ////uint GameTimeStarted = Game.GameTime;
-        ////while (Game.GameTime - GameTimeStarted <= 10000)
-        ////{
-        ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
-        ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-        ////    GameFiber.Yield();
-        ////}
-        //GameFiber.Sleep(3000);
-
-        //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
-        //Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
-
-
-
-        //uint GameTimeStarted = Game.GameTime;
-        ////while (Game.GameTime - GameTimeStarted <= 10000)
-        ////{
-        ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
-        ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-        ////    GameFiber.Yield();
-        ////}
-
-
-
-        //Driver.Position = DriverSeatCoordinates;
-
-        //GameFiber.Sleep(3000);
-
-        //Driver.WarpIntoVehicle(MyCar, -1);
-
-        //GameFiber.Sleep(3000);
-
-        ////GameFiber.Sleep(3000);
-
-        //if (MyCar.Exists())
-        //    MyCar.Delete();
-
-        //if (Driver.Exists())
-        //    Driver.Delete();
-
-
-
-        //foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
-        //{
-
-        //    WriteToLog("WeaponInventoryChanged", string.Format("Dropped Gun {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
-
-        //}
+            //});
 
 
 
 
-        //List<string> Bones = new List<string> { "SKEL_ROOT", "skel_root", "SKEL_Pelvis", "SKEL_PELVIS", "skel_pelvis", "SKEL_Spine_Root", "SKEL_SPINE_ROOT", "skel_spine_root", "SKEL_Spine0","SKEL_SPINE0","skel_spine0" };
 
 
-        //foreach(string Stuff in Bones)
-        //{
-        //    if(Game.LocalPlayer.Character.HasBone(Stuff))
-        //    {
-        //        WriteToLog("Bones", string.Format("I have bone: {0}", Stuff));
-        //    }
-        //}
-
-
-        //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0);
-        //Vector3 MyPosition = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Game.LocalPlayer.Character, BoneIndexSpine, 0f, 0f, 0f);
-        // WriteToLog("Bones", string.Format("Spine Bone?: {0}", MyPosition));
-
-        //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-        //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-        //if (ClosestVehicle != null)
-        //{
-        //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
+            //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+            //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+            //if (ClosestVehicle != null)
+            //{
+            //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
+            //}
 
 
 
 
-        //    //Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
-        //    //Vector3 CarPosition = ClosestVehicle.Position;
-        //    //float DesiredHeading = ClosestVehicle.Heading - 90f;
-        //    ////NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Game.LocalPlayer.Character, GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, DesiredHeading, 3000);
-
-        //    //uint GameTimeStarted = Game.GameTime;
-
-        //    //while (Game.GameTime - GameTimeStarted <= 10000)
-        //    //{
-        //    //    Rage.Debug.DrawArrowDebug(new Vector3(GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
-        //    //    GameFiber.Yield();
-        //    //}
 
 
-        //   // GameFiber.Sleep(3000);
+            //DispatchAudioSystem.AbortAllAudio();
 
-        //}
+
+
+
+
+
+
+            //Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+            //Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
+            //Driver.BlockPermanentEvents = true;
+
+            //Driver.WarpIntoVehicle(MyCar, -1);
+
+            ////uint GameTimeStarted = Game.GameTime;
+            ////while (Game.GameTime - GameTimeStarted <= 10000)
+            ////{
+            ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
+            ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+            ////    GameFiber.Yield();
+            ////}
+            //GameFiber.Sleep(3000);
+
+            //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
+            //Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+
+
+
+            //uint GameTimeStarted = Game.GameTime;
+            ////while (Game.GameTime - GameTimeStarted <= 10000)
+            ////{
+            ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
+            ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+            ////    GameFiber.Yield();
+            ////}
+
+
+
+            //Driver.Position = DriverSeatCoordinates;
+
+            //GameFiber.Sleep(3000);
+
+            //Driver.WarpIntoVehicle(MyCar, -1);
+
+            //GameFiber.Sleep(3000);
+
+            ////GameFiber.Sleep(3000);
+
+            //if (MyCar.Exists())
+            //    MyCar.Delete();
+
+            //if (Driver.Exists())
+            //    Driver.Delete();
+
+
+
+            //foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
+            //{
+
+            //    WriteToLog("WeaponInventoryChanged", string.Format("Dropped Gun {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
+
+            //}
+
+
+
+
+            //List<string> Bones = new List<string> { "SKEL_ROOT", "skel_root", "SKEL_Pelvis", "SKEL_PELVIS", "skel_pelvis", "SKEL_Spine_Root", "SKEL_SPINE_ROOT", "skel_spine_root", "SKEL_Spine0","SKEL_SPINE0","skel_spine0" };
+
+
+            //foreach(string Stuff in Bones)
+            //{
+            //    if(Game.LocalPlayer.Character.HasBone(Stuff))
+            //    {
+            //        WriteToLog("Bones", string.Format("I have bone: {0}", Stuff));
+            //    }
+            //}
+
+
+            //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0);
+            //Vector3 MyPosition = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Game.LocalPlayer.Character, BoneIndexSpine, 0f, 0f, 0f);
+            // WriteToLog("Bones", string.Format("Spine Bone?: {0}", MyPosition));
+
+            //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+            //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+            //if (ClosestVehicle != null)
+            //{
+            //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
+
+
+
+
+            //    //Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
+            //    //Vector3 CarPosition = ClosestVehicle.Position;
+            //    //float DesiredHeading = ClosestVehicle.Heading - 90f;
+            //    ////NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Game.LocalPlayer.Character, GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, DesiredHeading, 3000);
+
+            //    //uint GameTimeStarted = Game.GameTime;
+
+            //    //while (Game.GameTime - GameTimeStarted <= 10000)
+            //    //{
+            //    //    Rage.Debug.DrawArrowDebug(new Vector3(GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+            //    //    GameFiber.Yield();
+            //    //}
+
+
+            //   // GameFiber.Sleep(3000);
+
+            //}
 
 
 

@@ -65,6 +65,14 @@ internal static class DispatchAudioSystem
         ReportGrandTheftAuto = 19,
         ReportSuspectSpotted = 20,
     }
+    public enum NearType
+    {
+        Nothing = 0,
+        Zone = 1,
+        HeadingAndZone = 2,
+        HeadingAndStreet = 3,
+        HeadingStreetAndZone = 4,
+    }
     static DispatchAudioSystem()
     {
         rnd = new Random();
@@ -574,6 +582,113 @@ internal static class DispatchAudioSystem
             {
                 GameFiber.Sleep(3000);
 
+                if (Settings.DispatchAudioOnlyHighPriority)
+                {
+                    DispatchQueue.RemoveAll(x => x.Priority > 3);
+                }
+
+                // Remove and order items
+                if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
+                {
+                    DispatchQueue.RemoveAll(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted);
+                }
+
+                if (DispatchQueue.Any(x => x.Priority <= 1) && DispatchQueue.Any(x => x.Priority > 1 && x.Type == ReportDispatch.ReportLethalForceAuthorized))
+                {
+                    DispatchQueue.RemoveAll(x => x.Priority > 1);
+                }
+
+                if (DispatchQueue.Any(x => x.ResultsInLethalForce && x.Type != ReportDispatch.ReportLethalForceAuthorized))
+                {
+                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLethalForceAuthorized);
+                }
+
+
+                if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSpottedStolenCar))
+                {
+                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSpottedStolenCar);
+                }
+                if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSuspiciousVehicle))
+                {
+                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSuspiciousVehicle);
+                }
+
+                if (DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
+                {
+                    DispatchQueueItem HighestItem = DispatchQueue.Where(x => x.IsTrafficViolation).OrderBy(x => x.Priority).FirstOrDefault();
+                    DispatchQueue.RemoveAll(x => x.IsTrafficViolation);
+                    if (HighestItem != null)
+                    {
+                        DispatchQueue.Add(HighestItem);
+                    }
+                }
+
+
+
+                while (DispatchQueue.Count > 0)
+                {
+                    DispatchQueueItem Item = DispatchQueue[0];
+                    if (Item.Type == ReportDispatch.ReportAssualtOnOfficer)
+                        ReportAssualtOnOfficer();
+                    else if (Item.Type == ReportDispatch.ReportCarryingWeapon)
+                        ReportCarryingWeapon(Item.WeaponToReport);
+                    else if (Item.Type == ReportDispatch.ReportFelonySpeeding)
+                        ReportFelonySpeeding(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportLethalForceAuthorized)
+                        ReportLethalForceAuthorized();
+                    else if (Item.Type == ReportDispatch.ReportOfficerDown)
+                        ReportOfficerDown();
+                    else if (Item.Type == ReportDispatch.ReportPedHitAndRun)
+                        ReportPedHitAndRun(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportRecklessDriver)
+                        ReportRecklessDriver(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportShotsFired)
+                        ReportShotsFired();
+                    else if (Item.Type == ReportDispatch.ReportSpottedStolenCar)
+                        ReportSpottedStolenCar(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportStolenVehicle)
+                        ReportStolenVehicle(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportSuspectArrested)
+                        ReportSuspectArrested();
+                    else if (Item.Type == ReportDispatch.ReportSuspectLastSeen)
+                        ReportSuspectLastSeen(false);
+                    else if (Item.Type == ReportDispatch.ReportSuspectLost)
+                        ReportSuspectLost();
+                    else if (Item.Type == ReportDispatch.ReportSuspectWasted)
+                        ReportSuspectWasted();
+                    else if (Item.Type == ReportDispatch.ReportThreateningWithFirearm)
+                        ReportThreateningWithFirearm();
+                    else if (Item.Type == ReportDispatch.ReportVehicleHitAndRun)
+                        ReportVehicleHitAndRun(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportWeaponsFree)
+                        ReportWeaponsFree();
+                    else if (Item.Type == ReportDispatch.ReportSuspiciousActivity)
+                        ReportSuspiciousActivity();
+                    else if (Item.Type == ReportDispatch.ReportSuspiciousVehicle)
+                        ReportSuspiciousVehicle(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportGrandTheftAuto)
+                        ReportGrandTheftAuto();
+                    else if (Item.Type == ReportDispatch.ReportSuspectSpotted)
+                        ReportSuspectSpotted();
+                    else
+                        ReportAssualtOnOfficer();
+                    DispatchQueue.RemoveAt(0);
+                }
+                ExecutingQueue = false;
+            });
+        }
+    }
+    private static void PlayDispatchQueueOld()
+    {
+
+        if (DispatchQueue.Count > 0 && !ExecutingQueue)
+        {
+            InstantAction.WriteToLog("PlayDispatchQueue", "Delegate Started");
+            ExecutingQueue = true;
+            GameFiber.StartNew(delegate
+            {
+                GameFiber.Sleep(3000);
+
                 // Remove and order items
                 if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
                 {
@@ -592,7 +707,7 @@ internal static class DispatchAudioSystem
                     InstantAction.WriteToLog("PlayDispatchQueue", "High Priority Message: Removed Some Low priority Items");
                 }
 
-                if (DispatchQueue.Any(x => x.ResultsInLethalForce))
+                if (DispatchQueue.Any(x => x.ResultsInLethalForce && x.Type != ReportDispatch.ReportLethalForceAuthorized))
                 {
                     DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLethalForceAuthorized);
                     InstantAction.WriteToLog("PlayDispatchQueue", "ResultsInLethalForce: Removed ReportLethalForceAuthorized");
@@ -710,36 +825,95 @@ internal static class DispatchAudioSystem
         myList.Add(ScannerAudio.AudioBeeps.AudioStart());
         myList.Add(ScannerAudio.we_have.OfficersReport());
     }
-    private static void ReportGenericEnd(List<string> myList, bool Near)
+    private static void ReportGenericEnd(List<string> ScannerList,NearType Near)
     {
-        if (Near)
+        if(Near == NearType.Zone)
         {
-            Vector3 Pos = Game.LocalPlayer.Character.Position;
-            Zone MyZone = Zones.GetZoneName(Pos);
-            if (MyZone != null && MyZone.ScannerValue != "")
-            {
-                myList.Add(ScannerAudio.conjunctives.NearGenericRandom());
-                myList.Add(MyZone.ScannerValue);
-            }
+            AddZone(ref ScannerList);
         }
-        myList.Add(ScannerAudio.AudioBeeps.Radio_End_1.FileName);
+        else if(Near == NearType.HeadingAndZone)
+        {
+            AddHeading(ref ScannerList, false);
+        }
+        else if (Near == NearType.HeadingAndStreet)
+        {
+            bool AddedStreet = AddHeading(ref ScannerList, true);
+            if(!AddedStreet)
+                AddZone(ref ScannerList);//fallback to zone
+        }
+        else if (Near == NearType.HeadingStreetAndZone)
+        {
+            AddHeading(ref ScannerList, true);
+            AddZone(ref ScannerList);
+        }
+        ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
+    }
+    public static bool AddHeading(ref List<string> ScannerList,bool IncludeStreet)
+    {
+        if (InstantAction.AnyPoliceRecentlySeenPlayer)
+        {
+            ScannerList.Add((new List<string>() { suspect_heading.SuspectHeading.FileName, suspect_heading.TargetHeading.FileName, suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
+
+            string heading = InstantAction.GetSimpleCompassHeading();
+            if (heading == "N")
+                ScannerList.Add(direction_heading.North.FileName);
+            else if (heading == "S")
+                ScannerList.Add(direction_heading.South.FileName);
+            else if (heading == "E")
+                ScannerList.Add(direction_heading.East.FileName);
+            else if (heading == "W")
+                ScannerList.Add(direction_heading.West.FileName);
+
+
+            if (IncludeStreet && InstantAction.PlayerCurrentStreet != "")
+            {
+                GTAStreet MyStreet = InstantAction.Streets.Where(x => x.Name == InstantAction.PlayerCurrentStreet).FirstOrDefault();
+                if (MyStreet != null && MyStreet.DispatchFile != "")
+                {
+                    ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
+                    ScannerList.Add(MyStreet.DispatchFile);
+
+                    if (InstantAction.PlayerCurrentCrossStreet != "")
+                    {
+                        GTAStreet MyCrossStreet = InstantAction.Streets.Where(x => x.Name == InstantAction.PlayerCurrentCrossStreet).FirstOrDefault();
+                        if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
+                        {
+                            ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());
+                            ScannerList.Add(MyCrossStreet.DispatchFile);
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+        else
+            return false;
+    }
+    public static bool AddZone(ref List<string> ScannerList)
+    {
+        Vector3 Pos = Game.LocalPlayer.Character.Position;
+        Zone MyZone = GetZoneName(Pos);
+        if (MyZone != null && MyZone.ScannerValue != "")
+        {
+            ScannerList.Add(conjunctives.NearGenericRandom());
+            ScannerList.Add(MyZone.ScannerValue);
+            return true;
+        }
+        return false;
     }
     public static void ReportShotsFired()
     {
-        InstantAction.WriteToLog("Dispatch", "Got to the proc");
         if (ReportedShotsFired || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
             return;
 
         ReportedShotsFired = true;
         ReportedLethalForceAuthorized = true;
-
-        InstantAction.WriteToLog("Dispatch", "Should have reported shots fired");
-
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ref ScannerList);
         ScannerList.Add(crime_shots_fired_at_an_officer.Shotsfiredatanofficer.FileName);
         AddLethalForceAuthorized(ref ScannerList);
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.Zone);
         PlayAudioList(ScannerList, true);
 
     }
@@ -852,7 +1026,7 @@ internal static class DispatchAudioSystem
             }
         }
 
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
         PlayAudioList(ScannerList, true);
     }
     public static void ReportOfficerDown()
@@ -963,7 +1137,7 @@ internal static class DispatchAudioSystem
             }
         }
 
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportAssualtOnOfficer()
@@ -998,7 +1172,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(ScannerAudio.crime_assault_on_an_officer.Anofficerassault.FileName);
         }
         AddLethalForceAuthorized(ref ScannerList);
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
 
         PlayAudioList(ScannerList, true);
     }
@@ -1015,7 +1189,7 @@ internal static class DispatchAudioSystem
         ScannerList.Add(ScannerAudio.we_have.We_Have_1.FileName);
         ScannerList.Add(ScannerAudio.crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName);
         AddLethalForceAuthorized(ref ScannerList);
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
 
         PlayAudioList(ScannerList, true);
     }
@@ -1052,7 +1226,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(ScannerAudio.suspect_last_seen.TargetLastSeen.FileName);
             near = true;
         }
-        ReportGenericEnd(ScannerList, near);
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportSuspectArrested()
@@ -1182,7 +1356,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(ScannerAudio.lethal_force.Useofdeadlyforcepermitted1.FileName);
         }
 
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportStolenVehicle(GTAVehicle stolenVehicle)
@@ -1223,7 +1397,7 @@ internal static class DispatchAudioSystem
         }
 
         AddVehicleDescription(stolenVehicle, ref ScannerList,true);
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
         PlayAudioList(ScannerList, false);
         GameFiber.StartNew(delegate
         {
@@ -1274,7 +1448,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(crime_suspicious_activity.Suspiciousactivity.FileName);
         }
 
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.Zone);
         PlayAudioList(ScannerList, false);
 
     }
@@ -1302,7 +1476,7 @@ internal static class DispatchAudioSystem
         {
             ScannerList.Add(crime_grand_theft_auto.AGTAinprogress1.FileName);
         }
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.Zone);
         PlayAudioList(ScannerList, false);
 
     }
@@ -1334,7 +1508,7 @@ internal static class DispatchAudioSystem
         AddVehicleDescription(myCar, ref ScannerList, false);
         if(myCar.IsStolen)
             ScannerList.Add(ScannerAudio.proceed_with_caution.Approachwithcaution.FileName);
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet);
 
         PlayAudioList(ScannerList, false);
     }
@@ -1370,7 +1544,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(ScannerAudio.suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName);
         }
 
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportSuspectSpotted()
@@ -1405,7 +1579,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(ScannerAudio.suspect_last_seen.SuspectSpotted.FileName);
         }
 
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.Zone);
         PlayAudioList(ScannerList, false);
     }
     public static void ResetReportedItems()
@@ -1451,7 +1625,7 @@ internal static class DispatchAudioSystem
             ScannerList.Add(officer_begin_patrol.Proceedwithpatrol.FileName);
         }
 
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportSpottedStolenCar(GTAVehicle vehicle)
@@ -1485,7 +1659,7 @@ internal static class DispatchAudioSystem
         }
 
         //AddVehicleDescription(vehicle, ref ScannerList);
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportPedHitAndRun(GTAVehicle vehicle)
@@ -1520,7 +1694,7 @@ internal static class DispatchAudioSystem
             AddStolenVehicle(ref ScannerList, vehicle);
         }
         AddVehicleDescription(vehicle, ref ScannerList,false);
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportVehicleHitAndRun(GTAVehicle vehicle)
@@ -1555,7 +1729,7 @@ internal static class DispatchAudioSystem
             AddStolenVehicle(ref ScannerList, vehicle);
         }
         AddVehicleDescription(vehicle, ref ScannerList,false);
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportRecklessDriver(GTAVehicle vehicle)
@@ -1568,7 +1742,7 @@ internal static class DispatchAudioSystem
             AddStolenVehicle(ref ScannerList, vehicle);
         }
         AddVehicleDescription(vehicle, ref ScannerList,false);
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportWeaponsFree()
@@ -1579,7 +1753,7 @@ internal static class DispatchAudioSystem
         ScannerList.Add(AudioBeeps.AudioStart());
         ScannerList.Add(attention_all_units_gen.Attentionallunits.FileName);
         ScannerList.Add(custom_wanted_level_line.Suspectisarmedanddangerousweaponsfree.FileName);
-        ReportGenericEnd(ScannerList, false);
+        ReportGenericEnd(ScannerList, NearType.Nothing);
         PlayAudioList(ScannerList, false);
     }
     public static void ReportFelonySpeeding(GTAVehicle vehicle)
@@ -1592,7 +1766,7 @@ internal static class DispatchAudioSystem
             AddStolenVehicle(ref ScannerList, vehicle);
         }
         AddVehicleDescription(vehicle, ref ScannerList,false);
-        ReportGenericEnd(ScannerList, true);
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet);
         PlayAudioList(ScannerList, false);
     }
     private static void AddLethalForceAuthorized(ref List<string> ScannerList)
@@ -1668,6 +1842,66 @@ internal static class DispatchAudioSystem
         }
         
     }
+
+    public static void TestStreetCall()
+    {
+        GTAVehicle MyVehicle = InstantAction.GetPlayersCurrentTrackedVehicle();
+        if (MyVehicle == null)
+            return;
+
+
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ref ScannerList);
+        ScannerList.Add(ScannerAudio.crime_speeding_felony.Aspeedingfelony.FileName);
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet);
+        PlayAudioList(ScannerList, false);
+
+
+        //List<string> ScannerList = new List<string>();
+        //ScannerList.Add(AudioBeeps.AudioStart());
+        //ScannerList.Add(attention_all_units_gen.Attentionallunits.FileName);
+
+
+
+
+        //ScannerList.Add(suspect_heading.SuspectHeading.FileName);
+
+        //string heading = InstantAction.GetSimpleCompassHeading();
+        //if(heading == "N")
+        //    ScannerList.Add(direction_heading.North.FileName);
+        //else if (heading == "S")
+        //    ScannerList.Add(direction_heading.South.FileName);
+        //else if (heading == "E")
+        //    ScannerList.Add(direction_heading.East.FileName);
+        //else if (heading == "W")
+        //    ScannerList.Add(direction_heading.West.FileName);
+
+        //bool NoStreetAudio = true;
+
+        //if (InstantAction.PlayerCurrentStreet != "")
+        //{
+
+        //    GTAStreet MyStreet = InstantAction.Streets.Where(x => x.Name == InstantAction.PlayerCurrentStreet).FirstOrDefault();
+        //    if (MyStreet != null && MyStreet.DispatchFile != "")
+        //    {
+        //        ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
+        //        ScannerList.Add(MyStreet.DispatchFile);
+        //        NoStreetAudio = false;
+        //        if (InstantAction.PlayerCurrentCrossStreet != "")
+        //        {
+        //            GTAStreet MyCrossStreet = InstantAction.Streets.Where(x => x.Name == InstantAction.PlayerCurrentCrossStreet).FirstOrDefault();
+        //            if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
+        //            {
+        //                ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());
+        //                ScannerList.Add(MyCrossStreet.DispatchFile);
+        //            }
+        //        }
+        //    }
+        //}
+        //ReportGenericEnd(ScannerList, NearType.HeadingStreetAndZone);
+       // PlayAudioList(ScannerList, false);
+    }
+
     public static void AddStolenVehicle(ref List<string> ScannerList,GTAVehicle VehicleDescription)
     {       
         int Num = rnd.Next(1, 3);

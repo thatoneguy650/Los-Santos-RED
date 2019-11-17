@@ -41,6 +41,7 @@ public class GTACop
     public bool canSeePlayer { get; set; }
     public bool isTasked { get; set; } = false;
     public bool WasRandomSpawn { get; set; } = false;
+    public bool WasRandomSpawnDriver { get; set; } = false;
     public uint GameTimeLastSeenPlayer { get; set; }
     public uint GameTimeContinuoslySeenPlayerSince { get; set; }
     public Vector3 PositionLastSeenPlayer { get; set; }

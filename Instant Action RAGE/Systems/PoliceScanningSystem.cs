@@ -856,6 +856,7 @@ namespace Instant_Action_RAGE.Systems
             IssueCopPistol(MyNewCop);
             MyNewCop.WasRandomSpawn = true;
             MyNewCop.WasMarkedNonPersistent = true;
+            MyNewCop.WasRandomSpawnDriver = true;
 
 
             bool AddPartner = rnd.Next(1, 11) <= 5;
@@ -1048,6 +1049,8 @@ namespace Instant_Action_RAGE.Systems
                             TaskSimpleInvestigate(_policeTask.CopToAssign);
                         else if (_policeTask.TaskToAssign == PoliceTask.Task.GoToWantedCenter)
                             TaskGoToWantedCenter(_policeTask.CopToAssign);
+                        else if (_policeTask.TaskToAssign == PoliceTask.Task.RandomSpawnIdle)
+                            RandomSpawnIdle(_policeTask.CopToAssign);
 
                         _policeTask.CopToAssign.TaskIsQueued = false;
                         CopsToTask.RemoveAt(0);//CopsToTask.Remove(_policeTask);
@@ -1119,9 +1122,9 @@ namespace Instant_Action_RAGE.Systems
                             if (Cop.isPursuitPrimary && Cop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
                             {
                                 Cop.CopPed.CanRagdoll = false;
-                                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2f, 9);
+                                //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2f, 9);
 
-                                //NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 10f);
+                                NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 10f);
 
 
                                 Cop.CopPed.KeepTasks = true;
@@ -1221,7 +1224,7 @@ namespace Instant_Action_RAGE.Systems
                     }
 
                     GameFiber.Yield();
-                    if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.Normal || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
+                    if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.Normal || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase || InstantAction.isDead)
                     {
                         GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
                         break;
@@ -1231,6 +1234,8 @@ namespace Instant_Action_RAGE.Systems
                 {
                     Cop.CopPed.BlockPermanentEvents = false;
                     Cop.CopPed.Tasks.Clear();
+                    if (Cop.CopPed.LastVehicle.Exists() && !Cop.CopPed.LastVehicle.IsPoliceVehicle)
+                        Cop.CopPed.ClearLastVehicle();
                 }
                 InstantAction.WriteToLog("Task Chasing", string.Format("Loop End: {0}", Cop.CopPed.Handle));
                 Cop.TaskFiber = null;
@@ -1653,7 +1658,50 @@ namespace Instant_Action_RAGE.Systems
             
             InstantAction.WriteToLog("UntaskAll Random", "");
         }
-        public static void Untask(GTACop Cop)
+        public static void RetaskAllRandomSpawns()
+        {
+            foreach (GTACop Cop in CopPeds.Where(x => x.WasRandomSpawn))
+            {
+                if (!Cop.TaskIsQueued)
+                {
+                    Cop.TaskIsQueued = true;
+                    AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.RandomSpawnIdle));
+                }
+            }
+            InstantAction.WriteToLog("RetaskAllRandomSpawns", "Done");
+        }
+        public static void RandomSpawnIdle(GTACop Cop)
+        {
+            if (Cop.CopPed.Exists())
+            {
+                if (!Cop.CopPed.IsInAnyVehicle(false))
+                {
+                    Vehicle LastVehicle = Cop.CopPed.LastVehicle;
+                    if (LastVehicle.Exists() && LastVehicle.IsDriveable && Cop.WasRandomSpawnDriver)
+                    {
+                        unsafe
+                        {
+                            int lol = 0;
+                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, -1, 2f, 9);
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
+                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.CopPed, lol);
+                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        }
+                        InstantAction.WriteToLog("RetaskAllRandomSpawns", "Told him to get in and drive");
+                    }
+                    else
+                    {
+                        Cop.CopPed.Tasks.Wander();
+                        InstantAction.WriteToLog("RetaskAllRandomSpawns", "Told him to wander");
+                    }
+                }
+            }
+
+        }
+       public static void Untask(GTACop Cop)
         {
             if (Cop.CopPed.Exists())
             {

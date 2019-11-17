@@ -22,13 +22,16 @@ namespace Instant_Action_RAGE.Systems
         private static bool needsToUnlock;
         private static uint GameTimeStartedExit;
         private static bool TogglingEngine;
+        private static bool ChangingStation;
         private static bool PrevMustBeHotwired;
         private static uint GameTimeStartedHotwiring;
         private static bool PrevIsHotwiring;
 
         public static bool AutoTune { get; private set; } = true;
+        public static bool WantedLevelTune { get; set; } = false;
+        public static bool PrevWantedLevelTune { get; set; } = false;
         public static bool SetLoud { get; private set; } = true;
-        public static RadioStation AutoTuneStation { get; private set; } = RadioStation.SelfRadio;
+        public static string AutoTuneStation { get; set; } = "RADIO_19_USER";
         public static Keys EngineToggleKey { get; private set; } = Keys.R;
         public static List<string> strRadioStations;
         public static bool Enabled { get; set; } = true;
@@ -52,7 +55,7 @@ namespace Instant_Action_RAGE.Systems
                 if(Game.LocalPlayer.Character.CurrentVehicle != null)
                     EngineRunning = Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
             }
-            AutoTuneStation = RadioStation.SelfRadio;
+            AutoTuneStation = "RADIO_19_USER";
             AutoTune = true;
             EngineToggleKey = Keys.R;
             strRadioStations = new List<string> { "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
@@ -96,8 +99,8 @@ namespace Instant_Action_RAGE.Systems
                                 {
                                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
                                     Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
-                                    if (InstantAction.PlayerWantedLevel > 0)
-                                        NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "RADIO_19_USER");
+                                    //if (WantedLevelTune)
+                                    //    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "RADIO_19_USER");
                                 }
                             }
                         }
@@ -110,7 +113,10 @@ namespace Instant_Action_RAGE.Systems
                         {
                             EngineRunningEvent();
                         }
-
+                        if(PrevWantedLevelTune != WantedLevelTune)
+                        {
+                            WantedLevelTuneEvent();
+                        }
                         GameFiber.Yield();
                     }
                 }
@@ -119,6 +125,12 @@ namespace Instant_Action_RAGE.Systems
                     InstantAction.WriteToLog("ToggleEngine", string.Format("{0},{1}", e.Message,e.StackTrace));
                 }
             });
+        }
+
+        private static void WantedLevelTuneEvent()
+        {
+            ChangeStation(VehicleEngineSystem.AutoTuneStation);
+            PrevWantedLevelTune = WantedLevelTune;
         }
 
         private static void EngineRunningEvent()
@@ -207,7 +219,52 @@ namespace Instant_Action_RAGE.Systems
             return true;
             //GameFiber.Sleep(1000);// is there a way to wait for the animation to finish?
         }
-       
+        public static void ChangeStation(string StationName)
+        {
+            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
+            {
+                if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+                    return;
+
+                if (IsHotwiring)
+                    return;
+
+                if (!Game.LocalPlayer.Character.IsOnBike)
+                {
+                    ChangingStation = true;
+                    if (!ChangeStationAnimation())
+                        return;
+                }
+                if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+                {
+                    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
+                }
+            }
+            InstantAction.WriteToLog("ToggleEngine", "toggled");
+            ChangingStation = false;
+        }
+        private static bool ChangeStationAnimation()
+        {
+            var sDict = "veh@van@ds@base";
+            NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
+            while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
+                GameFiber.Yield();
+            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
+
+            uint GameTimeStartedAnimation = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedAnimation <= 1000)
+            {
+                if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
+                {
+                    NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
+                    ChangingStation = false;
+                    return false;
+                }
+                GameFiber.Sleep(200);
+            }
+            return true;
+        }
+
 
     }
 }

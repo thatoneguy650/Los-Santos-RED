@@ -15,5 +15,11 @@ public class GTAStreet
         Name = _Name;
         SpeedLimit = _SpeedLimit;
     }
+    public GTAStreet(string _Name, float _SpeedLimit,string _DispatchFile)
+    {
+        Name = _Name;
+        SpeedLimit = _SpeedLimit;
+        DispatchFile = _DispatchFile;
+    }
 }
 

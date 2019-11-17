@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class GTALocation
+public class GTALocation
 {
-    internal enum LocationType : int
+    public enum LocationType : int
     {
         Police = 0,
         Hospital = 1,

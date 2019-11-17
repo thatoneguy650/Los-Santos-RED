@@ -20,6 +20,7 @@ using System.Threading.Tasks;
             NoTask = 6,
             SimpleInvestigate = 7,
         GoToWantedCenter = 8,
+        RandomSpawnIdle = 9,
     }
 
         public PoliceTask(GTACop _CopToAssign,Task _TaskToAssign)
