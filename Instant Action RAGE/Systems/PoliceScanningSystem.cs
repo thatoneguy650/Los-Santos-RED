@@ -873,7 +873,7 @@ namespace Instant_Action_RAGE.Systems
                 CopPeds.Add(MyNewPartnerCop);
             }
 
-            if (Settings.Debug)
+            if (Settings.SpawnedRandomPoliceHaveBlip)
             {
                 Blip myBlip = Cop.AttachBlip();
                 Color BlipColor = Color.Black;

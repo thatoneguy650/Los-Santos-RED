@@ -38,6 +38,7 @@ static class Settings
     public static bool SpawnPoliceK9 = true;
     public static bool SpawnRandomPolice = true;
     public static int SpawnRandomPoliceLimit = 5;
+    public static bool SpawnedRandomPoliceHaveBlip = true;
 
     public static bool IssuePoliceHeavyWeapons = true;
 

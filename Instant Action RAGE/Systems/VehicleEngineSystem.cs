@@ -86,7 +86,10 @@ namespace Instant_Action_RAGE.Systems
 
                             if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))
                             {
-                                ToggleEngine(true,false);
+                                InstantAction.WriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
+                                TogglingEngine = true;
+                                ToggleEngine(true, !EngineRunning);
+                                InstantAction.WriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
                             }
 
                             if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -170,28 +173,37 @@ namespace Instant_Action_RAGE.Systems
             }
             WasinVehicle = PlayerInVehicle;
         }  
-        private static void ToggleEngine(bool _animation,bool OnlyOff)
+        private static void ToggleEngine(bool _animation,bool DesiredEngineStatus)
         {                 
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
             {
                 if (Game.LocalPlayer.Character.CurrentVehicle.Speed > 4f)
+                {
+                    TogglingEngine = false;
                     return;
+                }
 
                 if (IsHotwiring)
+                {
+                    TogglingEngine = false;
                     return;
+                }
 
                 if (!Game.LocalPlayer.Character.IsOnBike && _animation)
                 {
-                    TogglingEngine = true;
-                    if(!StartEngineAnimation())
+
+                    if (!StartEngineAnimation())
+                    {
+                        TogglingEngine = false;
                         return;
+                    }
                 }
                 if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 {
-                    if (OnlyOff)
+                    if (!DesiredEngineStatus)
                         EngineRunning = false;
                     else
-                        EngineRunning = !Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
+                        EngineRunning = true;
                 }
             }
             InstantAction.WriteToLog("ToggleEngine", "toggled");

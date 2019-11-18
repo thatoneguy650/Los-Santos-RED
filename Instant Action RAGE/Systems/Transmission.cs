@@ -17,7 +17,7 @@ internal static class Transmission
 
     public static void Initialize()
     {
-        MainLoop();
+        //MainLoop();
     }
     public enum Gears
     {
