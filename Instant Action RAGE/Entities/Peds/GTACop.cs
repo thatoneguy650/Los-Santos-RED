@@ -1,4 +1,5 @@
 ﻿
+using Instant_Action_RAGE.Systems;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -17,20 +18,22 @@ public class GTACop
     {
 
     }
-    public GTACop(Ped _Cop,bool _canSeePlayer, int _Health)
+    public GTACop(Ped _Cop,bool _canSeePlayer, int _Health,Agency _Agency)
     {
         CopPed = _Cop;
         canSeePlayer = _canSeePlayer;
         Health = _Health;
+        AssignedAgency = _Agency;
         SetAccuracyAndSightRange();
     }
-    public GTACop(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health)
+    public GTACop(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health,Agency _Agency)
     {
         CopPed = _Cop;
         canSeePlayer = _canSeePlayer;
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
         PositionLastSeenPlayer = _positionLastSeenPlayer;
         Health = _Health;
+        AssignedAgency = _Agency;
         SetAccuracyAndSightRange();
     }
     public int Health { get; set; }
@@ -42,6 +45,7 @@ public class GTACop
     public bool isTasked { get; set; } = false;
     public bool WasRandomSpawn { get; set; } = false;
     public bool WasRandomSpawnDriver { get; set; } = false;
+    public bool IsBikeCop { get; set; } = false;
     public uint GameTimeLastSeenPlayer { get; set; }
     public uint GameTimeContinuoslySeenPlayerSince { get; set; }
     public Vector3 PositionLastSeenPlayer { get; set; }
@@ -69,6 +73,7 @@ public class GTACop
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public WeaponVariation PistolVariation { get; set; }
     public WeaponVariation HeavyVariation { get; set; }
+    public Agency AssignedAgency { get; set; } = PoliceScanningSystem.LSPD;
     public void SetAccuracyAndSightRange()
     {
         CopPed.VisionRange = 55f;

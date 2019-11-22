@@ -13,11 +13,50 @@ namespace ExtensionsMethods
 {
     public static class Extensions
     {
-
+        public static List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01","s_m_m_ammucountry","u_m_y_tattoo_01","s_f_y_shop_low","s_f_y_shop_mid","s_f_m_shop_high","s_m_m_autoshop_01","s_m_m_autoshop_02" };
+        //Controls
+            public static bool IsMoveControlPressed()
+            {
+                if (Game.IsControlPressed(2, GameControl.MoveUp) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDown) || Game.IsControlPressed(2, GameControl.MoveLeft))
+                    return true;
+                else
+                    return false;
+            }
+        //Pedestrian
         public static bool isPoliceArmy(this Ped myPed)
         {
+            string ModelName = myPed.Model.Name.ToLower();
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
-            if ((PedType == 6 || PedType == 29 || PedType == 27) && myPed.Model.Name != "Shepherd")//PedHash.Shepherd)
+            if ((PedType == 6 || PedType == 29 || PedType == 27 || ModelName == "s_m_m_prisguard_01" || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")//PedHash.Shepherd)
+            {
+                    
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
+        public static bool isPolice(this Ped myPed)
+        {
+            string ModelName = myPed.Model.Name.ToLower();
+            int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            if ((PedType == 6 || PedType == 27 || ModelName == "s_m_m_prisguard_01" || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool isArmy(this Ped myPed)
+        {
+            int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            if (PedType == 29)
             {
                 return true;
             }
@@ -54,17 +93,26 @@ namespace ExtensionsMethods
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);
             if (PedType == 4 || PedType == 5 || PedType == 26)
             {
-                return true;
-                //if (Function.Call<bool>(Hash.IS_PED_MODEL, myPed, (uint)PedHash.Ammucity01SMY) || Function.Call<bool>(Hash.IS_PED_MODEL, myPed, (uint)PedHash.Ammucity01SMY))
-                //    return false;
-                //else
-                //    return true;
+            string ModelName = myPed.Model.Name.ToLower();
+                if (ShopPeds.Contains(ModelName))
+                    return false;
+                else
+                    return true;
             }
             else
             {
                 return false;
             }
         }
+        public static bool isInLosSantosCity(this Ped myPed)
+        {
+            if (Game.LocalPlayer.Character.Position.Y <= 0f && Game.LocalPlayer.Character.Position.X <= 1500)
+                return true;
+            else
+                return false;
+        }
+
+        
         public static bool inSameCar(this Ped myPed, Ped PedToCompare)
         {
             bool ImInVehicle = myPed.IsInAnyVehicle(false);
@@ -144,136 +192,257 @@ namespace ExtensionsMethods
         {
             return Math.Abs(Vector3.Subtract(myPed.Position, position).Length());
         }
-        public static double GetRandomNumber(double minimum, double maximum)
-        {
-            Random random = new Random();
-            return random.NextDouble() * (maximum - minimum) + minimum;
-        }
-        public static bool IsRoadWorthy(this Vehicle myCar)
-        {
-            bool LightsOn;
-            bool HighbeamsOn;
-            if (InstantAction.IsNightTime)
+
+        //Math
+            public static double GetRandomNumber(double minimum, double maximum)
             {
-                unsafe
+                Random random = new Random();
+                return random.NextDouble() * (maximum - minimum) + minimum;
+            }
+        //Car Stuff
+            public static bool IsRoadWorthy(this Vehicle myCar)
+            {
+                bool LightsOn;
+                bool HighbeamsOn;
+                if (InstantAction.IsNightTime)
                 {
-                    NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", myCar, &LightsOn, &HighbeamsOn);
+                    unsafe
+                    {
+                        NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", myCar, &LightsOn, &HighbeamsOn);
+                    }
+                    if (!LightsOn)
+                        return false;
+                    if (HighbeamsOn)
+                        return false;
+
+
+
+                    if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                        return false;
                 }
-                if (!LightsOn)
+
+                if (myCar.LicensePlate == "        ")
                     return false;
-                //if (HighbeamsOn)
-                //    return false;
 
+                return true;
+            }
+            public static bool IsDamaged(this Vehicle myCar)
+            {
+                if (myCar.Health <= 700 || myCar.EngineHealth <= 700)
+                    return true;
 
+                if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar))
+                    return true;
 
-                if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                VehicleDoor[] CarDoors = myCar.GetDoors();
+
+                foreach (VehicleDoor myDoor in CarDoors)
+                {
+                    if (myDoor.IsDamaged)
+                        return true;
+                }
+
+                if (InstantAction.IsNightTime)
+                {
+                    if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                        return true;
+                }
+
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 0, false))
+                    return true;
+
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 1, false))
+                    return true;
+
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 2, false))
+                    return true;
+
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 3, false))
+                    return true;
+
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 4, false))
+                    return true;
+
+                if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 5, false))
+                    return true;
+
+                return false;
+            }
+        //Vector
+            public static bool IsWithin(this float value, float minimum, float maximum)
+            {
+                return value >= minimum && value <= maximum;
+            }
+            public static float getDotVectorResult(Ped source, Ped target)
+            {
+                if (source.Exists() && target.Exists())
+                {
+                    Vector3 dir = (target.Position - source.Position).ToNormalized();
+                    return Vector3.Dot(dir, source.ForwardVector);
+                }
+                else return -1.0f;
+            }
+            public static float getDotVectorResult(Entity source, Entity target)
+            {
+                if (source.Exists() && target.Exists())
+                {
+                    Vector3 dir = (target.Position - source.Position).ToNormalized();
+                    return Vector3.Dot(dir, source.ForwardVector);
+                }
+                else return -1.0f;
+            }
+            public static float getDotVectorResult(Vehicle source, Vehicle target)
+            {
+                if (source.Exists() && target.Exists())
+                {
+                    Vector3 dir = (target.Position - source.Position).ToNormalized();
+                    return Vector3.Dot(dir, source.ForwardVector);
+                }
+                else return -1.0f;
+            }
+            public static bool PlayerIsInFront(this Ped myPed)
+            {
+                float Result = getDotVectorResult(myPed, Game.LocalPlayer.Character);
+                if (Result > 0)
+                    return true;
+                else
                     return false;
+
             }
-
-            if (myCar.LicensePlate == "        ")
-                return false;
-
-            return true;
-        }
-        public static bool IsDamaged(this Vehicle myCar)
-        {
-            if (myCar.Health <= 700 || myCar.EngineHealth <= 700)
-                return true;
-
-            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar))
-                return true;
-
-            VehicleDoor[] CarDoors = myCar.GetDoors();
-
-            foreach (VehicleDoor myDoor in CarDoors)
+            public static bool IsInFront(this Entity Target,Entity Source)
             {
-                if (myDoor.IsDamaged)
+                float Result = getDotVectorResult(Target, Source);
+                if (Result > 0)
                     return true;
-            }
+                else
+                    return false;
 
-            if (InstantAction.IsNightTime)
+            }
+            public static bool PlayerVehicleIsBehind(this Vehicle myVehicle)
             {
-                if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                float Result = getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, myVehicle);
+                if (Result > 0)
                     return true;
+                else
+                    return false;
+
             }
-
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 0, false))
-                return true;
-
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 1, false))
-                return true;
-
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 2, false))
-                return true;
-
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 3, false))
-                return true;
-
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 4, false))
-                return true;
-
-            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 5, false))
-                return true;
-
-            return false;
-        }
-        public static bool IsWithin(this float value, float minimum, float maximum)
-        {
-            return value >= minimum && value <= maximum;
-        }
-        public static float getDotVectorResult(Ped source, Ped target)
-        {
-            if (source.Exists() && target.Exists())
+            public static void FaceEntity(this Entity Source,Entity Target)
             {
-                Vector3 dir = (target.Position - source.Position).ToNormalized();
-                return Vector3.Dot(dir, source.ForwardVector);
+                Vector3 Resultant = Vector3.Subtract(Target.Position, Source.Position);
+                Source.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
             }
-            else return -1.0f;
-        }
-        public static float getDotVectorResult(Entity source, Entity target)
-        {
-            if (source.Exists() && target.Exists())
+            public static float Dot(Vector3 left, Vector3 right)
             {
-                Vector3 dir = (target.Position - source.Position).ToNormalized();
-                return Vector3.Dot(dir, source.ForwardVector);
+                return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
             }
-            else return -1.0f;
-        }
-        public static float getDotVectorResult(Vehicle source, Vehicle target)
-        {
-            if (source.Exists() && target.Exists())
+            public static float Angle(Vector3 from, Vector3 to)
             {
-                Vector3 dir = (target.Position - source.Position).ToNormalized();
-                return Vector3.Dot(dir, source.ForwardVector);
+                from.Normalize();
+                to.Normalize();
+                double dot = Dot(from, to);
+                return (float)(System.Math.Acos((dot)) * (180.0 / System.Math.PI));
             }
-            else return -1.0f;
-        }
-        public static bool PlayerIsInFront(this Ped myPed)
-        {
-            float Result = getDotVectorResult(myPed, Game.LocalPlayer.Character);
-            if (Result > 0)
-                return true;
-            else
-                return false;
+            public static bool FacingSameDirection(this Entity Entity1, Entity Entity2)
+            {
+                float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
+                if (MyAngle <= 40f)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            public static bool FacingOppositeDirection(this Entity Entity1, Entity Entity2)
+            {
+                float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
+                if (MyAngle >= 140f && MyAngle <= 220f)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
-        }
-        public static bool IsInFront(this Entity Target,Entity Source)
-        {
-            float Result = getDotVectorResult(Target, Source);
-            if (Result > 0)
-                return true;
-            else
-                return false;
+        //Enumerable Functions
+            public static T PickRandom<T>(this IEnumerable<T> source)
+            {
+                if (source.Count() == 0)
+                    return default(T);
+                else
+                    return source.PickRandom(1).Single();
+            }
 
-        }
-        public static bool PlayerVehicleIsBehind(this Vehicle myVehicle)
-        {
-            float Result = getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, myVehicle);
-            if (Result > 0)
-                return true;
-            else
-                return false;
+            public static IEnumerable<T> PickRandom<T>(this IEnumerable<T> source, int count)
+            {
+                return source.Shuffle().Take(count);
+            }
 
+            public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
+            {
+                return source.OrderBy(x => Guid.NewGuid());
+        }
+        //Color Picking
+            public static int closestColor1(List<Color> colors, Color target)
+            {
+                var hue1 = target.GetHue();
+                var diffs = colors.Select(n => getHueDistance(n.GetHue(), hue1));
+                var diffMin = diffs.Min(n => n);
+                return diffs.ToList().FindIndex(n => n == diffMin);
+            }
+
+            // closed match in RGB space
+            public static int closestColor2(List<Color> colors, Color target)
+            {
+                var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
+                return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
+            }
+
+
+            // weighed distance using hue, saturation and brightness
+            public static int closestColor3(List<Color> colors, Color target)
+            {
+                float hue1 = target.GetHue();
+                var num1 = ColorNum(target);
+                var diffs = colors.Select(n => Math.Abs(ColorNum(n) - num1) +
+                                               getHueDistance(n.GetHue(), hue1));
+                var diffMin = diffs.Min(x => x);
+                return diffs.ToList().FindIndex(n => n == diffMin);
+            }
+
+            // color brightness as perceived:
+            public static float getBrightness(Color c)
+            { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
+
+            // distance between two hues:
+            public static float getHueDistance(float hue1, float hue2)
+            {
+                float d = Math.Abs(hue1 - hue2); return d > 180 ? 360 - d : d;
+            }
+
+            //  weighed only by saturation and brightness (from my trackbars)
+            public static float ColorNum(Color c)
+            {
+                return c.GetSaturation() * 1 +
+                            getBrightness(c) * 1;
+            }
+
+            // distance in RGB space
+            public static int ColorDiff(Color c1, Color c2)
+            {
+                return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
+                                       + (c1.G - c2.G) * (c1.G - c2.G)
+                                       + (c1.B - c2.B) * (c1.B - c2.B));
+            }
+
+        //Unused
+        public static bool Like(this string toSearch, string toFind)
+        {
+            return new Regex(@"\A" + new Regex(@"\.|\$|\^|\{|\[|\(|\||\)|\*|\+|\?|\\").Replace(toFind, ch => @"\" + ch).Replace('_', '.').Replace("%", ".*") + @"\z", RegexOptions.Singleline).IsMatch(toSearch);
         }
         public static bool PlayerVehicleIsInFront(this Vehicle myvehicle)
         {
@@ -293,127 +462,7 @@ namespace ExtensionsMethods
                 return false;
 
         }
-        public static void FaceEntity(this Entity Source,Entity Target)
-        {
-            Vector3 Resultant = Vector3.Subtract(Target.Position, Source.Position);
-            Source.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-        }
-        public static float Dot(Vector3 left, Vector3 right)
-        {
-            return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
-        }
-        public static float Angle(Vector3 from, Vector3 to)
-        {
-            from.Normalize();
-            to.Normalize();
-            double dot = Dot(from, to);
-            return (float)(System.Math.Acos((dot)) * (180.0 / System.Math.PI));
-        }
-        public static bool FacingSameDirection(this Entity Entity1, Entity Entity2)
-        {
-            float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
-            if (MyAngle <= 40f)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public static bool FacingOppositeDirection(this Entity Entity1, Entity Entity2)
-        {
-            float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
-            if (MyAngle >= 140f && MyAngle <= 220f)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static T PickRandom<T>(this IEnumerable<T> source)
-        {
-            if (source.Count() == 0)
-                return default(T);
-            else
-                return source.PickRandom(1).Single();
-        }
-
-        public static IEnumerable<T> PickRandom<T>(this IEnumerable<T> source, int count)
-        {
-            return source.Shuffle().Take(count);
-        }
-
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
-        {
-            return source.OrderBy(x => Guid.NewGuid());
-        }
-        public static int closestColor1(List<Color> colors, Color target)
-        {
-            var hue1 = target.GetHue();
-            var diffs = colors.Select(n => getHueDistance(n.GetHue(), hue1));
-            var diffMin = diffs.Min(n => n);
-            return diffs.ToList().FindIndex(n => n == diffMin);
-        }
-
-        // closed match in RGB space
-        public static int closestColor2(List<Color> colors, Color target)
-        {
-            var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
-            return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
-        }
 
 
-        // weighed distance using hue, saturation and brightness
-        public static int closestColor3(List<Color> colors, Color target)
-        {
-            float hue1 = target.GetHue();
-            var num1 = ColorNum(target);
-            var diffs = colors.Select(n => Math.Abs(ColorNum(n) - num1) +
-                                           getHueDistance(n.GetHue(), hue1));
-            var diffMin = diffs.Min(x => x);
-            return diffs.ToList().FindIndex(n => n == diffMin);
-        }
-
-        // color brightness as perceived:
-        public static float getBrightness(Color c)
-        { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
-
-        // distance between two hues:
-        public static float getHueDistance(float hue1, float hue2)
-        {
-            float d = Math.Abs(hue1 - hue2); return d > 180 ? 360 - d : d;
-        }
-
-        //  weighed only by saturation and brightness (from my trackbars)
-        public static float ColorNum(Color c)
-        {
-            return c.GetSaturation() * 1 +
-                        getBrightness(c) * 1;
-        }
-
-        // distance in RGB space
-        public static int ColorDiff(Color c1, Color c2)
-        {
-            return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
-                                   + (c1.G - c2.G) * (c1.G - c2.G)
-                                   + (c1.B - c2.B) * (c1.B - c2.B));
-        }
-
-        public static bool Like(this string toSearch, string toFind)
-        {
-            return new Regex(@"\A" + new Regex(@"\.|\$|\^|\{|\[|\(|\||\)|\*|\+|\?|\\").Replace(toFind, ch => @"\" + ch).Replace('_', '.').Replace("%", ".*") + @"\z", RegexOptions.Singleline).IsMatch(toSearch);
-        }
-
-        public static bool IsMoveControlPressed()
-        {
-            if (Game.IsControlPressed(2, GameControl.MoveUp) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDown) || Game.IsControlPressed(2, GameControl.MoveLeft))
-                return true;
-            else
-                return false;
-        }
     }
 }

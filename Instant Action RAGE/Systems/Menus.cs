@@ -62,7 +62,7 @@ namespace Instant_Action_RAGE.Systems
         private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
         private static List<int> UndieLimit = new List<int> { 0,1,2,3,4,5 };
         private static string CurrentScreenEffect = "Rampage";
-        private static float TakeoverRadius = -1f;
+        public static float TakeoverRadius = -1f;
         public static int ChangePlateIndex = 0;
         private static int PrevMainMenuCurrentSelection;
         private static bool PrevMainMenuVisible;

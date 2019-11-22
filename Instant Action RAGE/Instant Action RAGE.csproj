@@ -99,6 +99,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Other\Agency.cs" />
     <Compile Include="Entities\Weapons\DroppedWeapon.cs" />
     <Compile Include="Entities\Peds\GTANewsReporter.cs" />
     <Compile Include="Entities\Vehicles\GTAVehicle.cs" />

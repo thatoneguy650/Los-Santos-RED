@@ -562,7 +562,7 @@ internal static class DispatchAudioSystem
                 }
                 while (outputDevice != null)
                 {
-                    if (MyAudioEvent.Subtitles != "")
+                    if (MyAudioEvent.Subtitles != "" && Settings.DispatchSubtitles)
                     {
                         //InstantAction.Text(MyAudioEvent.Subtitles.Substring(0,Math.Min(75,MyAudioEvent.Subtitles.Length)), 0.94f, 0.5f, 0.35f, true, System.Drawing.Color.White);
                         //if (MyAudioEvent.Subtitles.Length >= 75)
@@ -1021,52 +1021,36 @@ internal static class DispatchAudioSystem
     {
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ref ScannerList);
-        ScannerList.Add(ScannerAudio.crime_speeding_felony.Aspeedingfelony.FileName);
+        ScannerList.Add(crime_speeding_felony.Aspeedingfelony.FileName);
         string Subtitles = "Officers Report, a ~r~speeding felony~s~ ";
 
-        if (Speed >= 40f)
-        {
-            
-            ScannerList.Add(suspect_is.CriminalIs.FileName);
-            if (Speed >= 40f && Speed < 50f)
-            {
-                ScannerList.Add(doing_speed.Doing40mph.FileName);
-                Subtitles = Subtitles + " criminal is doing ~h~40 mph";
-            }
-            else if (Speed >= 50f && Speed < 60f)
-            {
-                ScannerList.Add(doing_speed.Doing50mph.FileName);
-                Subtitles = Subtitles + " criminal is doing ~h~50 mph";
-            }
-            else if (Speed >= 60f && Speed < 70f)
-            {
-                ScannerList.Add(doing_speed.Doing60mph.FileName);
-                Subtitles = Subtitles + " criminal is doing ~h~60 mph";
-            }
-            else if (Speed >= 70f && Speed < 80f)
+        if (Speed >= 70f)
+        {           
+            //ScannerList.Add(suspect_is.CriminalIs.FileName);
+            if (Speed >= 70f && Speed < 80f)
             {
                 ScannerList.Add(doing_speed.Doing70mph.FileName);
-                Subtitles = Subtitles + " criminal is doing ~h~70 mph";
+                Subtitles = Subtitles + " doing ~h~70 mph";
             }
             else if (Speed >= 80f && Speed < 90f)
             {
                 ScannerList.Add(doing_speed.Doing80mph.FileName);
-                Subtitles = Subtitles + " criminal is doing ~h~80 mph";
+                Subtitles = Subtitles + " doing ~h~80 mph";
             }
             else if (Speed >= 90f && Speed < 100f)
             {
                 ScannerList.Add(doing_speed.Doing90mph.FileName);
-                Subtitles = Subtitles + " criminal is doing ~h~90 mph";
+                Subtitles = Subtitles + " doing ~h~90 mph";
             }
             else if (Speed >= 100f && Speed < 104f)
             {
                 ScannerList.Add(doing_speed.Doing100mph.FileName);
-                Subtitles = Subtitles + " criminal is doing ~h~100 mph";
+                Subtitles = Subtitles + " doing ~h~100 mph";
             }
             else if (Speed >= 105f)
             {
                 ScannerList.Add(doing_speed.Doingover100mph.FileName);
-                Subtitles = Subtitles + " criminal is doing ~h~over 100 mph~s~";
+                Subtitles = Subtitles + " doing ~h~over 100 mph~s~";
             }
         }
         if (vehicle.IsStolen)
@@ -1824,6 +1808,12 @@ internal static class DispatchAudioSystem
         ReportGenericEnd(ScannerList, NearType.Zone, ref Subtitles);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
+    public static void PopQuizHotShot()
+    {
+        List<string> ScannerList = new List<string>();
+        ScannerList.Add(SpeedQuotes.PopQuizHotShot.FileName);  
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, "Pop quiz hot shot"));
+    }
 
     //Debug
     public static void TestStreetCall()
@@ -2230,18 +2220,18 @@ internal static class DispatchAudioSystem
             }
 
 
-            if (IncludeStreet && InstantAction.PlayerCurrentStreet != "")
+            if (IncludeStreet && InstantAction.PlayerCurrentStreet != null)
             {
-                GTAStreet MyStreet = InstantAction.Streets.Where(x => x.Name == InstantAction.PlayerCurrentStreet).FirstOrDefault();
+                GTAStreet MyStreet = InstantAction.PlayerCurrentStreet;
                 if (MyStreet != null && MyStreet.DispatchFile != "")
                 {
                     ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
                     ScannerList.Add(MyStreet.DispatchFile);
                     Subtitles = Subtitles + " ~s~on ~h~" + MyStreet.Name;
 
-                    if (InstantAction.PlayerCurrentCrossStreet != "")
+                    if (InstantAction.PlayerCurrentCrossStreet != null)
                     {
-                        GTAStreet MyCrossStreet = InstantAction.Streets.Where(x => x.Name == InstantAction.PlayerCurrentCrossStreet).FirstOrDefault();
+                        GTAStreet MyCrossStreet = InstantAction.PlayerCurrentCrossStreet;
                         if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
                         {
                             ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());

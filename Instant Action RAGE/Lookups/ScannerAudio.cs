@@ -4405,6 +4405,10 @@ public class s_m_y_sheriff_white_full_02
     public static ScannerFile HASH1E193B2F { get { return new ScannerFile("s_m_y_sheriff_01_white_full_02\\0x1E193B2F.wav", "0x1E193B2F", "s_m_y_sheriff_white_full_02"); } }
     public static ScannerFile HASH1E99399B { get { return new ScannerFile("s_m_y_sheriff_01_white_full_02\\0x1E99399B.wav", "0x1E99399B", "s_m_y_sheriff_white_full_02"); } }
 }
+    public class SpeedQuotes
+    {
+        public static ScannerFile PopQuizHotShot { get { return new ScannerFile("SpeedQuotes\\PopQuizHotShot.wav", "Pop quiz hot shot...", "Speed"); } }
+    }
     public class AudioBeeps
     {
 

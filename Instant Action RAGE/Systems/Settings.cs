@@ -76,6 +76,8 @@ static class Settings
     public static float TrafficInfoUIPositionY = 0.16f;
     public static float TrafficInfoUISpacing = 0.02f;
     public static float TrafficInfoUIScale = 0.35f;
+    public static bool DispatchSubtitles = false;
+    public static bool Logging = true;
 
     public static string MainCharacterToAliasModelName
     {
