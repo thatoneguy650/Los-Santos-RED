@@ -77,6 +77,9 @@ namespace Instant_Action_RAGE.Systems
                             EnterExitVehicleEvent(PlayerInVehicle);
                         }
 
+                        if (PrevIsHotwiring != IsHotwiring)
+                            IsHotWiringChanged();
+
                         if (PlayerInVehicle)
                         {
                             if (Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
@@ -128,6 +131,19 @@ namespace Instant_Action_RAGE.Systems
                     InstantAction.WriteToLog("ToggleEngine", string.Format("{0},{1}", e.Message,e.StackTrace));
                 }
             });
+        }
+
+        private static void IsHotWiringChanged()
+        {
+            if(IsHotwiring)
+            {
+
+            }
+            else
+            {
+                ToggleEngine(true, !EngineRunning);
+            }
+            PrevIsHotwiring = IsHotwiring;
         }
 
         private static void WantedLevelTuneEvent()

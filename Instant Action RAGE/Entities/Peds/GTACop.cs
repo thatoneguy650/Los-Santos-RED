@@ -73,7 +73,8 @@ public class GTACop
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public WeaponVariation PistolVariation { get; set; }
     public WeaponVariation HeavyVariation { get; set; }
-    public Agency AssignedAgency { get; set; } = PoliceScanningSystem.LSPD;
+    public Agency AssignedAgency { get; set; } = Agencies.LSPD;
+    public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public void SetAccuracyAndSightRange()
     {
         CopPed.VisionRange = 55f;

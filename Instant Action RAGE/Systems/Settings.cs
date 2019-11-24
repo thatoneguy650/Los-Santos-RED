@@ -67,7 +67,7 @@ static class Settings
     public static bool DisableAmbientScanner = true;
     public static bool WantedMusicDisable = true;
     public static bool AlwaysShowHUD = true;
-    public static bool ShowPoliceRadarBlips = false;
+    public static bool ShowPoliceRadarBlips = true;
     public static bool AlwaysShowCash = true;
     public static bool Keanu = true;
     public static bool AllowPoliceWeaponVariations = true;

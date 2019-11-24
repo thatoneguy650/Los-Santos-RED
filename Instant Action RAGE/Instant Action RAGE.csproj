@@ -99,6 +99,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Other\Agencies.cs" />
     <Compile Include="Entities\Other\Agency.cs" />
     <Compile Include="Entities\Weapons\DroppedWeapon.cs" />
     <Compile Include="Entities\Peds\GTANewsReporter.cs" />
@@ -125,9 +126,11 @@
     <Compile Include="Systems\DispatchAudioSystem.cs" />
     <Compile Include="Systems\Menus.cs" />
     <Compile Include="Systems\PoliceScanningSystem.cs" />
+    <Compile Include="Systems\PoliceSpawning.cs" />
     <Compile Include="Systems\PoliceSpeechSystem.cs" />
     <Compile Include="Systems\RespawnSystem.cs" />
     <Compile Include="Systems\Smoking.cs" />
+    <Compile Include="Systems\Tasking.cs" />
     <Compile Include="Systems\Transmission.cs" />
     <Compile Include="Systems\VehicleEngineSystem.cs" />
     <Compile Include="Systems\Settings.cs" />
