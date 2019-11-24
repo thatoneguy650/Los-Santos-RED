@@ -1703,29 +1703,28 @@ public static class PoliceScanningSystem
     public static void TaskSimpleInvestigate(GTACop Cop)
     {
         Cop.TaskType = PoliceTask.Task.SimpleInvestigate;
-        Cop.CopPed.BlockPermanentEvents = true;
+        Cop.CopPed.BlockPermanentEvents = false;
         Cop.SimpleTaskName = "SimpleInvestigate";
         if (Cop.isInVehicle)
             Cop.CopPed.Tasks.CruiseWithVehicle(30f, VehicleDrivingFlags.Emergency);
         else
             Cop.CopPed.Tasks.Wander();
 
-        Cop.CopPed.KeepTasks = true;
+       // Cop.CopPed.KeepTasks = true;
         InstantAction.WriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate: {0}", Cop.CopPed.Handle));
     }
     public static void TaskGoToWantedCenter(GTACop Cop)
     {
         Cop.TaskType = PoliceTask.Task.GoToWantedCenter;
-        Cop.CopPed.BlockPermanentEvents = true;
+        Cop.CopPed.BlockPermanentEvents = false;
         Cop.SimpleTaskName = "GoToWantedCenter";
+        Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
         if (Cop.isInVehicle)
-            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.CopPed, Cop.CopPed.CurrentVehicle, PlacePlayerLastSeen.X, PlacePlayerLastSeen.Y, PlacePlayerLastSeen.Z, 70f, 4 | 16 | 32 | 262144, 20f);
+            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.CopPed, Cop.CopPed.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 70f, 4 | 16 | 32 | 262144, 35f);
         else
-            NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.CopPed, PlacePlayerLastSeen.X, PlacePlayerLastSeen.Y, PlacePlayerLastSeen.Z, 500f, -1, 0f, 2f);
+            NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.CopPed, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 500f, -1, 0f, 2f);
 
-
-
-        Cop.CopPed.KeepTasks = true;
+        //Cop.CopPed.KeepTasks = true;
         InstantAction.WriteToLog("TaskGoToWantedCenter", string.Format("Started GoToWantedCenter: {0}", Cop.CopPed.Handle));
     }
     public static void UntaskAll(bool OnlyTasked)
@@ -1811,6 +1810,11 @@ public static class PoliceScanningSystem
                     Cop.CopPed.Tasks.Wander();
                     InstantAction.WriteToLog("RetaskAllRandomSpawns", "Told him to wander");
                 }
+            }
+            else
+            {
+                Cop.CopPed.Tasks.Wander();
+                InstantAction.WriteToLog("RetaskAllRandomSpawns", "Told him to wander");
             }
         }
 

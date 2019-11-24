@@ -43,6 +43,7 @@ public static class InstantAction
     public static List<GTALicensePlate> SpareLicensePlates = new List<GTALicensePlate>();
     public static List<Rage.Object> CreatedObjects = new List<Rage.Object>();
 
+
     //Police Items
     private static int TimeAimedAtPolice = 0;
     public static bool areHandsUp = false;
@@ -270,6 +271,7 @@ public static class InstantAction
             PoliceSpeechSystem.Initialize();
             VehicleLookup.Initialize();
             VehicleEngineSystem.Initialize();
+            Smoking.Initialize();
            // Transmission.Initialize();
             while (IsRunning)
             {
@@ -892,13 +894,13 @@ public static class InstantAction
     }
     private static void PoliceTickNormal()
     {
-        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.isTasked && !x.TaskIsQueued))
+        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.isTasked && !x.TaskIsQueued && (x.TaskType != PoliceTask.Task.RandomSpawnIdle))
         {
             Cop.TaskIsQueued = true;
             PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
             WriteToLog("InstantActionTick", string.Format("Untask Queued {0}", Cop.CopPed.Handle));
         }
-        if(Game.GameTime - GameTimePoliceStateStart >= 8000)
+        if (Game.GameTime - GameTimePoliceStateStart >= 8000)
         {
             foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.SetDeadly || x.SetTazer || x.SetUnarmed))
             {
@@ -1080,10 +1082,27 @@ public static class InstantAction
     }
     private static void PoliceTickSearchMode()
     {
-        if(AnyPoliceSeenPlayerThisWanted)
-            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PoliceScanningSystem.PlacePlayerLastSeen.X, PoliceScanningSystem.PlacePlayerLastSeen.Y, PoliceScanningSystem.PlacePlayerLastSeen.Z);
+        Vector3 SetWantedLocation;
+        if (AnyPoliceSeenPlayerThisWanted)
+            SetWantedLocation = PoliceScanningSystem.PlacePlayerLastSeen;
         else
-            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlaceWantedStarted.X, PlaceWantedStarted.Y, PlaceWantedStarted.Z);
+            SetWantedLocation = PlaceWantedStarted;
+
+        NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, SetWantedLocation.X, SetWantedLocation.Y, SetWantedLocation.Z);
+
+        //foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => !x.isTasked))
+        //{
+        //    if(!Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.GoToWantedCenter && Cop.CopPed.DistanceTo2D(SetWantedLocation) >= 35f && ((Cop.CopPed.IsInAnyVehicle(false) && Cop.CopPed.CurrentVehicle.Driver == Cop.CopPed) || !Cop.CopPed.IsInAnyVehicle(false)))
+        //    {
+        //        Cop.TaskIsQueued = true;
+        //        PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.GoToWantedCenter));
+        //    }
+        //    else if (!Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.SimpleInvestigate && Cop.CopPed.DistanceTo2D(SetWantedLocation) < 35f && ((Cop.CopPed.IsInAnyVehicle(false) && Cop.CopPed.CurrentVehicle.Driver == Cop.CopPed) || !Cop.CopPed.IsInAnyVehicle(false)))
+        //    {
+        //        Cop.TaskIsQueued = true;
+        //        PoliceScanningSystem.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleInvestigate));
+        //    }
+        //}
 
         if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 10000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000)
         {
@@ -3051,7 +3070,7 @@ public static class InstantAction
         //PoliceScanningSystem.UntaskAll(true);
 
     }
-
+  
     public static void BribeAnimation(Ped Cop,Ped Briber)
     {
         GameFiber.StartNew(delegate
@@ -5436,6 +5455,11 @@ public static class InstantAction
 
         //PoliceScanningSystem.RemoveAllCreatedEntities();
 
+
+        PoliceScanningSystem.RetaskAllRandomSpawns();
+        return;
+
+
         PoliceScanningSystem.SpawnCop(PoliceScanningSystem.SAHP, Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
 
 
@@ -5446,6 +5470,13 @@ public static class InstantAction
         {
 
             MyCop.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f);
+
+
+
+            PoliceScanningSystem.AddItemToQueue(new PoliceTask(MyCop, PoliceTask.Task.RandomSpawnIdle));
+
+            return;
+
 
 
 
@@ -5817,29 +5848,76 @@ public static class InstantAction
     {
         try
         {
-            GTAWeapon CurrentWeapon = Weapons.Where(x => x.Hash == (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash).First();
+            // Smoking.startPTFX("core", "ent_dst_concrete_large");
 
-            if (CurrentWeapon != null)
+            //Smoking.Start();
+            //if(!Smoking.PlayersCurrentCigarette.Exists())
+            //{
+            //    return;
+            //}
+
+            string PTFX = "core";
+            string FX = "ent_anim_cig_exhale_mth_car";
+
+            if (!NativeFunction.CallByName<bool>("HAS_NAMED_PTFX_ASSET_LOADED", PTFX))
             {
-                WeaponVariation.WeaponComponent myComponent = WeaponComponentsLookup.Where(x => x.BaseWeapon == CurrentWeapon.Name && x.Name == "Suppressor").FirstOrDefault();
-                if (myComponent == null)
-                {
-                    WriteToLog("DebugNumpad6", "No Component Found");
-                    return;
-                }
-
-                WeaponVariation Cool = new WeaponVariation(0);
-                Cool.Components.Add(myComponent);
-
-                ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)CurrentWeapon.Hash, Cool);
+                NativeFunction.CallByName<bool>("REQUEST_NAMED_PTFX_ASSET", PTFX);
+                while (!NativeFunction.CallByName<bool>("HAS_NAMED_PTFX_ASSET_LOADED", PTFX))
+                    GameFiber.Sleep(50);
             }
 
-            WeaponVariation DroppedGunVariation = GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-            foreach (WeaponVariation.WeaponComponent Comp in DroppedGunVariation.Components)
-            {
-                WriteToLog("GetWeaponVariation", string.Format("Name: {0},HashKey: {1},Hash: {2}", Comp.Name, Comp.HashKey, Comp.Hash));
-            }
-            WriteToLog("GetWeaponVariation", string.Format("Tint: {0}", DroppedGunVariation.Tint));
+
+            //NativeFunction.CallByName<bool>("REQUEST_NAMED_PTFX_ASSET", PTFX);
+            //GameFiber.Sleep(200);
+            NativeFunction.CallByHash<bool>(0x6C38AF3693A69A91, PTFX);
+            //NativeFunction.CallByName<bool>("START_PARTICLE_FX_NON_LOOPED_AT_COORD", FX, offset.X, offset.Y, offset.Z, 0f, 0f, 0f, 1.0f, false, false, false);
+            //NativeFunction.CallByName<bool>("START_PARTICLE_FX_LOOPED_ON_PED_BONE", FX, Game.LocalPlayer.Character, 0f, 0f, 0f, 0f, 0f, 0f, 57005, 1f, false, false, false);
+            //NativeFunction.CallByName<bool>("START_PARTICLE_FX_LOOPED_ON_ENTITY", FX, Smoking.PlayersCurrentCigarette, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 2.0f, false, false, false);
+            WriteToLog("DebugNumpad6", "StartLoop");
+            int Particle = 0;
+
+                Particle = NativeFunction.CallByName<int>("START_PARTICLE_FX_LOOPED_ON_PED_BONE", FX, Game.LocalPlayer.Character, 0f, 0f, 0f, 0f, 0f, 0f, 57005, 2.0f, false, false, false);
+                GameFiber.Sleep(2500);
+            
+            NativeFunction.CallByName<int>("STOP_PARTICLE_FX_LOOPED", Particle, true);
+            WriteToLog("DebugNumpad6", "StopLoop");
+
+
+            //uint TimeStarted = Game.GameTime;
+            //GameFiber.StartNew(delegate
+            //{
+            //    while (Game.GameTime - TimeStarted <= 5000)
+            //    {
+            //        NativeFunction.CallByName<bool>("START_PARTICLE_FX_LOOPED_ON_PED_BONE", FX, Game.LocalPlayer.Character, 0f, 0f, 0f, 0f, 0f, 0f, 57005, 2.0f, false, false, false);
+            //       // NativeFunction.CallByName<bool>("START_PARTICLE_FX_NON_LOOPED_AT_COORD", "ent_dst_concrete_large", offset.X, offset.Y, offset.Z, 0f, 0f, 0f, 10.0f, false, false, false);
+            //        GameFiber.Yield();
+            //    }
+            //});
+
+
+            //GTAWeapon CurrentWeapon = Weapons.Where(x => x.Hash == (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash).First();
+
+            //if (CurrentWeapon != null)
+            //{
+            //    WeaponVariation.WeaponComponent myComponent = WeaponComponentsLookup.Where(x => x.BaseWeapon == CurrentWeapon.Name && x.Name == "Suppressor").FirstOrDefault();
+            //    if (myComponent == null)
+            //    {
+            //        WriteToLog("DebugNumpad6", "No Component Found");
+            //        return;
+            //    }
+
+            //    WeaponVariation Cool = new WeaponVariation(0);
+            //    Cool.Components.Add(myComponent);
+
+            //    ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)CurrentWeapon.Hash, Cool);
+            //}
+
+            //WeaponVariation DroppedGunVariation = GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            //foreach (WeaponVariation.WeaponComponent Comp in DroppedGunVariation.Components)
+            //{
+            //    WriteToLog("GetWeaponVariation", string.Format("Name: {0},HashKey: {1},Hash: {2}", Comp.Name, Comp.HashKey, Comp.Hash));
+            //}
+            //WriteToLog("GetWeaponVariation", string.Format("Tint: {0}", DroppedGunVariation.Tint));
         }
         catch (Exception e)
         {
@@ -5858,7 +5936,7 @@ public static class InstantAction
     }
     private static void DebugNumpad8()
     {
-
+        Smoking.Start();
     }
     private static void DebugNumpad9()
     {
