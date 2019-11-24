@@ -229,6 +229,7 @@ public static class PoliceScanningSystem
             }
                 
             Cop.DistanceToPlayer = Cop.CopPed.RangeTo(Game.LocalPlayer.Character.Position);
+            Cop.DistanceToLastSeen = Cop.CopPed.RangeTo(PlacePlayerLastSeen);
         }
         CopPeds.RemoveAll(x => x.CopPed.IsDead);
     }

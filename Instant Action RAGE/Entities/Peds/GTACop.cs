@@ -68,6 +68,7 @@ public class GTACop
     public bool isOnBike { get; set; } = false;
     public bool InChasingLoop { get; set; } = false;
     public float DistanceToPlayer { get; set; }
+    public float DistanceToLastSeen { get; set; }
     public bool WasMarkedNonPersistent { get; set; } = false;
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
@@ -111,6 +112,16 @@ public class GTACop
             if (GameTimeLastSpoke == 0)
                 return true;
             else if (Game.GameTime > GameTimeLastSpoke + 15000)
+                return true;
+            else
+                return false;
+        }
+    }
+    public bool IsDriver
+    {
+        get
+        {
+            if (CopPed.IsInAnyVehicle(false) && CopPed.SeatIndex == -1)
                 return true;
             else
                 return false;

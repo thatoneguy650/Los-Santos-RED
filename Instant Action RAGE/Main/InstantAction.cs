@@ -1100,23 +1100,23 @@ public static class InstantAction
     }
     private static void PoliceTickSearchMode()
     {
-        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CopPed.DistanceTo2D(PoliceScanningSystem.PlacePlayerLastSeen) <= 200f || x.DistanceToPlayer <= 150f))//.Where(x => !x.isTasked))
+        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.DistanceToLastSeen <= 200f || x.DistanceToPlayer <= 150f))//.Where(x => !x.isTasked))
         {
-            bool InVehicle = Cop.CopPed.IsInAnyVehicle(false);
-            if (InVehicle)
+            if (Cop.isInVehicle)
             {
                 SetUnarmed(Cop);
             }
-            if (!Cop.AtWantedCenterDuringSearchMode && !Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.GoToWantedCenter && Cop.CopPed.DistanceTo2D(PoliceScanningSystem.PlacePlayerLastSeen) >= 35f && ((InVehicle && Cop.CopPed.CurrentVehicle.Driver == Cop.CopPed) || !InVehicle))
+            if (!Cop.AtWantedCenterDuringSearchMode && !Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.GoToWantedCenter && Cop.DistanceToLastSeen >= 35f && Cop.IsDriver)//((InVehicle && Cop.CopPed.CurrentVehicle.Driver == Cop.CopPed) || !InVehicle))
             {
                 Cop.TaskIsQueued = true;
                 Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.GoToWantedCenter));
             }
-            else if (!Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.SimpleInvestigate && Cop.CopPed.DistanceTo2D(PoliceScanningSystem.PlacePlayerLastSeen) < 35f && ((InVehicle && Cop.CopPed.CurrentVehicle.Driver == Cop.CopPed) || !InVehicle))
+            else if (!Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.SimpleInvestigate && Cop.DistanceToLastSeen < 35f)
             {
                 Cop.AtWantedCenterDuringSearchMode = true;
                 Cop.TaskIsQueued = true;
                 Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleInvestigate));
+                
             }
         }
 
@@ -1391,7 +1391,7 @@ public static class InstantAction
             Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
             GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
         }
-        if (PoliceScanningSystem.CopPeds.Any(x => x.RecentlySeenPlayer()))// Needed for the AI to keep the player in the wanted position
+        if (AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
         {
             GhostCopFollow = true;
         }
@@ -1813,8 +1813,16 @@ public static class InstantAction
         }
         else
         {
-            PoliceScanningSystem.CopPeds.ForEach(x => x.AtWantedCenterDuringSearchMode = false);
-            Tasking.UntaskAll(true);
+            foreach(GTACop Cop in PoliceScanningSystem.CopPeds)
+            {
+                Cop.AtWantedCenterDuringSearchMode = false;
+                if(Cop.isTasked && (Cop.TaskType == PoliceTask.Task.GoToWantedCenter || Cop.TaskType == PoliceTask.Task.SimpleInvestigate))
+                {
+                    Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
+                }
+            }
+            //PoliceScanningSystem.CopPeds.ForEach(x => x.AtWantedCenterDuringSearchMode = false);
+            //Tasking.UntaskAll(true);
             CanReportLastSeen = false;
         }
         PrevPlayerStarsGreyedOut = PlayerStarsGreyedOut;
