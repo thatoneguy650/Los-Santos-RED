@@ -61,6 +61,7 @@ public class GTACop
     public uint GameTimeLastWeaponCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
+    public uint GameTimeLastLOSCheck { get; set; }
     public bool isDriveTasked { get; set; } = false;
     public string SubTaskName { get; set; }
     public bool isInVehicle { get; set; } = false;
@@ -144,6 +145,13 @@ public class GTACop
             return true;
         else
             return false;
+    }
+    public void UpdateContinuouslySeen()
+    {
+        if (GameTimeContinuoslySeenPlayerSince == 0)
+        {
+            GameTimeContinuoslySeenPlayerSince = Game.GameTime;
+        }
     }
 }
 

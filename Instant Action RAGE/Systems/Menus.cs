@@ -47,6 +47,8 @@ namespace Instant_Action_RAGE.Systems
         private static UIMenuItem menuDeathHospitalRespawn;
         private static UIMenuItem menuDebugGiveMoney;
         private static UIMenuItem menuDebugHealthAndArmor;
+        private static UIMenuItem menuMainStartSmoking;
+        private static UIMenuItem menuMainStopSmoking;
 
         private static MenuPool menuPool;
         public static UIMenu mainMenu;
@@ -263,7 +265,8 @@ namespace Instant_Action_RAGE.Systems
             menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
             menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
 
-            menuMainChangeHelmet = new UIMenuItem("Start Smoking", "Starts smoking");
+            menuMainStartSmoking = new UIMenuItem("Start Smoking", "Starts smoking");
+            menuMainStopSmoking = new UIMenuItem("Stop Smoking", "Stops smoking");
 
             mainMenu.AddItem(menuMainTakeoverRandomPed);
             mainMenu.AddItem(menuMainSuicide);
@@ -271,6 +274,8 @@ namespace Instant_Action_RAGE.Systems
             {
                 mainMenu.AddItem(menuMainChangeLicensePlate);
                 mainMenu.AddItem(menuMainRemoveLicensePlate);
+                mainMenu.AddItem(menuMainStartSmoking);
+                mainMenu.AddItem(menuMainStopSmoking);
                 //mainMenu.AddItem(menuMainChangeHelmet); //doesnt work fully so far, and only on certain peds
             }
             CreateOptionsMenu();
@@ -362,6 +367,14 @@ namespace Instant_Action_RAGE.Systems
                 else if (selectedItem == menuMainReloadSettings)
                 {
                     Settings.ReadSettings();
+                }
+                else if (selectedItem == menuMainStartSmoking)
+                {
+                    Smoking.Start();
+                }
+                else if (selectedItem == menuMainStopSmoking)
+                {
+                    Smoking.StopWithAnimation();
                 }
                 mainMenu.Visible = false;
             }

@@ -22,9 +22,12 @@ public static class PoliceSpawning
     {
         try
         {
-            Vector3 SpawnLocation;
+            Vector3 SpawnLocation = Vector3.Zero;
 
             SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(750f, 1500f));
+
+            if (SpawnLocation == Vector3.Zero)
+                return;
 
             if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 250f)
                 return;
@@ -60,7 +63,7 @@ public static class PoliceSpawning
         }
         catch (Exception e)
         {
-            InstantAction.WriteToLog("SpawnRandomCop", e.Message);
+            InstantAction.WriteToLog("SpawnRandomCop", e.StackTrace);
         }
 
     }

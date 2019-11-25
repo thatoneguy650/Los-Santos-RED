@@ -158,6 +158,7 @@ public static class InstantAction
     private static bool PlayerIsOffroad;
     private static uint GameTimeLastPoliceTick;
     private static uint GameTimeLastSetWanted;
+    private static string TempCurrentPoliceTickRunning = "";
 
     public static bool IsHardToSeeInWeather
     {
@@ -580,6 +581,10 @@ public static class InstantAction
         string CompassHeading = GetCompassHeading();
         string StreetString = GetStreetDisplay();
         string TextToShow = CompassHeading + " | " + StreetString;
+
+        TextToShow = TextToShow +  " Police State: " + TempCurrentPoliceTickRunning;
+
+
         Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White,eFont.FontChaletComprimeCologne);
         //Text(StreetString, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY + 0.025f, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontHouseScript);
 
@@ -614,6 +619,8 @@ public static class InstantAction
             //    SpeedDisplay = SpeedDisplay + " A!";
             //if(HasBeenDrivingOnPavement)
             //    SpeedDisplay = SpeedDisplay + " P!";
+
+            //SpeedDisplay = SpeedDisplay + TempCurrentPoliceTickRunning;
 
             Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
         }
@@ -783,19 +790,40 @@ public static class InstantAction
             {
 
                 if (CurrentPoliceState == PoliceState.Normal)
+                {
+                    TempCurrentPoliceTickRunning = "Normal";
                     PoliceTickNormal();
+                }
                 else if (PlayerStarsGreyedOut && PoliceScanningSystem.CopPeds.All(x => !x.RecentlySeenPlayer()))
+                {
+                    TempCurrentPoliceTickRunning = "Search Mode";
                     PoliceTickSearchMode();
+                }
                 else if (CurrentPoliceState == PoliceState.UnarmedChase)
+                {
+                    TempCurrentPoliceTickRunning = "Unarmed Chase";
                     PoliceTickUnarmedChase();
+                }
                 else if (CurrentPoliceState == PoliceState.CautiousChase)
+                {
+                    TempCurrentPoliceTickRunning = "Cautious Chase";
                     PoliceTickCautiousChase();
+                }
                 else if (CurrentPoliceState == PoliceState.DeadlyChase)
+                {
+                    TempCurrentPoliceTickRunning = "Deadly Chase";
                     PoliceTickDeadlyChase();
+                }
                 else if (CurrentPoliceState == PoliceState.ArrestedWait)
+                {
+                    TempCurrentPoliceTickRunning = "Arrested Wait";
                     PoliceTickArrestedWait();
+                }
                 else
+                {
+                    TempCurrentPoliceTickRunning = "Normal";
                     PoliceTickNormal();
+                }
 
                 GameTimeLastPoliceTick = Game.GameTime;
             }
@@ -895,6 +923,13 @@ public static class InstantAction
             SetWantedLevel(2);
             AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportGrandTheftAuto, 3, false));
             WriteToLog("GetPoliceState", "breaking into car");
+        }
+
+        if(PlayerWantedLevel > 0  && (PlayerWantedLevel <= 3 || CurrentPoliceState != PoliceState.DeadlyChase) && Game.LocalPlayer.Character.DistanceTo2D(new Vector3 (1696f,2566f,0f)) <= 150f)
+        {
+            SetWantedLevel(2);
+            CurrentPoliceState = PoliceState.DeadlyChase;
+            WriteToLog("GetPoliceState", "WEnt to close to the prison");
         }
 
         //if (PlayerIsPersonOfInterest && PlayerWantedLevel == 0 && AnyPoliceCanRecognizePlayerAfterWanted && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000)
@@ -1829,7 +1864,7 @@ public static class InstantAction
             foreach(GTACop Cop in PoliceScanningSystem.CopPeds)
             {
                 Cop.AtWantedCenterDuringSearchMode = false;
-                if(Cop.isTasked && (Cop.TaskType == PoliceTask.Task.GoToWantedCenter || Cop.TaskType == PoliceTask.Task.SimpleInvestigate))
+                if(Cop.isTasked && (Cop.TaskType == PoliceTask.Task.GoToWantedCenter || Cop.TaskType == PoliceTask.Task.SimpleInvestigate || Cop.TaskType == PoliceTask.Task.RandomSpawnIdle))
                 {
                     Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
                 }
@@ -5981,7 +6016,7 @@ public static class InstantAction
     }
     private static void DebugNumpad8()
     {
-        Smoking.Start();
+       // Smoking.Start();
     }
     private static void DebugNumpad9()
     {

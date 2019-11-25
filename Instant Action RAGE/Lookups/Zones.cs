@@ -133,7 +133,7 @@ public static class Zones
         public string TextName { get; set; }
         public string ScannerValue { get; set; }
         public Agency MainZoneAgency { get; set; }
-        public List<Agency> SecondaryZoneAgencies { get; set; }
+        public List<Agency> SecondaryZoneAgencies { get; set; } = new List<Agency>();
     }
 }
 

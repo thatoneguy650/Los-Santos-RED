@@ -136,6 +136,10 @@ static class Settings
                     {
                         MyField.SetValue(null, int.Parse(myNode.InnerText));
                     }
+                    else if (MyField.FieldType == typeof(uint))
+                    {
+                        MyField.SetValue(null, uint.Parse(myNode.InnerText));
+                    }
                     else if (MyField.FieldType == typeof(float))
                     {
                         MyField.SetValue(null, float.Parse(myNode.InnerText));
@@ -158,7 +162,7 @@ static class Settings
         }
         catch (Exception e)
         {
-            InstantAction.WriteToLog("ReadSettings", e.Message.ToString());
+            InstantAction.WriteToLog("ReadSettings", e.Message.ToString() + " " + e.StackTrace.ToString());
         }
     }
     public static void WriteSettings()

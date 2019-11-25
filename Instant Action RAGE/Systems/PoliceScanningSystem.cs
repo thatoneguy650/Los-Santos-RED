@@ -325,42 +325,47 @@ public static class PoliceScanningSystem
     }
     private static void CheckLOS(bool PlayerInVehicle,Entity EntityToCheck)
     {
-        int i = 0;
+        int TotalEntityNativeLOSChecks = 0;
+        bool SawPlayerThisCheck = false;
         float RangeToCheck = 55f;
 
         foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead && !x.CopPed.IsInHelicopter))
         {
+            if (SawPlayerThisCheck && TotalEntityNativeLOSChecks >= 3 && Cop.GameTimeLastLOSCheck <= 1500)//we have already done 3 checks, saw us and they were looked at last check
+            {
+                //InstantAction.WriteToLog("CheckLOS", "Skipped Ped checking LOS");
+                break;
+            }
+            Cop.GameTimeLastLOSCheck = Game.GameTime;
             if (Cop.CopPed.PlayerIsInFront() && Cop.DistanceToPlayer <= RangeToCheck && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck))//if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
             {
-                if (Cop.GameTimeContinuoslySeenPlayerSince == 0)
-                {
-                    Cop.GameTimeContinuoslySeenPlayerSince = Game.GameTime;
-                }
+                Cop.UpdateContinuouslySeen();
                 Cop.canSeePlayer = true;
                 Cop.GameTimeLastSeenPlayer = Game.GameTime;
                 Cop.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
-                i++;
-                if (PlayerInVehicle)
-                    break;
+                SawPlayerThisCheck = true;
+                //if (PlayerInVehicle)
+                //    break;
             }
             else
             {
                 Cop.GameTimeContinuoslySeenPlayerSince = 0;
                 Cop.canSeePlayer = false;
             }
+            TotalEntityNativeLOSChecks++;
         }
+        if (SawPlayerThisCheck)
+            return;
         foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead && x.CopPed.IsInHelicopter))
         {
+            Cop.GameTimeLastLOSCheck = Game.GameTime;
             if (Cop.DistanceToPlayer <= 250f && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Cop.CopPed, EntityToCheck, 17)) //was 55f
             {
-                if (Cop.GameTimeContinuoslySeenPlayerSince == 0)
-                {
-                    Cop.GameTimeContinuoslySeenPlayerSince = Game.GameTime;
-                }
+                Cop.UpdateContinuouslySeen();
                 Cop.canSeePlayer = true;
                 Cop.GameTimeLastSeenPlayer = Game.GameTime;
                 Cop.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
-                i++;
+                break;//Only care if one of the people saw it as we wont be tasking them 
             }
             else
             {
@@ -368,25 +373,7 @@ public static class PoliceScanningSystem
                 Cop.canSeePlayer = false;
             }
         }
-        foreach (GTANewsReporter Reporter in Reporters.Where(x => x.ReporterPed.Exists() && !x.ReporterPed.IsDead && x.ReporterPed.IsInHelicopter))
-        {
-            if (Reporter.DistanceToPlayer <= 250f && !Reporter.ReporterPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Reporter.ReporterPed, EntityToCheck, 17)) //was 55f
-            {
-                if (Reporter.GameTimeContinuoslySeenPlayerSince == 0)
-                {
-                    Reporter.GameTimeContinuoslySeenPlayerSince = Game.GameTime;
-                }
-                Reporter.canSeePlayer = true;
-                Reporter.GameTimeLastSeenPlayer = Game.GameTime;
-                Reporter.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
-                i++;
-            }
-            else
-            {
-                Reporter.GameTimeContinuoslySeenPlayerSince = 0;
-                Reporter.canSeePlayer = false;
-            }
-        }
+
 
     }
     public static bool PoliceCanSeeEntity(Entity EntityToCheck)
