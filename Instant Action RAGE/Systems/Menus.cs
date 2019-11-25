@@ -263,6 +263,8 @@ namespace Instant_Action_RAGE.Systems
             menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
             menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
 
+            menuMainChangeHelmet = new UIMenuItem("Start Smoking", "Starts smoking");
+
             mainMenu.AddItem(menuMainTakeoverRandomPed);
             mainMenu.AddItem(menuMainSuicide);
             if (!InstantAction.PlayerInVehicle)

@@ -103,6 +103,8 @@ public static class Tasking
         Cop.TaskFiber =
         GameFiber.StartNew(delegate
         {
+            if (!Cop.CopPed.Exists())
+                return;
             InstantAction.WriteToLog("Task Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
             uint TaskTime = 0;// = Game.GameTime;
             string LocalTaskName = "GoTo";

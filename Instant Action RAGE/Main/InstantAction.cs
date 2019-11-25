@@ -238,6 +238,15 @@ public static class InstantAction
         DeadlyChase = 3,
         ArrestedWait = 4,
     }
+    public enum eFont
+    {
+        FontChaletLondon = 0,
+        FontHouseScript = 1,
+        FontMonospace = 2,
+        FontWingDings = 3,
+        FontChaletComprimeCologne = 4,
+        FontPricedown = 7
+    };
 
     //Header Items
     static InstantAction()
@@ -570,11 +579,15 @@ public static class InstantAction
     {
         string CompassHeading = GetCompassHeading();
         string StreetString = GetStreetDisplay();
-
         string TextToShow = CompassHeading + " | " + StreetString;
-        Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White);
+        Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White,eFont.FontChaletComprimeCologne);
+        //Text(StreetString, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY + 0.025f, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontHouseScript);
+
+
+
+
         string ZoneString = GetZoneDisplay();
-        Text(ZoneString, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White);
+        Text(ZoneString, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White,eFont.FontChaletComprimeCologne);
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
         {
             string SpeedDisplay = "";
@@ -602,7 +615,7 @@ public static class InstantAction
             //if(HasBeenDrivingOnPavement)
             //    SpeedDisplay = SpeedDisplay + " P!";
 
-            Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White);
+            Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
         }
     }
     public static string GetCompassHeading()
@@ -5200,7 +5213,7 @@ public static class InstantAction
 
 
 
-        InstantAction.Text(string.Format("Node Flag: {0}, {1}", Flag, string.Join("", bits)), 0.5f, 0.5f, 0.5f, true, Color.Yellow);
+        InstantAction.Text(string.Format("Node Flag: {0}, {1}", Flag, string.Join("", bits)), 0.5f, 0.5f, 0.5f, true, Color.Yellow, eFont.FontChaletComprimeCologne);
 
 
         NodeID = NativeFunction.CallByName<int>("GET_NTH_CLOSEST_VEHICLE_NODE_ID", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 1, 0, 300f, 300f);
@@ -5376,10 +5389,10 @@ public static class InstantAction
         if(Settings.Logging)
             Game.Console.Print(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog);
     }
-    internal static void Text(string text, float x, float y, float scale, bool center, Color TextColor)
+    internal static void Text(string text, float x, float y, float scale, bool center, Color TextColor, eFont Font)
     {
         //Game.Console.Print("Invoke font");
-        NativeFunction.Natives.SetTextFont(4);
+        NativeFunction.Natives.SetTextFont((int)Font);
         //Game.Console.Print("Set scale");
         NativeFunction.Natives.SetTextScale(scale, scale);
         //Game.Console.Print("Calling color ref");
