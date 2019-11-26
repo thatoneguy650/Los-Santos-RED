@@ -191,7 +191,7 @@ public static class Tasking
                     }
                     else
                     {
-                        if (LocalTaskName != "Arrest" && (InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait || (InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase && Cop.DistanceToPlayer <= 15f)))
+                        if (LocalTaskName != "Arrest" && (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait || (Police.CurrentPoliceState == Police.PoliceState.CautiousChase && Cop.DistanceToPlayer <= 15f)))
                         {
                             unsafe
                             {
@@ -213,7 +213,7 @@ public static class Tasking
                             LocalTaskName = "Arrest";
                             //InstantAction.WriteToLog("TaskChasing", "Cop SubTasked with Arresting");
                         }
-                        else if (LocalTaskName != "GotoShooting" && InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase && Cop.DistanceToPlayer <= 7f)
+                        else if (LocalTaskName != "GotoShooting" && Police.CurrentPoliceState == Police.PoliceState.UnarmedChase && Cop.DistanceToPlayer <= 7f)
                         {
                             Cop.CopPed.CanRagdoll = true;
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, Game.LocalPlayer.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
@@ -222,7 +222,7 @@ public static class Tasking
                             Cop.SubTaskName = "GotoShooting";
                             LocalTaskName = "GotoShooting";
                         }
-                        else if (LocalTaskName != "Goto" && (InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase) && Cop.DistanceToPlayer >= 15) //was 15f
+                        else if (LocalTaskName != "Goto" && (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase) && Cop.DistanceToPlayer >= 15) //was 15f
                         {
                             Cop.CopPed.CanRagdoll = true;
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
@@ -234,11 +234,11 @@ public static class Tasking
 
                     }
 
-                    if ((InstantAction.areHandsUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f && !InstantAction.PlayerWasJustJacking)
-                        InstantAction.SurrenderBust = true;
+                    if ((InstantAction.areHandsUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
+                        Police.SurrenderBust = true;
 
-                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f && !InstantAction.PlayerWasJustJacking)
-                        InstantAction.SurrenderBust = true;
+                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
+                        Police.SurrenderBust = true;
 
                     if (InstantAction.PlayerInVehicle && (Cop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f))
                     {
@@ -250,7 +250,7 @@ public static class Tasking
                 }
 
                 GameFiber.Yield();
-                if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.Normal || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase || InstantAction.isDead)
+                if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase || InstantAction.isDead)
                 {
                     GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
                     break;
@@ -308,7 +308,7 @@ public static class Tasking
     }
     public static void TaskVehicleChase(GTACop Cop)
     {
-        if (!PoliceScanningSystem.CopPeds.Any(x => x.TaskType == PoliceTask.Task.Chase))
+        if (!PoliceScanning.CopPeds.Any(x => x.TaskType == PoliceTask.Task.Chase))
         {
             InstantAction.WriteToLog("Task Vehicle Chasing", string.Format("Didn't Start Vehicle Chase: {0}", Cop.CopPed.Handle));
             return; //Only task this is we already have officers on foot
@@ -387,7 +387,7 @@ public static class Tasking
                     TaskTime = Game.GameTime;
                 }
                 GameFiber.Yield();
-                if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.Normal || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait || InstantAction.isBusted || InstantAction.isDead)
+                if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase || Police.CurrentPoliceState == Police.PoliceState.ArrestedWait || InstantAction.isBusted || InstantAction.isDead)
                 {
                     GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
                     break;
@@ -441,7 +441,7 @@ public static class Tasking
     }
     public static void RetaskAllRandomSpawns()
     {
-        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.WasRandomSpawn))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn))
         {
             if (!Cop.TaskIsQueued)
             {
@@ -492,7 +492,7 @@ public static class Tasking
     }
     public static void UntaskAll(bool OnlyTasked)
     {
-        foreach (GTACop Cop in PoliceScanningSystem.CopPeds)
+        foreach (GTACop Cop in PoliceScanning.CopPeds)
         {
 
             if (OnlyTasked && Cop.isTasked && !Cop.TaskIsQueued)
@@ -506,7 +506,7 @@ public static class Tasking
                 AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
             }
         }
-        foreach (GTACop Cop in PoliceScanningSystem.K9Peds)
+        foreach (GTACop Cop in PoliceScanning.K9Peds)
         {
             if (Cop.isTasked && !Cop.TaskIsQueued)
             {
@@ -518,7 +518,7 @@ public static class Tasking
     }
     public static void UntaskAllRandomSpawns(bool OnlyTasked)
     {
-        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.WasRandomSpawn))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn))
         {
             if (OnlyTasked && Cop.isTasked && !Cop.TaskIsQueued)
             {
@@ -581,21 +581,21 @@ public static class Tasking
     }
     public static void ArmCopAppropriately(GTACop Cop)
     {
-        if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase)
+        if (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase)
         {
-            InstantAction.SetCopTazer(Cop);
+            Police.SetCopTazer(Cop);
         }
-        else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase)
+        else if (Police.CurrentPoliceState == Police.PoliceState.CautiousChase)
         {
-            InstantAction.SetCopDeadly(Cop);
+            Police.SetCopDeadly(Cop);
         }
-        else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait && InstantAction.LastPoliceState == InstantAction.PoliceState.UnarmedChase)
+        else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait && Police.LastPoliceState == Police.PoliceState.UnarmedChase)
         {
-            InstantAction.SetCopTazer(Cop);
+            Police.SetCopTazer(Cop);
         }
-        else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait && InstantAction.LastPoliceState != InstantAction.PoliceState.UnarmedChase)
+        else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait && Police.LastPoliceState != Police.PoliceState.UnarmedChase)
         {
-            InstantAction.SetCopDeadly(Cop);
+            Police.SetCopDeadly(Cop);
         }
     }
 }

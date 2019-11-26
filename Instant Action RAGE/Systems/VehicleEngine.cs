@@ -9,9 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Instant_Action_RAGE.Systems
-{
-    internal static class VehicleEngineSystem
+
+    internal static class VehicleEngine
     {
         private static bool EngineRunning;
         private static bool PrevEngineRunning;
@@ -148,7 +147,7 @@ namespace Instant_Action_RAGE.Systems
 
         private static void WantedLevelTuneEvent()
         {
-            ChangeStation(VehicleEngineSystem.AutoTuneStation);
+            ChangeStation(VehicleEngine.AutoTuneStation);
             PrevWantedLevelTune = WantedLevelTune;
         }
 
@@ -295,4 +294,4 @@ namespace Instant_Action_RAGE.Systems
 
 
     }
-}
+

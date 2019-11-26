@@ -109,6 +109,9 @@ static class Settings
             return 1;
         }
     }
+
+    public static bool AlwaysShowRadar { get; set; } = true;
+
     public static void Initialize()
     {
         ReadSettings();

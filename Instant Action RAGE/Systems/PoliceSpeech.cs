@@ -1,5 +1,4 @@
 ﻿using ExtensionsMethods;
-using Instant_Action_RAGE.Systems;
 using NAudio.Wave;
 using Rage;
 using Rage.Native;
@@ -9,9 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Zones;
 
-internal static class PoliceSpeechSystem
+internal static class PoliceSpeech
 {
     private static Random rnd;
     public static bool IsRunning { get; set; } = true;
@@ -21,7 +19,7 @@ internal static class PoliceSpeechSystem
     public static List<string> ArrestedWaitSpeech { get; set; }
     public static List<string> PlayerDeadSpeech { get; set; }
     public static bool SaidManDown { get; set; } = true;
-    static PoliceSpeechSystem()
+    static PoliceSpeech()
     {
         rnd = new Random();
     }
@@ -54,7 +52,7 @@ internal static class PoliceSpeechSystem
     {
         try
         {
-            foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CanSpeak && x.DistanceToPlayer <= 45f && x.CopPed.Exists() && !x.CopPed.IsDead))
+            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CanSpeak && x.DistanceToPlayer <= 45f && x.CopPed.Exists() && !x.CopPed.IsDead))
             {
                 //if (rnd.Next(0, 100) <= 10)
                 //    return;
@@ -66,25 +64,25 @@ internal static class PoliceSpeechSystem
                         Cop.CopPed.PlayAmbientSpeech("ARREST_PLAYER");
                        // InstantAction.WriteToLog("CheckSpeech", "ARREST_PLAYER");
                     }
-                    else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase)
+                    else if (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase)
                     {
                         string Speech = UnarmedChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
                        // InstantAction.WriteToLog("CheckSpeech", Speech);
                     }
-                    else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase)
+                    else if (Police.CurrentPoliceState == Police.PoliceState.CautiousChase)
                     {
                         string Speech = CautiousChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
                        // InstantAction.WriteToLog("CheckSpeech", Speech);
                     }
-                    else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait)
+                    else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
                     {
                         string Speech = ArrestedWaitSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
                        // InstantAction.WriteToLog("CheckSpeech", Speech);
                     }
-                    else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
+                    else if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                     {
                         string Speech = DeadlyChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);

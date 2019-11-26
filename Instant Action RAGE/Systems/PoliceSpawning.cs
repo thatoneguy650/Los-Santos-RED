@@ -32,13 +32,13 @@ public static class PoliceSpawning
             if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 250f)
                 return;
 
-            if (PoliceScanningSystem.CopPeds.Any(x => x.CopPed.DistanceTo2D(SpawnLocation) <= 500f))
+            if (PoliceScanning.CopPeds.Any(x => x.CopPed.DistanceTo2D(SpawnLocation) <= 500f))
                 return;
 
 
-            Zones.Zone ZoneName = Zones.GetZoneName(SpawnLocation);
+            Zone ZoneName = Zones.GetZoneName(SpawnLocation);
             string StreetName = InstantAction.GetCurrentStreet(SpawnLocation);
-            GTAStreet MyGTAStreet = InstantAction.Streets.Where(x => x.Name == StreetName).FirstOrDefault();
+            Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
 
             if (ZoneName == null || (MyGTAStreet != null && MyGTAStreet.isFreeway && rnd.Next(1, 11) <= 4))
             {
@@ -70,7 +70,7 @@ public static class PoliceSpawning
     public static void RemoveFarAwayRandomlySpawnedCops()
     {
         //Zones.Zone CurrentZone = Zones.GetZoneName(Game.LocalPlayer.Character.Position);
-        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CopPed.Exists() && x.WasRandomSpawn))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && x.WasRandomSpawn))
         {
             if (Cop.DistanceToPlayer >= 2000f)//750f
             {
@@ -93,7 +93,7 @@ public static class PoliceSpawning
     }
     public static void RemoveAllRandomlySpawnedCops()
     {
-        foreach (GTACop Cop in PoliceScanningSystem.CopPeds.Where(x => x.CopPed.Exists() && x.WasRandomSpawn))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && x.WasRandomSpawn))
         {
             if (Cop.DistanceToPlayer >= 250f)
             {
@@ -119,7 +119,7 @@ public static class PoliceSpawning
         Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
         //Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections);
         GTACop MyNewCop = new GTACop(Cop, false, Cop.Health, _Agency);
-        PoliceScanningSystem.IssueCopPistol(MyNewCop);
+        Police.IssueCopPistol(MyNewCop);
         MyNewCop.WasRandomSpawn = true;
         MyNewCop.WasMarkedNonPersistent = true;
         MyNewCop.WasRandomSpawnDriver = true;
@@ -133,10 +133,10 @@ public static class PoliceSpawning
             PartnerCop.WarpIntoVehicle(CopCar, 0);
             PartnerCop.IsPersistent = true;
             GTACop MyNewPartnerCop = new GTACop(PartnerCop, false, PartnerCop.Health, _Agency);
-            PoliceScanningSystem.IssueCopPistol(MyNewPartnerCop);
+            Police.IssueCopPistol(MyNewPartnerCop);
             MyNewPartnerCop.WasRandomSpawn = true;
             MyNewPartnerCop.WasMarkedNonPersistent = true;
-            PoliceScanningSystem.CopPeds.Add(MyNewPartnerCop);
+            PoliceScanning.CopPeds.Add(MyNewPartnerCop);
         }
 
         if (Settings.SpawnedRandomPoliceHaveBlip)
@@ -146,7 +146,7 @@ public static class PoliceSpawning
             myBlip.Scale = 0.6f;
         }
 
-        PoliceScanningSystem.CopPeds.Add(MyNewCop);
+        PoliceScanning.CopPeds.Add(MyNewCop);
 
         InstantAction.WriteToLog("SpawnCop", string.Format("CopSpawned: Handled {0},Agency{1},AddedPartner{2}", Cop.Handle, _Agency.Initials, AddPartner));
     }
@@ -215,7 +215,7 @@ public static class PoliceSpawning
         {
             if (isMale && rnd.Next(1, 11) <= 4) //40% Chance of Vest
                 NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 9, 2, 0, 2);//Vest male only
-            if (!InstantAction.IsNightTime)
+            if (!Police.IsNightTime)
                 NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", Cop, 1, 0, 0, 2);//Sunglasses
         }
 
@@ -287,7 +287,7 @@ public static class PoliceSpawning
     {
         try
         {
-            GTACop ClosestDriver = PoliceScanningSystem.CopPeds.Where(x => x.CopPed.IsInAnyVehicle(false) && !x.isInHelicopter && x.CopPed.CurrentVehicle.Driver == x.CopPed && x.CopPed.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            GTACop ClosestDriver = PoliceScanning.CopPeds.Where(x => x.CopPed.IsInAnyVehicle(false) && !x.isInHelicopter && x.CopPed.CurrentVehicle.Driver == x.CopPed && x.CopPed.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             if (ClosestDriver != null)
             {
                 Ped Doggo = new Ped("a_c_shepherd", ClosestDriver.CopPed.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
@@ -304,7 +304,7 @@ public static class PoliceSpawning
 
                 GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health, ClosestDriver.AssignedAgency);
                 //PutK9InCar(DoggoCop, ClosestDriver);
-                PoliceScanningSystem.K9Peds.Add(DoggoCop);
+                PoliceScanning.K9Peds.Add(DoggoCop);
                 //TaskK9(DoggoCop);
                 InstantAction.WriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
             }
@@ -327,11 +327,11 @@ public static class PoliceSpawning
     }
     public static void MoveK9s()
     {
-        foreach (GTACop K9 in PoliceScanningSystem.K9Peds)
+        foreach (GTACop K9 in PoliceScanning.K9Peds)
         {
             if (K9.CopPed.IsInAnyVehicle(false))
             {
-                GTACop ClosestDriver = PoliceScanningSystem.CopPeds.Where(x => x.CopPed.IsInAnyVehicle(false) && !x.isInHelicopter && x.CopPed.CurrentVehicle.Driver == x.CopPed && x.CopPed.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                GTACop ClosestDriver = PoliceScanning.CopPeds.Where(x => x.CopPed.IsInAnyVehicle(false) && !x.isInHelicopter && x.CopPed.CurrentVehicle.Driver == x.CopPed && x.CopPed.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
                 if (ClosestDriver != null)
                 {
                     PutK9InCar(K9, ClosestDriver);
@@ -376,14 +376,14 @@ public static class PoliceSpawning
                         LocalTaskName = "Exit";
                         InstantAction.WriteToLog("TaskK9Chasing", "Cop SubTasked with Exit");
                     }
-                    else if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.ArrestedWait && LocalTaskName != "Arrest")
+                    else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait && LocalTaskName != "Arrest")
                     {
                         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
                         TaskTime = Game.GameTime;
                         LocalTaskName = "Arrest";
                         InstantAction.WriteToLog("TaskK9Chasing", "Cop SubTasked with Arresting");
                     }
-                    else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "GotoFighting" && _locrangeTo <= 5f) //was 10f
+                    else if ((Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase) && LocalTaskName != "GotoFighting" && _locrangeTo <= 5f) //was 10f
                     {
                         NativeFunction.CallByName<bool>("TASK_COMBAT_PED", Cop.CopPed, Game.LocalPlayer.Character, 0, 16);
                         Cop.CopPed.KeepTasks = true;
@@ -393,7 +393,7 @@ public static class PoliceSpawning
                         //GameFiber.Sleep(25000);
                         InstantAction.WriteToLog("TaskK9Chasing", "Cop SubTasked with Fighting");
                     }
-                    else if ((InstantAction.CurrentPoliceState == InstantAction.PoliceState.UnarmedChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.CautiousChase || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase) && LocalTaskName != "Goto" && _locrangeTo >= 45f) //was 15f
+                    else if ((Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase) && LocalTaskName != "Goto" && _locrangeTo >= 45f) //was 15f
                     {
                         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
                         Cop.CopPed.KeepTasks = true;
@@ -402,7 +402,7 @@ public static class PoliceSpawning
                         InstantAction.WriteToLog("TaskK9Chasing", "Cop SubTasked with GoTo");
                     }
 
-                    if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.Normal || InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
+                    if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                     {
                         GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
                         break;

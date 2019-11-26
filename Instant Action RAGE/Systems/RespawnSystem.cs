@@ -7,9 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Instant_Action_RAGE.Systems
-{
-    internal static class RespawnSystem
+    internal static class RespawnStopper
     {
         public static bool IsRunning { get; set; } = true;
         public static void Initialize()
@@ -50,4 +48,4 @@ namespace Instant_Action_RAGE.Systems
             });
         }
     }
-}
+

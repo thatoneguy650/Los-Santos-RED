@@ -1,5 +1,4 @@
 ﻿using ExtensionsMethods;
-using Instant_Action_RAGE.Systems;
 using NAudio.Wave;
 using Rage;
 using Rage.Native;
@@ -14,10 +13,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
 using static ScannerAudio;
-using static VehicleLookup;
 using static Zones;
 
-internal static class DispatchAudioSystem
+internal static class DispatchAudio
 {
     private static WaveOutEvent outputDevice;
     private static AudioFileReader audioFile;
@@ -75,7 +73,7 @@ internal static class DispatchAudioSystem
         HeadingAndStreet = 3,
         HeadingStreetAndZone = 4,
     }
-    static DispatchAudioSystem()
+    static DispatchAudio()
     {
         rnd = new Random();
     }
@@ -498,7 +496,7 @@ internal static class DispatchAudioSystem
     }
     private static void PlayAudioListNEW(List<String> SoundsToPlay, bool CheckSight)
     {
-        if (CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
+        if (CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
             return;
 
         QueueFiber = GameFiber.StartNew(delegate
@@ -544,7 +542,7 @@ internal static class DispatchAudioSystem
     private static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
         //GameFiber.Sleep(rnd.Next(250, 670));
-        if (MyAudioEvent.CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
+        if (MyAudioEvent.CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
             return;
 
         QueueFiber = GameFiber.StartNew(delegate
@@ -583,7 +581,7 @@ internal static class DispatchAudioSystem
     private static void PlayAudioListOLD(List<String> SoundsToPlay, bool CheckSight)
     {
         //GameFiber.Sleep(rnd.Next(250, 670));
-        if (CheckSight && !PoliceScanningSystem.CopPeds.Any(x => x.canSeePlayer))
+        if (CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
             return;
 
         QueueFiber = GameFiber.StartNew(delegate
@@ -656,7 +654,7 @@ internal static class DispatchAudioSystem
                 }
 
                 // Remove and order items
-                if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
+                if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                 {
                     DispatchQueue.RemoveAll(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted);
                 }
@@ -758,7 +756,7 @@ internal static class DispatchAudioSystem
                 GameFiber.Sleep(3000);
 
                 // Remove and order items
-                if (InstantAction.CurrentPoliceState == InstantAction.PoliceState.DeadlyChase)
+                if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                 {
                     foreach (DispatchQueueItem Item in DispatchQueue.Where(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted))
                     {
@@ -1388,7 +1386,7 @@ internal static class DispatchAudioSystem
         if (InstantAction.isBusted || InstantAction.isDead)
             return;
 
-        if (PoliceScanningSystem.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
+        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1926,184 +1924,184 @@ internal static class DispatchAudioSystem
 
         return BaseColorList[Index];
     }
-    public static string GetManufacturerScannerFile(Manufacturer manufacturer)
+    public static string GetManufacturerScannerFile(Vehicles.Manufacturer manufacturer)
     {
-        if (manufacturer == Manufacturer.Albany)
+        if (manufacturer == Vehicles.Manufacturer.Albany)
             return ScannerAudio.manufacturer.ALBANY01.FileName;
-        else if (manufacturer == Manufacturer.Annis)
+        else if (manufacturer == Vehicles.Manufacturer.Annis)
             return ScannerAudio.manufacturer.ANNIS01.FileName;
-        else if (manufacturer == Manufacturer.Benefactor)
+        else if (manufacturer == Vehicles.Manufacturer.Benefactor)
             return ScannerAudio.manufacturer.BENEFACTOR01.FileName;
-        else if (manufacturer == Manufacturer.Bürgerfahrzeug)
+        else if (manufacturer == Vehicles.Manufacturer.Bürgerfahrzeug)
             return ScannerAudio.manufacturer.BF01.FileName;
-        else if (manufacturer == Manufacturer.Bollokan)
+        else if (manufacturer == Vehicles.Manufacturer.Bollokan)
             return ScannerAudio.manufacturer.BOLLOKAN01.FileName;
-        else if (manufacturer == Manufacturer.Bravado)
+        else if (manufacturer == Vehicles.Manufacturer.Bravado)
             return ScannerAudio.manufacturer.BRAVADO01.FileName;
-        else if (manufacturer == Manufacturer.Brute)
+        else if (manufacturer == Vehicles.Manufacturer.Brute)
             return ScannerAudio.manufacturer.BRUTE01.FileName;
-        else if (manufacturer == Manufacturer.Buckingham)
+        else if (manufacturer == Vehicles.Manufacturer.Buckingham)
             return "";
-        else if (manufacturer == Manufacturer.Canis)
+        else if (manufacturer == Vehicles.Manufacturer.Canis)
             return ScannerAudio.manufacturer.CANIS01.FileName;
-        else if (manufacturer == Manufacturer.Chariot)
+        else if (manufacturer == Vehicles.Manufacturer.Chariot)
             return ScannerAudio.manufacturer.CHARIOT01.FileName;
-        else if (manufacturer == Manufacturer.Cheval)
+        else if (manufacturer == Vehicles.Manufacturer.Cheval)
             return ScannerAudio.manufacturer.CHEVAL01.FileName;
-        else if (manufacturer == Manufacturer.Classique)
+        else if (manufacturer == Vehicles.Manufacturer.Classique)
             return ScannerAudio.manufacturer.CLASSIQUE01.FileName;
-        else if (manufacturer == Manufacturer.Coil)
+        else if (manufacturer == Vehicles.Manufacturer.Coil)
             return ScannerAudio.manufacturer.COIL01.FileName;
-        else if (manufacturer == Manufacturer.Declasse)
+        else if (manufacturer == Vehicles.Manufacturer.Declasse)
             return ScannerAudio.manufacturer.DECLASSE01.FileName;
-        else if (manufacturer == Manufacturer.Dewbauchee)
+        else if (manufacturer == Vehicles.Manufacturer.Dewbauchee)
             return ScannerAudio.manufacturer.DEWBAUCHEE01.FileName;
-        else if (manufacturer == Manufacturer.Dinka)
+        else if (manufacturer == Vehicles.Manufacturer.Dinka)
             return ScannerAudio.manufacturer.DINKA01.FileName;
-        else if (manufacturer == Manufacturer.DUDE)
+        else if (manufacturer == Vehicles.Manufacturer.DUDE)
             return "";
-        else if (manufacturer == Manufacturer.Dundreary)
+        else if (manufacturer == Vehicles.Manufacturer.Dundreary)
             return ScannerAudio.manufacturer.DUNDREARY01.FileName;
-        else if (manufacturer == Manufacturer.Emperor)
+        else if (manufacturer == Vehicles.Manufacturer.Emperor)
             return ScannerAudio.manufacturer.EMPEROR01.FileName;
-        else if (manufacturer == Manufacturer.Enus)
+        else if (manufacturer == Vehicles.Manufacturer.Enus)
             return ScannerAudio.manufacturer.ENUS01.FileName;
-        else if (manufacturer == Manufacturer.Fathom)
+        else if (manufacturer == Vehicles.Manufacturer.Fathom)
             return ScannerAudio.manufacturer.FATHOM01.FileName;
-        else if (manufacturer == Manufacturer.Gallivanter)
+        else if (manufacturer == Vehicles.Manufacturer.Gallivanter)
             return ScannerAudio.manufacturer.GALLIVANTER01.FileName;
-        else if (manufacturer == Manufacturer.Grotti)
+        else if (manufacturer == Vehicles.Manufacturer.Grotti)
             return ScannerAudio.manufacturer.GROTTI01.FileName;
-        else if (manufacturer == Manufacturer.HVY)
+        else if (manufacturer == Vehicles.Manufacturer.HVY)
             return ScannerAudio.manufacturer.HVY01.FileName;
-        else if (manufacturer == Manufacturer.Hijak)
+        else if (manufacturer == Vehicles.Manufacturer.Hijak)
             return ScannerAudio.manufacturer.HIJAK01.FileName;
-        else if (manufacturer == Manufacturer.Imponte)
+        else if (manufacturer == Vehicles.Manufacturer.Imponte)
             return ScannerAudio.manufacturer.IMPONTE01.FileName;
-        else if (manufacturer == Manufacturer.Invetero)
+        else if (manufacturer == Vehicles.Manufacturer.Invetero)
             return ScannerAudio.manufacturer.INVETERO01.FileName;
-        else if (manufacturer == Manufacturer.JackSheepe)
+        else if (manufacturer == Vehicles.Manufacturer.JackSheepe)
             return ScannerAudio.manufacturer.JACKSHEEPE01.FileName;
-        else if (manufacturer == Manufacturer.Jobuilt)
+        else if (manufacturer == Vehicles.Manufacturer.Jobuilt)
             return ScannerAudio.manufacturer.JOEBUILT01.FileName;
-        else if (manufacturer == Manufacturer.Karin)
+        else if (manufacturer == Vehicles.Manufacturer.Karin)
             return ScannerAudio.manufacturer.KARIN01.FileName;
-        else if (manufacturer == Manufacturer.KrakenSubmersibles)
+        else if (manufacturer == Vehicles.Manufacturer.KrakenSubmersibles)
             return "";
-        else if (manufacturer == Manufacturer.Lampadati)
+        else if (manufacturer == Vehicles.Manufacturer.Lampadati)
             return ScannerAudio.manufacturer.LAMPADATI01.FileName;
-        else if (manufacturer == Manufacturer.LibertyChopShop)
+        else if (manufacturer == Vehicles.Manufacturer.LibertyChopShop)
             return "";
-        else if (manufacturer == Manufacturer.LibertyCityCycles)
+        else if (manufacturer == Vehicles.Manufacturer.LibertyCityCycles)
             return "";
-        else if (manufacturer == Manufacturer.MaibatsuCorporation)
+        else if (manufacturer == Vehicles.Manufacturer.MaibatsuCorporation)
             return ScannerAudio.manufacturer.MAIBATSU01.FileName;
-        else if (manufacturer == Manufacturer.Mammoth)
+        else if (manufacturer == Vehicles.Manufacturer.Mammoth)
             return ScannerAudio.manufacturer.MAMMOTH01.FileName;
-        else if (manufacturer == Manufacturer.MTL)
+        else if (manufacturer == Vehicles.Manufacturer.MTL)
             return ScannerAudio.manufacturer.MTL01.FileName;
-        else if (manufacturer == Manufacturer.Nagasaki)
+        else if (manufacturer == Vehicles.Manufacturer.Nagasaki)
             return ScannerAudio.manufacturer.NAGASAKI01.FileName;
-        else if (manufacturer == Manufacturer.Obey)
+        else if (manufacturer == Vehicles.Manufacturer.Obey)
             return ScannerAudio.manufacturer.OBEY01.FileName;
-        else if (manufacturer == Manufacturer.Ocelot)
+        else if (manufacturer == Vehicles.Manufacturer.Ocelot)
             return ScannerAudio.manufacturer.OCELOT01.FileName;
-        else if (manufacturer == Manufacturer.Överflöd)
+        else if (manufacturer == Vehicles.Manufacturer.Överflöd)
             return ScannerAudio.manufacturer.OVERFLOD01.FileName;
-        else if (manufacturer == Manufacturer.Pegassi)
+        else if (manufacturer == Vehicles.Manufacturer.Pegassi)
             return ScannerAudio.manufacturer.PEGASI01.FileName;
-        else if (manufacturer == Manufacturer.Pfister)
+        else if (manufacturer == Vehicles.Manufacturer.Pfister)
             return "";
-        else if (manufacturer == Manufacturer.Principe)
+        else if (manufacturer == Vehicles.Manufacturer.Principe)
             return ScannerAudio.manufacturer.PRINCIPE01.FileName;
-        else if (manufacturer == Manufacturer.Progen)
+        else if (manufacturer == Vehicles.Manufacturer.Progen)
             return ScannerAudio.manufacturer.PROGEN01.FileName;
-        else if (manufacturer == Manufacturer.ProLaps)
+        else if (manufacturer == Vehicles.Manufacturer.ProLaps)
             return "";
-        else if (manufacturer == Manufacturer.RUNE)
+        else if (manufacturer == Vehicles.Manufacturer.RUNE)
             return "";
-        else if (manufacturer == Manufacturer.Schyster)
+        else if (manufacturer == Vehicles.Manufacturer.Schyster)
             return ScannerAudio.manufacturer.SCHYSTER01.FileName;
-        else if (manufacturer == Manufacturer.Shitzu)
+        else if (manufacturer == Vehicles.Manufacturer.Shitzu)
             return ScannerAudio.manufacturer.SHITZU01.FileName;
-        else if (manufacturer == Manufacturer.Speedophile)
+        else if (manufacturer == Vehicles.Manufacturer.Speedophile)
             return ScannerAudio.manufacturer.SPEEDOPHILE01.FileName;
-        else if (manufacturer == Manufacturer.Stanley)
+        else if (manufacturer == Vehicles.Manufacturer.Stanley)
             return ScannerAudio.manufacturer.STANLEY01.FileName;
-        else if (manufacturer == Manufacturer.SteelHorse)
+        else if (manufacturer == Vehicles.Manufacturer.SteelHorse)
             return ScannerAudio.manufacturer.STEELHORSE01.FileName;
-        else if (manufacturer == Manufacturer.Truffade)
+        else if (manufacturer == Vehicles.Manufacturer.Truffade)
             return ScannerAudio.manufacturer.TRUFFADE01.FileName;
-        else if (manufacturer == Manufacturer.Übermacht)
+        else if (manufacturer == Vehicles.Manufacturer.Übermacht)
             return ScannerAudio.manufacturer.UBERMACHT01.FileName;
-        else if (manufacturer == Manufacturer.Vapid)
+        else if (manufacturer == Vehicles.Manufacturer.Vapid)
             return ScannerAudio.manufacturer.VAPID01.FileName;
-        else if (manufacturer == Manufacturer.Vulcar)
+        else if (manufacturer == Vehicles.Manufacturer.Vulcar)
             return ScannerAudio.manufacturer.VULCAR01.FileName;
-        else if (manufacturer == Manufacturer.Vysser)
+        else if (manufacturer == Vehicles.Manufacturer.Vysser)
             return "";
-        else if (manufacturer == Manufacturer.Weeny)
+        else if (manufacturer == Vehicles.Manufacturer.Weeny)
             return ScannerAudio.manufacturer.WEENY01.FileName;
-        else if (manufacturer == Manufacturer.WesternCompany)
+        else if (manufacturer == Vehicles.Manufacturer.WesternCompany)
             return ScannerAudio.manufacturer.WESTERNCOMPANY01.FileName;
-        else if (manufacturer == Manufacturer.WesternMotorcycleCompany)
+        else if (manufacturer == Vehicles.Manufacturer.WesternMotorcycleCompany)
             return ScannerAudio.manufacturer.WESTERNMOTORCYCLECOMPANY01.FileName;
-        else if (manufacturer == Manufacturer.Willard)
+        else if (manufacturer == Vehicles.Manufacturer.Willard)
             return "";
-        else if (manufacturer == Manufacturer.Zirconium)
+        else if (manufacturer == Vehicles.Manufacturer.Zirconium)
             return ScannerAudio.manufacturer.ZIRCONIUM01.FileName;
         else
             return "";
     }
-    public static string GetVehicleClassScannerFile(VehicleLookup.VehicleClass myVehicleClass)
+    public static string GetVehicleClassScannerFile(Vehicles.VehicleClass myVehicleClass)
     {
-        if (myVehicleClass == VehicleLookup.VehicleClass.Boats)
+        if (myVehicleClass == Vehicles.VehicleClass.Boats)
             return vehicle_category.Boat01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Commercial)
+        else if (myVehicleClass == Vehicles.VehicleClass.Commercial)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Compacts)
+        else if (myVehicleClass == Vehicles.VehicleClass.Compacts)
             return vehicle_category.Sedan.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Coupes)
+        else if (myVehicleClass == Vehicles.VehicleClass.Coupes)
             return vehicle_category.Coupe01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Cycles)
+        else if (myVehicleClass == Vehicles.VehicleClass.Cycles)
             return vehicle_category.Bicycle01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Emergency)
+        else if (myVehicleClass == Vehicles.VehicleClass.Emergency)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Helicopters)
+        else if (myVehicleClass == Vehicles.VehicleClass.Helicopters)
             return vehicle_category.Helicopter01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Industrial)
+        else if (myVehicleClass == Vehicles.VehicleClass.Industrial)
             return vehicle_category.IndustrialVehicle01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Military)
+        else if (myVehicleClass == Vehicles.VehicleClass.Military)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Motorcycles)
+        else if (myVehicleClass == Vehicles.VehicleClass.Motorcycles)
             return vehicle_category.Motorcycle01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Muscle)
+        else if (myVehicleClass == Vehicles.VehicleClass.Muscle)
             return vehicle_category.MuscleCar01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.OffRoad)
+        else if (myVehicleClass == Vehicles.VehicleClass.OffRoad)
             return vehicle_category.OffRoad01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Planes)
+        else if (myVehicleClass == Vehicles.VehicleClass.Planes)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Sedans)
+        else if (myVehicleClass == Vehicles.VehicleClass.Sedans)
             return vehicle_category.Sedan.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Service)
+        else if (myVehicleClass == Vehicles.VehicleClass.Service)
             return vehicle_category.Service01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Sports)
+        else if (myVehicleClass == Vehicles.VehicleClass.Sports)
             return vehicle_category.SportsCar01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.SportsClassics)
+        else if (myVehicleClass == Vehicles.VehicleClass.SportsClassics)
             return vehicle_category.Classic01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Super)
+        else if (myVehicleClass == Vehicles.VehicleClass.Super)
             return vehicle_category.PerformanceCar01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.SUVs)
+        else if (myVehicleClass == Vehicles.VehicleClass.SUVs)
             return vehicle_category.SUV01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Trailer)
+        else if (myVehicleClass == Vehicles.VehicleClass.Trailer)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Trains)
+        else if (myVehicleClass == Vehicles.VehicleClass.Trains)
             return vehicle_category.Train01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Unknown)
+        else if (myVehicleClass == Vehicles.VehicleClass.Unknown)
             return "";
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Utility)
+        else if (myVehicleClass == Vehicles.VehicleClass.Utility)
             return vehicle_category.UtilityVehicle01.FileName;
-        else if (myVehicleClass == VehicleLookup.VehicleClass.Vans)
+        else if (myVehicleClass == Vehicles.VehicleClass.Vans)
             return vehicle_category.Van01.FileName;
         else
             return "";
@@ -2134,7 +2132,7 @@ internal static class DispatchAudioSystem
     }
     public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles)
     {
-        VehicleInfo VehicleInformation = InstantAction.GetVehicleInfo(VehicleDescription);
+        Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(VehicleDescription);
         System.Drawing.Color BaseColor = GetBaseColor(VehicleDescription.DescriptionColor);
         ColorLookup LookupColor = ColorLookups.Where(x => x.BaseColor == BaseColor).PickRandom();
         string ManufacturerScannerFile;
@@ -2154,7 +2152,7 @@ internal static class DispatchAudioSystem
                     Subtitles = Subtitles + " ~s~damaged";
                 }
 
-                if (VehicleInformation.VehicleClass != VehicleLookup.VehicleClass.Emergency)
+                if (VehicleInformation.VehicleClass != Vehicles.VehicleClass.Emergency)
                 {
                     Subtitles = Subtitles + " ~s~" + LookupColor.BaseColor.Name;
                     ScannerList.Add(LookupColor.ScannerFile);
@@ -2193,11 +2191,11 @@ internal static class DispatchAudioSystem
     }
     public static bool AddHeading(ref List<string> ScannerList, bool IncludeStreet,ref string Subtitles)
     {
-        if (InstantAction.AnyPoliceRecentlySeenPlayer)
+        if (Police.AnyPoliceRecentlySeenPlayer)
         {
             ScannerList.Add((new List<string>() { suspect_heading.SuspectHeading.FileName, suspect_heading.TargetHeading.FileName, suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             Subtitles = Subtitles + " ~s~Suspect Heading ";
-            string heading = InstantAction.GetSimpleCompassHeading();
+            string heading = UI.GetSimpleCompassHeading();
             if (heading == "N")
             {
                 ScannerList.Add(direction_heading.North.FileName);
@@ -2222,7 +2220,7 @@ internal static class DispatchAudioSystem
 
             if (IncludeStreet && InstantAction.PlayerCurrentStreet != null)
             {
-                GTAStreet MyStreet = InstantAction.PlayerCurrentStreet;
+                Street MyStreet = InstantAction.PlayerCurrentStreet;
                 if (MyStreet != null && MyStreet.DispatchFile != "")
                 {
                     ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
@@ -2231,7 +2229,7 @@ internal static class DispatchAudioSystem
 
                     if (InstantAction.PlayerCurrentCrossStreet != null)
                     {
-                        GTAStreet MyCrossStreet = InstantAction.PlayerCurrentCrossStreet;
+                        Street MyCrossStreet = InstantAction.PlayerCurrentCrossStreet;
                         if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
                         {
                             ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());

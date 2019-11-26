@@ -112,29 +112,30 @@ public static class Zones
         new Zone("ZQ_UAR", "Davis Quartz",ScannerAudio.areas.DavisCourts.FileName,Agencies.LSSD,new List<Agency>() { Agencies.DOA }),
     });
 
-    public  class Zone
+   
+}
+public class Zone
+{
+    public Zone(string _GameName, string _TextName, string _ScannerValue, Agency _MainZoneAgency)
     {
-        public Zone(string _GameName, string _TextName, string _ScannerValue, Agency _MainZoneAgency)
-        {
-            GameName = _GameName;
-            TextName = _TextName;
-            ScannerValue = _ScannerValue;
-            MainZoneAgency = _MainZoneAgency;
-        }
-        public Zone(string _GameName, string _TextName, string _ScannerValue, Agency _MainZoneAgency,List<Agency> _SecondaryZoneAgencies)
-        {
-            GameName = _GameName;
-            TextName = _TextName;
-            ScannerValue = _ScannerValue;
-            MainZoneAgency = _MainZoneAgency;
-            SecondaryZoneAgencies = _SecondaryZoneAgencies;
-        }
-        public string GameName { get; set; }
-        public string TextName { get; set; }
-        public string ScannerValue { get; set; }
-        public Agency MainZoneAgency { get; set; }
-        public List<Agency> SecondaryZoneAgencies { get; set; } = new List<Agency>();
+        GameName = _GameName;
+        TextName = _TextName;
+        ScannerValue = _ScannerValue;
+        MainZoneAgency = _MainZoneAgency;
     }
+    public Zone(string _GameName, string _TextName, string _ScannerValue, Agency _MainZoneAgency, List<Agency> _SecondaryZoneAgencies)
+    {
+        GameName = _GameName;
+        TextName = _TextName;
+        ScannerValue = _ScannerValue;
+        MainZoneAgency = _MainZoneAgency;
+        SecondaryZoneAgencies = _SecondaryZoneAgencies;
+    }
+    public string GameName { get; set; }
+    public string TextName { get; set; }
+    public string ScannerValue { get; set; }
+    public Agency MainZoneAgency { get; set; }
+    public List<Agency> SecondaryZoneAgencies { get; set; } = new List<Agency>();
 }
 
 
