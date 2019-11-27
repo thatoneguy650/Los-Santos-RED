@@ -438,6 +438,10 @@ namespace ExtensionsMethods
                                        + (c1.G - c2.G) * (c1.G - c2.G)
                                        + (c1.B - c2.B) * (c1.B - c2.B));
             }
+        private static string HexConverter(System.Drawing.Color c)
+        {
+            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+        }
 
         //Unused
         public static bool Like(this string toSearch, string toFind)

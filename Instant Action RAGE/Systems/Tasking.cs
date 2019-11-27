@@ -11,6 +11,7 @@ public static class Tasking
 {
     private static Random rnd;
     public static List<PoliceTask> CopsToTask = new List<PoliceTask>();
+    public static bool IsRunning { get; set; } = true;
     static Tasking()
     {
         rnd = new Random();
@@ -18,6 +19,10 @@ public static class Tasking
     public static void Initialize()
     {
         TaskQueue();
+    }
+    public static void Dispose()
+    {
+        IsRunning = false;
     }
     public static void AddItemToQueue(PoliceTask MyTask)
     {
@@ -40,47 +45,55 @@ public static class Tasking
     {
         GameFiber.StartNew(delegate
         {
-            while (true)
+            try
             {
-                int _ToTask = CopsToTask.Count;
-
-                if (_ToTask > 0)
+                while (IsRunning)
                 {
-                    InstantAction.WriteToLog("TaskQueue", string.Format("Cops To Task: {0}", _ToTask));
-                    PoliceTask _policeTask = CopsToTask[0];
-                    _policeTask.CopToAssign.isTasked = true;
+                    int _ToTask = CopsToTask.Count;
 
-                    if (_policeTask.TaskToAssign == PoliceTask.Task.Untask && CopsToTask.Any(x => x.CopToAssign == _policeTask.CopToAssign && x.TaskToAssign != PoliceTask.Task.Untask && x.GameTimeAssigned >= _policeTask.GameTimeAssigned))
+                    if (_ToTask > 0)
                     {
-                        _policeTask.CopToAssign.TaskIsQueued = false;
-                        CopsToTask.RemoveAt(0);
-                    }
-                    else
-                    {
-                        if (_policeTask.TaskToAssign == PoliceTask.Task.Arrest)
-                            TaskChasing(_policeTask.CopToAssign);
-                        else if (_policeTask.TaskToAssign == PoliceTask.Task.Chase)
-                            TaskChasing(_policeTask.CopToAssign);
-                        else if (_policeTask.TaskToAssign == PoliceTask.Task.Untask)
-                            Untask(_policeTask.CopToAssign);
-                        else if (_policeTask.TaskToAssign == PoliceTask.Task.SimpleArrest)
-                            TaskSimpleArrest(_policeTask.CopToAssign);
-                        else if (_policeTask.TaskToAssign == PoliceTask.Task.SimpleChase)
-                            TaskSimpleChase(_policeTask.CopToAssign);
-                        else if (_policeTask.TaskToAssign == PoliceTask.Task.VehicleChase)
-                            TaskVehicleChase(_policeTask.CopToAssign);
-                        else if (_policeTask.TaskToAssign == PoliceTask.Task.SimpleInvestigate)
-                            TaskSimpleInvestigate(_policeTask.CopToAssign);
-                        else if (_policeTask.TaskToAssign == PoliceTask.Task.GoToWantedCenter)
-                            TaskGoToWantedCenter(_policeTask.CopToAssign);
-                        else if (_policeTask.TaskToAssign == PoliceTask.Task.RandomSpawnIdle)
-                            RandomSpawnIdle(_policeTask.CopToAssign);
+                        InstantAction.WriteToLog("TaskQueue", string.Format("Cops To Task: {0}", _ToTask));
+                        PoliceTask _policeTask = CopsToTask[0];
+                        _policeTask.CopToAssign.isTasked = true;
 
-                        _policeTask.CopToAssign.TaskIsQueued = false;
-                        CopsToTask.RemoveAt(0);
+                        if (_policeTask.TaskToAssign == PoliceTask.Task.Untask && CopsToTask.Any(x => x.CopToAssign == _policeTask.CopToAssign && x.TaskToAssign != PoliceTask.Task.Untask && x.GameTimeAssigned >= _policeTask.GameTimeAssigned))
+                        {
+                            _policeTask.CopToAssign.TaskIsQueued = false;
+                            CopsToTask.RemoveAt(0);
+                        }
+                        else
+                        {
+                            if (_policeTask.TaskToAssign == PoliceTask.Task.Arrest)
+                                TaskChasing(_policeTask.CopToAssign);
+                            else if (_policeTask.TaskToAssign == PoliceTask.Task.Chase)
+                                TaskChasing(_policeTask.CopToAssign);
+                            else if (_policeTask.TaskToAssign == PoliceTask.Task.Untask)
+                                Untask(_policeTask.CopToAssign);
+                            else if (_policeTask.TaskToAssign == PoliceTask.Task.SimpleArrest)
+                                TaskSimpleArrest(_policeTask.CopToAssign);
+                            else if (_policeTask.TaskToAssign == PoliceTask.Task.SimpleChase)
+                                TaskSimpleChase(_policeTask.CopToAssign);
+                            else if (_policeTask.TaskToAssign == PoliceTask.Task.VehicleChase)
+                                TaskVehicleChase(_policeTask.CopToAssign);
+                            else if (_policeTask.TaskToAssign == PoliceTask.Task.SimpleInvestigate)
+                                TaskSimpleInvestigate(_policeTask.CopToAssign);
+                            else if (_policeTask.TaskToAssign == PoliceTask.Task.GoToWantedCenter)
+                                TaskGoToWantedCenter(_policeTask.CopToAssign);
+                            else if (_policeTask.TaskToAssign == PoliceTask.Task.RandomSpawnIdle)
+                                RandomSpawnIdle(_policeTask.CopToAssign);
+
+                            _policeTask.CopToAssign.TaskIsQueued = false;
+                            CopsToTask.RemoveAt(0);
+                        }
                     }
+                    GameFiber.Sleep(100);
                 }
-                GameFiber.Sleep(100);
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

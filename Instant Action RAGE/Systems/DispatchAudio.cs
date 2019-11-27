@@ -82,6 +82,11 @@ internal static class DispatchAudio
         SetupLists();
         MainLoop();
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+        AbortAllAudio();
+    }
     private static void SetupLists()
     {
         LettersAndNumbersLookup.Add(new DispatchLettersNumber('A', lp_letters_high.Adam.FileName));
@@ -446,13 +451,21 @@ internal static class DispatchAudio
     {
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                if (Settings.DispatchAudio)
-                    PlayDispatchQueue();
-                else
-                    DispatchQueue.Clear();
-                GameFiber.Yield();
+                while (IsRunning)
+                {
+                    if (Settings.DispatchAudio)
+                        PlayDispatchQueue();
+                    else
+                        DispatchQueue.Clear();
+                    GameFiber.Sleep(500);
+                }
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

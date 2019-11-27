@@ -116,6 +116,10 @@ static class Settings
     {
         ReadSettings();
     }
+    public static void Dispose()
+    {
+
+    }
     public static void ReadSettings()
     {
         try

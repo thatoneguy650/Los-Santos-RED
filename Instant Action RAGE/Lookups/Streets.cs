@@ -228,6 +228,10 @@ public static class Streets
         StreetsList.Add(new Street("Meringue Ln", 35f, ScannerAudio.streets.MirangeLane.FileName));
         StreetsList.Add(new Street("Strangeways Dr", 30f, ScannerAudio.streets.StrangeWaysDrive.FileName));
     }
+    public static void Dispose()
+    {
+
+    }
 
     public static Street GetStreetFromName(string StreetName)
     {

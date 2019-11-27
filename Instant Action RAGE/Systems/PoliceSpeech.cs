@@ -28,14 +28,26 @@ internal static class PoliceSpeech
         SetupSpeech();
         MainLoop();
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
     public static void MainLoop()
     {
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                CheckSpeech();
-                GameFiber.Yield();
+                while (IsRunning)
+                {
+                    CheckSpeech();
+                    GameFiber.Sleep(500);
+                }
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

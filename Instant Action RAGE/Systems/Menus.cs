@@ -57,7 +57,7 @@ internal static class Menus
     public static UIMenu actionsMenu;
 
     private static int RandomCrimeLevel = 1;
-    private static int RandomWeaponLevel = 0;
+    private static int RandomWeaponCategory = 0;
     private static Vector3 WorldPos = new Vector3(0f, 0f, 0f);
     private static Entity EntityToHighlight;
     private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
@@ -71,16 +71,6 @@ internal static class Menus
     private static List<string> SmokingOptionsList;
 
     public static bool IsRunning { get; set; } = true;
-    public static void MainLoop()
-    {
-        GameFiber.StartNew(delegate
-        {
-            while (IsRunning)
-            {
-                GameFiber.Yield();
-            }
-        });
-    }
     public static void Intitialize()
     {
         //Game.FrameRender += ProcessLoop;
@@ -101,7 +91,7 @@ internal static class Menus
 
         menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
         menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
-        menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", new List<dynamic> { "Level 0", "Level 1", "Level 2", "Level 3", "Level 4" } );
+        menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", new List<dynamic> { "Melee", "Pistol", "Shotgun", "SMG", "AR", "LMG", "Sniper", "Heavy" } );
         menuDebugScreenEffect = new UIMenuListItem("Play Screen Effect", "", new List<dynamic> { "SwitchHUDIn",
     "SwitchHUDOut",
     "FocusIn",
@@ -230,6 +220,10 @@ internal static class Menus
 
         ProcessLoop();
 
+    }
+    public static void Dispose()
+    {
+        IsRunning = false;
     }
 
     private static void CreateOptionsMenu()
@@ -360,7 +354,7 @@ internal static class Menus
             if (list == menuDebugScreenEffect)
                 CurrentScreenEffect = list.Collection[index].ToString();
             if (list == menuDebugRandomWeapon)
-                RandomWeaponLevel = list.Index;
+                RandomWeaponCategory = list.Index;
         }
     }
     public static void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -458,7 +452,7 @@ internal static class Menus
             }
             if (selectedItem == menuDebugRandomWeapon)
             {
-                GTAWeapon myGun = GTAWeapons.GetRandomWeapon(RandomWeaponLevel);
+                GTAWeapon myGun = GTAWeapons.GetRandomWeapon((GTAWeapon.WeaponCategory)RandomWeaponCategory);
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
                 if (myGun.PlayerVariations.Any())
                     InstantAction.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
@@ -538,53 +532,61 @@ internal static class Menus
     {
         GameFiber.StartNew(delegate
         {
-            while (true)
+            try
             {
-                if (Game.IsKeyDown(Keys.F10)) // Our menu on/off switch.
+                while (IsRunning)
                 {
-                    if (InstantAction.isDead)
+                    if (Game.IsKeyDown(Keys.F10)) // Our menu on/off switch.
                     {
-                        bustedMenu.Visible = false;
-                        mainMenu.Visible = false;
-                        deathMenu.Visible = !deathMenu.Visible;
-                    }
-                    else if (InstantAction.isBusted)
-                    {
-                        deathMenu.Visible = false;
-                        mainMenu.Visible = false;
-                        bustedMenu.Visible = !bustedMenu.Visible;
-                    }
-                    else if(optionsMenu.Visible)
-                    {
+                        if (InstantAction.isDead)
+                        {
+                            bustedMenu.Visible = false;
+                            mainMenu.Visible = false;
+                            deathMenu.Visible = !deathMenu.Visible;
+                        }
+                        else if (InstantAction.isBusted)
+                        {
+                            deathMenu.Visible = false;
+                            mainMenu.Visible = false;
+                            bustedMenu.Visible = !bustedMenu.Visible;
+                        }
+                        else if (optionsMenu.Visible)
+                        {
 
+                        }
+                        else
+                        {
+                            UpdateLists();
+                            bustedMenu.Visible = false;
+                            deathMenu.Visible = false;
+                            mainMenu.Visible = !mainMenu.Visible;
+                        }
+                    }
+                    else if (Game.IsKeyDown(Keys.F11)) // Our menu on/off switch.
+                    {
+                        debugMenu.Visible = !debugMenu.Visible;
+                    }
+                    menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse. 
+
+                    if (Settings.UndieLimit == 0)
+                    {
+                        menuDeathUndie.Enabled = true;
+                    }
+                    else if (InstantAction.TimesDied < Settings.UndieLimit)
+                    {
+                        menuDeathUndie.Enabled = true;
                     }
                     else
                     {
-                        UpdateLists();
-                        bustedMenu.Visible = false;
-                        deathMenu.Visible = false;
-                        mainMenu.Visible = !mainMenu.Visible;
+                        menuDeathUndie.Enabled = false;
                     }
+                        GameFiber.Yield();
                 }
-                else if (Game.IsKeyDown(Keys.F11)) // Our menu on/off switch.
-                {
-                    debugMenu.Visible = !debugMenu.Visible;
-                }
-                menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse. 
-
-                if (Settings.UndieLimit == 0)
-                {
-                    menuDeathUndie.Enabled = true;
-                }
-                else if (InstantAction.TimesDied < Settings.UndieLimit)
-                {
-                    menuDeathUndie.Enabled = true;
-                }
-                else
-                {
-                    menuDeathUndie.Enabled = false;
-                }
-                GameFiber.Yield();
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

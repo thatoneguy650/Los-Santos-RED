@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 public static class PoliceSpawning
 {
-    public static List<Entity> CreatedEntities = new List<Entity>();
+    private static List<Entity> CreatedEntities = new List<Entity>();
     private static Random rnd;
     private static Vehicle NewsChopper;
     private static List<GTANewsReporter> Reporters = new List<GTANewsReporter>();
@@ -17,6 +17,15 @@ public static class PoliceSpawning
     static PoliceSpawning()
     {
         rnd = new Random();
+    }
+    public static void Dispose()
+    {
+        foreach (Entity ent in CreatedEntities)
+        {
+            if (ent.Exists())
+                ent.Delete();
+        }
+        CreatedEntities.Clear();
     }
     public static void SpawnRandomCop(bool InVehicle)
     {
@@ -291,7 +300,7 @@ public static class PoliceSpawning
             if (ClosestDriver != null)
             {
                 Ped Doggo = new Ped("a_c_shepherd", ClosestDriver.CopPed.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
-                PoliceSpawning.CreatedEntities.Add(Doggo);
+                CreatedEntities.Add(Doggo);
                 Doggo.BlockPermanentEvents = true;
                 Doggo.IsPersistent = false;
                 Doggo.RelationshipGroup = "COPDOGS";
@@ -509,14 +518,5 @@ public static class PoliceSpawning
         InstantAction.WriteToLog("DeleteNewsTeam", "News Team Deleted");
     }
     //Debug
-    public static void RemoveAllCreatedEntities()
-    {
-        foreach (Entity ent in CreatedEntities)
-        {
-            if (ent.Exists())
-                ent.Delete();
-        }
-        CreatedEntities.Clear();
-    }
 }
 

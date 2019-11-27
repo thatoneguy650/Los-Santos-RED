@@ -41,14 +41,26 @@ public static class UI
     {
         MainLoop();
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
     public static void MainLoop()
     {
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                UITick();
-                GameFiber.Yield();
+                while (IsRunning)
+                {
+                    UITick();
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

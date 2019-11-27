@@ -754,6 +754,11 @@ public static class GTAWeapons
         }
         foreach (GTAWeapon Weapon in WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.SMG))
         {
+            if (Weapon.Name == "weapon_minismg" || Weapon.Name == "weapon_machinepistol" || Weapon.Name == "weapon_microsmg")
+                Weapon.CanPistolSuicide = true;
+            else
+                Weapon.CanPistolSuicide = false;
+
             if (Weapon.Name == "weapon_combatpdw")
             {
                 WeaponVariation Police1 = new WeaponVariation(0);
@@ -801,6 +806,11 @@ public static class GTAWeapons
 
         foreach (GTAWeapon Weapon in WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.Shotgun))
         {
+            if (Weapon.Name == "weapon_dbshotgun")
+                Weapon.CanPistolSuicide = true;
+            else
+                Weapon.CanPistolSuicide = false;
+
             if (Weapon.Name == "weapon_pumpshotgun")
             {
                 WeaponVariation Police1 = new WeaponVariation(0);
@@ -830,6 +840,10 @@ public static class GTAWeapons
             }
         }
     }
+    public static void Dispose()
+    {
+
+    }
     public static GTAWeapon GetWeaponFromHash(ulong WeaponHash)
     {
         return WeaponsList.Where(x => x.Hash == WeaponHash).First();
@@ -842,9 +856,9 @@ public static class GTAWeapons
     {
         return WeaponsList.Where(x => x.Category == MyCategory).PickRandom();
     }
-    public static GTAWeapon GetRandomWeapon(int RequestedLevel)
+    public static GTAWeapon GetRandomWeapon(GTAWeapon.WeaponCategory Category)
     {
-        return WeaponsList.Where(s => s.WeaponLevel == RequestedLevel).PickRandom();
+        return WeaponsList.Where(s => s.Category == Category).PickRandom();
     }
 }
 public class GTAWeapon

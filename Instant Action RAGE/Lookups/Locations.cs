@@ -51,6 +51,10 @@ public static class Locations
         LocationsList.Add(Store2);
         LocationsList.Add(Store3);
     }
+    public static void Dispose()
+    {
+
+    }
     public static Location GetClosestLocationByType(Vector3 Position,Location.LocationType Type)
     {
         return LocationsList.Where(x => x.Type == Type).OrderBy(s => Position.DistanceTo2D(s.LocationPosition)).FirstOrDefault();

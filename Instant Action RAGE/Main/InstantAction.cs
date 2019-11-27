@@ -74,6 +74,7 @@ public static class InstantAction
     }
     public static void Initialize()
     {
+
         Police.CopModel.LoadAndWait();
         Police.CopModel.LoadCollisionAndWait();
         Game.LocalPlayer.Character.CanBePulledOutOfVehicles = true;
@@ -82,11 +83,11 @@ public static class InstantAction
         SetupLicensePlates();
 
         Settings.Initialize();
-        Menus.Intitialize();
-        RespawnStopper.Initialize();
+        Menus.Intitialize();//SOmewhat the procees each tick is taking frames
+        RespawnStopper.Initialize(); //maye some slowness
         PoliceScanning.Initialize();
-        DispatchAudio.Initialize();
-        PoliceSpeech.Initialize();
+        DispatchAudio.Initialize();//slow? moved to 500 ms
+        PoliceSpeech.Initialize();//slow? moved to 500 ms
         Vehicles.Initialize();
         VehicleEngine.Initialize();
         Smoking.Initialize();
@@ -105,42 +106,74 @@ public static class InstantAction
         var stopwatch = new Stopwatch();
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                stopwatch.Start();
-                UpdatePlayer();
-                StateTick();
-                ControlTick();
-                AudioTick();
-                Police.Tick();
-                TrafficViolations.Tick();
-                stopwatch.Stop();
-                if (stopwatch.ElapsedMilliseconds >= 16)
-                    WriteToLog("InstantActionTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
-                stopwatch.Reset();
-                GameFiber.Yield();
+                while (IsRunning)
+                {
+                    stopwatch.Start();
+                    UpdatePlayer();
+                    StateTick();
+                    ControlTick();
+                    AudioTick();
+                    Police.Tick();
+                    TrafficViolations.Tick();
+                    stopwatch.Stop();
+                    if (stopwatch.ElapsedMilliseconds >= 16)
+                        WriteToLog("InstantActionTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
+                    stopwatch.Reset();
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception e)
+            {
+                Dispose();
+                WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
 
         });
 
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                DebugLoop();
-                GameFiber.Yield();
+                while (IsRunning)
+                {
+                    DebugLoop();
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception e)
+            {
+                Dispose();
+                WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }
     public static void Dispose()
     {
         IsRunning = false;
-        VehicleEngine.IsRunning = false;
         foreach (Blip myBlip in Police.CreatedBlips)
         {
             if (myBlip.Exists())
                 myBlip.Delete();
         }
+        Settings.Dispose();
+        Menus.Dispose();
+        RespawnStopper.Dispose(); //maye some slowness
+        PoliceScanning.Dispose();
+        DispatchAudio.Dispose();
+        PoliceSpeech.Dispose();
+        Vehicles.Dispose();
+        VehicleEngine.Dispose();
+        Smoking.Dispose();
+        Tasking.Dispose();
+        Agencies.Dispose();
+        Locations.Dispose();
+        GTAWeapons.Dispose();
+        Speed.Dispose();
+        WeaponDropping.Dispose();
+        Streets.Dispose();
+        UI.Dispose();
     }
 
     //Ticks
@@ -1543,6 +1576,7 @@ public static class InstantAction
             NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS
             ResetPlayer(false, false);
             Game.HandleRespawn();
+            NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
         catch (Exception e)
         {
@@ -2129,6 +2163,13 @@ public static class InstantAction
         //sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog + System.Environment.NewLine);
         //File.AppendAllText("Plugins\\InstantAction\\" + "log.txt", sb.ToString());
         //sb.Clear();
+
+
+        if(ProcedureString == "Error")
+        {
+            Game.DisplayNotification("Instant Action has Crashed and needs to be restarted");
+        }
+
         if(Settings.Logging)
             Game.Console.Print(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog);
     }
@@ -2179,7 +2220,7 @@ public static class InstantAction
         NativeFunction.Natives.xB4EDDC19532BFB85();
 
 
-        PoliceSpawning.RemoveAllCreatedEntities();
+        PoliceSpawning.Dispose();
     }
     private static void DebugNumpad0()
     {
@@ -2706,7 +2747,6 @@ public static class InstantAction
     private static void DebugNumpad9()
     {
         Game.DisplayNotification("Instant Action Deactivated");
-        PoliceScanning.Dispose();
         Dispose();
     }
     private static void DebugLoop()

@@ -19,23 +19,34 @@ public static class WeaponDropping
     {
         MainLoop();
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
     public static void MainLoop()
     {
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                int WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
-                if (PrevCountWeapons != WeaponCount)
-                    WeaponInventoryChanged(WeaponCount);
-
-                if (Game.IsKeyDownRightNow(Settings.DropWeaponKey) && !DroppingWeapon && !InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.isConsideredArmed())
+                while (IsRunning)
                 {
-                    DropWeapon();
-                }
-                GameFiber.Yield();
-            }
+                    int WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
+                    if (PrevCountWeapons != WeaponCount)
+                        WeaponInventoryChanged(WeaponCount);
 
+                    if (Game.IsKeyDownRightNow(Settings.DropWeaponKey) && !DroppingWeapon && !InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.isConsideredArmed())
+                    {
+                        DropWeapon();
+                    }
+                    GameFiber.Sleep(100);
+                }
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+            }
         });
     }
     public static void DropWeapon()

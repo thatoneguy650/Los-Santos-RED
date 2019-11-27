@@ -14,36 +14,48 @@ public static class Speed
     {
         MainLoop();
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
     public static void MainLoop()
     {
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                if (Settings.Keanu)
+                while (IsRunning)
                 {
-                    if (SpeedModeBombActive)
+                    if (Settings.Keanu)
                     {
-                        if (!SpeedBus.Exists())
+                        if (SpeedModeBombActive)
                         {
-                            SpeedModeBombActive = false;
+                            if (!SpeedBus.Exists())
+                            {
+                                SpeedModeBombActive = false;
+                            }
+                            if (SpeedBus.Speed < 22.352f)
+                            {
+                                SpeedBus.Explode();
+                                SpeedModeBombActive = false;
+                                Game.DisplaySubtitle("BOOM");
+                            }
                         }
-                        if (SpeedBus.Speed < 22.352f)
+                        else if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Model.Name == "BUS" && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 22.352f)
                         {
-                            SpeedBus.Explode();
-                            SpeedModeBombActive = false;
-                            Game.DisplaySubtitle("BOOM");
+                            SpeedBus = Game.LocalPlayer.Character.CurrentVehicle;
+                            SpeedModeBombActive = true;
+                            Game.DisplaySubtitle("Bomb Activated, Don't Drop Below 50 MPH");
+                            DispatchAudio.PopQuizHotShot();
                         }
                     }
-                    else if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Model.Name == "BUS" && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 22.352f)
-                    {
-                        SpeedBus = Game.LocalPlayer.Character.CurrentVehicle;
-                        SpeedModeBombActive = true;
-                        Game.DisplaySubtitle("Bomb Activated, Don't Drop Below 50 MPH");
-                        DispatchAudio.PopQuizHotShot();
-                    }
+                    GameFiber.Sleep(200);
                 }
-                GameFiber.Yield();
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

@@ -70,17 +70,16 @@ public static class PoliceScanning
             }
         }
         CopPeds.Clear();
-        PoliceSpawning.RemoveAllCreatedEntities();
     }
     public static void MainLoop()
     {
         var stopwatch = new Stopwatch();
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                try
-                { 
+                while (IsRunning)
+                {
                     stopwatch.Start();
                     bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
                     //Check if we have killed any cops
@@ -92,7 +91,7 @@ public static class PoliceScanning
                     }
                     if (Game.GameTime > GameTimeInterval + ScanningInterval)
                     {
-                        ScanForPolice();                        
+                        ScanForPolice();
                         GameTimeInterval = Game.GameTime;
                     }
                     if (Game.GameTime > LOSInterval + LOSInterval) // was 2000
@@ -101,7 +100,7 @@ public static class PoliceScanning
                         Police.SetPrimaryPursuer();
                         Police.UpdatePlacePlayerLastSeen();
                     }
-                    if (Settings.SpawnPoliceK9 && 1==0 && Game.GameTime > K9Interval + 5555) // was 2000
+                    if (Settings.SpawnPoliceK9 && 1 == 0 && Game.GameTime > K9Interval + 5555) // was 2000
                     {
                         if (Game.LocalPlayer.WantedLevel > 0 && !PlayerInVehicle && K9Peds.Count < 3)
                             PoliceSpawning.CreateK9();
@@ -110,7 +109,7 @@ public static class PoliceScanning
                     }
                     if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
                     {
-                        if(Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+                        if (Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
                             PoliceSpawning.SpawnRandomCop(true);
                         PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
                         RandomCopInterval = Game.GameTime;
@@ -121,11 +120,11 @@ public static class PoliceScanning
                     stopwatch.Reset();
                     GameFiber.Yield();
                 }
-                catch (Exception e)
-                {
-                    Game.DisplayNotification("PoliceScanning Crashed");
-                    InstantAction.WriteToLog("PoliceScanning", e.Message + ":" + e.StackTrace);
-                }
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

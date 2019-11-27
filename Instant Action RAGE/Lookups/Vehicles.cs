@@ -108,6 +108,10 @@ public static class Vehicles
     {
         SetupVehicleList();
     }
+    public static void Dispose()
+    {
+
+    }
     public static VehicleInfo GetVehicleInfo(GTAVehicle Vehicle)
     {
         VehicleInfo ToReturn = VehiclesList.Where(x => x.Hash == Vehicle.VehicleEnt.Model.Hash).FirstOrDefault();
