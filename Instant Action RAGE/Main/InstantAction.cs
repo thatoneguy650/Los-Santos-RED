@@ -545,29 +545,31 @@ public static class InstantAction
             if (PedToArrest.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = PedToArrest.CurrentVehicle;
-                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "veh@busted_std", "get_out_car_crim", 2.0f, -2.0f, 2500, 50, 0, false, false, false);
-                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "veh@busted_std", "get_out_car_crim", 8.0f, -8.0f, -1, 50, 0, false, false, false);
+                //////NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "veh@busted_std", "get_out_car_crim", 2.0f, -2.0f, 2500, 50, 0, false, false, false);
+                //////NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "veh@busted_std", "get_out_car_crim", 8.0f, -8.0f, -1, 50, 0, false, false, false);
 
-                //GameFiber.Sleep(6000);
+                //////GameFiber.Sleep(6000);
                 if (PedToArrest.Exists() && oldVehicle.Exists())
                 {
                     WriteToLog("SetArrestedAnimation", "Tasked to leave the vehicle");
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
-                    GameFiber.Sleep(2500);
+                    GameFiber.Wait(2500);
                 }
             }
+
             if (PedToArrest == Game.LocalPlayer.Character && !isBusted)
                 return;
 
-
-            if (MaxWantedLastLife < 3)
+            if (MaxWantedLastLife < 2)
             {
                 NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
             }
             else
             {
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 2.0f, -8.0f, 5000, 2, 0, false, false, false);
-                GameFiber.Sleep(5000);
+                // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, 5000, 2, 0, false, false, false);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+                GameFiber.Wait(6000);
+
                 if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !isBusted))
                     return;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -589,7 +591,9 @@ public static class InstantAction
 
             if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 1) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 1))
             {
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
+                GameFiber.Wait(1250);
+                PedToArrest.Tasks.Clear();
             }
             else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 1))
             {
@@ -1647,13 +1651,13 @@ public static class InstantAction
         if (MyGun == null)
             return new WeaponVariation(Tint);
 
-
-        List<WeaponVariation.WeaponComponent> Components = GTAWeapons.GetWeaponVariations(MyGun.Name);
+        List<WeaponVariation.WeaponComponent> Components = new List<WeaponVariation.WeaponComponent>();
+        List<WeaponVariation.WeaponComponent> PossibleComponents = GTAWeapons.GetWeaponVariations(MyGun.Name);
 
         if (!Components.Any())
             return new WeaponVariation(Tint);
 
-        foreach (WeaponVariation.WeaponComponent PossibleComponent in Components)
+        foreach (WeaponVariation.WeaponComponent PossibleComponent in PossibleComponents)
         {
             if (NativeFunction.CallByName<bool>("HAS_PED_GOT_WEAPON_COMPONENT", WeaponOwner, WeaponHash, PossibleComponent.Hash))
             {
@@ -2644,6 +2648,14 @@ public static class InstantAction
     {
         try
         {
+
+            UnSetArrestedAnimation(Game.LocalPlayer.Character);
+
+
+
+
+            /*
+
             // Smoking.startPTFX("core", "ent_dst_concrete_large");
 
             //Smoking.Start();
@@ -2714,6 +2726,7 @@ public static class InstantAction
             //    WriteToLog("GetWeaponVariation", string.Format("Name: {0},HashKey: {1},Hash: {2}", Comp.Name, Comp.HashKey, Comp.Hash));
             //}
             //WriteToLog("GetWeaponVariation", string.Format("Tint: {0}", DroppedGunVariation.Tint));
+            */
         }
         catch (Exception e)
         {
@@ -2741,6 +2754,9 @@ public static class InstantAction
             WriteToLog("PlayerCurrentStreet", PlayerCurrentStreet.Name);
 
         }
+
+        SetArrestedAnimation(Game.LocalPlayer.Character, false);
+
         
        // Smoking.Start();
     }

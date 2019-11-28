@@ -145,7 +145,7 @@ internal static class VehicleEngine
         }
         else
         {
-            ToggleEngine(true, !EngineRunning);
+            EngineRunning = true;//ToggleEngine(true, !EngineRunning);
         }
         PrevIsHotwiring = IsHotwiring;
     }

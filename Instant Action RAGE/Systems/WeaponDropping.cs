@@ -60,6 +60,8 @@ public static class WeaponDropping
             else
                 GameFiber.Sleep(250);
 
+            
+
             int CurrentWeaponAmmo = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Ammo;
             int AmmoToDrop = 0;
             if (CurrentWeaponAmmo > 60)

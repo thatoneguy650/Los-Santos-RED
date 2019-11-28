@@ -180,7 +180,7 @@ internal static class Police
             if (Game.GameTime > GameTimeLastPoliceTick + 100)
             {
 
-                if (CurrentPoliceState == PoliceState.Normal)
+                if (CurrentPoliceState == PoliceState.Normal && InstantAction.PlayerWantedLevel == 0)//if (CurrentPoliceState == PoliceState.Normal)
                 {
                     TempCurrentPoliceTickRunning = "Normal";
                     PoliceTickNormal();
@@ -212,8 +212,8 @@ internal static class Police
                 }
                 else
                 {
-                    TempCurrentPoliceTickRunning = "Normal";
-                    PoliceTickNormal();
+                    TempCurrentPoliceTickRunning = "";//TempCurrentPoliceTickRunning = "Normal";
+                    //PoliceTickNormal();
                 }
 
                 GameTimeLastPoliceTick = Game.GameTime;
@@ -985,6 +985,7 @@ internal static class Police
             if (Settings.WantedLevelIncreasesOverTime && Game.GameTime - WantedLevelStartTime > Settings.WantedLevelIncreaseTime && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 0 && InstantAction.PlayerWantedLevel <= Settings.WantedLevelInceaseOverTimeLimit)
             {
                 Game.LocalPlayer.WantedLevel++;
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportIncreasedWanted, 4, false));
                 InstantAction.WriteToLog("WantedLevelStartTime", "Wanted Level Increased Over Time");
             }
 

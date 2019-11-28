@@ -9,7 +9,6 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
 using static ScannerAudio;
@@ -64,6 +63,7 @@ internal static class DispatchAudio
         ReportSuspiciousVehicle = 18,
         ReportGrandTheftAuto = 19,
         ReportSuspectSpotted = 20,
+        ReportIncreasedWanted = 21,
     }
     public enum NearType
     {
@@ -481,14 +481,16 @@ internal static class DispatchAudio
            // SoundPlayer MySoundPlayer = new SoundPlayer(FullPath);
             AudioPlaying = true;
 
+            MySoundPlayer.PlaySync();
+            MySoundPlayer.Dispose();
+            AudioPlaying = false;
 
 
+            //MediaPlayer Sound2 = new MediaPlayer();
+            //Sound2.MediaEnded += OnPlaybackStopped2;
+            //Sound2.Open(new Uri(FullPath));
+            //Sound2.Play();
 
-            MediaPlayer Sound2 = new MediaPlayer();
-            Sound2.MediaEnded += OnPlaybackStopped2;
-            Sound2.Open(new Uri(FullPath));
-            Sound2.Play();
-            
 
             //QueueFiber = GameFiber.StartNew(delegate
             //{
@@ -511,6 +513,11 @@ internal static class DispatchAudio
     {
         if (CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
             return;
+
+
+        //if (DispatchThread.IsAlive)
+        //    return;
+      //  DispatchThread = new ThreadStart()
 
         QueueFiber = GameFiber.StartNew(delegate
         {
@@ -557,6 +564,8 @@ internal static class DispatchAudio
         //GameFiber.Sleep(rnd.Next(250, 670));
         if (MyAudioEvent.CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
             return;
+        while (outputDevice != null)
+            GameFiber.Yield();
 
         QueueFiber = GameFiber.StartNew(delegate
         {
@@ -749,6 +758,8 @@ internal static class DispatchAudio
                         ReportGrandTheftAuto();
                     else if (Item.Type == ReportDispatch.ReportSuspectSpotted)
                         ReportSuspectSpotted();
+                    else if (Item.Type == ReportDispatch.ReportIncreasedWanted)
+                        ReportIncreasedWanted();
                     else
                         ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
@@ -1606,6 +1617,22 @@ internal static class DispatchAudio
         }
         string Subtitles = "Officers Report, a ~y~GTA~s~ in progress";
         ReportGenericEnd(ScannerList, NearType.Zone,ref Subtitles);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+
+    }
+    public static void ReportIncreasedWanted()
+    {
+        if (InstantAction.isBusted || InstantAction.isDead)
+            return;
+
+        List<string> ScannerList = new List<string>();
+        ScannerList.Add(AudioBeeps.AudioStart());
+        ScannerList.Add(attention_all_units_gen.Attentionallunits.FileName);
+        List<string> PossibleVariations = new List<string>() { assistance_required.Assistanceneeded.FileName, assistance_required.Assistancerequired.FileName, assistance_required.Backupneeded.FileName, assistance_required.Backuprequired.FileName, assistance_required.Officersneeded.FileName, assistance_required.Officersrequired.FileName };
+        ScannerList.Add(PossibleVariations.PickRandom());
+        string Subtitles = "Attention all units, a Assistance Needed";
+        AddZone(ref ScannerList, ref Subtitles);
+        ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
 
     }

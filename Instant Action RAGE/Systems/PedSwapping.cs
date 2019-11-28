@@ -122,6 +122,9 @@ internal static class PedSwapping
 
             NativeFunction.CallByName<uint>("CHANGE_PLAYER_PED", Game.LocalPlayer, TargetPed, false, false);
 
+            CurrentPed.IsPersistent = false;
+
+
             if (DeleteOld)
                 CurrentPed.Delete();
             else if (ArrestOld)
