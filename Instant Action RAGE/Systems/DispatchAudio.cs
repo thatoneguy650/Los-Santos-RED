@@ -20,23 +20,18 @@ internal static class DispatchAudio
     private static AudioFileReader audioFile;
     private static Random rnd;
     private static bool ExecutingQueue = false;
-    private static GameFiber QueueFiber;
-    private static bool AudioPlaying = false;
-    private static SoundPlayer MySoundPlayer;
+    private static List<DispatchQueueItem> DispatchQueue = new List<DispatchQueueItem>();
 
-    public static bool ReportedOfficerDown { get; set; } = false;
-    public static bool ReportedShotsFired { get; set; } = false;
-    public static bool ReportedAssaultOnOfficer { get; set; } = false;
-    public static bool ReportedCarryingWeapon { get; set; } = false;
-    public static bool ReportedLethalForceAuthorized { get; set; } = false;
-    public static bool ReportedThreateningWithAFirearm { get; set; } = false;
-    public static List<DispatchQueueItem> DispatchQueue { get; set; } = new List<DispatchQueueItem>();
+    private static bool ReportedOfficerDown = false;
+    private static bool ReportedShotsFired  = false;
+    private static bool ReportedAssaultOnOfficer = false;
+    private static bool ReportedCarryingWeapon = false;
+    private static bool ReportedLethalForceAuthorized = false;
+    private static bool ReportedThreateningWithAFirearm = false;
 
     private static List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
-    public static List<VehicleModelNameLookup> ModelNameLookup = new List<VehicleModelNameLookup>();
-    public static List<ColorLookup> ColorLookups = new List<ColorLookup>();
-
-    public static List<string> DamagedScannerAliases = new List<string>();
+    private static List<ColorLookup> ColorLookups = new List<ColorLookup>();
+    private static List<string> DamagedScannerAliases = new List<string>();
     private static bool CancelAudio;
 
     public static bool IsRunning { get; set; } = true;
@@ -204,13 +199,13 @@ internal static class DispatchAudio
 
 
 
-        DamagedScannerAliases.Add(extra_prefix.Battered.FileName);
-        DamagedScannerAliases.Add(extra_prefix.Beatup.FileName);
+        //DamagedScannerAliases.Add(extra_prefix.Battered.FileName);
+       // DamagedScannerAliases.Add(extra_prefix.Beatup.FileName);
         DamagedScannerAliases.Add(extra_prefix.Damaged.FileName);
-        DamagedScannerAliases.Add(extra_prefix.Dented.FileName);
-        DamagedScannerAliases.Add(extra_prefix.Distressed.FileName);
-        DamagedScannerAliases.Add(extra_prefix.Rundown.FileName);
-        DamagedScannerAliases.Add(extra_prefix.Rundown1.FileName);
+       // DamagedScannerAliases.Add(extra_prefix.Dented.FileName);
+       // DamagedScannerAliases.Add(extra_prefix.Distressed.FileName);
+       // DamagedScannerAliases.Add(extra_prefix.Rundown.FileName);
+       // DamagedScannerAliases.Add(extra_prefix.Rundown1.FileName);
 
         //ModelNameLookup.Add(new VehicleModelNameLookup(model.MODELADDER01.FileName, "ADDER_01", manufacturer.MANUFACTURERTRUFFADE01.FileName));
         //ModelNameLookup.Add(new VehicleModelNameLookup(model.MODELAIRSHIP01.FileName, "AIRSHIP_01"));
@@ -447,7 +442,7 @@ internal static class DispatchAudio
 
 
     }
-    public static void MainLoop()
+    private static void MainLoop()
     {
         GameFiber.StartNew(delegate
         {
@@ -465,71 +460,9 @@ internal static class DispatchAudio
             catch (Exception e)
             {
                 InstantAction.Dispose();
-                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
-    }
-
-    //Playing Audio
-    private static void PlayAudioNEW(string AudioFile)
-    {
-        try
-        {
-            if (AudioFile == "")
-                return;
-            string FullPath = String.Format("Plugins\\InstantAction\\scanner\\{0}", AudioFile);
-           // SoundPlayer MySoundPlayer = new SoundPlayer(FullPath);
-            AudioPlaying = true;
-
-            MySoundPlayer.PlaySync();
-            MySoundPlayer.Dispose();
-            AudioPlaying = false;
-
-
-            //MediaPlayer Sound2 = new MediaPlayer();
-            //Sound2.MediaEnded += OnPlaybackStopped2;
-            //Sound2.Open(new Uri(FullPath));
-            //Sound2.Play();
-
-
-            //QueueFiber = GameFiber.StartNew(delegate
-            //{
-            //    MySoundPlayer.PlaySync();
-            //    MySoundPlayer.Dispose();
-            //    AudioPlaying = false;
-            //}, "AudioPlayFiber");
-
-        }
-        catch (Exception e)
-        {
-            Game.Console.Print(e.Message);
-        }
-    }
-    private static void OnPlaybackStopped2(object sender, EventArgs e)
-    {
-        AudioPlaying = false;
-    }
-    private static void PlayAudioListNEW(List<String> SoundsToPlay, bool CheckSight)
-    {
-        if (CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
-            return;
-
-
-        //if (DispatchThread.IsAlive)
-        //    return;
-      //  DispatchThread = new ThreadStart()
-
-        QueueFiber = GameFiber.StartNew(delegate
-        {
-            while (AudioPlaying)
-                GameFiber.Yield();
-            foreach (String audioname in SoundsToPlay)
-            {
-                PlayAudio(audioname);
-                while (AudioPlaying)
-                    GameFiber.Yield();
-            }
-        }, "AudioQueue2");
     }
     private static void PlayAudio(String _Audio)
     {
@@ -561,14 +494,15 @@ internal static class DispatchAudio
     }
     private static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
-        //GameFiber.Sleep(rnd.Next(250, 670));
         if (MyAudioEvent.CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
             return;
+
         while (outputDevice != null)
             GameFiber.Yield();
 
-        QueueFiber = GameFiber.StartNew(delegate
+        GameFiber PlayAudioList = GameFiber.StartNew(delegate
         {
+
             while (outputDevice != null)
                 GameFiber.Yield();
 
@@ -598,28 +532,8 @@ internal static class DispatchAudio
                 }
             }
             CancelAudio = false;
-        }, "AudioQueue");
-    }
-    private static void PlayAudioListOLD(List<String> SoundsToPlay, bool CheckSight)
-    {
-        //GameFiber.Sleep(rnd.Next(250, 670));
-        if (CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
-            return;
-
-        QueueFiber = GameFiber.StartNew(delegate
-        {
-            while (outputDevice != null)
-                GameFiber.Yield();
-            foreach (String audioname in SoundsToPlay)
-            {
-                PlayAudio(audioname);
-                if (CancelAudio)
-                {
-                }
-                while (outputDevice != null)
-                    GameFiber.Yield();
-            }
-        }, "AudioQueue");
+        }, "PlayAudioList");
+        Debugging.GameFibers.Add(PlayAudioList);
     }
     private static void OnPlaybackStopped(object sender, StoppedEventArgs args)
     {
@@ -633,27 +547,8 @@ internal static class DispatchAudio
     }
     public static void AbortAllAudio()
     {
-        //if (QueueFiber != null)
-        //    QueueFiber.Abort();
-        //if (outputDevice == null)
-        //{
-        //    DispatchQueue.Clear();
-        //}
-        //else
-        //{
-        //    outputDevice.Stop();
-        //    DispatchQueue.Clear();
-
-
-        //    PlayAudio(ScannerAudio.AudioBeeps.AudioEnd());
-
-        //}
         CancelAudio = true;
-
-        //PlayAudio(ScannerAudio.AudioBeeps.AudioEnd());
     }
-
-    //Queue
     public static void AddDispatchToQueue(DispatchQueueItem _ItemToAdd)
     {
         if (!DispatchQueue.Any(x => x.Type == _ItemToAdd.Type))
@@ -661,21 +556,20 @@ internal static class DispatchAudio
     }
     private static void PlayDispatchQueue()
     {
-
         if (DispatchQueue.Count > 0 && !ExecutingQueue)
         {
-            InstantAction.WriteToLog("PlayDispatchQueue", "Delegate Started");
+            Debugging.WriteToLog("PlayDispatchQueue", "Delegate Started");
             ExecutingQueue = true;
-            GameFiber.StartNew(delegate
+            GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
             {
-                GameFiber.Sleep(3000);
+                GameFiber.Sleep(rnd.Next(1500,5000));
 
                 if (Settings.DispatchAudioOnlyHighPriority)
                 {
                     DispatchQueue.RemoveAll(x => x.Priority > 3);
                 }
 
-                // Remove and order items
+                // Remove and order items, needs to be fixed up 
                 if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                 {
                     DispatchQueue.RemoveAll(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted);
@@ -710,8 +604,6 @@ internal static class DispatchAudio
                         DispatchQueue.Add(HighestItem);
                     }
                 }
-
-
 
                 while (DispatchQueue.Count > 0)
                 {
@@ -765,131 +657,11 @@ internal static class DispatchAudio
                     DispatchQueue.RemoveAt(0);
                 }
                 ExecutingQueue = false;
-            });
+            }, "PlayDispatchQueue");
+            Debugging.GameFibers.Add(PlayDispatchQueue);
         }
     }
-    private static void PlayDispatchQueueOld()
-    {
-
-        if (DispatchQueue.Count > 0 && !ExecutingQueue)
-        {
-            InstantAction.WriteToLog("PlayDispatchQueue", "Delegate Started");
-            ExecutingQueue = true;
-            GameFiber.StartNew(delegate
-            {
-                GameFiber.Sleep(3000);
-
-                // Remove and order items
-                if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
-                {
-                    foreach (DispatchQueueItem Item in DispatchQueue.Where(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted))
-                    {
-                        InstantAction.WriteToLog("PlayDispatchQueue", string.Format("DeadlyChase: Removed {0}", Item.Type.ToString()));
-                    }
-                    
-                    DispatchQueue.RemoveAll(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted);
-                    InstantAction.WriteToLog("PlayDispatchQueue", "DeadlyChase: Removed Some Low priority Items");
-                }
-
-                if(DispatchQueue.Any(x => x.Priority <= 1) && DispatchQueue.Any(x => x.Priority > 1 && x.Type == ReportDispatch.ReportLethalForceAuthorized))
-                {
-                    DispatchQueue.RemoveAll(x => x.Priority > 1);
-                    InstantAction.WriteToLog("PlayDispatchQueue", "High Priority Message: Removed Some Low priority Items");
-                }
-
-                if (DispatchQueue.Any(x => x.ResultsInLethalForce && x.Type != ReportDispatch.ReportLethalForceAuthorized))
-                {
-                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLethalForceAuthorized);
-                    InstantAction.WriteToLog("PlayDispatchQueue", "ResultsInLethalForce: Removed ReportLethalForceAuthorized");
-                }
-
-
-                if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSpottedStolenCar))
-                {
-                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSpottedStolenCar);
-                    InstantAction.WriteToLog("PlayDispatchQueue", "ResultsInStolenCarSpotted: Removed ReportSpottedStolenCar");
-                }
-                if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSuspiciousVehicle))
-                {
-                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSuspiciousVehicle);
-                    InstantAction.WriteToLog("PlayDispatchQueue", "ResultsInStolenCarSpotted: Removed ReportSuspiciousVehicle");
-                }
-
-                if (DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
-                {
-                    DispatchQueueItem HighestItem = DispatchQueue.Where(x => x.IsTrafficViolation).OrderBy(x => x.Priority).FirstOrDefault();
-                    DispatchQueue.RemoveAll(x => x.IsTrafficViolation);
-                    if (HighestItem != null)
-                    {
-                        DispatchQueue.Add(HighestItem);
-                    }
-                    InstantAction.WriteToLog("PlayDispatchQueue", "IsTrafficViolation: Removed IsTrafficViolation except highest");
-                }
-
-                if(Settings.DispatchAudioOnlyHighPriority)
-                {
-                    DispatchQueue.RemoveAll(x => x.Priority < 3);
-                }
-
-                foreach (DispatchQueueItem Item in DispatchQueue)
-                {
-                    InstantAction.WriteToLog("PlayDispatchQueue", string.Format("Items To Play: {0}", Item.Type.ToString()));
-                }
-
-
-                while (DispatchQueue.Count > 0)
-                {
-                    DispatchQueueItem Item = DispatchQueue[0];
-                    if (Item.Type == ReportDispatch.ReportAssualtOnOfficer)
-                        ReportAssualtOnOfficer();
-                    else if (Item.Type == ReportDispatch.ReportCarryingWeapon)
-                        ReportCarryingWeapon(Item.WeaponToReport);
-                    else if (Item.Type == ReportDispatch.ReportFelonySpeeding)
-                        ReportFelonySpeeding(Item.VehicleToReport,Item.Speed);
-                    else if (Item.Type == ReportDispatch.ReportLethalForceAuthorized)
-                        ReportLethalForceAuthorized();
-                    else if (Item.Type == ReportDispatch.ReportOfficerDown)
-                        ReportOfficerDown();
-                    else if (Item.Type == ReportDispatch.ReportPedHitAndRun)
-                        ReportPedHitAndRun(Item.VehicleToReport);
-                    else if (Item.Type == ReportDispatch.ReportRecklessDriver)
-                        ReportRecklessDriver(Item.VehicleToReport);
-                    else if (Item.Type == ReportDispatch.ReportShotsFired)
-                        ReportShotsFired();
-                    else if (Item.Type == ReportDispatch.ReportSpottedStolenCar)
-                        ReportSpottedStolenCar(Item.VehicleToReport);
-                    else if (Item.Type == ReportDispatch.ReportStolenVehicle)
-                        ReportStolenVehicle(Item.VehicleToReport);
-                    else if (Item.Type == ReportDispatch.ReportSuspectArrested)
-                        ReportSuspectArrested();
-                    else if (Item.Type == ReportDispatch.ReportSuspectLastSeen)
-                        ReportSuspectLastSeen();
-                    else if (Item.Type == ReportDispatch.ReportSuspectLost)
-                        ReportSuspectLost();
-                    else if (Item.Type == ReportDispatch.ReportSuspectWasted)
-                        ReportSuspectWasted();
-                    else if (Item.Type == ReportDispatch.ReportThreateningWithFirearm)
-                        ReportThreateningWithFirearm();
-                    else if (Item.Type == ReportDispatch.ReportVehicleHitAndRun)
-                        ReportVehicleHitAndRun(Item.VehicleToReport);
-                    else if (Item.Type == ReportDispatch.ReportWeaponsFree)
-                        ReportWeaponsFree();
-                    else if (Item.Type == ReportDispatch.ReportSuspiciousActivity)
-                        ReportSuspiciousActivity();
-                    else if (Item.Type == ReportDispatch.ReportSuspiciousVehicle)
-                        ReportSuspiciousVehicle(Item.VehicleToReport);
-                    else if (Item.Type == ReportDispatch.ReportGrandTheftAuto)
-                        ReportGrandTheftAuto();
-                    else if (Item.Type == ReportDispatch.ReportSuspectSpotted)
-                        ReportSuspectSpotted();
-                    else
-                        ReportAssualtOnOfficer();
-                    DispatchQueue.RemoveAt(0);
-                }
-                ExecutingQueue = false;
-            });
-        }
-    }
+  
 
     //Starting
     private static void ReportGenericStart(ref List<string> myList)
@@ -1632,6 +1404,7 @@ internal static class DispatchAudio
         ScannerList.Add(PossibleVariations.PickRandom());
         string Subtitles = "Attention all units, a Assistance Needed";
         AddZone(ref ScannerList, ref Subtitles);
+        ScannerList.Add(dispatch_respond_code.UnitsrespondCode3.FileName);
         ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
 
@@ -1766,15 +1539,16 @@ internal static class DispatchAudio
         AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles);
         ReportGenericEnd(ScannerList, NearType.Nothing, ref Subtitles);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
-        GameFiber.StartNew(delegate
+        GameFiber ReportStolenVehicle = GameFiber.StartNew(delegate
         {
             GameFiber.Sleep(15000);
             stolenVehicle.WasReportedStolen = true;
             if (stolenVehicle.CarPlate.PlateNumber == stolenVehicle.OriginalLicensePlate.PlateNumber) //if you changed it between when it was reported, dont count it
                 stolenVehicle.CarPlate.IsWanted = true;
-            InstantAction.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", stolenVehicle.VehicleEnt.Handle));
-        });
+            Debugging.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", stolenVehicle.VehicleEnt.Handle));
 
+        }, "PlayDispatchQueue");
+        Debugging.GameFibers.Add(ReportStolenVehicle);
     }
 
     //Visuals
@@ -2179,7 +1953,7 @@ internal static class DispatchAudio
         string VehicleClassScannerFile;
         if (VehicleInformation != null)
         {
-            InstantAction.WriteToLog("Description", string.Format("VehicleInformation.ModelScannerFile {0}", VehicleInformation.ModelScannerFile.ToString()));
+            Debugging.WriteToLog("Description", string.Format("VehicleInformation.ModelScannerFile {0}", VehicleInformation.ModelScannerFile.ToString()));
             ManufacturerScannerFile = GetManufacturerScannerFile(VehicleInformation.Manufacturer);
             VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
             if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != "" || VehicleClassScannerFile != ""))
@@ -2235,7 +2009,7 @@ internal static class DispatchAudio
         {
             ScannerList.Add((new List<string>() { suspect_heading.SuspectHeading.FileName, suspect_heading.TargetHeading.FileName, suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             Subtitles = Subtitles + " ~s~Suspect Heading ";
-            string heading = UI.GetSimpleCompassHeading();
+            string heading = GetSimpleCompassHeading();
             if (heading == "N")
             {
                 ScannerList.Add(direction_heading.North.FileName);
@@ -2258,18 +2032,18 @@ internal static class DispatchAudio
             }
 
 
-            if (IncludeStreet && InstantAction.PlayerCurrentStreet != null)
+            if (IncludeStreet && PlayerLocation.PlayerCurrentStreet != null)
             {
-                Street MyStreet = InstantAction.PlayerCurrentStreet;
+                Street MyStreet = PlayerLocation.PlayerCurrentStreet;
                 if (MyStreet != null && MyStreet.DispatchFile != "")
                 {
                     ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
                     ScannerList.Add(MyStreet.DispatchFile);
                     Subtitles = Subtitles + " ~s~on ~h~" + MyStreet.Name;
 
-                    if (InstantAction.PlayerCurrentCrossStreet != null)
+                    if (PlayerLocation.PlayerCurrentCrossStreet != null)
                     {
-                        Street MyCrossStreet = InstantAction.PlayerCurrentCrossStreet;
+                        Street MyCrossStreet = PlayerLocation.PlayerCurrentCrossStreet;
                         if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
                         {
                             ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());
@@ -2297,6 +2071,49 @@ internal static class DispatchAudio
             return true;
         }
         return false;
+    }
+    private static string GetSimpleCompassHeading()
+    {
+        float Heading = Game.LocalPlayer.Character.Heading;
+        string Abbreviation = "";
+
+        //yeah could be simpler, whatever idk computers are fast
+        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
+        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
+        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
+        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
+        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
+        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
+        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
+        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
+        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
+        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
+        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
+        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
+        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
+        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
+        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
+        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
+        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
+        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
+        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
+        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
+        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
+        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
+        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
+        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
+        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
+        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
+        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
+        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
+        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
+        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
+        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
+        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else { Abbreviation = ""; }
+
+        return Abbreviation;
     }
     public class DispatchAudioEvent
     {
@@ -2330,6 +2147,13 @@ internal static class DispatchAudio
     }
     public class DispatchQueueItem
     {
+        public enum DispatchType
+        {
+            TrafficViolation = 1,
+            FelonyCrimes = 2,
+            AnnounceStolen = 3,
+            AnnounceLost = 4,
+        }
         public ReportDispatch Type { get; set; }
         public int Priority { get; set; } = 0;
         public bool ResultsInLethalForce { get; set; } = false;

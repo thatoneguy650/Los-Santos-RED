@@ -14,17 +14,15 @@ public static class TrafficViolations
     private static bool ViolationDrivingOnPavement = false;
     private static bool ViolationHitPed = false;
     private static bool ViolationHitVehicle = false;
-    private static bool ViolationsSpeeding = false;
     private static bool ViolationSpeedLimit = false;
     private static bool ViolationNonRoadworthy = false;
-    public static bool ReportedStolenVehicle;
     private static bool PlayerIsRunningRedLight = false;
     private static uint GameTimeStartedDrivingOnPavement = 0;
     private static uint GameTimeStartedDrivingAgainstTraffic = 0;
-    public static bool PlayerIsSpeeding = false;
-    public static float CurrentSpeedLimit;
-    public static bool PlayersVehicleIsSuspicious = false;
+    private static bool PlayersVehicleIsSuspicious = false;
     private static uint GameTimeTrafficViolations;
+
+    public static bool PlayerIsSpeeding = false;
     public static bool HasBeenDrivingAgainstTraffic//seconds
     {
         get
@@ -122,7 +120,7 @@ public static class TrafficViolations
                     DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar);
                     RecklessDriver.IsTrafficViolation = true;
                     DispatchAudio.AddDispatchToQueue(RecklessDriver);
-                    InstantAction.WriteToLog("TrafficViolationsTick", "ViolationDrivingAgainstTraffic");
+                    Debugging.WriteToLog("TrafficViolationsTick", "ViolationDrivingAgainstTraffic");
                 }
                 if (Settings.TrafficViolationsDrivingOnPavement && Police.AnyPoliceCanSeePlayer && !ViolationDrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
                 {
@@ -131,7 +129,7 @@ public static class TrafficViolations
                     DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar);
                     RecklessDriver.IsTrafficViolation = true;
                     DispatchAudio.AddDispatchToQueue(RecklessDriver);
-                    InstantAction.WriteToLog("TrafficViolationsTick", "ViolationDrivingOnPavement");
+                    Debugging.WriteToLog("TrafficViolationsTick", "ViolationDrivingOnPavement");
                 }
                 int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
                 if (Settings.TrafficViolationsHitPed && Police.AnyPoliceCanSeePlayer && !ViolationHitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
@@ -141,7 +139,7 @@ public static class TrafficViolations
                     DispatchAudio.DispatchQueueItem PedHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPedHitAndRun, 8, false, true, MyCar);
                     PedHitAndRun.IsTrafficViolation = true;
                     DispatchAudio.AddDispatchToQueue(PedHitAndRun);
-                    InstantAction.WriteToLog("TrafficViolationsTick", "PedHitAndRun");
+                    Debugging.WriteToLog("TrafficViolationsTick", "PedHitAndRun");
                 }
                 int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
                 if (Settings.TrafficViolationsHitVehicle && Police.AnyPoliceCanSeePlayer && !ViolationHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
@@ -151,7 +149,7 @@ public static class TrafficViolations
                     DispatchAudio.DispatchQueueItem VehicleHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportVehicleHitAndRun, 9, false, true, MyCar);
                     VehicleHitAndRun.IsTrafficViolation = true;
                     DispatchAudio.AddDispatchToQueue(VehicleHitAndRun);
-                    InstantAction.WriteToLog("TrafficViolationsTick", "VehicleHitAndRun");
+                    Debugging.WriteToLog("TrafficViolationsTick", "VehicleHitAndRun");
                 }
                 if (Settings.TrafficViolationsNotRoadworthy && Police.AnyPoliceCanSeePlayer && !ViolationNonRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
                 {
@@ -160,22 +158,22 @@ public static class TrafficViolations
                     DispatchAudio.DispatchQueueItem NonRoadWorthy = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10, false, true, MyCar);
                     NonRoadWorthy.IsTrafficViolation = true;
                     DispatchAudio.AddDispatchToQueue(NonRoadWorthy);
-                    InstantAction.WriteToLog("TrafficViolationsTick", "NonRoadWorthy");
+                    Debugging.WriteToLog("TrafficViolationsTick", "NonRoadWorthy");
                 }
-
-                float SpeedLimit = InstantAction.GetSpeedLimit(Game.LocalPlayer.Character.Position);
+                float SpeedLimit = 100f;
+                if (PlayerLocation.PlayerCurrentStreet != null)
+                    SpeedLimit = PlayerLocation.PlayerCurrentStreet.SpeedLimit;
                 bool ViolationSpeedLimit = VehicleSpeedMPH > SpeedLimit + Settings.TrafficViolationsSpeedingOverLimitThreshold;
                 PlayerIsSpeeding = ViolationSpeedLimit;
-                CurrentSpeedLimit = SpeedLimit;
 
                 if (ViolationSpeedLimit)
                     ViolationSpeedLimit = true;
                 else
                     ViolationSpeedLimit = false;
 
-                if (Settings.TrafficViolationsSpeeding && Police.AnyPoliceCanSeePlayer && !ViolationsSpeeding && !TreatAsCop && ViolationSpeedLimit)
+                if (Settings.TrafficViolationsSpeeding && Police.AnyPoliceCanSeePlayer && !ViolationSpeedLimit && !TreatAsCop && ViolationSpeedLimit)
                 {
-                    ViolationsSpeeding = true;
+                    ViolationSpeedLimit = true;
                     if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 1.5))//going 1.5 times the over the threshold = 2 stars
                         Police.SetWantedLevel(2);
                     else
@@ -185,7 +183,7 @@ public static class TrafficViolations
                     FelonySpeeding.Speed = VehicleSpeedMPH;
                     FelonySpeeding.IsTrafficViolation = true;
                     DispatchAudio.AddDispatchToQueue(FelonySpeeding);
-                    InstantAction.WriteToLog("TrafficViolationsTick", "Speeding");
+                    Debugging.WriteToLog("TrafficViolationsTick", "Speeding");
                 }
             }
             GameTimeTrafficViolations = Game.GameTime;
@@ -196,7 +194,7 @@ public static class TrafficViolations
         ViolationDrivingOnPavement = false;
         ViolationDrivingAgainstTraffic = false;
         ViolationHitPed = false;
-        ViolationsSpeeding = false;
+        ViolationSpeedLimit = false;
         ViolationHitVehicle = false;
         ViolationNonRoadworthy = false;
     }

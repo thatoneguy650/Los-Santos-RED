@@ -14,27 +14,18 @@ internal static class VehicleEngine
 {
     private static bool EngineRunning;
     private static bool PrevEngineRunning;
-
-    private static bool WasGettingInVehicle;
     private static bool WasinVehicle;
-    private static bool needsHotwiring;
-    private static bool needsToUnlock;
-    private static uint GameTimeStartedExit;
     private static bool TogglingEngine;
     private static bool ChangingStation;
-    private static bool PrevMustBeHotwired;
     private static uint GameTimeStartedHotwiring;
     private static bool PrevIsHotwiring;
-
+    private static bool PrevWantedLevelTune = false;
+    //private static List<string> strRadioStations = new List<string> { "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
     public static bool AutoTune { get; private set; } = true;
-    public static bool WantedLevelTune { get; set; } = false;
-    public static bool PrevWantedLevelTune { get; set; } = false;
-    public static bool SetLoud { get; private set; } = true;
     public static string AutoTuneStation { get; set; } = "RADIO_19_USER";
     public static Keys EngineToggleKey { get; private set; } = Keys.R;
-    public static List<string> strRadioStations;
-    public static bool Enabled { get; set; } = true;
     public static bool IsRunning { get; set; } = true;
+    public static bool WantedLevelTune { get; set; } = false;
     public static bool IsHotwiring
     {
         get
@@ -57,7 +48,6 @@ internal static class VehicleEngine
         AutoTuneStation = "RADIO_19_USER";
         AutoTune = true;
         EngineToggleKey = Keys.R;
-        strRadioStations = new List<string> { "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
         MainLoop();         
     }
     public static void Dispose()
@@ -92,10 +82,10 @@ internal static class VehicleEngine
 
                         if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))
                         {
-                            InstantAction.WriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
+                            Debugging.WriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
                             TogglingEngine = true;
                             ToggleEngine(true, !EngineRunning);
-                            InstantAction.WriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
+                            Debugging.WriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
                         }
 
                         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -132,7 +122,7 @@ internal static class VehicleEngine
             catch (Exception e)
             {
                 InstantAction.Dispose();
-                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }
@@ -158,18 +148,18 @@ internal static class VehicleEngine
 
     private static void EngineRunningEvent()
     {
-        InstantAction.WriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",EngineRunning));
+        Debugging.WriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",EngineRunning));
         PrevEngineRunning = EngineRunning;
     }
     public static void EnterExitVehicleEvent(bool PlayerInVehicle)
     {
         if(PlayerInVehicle)
         {
-            InstantAction.WriteToLog("EnterExitVehicleEvent", "You got into a vehicle");
+            Debugging.WriteToLog("EnterExitVehicleEvent", "You got into a vehicle");
             if (Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
             {
                 EngineRunning = true;
-                InstantAction.WriteToLog("EnterExitVehicleEvent", "The Engine was already on");
+                Debugging.WriteToLog("EnterExitVehicleEvent", "The Engine was already on");
             }
             else
             {
@@ -179,15 +169,15 @@ internal static class VehicleEngine
                 if(Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
                 {
                     GameTimeStartedHotwiring = Game.GameTime;
-                    InstantAction.WriteToLog("EnterExitVehicleEvent", "The Engine was off and Needed Hotwire");
+                    Debugging.WriteToLog("EnterExitVehicleEvent", "The Engine was off and Needed Hotwire");
                 }
 
-                InstantAction.WriteToLog("EnterExitVehicleEvent", "The Engine was off");
+                Debugging.WriteToLog("EnterExitVehicleEvent", "The Engine was off");
             }
         }
         else
         {
-            InstantAction.WriteToLog("EnterExitVehicleEvent", "You got out of a vehicle");
+            Debugging.WriteToLog("EnterExitVehicleEvent", "You got out of a vehicle");
             if(Game.LocalPlayer.Character.LastVehicle.Exists())
                 Game.LocalPlayer.Character.LastVehicle.IsEngineOn = EngineRunning;
         }
@@ -226,7 +216,7 @@ internal static class VehicleEngine
                     EngineRunning = true;
             }
         }
-        InstantAction.WriteToLog("ToggleEngine", "toggled");
+        Debugging.WriteToLog("ToggleEngine", "toggled");
         TogglingEngine = false;
     }
     private static bool StartEngineAnimation()
@@ -272,7 +262,7 @@ internal static class VehicleEngine
                 NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
             }
         }
-        InstantAction.WriteToLog("ToggleEngine", "toggled");
+        Debugging.WriteToLog("ToggleEngine", "toggled");
         ChangingStation = false;
     }
     private static bool ChangeStationAnimation()

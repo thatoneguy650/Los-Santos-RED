@@ -21,22 +21,6 @@ public static class UI
         FontPricedown = 7
     };
     public static bool IsRunning { get; set; } = true;
-    public static Rage.Object PlayersCurrentCigarette { get; set; } = null;
-    public static bool PlayersCurrentCigaretteIsLit { get; set; } = false;
-    public enum CigarettePosition
-    {
-        None = -1,
-        Hand = 0,
-        Mouth = 1,
-    }
-    public enum CigaretteAnimation
-    {
-        None = -1,
-        Start = 0,
-        Puffing = 1,
-        Exit = 2,
-        ExitStayInMouth = 3,
-    }
     public static void Initialize()
     {
         MainLoop();
@@ -45,7 +29,7 @@ public static class UI
     {
         IsRunning = false;
     }
-    public static void MainLoop()
+    private static void MainLoop()
     {
         GameFiber.StartNew(delegate
         {
@@ -60,7 +44,7 @@ public static class UI
             catch (Exception e)
             {
                 InstantAction.Dispose();
-                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }
@@ -92,16 +76,8 @@ public static class UI
         string StreetString = GetStreetDisplay();
         string TextToShow = CompassHeading + " | " + StreetString;
 
-        TextToShow = TextToShow + " Police State: " + Police.TempCurrentPoliceTickRunning;
-        if (Police.PlayerIsPersonOfInterest)
-            TextToShow = TextToShow + " + POA";
-
-
             Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
         //Text(StreetString, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY + 0.025f, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontHouseScript);
-
-
-
 
         string ZoneString = GetZoneDisplay();
         Text(ZoneString, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
@@ -113,17 +89,17 @@ public static class UI
                 SpeedDisplay = "ENGINE OFF";
             else if (TrafficViolations.PlayerIsSpeeding)
             {
-                if (InstantAction.PlayerCurrentStreet != null && InstantAction.PlayerCurrentCrossStreet != null)
-                    SpeedDisplay = string.Format("~r~{0} ~s~MPH ({1}) / ({2})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), InstantAction.PlayerCurrentStreet.SpeedLimit, InstantAction.PlayerCurrentCrossStreet.SpeedLimit);
-                else if (InstantAction.PlayerCurrentStreet != null)
-                    SpeedDisplay = string.Format("~r~{0} ~s~MPH ({1})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), InstantAction.PlayerCurrentStreet.SpeedLimit);
+                if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentCrossStreet != null)
+                    SpeedDisplay = string.Format("~r~{0} ~s~MPH ({1}) / ({2})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit, PlayerLocation.PlayerCurrentCrossStreet.SpeedLimit);
+                else if (PlayerLocation.PlayerCurrentStreet != null)
+                    SpeedDisplay = string.Format("~r~{0} ~s~MPH ({1})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit);
             }
             else
             {
-                if (InstantAction.PlayerCurrentStreet != null && InstantAction.PlayerCurrentCrossStreet != null)
-                    SpeedDisplay = string.Format("{0} MPH ({1}) / ({2})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), InstantAction.PlayerCurrentStreet.SpeedLimit, InstantAction.PlayerCurrentCrossStreet.SpeedLimit);
-                else if (InstantAction.PlayerCurrentStreet != null)
-                    SpeedDisplay = string.Format("{0} MPH ({1})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), InstantAction.PlayerCurrentStreet.SpeedLimit);
+                if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentCrossStreet != null)
+                    SpeedDisplay = string.Format("{0} MPH ({1}) / ({2})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit, PlayerLocation.PlayerCurrentCrossStreet.SpeedLimit);
+                else if (PlayerLocation.PlayerCurrentStreet != null)
+                    SpeedDisplay = string.Format("{0} MPH ({1})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit);
 
             }
 
@@ -133,12 +109,10 @@ public static class UI
             Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
         }
     }
-    public static string GetCompassHeading()
+    private static string GetCompassHeading()
     {
         float Heading = Game.LocalPlayer.Character.Heading;
         string Abbreviation = "";
-
-
         if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
         else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "NbE"; }
         else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "NNE"; }
@@ -176,59 +150,17 @@ public static class UI
 
         return Abbreviation;
     }
-    public static string GetSimpleCompassHeading()
-    {
-        float Heading = Game.LocalPlayer.Character.Heading;
-        string Abbreviation = "";
 
-        //yeah could be simpler, whatever idk computers are fast
-        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
-        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
-        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
-        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
-        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
-        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
-        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
-        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
-        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
-        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
-        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
-        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
-        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
-        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
-        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
-        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
-        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
-        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
-        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
-        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
-        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
-        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
-        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
-        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
-        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
-        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
-        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
-        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
-        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
-        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
-        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
-        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-        else { Abbreviation = ""; }
-
-        return Abbreviation;
-    }
     private static string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (InstantAction.PlayerCurrentStreet != null && InstantAction.PlayerCurrentCrossStreet != null)
-            StreetDisplay = string.Format(" {0} / {1} ", InstantAction.PlayerCurrentStreet.Name, InstantAction.PlayerCurrentCrossStreet.Name);
-        else if (InstantAction.PlayerCurrentStreet != null)
-            StreetDisplay = string.Format(" {0} ", InstantAction.PlayerCurrentStreet.Name);
-        else if (InstantAction.PlayerIsOffroad && InstantAction.PlayerCurrentStreet == null && Game.LocalPlayer.Character.isInLosSantosCity())
+        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentCrossStreet != null)
+            StreetDisplay = string.Format(" {0} / {1} ", PlayerLocation.PlayerCurrentStreet.Name, PlayerLocation.PlayerCurrentCrossStreet.Name);
+        else if (PlayerLocation.PlayerCurrentStreet != null)
+            StreetDisplay = string.Format(" {0} ", PlayerLocation.PlayerCurrentStreet.Name);
+        else if (PlayerLocation.PlayerIsOffroad && PlayerLocation.PlayerCurrentStreet == null && Game.LocalPlayer.Character.isInLosSantosCity())
             StreetDisplay = " Los Santos ";
-        else if (InstantAction.PlayerIsOffroad && InstantAction.PlayerCurrentStreet == null)
+        else if (PlayerLocation.PlayerIsOffroad && PlayerLocation.PlayerCurrentStreet == null)
             StreetDisplay = " San Andreas ";
         return StreetDisplay;
     }
@@ -238,14 +170,14 @@ public static class UI
         string CopZoneName = "";
         if (Game.LocalPlayer.WantedLevel == 0)
         {
-            if (InstantAction.PlayerCurrentZone != null)
+            if (PlayerLocation.PlayerCurrentZone != null)
             {
-                if (InstantAction.PlayerCurrentStreet != null && InstantAction.PlayerCurrentStreet.isFreeway)
+                if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
                     CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
                 else
-                    CopZoneName = InstantAction.PlayerCurrentZone.MainZoneAgency.ColorPrefix + InstantAction.PlayerCurrentZone.MainZoneAgency.Initials;
+                    CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColorPrefix + PlayerLocation.PlayerCurrentZone.MainZoneAgency.Initials;
 
-                ZoneDisplay = InstantAction.PlayerCurrentZone.TextName + " - " + CopZoneName;
+                ZoneDisplay = PlayerLocation.PlayerCurrentZone.TextName + " - " + CopZoneName;
             }
             else
             {
@@ -264,9 +196,9 @@ public static class UI
                 CopZoneName = Agencies.LSPD.ColorPrefix + Agencies.LSPD.Initials;
             else
                 CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
-            if (InstantAction.PlayerCurrentZone != null)
+            if (PlayerLocation.PlayerCurrentZone != null)
             {
-                ZoneDisplay = InstantAction.PlayerCurrentZone.TextName + " - " + CopZoneName;
+                ZoneDisplay = PlayerLocation.PlayerCurrentZone.TextName + " - " + CopZoneName;
             }
             else
             {
@@ -275,7 +207,7 @@ public static class UI
         }
         return ZoneDisplay;
     }
-    internal static void Text(string text, float x, float y, float scale, bool center, Color TextColor, eFont Font)
+    public static void Text(string text, float x, float y, float scale, bool center, Color TextColor, eFont Font)
     {
         //Game.Console.Print("Invoke font");
         NativeFunction.Natives.SetTextFont((int)Font);

@@ -18,7 +18,7 @@ public static class Speed
     {
         IsRunning = false;
     }
-    public static void MainLoop()
+    private static void MainLoop()
     {
         GameFiber.StartNew(delegate
         {
@@ -55,7 +55,7 @@ public static class Speed
             catch (Exception e)
             {
                 InstantAction.Dispose();
-                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

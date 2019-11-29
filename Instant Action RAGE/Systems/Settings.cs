@@ -169,7 +169,7 @@ static class Settings
         }
         catch (Exception e)
         {
-            InstantAction.WriteToLog("ReadSettings", e.Message.ToString() + " " + e.StackTrace.ToString());
+            Debugging.WriteToLog("ReadSettings", e.Message.ToString() + " " + e.StackTrace.ToString());
         }
     }
     public static void WriteSettings()
@@ -195,7 +195,7 @@ static class Settings
         }
         catch (Exception e2)
         {
-            InstantAction.WriteToLog("WriteSettings", e2.Message);
+            Debugging.WriteToLog("WriteSettings", e2.Message);
         }
     }
     public static void CreateSettingsFile()

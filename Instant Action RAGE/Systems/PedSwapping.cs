@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 internal static class PedSwapping
 {
     private static Random rnd;
-    public static List<TakenOverPed> TakenOverPeds = new List<TakenOverPed>();
-    public static Model OriginalModel;
+    private static List<TakenOverPed> TakenOverPeds = new List<TakenOverPed>();
+    private static Model OriginalModel;
     private static string LastModelHash;
-    public static PedVariation myPedVariation;
-    public static bool PedOriginallyHadHelmet = false;
-    public static uint GameTimeLastTakenOver;
+    private static PedVariation myPedVariation;
+    private static bool PedOriginallyHadHelmet = false;
+    private static uint GameTimeLastTakenOver;
     static PedSwapping()
     {
         rnd = new Random();
@@ -28,7 +28,6 @@ internal static class PedSwapping
         else
             return false;
     }
-    //Ped Takeover
     public static Ped GetPedestrian(float Radius, bool Nearest)
     {
         Ped PedToReturn = null;
@@ -76,7 +75,7 @@ internal static class PedSwapping
 
             if (Game.LocalPlayer.Character.IsDead)
             {
-                InstantAction.RespawnInPlace(false);
+                Respawning.RespawnInPlace(false);
             }
             Vector3 PlayerOriginalPedPosition = Game.LocalPlayer.Character.Position;
 
@@ -128,7 +127,7 @@ internal static class PedSwapping
             if (DeleteOld)
                 CurrentPed.Delete();
             else if (ArrestOld)
-                InstantAction.SetArrestedAnimation(CurrentPed, true);
+                Surrendering.SetArrestedAnimation(CurrentPed, true);
             else
                 AITakeoverPlayer(CurrentPed);
 
@@ -179,9 +178,9 @@ internal static class PedSwapping
             Police.ResetPersonOfInterest();
             GameTimeLastTakenOver = Game.GameTime;
             Menus.TakeoverRadius = -1f;//reset this on the menu
+            InstantAction.LastWeapon = 0;
 
             CurrentPed.IsPersistent = false;
-
             if (Game.LocalPlayer.Character.IsWearingHelmet)
             {
                 PedOriginallyHadHelmet = true;
@@ -189,7 +188,7 @@ internal static class PedSwapping
         }
         catch (Exception e3)
         {
-            InstantAction.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message);
+            Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message);
         }
     }
     private static void AddPedToTakenOverPeds(TakenOverPed MyPed)
@@ -197,11 +196,11 @@ internal static class PedSwapping
         if (!TakenOverPeds.Any(x => x.OriginalHandle == MyPed.Pedestrian.Handle))
         {
             TakenOverPeds.Add(MyPed);
-            InstantAction.WriteToLog("AddPedToTakenOverPeds", string.Format("Added Ped to List {0} ", MyPed.Pedestrian.Handle));
+            Debugging.WriteToLog("AddPedToTakenOverPeds", string.Format("Added Ped to List {0} ", MyPed.Pedestrian.Handle));
         }
         else
         {
-            InstantAction.WriteToLog("AddPedToTakenOverPeds", string.Format("Ped already in list {0} ", MyPed.Pedestrian.Handle));
+            Debugging.WriteToLog("AddPedToTakenOverPeds", string.Format("Ped already in list {0} ", MyPed.Pedestrian.Handle));
         }
     }
     private static void CopyPedComponentVariation(Ped myPed)
@@ -222,7 +221,7 @@ internal static class PedSwapping
         }
         catch (Exception e)
         {
-            InstantAction.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
         }
     }
     private static PedVariation GetPedVariation(Ped myPed)
@@ -244,7 +243,7 @@ internal static class PedSwapping
         }
         catch (Exception e)
         {
-            InstantAction.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
             return null;
         }
     }
@@ -263,7 +262,7 @@ internal static class PedSwapping
         }
         catch (Exception e)
         {
-            InstantAction.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
+            Debugging.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
         }
     }
     private static void SetPlayerOffset()
@@ -305,7 +304,6 @@ internal static class PedSwapping
     }
     private static void ChangeModel(String ModelRequested)
     {
-        // Request the character model
         Model characterModel = new Model(ModelRequested);
         characterModel.LoadAndWait();
         characterModel.LoadCollisionAndWait();
@@ -325,12 +323,12 @@ internal static class PedSwapping
                     return;
 
                 Game.LocalPlayer.Character.GiveHelmet(true, (Rage.HelmetTypes)MyPropComponent.DrawableID, MyPropComponent.TextureID);
-                InstantAction.WriteToLog("AddRemovePlayerHelmet", "Original");
+                Debugging.WriteToLog("AddRemovePlayerHelmet", "Original");
             }
             else
             {
                 Game.LocalPlayer.Character.GiveHelmet(true, HelmetTypes.RegularMotorcycleHelmet, 0);
-                InstantAction.WriteToLog("AddRemovePlayerHelmet", "Not Original");
+                Debugging.WriteToLog("AddRemovePlayerHelmet", "Not Original");
             }
         }
     }

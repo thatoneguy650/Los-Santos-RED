@@ -49,12 +49,12 @@ internal static class Menus
     private static UIMenuItem menuActionSmoking;
 
     private static MenuPool menuPool;
-    public static UIMenu mainMenu;
-    public static UIMenu deathMenu;
-    public static UIMenu debugMenu;
-    public static UIMenu bustedMenu;
-    public static UIMenu optionsMenu;
-    public static UIMenu actionsMenu;
+    private static UIMenu mainMenu;
+    private static UIMenu deathMenu;
+    private static UIMenu debugMenu;
+    private static UIMenu bustedMenu;
+    private static UIMenu optionsMenu;
+    private static UIMenu actionsMenu;
 
     private static int RandomCrimeLevel = 1;
     private static int RandomWeaponCategory = 0;
@@ -63,13 +63,22 @@ internal static class Menus
     private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
     private static List<int> UndieLimit = new List<int> { 0,1,2,3,4,5 };
     private static string CurrentScreenEffect = "Rampage";
-    public static float TakeoverRadius = -1f;
-    public static int ChangePlateIndex = 0;
     private static int PrevMainMenuCurrentSelection;
     private static bool PrevMainMenuVisible;
     private static bool MainMenuVisible;
     private static List<string> SmokingOptionsList;
 
+    public static float TakeoverRadius = -1f;
+    public static int ChangePlateIndex = 0;
+
+    public static void ShowDeathMenu()
+    {
+        deathMenu.Visible = true;
+    }
+    public static void ShowBustedMenu()
+    {
+        bustedMenu.Visible = true;
+    }
     public static bool IsRunning { get; set; } = true;
     public static void Intitialize()
     {
@@ -279,7 +288,7 @@ internal static class Menus
         mainMenu.Clear();
         // menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
         menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", InstantAction.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
+        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", LicensePlateChanging.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
         menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
 
@@ -346,7 +355,7 @@ internal static class Menus
         //    if (list == menuBustedBribe)
         //    {
         //        BribeAmount = BribeList[list.Index];// + 1;
-        //        InstantAction.WriteToLog("Bribe Changed", String.Format("Bribe: {0}", BribeAmount));
+        //        Debugging.WriteToLog("Bribe Changed", String.Format("Bribe: {0}", BribeAmount));
         //    }
         //}
         else if (sender == debugMenu)
@@ -370,15 +379,15 @@ internal static class Menus
             }
             else if (selectedItem == menuMainSuicide)
             {
-                InstantAction.CommitSuicide(Game.LocalPlayer.Character);
+                Surrendering.CommitSuicide(Game.LocalPlayer.Character);
             }
             else if (selectedItem == menuMainChangeLicensePlate)
             {
-                InstantAction.ChangeNearestLicensePlate();
+                LicensePlateChanging.ChangeNearestLicensePlate();
             }
             else if (selectedItem == menuMainRemoveLicensePlate)
             {
-                InstantAction.RemoveNearestLicensePlate();
+                LicensePlateChanging.RemoveNearestLicensePlate();
             }
             else if (selectedItem == menuMainChangeHelmet)
             {
@@ -402,19 +411,19 @@ internal static class Menus
         {
             if (selectedItem == menuBustedResistArrest)
             {
-                InstantAction.ResistArrest();
+                Respawning.ResistArrest();
             }
             else if (selectedItem == menuBustedBribe)
             {
                 int BribeAmount;
                 if (int.TryParse(GetKeyboardInput(), out BribeAmount))
                 {
-                    InstantAction.BribePolice(BribeAmount);
+                    Respawning.BribePolice(BribeAmount);
                 }
             }
             else if (selectedItem == menuBustedSurrender)
             {
-                InstantAction.Surrender();
+                Respawning.Surrender();
             }
             else if (selectedItem == menuBustedTakeoverRandomPed)
             {
@@ -429,11 +438,11 @@ internal static class Menus
         {
             if (selectedItem == menuDeathUndie)
             {
-                InstantAction.RespawnInPlace(true);
+                Respawning.RespawnInPlace(true);
             }
             else if (selectedItem == menuDeathHospitalRespawn)
             {
-                InstantAction.RespawnAtHospital();
+                Respawning.RespawnAtHospital();
             }
             else if (selectedItem == menuDeathTakeoverRandomPed)
             {
@@ -513,7 +522,7 @@ internal static class Menus
         {
             if (selectedItem == menuMainSuicide)
             {
-                InstantAction.CommitSuicide(Game.LocalPlayer.Character);
+                Surrendering.CommitSuicide(Game.LocalPlayer.Character);
             }
             if (selectedItem == menuActionSmoking)
             {
@@ -580,13 +589,13 @@ internal static class Menus
                     {
                         menuDeathUndie.Enabled = false;
                     }
-                        GameFiber.Yield();
+                     GameFiber.Yield();
                 }
             }
             catch (Exception e)
             {
                 InstantAction.Dispose();
-                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }

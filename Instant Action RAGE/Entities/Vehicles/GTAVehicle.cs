@@ -80,7 +80,7 @@ public class GTAVehicle
     }
     public void WatchForDeath(Ped Pedestrian)
     {
-        GameFiber.StartNew(delegate
+        GameFiber WatchForDeath = GameFiber.StartNew(delegate
         {
             uint GameTimeStolen = Game.GameTime;
             while(Pedestrian.Exists())
@@ -93,7 +93,7 @@ public class GTAVehicle
                     WillBeReportedStolen = false;
                     PreviousOwnerDied = true;
                     Pedestrian.IsPersistent = false;
-                    //InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDied {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
+                    //Debugging.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDied {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
                     break;
                 }
                 else if(Game.GameTime - GameTimeStolen > 15000 && !Pedestrian.IsRagdoll)
@@ -106,14 +106,15 @@ public class GTAVehicle
                         WillBeReportedStolen = true;
                         Pedestrian.IsPersistent = false;
                     }
-                    InstantAction.WriteToLog("StolenVehicles", string.Format("WillBeReportedStolen {0}", WillBeReportedStolen));
+                    Debugging.WriteToLog("StolenVehicles", string.Format("WillBeReportedStolen {0}", WillBeReportedStolen));
                     break;
                 }
                 
                 GameFiber.Yield();
             }
-            InstantAction.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDisappeared? Died {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
-        });
+            Debugging.WriteToLog("StolenVehicles", string.Format("PreviousOwnerDisappeared? Died {0},WillBeReportedStolen {1}", PreviousOwnerDied, WillBeReportedStolen));
+        }, "WatchForDeath");
+        Debugging.GameFibers.Add(WatchForDeath);
     }
     public GTAVehicle(Vehicle _Vehicle, bool _IsPlayersVehicle, bool _IsStolen, GTALicensePlate _CarPlate)
     {
@@ -149,12 +150,12 @@ public class GTAVehicle
         {
             if (PreviousOwner.isPoliceArmy())
             {
-                InstantAction.WriteToLog("StolenVehicles", "Previous Owner is Cop reported immediately");
+                Debugging.WriteToLog("StolenVehicles", "Previous Owner is Cop reported immediately");
                 WillBeReportedStolen = true;
             }
             else
             {
-                InstantAction.WriteToLog("StolenVehicles", "Previous Owner is alive, will watch for death");
+                Debugging.WriteToLog("StolenVehicles", "Previous Owner is alive, will watch for death");
                 WatchForDeath(PreviousOwner);
             }
         }
@@ -167,7 +168,7 @@ public class GTAVehicle
             GameTimeToReportStolen = GameTimeEntered + 600000;
 
 
-        InstantAction.WriteToLog("GTAVehicle", string.Format("Vehicle Created: Handle {0},GTEntered,{1},GTReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WillBeRptdStoln {6},WatchLastOwner {7}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, WillBeReportedStolen, PreviousOwner != null));
+        Debugging.WriteToLog("GTAVehicle", string.Format("Vehicle Created: Handle {0},GTEntered,{1},GTReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WillBeRptdStoln {6},WatchLastOwner {7}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, WillBeReportedStolen, PreviousOwner != null));
     }
     public GTAVehicle(Vehicle _Vehicle, bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsPlayersVehicle, bool _IsStolen, GTALicensePlate _CarPlate)
     {

@@ -40,8 +40,8 @@ public static class PoliceScanning
         ScanningInterval = 5000;
         ScanningRange = 200f;
         LOSInterval = 500;
-
         InnocentScanningRange = 10f;
+
         K9Model.LoadAndWait();
         K9Model.LoadCollisionAndWait();
 
@@ -71,7 +71,7 @@ public static class PoliceScanning
         }
         CopPeds.Clear();
     }
-    public static void MainLoop()
+    private static void MainLoop()
     {
         var stopwatch = new Stopwatch();
         GameFiber.StartNew(delegate
@@ -110,13 +110,13 @@ public static class PoliceScanning
                     if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
                     {
                         if (Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
-                            PoliceSpawning.SpawnRandomCop(true);
+                            PoliceSpawning.SpawnRandomCop();
                         PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
                         RandomCopInterval = Game.GameTime;
                     }
                     stopwatch.Stop();
                     if (stopwatch.ElapsedMilliseconds >= 20)
-                        InstantAction.WriteToLog("PoliceScanningTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
+                        Debugging.WriteToLog("PoliceScanningTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
                     stopwatch.Reset();
                     GameFiber.Yield();
                 }
@@ -124,13 +124,13 @@ public static class PoliceScanning
             catch (Exception e)
             {
                 InstantAction.Dispose();
-                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }
     private static void ScanForPolice()
     {
-        Ped[] Pedestrians = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));
+        Ped[] Pedestrians = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250
         foreach (Ped Pedestrian in Pedestrians.Where(s => s.Exists() && !s.IsDead && s.IsVisible))
         {
             if(Pedestrian.isPoliceArmy())
@@ -165,14 +165,9 @@ public static class PoliceScanning
                 //    Civilians.Add(Pedestrian);
                 //}
             }
-                
         }
         CopPeds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
         K9Peds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
         Civilians.RemoveAll(x => !x.Exists() || x.IsDead);
     }
-
-  
-
-
 }

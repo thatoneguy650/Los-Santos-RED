@@ -12,14 +12,13 @@ internal static class RespawnStopper
     public static bool IsRunning { get; set; } = true;
     public static void Initialize()
     {
-        //Game.TerminateAllScripts("selector");
         MainLoop();
     }
     public static void Dispose()
     {
         IsRunning = false;
     }
-    public static void MainLoop()
+    private static void MainLoop()
         {
             GameFiber.StartNew(delegate
             {
@@ -27,11 +26,6 @@ internal static class RespawnStopper
                 {
                     while (IsRunning)
                     {
-
-                        //if (Game.IsKeyDown(Keys.E)) // Our menu on/off switch.
-                        //{
-                        //    Game.TerminateAllScripts("selector");
-                        //}
                         Game.DisableAutomaticRespawn = true;
                         Game.FadeScreenOutOnDeath = false;
                         Game.TerminateAllScriptsWithName("respawn_controller");
@@ -47,7 +41,6 @@ internal static class RespawnStopper
                         NativeFunction.Natives.x9DC711BC69C548DF("respawn_controller");
                         //Function.Call(Hash.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME, "respawn_controller");
 
-
                         NativeFunction.Natives.x9DC711BC69C548DF("selector");
                         GameFiber.Yield();
                     }
@@ -55,7 +48,7 @@ internal static class RespawnStopper
                 catch (Exception e)
                 {
                     InstantAction.Dispose();
-                    InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                    Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
                 }
             });
         }

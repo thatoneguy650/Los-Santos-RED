@@ -12,13 +12,13 @@ using System.Windows.Forms;
 internal static class PoliceSpeech
 {
     private static Random rnd;
+    private static List<string> DeadlyChaseSpeech;
+    private static List<string> UnarmedChaseSpeech;
+    private static List<string> CautiousChaseSpeech;
+    private static List<string> ArrestedWaitSpeech;
+    private static List<string> PlayerDeadSpeech;
+
     public static bool IsRunning { get; set; } = true;
-    public static List<string> DeadlyChaseSpeech { get; set; }
-    public static List<string> UnarmedChaseSpeech { get; set; }
-    public static List<string> CautiousChaseSpeech { get; set; }
-    public static List<string> ArrestedWaitSpeech { get; set; }
-    public static List<string> PlayerDeadSpeech { get; set; }
-    public static bool SaidManDown { get; set; } = true;
     static PoliceSpeech()
     {
         rnd = new Random();
@@ -32,7 +32,7 @@ internal static class PoliceSpeech
     {
         IsRunning = false;
     }
-    public static void MainLoop()
+    private static void MainLoop()
     {
         GameFiber.StartNew(delegate
         {
@@ -47,7 +47,7 @@ internal static class PoliceSpeech
             catch (Exception e)
             {
                 InstantAction.Dispose();
-                InstantAction.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
     }
@@ -74,38 +74,38 @@ internal static class PoliceSpeech
                     if (InstantAction.isBusted && Cop.DistanceToPlayer <= 20f)
                     {
                         Cop.CopPed.PlayAmbientSpeech("ARREST_PLAYER");
-                       // InstantAction.WriteToLog("CheckSpeech", "ARREST_PLAYER");
+                       // Debugging.WriteToLog("CheckSpeech", "ARREST_PLAYER");
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase)
                     {
                         string Speech = UnarmedChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                       // InstantAction.WriteToLog("CheckSpeech", Speech);
+                       // Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.CautiousChase)
                     {
                         string Speech = CautiousChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                       // InstantAction.WriteToLog("CheckSpeech", Speech);
+                       // Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
                     {
                         string Speech = ArrestedWaitSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                       // InstantAction.WriteToLog("CheckSpeech", Speech);
+                       // Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                     {
                         string Speech = DeadlyChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        //InstantAction.WriteToLog("CheckSpeech", Speech);
+                        //Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                     else //Normal State
                     {
                         if(Cop.DistanceToPlayer <= 4f)
                         {
                             Cop.CopPed.PlayAmbientSpeech("CRIMINAL_WARNING");
-                            //InstantAction.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
+                            //Debugging.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
                         }
                     }
                 }
@@ -115,7 +115,7 @@ internal static class PoliceSpeech
                     {
                         string Speech = PlayerDeadSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        //InstantAction.WriteToLog("CheckSpeech", Speech);
+                        //Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                 }
                 Cop.GameTimeLastSpoke = Game.GameTime - (uint)rnd.Next(500,1000);
