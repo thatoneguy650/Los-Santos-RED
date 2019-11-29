@@ -59,7 +59,7 @@ public static class Smoking
             {
                 while (IsRunning)
                 {
-                    if (InstantAction.isDead || Game.LocalPlayer.Character.IsRagdoll)
+                    if (InstantAction.IsDead || Game.LocalPlayer.Character.IsRagdoll)
                     {
                         RemoveCigarette();
                         return;

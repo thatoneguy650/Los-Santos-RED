@@ -42,8 +42,8 @@ internal static class Menus
     private static UIMenuItem menuBustedNormalRespawn;
     private static UIMenuItem menuBustedTakeoverNearestPed;
     private static UIMenuListItem menuBustedTakeoverRandomPed;
-    private static UIMenuItem menuBustedSurrender;
-    private static UIMenuItem menuDeathHospitalRespawn;
+    private static UIMenuListItem menuBustedSurrender;
+    private static UIMenuListItem menuDeathHospitalRespawn;
     private static UIMenuItem menuDebugGiveMoney;
     private static UIMenuItem menuDebugHealthAndArmor;
     private static UIMenuItem menuActionSmoking;
@@ -67,16 +67,21 @@ internal static class Menus
     private static bool PrevMainMenuVisible;
     private static bool MainMenuVisible;
     private static List<string> SmokingOptionsList;
+    private static Location CurrentSelectedSurrenderLocation;
+    private static Location CurrentSelectedHospitalLocation;
 
     public static float TakeoverRadius = -1f;
     public static int ChangePlateIndex = 0;
 
+
     public static void ShowDeathMenu()
     {
+        UpdateClosestHospitalIndex();
         deathMenu.Visible = true;
     }
     public static void ShowBustedMenu()
     {
+        UpdateClosestPoliceStationIndex();
         bustedMenu.Visible = true;
     }
     public static bool IsRunning { get; set; } = true;
@@ -196,7 +201,7 @@ internal static class Menus
 
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
         menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-        menuDeathHospitalRespawn = new UIMenuItem("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.");
+        menuDeathHospitalRespawn = new UIMenuListItem("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Hospital));
         menuDeathNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the hospital (standard game logc).");
         menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
@@ -207,7 +212,7 @@ internal static class Menus
         menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
         //menuBustedBribe = new UIMenuListItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.",new List<dynamic> { 250, 500, 1000, 1250, 1750, 2000, 3500 } );
         menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
-        menuBustedSurrender = new UIMenuItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.");
+        menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));//new UIMenuItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.");
         menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
         menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
@@ -312,6 +317,16 @@ internal static class Menus
     public static void UpdateLists()
     {         
         CreateMainMenu();
+        
+        menuDeathHospitalRespawn.Index = Locations.GetAllLocationsOfType(Location.LocationType.Hospital).IndexOf(Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Hospital));
+    }
+    private static void UpdateClosestHospitalIndex()
+    {
+        menuDeathHospitalRespawn.Index = Locations.GetAllLocationsOfType(Location.LocationType.Hospital).IndexOf(Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Hospital));
+    }
+    private static void UpdateClosestPoliceStationIndex()
+    {
+        menuBustedSurrender.Index = Locations.GetAllLocationsOfType(Location.LocationType.Police).IndexOf(Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Police));
     }
     public static void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
     {
@@ -349,15 +364,22 @@ internal static class Menus
                 ChangePlateIndex = index;
             }
         }
-
-        //else if (sender == bustedMenu)
-        //{
-        //    if (list == menuBustedBribe)
-        //    {
-        //        BribeAmount = BribeList[list.Index];// + 1;
-        //        Debugging.WriteToLog("Bribe Changed", String.Format("Bribe: {0}", BribeAmount));
-        //    }
-        //}
+        else if (sender == deathMenu)
+        {
+            if (list == menuDeathHospitalRespawn)
+            {
+                CurrentSelectedHospitalLocation = Locations.GetAllLocationsOfType(Location.LocationType.Hospital)[index];
+                Debugging.WriteToLog("menuDeathHospitalRespawn Changed", String.Format("Location: {0}", CurrentSelectedHospitalLocation));
+            }
+        }
+        else if (sender == bustedMenu)
+        {
+            if (list == menuBustedSurrender)
+            {
+                CurrentSelectedSurrenderLocation = Locations.GetAllLocationsOfType(Location.LocationType.Police)[index];
+                Debugging.WriteToLog("menuBustedSurrender Changed", String.Format("Location: {0}", CurrentSelectedSurrenderLocation));
+            }
+        }
         else if (sender == debugMenu)
         {
             if (list == menuDebugScreenEffect)
@@ -421,9 +443,9 @@ internal static class Menus
                     Respawning.BribePolice(BribeAmount);
                 }
             }
-            else if (selectedItem == menuBustedSurrender)
+            if (selectedItem == menuBustedSurrender)
             {
-                Respawning.Surrender();
+                Respawning.Surrender(CurrentSelectedSurrenderLocation);
             }
             else if (selectedItem == menuBustedTakeoverRandomPed)
             {
@@ -440,9 +462,13 @@ internal static class Menus
             {
                 Respawning.RespawnInPlace(true);
             }
-            else if (selectedItem == menuDeathHospitalRespawn)
+            //else if (selectedItem == menuDeathHospitalRespawn)
+            //{
+            //    Respawning.RespawnAtHospital();
+            //}
+            if (selectedItem == menuDeathHospitalRespawn)
             {
-                Respawning.RespawnAtHospital();
+                Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
             }
             else if (selectedItem == menuDeathTakeoverRandomPed)
             {
@@ -547,14 +573,16 @@ internal static class Menus
                 {
                     if (Game.IsKeyDown(Keys.F10)) // Our menu on/off switch.
                     {
-                        if (InstantAction.isDead)
+                        if (InstantAction.IsDead)
                         {
+                            UpdateClosestHospitalIndex();
                             bustedMenu.Visible = false;
                             mainMenu.Visible = false;
                             deathMenu.Visible = !deathMenu.Visible;
                         }
-                        else if (InstantAction.isBusted)
+                        else if (InstantAction.IsBusted)
                         {
+                            UpdateClosestPoliceStationIndex();
                             deathMenu.Visible = false;
                             mainMenu.Visible = false;
                             bustedMenu.Visible = !bustedMenu.Visible;

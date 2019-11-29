@@ -625,7 +625,7 @@ internal static class DispatchAudio
                     else if (Item.Type == ReportDispatch.ReportShotsFired)
                         ReportShotsFired();
                     else if (Item.Type == ReportDispatch.ReportSpottedStolenCar)
-                        ReportSpottedStolenCar(Item.VehicleToReport);
+                        ReportSpottedStolenCar(Item.VehicleToReport,Item.Speed);
                     else if (Item.Type == ReportDispatch.ReportStolenVehicle)
                         ReportStolenVehicle(Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportSuspectArrested)
@@ -694,9 +694,9 @@ internal static class DispatchAudio
     }
 
     //Traffic
-    public static void ReportSpottedStolenCar(GTAVehicle vehicle)
+    public static void ReportSpottedStolenCar(GTAVehicle vehicle,float Speed)
     {
-        if (InstantAction.isBusted || InstantAction.isDead || ReportedLethalForceAuthorized)
+        if (InstantAction.IsBusted || InstantAction.IsDead || ReportedLethalForceAuthorized)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -724,6 +724,7 @@ internal static class DispatchAudio
             ScannerList.Add(crime_person_in_a_stolen_car.Apersoninastolencar.FileName);
         }
         string Subtitles = "Officer Report, a person in a ~h~stolen vehicle~s~";
+        AddSpeed(ref ScannerList, Speed,ref Subtitles);
         ReportGenericEnd(ScannerList, NearType.Nothing, ref Subtitles);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -817,36 +818,7 @@ internal static class DispatchAudio
         ReportGenericStart(ref ScannerList);
         ScannerList.Add(crime_speeding_felony.Aspeedingfelony.FileName);
         string Subtitles = "Officers Report, a ~r~speeding felony~s~ ";
-
-        if (Speed >= 70f)
-        {           
-            //ScannerList.Add(suspect_is.CriminalIs.FileName);
-            if (Speed >= 70f && Speed < 80f)
-            {
-                ScannerList.Add(doing_speed.Doing70mph.FileName);
-                Subtitles = Subtitles + " doing ~h~70 mph";
-            }
-            else if (Speed >= 80f && Speed < 90f)
-            {
-                ScannerList.Add(doing_speed.Doing80mph.FileName);
-                Subtitles = Subtitles + " doing ~h~80 mph";
-            }
-            else if (Speed >= 90f && Speed < 100f)
-            {
-                ScannerList.Add(doing_speed.Doing90mph.FileName);
-                Subtitles = Subtitles + " doing ~h~90 mph";
-            }
-            else if (Speed >= 100f && Speed < 104f)
-            {
-                ScannerList.Add(doing_speed.Doing100mph.FileName);
-                Subtitles = Subtitles + " doing ~h~100 mph";
-            }
-            else if (Speed >= 105f)
-            {
-                ScannerList.Add(doing_speed.Doingover100mph.FileName);
-                Subtitles = Subtitles + " doing ~h~over 100 mph~s~";
-            }
-        }
+        AddSpeed(ref ScannerList, Speed, ref Subtitles);
         if (vehicle.IsStolen)
         {
             Subtitles = Subtitles + " ~s~in a possible stolen vehicle";
@@ -861,7 +833,7 @@ internal static class DispatchAudio
     //Felony
     public static void ReportShotsFired()
     {
-        if (ReportedShotsFired || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
+        if (ReportedShotsFired || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         ReportedShotsFired = true;
@@ -877,7 +849,7 @@ internal static class DispatchAudio
     }
     public static void ReportCarryingWeapon(GTAWeapon CarryingWeapon)
     {
-        if (ReportedOfficerDown || ReportedLethalForceAuthorized || ReportedAssaultOnOfficer || InstantAction.isBusted || InstantAction.isDead)
+        if (ReportedOfficerDown || ReportedLethalForceAuthorized || ReportedAssaultOnOfficer || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         ReportedCarryingWeapon = true;
@@ -1008,7 +980,7 @@ internal static class DispatchAudio
     }
     public static void ReportOfficerDown()
     {
-        if (InstantAction.isBusted || InstantAction.isDead || ReportedOfficerDown)
+        if (InstantAction.IsBusted || InstantAction.IsDead || ReportedOfficerDown)
             return;
 
         ReportedOfficerDown = true;
@@ -1122,7 +1094,7 @@ internal static class DispatchAudio
     }
     public static void ReportAssualtOnOfficer()
     {
-        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
+        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         ReportedAssaultOnOfficer = true;
@@ -1160,7 +1132,7 @@ internal static class DispatchAudio
     }
     public static void ReportThreateningWithFirearm()
     {
-        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
+        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         ReportedThreateningWithAFirearm = true;
@@ -1179,7 +1151,7 @@ internal static class DispatchAudio
     }
     public static void ReportSuspectLastSeen()
     {
-        if (InstantAction.isBusted || InstantAction.isDead)
+        if (InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
@@ -1282,7 +1254,7 @@ internal static class DispatchAudio
     }
     public static void ReportLethalForceAuthorized()
     {
-        if (InstantAction.isBusted || InstantAction.isDead || ReportedLethalForceAuthorized)
+        if (InstantAction.IsBusted || InstantAction.IsDead || ReportedLethalForceAuthorized)
             return;
 
         ReportedLethalForceAuthorized = true;
@@ -1324,7 +1296,7 @@ internal static class DispatchAudio
     }
     public static void ReportSuspiciousActivity()
     {
-        if (InstantAction.isBusted || InstantAction.isDead || ReportedLethalForceAuthorized)
+        if (InstantAction.IsBusted || InstantAction.IsDead || ReportedLethalForceAuthorized)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1365,7 +1337,7 @@ internal static class DispatchAudio
     }
     public static void ReportGrandTheftAuto()
     {
-        if (ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
+        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1394,7 +1366,7 @@ internal static class DispatchAudio
     }
     public static void ReportIncreasedWanted()
     {
-        if (InstantAction.isBusted || InstantAction.isDead)
+        if (InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1411,7 +1383,7 @@ internal static class DispatchAudio
     }
     public static void ReportSuspiciousVehicle(GTAVehicle myCar)
     {
-        if (ReportedLethalForceAuthorized || InstantAction.isBusted || InstantAction.isDead)
+        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1440,7 +1412,7 @@ internal static class DispatchAudio
     }
     public static void BeginDispatch()
     {
-        if (InstantAction.isBusted || InstantAction.isDead)
+        if (InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1477,7 +1449,7 @@ internal static class DispatchAudio
     }
     public static void ReportWeaponsFree()
     {
-        if (InstantAction.isBusted || InstantAction.isDead)
+        if (InstantAction.IsBusted || InstantAction.IsDead)
             return;
         List<string> ScannerList = new List<string>();
         ScannerList.Add(AudioBeeps.AudioStart());
@@ -1501,7 +1473,7 @@ internal static class DispatchAudio
     //StolenCar
     public static void ReportStolenVehicle(GTAVehicle stolenVehicle)
     {
-        if (InstantAction.isBusted || InstantAction.isDead)
+        if (InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1554,7 +1526,7 @@ internal static class DispatchAudio
     //Visuals
     public static void ReportSuspectLost()
     {
-        if (InstantAction.isBusted || InstantAction.isDead)
+        if (InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -1588,7 +1560,7 @@ internal static class DispatchAudio
     }
     public static void ReportSuspectSpotted()
     {
-        if (InstantAction.isBusted || InstantAction.isDead)
+        if (InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         List<string> ScannerList = new List<string>();
@@ -2114,6 +2086,38 @@ internal static class DispatchAudio
         else { Abbreviation = ""; }
 
         return Abbreviation;
+    }
+    public static void AddSpeed(ref List<string> ScannerList,float Speed, ref string Subtitles)
+    {
+        if (Speed >= 70f)
+        {
+            //ScannerList.Add(suspect_is.CriminalIs.FileName);
+            if (Speed >= 70f && Speed < 80f)
+            {
+                ScannerList.Add(doing_speed.Doing70mph.FileName);
+                Subtitles = Subtitles + " doing ~h~70 mph";
+            }
+            else if (Speed >= 80f && Speed < 90f)
+            {
+                ScannerList.Add(doing_speed.Doing80mph.FileName);
+                Subtitles = Subtitles + " doing ~h~80 mph";
+            }
+            else if (Speed >= 90f && Speed < 100f)
+            {
+                ScannerList.Add(doing_speed.Doing90mph.FileName);
+                Subtitles = Subtitles + " doing ~h~90 mph";
+            }
+            else if (Speed >= 100f && Speed < 104f)
+            {
+                ScannerList.Add(doing_speed.Doing100mph.FileName);
+                Subtitles = Subtitles + " doing ~h~100 mph";
+            }
+            else if (Speed >= 105f)
+            {
+                ScannerList.Add(doing_speed.Doingover100mph.FileName);
+                Subtitles = Subtitles + " doing ~h~over 100 mph~s~";
+            }
+        }
     }
     public class DispatchAudioEvent
     {

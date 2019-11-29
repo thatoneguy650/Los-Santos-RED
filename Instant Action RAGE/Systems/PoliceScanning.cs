@@ -9,24 +9,21 @@ using System.Linq;
 
 public static class PoliceScanning
 {
-    private static uint GameTimeInterval;
-    private static uint LOSInterval;
-    private static uint GameTimeCheckedKilled;
-    private static uint K9Interval;
+    //private static uint GameTimeInterval;
+    //private static uint LOSInterval;
+    //private static uint GameTimeCheckedKilled;
+    //private static uint K9Interval;
     private static Model K9Model = new Model("a_c_shepherd");
     private static Model LSPDMale = new Model("s_m_y_cop_01");
     private static Model LSPDFemale = new Model("s_f_y_cop_01");
     private static Model LSSDMale = new Model("s_m_y_sheriff_01");
     private static Model LSSDFemale = new Model("s_f_y_sheriff_01");
-    private static uint RandomCopInterval;
+    //private static uint RandomCopInterval;
 
     public static List<GTACop> CopPeds { get; private set; } = new List<GTACop>();
     public static List<GTACop> K9Peds { get; private set; } = new List<GTACop>();
     public static List<Ped> Civilians { get; private set; } = new List<Ped>();
-    public static List<GTANewsReporter> Reporters { get; private set; } = new List<GTANewsReporter>();
-    public static int ScanningInterval { get; private set; }
-    public static float ScanningRange { get; private set; }
-    public static float InnocentScanningRange { get; private set; }
+    //public static List<GTANewsReporter> Reporters { get; private set; } = new List<GTANewsReporter>();
     public static bool IsRunning { get; set; } = true;
     public static string AgenciesChasingPlayer
     {
@@ -37,14 +34,13 @@ public static class PoliceScanning
     }
     public static void Initialize()
     {
-        ScanningInterval = 5000;
-        ScanningRange = 200f;
-        LOSInterval = 500;
-        InnocentScanningRange = 10f;
+        //ScanningInterval = 5000;
+        //ScanningRange = 200f;
+        //LOSInterval = 500;
+        //InnocentScanningRange = 10f;
 
         K9Model.LoadAndWait();
         K9Model.LoadCollisionAndWait();
-
         LSPDMale.LoadAndWait();
         LSPDMale.LoadCollisionAndWait();
         LSPDFemale.LoadAndWait();
@@ -54,7 +50,7 @@ public static class PoliceScanning
         LSSDFemale.LoadAndWait();
         LSSDFemale.LoadCollisionAndWait();
 
-        MainLoop();
+        //MainLoop();
     }
     public static void Dispose()
     {
@@ -71,64 +67,64 @@ public static class PoliceScanning
         }
         CopPeds.Clear();
     }
-    private static void MainLoop()
-    {
-        var stopwatch = new Stopwatch();
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    stopwatch.Start();
-                    bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-                    //Check if we have killed any cops
-                    int CheckKilledInterval = 200;
-                    if (Game.GameTime > GameTimeCheckedKilled + CheckKilledInterval) // was 2000
-                    {
-                        Police.CheckKilled();
-                        GameTimeCheckedKilled = Game.GameTime;
-                    }
-                    if (Game.GameTime > GameTimeInterval + ScanningInterval)
-                    {
-                        ScanForPolice();
-                        GameTimeInterval = Game.GameTime;
-                    }
-                    if (Game.GameTime > LOSInterval + LOSInterval) // was 2000
-                    {
-                        Police.CheckLOS((PlayerInVehicle) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
-                        Police.SetPrimaryPursuer();
-                        Police.UpdatePlacePlayerLastSeen();
-                    }
-                    if (Settings.SpawnPoliceK9 && 1 == 0 && Game.GameTime > K9Interval + 5555) // was 2000
-                    {
-                        if (Game.LocalPlayer.WantedLevel > 0 && !PlayerInVehicle && K9Peds.Count < 3)
-                            PoliceSpawning.CreateK9();
-                        PoliceSpawning.MoveK9s();
-                        K9Interval = Game.GameTime;
-                    }
-                    if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
-                    {
-                        if (Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
-                            PoliceSpawning.SpawnRandomCop();
-                        PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
-                        RandomCopInterval = Game.GameTime;
-                    }
-                    stopwatch.Stop();
-                    if (stopwatch.ElapsedMilliseconds >= 20)
-                        Debugging.WriteToLog("PoliceScanningTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
-                    stopwatch.Reset();
-                    GameFiber.Yield();
-                }
-            }
-            catch (Exception e)
-            {
-                InstantAction.Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
-    }
-    private static void ScanForPolice()
+    //private static void MainLoop()
+    //{
+    //    var stopwatch = new Stopwatch();
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        try
+    //        {
+    //            while (IsRunning)
+    //            {
+    //                //stopwatch.Start();
+    //                //bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+    //                ////Check if we have killed any cops
+    //                //int CheckKilledInterval = 200;
+    //                //if (Game.GameTime > GameTimeCheckedKilled + CheckKilledInterval) // was 2000
+    //                //{
+    //                //    Police.CheckKilled();
+    //                //    GameTimeCheckedKilled = Game.GameTime;
+    //                //}
+    //                //if (Game.GameTime > GameTimeInterval + ScanningInterval)
+    //                //{
+    //                //    ScanForPolice();
+    //                //    GameTimeInterval = Game.GameTime;
+    //                //}
+    //                //if (Game.GameTime > LOSInterval + LOSInterval) // was 2000
+    //                //{
+    //                //    Police.CheckLOS((PlayerInVehicle) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
+    //                //    Police.SetPrimaryPursuer();
+    //                //    Police.UpdatePlacePlayerLastSeen();
+    //                //}
+    //                //if (Settings.SpawnPoliceK9 && 1 == 0 && Game.GameTime > K9Interval + 5555) // was 2000
+    //                //{
+    //                //    if (Game.LocalPlayer.WantedLevel > 0 && !PlayerInVehicle && K9Peds.Count < 3)
+    //                //        PoliceSpawning.CreateK9();
+    //                //    PoliceSpawning.MoveK9s();
+    //                //    K9Interval = Game.GameTime;
+    //                //}
+    //                //if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
+    //                //{
+    //                //    if (Game.LocalPlayer.WantedLevel == 0 && CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+    //                //        PoliceSpawning.SpawnRandomCop();
+    //                //    PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
+    //                //    RandomCopInterval = Game.GameTime;
+    //                //}
+    //                //stopwatch.Stop();
+    //                //if (stopwatch.ElapsedMilliseconds >= 20)
+    //                //    Debugging.WriteToLog("PoliceScanningTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
+    //                //stopwatch.Reset();
+    //                GameFiber.Yield();
+    //            }
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            InstantAction.Dispose();
+    //            Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+    //        }
+    //    });
+    //}
+    public static void ScanForPolice()
     {
         Ped[] Pedestrians = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250
         foreach (Ped Pedestrian in Pedestrians.Where(s => s.Exists() && !s.IsDead && s.IsVisible))

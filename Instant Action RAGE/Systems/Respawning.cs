@@ -24,7 +24,7 @@ public static class Respawning
         else
         {
             InstantAction.BeingArrested = false;
-            InstantAction.isBusted = false;
+            InstantAction.IsBusted = false;
             Game.DisplayNotification("Thanks for the cash, now beat it.");
             Game.LocalPlayer.Character.GiveCash(-1 * Amount, Settings.MainCharacterToAlias);
         }
@@ -34,12 +34,12 @@ public static class Respawning
         NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(true, false);
     }
-    public static void RespawnAtHospital()
+    public static void RespawnAtHospital(Location Hospital)
     {
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
-        InstantAction.isDead = false;
-        InstantAction.isBusted = false;
+        InstantAction.IsDead = false;
+        InstantAction.IsBusted = false;
 
         Police.CurrentPoliceState = Police.PoliceState.Normal;
         Police.PlayerIsPersonOfInterest = false;
@@ -49,10 +49,11 @@ public static class Respawning
         InstantAction.LastWeapon = 0;
         RespawnInPlace(false);
         Police.SetWantedLevel(0);
-        Location ClosestHospital = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Hospital);
+        if (Hospital == null)
+            Hospital = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Hospital);
 
-        Game.LocalPlayer.Character.Position = ClosestHospital.LocationPosition;
-        Game.LocalPlayer.Character.Heading = ClosestHospital.Heading;
+        Game.LocalPlayer.Character.Position = Hospital.LocationPosition;
+        Game.LocalPlayer.Character.Heading = Hospital.Heading;
 
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
@@ -61,7 +62,7 @@ public static class Respawning
     }
     public static void ResistArrest()
     {
-        InstantAction.isBusted = false;
+        InstantAction.IsBusted = false;
         InstantAction.BeingArrested = false;
         InstantAction.HandsAreUp = false;
         Police.CurrentPoliceState = Police.PoliceState.DeadlyChase;
@@ -70,23 +71,24 @@ public static class Respawning
         ResetPlayer(false, false);
         Tasking.UntaskAll(true);
     }
-    public static void Surrender()
+    public static void Surrender(Location PoliceStation)
     {
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
 
         int bailMoney = InstantAction.MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
         InstantAction.BeingArrested = false;
-        InstantAction.isBusted = false;
+        InstantAction.IsBusted = false;
         Police.SetWantedLevel(0);
         Police.PlayerIsPersonOfInterest = false;
         Surrendering.RaiseHands();
         ResetPlayer(true, true);
         NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-        Location ClosestPolice = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Police);
+        if(PoliceStation == null)
+            PoliceStation = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Police);
 
-        Game.LocalPlayer.Character.Position = ClosestPolice.LocationPosition;
-        Game.LocalPlayer.Character.Heading = ClosestPolice.Heading;
+        Game.LocalPlayer.Character.Position = PoliceStation.LocationPosition;
+        Game.LocalPlayer.Character.Heading = PoliceStation.Heading;
 
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
@@ -101,8 +103,8 @@ public static class Respawning
     }
     public static void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {
-        InstantAction.isDead = false;
-        InstantAction.isBusted = false;
+        InstantAction.IsDead = false;
+        InstantAction.IsBusted = false;
         InstantAction.BeingArrested = false;
 
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
@@ -124,8 +126,8 @@ public static class Respawning
     {
         try
         {
-            InstantAction.isDead = false;
-            InstantAction.isBusted = false;
+            InstantAction.IsDead = false;
+            InstantAction.IsBusted = false;
             InstantAction.BeingArrested = false;
             Game.LocalPlayer.Character.Health = 100;
             if (InstantAction.DiedInVehicle)

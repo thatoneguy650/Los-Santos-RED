@@ -134,7 +134,7 @@ public class Zone
     public string GameName { get; set; }
     public string TextName { get; set; }
     public string ScannerValue { get; set; }
-    public Agency MainZoneAgency { get; set; }
+    public Agency MainZoneAgency { get; set; } = Agencies.LSPD;
     public List<Agency> SecondaryZoneAgencies { get; set; } = new List<Agency>();
 }
 

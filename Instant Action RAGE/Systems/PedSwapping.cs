@@ -169,8 +169,8 @@ internal static class PedSwapping
             NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
             NativeFunction.Natives.xC0AA53F866B3134D();
             Police.RemoveWantedBlips();
-            InstantAction.isDead = false;
-            InstantAction.isBusted = false;
+            InstantAction.IsDead = false;
+            InstantAction.IsBusted = false;
             Police.CurrentPoliceState = Police.PoliceState.Normal;
             InstantAction.BeingArrested = false;
             TrafficViolations.ResetTrafficViolations();

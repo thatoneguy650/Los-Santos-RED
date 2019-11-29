@@ -65,7 +65,7 @@ public static class UI
         if (Settings.AlwaysShowCash)
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
 
-        if (Settings.TrafficInfoUI && !InstantAction.isBusted && !InstantAction.isDead)
+        if (Settings.TrafficInfoUI && !InstantAction.IsBusted && !InstantAction.IsDead)
         {
             ShowTrafficUI();
         }

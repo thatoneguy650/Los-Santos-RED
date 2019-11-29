@@ -72,7 +72,7 @@ public static class PoliceSpawning
         }
         catch (Exception e)
         {
-            Debugging.WriteToLog("SpawnRandomCop", e.StackTrace);
+            Debugging.WriteToLog("SpawnRandomCop",e.Message + " : " + e.StackTrace);
         }
 
     }
@@ -117,6 +117,8 @@ public static class PoliceSpawning
     }
     public static void SpawnCop(Agency _Agency, Vector3 SpawnLocation)
     {
+        if (SpawnLocation == null)
+            return;
         bool isBikeCop = rnd.Next(1, 11) <= 9; //90% chance Bike Cop
         Ped Cop = SpawnCopPed(_Agency, SpawnLocation, isBikeCop);
         CreatedEntities.Add(Cop);

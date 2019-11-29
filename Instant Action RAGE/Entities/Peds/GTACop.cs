@@ -55,7 +55,6 @@ public class GTACop
     public bool SetTazer { get; set; } = false;
     public bool SetUnarmed { get; set; } = false;
     public bool SetDeadly { get; set; } = false;
-    public bool WasInVehicle { get; set; } = false;
     public bool TaskIsQueued { get; set; } = false;
     public uint GameTimeLastWeaponCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
@@ -66,7 +65,7 @@ public class GTACop
     public bool isInVehicle { get; set; } = false;
     public bool isInHelicopter { get; set; } = false;
     public bool isOnBike { get; set; } = false;
-    public bool InChasingLoop { get; set; } = false;
+  //  public bool InChasingLoop { get; set; } = false;
     public float DistanceToPlayer { get; set; }
     public float DistanceToLastSeen { get; set; }
     public bool WasMarkedNonPersistent { get; set; } = false;

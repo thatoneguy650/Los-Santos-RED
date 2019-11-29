@@ -55,7 +55,7 @@ public static class Surrendering
                 }
             }
 
-            if (PedToArrest == Game.LocalPlayer.Character && !InstantAction.isBusted)
+            if (PedToArrest == Game.LocalPlayer.Character && !InstantAction.IsBusted)
                 return;
 
             if (InstantAction.MaxWantedLastLife < 2)
@@ -67,7 +67,7 @@ public static class Surrendering
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                 GameFiber.Wait(6000);
 
-                if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !InstantAction.isBusted))
+                if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !InstantAction.IsBusted))
                     return;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
             }

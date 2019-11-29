@@ -23,8 +23,8 @@ public static class Locations
     public static Location MissionRowPolice = new Location(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, Location.LocationType.Police, "Mission Row Police Station");
     public static Location LasMesaPolice = new Location(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, Location.LocationType.Police, "La Mesa Police Station");
     public static Location VinewoodPolice = new Location(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f, Location.LocationType.Police, "Vinewood Police Station");
-    public static Location RockfordHillsPolice = new Location(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, Location.LocationType.Police, "Vinewood Police Station");
-    public static Location VespucciPolice = new Location(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, Location.LocationType.Police, "Vinewood Police Station");
+    public static Location RockfordHillsPolice = new Location(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, Location.LocationType.Police, "Rockford Hills Police Station");
+    public static Location VespucciPolice = new Location(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, Location.LocationType.Police, "Vespucci Police Station");
     //Stores
     public static Location LTDGasLIttleSeoul = new Location(new Vector3(-709.68f, -923.198f, 19.0193f), 22.23846f, Location.LocationType.ConvenienceStore, "LTD Gas - Little Seoul");
     public static Location RobsLiquors = new Location(new Vector3(-1226.09f, -896.166f, 12.4057f), 22.23846f, Location.LocationType.ConvenienceStore, "Rob's Liquors");
@@ -59,7 +59,10 @@ public static class Locations
     {
         return LocationsList.Where(x => x.Type == Type).OrderBy(s => Position.DistanceTo2D(s.LocationPosition)).FirstOrDefault();
     }
-    
+    public static List<Location> GetAllLocationsOfType(Location.LocationType Type)
+    {
+        return LocationsList.Where(x => x.Type == Type).ToList();
+    }
 }
 public class Location
 {
@@ -106,6 +109,10 @@ public class Location
 
         NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LocationBlip.Handle, true);
         Police.CreatedBlips.Add(LocationBlip);
+    }
+    public override string ToString()
+    {
+        return Name.ToString();
     }
 }
 

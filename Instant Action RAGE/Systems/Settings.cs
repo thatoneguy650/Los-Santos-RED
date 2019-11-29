@@ -63,7 +63,7 @@ static class Settings
     public static int PedTakeoverRandomMoneyMax = 5000;
     public static bool DispatchAudio = true;
     public static bool DispatchAudioOnlyHighPriority = false;
-    public static int PoliceRecentlySeenTime = 10000;
+    public static int PoliceRecentlySeenTime = 15000;//10000
     public static bool DisableAmbientScanner = true;
     public static bool WantedMusicDisable = true;
     public static bool AlwaysShowHUD = true;

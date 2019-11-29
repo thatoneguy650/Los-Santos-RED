@@ -23,8 +23,8 @@ public static class InstantAction
     private static bool PrevPlayerInVehicle = false;
     private static bool PrevPlayerIsGettingIntoVehicle;
     private static bool IsRunning { get; set; } = true;
-    public static bool isDead { get; set; } = false;
-    public static bool isBusted { get; set; } = false;
+    public static bool IsDead { get; set; } = false;
+    public static bool IsBusted { get; set; } = false;
     public static bool BeingArrested { get; set; } = false;
     public static bool DiedInVehicle { get; set; } = false;
     public static bool PlayerIsConsideredArmed { get; set; } = false;
@@ -72,7 +72,7 @@ public static class InstantAction
         while (Game.IsLoading)
             GameFiber.Yield();
         LoadInteriors();
-
+        Locations.Initialize();
         Police.Initialize();
         LicensePlateChanging.Initialize();
         Settings.Initialize();
@@ -86,7 +86,7 @@ public static class InstantAction
         Smoking.Initialize();
         Tasking.Initialize();
         Agencies.Initialize();
-        Locations.Initialize();
+
         GTAWeapons.Initialize();
         Speed.Initialize();
         WeaponDropping.Initialize();
@@ -94,6 +94,7 @@ public static class InstantAction
         UI.Initialize();
         Debugging.Initialize();
         PlayerLocation.Initialize();
+        TrafficViolations.Initialize();
         MainLoop();
     }
     public static void MainLoop()
@@ -111,8 +112,6 @@ public static class InstantAction
                     StateTick();
                     ControlTick();
                     AudioTick();
-                    Police.Tick();
-                    TrafficViolations.Tick();
                     stopwatch.Stop();
                     if (stopwatch.ElapsedMilliseconds >= 16)
                         Debugging.WriteToLog("InstantActionTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
@@ -155,6 +154,8 @@ public static class InstantAction
         UI.Dispose();
         Debugging.Dispose();
         PlayerLocation.Dispose();
+        Police.Dispose();
+        TrafficViolations.Dispose();
     }
 
     private static void UpdatePlayer()
@@ -162,17 +163,13 @@ public static class InstantAction
         PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
         PlayerWantedLevel = Game.LocalPlayer.WantedLevel;
-        Police.PlayerStarsGreyedOut = NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
         PlayerIsConsideredArmed = Game.LocalPlayer.Character.isConsideredArmed();
-        Police.PlayerIsJacking = Game.LocalPlayer.Character.IsJacking;
 
         if (PrevPlayerIsGettingIntoVehicle != PlayerIsGettingIntoVehicle)
             PlayerIsGettingIntoVehicleChanged();
 
         if (PlayerInVehicle && !IsCurrentVehicleTracked)
             TrackCurrentVehicle();
-
-        Police.CheckRecognition();
 
         if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash != LastWeapon)
             LastWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
@@ -183,7 +180,7 @@ public static class InstantAction
     private static void StateTick()
     {
         //Dead
-        if (Game.LocalPlayer.Character.IsDead && !isDead)
+        if (Game.LocalPlayer.Character.IsDead && !IsDead)
             PlayerDeathEvent();
 
         // Busted
@@ -195,7 +192,7 @@ public static class InstantAction
             Game.LocalPlayer.Character.Tasks.Clear();
         }
 
-        if (BeingArrested && !isBusted)
+        if (BeingArrested && !IsBusted)
             PlayerBustedEvent();
 
         //if (PlayerWantedLevel > PreviousWantedLevel)
@@ -236,7 +233,7 @@ public static class InstantAction
     private static void PlayerBustedEvent()
     {
         DiedInVehicle = PlayerInVehicle; //Game.LocalPlayer.Character.IsInAnyVehicle(false);
-        isBusted = true;
+        IsBusted = true;
         BeingArrested = true;
         Game.LocalPlayer.Character.Tasks.Clear();
         NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);//_START_SCREEN_EFFECT
@@ -254,7 +251,7 @@ public static class InstantAction
     private static void PlayerDeathEvent()
     {
         DiedInVehicle = PlayerInVehicle;//Game.LocalPlayer.Character.IsInAnyVehicle(false);
-        isDead = true;
+        IsDead = true;
         NativeFunction.Natives.x2206BF9A37B7F724("DeathFailOut", 0, 0);//_START_SCREEN_EFFECT
         Game.LocalPlayer.Character.Kill();
         Game.LocalPlayer.Character.Health = 0;
@@ -326,12 +323,11 @@ public static class InstantAction
 
         Debugging.WriteToLog("ValueChecker", String.Format("playerInVehicle Changed to: {0}", playerInVehicle));
     }
-
     private static void ControlTick()
     {
         if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
         {
-            if (!HandsAreUp && !isBusted)
+            if (!HandsAreUp && !IsBusted)
             {
                 SetPedUnarmed(Game.LocalPlayer.Character, false);
                 HandsUpPreviousPoliceState = Police.CurrentPoliceState;
@@ -343,7 +339,7 @@ public static class InstantAction
         }
         else
         {
-            if (HandsAreUp && !isBusted)
+            if (HandsAreUp && !IsBusted)
             {
                 HandsAreUp = false; // You put your hands down
                 Police.CurrentPoliceState = HandsUpPreviousPoliceState;
@@ -361,8 +357,6 @@ public static class InstantAction
         if (Settings.WantedMusicDisable)
             NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
     }
-
-
     public static GTAWeapon GetCurrentWeapon()
     {
         ulong myHash = (ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;

@@ -133,7 +133,6 @@ public static class Tasking
                     if (Cop.DistanceToPlayer > 100f || !Cop.SeenPlayerSince(15000))
                         break;
 
-                    Cop.InChasingLoop = true;
                     if (Cop.CopPed.IsGettingIntoVehicle)
                     {
                         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == Cop.CopPed.VehicleTryingToEnter.Handle)
@@ -214,10 +213,10 @@ public static class Tasking
 
                     }
 
-                    if ((InstantAction.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
+                    if ((InstantAction.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
                         Police.SurrenderBust = true;
 
-                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.isBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
+                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
                         Police.SurrenderBust = true;
 
                     if (InstantAction.PlayerInVehicle && (Cop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f))
@@ -230,7 +229,7 @@ public static class Tasking
                 }
 
                 GameFiber.Yield();
-                if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase || InstantAction.isDead)
+                if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase || InstantAction.IsDead)
                 {
                     GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
                     break;
@@ -251,8 +250,6 @@ public static class Tasking
             if (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
                 Cop.CopPed.CanRagdoll = true;
 
-
-            Cop.InChasingLoop = false;
         }, "Chase");
         Debugging.GameFibers.Add(Cop.TaskFiber);
     }
@@ -301,62 +298,39 @@ public static class Tasking
             Cop.CopPed.BlockPermanentEvents = true;
             Cop.SimpleTaskName = "VehicleChase";
 
-            // Cop.CopPed.Tasks.ChaseWithGroundVehicle(Game.LocalPlayer.Character);
             NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.CopPed, 3, false);
-            // NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.CopPed, 8f);
-            // NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 32, true);
             Cop.CopPed.KeepTasks = true;
 
-            //Main Loop
             while (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
             {
 
                 if (Game.GameTime - TaskTime >= 250)
                 {
-                    //if (!CopPeds.Any(x => x.TaskFiber != null && x.TaskFiber.Name == "Chase"))
-                    //{
-                    //    GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
-                    //    break;
-                    //}
-
                     if (!Cop.CopPed.IsInAnyVehicle(false))
                     {
                         Debugging.WriteToLog("Task Vehicle Chase", string.Format("I got out of my car like a dummy: {0}", Cop.CopPed.Handle));
                         break;
                     }
-
                     if (InstantAction.PlayerInVehicle)
                     {
                         Debugging.WriteToLog("Task Vehicle Chase", string.Format("Player got in a vehicle, letting ai takeover: {0}", Cop.CopPed.Handle));
                         break;
                     }
-
-
                     if (!Cop.RecentlySeenPlayer())
                     {
                         Debugging.WriteToLog("Task Vehicle Chase", string.Format("Lost the player, let AI takeover: {0}", Cop.CopPed.Handle));
                         break;
                     }
-
-
                     Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
                     Vector3 DrivingCoords = World.GetNextPositionOnStreet(PlayerPos);
                     NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Cop.CopPed, 6);
-
-                    //NativeFunction.CallByName<bool>("TASK_VEHICLE_GOTO_NAVMESH", Cop.CopPed, Cop.CopPed.CurrentVehicle, PlayerPos.X, PlayerPos.Y, PlayerPos.Z,10.0f, 156, 3f);
-                    // NativeFunction.CallByName<bool>("TASK_VEHICLE_GOTO_NAVMESH", Cop.CopPed, Cop.CopPed.CurrentVehicle, PlayerPos.X, PlayerPos.Y, PlayerPos.Z, 15.0f, 110, 5f); //Best one so far, but they get out
-                    //NativeFunction.CallByName<bool>("TASK_VEHICLE_GOTO_NAVMESH", Cop.CopPed, Cop.CopPed.CurrentVehicle, PlayerPos.X, PlayerPos.Y, PlayerPos.Z,10.0f, 171, 3f);
-                    //escort?
-                    //NativeFunction.CallByName<bool>("TASK_VEHICLE_GOTO_NAVMESH", Cop.CopPed, Cop.CopPed.CurrentVehicle, PlayerPos.X, PlayerPos.Y + 10f, PlayerPos.Z, 25f, 110, 10f);
                     NativeFunction.CallByName<bool>("TASK_VEHICLE_GOTO_NAVMESH", Cop.CopPed, Cop.CopPed.CurrentVehicle, DrivingCoords.X, DrivingCoords.Y, DrivingCoords.Z, 25f, 110, 10f);
-
-
                     Cop.CopPed.KeepTasks = true;
                     TaskTime = Game.GameTime;
                 }
                 GameFiber.Yield();
-                if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase || Police.CurrentPoliceState == Police.PoliceState.ArrestedWait || InstantAction.isBusted || InstantAction.isDead)
+                if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase || Police.CurrentPoliceState == Police.PoliceState.ArrestedWait || InstantAction.IsBusted || InstantAction.IsDead)
                 {
                     GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
                     break;
@@ -383,10 +357,33 @@ public static class Tasking
         Cop.TaskType = PoliceTask.Task.SimpleInvestigate;
         Cop.CopPed.BlockPermanentEvents = false;
         Cop.SimpleTaskName = "SimpleInvestigate";
-        if (Cop.isInVehicle)
+        if (Cop.isInVehicle && Police.PlayerLastSeenInVehicle)
+        {
             Cop.CopPed.Tasks.CruiseWithVehicle(30f, VehicleDrivingFlags.Emergency);
-        else
+            Debugging.WriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(CruiseWithVehicle): {0}", Cop.CopPed.Handle));
+        }
+        if (Cop.isInVehicle && !Police.PlayerLastSeenInVehicle)
+        {
+            Vehicle CopCar = Cop.CopPed.CurrentVehicle;
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_TEMP_ACTION", 0, CopCar, 27, 8000);     
+                NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, CopCar, 256);
+                NativeFunction.CallByName<bool>("TASK_WANDER_STANDARD", 0, CopCar, 30f, 0);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.CopPed, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+            Debugging.WriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(ExitVehicleWander): {0}", Cop.CopPed.Handle));
+        }
+        else if(!Cop.isInVehicle)
+        {
+            Debugging.WriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(Wander): {0}", Cop.CopPed.Handle));
             Cop.CopPed.Tasks.Wander();
+        }
 
         // Cop.CopPed.KeepTasks = true;
         Debugging.WriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate: {0}", Cop.CopPed.Handle));

@@ -71,6 +71,10 @@ public static class Debugging
         if (Police.PlayerIsPersonOfInterest)
             TextToShow = TextToShow + " + POI";
 
+        if(Police.PlayerLastSeenInVehicle)
+            TextToShow = TextToShow + " + LS:Vehicle";
+        else
+            TextToShow = TextToShow + " + LS:Foot";
 
         UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
 
@@ -185,7 +189,7 @@ public static class Debugging
         }
 
         Game.TimeScale = 1f;
-        InstantAction.isBusted = false;
+        InstantAction.IsBusted = false;
         InstantAction.BeingArrested = false;
         NativeFunction.Natives.xB4EDDC19532BFB85();
 
@@ -221,7 +225,13 @@ public static class Debugging
         //PoliceScanning.RemoveAllCreatedEntities();
 
 
-        Tasking.RetaskAllRandomSpawns();
+        foreach(Location loc in Locations.GetAllLocationsOfType(Location.LocationType.Police))
+        {
+            WriteToLog("", loc.ToString());
+        }
+
+
+        //Tasking.RetaskAllRandomSpawns();
         return;
 
 
