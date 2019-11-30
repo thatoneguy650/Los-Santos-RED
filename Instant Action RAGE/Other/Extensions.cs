@@ -37,9 +37,13 @@ namespace ExtensionsMethods
                 return false;
             }
         }
-
-
-
+        public static bool IsDriver(this Ped myPed)
+        {
+            if (myPed.IsInAnyVehicle(false) && myPed.SeatIndex == -1)
+                return true;
+            else
+                return false;
+        }
         public static bool isPolice(this Ped myPed)
         {
             string ModelName = myPed.Model.Name.ToLower();

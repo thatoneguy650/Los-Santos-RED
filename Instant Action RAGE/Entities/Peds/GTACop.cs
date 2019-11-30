@@ -9,14 +9,6 @@ using System.Threading.Tasks;
 
 public class GTACop
 {
-    static GTACop()
-    {
-        rnd = new Random();
-    }
-    public GTACop()
-    {
-
-    }
     public GTACop(Ped _Cop,bool _canSeePlayer, int _Health,Agency _Agency)
     {
         CopPed = _Cop;
@@ -36,8 +28,6 @@ public class GTACop
         SetAccuracyAndSightRange();
     }
     public int Health { get; set; }
-
-    private static Random rnd;
     public Ped CopPed { get; set; }
     public string SimpleTaskName { get; set; }
     public bool canSeePlayer { get; set; }
@@ -60,12 +50,9 @@ public class GTACop
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
     public uint GameTimeLastLOSCheck { get; set; }
-    public bool isDriveTasked { get; set; } = false;
-    public string SubTaskName { get; set; }
     public bool isInVehicle { get; set; } = false;
     public bool isInHelicopter { get; set; } = false;
     public bool isOnBike { get; set; } = false;
-  //  public bool InChasingLoop { get; set; } = false;
     public float DistanceToPlayer { get; set; }
     public float DistanceToLastSeen { get; set; }
     public bool WasMarkedNonPersistent { get; set; } = false;
@@ -94,7 +81,7 @@ public class GTACop
                 return false;
         }       
     }
-    public uint HasSeenPlayerFor//seconds
+    public uint HasSeenPlayerFor
     {
         get
         {
@@ -111,16 +98,6 @@ public class GTACop
             if (GameTimeLastSpoke == 0)
                 return true;
             else if (Game.GameTime > GameTimeLastSpoke + 15000)
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool IsDriver
-    {
-        get
-        {
-            if (CopPed.IsInAnyVehicle(false) && CopPed.SeatIndex == -1)
                 return true;
             else
                 return false;

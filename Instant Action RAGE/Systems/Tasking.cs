@@ -141,7 +141,6 @@ public static class Tasking
                             NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.CopPed, Game.LocalPlayer.Character, 4f, 20f);
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
-                            Cop.SubTaskName = "Arrest";
                             LocalTaskName = "Arrest";
                             Debugging.WriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest From Carjacking!!!!, {0}", Cop.CopPed.Handle));
                         }
@@ -157,7 +156,6 @@ public static class Tasking
                             NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.CopPed, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 10f);
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
-                            Cop.SubTaskName = "CarJack";
                             LocalTaskName = "CarJack";
                             Debugging.WriteToLog("TaskChasing", "Primary Cop SubTasked with CarJack 2");
                         }
@@ -166,7 +164,6 @@ public static class Tasking
                             NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.CopPed, Game.LocalPlayer.Character, 4f, 20f);
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
-                            Cop.SubTaskName = "Arrest";
                             LocalTaskName = "Arrest";
                             Debugging.WriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest, {0}", Cop.CopPed.Handle));
                         }
@@ -189,7 +186,6 @@ public static class Tasking
                             }
                             TaskTime = Game.GameTime;
                             Cop.CopPed.KeepTasks = true;
-                            Cop.SubTaskName = "Arrest";
                             LocalTaskName = "Arrest";
                         }
                         else if (LocalTaskName != "GotoShooting" && Police.CurrentPoliceState == Police.PoliceState.UnarmedChase && Cop.DistanceToPlayer <= 7f)
@@ -198,7 +194,6 @@ public static class Tasking
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, Game.LocalPlayer.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
-                            Cop.SubTaskName = "GotoShooting";
                             LocalTaskName = "GotoShooting";
                         }
                         else if (LocalTaskName != "Goto" && (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase) && Cop.DistanceToPlayer >= 15) //was 15f
@@ -208,7 +203,6 @@ public static class Tasking
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Goto";
-                            Cop.SubTaskName = "Goto";
                         }
 
                     }

@@ -78,6 +78,11 @@ public static class Debugging
 
         UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
 
+        if (Smoking.CurrentIdleAnimation != null)
+        {
+            string Animation = string.Format("Anim: {0}, Time: {1}, NearMouth: {2}", Smoking.CurrentIdleAnimation.Animation, Smoking.CurrentPuffingAnimationTime, Smoking.CurrentPuffingAnimationNearMouth);
+            UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+        }
 
 
         if (Game.IsKeyDown(Keys.NumPad0))
@@ -624,8 +629,24 @@ public static class Debugging
     {
         try
         {
+            RespawnStopper.IsRunning = false;
+            NativeFunction.CallByName<bool>("REQUEST_SCRIPT", "respawn_controller");
 
-            Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+
+            NativeFunction.CallByName<bool>("REQUEST_SCRIPT", "selector");
+
+
+
+            Game.HandleRespawn();
+            NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
+            NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
+            NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);
+
+
+            GameFiber.Sleep(5000);
+            RespawnStopper.IsRunning = true;
+
+            //Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 
 
 

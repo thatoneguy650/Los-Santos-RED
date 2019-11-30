@@ -119,8 +119,12 @@ public static class PoliceSpawning
     {
         if (SpawnLocation == null)
             return;
+        if (_Agency == null)
+            return;
         bool isBikeCop = rnd.Next(1, 11) <= 9; //90% chance Bike Cop
         Ped Cop = SpawnCopPed(_Agency, SpawnLocation, isBikeCop);
+        if (Cop == null)
+            return;
         CreatedEntities.Add(Cop);
         Vehicle CopCar = SpawnCopCruiser(_Agency, SpawnLocation, isBikeCop);
         CreatedEntities.Add(CopCar);
@@ -163,7 +167,12 @@ public static class PoliceSpawning
     }
     public static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBikeCop)
     {
-        bool isMale = rnd.Next(1, 11) <= 7; //70% chance Male
+        bool isMale = true;
+        if (_Agency == null)
+            return null;
+        if (_Agency.CopModels.Any(x => !x.isMale))
+            isMale = rnd.Next(1, 11) <= 7; //70% chance Male
+
         Agency.ModelInformation MyInfo = _Agency.CopModels.Where(x => x.isMale == isMale).PickRandom();
         Vector3 SafeSpawnLocation = new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 10f);
         Ped Cop = new Ped(MyInfo.ModelName, SafeSpawnLocation, 0f);
