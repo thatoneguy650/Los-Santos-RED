@@ -12,11 +12,11 @@ using System.Windows.Forms;
 internal static class PoliceSpeech
 {
     private static Random rnd;
-    private static List<string> DeadlyChaseSpeech;
-    private static List<string> UnarmedChaseSpeech;
-    private static List<string> CautiousChaseSpeech;
-    private static List<string> ArrestedWaitSpeech;
-    private static List<string> PlayerDeadSpeech;
+    private static List<string> DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
+    private static List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
+    private static List<string> CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
+    private static List<string> ArrestedWaitSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "SURROUNDED" };
+    private static List<string> PlayerDeadSpeech = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE" };
 
     public static bool IsRunning { get; set; } = true;
     static PoliceSpeech()
@@ -25,7 +25,6 @@ internal static class PoliceSpeech
     }
     public static void Initialize()
     {
-        SetupSpeech();
         MainLoop();
     }
     public static void Dispose()
@@ -51,61 +50,49 @@ internal static class PoliceSpeech
             }
         });
     }
-    private static void SetupSpeech()
-    {
-        DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
-        UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
-        CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
-        ArrestedWaitSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL","SURROUNDED" };
-
-        PlayerDeadSpeech = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE" };
-    }
     private static void CheckSpeech()
     {
         try
         {
             foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CanSpeak && x.DistanceToPlayer <= 45f && x.CopPed.Exists() && !x.CopPed.IsDead))
             {
-                //if (rnd.Next(0, 100) <= 10)
-                //    return;
-
                 if (Cop.isTasked)
                 {
                     if (InstantAction.IsBusted && Cop.DistanceToPlayer <= 20f)
                     {
                         Cop.CopPed.PlayAmbientSpeech("ARREST_PLAYER");
-                       // Debugging.WriteToLog("CheckSpeech", "ARREST_PLAYER");
+                       LocalWriteToLog("CheckSpeech", "ARREST_PLAYER");
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase)
                     {
                         string Speech = UnarmedChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                       // Debugging.WriteToLog("CheckSpeech", Speech);
+                        LocalWriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.CautiousChase)
                     {
                         string Speech = CautiousChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                       // Debugging.WriteToLog("CheckSpeech", Speech);
+                        LocalWriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
                     {
                         string Speech = ArrestedWaitSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                       // Debugging.WriteToLog("CheckSpeech", Speech);
+                        LocalWriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                     {
                         string Speech = DeadlyChaseSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        //Debugging.WriteToLog("CheckSpeech", Speech);
+                        LocalWriteToLog("CheckSpeech", Speech);
                     }
                     else //Normal State
                     {
                         if(Cop.DistanceToPlayer <= 4f)
                         {
                             Cop.CopPed.PlayAmbientSpeech("CRIMINAL_WARNING");
-                            //Debugging.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
+                            LocalWriteToLog("CheckSpeech", "CRIMINAL_WARNING");
                         }
                     }
                 }
@@ -115,17 +102,21 @@ internal static class PoliceSpeech
                     {
                         string Speech = PlayerDeadSpeech.PickRandom();
                         Cop.CopPed.PlayAmbientSpeech(Speech);
-                        //Debugging.WriteToLog("CheckSpeech", Speech);
+                        LocalWriteToLog("CheckSpeech", Speech);
                     }
                 }
                 Cop.GameTimeLastSpoke = Game.GameTime - (uint)rnd.Next(500,1000);
-            }
-           
+            }          
         }
         catch (Exception e)
         {
             Game.Console.Print(e.Message);
         }
+    }
+    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
+    {
+        if (Settings.PoliceSpeechLogging)
+            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 
 }

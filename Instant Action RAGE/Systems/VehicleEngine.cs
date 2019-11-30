@@ -82,10 +82,10 @@ internal static class VehicleEngine
 
                         if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))
                         {
-                            Debugging.WriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
+                            LocalWriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
                             TogglingEngine = true;
                             ToggleEngine(true, !EngineRunning);
-                            Debugging.WriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
+                            LocalWriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
                         }
 
                         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -148,18 +148,18 @@ internal static class VehicleEngine
 
     private static void EngineRunningEvent()
     {
-        Debugging.WriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",EngineRunning));
+        LocalWriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",EngineRunning));
         PrevEngineRunning = EngineRunning;
     }
     public static void EnterExitVehicleEvent(bool PlayerInVehicle)
     {
         if(PlayerInVehicle)
         {
-            Debugging.WriteToLog("EnterExitVehicleEvent", "You got into a vehicle");
+            LocalWriteToLog("EnterExitVehicleEvent", "You got into a vehicle");
             if (Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
             {
                 EngineRunning = true;
-                Debugging.WriteToLog("EnterExitVehicleEvent", "The Engine was already on");
+                LocalWriteToLog("EnterExitVehicleEvent", "The Engine was already on");
             }
             else
             {
@@ -169,15 +169,15 @@ internal static class VehicleEngine
                 if(Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
                 {
                     GameTimeStartedHotwiring = Game.GameTime;
-                    Debugging.WriteToLog("EnterExitVehicleEvent", "The Engine was off and Needed Hotwire");
+                    LocalWriteToLog("EnterExitVehicleEvent", "The Engine was off and Needed Hotwire");
                 }
 
-                Debugging.WriteToLog("EnterExitVehicleEvent", "The Engine was off");
+                LocalWriteToLog("EnterExitVehicleEvent", "The Engine was off");
             }
         }
         else
         {
-            Debugging.WriteToLog("EnterExitVehicleEvent", "You got out of a vehicle");
+            LocalWriteToLog("EnterExitVehicleEvent", "You got out of a vehicle");
             if(Game.LocalPlayer.Character.LastVehicle.Exists())
                 Game.LocalPlayer.Character.LastVehicle.IsEngineOn = EngineRunning;
         }
@@ -216,7 +216,7 @@ internal static class VehicleEngine
                     EngineRunning = true;
             }
         }
-        Debugging.WriteToLog("ToggleEngine", "toggled");
+        LocalWriteToLog("ToggleEngine", "toggled");
         TogglingEngine = false;
     }
     private static bool StartEngineAnimation()
@@ -262,7 +262,7 @@ internal static class VehicleEngine
                 NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
             }
         }
-        Debugging.WriteToLog("ToggleEngine", "toggled");
+        LocalWriteToLog("ToggleEngine", "toggled");
         ChangingStation = false;
     }
     private static bool ChangeStationAnimation()
@@ -285,6 +285,11 @@ internal static class VehicleEngine
             GameFiber.Sleep(200);
         }
         return true;
+    }
+    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
+    {
+        if (Settings.VehicleEngineLogging)
+            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }
 

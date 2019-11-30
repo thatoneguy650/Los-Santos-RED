@@ -17,25 +17,16 @@ internal static class Police
     private static int TimeAimedAtPolice = 0;
     private static bool firedWeapon = false;
     private static bool aimedAtPolice = false;
-    private static uint LastBust;
-    private static int ForceSurrenderTime;
-    private static Model CopModel = new Model("s_m_y_cop_01");
+
     private static uint GameTimeInterval;
     private static uint LOSInterval;
     private static uint GameTimeCheckedLOS;
-    private static uint GameTimeCheckedKilled;
     private static uint K9Interval;
-    //private static Model K9Model = new Model("a_c_shepherd");
-    //private static Model LSPDMale = new Model("s_m_y_cop_01");
-    //private static Model LSPDFemale = new Model("s_f_y_cop_01");
-    //private static Model LSSDMale = new Model("s_m_y_sheriff_01");
-    //private static Model LSSDFemale = new Model("s_f_y_sheriff_01");
     private static uint RandomCopInterval;
     private static GTAVehicle TrackedCar;
 
     private static bool CanReportLastSeen;
     private static uint GameTimeLastGreyedOut;
-    private static bool GhostCopFollow;
 
     private static Vector3 PlaceWantedStarted;
     private static Blip LastWantedCenterBlip;
@@ -43,8 +34,7 @@ internal static class Police
 
     private static uint GameTimeWantedStarted;
     private static uint GameTimeLastWantedEnded;
-    private static uint GameTimePoliceStateStart;
-    private static uint GameTimeLastPoliceTick;
+    public static uint GameTimePoliceStateStart;
     private static uint GameTimeLastSetWanted;
     private static uint GameTimeLastStartedJacking = 0;
 
@@ -56,14 +46,11 @@ internal static class Police
     private static bool PrevPlayerKilledPolice = false;
     private static int PrevCopsKilledByPlayer = 0;
     private static bool PrevPlayerStarsGreyedOut;
-    private static bool PrevAnyPoliceRecentlySeenPlayer;
     private static bool PrevAnyCanRecognizePlayer;
-   // private static int PrevWantedLevel = 0;
     private static PoliceState PrevPoliceState = PoliceState.Normal;
 
     public static List<Blip> CreatedBlips = new List<Blip>();
-    public static string TempCurrentPoliceTickRunning = "";
-
+    public static List<Blip> TempBlips = new List<Blip>();
     public static bool AnyPoliceCanSeePlayer { get; set; } = false;
     public static bool AnyPoliceCanRecognizePlayer { get; set; } = false;
     public static bool AnyPoliceCanRecognizePlayerAfterWanted { get; set; } = false;
@@ -83,9 +70,11 @@ internal static class Police
     public static bool PlayerIsPersonOfInterest { get; set; } = false;
     public static bool PlayerIsJacking { get; set; } = false;
     public static bool PlayerLastSeenInVehicle { get; set; } = false;
+    public static float PlayerLastSeenHeading { get; set; } = 0f;
+    public static Vector3 PlayerLastSeenForwardVector { get; set; }
+
     public static bool IsNightTime { get; set; } = false;
-    public static bool SurrenderBust { get; set; } = false;
-    public static Ped GhostCop { get; set; }
+
     public static int PreviousWantedLevel { get; set; }
     public static int ScanningInterval { get; set; } = 5000;
     public static bool PoliceInSearchMode
@@ -143,7 +132,6 @@ internal static class Police
                 return (Game.GameTime - WantedLevelStartTime);
         }
     }
-
     public static bool IsRunning { get; set; } = true;
     static Police()
     {
@@ -159,9 +147,6 @@ internal static class Police
     }
     public static void Initialize()
     {
-        CopModel.LoadAndWait();
-        CopModel.LoadCollisionAndWait();
-
         ScanningInterval = 5000;
         LOSInterval = 750;//500
 
@@ -172,46 +157,54 @@ internal static class Police
         var stopwatch = new Stopwatch();
         GameFiber.StartNew(delegate
         {
-            while (IsRunning)
+            try
             {
-                stopwatch.Start();
+                while (IsRunning)
+                {
+                    stopwatch.Start();
 
-                Tick();//Every Tick
+                    Tick();//Every Tick
 
-                if (Game.GameTime > GameTimeInterval + ScanningInterval)
-                {
-                    PoliceScanning.ScanForPolice();
-                    GameTimeInterval = Game.GameTime;
-                }
-                if (Game.GameTime > GameTimeCheckedLOS + LOSInterval) // was 2000
-                {
-                    UpdateTrackedObjects();
-                    CheckLOS((Game.LocalPlayer.Character.IsInAnyVehicle(false)) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
-                    SetPrimaryPursuer();
-                    GameTimeCheckedLOS = Game.GameTime;
-                }
-                if (stopwatch.ElapsedMilliseconds < 16)//Optional stuff
-                {
-                    if (Settings.SpawnPoliceK9 && 1 == 0 && Game.GameTime > K9Interval + 5555) // was 2000
+                    if (Game.GameTime > GameTimeInterval + ScanningInterval)
                     {
-                        if (Game.LocalPlayer.WantedLevel > 0 && !InstantAction.PlayerInVehicle && PoliceScanning.K9Peds.Count < 3)
-                            PoliceSpawning.CreateK9();
-                        PoliceSpawning.MoveK9s();
-                        K9Interval = Game.GameTime;
+                        PoliceScanning.ScanForPolice();
+                        GameTimeInterval = Game.GameTime;
                     }
-                    if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
+                    if (Game.GameTime > GameTimeCheckedLOS + LOSInterval) // was 2000
                     {
-                        if (Game.LocalPlayer.WantedLevel == 0 && PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
-                            PoliceSpawning.SpawnRandomCop();
-                        PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
-                        RandomCopInterval = Game.GameTime;
+                        UpdateTrackedObjects();
+                        CheckLOS((Game.LocalPlayer.Character.IsInAnyVehicle(false)) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
+                        SetPrimaryPursuer();
+                        GameTimeCheckedLOS = Game.GameTime;
                     }
+                    if (stopwatch.ElapsedMilliseconds < 16)//Optional stuff
+                    {
+                        if (Settings.SpawnPoliceK9 && 1 == 0 && Game.GameTime > K9Interval + 5555) // was 2000
+                        {
+                            if (Game.LocalPlayer.WantedLevel > 0 && !InstantAction.PlayerInVehicle && PoliceScanning.K9Peds.Count < 3)
+                                PoliceSpawning.CreateK9();
+                            PoliceSpawning.MoveK9s();
+                            K9Interval = Game.GameTime;
+                        }
+                        if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
+                        {
+                            if (Game.LocalPlayer.WantedLevel == 0 && PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+                                PoliceSpawning.SpawnRandomCop();
+                            PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
+                            RandomCopInterval = Game.GameTime;
+                        }
+                    }
+                    stopwatch.Stop();
+                    if (stopwatch.ElapsedMilliseconds >= 16)
+                        LocalWriteToLog("PoliceTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
+                    stopwatch.Reset();
+                    GameFiber.Yield();
                 }
-                stopwatch.Stop();
-                if (stopwatch.ElapsedMilliseconds >= 16)
-                    Debugging.WriteToLog("PoliceTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
-                stopwatch.Reset();
-                GameFiber.Yield();
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
 
         });
@@ -226,7 +219,7 @@ internal static class Police
         if (TrackedCar != null && !TrackedCar.VehicleEnt.Exists())
         {
             TrackedCar = null;
-            Debugging.WriteToLog("UpdateTrackedObjects", "Removing abandoned car it doesnt exist");
+            LocalWriteToLog("UpdateTrackedObjects", "Removing abandoned car it doesnt exist");
         }
 
         if (PoliceInSearchMode && !InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.LastVehicle.Exists())
@@ -237,7 +230,7 @@ internal static class Police
                 if(TrackedCar != null && TrackedCar.VehicleEnt.Exists() && TrackedCar.VehicleEnt.Handle != AbandonedCar.VehicleEnt.Handle)
                 {
                     TrackedCar = AbandonedCar;
-                    Debugging.WriteToLog("UpdateTrackedObjects", "Tracking your abandoned car");
+                    LocalWriteToLog("UpdateTrackedObjects", "Tracking your abandoned car");
                 }
             }
         }
@@ -246,7 +239,7 @@ internal static class Police
             if (TrackedCar != null)
             {
                 TrackedCar = null;
-                Debugging.WriteToLog("UpdateTrackedObjects", "Removing tracked car as we arent in need of it");
+                LocalWriteToLog("UpdateTrackedObjects", "Removing tracked car as we arent in need of it");
             }
         }
 
@@ -255,52 +248,19 @@ internal static class Police
             if(PlacePlayerLastSeen != TrackedCar.VehicleEnt.Position && PoliceCanSeeEntity(TrackedCar.VehicleEnt))
             {
                 PlacePlayerLastSeen = TrackedCar.VehicleEnt.Position;
-                Debugging.WriteToLog("UpdateTrackedObjects", "Updated place player last seen as they saw your abandoned vehicle");
+                LocalWriteToLog("UpdateTrackedObjects", "Updated place player last seen as they saw your abandoned vehicle");
             }
         }
 
     }
     private static void Tick()
     {
-        try
-        {
-            UpdatePolice();
-            GetPoliceState();
-            PoliceVehicleTick();
-            CheckPoliceEvents();
-            TrackedVehiclesTick();
-
-            if (Game.GameTime > GameTimeLastPoliceTick + 100)
-            {
-                PoliceStateTick();
-                GameTimeLastPoliceTick = Game.GameTime;
-            }
-
-            WantedLevelTick();
-        }
-        catch (Exception e)
-        {
-            Game.LogTrivial(e.StackTrace);
-        }
+        UpdatePolice();
+        GetPoliceState();
+        CheckPoliceEvents();
+        TrackedVehiclesTick();
+        WantedLevelTick();
     }
-    private static void PoliceStateTick()
-    {
-        if (CurrentPoliceState == PoliceState.Normal && InstantAction.PlayerWantedLevel == 0)//if (CurrentPoliceState == PoliceState.Normal)
-            PoliceTickNormal();
-        else if (PoliceInSearchMode)
-            PoliceTickSearchMode();
-        else if (CurrentPoliceState == PoliceState.UnarmedChase)
-            PoliceTickUnarmedChase();
-        else if (CurrentPoliceState == PoliceState.CautiousChase)
-            PoliceTickCautiousChase();
-        else if (CurrentPoliceState == PoliceState.DeadlyChase)
-            PoliceTickDeadlyChase();
-        else if (CurrentPoliceState == PoliceState.ArrestedWait)
-            PoliceTickArrestedWait();
-        else
-            TempCurrentPoliceTickRunning = "";
-    }
-
     private static void UpdatePolice()
     {
         PlayerStarsGreyedOut = NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
@@ -336,9 +296,9 @@ internal static class Police
                 {
                     PlayerHurtPolice = true;
                     Cop.HurtByPlayer = true;
-                    Debugging.WriteToLog("UpdatePolice", String.Format("Cop {0}, Was hurt by player", Cop.CopPed.Handle));
+                    LocalWriteToLog("UpdatePolice", String.Format("Cop {0}, Was hurt by player", Cop.CopPed.Handle));
                 }
-                Debugging.WriteToLog("UpdatePolice", String.Format("Cop {0}, Health Changed from {1} to {2}", Cop.CopPed.Handle, Cop.Health, NewHealth));
+                LocalWriteToLog("UpdatePolice", String.Format("Cop {0}, Health Changed from {1} to {2}", Cop.CopPed.Handle, Cop.Health, NewHealth));
                 Cop.Health = NewHealth;
             }
             Cop.isInVehicle = Cop.CopPed.IsInAnyVehicle(false);
@@ -460,6 +420,8 @@ internal static class Police
                 Cop.GameTimeLastSeenPlayer = Game.GameTime;
                 Cop.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 PlayerLastSeenInVehicle = InstantAction.PlayerInVehicle;
+                PlayerLastSeenHeading = Game.LocalPlayer.Character.Heading;
+                PlayerLastSeenForwardVector = Game.LocalPlayer.Character.ForwardVector;
                 SawPlayerThisCheck = true;
             }
             else
@@ -481,6 +443,8 @@ internal static class Police
                 Cop.GameTimeLastSeenPlayer = Game.GameTime;
                 Cop.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 PlayerLastSeenInVehicle = InstantAction.PlayerInVehicle;
+                PlayerLastSeenHeading = Game.LocalPlayer.Character.Heading;
+                PlayerLastSeenForwardVector = Game.LocalPlayer.Character.ForwardVector;
                 break;//Only care if one of the people saw it as we wont be tasking them 
             }
             else
@@ -573,13 +537,6 @@ internal static class Police
             InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)IssuedHeavy.Hash, MyVariation);
         }
     }
-    //private static Vector3 UpdatePlacePlayerLastSeen()
-    //{
-    //    if (!PoliceScanning.CopPeds.Any(x => x.GameTimeLastSeenPlayer > 0))
-    //        return new Vector3(0f, 0f, 0f);
-    //    else
-    //        return PoliceScanning.CopPeds.Where(x => x.GameTimeLastSeenPlayer > 0).OrderByDescending(x => x.GameTimeLastSeenPlayer).FirstOrDefault().PositionLastSeenPlayer;
-    //}
     private static void GetPoliceState()
     {
         if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
@@ -599,361 +556,103 @@ internal static class Police
         }
         else if (InstantAction.PlayerWantedLevel >= 4 || PlayerHurtPolice || PlayerKilledPolice)
             CurrentPoliceState = PoliceState.DeadlyChase;
-
-        if (AnyPoliceCanRecognizePlayer && InstantAction.PlayerIsConsideredArmed && InstantAction.PlayerWantedLevel < 3 && !InstantAction.PlayerInVehicle)
+        
+        if (InstantAction.PlayerWantedLevel < 2)
         {
-            ulong myHash = (ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
-            GTAWeapon MatchedWeapon = GTAWeapons.GetWeaponFromHash(myHash);//InstantAction.Weapons.Where(x => x.Hash == myHash).FirstOrDefault();
-            bool ChangedWanted = false;
-            if (MatchedWeapon != null)
+            if (!firedWeapon && (Game.LocalPlayer.Character.IsShooting || PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
             {
-                if (MatchedWeapon.WeaponLevel >= 3 && InstantAction.PlayerWantedLevel < 3)
+                SetWantedLevel(2,"Fired a Weapon");
+                firedWeapon = true;
+            }
+
+            if (InstantAction.PlayerWantedLevel < 2 && LicensePlateChanging.PlayerChangingPlate && AnyPoliceCanSeePlayer)
+            {
+                SetWantedLevel(2,"Police saw you changing plates");
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousActivity, 3, false));
+            }
+
+            if (InstantAction.PlayerWantedLevel < 2 && CarStealing.PlayerBreakingIntoCar && AnyPoliceCanSeePlayer)
+            {
+                SetWantedLevel(2,"Police saw you breaking into a car");
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportGrandTheftAuto, 3, false));
+            }
+
+            if (InstantAction.PlayerWantedLevel > 0 && (InstantAction.PlayerWantedLevel <= 3 || CurrentPoliceState != PoliceState.DeadlyChase) && Game.LocalPlayer.Character.DistanceTo2D(new Vector3(1696f, 2566f, 0f)) <= 150f)
+            {
+                SetWantedLevel(2,"You went too close to the prison with a wanted level");
+                CurrentPoliceState = PoliceState.DeadlyChase;
+            }
+        }
+
+        if (InstantAction.PlayerWantedLevel < 3)
+        {
+            if (AnyPoliceCanRecognizePlayer && InstantAction.PlayerIsConsideredArmed && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !InstantAction.PlayerInVehicle)
+            {
+                ulong myHash = (ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
+                GTAWeapon MatchedWeapon = GTAWeapons.GetWeaponFromHash(myHash);//InstantAction.Weapons.Where(x => x.Hash == myHash).FirstOrDefault();
+                bool ChangedWanted = false;
+                if (MatchedWeapon != null)
                 {
-                    ChangedWanted = true;
-                    SetWantedLevel(3);
+                    if (MatchedWeapon.WeaponLevel >= 3 && InstantAction.PlayerWantedLevel < 3)
+                    {
+                        ChangedWanted = true;
+                        SetWantedLevel(3,"Cops saw you with a level 3 or higher gun");
+                    }
+                    else if (InstantAction.PlayerWantedLevel < 2)
+                    {
+                        ChangedWanted = true;
+                        SetWantedLevel(2, "Cops saw you with a gun");
+                    }
                 }
                 else if (InstantAction.PlayerWantedLevel < 2)
                 {
                     ChangedWanted = true;
-                    SetWantedLevel(2);
-                    Debugging.WriteToLog("GetPoliceState", "Cops Saw you with gun");
+                    SetWantedLevel(2, "Cops saw you with a gun");
+                }
+
+                if (ChangedWanted)
+                {
+                    DispatchAudio.DispatchQueueItem CarryingWeapon = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportCarryingWeapon, 3, false);
+                    CarryingWeapon.WeaponToReport = MatchedWeapon;
+                    DispatchAudio.AddDispatchToQueue(CarryingWeapon);
                 }
             }
-            else if (InstantAction.PlayerWantedLevel < 2)
+            if (!aimedAtPolice && InstantAction.PlayerIsConsideredArmed && Game.LocalPlayer.IsFreeAiming && AnyPoliceCanSeePlayer && PoliceScanning.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.CopPed)))
             {
-                ChangedWanted = true;
-                SetWantedLevel(2);
-                Debugging.WriteToLog("GetPoliceState", "Cops Saw you with gun");
+                TimeAimedAtPolice++;
             }
-
-            if (ChangedWanted)
+            else
             {
-                DispatchAudio.DispatchQueueItem CarryingWeapon = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportCarryingWeapon, 3, false);
-                CarryingWeapon.WeaponToReport = MatchedWeapon;
-                DispatchAudio.AddDispatchToQueue(CarryingWeapon);
+                TimeAimedAtPolice = 0;
+            }
+            if (TimeAimedAtPolice >= 100)
+            {
+                SetWantedLevel(3, "You aimed at the police too long");
+                aimedAtPolice = true;
             }
         }
 
-        if (!aimedAtPolice && InstantAction.PlayerIsConsideredArmed && Game.LocalPlayer.IsFreeAiming && AnyPoliceCanSeePlayer && PoliceScanning.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.CopPed)))
-        {
-            TimeAimedAtPolice++;
-        }
-        else
-        {
-            TimeAimedAtPolice = 0;
-        }
-
-        if (TimeAimedAtPolice >= 100 && InstantAction.PlayerWantedLevel < 3)
-        {
-            SetWantedLevel(3);
-            aimedAtPolice = true;
-        }
-
-        if (!firedWeapon && (Game.LocalPlayer.Character.IsShooting || PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
-        {
-            SetWantedLevel(2);
-            firedWeapon = true;
-            Debugging.WriteToLog("GetPoliceState", "fired gun");
-        }
-
-        if (InstantAction.PlayerWantedLevel < 2 && LicensePlateChanging.PlayerChangingPlate && AnyPoliceCanSeePlayer)
-        {
-            SetWantedLevel(2);
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousActivity, 3, false));
-            Debugging.WriteToLog("GetPoliceState", "Changing plate");
-        }
-
-        if (InstantAction.PlayerWantedLevel < 2 && CarStealing.PlayerBreakingIntoCar && AnyPoliceCanSeePlayer)
-        {
-            SetWantedLevel(2);
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportGrandTheftAuto, 3, false));
-            Debugging.WriteToLog("GetPoliceState", "breaking into car");
-        }
-
-        if (InstantAction.PlayerWantedLevel > 0 && (InstantAction.PlayerWantedLevel <= 3 || CurrentPoliceState != PoliceState.DeadlyChase) && Game.LocalPlayer.Character.DistanceTo2D(new Vector3(1696f, 2566f, 0f)) <= 150f)
-        {
-            SetWantedLevel(2);
-            CurrentPoliceState = PoliceState.DeadlyChase;
-            Debugging.WriteToLog("GetPoliceState", "WEnt to close to the prison");
-        }
-
-        //if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanRecognizePlayerAfterWanted && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000)
-        //{
-        //    Game.LocalPlayer.WantedLevel = 3;
-        //    AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectSpotted, 3, false));
-        //    Debugging.WriteToLog("Cops Reacquired after losing them", "");
-        //}
-        //if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= 250f)
-        //{
-        //    Game.LocalPlayer.WantedLevel = 3;
-        //    AddDispatchToQueue(new DispatchQueueItem(ReportDispatch.ReportSuspectSpotted, 3, false));
-        //    Debugging.WriteToLog("Cops Reacquired after losing them in the same area", "");
-        //}
-
-
-        if (PlayerHasBeenNotWantedFor >= 120000)
+        if (InstantAction.PlayerWantedLevel == 0 && PlayerHasBeenNotWantedFor >= 120000)
         {
             PlayerIsPersonOfInterest = false;
             if (LastWantedCenterBlip.Exists())
                 LastWantedCenterBlip.Delete();
         }
+
+        if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanRecognizePlayerAfterWanted && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000)
+        {
+            SetWantedLevel(3, "Cops Reacquired after losing them");
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3, false));
+            LocalWriteToLog("Cops Reacquired after losing them", "");
+        }
+        if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= 250f)
+        {
+            SetWantedLevel(3, "Cops Reacquired after losing them in the same area");
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3, false));
+        }
+
     }
-    private static void PoliceTickNormal()
-    {
-        TempCurrentPoliceTickRunning = "Normal";
-        foreach (GTACop Cop in PoliceScanning.CopPeds)
-        {
-            if (Cop.isTasked && !Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.RandomSpawnIdle)
-            {
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
-                Debugging.WriteToLog("InstantActionTick", string.Format("Untask Queued {0}", Cop.CopPed.Handle));
-            }
-            else if (Cop.WasRandomSpawn && !Cop.isTasked && !Cop.TaskIsQueued)
-            {
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.RandomSpawnIdle));
-                Debugging.WriteToLog("InstantActionTick", string.Format("RandomSpawnIdle Queued {0}", Cop.CopPed.Handle));
-            }
-        }
-        if (Game.GameTime - GameTimePoliceStateStart >= 8000)
-        {
-            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.SetDeadly || x.SetTazer || x.SetUnarmed))
-            {
-                ResetCopWeapons(Cop);//just in case they get stuck
-            }
-        }
-    }
-    private static void PoliceTickUnarmedChase()
-    {
-        TempCurrentPoliceTickRunning = "Unarmed Chase";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked))
-        {
-            if (Cop.CopPed.IsOnBike || Cop.CopPed.IsInHelicopter)
-                SetUnarmed(Cop);
-            else
-                SetCopTazer(Cop);
 
-            if (Cop.DistanceToPlayer <= 55f)
-            {
-                int TotalFootChaseTasked = PoliceScanning.CopPeds.Where(x => (x.isTasked || x.TaskIsQueued) && x.TaskType == PoliceTask.Task.Chase).Count();
-                int TotalVehicleChaseTasked = PoliceScanning.CopPeds.Where(x => (x.isTasked || x.TaskIsQueued) && x.TaskType == PoliceTask.Task.VehicleChase).Count();
-
-                if (!InstantAction.IsBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked <= 4 && !Cop.CopPed.IsInAnyVehicle(false) && Cop.DistanceToPlayer <= 55f && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed <= 5f))
-                {
-                    Cop.TaskIsQueued = true;
-                    Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Chase));
-                }
-                else if (!InstantAction.IsBusted && Cop.RecentlySeenPlayer() && !Cop.TaskIsQueued && TotalFootChaseTasked > 0 && TotalVehicleChaseTasked <= 5 && Cop.isInVehicle && !Cop.isInHelicopter && Cop.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
-                {
-                    Cop.TaskIsQueued = true;
-                    Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.VehicleChase));
-                }
-                if ((InstantAction.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !PlayerWasJustJacking)
-                    SurrenderBust = true;
-            }
-        }
-        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 4.0f) && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
-            SurrenderBust = true;
-
-        if (SurrenderBust && !IsBustTimeOut())
-            SurrenderBustEvent();
-
-        StopSearchMode();
-    }
-    private static void PoliceTickArrestedWait()
-    {
-        TempCurrentPoliceTickRunning = "Arrested Wait";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked)) // Exist/Dead Check
-        {
-            bool InVehicle = Cop.CopPed.IsInAnyVehicle(false);
-            if (InVehicle)
-            {
-                SetUnarmed(Cop);
-            }
-            else
-            {
-                if (!Cop.TaskIsQueued && PoliceScanning.CopPeds.Where(x => x.isTasked || x.TaskIsQueued).Count() <= 3 && Cop.DistanceToPlayer <= 45f)
-                {
-                    Cop.TaskIsQueued = true;
-                    Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Arrest));
-                }
-                else if (!Cop.TaskIsQueued && (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing || Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted) && (Cop.RecentlySeenPlayer() || Cop.DistanceToPlayer <= 65f))
-                {
-                    Cop.TaskIsQueued = true;
-                    Cop.GameTimeLastTask = Game.GameTime;
-                    Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest));
-                }
-                else if (!Cop.TaskIsQueued && Game.GameTime - Cop.GameTimeLastTask > 3500 && Cop.RecentlySeenPlayer() && Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress && Cop.DistanceToPlayer > 45f)
-                {
-                    Cop.TaskIsQueued = true;
-                    Cop.GameTimeLastTask = Game.GameTime;
-                    Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest)); //retask the arrest
-                }
-            }
-        }
-        SetWantedLevel(InstantAction.MaxWantedLastLife);
-
-        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 4.0f) && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
-            SurrenderBust = true;
-
-        if (SurrenderBust && !IsBustTimeOut())
-            SurrenderBustEvent();
-
-        StopSearchMode();
-    }
-    private static void PoliceTickCautiousChase()
-    {
-        TempCurrentPoliceTickRunning = "Cautious Chase";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked && !x.isInVehicle && !x.isInHelicopter))
-        {
-            SetCopDeadly(Cop);
-            if (!Cop.TaskIsQueued && PoliceScanning.CopPeds.Where(x => x.isTasked || x.TaskIsQueued).Count() <= 4 && Cop.DistanceToPlayer <= 45f)
-            {
-                Cop.TaskIsQueued = true;
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Arrest));
-            }
-            else if (!Cop.TaskIsQueued && Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask && (Cop.RecentlySeenPlayer() || Cop.DistanceToPlayer <= 65f))
-            {
-                Cop.TaskIsQueued = true;
-                Cop.GameTimeLastTask = Game.GameTime;
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest));
-            }
-            else if (!Cop.TaskIsQueued && Game.GameTime - Cop.GameTimeLastTask > 3500 && Cop.RecentlySeenPlayer() && Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress && Cop.DistanceToPlayer > 35f)
-            {
-                Cop.TaskIsQueued = true;
-                Cop.GameTimeLastTask = Game.GameTime;
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest));
-            }
-
-        }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isTasked && x.SimpleTaskName != ""))
-        {
-            if (!Cop.TaskIsQueued && Game.GameTime - Cop.GameTimeLastTask > 20000 && Cop.RecentlySeenPlayer() && Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress && Cop.DistanceToPlayer > 25f)
-            {
-                Cop.TaskIsQueued = true;
-                Cop.GameTimeLastTask = Game.GameTime;
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest));
-            }
-            else if (!Cop.TaskIsQueued && Game.GameTime - Cop.GameTimeLastTask > 20000 && !Cop.RecentlySeenPlayer() && Cop.DistanceToPlayer > 35f)
-            {
-                Cop.TaskIsQueued = true;
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
-            }
-
-        }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked && (x.isInHelicopter || x.isOnBike)))
-        {
-            SetUnarmed(Cop);
-        }
-
-        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 8f) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !InstantAction.IsBusted && !PlayerWasJustJacking)
-            ForceSurrenderTime++;
-        else
-            ForceSurrenderTime = 0;
-
-        if (ForceSurrenderTime >= 500)
-            SurrenderBust = true;
-
-        if (SurrenderBust && !IsBustTimeOut())
-            SurrenderBustEvent();
-
-        StopSearchMode();
-    }
-    private static void PoliceTickDeadlyChase()
-    {
-        TempCurrentPoliceTickRunning = "Deadly Chase";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isInVehicle))
-        {
-            SetCopDeadly(Cop);
-            if (!InstantAction.HandsAreUp && !InstantAction.BeingArrested && !Cop.TaskIsQueued && Cop.isTasked)
-            {
-                Cop.TaskIsQueued = true;
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
-            }
-        }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked && x.isInHelicopter))
-        {
-            if (!InstantAction.HandsAreUp && Game.LocalPlayer.WantedLevel >= 4)
-                SetCopDeadly(Cop);
-            else
-                SetUnarmed(Cop);
-        }
-        if (Settings.IssuePoliceHeavyWeapons)
-        {
-            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isInVehicle && x.IssuedHeavyWeapon == null))
-            {
-                IssueCopHeavyWeapon(Cop);
-                break;
-            }
-        }
-
-        if (CopsKilledByPlayer >= Settings.PoliceKilledSurrenderLimit && InstantAction.PlayerWantedLevel < 4)
-        {
-            SetWantedLevel(4);
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportWeaponsFree, 2, false));
-        }
-
-        if (SurrenderBust && !IsBustTimeOut())
-            SurrenderBustEvent();
-    }
-    private static void PoliceTickSearchMode()
-    {
-        TempCurrentPoliceTickRunning = "Search Mode";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.DistanceToLastSeen <= 350f || x.DistanceToPlayer <= 250f))//.Where(x => !x.isTasked))
-        {
-            if (Cop.isInVehicle)
-            {
-                SetUnarmed(Cop);
-            }
-            if (!Cop.AtWantedCenterDuringSearchMode && !Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.GoToWantedCenter && Cop.DistanceToLastSeen >= 35f && Cop.CopPed.IsDriver())//((InVehicle && Cop.CopPed.CurrentVehicle.Driver == Cop.CopPed) || !InVehicle))
-            {
-                Cop.TaskIsQueued = true;
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.GoToWantedCenter));
-            }
-            else if (!Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.SimpleInvestigate && Cop.DistanceToLastSeen < 35f)
-            {
-                Cop.AtWantedCenterDuringSearchMode = true;
-                Cop.TaskIsQueued = true;
-                Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleInvestigate));
-            }
-        }
-
-        if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 10000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000)
-        {
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLastSeen, 10, false));
-            CanReportLastSeen = false;
-        }
-    }
-    private static void PoliceVehicleTick()
-    {
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isInVehicle && !x.isInHelicopter))
-        {
-            if (CurrentPoliceState == PoliceState.DeadlyChase)
-            {
-                NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 8, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 16, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 512, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 262144, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.CopPed, 8f);
-            }
-            else
-            {
-                NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.CopPed, 8f);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 32, true);
-            }
-
-            if (PlayerLocation.PlayerIsOffroad && Cop.DistanceToPlayer <= 200f)
-            {
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4194304, true);
-            }
-            else
-            {
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4194304, false);
-            }
-        }
-    }
     private static void CheckPoliceEvents()
     {
         if (PrevPlayerIsJacking != PlayerIsJacking)
@@ -1000,7 +699,7 @@ internal static class Police
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportStolenVehicle, 10, false, true, StolenCar));
             }
         }
-        if (InstantAction.PlayerInVehicle)
+        if (InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
             Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
             GTAVehicle CurrTrackedVehicle = InstantAction.TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
@@ -1011,17 +710,15 @@ internal static class Police
 
                 if (InstantAction.PlayerWantedLevel < 2 && CurrTrackedVehicle.WasReportedStolen && CurrTrackedVehicle.IsStolen && CurrTrackedVehicle.MatchesOriginalDescription)
                 {
-                    SetWantedLevel(2);
+                    SetWantedLevel(2,"Car was reported stolen and it matches the original description (formerly First)");
                     DispatchAudio.DispatchQueueItem SpottedStolen = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSpottedStolenCar, 10, false, true, CurrTrackedVehicle);
                     SpottedStolen.Speed = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
                     DispatchAudio.AddDispatchToQueue(SpottedStolen);
-                    Debugging.WriteToLog("TrackedVehiclesTick", "First");
                 }
                 else if (InstantAction.PlayerWantedLevel < 2 && CurrTrackedVehicle.CarPlate.IsWanted && !CurrTrackedVehicle.IsStolen && CurrTrackedVehicle.ColorMatchesDescription)
                 {
-                    SetWantedLevel(2);
+                    SetWantedLevel(2,"Car plate is wanted and color matches original (formerly Second)");
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10, false, true, CurrTrackedVehicle));
-                    Debugging.WriteToLog("TrackedVehiclesTick", "Second");
                 }
             }
 
@@ -1029,7 +726,7 @@ internal static class Police
             {
                 CurrTrackedVehicle.CarPlate.IsWanted = false;
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLost, 10, false, true));
-                Menus.UpdateLists();
+                //Menus.CreateMainMenu();
             }
         }
     }
@@ -1055,13 +752,13 @@ internal static class Police
             {
                 Game.LocalPlayer.WantedLevel++;
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportIncreasedWanted, 3, false));
-                Debugging.WriteToLog("WantedLevelStartTime", "Wanted Level Increased Over Time");
+                LocalWriteToLog("WantedLevelStartTime", "Wanted Level Increased Over Time");
             }
 
             //if (Settings.SpawnNewsChopper && Game.GameTime - WantedLevelStartTime > 180000 && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 4 && !PoliceScanning.Reporters.Any())
             //{
             //    PoliceSpawning.SpawnNewsChopper();
-            //    Debugging.WriteToLog("WantedLevelTick", "Been at this wanted for a while, wanted news chopper spawned (if they dont already exist)");
+            //    LocalWriteToLog("WantedLevelTick", "Been at this wanted for a while, wanted news chopper spawned (if they dont already exist)");
             //}
 
             //if (AnyPoliceRecentlySeenPlayer && !PlayerStarsGreyedOut)
@@ -1077,140 +774,7 @@ internal static class Police
             //}
         }
     }
-    public static void SetUnarmed(GTACop Cop)
-    {
-        if (!Cop.CopPed.Exists() || (Cop.SetUnarmed && !Cop.NeedsWeaponCheck))
-            return;
-        if (Settings.OverridePoliceAccuracy)
-            Cop.CopPed.Accuracy = Settings.PoliceGeneralAccuracy;
-        NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.CopPed, 0);
-        if (!(Cop.CopPed.Inventory.EquippedWeapon == null))
-        {
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.CopPed, (uint)2725352035, true); //Unequip weapon so you don't get shot
-            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, false);
-        }
-        Cop.SetTazer = false;
-        Cop.SetUnarmed = true;
-        Cop.SetDeadly = false;
-        Cop.GameTimeLastWeaponCheck = Game.GameTime;
-    }
-    public static void ResetCopWeapons(GTACop Cop)
-    {
-        if (!Cop.CopPed.Exists() || (!Cop.SetDeadly && !Cop.SetTazer && !Cop.SetUnarmed && !Cop.NeedsWeaponCheck))
-            return;
-        if (Settings.OverridePoliceAccuracy)
-            Cop.CopPed.Accuracy = Settings.PoliceGeneralAccuracy;
-        NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.CopPed, 30);
-        if (!Cop.CopPed.Inventory.Weapons.Contains(Cop.IssuedPistol.Name))
-            Cop.CopPed.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, false);
-        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, true);
-        Cop.SetTazer = false;
-        Cop.SetUnarmed = false;
-        Cop.SetDeadly = false;
-        Cop.GameTimeLastWeaponCheck = Game.GameTime;
-    }
-    public static void SetCopDeadly(GTACop Cop)
-    {
-        if (!Cop.CopPed.Exists() || (Cop.SetDeadly && !Cop.NeedsWeaponCheck))
-            return;
-        if (Settings.OverridePoliceAccuracy)
-            Cop.CopPed.Accuracy = Settings.PoliceGeneralAccuracy;
-        NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.CopPed, 30);
-        if (!Cop.CopPed.Inventory.Weapons.Contains(Cop.IssuedPistol.Name))
-            Cop.CopPed.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, true);
 
-        if ((Cop.CopPed.Inventory.EquippedWeapon == null || Cop.CopPed.Inventory.EquippedWeapon.Hash == WeaponHash.StunGun) && Game.LocalPlayer.WantedLevel >= 0)
-            Cop.CopPed.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, true);
-
-        if (Settings.AllowPoliceWeaponVariations)
-            InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)Cop.IssuedPistol.Hash, Cop.PistolVariation);
-        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, true);
-        Cop.SetTazer = false;
-        Cop.SetUnarmed = false;
-        Cop.SetDeadly = true;
-        Cop.GameTimeLastWeaponCheck = Game.GameTime;
-    }
-    public static void SetCopTazer(GTACop Cop)
-    {
-        if (!Cop.CopPed.Exists() || (Cop.SetTazer && !Cop.NeedsWeaponCheck))
-            return;
-
-        if (Settings.OverridePoliceAccuracy)
-            Cop.CopPed.Accuracy = Settings.PoliceTazerAccuracy;
-        NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.CopPed, 100);
-        if (!Cop.CopPed.Inventory.Weapons.Contains(WeaponHash.StunGun))
-        {
-            Cop.CopPed.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, true);
-        }
-        else if (Cop.CopPed.Inventory.EquippedWeapon != WeaponHash.StunGun)
-        {
-            Cop.CopPed.Inventory.EquippedWeapon = WeaponHash.StunGun;
-        }
-        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, false);
-        Cop.SetTazer = true;
-        Cop.SetUnarmed = false;
-        Cop.SetDeadly = false;
-        Cop.GameTimeLastWeaponCheck = Game.GameTime;
-    }
-    private static void StopSearchMode()
-    {
-        if (InstantAction.PlayerInVehicle)
-            return;
-        if (!GhostCop.Exists())
-        {
-            CreateGhostCop();
-        }
-        if (GhostCopFollow && GhostCop != null)
-        {
-            Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 1f));
-            Vector3 PlacedPosition = Vector3.Zero;
-            bool FoundPlace = false;
-            unsafe
-            {
-                FoundPlace = NativeFunction.CallByName<bool>("GET_SAFE_COORD_FOR_PED", DesiredPosition.X, DesiredPosition.Y, DesiredPosition.Z, false, &PlacedPosition, 16);
-            }
-
-            if (FoundPlace)
-                GhostCop.Position = PlacedPosition;
-            else
-                GhostCop.Position = DesiredPosition;
-
-            Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
-            GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-        }
-        if (AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
-        {
-            GhostCopFollow = true;
-        }
-        else
-        {
-            if (GhostCop != null)
-                GhostCop.Position = new Vector3(0f, 0f, 0f);
-            GhostCopFollow = false;
-        }
-    }
-    private static void CreateGhostCop()
-    {
-        GhostCop = new Ped(CopModel, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), Game.LocalPlayer.Character.Heading);
-        GhostCop.BlockPermanentEvents = false;
-        GhostCop.IsPersistent = true;
-        GhostCop.IsCollisionEnabled = false;
-        GhostCop.IsVisible = false;
-        Blip myBlip = GhostCop.GetAttachedBlip();
-        if (myBlip != null)
-            myBlip.Delete();
-        GhostCop.VisionRange = 100f;
-        GhostCop.HearingRange = 100f;
-        GhostCop.CanRagdoll = false;
-        const ulong SetPedMute = 0x7A73D05A607734C7;
-        NativeFunction.CallByHash<uint>(SetPedMute, GhostCop);
-        NativeFunction.CallByName<bool>("STOP_PED_SPEAKING", GhostCop, true);
-        NativeFunction.CallByName<uint>("SET_PED_CONFIG_FLAG", GhostCop, 69, true);
-        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, (uint)2725352035, true); //Unequip weapon so you don't get shot
-        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
-        NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", GhostCop, 0f);
-        GhostCopFollow = true;
-    }
     public static void ResetPoliceStats()
     {
         CopsKilledByPlayer = 0;
@@ -1226,13 +790,13 @@ internal static class Police
         firedWeapon = false;
         DispatchAudio.ResetReportedItems();
     }
-    public static void SetWantedLevel(int WantedLevel)
+    public static void SetWantedLevel(int WantedLevel,string Reason)
     {
         GameTimeLastSetWanted = Game.GameTime;
         if (Game.LocalPlayer.WantedLevel != WantedLevel)
         {
             Game.LocalPlayer.WantedLevel = WantedLevel;
-            Debugging.WriteToLog("SetWantedLevel", string.Format("Manually set to: {0}", WantedLevel));
+            LocalWriteToLog("SetWantedLevel", string.Format("Manually set to: {0}: {1}", WantedLevel, Reason));
         }
     }
     public static void CheckRecognition()//needs some optimization
@@ -1297,6 +861,7 @@ internal static class Police
         if (LastWantedCenterBlip.Exists())
             LastWantedCenterBlip.Delete();
     }
+
     private static void WantedLevelChanged()
     {
         if (Game.LocalPlayer.WantedLevel == 0)//Just Removed
@@ -1314,11 +879,17 @@ internal static class Police
             DispatchAudio.ResetReportedItems();
             GameTimeLastWantedEnded = Game.GameTime;
 
-            if (CurrentWantedCenterBlip.Exists())
-                CurrentWantedCenterBlip.Delete();
 
             Tasking.UntaskAll(false);
             Tasking.RetaskAllRandomSpawns();
+
+
+            foreach(Blip myBlip in TempBlips)
+            {
+                if (myBlip.Exists())
+                    myBlip.Delete();
+            }
+            AddUpdateCurrentWantedBlip(Vector3.Zero);
         }
         else
         {
@@ -1328,8 +899,7 @@ internal static class Police
         {
             if (Game.LocalPlayer.WantedLevel == 1 && !RecentlySetWanted && !AnyPoliceRecentlySeenPlayer && !World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Any(x => x.IsAlive))
             {
-                Debugging.WriteToLog("ValueChecker", String.Format("FAKE WantedLevel Changed to: {0}, changing it back", Game.LocalPlayer.WantedLevel));
-                SetWantedLevel(0);
+                SetWantedLevel(0,"Reset a fake wanted level as there is nobody within 25 meters and no police have recently seen you");
                 if (LastWantedCenterBlip.Exists())
                     LastWantedCenterBlip.Delete();
                 return;
@@ -1349,22 +919,22 @@ internal static class Police
                 VehicleEngine.WantedLevelTune = true;
         }
         WantedLevelStartTime = Game.GameTime;
-        Debugging.WriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}", Game.LocalPlayer.WantedLevel));
+        LocalWriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}", Game.LocalPlayer.WantedLevel));
         PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
     }
     private static void CopsKilledChanged()
     {
-        Debugging.WriteToLog("ValueChecker", string.Format("CopsKilledByPlayer Changed to: {0}", CopsKilledByPlayer));
+        LocalWriteToLog("ValueChecker", string.Format("CopsKilledByPlayer Changed to: {0}", CopsKilledByPlayer));
         PrevCopsKilledByPlayer = CopsKilledByPlayer;
     }
     private static void CiviliansKilledChanged()
     {
-        Debugging.WriteToLog("ValueChecker", String.Format("CiviliansKilledChanged Changed to: {0}", CiviliansKilledByPlayer));
+        LocalWriteToLog("ValueChecker", String.Format("CiviliansKilledChanged Changed to: {0}", CiviliansKilledByPlayer));
         PrevCiviliansKilledByPlayer = CiviliansKilledByPlayer;
     }
     private static void PlayerHurtPoliceChanged()
     {
-        Debugging.WriteToLog("ValueChecker", String.Format("PlayerHurtPolice Changed to: {0}", PlayerHurtPolice));
+        LocalWriteToLog("ValueChecker", String.Format("PlayerHurtPolice Changed to: {0}", PlayerHurtPolice));
         if (PlayerHurtPolice)
         {
             //DispatchAudioSystem.ReportAssualtOnOfficer();
@@ -1375,7 +945,7 @@ internal static class Police
     }
     private static void PlayerKilledPoliceChanged()
     {
-        Debugging.WriteToLog("ValueChecker", String.Format("PlayerKilledPolice Changed to: {0}", PlayerKilledPolice));
+        LocalWriteToLog("ValueChecker", String.Format("PlayerKilledPolice Changed to: {0}", PlayerKilledPolice));
         if (PlayerKilledPolice)
         {
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportOfficerDown, 1, true));
@@ -1384,26 +954,13 @@ internal static class Police
     }
     private static void FiredWeaponChanged()
     {
-        Debugging.WriteToLog("ValueChecker", String.Format("firedWeapon Changed to: {0}", firedWeapon));
+        LocalWriteToLog("ValueChecker", String.Format("firedWeapon Changed to: {0}", firedWeapon));
         if (firedWeapon)
         {
             //DispatchAudioSystem.ReportShotsFired();
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportShotsFired, 2, true));
         }
         PrevfiredWeapon = firedWeapon;
-    }
-    private static void SurrenderBustEvent()
-    {
-        //return;
-        //if (!NativeFunction.Natives.x36AD3E690DA5ACEB<bool>("PeyoteIn"))//_GET_SCREEN_EFFECT_IS_ACTIVE
-        //    NativeFunction.Natives.x068E835A1D0DC0E3("PeyoteIn", 0, 0);//_STOP_SCREEN_EFFECT
-        InstantAction.BeingArrested = true;
-        CurrentPoliceState = PoliceState.ArrestedWait;
-        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
-        InstantAction.HandsAreUp = false;
-        SurrenderBust = false;
-        LastBust = Game.GameTime;
-        Debugging.WriteToLog("SurrenderBust", "SurrenderBust Executed");
     }
     private static void AimedAtPoliceChanged()
     {
@@ -1415,7 +972,7 @@ internal static class Police
     }
     private static void PlayerStarsGreyedOutChanged()
     {
-        Debugging.WriteToLog("ValueChecker", String.Format("PlayerStarsGreyedOut Changed to: {0}", PlayerStarsGreyedOut));
+        LocalWriteToLog("ValueChecker", String.Format("PlayerStarsGreyedOut Changed to: {0}", PlayerStarsGreyedOut));
         if (PlayerStarsGreyedOut)
         {
             CanReportLastSeen = true;
@@ -1431,24 +988,19 @@ internal static class Police
                     Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
                 }
             }
-            //PoliceScanning.CopPeds.ForEach(x => x.AtWantedCenterDuringSearchMode = false);
-            //Tasking.UntaskAll(true);
             CanReportLastSeen = false;
         }
         PrevPlayerStarsGreyedOut = PlayerStarsGreyedOut;
     }
     private static void PoliceStateChanged()
     {
-        Debugging.WriteToLog("ValueChecker", String.Format("PoliceState Changed to: {0}", CurrentPoliceState));
-        Debugging.WriteToLog("ValueChecker", String.Format("PreviousPoliceState Changed to: {0}", PrevPoliceState));
+        LocalWriteToLog("ValueChecker", String.Format("PoliceState Changed to: {0}", CurrentPoliceState));
+        LocalWriteToLog("ValueChecker", String.Format("PreviousPoliceState Changed to: {0}", PrevPoliceState));
         LastPoliceState = PrevPoliceState;
         if (CurrentPoliceState == PoliceState.Normal && !InstantAction.IsDead)
         {
             ResetPoliceStats();
-            PoliceSpawning.DeleteNewsTeam();
-            //PoliceScanning.RetaskAllRandomSpawns();
         }
-
         if (CurrentPoliceState == PoliceState.DeadlyChase)
         {
             if (PrevPoliceState != PoliceState.ArrestedWait)
@@ -1462,7 +1014,7 @@ internal static class Police
     private static void PlayerJackingChanged(bool isJacking)
     {
         PlayerIsJacking = isJacking;
-        Debugging.WriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to: {0}", PlayerIsJacking));
+        LocalWriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to: {0}", PlayerIsJacking));
         if (PlayerIsJacking)
         {
             GameTimeLastStartedJacking = Game.GameTime;
@@ -1519,12 +1071,11 @@ internal static class Police
         if (CurrentWantedCenterBlip.Exists())
             CurrentWantedCenterBlip.Delete();
     }
-    private static bool IsBustTimeOut()
+    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
     {
-        if (Game.GameTime - LastBust >= 10000)
-            return false;
-        else
-            return true;
+        if (Settings.PoliceLogging)
+            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
+
 }
 

@@ -76,19 +76,41 @@ internal static class Menus
 
     public static void ShowDeathMenu()
     {
+        if (Settings.UndieLimit == 0)
+        {
+            menuDeathUndie.Enabled = true;
+        }
+        else if (InstantAction.TimesDied < Settings.UndieLimit)
+        {
+            menuDeathUndie.Enabled = true;
+        }
+        else
+        {
+            menuDeathUndie.Enabled = false;
+        }
         UpdateClosestHospitalIndex();
+        mainMenu.Visible = false;
+        debugMenu.Visible = false;
+        bustedMenu.Visible = false;
+        optionsMenu.Visible = false;
+        actionsMenu.Visible = false;
+
         deathMenu.Visible = true;
     }
     public static void ShowBustedMenu()
     {
         UpdateClosestPoliceStationIndex();
+        mainMenu.Visible = false;
+        deathMenu.Visible = false;
+        debugMenu.Visible = false;
+        optionsMenu.Visible = false;
+        actionsMenu.Visible = false;
+
         bustedMenu.Visible = true;
     }
     public static bool IsRunning { get; set; } = true;
     public static void Intitialize()
     {
-        //Game.FrameRender += ProcessLoop;
-        //MenusProcessFiber = new GameFiber(ProcessLoop);
         menuPool = new MenuPool();
         mainMenu = new UIMenu("Instant Action", "Select an Option");
         menuPool.Add(mainMenu);
@@ -100,8 +122,6 @@ internal static class Menus
         menuPool.Add(bustedMenu);
 
         CreateMainMenu();
-
-
 
         menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
         menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
@@ -210,9 +230,8 @@ internal static class Menus
         deathMenu.AddItem(menuDeathTakeoverRandomPed);
 
         menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
-        //menuBustedBribe = new UIMenuListItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.",new List<dynamic> { 250, 500, 1000, 1250, 1750, 2000, 3500 } );
         menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
-        menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));//new UIMenuItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.");
+        menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));
         menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
         menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
@@ -221,14 +240,17 @@ internal static class Menus
         bustedMenu.AddItem(menuBustedSurrender);
         bustedMenu.AddItem(menuBustedTakeoverRandomPed);
 
-        mainMenu.OnItemSelect += OnItemSelect;
+        mainMenu.OnItemSelect += MainMenuSelect;
         mainMenu.OnListChange += OnListChange;
         mainMenu.OnCheckboxChange += OnCheckboxChange;
-        deathMenu.OnItemSelect += OnItemSelect;
+
+        deathMenu.OnItemSelect += DeathMenuSelect;
         deathMenu.OnListChange += OnListChange;
-        bustedMenu.OnItemSelect += OnItemSelect;
+
+        bustedMenu.OnItemSelect += BustedMenuSelect;
         bustedMenu.OnListChange += OnListChange;
-        debugMenu.OnItemSelect += OnItemSelect;
+
+        debugMenu.OnItemSelect += DebugMenuSelect;
         debugMenu.OnListChange += OnListChange;
         debugMenu.OnCheckboxChange += OnCheckboxChange;
 
@@ -239,7 +261,23 @@ internal static class Menus
     {
         IsRunning = false;
     }
-
+    private static void CreateMainMenu()
+    {
+        mainMenu.Clear();
+        menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
+        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", LicensePlateChanging.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
+        menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
+        menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
+       
+        mainMenu.AddItem(menuMainTakeoverRandomPed);
+        if (!InstantAction.PlayerInVehicle)
+        {
+            mainMenu.AddItem(menuMainChangeLicensePlate);
+            mainMenu.AddItem(menuMainRemoveLicensePlate);
+        }
+        CreateOptionsMenu();
+        CreateActionsMenu();
+    }
     private static void CreateOptionsMenu()
     {
         optionsMenu = menuPool.AddSubMenu(mainMenu, "Options");
@@ -254,11 +292,11 @@ internal static class Menus
             }
             if (fi.FieldType == typeof(int) || fi.FieldType == typeof(string) || fi.FieldType == typeof(float))
             {
-                UIMenuItem MySetting = new UIMenuItem(string.Format("{0}: {1}",fi.Name, fi.GetValue(null)));
+                UIMenuItem MySetting = new UIMenuItem(string.Format("{0}: {1}", fi.Name, fi.GetValue(null)));
                 optionsMenu.AddItem(MySetting);
             }
         }
-        optionsMenu.OnItemSelect += OnItemSelect;
+        optionsMenu.OnItemSelect += OptionsMenuSelect;
         optionsMenu.OnListChange += OnListChange;
         optionsMenu.OnCheckboxChange += OnCheckboxChange;
         optionsMenu.RefreshIndex();
@@ -267,8 +305,6 @@ internal static class Menus
     {
         actionsMenu = menuPool.AddSubMenu(mainMenu, "Actions");
         menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
-
-        
 
         if (Smoking.CurrentAttachedPosition == Smoking.CigarettePosition.Mouth)
             SmokingOptionsList = new List<string> { "Start", "Stop" };
@@ -279,46 +315,18 @@ internal static class Menus
 
         menuActionSmoking = new UIMenuListItem("Smoking", "Start smoking.", SmokingOptionsList);
 
-        //UIMenuItem ReloadSettings = new UIMenuItem("Reload Settings", "Reload settings from XML");
         actionsMenu.AddItem(menuMainSuicide);
         actionsMenu.AddItem(menuActionSmoking);
 
-        actionsMenu.OnItemSelect += OnItemSelect;
+        actionsMenu.OnItemSelect += ActionsMenuSelect;
         actionsMenu.OnListChange += OnListChange;
         actionsMenu.OnCheckboxChange += OnCheckboxChange;
         actionsMenu.RefreshIndex();
     }
-    public static void CreateMainMenu()
-    {
-        mainMenu.Clear();
-        // menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
-        menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", LicensePlateChanging.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
-        menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
-        menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
-
-    // menuMainStartSmoking = new UIMenuItem("Start Smoking", "Starts smoking");
-    //menuMainStopSmoking = new UIMenuItem("Stop Smoking", "Stops smoking");
-
-       
-        mainMenu.AddItem(menuMainTakeoverRandomPed);
-        //mainMenu.AddItem(menuMainSuicide);
-        if (!InstantAction.PlayerInVehicle)
-        {
-            mainMenu.AddItem(menuMainChangeLicensePlate);
-            mainMenu.AddItem(menuMainRemoveLicensePlate);
-            //mainMenu.AddItem(menuActionSmoking);
-            //mainMenu.AddItem(menuMainStopSmoking);
-            //mainMenu.AddItem(menuMainChangeHelmet); //doesnt work fully so far, and only on certain peds
-        }
-        CreateOptionsMenu();
-        CreateActionsMenu();
-    }
-    public static void UpdateLists()
+    public static void ShowMainMenu()
     {         
         CreateMainMenu();
-        
-        menuDeathHospitalRespawn.Index = Locations.GetAllLocationsOfType(Location.LocationType.Hospital).IndexOf(Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Hospital));
+        mainMenu.Visible = true;
     }
     private static void UpdateClosestHospitalIndex()
     {
@@ -388,180 +396,162 @@ internal static class Menus
                 RandomWeaponCategory = list.Index;
         }
     }
-    public static void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private static void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (sender == mainMenu)
+        if (selectedItem == menuMainTakeoverRandomPed)
         {
-            if (selectedItem == menuMainTakeoverRandomPed)
-            {
-                if (TakeoverRadius == -1f)
-                    PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
-                else
-                    PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
-            }
-            else if (selectedItem == menuMainSuicide)
-            {
-                Surrendering.CommitSuicide(Game.LocalPlayer.Character);
-            }
-            else if (selectedItem == menuMainChangeLicensePlate)
-            {
-                LicensePlateChanging.ChangeNearestLicensePlate();
-            }
-            else if (selectedItem == menuMainRemoveLicensePlate)
-            {
-                LicensePlateChanging.RemoveNearestLicensePlate();
-            }
-            else if (selectedItem == menuMainChangeHelmet)
-            {
-                PedSwapping.AddRemovePlayerHelmet();
-            }
-            else if (selectedItem == menuMainReloadSettings)
-            {
-                Settings.ReadSettings();
-            }
-            //else if (selectedItem == menuMainStartSmoking)
-            //{
-            //    Smoking.Start();
-            //}
-            //else if (selectedItem == menuMainStopSmoking)
-            //{
-            //    Smoking.StopWithAnimation();
-            //}
-            mainMenu.Visible = false;
+            if (TakeoverRadius == -1f)
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
+            else
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
         }
-        else if (sender == bustedMenu)
+        else if (selectedItem == menuMainSuicide)
         {
-            if (selectedItem == menuBustedResistArrest)
-            {
-                Respawning.ResistArrest();
-            }
-            else if (selectedItem == menuBustedBribe)
-            {
-                int BribeAmount;
-                if (int.TryParse(GetKeyboardInput(), out BribeAmount))
-                {
-                    Respawning.BribePolice(BribeAmount);
-                }
-            }
-            if (selectedItem == menuBustedSurrender)
-            {
-                Respawning.Surrender(CurrentSelectedSurrenderLocation);
-            }
-            else if (selectedItem == menuBustedTakeoverRandomPed)
-            {
-                if (TakeoverRadius == -1f)
-                    PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
-                else
-                    PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
-            }
-            bustedMenu.Visible = false;
+            Surrendering.CommitSuicide(Game.LocalPlayer.Character);
         }
-        else if (sender == deathMenu)
+        else if (selectedItem == menuMainChangeLicensePlate)
         {
-            if (selectedItem == menuDeathUndie)
-            {
-                Respawning.RespawnInPlace(true);
-            }
-            //else if (selectedItem == menuDeathHospitalRespawn)
-            //{
-            //    Respawning.RespawnAtHospital();
-            //}
-            if (selectedItem == menuDeathHospitalRespawn)
-            {
-                Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
-            }
-            else if (selectedItem == menuDeathTakeoverRandomPed)
-            {
-                if (TakeoverRadius == -1f)
-                    PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
-                else
-                    PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
-            }
-            deathMenu.Visible = false;
+            LicensePlateChanging.ChangeNearestLicensePlate();
         }
-        else if (sender == debugMenu)
+        else if (selectedItem == menuMainRemoveLicensePlate)
         {
-            if (selectedItem == menuDebugKillPlayer)
+            LicensePlateChanging.RemoveNearestLicensePlate();
+        }
+        else if (selectedItem == menuMainChangeHelmet)
+        {
+            PedSwapping.AddRemovePlayerHelmet();
+        }
+        else if (selectedItem == menuMainReloadSettings)
+        {
+            Settings.ReadSettings();
+        }
+        mainMenu.Visible = false;
+    }
+    private static void BustedMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (selectedItem == menuBustedResistArrest)
+        {
+            Respawning.ResistArrest();
+        }
+        else if (selectedItem == menuBustedBribe)
+        {
+            int BribeAmount;
+            if (int.TryParse(GetKeyboardInput(), out BribeAmount))
             {
-                Game.LocalPlayer.Character.Kill();
+                Respawning.BribePolice(BribeAmount);
             }
-            if (selectedItem == menuDebugRandomWeapon)
-            {
-                GTAWeapon myGun = GTAWeapons.GetRandomWeapon((GTAWeapon.WeaponCategory)RandomWeaponCategory);
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
-                if (myGun.PlayerVariations.Any())
-                    InstantAction.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
-            }
-            if (selectedItem == menuDebugGiveMoney)
-            {
-                Game.LocalPlayer.Character.GiveCash(5000, Settings.MainCharacterToAlias);
-            }
-            if (selectedItem == menuDebugScreenEffect)
-            {
-                NativeFunction.Natives.xB4EDDC19532BFB85();
-            }
-            if (selectedItem == menuDebugHealthAndArmor)
-            {
-                Game.LocalPlayer.Character.Health = 100;
-                Game.LocalPlayer.Character.Armor = 100;
-            }
+        }
+        if (selectedItem == menuBustedSurrender)
+        {
+            Respawning.Surrender(CurrentSelectedSurrenderLocation);
+        }
+        else if (selectedItem == menuBustedTakeoverRandomPed)
+        {
+            if (TakeoverRadius == -1f)
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
+            else
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
+        }
+        bustedMenu.Visible = false;
+    }
+    private static void DeathMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (selectedItem == menuDeathUndie)
+        {
+            Respawning.UnDie();
+        }
+        if (selectedItem == menuDeathHospitalRespawn)
+        {
+            Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
+        }
+        else if (selectedItem == menuDeathTakeoverRandomPed)
+        {
+            if (TakeoverRadius == -1f)
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
+            else
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
+        }
+        deathMenu.Visible = false;
+    }
+    private static void OptionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        string mySettingName = selectedItem.Text.Split(':')[0];
+        FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
+        FieldInfo MySetting = MyFields.Where(x => x.Name == mySettingName).FirstOrDefault();
 
-
-            debugMenu.Visible = false;
-        }
-        else if (sender == optionsMenu)
+        string Value = GetKeyboardInput();
+        if (MySetting.FieldType == typeof(float))
         {
-            string mySettingName = selectedItem.Text.Split(':')[0];
-            FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
-            FieldInfo MySetting = MyFields.Where(x => x.Name == mySettingName).FirstOrDefault();
-
-            string Value = GetKeyboardInput();
-            if (MySetting.FieldType == typeof(float))
+            float myFloat;
+            if (float.TryParse(Value, out myFloat))
             {
-                float myFloat;
-                if (float.TryParse(Value, out myFloat))
-                {
-                    MySetting.SetValue(null, myFloat);
-                    selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
-                    Settings.WriteSettings();
-                }
-            }
-            else if (MySetting.FieldType == typeof(int))
-            {
-                int myInt;
-                if (int.TryParse(Value, out myInt))
-                {
-                    MySetting.SetValue(null, myInt);
-                    selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
-                    Settings.WriteSettings();
-                }
-            }
-            else if (MySetting.FieldType == typeof(string))
-            {
-                MySetting.SetValue(null, Value);
+                MySetting.SetValue(null, myFloat);
                 selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
                 Settings.WriteSettings();
             }
-
         }
-        else if (sender == actionsMenu)
+        else if (MySetting.FieldType == typeof(int))
         {
-            if (selectedItem == menuMainSuicide)
+            int myInt;
+            if (int.TryParse(Value, out myInt))
             {
-                Surrendering.CommitSuicide(Game.LocalPlayer.Character);
-            }
-            if (selectedItem == menuActionSmoking)
-            {
-                if (SmokingOptionsList[index-1].ToString() == "Start")
-                {
-                    Smoking.Start();
-                }
-                else
-                {
-                    Smoking.StopWithAnimation();
-                }
+                MySetting.SetValue(null, myInt);
+                selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+                Settings.WriteSettings();
             }
         }
+        else if (MySetting.FieldType == typeof(string))
+        {
+            MySetting.SetValue(null, Value);
+            selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+            Settings.WriteSettings();
+        }
+    }
+    private static void ActionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (selectedItem == menuMainSuicide)
+        {
+            Surrendering.CommitSuicide(Game.LocalPlayer.Character);
+        }
+        if (selectedItem == menuActionSmoking)
+        {
+            if (SmokingOptionsList[index].ToString() == "Start")
+            {
+                Smoking.Start();
+            }
+            else
+            {
+                Smoking.StopWithAnimation();
+            }
+        }
+    }
+    private static void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (selectedItem == menuDebugKillPlayer)
+        {
+            Game.LocalPlayer.Character.Kill();
+        }
+        if (selectedItem == menuDebugRandomWeapon)
+        {
+            GTAWeapon myGun = GTAWeapons.GetRandomWeapon((GTAWeapon.WeaponCategory)RandomWeaponCategory);
+            Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+            if (myGun.PlayerVariations.Any())
+                InstantAction.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
+        }
+        if (selectedItem == menuDebugGiveMoney)
+        {
+            Game.LocalPlayer.Character.GiveCash(5000, Settings.MainCharacterToAlias);
+        }
+        if (selectedItem == menuDebugScreenEffect)
+        {
+            NativeFunction.Natives.xB4EDDC19532BFB85();
+        }
+        if (selectedItem == menuDebugHealthAndArmor)
+        {
+            Game.LocalPlayer.Character.Health = 100;
+            Game.LocalPlayer.Character.Armor = 100;
+        }
+        debugMenu.Visible = false;
     }
     public static void ProcessLoop()
     {
@@ -571,53 +561,44 @@ internal static class Menus
             {
                 while (IsRunning)
                 {
-                    if (Game.IsKeyDown(Keys.F10)) // Our menu on/off switch.
+                    if (Game.IsKeyDown(Settings.MenuKey)) // Our menu on/off switch.
                     {
                         if (InstantAction.IsDead)
                         {
-                            UpdateClosestHospitalIndex();
-                            bustedMenu.Visible = false;
-                            mainMenu.Visible = false;
-                            deathMenu.Visible = !deathMenu.Visible;
+                            if (!deathMenu.Visible)
+                                ShowDeathMenu();
+                            else
+                                deathMenu.Visible = false;
                         }
                         else if (InstantAction.IsBusted)
                         {
-                            UpdateClosestPoliceStationIndex();
-                            deathMenu.Visible = false;
-                            mainMenu.Visible = false;
-                            bustedMenu.Visible = !bustedMenu.Visible;
+                            if (!bustedMenu.Visible)
+                                ShowBustedMenu();
+                            else
+                                bustedMenu.Visible = false;
                         }
                         else if (optionsMenu.Visible)
                         {
-
+                            optionsMenu.Visible = !optionsMenu.Visible;
+                        }
+                        else if (actionsMenu.Visible)
+                        {
+                            actionsMenu.Visible = !actionsMenu.Visible;
                         }
                         else
                         {
-                            UpdateLists();
-                            bustedMenu.Visible = false;
-                            deathMenu.Visible = false;
-                            mainMenu.Visible = !mainMenu.Visible;
+                            if (!mainMenu.Visible)
+                                ShowMainMenu();
+                            else
+                                mainMenu.Visible = false;
                         }
                     }
                     else if (Game.IsKeyDown(Keys.F11)) // Our menu on/off switch.
                     {
                         debugMenu.Visible = !debugMenu.Visible;
                     }
-                    menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse. 
-
-                    if (Settings.UndieLimit == 0)
-                    {
-                        menuDeathUndie.Enabled = true;
-                    }
-                    else if (InstantAction.TimesDied < Settings.UndieLimit)
-                    {
-                        menuDeathUndie.Enabled = true;
-                    }
-                    else
-                    {
-                        menuDeathUndie.Enabled = false;
-                    }
-                     GameFiber.Yield();
+                    menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse.      
+                    GameFiber.Yield();
                 }
             }
             catch (Exception e)

@@ -72,7 +72,7 @@ public static class PoliceSpawning
         }
         catch (Exception e)
         {
-            Debugging.WriteToLog("SpawnRandomCop",e.Message + " : " + e.StackTrace);
+            LocalWriteToLog("SpawnRandomCop",e.Message + " : " + e.StackTrace);
         }
 
     }
@@ -87,7 +87,7 @@ public static class PoliceSpawning
                     Cop.CopPed.CurrentVehicle.Delete();
                 Cop.CopPed.Delete();
                 Cop.WasMarkedNonPersistent = false;
-                Debugging.WriteToLog("SpawnCop", string.Format("Cop Deleted: Handled {0}", Cop.CopPed.Handle));
+                LocalWriteToLog("SpawnCop", string.Format("Cop Deleted: Handled {0}", Cop.CopPed.Handle));
             }
             else if (Cop.WasMarkedNonPersistent && Cop.DistanceToPlayer >= 1750f)//500f
             {
@@ -95,7 +95,7 @@ public static class PoliceSpawning
                     Cop.CopPed.CurrentVehicle.IsPersistent = false;
                 Cop.CopPed.IsPersistent = false;
                 Cop.WasMarkedNonPersistent = false;
-                Debugging.WriteToLog("SpawnCop", string.Format("CopMarkedNonPersistant: Handled {0}", Cop.CopPed.Handle));
+                LocalWriteToLog("SpawnCop", string.Format("CopMarkedNonPersistant: Handled {0}", Cop.CopPed.Handle));
                 break;
             }
         }
@@ -111,7 +111,7 @@ public static class PoliceSpawning
                 Cop.CopPed.IsPersistent = false;
                 Cop.WasMarkedNonPersistent = false;
                 break;
-                // Debugging.WriteToLog("PoliceScanningTick", "Removed Random Spawn Cop");
+                // LocalWriteToLog("PoliceScanningTick", "Removed Random Spawn Cop");
             }
         }
     }
@@ -163,7 +163,7 @@ public static class PoliceSpawning
 
         PoliceScanning.CopPeds.Add(MyNewCop);
 
-        Debugging.WriteToLog("SpawnCop", string.Format("CopSpawned: Handled {0},Agency{1},AddedPartner{2}", Cop.Handle, _Agency.Initials, AddPartner));
+        LocalWriteToLog("SpawnCop", string.Format("CopSpawned: Handled {0},Agency{1},AddedPartner{2}", Cop.Handle, _Agency.Initials, AddPartner));
     }
     public static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBikeCop)
     {
@@ -282,12 +282,12 @@ public static class PoliceSpawning
                 //PutK9InCar(DoggoCop, ClosestDriver);
                 PoliceScanning.K9Peds.Add(DoggoCop);
                 //TaskK9(DoggoCop);
-                Debugging.WriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
+                LocalWriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
             }
         }
         catch (Exception e)
         {
-            Debugging.WriteToLog("CreateK9", e.Message);
+            LocalWriteToLog("CreateK9", e.Message);
         }
 
     }
@@ -299,7 +299,7 @@ public static class PoliceSpawning
             DoggoCop.CopPed.WarpIntoVehicle(Cop.CopPed.CurrentVehicle, 1);
         else
             DoggoCop.CopPed.WarpIntoVehicle(Cop.CopPed.CurrentVehicle, 2);
-        Debugging.WriteToLog("PutK9InCar", String.Format("K9 {0}, put in Car", DoggoCop.CopPed.Handle));
+        LocalWriteToLog("PutK9InCar", String.Format("K9 {0}, put in Car", DoggoCop.CopPed.Handle));
     }
     public static void MoveK9s()
     {
@@ -321,7 +321,7 @@ public static class PoliceSpawning
         Cop.TaskFiber =
         GameFiber.StartNew(delegate
         {
-            //Debugging.WriteToLog("Task K9 Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
+            //LocalWriteToLog("Task K9 Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
             uint TaskTime = Game.GameTime;
             string LocalTaskName = "GoTo";
 
@@ -330,7 +330,7 @@ public static class PoliceSpawning
                 GameFiber.Sleep(2000);
 
 
-            Debugging.WriteToLog("Task K9 Chasing", string.Format("Near Player Chase: {0}", Cop.CopPed.Handle));
+            LocalWriteToLog("Task K9 Chasing", string.Format("Near Player Chase: {0}", Cop.CopPed.Handle));
 
             while (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
             {
@@ -349,14 +349,14 @@ public static class PoliceSpawning
                         //Cop.CopPed.Heading = Game.LocalPlayer.Character.Heading;
                         TaskTime = Game.GameTime;
                         LocalTaskName = "Exit";
-                        Debugging.WriteToLog("TaskK9Chasing", "Cop SubTasked with Exit");
+                        LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Exit");
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait && LocalTaskName != "Arrest")
                     {
                         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
                         TaskTime = Game.GameTime;
                         LocalTaskName = "Arrest";
-                        Debugging.WriteToLog("TaskK9Chasing", "Cop SubTasked with Arresting");
+                        LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Arresting");
                     }
                     else if ((Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase) && LocalTaskName != "GotoFighting" && _locrangeTo <= 5f) //was 10f
                     {
@@ -366,7 +366,7 @@ public static class PoliceSpawning
                         TaskTime = Game.GameTime;
                         LocalTaskName = "GotoFighting";
                         //GameFiber.Sleep(25000);
-                        Debugging.WriteToLog("TaskK9Chasing", "Cop SubTasked with Fighting");
+                        LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Fighting");
                     }
                     else if ((Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase) && LocalTaskName != "Goto" && _locrangeTo >= 45f) //was 15f
                     {
@@ -374,7 +374,7 @@ public static class PoliceSpawning
                         Cop.CopPed.KeepTasks = true;
                         TaskTime = Game.GameTime;
                         LocalTaskName = "Goto";
-                        Debugging.WriteToLog("TaskK9Chasing", "Cop SubTasked with GoTo");
+                        LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with GoTo");
                     }
 
                     if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
@@ -385,7 +385,7 @@ public static class PoliceSpawning
                 }
                 GameFiber.Yield();
             }
-            Debugging.WriteToLog("Task K9 Chasing", string.Format("Loop End: {0}", Cop.CopPed.Handle));
+            LocalWriteToLog("Task K9 Chasing", string.Format("Loop End: {0}", Cop.CopPed.Handle));
             Cop.TaskFiber = null;
 
             if (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
@@ -398,31 +398,36 @@ public static class PoliceSpawning
         }, "K9");
         Debugging.GameFibers.Add(Cop.TaskFiber);
     }
-    //News Spawning
-    public static void SpawnNewsChopper()
+    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
     {
-
-        Ped NewsPilot = new Ped("s_m_m_pilot_01", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 400f)), 0f);
-        CreatedEntities.Add(NewsPilot);
-        Ped CameraMan = new Ped("ig_beverly", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 410f)), 0f);
-        CreatedEntities.Add(CameraMan);
-        Ped Assistant = new Ped("s_m_y_grip_01", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 420f)), 0f);
-        CreatedEntities.Add(Assistant);
-        NewsChopper = new Vehicle("maverick", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 500f)), NewsPilot.Heading);
-        CreatedEntities.Add(NewsChopper);
-        NewsPilot.WarpIntoVehicle(NewsChopper, -1);
-        CameraMan.WarpIntoVehicle(NewsChopper, 1);
-        Assistant.WarpIntoVehicle(NewsChopper, 2);
-        NewsPilot.BlockPermanentEvents = true;
-        CameraMan.BlockPermanentEvents = true;
-        Assistant.BlockPermanentEvents = true;
-        NativeFunction.CallByName<bool>("TASK_HELI_CHASE", NewsPilot, Game.LocalPlayer.Character, 25f, 25f, 40f);
-        Reporters.Add(new GTANewsReporter(NewsPilot, false, NewsPilot.Health));
-        Reporters.Add(new GTANewsReporter(CameraMan, false, CameraMan.Health));
-        Reporters.Add(new GTANewsReporter(Assistant, false, Assistant.Health));
-        NewsPilot.KeepTasks = true;
-        Debugging.WriteToLog("SpawnNewsChopper", "News Chopper Spawned");
+        if (Settings.PoliceSpawningLogging)
+            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
+    //News Spawning
+    //public static void SpawnNewsChopper()
+    //{
+
+    //    Ped NewsPilot = new Ped("s_m_m_pilot_01", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 400f)), 0f);
+    //    CreatedEntities.Add(NewsPilot);
+    //    Ped CameraMan = new Ped("ig_beverly", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 410f)), 0f);
+    //    CreatedEntities.Add(CameraMan);
+    //    Ped Assistant = new Ped("s_m_y_grip_01", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 420f)), 0f);
+    //    CreatedEntities.Add(Assistant);
+    //    NewsChopper = new Vehicle("maverick", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 500f)), NewsPilot.Heading);
+    //    CreatedEntities.Add(NewsChopper);
+    //    NewsPilot.WarpIntoVehicle(NewsChopper, -1);
+    //    CameraMan.WarpIntoVehicle(NewsChopper, 1);
+    //    Assistant.WarpIntoVehicle(NewsChopper, 2);
+    //    NewsPilot.BlockPermanentEvents = true;
+    //    CameraMan.BlockPermanentEvents = true;
+    //    Assistant.BlockPermanentEvents = true;
+    //    NativeFunction.CallByName<bool>("TASK_HELI_CHASE", NewsPilot, Game.LocalPlayer.Character, 25f, 25f, 40f);
+    //    Reporters.Add(new GTANewsReporter(NewsPilot, false, NewsPilot.Health));
+    //    Reporters.Add(new GTANewsReporter(CameraMan, false, CameraMan.Health));
+    //    Reporters.Add(new GTANewsReporter(Assistant, false, Assistant.Health));
+    //    NewsPilot.KeepTasks = true;
+    //    LocalWriteToLog("SpawnNewsChopper", "News Chopper Spawned");
+    //}
     //public static void SpawnNewsVan()
     //{
 
@@ -471,18 +476,17 @@ public static class PoliceSpawning
     //    //NewsTeam.Add(CameraMan);
     //    //NewsTeam.Add(Assistant);
     //}
-    public static void DeleteNewsTeam()
-    {
-        foreach (GTANewsReporter Reporter in Reporters)
-        {
-            if (Reporter.ReporterPed.Exists())
-                Reporter.ReporterPed.Delete();
-        }
-        Reporters.Clear();
-        if (NewsChopper.Exists())
-            NewsChopper.Delete();
-        Debugging.WriteToLog("DeleteNewsTeam", "News Team Deleted");
-    }
-    //Debug
+    //public static void DeleteNewsTeam()
+    //{
+    //    foreach (GTANewsReporter Reporter in Reporters)
+    //    {
+    //        if (Reporter.ReporterPed.Exists())
+    //            Reporter.ReporterPed.Delete();
+    //    }
+    //    Reporters.Clear();
+    //    if (NewsChopper.Exists())
+    //        NewsChopper.Delete();
+    //    LocalWriteToLog("DeleteNewsTeam", "News Team Deleted");
+    //}
 }
 

@@ -163,7 +163,7 @@ internal static class PedSwapping
             InstantAction.TimesDied = 0;
             InstantAction.MaxWantedLastLife = 0;
             Game.TimeScale = 1f;
-            Police.SetWantedLevel(0);
+            Police.SetWantedLevel(0,"Reset After Takeover as a precaution");
             NativeFunction.Natives.xB4EDDC19532BFB85();
             Game.HandleRespawn();
             NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
@@ -179,7 +179,6 @@ internal static class PedSwapping
             GameTimeLastTakenOver = Game.GameTime;
             Menus.TakeoverRadius = -1f;//reset this on the menu
             InstantAction.LastWeapon = 0;
-
             CurrentPed.IsPersistent = false;
             if (Game.LocalPlayer.Character.IsWearingHelmet)
             {
@@ -188,7 +187,7 @@ internal static class PedSwapping
         }
         catch (Exception e3)
         {
-            Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message);
+            LocalWriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message);
         }
     }
     private static void AddPedToTakenOverPeds(TakenOverPed MyPed)
@@ -196,11 +195,11 @@ internal static class PedSwapping
         if (!TakenOverPeds.Any(x => x.OriginalHandle == MyPed.Pedestrian.Handle))
         {
             TakenOverPeds.Add(MyPed);
-            Debugging.WriteToLog("AddPedToTakenOverPeds", string.Format("Added Ped to List {0} ", MyPed.Pedestrian.Handle));
+            LocalWriteToLog("AddPedToTakenOverPeds", string.Format("Added Ped to List {0} ", MyPed.Pedestrian.Handle));
         }
         else
         {
-            Debugging.WriteToLog("AddPedToTakenOverPeds", string.Format("Ped already in list {0} ", MyPed.Pedestrian.Handle));
+            LocalWriteToLog("AddPedToTakenOverPeds", string.Format("Ped already in list {0} ", MyPed.Pedestrian.Handle));
         }
     }
     private static void CopyPedComponentVariation(Ped myPed)
@@ -221,7 +220,7 @@ internal static class PedSwapping
         }
         catch (Exception e)
         {
-            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            LocalWriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
         }
     }
     private static PedVariation GetPedVariation(Ped myPed)
@@ -243,7 +242,7 @@ internal static class PedSwapping
         }
         catch (Exception e)
         {
-            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            LocalWriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
             return null;
         }
     }
@@ -262,7 +261,7 @@ internal static class PedSwapping
         }
         catch (Exception e)
         {
-            Debugging.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
+            LocalWriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
         }
     }
     private static void SetPlayerOffset()
@@ -323,14 +322,19 @@ internal static class PedSwapping
                     return;
 
                 Game.LocalPlayer.Character.GiveHelmet(true, (Rage.HelmetTypes)MyPropComponent.DrawableID, MyPropComponent.TextureID);
-                Debugging.WriteToLog("AddRemovePlayerHelmet", "Original");
+                LocalWriteToLog("AddRemovePlayerHelmet", "Original");
             }
             else
             {
                 Game.LocalPlayer.Character.GiveHelmet(true, HelmetTypes.RegularMotorcycleHelmet, 0);
-                Debugging.WriteToLog("AddRemovePlayerHelmet", "Not Original");
+                LocalWriteToLog("AddRemovePlayerHelmet", "Not Original");
             }
         }
+    }
+    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
+    {
+        if (Settings.PedSwappingLogging)
+            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }
 

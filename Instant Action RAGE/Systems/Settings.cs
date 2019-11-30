@@ -77,7 +77,21 @@ static class Settings
     public static float TrafficInfoUISpacing = 0.02f;
     public static float TrafficInfoUIScale = 0.35f;
     public static bool DispatchSubtitles = false;
+
     public static bool Logging = true;
+    public static bool GeneralLogging = true;
+    public static bool SmokingLogging = true;
+    public static bool PoliceSpawningLogging = true;
+    public static bool PoliceTaskingLogging = true;
+    public static bool PoliceLogging = true;
+    public static bool DispatchAudioLogging = true;
+    public static bool CarStealingLogging = true;
+    public static bool LicensePlateChanging = true;
+    public static bool PedSwappingLogging = true;
+    public static bool PlayerLocationLogging = true;
+    public static bool PoliceSpeechLogging = false;
+    public static bool VehicleEngineLogging = false;
+    public static bool WeaponDroppingLogging = false;
 
     public static string MainCharacterToAliasModelName
     {

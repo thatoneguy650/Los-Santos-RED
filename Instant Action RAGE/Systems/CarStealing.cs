@@ -59,7 +59,7 @@ public static class CarStealing
                     }
                 }
 
-                Debugging.WriteToLog("UnlockCarDoor", string.Format("DoorIndex: {0},AnimationName: {1}", DoorIndex, AnimationName));
+                LocalWriteToLog("UnlockCarDoor", string.Format("DoorIndex: {0},AnimationName: {1}", DoorIndex, AnimationName));
                 Rage.Object Screwdriver = InstantAction.AttachScrewdriverToPed(Game.LocalPlayer.Character);
                 InstantAction.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@break_in@0h@p_m_one@", AnimationName, 2.0f, -2.0f, -1, 0, 0, false, false, false);
@@ -90,7 +90,7 @@ public static class CarStealing
 
                 //GameFiber.Sleep(500);
 
-                Debugging.WriteToLog("UnlockCarDoor", string.Format("Open Door: {0}", DoorIndex));
+                LocalWriteToLog("UnlockCarDoor", string.Format("Open Door: {0}", DoorIndex));
                 GameTimeStarted = Game.GameTime;
                 Game.LocalPlayer.Character.Tasks.EnterVehicle(ToEnter, SeatTryingToEnter);
                 while (!Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 10000)
@@ -108,36 +108,36 @@ public static class CarStealing
                 GameFiber.Sleep(5000);
                 Screwdriver.Delete();
                 PlayerBreakingIntoCar = false;
-                Debugging.WriteToLog("UnlockCarDoor", string.Format("Made it to the end: {0}", SeatTryingToEnter));
+                LocalWriteToLog("UnlockCarDoor", string.Format("Made it to the end: {0}", SeatTryingToEnter));
             }, "UnlockCarDoor");
             Debugging.GameFibers.Add(UnlockCarDoor);
         }
         catch (Exception e)
         {
             PlayerBreakingIntoCar = false;
-            Debugging.WriteToLog("UnlockCarDoor", e.Message);
+            LocalWriteToLog("UnlockCarDoor", e.Message);
         }
 
 
     }
     public static void LockCarDoor(Vehicle ToLock)
     {
-        Debugging.WriteToLog("LockCarDoor", string.Format("Go To Start, Lock Status {0}", ToLock.LockStatus));
+        LocalWriteToLog("LockCarDoor", string.Format("Go To Start, Lock Status {0}", ToLock.LockStatus));
         if (ToLock.LockStatus != (VehicleLockStatus)1) //unlocked
             return;
-        Debugging.WriteToLog("LockCarDoor", "1");
+        LocalWriteToLog("LockCarDoor", "1");
         if (ToLock.HasDriver)//If they have a driver 
             return;
-        Debugging.WriteToLog("LockCarDoor", "2");
+        LocalWriteToLog("LockCarDoor", "2");
         foreach (VehicleDoor myDoor in ToLock.GetDoors())
         {
             if (!myDoor.IsValid() || myDoor.IsOpen)
                 return;//invalid doors make the car not locked
         }
-        Debugging.WriteToLog("LockCarDoor", "3");
+        LocalWriteToLog("LockCarDoor", "3");
         if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
             return;//broken windows == not locked
-        Debugging.WriteToLog("LockCarDoor", "4");
+        LocalWriteToLog("LockCarDoor", "4");
         if (InstantAction.TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
             return; //previously entered vehicle arent locked
         if (ToLock.IsConvertible && ToLock.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
@@ -145,7 +145,7 @@ public static class CarStealing
         if (ToLock.IsBike || ToLock.IsPlane || ToLock.IsHelicopter)
             return;
 
-        Debugging.WriteToLog("LockCarDoor", "Locked");
+        LocalWriteToLog("LockCarDoor", "Locked");
         ToLock.LockStatus = (VehicleLockStatus)7;
     }
     public static Vector3 GetHandlePosition(Vehicle TargetVehicle)
@@ -154,12 +154,12 @@ public static class CarStealing
         if (TargetVehicle.HasBone("handle_dside_f") && 1 == 0)
         {
             GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
-            Debugging.WriteToLog("CarJackPedWithWeapon", string.Format("Handle Pos: {0}", GameEntryPosition));
+            LocalWriteToLog("CarJackPedWithWeapon", string.Format("Handle Pos: {0}", GameEntryPosition));
         }
         else
         {
             GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
-            Debugging.WriteToLog("CarJackPedWithWeapon", string.Format("Game Entry Pos: {0}", GameEntryPosition));
+            LocalWriteToLog("CarJackPedWithWeapon", string.Format("Game Entry Pos: {0}", GameEntryPosition));
         }
         return GameEntryPosition;
     }
@@ -302,15 +302,15 @@ public static class CarStealing
                 if (TargetVehicle.Doors[0].IsValid())
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
 
-                Debugging.WriteToLog("CarJackPedWithWeapon", string.Format("Scene1 Phase: {0}", FinalScenePhase));
+                LocalWriteToLog("CarJackPedWithWeapon", string.Format("Scene1 Phase: {0}", FinalScenePhase));
 
                 if (Driver.IsInAnyVehicle(false))
                 {
-                    Debugging.WriteToLog("CarjackAnimation", "Driver In Vehicle");
+                    LocalWriteToLog("CarjackAnimation", "Driver In Vehicle");
                 }
                 else
                 {
-                    Debugging.WriteToLog("CarjackAnimation", "Driver Out of Vehicle");
+                    LocalWriteToLog("CarjackAnimation", "Driver Out of Vehicle");
                     Driver.Tasks.ClearImmediately();
                     Driver.IsRagdoll = false;
                     Driver.BlockPermanentEvents = false;
@@ -331,7 +331,7 @@ public static class CarStealing
         catch (Exception e)
         {
             PlayerBreakingIntoCar = false;
-            Debugging.WriteToLog("UnlockCarDoor", e.Message);
+            LocalWriteToLog("UnlockCarDoor", e.Message);
         }
     }
     public static bool GetCarjackingAnimations(Vehicle TargetVehicle, Vector3 DriverSeatCoordinates, GTAWeapon MyGun, ref string Dictionary, ref string PerpAnimation, ref string VictimAnimation)
@@ -350,7 +350,7 @@ public static class CarStealing
         if (GroundZ == null)
             GroundZ = 0f;
         float DriverDistanceToGround = DriverSeatCoordinates.Z - (float)GroundZ;
-        Debugging.WriteToLog("GetCarjackingAnimations", string.Format("VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
+        LocalWriteToLog("GetCarjackingAnimations", string.Format("VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
         if (VehicleClass == Vehicles.VehicleClass.Vans)
         {
             if (MyGun.IsTwoHanded)
@@ -454,6 +454,11 @@ public static class CarStealing
         Attacker.Tasks.FightAgainst(Game.LocalPlayer.Character);
         Attacker.BlockPermanentEvents = true;
         Attacker.KeepTasks = true;
+    }
+    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
+    {
+        if (Settings.CarStealingLogging)
+            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }
 

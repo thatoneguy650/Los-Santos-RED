@@ -67,7 +67,7 @@ public static class Debugging
         //    DebugString = DebugString + " IA!";
 
 
-        string TextToShow = "Police State: " + Police.TempCurrentPoliceTickRunning;
+        string TextToShow = Tasking.CurrentPoliceTickRunning;
         if (Police.PlayerIsPersonOfInterest)
             TextToShow = TextToShow + " + POI";
 
@@ -629,22 +629,29 @@ public static class Debugging
     {
         try
         {
-            RespawnStopper.IsRunning = false;
-            NativeFunction.CallByName<bool>("REQUEST_SCRIPT", "respawn_controller");
+
+            NativeFunction.CallByName<bool>("RESET_HUD_COMPONENT_VALUES", 0);
+
+            //RespawnStopper.IsRunning = false;
+            //NativeFunction.CallByName<bool>("REQUEST_SCRIPT", "respawn_controller");
 
 
-            NativeFunction.CallByName<bool>("REQUEST_SCRIPT", "selector");
+            //NativeFunction.CallByName<bool>("REQUEST_SCRIPT", "selector");
 
 
 
-            Game.HandleRespawn();
-            NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
-            NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
-            NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);
+            //Game.HandleRespawn();
+            //NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
+            //NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
+            //NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);
 
 
-            GameFiber.Sleep(5000);
-            RespawnStopper.IsRunning = true;
+
+
+
+
+            //GameFiber.Sleep(5000);
+            //RespawnStopper.IsRunning = true;
 
             //Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 

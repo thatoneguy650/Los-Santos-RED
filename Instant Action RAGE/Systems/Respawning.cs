@@ -48,7 +48,7 @@ public static class Respawning
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         InstantAction.LastWeapon = 0;
         RespawnInPlace(false);
-        Police.SetWantedLevel(0);
+        Police.SetWantedLevel(0,"Respawning at hospital");
         if (Hospital == null)
             Hospital = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Hospital);
 
@@ -79,7 +79,7 @@ public static class Respawning
         int bailMoney = InstantAction.MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
         InstantAction.BeingArrested = false;
         InstantAction.IsBusted = false;
-        Police.SetWantedLevel(0);
+        Police.SetWantedLevel(0,"Surrendering");
         Police.PlayerIsPersonOfInterest = false;
         Surrendering.RaiseHands();
         ResetPlayer(true, true);
@@ -101,6 +101,10 @@ public static class Respawning
         Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in bail money, try to stay out of trouble.", bailMoney));
         Game.LocalPlayer.Character.GiveCash(-1 * bailMoney, Settings.MainCharacterToAlias);
     }
+    public static void UnDie()
+    {
+        RespawnInPlace(true);
+    }
     public static void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {
         InstantAction.IsDead = false;
@@ -112,7 +116,7 @@ public static class Respawning
         Game.TimeScale = 1f;
         if (ClearWanted)
         {
-            Police.SetWantedLevel(0);
+            Police.SetWantedLevel(0,"Reset player with Clear Wanted");
             Police.ResetPoliceStats();
             TrafficViolations.ResetTrafficViolations();
             Police.ResetPersonOfInterest();
@@ -121,6 +125,8 @@ public static class Respawning
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
         if (ResetHealth)
             Game.LocalPlayer.Character.Health = 100;
+
+        NativeFunction.CallByName<bool>("RESET_HUD_COMPONENT_VALUES", 0);
     }
     public static void RespawnInPlace(bool AsOldCharacter)
     {
@@ -149,7 +155,7 @@ public static class Respawning
             }
             if (AsOldCharacter)
             {
-                Police.SetWantedLevel(InstantAction.MaxWantedLastLife);
+                Police.SetWantedLevel(InstantAction.MaxWantedLastLife,"Resetting to max wanted last life after respawn in place");
                 ++InstantAction.TimesDied;
             }
             else
@@ -158,7 +164,7 @@ public static class Respawning
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
                 InstantAction.LastWeapon = 0;
                 Police.PreviousWantedLevel = 0;
-                Police.SetWantedLevel(0);
+                Police.SetWantedLevel(0, "Resetting to 0 after respawn in place");
                 InstantAction.TimesDied = 0;
                 InstantAction.MaxWantedLastLife = 0;
                 Police.ResetPoliceStats();
@@ -173,6 +179,7 @@ public static class Respawning
             Game.HandleRespawn();
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
             NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
+
         }
         catch (Exception e)
         {

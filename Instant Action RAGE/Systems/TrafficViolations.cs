@@ -20,7 +20,6 @@ public static class TrafficViolations
     private static uint GameTimeStartedDrivingOnPavement = 0;
     private static uint GameTimeStartedDrivingAgainstTraffic = 0;
     private static bool PlayersVehicleIsSuspicious = false;
-    private static uint GameTimeTrafficViolations;
 
     public static bool IsRunning { get; set; } = true;
     public static bool PlayerIsSpeeding { get; set; } = false;
@@ -141,7 +140,7 @@ public static class TrafficViolations
             if (Settings.TrafficViolationsDrivingAgainstTraffic && Police.AnyPoliceCanSeePlayer && !ViolationDrivingAgainstTraffic && !TreatAsCop && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 ViolationDrivingAgainstTraffic = true;
-                Police.SetWantedLevel(1);
+                Police.SetWantedLevel(1,"Driving Against Traffic");
                 DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar);
                 RecklessDriver.IsTrafficViolation = true;
                 DispatchAudio.AddDispatchToQueue(RecklessDriver);
@@ -149,7 +148,7 @@ public static class TrafficViolations
             if (Settings.TrafficViolationsDrivingOnPavement && Police.AnyPoliceCanSeePlayer && !ViolationDrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 ViolationDrivingOnPavement = true;
-                Police.SetWantedLevel(1);
+                Police.SetWantedLevel(1,"Driving On Pavement");
                 DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar);
                 RecklessDriver.IsTrafficViolation = true;
                 DispatchAudio.AddDispatchToQueue(RecklessDriver);
@@ -158,7 +157,7 @@ public static class TrafficViolations
             if (Settings.TrafficViolationsHitPed && Police.AnyPoliceCanSeePlayer && !ViolationHitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
             {
                 ViolationHitPed = true;
-                Police.SetWantedLevel(2);
+                Police.SetWantedLevel(2,"Hit a Pedestrian");
                 DispatchAudio.DispatchQueueItem PedHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPedHitAndRun, 8, false, true, MyCar);
                 PedHitAndRun.IsTrafficViolation = true;
                 DispatchAudio.AddDispatchToQueue(PedHitAndRun);
@@ -167,7 +166,7 @@ public static class TrafficViolations
             if (Settings.TrafficViolationsHitVehicle && Police.AnyPoliceCanSeePlayer && !ViolationHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
             {
                 ViolationHitVehicle = true;
-                Police.SetWantedLevel(1);
+                Police.SetWantedLevel(1,"Hit a vehicle");
                 DispatchAudio.DispatchQueueItem VehicleHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportVehicleHitAndRun, 9, false, true, MyCar);
                 VehicleHitAndRun.IsTrafficViolation = true;
                 DispatchAudio.AddDispatchToQueue(VehicleHitAndRun);
@@ -175,29 +174,25 @@ public static class TrafficViolations
             if (Settings.TrafficViolationsNotRoadworthy && Police.AnyPoliceCanSeePlayer && !ViolationNonRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
             {
                 ViolationNonRoadworthy = true;
-                Police.SetWantedLevel(1);
+                Police.SetWantedLevel(1,"Driving a non-roadwrothy vehicle");
                 DispatchAudio.DispatchQueueItem NonRoadWorthy = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10, false, true, MyCar);
                 NonRoadWorthy.IsTrafficViolation = true;
                 DispatchAudio.AddDispatchToQueue(NonRoadWorthy);
             }
-            float SpeedLimit = 100f;
+            float SpeedLimit = 60f;
             if (PlayerLocation.PlayerCurrentStreet != null)
                 SpeedLimit = PlayerLocation.PlayerCurrentStreet.SpeedLimit;
-            bool ViolationSpeedLimit = VehicleSpeedMPH > SpeedLimit + Settings.TrafficViolationsSpeedingOverLimitThreshold;
-            PlayerIsSpeeding = ViolationSpeedLimit;
+            PlayerIsSpeeding = VehicleSpeedMPH > SpeedLimit + Settings.TrafficViolationsSpeedingOverLimitThreshold;
 
-            if (ViolationSpeedLimit)
-                ViolationSpeedLimit = true;
-            else
-                ViolationSpeedLimit = false;
-
-            if (Settings.TrafficViolationsSpeeding && Police.AnyPoliceCanSeePlayer && !ViolationSpeedLimit && !TreatAsCop && ViolationSpeedLimit)
+            if (Settings.TrafficViolationsSpeeding && Police.AnyPoliceCanSeePlayer && !ViolationSpeedLimit && !TreatAsCop && PlayerIsSpeeding)
             {
                 ViolationSpeedLimit = true;
-                if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 1.5))//going 1.5 times the over the threshold = 2 stars
-                    Police.SetWantedLevel(2);
+                if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 2))//going 2 times over the threshold = 3 stars
+                    Police.SetWantedLevel(3, "Going 2 over Speed limit");
+                else if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 1.5))//going 1.5 times over the threshold = 2 stars
+                    Police.SetWantedLevel(2,"Going 1.5 over Speed limit");
                 else
-                    Police.SetWantedLevel(1);
+                    Police.SetWantedLevel(1,"Going over speed limit");
 
                 DispatchAudio.DispatchQueueItem FelonySpeeding = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportFelonySpeeding, 10, false, true, MyCar);
                 FelonySpeeding.Speed = VehicleSpeedMPH;

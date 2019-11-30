@@ -141,7 +141,7 @@ public static class LicensePlateChanging
                 LicensePlate = null;
                 Screwdriver = null;
                 PlayerChangingPlate = false;
-                Debugging.WriteToLog("ChangeLicensePlate", e.StackTrace);
+                LocalWriteToLog("ChangeLicensePlate", e.StackTrace);
             }
         }, "PlayDispatchQueue");
         Debugging.GameFibers.Add(ChangeLicensePlateAnimation);
@@ -151,7 +151,7 @@ public static class LicensePlateChanging
         if (VehicleToChange.VehicleEnt.Exists())
         {
             SpareLicensePlates.Add(VehicleToChange.CarPlate);
-            Menus.UpdateLists();
+            //Menus.UpdateLists();
             VehicleToChange.CarPlate = null;
             VehicleToChange.VehicleEnt.LicensePlate = "        ";
             VehicleToChange.CarPlate = null;
@@ -174,7 +174,7 @@ public static class LicensePlateChanging
             VehicleToChange.CarPlate = PlateToAdd;
             VehicleToChange.VehicleEnt.LicensePlate = PlateToAdd.PlateNumber;
             NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleToChange.VehicleEnt, PlateToAdd.PlateType);
-            Menus.UpdateLists();
+            //Menus.UpdateLists();
             return true;
         }
         return false;
@@ -273,6 +273,11 @@ public static class LicensePlateChanging
             Attacker.BlockPermanentEvents = true;
             Attacker.KeepTasks = true;
         }
+    }
+    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
+    {
+        if (Settings.LicensePlateChanging)
+            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }
 

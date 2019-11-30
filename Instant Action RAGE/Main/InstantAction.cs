@@ -86,7 +86,6 @@ public static class InstantAction
         Smoking.Initialize();
         Tasking.Initialize();
         Agencies.Initialize();
-
         GTAWeapons.Initialize();
         Speed.Initialize();
         WeaponDropping.Initialize();
@@ -100,6 +99,7 @@ public static class InstantAction
     public static void MainLoop()
     {
         Game.LocalPlayer.Character.CanBePulledOutOfVehicles = true;
+
         var stopwatch = new Stopwatch();
         GameFiber.StartNew(delegate
         {
@@ -114,7 +114,7 @@ public static class InstantAction
                     AudioTick();
                     stopwatch.Stop();
                     if (stopwatch.ElapsedMilliseconds >= 16)
-                        Debugging.WriteToLog("InstantActionTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
+                        LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
                     stopwatch.Reset();
                     GameFiber.Yield();
                 }
@@ -179,11 +179,9 @@ public static class InstantAction
     }
     private static void StateTick()
     {
-        //Dead
         if (Game.LocalPlayer.Character.IsDead && !IsDead)
             PlayerDeathEvent();
 
-        // Busted
         if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 0))
             BeingArrested = true;
         if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 1))
@@ -203,8 +201,7 @@ public static class InstantAction
 
         if (PedSwapping.JustTakenOver(1000) && PlayerWantedLevel > 0)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
         {
-            Police.SetWantedLevel(0);
-            Debugging.WriteToLog("StateTick", "Setting wanted to 0 after takeover");
+            Police.SetWantedLevel(0,"Resetting wanted just after takeover");
         }
     }
     private static void TrackCurrentVehicle()
@@ -256,7 +253,7 @@ public static class InstantAction
         Game.LocalPlayer.Character.Kill();
         Game.LocalPlayer.Character.Health = 0;
         Game.LocalPlayer.Character.IsInvincible = true;
-        Police.SetWantedLevel(0);
+        Police.SetWantedLevel(0,"You died");
         Game.TimeScale = 0.4f;
         if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5, false));
@@ -286,16 +283,16 @@ public static class InstantAction
                 if (Driver != null && Driver.IsAlive)
                 {
                     CarStealing.CarJackPedWithWeapon(TargetVeh,Driver, SeatTryingToEnter);
-                    Debugging.WriteToLog("EnterVehicle", "CarJacking");
+                    LocalWriteToLog("EnterVehicle", "CarJacking");
                 }
                 else
                 {
-                    Debugging.WriteToLog("EnterVehicle", "Regular Enter No Driver");
+                    LocalWriteToLog("EnterVehicle", "Regular Enter No Driver");
                 }
             }
             else
             {
-                Debugging.WriteToLog("EnterVehicle", "Regular Enter");
+                LocalWriteToLog("EnterVehicle", "Regular Enter");
             }
 
         }
@@ -321,7 +318,7 @@ public static class InstantAction
         PlayerInVehicle = playerInVehicle;
         PrevPlayerInVehicle = playerInVehicle;
 
-        Debugging.WriteToLog("ValueChecker", String.Format("playerInVehicle Changed to: {0}", playerInVehicle));
+        LocalWriteToLog("ValueChecker", String.Format("playerInVehicle Changed to: {0}", playerInVehicle));
     }
     private static void ControlTick()
     {
@@ -348,7 +345,6 @@ public static class InstantAction
                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
             }
         }
-
     }
     private static void AudioTick()
     {
@@ -493,6 +489,11 @@ public static class InstantAction
         NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, 993120320, -565.1712f, 276.6259f, 83.28626f, false, 0.0f, 0.0f, 0.0f);// front door
         NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, 993120320, -561.2866f, 293.5044f, 87.77851f, false, 0.0f, 0.0f, 0.0f);// back door
 
+    }
+    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
+    {
+        if (Settings.GeneralLogging)
+            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 
 }

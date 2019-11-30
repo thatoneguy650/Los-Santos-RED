@@ -87,20 +87,15 @@ public static class UI
             float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
             if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
                 SpeedDisplay = "ENGINE OFF";
-            else if (TrafficViolations.PlayerIsSpeeding)
-            {
-                if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentCrossStreet != null)
-                    SpeedDisplay = string.Format("~r~{0} ~s~MPH ({1}) / ({2})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit, PlayerLocation.PlayerCurrentCrossStreet.SpeedLimit);
-                else if (PlayerLocation.PlayerCurrentStreet != null)
-                    SpeedDisplay = string.Format("~r~{0} ~s~MPH ({1})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit);
-            }
             else
             {
+                string ColorPrefx = "~s~";
+                if (TrafficViolations.PlayerIsSpeeding)
+                    ColorPrefx = "~r~";
                 if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentCrossStreet != null)
-                    SpeedDisplay = string.Format("{0} MPH ({1}) / ({2})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit, PlayerLocation.PlayerCurrentCrossStreet.SpeedLimit);
+                    SpeedDisplay = string.Format("{0}{1} ~s~MPH ({2}) / ({3})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit, PlayerLocation.PlayerCurrentCrossStreet.SpeedLimit);
                 else if (PlayerLocation.PlayerCurrentStreet != null)
-                    SpeedDisplay = string.Format("{0} MPH ({1})", Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit);
-
+                    SpeedDisplay = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit);
             }
 
             if(TrafficViolations.ViolatingTrafficLaws)
@@ -174,8 +169,10 @@ public static class UI
             {
                 if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
                     CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
-                else
+                else if(PlayerLocation.PlayerCurrentZone.MainZoneAgency != null)
                     CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColorPrefix + PlayerLocation.PlayerCurrentZone.MainZoneAgency.Initials;
+                else
+                    CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
 
                 ZoneDisplay = PlayerLocation.PlayerCurrentZone.TextName + " - " + CopZoneName;
             }
