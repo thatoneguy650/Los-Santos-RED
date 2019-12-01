@@ -521,7 +521,7 @@ internal static class Menus
             }
             else
             {
-                Smoking.StopWithAnimation();
+                //Smoking.StopWithAnimation();
             }
         }
     }

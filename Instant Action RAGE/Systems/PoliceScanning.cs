@@ -12,7 +12,6 @@ public static class PoliceScanning
     public static List<GTACop> CopPeds { get; private set; } = new List<GTACop>();
     public static List<GTACop> K9Peds { get; private set; } = new List<GTACop>();
     public static List<Ped> Civilians { get; private set; } = new List<Ped>();
-    public static bool IsRunning { get; set; } = true;
     public static string AgenciesChasingPlayer
     {
         get
@@ -26,7 +25,6 @@ public static class PoliceScanning
     }
     public static void Dispose()
     {
-        IsRunning = false;
         foreach(GTACop Cop in CopPeds)
         {
             if(Cop.CopPed.Exists())
@@ -58,7 +56,7 @@ public static class PoliceScanning
                     Pedestrian.Inventory.Weapons.Clear();
                     Police.IssueCopPistol(myCop);
                     NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
-                    if (Tasking.SpotterCop != null && Tasking.SpotterCop.Handle == Pedestrian.Handle)
+                    if (SearchModeStopping.SpotterCop != null && SearchModeStopping.SpotterCop.Handle == Pedestrian.Handle)
                         continue;
 
                     CopPeds.Add(myCop);

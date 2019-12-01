@@ -92,6 +92,34 @@ public static class Smoking
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
+
+
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (IsRunning)
+                {
+                    if (CurrentSmokingAnimation != null)
+                    {
+                        float CurrentTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, CurrentSmokingAnimation.EnterAnimationDictionary, CurrentSmokingAnimation.EnterAnimation);
+                        string Animation = string.Format("Anim: {0}, Time: {1}", CurrentSmokingAnimation.EnterAnimation, CurrentTime);
+                        UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+                    }
+                    else if (CurrentIdleAnimation != null)
+                    {
+                        string Animation = string.Format("Anim: {0}, Time: {1}, NearMouth: {2}", CurrentIdleAnimation.Animation, CurrentPuffingAnimationTime, CurrentPuffingAnimationNearMouth);
+                        UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+                    }
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+            }
+        });
     }
     public static void Dispose()
     {
@@ -105,13 +133,13 @@ public static class Smoking
     {
         List<SmokingAnimation.IdleAnimation> MaleIdles = new List<SmokingAnimation.IdleAnimation>() { new SmokingAnimation.IdleAnimation("amb@world_human_smoking@male@male_a@idle_a", "idle_b", new SmokingAnimation.AnimationDragIndex(0.1f, 0.3f,0.6f, 0.7f),1500)
                                                                                                  ,new SmokingAnimation.IdleAnimation("amb@world_human_smoking@male@male_a@idle_a", "idle_c", new SmokingAnimation.AnimationDragIndex(0.1f, 0.2f,0.7f, 0.8f),1500) };
-        StandardCigaretteMale = new SmokingAnimation("ng_proc_cigarette01a", "amb@world_human_smoking@male@male_a@enter", "enter", "amb@world_human_smoking@male@male_a@idle_a", MaleIdles, "amb@world_human_smoking@male@male_a@exit", "exit", new Vector3(-0.07f, 0.0f, 0f), 1.5f, 17188, new Vector3(0.046f, 0.015f, 0.014f), new Rotator(0.0f, -180f, 0f), 57005, new Vector3(0.14f, 0.03f, 0.0f), new Rotator(0.49f, 79f, 79f));
-        StandardCigarettePlayerZero = new SmokingAnimation("ng_proc_cigarette01a", "amb@world_human_smoking@male@male_a@enter", "enter", "amb@world_human_smoking@male@male_a@idle_a", MaleIdles, "amb@world_human_smoking@male@male_a@exit", "exit", new Vector3(-0.07f, 0.0f, 0f), 1.5f, 31086, new Vector3(-0.007f, 0.13f, 0.01f), new Rotator(0.0f, -175f, 91f), 57005, new Vector3(0.1640f, 0.019f, 0.0f), new Rotator(0.49f, 79f, 79f));
+        StandardCigaretteMale = new SmokingAnimation("ng_proc_cigarette01a", "amb@world_human_smoking@male@male_a@base","base", "amb@world_human_smoking@male@male_a@enter", "enter",0.1f,0.7f, 0.3f, "amb@world_human_smoking@male@male_a@idle_a", MaleIdles, "amb@world_human_smoking@male@male_a@exit", "exit",99f, new Vector3(-0.07f, 0.0f, 0f), 1.5f, 17188, new Vector3(0.046f, 0.015f, 0.014f), new Rotator(0.0f, -180f, 0f), 57005, new Vector3(0.14f, 0.03f, 0.0f), new Rotator(0.49f, 79f, 79f));
+        StandardCigarettePlayerZero = new SmokingAnimation("ng_proc_cigarette01a", "amb@world_human_smoking@male@male_a@base", "base", "amb@world_human_smoking@male@male_a@enter", "enter", 0.1f, 0.7f, 0.3f, "amb@world_human_smoking@male@male_a@idle_a", MaleIdles, "amb@world_human_smoking@male@male_a@exit", "exit",99f, new Vector3(-0.07f, 0.0f, 0f), 1.5f, 31086, new Vector3(-0.007f, 0.13f, 0.01f), new Rotator(0.0f, -175f, 91f), 57005, new Vector3(0.1640f, 0.019f, 0.0f), new Rotator(0.49f, 79f, 79f));
 
         List<SmokingAnimation.IdleAnimation> FemaleIdles = new List<SmokingAnimation.IdleAnimation>() { new SmokingAnimation.IdleAnimation("amb@world_human_smoking@female@idle_a", "idle_a", new SmokingAnimation.AnimationDragIndex(0.3f, 0.7f),1500)
                                                                                                         ,new SmokingAnimation.IdleAnimation("amb@world_human_smoking@female@idle_a", "idle_b", new SmokingAnimation.AnimationDragIndex(0.6f, 0.7f),1500)
                                                                                                  ,new SmokingAnimation.IdleAnimation("amb@world_human_smoking@female@idle_a", "idle_c", new SmokingAnimation.AnimationDragIndex(0.1f, 0.19f),500) };
-        StandardCigaretteFemale = new SmokingAnimation("ng_proc_cigarette01a", "amb@world_human_smoking@female@enter", "enter", "amb@world_human_smoking@male@male_a@idle_a", FemaleIdles, "amb@world_human_smoking@female@exit", "exit", new Vector3(-0.07f, 0.0f, 0f), 1.5f, 17188, new Vector3(0.046f, 0.015f, 0.014f), new Rotator(0.0f, -180f, 0f), 57005, new Vector3(0.14f, 0.01f, 0.0f), new Rotator(0.49f, 79f, 79f));
+        StandardCigaretteFemale = new SmokingAnimation("ng_proc_cigarette01a", "amb@world_human_smoking@female@base", "base", "amb@world_human_smoking@female@enter", "enter", 0.175f, 0.74f,0.41f, "amb@world_human_smoking@male@male_a@idle_a", FemaleIdles, "amb@world_human_smoking@female@exit", "exit",0.8f, new Vector3(-0.07f, 0.0f, 0f), 1.5f, 17188, new Vector3(0.046f, 0.015f, 0.014f), new Rotator(0.0f, -180f, 0f), 57005, new Vector3(0.14f, 0.01f, 0.0f), new Rotator(0.49f, 79f, 79f));
     }
     private static void UpdateAnimations()
     {
@@ -187,47 +215,44 @@ public static class Smoking
             return;
         GameFiber SmokingStart = GameFiber.StartNew(delegate
         {
-            LocalWriteToLog("Smoking", string.Format("StartedSmoking {0}", true));
             SetPedUnarmed(Game.LocalPlayer.Character, false);
             bool Cancel = false;
             CurrentSmokingAnimation = GetSmokingAnimationForPed(Game.LocalPlayer.Character);
             if (!PlayersCurrentCigarette.Exists())
             {
-                LocalWriteToLog("Smoking", string.Format("PlayersCurrentCigarette.Exists {0}", false));
                 PlayersCurrentCigarette = new Rage.Object(CurrentSmokingAnimation.PropName, Game.LocalPlayer.Character.GetOffsetPositionUp(50f));
                 if (CurrentAttachedPosition != CigarettePosition.Mouth)
                 {
-                    LocalWriteToLog("Smoking", string.Format("CurrentAttachedPosition {0}", CurrentAttachedPosition));
                     Cancel = !PutCigaretteInMouth(false);
                 }
             }
             if (Cancel)
             {
-                LocalWriteToLog("Smoking", string.Format("Cancel after PutInMouth {0}", Cancel));
                 return;        
             }
-            Cancel = !StartPuffingCigarette();
-            if (Cancel)
-            {
-                LocalWriteToLog("Smoking", string.Format("Cancel after StartPuffing {0}", Cancel));
-                Stop();
-                return;
-            }
-            while (!Game.IsControlPressed(0, GameControl.Aim) && !Game.IsControlPressed(0, GameControl.Enter) && !Game.IsControlPressed(0, GameControl.Sprint))
+
+            GameFiber.Wait(5000);
+            PuffCigarette();
+            uint GameTimeToPuffAgain = Game.GameTime + (uint)rnd.Next(3500, 6000);
+            while (!CancelSmoking)
             {
                 CurrentPuffingAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, CurrentIdleAnimation.Dictionary, CurrentIdleAnimation.Animation);
-                if (CurrentPuffingAnimationTime <= 0.005f) 
+                if (CurrentPuffingAnimationTime == 1.0f && Game.GameTime > GameTimeToPuffAgain)
                 {
-                    StartPuffingCigarette();
+                    PuffCigarette();
+                    GameTimeToPuffAgain = Game.GameTime + (uint)rnd.Next(3500, 6000);
                 }
-                string Animation = string.Format("Anim: {0}, Time: {1}, NearMouth: {2}", CurrentIdleAnimation.Animation, CurrentPuffingAnimationTime, CurrentPuffingAnimationNearMouth);
-                UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
-
-
+                //
+                //if (CurrentPuffingAnimationTime <= 0.005f) 
+                //{
+                //    Game.LocalPlayer.Character.Tasks.ClearSecondary();
+                //    GameFiber.Wait(rnd.Next(1500,4500));
+                ////    StartPuffingCigarette();
+                //}
                 GameFiber.Yield(); //GameFiber.Sleep(50);//works fine with sleep 50
             }
-            LocalWriteToLog("Smoking", string.Format("Cancel after waiting after puffing {0}", Cancel));
-            Stop();
+            GameFiber.Wait(50);
+            StopPuffingCigarette(true);//Stop();
         }, "SmokingStart");
         Debugging.GameFibers.Add(SmokingStart);
     }
@@ -235,56 +260,62 @@ public static class Smoking
     {
         SetPedUnarmed(Game.LocalPlayer.Character, false);
         InstantAction.RequestAnimationDictionay(CurrentSmokingAnimation.EnterAnimationDictionary);
+        InstantAction.RequestAnimationDictionay(CurrentSmokingAnimation.BaseAnimationDictionary);
         CurrentAnimationCategory = CigaretteAnimation.Start;
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentSmokingAnimation.EnterAnimationDictionary, CurrentSmokingAnimation.EnterAnimation, 4.0f, -4.0f, -1, 48, 0, false, false, false);
-        uint GameTimeStartedAnimation = Game.GameTime;
-        while (Game.GameTime - GameTimeStartedAnimation <= 2500 && !CancelSmoking)
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentSmokingAnimation.EnterAnimationDictionary, CurrentSmokingAnimation.EnterAnimation, 8.0f, -8.0f, -1, 50, 0, false, false, false);
+        float AnimationTime = 0f;
+        while (AnimationTime < 1.0f && !CancelSmoking)
         {
-            GameFiber.Yield();
-        }
-        if(CancelSmoking)
-        {
-            LocalWriteToLog("PutCigaretteInMouth", string.Format("FirstCancel {0}", CancelSmoking));
-            CurrentAnimationCategory = CigaretteAnimation.None;
-            Game.LocalPlayer.Character.Tasks.Clear();
-            return false;
-        }
-        AttachCigaretteToPedLowerLip(Game.LocalPlayer.Character);
-        GameTimeStartedAnimation = Game.GameTime;
-        while (Game.GameTime - GameTimeStartedAnimation <= 7500 && !CancelSmoking)
-        {
-            if(Game.GameTime - GameTimeStartedAnimation >= 3000)
+            AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, CurrentSmokingAnimation.EnterAnimationDictionary, CurrentSmokingAnimation.EnterAnimation);
+
+            if (AnimationTime >= CurrentSmokingAnimation.EnterAnimationAttachTime && CurrentAttachedPosition == CigarettePosition.None)
+                AttachCigaretteToPedLowerLip(Game.LocalPlayer.Character);
+            if (AnimationTime >= CurrentSmokingAnimation.EnterAnimationLightTime)
                 PlayersCurrentCigaretteIsLit = true;
+            if (AnimationTime >= CurrentSmokingAnimation.EnterAnimationDetachTime && CurrentAttachedPosition == CigarettePosition.Mouth)
+                AttachCigaretteToPedRightHand(Game.LocalPlayer.Character);
             GameFiber.Yield();
         }
         if (CancelSmoking)
         {
-            LocalWriteToLog("PutCigaretteInMouth", string.Format("SecondCanel {0}", CancelSmoking));
             CurrentAnimationCategory = CigaretteAnimation.None;
             Game.LocalPlayer.Character.Tasks.Clear();
-            if(!PlayersCurrentCigaretteIsLit)
+            if(!PlayersCurrentCigaretteIsLit && CurrentAttachedPosition != CigarettePosition.Mouth)
                 RemoveCigarette();
             return false;
         }
-        if (ClearTasks)
-        {
-            CurrentAnimationCategory = CigaretteAnimation.None;
-            Game.LocalPlayer.Character.Tasks.Clear();
-        }
         PlayersCurrentCigaretteIsLit = true;
-        LocalWriteToLog("PutCigaretteInMouth", string.Format("Return {0}", true));
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentSmokingAnimation.BaseAnimationDictionary, CurrentSmokingAnimation.BaseAnimation, 8.0f, -8.0f, -1, 49, 0, false, false, false);
+        //if (ClearTasks)
+        //{
+        //    CurrentAnimationCategory = CigaretteAnimation.None;
+        //    Game.LocalPlayer.Character.Tasks.Clear();
+        //}
+        //else
+        //{
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentSmokingAnimation.BaseAnimationDictionary, CurrentSmokingAnimation.BaseAnimation, 4.0f, -4.0f, -1, 48, 0, false, false, false);
+        //}
         return true;
     }
-    private static void AttachCigaretteToPedLowerLip(Ped Pedestrian)
+    private static void PuffCigarette()
     {
-        if (!PlayersCurrentCigarette.Exists())
-        {
-            PlayersCurrentCigarette = new Rage.Object(CurrentSmokingAnimation.PropName, Pedestrian.GetOffsetPositionUp(50f));
-            InstantAction.CreatedObjects.Add(PlayersCurrentCigarette);
-        }
-        int BoneIndex = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, CurrentSmokingAnimation.MouthBoneToAttach);
-        PlayersCurrentCigarette.AttachTo(Pedestrian, BoneIndex, CurrentSmokingAnimation.MouthAttachPosition, CurrentSmokingAnimation.MouthAttachRotation);
-        CurrentAttachedPosition = CigarettePosition.Mouth;
+        CurrentIdleAnimation = CurrentSmokingAnimation.IdleAnimations.PickRandom();
+        LocalWriteToLog("CurrentIdleAnimation", string.Format("CurrentIdleAnimation.Animation {0}", CurrentIdleAnimation.Animation));
+        InstantAction.RequestAnimationDictionay(CurrentIdleAnimation.Dictionary);
+
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentIdleAnimation.Dictionary, CurrentIdleAnimation.Animation, 4.0f, -4.0f, -1, 49, 0, false, false, false);
+        //while (!CurrentPuffingAnimationNearMouth && !CancelSmoking) //while (Game.GameTime - GameTimeStartedAnimation <= 2000 && !CancelSmoking)
+        //{
+        //    GameFiber.Yield();
+        //}
+        //if (CancelSmoking)
+        //{
+        //    CurrentAnimationCategory = CigaretteAnimation.None;
+        //    Game.LocalPlayer.Character.Tasks.Clear();
+        //    return false;
+        //}
+        //AttachCigaretteToPedRightHand(Game.LocalPlayer.Character);
+        //return true;
     }
     private static bool StartPuffingCigarette()
     {
@@ -293,7 +324,6 @@ public static class Smoking
         InstantAction.RequestAnimationDictionay(CurrentIdleAnimation.Dictionary);
         CurrentAnimationCategory = CigaretteAnimation.Puffing;
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentIdleAnimation.Dictionary, CurrentIdleAnimation.Animation, 4.0f, -4.0f, -1, 49, 0, false, false, false);
-        uint GameTimeStartedAnimation = Game.GameTime;
         while (!CurrentPuffingAnimationNearMouth && !CancelSmoking) //while (Game.GameTime - GameTimeStartedAnimation <= 2000 && !CancelSmoking)
         {
             GameFiber.Yield();
@@ -307,6 +337,17 @@ public static class Smoking
         AttachCigaretteToPedRightHand(Game.LocalPlayer.Character);
         return true;
     }
+    private static void AttachCigaretteToPedLowerLip(Ped Pedestrian)
+    {
+        if (!PlayersCurrentCigarette.Exists())
+        {
+            PlayersCurrentCigarette = new Rage.Object(CurrentSmokingAnimation.PropName, Pedestrian.GetOffsetPositionUp(50f));
+            InstantAction.CreatedObjects.Add(PlayersCurrentCigarette);
+        }
+        int BoneIndex = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, CurrentSmokingAnimation.MouthBoneToAttach);
+        PlayersCurrentCigarette.AttachTo(Pedestrian, BoneIndex, CurrentSmokingAnimation.MouthAttachPosition, CurrentSmokingAnimation.MouthAttachRotation);
+        CurrentAttachedPosition = CigarettePosition.Mouth;
+    }
     private static void AttachCigaretteToPedRightHand(Ped Pedestrian)
     {
         if (!PlayersCurrentCigarette.Exists())
@@ -318,32 +359,32 @@ public static class Smoking
         PlayersCurrentCigarette.AttachTo(Pedestrian, BoneIndex, CurrentSmokingAnimation.HandAttachPosition, CurrentSmokingAnimation.HandAttachRotation);
         CurrentAttachedPosition = CigarettePosition.Hand;
     }
-    public static void Stop()
-    {
-        if (!PlayersCurrentCigarette.Exists())
-            return;
+    //public static void Stop()
+    //{
+    //    if (!PlayersCurrentCigarette.Exists())
+    //        return;
 
-        StopPuffingCigarette(false);
-    }
-    public static void StopWithAnimation()
-    {
-        if (!PlayersCurrentCigarette.Exists())
-            return;
+    //    StopPuffingCigarette(false);
+    //}
+    //public static void StopWithAnimation()
+    //{
+    //    if (!PlayersCurrentCigarette.Exists())
+    //        return;
 
-        SetPedUnarmed(Game.LocalPlayer.Character, false);
+    //    SetPedUnarmed(Game.LocalPlayer.Character, false);
 
-        bool CigInHand = false;
-        if (CurrentAnimationCategory != CigaretteAnimation.Puffing)
-        {
-            CigInHand = StartPuffingCigarette();
-        }
-        if (CigInHand)
-        {
-            while (CurrentPuffingAnimationTime <= 0.57f)
-                GameFiber.Yield();
-        }
-        StopPuffingCigarette(false);
-    }
+    //    bool CigInHand = false;
+    //    if (CurrentAnimationCategory != CigaretteAnimation.Puffing)
+    //    {
+    //        CigInHand = StartPuffingCigarette();
+    //    }
+    //    if (CigInHand)
+    //    {
+    //        while (CurrentPuffingAnimationTime <= 0.57f)
+    //            GameFiber.Yield();
+    //    }
+    //    StopPuffingCigarette(false);
+    //}
     private static void StopPuffingCigarette(bool PlayAnimation)
     {
         if (PlayAnimation)
@@ -351,27 +392,33 @@ public static class Smoking
             InstantAction.RequestAnimationDictionay(CurrentSmokingAnimation.ExitAnimationDictionary);
             CurrentAnimationCategory = CigaretteAnimation.Exit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentSmokingAnimation.ExitAnimationDictionary, CurrentSmokingAnimation.ExitAnimation, 4.0f, -4.0f, -1, 48, 0, false, false, false);
-            uint GameTimeStartedAnimation = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedAnimation <= 1500 && !CancelSmoking)
+            float AnimationTime = 0f;
+            while (AnimationTime <= 0.99f && !CancelSmoking)
             {
+                AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, CurrentSmokingAnimation.ExitAnimationDictionary, CurrentSmokingAnimation.ExitAnimation);
+                if (AnimationTime >= CurrentSmokingAnimation.ExitAnimationDetachTime && CurrentAttachedPosition != CigarettePosition.None)
+                {
+                    CurrentAttachedPosition = CigarettePosition.None;
+                    PlayersCurrentCigarette.Detach();
+                }
                 GameFiber.Yield();
             }
         }
-        if (CurrentPuffingAnimationNearMouth)
+        if (CancelSmoking)
         {
-            AttachCigaretteToPedLowerLip(Game.LocalPlayer.Character);
-            CurrentAnimationCategory = CigaretteAnimation.None;
-            Game.LocalPlayer.Character.Tasks.Clear();
+            if (CurrentPuffingAnimationNearMouth)
+            {
+                AttachCigaretteToPedLowerLip(Game.LocalPlayer.Character);
+                CurrentAnimationCategory = CigaretteAnimation.None;
+                Game.LocalPlayer.Character.Tasks.Clear();
+            }
+            else if (PlayersCurrentCigaretteIsLit && CurrentAttachedPosition == CigarettePosition.Mouth)
+            {
+                CurrentAnimationCategory = CigaretteAnimation.None;
+                Game.LocalPlayer.Character.Tasks.Clear();
+            }
         }
-        else if (PlayersCurrentCigaretteIsLit && CurrentAttachedPosition == CigarettePosition.Mouth)
-        {
-            CurrentAnimationCategory = CigaretteAnimation.None;
-            Game.LocalPlayer.Character.Tasks.Clear();
-        }
-        else
-        {
-            RemoveCigarette();
-        }
+        RemoveCigarette();
     }
     private static void RemoveCigarette()
     {
@@ -419,15 +466,21 @@ public static class Smoking
     }
     public class SmokingAnimation
     {
-        public SmokingAnimation(string propName, string enterAnimationDictionary, string enterAnimation, string idleAnimationDictionary, List<IdleAnimation> idleAnimations, string exitAnimationDictionary, string exitAnimation, Vector3 smokePosition, float smokeScale, int mouthBoneToAttach, Vector3 mouthAttachPosition, Rotator mouthAttachRotation, int handBoneToAttach, Vector3 handAttachPosition, Rotator handAttachRotation)
+        public SmokingAnimation(string propName, string baseAnimationDictionary, string baseAnimation, string enterAnimationDictionary, string enterAnimation, float enterAnimationAttachTime, float enterAnimationDetachTime, float enterAnimationLightTime, string idleAnimationDictionary, List<IdleAnimation> idleAnimations, string exitAnimationDictionary, string exitAnimation, float exitAnimationDetachTime, Vector3 smokePosition, float smokeScale, int mouthBoneToAttach, Vector3 mouthAttachPosition, Rotator mouthAttachRotation, int handBoneToAttach, Vector3 handAttachPosition, Rotator handAttachRotation)
         {
             PropName = propName;
+            BaseAnimationDictionary = baseAnimationDictionary;
+            BaseAnimation = baseAnimation;
             EnterAnimationDictionary = enterAnimationDictionary;
             EnterAnimation = enterAnimation;
+            EnterAnimationAttachTime = enterAnimationAttachTime;
+            EnterAnimationDetachTime = enterAnimationDetachTime;
+            EnterAnimationLightTime = enterAnimationLightTime;
             IdleAnimationDictionary = idleAnimationDictionary;
             IdleAnimations = idleAnimations;
             ExitAnimationDictionary = exitAnimationDictionary;
             ExitAnimation = exitAnimation;
+            ExitAnimationDetachTime = exitAnimationDetachTime;
             SmokePosition = smokePosition;
             SmokeScale = smokeScale;
             MouthBoneToAttach = mouthBoneToAttach;
@@ -437,13 +490,39 @@ public static class Smoking
             HandAttachPosition = handAttachPosition;
             HandAttachRotation = handAttachRotation;
         }
+
+
+        //public SmokingAnimation(string propName, string enterAnimationDictionary, string enterAnimation, string idleAnimationDictionary, List<IdleAnimation> idleAnimations, string exitAnimationDictionary, string exitAnimation, Vector3 smokePosition, float smokeScale, int mouthBoneToAttach, Vector3 mouthAttachPosition, Rotator mouthAttachRotation, int handBoneToAttach, Vector3 handAttachPosition, Rotator handAttachRotation)
+        //{
+        //    PropName = propName;
+        //    EnterAnimationDictionary = enterAnimationDictionary;
+        //    EnterAnimation = enterAnimation;
+        //    IdleAnimationDictionary = idleAnimationDictionary;
+        //    IdleAnimations = idleAnimations;
+        //    ExitAnimationDictionary = exitAnimationDictionary;
+        //    ExitAnimation = exitAnimation;
+        //    SmokePosition = smokePosition;
+        //    SmokeScale = smokeScale;
+        //    MouthBoneToAttach = mouthBoneToAttach;
+        //    MouthAttachPosition = mouthAttachPosition;
+        //    MouthAttachRotation = mouthAttachRotation;
+        //    HandBoneToAttach = handBoneToAttach;
+        //    HandAttachPosition = handAttachPosition;
+        //    HandAttachRotation = handAttachRotation;
+        //}
         public string PropName { get; set; }
+        public string BaseAnimationDictionary { get; set; }
+        public string BaseAnimation { get; set; }
         public string EnterAnimationDictionary { get; set; }
         public string EnterAnimation { get; set; }
+        public float EnterAnimationAttachTime { get; set; }
+        public float EnterAnimationDetachTime { get; set; }
+        public float EnterAnimationLightTime { get; set; }
         public string IdleAnimationDictionary { get; set; }
         public List<IdleAnimation> IdleAnimations { get; set; } = new List<IdleAnimation>();
         public string ExitAnimationDictionary { get; set; }
         public string ExitAnimation { get; set; }
+        public float ExitAnimationDetachTime { get; set; }
         public Vector3 SmokePosition { get; set; }
         public float SmokeScale { get; set; }
         public int MouthBoneToAttach { get; set; }

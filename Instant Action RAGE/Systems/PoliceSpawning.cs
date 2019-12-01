@@ -247,6 +247,10 @@ public static class PoliceSpawning
             else
                 CarModel = "police4";
         }
+        else if (_Agency == Agencies.PRISEC || _Agency == Agencies.LSPA)
+        {
+            CarModel = "police4";
+        }
         else
         {
             if (RandomValue <= 10)
@@ -254,6 +258,7 @@ public static class PoliceSpawning
             else
                 CarModel = "police2";
         }
+
 
         Vehicle CopCar = new Vehicle(CarModel, SpawnLocation, 0f);
         return CopCar;

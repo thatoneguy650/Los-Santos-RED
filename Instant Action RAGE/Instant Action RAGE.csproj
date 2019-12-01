@@ -135,6 +135,7 @@
     <Compile Include="Systems\PoliceSpeech.cs" />
     <Compile Include="Systems\Respawning.cs" />
     <Compile Include="Systems\RespawnStopper.cs" />
+    <Compile Include="Systems\SearchModeStopping.cs" />
     <Compile Include="Systems\Smoking.cs" />
     <Compile Include="Systems\PedSwapping.cs" />
     <Compile Include="Systems\Speed.cs" />

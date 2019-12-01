@@ -417,7 +417,7 @@ internal static class DispatchAudio
                     else if (Item.Type == ReportDispatch.ReportSuspectSpotted)
                         ReportSuspectSpotted();
                     else if (Item.Type == ReportDispatch.ReportIncreasedWanted)
-                        ReportIncreasedWanted();
+                        ReportIncreasedWanted(Item.ResultsInLethalForce);
                     else
                         ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
@@ -1130,10 +1130,13 @@ internal static class DispatchAudio
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
 
     }
-    public static void ReportIncreasedWanted()
+    public static void ReportIncreasedWanted(bool ResultsInLethalForce)
     {
         if (InstantAction.IsBusted || InstantAction.IsDead)
             return;
+
+        if(ResultsInLethalForce)
+            ReportedLethalForceAuthorized = true;
 
         List<string> ScannerList = new List<string>();
         ScannerList.Add(AudioBeeps.AudioStart());
@@ -1142,10 +1145,16 @@ internal static class DispatchAudio
         ScannerList.Add(PossibleVariations.PickRandom());
         string Subtitles = "Attention all units, a Assistance Needed";
         AddZone(ref ScannerList, ref Subtitles);
+
+        if (ResultsInLethalForce)
+        {
+            Subtitles = Subtitles + ", use of ~r~deadly force~r~ is authorized";
+            AddLethalForceAuthorized(ref ScannerList);
+        }
+
         ScannerList.Add(dispatch_respond_code.UnitsrespondCode3.FileName);
         ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
-
     }
     public static void ReportSuspiciousVehicle(GTAVehicle myCar)
     {

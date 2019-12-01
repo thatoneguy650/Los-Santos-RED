@@ -97,6 +97,7 @@ public static class InstantAction
         Debugging.Initialize();
         PlayerLocation.Initialize();
         TrafficViolations.Initialize();
+        SearchModeStopping.Initialize();
         MainLoop();
     }
     public static void MainLoop()
@@ -159,6 +160,7 @@ public static class InstantAction
         PlayerLocation.Dispose();
         Police.Dispose();
         TrafficViolations.Dispose();
+        SearchModeStopping.Dispose();
     }
 
     private static void UpdatePlayer()
@@ -478,5 +480,4 @@ public static class InstantAction
         if (Settings.GeneralLogging)
             Debugging.WriteToLog(ProcedureString, TextToLog);
     }
-
 }

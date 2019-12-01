@@ -12,30 +12,20 @@ public static class Tasking
 {
     private static Random rnd;
     private static List<PoliceTask> CopsToTask = new List<PoliceTask>();
-    private static bool GhostCopFollow;
-    private static Model CopModel = new Model("s_m_y_cop_01");
     private static uint LastBust;
     private static int ForceSurrenderTime;
     private static bool SurrenderBust = false;
-    private static Ped GhostCop;
-
+    private static uint GameTimeLastResetWeapons;
     public static string CurrentPoliceTickRunning { get; set; }
     public static bool IsRunning { get; set; } = true;
-    public static Ped SpotterCop
-    {
-        get
-        {
-            return GhostCop;
-        }
-    }
+
     static Tasking()
     {
         rnd = new Random();
     }
     public static void Initialize()
     {
-        CopModel.LoadAndWait();
-        CopModel.LoadCollisionAndWait();
+
         MainLoop();
     }
     private static void MainLoop()
@@ -50,6 +40,8 @@ public static class Tasking
                     GameFiber.Sleep(50);//was 100
                     PoliceStateTick();
                     GameFiber.Sleep(50);
+
+
                 }
             }
             catch (Exception e)
@@ -81,7 +73,6 @@ public static class Tasking
         });
         
     }
-
     private static void DisplayQueue()
     {
         string Tasking = "";//string.Format("ToTask: {0}", CopsToTask.Count());
@@ -91,7 +82,6 @@ public static class Tasking
         }
         UI.Text(Tasking, 0.8f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
     }
-
     public static void Dispose()
     {
         IsRunning = false;
@@ -145,6 +135,7 @@ public static class Tasking
             MyTask.GameTimeAssigned = Game.GameTime;
             CopsToTask.Add(MyTask);
             MyTask.CopToAssign.TaskIsQueued = true;
+            LocalWriteToLog("InstantActionTick", string.Format("Queued: {0}, For: {1}", MyTask.TaskToAssign, MyTask.CopToAssign.CopPed.Handle));
         }
     }
     private static void PoliceVehicleTick()
@@ -194,6 +185,11 @@ public static class Tasking
             PoliceTickArrestedWait();
         else
             CurrentPoliceTickRunning = "";
+
+        if(Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
+            SearchModeStopping.StopSearchMode = true;
+        else
+            SearchModeStopping.StopSearchMode = false;
     }
     private static void PoliceTickNormal()
     {
@@ -203,20 +199,19 @@ public static class Tasking
             if (Cop.isTasked && !Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.RandomSpawnIdle)
             {
                 AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
-                LocalWriteToLog("InstantActionTick", string.Format("Untask Queued {0}", Cop.CopPed.Handle));
             }
             else if (Cop.WasRandomSpawn && !Cop.isTasked && !Cop.TaskIsQueued)
             {
                 AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.RandomSpawnIdle));
-                LocalWriteToLog("InstantActionTick", string.Format("RandomSpawnIdle Queued {0}", Cop.CopPed.Handle));
             }
         }
-        if (Game.GameTime - Police.GameTimePoliceStateStart >= 8000)
+        if (Game.GameTime - Police.GameTimePoliceStateStart >= 8000 && Game.GameTime - GameTimeLastResetWeapons >= 10000)//Only reset them every 10 seconds if they need it after 8 seconds of being at normal. Incase you go from normal to deadly real fast.
         {
             foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.SetDeadly || x.SetTazer || x.SetUnarmed))
             {
                 ResetCopWeapons(Cop);//just in case they get stuck
             }
+            GameTimeLastResetWeapons = Game.GameTime;
         }
     }
     private static void PoliceTickUnarmedChase()
@@ -254,7 +249,8 @@ public static class Tasking
         if (SurrenderBust && !IsBustTimeOut())
             SurrenderBustEvent();
 
-        StopSearchMode();
+        SearchModeStopping.StopSearchMode = true;
+       //StopSearchMode();
     }
     private static void PoliceTickArrestedWait()
     {
@@ -295,7 +291,8 @@ public static class Tasking
         if (SurrenderBust && !IsBustTimeOut())
             SurrenderBustEvent();
 
-        StopSearchMode();
+        SearchModeStopping.StopSearchMode = true;
+        //StopSearchMode();
     }
     private static void PoliceTickCautiousChase()
     {
@@ -353,7 +350,8 @@ public static class Tasking
         if (SurrenderBust && !IsBustTimeOut())
             SurrenderBustEvent();
 
-        StopSearchMode();
+        SearchModeStopping.StopSearchMode = true;
+        //StopSearchMode();
     }
     private static void PoliceTickDeadlyChase()
     {
@@ -414,13 +412,8 @@ public static class Tasking
             }
         }
 
-        //if (Police.CanReportLastSeen && Game.GameTime - Police.GameTimeLastGreyedOut > 10000 && Police.AnyPoliceSeenPlayerThisWanted && Police.PlayerHasBeenWantedFor > 45000)
-        //{
-        //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLastSeen, 10, false));
-        //    Police.CanReportLastSeen = false;
-        //}
-    }
 
+    }
     private static void SurrenderBustEvent()
     {
         //return;
@@ -435,43 +428,6 @@ public static class Tasking
         LocalWriteToLog("SurrenderBust", "SurrenderBust Executed");
     }
 
-    private static void StopSearchMode()
-    {
-        if (InstantAction.PlayerInVehicle)
-            return;
-        if (!GhostCop.Exists())
-        {
-            CreateGhostCop();
-        }
-        if (GhostCopFollow && GhostCop != null)
-        {
-            Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 1f));
-            Vector3 PlacedPosition = Vector3.Zero;
-            bool FoundPlace = false;
-            unsafe
-            {
-                FoundPlace = NativeFunction.CallByName<bool>("GET_SAFE_COORD_FOR_PED", DesiredPosition.X, DesiredPosition.Y, DesiredPosition.Z, false, &PlacedPosition, 16);
-            }
-
-            if (FoundPlace)
-                GhostCop.Position = PlacedPosition;
-            else
-                GhostCop.Position = DesiredPosition;
-
-            Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
-            GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-        }
-        if (Police.AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
-        {
-            GhostCopFollow = true;
-        }
-        else
-        {
-            if (GhostCop != null)
-                GhostCop.Position = new Vector3(0f, 0f, 0f);
-            GhostCopFollow = false;
-        }
-    }
     private static void SetUnarmed(GTACop Cop)
     {
         if (!Cop.CopPed.Exists() || (Cop.SetUnarmed && !Cop.NeedsWeaponCheck))
@@ -547,28 +503,7 @@ public static class Tasking
         Cop.SetDeadly = false;
         Cop.GameTimeLastWeaponCheck = Game.GameTime;
     }
-    private static void CreateGhostCop()
-    {
-        GhostCop = new Ped(CopModel, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), Game.LocalPlayer.Character.Heading);
-        GhostCop.BlockPermanentEvents = false;
-        GhostCop.IsPersistent = true;
-        GhostCop.IsCollisionEnabled = false;
-        GhostCop.IsVisible = false;
-        Blip myBlip = GhostCop.GetAttachedBlip();
-        if (myBlip != null)
-            myBlip.Delete();
-        GhostCop.VisionRange = 100f;
-        GhostCop.HearingRange = 100f;
-        GhostCop.CanRagdoll = false;
-        const ulong SetPedMute = 0x7A73D05A607734C7;
-        NativeFunction.CallByHash<uint>(SetPedMute, GhostCop);
-        NativeFunction.CallByName<bool>("STOP_PED_SPEAKING", GhostCop, true);
-        NativeFunction.CallByName<uint>("SET_PED_CONFIG_FLAG", GhostCop, 69, true);
-        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, (uint)2725352035, true); //Unequip weapon so you don't get shot
-        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
-        NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", GhostCop, 0f);
-        GhostCopFollow = true;
-    }
+
 
     private static bool IsBustTimeOut()
     {
@@ -853,7 +788,7 @@ public static class Tasking
             Cop.CopPed.Tasks.CruiseWithVehicle(30f, VehicleDrivingFlags.Emergency);
             LocalWriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(CruiseWithVehicle): {0}", Cop.CopPed.Handle));
         }
-        if (Cop.isInVehicle && !Police.PlayerLastSeenInVehicle)
+        if (Cop.isInVehicle && !Police.PlayerLastSeenInVehicle && Police.AnyPoliceSeenPlayerThisWanted)
         {
             Vehicle CopCar = Cop.CopPed.CurrentVehicle;
             unsafe

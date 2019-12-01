@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,6 +23,7 @@ public static class Agencies
     public static Agency ARMY;
     public static Agency UNK;
     public static Agency PRISEC;
+    public static Agency LSPA;
     public static void Initialize()
     {
         AgenciesList = new List<Agency>();
@@ -50,7 +52,7 @@ public static class Agencies
                 , new Agency.ModelInformation("s_m_y_marine_02",true), new Agency.ModelInformation("s_m_y_marine_03",true), new Agency.ModelInformation("s_m_m_pilot_02",true), new Agency.ModelInformation("s_m_y_pilot_01",true) }, Color.Black);
         UNK = new Agency("~s~", "UNK", "Unknown Agency", new List<Agency.ModelInformation>() { new Agency.ModelInformation("",true) }, Color.White);
         PRISEC = new Agency("~s~", "PRISEC", "Private Security", new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_m_security_01", true) }, Color.White);
-
+        LSPA = new Agency("~c~", "LSPA", "Port Authority of Los Santos", new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_m_security_01", true) }, Color.LightGray);
 
         AgenciesList.Add(LSPD);
         AgenciesList.Add(LSSD);
@@ -76,12 +78,19 @@ public static class Agencies
             return ARMY;
         else if (Cop.isPolice())
         {
-            //Agency ToReturn = AgenciesList.Where(x => x.CopModels.SelectMany(b => b.ModelName).Where(c => c.//Where(x => x.ModelName == Cop.Model.Name.ToLower()).ToList()).FirstOrDefault();//.Include(Cop.Model.Name.ToLower())).FirstOrDefault();
-           // Agency ToReturn = AgenciesList.SelectMany(x => x.CopModels).SelectMany(c => c.ModelName == Cop.Model.Name.ToLower());
-
-            Agency ToReturn = AgenciesList.Where(p => p.CopModels.Any(c => c.ModelName == Cop.Model.Name.ToLower())).FirstOrDefault();
-
-
+            Agency ToReturn;
+            if (Cop.Model.Name.ToLower() == "s_m_y_swat_01")//Swat depends on unit insignias
+             {
+                ToReturn = GetAgencyFromSwat(Cop);
+            }
+            else if (Cop.Model.Name.ToLower() == "s_m_m_security_01")//Security depends on where they are
+            {
+                ToReturn = GetAgencyFromSecurity(Cop);
+            }
+            else
+            {
+                ToReturn = AgenciesList.Where(p => p.CopModels.Any(c => c.ModelName == Cop.Model.Name.ToLower())).FirstOrDefault();
+            }
             if (ToReturn == null)
                 return LSPD;
             else
@@ -90,7 +99,30 @@ public static class Agencies
         else
             return null;
     }
-
+    private static Agency GetAgencyFromSwat(Ped Cop)
+    {
+        if(InstantAction.PlayerWantedLevel >= 5)
+        {
+            NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 10, 0, 1, 0);//Set them as FIB
+        }
+        int TextureVariation = NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", Cop, 10);
+        if (TextureVariation == 0)
+            return LSPD;
+        else
+            return FIB;
+    }
+    private static Agency GetAgencyFromSecurity(Ped Cop)
+    {
+        Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
+        if (PedZone != null && PedZone.MainZoneAgency == LSPA)
+        {
+            return LSPA;
+        }
+        else
+        {
+            return PRISEC;
+        }
+    }
 }
 public class Agency
 {
@@ -126,27 +158,6 @@ public class Agency
         CopModels = _CopModels;
         AgencyColor = _AgencyColor;
     }
-
-    //public static ModelInformation GetRandomModel(List<ModelInformation> brokers, int totalWeight)
-    //{
-    //    // totalWeight is the sum of all brokers' weight
-    //    int randomNumber = rnd.Next(0, totalWeight);
-
-    //    ModelInformation selectedBroker = null;
-    //    foreach (ModelInformation broker in brokers)
-    //    {
-    //        if (randomNumber <= broker.Weight)
-    //        {
-    //            selectedBroker = broker;
-    //            break;
-    //        }
-    //        randomNumber = randomNumber - broker.Weight;
-    //    }
-    //    return selectedBroker;
-    //}
-
-
-
     public class ModelInformation
     {
         public string ModelName;

@@ -733,7 +733,11 @@ internal static class Police
             //    PoliceSpawning.SpawnNewsChopper();
             //    LocalWriteToLog("WantedLevelTick", "Been at this wanted for a while, wanted news chopper spawned (if they dont already exist)");
             //}
-
+            if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 10000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000)
+            {
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLastSeen, 10, false));
+                CanReportLastSeen = false;
+            }
         }
     }
     private static void PersonOfInterestTick()
