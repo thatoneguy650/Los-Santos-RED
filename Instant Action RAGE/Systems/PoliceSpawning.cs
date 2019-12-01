@@ -45,7 +45,7 @@ public static class PoliceSpawning
                 return;
 
 
-            Zone ZoneName = Zones.GetZoneName(SpawnLocation);
+            Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
             string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
             Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
 
@@ -173,7 +173,7 @@ public static class PoliceSpawning
         if (_Agency.CopModels.Any(x => !x.isMale))
             isMale = rnd.Next(1, 11) <= 7; //70% chance Male
 
-        Agency.ModelInformation MyInfo = _Agency.CopModels.Where(x => x.isMale == isMale).PickRandom();
+        Agency.ModelInformation MyInfo = _Agency.CopModels.Where(x => x.isMale == isMale && x.UseForRandomSpawn).PickRandom();
         Vector3 SafeSpawnLocation = new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 10f);
         Ped Cop = new Ped(MyInfo.ModelName, SafeSpawnLocation, 0f);
         NativeFunction.CallByName<bool>("SET_PED_AS_COP", Cop, true);

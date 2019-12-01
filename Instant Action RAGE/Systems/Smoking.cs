@@ -103,7 +103,7 @@ public static class Smoking
     }
     private static void Setup()
     {
-        List<SmokingAnimation.IdleAnimation> MaleIdles = new List<SmokingAnimation.IdleAnimation>() { new SmokingAnimation.IdleAnimation("amb@world_human_smoking@male@male_a@idle_a", "idle_b", new SmokingAnimation.AnimationDragIndex(0.1f, 0.2f,0.7f, 0.8f),1500)
+        List<SmokingAnimation.IdleAnimation> MaleIdles = new List<SmokingAnimation.IdleAnimation>() { new SmokingAnimation.IdleAnimation("amb@world_human_smoking@male@male_a@idle_a", "idle_b", new SmokingAnimation.AnimationDragIndex(0.1f, 0.3f,0.6f, 0.7f),1500)
                                                                                                  ,new SmokingAnimation.IdleAnimation("amb@world_human_smoking@male@male_a@idle_a", "idle_c", new SmokingAnimation.AnimationDragIndex(0.1f, 0.2f,0.7f, 0.8f),1500) };
         StandardCigaretteMale = new SmokingAnimation("ng_proc_cigarette01a", "amb@world_human_smoking@male@male_a@enter", "enter", "amb@world_human_smoking@male@male_a@idle_a", MaleIdles, "amb@world_human_smoking@male@male_a@exit", "exit", new Vector3(-0.07f, 0.0f, 0f), 1.5f, 17188, new Vector3(0.046f, 0.015f, 0.014f), new Rotator(0.0f, -180f, 0f), 57005, new Vector3(0.14f, 0.03f, 0.0f), new Rotator(0.49f, 79f, 79f));
         StandardCigarettePlayerZero = new SmokingAnimation("ng_proc_cigarette01a", "amb@world_human_smoking@male@male_a@enter", "enter", "amb@world_human_smoking@male@male_a@idle_a", MaleIdles, "amb@world_human_smoking@male@male_a@exit", "exit", new Vector3(-0.07f, 0.0f, 0f), 1.5f, 31086, new Vector3(-0.007f, 0.13f, 0.01f), new Rotator(0.0f, -175f, 91f), 57005, new Vector3(0.1640f, 0.019f, 0.0f), new Rotator(0.49f, 79f, 79f));
@@ -215,7 +215,16 @@ public static class Smoking
             }
             while (!Game.IsControlPressed(0, GameControl.Aim) && !Game.IsControlPressed(0, GameControl.Enter) && !Game.IsControlPressed(0, GameControl.Sprint))
             {
-                GameFiber.Sleep(50);
+                CurrentPuffingAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, CurrentIdleAnimation.Dictionary, CurrentIdleAnimation.Animation);
+                if (CurrentPuffingAnimationTime <= 0.005f) 
+                {
+                    StartPuffingCigarette();
+                }
+                string Animation = string.Format("Anim: {0}, Time: {1}, NearMouth: {2}", CurrentIdleAnimation.Animation, CurrentPuffingAnimationTime, CurrentPuffingAnimationNearMouth);
+                UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+
+
+                GameFiber.Yield(); //GameFiber.Sleep(50);//works fine with sleep 50
             }
             LocalWriteToLog("Smoking", string.Format("Cancel after waiting after puffing {0}", Cancel));
             Stop();

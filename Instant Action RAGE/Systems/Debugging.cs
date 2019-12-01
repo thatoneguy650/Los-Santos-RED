@@ -78,12 +78,6 @@ public static class Debugging
 
         UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
 
-        if (Smoking.CurrentIdleAnimation != null)
-        {
-            string Animation = string.Format("Anim: {0}, Time: {1}, NearMouth: {2}", Smoking.CurrentIdleAnimation.Animation, Smoking.CurrentPuffingAnimationTime, Smoking.CurrentPuffingAnimationNearMouth);
-            UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
-        }
-
 
         if (Game.IsKeyDown(Keys.NumPad0))
         {
@@ -211,10 +205,10 @@ public static class Debugging
     }
     private static void DebugNumpad2()
     {
-        if (Game.LocalPlayer.WantedLevel > 0)
-            Game.LocalPlayer.WantedLevel = 0;
-        else
-            Game.LocalPlayer.WantedLevel = 2;
+        //if (Game.LocalPlayer.WantedLevel > 0)
+        //    Game.LocalPlayer.WantedLevel = 0;
+        //else
+        //    Game.LocalPlayer.WantedLevel = 2;
     }
     private static void DebugNumpad3()
     {
@@ -233,6 +227,15 @@ public static class Debugging
         foreach(Location loc in Locations.GetAllLocationsOfType(Location.LocationType.Police))
         {
             WriteToLog("", loc.ToString());
+        }
+        if (PlayerLocation.PlayerCurrentZone != null)
+        {
+            WriteToLog("PlayerCurrentZone", string.Format("Zone: {0},MainAgency: {1}", PlayerLocation.PlayerCurrentZone.TextName, PlayerLocation.PlayerCurrentZone.MainZoneAgency.FullName));
+            
+        }
+        else
+        {
+            WriteToLog("PlayerCurrentZone", string.Format("Zone: {0}", "No Zone"));
         }
 
 

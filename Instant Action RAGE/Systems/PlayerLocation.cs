@@ -45,7 +45,7 @@ public static class PlayerLocation
     }
     private static void UpdateLocation()
     {
-        PlayerCurrentZone = Zones.GetZoneName(Game.LocalPlayer.Character.Position);
+        PlayerCurrentZone = Zones.GetZoneAtLocation(Game.LocalPlayer.Character.Position);
         if (World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position).DistanceTo2D(Game.LocalPlayer.Character) >= 25f)
         {
             PlayerIsOffroad = true;

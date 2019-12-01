@@ -515,7 +515,7 @@ internal static class Menus
         }
         if (selectedItem == menuActionSmoking)
         {
-            if (SmokingOptionsList[index].ToString() == "Start")
+            if (SmokingOptionsList[index-1].ToString() == "Start")
             {
                 Smoking.Start();
             }

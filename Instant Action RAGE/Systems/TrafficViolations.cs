@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -198,6 +199,38 @@ public static class TrafficViolations
                 FelonySpeeding.Speed = VehicleSpeedMPH;
                 FelonySpeeding.IsTrafficViolation = true;
                 DispatchAudio.AddDispatchToQueue(FelonySpeeding);
+            }
+        }
+    }
+    public static void SetDriverWindow(bool RollDown)
+    {
+        if (Game.LocalPlayer.Character.CurrentVehicle == null)
+            return;
+
+        bool DriverWindowIntact = NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0);
+        GTAVehicle MyVehicle = InstantAction.GetPlayersCurrentTrackedVehicle();
+        if (DriverWindowIntact)
+        {
+            if (RollDown)
+            {
+                NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+                MyVehicle.ManuallyRolledDriverWindowDown = true;
+            }
+            else
+            {           
+                MyVehicle.ManuallyRolledDriverWindowDown = false;
+                NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+            }
+        }
+        else
+        {
+            if (!RollDown)
+            {
+                if (MyVehicle != null && MyVehicle.ManuallyRolledDriverWindowDown)
+                {
+                    MyVehicle.ManuallyRolledDriverWindowDown = false;
+                    NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+                }
             }
         }
     }

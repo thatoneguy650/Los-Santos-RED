@@ -67,17 +67,31 @@ public static class Tasking
                 {
                     if(Game.LocalPlayer.WantedLevel > 0)//Dont need to do this each tick if we arent wanted?
                         PoliceVehicleTick();
+
+                    DisplayQueue(); //Temp Crap to show me the queue
+
                     GameFiber.Yield();
                 }
             }
             catch (Exception e)
             {
                 InstantAction.Dispose();
-                LocalWriteToLog("Error", e.Message + " : " + e.StackTrace);
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
         
     }
+
+    private static void DisplayQueue()
+    {
+        string Tasking = "";//string.Format("ToTask: {0}", CopsToTask.Count());
+        foreach(PoliceTask MyTask in CopsToTask)
+        {
+            Tasking = MyTask.CopToAssign.CopPed.Handle.ToString() + ":" + MyTask.TaskToAssign.ToString();
+        }
+        UI.Text(Tasking, 0.8f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+    }
+
     public static void Dispose()
     {
         IsRunning = false;
@@ -120,6 +134,7 @@ public static class Tasking
 
                 _policeTask.CopToAssign.TaskIsQueued = false;
                 CopsToTask.RemoveAt(0);
+                   
             }
         }
     }
@@ -307,7 +322,7 @@ public static class Tasking
             }
 
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isTasked && x.SimpleTaskName != ""))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isTasked && x.TaskType != PoliceTask.Task.NoTask))//foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isTasked && x.SimpleTaskName != "")) NoTask
         {
             if (!Cop.TaskIsQueued && Game.GameTime - Cop.GameTimeLastTask > 20000 && Cop.RecentlySeenPlayer() && Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress && Cop.DistanceToPlayer > 25f)
             {
@@ -577,7 +592,7 @@ public static class Tasking
             LocalWriteToLog("Task Chasing", string.Format("Initial Return: {0}", Cop.CopPed.Handle));
             return;
         }
-        Cop.TaskType = PoliceTask.Task.Chase;
+        
         Cop.TaskFiber =
         GameFiber.StartNew(delegate
         {
@@ -586,9 +601,10 @@ public static class Tasking
             LocalWriteToLog("Task Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
             uint TaskTime = 0;// = Game.GameTime;
             string LocalTaskName = "GoTo";
-            double cool = rnd.NextDouble() * (1.175 - 1.1) + 1.1;
+            double cool = rnd.NextDouble() * (1.17 - 1.075) + 1.075;//(1.175 - 1.1) + 1.1;
             float MoveRate = (float)cool;
-            Cop.SimpleTaskName = "Chase";
+            //Cop.SimpleTaskName = "Chase";
+            Cop.TaskType = PoliceTask.Task.Chase;
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_CLIMBOVERS", Cop.CopPed, true);
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_LADDERS", Cop.CopPed, true);
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_DROP_FROM_HEIGHT", Cop.CopPed, true);
@@ -603,7 +619,7 @@ public static class Tasking
                 if (TaskTime == 0 || Game.GameTime - TaskTime >= 250)//250
                 {
                     ArmCopAppropriately(Cop);
-                    if (Cop.DistanceToPlayer > 100f || !Cop.SeenPlayerSince(15000))
+                    if (Cop.DistanceToPlayer > 100f || !Cop.RecentlySeenPlayer())
                         break;
 
                     if (Cop.CopPed.IsGettingIntoVehicle)
@@ -713,7 +729,7 @@ public static class Tasking
             Cop.TaskFiber = null;
             Cop.isTasked = false;
             Cop.TaskType = PoliceTask.Task.NoTask;
-            Cop.SimpleTaskName = "";
+            //Cop.SimpleTaskName = "";
             if (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
                 Cop.CopPed.CanRagdoll = true;
 
@@ -724,7 +740,7 @@ public static class Tasking
     {
         Cop.TaskType = PoliceTask.Task.SimpleChase;
         Cop.CopPed.BlockPermanentEvents = true;
-        Cop.SimpleTaskName = "SimpleChase";
+        //Cop.SimpleTaskName = "SimpleChase";
         Cop.CopPed.Tasks.GoToWhileAiming(Game.LocalPlayer.Character, 10f, 40f);
         Cop.CopPed.KeepTasks = true;
         LocalWriteToLog("TaskSimpleChase", "How many times i this getting called?");
@@ -733,7 +749,7 @@ public static class Tasking
     {
         Cop.TaskType = PoliceTask.Task.SimpleArrest;
         Cop.CopPed.BlockPermanentEvents = true;
-        Cop.SimpleTaskName = "SimpleArrest";
+        //Cop.SimpleTaskName = "SimpleArrest";
         unsafe
         {
             int lol = 0;
@@ -756,14 +772,15 @@ public static class Tasking
             LocalWriteToLog("Task Vehicle Chasing", string.Format("Didn't Start Vehicle Chase: {0}", Cop.CopPed.Handle));
             return; //Only task this is we already have officers on foot
         }
-        Cop.TaskType = PoliceTask.Task.VehicleChase;
+
         Cop.TaskFiber =
         GameFiber.StartNew(delegate
         {
             LocalWriteToLog("Task Vehicle Chasing", string.Format("Started Vehicle Chase: {0}", Cop.CopPed.Handle));
             uint TaskTime = Game.GameTime;
             Cop.CopPed.BlockPermanentEvents = true;
-            Cop.SimpleTaskName = "VehicleChase";
+            Cop.TaskType = PoliceTask.Task.VehicleChase;
+            //Cop.SimpleTaskName = "VehicleChase";
 
             NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.CopPed, 3, false);
@@ -812,7 +829,7 @@ public static class Tasking
             LocalWriteToLog("Task Vehicle Chase", string.Format("Loop End: {0}", Cop.CopPed.Handle));
             Cop.TaskFiber = null;
             Cop.isTasked = false;
-            Cop.SimpleTaskName = "";
+            //Cop.SimpleTaskName = "";
             Cop.TaskType = PoliceTask.Task.NoTask;
         }, "VehicleChase");
         Debugging.GameFibers.Add(Cop.TaskFiber);
@@ -823,9 +840,9 @@ public static class Tasking
             return;
         Cop.TaskType = PoliceTask.Task.SimpleInvestigate;
         Cop.CopPed.BlockPermanentEvents = false;
-        Cop.SimpleTaskName = "SimpleInvestigate";
+        //Cop.SimpleTaskName = "SimpleInvestigate";
 
-        Vector3 TargetLocation = (Police.PlayerLastSeenForwardVector * 150f).Around2D(75f);
+        Vector3 TargetLocation = Police.PlacePlayerLastSeen.Around2D(65f);//(Police.PlayerLastSeenForwardVector * 55f).Around2D(75f);
         Blip MyBlip = new Blip(TargetLocation, 15f);
         MyBlip.Color = Color.Purple;
         MyBlip.Alpha = 0.5f;
@@ -870,7 +887,7 @@ public static class Tasking
             return;
         Cop.TaskType = PoliceTask.Task.GoToWantedCenter;
         Cop.CopPed.BlockPermanentEvents = false;
-        Cop.SimpleTaskName = "GoToWantedCenter";
+        //Cop.SimpleTaskName = "GoToWantedCenter";
         Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
         if (Cop.isInVehicle)
             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.CopPed, Cop.CopPed.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 70f, 4 | 16 | 32 | 262144, 35f);
@@ -1013,7 +1030,7 @@ public static class Tasking
         }
 
         Cop.TaskType = PoliceTask.Task.NoTask;
-        Cop.SimpleTaskName = "";
+        //Cop.SimpleTaskName = "";
         Cop.isTasked = false;
     }
     private static void ArmCopAppropriately(GTACop Cop)

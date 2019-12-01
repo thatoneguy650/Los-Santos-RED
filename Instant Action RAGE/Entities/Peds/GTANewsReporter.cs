@@ -35,7 +35,7 @@ public class GTANewsReporter
 
     private static Random rnd;
     public Ped ReporterPed { get; set; }
-    public string SimpleTaskName { get; set; }
+   // public string SimpleTaskName { get; set; }
     public bool canSeePlayer { get; set; }
     public bool isTasked { get; set; } = false;
     public uint GameTimeLastSeenPlayer { get; set; }

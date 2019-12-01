@@ -32,6 +32,7 @@ public class GTAVehicle
     public Color DescriptionColor;
     public GTALicensePlate CarPlate;
     public GTALicensePlate OriginalLicensePlate;
+    public bool ManuallyRolledDriverWindowDown = false;
     public bool PlayerHasEntered
     {
         get

@@ -29,7 +29,7 @@ public class GTACop
     }
     public int Health { get; set; }
     public Ped CopPed { get; set; }
-    public string SimpleTaskName { get; set; }
+   // public string SimpleTaskName { get; set; }
     public bool canSeePlayer { get; set; }
     public bool isTasked { get; set; } = false;
     public bool WasRandomSpawn { get; set; } = false;

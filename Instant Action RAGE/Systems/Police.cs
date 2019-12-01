@@ -260,6 +260,7 @@ internal static class Police
         CheckPoliceEvents();
         TrackedVehiclesTick();
         WantedLevelTick();
+        PersonOfInterestTick();
     }
     private static void UpdatePolice()
     {
@@ -631,26 +632,6 @@ internal static class Police
                 aimedAtPolice = true;
             }
         }
-
-        if (InstantAction.PlayerWantedLevel == 0 && PlayerHasBeenNotWantedFor >= 120000)
-        {
-            PlayerIsPersonOfInterest = false;
-            if (LastWantedCenterBlip.Exists())
-                LastWantedCenterBlip.Delete();
-        }
-
-        if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanRecognizePlayerAfterWanted && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000)
-        {
-            SetWantedLevel(3, "Cops Reacquired after losing them");
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3, false));
-            LocalWriteToLog("Cops Reacquired after losing them", "");
-        }
-        if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= 250f)
-        {
-            SetWantedLevel(3, "Cops Reacquired after losing them in the same area");
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3, false));
-        }
-
     }
 
     private static void CheckPoliceEvents()
@@ -741,18 +722,10 @@ internal static class Police
     {
         if (InstantAction.PlayerWantedLevel > 0)
         {
-            Vector3 CurrentWantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
-            if (CurrentWantedCenter != Vector3.Zero)
-            {
-                LastWantedCenterPosition = CurrentWantedCenter;
-                AddUpdateCurrentWantedBlip(CurrentWantedCenter);
-            }
-
             if (Settings.WantedLevelIncreasesOverTime && Game.GameTime - WantedLevelStartTime > Settings.WantedLevelIncreaseTime && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 0 && InstantAction.PlayerWantedLevel <= Settings.WantedLevelInceaseOverTimeLimit)
             {
-                Game.LocalPlayer.WantedLevel++;
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportIncreasedWanted, 3, false));
-                LocalWriteToLog("WantedLevelStartTime", "Wanted Level Increased Over Time");
+                SetWantedLevel(InstantAction.PlayerWantedLevel + 1, "Wanted Level increased over time");
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportIncreasedWanted, 3, Game.LocalPlayer.WantedLevel == 4));
             }
 
             //if (Settings.SpawnNewsChopper && Game.GameTime - WantedLevelStartTime > 180000 && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 4 && !PoliceScanning.Reporters.Any())
@@ -761,20 +734,39 @@ internal static class Police
             //    LocalWriteToLog("WantedLevelTick", "Been at this wanted for a while, wanted news chopper spawned (if they dont already exist)");
             //}
 
-            //if (AnyPoliceRecentlySeenPlayer && !PlayerStarsGreyedOut)
-            //{
-            //    PoliceScanning.PlacePlayerLastSeen = Game.LocalPlayer.Character.Position;
-            //    NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z);
-            //}
-
-            //if (AnyPoliceRecentlySeenPlayer && !PlayerStarsGreyedOut)
-            //{
-            //    PoliceScanning.PlacePlayerLastSeen = Game.LocalPlayer.Character.Position;
-            //    NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z);
-            //}
         }
     }
+    private static void PersonOfInterestTick()
+    {
+        Vector3 CurrentWantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+        if (Game.LocalPlayer.WantedLevel > 0 && CurrentWantedCenter != Vector3.Zero)
+        {
+            LastWantedCenterPosition = CurrentWantedCenter;
+            AddUpdateCurrentWantedBlip(CurrentWantedCenter);
+        }
 
+        if (InstantAction.PlayerWantedLevel == 0 && PlayerHasBeenNotWantedFor >= 120000)
+        {
+            PlayerIsPersonOfInterest = false;
+            AddUpdateLastWantedBlip(Vector3.Zero);
+            AddUpdateCurrentWantedBlip(Vector3.Zero);
+        }
+        if (InstantAction.PlayerWantedLevel == 0)
+        {
+            AddUpdateCurrentWantedBlip(Vector3.Zero);
+        }
+
+        if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanRecognizePlayerAfterWanted && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000)
+        {
+            SetWantedLevel(3, "Cops Reacquired after losing them");
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3, false));
+        }
+        if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= 250f)
+        {
+            SetWantedLevel(3, "Cops Reacquired after losing them in the same area");
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3, false));
+        }
+    }
     public static void ResetPoliceStats()
     {
         CopsKilledByPlayer = 0;
@@ -858,10 +850,9 @@ internal static class Police
     {
         PlayerIsPersonOfInterest = false;
         LastWantedCenterPosition = Vector3.Zero;
-        if (LastWantedCenterBlip.Exists())
-            LastWantedCenterBlip.Delete();
+        AddUpdateCurrentWantedBlip(Vector3.Zero);
+        AddUpdateLastWantedBlip(Vector3.Zero);
     }
-
     private static void WantedLevelChanged()
     {
         if (Game.LocalPlayer.WantedLevel == 0)//Just Removed
@@ -869,6 +860,9 @@ internal static class Police
             if (AnyPoliceSeenPlayerThisWanted && PreviousWantedLevel != 0)//maxwantedlastlife
             {
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLost, 5, false));
+            }
+            if(PlayerIsPersonOfInterest)
+            {
                 AddUpdateLastWantedBlip(LastWantedCenterPosition);
             }
             CurrentPoliceState = PoliceState.Normal;
@@ -900,16 +894,14 @@ internal static class Police
             if (Game.LocalPlayer.WantedLevel == 1 && !RecentlySetWanted && !AnyPoliceRecentlySeenPlayer && !World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Any(x => x.IsAlive))
             {
                 SetWantedLevel(0,"Reset a fake wanted level as there is nobody within 25 meters and no police have recently seen you");
-                if (LastWantedCenterBlip.Exists())
-                    LastWantedCenterBlip.Delete();
+                AddUpdateLastWantedBlip(Vector3.Zero);
                 return;
             }
 
             GameTimeWantedStarted = Game.GameTime;
             PlaceWantedStarted = Game.LocalPlayer.Character.Position;
 
-            if (LastWantedCenterBlip.Exists())
-                LastWantedCenterBlip.Delete();
+            AddUpdateLastWantedBlip(Vector3.Zero);
 
             Tasking.UntaskAllRandomSpawns(false);
             PlayerIsPersonOfInterest = true;

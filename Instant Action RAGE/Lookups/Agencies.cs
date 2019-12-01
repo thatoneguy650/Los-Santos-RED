@@ -38,7 +38,7 @@ public static class Agencies
         //PRISEC = new Agency("~s~", "PRISEC", "Private Security", new List<string>() { "s_m_m_security_01" }, Color.White);
 
 
-        LSPD = new Agency("~b~", "LSPD", "Los Santos Police Deptartment", new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_cop_01", true), new Agency.ModelInformation("s_f_y_cop_01", false), new Agency.ModelInformation("s_m_y_swat_01", true) }, Color.Blue);
+        LSPD = new Agency("~b~", "LSPD", "Los Santos Police Deptartment", new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_cop_01", true), new Agency.ModelInformation("s_f_y_cop_01", false), new Agency.ModelInformation("s_m_y_swat_01", true,false) }, Color.Blue);
         LSSD = new Agency("~r~", "LSSD", "Los Santos County Sheriff", new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_sheriff_01", true), new Agency.ModelInformation("s_f_y_sheriff_01",false) }, Color.Red);
         SAPR = new Agency("~g~", "SAPR", "San Andreas Park Ranger", new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_ranger_01", true), new Agency.ModelInformation("s_f_y_ranger_01",false) }, Color.Green);
         DOA = new Agency("~q~", "DOA", "Drug Observation Agency", new List<Agency.ModelInformation>() { new Agency.ModelInformation("u_m_m_doa_01", true) }, Color.DeepPink);
@@ -151,10 +151,17 @@ public class Agency
     {
         public string ModelName;
         public bool isMale = true;
+        public bool UseForRandomSpawn = true;
         public ModelInformation(string _ModelName,bool _isMale)
         {
             ModelName = _ModelName;
             isMale = _isMale;
+        }
+        public ModelInformation(string _ModelName, bool _isMale,bool _UseForRandomSpawn)
+        {
+            ModelName = _ModelName;
+            isMale = _isMale;
+            UseForRandomSpawn = _UseForRandomSpawn;
         }
     }
 }

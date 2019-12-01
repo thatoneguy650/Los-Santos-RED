@@ -1800,7 +1800,7 @@ internal static class DispatchAudio
     public static bool AddZone(ref List<string> ScannerList, ref string Subtitles)
     {
         Vector3 Pos = Game.LocalPlayer.Character.Position;
-        Zone MyZone = GetZoneName(Pos);
+        Zone MyZone = GetZoneAtLocation(Pos);
         if (MyZone != null && MyZone.ScannerValue != "")
         {
             ScannerList.Add(conjunctives.NearGenericRandom());

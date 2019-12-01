@@ -10,6 +10,7 @@ using ExtensionsMethods;
 
 public static class CarStealing
 {
+
     private static uint GameTimeLastTriedCarJacking;
     private static Random rnd;
 
@@ -117,8 +118,6 @@ public static class CarStealing
             PlayerBreakingIntoCar = false;
             LocalWriteToLog("UnlockCarDoor", e.Message);
         }
-
-
     }
     public static void LockCarDoor(Vehicle ToLock)
     {
@@ -147,6 +146,46 @@ public static class CarStealing
 
         LocalWriteToLog("LockCarDoor", "Locked");
         ToLock.LockStatus = (VehicleLockStatus)7;
+    }
+    public static void EnterVehicleEvent()
+    {
+        Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
+        int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
+        LockCarDoor(TargetVeh);//Attempt to lock most car doors
+        int LockStatus = (int)TargetVeh.LockStatus;//Get the result of the function
+        if (LockStatus == 7)//Locked but can be broken into
+        {
+            UnlockCarDoor(TargetVeh, SeatTryingToEnter);
+        }
+
+        if (TargetVeh != null && SeatTryingToEnter == -1)
+        {
+            Ped Driver = TargetVeh.Driver;
+            if (Driver != null && Driver.IsAlive)
+            {
+                CarJackPedWithWeapon(TargetVeh, Driver, SeatTryingToEnter);
+                LocalWriteToLog("EnterVehicle", "CarJacking");
+            }
+            else
+            {
+                LocalWriteToLog("EnterVehicle", "Regular Enter No Driver");
+            }
+        }
+        else
+        {
+            LocalWriteToLog("EnterVehicle", "Regular Enter");
+        }
+    }
+    public static void UpdateStolenStatus()
+    {
+        GTAVehicle MyVehicle = InstantAction.GetPlayersCurrentTrackedVehicle();
+        if (MyVehicle == null || MyVehicle.IsStolen)
+            return;
+
+        if (InstantAction.OwnedCar == null)
+            MyVehicle.IsStolen = true;
+        else if (MyVehicle.VehicleEnt.Handle != InstantAction.OwnedCar.Handle && !MyVehicle.IsStolen)
+            MyVehicle.IsStolen = true;
     }
     public static Vector3 GetHandlePosition(Vehicle TargetVehicle)
     {

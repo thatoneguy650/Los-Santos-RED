@@ -19,9 +19,9 @@ public static class InstantAction
 {
     private static Random rnd;
     private static Police.PoliceState HandsUpPreviousPoliceState;
-    private static bool PlayerIsGettingIntoVehicle;
-    private static bool PrevPlayerInVehicle = false;
     private static bool PrevPlayerIsGettingIntoVehicle;
+    private static bool PrevPlayerInVehicle = false;
+    private static bool PrevPlayerAimingInVehicle = false;
     private static bool IsRunning { get; set; } = true;
     public static bool IsDead { get; set; } = false;
     public static bool IsBusted { get; set; } = false;
@@ -33,7 +33,10 @@ public static class InstantAction
     public static int MaxWantedLastLife { get; set; }
     public static WeaponHash LastWeapon { get; set; } = 0;
     public static bool PlayerInVehicle { get; set; } = false;
+    public static bool PlayerAimingInVehicle { get; set; } = false;
+    public static bool PlayerIsGettingIntoVehicle { get; set; }
     public static int PlayerWantedLevel { get; set; } = 0;
+    public static WeaponHash PlayerCurrentWeaponHash { get; set; }
     public static List<GTAVehicle> TrackedVehicles { get; set; } = new List<GTAVehicle>() ;
     public static Vehicle OwnedCar { get; set; } = null;
     public static List<Rage.Object> CreatedObjects { get; set; } = new List<Rage.Object>();
@@ -164,6 +167,12 @@ public static class InstantAction
         PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
         PlayerWantedLevel = Game.LocalPlayer.WantedLevel;
         PlayerIsConsideredArmed = Game.LocalPlayer.Character.isConsideredArmed();
+        PlayerAimingInVehicle = PlayerInVehicle && Game.LocalPlayer.IsFreeAiming;
+        WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
+        if (PlayerCurrentWeapon != null)
+            PlayerCurrentWeaponHash = PlayerCurrentWeapon.Hash;
+        else
+            PlayerCurrentWeaponHash = 0;
 
         if (PrevPlayerIsGettingIntoVehicle != PlayerIsGettingIntoVehicle)
             PlayerIsGettingIntoVehicleChanged();
@@ -171,11 +180,14 @@ public static class InstantAction
         if (PlayerInVehicle && !IsCurrentVehicleTracked)
             TrackCurrentVehicle();
 
-        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash != LastWeapon)
-            LastWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
+        if (PlayerCurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeapon)
+            LastWeapon = PlayerCurrentWeapon.Hash;
+
+        if (PrevPlayerAimingInVehicle != PlayerAimingInVehicle)
+            PlayerAimingInVehicleChanged();
 
         if (PrevPlayerInVehicle != PlayerInVehicle)
-            PlayerInVehicleChanged(PlayerInVehicle);
+            PlayerInVehicleChanged();
     }
     private static void StateTick()
     {
@@ -192,9 +204,6 @@ public static class InstantAction
 
         if (BeingArrested && !IsBusted)
             PlayerBustedEvent();
-
-        //if (PlayerWantedLevel > PreviousWantedLevel)
-        //    PreviousWantedLevel = PlayerWantedLevel;
 
         if (PlayerWantedLevel > MaxWantedLastLife) // The max wanted level i saw in the last life, not just right before being busted
             MaxWantedLastLife = PlayerWantedLevel;
@@ -264,61 +273,35 @@ public static class InstantAction
         }, "HandleDeath");
         Debugging.GameFibers.Add(HandleDeath);
     }
-    private static void PlayerIsGettingIntoVehicleChanged()
+    public static void PlayerIsGettingIntoVehicleChanged()
     {
         if (PlayerIsGettingIntoVehicle)
         {
-            Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
-            int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-            CarStealing.LockCarDoor(TargetVeh);//Attempt to lock most car doors
-            int LockStatus = (int)TargetVeh.LockStatus;//Get the result of the function
-            if(LockStatus == 7)//Locked but can be broken into
-            {
-                CarStealing.UnlockCarDoor(TargetVeh, SeatTryingToEnter);
-            }
-
-            if (TargetVeh != null && SeatTryingToEnter == -1)
-            {
-                Ped Driver = TargetVeh.Driver;
-                if (Driver != null && Driver.IsAlive)
-                {
-                    CarStealing.CarJackPedWithWeapon(TargetVeh,Driver, SeatTryingToEnter);
-                    LocalWriteToLog("EnterVehicle", "CarJacking");
-                }
-                else
-                {
-                    LocalWriteToLog("EnterVehicle", "Regular Enter No Driver");
-                }
-            }
-            else
-            {
-                LocalWriteToLog("EnterVehicle", "Regular Enter");
-            }
-
+            CarStealing.EnterVehicleEvent();
         }
         PrevPlayerIsGettingIntoVehicle = PlayerIsGettingIntoVehicle;
     }
-    private static void PlayerInVehicleChanged(bool playerInVehicle)
+    private static void PlayerInVehicleChanged()
     {
-        if (playerInVehicle)
+        if (PlayerInVehicle)
         {
-            GTAVehicle MyVehicle = GetPlayersCurrentTrackedVehicle();
-            if (MyVehicle == null || MyVehicle.IsStolen)
-                return;
-
-            if(OwnedCar == null)
-                MyVehicle.IsStolen = true;
-            else if (MyVehicle.VehicleEnt.Handle != OwnedCar.Handle && !MyVehicle.IsStolen)
-                MyVehicle.IsStolen = true;
+            CarStealing.UpdateStolenStatus();
+        }
+        PrevPlayerInVehicle = PlayerInVehicle;
+        LocalWriteToLog("ValueChecker", String.Format("PlayerInVehicle Changed to: {0}", PlayerInVehicle));
+    }
+    private static void PlayerAimingInVehicleChanged()
+    {
+        if (PlayerAimingInVehicle)
+        {
+             TrafficViolations.SetDriverWindow(true);
         }
         else
         {
-
+            TrafficViolations.SetDriverWindow(false);
         }
-        PlayerInVehicle = playerInVehicle;
-        PrevPlayerInVehicle = playerInVehicle;
-
-        LocalWriteToLog("ValueChecker", String.Format("playerInVehicle Changed to: {0}", playerInVehicle));
+        PrevPlayerAimingInVehicle = PlayerAimingInVehicle;
+        LocalWriteToLog("ValueChecker", String.Format("PlayerAimingInVehicle Changed to: {0}", PlayerAimingInVehicle));
     }
     private static void ControlTick()
     {

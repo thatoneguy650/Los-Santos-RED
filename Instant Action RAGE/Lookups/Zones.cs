@@ -6,13 +6,12 @@ using System.Runtime.InteropServices;
 
 public static class Zones
 {
-    public static Zone GetZoneName(Vector3 pos)
+    public static Zone GetZoneAtLocation(Vector3 ZonePosition)
     {      
         string zoneName = string.Empty;
-        Vector3 Position = Game.LocalPlayer.Character.Position;
         unsafe
         {
-            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE",Position.X, Position.Y, Position.Z);
+            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
 
             zoneName = Marshal.PtrToStringAnsi(ptr);
         }
