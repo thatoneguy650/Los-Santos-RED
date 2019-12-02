@@ -75,9 +75,13 @@ internal static class VehicleEngine
 
                     if (PlayerInVehicle)
                     {
-                        if (Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
+                        if (Game.LocalPlayer.Character.IsInAnyPoliceVehicle && EngineRunning)
                         {                        
                             NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
+                        }
+                        else if(!EngineRunning)
+                        {
+                            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
                         }
 
                         if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))

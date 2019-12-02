@@ -27,18 +27,6 @@ public static class Agencies
     public static void Initialize()
     {
         AgenciesList = new List<Agency>();
-        //LSPD = new Agency("~b~", "LSPD", "Los Santos Police Deptartment", new List<string>() { "s_m_y_cop_01", "s_f_y_cop_01", "s_m_y_swat_01" }, Color.Blue);
-        //LSSD = new Agency("~r~", "LSSD", "Los Santos County Sheriff", new List<string>() { "s_m_y_sheriff_01", "s_f_y_sheriff_01" }, Color.Red);
-        //SAPR = new Agency("~g~", "SAPR", "San Andreas Park Ranger", new List<string>() { "s_m_y_ranger_01", "s_f_y_ranger_01" }, Color.Green);
-        //DOA = new Agency("~q~", "DOA", "Drug Observation Agency", new List<string>() { "u_m_m_doa_01" }, Color.DeepPink);
-        //FIB = new Agency("~p~", "FIB", "Federal Investigation Bureau", new List<string>() { "s_m_m_fibsec_01" }, Color.Purple);
-        //IAA = new Agency("~p~", "IAA", "International Affairs Agency", new List<string>() { "s_m_m_ciasec_01" }, Color.Purple);
-        //SAHP = new Agency("~y~", "SAHP", "San Andreas Highway Patrol", new List<string>() { "s_m_y_hwaycop_01" }, Color.Yellow);
-        //SASPA = new Agency("~o~", "SASPA", "San Andreas State Prison Authority", new List<string>() { "s_m_m_prisguard_01" }, Color.Orange);
-        //ARMY = new Agency("~u~", "ARMY", "Army", new List<string>() { "s_m_y_armymech_01", "s_m_m_marine_01", "s_m_m_marine_02", "s_m_y_marine_01", "s_m_y_marine_02", "s_m_y_marine_03", "s_m_m_pilot_02", "s_m_y_pilot_01" }, Color.Black);
-        //UNK = new Agency("~s~", "UNK", "Unknown Agency", new List<string>() { "" }, Color.White);
-        //PRISEC = new Agency("~s~", "PRISEC", "Private Security", new List<string>() { "s_m_m_security_01" }, Color.White);
-
 
         LSPD = new Agency("~b~", "LSPD", "Los Santos Police Deptartment", new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_cop_01", true), new Agency.ModelInformation("s_f_y_cop_01", false), new Agency.ModelInformation("s_m_y_swat_01", true,false) }, Color.Blue);
         LSSD = new Agency("~r~", "LSSD", "Los Santos County Sheriff", new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_sheriff_01", true), new Agency.ModelInformation("s_f_y_sheriff_01",false) }, Color.Red);
@@ -65,6 +53,7 @@ public static class Agencies
         AgenciesList.Add(ARMY);
         AgenciesList.Add(UNK);
         AgenciesList.Add(PRISEC);
+        AgenciesList.Add(LSPA);
     }
     public static void Dispose()
     {
@@ -129,27 +118,9 @@ public class Agency
     public string ColorPrefix = "~s~";
     public string Initials;
     public string FullName;
-    public List<string> Models;
     public List<ModelInformation> CopModels;
     public Color AgencyColor = Color.White;
-    private static Random rnd;
 
-    static Agency()
-    {
-        rnd = new Random();
-    }
-    public Agency()
-    {
-
-    }
-    public Agency(string _ColorPrefix, string _Initials, string _FullName, List<string> _Models, Color _AgencyColor)
-    {
-        ColorPrefix = _ColorPrefix;
-        Initials = _Initials;
-        FullName = _FullName;
-        Models = _Models;
-        AgencyColor = _AgencyColor;
-    }
     public Agency(string _ColorPrefix, string _Initials, string _FullName, List<ModelInformation> _CopModels, Color _AgencyColor)
     {
         ColorPrefix = _ColorPrefix;

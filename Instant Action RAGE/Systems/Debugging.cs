@@ -633,7 +633,14 @@ public static class Debugging
         try
         {
 
-            NativeFunction.CallByName<bool>("RESET_HUD_COMPONENT_VALUES", 0);
+           string report =  WeatherReporting.GetAudioFromWeatherType(WeatherReporting.WeatherTypeHash.Clearing);
+
+
+
+            Debugging.WriteToLog("DebugNumpad6", report);
+
+            //WeatherReporting.ReportWeather(WeatherReporting.WeatherTypeHash.Clearing);
+            //NativeFunction.CallByName<bool>("RESET_HUD_COMPONENT_VALUES", 0);
 
             //RespawnStopper.IsRunning = false;
             //NativeFunction.CallByName<bool>("REQUEST_SCRIPT", "respawn_controller");

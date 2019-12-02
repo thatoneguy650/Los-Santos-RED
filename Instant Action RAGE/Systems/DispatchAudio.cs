@@ -34,6 +34,13 @@ internal static class DispatchAudio
     private static List<string> DamagedScannerAliases = new List<string>();
     private static bool CancelAudio;
 
+    public static bool AudioPlaying
+    {
+        get
+        {
+            return outputDevice != null;
+        }
+    }
     public static bool IsRunning { get; set; } = true;
     public enum ReportDispatch
     {
@@ -243,7 +250,7 @@ internal static class DispatchAudio
             }
             if (audioFile == null)
             {
-                audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\scanner\\{0}", _Audio));
+                audioFile = new AudioFileReader(String.Format("Plugins\\InstantAction\\audio\\{0}", _Audio));
                 audioFile.Volume = Settings.DispatchAudioVolume;
                 outputDevice.Init(audioFile);
             }
@@ -258,7 +265,7 @@ internal static class DispatchAudio
             Game.Console.Print(e.Message);
         }
     }
-    private static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
+    public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
         if (MyAudioEvent.CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
             return;
@@ -1375,6 +1382,17 @@ internal static class DispatchAudio
     }
 
     //Debug
+    public static void TestWeatherCall()
+    {
+        List<string> ScannerList = new List<string>();
+        ScannerList.Add(AudioBeeps.AudioStart());
+        ScannerList.Add(attention_all_units_gen.Attentionallunits.FileName);
+        ScannerList.Add(custom_wanted_level_line.Suspectisarmedanddangerousweaponsfree.FileName);
+
+        string Subtitles = "Attention all units, suspect is ~r~armed and dangerious~s~, ~r~weapons free~s~";
+        ReportGenericEnd(ScannerList, NearType.Nothing, ref Subtitles);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
     public static void TestStreetCall()
     {
         GTAVehicle MyVehicle = InstantAction.GetPlayersCurrentTrackedVehicle();

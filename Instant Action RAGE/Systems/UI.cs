@@ -174,12 +174,12 @@ public static class UI
                 else
                     CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
 
-                ZoneDisplay = PlayerLocation.PlayerCurrentZone.TextName + " - " + CopZoneName;
+                ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone) + " - " + CopZoneName;
             }
             else
             {
                 if (Game.LocalPlayer.Character.isInLosSantosCity())
-                    ZoneDisplay = "Los Santos - " + Agencies.LSPD.ColorPrefix + Agencies.LSPD.Initials;
+                    ZoneDisplay = "Los Santos County - " + Agencies.LSPD.ColorPrefix + Agencies.LSPD.Initials;
                 else
                     ZoneDisplay = "San Andreas - " + Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
             }
@@ -188,18 +188,21 @@ public static class UI
         {
             string AgenciesChasingPlayer = PoliceScanning.AgenciesChasingPlayer;
             if (Game.LocalPlayer.WantedLevel > 0 && AgenciesChasingPlayer != "")
-                CopZoneName = AgenciesChasingPlayer;
+                CopZoneName = "(" + AgenciesChasingPlayer + ")";
             else if (Game.LocalPlayer.Character.isInLosSantosCity())
                 CopZoneName = Agencies.LSPD.ColorPrefix + Agencies.LSPD.Initials;
             else
                 CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
             if (PlayerLocation.PlayerCurrentZone != null)
             {
-                ZoneDisplay = PlayerLocation.PlayerCurrentZone.TextName + " - " + CopZoneName;
+                ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone) + " - " + CopZoneName;
             }
             else
             {
-                ZoneDisplay = "San Andreas - " + CopZoneName;
+                if (Game.LocalPlayer.Character.isInLosSantosCity())
+                    ZoneDisplay = "Los Santos County - " + Agencies.LSPD.ColorPrefix + Agencies.LSPD.Initials;
+                else
+                    ZoneDisplay = "San Andreas - " + Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
             }
         }
         return ZoneDisplay;

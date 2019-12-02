@@ -75,6 +75,7 @@ public static class InstantAction
         while (Game.IsLoading)
             GameFiber.Yield();
         LoadInteriors();
+        WeatherReporting.Initialize();
         Locations.Initialize();
         Police.Initialize();
         LicensePlateChanging.Initialize();
@@ -161,6 +162,7 @@ public static class InstantAction
         Police.Dispose();
         TrafficViolations.Dispose();
         SearchModeStopping.Dispose();
+        WeatherReporting.Dispose();
     }
 
     private static void UpdatePlayer()

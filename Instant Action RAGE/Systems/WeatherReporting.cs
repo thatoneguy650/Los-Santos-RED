@@ -1,0 +1,310 @@
+﻿using ExtensionsMethods;
+using Rage;
+using Rage.Native;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+public static class WeatherReporting
+{
+    private static List<WeatherFile> WeatherFiles = new List<WeatherFile>();
+    private static uint GameTimeLastCheckedWeather;
+    private static WeatherTypeHash NextWeather = WeatherTypeHash.Neutral;
+    private static WeatherTypeHash PrevNextWeather = WeatherTypeHash.Neutral;
+    private static WeatherTypeHash CurrentWeather = WeatherTypeHash.Neutral;
+    private static WeatherTypeHash PrevCurrentWeather = WeatherTypeHash.Neutral;
+    private static uint GameTimeLastReportedWeather;
+    public static bool IsRunning { get; set; } = true;
+    public static bool CanReportWeather
+    {
+        get
+        {
+            return Game.GameTime - GameTimeLastReportedWeather >= 30000;
+        }
+    }
+    public static void Initialize()
+    {
+        WeatherFiles.Add(Cloudy.Cloudy1);
+        WeatherFiles.Add(Cloudy.Cloudy2);
+        WeatherFiles.Add(Cloudy.Cloudy3);
+        WeatherFiles.Add(Cloudy.Cloudy4);
+        WeatherFiles.Add(Cloudy.Cloudy5);
+        WeatherFiles.Add(Cloudy.Cloudy6);
+        WeatherFiles.Add(Cloudy.Cloudy7);
+        WeatherFiles.Add(Cloudy.Cloudy8);
+        WeatherFiles.Add(Cloudy.Cloudy10);
+        WeatherFiles.Add(Cloudy.Cloudy11);
+
+        WeatherFiles.Add(Foggy.Fog1);
+        WeatherFiles.Add(Foggy.Fog2);
+        WeatherFiles.Add(Foggy.Fog4);
+        WeatherFiles.Add(Foggy.Fog5);
+        WeatherFiles.Add(Foggy.Fog6);
+        WeatherFiles.Add(Foggy.Fog7);
+        WeatherFiles.Add(Foggy.Fog8);
+        WeatherFiles.Add(Foggy.Fog9);
+        WeatherFiles.Add(Foggy.Fog10);
+        WeatherFiles.Add(Foggy.Fog11);
+
+        WeatherFiles.Add(Rainy.Rain1);
+        WeatherFiles.Add(Rainy.Rain2);
+        WeatherFiles.Add(Rainy.Rain3);
+        WeatherFiles.Add(Rainy.Rain5);
+        WeatherFiles.Add(Rainy.Rain6);
+        WeatherFiles.Add(Rainy.Rain8);
+        WeatherFiles.Add(Rainy.Rain9);
+        WeatherFiles.Add(Rainy.Rain10);
+        WeatherFiles.Add(Rainy.Rain11);
+
+        WeatherFiles.Add(Stormy.Storm1);
+
+        WeatherFiles.Add(Windy.Windy1);
+        WeatherFiles.Add(Windy.Windy2);
+        WeatherFiles.Add(Windy.Windy3);
+        WeatherFiles.Add(Windy.Windy4);
+        WeatherFiles.Add(Windy.Windy5);
+        WeatherFiles.Add(Windy.Windy6);
+        WeatherFiles.Add(Windy.Windy7);
+        WeatherFiles.Add(Windy.Windy8);
+        WeatherFiles.Add(Windy.Windy9);
+        WeatherFiles.Add(Windy.Windy10);
+        WeatherFiles.Add(Windy.Windy11);
+
+        WeatherFiles.Add(Sunny.Sunny1);
+        WeatherFiles.Add(Sunny.Sunny2);
+        WeatherFiles.Add(Sunny.Sunny3);
+        WeatherFiles.Add(Sunny.Sunny4);
+        WeatherFiles.Add(Sunny.Sunny5);
+        WeatherFiles.Add(Sunny.Sunny6);
+        WeatherFiles.Add(Sunny.Sunny7);
+        WeatherFiles.Add(Sunny.Sunny8);
+        WeatherFiles.Add(Sunny.Sunny9);
+        WeatherFiles.Add(Sunny.Sunny10);
+        WeatherFiles.Add(Sunny.Sunny11);
+        MainLoop();
+    }
+    public static void MainLoop()
+    {
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (IsRunning)
+                {
+                    if(Game.GameTime - GameTimeLastCheckedWeather > 5000)
+                    {
+                        CheckWeather();
+                        GameTimeLastCheckedWeather = Game.GameTime;
+                    }
+
+
+
+                    string Tasking = string.Format("Weather: Current: {0}, Next: {1}", CurrentWeather, NextWeather);//string.Format("ToTask: {0}", CopsToTask.Count());
+                    UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception e)
+            {
+                Dispose();
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+            }
+        });
+    }
+    public static void Dispose()
+    {
+        IsRunning = false;
+        DispatchAudio.AbortAllAudio();
+    }
+    private static void CheckWeather()
+    {
+        CurrentWeather = (WeatherTypeHash)NativeFunction.CallByName<int>("GET_PREV_WEATHER_TYPE_HASH_NAME");
+        NextWeather = (WeatherTypeHash)NativeFunction.CallByName<int>("GET_NEXT_WEATHER_TYPE_HASH_NAME");
+        if (CanReportWeather)
+        {
+            if (PrevCurrentWeather != CurrentWeather)
+            {
+                CurrentWeatherChanged();
+            }
+        }
+        if(CanReportWeather)
+        {
+            if (PrevNextWeather != NextWeather)
+            {
+                NextWeatherChanged();
+            }
+        }
+    }
+    private static void CurrentWeatherChanged()
+    {
+        ReportWeather(CurrentWeather);
+        Debugging.WriteToLog("CheckWeather", string.Format("Current Weather Changed from {0} to {1}", PrevCurrentWeather, CurrentWeather));
+        PrevCurrentWeather = CurrentWeather;
+
+    }
+    private static void NextWeatherChanged()
+    {
+        //ReportWeather(NextWeather);
+        Debugging.WriteToLog("CheckWeather", string.Format("Next Weather Changed from {0} to {1}", PrevNextWeather, NextWeather));
+        PrevNextWeather = NextWeather;
+    }
+    public static void ReportWeather(WeatherTypeHash WeatherToReport)
+    {
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        {
+            string RadioStationName;
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
+                RadioStationName = Marshal.PtrToStringAnsi(ptr);
+            }
+
+            Debugging.WriteToLog("ReportWeather", RadioStationName);
+            if(RadioStationName != "OFF")
+            {
+                Debugging.WriteToLog("ReportWeather", "Setting to OFF");
+                NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "OFF");
+            }
+
+
+            List<string> ScannerList = new List<string>();
+            ScannerList.Add(Weazel.Intro.FileName);
+            ScannerList.Add(GetAudioFromWeatherType(WeatherToReport));
+            ScannerList.Add(Weazel.Outro.FileName);
+            string Subtitles = "";
+            DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(ScannerList, false, Subtitles));
+            GameTimeLastReportedWeather = Game.GameTime;
+            if(RadioStationName != "OFF")
+            {
+                GameFiber ChangeRadioBack = GameFiber.StartNew(delegate
+                {
+                    while (DispatchAudio.AudioPlaying)
+                        GameFiber.Sleep(500);
+                    Debugging.WriteToLog("ReportWeather", "Setting back to " + RadioStationName);
+                    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, RadioStationName);
+                }, "ChangeRadioBack");
+            }
+        }
+    }
+
+    public class Cloudy
+    {
+        public static WeatherFile Cloudy1 { get { return new WeatherFile("weather\\Cloudy1.wav",new List<WeatherTypeHash> { WeatherTypeHash.Clouds,WeatherTypeHash.Overcast,WeatherTypeHash.Smog },true,false);; } }
+        public static WeatherFile Cloudy2 { get { return new WeatherFile("weather\\Cloudy2.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,false); } }
+        public static WeatherFile Cloudy3 { get { return new WeatherFile("weather\\Cloudy3.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,true); } }
+        public static WeatherFile Cloudy4 { get { return new WeatherFile("weather\\Cloudy4.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,true); } }
+        public static WeatherFile Cloudy5 { get { return new WeatherFile("weather\\Cloudy5.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,false); } }
+        public static WeatherFile Cloudy6 { get { return new WeatherFile("weather\\Cloudy6.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,false); } }
+        public static WeatherFile Cloudy7 { get { return new WeatherFile("weather\\Cloudy7.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,true); } }
+        public static WeatherFile Cloudy8 { get { return new WeatherFile("weather\\Cloudy8.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,true); } }
+        public static WeatherFile Cloudy10 { get { return new WeatherFile("weather\\Cloudy10.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,false); } }
+        public static WeatherFile Cloudy11 { get { return new WeatherFile("weather\\Cloudy11.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, false,true); } }
+    }
+    public class Foggy
+    {
+        public static WeatherFile Fog1 { get { return new WeatherFile("weather\\Fog1.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy },true,true); ; } }
+        public static WeatherFile Fog2 { get { return new WeatherFile("weather\\Fog2.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,false); } }
+        public static WeatherFile Fog4 { get { return new WeatherFile("weather\\Fog4.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,false); } }
+        public static WeatherFile Fog5 { get { return new WeatherFile("weather\\Fog5.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,false); } }
+        public static WeatherFile Fog6 { get { return new WeatherFile("weather\\Fog6.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,false); } }
+        public static WeatherFile Fog7 { get { return new WeatherFile("weather\\Fog7.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,false); } }
+        public static WeatherFile Fog8 { get { return new WeatherFile("weather\\Fog8.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,true); } }
+        public static WeatherFile Fog9 { get { return new WeatherFile("weather\\Fog9.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,true); } }
+        public static WeatherFile Fog10 { get { return new WeatherFile("weather\\Fog10.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,false); } }
+        public static WeatherFile Fog11 { get { return new WeatherFile("weather\\Fog11.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true,false); } }
+        public static WeatherFile Fog12 { get { return new WeatherFile("weather\\Fog12.wav", new List<WeatherTypeHash> { WeatherTypeHash.Foggy }, true, false); } }
+    }
+    public class Rainy
+    {
+        public static WeatherFile Rain1 { get { return new WeatherFile("weather\\Rain1.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining, WeatherTypeHash.ThunderStorm }, true,true); ; } }
+        public static WeatherFile Rain2 { get { return new WeatherFile("weather\\Rain2.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining ,WeatherTypeHash.ThunderStorm}, true,true); } }
+        public static WeatherFile Rain3 { get { return new WeatherFile("weather\\Rain3.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining, WeatherTypeHash.ThunderStorm }, true,true); } }
+        public static WeatherFile Rain5 { get { return new WeatherFile("weather\\Rain5.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining, WeatherTypeHash.ThunderStorm }, true,true); } }
+        public static WeatherFile Rain6 { get { return new WeatherFile("weather\\Rain6.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining, WeatherTypeHash.ThunderStorm }, true,true); } }
+        public static WeatherFile Rain8 { get { return new WeatherFile("weather\\Rain8.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining, WeatherTypeHash.ThunderStorm }, false,true); } }
+        public static WeatherFile Rain9 { get { return new WeatherFile("weather\\Rain9.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining, WeatherTypeHash.ThunderStorm }, false,true); } }
+        public static WeatherFile Rain10 { get { return new WeatherFile("weather\\Rain10.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining, WeatherTypeHash.ThunderStorm },true,true); } }
+        public static WeatherFile Rain11 { get { return new WeatherFile("weather\\Rain11.wav", new List<WeatherTypeHash> { WeatherTypeHash.Raining, WeatherTypeHash.ThunderStorm }, true,false); } }
+    }
+    public class Stormy
+    {
+        public static WeatherFile Storm1 { get { return new WeatherFile("weather\\Storm1.wav", new List<WeatherTypeHash> { WeatherTypeHash.ThunderStorm }, true, true); ; } }
+    }
+    public class Windy
+    {
+        public static WeatherFile Windy1 { get { return new WeatherFile("weather\\Windy1.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); ; } }
+        public static WeatherFile Windy2 { get { return new WeatherFile("weather\\Windy2.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy3 { get { return new WeatherFile("weather\\Windy3.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy4 { get { return new WeatherFile("weather\\Windy4.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy5 { get { return new WeatherFile("weather\\Windy5.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy6 { get { return new WeatherFile("weather\\Windy6.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy7 { get { return new WeatherFile("weather\\Windy7.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy8 { get { return new WeatherFile("weather\\Windy8.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy9 { get { return new WeatherFile("weather\\Windy9.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy10 { get { return new WeatherFile("weather\\Windy10.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+        public static WeatherFile Windy11 { get { return new WeatherFile("weather\\Windy11.wav", new List<WeatherTypeHash> { WeatherTypeHash.Overcast, WeatherTypeHash.Clearing }, true, true); } }
+    }
+    public class Sunny
+    {
+        public static WeatherFile Sunny1 { get { return new WeatherFile("weather\\Sunny1.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true,true); ; } }
+        public static WeatherFile Sunny2 { get { return new WeatherFile("weather\\Sunny2.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny3 { get { return new WeatherFile("weather\\Sunny3.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny4 { get { return new WeatherFile("weather\\Sunny4.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny5 { get { return new WeatherFile("weather\\Sunny5.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny6 { get { return new WeatherFile("weather\\Sunny6.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny7 { get { return new WeatherFile("weather\\Sunny7.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny8 { get { return new WeatherFile("weather\\Sunny8.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny9 { get { return new WeatherFile("weather\\Sunny9.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny10 { get { return new WeatherFile("weather\\Sunny10.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+        public static WeatherFile Sunny11 { get { return new WeatherFile("weather\\Sunny11.wav", new List<WeatherTypeHash> { WeatherTypeHash.ExtraSunny, WeatherTypeHash.Clear }, true, true); } }
+    }
+    public class Weazel
+    {
+        public static WeatherFile Intro { get { return new WeatherFile("weather\\Intro.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, false,false); ; } }
+        public static WeatherFile Outro { get { return new WeatherFile("weather\\Outro.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, false,false); } }
+    }
+    public static string GetAudioFromWeatherType(WeatherTypeHash MyWeather)
+    {
+        return WeatherFiles.Where(p => p.WeatherTypes.Any(c => c == MyWeather)).PickRandom().FileName;
+    }
+    public class WeatherFile
+    {
+        public WeatherFile(string fileName, List<WeatherTypeHash> weatherTypes, bool isCurrentWeather, bool isForecastedWeather)
+        {
+            FileName = fileName;
+            WeatherTypes = weatherTypes;
+            IsCurrentWeather = isCurrentWeather;
+            IsForecastedWeather = isForecastedWeather;
+        }
+
+        public string FileName { get; set; }
+        public List<WeatherTypeHash> WeatherTypes { get; set; } = new List<WeatherTypeHash>();
+        public bool IsCurrentWeather { get; set; }
+        public bool IsForecastedWeather { get; set; }
+    }
+    public enum WeatherTypeHash
+    {
+        None = 0,
+        Unknown = -1,
+        ExtraSunny = -1750463879,
+        Clear = 916995460,
+        Neutral = -1530260698,
+        Smog = 282916021,
+        Foggy = -1368164796,
+        Clouds = 821931868,
+        Overcast = -1148613331,
+        Clearing = 1840358669,
+        Raining = 1420204096,
+        ThunderStorm = -1233681761,
+        Blizzard = 669657108,
+        Snowing = -273223690,
+        Snowlight = 603685163,
+        Christmas = -1429616491,
+        Halloween = -921030142
+    }
+}
