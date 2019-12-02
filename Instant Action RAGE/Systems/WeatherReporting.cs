@@ -101,8 +101,6 @@ public static class WeatherReporting
                         GameTimeLastCheckedWeather = Game.GameTime;
                     }
 
-
-
                     string Tasking = string.Format("Weather: Current: {0}, Next: {1}", CurrentWeather, NextWeather);//string.Format("ToTask: {0}", CopsToTask.Count());
                     UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
 
@@ -142,14 +140,15 @@ public static class WeatherReporting
     }
     private static void CurrentWeatherChanged()
     {
-        ReportWeather(CurrentWeather);
         Debugging.WriteToLog("CheckWeather", string.Format("Current Weather Changed from {0} to {1}", PrevCurrentWeather, CurrentWeather));
         PrevCurrentWeather = CurrentWeather;
 
     }
     private static void NextWeatherChanged()
     {
-        //ReportWeather(NextWeather);
+        if(NextWeather != CurrentWeather)
+            ReportWeather(NextWeather);
+
         Debugging.WriteToLog("CheckWeather", string.Format("Next Weather Changed from {0} to {1}", PrevNextWeather, NextWeather));
         PrevNextWeather = NextWeather;
     }
@@ -171,10 +170,19 @@ public static class WeatherReporting
                 NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "OFF");
             }
 
-
             List<string> ScannerList = new List<string>();
-            ScannerList.Add(Weazel.Intro.FileName);
-            ScannerList.Add(GetAudioFromWeatherType(WeatherToReport));
+            ScannerList.Add(Weazel.Outro2.FileName);
+            string WeatherFile = GetAudioFromWeatherType(WeatherToReport);
+            if (WeatherFile == "")
+            {
+                Debugging.WriteToLog("ReportWeather", "No weather file found looking for " + WeatherToReport);
+                return;
+            }
+            else
+            {
+                ScannerList.Add(WeatherFile);
+            }
+
             ScannerList.Add(Weazel.Outro.FileName);
             string Subtitles = "";
             DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(ScannerList, false, Subtitles));
@@ -267,6 +275,7 @@ public static class WeatherReporting
     {
         public static WeatherFile Intro { get { return new WeatherFile("weather\\Intro.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, false,false); ; } }
         public static WeatherFile Outro { get { return new WeatherFile("weather\\Outro.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, false,false); } }
+        public static WeatherFile Outro2 { get { return new WeatherFile("weather\\Outro_News_03.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, false, false); } }
     }
     public static string GetAudioFromWeatherType(WeatherTypeHash MyWeather)
     {

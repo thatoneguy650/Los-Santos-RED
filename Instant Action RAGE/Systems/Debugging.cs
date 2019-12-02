@@ -633,11 +633,16 @@ public static class Debugging
         try
         {
 
-           string report =  WeatherReporting.GetAudioFromWeatherType(WeatherReporting.WeatherTypeHash.Clearing);
+            //string report =  WeatherReporting.GetAudioFromWeatherType(WeatherReporting.WeatherTypeHash.Clearing);
+
+       
+            Debugging.WriteToLog("DebugNumpad6", Zones.GetZoneStringAtLocation(Game.LocalPlayer.Character.Position));
+
+            Respawning.RemoveIllegalWeapons();
 
 
 
-            Debugging.WriteToLog("DebugNumpad6", report);
+
 
             //WeatherReporting.ReportWeather(WeatherReporting.WeatherTypeHash.Clearing);
             //NativeFunction.CallByName<bool>("RESET_HUD_COMPONENT_VALUES", 0);
@@ -744,7 +749,7 @@ public static class Debugging
         }
         catch (Exception e)
         {
-            Debugging.WriteToLog("DebugApplyPoliceVariation", e.Message);
+            Debugging.WriteToLog("DebugApplyPoliceVariation", e.Message+ ";" + e.StackTrace);
         }
     }
     private static void DebugNumpad7()

@@ -120,7 +120,13 @@ public class Agency
     public string FullName;
     public List<ModelInformation> CopModels;
     public Color AgencyColor = Color.White;
-
+    public string ColoredInitials
+    {
+        get
+        {
+            return ColorPrefix + Initials;
+        }
+    }
     public Agency(string _ColorPrefix, string _Initials, string _FullName, List<ModelInformation> _CopModels, Color _AgencyColor)
     {
         ColorPrefix = _ColorPrefix;

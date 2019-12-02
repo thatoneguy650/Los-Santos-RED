@@ -14,6 +14,10 @@ public static class Surrendering
         if (Game.LocalPlayer.WantedLevel > 0 && Police.CopsKilledByPlayer < 5)
             Police.CurrentPoliceState = Police.PoliceState.ArrestedWait;
 
+        if (InstantAction.HandsAreUp)
+            return;
+
+        InstantAction.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
         InstantAction.RequestAnimationDictionay(sDict);

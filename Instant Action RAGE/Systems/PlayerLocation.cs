@@ -13,7 +13,7 @@ public static class PlayerLocation
     public static bool IsRunning { get; set; } = true;
     public static Street PlayerCurrentStreet { get; set; }
     public static Street PlayerCurrentCrossStreet { get; set; }
-    public static Zone PlayerCurrentZone { get; set; }
+    public static Zone PlayerCurrentZone { get; set; } = Zones.UNK_LSCOUNTY;
     public static bool PlayerIsOffroad { get; set; } = false;
 
     public static void Initialize()

@@ -75,7 +75,7 @@ public static class Respawning
     {
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
-
+        bool prePlayerKilledPolice = Police.PlayerKilledPolice;
         int bailMoney = InstantAction.MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
         InstantAction.BeingArrested = false;
         InstantAction.IsBusted = false;
@@ -91,8 +91,16 @@ public static class Respawning
         Game.LocalPlayer.Character.Heading = PoliceStation.Heading;
 
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
-        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-        Game.LocalPlayer.Character.Inventory.GiveNewWeapon((WeaponHash)2725352035, -1, true);
+
+        if (!prePlayerKilledPolice)//the actual gets changed and i want to run this after you have transitioned 
+        {
+            RemoveIllegalWeapons();
+        }
+        else
+        {
+            Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+            Game.LocalPlayer.Character.Inventory.GiveNewWeapon((WeaponHash)2725352035, -1, true);
+        }
         InstantAction.LastWeapon = 0;
         ResetPlayer(true, true);
         Police.CurrentPoliceState = Police.PoliceState.Normal;
@@ -179,6 +187,7 @@ public static class Respawning
             Game.HandleRespawn();
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
             NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
+            DispatchAudio.AbortAllAudio();
 
         }
         catch (Exception e)
@@ -186,5 +195,101 @@ public static class Respawning
             Game.LogTrivial(e.Message);
         }
     }
+    public static void RemoveIllegalWeapons()
+    {
+        //int Index = 0;
+        //bool Continue = true;
+        //while(Continue)
+        //{
+        //    if (!RemoveIllegalWeapon(Index))
+        //        break;
+        //    else
+        //        Index++;
+        //}
+
+
+        WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
+        foreach (WeaponDescriptor Weapon in CurrentWeapons)
+        {
+            GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash((ulong)Weapon.Hash);
+            if (MyGun == null || !MyGun.IsLegal)
+            {
+                if (Weapon.Hash != (WeaponHash)2725352035)
+                {
+                    NativeFunction.CallByName<bool>("REMOVE_WEAPON_FROM_PED", Game.LocalPlayer.Character, (uint)Weapon.Hash);
+                    Debugging.WriteToLog("DebugNumpad6", "Remove: " + Weapon.Hash);
+                }
+            }
+            else
+            {
+                Debugging.WriteToLog("DebugNumpad6", "Keep: " + Weapon.Hash);
+            }
+        }
+        //int Weapons = Game.LocalPlayer.Character.Inventory.Weapons.Count();
+        //for (int i = 0; i <= Weapons - 1; i++)
+        //{
+        //    if (CurrentWeapons[i] == null)
+        //        break;
+        //    WeaponHash MyHash = CurrentWeapons[i].Hash;
+        //    GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash((ulong)MyHash);
+        //    if (MyGun == null || !MyGun.IsLegal)
+        //    {
+        //        if (MyHash != (WeaponHash)2725352035)
+        //        {
+        //            NativeFunction.CallByName<bool>("REMOVE_WEAPON_FROM_PED", Game.LocalPlayer.Character, (uint)MyHash);
+        //            Debugging.WriteToLog("DebugNumpad6", "Remove: " + MyHash);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Debugging.WriteToLog("DebugNumpad6", "Keep: " + MyHash);
+        //    }
+
+
+
+
+        //    Debugging.WriteToLog("DebugNumpad6       ", "           AllWeapons: " + Game.LocalPlayer.Character.Inventory.Weapons[i].Hash);
+
+        //}
+        // Game.LocalPlayer.Character.Inventory.Weapons[0].Hash
+        //WeaponHash MyEquipped = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
+        //GTAWeapon MyGun2 = GTAWeapons.GetWeaponFromHash((ulong)MyEquipped);
+        //if (MyGun2 == null || !MyGun2.IsLegal)
+        //{
+        //    if (MyEquipped != (WeaponHash)2725352035)
+        //    {
+        //        NativeFunction.CallByName<bool>("REMOVE_WEAPON_FROM_PED", Game.LocalPlayer.Character, (uint)MyEquipped);
+        //        Debugging.WriteToLog("DebugNumpad6", "Remove: " + MyEquipped);
+        //    }
+        //}
+        //else
+        //{
+        //    Debugging.WriteToLog("DebugNumpad6", "Keep: " + MyEquipped);
+        //}
+    }
+    private static bool RemoveIllegalWeapon(int Index)
+    {
+        if (Game.LocalPlayer.Character.Inventory.Weapons[Index] == null)
+            return false;
+        GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash((ulong)Game.LocalPlayer.Character.Inventory.Weapons[Index].Hash);
+        WeaponHash MyHash = Game.LocalPlayer.Character.Inventory.Weapons[Index].Hash;
+        if (MyGun == null || !MyGun.IsLegal)
+        {
+            if (MyHash != (WeaponHash)2725352035)
+            {
+                NativeFunction.CallByName<bool>("REMOVE_WEAPON_FROM_PED", Game.LocalPlayer.Character, (uint)MyHash);
+                Debugging.WriteToLog("DebugNumpad6", "Remove: " + MyHash);
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            Debugging.WriteToLog("DebugNumpad6", "Keep: " + MyHash);
+            return false;
+        }
+    }
+
+
 }
 

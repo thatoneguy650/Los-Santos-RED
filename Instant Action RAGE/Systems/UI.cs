@@ -40,13 +40,13 @@ public static class UI
                     UITick();
                     GameFiber.Yield();
                 }
-            }
+        }
             catch (Exception e)
-            {
-                InstantAction.Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
+        {
+            InstantAction.Dispose();
+            Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        }
+    });
     }
 
     private static void UITick()
@@ -76,11 +76,13 @@ public static class UI
         string StreetString = GetStreetDisplay();
         string TextToShow = CompassHeading + " | " + StreetString;
 
-            Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
-        //Text(StreetString, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY + 0.025f, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontHouseScript);
 
-        string ZoneString = GetZoneDisplay();
+        Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
+        string ZoneString = "";
+        if (PlayerLocation.PlayerCurrentZone != null)
+            ZoneString = GetZoneDisplay();
         Text(ZoneString, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
+
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
         {
             string SpeedDisplay = "";
@@ -153,58 +155,29 @@ public static class UI
             StreetDisplay = string.Format(" {0} / {1} ", PlayerLocation.PlayerCurrentStreet.Name, PlayerLocation.PlayerCurrentCrossStreet.Name);
         else if (PlayerLocation.PlayerCurrentStreet != null)
             StreetDisplay = string.Format(" {0} ", PlayerLocation.PlayerCurrentStreet.Name);
-        else if (PlayerLocation.PlayerIsOffroad && PlayerLocation.PlayerCurrentStreet == null && Game.LocalPlayer.Character.isInLosSantosCity())
-            StreetDisplay = " Los Santos ";
-        else if (PlayerLocation.PlayerIsOffroad && PlayerLocation.PlayerCurrentStreet == null)
-            StreetDisplay = " San Andreas ";
         return StreetDisplay;
     }
     private static string GetZoneDisplay()
     {
         string ZoneDisplay = "";
         string CopZoneName = "";
+        ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone);
         if (Game.LocalPlayer.WantedLevel == 0)
         {
-            if (PlayerLocation.PlayerCurrentZone != null)
-            {
-                if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
-                    CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
-                else if(PlayerLocation.PlayerCurrentZone.MainZoneAgency != null)
-                    CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColorPrefix + PlayerLocation.PlayerCurrentZone.MainZoneAgency.Initials;
-                else
-                    CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
-
-                ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone) + " - " + CopZoneName;
-            }
+            if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
+                CopZoneName = Agencies.SAHP.ColoredInitials;
             else
-            {
-                if (Game.LocalPlayer.Character.isInLosSantosCity())
-                    ZoneDisplay = "Los Santos County - " + Agencies.LSPD.ColorPrefix + Agencies.LSPD.Initials;
-                else
-                    ZoneDisplay = "San Andreas - " + Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
-            }
+                CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
         }
         else
         {
             string AgenciesChasingPlayer = PoliceScanning.AgenciesChasingPlayer;
-            if (Game.LocalPlayer.WantedLevel > 0 && AgenciesChasingPlayer != "")
-                CopZoneName = "(" + AgenciesChasingPlayer + ")";
-            else if (Game.LocalPlayer.Character.isInLosSantosCity())
-                CopZoneName = Agencies.LSPD.ColorPrefix + Agencies.LSPD.Initials;
+            if (AgenciesChasingPlayer != "")
+                CopZoneName = "~s~(" + AgenciesChasingPlayer + "~s~)";
             else
-                CopZoneName = Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
-            if (PlayerLocation.PlayerCurrentZone != null)
-            {
-                ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone) + " - " + CopZoneName;
-            }
-            else
-            {
-                if (Game.LocalPlayer.Character.isInLosSantosCity())
-                    ZoneDisplay = "Los Santos County - " + Agencies.LSPD.ColorPrefix + Agencies.LSPD.Initials;
-                else
-                    ZoneDisplay = "San Andreas - " + Agencies.SAHP.ColorPrefix + Agencies.SAHP.Initials;
-            }
+                CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
         }
+        ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
     }
     public static void Text(string text, float x, float y, float scale, bool center, Color TextColor, eFont Font)

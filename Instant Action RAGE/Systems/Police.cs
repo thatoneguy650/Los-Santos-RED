@@ -578,15 +578,15 @@ internal static class Police
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportGrandTheftAuto, 3, false));
             }
 
-            if (InstantAction.PlayerWantedLevel > 0 && (InstantAction.PlayerWantedLevel <= 3 || CurrentPoliceState != PoliceState.DeadlyChase) && Game.LocalPlayer.Character.DistanceTo2D(new Vector3(1696f, 2566f, 0f)) <= 150f)
-            {
-                SetWantedLevel(2,"You went too close to the prison with a wanted level");
-                CurrentPoliceState = PoliceState.DeadlyChase;
-            }
         }
 
         if (InstantAction.PlayerWantedLevel < 3)
         {
+            if (InstantAction.PlayerWantedLevel > 0 && PlayerLocation.PlayerCurrentZone == Zones.JAIL)
+            {
+                SetWantedLevel(3, "You went too close to the prison with a wanted level");
+                CurrentPoliceState = PoliceState.DeadlyChase;
+            }
             if (AnyPoliceCanRecognizePlayer && InstantAction.PlayerIsConsideredArmed && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !InstantAction.PlayerInVehicle)
             {
                 ulong myHash = (ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;

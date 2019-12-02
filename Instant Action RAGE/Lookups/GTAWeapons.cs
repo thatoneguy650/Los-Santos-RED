@@ -14,15 +14,15 @@ public static class GTAWeapons
     public static void Initialize()
     {
         //Melee
-        WeaponsList.Add(new GTAWeapon("weapon_dagger", 0, GTAWeapon.WeaponCategory.Melee, 0, 2460120199, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_bat", 0, GTAWeapon.WeaponCategory.Melee, 0, 2508868239, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_bottle", 0, GTAWeapon.WeaponCategory.Melee, 0, 4192643659, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_crowbar", 0, GTAWeapon.WeaponCategory.Melee, 0, 2227010557, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_flashlight", 0, GTAWeapon.WeaponCategory.Melee, 0, 2343591895, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_golfclub", 0, GTAWeapon.WeaponCategory.Melee, 0, 1141786504, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_hammer", 0, GTAWeapon.WeaponCategory.Melee, 0, 1317494643, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 4191993645, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_knuckle", 0, GTAWeapon.WeaponCategory.Melee, 0, 3638508604, false, false, false));
+        WeaponsList.Add(new GTAWeapon("weapon_dagger", 0, GTAWeapon.WeaponCategory.Melee, 0, 2460120199, false, false, false,true));
+        WeaponsList.Add(new GTAWeapon("weapon_bat", 0, GTAWeapon.WeaponCategory.Melee, 0, 2508868239, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_bottle", 0, GTAWeapon.WeaponCategory.Melee, 0, 4192643659, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_crowbar", 0, GTAWeapon.WeaponCategory.Melee, 0, 2227010557, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_flashlight", 0, GTAWeapon.WeaponCategory.Melee, 0, 2343591895, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_golfclub", 0, GTAWeapon.WeaponCategory.Melee, 0, 1141786504, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_hammer", 0, GTAWeapon.WeaponCategory.Melee, 0, 1317494643, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 4191993645, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_knuckle", 0, GTAWeapon.WeaponCategory.Melee, 0, 3638508604, false, false, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Base Model", "COMPONENT_KNUCKLE_VARMOD_BASE", 0xF3462F33, false, "weapon_knuckle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("The Pimp", "COMPONENT_KNUCKLE_VARMOD_PIMP", 0xC613F685, false, "weapon_knuckle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("The Ballas", "COMPONENT_KNUCKLE_VARMOD_BALLAS", 0xEED9FD63, false, "weapon_knuckle"));
@@ -33,25 +33,25 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("The Player", "COMPONENT_KNUCKLE_VARMOD_PLAYER", 0x8B808BB, false, "weapon_knuckle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("The King", "COMPONENT_KNUCKLE_VARMOD_KING", 0xE28BABEF, false, "weapon_knuckle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("The Vagos", "COMPONENT_KNUCKLE_VARMOD_VAGOS", 0x7AF3F785, false, "weapon_knuckle"));
-        WeaponsList.Add(new GTAWeapon("weapon_knife", 0, GTAWeapon.WeaponCategory.Melee, 0, 2578778090, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_machete", 0, GTAWeapon.WeaponCategory.Melee, 0, 3713923289, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_switchblade", 0, GTAWeapon.WeaponCategory.Melee, 0, 3756226112, false, false, false));
+        WeaponsList.Add(new GTAWeapon("weapon_knife", 0, GTAWeapon.WeaponCategory.Melee, 0, 2578778090, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_machete", 0, GTAWeapon.WeaponCategory.Melee, 0, 3713923289, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_switchblade", 0, GTAWeapon.WeaponCategory.Melee, 0, 3756226112, false, false, false,false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Handle", "COMPONENT_SWITCHBLADE_VARMOD_BASE", 0x9137A500, false, "weapon_switchblade"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("VIP Variant", "COMPONENT_SWITCHBLADE_VARMOD_VAR1", 0x5B3E7DB6, false, "weapon_switchblade"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Bodyguard Variant", "COMPONENT_SWITCHBLADE_VARMOD_VAR2", 0xE7939662, false, "weapon_switchblade"));
-        WeaponsList.Add(new GTAWeapon("weapon_nightstick", 0, GTAWeapon.WeaponCategory.Melee, 0, 1737195953, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_wrench", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x19044EE0, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_battleaxe", 0, GTAWeapon.WeaponCategory.Melee, 0, 3441901897, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_poolcue", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x94117305, false, false, false));
-        WeaponsList.Add(new GTAWeapon("weapon_stone_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x3813FC08, false, false, false));
+        WeaponsList.Add(new GTAWeapon("weapon_nightstick", 0, GTAWeapon.WeaponCategory.Melee, 0, 1737195953, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_wrench", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x19044EE0, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_battleaxe", 0, GTAWeapon.WeaponCategory.Melee, 0, 3441901897, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_poolcue", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x94117305, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_stone_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x3813FC08, false, false, false, true));
         //Pistol
-        WeaponsList.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_PISTOL_CLIP_01", 0xFED0FD71, false, "weapon_pistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_CLIP_02", 0xED265A1C, false, "weapon_pistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_pistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_PISTOL_VARMOD_LUXE", 0xD7391086, false, "weapon_pistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_PISTOL_MK2_CLIP_01", 0x94F42D62, false, "weapon_pistol_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_MK2_CLIP_02", 0x5ED6C128, false, "weapon_pistol_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_PISTOL_MK2_CLIP_TRACER", 0x25CAAEAF, false, "weapon_pistol_mk2"));
@@ -84,30 +84,30 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_09_SLIDE", 0xC6836E12, false, "weapon_pistol_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_10_SLIDE", 0x43B1B173, false, "weapon_pistol_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_PISTOL_MK2_CAMO_IND_01_SLIDE", 0x4ABDA3FA, false, "weapon_pistol_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMBATPISTOL_CLIP_01", 0x721B079, false, "weapon_combatpistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATPISTOL_CLIP_02", 0xD67B4F2D, false, "weapon_combatpistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_combatpistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_combatpistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_COMBATPISTOL_VARMOD_LOWRIDER", 0xC6654D72, false, "weapon_combatpistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_appistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 584646201, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_appistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 584646201, false, true, false,false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_APPISTOL_CLIP_01", 0x31C4B22A, false, "weapon_appistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_APPISTOL_CLIP_02", 0x249A17D5, false, "weapon_appistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_appistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_appistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_APPISTOL_VARMOD_LUXE", 0x9B76C72C, false, "weapon_appistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153, false, true, false));
-        WeaponsList.Add(new GTAWeapon("weapon_pistol50", 60, GTAWeapon.WeaponCategory.Pistol, 1, 2578377531, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_pistol50", 60, GTAWeapon.WeaponCategory.Pistol, 1, 2578377531, false, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_PISTOL50_CLIP_01", 0x2297BE19, false, "weapon_pistol50"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL50_CLIP_02", 0xD9D3AC92, false, "weapon_pistol50"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_pistol50"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_pistol50"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Platinum Pearl Deluxe Finish", "COMPONENT_PISTOL50_VARMOD_LUXE", 0x77B8AB2F, false, "weapon_pistol50"));
-        WeaponsList.Add(new GTAWeapon("weapon_snspistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3218215474, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_snspistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3218215474, false, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SNSPISTOL_CLIP_01", 0xF8802ED9, false, "weapon_snspistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SNSPISTOL_CLIP_02", 0x7B0033B3, false, "weapon_snspistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_SNSPISTOL_VARMOD_LOWRIDER", 0x8033ECAF, false, "weapon_snspistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054, false, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SNSPISTOL_MK2_CLIP_01", 0x1466CE6, false, "weapon_snspistol_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SNSPISTOL_MK2_CLIP_02", 0xCE8C0772, false, "weapon_snspistol_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_SNSPISTOL_MK2_CLIP_TRACER", 0x902DA26E, false, "weapon_snspistol_mk2"));
@@ -140,23 +140,23 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_SNSPISTOL_MK2_CAMO_09_SLIDE", 0x22C24F9C, false, "weapon_snspistol_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_SNSPISTOL_MK2_CAMO_10_SLIDE", 0x8D0D5ECD, false, "weapon_snspistol_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_SNSPISTOL_MK2_CAMO_IND_01_SLIDE", 0x1F07150A, false, "weapon_snspistol_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYPISTOL_CLIP_01", 0xD4A969A, false, "weapon_heavypistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_HEAVYPISTOL_CLIP_02", 0x64F9C62B, false, "weapon_heavypistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_heavypistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_heavypistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", 0x7A6A7B7B, false, "weapon_heavypistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_vintagepistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 137902532, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_vintagepistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 137902532, false, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_VINTAGEPISTOL_CLIP_01", 0x45A3B6BB, false, "weapon_vintagepistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_VINTAGEPISTOL_CLIP_02", 0x33BA12E8, false, "weapon_vintagepistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_vintagepistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012, false, true, false));
-        WeaponsList.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510, false, true, false));
-        WeaponsList.Add(new GTAWeapon("weapon_revolver", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3249783761, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_revolver", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3249783761, false, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("VIP Variant", "COMPONENT_REVOLVER_VARMOD_BOSS", 0x16EE3040, false, "weapon_revolver"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Bodyguard Variant", "COMPONENT_REVOLVER_VARMOD_GOON", 0x9493B80D, false, "weapon_revolver"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_REVOLVER_CLIP_01", 0xE9867CE3, false, "weapon_revolver"));
-        WeaponsList.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F, false, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Rounds", "COMPONENT_REVOLVER_MK2_CLIP_01", 0xBA23D8BE, false, "weapon_revolver_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_REVOLVER_MK2_CLIP_TRACER", 0xC6D8E476, false, "weapon_revolver_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_REVOLVER_MK2_CLIP_INCENDIARY", 0xEFBF25, false, "weapon_revolver_mk2"));
@@ -177,15 +177,15 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_REVOLVER_MK2_CAMO_09", 0x48DAEE71, false, "weapon_revolver_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_REVOLVER_MK2_CAMO_10", 0x20ED9B5B, false, "weapon_revolver_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_REVOLVER_MK2_CAMO_IND_01", 0xD951E867, false, "weapon_revolver_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8, false, true, false));
-        WeaponsList.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1, false, true, false,false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Festive tint", "COMPONENT_RAYPISTOL_VARMOD_XMAS18", 0xD7DBF707, false, "weapon_raypistol"));
         //Shotgun
-        WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true, false, true, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_SR_SUPP", 0xE608B35E, false, "weapon_pumpshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_PUMPSHOTGUN_VARMOD_LOWRIDER", 0xA2D79DDB, false, "weapon_pumpshotgun"));
-        WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 0x555AF99A, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 0x555AF99A, true, false, true, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Shells", "COMPONENT_PUMPSHOTGUN_MK2_CLIP_01", 0xCD940141, false, "weapon_pumpshotgun_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Dragon's Breath Shells", "COMPONENT_PUMPSHOTGUN_MK2_CLIP_INCENDIARY", 0x9F8A1BF5, false, "weapon_pumpshotgun_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Steel Buckshot Shells", "COMPONENT_PUMPSHOTGUN_MK2_CLIP_ARMORPIERCING", 0x4E65B425, false, "weapon_pumpshotgun_mk2"));
@@ -208,37 +208,37 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_09", 0xEF29BFCA, false, "weapon_pumpshotgun_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_10", 0x67AEB165, false, "weapon_pumpshotgun_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_IND_01", 0x46411A1D, false, "weapon_pumpshotgun_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_sawnoffshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2017895192, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_sawnoffshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2017895192, false, false, true,false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_SAWNOFFSHOTGUN_VARMOD_LUXE", 0x85A64DF9, false, "weapon_sawnoffshotgun"));
-        WeaponsList.Add(new GTAWeapon("weapon_assaultshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 3800352039, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_assaultshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 3800352039, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTSHOTGUN_CLIP_01", 0x94E81BC7, false, "weapon_assaultshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ASSAULTSHOTGUN_CLIP_02", 0x86BD7F72, false, "weapon_assaultshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_assaultshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_assaultshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_assaultshotgun"));
-        WeaponsList.Add(new GTAWeapon("weapon_bullpupshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2640438543, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_bullpupshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2640438543, false, false, true, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_bullpupshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_bullpupshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_bullpupshotgun"));
-        WeaponsList.Add(new GTAWeapon("weapon_musket", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2828843422, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_heavyshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 984333226, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_musket", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2828843422, false, false, true, true));
+        WeaponsList.Add(new GTAWeapon("weapon_heavyshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 984333226, false, false, true, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYSHOTGUN_CLIP_01", 0x324F2D5F, false, "weapon_heavyshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_HEAVYSHOTGUN_CLIP_02", 0x971CF6FD, false, "weapon_heavyshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_HEAVYSHOTGUN_CLIP_03", 0x88C7DA53, false, "weapon_heavyshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_heavyshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_heavyshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_heavyshotgun"));
-        WeaponsList.Add(new GTAWeapon("weapon_dbshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 4019527611, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_autoshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 317205821, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_dbshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 4019527611, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_autoshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 317205821, false, false, true, false));
         //SMG
-        WeaponsList.Add(new GTAWeapon("weapon_microsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 324215364, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_microsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 324215364, false, true, false, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MICROSMG_CLIP_01", 0xCB48AEF0, false, "weapon_microsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MICROSMG_CLIP_02", 0x10E6BA2B, false, "weapon_microsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_microsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MACRO", 0x9D2FBF29, false, "weapon_microsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_microsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_MICROSMG_VARMOD_LUXE", 0x487AAE09, false, "weapon_microsmg"));
-        WeaponsList.Add(new GTAWeapon("weapon_smg", 32, GTAWeapon.WeaponCategory.SMG, 2, 736523883, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_smg", 32, GTAWeapon.WeaponCategory.SMG, 2, 736523883, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SMG_CLIP_01", 0x26574997, false, "weapon_smg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SMG_CLIP_02", 0x350966FB, false, "weapon_smg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_SMG_CLIP_03", 0x79C77076, false, "weapon_smg"));
@@ -246,7 +246,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MACRO_02", 0x3CC6BA57, false, "weapon_smg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_smg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_SMG_VARMOD_LUXE", 0x27872C90, false, "weapon_smg"));
-        WeaponsList.Add(new GTAWeapon("weapon_smg_mk2", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x78A97CD0, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_smg_mk2", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x78A97CD0, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SMG_MK2_CLIP_01", 0x4C24806E, false, "weapon_smg_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SMG_MK2_CLIP_02", 0xB9835B2E, false, "weapon_smg_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_SMG_MK2_CLIP_TRACER", 0x7FEA36EC, false, "weapon_smg_mk2"));
@@ -278,31 +278,31 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_SMG_MK2_CAMO_09", 0x2218FD68, false, "weapon_smg_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_SMG_MK2_CAMO_10", 0x45C5C3C5, false, "weapon_smg_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_SMG_MK2_CAMO_IND_01", 0x399D558F, false, "weapon_smg_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_assaultsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 4024951519, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_assaultsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 4024951519, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTSMG_CLIP_01", 0x8D1307B0, false, "weapon_assaultsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ASSAULTSMG_CLIP_02", 0xBB46E417, false, "weapon_assaultsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_assaultsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MACRO", 0x9D2FBF29, false, "weapon_assaultsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_assaultsmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_ASSAULTSMG_VARMOD_LOWRIDER", 0x278C78AF, false, "weapon_assaultsmg"));
-        WeaponsList.Add(new GTAWeapon("weapon_combatpdw", 32, GTAWeapon.WeaponCategory.SMG, 2, 171789620, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_combatpdw", 32, GTAWeapon.WeaponCategory.SMG, 2, 171789620, true, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMBATPDW_CLIP_01", 0x4317F19E, false, "weapon_combatpdw"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATPDW_CLIP_02", 0x334A5203, false, "weapon_combatpdw"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_COMBATPDW_CLIP_03", 0x6EB8C8DB, false, "weapon_combatpdw"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_combatpdw"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw"));
-        WeaponsList.Add(new GTAWeapon("weapon_machinepistol", 32, GTAWeapon.WeaponCategory.SMG, 2, 3675956304, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_machinepistol", 32, GTAWeapon.WeaponCategory.SMG, 2, 3675956304, false, true, false, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MACHINEPISTOL_CLIP_01", 0x476E85FF, false, "weapon_machinepistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MACHINEPISTOL_CLIP_02", 0xB92C6979, false, "weapon_machinepistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_MACHINEPISTOL_CLIP_03", 0xA9E9CAF4, false, "weapon_machinepistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_machinepistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_minismg", 32, GTAWeapon.WeaponCategory.SMG, 2, 3173288789, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_minismg", 32, GTAWeapon.WeaponCategory.SMG, 2, 3173288789, false, true, false, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MINISMG_CLIP_01", 0x84C8B2D3, false, "weapon_minismg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MINISMG_CLIP_02", 0x937ED0B7, false, "weapon_minismg"));
-        WeaponsList.Add(new GTAWeapon("weapon_raycarbine", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x476BF155, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_raycarbine", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x476BF155, false, true, false, false));
         //AR
-        WeaponsList.Add(new GTAWeapon("weapon_assaultrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 3220176749, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_assaultrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 3220176749, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTRIFLE_CLIP_01", 0xBE5EEA16, false, "weapon_assaultrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ASSAULTRIFLE_CLIP_02", 0xB1214F9B, false, "weapon_assaultrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_ASSAULTRIFLE_CLIP_03", 0xDBF0A53D, false, "weapon_assaultrifle"));
@@ -311,7 +311,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_assaultrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_assaultrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_ASSAULTRIFLE_VARMOD_LUXE", 0x4EAD7533, false, "weapon_assaultrifle"));
-        WeaponsList.Add(new GTAWeapon("weapon_assaultrifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x394F415C, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_assaultrifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x394F415C, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_01", 0x8610343F, false, "weapon_assaultrifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_02", 0xD12ACA6F, false, "weapon_assaultrifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_ASSAULTRIFLE_MK2_CLIP_TRACER", 0xEF2C78C1, false, "weapon_assaultrifle_mk2"));
@@ -344,7 +344,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_09", 0x7C7FCD9B, false, "weapon_assaultrifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_10", 0xA5C38392, false, "weapon_assaultrifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_ASSAULTRIFLE_MK2_CAMO_IND_01", 0xB9B15DB0, false, "weapon_assaultrifle_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_carbinerifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2210333304, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_carbinerifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2210333304, true, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_CARBINERIFLE_CLIP_01", 0x9FBE33EC, false, "weapon_carbinerifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_CARBINERIFLE_CLIP_02", 0x91109691, false, "weapon_carbinerifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Box Magazine", "COMPONENT_CARBINERIFLE_CLIP_03", 0xBA62E935, false, "weapon_carbinerifle"));
@@ -353,7 +353,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_carbinerifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_carbinerifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_CARBINERIFLE_VARMOD_LUXE", 0xD89B9658, false, "weapon_carbinerifle"));
-        WeaponsList.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0xFAD1F1C9, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0xFAD1F1C9, true, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_CARBINERIFLE_MK2_CLIP_01", 0x4C7A391E, false, "weapon_carbinerifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_CARBINERIFLE_MK2_CLIP_02", 0x5DD5DBD5, false, "weapon_carbinerifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_CARBINERIFLE_MK2_CLIP_TRACER", 0x1757F566, false, "weapon_carbinerifle_mk2"));
@@ -386,14 +386,14 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_CARBINERIFLE_MK2_CAMO_09", 0x9893A95D, false, "weapon_carbinerifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_CARBINERIFLE_MK2_CAMO_10", 0x6B13CD3E, false, "weapon_carbinerifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_CARBINERIFLE_MK2_CAMO_IND_01", 0xDA55CD3F, false, "weapon_carbinerifle_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_advancedrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2937143193, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_advancedrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2937143193, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ADVANCEDRIFLE_CLIP_01", 0xFA8FA10F, false, "weapon_advancedrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_ADVANCEDRIFLE_CLIP_02", 0x8EC1C979, false, "weapon_advancedrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_advancedrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_advancedrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_advancedrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_ADVANCEDRIFLE_VARMOD_LUXE", 0x377CD377, false, "weapon_advancedrifle"));
-        WeaponsList.Add(new GTAWeapon("weapon_specialcarbine", 120, GTAWeapon.WeaponCategory.AR, 3, 3231910285, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_specialcarbine", 120, GTAWeapon.WeaponCategory.AR, 3, 3231910285, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SPECIALCARBINE_CLIP_01", 0xC6C7E581, false, "weapon_specialcarbine"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SPECIALCARBINE_CLIP_02", 0x7C8BD10E, false, "weapon_specialcarbine"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_SPECIALCARBINE_CLIP_03", 0x6B59AEAA, false, "weapon_specialcarbine"));
@@ -402,7 +402,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_specialcarbine"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_specialcarbine"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Etched Gun Metal Finish", "COMPONENT_SPECIALCARBINE_VARMOD_LOWRIDER", 0x730154F2, false, "weapon_specialcarbine"));
-        WeaponsList.Add(new GTAWeapon("weapon_specialcarbine_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x969C3D67, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_specialcarbine_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x969C3D67, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SPECIALCARBINE_MK2_CLIP_01", 0x16C69281, false, "weapon_specialcarbine_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_SPECIALCARBINE_MK2_CLIP_02", 0xDE1FA12C, false, "weapon_specialcarbine_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_SPECIALCARBINE_MK2_CLIP_TRACER", 0x8765C68A, false, "weapon_specialcarbine_mk2"));
@@ -435,7 +435,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_SPECIALCARBINE_MK2_CAMO_09", 0x7B82145C, false, "weapon_specialcarbine_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_SPECIALCARBINE_MK2_CAMO_10", 0x899CAF75, false, "weapon_specialcarbine_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_SPECIALCARBINE_MK2_CAMO_IND_01", 0x5218C819, false, "weapon_specialcarbine_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_bullpuprifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2132975508, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_bullpuprifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2132975508, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_BULLPUPRIFLE_CLIP_01", 0xC5A12F80, false, "weapon_bullpuprifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_BULLPUPRIFLE_CLIP_02", 0xB3688B0F, false, "weapon_bullpuprifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_bullpuprifle"));
@@ -443,7 +443,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_bullpuprifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_bullpuprifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_BULLPUPRIFLE_VARMOD_LOW", 0xA857BC78, false, "weapon_bullpuprifle"));
-        WeaponsList.Add(new GTAWeapon("weapon_bullpuprifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x84D6FAFD, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_bullpuprifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0x84D6FAFD, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_01", 0x18929DA, false, "weapon_bullpuprifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_02", 0xEFB00628, false, "weapon_bullpuprifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_BULLPUPRIFLE_MK2_CLIP_TRACER", 0x822060A9, false, "weapon_bullpuprifle_mk2"));
@@ -476,23 +476,23 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_09", 0xCB631225, false, "weapon_bullpuprifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_10", 0xA87D541E, false, "weapon_bullpuprifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_BULLPUPRIFLE_MK2_CAMO_IND_01", 0xC5E9AE52, false, "weapon_bullpuprifle_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_compactrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 1649403952, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_compactrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 1649403952, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMPACTRIFLE_CLIP_01", 0x513F0A63, false, "weapon_compactrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMPACTRIFLE_CLIP_02", 0x59FF9BF8, false, "weapon_compactrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Drum Magazine", "COMPONENT_COMPACTRIFLE_CLIP_03", 0xC607740E, false, "weapon_compactrifle"));
         //LMG
-        WeaponsList.Add(new GTAWeapon("weapon_mg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2634544996, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_mg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2634544996, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MG_CLIP_01", 0xF434EF84, false, "weapon_mg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MG_CLIP_02", 0x82158B47, false, "weapon_mg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL_02", 0x3C00AFED, false, "weapon_mg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_MG_VARMOD_LOWRIDER", 0xD6DABABE, false, "weapon_mg"));
-        WeaponsList.Add(new GTAWeapon("weapon_combatmg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2144741730, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_combatmg", 200, GTAWeapon.WeaponCategory.LMG, 4, 2144741730, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMBATMG_CLIP_01", 0xE1FFB34A, false, "weapon_combatmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATMG_CLIP_02", 0xD6C59CD6, false, "weapon_combatmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MEDIUM", 0xA0D89C42, false, "weapon_combatmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatmg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Etched Gun Metal Finish", "COMPONENT_COMBATMG_VARMOD_LOWRIDER", 0x92FECCDD, false, "weapon_combatmg"));
-        WeaponsList.Add(new GTAWeapon("weapon_combatmg_mk2", 200, GTAWeapon.WeaponCategory.LMG, 4, 0xDBBD7280, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_combatmg_mk2", 200, GTAWeapon.WeaponCategory.LMG, 4, 0xDBBD7280, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_COMBATMG_MK2_CLIP_01", 0x492B257C, false, "weapon_combatmg_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_COMBATMG_MK2_CLIP_02", 0x17DF42E9, false, "weapon_combatmg_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_COMBATMG_MK2_CLIP_TRACER", 0xF6649745, false, "weapon_combatmg_mk2"));
@@ -523,21 +523,21 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_COMBATMG_MK2_CAMO_09", 0xE046DFC, false, "weapon_combatmg_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_COMBATMG_MK2_CAMO_10", 0x28B536E, false, "weapon_combatmg_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_COMBATMG_MK2_CAMO_IND_01", 0xD703C94D, false, "weapon_combatmg_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_gusenberg", 200, GTAWeapon.WeaponCategory.LMG, 4, 1627465347, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_gusenberg", 200, GTAWeapon.WeaponCategory.LMG, 4, 1627465347, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_GUSENBERG_CLIP_01", 0x1CE5A6A5, false, "weapon_gusenberg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_GUSENBERG_CLIP_02", 0xEAC8C270, false, "weapon_gusenberg"));
         //Sniper
-        WeaponsList.Add(new GTAWeapon("weapon_sniperrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 100416529, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_sniperrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 100416529, false, false, true,true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_SNIPERRIFLE_CLIP_01", 0x9BC64089, false, "weapon_sniperrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_sniperrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_LARGE", 0xD2443DDC, false, "weapon_sniperrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Advanced Scope", "COMPONENT_AT_SCOPE_MAX", 0xBC54DA77, false, "weapon_sniperrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_SNIPERRIFLE_VARMOD_LUXE", 0x4032B5E7, false, "weapon_sniperrifle"));
-        WeaponsList.Add(new GTAWeapon("weapon_heavysniper", 40, GTAWeapon.WeaponCategory.Sniper, 4, 205991906, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_heavysniper", 40, GTAWeapon.WeaponCategory.Sniper, 4, 205991906, false, false, true,true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYSNIPER_CLIP_01", 0x476F52F4, false, "weapon_heavysniper"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_LARGE", 0xD2443DDC, false, "weapon_heavysniper"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Advanced Scope", "COMPONENT_AT_SCOPE_MAX", 0xBC54DA77, false, "weapon_heavysniper"));
-        WeaponsList.Add(new GTAWeapon("weapon_heavysniper_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0xA914799, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_heavysniper_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0xA914799, false, false, true,true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYSNIPER_MK2_CLIP_01", 0xFA1E1A28, false, "weapon_heavysniper_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_HEAVYSNIPER_MK2_CLIP_02", 0x2CD8FF9D, false, "weapon_heavysniper_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Incendiary Rounds", "COMPONENT_HEAVYSNIPER_MK2_CLIP_INCENDIARY", 0xEC0F617, false, "weapon_heavysniper_mk2"));
@@ -564,7 +564,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Geometric", "COMPONENT_HEAVYSNIPER_MK2_CAMO_09", 0xCD776C82, false, "weapon_heavysniper_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_HEAVYSNIPER_MK2_CAMO_10", 0xABC5ACC7, false, "weapon_heavysniper_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_HEAVYSNIPER_MK2_CAMO_IND_01", 0x6C32D2EB, false, "weapon_heavysniper_mk2"));
-        WeaponsList.Add(new GTAWeapon("weapon_marksmanrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 3342088282, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_marksmanrifle", 40, GTAWeapon.WeaponCategory.Sniper, 4, 3342088282, false, false, true,true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MARKSMANRIFLE_CLIP_01", 0xD83B4141, false, "weapon_marksmanrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MARKSMANRIFLE_CLIP_02", 0xCCFD2AC5, false, "weapon_marksmanrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_LARGE_FIXED_ZOOM", 0x1C221B1A, false, "weapon_marksmanrifle"));
@@ -572,7 +572,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP", 0x837445AA, false, "weapon_marksmanrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_marksmanrifle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_MARKSMANRIFLE_VARMOD_LUXE", 0x161E9241, false, "weapon_marksmanrifle"));
-        WeaponsList.Add(new GTAWeapon("weapon_marksmanrifle_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0x6A6C02E0, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_marksmanrifle_mk2", 40, GTAWeapon.WeaponCategory.Sniper, 4, 0x6A6C02E0, false, false, true,true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_01", 0x94E12DCE, false, "weapon_marksmanrifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_02", 0xE6CFD1AA, false, "weapon_marksmanrifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Tracer Rounds", "COMPONENT_MARKSMANRIFLE_MK2_CLIP_TRACER", 0xD77A22D2, false, "weapon_marksmanrifle_mk2"));
@@ -606,19 +606,19 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_10", 0x3B61040B, false, "weapon_marksmanrifle_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_MARKSMANRIFLE_MK2_CAMO_IND_01", 0xB7A316DA, false, "weapon_marksmanrifle_mk2"));
         //Heavy
-        WeaponsList.Add(new GTAWeapon("weapon_rpg", 3, GTAWeapon.WeaponCategory.Heavy, 4, 2982836145, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_grenadelauncher", 32, GTAWeapon.WeaponCategory.Heavy, 4, 2726580491, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_rpg", 3, GTAWeapon.WeaponCategory.Heavy, 4, 2982836145, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_grenadelauncher", 32, GTAWeapon.WeaponCategory.Heavy, 4, 2726580491, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_GRENADELAUNCHER_CLIP_01", 0x11AE5C97, false, "weapon_grenadelauncher"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_grenadelauncher"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_grenadelauncher"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_grenadelauncher"));
-        WeaponsList.Add(new GTAWeapon("weapon_grenadelauncher_smoke", 32, GTAWeapon.WeaponCategory.Heavy, 4, 1305664598, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_minigun", 500, GTAWeapon.WeaponCategory.Heavy, 4, 1119849093, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_firework", 20, GTAWeapon.WeaponCategory.Heavy, 4, 0x7F7497E5, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_railgun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0x6D544C99, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_hominglauncher", 3, GTAWeapon.WeaponCategory.Heavy, 4, 0x63AB0442, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_compactlauncher", 10, GTAWeapon.WeaponCategory.Heavy, 4, 125959754, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_rayminigun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0xB62D1F67, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_grenadelauncher_smoke", 32, GTAWeapon.WeaponCategory.Heavy, 4, 1305664598, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_minigun", 500, GTAWeapon.WeaponCategory.Heavy, 4, 1119849093, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_firework", 20, GTAWeapon.WeaponCategory.Heavy, 4, 0x7F7497E5, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_railgun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0x6D544C99, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_hominglauncher", 3, GTAWeapon.WeaponCategory.Heavy, 4, 0x63AB0442, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_compactlauncher", 10, GTAWeapon.WeaponCategory.Heavy, 4, 125959754, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_rayminigun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0xB62D1F67, false, false, true, false));
 
         foreach (GTAWeapon Weapon in WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol))
         {
@@ -846,7 +846,7 @@ public static class GTAWeapons
     }
     public static GTAWeapon GetWeaponFromHash(ulong WeaponHash)
     {
-        return WeaponsList.Where(x => x.Hash == WeaponHash).First();
+        return WeaponsList.Where(x => x.Hash == WeaponHash).FirstOrDefault();
     }
     public static List<WeaponVariation.WeaponComponent> GetWeaponVariations(string GunName)
     {
@@ -874,24 +874,7 @@ public class GTAWeapon
         Sniper = 6,
         Heavy = 7,
     }
-    public GTAWeapon(String _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, ulong _Hash)
-    {
-        Name = _Name;
-        AmmoAmount = _AmmoAmount;
-        Category = _Category;
-        WeaponLevel = _WeaponLevel;
-        Hash = _Hash;
-    }
-    public GTAWeapon(String _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, ulong _Hash, bool _isPoliceIssue)
-    {
-        Name = _Name;
-        AmmoAmount = _AmmoAmount;
-        Category = _Category;
-        WeaponLevel = _WeaponLevel;
-        Hash = _Hash;
-        isPoliceIssue = _isPoliceIssue;
-    }
-    public GTAWeapon(String _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, ulong _Hash, bool _isPoliceIssue, bool _IsOneHanded, bool _IsTwoHanded)
+    public GTAWeapon(String _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, ulong _Hash, bool _isPoliceIssue, bool _IsOneHanded, bool _IsTwoHanded,bool _IsLegal)
     {
         Name = _Name;
         AmmoAmount = _AmmoAmount;
@@ -901,6 +884,7 @@ public class GTAWeapon
         isPoliceIssue = _isPoliceIssue;
         IsOneHanded = _IsOneHanded;
         IsTwoHanded = _IsTwoHanded;
+        IsLegal = _IsLegal;
     }
     public string Name;
     public short AmmoAmount;
@@ -912,6 +896,7 @@ public class GTAWeapon
     public bool CanPistolSuicide = false;
     public bool IsTwoHanded = false;
     public bool IsOneHanded = false;
+    public bool IsLegal = false;
     public List<WeaponVariation> PoliceVariations = new List<WeaponVariation>();
     public List<WeaponVariation> PlayerVariations = new List<WeaponVariation>();
 

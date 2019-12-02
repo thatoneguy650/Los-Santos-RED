@@ -75,6 +75,8 @@ public static class InstantAction
         while (Game.IsLoading)
             GameFiber.Yield();
         LoadInteriors();
+        Agencies.Initialize();
+        Zones.Initialize();
         WeatherReporting.Initialize();
         Locations.Initialize();
         Police.Initialize();
@@ -89,16 +91,16 @@ public static class InstantAction
         VehicleEngine.Initialize();
         Smoking.Initialize();
         Tasking.Initialize();
-        Agencies.Initialize();
+
         GTAWeapons.Initialize();
         Speed.Initialize();
         WeaponDropping.Initialize();
         Streets.Initialize();
-        UI.Initialize();
         Debugging.Initialize();
         PlayerLocation.Initialize();
         TrafficViolations.Initialize();
         SearchModeStopping.Initialize();
+        UI.Initialize();
         MainLoop();
     }
     public static void MainLoop()
@@ -315,7 +317,6 @@ public static class InstantAction
             {
                 SetPedUnarmed(Game.LocalPlayer.Character, false);
                 HandsUpPreviousPoliceState = Police.CurrentPoliceState;
-                HandsAreUp = true;
                 Surrendering.RaiseHands();
                 if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 10f)
                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;

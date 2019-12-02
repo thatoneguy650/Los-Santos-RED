@@ -56,7 +56,7 @@ public class GTACop
     public float DistanceToPlayer { get; set; }
     public float DistanceToLastSeen { get; set; }
     public bool WasMarkedNonPersistent { get; set; } = false;
-    public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true);
+    public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false,true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public WeaponVariation PistolVariation { get; set; }
     public WeaponVariation HeavyVariation { get; set; }

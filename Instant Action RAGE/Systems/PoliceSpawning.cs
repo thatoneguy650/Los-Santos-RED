@@ -251,12 +251,22 @@ public static class PoliceSpawning
         {
             CarModel = "police4";
         }
-        else
+        else if (_Agency == Agencies.SASPA)
         {
-            if (RandomValue <= 10)
-                CarModel = "police3";
+            if (RandomValue <= 6)
+                CarModel = "police4";
+            else if (RandomValue <= 16)
+                CarModel = "policet";
+            else if (RandomValue <= 18)
+                CarModel = "fbi2";
             else
-                CarModel = "police2";
+                CarModel = "fbi";
+
+            CarModel = "policet";
+        }
+        else//fall back to unmarked, goes with everyone
+        {
+            CarModel = "police4";
         }
 
 
