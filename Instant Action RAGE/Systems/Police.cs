@@ -21,8 +21,7 @@ internal static class Police
     private static uint GameTimeInterval;
     private static uint LOSInterval;
     private static uint GameTimeCheckedLOS;
-    private static uint K9Interval;
-    private static uint RandomCopInterval;
+
     private static GTAVehicle TrackedCar;
 
     private static bool CanReportLastSeen;
@@ -177,23 +176,23 @@ internal static class Police
                         SetPrimaryPursuer();
                         GameTimeCheckedLOS = Game.GameTime;
                     }
-                    if (stopwatch.ElapsedMilliseconds < 16)//Optional stuff
-                    {
-                        if (Settings.SpawnPoliceK9 && 1 == 0 && Game.GameTime > K9Interval + 5555) // was 2000
-                        {
-                            if (Game.LocalPlayer.WantedLevel > 0 && !InstantAction.PlayerInVehicle && PoliceScanning.K9Peds.Count < 3)
-                                PoliceSpawning.CreateK9();
-                            PoliceSpawning.MoveK9s();
-                            K9Interval = Game.GameTime;
-                        }
-                        if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
-                        {
-                            if (Game.LocalPlayer.WantedLevel == 0 && PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
-                                PoliceSpawning.SpawnRandomCop();
-                            PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
-                            RandomCopInterval = Game.GameTime;
-                        }
-                    }
+                    //if (stopwatch.ElapsedMilliseconds < 16)//Optional stuff
+                    //{
+                    //    if (Settings.SpawnPoliceK9 && 1 == 0 && Game.GameTime > K9Interval + 5555) // was 2000
+                    //    {
+                    //        if (Game.LocalPlayer.WantedLevel > 0 && !InstantAction.PlayerInVehicle && PoliceScanning.K9Peds.Count < 3)
+                    //            PoliceSpawning.CreateK9();
+                    //        PoliceSpawning.MoveK9s();
+                    //        K9Interval = Game.GameTime;
+                    //    }
+                    //    if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
+                    //    {
+                    //        if (Game.LocalPlayer.WantedLevel == 0 && PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+                    //            PoliceSpawning.SpawnRandomCop();
+                    //        PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
+                    //        RandomCopInterval = Game.GameTime;
+                    //    }
+                    //}
                     stopwatch.Stop();
                     if (stopwatch.ElapsedMilliseconds >= 16)
                         LocalWriteToLog("PoliceTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));

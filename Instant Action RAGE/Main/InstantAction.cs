@@ -80,6 +80,7 @@ public static class InstantAction
         WeatherReporting.Initialize();
         Locations.Initialize();
         Police.Initialize();
+        PoliceSpawning.Initialize();
         LicensePlateChanging.Initialize();
         Settings.Initialize();
         Menus.Intitialize();//Somewhat the procees each tick is taking frames
@@ -162,6 +163,7 @@ public static class InstantAction
         Debugging.Dispose();
         PlayerLocation.Dispose();
         Police.Dispose();
+        PoliceSpawning.Dispose();
         TrafficViolations.Dispose();
         SearchModeStopping.Dispose();
         WeatherReporting.Dispose();
@@ -355,6 +357,7 @@ public static class InstantAction
         if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
         {
             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
+            LocalWriteToLog("SetPlayerToLastWeapon", LastWeapon.ToString());
         }
     }
     public static GTAVehicle GetPlayersCurrentTrackedVehicle()

@@ -3,6 +3,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,13 +14,63 @@ public static class PoliceSpawning
     private static Random rnd;
     private static Vehicle NewsChopper;
     private static List<GTANewsReporter> Reporters = new List<GTANewsReporter>();
-
+    private static uint K9Interval;
+    private static uint RandomCopInterval;
+    public static bool IsRunning { get; set; } = true;
     static PoliceSpawning()
     {
         rnd = new Random();
     }
+    public static void Initialize()
+    {
+        MainLoop();
+    }
+    private static void MainLoop()
+    {
+        var stopwatch = new Stopwatch();
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (IsRunning)
+                {
+                    stopwatch.Start();         
+                    //if (Settings.SpawnPoliceK9 && 1 == 0 && Game.GameTime > K9Interval + 5555) // was 2000
+                    //{
+                    //    if (Game.LocalPlayer.WantedLevel > 0 && !InstantAction.PlayerInVehicle && PoliceScanning.K9Peds.Count < 3)
+                    //        CreateK9();
+                    //    MoveK9s();
+                    //    K9Interval = Game.GameTime;
+                    //}
+                    if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
+                    {
+                        if (Game.LocalPlayer.WantedLevel == 0 && PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+                            SpawnRandomCop();
+                        
+                        RandomCopInterval = Game.GameTime;
+                    }   
+                    else if(Game.GameTime > RandomCopInterval + 500 && Game.GameTime < RandomCopInterval + 1000)
+                    {
+                        RemoveFarAwayRandomlySpawnedCops();
+                    }
+                    stopwatch.Stop();
+                    if (stopwatch.ElapsedMilliseconds >= 16)
+                        LocalWriteToLog("PoliceSpawningTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
+                    stopwatch.Reset();
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+            }
+
+        });
+    }
     public static void Dispose()
     {
+        IsRunning = false;
         foreach (Entity ent in CreatedEntities)
         {
             if (ent.Exists())
@@ -78,7 +129,6 @@ public static class PoliceSpawning
     }
     public static void RemoveFarAwayRandomlySpawnedCops()
     {
-        //Zones.Zone CurrentZone = Zones.GetZoneName(Game.LocalPlayer.Character.Position);
         foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && x.WasRandomSpawn))
         {
             if (Cop.DistanceToPlayer >= 2000f)//750f
@@ -123,10 +173,17 @@ public static class PoliceSpawning
             return;
         bool isBikeCop = rnd.Next(1, 11) <= 9; //90% chance Bike Cop
         Ped Cop = SpawnCopPed(_Agency, SpawnLocation, isBikeCop);
+        GameFiber.Yield();
         if (Cop == null)
             return;
         CreatedEntities.Add(Cop);
         Vehicle CopCar = SpawnCopCruiser(_Agency, SpawnLocation, isBikeCop);
+        GameFiber.Yield();
+        if (CopCar == null)
+        {
+            Cop.Delete();
+            return;
+        }
         CreatedEntities.Add(CopCar);
         Cop.WarpIntoVehicle(CopCar, -1);
         Cop.IsPersistent = true;
@@ -139,6 +196,16 @@ public static class PoliceSpawning
         MyNewCop.WasMarkedNonPersistent = true;
         MyNewCop.WasRandomSpawnDriver = true;
         MyNewCop.IsBikeCop = isBikeCop;
+
+        if (Settings.SpawnedRandomPoliceHaveBlip)
+        {
+            Blip myBlip = Cop.AttachBlip();
+            myBlip.Color = _Agency.AgencyColor;
+            myBlip.Scale = 0.6f;
+        }
+
+        PoliceScanning.CopPeds.Add(MyNewCop);
+        GameFiber.Yield();
 
         bool AddPartner = rnd.Next(1, 11) <= 5;
         if (AddPartner && !isBikeCop)
@@ -153,15 +220,6 @@ public static class PoliceSpawning
             MyNewPartnerCop.WasMarkedNonPersistent = true;
             PoliceScanning.CopPeds.Add(MyNewPartnerCop);
         }
-
-        if (Settings.SpawnedRandomPoliceHaveBlip)
-        {
-            Blip myBlip = Cop.AttachBlip();
-            myBlip.Color = _Agency.AgencyColor;
-            myBlip.Scale = 0.6f;
-        }
-
-        PoliceScanning.CopPeds.Add(MyNewCop);
 
         LocalWriteToLog("SpawnCop", string.Format("CopSpawned: Handled {0},Agency{1},AddedPartner{2}", Cop.Handle, _Agency.Initials, AddPartner));
     }

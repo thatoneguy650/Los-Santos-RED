@@ -321,6 +321,7 @@ internal static class DispatchAudio
     public static void AbortAllAudio()
     {
         CancelAudio = true;
+        DispatchQueue.Clear();
     }
     public static void AddDispatchToQueue(DispatchQueueItem _ItemToAdd)
     {
@@ -498,7 +499,7 @@ internal static class DispatchAudio
         }
         string Subtitles = "Officer Report, a person in a ~h~stolen vehicle~s~";
         AddSpeed(ref ScannerList, Speed,ref Subtitles);
-        ReportGenericEnd(ScannerList, NearType.Nothing, ref Subtitles);
+        ReportGenericEnd(ScannerList, NearType.HeadingStreetAndZone, ref Subtitles);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
     public static void ReportPedHitAndRun(GTAVehicle vehicle)

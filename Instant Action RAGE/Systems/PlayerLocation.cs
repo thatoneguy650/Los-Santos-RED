@@ -33,7 +33,7 @@ public static class PlayerLocation
                 while (IsRunning)
                 {
                     UpdateLocation();
-                    GameFiber.Sleep(500);
+                    GameFiber.Sleep(2000);
                 }
             }
             catch (Exception e)

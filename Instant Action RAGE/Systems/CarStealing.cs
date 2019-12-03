@@ -28,18 +28,20 @@ public static class CarStealing
         if (ToEnter.Exists() && (ToEnter.IsBike || ToEnter.IsBoat || ToEnter.IsHelicopter || ToEnter.IsPlane || ToEnter.IsBicycle))
             return;
 
+        if (!CanLockPick(ToEnter))
+            return;
+
+        Vector3 GameEntryPosition = GetHandlePosition(ToEnter);
+        if (GameEntryPosition == Vector3.Zero)
+            return;
+
         try
         {
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
                 InstantAction.SetPedUnarmed(Game.LocalPlayer.Character, false);
-
                 bool Continue = true;
                 ToEnter.MustBeHotwired = true;
-
-                Vector3 GameEntryPosition = GetHandlePosition(ToEnter);
-                if (GameEntryPosition == Vector3.Zero)
-                    return;
                 string AnimationName = "std_force_entry_ds";
                 int DoorIndex = 0;
                 int WaitTime = 1750;
@@ -147,6 +149,17 @@ public static class CarStealing
         LocalWriteToLog("LockCarDoor", "Locked");
         ToLock.LockStatus = (VehicleLockStatus)7;
     }
+    public static bool CanLockPick(Vehicle ToEnter)
+    {
+        int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", ToEnter);
+        Vehicles.VehicleClass VehicleClass = (Vehicles.VehicleClass)intVehicleClass;
+        if (VehicleClass == Vehicles.VehicleClass.Boats || VehicleClass == Vehicles.VehicleClass.Cycles || VehicleClass == Vehicles.VehicleClass.Industrial || VehicleClass == Vehicles.VehicleClass.Motorcycles 
+            || VehicleClass == Vehicles.VehicleClass.Planes || VehicleClass == Vehicles.VehicleClass.Service || VehicleClass == Vehicles.VehicleClass.Trailer || VehicleClass == Vehicles.VehicleClass.Trains 
+            || VehicleClass == Vehicles.VehicleClass.Helicopters)
+            return false;//maybe add utility?
+        else
+            return true;
+    }
     public static void EnterVehicleEvent()
     {
         Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
@@ -242,6 +255,7 @@ public static class CarStealing
                     return;
                 }
                 InstantAction.RequestAnimationDictionay(dict);
+                InstantAction.SetPlayerToLastWeapon();
 
                 float DriverHeading = Driver.Heading;
                 int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
@@ -373,14 +387,15 @@ public static class CarStealing
             LocalWriteToLog("UnlockCarDoor", e.Message);
         }
     }
-    public static bool GetCarjackingAnimations(Vehicle TargetVehicle, Vector3 DriverSeatCoordinates, GTAWeapon MyGun, ref string Dictionary, ref string PerpAnimation, ref string VictimAnimation)
+    private static bool GetCarjackingAnimations(Vehicle TargetVehicle, Vector3 DriverSeatCoordinates, GTAWeapon MyGun, ref string Dictionary, ref string PerpAnimation, ref string VictimAnimation)
     {
         if (MyGun == null || (!MyGun.IsTwoHanded && !MyGun.IsOneHanded))
             return false;
 
         int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
         Vehicles.VehicleClass VehicleClass = (Vehicles.VehicleClass)intVehicleClass;
-
+        if (VehicleClass == Vehicles.VehicleClass.Boats || VehicleClass == Vehicles.VehicleClass.Cycles || VehicleClass == Vehicles.VehicleClass.Industrial || VehicleClass == Vehicles.VehicleClass.Motorcycles || VehicleClass == Vehicles.VehicleClass.Planes || VehicleClass == Vehicles.VehicleClass.Service || VehicleClass == Vehicles.VehicleClass.Trailer || VehicleClass == Vehicles.VehicleClass.Trains)
+            return false;//maybe add utility?
 
         if (!TargetVehicle.Doors[0].IsValid())
             return false;
@@ -464,10 +479,6 @@ public static class CarStealing
                 PerpAnimation = "low_perp_ds_a";
                 VictimAnimation = "low_victim_ds_a";
             }
-        }
-        else if (VehicleClass == Vehicles.VehicleClass.Motorcycles)
-        {
-            return false;
         }
         else
         {

@@ -638,7 +638,8 @@ public static class Debugging
        
             Debugging.WriteToLog("DebugNumpad6", Zones.GetZoneStringAtLocation(Game.LocalPlayer.Character.Position));
 
-            Respawning.RemoveIllegalWeapons();
+            // Respawning.RemoveIllegalWeapons();
+            WeatherReporting.ReportWeather(WeatherReporting.ForecastedWeather);
 
 
 
