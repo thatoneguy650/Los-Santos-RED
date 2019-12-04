@@ -639,7 +639,8 @@ public static class Debugging
             Debugging.WriteToLog("DebugNumpad6", Zones.GetZoneStringAtLocation(Game.LocalPlayer.Character.Position));
 
             // Respawning.RemoveIllegalWeapons();
-            WeatherReporting.ReportWeather(WeatherReporting.ForecastedWeather);
+            //WeatherReporting.ReportWeather(WeatherReporting.ForecastedWeather);
+            InstantAction.TransitionToSlowMo();
 
 
 
@@ -765,17 +766,18 @@ public static class Debugging
     }
     private static void DebugNumpad8()
     {
-        if (PlayerLocation.PlayerCurrentStreet == null)
-        {
-            WriteToLog("PlayerCurrentStreet", "No STreet");
-        }
-        else
-        {
-            WriteToLog("PlayerCurrentStreet", PlayerLocation.PlayerCurrentStreet.Name);
+        //if (PlayerLocation.PlayerCurrentStreet == null)
+        //{
+        //    WriteToLog("PlayerCurrentStreet", "No STreet");
+        //}
+        //else
+        //{
+        //    WriteToLog("PlayerCurrentStreet", PlayerLocation.PlayerCurrentStreet.Name);
 
-        }
+        //}
 
-        Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false);
+        //Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false);
+        InstantAction.TransitionToRegularSpeed();
 
 
         // Smoking.Start();

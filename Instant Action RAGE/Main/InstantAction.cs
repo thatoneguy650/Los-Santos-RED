@@ -251,7 +251,8 @@ public static class InstantAction
         BeingArrested = true;
         Game.LocalPlayer.Character.Tasks.Clear();
         NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);//_START_SCREEN_EFFECT
-        Game.TimeScale = 0.4f;
+        //Game.TimeScale = 0.4f;
+        TransitionToSlowMo();
         HandsAreUp = false;
         Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false);
         DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectArrested, 5, false));
@@ -271,7 +272,8 @@ public static class InstantAction
         Game.LocalPlayer.Character.Health = 0;
         Game.LocalPlayer.Character.IsInvincible = true;
         Police.SetWantedLevel(0,"You died");
-        Game.TimeScale = 0.4f;
+        //Game.TimeScale = 0.4f;
+        TransitionToSlowMo();
         if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5, false));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
@@ -485,5 +487,31 @@ public static class InstantAction
     {
         if (Settings.GeneralLogging)
             Debugging.WriteToLog(ProcedureString, TextToLog);
+    }
+    public static void TransitionToSlowMo()
+    {
+        GameFiber Transition = GameFiber.StartNew(delegate
+        {
+            while(Game.TimeScale > 0.4f)
+            {
+                Game.TimeScale = Game.TimeScale - 0.05f;
+                GameFiber.Wait(100);
+            }
+
+        }, "TransitionIn");
+        Debugging.GameFibers.Add(Transition);
+    }
+    public static void TransitionToRegularSpeed()
+    {
+        GameFiber Transition = GameFiber.StartNew(delegate
+        {
+            while (Game.TimeScale < 1f)
+            {
+                Game.TimeScale = Game.TimeScale + 0.05f;
+                GameFiber.Wait(100);
+            }
+
+        }, "TransitionOut");
+        Debugging.GameFibers.Add(Transition);
     }
 }

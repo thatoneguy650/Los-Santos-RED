@@ -147,8 +147,7 @@ internal static class Police
     public static void Initialize()
     {
         ScanningInterval = 5000;
-        LOSInterval = 750;//500
-
+        LOSInterval = 500;//500//750
         MainLoop();
     }
     private static void MainLoop()
