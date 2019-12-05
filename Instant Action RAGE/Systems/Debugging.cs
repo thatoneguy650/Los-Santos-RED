@@ -209,6 +209,10 @@ public static class Debugging
         //    Game.LocalPlayer.WantedLevel = 0;
         //else
         //    Game.LocalPlayer.WantedLevel = 2;
+
+
+        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousActivity, 3, false));
+
     }
     private static void DebugNumpad3()
     {

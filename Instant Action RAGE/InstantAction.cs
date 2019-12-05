@@ -258,7 +258,7 @@ public static class InstantAction
         DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectArrested, 5, false));
         GameFiber HandleBusted = GameFiber.StartNew(delegate
         {
-            GameFiber.Wait(1500);
+            GameFiber.Wait(1000);
             Menus.ShowBustedMenu();
         }, "HandleBusted");
         Debugging.GameFibers.Add(HandleBusted);
@@ -278,7 +278,7 @@ public static class InstantAction
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5, false));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {
-            GameFiber.Wait(1500);
+            GameFiber.Wait(1000);
             Menus.ShowDeathMenu();
         }, "HandleDeath");
         Debugging.GameFibers.Add(HandleDeath);
@@ -492,10 +492,13 @@ public static class InstantAction
     {
         GameFiber Transition = GameFiber.StartNew(delegate
         {
-            while(Game.TimeScale > 0.4f)
+            int WaitTime = 10;
+            while (Game.TimeScale > 0.4f)
             {
                 Game.TimeScale = Game.TimeScale - 0.05f;
-                GameFiber.Wait(100);
+                GameFiber.Wait(WaitTime);
+                if(WaitTime <= 98)
+                    WaitTime = WaitTime + 2;
             }
 
         }, "TransitionIn");
@@ -505,10 +508,13 @@ public static class InstantAction
     {
         GameFiber Transition = GameFiber.StartNew(delegate
         {
+            int WaitTime = 100;
             while (Game.TimeScale < 1f)
             {
                 Game.TimeScale = Game.TimeScale + 0.05f;
-                GameFiber.Wait(100);
+                GameFiber.Wait(WaitTime);
+                if(WaitTime >= 12)
+                    WaitTime = WaitTime - 2;
             }
 
         }, "TransitionOut");

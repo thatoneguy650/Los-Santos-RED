@@ -31,8 +31,9 @@ public static class LicensePlateChanging
     public static List<GTALicensePlate> SpareLicensePlates = new List<GTALicensePlate>();
     public static void RemoveNearestLicensePlate()
     {
-        Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-        Vehicle ClosestVehicle = NearbyVehicles.Where(x => x.LicensePlate != "        ").OrderBy(x => GetLicensePlateChangePosition(x).DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+        Vehicle ClosestVehicle = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderCars);
+        if (ClosestVehicle.LicensePlate == "        ")
+            return;
 
         if (ClosestVehicle != null)
         {
@@ -55,9 +56,7 @@ public static class LicensePlateChanging
         if (!SpareLicensePlates.Any())
             return;
 
-
-        Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-        Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => GetLicensePlateChangePosition(x).DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+        Vehicle ClosestVehicle = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderCars);
 
         if (ClosestVehicle != null)
         {
@@ -253,7 +252,7 @@ public static class LicensePlateChanging
     public static void PedReactToThreatening(Ped Attacker)
     {
         int RandomNum = rnd.Next(1, 20);
-        if (RandomNum == 1) //Murder
+        if (RandomNum <= 4) //Murder
         {
             GTAWeapon GunToGive = GTAWeapons.GetRandomWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
             Attacker.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);

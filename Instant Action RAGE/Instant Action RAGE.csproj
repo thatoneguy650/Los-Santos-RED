@@ -118,9 +118,9 @@
     <Compile Include="Entities\Other\PoliceTask.cs" />
     <Compile Include="Lookups\Locations.cs" />
     <Compile Include="Systems\WeatherReporting.cs" />
-    <Compile Include="Main\EntryPoint.cs" />
+    <Compile Include="EntryPoint.cs" />
     <Compile Include="Other\Extensions.cs" />
-    <Compile Include="Main\InstantAction.cs" />
+    <Compile Include="InstantAction.cs" />
     <Compile Include="Other\Memory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lookups\ScannerAudio.cs" />

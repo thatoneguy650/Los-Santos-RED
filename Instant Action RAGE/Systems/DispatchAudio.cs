@@ -9,6 +9,7 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Media;
 using static ScannerAudio;
@@ -33,6 +34,7 @@ internal static class DispatchAudio
     private static List<ColorLookup> ColorLookups = new List<ColorLookup>();
     private static List<string> DamagedScannerAliases = new List<string>();
     private static bool CancelAudio;
+    public static bool IsPlayingAudio;
 
     public static bool AudioPlaying
     {
@@ -237,6 +239,37 @@ internal static class DispatchAudio
             }
         });
     }
+    public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
+    {
+        if (MyAudioEvent.CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
+            return;
+
+        GameFiber PlayAudioList = GameFiber.StartNew(delegate
+        {
+
+            while (IsPlayingAudio)
+                GameFiber.Yield();
+
+            foreach (String audioname in MyAudioEvent.SoundsToPlay)
+            {
+                PlayAudio(audioname);
+                if (CancelAudio)
+                {
+                    break;
+                }
+                while (IsPlayingAudio)
+                {
+                    if (MyAudioEvent.Subtitles != "" && Settings.DispatchSubtitles)
+                    {
+                        Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
+                    }
+                    GameFiber.Yield();
+                }
+            }
+            CancelAudio = false;
+        }, "PlayAudioList");
+        Debugging.GameFibers.Add(PlayAudioList);
+    }
     private static void PlayAudio(String _Audio)
     {
         try
@@ -265,49 +298,6 @@ internal static class DispatchAudio
             Game.Console.Print(e.Message);
         }
     }
-    public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
-    {
-        if (MyAudioEvent.CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
-            return;
-
-        while (outputDevice != null)
-            GameFiber.Yield();
-
-        GameFiber PlayAudioList = GameFiber.StartNew(delegate
-        {
-
-            while (outputDevice != null)
-                GameFiber.Yield();
-
-
-            foreach (String audioname in MyAudioEvent.SoundsToPlay)
-            {
-                PlayAudio(audioname);
-                if (CancelAudio)
-                {
-                    break;
-                }
-                while (outputDevice != null)
-                {
-                    if (MyAudioEvent.Subtitles != "" && Settings.DispatchSubtitles)
-                    {
-                        //InstantAction.Text(MyAudioEvent.Subtitles.Substring(0,Math.Min(75,MyAudioEvent.Subtitles.Length)), 0.94f, 0.5f, 0.35f, true, System.Drawing.Color.White);
-                        //if (MyAudioEvent.Subtitles.Length >= 75)
-                        //{
-                        //    InstantAction.Text(MyAudioEvent.Subtitles.Substring(74, MyAudioEvent.Subtitles.Length), 0.96f, 0.5f, 0.35f, true, System.Drawing.Color.White);
-                        //}
-                        Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
-                        
-                    }
-                    
-                    GameFiber.Yield();
-
-                }
-            }
-            CancelAudio = false;
-        }, "PlayAudioList");
-        Debugging.GameFibers.Add(PlayAudioList);
-    }
     private static void OnPlaybackStopped(object sender, StoppedEventArgs args)
     {
         outputDevice.Dispose();
@@ -317,11 +307,6 @@ internal static class DispatchAudio
             audioFile.Dispose();
         }
         audioFile = null;
-    }
-    public static void AbortAllAudio()
-    {
-        CancelAudio = true;
-        DispatchQueue.Clear();
     }
     public static void AddDispatchToQueue(DispatchQueueItem _ItemToAdd)
     {
@@ -436,7 +421,6 @@ internal static class DispatchAudio
         }
     }
   
-
     //Starting
     private static void ReportGenericStart(ref List<string> myList)
     {
@@ -1451,6 +1435,35 @@ internal static class DispatchAudio
         //}
         //ReportGenericEnd(ScannerList, NearType.HeadingStreetAndZone);
        // PlayAudioList(ScannerList, false);
+    }
+    private static void PlayAudioNEW(String _Audio)
+    {
+        try
+        {
+            if (_Audio == "")
+                return;
+
+            SoundPlayer MySoundPlayer = new SoundPlayer(string.Format("Plugins\\InstantAction\\audio\\{0}", _Audio));
+            IsPlayingAudio = true;
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                MySoundPlayer.PlaySync();
+                IsPlayingAudio = false;
+            }).Start();
+
+        }
+        catch (Exception e)
+        {
+            Game.Console.Print(e.Message);
+        }
+    }
+    public static void AbortAllAudio()
+    {
+        CancelAudio = true;
+        DispatchQueue.Clear();
+        outputDevice.Stop();
     }
 
     //Helper

@@ -320,7 +320,7 @@ public static class PoliceSpawning
             else
                 CarModel = "fbi";
 
-            CarModel = "policet";
+            //CarModel = "policet";
         }
         else//fall back to unmarked, goes with everyone
         {

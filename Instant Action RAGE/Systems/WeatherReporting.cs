@@ -20,6 +20,7 @@ public static class WeatherReporting
     private static float CurrentWindSpeed;
     private static uint GameTimeLastReportedWeather;
     public static bool IsRunning { get; set; } = true;
+    public static bool IsReportingWeather { get; set; } = false;
     public static bool CanReportWeather
     {
         get
@@ -178,7 +179,7 @@ public static class WeatherReporting
     }
     private static void NextWeatherChanged()
     {
-        if(NextWeather != CurrentWeather)
+        if(NextWeather != CurrentWeather && InstantAction.PlayerWantedLevel == 0)
             ReportWeather(NextWeather);
 
         Debugging.WriteToLog("CheckWeather", string.Format("Next Weather Changed from {0} to {1}", PrevNextWeather, NextWeather));
@@ -217,6 +218,7 @@ public static class WeatherReporting
 
             ScannerList.Add(Weazel.Outro.FileName);
             string Subtitles = "";
+            IsReportingWeather = true;
             DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(ScannerList, false, Subtitles));
             GameTimeLastReportedWeather = Game.GameTime;
             if(RadioStationName != "OFF")
@@ -225,6 +227,7 @@ public static class WeatherReporting
                 {
                     while (DispatchAudio.AudioPlaying)
                         GameFiber.Sleep(500);
+                    IsReportingWeather = false;
                     Debugging.WriteToLog("ReportWeather", "Setting back to " + RadioStationName);
                     NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, RadioStationName);
                 }, "ChangeRadioBack");
@@ -236,13 +239,13 @@ public static class WeatherReporting
         public static WeatherFile Cloudy1 { get { return new WeatherFile("weather\\Cloudy1.wav",new List<WeatherTypeHash> { WeatherTypeHash.Clouds,WeatherTypeHash.Overcast,WeatherTypeHash.Smog },true,false);; } }//were getting some serious clouds to our east, expect them for a while
         public static WeatherFile Cloudy2 { get { return new WeatherFile("weather\\Cloudy2.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,false); } }//were getting some clouds in the areas, expect them to stay around for a bit then move out
         public static WeatherFile Cloudy3 { get { return new WeatherFile("weather\\Cloudy3.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,true); } }//cloudy right now. Low pressure coming in.
-        public static WeatherFile Cloudy4 { get { return new WeatherFile("weather\\Cloudy4.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,true); } }//great night tonight if this weather holds, cloudy right now
-        public static WeatherFile Cloudy5 { get { return new WeatherFile("weather\\Cloudy5.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,false); } }//little cloudy right now, but it will be a great week
-        public static WeatherFile Cloudy6 { get { return new WeatherFile("weather\\Cloudy6.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,false); } }//its cloudy,
-        public static WeatherFile Cloudy7 { get { return new WeatherFile("weather\\Cloudy7.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,true); } }//lots of clouds out there, gonna see some bright red clouds
-        public static WeatherFile Cloudy8 { get { return new WeatherFile("weather\\Cloudy8.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,true); } }//sseing some cloudy skies right now, though it will clear up at some point
-        public static WeatherFile Cloudy10 { get { return new WeatherFile("weather\\Cloudy10.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, true,false); } }//some clouds moving through the area
-        public static WeatherFile Cloudy11 { get { return new WeatherFile("weather\\Cloudy11.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast, WeatherTypeHash.Smog }, false,true); } }//some clouds moving through the area
+        public static WeatherFile Cloudy4 { get { return new WeatherFile("weather\\Cloudy4.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast }, true,true); } }//great night tonight if this weather holds, cloudy right now
+        public static WeatherFile Cloudy5 { get { return new WeatherFile("weather\\Cloudy5.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast }, true,false); } }//little cloudy right now, but it will be a great week
+        public static WeatherFile Cloudy6 { get { return new WeatherFile("weather\\Cloudy6.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast }, true,false); } }//its cloudy,
+        public static WeatherFile Cloudy7 { get { return new WeatherFile("weather\\Cloudy7.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast }, true,true); } }//lots of clouds out there, gonna see some bright red clouds
+        public static WeatherFile Cloudy8 { get { return new WeatherFile("weather\\Cloudy8.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast }, true,true); } }//sseing some cloudy skies right now, though it will clear up at some point
+        public static WeatherFile Cloudy10 { get { return new WeatherFile("weather\\Cloudy10.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast }, true,false); } }//some clouds moving through the area
+        public static WeatherFile Cloudy11 { get { return new WeatherFile("weather\\Cloudy11.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clouds, WeatherTypeHash.Overcast }, false,true); } }//some clouds moving through the area
     }
     public class Foggy
     {
@@ -276,13 +279,13 @@ public static class WeatherReporting
     }
     public class Windy
     {
-        public static WeatherFile Windy1 { get { return new WeatherFile("weather\\Windy1.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clearing }, true, true); ; } }//wind is going to be with us for a while
-        public static WeatherFile Windy2 { get { return new WeatherFile("weather\\Windy2.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clearing }, true, true); } }//some serious wind coming through next few days
-        public static WeatherFile Windy3 { get { return new WeatherFile("weather\\Windy3.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clearing }, true, true); } }//tropical storms causing this wind right now
-        public static WeatherFile Windy4 { get { return new WeatherFile("weather\\Windy4.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clearing }, true, true); } }//weve got some wind in the area
-        public static WeatherFile Windy6 { get { return new WeatherFile("weather\\Windy6.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clearing }, true, true); } }//expect some wind then rain, then sun
-        public static WeatherFile Windy7 { get { return new WeatherFile("weather\\Windy7.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clearing }, true, true); } }//its windy
-        public static WeatherFile Windy8 { get { return new WeatherFile("weather\\Windy8.wav", new List<WeatherTypeHash> { WeatherTypeHash.Clearing }, true, true); } }//windy now
+        public static WeatherFile Windy1 { get { return new WeatherFile("weather\\Windy1.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, true, true); ; } }//wind is going to be with us for a while
+        public static WeatherFile Windy2 { get { return new WeatherFile("weather\\Windy2.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, true, true); } }//some serious wind coming through next few days
+        public static WeatherFile Windy3 { get { return new WeatherFile("weather\\Windy3.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, true, true); } }//tropical storms causing this wind right now
+        public static WeatherFile Windy4 { get { return new WeatherFile("weather\\Windy4.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, true, true); } }//weve got some wind in the area
+        public static WeatherFile Windy6 { get { return new WeatherFile("weather\\Windy6.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, true, true); } }//expect some wind then rain, then sun
+        public static WeatherFile Windy7 { get { return new WeatherFile("weather\\Windy7.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, true, true); } }//its windy
+        public static WeatherFile Windy8 { get { return new WeatherFile("weather\\Windy8.wav", new List<WeatherTypeHash> { WeatherTypeHash.None }, true, true); } }//windy now
     }
     public class Sunny
     {
