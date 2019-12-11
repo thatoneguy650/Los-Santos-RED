@@ -31,10 +31,6 @@ public static class CarStealing
         if (!CanLockPick(ToEnter))
             return;
 
-        Vector3 GameEntryPosition = GetHandlePosition(ToEnter);
-        if (GameEntryPosition == Vector3.Zero)
-            return;
-
         try
         {
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
@@ -107,8 +103,10 @@ public static class CarStealing
                 }
                 if (ToEnter.Doors[DoorIndex].IsValid())
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", ToEnter, DoorIndex, 4, 0f);
-
-                GameFiber.Sleep(5000);
+                if(DoorIndex == 0)//Driver side
+                    GameFiber.Sleep(5000);
+                else
+                    GameFiber.Sleep(8000);//Passengfer takes longer
                 Screwdriver.Delete();
                 PlayerBreakingIntoCar = false;
                 LocalWriteToLog("UnlockCarDoor", string.Format("Made it to the end: {0}", SeatTryingToEnter));
@@ -200,20 +198,33 @@ public static class CarStealing
         else if (MyVehicle.VehicleEnt.Handle != InstantAction.OwnedCar.Handle && !MyVehicle.IsStolen)
             MyVehicle.IsStolen = true;
     }
-    public static Vector3 GetHandlePosition(Vehicle TargetVehicle)
+    //public static Vector3 GetHandlePosition(Vehicle TargetVehicle)
+    //{
+    //    Vector3 GameEntryPosition = Vector3.Zero;
+    //    if (TargetVehicle.HasBone("handle_dside_f") && 1 == 0)
+    //    {
+    //        GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
+    //        LocalWriteToLog("CarJackPedWithWeapon", string.Format("Handle Pos: {0}", GameEntryPosition));
+    //    }
+    //    else
+    //    {
+    //        GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
+    //        LocalWriteToLog("CarJackPedWithWeapon", string.Format("Game Entry Pos: {0}", GameEntryPosition));
+    //    }
+    //    return GameEntryPosition;
+    //}
+    public static Vector3 GetHandlePosition(Vehicle TargetVehicle,string Bone)
     {
         Vector3 GameEntryPosition = Vector3.Zero;
-        if (TargetVehicle.HasBone("handle_dside_f") && 1 == 0)
+        if (TargetVehicle.HasBone(Bone))
         {
-            GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
-            LocalWriteToLog("CarJackPedWithWeapon", string.Format("Handle Pos: {0}", GameEntryPosition));
-        }
-        else
-        {
-            GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
-            LocalWriteToLog("CarJackPedWithWeapon", string.Format("Game Entry Pos: {0}", GameEntryPosition));
+            GameEntryPosition = TargetVehicle.GetBonePosition(Bone);
         }
         return GameEntryPosition;
+    }
+    public static Vector3 GetEntryPosition(Vehicle TargetVehicle)
+    {
+        return NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
     }
     public static void CarJackPedWithWeapon(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
     {
@@ -236,7 +247,7 @@ public static class CarStealing
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
                 Driver.BlockPermanentEvents = true;
 
-                Vector3 GameEntryPosition = GetHandlePosition(TargetVehicle);
+                Vector3 GameEntryPosition = GetEntryPosition(TargetVehicle);
                 float DesiredHeading = TargetVehicle.Heading - 90f;
 
                 string dict = "";

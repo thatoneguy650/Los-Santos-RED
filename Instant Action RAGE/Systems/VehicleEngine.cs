@@ -116,10 +116,6 @@ internal static class VehicleEngine
                     {
                         EngineRunningEvent();
                     }
-                    if(PrevWantedLevelTune != WantedLevelTune)
-                    {
-                        WantedLevelTuneEvent();
-                    }
                     GameFiber.Yield();
                 }
             }
@@ -130,7 +126,6 @@ internal static class VehicleEngine
             }
         });
     }
-
     private static void IsHotWiringChanged()
     {
         if(IsHotwiring)
@@ -139,17 +134,11 @@ internal static class VehicleEngine
         }
         else
         {
-            EngineRunning = true;//ToggleEngine(true, !EngineRunning);
+            if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                EngineRunning = true;
         }
         PrevIsHotwiring = IsHotwiring;
     }
-
-    private static void WantedLevelTuneEvent()
-    {
-        ChangeStation(VehicleEngine.AutoTuneStation);
-        PrevWantedLevelTune = WantedLevelTune;
-    }
-
     private static void EngineRunningEvent()
     {
         LocalWriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",EngineRunning));

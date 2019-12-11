@@ -73,8 +73,10 @@ public static class PoliceScanning
                 //}
             }
         }
-        CopPeds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
-        K9Peds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
-        Civilians.RemoveAll(x => !x.Exists() || x.IsDead);
+        Police.UpdatedCopsStats();
+        //CopPeds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
+        //K9Peds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
+        //Civilians.RemoveAll(x => !x.Exists() || x.IsDead);
+        // Police.CheckKilled();
     }
 }

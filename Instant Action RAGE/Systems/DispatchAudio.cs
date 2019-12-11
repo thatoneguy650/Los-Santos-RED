@@ -33,8 +33,9 @@ internal static class DispatchAudio
     private static List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
     private static List<ColorLookup> ColorLookups = new List<ColorLookup>();
     private static List<string> DamagedScannerAliases = new List<string>();
-    private static bool CancelAudio;
+    public static bool CancelAudio;
     public static bool IsPlayingAudio;
+
 
     public static bool AudioPlaying
     {
@@ -253,20 +254,21 @@ internal static class DispatchAudio
             foreach (String audioname in MyAudioEvent.SoundsToPlay)
             {
                 PlayAudio(audioname);
-                if (CancelAudio)
-                {
-                    break;
-                }
                 while (IsPlayingAudio)
                 {
                     if (MyAudioEvent.Subtitles != "" && Settings.DispatchSubtitles)
                     {
                         Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
                     }
+
                     GameFiber.Yield();
                 }
+                if (CancelAudio)
+                {
+                    CancelAudio = false;
+                    break;
+                }
             }
-            CancelAudio = false;
         }, "PlayAudioList");
         Debugging.GameFibers.Add(PlayAudioList);
     }
@@ -292,6 +294,7 @@ internal static class DispatchAudio
                 outputDevice.Init(audioFile);
             }
             outputDevice.Play();
+            IsPlayingAudio = true;
         }
         catch (Exception e)
         {
@@ -307,6 +310,7 @@ internal static class DispatchAudio
             audioFile.Dispose();
         }
         audioFile = null;
+        IsPlayingAudio = false;
     }
     public static void AddDispatchToQueue(DispatchQueueItem _ItemToAdd)
     {
@@ -1461,9 +1465,10 @@ internal static class DispatchAudio
     }
     public static void AbortAllAudio()
     {
-        CancelAudio = true;
         DispatchQueue.Clear();
-        outputDevice.Stop();
+        CancelAudio = true;
+        if(AudioPlaying)
+            outputDevice.Stop();
     }
 
     //Helper

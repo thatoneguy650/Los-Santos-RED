@@ -187,7 +187,7 @@ public static class WeatherReporting
     }
     public static void ReportWeather(WeatherTypeHash WeatherToReport)
     {
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && InstantAction.PlayerWantedLevel == 0 && Police.PlayerHasBeenNotWantedFor > 15000)//Aren;t wanted and haven't been wanted for 15 seconds
         {
             string RadioStationName;
             unsafe
@@ -310,7 +310,11 @@ public static class WeatherReporting
     }
     public static string GetAudioFromWeatherType(WeatherTypeHash MyWeather)
     {
-        return WeatherFiles.Where(p => p.WeatherTypes.Any(c => c == MyWeather)).PickRandom().FileName;
+        WeatherFile TheWeather = WeatherFiles.Where(p => p.WeatherTypes.Any(c => c == MyWeather)).PickRandom();
+        if (TheWeather == null)
+            return "";
+        else
+            return WeatherFiles.Where(p => p.WeatherTypes.Any(c => c == MyWeather)).PickRandom().FileName;
     }
     public class WeatherFile
     {

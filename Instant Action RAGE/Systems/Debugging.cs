@@ -788,6 +788,7 @@ public static class Debugging
     }
     private static void DebugNumpad9()
     {
+        DebugCopReset();
         Game.DisplayNotification("Instant Action Deactivated");
         InstantAction.Dispose();
     }

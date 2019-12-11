@@ -120,7 +120,6 @@ internal static class Police
                 return (Game.GameTime - GameTimeLastWantedEnded);
         }
     }
-
     public static uint PlayerHasBeenWantedFor//seconds
     {
         get
@@ -267,25 +266,15 @@ internal static class Police
         UpdatedCopsStats();
         CheckRecognition();
     }
-    private static void UpdatedCopsStats()
+    public static void UpdatedCopsStats()
     {
         PoliceScanning.CopPeds.RemoveAll(x => !x.CopPed.Exists());
         PoliceScanning.K9Peds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
         foreach (GTACop Cop in PoliceScanning.CopPeds)
         {
-
             if (Cop.CopPed.IsDead)
             {
-                if (PlayerHurtPed(Cop))
-                {
-                    Cop.HurtByPlayer = true;
-                    PlayerHurtPolice = true;
-                }
-                if (PlayerKilledPed(Cop))
-                {
-                    CopsKilledByPlayer++;
-                    PlayerKilledPolice = true;
-                }
+                CheckKilled(Cop);
                 continue;
             }
             int NewHealth = Cop.CopPed.Health;
@@ -316,28 +305,28 @@ internal static class Police
             Cop.DistanceToPlayer = Cop.CopPed.RangeTo(Game.LocalPlayer.Character.Position);
             Cop.DistanceToLastSeen = Cop.CopPed.RangeTo(PlacePlayerLastSeen);
         }
+        foreach(GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.IsDead))
+        {
+            MarkNonPersistent(Cop);
+        }
         PoliceScanning.CopPeds.RemoveAll(x => x.CopPed.IsDead);
     }
-    private static void CheckKilled()
+    public static void CheckKilled(GTACop Cop)
     {
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && x.CopPed.IsDead))
+        if (Cop.WasRandomSpawn)
         {
-            if (PlayerKilledPed(Cop))
-            {
-                CopsKilledByPlayer++;
-                PlayerKilledPolice = true;
-            }
+
         }
-        foreach (Ped Pedestrian in PoliceScanning.Civilians.Where(x => x.Exists() && x.IsDead))
+        if (PlayerHurtPed(Cop))
         {
-            if (PlayerKilledPed(Pedestrian))
-            {
-                CiviliansKilledByPlayer++;
-                PlayerKilledCivilians = true;
-            }
+            Cop.HurtByPlayer = true;
+            PlayerHurtPolice = true;
         }
-        PoliceScanning.CopPeds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
-        PoliceScanning.Civilians.RemoveAll(x => !x.Exists() || x.IsDead);
+        if (PlayerKilledPed(Cop))
+        {
+            CopsKilledByPlayer++;
+            PlayerKilledPolice = true;
+        }
     }
     private static bool PlayerHurtPed(GTACop Cop)
     {
@@ -631,7 +620,6 @@ internal static class Police
             }
         }
     }
-
     private static void CheckPoliceEvents()
     {
         if (PrevPlayerIsJacking != PlayerIsJacking)
@@ -1069,6 +1057,71 @@ internal static class Police
     {
         if (Settings.PoliceLogging)
             Debugging.WriteToLog(ProcedureString, TextToLog);
+    }
+    public static void StopWantedTemporarily(int TimeToStop)
+    {
+        GameFiber StopWantedLevel = GameFiber.StartNew(delegate
+        {
+            uint GameTimeStarted = Game.GameTime;
+            while (Game.GameTime - GameTimeStarted < TimeToStop)
+            {
+                Game.LocalPlayer.WantedLevel = 0;
+                GameFiber.Yield();
+            }
+
+        }, "StopWantedLevel");
+        Debugging.GameFibers.Add(StopWantedLevel);
+    }
+    public static void RemoveBlip(Ped MyPed)
+    {
+        Blip MyBlip = MyPed.GetAttachedBlip();
+        if (MyBlip.Exists())
+            MyBlip.Delete();
+    }
+    public static void DeleteCop(GTACop Cop)
+    {
+        if (!Cop.CopPed.Exists())
+            return;
+        if (Cop.CopPed.IsInAnyVehicle(false))
+        {
+            if (Cop.CopPed.CurrentVehicle.HasPassengers)
+            {
+                foreach (Ped Passenger in Cop.CopPed.CurrentVehicle.Passengers)
+                {
+                    RemoveBlip(Passenger);
+                    Passenger.Delete();
+                }
+            }
+            Cop.CopPed.CurrentVehicle.Delete();
+        }
+        RemoveBlip(Cop.CopPed);
+        Cop.CopPed.Delete();
+        Cop.WasMarkedNonPersistent = false;
+        LocalWriteToLog("SpawnCop", string.Format("Cop Deleted: Handled {0}", Cop.CopPed.Handle));
+    }
+    public static void MarkNonPersistent(GTACop Cop)
+    {
+        if (!Cop.CopPed.Exists())
+            return;
+        if (Cop.CopPed.IsInAnyVehicle(false))
+        {
+            if (Cop.CopPed.CurrentVehicle.HasPassengers)
+            {
+                foreach (Ped Passenger in Cop.CopPed.CurrentVehicle.Passengers)
+                {
+                    GTACop PassengerCop = PoliceScanning.CopPeds.Where(x => x.CopPed.Handle == Passenger.Handle).FirstOrDefault();
+                    if(PassengerCop != null)
+                    {
+                        PassengerCop.CopPed.IsPersistent = false;
+                        PassengerCop.WasMarkedNonPersistent = false;
+                    }
+                }
+            }
+            Cop.CopPed.CurrentVehicle.IsPersistent = false;
+        }
+        Cop.CopPed.IsPersistent = false;
+        Cop.WasMarkedNonPersistent = false;
+        LocalWriteToLog("SpawnCop", string.Format("CopMarkedNonPersistant: Handled {0}", Cop.CopPed.Handle));
     }
 
 }

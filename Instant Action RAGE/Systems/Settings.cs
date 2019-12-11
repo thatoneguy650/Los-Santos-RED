@@ -92,7 +92,8 @@ static class Settings
     public static bool PoliceSpeechLogging = false;
     public static bool VehicleEngineLogging = false;
     public static bool WeaponDroppingLogging = false;
-
+    public static bool AllowDeathMenus = true;
+    public static bool AlwaysShowRadar = true;
     public static string MainCharacterToAliasModelName
     {
         get
@@ -122,9 +123,7 @@ static class Settings
             }
             return 1;
         }
-    }
-
-    public static bool AlwaysShowRadar { get; set; } = true;
+    }    
 
     public static void Initialize()
     {
