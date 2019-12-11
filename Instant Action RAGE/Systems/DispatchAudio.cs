@@ -1743,7 +1743,7 @@ internal static class DispatchAudio
             if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != "" || VehicleClassScannerFile != ""))
             {
                 Subtitles = Subtitles + " ~s~a";
-                ScannerList.Add(conjunctives.A01.FileName);
+                ScannerList.Add(new List<string>() { conjunctives.A01.FileName,conjunctives.A02.FileName }.PickRandom());
                 if (VehicleDescription.VehicleEnt.IsDamaged())
                 {
                     ScannerList.Add(DamagedScannerAliases.PickRandom());

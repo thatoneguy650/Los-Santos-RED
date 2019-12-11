@@ -126,9 +126,11 @@ public static class WeatherReporting
                         GameTimeLastCheckedWeather = Game.GameTime;
                     }
 
-                    string Tasking = string.Format("Weather: Current: {0}, Next: {1}, Wind: {2}", CurrentWeather, NextWeather,WindSpeed);//string.Format("ToTask: {0}", CopsToTask.Count());
-                    UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
-
+                    if (Settings.DebugShowUI)
+                    {
+                        string Tasking = string.Format("Weather: Current: {0}, Next: {1}, Wind: {2}", CurrentWeather, NextWeather, WindSpeed);//string.Format("ToTask: {0}", CopsToTask.Count());
+                        UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+                    }
                     GameFiber.Yield();
                 }
             }
@@ -179,7 +181,7 @@ public static class WeatherReporting
     }
     private static void NextWeatherChanged()
     {
-        if(NextWeather != CurrentWeather && InstantAction.PlayerWantedLevel == 0)
+        if(NextWeather != CurrentWeather && InstantAction.PlayerWantedLevel == 0 && !DispatchAudio.IsPlayingAudio)
             ReportWeather(NextWeather);
 
         Debugging.WriteToLog("CheckWeather", string.Format("Next Weather Changed from {0} to {1}", PrevNextWeather, NextWeather));

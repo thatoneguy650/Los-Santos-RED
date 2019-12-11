@@ -148,7 +148,14 @@ public static class PoliceSpawning
             }
             if (Cop.DistanceToPlayer >= 250f && Cop.CopPed.IsInAnyVehicle(false))//750f
             {
-                if (Cop.CopPed.CurrentVehicle.Health <= 600 || Cop.CopPed.CurrentVehicle.EngineHealth <= 600 || Cop.CopPed.CurrentVehicle.IsUpsideDown)
+                if (Cop.CopPed.CurrentVehicle.Health <= 800 || Cop.CopPed.CurrentVehicle.EngineHealth <= 800)
+                {
+                    if (Cop.AssignedAgency == Agencies.LSPD || Cop.AssignedAgency == Agencies.LSSD)//Only repiar naturally spawning cars so they appear to have just been another spawned car
+                    {
+                        Cop.CopPed.CurrentVehicle.Repair();
+                    }
+                }
+                else if (Cop.CopPed.CurrentVehicle.Health <= 600 || Cop.CopPed.CurrentVehicle.EngineHealth <= 600 || Cop.CopPed.CurrentVehicle.IsUpsideDown)
                 {
                     Police.DeleteCop(Cop);
                 }
@@ -222,7 +229,7 @@ public static class PoliceSpawning
             PoliceScanning.CopPeds.Add(MyNewPartnerCop);
         }
 
-        LocalWriteToLog("SpawnCop", string.Format("CopSpawned: Handled {0},Agency{1},AddedPartner{2}", Cop.Handle, _Agency.Initials, AddPartner));
+        //LocalWriteToLog("SpawnCop", string.Format("CopSpawned: Handled {0},Agency{1},AddedPartner{2}", Cop.Handle, _Agency.Initials, AddPartner));
     }
     public static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBikeCop)
     {
@@ -332,7 +339,29 @@ public static class PoliceSpawning
         }
 
         Vehicle CopCar = new Vehicle(CarModel, SpawnLocation, 0f);
-        return CopCar;
+        GameFiber.Yield();
+        if(CopCar.Exists())
+        {
+            UpgradeCruiser(CopCar);
+            return CopCar;
+        }
+        else
+        {
+            return null;
+        }
+        
+    }
+    public static void UpgradeCruiser(Vehicle CopCruiser)
+    {
+        if (!CopCruiser.Exists())
+            return;
+        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT", CopCruiser, 0);//Required to work
+        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 11) - 1, true);//Engine
+        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 12) - 1, true);//Brakes
+        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 13) - 1, true);//Tranny
+        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 15) - 1, true);//Suspension
+
+        NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
     }
     public static void CreateK9()
     {

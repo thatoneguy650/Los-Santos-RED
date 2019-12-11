@@ -94,6 +94,8 @@ static class Settings
     public static bool WeaponDroppingLogging = false;
     public static bool AllowDeathMenus = true;
     public static bool AlwaysShowRadar = true;
+
+    public static bool DebugShowUI = true;
     public static string MainCharacterToAliasModelName
     {
         get

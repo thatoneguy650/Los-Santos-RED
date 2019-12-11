@@ -521,13 +521,13 @@ public static class InstantAction
     {
         GameFiber Transition = GameFiber.StartNew(delegate
         {
-            int WaitTime = 10;
+            int WaitTime = 100;
             while (Game.TimeScale > 0.4f)
             {
                 Game.TimeScale = Game.TimeScale - 0.05f;
                 GameFiber.Wait(WaitTime);
-                if(WaitTime <= 98)
-                    WaitTime = WaitTime + 2;
+                if (WaitTime <= 200)
+                    WaitTime = WaitTime + 1;
             }
 
         }, "TransitionIn");
@@ -542,8 +542,8 @@ public static class InstantAction
             {
                 Game.TimeScale = Game.TimeScale + 0.05f;
                 GameFiber.Wait(WaitTime);
-                if(WaitTime >= 12)
-                    WaitTime = WaitTime - 2;
+                if (WaitTime >= 12)
+                    WaitTime = WaitTime - 1;
             }
 
         }, "TransitionOut");

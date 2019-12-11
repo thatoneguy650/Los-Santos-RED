@@ -92,7 +92,7 @@ internal static class VehicleEngine
                             LocalWriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
                         }
 
-                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
                         {
                             if (!EngineRunning)
                             {

@@ -240,11 +240,11 @@ public static class Tasking
                     Cop.TaskIsQueued = true;
                     AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.VehicleChase));
                 }
-                if ((InstantAction.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
+                if ((InstantAction.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking && !Cop.isInVehicle)
                     SurrenderBust = true;
             }
         }
-        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
+        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.isInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
             SurrenderBust = true;
 
         if (SurrenderBust && !IsBustTimeOut())
@@ -286,7 +286,7 @@ public static class Tasking
         }
         Police.SetWantedLevel(InstantAction.MaxWantedLastLife,"Changing it back to what it was max during your last life");
 
-        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
+        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.isInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
             SurrenderBust = true;
 
         if (SurrenderBust && !IsBustTimeOut())
@@ -340,7 +340,7 @@ public static class Tasking
             SetUnarmed(Cop);
         }
 
-        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 8f) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !InstantAction.IsBusted && !Police.PlayerWasJustJacking)
+        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 8f && !x.isInVehicle) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !InstantAction.IsBusted && !Police.PlayerWasJustJacking)
             ForceSurrenderTime++;
         else
             ForceSurrenderTime = 0;
@@ -636,10 +636,10 @@ public static class Tasking
 
                     }
 
-                    if ((InstantAction.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
+                    if ((InstantAction.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking && !Cop.isInVehicle)
                         SurrenderBust = true;
 
-                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking)
+                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking && !Cop.isInVehicle)
                         SurrenderBust = true;
 
                     if (InstantAction.PlayerInVehicle && (Cop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f))

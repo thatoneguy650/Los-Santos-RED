@@ -52,33 +52,34 @@ public static class Debugging
     }
     private static void DebugLoop()
     {
+        if (Settings.DebugShowUI)
+        {
+            string MyGameFibers = string.Join(";", GameFibers.Where(x => x.IsAlive).GroupBy(g => g.Name).Select(group => group.Key + ":" + group.Count()));//new { GF = group.Key,Cnt = group.Count() }));//.ToArray());
 
-        string MyGameFibers = string.Join(";", GameFibers.Where(x => x.IsAlive).GroupBy(g => g.Name).Select(group => group.Key + ":" + group.Count()));//new { GF = group.Key,Cnt = group.Count() }));//.ToArray());
+            // string MyGameFibers = string.Join(";", GameFibers.Where(x => x.IsAlive).Select(x => x.Name).Distinct().ToArray());
 
-       // string MyGameFibers = string.Join(";", GameFibers.Where(x => x.IsAlive).Select(x => x.Name).Distinct().ToArray());
+            //GameFibers.
+            string DebugString = string.Format("Fibers: {0} LastWeapon: {1}", MyGameFibers, InstantAction.LastWeapon);
+            UI.Text(DebugString, 0.86f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+            //if (DispatchAudioGameFibersRunning)
+            //    DebugString = DebugString + " DA!";
 
-        //GameFibers.
-        string DebugString = string.Format("Fibers: {0} LastWeapon: {1}", MyGameFibers, InstantAction.LastWeapon);
-        UI.Text(DebugString, 0.86f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
-        //if (DispatchAudioGameFibersRunning)
-        //    DebugString = DebugString + " DA!";
-
-        //if (InstantActionGameFibersRunning)
-        //    DebugString = DebugString + " IA!";
-
-
-        string TextToShow = Tasking.CurrentPoliceTickRunning;
-        if (Police.PlayerIsPersonOfInterest)
-            TextToShow = TextToShow + " + POI";
-
-        if(Police.PlayerLastSeenInVehicle)
-            TextToShow = TextToShow + " + LS:Vehicle";
-        else
-            TextToShow = TextToShow + " + LS:Foot";
-
-        UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+            //if (InstantActionGameFibersRunning)
+            //    DebugString = DebugString + " IA!";
 
 
+            string TextToShow = Tasking.CurrentPoliceTickRunning;
+            if (Police.PlayerIsPersonOfInterest)
+                TextToShow = TextToShow + " + POI";
+
+            if (Police.PlayerLastSeenInVehicle)
+                TextToShow = TextToShow + " + LS:Vehicle";
+            else
+                TextToShow = TextToShow + " + LS:Foot";
+
+            UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+
+        }
         if (Game.IsKeyDown(Keys.NumPad0))
         {
             DebugNumpad0();
@@ -644,7 +645,22 @@ public static class Debugging
 
             // Respawning.RemoveIllegalWeapons();
             //WeatherReporting.ReportWeather(WeatherReporting.ForecastedWeather);
-            InstantAction.TransitionToSlowMo();
+            //InstantAction.TransitionToSlowMo();
+
+
+            if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            {
+                Vehicle CurrentVeh = Game.LocalPlayer.Character.CurrentVehicle;
+                if (!CurrentVeh.Exists())
+                    return;
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT",CurrentVeh,0);//Required to work
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 11) - 1,true);//Engine
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 12) - 1, true);//Brakes
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 13) - 1, true);//Tranny
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 15) - 1,true);//Suspension
+
+                NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CurrentVeh, 1);
+            }
 
 
 
@@ -767,6 +783,9 @@ public static class Debugging
             Debugging.WriteToLog("Debug", string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11},Agency: {12}",
                     Cop.CopPed.Handle, Cop.CopPed.Model.Name, Cop.isTasked, Cop.canSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.CopPed.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials));
         }
+
+
+
     }
     private static void DebugNumpad8()
     {
@@ -781,8 +800,30 @@ public static class Debugging
         //}
 
         //Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false);
-        InstantAction.TransitionToRegularSpeed();
+        //InstantAction.TransitionToRegularSpeed();
 
+
+        if(Game.TimeScale < 1.0f)
+        {
+            InstantAction.TransitionToRegularSpeed();
+        }
+        else
+        {
+            InstantAction.TransitionToSlowMo();
+        }
+
+        //GTACop MyCop = PoliceScanning.CopPeds.PickRandom();
+        //if (MyCop == null)
+        //    return;
+        //List<int> CombatFloats = new List<int>() { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,20,21,22,23,24,25,26,27,28,29,30,31,33,34,35,36,37,38,39,41,42,43,44,45,46,47,49,50,51,52,53,54,56,57,58,59,62,64,66,67,69,70,71,72,73,74,78,79,80,81,82,83,84,85,86,88};
+
+        //foreach (int i in CombatFloats)
+        //{
+        //    float myValue = NativeFunction.CallByName<float>("GET_COMBAT_FLOAT", MyCop.CopPed, i);
+        //    Debugging.WriteToLog("Debug", string.Format("CombatFloat {0}: {1}", i, myValue));
+        //}
+        
+     
 
         // Smoking.Start();
     }
