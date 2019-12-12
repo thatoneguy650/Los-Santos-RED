@@ -648,22 +648,22 @@ public static class Debugging
             //InstantAction.TransitionToSlowMo();
 
 
-            if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
-            {
-                Vehicle CurrentVeh = Game.LocalPlayer.Character.CurrentVehicle;
-                if (!CurrentVeh.Exists())
-                    return;
-                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT",CurrentVeh,0);//Required to work
-                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 11) - 1,true);//Engine
-                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 12) - 1, true);//Brakes
-                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 13) - 1, true);//Tranny
-                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 15) - 1,true);//Suspension
+            //if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            //{
+            //    Vehicle CurrentVeh = Game.LocalPlayer.Character.CurrentVehicle;
+            //    if (!CurrentVeh.Exists())
+            //        return;
+            //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT",CurrentVeh,0);//Required to work
+            //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 11) - 1,true);//Engine
+            //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 12) - 1, true);//Brakes
+            //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 13) - 1, true);//Tranny
+            //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CurrentVeh, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CurrentVeh, 15) - 1,true);//Suspension
 
-                NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CurrentVeh, 1);
-            }
+            //    NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CurrentVeh, 1);
+            //}
 
 
-
+            NativeFunction.CallByName<bool>("PLAY_POLICE_REPORT","SCRIPTED_SCANNER_REPORT_CAR_STEAL_2_01", 0.0f);
 
 
             //WeatherReporting.ReportWeather(WeatherReporting.WeatherTypeHash.Clearing);

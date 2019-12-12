@@ -33,6 +33,7 @@ public static class InstantAction
     public static int MaxWantedLastLife { get; set; }
     public static WeaponHash LastWeapon { get; set; } = 0;
     public static bool PlayerInVehicle { get; set; } = false;
+    public static bool PlayerInAutomobile { get; set; } = false;
     public static bool PlayerAimingInVehicle { get; set; } = false;
     public static bool PlayerIsGettingIntoVehicle { get; set; }
     public static int PlayerWantedLevel { get; set; } = 0;
@@ -173,6 +174,13 @@ public static class InstantAction
     private static void UpdatePlayer()
     {
         PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+        if(PlayerInVehicle)
+        {
+            if (Game.LocalPlayer.Character.IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike)
+                PlayerInAutomobile = false;
+            else
+                PlayerInAutomobile = true;
+        }
         PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
         PlayerWantedLevel = Game.LocalPlayer.WantedLevel;
         PlayerIsConsideredArmed = Game.LocalPlayer.Character.isConsideredArmed();

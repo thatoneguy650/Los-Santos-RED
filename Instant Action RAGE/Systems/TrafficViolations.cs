@@ -104,7 +104,7 @@ public static class TrafficViolations
             ViolationSpeedLimit = false;
         }
 
-        if (InstantAction.PlayerInVehicle && !PedSwapping.JustTakenOver(5000))
+        if (InstantAction.PlayerInAutomobile && !PedSwapping.JustTakenOver(5000))
         {
             float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
             Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;

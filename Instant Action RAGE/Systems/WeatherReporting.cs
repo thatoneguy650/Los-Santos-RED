@@ -231,7 +231,8 @@ public static class WeatherReporting
                         GameFiber.Sleep(500);
                     IsReportingWeather = false;
                     Debugging.WriteToLog("ReportWeather", "Setting back to " + RadioStationName);
-                    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, RadioStationName);
+                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                        NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, RadioStationName);
                 }, "ChangeRadioBack");
             }
         }
