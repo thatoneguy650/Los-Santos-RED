@@ -16,10 +16,10 @@ internal static class VehicleEngine
     private static bool PrevEngineRunning;
     private static bool WasinVehicle;
     private static bool TogglingEngine;
-    private static bool ChangingStation;
+    //private static bool ChangingStation;
     private static uint GameTimeStartedHotwiring;
     private static bool PrevIsHotwiring;
-    private static bool PrevWantedLevelTune = false;
+   // private static bool PrevWantedLevelTune = false;
     //private static List<string> strRadioStations = new List<string> { "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
     public static bool AutoTune { get; private set; } = true;
     public static string AutoTuneStation { get; set; } = "RADIO_19_USER";
@@ -246,7 +246,7 @@ internal static class VehicleEngine
 
             if (!Game.LocalPlayer.Character.IsOnBike)
             {
-                ChangingStation = true;
+                //ChangingStation = true;
                 if (!ChangeStationAnimation())
                     return;
             }
@@ -256,7 +256,7 @@ internal static class VehicleEngine
             }
         }
         LocalWriteToLog("ToggleEngine", "toggled");
-        ChangingStation = false;
+        //ChangingStation = false;
     }
     private static bool ChangeStationAnimation()
     {
@@ -272,7 +272,7 @@ internal static class VehicleEngine
             if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
             {
                 NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
-                ChangingStation = false;
+                //ChangingStation = false;
                 return false;
             }
             GameFiber.Sleep(200);

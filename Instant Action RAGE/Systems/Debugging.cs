@@ -70,12 +70,12 @@ public static class Debugging
 
             string TextToShow = Tasking.CurrentPoliceTickRunning;
             if (Police.PlayerIsPersonOfInterest)
-                TextToShow = TextToShow + " + POI";
+                TextToShow += " + POI";
 
             if (Police.PlayerLastSeenInVehicle)
-                TextToShow = TextToShow + " + LS:Vehicle";
+                TextToShow += " + LS:Vehicle";
             else
-                TextToShow = TextToShow + " + LS:Foot";
+                TextToShow += " + LS:Foot";
 
             UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
 
@@ -185,6 +185,7 @@ public static class Debugging
         foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead && x.CopPed.IsInAnyVehicle(false) && !x.CopPed.IsInHelicopter))
         {
             Cop.CopPed.CurrentVehicle.Delete();
+
             Cop.CopPed.Delete();
         }
 
@@ -201,7 +202,7 @@ public static class Debugging
         NativeFunction.Natives.xB4EDDC19532BFB85();
 
 
-        PoliceSpawning.Dispose();
+        //PoliceSpawning.Dispose();
     }
     private static void DebugNumpad0()
     {
@@ -256,80 +257,80 @@ public static class Debugging
 
 
 
-        PoliceSpawning.SpawnCop(Agencies.SAHP, Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
+        //PoliceSpawning.SpawnCop(Agencies.SAHP, Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
 
 
 
 
-        GTACop MyCop = PoliceScanning.CopPeds.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if (MyCop != null)
-        {
+        //GTACop MyCop = PoliceScanning.CopPeds.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if (MyCop != null)
+        //{
 
-            MyCop.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f);
-
-
-
-            Tasking.AddItemToQueue(new PoliceTask(MyCop, PoliceTask.Task.RandomSpawnIdle));
-
-            return;
+        //    MyCop.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f);
 
 
 
+        //    Tasking.AddItemToQueue(new PoliceTask(MyCop, PoliceTask.Task.RandomSpawnIdle));
 
-            MyCop.CopPed.Tasks.StandStill(-1);
-
-            Ped PedToMove = Game.LocalPlayer.Character;
-            Vector3 PositionToMoveTo = MyCop.CopPed.GetOffsetPositionFront(1f);
-
-            // 
-            bool Continue = true;
-            bool isPlayer = true;
-            //Vector3 Resultant = Vector3.Subtract(PositionToMoveTo, MyCop.CopPed.Position);
-            //float DesiredHeading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        //    return;
 
 
 
 
+        //    MyCop.CopPed.Tasks.StandStill(-1);
 
-            //NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
+        //    Ped PedToMove = Game.LocalPlayer.Character;
+        //    Vector3 PositionToMoveTo = MyCop.CopPed.GetOffsetPositionFront(1f);
 
-            Game.LocalPlayer.Character.Tasks.GoToOffsetFromEntity(MyCop.CopPed, -1, 1f, 0f, 2f);
-
-
-            while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.2f))
-            {
-                GameFiber.Yield();
-                if (isPlayer && Extensions.IsMoveControlPressed())
-                {
-                    Continue = false;
-                    break;
-                }
-            }
-            if (!Continue)
-            {
-                PedToMove.Tasks.Clear();
-            }
+        //    // 
+        //    bool Continue = true;
+        //    bool isPlayer = true;
+        //    //Vector3 Resultant = Vector3.Subtract(PositionToMoveTo, MyCop.CopPed.Position);
+        //    //float DesiredHeading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
 
 
 
-            GameFiber.Sleep(1000);
 
-            //Respawning.BribeAnimation(MyCop.CopPed, Game.LocalPlayer.Character);
-            //MyCop.CopPed.Tasks.LeaveVehicle(MyCop.CopPed.CurrentVehicle, LeaveVehicleFlags.None);
-            //GameFiber.Sleep(4000);
-            //PoliceScanning.Untask(MyCop);
 
-            GameFiber.Sleep(15000);
+        //    //NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
 
-            //PoliceScanning.RandomSpawnIdle(MyCop);
+        //    Game.LocalPlayer.Character.Tasks.GoToOffsetFromEntity(MyCop.CopPed, -1, 1f, 0f, 2f);
 
-            if (MyCop.CopPed.CurrentVehicle.Exists())
-                MyCop.CopPed.CurrentVehicle.Delete();
-            if (MyCop.CopPed.LastVehicle.Exists())
-                MyCop.CopPed.LastVehicle.Delete();
-            MyCop.CopPed.Delete();
 
-        }
+        //    while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.2f))
+        //    {
+        //        GameFiber.Yield();
+        //        if (isPlayer && Extensions.IsMoveControlPressed())
+        //        {
+        //            Continue = false;
+        //            break;
+        //        }
+        //    }
+        //    if (!Continue)
+        //    {
+        //        PedToMove.Tasks.Clear();
+        //    }
+
+
+
+        //    GameFiber.Sleep(1000);
+
+        //    //Respawning.BribeAnimation(MyCop.CopPed, Game.LocalPlayer.Character);
+        //    //MyCop.CopPed.Tasks.LeaveVehicle(MyCop.CopPed.CurrentVehicle, LeaveVehicleFlags.None);
+        //    //GameFiber.Sleep(4000);
+        //    //PoliceScanning.Untask(MyCop);
+
+        //    GameFiber.Sleep(15000);
+
+        //    //PoliceScanning.RandomSpawnIdle(MyCop);
+
+        //    if (MyCop.CopPed.CurrentVehicle.Exists())
+        //        MyCop.CopPed.CurrentVehicle.Delete();
+        //    if (MyCop.CopPed.LastVehicle.Exists())
+        //        MyCop.CopPed.LastVehicle.Delete();
+        //    MyCop.CopPed.Delete();
+
+        //}
 
 
 

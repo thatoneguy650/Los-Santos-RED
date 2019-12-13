@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 public static class SearchModeStopping
 {
-    private static bool GhostCopFollow;
-    private static Model CopModel = new Model("s_m_y_cop_01");
+   // private static bool GhostCopFollow;
+    private static readonly Model CopModel = new Model("s_m_y_cop_01");
     private static Ped GhostCop;
-    private static Vector3 CurrentPosition;
+   // private static Vector3 CurrentPosition;
     public static bool StopSearchMode { get; set; } = false;
     public static bool IsRunning { get; set; } = true;
     public static Ped SpotterCop
@@ -102,11 +102,13 @@ public static class SearchModeStopping
     }
     private static void CreateGhostCop()
     {
-        GhostCop = new Ped(CopModel, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), Game.LocalPlayer.Character.Heading);
-        GhostCop.BlockPermanentEvents = false;
-        GhostCop.IsPersistent = true;
-        GhostCop.IsCollisionEnabled = false;
-        GhostCop.IsVisible = false;
+        GhostCop = new Ped(CopModel, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), Game.LocalPlayer.Character.Heading)
+        {
+            BlockPermanentEvents = false,
+            IsPersistent = true,
+            IsCollisionEnabled = false,
+            IsVisible = false
+        };
         Blip myBlip = GhostCop.GetAttachedBlip();
         if (myBlip != null)
             myBlip.Delete();

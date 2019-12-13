@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 public static class Tasking
 {
-    private static Random rnd;
-    private static List<PoliceTask> CopsToTask = new List<PoliceTask>();
+    private static readonly Random rnd;
+    private static readonly List<PoliceTask> CopsToTask = new List<PoliceTask>();
     private static uint LastBust;
     private static int ForceSurrenderTime;
     private static bool SurrenderBust = false;
@@ -783,9 +783,11 @@ public static class Tasking
         //Cop.SimpleTaskName = "SimpleInvestigate";
 
         Vector3 TargetLocation = Police.PlacePlayerLastSeen.Around2D(65f);//(Police.PlayerLastSeenForwardVector * 55f).Around2D(75f);
-        Blip MyBlip = new Blip(TargetLocation, 15f);
-        MyBlip.Color = Color.Purple;
-        MyBlip.Alpha = 0.5f;
+        Blip MyBlip = new Blip(TargetLocation, 15f)
+        {
+            Color = Color.Purple,
+            Alpha = 0.5f
+        };
         Police.TempBlips.Add(MyBlip);
 
         if (Cop.isInVehicle && Police.PlayerLastSeenInVehicle)

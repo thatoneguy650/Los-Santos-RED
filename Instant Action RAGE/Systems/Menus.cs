@@ -15,11 +15,7 @@ using System.Windows.Forms;
 
 internal static class Menus
 {
-    private static UIMenuListItem menuMainRandomCrime;
-    private static UIMenuItem menuMainTakeoverNearestPed;
     private static UIMenuListItem menuMainTakeoverRandomPed;
-    private static UIMenuItem menuMainReloadSettings;
-    private static UIMenuItem menuMainOptions;
     private static UIMenuItem menuDebugResetCharacter;
     private static UIMenuItem menuMainSuicide;
     private static UIMenuItem menuMainChangeLicensePlate;
@@ -31,16 +27,11 @@ internal static class Menus
     private static UIMenuCheckboxItem menuDebugEnabled;
     private static UIMenuItem menuDeathUndie;
     private static UIMenuItem menuDeathRespawnInPlace;
-    private static UIMenuListItem menuDeathRandomCrime;
     private static UIMenuItem menuDeathNormalRespawn;
-    private static UIMenuItem menuDeathTakeoverNearestPed;
     private static UIMenuListItem menuDeathTakeoverRandomPed;
     private static UIMenuItem menuBustedResistArrest;
     private static UIMenuItem menuBustedBribe;
     private static UIMenuItem menuBustedRespawnInPlace;
-    private static UIMenuListItem menuBustedRandomCrime;
-    private static UIMenuItem menuBustedNormalRespawn;
-    private static UIMenuItem menuBustedTakeoverNearestPed;
     private static UIMenuListItem menuBustedTakeoverRandomPed;
     private static UIMenuListItem menuBustedSurrender;
     private static UIMenuListItem menuDeathHospitalRespawn;
@@ -56,16 +47,12 @@ internal static class Menus
     private static UIMenu optionsMenu;
     private static UIMenu actionsMenu;
 
-    private static int RandomCrimeLevel = 1;
     private static int RandomWeaponCategory = 0;
     private static Vector3 WorldPos = new Vector3(0f, 0f, 0f);
-    private static Entity EntityToHighlight;
-    private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
-    private static List<int> UndieLimit = new List<int> { 0,1,2,3,4,5 };
+    //private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
+   // private static List<int> UndieLimit = new List<int> { 0,1,2,3,4,5 };
     private static string CurrentScreenEffect = "Rampage";
-    private static int PrevMainMenuCurrentSelection;
-    private static bool PrevMainMenuVisible;
-    private static bool MainMenuVisible;
+
     private static List<string> SmokingOptionsList;
     private static Location CurrentSelectedSurrenderLocation;
     private static Location CurrentSelectedHospitalLocation;
@@ -350,8 +337,6 @@ internal static class Menus
     {
         if (sender == mainMenu)
         {
-            if (list == menuMainRandomCrime)
-                RandomCrimeLevel = list.Index + 1;
             if (list == menuMainTakeoverRandomPed)
             {
                 if (index == 0)
@@ -421,10 +406,6 @@ internal static class Menus
         {
             PedSwapping.AddRemovePlayerHelmet();
         }
-        else if (selectedItem == menuMainReloadSettings)
-        {
-            Settings.ReadSettings();
-        }
         mainMenu.Visible = false;
     }
     private static void BustedMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -435,8 +416,7 @@ internal static class Menus
         }
         else if (selectedItem == menuBustedBribe)
         {
-            int BribeAmount;
-            if (int.TryParse(GetKeyboardInput(), out BribeAmount))
+            if (int.TryParse(GetKeyboardInput(), out int BribeAmount))
             {
                 Respawning.BribePolice(BribeAmount);
             }
@@ -482,8 +462,7 @@ internal static class Menus
         string Value = GetKeyboardInput();
         if (MySetting.FieldType == typeof(float))
         {
-            float myFloat;
-            if (float.TryParse(Value, out myFloat))
+            if (float.TryParse(Value, out float myFloat))
             {
                 MySetting.SetValue(null, myFloat);
                 selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
@@ -492,8 +471,7 @@ internal static class Menus
         }
         else if (MySetting.FieldType == typeof(int))
         {
-            int myInt;
-            if (int.TryParse(Value, out myInt))
+            if (int.TryParse(Value, out int myInt))
             {
                 MySetting.SetValue(null, myInt);
                 selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
@@ -616,7 +594,7 @@ internal static class Menus
         {
             GameFiber.Sleep(500);
         }
-        string Value = "";
+        string Value;
         unsafe
         {
             IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_ONSCREEN_KEYBOARD_RESULT");

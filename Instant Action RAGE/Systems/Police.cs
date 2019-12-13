@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 internal static class Police
 {
-    private static Random rnd;
+    private static readonly Random rnd;
     private static uint WantedLevelStartTime;
     private static Vector3 LastWantedCenterPosition = Vector3.Zero;
     private static int TimeAimedAtPolice = 0;
@@ -22,7 +22,7 @@ internal static class Police
     private static uint LOSInterval;
     private static uint GameTimeCheckedLOS;
 
-    private static GTAVehicle TrackedCar;
+   // private static GTAVehicle TrackedCar;
 
     private static bool CanReportLastSeen;
     private static uint GameTimeLastGreyedOut;
@@ -212,42 +212,42 @@ internal static class Police
     }
     private static void UpdateTrackedObjects()
     {
-        return;
-        if (TrackedCar != null && !TrackedCar.VehicleEnt.Exists())
-        {
-            TrackedCar = null;
-            LocalWriteToLog("UpdateTrackedObjects", "Removing abandoned car it doesnt exist");
-        }
+       
+        //if (TrackedCar != null && !TrackedCar.VehicleEnt.Exists())
+        //{
+        //    TrackedCar = null;
+        //    LocalWriteToLog("UpdateTrackedObjects", "Removing abandoned car it doesnt exist");
+        //}
 
-        if (PoliceInSearchMode && !InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.LastVehicle.Exists())
-        {
-            GTAVehicle AbandonedCar = InstantAction.TrackedVehicles.Where(x => x.VehicleEnt.Handle == Game.LocalPlayer.Character.LastVehicle.Handle).FirstOrDefault();
-            if(AbandonedCar != null)
-            {
-                if(TrackedCar != null && TrackedCar.VehicleEnt.Exists() && TrackedCar.VehicleEnt.Handle != AbandonedCar.VehicleEnt.Handle)
-                {
-                    TrackedCar = AbandonedCar;
-                    LocalWriteToLog("UpdateTrackedObjects", "Tracking your abandoned car");
-                }
-            }
-        }
-        else
-        {
-            if (TrackedCar != null)
-            {
-                TrackedCar = null;
-                LocalWriteToLog("UpdateTrackedObjects", "Removing tracked car as we arent in need of it");
-            }
-        }
+        //if (PoliceInSearchMode && !InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.LastVehicle.Exists())
+        //{
+        //    GTAVehicle AbandonedCar = InstantAction.TrackedVehicles.Where(x => x.VehicleEnt.Handle == Game.LocalPlayer.Character.LastVehicle.Handle).FirstOrDefault();
+        //    if(AbandonedCar != null)
+        //    {
+        //        if(TrackedCar != null && TrackedCar.VehicleEnt.Exists() && TrackedCar.VehicleEnt.Handle != AbandonedCar.VehicleEnt.Handle)
+        //        {
+        //            TrackedCar = AbandonedCar;
+        //            LocalWriteToLog("UpdateTrackedObjects", "Tracking your abandoned car");
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    if (TrackedCar != null)
+        //    {
+        //        TrackedCar = null;
+        //        LocalWriteToLog("UpdateTrackedObjects", "Removing tracked car as we arent in need of it");
+        //    }
+        //}
 
-        if(TrackedCar != null && TrackedCar.VehicleEnt.Exists())
-        {
-            if(PlacePlayerLastSeen != TrackedCar.VehicleEnt.Position && PoliceCanSeeEntity(TrackedCar.VehicleEnt))
-            {
-                PlacePlayerLastSeen = TrackedCar.VehicleEnt.Position;
-                LocalWriteToLog("UpdateTrackedObjects", "Updated place player last seen as they saw your abandoned vehicle");
-            }
-        }
+        //if(TrackedCar != null && TrackedCar.VehicleEnt.Exists())
+        //{
+        //    if(PlacePlayerLastSeen != TrackedCar.VehicleEnt.Position && PoliceCanSeeEntity(TrackedCar.VehicleEnt))
+        //    {
+        //        PlacePlayerLastSeen = TrackedCar.VehicleEnt.Position;
+        //        LocalWriteToLog("UpdateTrackedObjects", "Updated place player last seen as they saw your abandoned vehicle");
+        //    }
+        //}
 
     }
     private static void Tick()
@@ -356,7 +356,7 @@ internal static class Police
             else
                 return false;
         }
-        catch (Exception e)
+        catch
         {
             if (Cop.HurtByPlayer)
                 return true;
@@ -383,7 +383,7 @@ internal static class Police
             else
                 return false;
         }
-        catch (Exception e)
+        catch
         {
             return false;
         }
@@ -544,15 +544,16 @@ internal static class Police
         }
         else if (InstantAction.PlayerWantedLevel >= 4 || PlayerHurtPolice || PlayerKilledPolice)
             CurrentPoliceState = PoliceState.DeadlyChase;
-        
+
+
+        if (!firedWeapon && (Game.LocalPlayer.Character.IsShooting || PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
+        {
+            SetWantedLevel(2, "Fired a Weapon");
+            firedWeapon = true;
+        }
+
         if (InstantAction.PlayerWantedLevel < 2)
         {
-            if (!firedWeapon && (Game.LocalPlayer.Character.IsShooting || PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
-            {
-                SetWantedLevel(2,"Fired a Weapon");
-                firedWeapon = true;
-            }
-
             if (InstantAction.PlayerWantedLevel < 2 && LicensePlateChanging.PlayerChangingPlate && AnyPoliceCanSeePlayer)
             {
                 SetWantedLevel(2,"Police saw you changing plates");
@@ -600,8 +601,10 @@ internal static class Police
 
                 if (ChangedWanted)
                 {
-                    DispatchAudio.DispatchQueueItem CarryingWeapon = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportCarryingWeapon, 3, false);
-                    CarryingWeapon.WeaponToReport = MatchedWeapon;
+                    DispatchAudio.DispatchQueueItem CarryingWeapon = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportCarryingWeapon, 3, false)
+                    {
+                        WeaponToReport = MatchedWeapon
+                    };
                     DispatchAudio.AddDispatchToQueue(CarryingWeapon);
                 }
             }
@@ -678,14 +681,16 @@ internal static class Police
                 if (InstantAction.PlayerWantedLevel < 2 && CurrTrackedVehicle.WasReportedStolen && CurrTrackedVehicle.IsStolen && CurrTrackedVehicle.MatchesOriginalDescription)
                 {
                     SetWantedLevel(2,"Car was reported stolen and it matches the original description (formerly First)");
-                    DispatchAudio.DispatchQueueItem SpottedStolen = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSpottedStolenCar, 10, false, true, CurrTrackedVehicle);
-                    SpottedStolen.Speed = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+                    DispatchAudio.DispatchQueueItem SpottedStolen = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSpottedStolenCar, 10, false, true, CurrTrackedVehicle)
+                    {
+                        Speed = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f
+                    };
                     DispatchAudio.AddDispatchToQueue(SpottedStolen);
                 }
                 else if (InstantAction.PlayerWantedLevel < 2 && CurrTrackedVehicle.CarPlate.IsWanted && !CurrTrackedVehicle.IsStolen && CurrTrackedVehicle.ColorMatchesDescription)
                 {
                     SetWantedLevel(2,"Car plate is wanted and color matches original (formerly Second)");
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10, false, true, CurrTrackedVehicle));
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 10, false, true, CurrTrackedVehicle));
                 }
             }
 
@@ -693,7 +698,6 @@ internal static class Police
             {
                 CurrTrackedVehicle.CarPlate.IsWanted = false;
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLost, 10, false, true));
-                //Menus.CreateMainMenu();
             }
         }
     }
@@ -719,7 +723,7 @@ internal static class Police
             //    PoliceSpawning.SpawnNewsChopper();
             //    LocalWriteToLog("WantedLevelTick", "Been at this wanted for a while, wanted news chopper spawned (if they dont already exist)");
             //}
-            if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 10000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000)
+            if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 15000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000 && !PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 150f))
             {
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLastSeen, 10, false));
                 CanReportLastSeen = false;
@@ -805,7 +809,7 @@ internal static class Police
                 TimeToRecongize = 4000;
 
             if (IsNightTime)
-                TimeToRecongize = TimeToRecongize + 6000;
+                TimeToRecongize += 6000;
 
             AnyPoliceCanRecognizePlayerAfterWanted = PoliceScanning.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecongize || (x.canSeePlayer && x.DistanceToPlayer <= 12f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
         }
@@ -1013,10 +1017,12 @@ internal static class Police
         }
         if (!LastWantedCenterBlip.Exists())
         {
-            LastWantedCenterBlip = new Blip(LastWantedCenterPosition, 250f);
-            LastWantedCenterBlip.Name = "Last Wanted Center Position";
-            LastWantedCenterBlip.Color = Color.Yellow;
-            LastWantedCenterBlip.Alpha = 0.5f;
+            LastWantedCenterBlip = new Blip(LastWantedCenterPosition, 250f)
+            {
+                Name = "Last Wanted Center Position",
+                Color = Color.Yellow,
+                Alpha = 0.5f
+            };
 
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastWantedCenterBlip.Handle, true);
             CreatedBlips.Add(LastWantedCenterBlip);
@@ -1034,10 +1040,12 @@ internal static class Police
         }
         if (!CurrentWantedCenterBlip.Exists())
         {
-            CurrentWantedCenterBlip = new Blip(Position, 100f);
-            CurrentWantedCenterBlip.Name = "Current Wanted Center Position";
-            CurrentWantedCenterBlip.Color = Color.Red;
-            CurrentWantedCenterBlip.Alpha = 0.5f;
+            CurrentWantedCenterBlip = new Blip(Position, 100f)
+            {
+                Name = "Current Wanted Center Position",
+                Color = Color.Red,
+                Alpha = 0.5f
+            };
 
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)CurrentWantedCenterBlip.Handle, true);
             CreatedBlips.Add(CurrentWantedCenterBlip);
@@ -1092,7 +1100,8 @@ internal static class Police
                     Passenger.Delete();
                 }
             }
-            Cop.CopPed.CurrentVehicle.Delete();
+            if(Cop.CopPed.CurrentVehicle.Exists())
+                Cop.CopPed.CurrentVehicle.Delete();
         }
         RemoveBlip(Cop.CopPed);
         Cop.CopPed.Delete();

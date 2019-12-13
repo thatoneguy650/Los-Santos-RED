@@ -14,10 +14,10 @@ public static class Smoking
     private static SmokingAnimation StandardCigaretteMale;
     private static SmokingAnimation StandardCigaretteFemale;
     private static SmokingAnimation StandardCigarettePlayerZero;
-    private static Random rnd;
+    private static readonly Random rnd;
     private static int BreathingInterval = 3500;
     private static CigaretteAnimation CurrentAnimationCategory = CigaretteAnimation.None;
-    private static bool LocalLogging = true;
+    //private static bool LocalLogging = true;
 
     //Temp ppublic
     public static SmokingAnimation CurrentSmokingAnimation;
@@ -223,7 +223,7 @@ public static class Smoking
                 PlayersCurrentCigarette = new Rage.Object(CurrentSmokingAnimation.PropName, Game.LocalPlayer.Character.GetOffsetPositionUp(50f));
                 if (CurrentAttachedPosition != CigarettePosition.Mouth)
                 {
-                    Cancel = !PutCigaretteInMouth(false);
+                    Cancel = !PutCigaretteInMouth();
                 }
             }
             if (Cancel)
@@ -256,7 +256,7 @@ public static class Smoking
         }, "SmokingStart");
         Debugging.GameFibers.Add(SmokingStart);
     }
-    public static bool PutCigaretteInMouth(bool ClearTasks)
+    public static bool PutCigaretteInMouth()
     {
         SetPedUnarmed(Game.LocalPlayer.Character, false);
         InstantAction.RequestAnimationDictionay(CurrentSmokingAnimation.EnterAnimationDictionary);
@@ -317,26 +317,26 @@ public static class Smoking
         //AttachCigaretteToPedRightHand(Game.LocalPlayer.Character);
         //return true;
     }
-    private static bool StartPuffingCigarette()
-    {
-        CurrentIdleAnimation = CurrentSmokingAnimation.IdleAnimations.PickRandom();
-        LocalWriteToLog("CurrentIdleAnimation", string.Format("CurrentIdleAnimation.Animation {0}", CurrentIdleAnimation.Animation));
-        InstantAction.RequestAnimationDictionay(CurrentIdleAnimation.Dictionary);
-        CurrentAnimationCategory = CigaretteAnimation.Puffing;
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentIdleAnimation.Dictionary, CurrentIdleAnimation.Animation, 4.0f, -4.0f, -1, 49, 0, false, false, false);
-        while (!CurrentPuffingAnimationNearMouth && !CancelSmoking) //while (Game.GameTime - GameTimeStartedAnimation <= 2000 && !CancelSmoking)
-        {
-            GameFiber.Yield();
-        }
-        if (CancelSmoking)
-        {
-            CurrentAnimationCategory = CigaretteAnimation.None;
-            Game.LocalPlayer.Character.Tasks.Clear();
-            return false;
-        }
-        AttachCigaretteToPedRightHand(Game.LocalPlayer.Character);
-        return true;
-    }
+    //private static bool StartPuffingCigarette()
+    //{
+    //    CurrentIdleAnimation = CurrentSmokingAnimation.IdleAnimations.PickRandom();
+    //    LocalWriteToLog("CurrentIdleAnimation", string.Format("CurrentIdleAnimation.Animation {0}", CurrentIdleAnimation.Animation));
+    //    InstantAction.RequestAnimationDictionay(CurrentIdleAnimation.Dictionary);
+    //    CurrentAnimationCategory = CigaretteAnimation.Puffing;
+    //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentIdleAnimation.Dictionary, CurrentIdleAnimation.Animation, 4.0f, -4.0f, -1, 49, 0, false, false, false);
+    //    while (!CurrentPuffingAnimationNearMouth && !CancelSmoking) //while (Game.GameTime - GameTimeStartedAnimation <= 2000 && !CancelSmoking)
+    //    {
+    //        GameFiber.Yield();
+    //    }
+    //    if (CancelSmoking)
+    //    {
+    //        CurrentAnimationCategory = CigaretteAnimation.None;
+    //        Game.LocalPlayer.Character.Tasks.Clear();
+    //        return false;
+    //    }
+    //    AttachCigaretteToPedRightHand(Game.LocalPlayer.Character);
+    //    return true;
+    //}
     private static void AttachCigaretteToPedLowerLip(Ped Pedestrian)
     {
         if (!PlayersCurrentCigarette.Exists())

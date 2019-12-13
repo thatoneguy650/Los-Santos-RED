@@ -27,19 +27,6 @@ public static class TrafficViolations
     public static bool IsRunning { get; set; } = true;
     public static bool PlayerIsSpeeding { get; set; } = false;
     public static bool PlayerIsRunningRedLight = false;
-    private static uint GameTimeStartedRunningRed;
-    public static bool HasRecentlyRanRedLight
-    {
-        get
-        {
-            if (GameTimeStartedRunningRed == 0)
-                return false;
-            else if (Game.GameTime - GameTimeStartedRunningRed <= 500)
-                return true;
-            else
-                return false;
-        }
-    }
     public static bool HasBeenDrivingAgainstTraffic
     {
         get
@@ -120,8 +107,8 @@ public static class TrafficViolations
             ViolationSpeedLimit = false;
             ViolationRunningRed = false;
         }
-
-        if (InstantAction.PlayerInAutomobile && !PedSwapping.JustTakenOver(5000))
+        
+        if (InstantAction.PlayerInVehicle && InstantAction.PlayerInAutomobile && !PedSwapping.JustTakenOver(5000))
         {
             float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
             Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
@@ -159,16 +146,20 @@ public static class TrafficViolations
             {
                 ViolationDrivingAgainstTraffic = true;
                 Police.SetWantedLevel(1,"Driving Against Traffic");
-                DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar);
-                RecklessDriver.IsTrafficViolation = true;
+                DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar)
+                {
+                    IsTrafficViolation = true
+                };
                 DispatchAudio.AddDispatchToQueue(RecklessDriver);
             }
             if (Settings.TrafficViolationsDrivingOnPavement && Police.AnyPoliceCanSeePlayer && !ViolationDrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 ViolationDrivingOnPavement = true;
                 Police.SetWantedLevel(1,"Driving On Pavement");
-                DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar);
-                RecklessDriver.IsTrafficViolation = true;
+                DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar)
+                {
+                    IsTrafficViolation = true
+                };
                 DispatchAudio.AddDispatchToQueue(RecklessDriver);
             }
             int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
@@ -176,8 +167,10 @@ public static class TrafficViolations
             {
                 ViolationHitPed = true;
                 Police.SetWantedLevel(2,"Hit a Pedestrian");
-                DispatchAudio.DispatchQueueItem PedHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPedHitAndRun, 8, false, true, MyCar);
-                PedHitAndRun.IsTrafficViolation = true;
+                DispatchAudio.DispatchQueueItem PedHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPedHitAndRun, 8, false, true, MyCar)
+                {
+                    IsTrafficViolation = true
+                };
                 DispatchAudio.AddDispatchToQueue(PedHitAndRun);
             }
             int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
@@ -185,16 +178,20 @@ public static class TrafficViolations
             {
                 ViolationHitVehicle = true;
                 Police.SetWantedLevel(1,"Hit a vehicle");
-                DispatchAudio.DispatchQueueItem VehicleHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportVehicleHitAndRun, 9, false, true, MyCar);
-                VehicleHitAndRun.IsTrafficViolation = true;
+                DispatchAudio.DispatchQueueItem VehicleHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportVehicleHitAndRun, 9, false, true, MyCar)
+                {
+                    IsTrafficViolation = true
+                };
                 DispatchAudio.AddDispatchToQueue(VehicleHitAndRun);
             }
             if (Settings.TrafficViolationsNotRoadworthy && Police.AnyPoliceCanSeePlayer && !ViolationNonRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
             {
                 ViolationNonRoadworthy = true;
                 Police.SetWantedLevel(1,"Driving a non-roadworthy vehicle");
-                DispatchAudio.DispatchQueueItem NonRoadWorthy = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10, false, true, MyCar);
-                NonRoadWorthy.IsTrafficViolation = true;
+                DispatchAudio.DispatchQueueItem NonRoadWorthy = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10, false, true, MyCar)
+                {
+                    IsTrafficViolation = true
+                };
                 DispatchAudio.AddDispatchToQueue(NonRoadWorthy);
             }
             if (Settings.TrafficViolationsSpeeding)
@@ -214,9 +211,11 @@ public static class TrafficViolations
                     else
                         Police.SetWantedLevel(1, "Going over speed limit");
 
-                    DispatchAudio.DispatchQueueItem FelonySpeeding = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportFelonySpeeding, 10, false, true, MyCar);
-                    FelonySpeeding.Speed = VehicleSpeedMPH;
-                    FelonySpeeding.IsTrafficViolation = true;
+                    DispatchAudio.DispatchQueueItem FelonySpeeding = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportFelonySpeeding, 10, false, true, MyCar)
+                    {
+                        Speed = VehicleSpeedMPH,
+                        IsTrafficViolation = true
+                    };
                     DispatchAudio.AddDispatchToQueue(FelonySpeeding);
                 }
             }
@@ -227,8 +226,10 @@ public static class TrafficViolations
                 {
                     ViolationRunningRed = true;
                     Police.SetWantedLevel(1, "Running a Red Light");
-                    DispatchAudio.DispatchQueueItem RunningRed = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRunningRed, 10, false, true, MyCar);
-                    RunningRed.IsTrafficViolation = true;
+                    DispatchAudio.DispatchQueueItem RunningRed = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRunningRed, 10, false, true, MyCar)
+                    {
+                        IsTrafficViolation = true
+                    };
                     DispatchAudio.AddDispatchToQueue(RunningRed);
                 }
             }
@@ -240,7 +241,7 @@ public static class TrafficViolations
     {
         if (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
             return false;
-        Entity[] MyEnts = World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderCars | GetEntitiesFlags.ExcludePlayerVehicle);
+        Entity[] MyEnts = World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePlayerVehicle);
         foreach(Vehicle MyCar in MyEnts.Where(x => x.Exists() && x is Vehicle))
         {
             if(!CloseVehicles.Any(x => x.Handle == MyCar.Handle))
@@ -248,7 +249,8 @@ public static class TrafficViolations
                 CloseVehicles.Add(MyCar);
             }
         }
-        CloseVehicles.RemoveAll(x => !x.Exists() || x.DistanceTo2D(Game.LocalPlayer.Character) >= 35f);
+        float PlayerZ = Game.LocalPlayer.Character.CurrentVehicle.Position.Z;
+        CloseVehicles.RemoveAll(x => !x.Exists() || x.DistanceTo2D(Game.LocalPlayer.Character) >= 35f || !x.Position.Z.IsWithin(PlayerZ - 1.0f,PlayerZ + 1.0f));//Dont care about cars below me stopping at red lights
         if(!CloseVehicles.Any())
         {
             return false;
@@ -257,13 +259,16 @@ public static class TrafficViolations
         {
             foreach (Vehicle MyCar in CloseVehicles.Where(x => x.Exists()))
             {
-                if(NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", MyCar))
+                if(NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", MyCar)) 
                 {
-                    float AngleBetween = Extensions.Angle(MyCar.ForwardVector, Game.LocalPlayer.Character.ForwardVector);
-                    //float ForwardVectorDiff = Extensions.Angle(Vector3.Subtract(MyCar.Position, Game.LocalPlayer.Character.Position), Game.LocalPlayer.Character.ForwardVector);
-                    if (AngleBetween <= 35.0f && !Game.LocalPlayer.Character.CurrentVehicle.IsInFront(MyCar) && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 4.0f)//ForwardVectorDiff > 110f)
+                    if (World.GetClosestEntity(MyCar.GetOffsetPositionFront(2f), 1f, GetEntitiesFlags.ConsiderGroundVehicles) == null)// And no car in front of them!!!!
                     {
-                        return true;
+                        float AngleBetween = Extensions.Angle(MyCar.ForwardVector, Game.LocalPlayer.Character.ForwardVector);
+                        //float ForwardVectorDiff = Extensions.Angle(Vector3.Subtract(MyCar.Position, Game.LocalPlayer.Character.Position), Game.LocalPlayer.Character.ForwardVector);
+                        if ((AngleBetween <= 35.0f || AngleBetween >= 155.0f) && !Game.LocalPlayer.Character.CurrentVehicle.IsInFront(MyCar) && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 4.0f)//ForwardVectorDiff > 110f)
+                        {
+                            return true;
+                        }
                     }
                 }
             }

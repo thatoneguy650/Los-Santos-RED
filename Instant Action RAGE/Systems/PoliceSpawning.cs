@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 public static class PoliceSpawning
 {
-    private static List<Entity> CreatedEntities = new List<Entity>();
-    private static Random rnd;
-    private static Vehicle NewsChopper;
-    private static List<GTANewsReporter> Reporters = new List<GTANewsReporter>();
-    private static uint K9Interval;
+    private static readonly List<Entity> CreatedEntities = new List<Entity>();
+    private static readonly Random rnd;
+   // private static Vehicle NewsChopper;
+   // private static List<GTANewsReporter> Reporters = new List<GTANewsReporter>();
+   // private static uint K9Interval;
     private static uint RandomCopInterval;
     private static uint CleanupCopInterval;
     public static bool IsRunning { get; set; } = true;
@@ -79,6 +79,11 @@ public static class PoliceSpawning
         {
             if (ent.Exists())
             {
+                Blip myBlip = ent.GetAttachedBlip();
+                if (myBlip.Exists())
+                {
+                    myBlip.Delete();
+                }
                 ent.Delete();
             }   
         }
@@ -217,7 +222,6 @@ public static class PoliceSpawning
             {
                 if (PartnerCop.Exists())
                     PartnerCop.Delete();
-
                 return;
             }
             PartnerCop.WarpIntoVehicle(CopCar, 0);
