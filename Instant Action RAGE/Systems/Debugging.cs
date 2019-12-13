@@ -146,6 +146,13 @@ public static class Debugging
             //}
         }
 
+        //Entity MyCar = World.GetClosestEntity(Game.LocalPlayer.Character.Position, 35f, GetEntitiesFlags.ConsiderCars | GetEntitiesFlags.ExcludePlayerVehicle);
+        //if (MyCar == null || !(MyCar is Vehicle))
+        //    return;
+        //float AngleBetween = Extensions.Angle(MyCar.ForwardVector, Game.LocalPlayer.Character.ForwardVector);
+        //float ForwardVectorDiff = Extensions.Angle(Vector3.Subtract(MyCar.Position, Game.LocalPlayer.Character.Position), Game.LocalPlayer.Character.ForwardVector);
+        //UI.Text(string.Format("AngleBetween {0}, ForawardVectorDiff {1}",AngleBetween,ForwardVectorDiff), 0.76f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+
     }
     private static void DebugNonInvincible()
     {
@@ -534,7 +541,7 @@ public static class Debugging
 
         if (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
             return;
-        DispatchAudio.ReportFelonySpeeding(InstantAction.GetPlayersCurrentTrackedVehicle(), 110f);
+        //DispatchAudio.ReportFelonySpeeding(InstantAction.GetPlayersCurrentTrackedVehicle(), 110f);
         GTAVehicle VehicleDescription = InstantAction.TrackedVehicles.Where(x => x.VehicleEnt.Handle == Game.LocalPlayer.Character.CurrentVehicle.Handle).FirstOrDefault();
         Vehicle myCar = VehicleDescription.VehicleEnt;
 
@@ -581,11 +588,34 @@ public static class Debugging
 
         //ReportStolenVehicle(GetPlayersCurrentTrackedVehicle());
 
+
+        TrafficViolations.CheckRedLight();
+
         Debugging.WriteToLog("Civilians", string.Format("Total Civilians: {0}", PoliceScanning.Civilians.Count()));
+        Debugging.WriteToLog("Civilians", string.Format("PlayerInAutomobile: {0}", InstantAction.PlayerInAutomobile));
+
+
+        Debugging.WriteToLog("RunningRed", string.Format(".CloseVehicles.Count: {0}", TrafficViolations.CloseVehicles.Count));
+
+        foreach (Vehicle MyCar in TrafficViolations.CloseVehicles.Where(x => x.Exists()))
+        {
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", MyCar))
+            {
+                Debugging.WriteToLog("RunningRed", string.Format("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", InstantAction.PlayerInVehicle));
 
 
 
+                float AngleBetween = Extensions.Angle(MyCar.ForwardVector, Game.LocalPlayer.Character.ForwardVector);
+                float ForwardVectorDiff = Extensions.Angle(Vector3.Subtract(MyCar.Position, Game.LocalPlayer.Character.Position), Game.LocalPlayer.Character.ForwardVector);
+                float DistanceToCar = Game.LocalPlayer.Character.DistanceTo2D(MyCar);
+                Debugging.WriteToLog("RunningRed", string.Format("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS, AngleBetween {0},ForwardVectorDiff {1},DistanceToCar {2}", AngleBetween, ForwardVectorDiff,DistanceToCar));
 
+                if (AngleBetween <= 35.0f && DistanceToCar > 30f && ForwardVectorDiff > 150f)
+                {
+                    Debugging.WriteToLog("RunningRed","You Are Running Red");
+                }
+            }
+        }
 
 
         //if (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -639,8 +669,9 @@ public static class Debugging
         {
 
             //string report =  WeatherReporting.GetAudioFromWeatherType(WeatherReporting.WeatherTypeHash.Clearing);
+            bool JustTaken = PedSwapping.JustTakenOver(5000);
+            Debugging.WriteToLog("DebugNumpad6", string.Format("JustTakenOver: {0}", JustTaken));
 
-       
             Debugging.WriteToLog("DebugNumpad6", Zones.GetZoneStringAtLocation(Game.LocalPlayer.Character.Position));
 
             // Respawning.RemoveIllegalWeapons();
@@ -663,7 +694,7 @@ public static class Debugging
             //}
 
 
-            NativeFunction.CallByName<bool>("PLAY_POLICE_REPORT","SCRIPTED_SCANNER_REPORT_CAR_STEAL_2_01", 0.0f);
+            //NativeFunction.CallByName<bool>("PLAY_POLICE_REPORT","SCRIPTED_SCANNER_REPORT_CAR_STEAL_2_01", 0.0f);
 
 
             //WeatherReporting.ReportWeather(WeatherReporting.WeatherTypeHash.Clearing);

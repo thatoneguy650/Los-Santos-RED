@@ -103,6 +103,10 @@ public static class UI
             if(TrafficViolations.ViolatingTrafficLaws)
                 SpeedDisplay = SpeedDisplay + " !";
 
+
+            if(TrafficViolations.PlayerIsRunningRedLight)
+                SpeedDisplay = SpeedDisplay + " Running Red";
+
             Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
         }
     }

@@ -30,6 +30,7 @@ static class Settings
     public static bool TrafficViolationsDrivingAgainstTraffic = true;
     public static bool TrafficViolationsDrivingOnPavement = true;
     public static bool TrafficViolationsNotRoadworthy = true;
+    public static bool TrafficViolationsRunningRedLight = true;
 
     public static bool TrafficViolationsUI = true;
     public static bool TrafficViolationsUIOnlyWhenSpeeding = false;

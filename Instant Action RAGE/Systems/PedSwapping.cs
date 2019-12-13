@@ -16,7 +16,7 @@ internal static class PedSwapping
     private static string LastModelHash;
     private static PedVariation myPedVariation;
     private static bool PedOriginallyHadHelmet = false;
-    private static uint GameTimeLastTakenOver;
+    private static uint GameTimeLastTakenOver = Game.GameTime;
     static PedSwapping()
     {
         rnd = new Random();

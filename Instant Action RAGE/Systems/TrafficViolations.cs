@@ -17,13 +17,29 @@ public static class TrafficViolations
     private static bool ViolationHitVehicle = false;
     private static bool ViolationSpeedLimit = false;
     private static bool ViolationNonRoadworthy = false;
-    private static bool PlayerIsRunningRedLight = false;
+    private static bool ViolationRunningRed = false;
     private static uint GameTimeStartedDrivingOnPavement = 0;
     private static uint GameTimeStartedDrivingAgainstTraffic = 0;
     private static bool PlayersVehicleIsSuspicious = false;
 
+    public static List<Vehicle> CloseVehicles = new List<Vehicle>();//temp public
+
     public static bool IsRunning { get; set; } = true;
     public static bool PlayerIsSpeeding { get; set; } = false;
+    public static bool PlayerIsRunningRedLight = false;
+    private static uint GameTimeStartedRunningRed;
+    public static bool HasRecentlyRanRedLight
+    {
+        get
+        {
+            if (GameTimeStartedRunningRed == 0)
+                return false;
+            else if (Game.GameTime - GameTimeStartedRunningRed <= 500)
+                return true;
+            else
+                return false;
+        }
+    }
     public static bool HasBeenDrivingAgainstTraffic
     {
         get
@@ -78,7 +94,7 @@ public static class TrafficViolations
             {
                 Debugging.WriteToLog("TrafficViolations",e.Message + " : " + e.StackTrace);
             }
-        });
+        });  
     }
     public static void Dispose()
     {
@@ -102,6 +118,7 @@ public static class TrafficViolations
         if (!InstantAction.PlayerInVehicle)
         {
             ViolationSpeedLimit = false;
+            ViolationRunningRed = false;
         }
 
         if (InstantAction.PlayerInAutomobile && !PedSwapping.JustTakenOver(5000))
@@ -175,33 +192,85 @@ public static class TrafficViolations
             if (Settings.TrafficViolationsNotRoadworthy && Police.AnyPoliceCanSeePlayer && !ViolationNonRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
             {
                 ViolationNonRoadworthy = true;
-                Police.SetWantedLevel(1,"Driving a non-roadwrothy vehicle");
+                Police.SetWantedLevel(1,"Driving a non-roadworthy vehicle");
                 DispatchAudio.DispatchQueueItem NonRoadWorthy = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10, false, true, MyCar);
                 NonRoadWorthy.IsTrafficViolation = true;
                 DispatchAudio.AddDispatchToQueue(NonRoadWorthy);
             }
-            float SpeedLimit = 60f;
-            if (PlayerLocation.PlayerCurrentStreet != null)
-                SpeedLimit = PlayerLocation.PlayerCurrentStreet.SpeedLimit;
-            PlayerIsSpeeding = VehicleSpeedMPH > SpeedLimit + Settings.TrafficViolationsSpeedingOverLimitThreshold;
-
-            if (Settings.TrafficViolationsSpeeding && Police.AnyPoliceCanSeePlayer && !ViolationSpeedLimit && !TreatAsCop && PlayerIsSpeeding)
+            if (Settings.TrafficViolationsSpeeding)
             {
-                ViolationSpeedLimit = true;
-                if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 2))//going 2 times over the threshold = 3 stars
-                    Police.SetWantedLevel(3, "Going 2 over Speed limit");
-                else if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 1.5))//going 1.5 times over the threshold = 2 stars
-                    Police.SetWantedLevel(2,"Going 1.5 over Speed limit");
-                else
-                    Police.SetWantedLevel(1,"Going over speed limit");
+                float SpeedLimit = 60f;
+                if (PlayerLocation.PlayerCurrentStreet != null)
+                    SpeedLimit = PlayerLocation.PlayerCurrentStreet.SpeedLimit;
+                PlayerIsSpeeding = VehicleSpeedMPH > SpeedLimit + Settings.TrafficViolationsSpeedingOverLimitThreshold;
 
-                DispatchAudio.DispatchQueueItem FelonySpeeding = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportFelonySpeeding, 10, false, true, MyCar);
-                FelonySpeeding.Speed = VehicleSpeedMPH;
-                FelonySpeeding.IsTrafficViolation = true;
-                DispatchAudio.AddDispatchToQueue(FelonySpeeding);
+                if (PlayerIsSpeeding && Police.AnyPoliceCanSeePlayer && !ViolationSpeedLimit && !TreatAsCop)
+                {
+                    ViolationSpeedLimit = true;
+                    if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 2))//going 2 times over the threshold = 3 stars
+                        Police.SetWantedLevel(3, "Going 2 over Speed limit");
+                    else if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 1.5))//going 1.5 times over the threshold = 2 stars
+                        Police.SetWantedLevel(2, "Going 1.5 over Speed limit");
+                    else
+                        Police.SetWantedLevel(1, "Going over speed limit");
+
+                    DispatchAudio.DispatchQueueItem FelonySpeeding = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportFelonySpeeding, 10, false, true, MyCar);
+                    FelonySpeeding.Speed = VehicleSpeedMPH;
+                    FelonySpeeding.IsTrafficViolation = true;
+                    DispatchAudio.AddDispatchToQueue(FelonySpeeding);
+                }
             }
+            if (Settings.TrafficViolationsRunningRedLight)
+            {
+                PlayerIsRunningRedLight = CheckRedLight();
+                if (PlayerIsRunningRedLight && Police.AnyPoliceCanSeePlayer && !ViolationRunningRed && !TreatAsCop)
+                {
+                    ViolationRunningRed = true;
+                    Police.SetWantedLevel(1, "Running a Red Light");
+                    DispatchAudio.DispatchQueueItem RunningRed = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRunningRed, 10, false, true, MyCar);
+                    RunningRed.IsTrafficViolation = true;
+                    DispatchAudio.AddDispatchToQueue(RunningRed);
+                }
+            }
+            else
+                PlayerIsRunningRedLight = false;
         }
     }
+    public static bool CheckRedLight()
+    {
+        if (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            return false;
+        Entity[] MyEnts = World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderCars | GetEntitiesFlags.ExcludePlayerVehicle);
+        foreach(Vehicle MyCar in MyEnts.Where(x => x.Exists() && x is Vehicle))
+        {
+            if(!CloseVehicles.Any(x => x.Handle == MyCar.Handle))
+            {
+                CloseVehicles.Add(MyCar);
+            }
+        }
+        CloseVehicles.RemoveAll(x => !x.Exists() || x.DistanceTo2D(Game.LocalPlayer.Character) >= 35f);
+        if(!CloseVehicles.Any())
+        {
+            return false;
+        }
+        else
+        {
+            foreach (Vehicle MyCar in CloseVehicles.Where(x => x.Exists()))
+            {
+                if(NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", MyCar))
+                {
+                    float AngleBetween = Extensions.Angle(MyCar.ForwardVector, Game.LocalPlayer.Character.ForwardVector);
+                    //float ForwardVectorDiff = Extensions.Angle(Vector3.Subtract(MyCar.Position, Game.LocalPlayer.Character.Position), Game.LocalPlayer.Character.ForwardVector);
+                    if (AngleBetween <= 35.0f && !Game.LocalPlayer.Character.CurrentVehicle.IsInFront(MyCar) && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 4.0f)//ForwardVectorDiff > 110f)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;  
+    }
+
     public static void SetDriverWindow(bool RollDown)
     {
         if (Game.LocalPlayer.Character.CurrentVehicle == null)
@@ -242,6 +311,7 @@ public static class TrafficViolations
         ViolationSpeedLimit = false;
         ViolationHitVehicle = false;
         ViolationNonRoadworthy = false;
+        ViolationRunningRed = false;
     }
 }
 

@@ -69,6 +69,7 @@ internal static class DispatchAudio
         ReportGrandTheftAuto = 19,
         ReportSuspectSpotted = 20,
         ReportIncreasedWanted = 21,
+        ReportRunningRed = 22,
     }
     public enum NearType
     {
@@ -415,8 +416,10 @@ internal static class DispatchAudio
                         ReportSuspectSpotted();
                     else if (Item.Type == ReportDispatch.ReportIncreasedWanted)
                         ReportIncreasedWanted(Item.ResultsInLethalForce);
-                    else
-                        ReportAssualtOnOfficer();
+                    else if(Item.Type == ReportDispatch.ReportRunningRed)
+                        ReportRunningRed(Item.VehicleToReport);
+                    //else
+                    //    //ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
                 }
                 ExecutingQueue = false;
@@ -424,7 +427,6 @@ internal static class DispatchAudio
             Debugging.GameFibers.Add(PlayDispatchQueue);
         }
     }
-  
     //Starting
     private static void ReportGenericStart(ref List<string> myList)
     {
@@ -571,6 +573,21 @@ internal static class DispatchAudio
             AddStolenVehicle(ref ScannerList);
         }
         AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles);
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet, ref Subtitles);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
+    private static void ReportRunningRed(GTAVehicle vehicleToReport)
+    {
+        List<string> ScannerList = new List<string>();
+        ReportGenericStart(ref ScannerList);
+        ScannerList.Add(crime_person_running_a_red_light.Apersonrunningaredlight.FileName);
+        string Subtitles = "Officer Report, a ~r~person running a red light~s~";
+        if (vehicleToReport.IsStolen)
+        {
+            Subtitles = Subtitles + " ~s~in a possible stolen vehicle";
+            AddStolenVehicle(ref ScannerList);
+        }
+        AddVehicleDescription(vehicleToReport, ref ScannerList, false, ref Subtitles);
         ReportGenericEnd(ScannerList, NearType.HeadingAndStreet, ref Subtitles);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
