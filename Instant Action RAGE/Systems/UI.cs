@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 public static class UI
 {
-    public enum eFont
+    public enum EFont
     {
         FontChaletLondon = 0,
         FontHouseScript = 1,
@@ -77,11 +77,11 @@ public static class UI
         string TextToShow = CompassHeading + " | " + StreetString;
 
 
-        Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
+        Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
         string ZoneString = "";
         if (PlayerLocation.PlayerCurrentZone != null)
             ZoneString = GetZoneDisplay();
-        Text(ZoneString, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
+        Text(ZoneString, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
 
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
         {
@@ -101,19 +101,19 @@ public static class UI
             }
 
             if(TrafficViolations.ViolatingTrafficLaws)
-                SpeedDisplay = SpeedDisplay + " !";
+                SpeedDisplay += " !";
 
 
             if(TrafficViolations.PlayerIsRunningRedLight)
-                SpeedDisplay = SpeedDisplay + " Running Red";
+                SpeedDisplay += " Running Red";
 
-            Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, eFont.FontChaletComprimeCologne);
+            Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
         }
     }
     private static string GetCompassHeading()
     {
         float Heading = Game.LocalPlayer.Character.Heading;
-        string Abbreviation = "";
+        string Abbreviation;
         if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
         else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "NbE"; }
         else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "NNE"; }
@@ -184,7 +184,7 @@ public static class UI
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
     }
-    public static void Text(string text, float x, float y, float scale, bool center, Color TextColor, eFont Font)
+    public static void Text(string text, float x, float y, float scale, bool center, Color TextColor, EFont Font)
     {
         //Game.Console.Print("Invoke font");
         NativeFunction.Natives.SetTextFont((int)Font);

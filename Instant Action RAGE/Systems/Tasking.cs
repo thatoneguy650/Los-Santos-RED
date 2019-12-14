@@ -79,7 +79,7 @@ public static class Tasking
         {
             Tasking = MyTask.CopToAssign.CopPed.Handle.ToString() + ":" + MyTask.TaskToAssign.ToString();
         }
-        UI.Text(Tasking, 0.8f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+        UI.Text(Tasking, 0.8f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
     }
     public static void Dispose()
     {

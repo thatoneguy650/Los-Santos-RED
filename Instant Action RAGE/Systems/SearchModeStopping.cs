@@ -11,6 +11,7 @@ public static class SearchModeStopping
 {
    // private static bool GhostCopFollow;
     private static readonly Model CopModel = new Model("s_m_y_cop_01");
+    private static bool SingleStopActive = false;
     private static Ped GhostCop;
    // private static Vector3 CurrentPosition;
     public static bool StopSearchMode { get; set; } = false;
@@ -51,6 +52,38 @@ public static class SearchModeStopping
     public static void Dispose()
     {
         IsRunning = false;
+    }
+    public static void StopSearchModeSingle()
+    {
+        if (SingleStopActive)
+            return;
+
+        SingleStopActive = true;
+        Debugging.WriteToLog("StopSearchModeSingle", "Started Stop Search Mod Single");
+        GameFiber StopSearchSingle = GameFiber.StartNew(delegate
+        {
+            try
+            {
+
+                if (!GhostCop.Exists())
+                {
+                    CreateGhostCop();
+                }
+                while (Police.PlayerStarsGreyedOut)
+                {
+                    MoveGhostCopToPosition();
+                    GameFiber.Sleep(50);
+                }
+                MoveGhostCopToOrigin();
+                SingleStopActive = false;
+            }
+            catch (Exception e)
+            {
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+            }
+        }, "StopSearchSingle");
+
+        Debugging.GameFibers.Add(StopSearchSingle);
     }
     private static void HauntPlayer()
     {

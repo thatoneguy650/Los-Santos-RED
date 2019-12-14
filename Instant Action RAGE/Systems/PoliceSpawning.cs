@@ -200,11 +200,12 @@ public static class PoliceSpawning
         MyNewCop.WasRandomSpawnDriver = true;
         MyNewCop.IsBikeCop = isBikeCop;
 
-        if (Settings.SpawnedRandomPoliceHaveBlip)
+        if (Settings.SpawnedRandomPoliceHaveBlip && Cop.Exists())
         {
             Blip myBlip = Cop.AttachBlip();
             myBlip.Color = _Agency.AgencyColor;
             myBlip.Scale = 0.6f;
+            Police.CreatedBlips.Add(myBlip);
         }
 
         PoliceScanning.CopPeds.Add(MyNewCop);

@@ -129,7 +129,7 @@ public static class WeatherReporting
                     if (Settings.DebugShowUI)
                     {
                         string Tasking = string.Format("Weather: Current: {0}, Next: {1}, Wind: {2}", CurrentWeather, NextWeather, WindSpeed);//string.Format("ToTask: {0}", CopsToTask.Count());
-                        UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+                        UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
                     }
                     GameFiber.Yield();
                 }
@@ -207,6 +207,8 @@ public static class WeatherReporting
 
             List<string> ScannerList = new List<string>();
             ScannerList.Add(Weazel.Outro2.FileName);
+            if ((WeatherToReport == WeatherTypeHash.Clear || WeatherToReport == WeatherTypeHash.ExtraSunny) && Police.IsNightTime)//Audio files don't really make sense at night
+                return;
             string WeatherFile = GetAudioFromWeatherType(WeatherToReport);
             if (WeatherFile == "")
             {
@@ -317,7 +319,7 @@ public static class WeatherReporting
         if (TheWeather == null)
             return "";
         else
-            return WeatherFiles.Where(p => p.WeatherTypes.Any(c => c == MyWeather)).PickRandom().FileName;
+            return TheWeather.FileName;
     }
     public class WeatherFile
     {

@@ -60,7 +60,7 @@ public static class Debugging
 
             //GameFibers.
             string DebugString = string.Format("Fibers: {0} LastWeapon: {1}", MyGameFibers, InstantAction.LastWeapon);
-            UI.Text(DebugString, 0.86f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+            UI.Text(DebugString, 0.86f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
             //if (DispatchAudioGameFibersRunning)
             //    DebugString = DebugString + " DA!";
 
@@ -77,7 +77,7 @@ public static class Debugging
             else
                 TextToShow += " + LS:Foot";
 
-            UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+            UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
 
         }
         if (Game.IsKeyDown(Keys.NumPad0))
@@ -618,6 +618,8 @@ public static class Debugging
             }
         }
 
+        Debugging.WriteToLog("PlacePlayerLastSeen", string.Format("PlacePlayerLastSeen, Disantce To Place 2d {0},Player Z {1},LastSeen Z {2}", Game.LocalPlayer.Character.DistanceTo2D(Police.PlacePlayerLastSeen), Game.LocalPlayer.Character.Position.Z, Police.PlacePlayerLastSeen.Z));
+        // <= 15f && !Game.LocalPlayer.Character.Position.Z.IsWithin(PlacePlayerLastSeen.Z - 2f, PlacePlayerLastSeen.Z + 2f)
 
         //if (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
         //    return;

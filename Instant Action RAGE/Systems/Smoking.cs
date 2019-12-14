@@ -104,12 +104,12 @@ public static class Smoking
                     {
                         float CurrentTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, CurrentSmokingAnimation.EnterAnimationDictionary, CurrentSmokingAnimation.EnterAnimation);
                         string Animation = string.Format("Anim: {0}, Time: {1}", CurrentSmokingAnimation.EnterAnimation, CurrentTime);
-                        UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+                        UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
                     }
                     else if (CurrentIdleAnimation != null)
                     {
                         string Animation = string.Format("Anim: {0}, Time: {1}, NearMouth: {2}", CurrentIdleAnimation.Animation, CurrentPuffingAnimationTime, CurrentPuffingAnimationNearMouth);
-                        UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
+                        UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
                     }
                     GameFiber.Yield();
                 }

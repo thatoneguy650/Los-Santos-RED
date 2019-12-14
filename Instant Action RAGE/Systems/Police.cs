@@ -687,7 +687,7 @@ internal static class Police
                     };
                     DispatchAudio.AddDispatchToQueue(SpottedStolen);
                 }
-                else if (InstantAction.PlayerWantedLevel < 2 && CurrTrackedVehicle.CarPlate.IsWanted && !CurrTrackedVehicle.IsStolen && CurrTrackedVehicle.ColorMatchesDescription)
+                else if (InstantAction.PlayerWantedLevel == 0 && CurrTrackedVehicle.CarPlate.IsWanted && !CurrTrackedVehicle.IsStolen && CurrTrackedVehicle.ColorMatchesDescription)
                 {
                     SetWantedLevel(2,"Car plate is wanted and color matches original (formerly Second)");
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 10, false, true, CurrTrackedVehicle));
@@ -818,14 +818,21 @@ internal static class Police
         {
             PrevAnyCanRecognizePlayer = AnyPoliceCanRecognizePlayer;
         }
-
+      //  Vector3 DesiredWantedLocation;
         if (!AnyPoliceSeenPlayerThisWanted)
         {
             PlacePlayerLastSeen = PlaceWantedStarted;
+            //DesiredWantedLocation = PlaceWantedStarted;
         }
         else if (AnyPoliceRecentlySeenPlayer || !PlayerStarsGreyedOut)//was &&
         {
             PlacePlayerLastSeen = Game.LocalPlayer.Character.Position;
+            //DesiredWantedLocation = Game.LocalPlayer.Character.Position;
+        }
+        else if(PlayerStarsGreyedOut && Game.LocalPlayer.Character.DistanceTo2D(PlacePlayerLastSeen) <= 15f && !Game.LocalPlayer.Character.Position.Z.IsWithin(PlacePlayerLastSeen.Z-2f,PlacePlayerLastSeen.Z+2f))//within the search zone but above or below it, need to help out my cops
+        {
+            SearchModeStopping.StopSearchModeSingle();
+            //SearchModeStopping.StopSearchMode = true;
         }
         NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlacePlayerLastSeen.X, PlacePlayerLastSeen.Y, PlacePlayerLastSeen.Z);
 

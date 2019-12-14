@@ -334,7 +334,7 @@ public static class CarStealing
                 Police.PlayerArtificiallyShooting = false;
 
                 float FinalScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-
+                LocalWriteToLog("CarJackPedWithWeapon", string.Format("Scene1 Phase: {0}", FinalScenePhase));
                 if (FinalScenePhase <= 0.4f)
                 {
                     if (Cancel || Driver.IsDead)
@@ -346,14 +346,18 @@ public static class CarStealing
                 }
                 else
                 {
-                    if (Cancel)
+                    if (Cancel && FinalScenePhase <= 0.6f)
                     {
                         Driver.BlockPermanentEvents = false;
                         Driver.WarpIntoVehicle(TargetVehicle, -1);
                         Game.LocalPlayer.Character.Tasks.Clear();
                     }
                     else
+                    {
                         Game.LocalPlayer.Character.WarpIntoVehicle(TargetVehicle, -1);
+                        if (TargetVehicle.Doors[0].IsValid())
+                            NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
+                    }
                 }
 
                 if (Cancel)
@@ -366,7 +370,7 @@ public static class CarStealing
                 if (TargetVehicle.Doors[0].IsValid())
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
 
-                LocalWriteToLog("CarJackPedWithWeapon", string.Format("Scene1 Phase: {0}", FinalScenePhase));
+                
 
                 if (Driver.IsInAnyVehicle(false))
                 {

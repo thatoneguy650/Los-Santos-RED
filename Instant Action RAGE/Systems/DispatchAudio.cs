@@ -328,7 +328,7 @@ internal static class DispatchAudio
             ExecutingQueue = true;
             GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
             {
-                GameFiber.Sleep(rnd.Next(1500,5000));
+                GameFiber.Sleep(rnd.Next(1500,2500));
 
                 if (Settings.DispatchAudioOnlyHighPriority)
                 {
@@ -1837,27 +1837,27 @@ internal static class DispatchAudio
             if (Speed >= 70f && Speed < 80f)
             {
                 ScannerList.Add(doing_speed.Doing70mph.FileName);
-                Subtitles += " doing ~h~70 mph~s~";
+                Subtitles += " ~s~doing ~o~70 mph~s~";
             }
             else if (Speed >= 80f && Speed < 90f)
             {
                 ScannerList.Add(doing_speed.Doing80mph.FileName);
-                Subtitles += " doing ~h~80 mph~s~";
+                Subtitles += " ~s~doing ~o~80 mph~s~";
             }
             else if (Speed >= 90f && Speed < 100f)
             {
                 ScannerList.Add(doing_speed.Doing90mph.FileName);
-                Subtitles += " doing ~h~90 mph~s~";
+                Subtitles += " ~s~doing ~o~90 mph~s~";
             }
             else if (Speed >= 100f && Speed < 104f)
             {
                 ScannerList.Add(doing_speed.Doing100mph.FileName);
-                Subtitles += " doing ~h~100 mph~s~";
+                Subtitles += " ~s~doing ~o~100 mph~s~";
             }
             else if (Speed >= 105f)
             {
                 ScannerList.Add(doing_speed.Doingover100mph.FileName);
-                Subtitles += " doing ~h~over 100 mph~s~";
+                Subtitles += " ~s~doing ~o~over 100 mph~s~";
             }
         }
     }
