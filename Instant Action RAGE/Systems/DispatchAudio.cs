@@ -17,25 +17,20 @@ using static Zones;
 
 internal static class DispatchAudio
 {
+    private static readonly Random rnd;
     private static WaveOutEvent outputDevice;
     private static AudioFileReader audioFile;
-    private static readonly Random rnd;
     private static bool ExecutingQueue = false;
-    private static readonly List<DispatchQueueItem> DispatchQueue = new List<DispatchQueueItem>();
-
+    private static List<DispatchQueueItem> DispatchQueue = new List<DispatchQueueItem>();
     private static bool ReportedOfficerDown = false;
     private static bool ReportedShotsFired  = false;
     private static bool ReportedAssaultOnOfficer = false;
-   // private static bool ReportedCarryingWeapon = false;
     private static bool ReportedLethalForceAuthorized = false;
-    //private static bool ReportedThreateningWithAFirearm = false;
-
-    private static readonly List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
-    private static readonly List<ColorLookup> ColorLookups = new List<ColorLookup>();
-    private static readonly List<string> DamagedScannerAliases = new List<string>();
+    private static List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
+    private static List<ColorLookup> ColorLookups = new List<ColorLookup>();
+    private static List<string> DamagedScannerAliases = new List<string>();
     public static bool CancelAudio;
     public static bool IsPlayingAudio;
-
 
     public static bool AudioPlaying
     {
@@ -85,6 +80,21 @@ internal static class DispatchAudio
     }
     public static void Initialize()
     {
+        outputDevice = null;
+        audioFile = default;
+        ExecutingQueue = false;
+        DispatchQueue = new List<DispatchQueueItem>();
+
+        ReportedOfficerDown = false;
+        ReportedShotsFired = false;
+        ReportedAssaultOnOfficer = false;
+        ReportedLethalForceAuthorized = false;
+
+        LettersAndNumbersLookup = new List<DispatchLettersNumber>();
+        ColorLookups = new List<ColorLookup>();
+        DamagedScannerAliases = new List<string>();
+        CancelAudio = false;
+        IsPlayingAudio = false; ;
         SetupLists();
         MainLoop();
     }
@@ -433,7 +443,22 @@ internal static class DispatchAudio
     private static void ReportGenericStart(ref List<string> myList)
     {
         myList.Add(AudioBeeps.AudioStart());
+        myList.Add(new List<string>() { attention_all_units_gen.Attentionallunits.FileName, attention_all_units_gen.Attentionallunits1.FileName, attention_all_units_gen.Attentionallunits3.FileName, attention_all_units_gen.Attentionallunits3.FileName }.PickRandom());
         myList.Add(we_have.OfficersReport());
+    }
+    private static void ReportGenericTrafficStart(ref List<string> ScannerList)
+    {
+        ScannerList.Add(AudioBeeps.AudioStart());
+        Zone MyZone = Zones.GetZoneAtLocation(Game.LocalPlayer.Character.Position);
+        if (MyZone != null && MyZone.DispatchUnitAudio.Any())
+        {
+            ScannerList.Add(MyZone.DispatchUnitAudio.PickRandom());
+            ScannerList.Add(we_have.We_Have_1.FileName);
+        }
+        else
+        {
+            ScannerList.Add(we_have.OfficersReport());
+        }
     }
     private static void ReportGenericEnd(List<string> ScannerList,NearType Near, ref string Subtitles)
     {
@@ -497,7 +522,7 @@ internal static class DispatchAudio
     public static void ReportPedHitAndRun(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ref ScannerList);
+        ReportGenericTrafficStart(ref ScannerList);
         string Subtitles = "Officer Report, a ~r~Pedestrian Struck~s~";
         int Num = rnd.Next(1, 5);
         if (Num == 1)
@@ -531,7 +556,7 @@ internal static class DispatchAudio
     public static void ReportVehicleHitAndRun(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ref ScannerList);
+        ReportGenericTrafficStart(ref ScannerList);
         string Subtitles = "Officer Report, a ~r~Reckless Driver~s~";
         int Num = rnd.Next(1, 5);
         if (Num == 1)
@@ -566,7 +591,7 @@ internal static class DispatchAudio
     public static void ReportRecklessDriver(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ref ScannerList);
+        ReportGenericTrafficStart(ref ScannerList);
         ScannerList.Add(ScannerAudio.crime_reckless_driver.Arecklessdriver.FileName);
         string Subtitles = "Officer Report, a ~r~Reckless Driver~s~";
         if (vehicle.IsStolen)
@@ -581,7 +606,7 @@ internal static class DispatchAudio
     private static void ReportRunningRed(GTAVehicle vehicleToReport)
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ref ScannerList);
+        ReportGenericTrafficStart(ref ScannerList);
         ScannerList.Add(crime_person_running_a_red_light.Apersonrunningaredlight.FileName);
         string Subtitles = "Officer Report, a person ~r~Running a Red Light~s~";
         if (vehicleToReport.IsStolen)
@@ -596,7 +621,7 @@ internal static class DispatchAudio
     public static void ReportFelonySpeeding(GTAVehicle vehicle,float Speed)
     {
         List<string> ScannerList = new List<string>();
-        ReportGenericStart(ref ScannerList);
+        ReportGenericTrafficStart(ref ScannerList);
         ScannerList.Add(crime_speeding_felony.Aspeedingfelony.FileName);
         string Subtitles = "Officers Report, a ~r~Speeding Felony~s~";
         AddSpeed(ref ScannerList, Speed, ref Subtitles);

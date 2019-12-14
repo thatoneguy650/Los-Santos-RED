@@ -17,30 +17,30 @@ using System.Windows.Forms;
 
 public static class InstantAction
 {
-    private static Random rnd;
+    private static readonly Random rnd;
     private static Police.PoliceState HandsUpPreviousPoliceState;
     private static bool PrevPlayerIsGettingIntoVehicle;
-    private static bool PrevPlayerInVehicle = false;
-    private static bool PrevPlayerAimingInVehicle = false;
-    private static bool IsRunning { get; set; } = true;
-    public static bool IsDead { get; set; } = false;
-    public static bool IsBusted { get; set; } = false;
-    public static bool BeingArrested { get; set; } = false;
-    public static bool DiedInVehicle { get; set; } = false;
-    public static bool PlayerIsConsideredArmed { get; set; } = false;
-    public static int TimesDied { get; set; } = 0;
-    public static bool HandsAreUp { get; set; } = false;
+    private static bool PrevPlayerInVehicle;
+    private static bool PrevPlayerAimingInVehicle;
+    public static bool IsRunning { get; set; }
+    public static bool IsDead { get; set; }
+    public static bool IsBusted { get; set; }
+    public static bool BeingArrested { get; set; }
+    public static bool DiedInVehicle { get; set; }
+    public static bool PlayerIsConsideredArmed { get; set; }
+    public static int TimesDied { get; set; }
+    public static bool HandsAreUp { get; set; }
     public static int MaxWantedLastLife { get; set; }
-    public static WeaponHash LastWeapon { get; set; } = 0;
-    public static bool PlayerInVehicle { get; set; } = false;
-    public static bool PlayerInAutomobile { get; set; } = false;
-    public static bool PlayerAimingInVehicle { get; set; } = false;
+    public static WeaponHash LastWeapon { get; set; }
+    public static bool PlayerInVehicle { get; set; }
+    public static bool PlayerInAutomobile { get; set; }
+    public static bool PlayerAimingInVehicle { get; set; }
     public static bool PlayerIsGettingIntoVehicle { get; set; }
-    public static int PlayerWantedLevel { get; set; } = 0;
+    public static int PlayerWantedLevel { get; set; }
     public static WeaponHash PlayerCurrentWeaponHash { get; set; }
-    public static List<GTAVehicle> TrackedVehicles { get; set; } = new List<GTAVehicle>() ;
-    public static Vehicle OwnedCar { get; set; } = null;
-    public static List<Rage.Object> CreatedObjects { get; set; } = new List<Rage.Object>();
+    public static List<GTAVehicle> TrackedVehicles { get; set; }
+    public static Vehicle OwnedCar { get; set; }
+    public static List<Rage.Object> CreatedObjects { get; set; }
     public static bool IsHardToSeeInWeather
     {
         get
@@ -73,10 +73,35 @@ public static class InstantAction
     }
     public static void Initialize()
     {
+        HandsUpPreviousPoliceState = Police.PoliceState.Normal;
+        PrevPlayerIsGettingIntoVehicle = false;
+        PrevPlayerInVehicle = false;
+        PrevPlayerAimingInVehicle = false;
+        IsRunning = true;
+        IsDead = false;
+        IsBusted = false;
+        BeingArrested = false;
+        DiedInVehicle = false;
+        PlayerIsConsideredArmed = false;
+        TimesDied = 0;
+        HandsAreUp = false;
+        MaxWantedLastLife = 0;
+        LastWeapon = 0;
+        PlayerInVehicle = false;
+        PlayerInAutomobile = false;
+        PlayerAimingInVehicle = false;
+        PlayerIsGettingIntoVehicle = false; 
+        PlayerWantedLevel = 0;
+        PlayerCurrentWeaponHash = 0;
+        TrackedVehicles = new List<GTAVehicle>();
+        OwnedCar = null;
+        CreatedObjects = new List<Rage.Object>();
+
         while (Game.IsLoading)
             GameFiber.Yield();
+
         RespawnStopper.Initialize(); //maye some slowness
-        LoadInteriors();
+        //LoadInteriors();
         Agencies.Initialize();
         Zones.Initialize();
         WeatherReporting.Initialize();
@@ -92,7 +117,7 @@ public static class InstantAction
         PoliceSpeech.Initialize();//slow? moved to 500 ms
         Vehicles.Initialize();
         VehicleEngine.Initialize();
-        Smoking.Initialize();
+        //Smoking.Initialize();
         Tasking.Initialize();
 
         GTAWeapons.Initialize();
@@ -378,7 +403,7 @@ public static class InstantAction
         if (PedToMove == Game.LocalPlayer.Character)
             isPlayer = true;
         Ped Driver = TargetVehicle.Driver;
-        Vector3 CarPosition = TargetVehicle.Position;
+        //Vector3 CarPosition = TargetVehicle.Position;
         NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
 
         while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.Heading.IsWithin(DesiredHeading - 5f, DesiredHeading + 5f)))
@@ -532,10 +557,10 @@ public static class InstantAction
             int WaitTime = 100;
             while (Game.TimeScale > 0.4f)
             {
-                Game.TimeScale = Game.TimeScale - 0.05f;
+                Game.TimeScale -= 0.05f;
                 GameFiber.Wait(WaitTime);
                 if (WaitTime <= 200)
-                    WaitTime = WaitTime + 1;
+                    WaitTime += 1;
             }
 
         }, "TransitionIn");
@@ -548,10 +573,10 @@ public static class InstantAction
             int WaitTime = 100;
             while (Game.TimeScale < 1f)
             {
-                Game.TimeScale = Game.TimeScale + 0.05f;
+                Game.TimeScale += 0.05f;
                 GameFiber.Wait(WaitTime);
                 if (WaitTime >= 12)
-                    WaitTime = WaitTime - 1;
+                    WaitTime -= 1;
             }
 
         }, "TransitionOut");

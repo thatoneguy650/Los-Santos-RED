@@ -20,9 +20,10 @@ public static class UI
         FontChaletComprimeCologne = 4,
         FontPricedown = 7
     };
-    public static bool IsRunning { get; set; } = true;
+    public static bool IsRunning { get; set; }
     public static void Initialize()
     {
+        IsRunning= true;
         MainLoop();
     }
     public static void Dispose()

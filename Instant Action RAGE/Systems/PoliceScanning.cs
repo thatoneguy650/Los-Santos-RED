@@ -9,19 +9,21 @@ using System.Linq;
 
 public static class PoliceScanning
 {
-    public static List<GTACop> CopPeds { get; private set; } = new List<GTACop>();
-    public static List<GTACop> K9Peds { get; private set; } = new List<GTACop>();
-    public static List<Ped> Civilians { get; private set; } = new List<Ped>();
+    public static List<GTACop> CopPeds { get; private set; }
+    public static List<GTACop> K9Peds { get; set; }
+    //public static List<Ped> Civilians { get; private set; }
     public static string AgenciesChasingPlayer
     {
         get
         {
-            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(60000)).Select(x => x.AssignedAgency.ColorPrefix + x.AssignedAgency.Initials).Distinct().ToArray());
+            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(30000)).Select(x => x.AssignedAgency.ColorPrefix + x.AssignedAgency.Initials).Distinct().ToArray());
         }
     }
     public static void Initialize()
     {
-
+        CopPeds = new List<GTACop>();
+        K9Peds = new List<GTACop>();
+        //Civilians = new List<Ped>();
     }
     public static void Dispose()
     {
@@ -35,6 +37,16 @@ public static class PoliceScanning
             }
         }
         CopPeds.Clear();
+        foreach (GTACop Cop in K9Peds)
+        {
+            if (Cop.CopPed.Exists())
+            {
+                if (Cop.CopPed.IsInAnyVehicle(false))
+                    Cop.CopPed.CurrentVehicle.Delete();
+                Cop.CopPed.Delete();
+            }
+        }
+        K9Peds.Clear();
     }
     public static void ScanForPolice()
     {
@@ -49,7 +61,7 @@ public static class PoliceScanning
                     if (Pedestrian.PlayerIsInFront() && Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 55f) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, Game.LocalPlayer.Character))
                         canSee = true;
 
-                    GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health,Agencies.GetAgencyFromPed(Pedestrian));
+                    GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health,Agencies.GetAgencyFromPed(Pedestrian,true));
                     Pedestrian.IsPersistent = false;
                     if (Settings.OverridePoliceAccuracy)
                         Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;

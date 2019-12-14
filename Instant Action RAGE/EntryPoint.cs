@@ -19,10 +19,19 @@ public static class EntryPoint
         {
             GameFiber.Yield();
         }
-
         InstantAction.Initialize();
+        while (true)
+        {
+            if(!InstantAction.IsRunning)
+            {
+                if(Game.IsAltKeyDownRightNow && Game.IsKeyDown(Settings.MenuKey))
+                {
+                    InstantAction.Initialize();
+                }
+            }
+            GameFiber.Yield();
+        }
 
-        GameFiber.Yield();
 
     }
        

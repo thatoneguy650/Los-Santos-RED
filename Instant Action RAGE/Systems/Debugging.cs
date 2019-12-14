@@ -13,12 +13,15 @@ using System.Windows.Forms;
 public static class Debugging
 {
 
-    public static bool ShowCopTaskStatus = false;
-    public static List<GameFiber> GameFibers = new List<GameFiber>();
+    public static bool ShowCopTaskStatus;
+    public static List<GameFiber> GameFibers;
 
-    public static bool IsRunning { get; set; } = true;
+    public static bool IsRunning { get; set; }
     public static void Initialize()
     {
+        ShowCopTaskStatus = false;
+        GameFibers = new List<GameFiber>();
+        IsRunning = true;
         MainLoop();
     }
     public static void MainLoop()
@@ -529,6 +532,10 @@ public static class Debugging
 
         Settings.Logging = true;
 
+
+
+        WriteToLog("WantedLevel", string.Format("Player Position: {0},Heading: {1}", Game.LocalPlayer.Character.Position, Game.LocalPlayer.Character.Heading));
+
         Vector3 CurrentWantedLevelPosition = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
         float DistanceToPlayer = Game.LocalPlayer.Character.DistanceTo2D(CurrentWantedLevelPosition);
         float DistanceToPlacePlayerLastSeen = Game.LocalPlayer.Character.DistanceTo2D(Police.PlacePlayerLastSeen);
@@ -536,7 +543,7 @@ public static class Debugging
 
         //WriteToLog("WantedLevel2", string.Format("LastWantedCenterPosition: {0}", Police.LastWantedCenterPosition));
 
-        // DispatchAudioSystem.ReportSuspiciousActivity();
+        
 
 
 
@@ -545,6 +552,9 @@ public static class Debugging
         //DispatchAudio.ReportFelonySpeeding(InstantAction.GetPlayersCurrentTrackedVehicle(), 110f);
         GTAVehicle VehicleDescription = InstantAction.TrackedVehicles.Where(x => x.VehicleEnt.Handle == Game.LocalPlayer.Character.CurrentVehicle.Handle).FirstOrDefault();
         Vehicle myCar = VehicleDescription.VehicleEnt;
+
+
+        DispatchAudio.ReportFelonySpeeding(VehicleDescription, 50f);
 
         //if (myCar.Health <= 500 || myCar.EngineHealth <= 300)
         Debugging.WriteToLog("RoadWorthyness", string.Format("CurrentCar: Health: {0},Engine Health {1}", myCar.Health, myCar.EngineHealth));
@@ -592,7 +602,7 @@ public static class Debugging
 
         TrafficViolations.CheckRedLight();
 
-        Debugging.WriteToLog("Civilians", string.Format("Total Civilians: {0}", PoliceScanning.Civilians.Count()));
+       // Debugging.WriteToLog("Civilians", string.Format("Total Civilians: {0}", PoliceScanning.Civilians.Count()));
         Debugging.WriteToLog("Civilians", string.Format("PlayerInAutomobile: {0}", InstantAction.PlayerInAutomobile));
 
 

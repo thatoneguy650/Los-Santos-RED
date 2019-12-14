@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public static class Vehicles
 {
-    public static List<VehicleInfo> VehiclesList = new List<VehicleInfo>();
+    public static List<VehicleInfo> VehiclesList;
     public enum Manufacturer
     {
         Albany = 1,
@@ -106,6 +106,7 @@ public static class Vehicles
     }
     public static void Initialize()
     {
+        VehiclesList = new List<VehicleInfo>();
         SetupVehicleList();
     }
     public static void Dispose()

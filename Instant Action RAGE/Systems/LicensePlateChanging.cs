@@ -10,10 +10,10 @@ using ExtensionsMethods;
 
 public static class LicensePlateChanging
 {
-    private static Rage.Object Screwdriver = null;
-    private static Rage.Object LicensePlate = null;
-    private static Random rnd;
-    public static bool PlayerChangingPlate { get; set; } = false;
+    private static readonly Random rnd;
+    private static Rage.Object Screwdriver;
+    private static Rage.Object LicensePlate;
+    public static bool PlayerChangingPlate { get; set; }
 
     static LicensePlateChanging()
     {
@@ -21,6 +21,9 @@ public static class LicensePlateChanging
     }
     public static void Initialize()
     {
+        Screwdriver = null;
+        LicensePlate = null;
+        PlayerChangingPlate = false;
         List<string> StartingPlateOptions = new List<string> { "BRNEBRO", "IMWITHER", "JOE30303", "JEBSGUAC", "MAGA2020", "YNGGANG", "POCAHNTS", "NOTPHOON", "LYINTED" };
         SpareLicensePlates.Add(new GTALicensePlate(StartingPlateOptions.PickRandom(), 1, 1, false));
     }

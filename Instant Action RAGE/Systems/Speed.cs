@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 public static class Speed
 {
-    private static bool SpeedModeBombActive = false;
+    private static bool SpeedModeBombActive;
     private static Vehicle SpeedBus;
-    public static bool IsRunning { get; set; } = true;
+    public static bool IsRunning;
     public static void Initialize()
     {
+        IsRunning = true;
+        SpeedModeBombActive = false;
+        SpeedBus = null;
         MainLoop();
     }
     public static void Dispose()

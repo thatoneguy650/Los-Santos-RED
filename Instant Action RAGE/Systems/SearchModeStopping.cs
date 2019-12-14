@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 public static class SearchModeStopping
 {
-   // private static bool GhostCopFollow;
-    private static readonly Model CopModel = new Model("s_m_y_cop_01");
+    private static Model CopModel;
     private static bool SingleStopActive = false;
     private static Ped GhostCop;
-   // private static Vector3 CurrentPosition;
-    public static bool StopSearchMode { get; set; } = false;
-    public static bool IsRunning { get; set; } = true;
+    public static bool StopSearchMode { get; set; }
+    public static bool IsRunning { get; set; }
     public static Ped SpotterCop
     {
         get
@@ -25,6 +23,11 @@ public static class SearchModeStopping
     }
     public static void Initialize()
     {
+        CopModel = new Model("s_m_y_cop_01");
+        SingleStopActive = false;
+        GhostCop = null;
+        StopSearchMode = false;
+        IsRunning = true;
         CopModel.LoadAndWait();
         CopModel.LoadCollisionAndWait();
         MainLoop();

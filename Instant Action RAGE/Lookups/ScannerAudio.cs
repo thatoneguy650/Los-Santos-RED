@@ -238,73 +238,73 @@ public class attempt_to_find
 }
 public class attention_all_area_units
 {
-    public static ScannerFile Anyunitinthecentralarea { get { return new ScannerFile("01_attention_all_area_units\\0x002E9CB4.wav", "Any unit in the central area,", "attention_all_area_units"); } }
-    public static ScannerFile AnyunitinthePortofLosSantosarea { get { return new ScannerFile("01_attention_all_area_units\\0x006919FF.wav", "Any unit in the Port of Los Santos area,", "attention_all_area_units"); } }
-    public static ScannerFile AttentionallMajesticCountyunits { get { return new ScannerFile("01_attention_all_area_units\\0x0183A299.wav", "Attention all Majestic County units,", "attention_all_area_units"); } }
-    public static ScannerFile Dispatchtoallairtrafficunits { get { return new ScannerFile("01_attention_all_area_units\\0x026A5966.wav", "Dispatch to all air traffic units,", "attention_all_area_units"); } }
-    public static ScannerFile DispatchtoanyavailableChumashunit { get { return new ScannerFile("01_attention_all_area_units\\0x0271A78D.wav", "Dispatch to any available Chumash unit,", "attention_all_area_units"); } }
-    public static ScannerFile AnyunitintheDowntownarea { get { return new ScannerFile("01_attention_all_area_units\\0x02C5949A.wav", "Any unit in the Downtown area,", "attention_all_area_units"); } }
-    public static ScannerFile Dispatchtoanyavailablecentralunit { get { return new ScannerFile("01_attention_all_area_units\\0x02F56240.wav", "Dispatch to any available central unit,", "attention_all_area_units"); } }
-    public static ScannerFile DispatchtoanyavailableMajesticCountyunit { get { return new ScannerFile("01_attention_all_area_units\\0x032265D7.wav", "Dispatch to any available Majestic County unit,", "attention_all_area_units"); } }
-    public static ScannerFile HASH032E41B8 { get { return new ScannerFile("01_attention_all_area_units\\0x032E41B8.wav", "0x032E41B8", "attention_all_area_units"); } }
-    public static ScannerFile HASH0361C69C { get { return new ScannerFile("01_attention_all_area_units\\0x0361C69C.wav", "0x0361C69C", "attention_all_area_units"); } }
-    public static ScannerFile HASH0412FFEA { get { return new ScannerFile("01_attention_all_area_units\\0x0412FFEA.wav", "0x0412FFEA", "attention_all_area_units"); } }
-    public static ScannerFile HASH04473B6D { get { return new ScannerFile("01_attention_all_area_units\\0x04473B6D.wav", "0x04473B6D", "attention_all_area_units"); } }
-    public static ScannerFile HASH05922078 { get { return new ScannerFile("01_attention_all_area_units\\0x05922078.wav", "0x05922078", "attention_all_area_units"); } }
-    public static ScannerFile HASH05A60B35 { get { return new ScannerFile("01_attention_all_area_units\\0x05A60B35.wav", "0x05A60B35", "attention_all_area_units"); } }
-    public static ScannerFile HASH07872AFA { get { return new ScannerFile("01_attention_all_area_units\\0x07872AFA.wav", "0x07872AFA", "attention_all_area_units"); } }
-    public static ScannerFile HASH07A78326 { get { return new ScannerFile("01_attention_all_area_units\\0x07A78326.wav", "0x07A78326", "attention_all_area_units"); } }
-    public static ScannerFile HASH0804A4A0 { get { return new ScannerFile("01_attention_all_area_units\\0x0804A4A0.wav", "0x0804A4A0", "attention_all_area_units"); } }
-    public static ScannerFile HASH0A089398 { get { return new ScannerFile("01_attention_all_area_units\\0x0A089398.wav", "0x0A089398", "attention_all_area_units"); } }
-    public static ScannerFile HASH0A36E84D { get { return new ScannerFile("01_attention_all_area_units\\0x0A36E84D.wav", "0x0A36E84D", "attention_all_area_units"); } }
-    public static ScannerFile HASH0AB3AEA2 { get { return new ScannerFile("01_attention_all_area_units\\0x0AB3AEA2.wav", "0x0AB3AEA2", "attention_all_area_units"); } }
-    public static ScannerFile HASH0B8B47C9 { get { return new ScannerFile("01_attention_all_area_units\\0x0B8B47C9.wav", "0x0B8B47C9", "attention_all_area_units"); } }
-    public static ScannerFile HASH0CC93925 { get { return new ScannerFile("01_attention_all_area_units\\0x0CC93925.wav", "0x0CC93925", "attention_all_area_units"); } }
-    public static ScannerFile HASH0D257CF4 { get { return new ScannerFile("01_attention_all_area_units\\0x0D257CF4.wav", "0x0D257CF4", "attention_all_area_units"); } }
-    public static ScannerFile HASH0D43C2A8 { get { return new ScannerFile("01_attention_all_area_units\\0x0D43C2A8.wav", "0x0D43C2A8", "attention_all_area_units"); } }
-    public static ScannerFile HASH0D8B042A { get { return new ScannerFile("01_attention_all_area_units\\0x0D8B042A.wav", "0x0D8B042A", "attention_all_area_units"); } }
-    public static ScannerFile HASH0DBA6A78 { get { return new ScannerFile("01_attention_all_area_units\\0x0DBA6A78.wav", "0x0DBA6A78", "attention_all_area_units"); } }
-    public static ScannerFile HASH0E5F5E95 { get { return new ScannerFile("01_attention_all_area_units\\0x0E5F5E95.wav", "0x0E5F5E95", "attention_all_area_units"); } }
-    public static ScannerFile HASH0F28DEDA { get { return new ScannerFile("01_attention_all_area_units\\0x0F28DEDA.wav", "0x0F28DEDA", "attention_all_area_units"); } }
-    public static ScannerFile HASH0F6BBEC8 { get { return new ScannerFile("01_attention_all_area_units\\0x0F6BBEC8.wav", "0x0F6BBEC8", "attention_all_area_units"); } }
-    public static ScannerFile HASH104FC34A { get { return new ScannerFile("01_attention_all_area_units\\0x104FC34A.wav", "0x104FC34A", "attention_all_area_units"); } }
-    public static ScannerFile HASH10A654A4 { get { return new ScannerFile("01_attention_all_area_units\\0x10A654A4.wav", "0x10A654A4", "attention_all_area_units"); } }
-    public static ScannerFile HASH10FC3107 { get { return new ScannerFile("01_attention_all_area_units\\0x10FC3107.wav", "0x10FC3107", "attention_all_area_units"); } }
-    public static ScannerFile HASH11137B4A { get { return new ScannerFile("01_attention_all_area_units\\0x11137B4A.wav", "0x11137B4A", "attention_all_area_units"); } }
-    public static ScannerFile HASH1145C27E { get { return new ScannerFile("01_attention_all_area_units\\0x1145C27E.wav", "0x1145C27E", "attention_all_area_units"); } }
-    public static ScannerFile HASH126F7A3C { get { return new ScannerFile("01_attention_all_area_units\\0x126F7A3C.wav", "0x126F7A3C", "attention_all_area_units"); } }
-    public static ScannerFile HASH127917D1 { get { return new ScannerFile("01_attention_all_area_units\\0x127917D1.wav", "0x127917D1", "attention_all_area_units"); } }
-    public static ScannerFile HASH12D3C1FD { get { return new ScannerFile("01_attention_all_area_units\\0x12D3C1FD.wav", "0x12D3C1FD", "attention_all_area_units"); } }
-    public static ScannerFile HASH148BFCF6 { get { return new ScannerFile("01_attention_all_area_units\\0x148BFCF6.wav", "0x148BFCF6", "attention_all_area_units"); } }
-    public static ScannerFile HASH14EC78E8 { get { return new ScannerFile("01_attention_all_area_units\\0x14EC78E8.wav", "0x14EC78E8", "attention_all_area_units"); } }
-    public static ScannerFile HASH1522220A { get { return new ScannerFile("01_attention_all_area_units\\0x1522220A.wav", "0x1522220A", "attention_all_area_units"); } }
-    public static ScannerFile HASH1580264A { get { return new ScannerFile("01_attention_all_area_units\\0x1580264A.wav", "0x1580264A", "attention_all_area_units"); } }
-    public static ScannerFile HASH15DFDF96 { get { return new ScannerFile("01_attention_all_area_units\\0x15DFDF96.wav", "0x15DFDF96", "attention_all_area_units"); } }
-    public static ScannerFile HASH16B56530 { get { return new ScannerFile("01_attention_all_area_units\\0x16B56530.wav", "0x16B56530", "attention_all_area_units"); } }
+    public static ScannerFile CentralAreaUnits { get { return new ScannerFile("01_attention_all_area_units\\0x002E9CB4.wav", "Any unit in the central area,", "attention_all_area_units"); } }
+    public static ScannerFile PortOfLosSantosUnits { get { return new ScannerFile("01_attention_all_area_units\\0x006919FF.wav", "Any unit in the Port of Los Santos area,", "attention_all_area_units"); } }
+    public static ScannerFile MajesticCountyUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0183A299.wav", "Attention all Majestic County units,", "attention_all_area_units"); } }
+    public static ScannerFile AirTrafficUnits { get { return new ScannerFile("01_attention_all_area_units\\0x026A5966.wav", "Dispatch to all air traffic units,", "attention_all_area_units"); } }
+    public static ScannerFile ChumashUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0271A78D.wav", "Dispatch to any available Chumash unit,", "attention_all_area_units"); } }
+    public static ScannerFile DowntownUnits { get { return new ScannerFile("01_attention_all_area_units\\0x02C5949A.wav", "Any unit in the Downtown area,", "attention_all_area_units"); } }
+    public static ScannerFile CentralUnits { get { return new ScannerFile("01_attention_all_area_units\\0x02F56240.wav", "Dispatch to any available central unit,", "attention_all_area_units"); } }
+    public static ScannerFile MajesticCountyUnits1 { get { return new ScannerFile("01_attention_all_area_units\\0x032265D7.wav", "Dispatch to any available Majestic County unit,", "attention_all_area_units"); } }
+    public static ScannerFile PaletoBayUnits { get { return new ScannerFile("01_attention_all_area_units\\0x032E41B8.wav", "0x032E41B8", "attention_all_area_units"); } }
+    public static ScannerFile CapeCatfishUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0361C69C.wav", "0x0361C69C", "attention_all_area_units"); } }
+    public static ScannerFile VenturaCounty { get { return new ScannerFile("01_attention_all_area_units\\0x0412FFEA.wav", "0x0412FFEA", "attention_all_area_units"); } }
+    public static ScannerFile EastLosSantosUnits { get { return new ScannerFile("01_attention_all_area_units\\0x04473B6D.wav", "0x04473B6D", "attention_all_area_units"); } }
+    public static ScannerFile CoastCuardUnits { get { return new ScannerFile("01_attention_all_area_units\\0x05922078.wav", "0x05922078", "attention_all_area_units"); } }
+    public static ScannerFile ZancudoRiverUnits { get { return new ScannerFile("01_attention_all_area_units\\0x05A60B35.wav", "0x05A60B35", "attention_all_area_units"); } }
+    public static ScannerFile GalilleUnits { get { return new ScannerFile("01_attention_all_area_units\\0x07872AFA.wav", "0x07872AFA", "attention_all_area_units"); } }
+    public static ScannerFile VespucciAreaUnits { get { return new ScannerFile("01_attention_all_area_units\\0x07A78326.wav", "0x07A78326", "attention_all_area_units"); } }
+    public static ScannerFile AirTrafficUnits1 { get { return new ScannerFile("01_attention_all_area_units\\0x0804A4A0.wav", "0x0804A4A0", "attention_all_area_units"); } }
+    public static ScannerFile RedwoodLightsUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0A089398.wav", "0x0A089398", "attention_all_area_units"); } }
+    public static ScannerFile SandyShoreUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0A36E84D.wav", "0x0A36E84D", "attention_all_area_units"); } }
+    public static ScannerFile PortOfLosSantosUnits1 { get { return new ScannerFile("01_attention_all_area_units\\0x0AB3AEA2.wav", "0x0AB3AEA2", "attention_all_area_units"); } }
+    public static ScannerFile KalafiaBridgeUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0B8B47C9.wav", "0x0B8B47C9", "attention_all_area_units"); } }
+    public static ScannerFile MajesticCountyUnits2 { get { return new ScannerFile("01_attention_all_area_units\\0x0CC93925.wav", "0x0CC93925", "attention_all_area_units"); } }
+    public static ScannerFile ChumashUnits1 { get { return new ScannerFile("01_attention_all_area_units\\0x0D257CF4.wav", "0x0D257CF4", "attention_all_area_units"); } }
+    public static ScannerFile CassidyCreekUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0D43C2A8.wav", "0x0D43C2A8", "attention_all_area_units"); } }
+    public static ScannerFile LandActDamnUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0D8B042A.wav", "0x0D8B042A", "attention_all_area_units"); } }
+    public static ScannerFile DowntownUnits1 { get { return new ScannerFile("01_attention_all_area_units\\0x0DBA6A78.wav", "0x0DBA6A78", "attention_all_area_units"); } }
+    public static ScannerFile HumaneLabsUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0E5F5E95.wav", "0x0E5F5E95", "attention_all_area_units"); } }
+    public static ScannerFile PaletoBayDeltaUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0F28DEDA.wav", "0x0F28DEDA", "attention_all_area_units"); } }
+    public static ScannerFile VinewoodHillsUnits { get { return new ScannerFile("01_attention_all_area_units\\0x0F6BBEC8.wav", "0x0F6BBEC8", "attention_all_area_units"); } }
+    public static ScannerFile ChumashUnits2 { get { return new ScannerFile("01_attention_all_area_units\\0x104FC34A.wav", "0x104FC34A", "attention_all_area_units"); } }
+    public static ScannerFile BollingBrokeUnits { get { return new ScannerFile("01_attention_all_area_units\\0x10A654A4.wav", "0x10A654A4", "attention_all_area_units"); } }
+    public static ScannerFile DowntownUnits2 { get { return new ScannerFile("01_attention_all_area_units\\0x10FC3107.wav", "0x10FC3107", "attention_all_area_units"); } }
+    public static ScannerFile PortOfLosSantosUnits2 { get { return new ScannerFile("01_attention_all_area_units\\0x11137B4A.wav", "0x11137B4A", "attention_all_area_units"); } }
+    public static ScannerFile VinewoodHillsUnits1 { get { return new ScannerFile("01_attention_all_area_units\\0x1145C27E.wav", "0x1145C27E", "attention_all_area_units"); } }
+    public static ScannerFile CoastGuardUnits2 { get { return new ScannerFile("01_attention_all_area_units\\0x126F7A3C.wav", "0x126F7A3C", "attention_all_area_units"); } }
+    public static ScannerFile EastLosSantosUnits1 { get { return new ScannerFile("01_attention_all_area_units\\0x127917D1.wav", "0x127917D1", "attention_all_area_units"); } }
+    public static ScannerFile CentralUnits1 { get { return new ScannerFile("01_attention_all_area_units\\0x12D3C1FD.wav", "0x12D3C1FD", "attention_all_area_units"); } }
+    public static ScannerFile SandyShoresUnits2 { get { return new ScannerFile("01_attention_all_area_units\\0x148BFCF6.wav", "0x148BFCF6", "attention_all_area_units"); } }
+    public static ScannerFile DowntownUnits3 { get { return new ScannerFile("01_attention_all_area_units\\0x14EC78E8.wav", "0x14EC78E8", "attention_all_area_units"); } }
+    public static ScannerFile VenturaCountyUnits { get { return new ScannerFile("01_attention_all_area_units\\0x1522220A.wav", "0x1522220A", "attention_all_area_units"); } }
+    public static ScannerFile AlamoSeaUnits { get { return new ScannerFile("01_attention_all_area_units\\0x1580264A.wav", "0x1580264A", "attention_all_area_units"); } }
+    public static ScannerFile VespucciAreaUnits2 { get { return new ScannerFile("01_attention_all_area_units\\0x15DFDF96.wav", "0x15DFDF96", "attention_all_area_units"); } }
+    public static ScannerFile VenturaCountyArea2 { get { return new ScannerFile("01_attention_all_area_units\\0x16B56530.wav", "0x16B56530", "attention_all_area_units"); } }
     public static ScannerFile HASH16C28216 { get { return new ScannerFile("01_attention_all_area_units\\0x16C28216.wav", "0x16C28216", "attention_all_area_units"); } }
-    public static ScannerFile HASH16D8A845 { get { return new ScannerFile("01_attention_all_area_units\\0x16D8A845.wav", "0x16D8A845", "attention_all_area_units"); } }
-    public static ScannerFile HASH17DBC397 { get { return new ScannerFile("01_attention_all_area_units\\0x17DBC397.wav", "0x17DBC397", "attention_all_area_units"); } }
-    public static ScannerFile HASH1824EF93 { get { return new ScannerFile("01_attention_all_area_units\\0x1824EF93.wav", "0x1824EF93", "attention_all_area_units"); } }
+    public static ScannerFile VinewoodUnits2 { get { return new ScannerFile("01_attention_all_area_units\\0x16D8A845.wav", "0x16D8A845", "attention_all_area_units"); } }
+    public static ScannerFile SanyShoreUnits3 { get { return new ScannerFile("01_attention_all_area_units\\0x17DBC397.wav", "0x17DBC397", "attention_all_area_units"); } }
+    public static ScannerFile VinewoodRacetrackUnits { get { return new ScannerFile("01_attention_all_area_units\\0x1824EF93.wav", "0x1824EF93", "attention_all_area_units"); } }
     public static ScannerFile HASH183605CA { get { return new ScannerFile("01_attention_all_area_units\\0x183605CA.wav", "0x183605CA", "attention_all_area_units"); } }
-    public static ScannerFile HASH1843E726 { get { return new ScannerFile("01_attention_all_area_units\\0x1843E726.wav", "0x1843E726", "attention_all_area_units"); } }
+    public static ScannerFile ElGordoLightHouseUnits { get { return new ScannerFile("01_attention_all_area_units\\0x1843E726.wav", "0x1843E726", "attention_all_area_units"); } }
     public static ScannerFile HASH184885E5 { get { return new ScannerFile("01_attention_all_area_units\\0x184885E5.wav", "0x184885E5", "attention_all_area_units"); } }
     public static ScannerFile HASH18709072 { get { return new ScannerFile("01_attention_all_area_units\\0x18709072.wav", "0x18709072", "attention_all_area_units"); } }
-    public static ScannerFile HASH18FFAD5C { get { return new ScannerFile("01_attention_all_area_units\\0x18FFAD5C.wav", "0x18FFAD5C", "attention_all_area_units"); } }
+    public static ScannerFile PaletoaBayUnits { get { return new ScannerFile("01_attention_all_area_units\\0x18FFAD5C.wav", "0x18FFAD5C", "attention_all_area_units"); } }
     public static ScannerFile HASH1A434396 { get { return new ScannerFile("01_attention_all_area_units\\0x1A434396.wav", "0x1A434396", "attention_all_area_units"); } }
     public static ScannerFile HASH1BBD320D { get { return new ScannerFile("01_attention_all_area_units\\0x1BBD320D.wav", "0x1BBD320D", "attention_all_area_units"); } }
     public static ScannerFile HASH1BC9F71B { get { return new ScannerFile("01_attention_all_area_units\\0x1BC9F71B.wav", "0x1BC9F71B", "attention_all_area_units"); } }
     public static ScannerFile HASH1BE850F4 { get { return new ScannerFile("01_attention_all_area_units\\0x1BE850F4.wav", "0x1BE850F4", "attention_all_area_units"); } }
     public static ScannerFile HASH1C807125 { get { return new ScannerFile("01_attention_all_area_units\\0x1C807125.wav", "0x1C807125", "attention_all_area_units"); } }
-    public static ScannerFile HASH1CA5193B { get { return new ScannerFile("01_attention_all_area_units\\0x1CA5193B.wav", "0x1CA5193B", "attention_all_area_units"); } }
-    public static ScannerFile HASH1CEB8EB7 { get { return new ScannerFile("01_attention_all_area_units\\0x1CEB8EB7.wav", "0x1CEB8EB7", "attention_all_area_units"); } }
-    public static ScannerFile HASH1DA275D7 { get { return new ScannerFile("01_attention_all_area_units\\0x1DA275D7.wav", "0x1DA275D7", "attention_all_area_units"); } }
-    public static ScannerFile HASH1DCDF6F8 { get { return new ScannerFile("01_attention_all_area_units\\0x1DCDF6F8.wav", "0x1DCDF6F8", "attention_all_area_units"); } }
-    public static ScannerFile HASH1E7BD1D7 { get { return new ScannerFile("01_attention_all_area_units\\0x1E7BD1D7.wav", "0x1E7BD1D7", "attention_all_area_units"); } }
+    public static ScannerFile VinewoodHillsUnits3 { get { return new ScannerFile("01_attention_all_area_units\\0x1CA5193B.wav", "0x1CA5193B", "attention_all_area_units"); } }
+    public static ScannerFile SouthLosSantosAreaUnits { get { return new ScannerFile("01_attention_all_area_units\\0x1CEB8EB7.wav", "0x1CEB8EB7", "attention_all_area_units"); } }
+    public static ScannerFile VinewoodAreaUnits { get { return new ScannerFile("01_attention_all_area_units\\0x1DA275D7.wav", "0x1DA275D7", "attention_all_area_units"); } }
+    public static ScannerFile PaletoBayUnits3 { get { return new ScannerFile("01_attention_all_area_units\\0x1DCDF6F8.wav", "0x1DCDF6F8", "attention_all_area_units"); } }
+    public static ScannerFile SouthLosSantosUnits { get { return new ScannerFile("01_attention_all_area_units\\0x1E7BD1D7.wav", "0x1E7BD1D7", "attention_all_area_units"); } }
     public static ScannerFile HASH1E8634D1 { get { return new ScannerFile("01_attention_all_area_units\\0x1E8634D1.wav", "0x1E8634D1", "attention_all_area_units"); } }
-    public static ScannerFile HASH1EC9F072 { get { return new ScannerFile("01_attention_all_area_units\\0x1EC9F072.wav", "0x1EC9F072", "attention_all_area_units"); } }
+    public static ScannerFile EastLosSantos2 { get { return new ScannerFile("01_attention_all_area_units\\0x1EC9F072.wav", "0x1EC9F072", "attention_all_area_units"); } }
     public static ScannerFile HASH1F400CC0 { get { return new ScannerFile("01_attention_all_area_units\\0x1F400CC0.wav", "0x1F400CC0", "attention_all_area_units"); } }
     public static ScannerFile HASH1FE288E6 { get { return new ScannerFile("01_attention_all_area_units\\0x1FE288E6.wav", "0x1FE288E6", "attention_all_area_units"); } }
-    public static ScannerFile HASH1FF0CEE5 { get { return new ScannerFile("01_attention_all_area_units\\0x1FF0CEE5.wav", "0x1FF0CEE5", "attention_all_area_units"); } }
+    public static ScannerFile DowntownUnits4 { get { return new ScannerFile("01_attention_all_area_units\\0x1FF0CEE5.wav", "0x1FF0CEE5", "attention_all_area_units"); } }
 }
 public class attention_all_units_gen
 {

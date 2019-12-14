@@ -10,9 +10,10 @@ using System.Windows.Forms;
 
 internal static class RespawnStopper
 {
-    public static bool IsRunning { get; set; } = true;
+    public static bool IsRunning { get; set; }
     public static void Initialize()
     {
+        IsRunning = true;
         IntPtr MyPtr = Game.GetScriptGlobalVariableAddress(4);
         Marshal.WriteInt32(MyPtr, 1);
         Game.TerminateAllScriptsWithName("respawn_controller");

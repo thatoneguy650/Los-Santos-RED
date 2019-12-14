@@ -39,7 +39,7 @@ static class Settings
     public static bool SpawnPoliceK9 = true;
     public static bool SpawnRandomPolice = true;
     public static int SpawnRandomPoliceLimit = 5;
-    public static bool SpawnedRandomPoliceHaveBlip = true;
+    public static bool SpawnedRandomPoliceHaveBlip = false;
 
     public static bool IssuePoliceHeavyWeapons = true;
 
@@ -68,7 +68,7 @@ static class Settings
     public static bool DisableAmbientScanner = true;
     public static bool WantedMusicDisable = true;
     public static bool AlwaysShowHUD = true;
-    public static bool ShowPoliceRadarBlips = true;
+    public static bool ShowPoliceRadarBlips = false;
     public static bool AlwaysShowCash = true;
     public static bool Keanu = true;
     public static bool AllowPoliceWeaponVariations = true;
@@ -96,7 +96,8 @@ static class Settings
     public static bool AllowDeathMenus = true;
     public static bool AlwaysShowRadar = true;
 
-    public static bool DebugShowUI = true;
+    public static bool DebugShowUI = false;
+    public static bool DispatchWorks = false;
     public static string MainCharacterToAliasModelName
     {
         get

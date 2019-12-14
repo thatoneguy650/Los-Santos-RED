@@ -18,6 +18,11 @@ public static class PlayerLocation
 
     public static void Initialize()
     {
+        IsRunning = true;
+        PlayerCurrentStreet = null;
+        PlayerCurrentCrossStreet = null;
+        PlayerCurrentZone = Zones.UNK_LSCOUNTY;
+        PlayerIsOffroad  = false;
         MainLoop();
     }
     public static void Dispose()

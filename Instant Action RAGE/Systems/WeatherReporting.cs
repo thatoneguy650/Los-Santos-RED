@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 public static class WeatherReporting
 {
-    private static List<WeatherFile> WeatherFiles = new List<WeatherFile>();
+    private static List<WeatherFile> WeatherFiles;
     private static uint GameTimeLastCheckedWeather;
-    private static WeatherTypeHash NextWeather = WeatherTypeHash.Neutral;
-    private static WeatherTypeHash PrevNextWeather = WeatherTypeHash.Neutral;
-    private static WeatherTypeHash CurrentWeather = WeatherTypeHash.Neutral;
-    private static WeatherTypeHash PrevCurrentWeather = WeatherTypeHash.Neutral;
+    private static WeatherTypeHash NextWeather;
+    private static WeatherTypeHash PrevNextWeather;
+    private static WeatherTypeHash CurrentWeather;
+    private static WeatherTypeHash PrevCurrentWeather;
     private static float CurrentWindSpeed;
     private static uint GameTimeLastReportedWeather;
-    public static bool IsRunning { get; set; } = true;
-    public static bool IsReportingWeather { get; set; } = false;
+    public static bool IsRunning { get; set; }
+    public static bool IsReportingWeather { get; set; }
     public static bool CanReportWeather
     {
         get
@@ -51,7 +51,16 @@ public static class WeatherReporting
     }
     public static void Initialize()
     {
-        NativeFunction.CallByName<bool>("REQUEST_STREAMED_TEXTURE_DICT", "news_weazelnews", false);
+        WeatherFiles = new List<WeatherFile>();
+        GameTimeLastCheckedWeather = 0;
+        NextWeather = WeatherTypeHash.Neutral;
+        PrevNextWeather = WeatherTypeHash.Neutral;
+        CurrentWeather = WeatherTypeHash.Neutral;
+        PrevCurrentWeather = WeatherTypeHash.Neutral;
+        CurrentWindSpeed = 0f;
+        GameTimeLastReportedWeather = 0;
+        IsRunning = true;
+        IsReportingWeather = false;
         WeatherFiles.Add(Cloudy.Cloudy1);
         WeatherFiles.Add(Cloudy.Cloudy2);
         WeatherFiles.Add(Cloudy.Cloudy3);
@@ -110,7 +119,6 @@ public static class WeatherReporting
         GameTimeLastReportedWeather = Game.GameTime;
         CheckWeather();
         MainLoop();
-
     }
     public static void MainLoop()
     {
@@ -205,8 +213,10 @@ public static class WeatherReporting
                 NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "OFF");
             }
 
-            List<string> ScannerList = new List<string>();
-            ScannerList.Add(Weazel.Outro2.FileName);
+            List<string> ScannerList = new List<string>
+            {
+                Weazel.Outro2.FileName
+            };
             if ((WeatherToReport == WeatherTypeHash.Clear || WeatherToReport == WeatherTypeHash.ExtraSunny) && Police.IsNightTime)//Audio files don't really make sense at night
                 return;
             string WeatherFile = GetAudioFromWeatherType(WeatherToReport);

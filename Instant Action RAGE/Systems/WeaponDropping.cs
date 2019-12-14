@@ -10,13 +10,17 @@ using System.Threading.Tasks;
 
 public static class WeaponDropping
 {
-    private static List<DroppedWeapon> DroppedWeapons = new List<DroppedWeapon>();
-    private static bool DroppingWeapon = false;
-    private static int PrevCountWeapons = 1;
-    public static bool IsRunning { get; set; } = true;
+    private static List<DroppedWeapon> DroppedWeapons;
+    private static bool DroppingWeapon;
+    private static int PrevCountWeapons;
+    public static bool IsRunning { get; set; }
    
     public static void Initialize()
     {
+        DroppedWeapons = new List<DroppedWeapon>();
+        DroppingWeapon = false;
+        PrevCountWeapons = 1;
+        IsRunning = true;
         MainLoop();
     }
     public static void Dispose()

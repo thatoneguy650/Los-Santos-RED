@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 public static class GTAWeapons
 {
-    public static List<GTAWeapon> WeaponsList = new List<GTAWeapon>();
-    public static List<WeaponVariation.WeaponComponent> WeaponComponentsList = new List<WeaponVariation.WeaponComponent>();
+    public static List<GTAWeapon> WeaponsList;
+    public static List<WeaponVariation.WeaponComponent> WeaponComponentsList;
 
     public static void Initialize()
     {
+        WeaponsList = new List<GTAWeapon>();
+        WeaponComponentsList = new List<WeaponVariation.WeaponComponent>();
         //Melee
         WeaponsList.Add(new GTAWeapon("weapon_dagger", 0, GTAWeapon.WeaponCategory.Melee, 0, 2460120199, false, false, false,true));
         WeaponsList.Add(new GTAWeapon("weapon_bat", 0, GTAWeapon.WeaponCategory.Melee, 0, 2508868239, false, false, false, true));

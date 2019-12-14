@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 public static class TrafficViolations
 {
 
-    private static bool ViolationDrivingAgainstTraffic = false;
-    private static bool ViolationDrivingOnPavement = false;
-    private static bool ViolationHitPed = false;
-    private static bool ViolationHitVehicle = false;
-    private static bool ViolationSpeedLimit = false;
-    private static bool ViolationNonRoadworthy = false;
-    private static bool ViolationRunningRed = false;
-    private static uint GameTimeStartedDrivingOnPavement = 0;
-    private static uint GameTimeStartedDrivingAgainstTraffic = 0;
-    private static bool PlayersVehicleIsSuspicious = false;
+    private static bool ViolationDrivingAgainstTraffic;
+    private static bool ViolationDrivingOnPavement;
+    private static bool ViolationHitPed;
+    private static bool ViolationHitVehicle;
+    private static bool ViolationSpeedLimit;
+    private static bool ViolationNonRoadworthy;
+    private static bool ViolationRunningRed;
+    private static uint GameTimeStartedDrivingOnPavement;
+    private static uint GameTimeStartedDrivingAgainstTraffic;
+    private static bool PlayersVehicleIsSuspicious;
 
-    public static List<Vehicle> CloseVehicles = new List<Vehicle>();//temp public
+    public static List<Vehicle> CloseVehicles;//tmp public
 
-    public static bool IsRunning { get; set; } = true;
-    public static bool PlayerIsSpeeding { get; set; } = false;
-    public static bool PlayerIsRunningRedLight = false;
+    public static bool IsRunning { get; set; }
+    public static bool PlayerIsSpeeding { get; set; }
+    public static bool PlayerIsRunningRedLight { get; set; }
     public static bool HasBeenDrivingAgainstTraffic
     {
         get
@@ -63,6 +63,20 @@ public static class TrafficViolations
     }
     public static void Initialize()
     {
+        ViolationDrivingAgainstTraffic = false;
+        ViolationDrivingOnPavement = false;
+        ViolationHitPed = false;
+        ViolationHitVehicle = false;
+        ViolationSpeedLimit = false;
+        ViolationNonRoadworthy = false;
+        ViolationRunningRed = false;
+        GameTimeStartedDrivingOnPavement = 0;
+        GameTimeStartedDrivingAgainstTraffic = 0;
+        PlayersVehicleIsSuspicious = false;
+        CloseVehicles = new List<Vehicle>();
+        IsRunning = true;
+        PlayerIsSpeeding = false;
+        PlayerIsRunningRedLight = false;
         MainLoop();
     }
     private static void MainLoop()
@@ -89,19 +103,17 @@ public static class TrafficViolations
     }
     private static void CheckViolations()
     {
-        if (Police.CurrentPoliceState != Police.PoliceState.Normal)
+        if (Police.CurrentPoliceState != Police.PoliceState.Normal || !Settings.TrafficViolations)
         {
             GameTimeStartedDrivingOnPavement = 0;
             GameTimeStartedDrivingAgainstTraffic = 0;
             PlayerIsSpeeding = false;
+            PlayerIsRunningRedLight = false;
+            PlayersVehicleIsSuspicious = false;
             return;
         }
 
-        if (!Settings.TrafficViolations)
-            return;
-
         InstantAction.PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-
         if (!InstantAction.PlayerInVehicle)
         {
             ViolationSpeedLimit = false;
@@ -142,7 +154,10 @@ public static class TrafficViolations
             else
                 GameTimeStartedDrivingAgainstTraffic = 0;
 
-            if (Settings.TrafficViolationsDrivingAgainstTraffic && Police.AnyPoliceCanSeePlayer && !ViolationDrivingAgainstTraffic && !TreatAsCop && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+
+            bool TrafficAnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.canSeePlayer && x.AssignedAgency.CanCheckTrafficViolations);
+
+            if (Settings.TrafficViolationsDrivingAgainstTraffic && TrafficAnyPoliceCanSeePlayer && !ViolationDrivingAgainstTraffic && !TreatAsCop && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 ViolationDrivingAgainstTraffic = true;
                 Police.SetWantedLevel(1,"Driving Against Traffic");
@@ -152,7 +167,7 @@ public static class TrafficViolations
                 };
                 DispatchAudio.AddDispatchToQueue(RecklessDriver);
             }
-            if (Settings.TrafficViolationsDrivingOnPavement && Police.AnyPoliceCanSeePlayer && !ViolationDrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+            if (Settings.TrafficViolationsDrivingOnPavement && TrafficAnyPoliceCanSeePlayer && !ViolationDrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 ViolationDrivingOnPavement = true;
                 Police.SetWantedLevel(1,"Driving On Pavement");
@@ -163,7 +178,7 @@ public static class TrafficViolations
                 DispatchAudio.AddDispatchToQueue(RecklessDriver);
             }
             int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
-            if (Settings.TrafficViolationsHitPed && Police.AnyPoliceCanSeePlayer && !ViolationHitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
+            if (Settings.TrafficViolationsHitPed && TrafficAnyPoliceCanSeePlayer && !ViolationHitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
             {
                 ViolationHitPed = true;
                 Police.SetWantedLevel(2,"Hit a Pedestrian");
@@ -174,7 +189,7 @@ public static class TrafficViolations
                 DispatchAudio.AddDispatchToQueue(PedHitAndRun);
             }
             int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
-            if (Settings.TrafficViolationsHitVehicle && Police.AnyPoliceCanSeePlayer && !ViolationHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
+            if (Settings.TrafficViolationsHitVehicle && TrafficAnyPoliceCanSeePlayer && !ViolationHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
             {
                 ViolationHitVehicle = true;
                 Police.SetWantedLevel(1,"Hit a vehicle");
@@ -184,7 +199,7 @@ public static class TrafficViolations
                 };
                 DispatchAudio.AddDispatchToQueue(VehicleHitAndRun);
             }
-            if (Settings.TrafficViolationsNotRoadworthy && Police.AnyPoliceCanSeePlayer && !ViolationNonRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
+            if (Settings.TrafficViolationsNotRoadworthy && TrafficAnyPoliceCanSeePlayer && !ViolationNonRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
             {
                 ViolationNonRoadworthy = true;
                 Police.SetWantedLevel(1,"Driving a non-roadworthy vehicle");
@@ -201,7 +216,7 @@ public static class TrafficViolations
                     SpeedLimit = PlayerLocation.PlayerCurrentStreet.SpeedLimit;
                 PlayerIsSpeeding = VehicleSpeedMPH > SpeedLimit + Settings.TrafficViolationsSpeedingOverLimitThreshold;
 
-                if (PlayerIsSpeeding && Police.AnyPoliceCanSeePlayer && !ViolationSpeedLimit && !TreatAsCop)
+                if (PlayerIsSpeeding && TrafficAnyPoliceCanSeePlayer && !ViolationSpeedLimit && !TreatAsCop)
                 {
                     ViolationSpeedLimit = true;
                     if (VehicleSpeedMPH > SpeedLimit + (Settings.TrafficViolationsSpeedingOverLimitThreshold * 2))//going 2 times over the threshold = 3 stars
@@ -222,7 +237,7 @@ public static class TrafficViolations
             if (Settings.TrafficViolationsRunningRedLight)
             {
                 PlayerIsRunningRedLight = CheckRedLight();
-                if (PlayerIsRunningRedLight && Police.AnyPoliceCanSeePlayer && !ViolationRunningRed && !TreatAsCop)
+                if (PlayerIsRunningRedLight && TrafficAnyPoliceCanSeePlayer && !ViolationRunningRed && !TreatAsCop)
                 {
                     ViolationRunningRed = true;
                     Police.SetWantedLevel(1, "Running a Red Light");

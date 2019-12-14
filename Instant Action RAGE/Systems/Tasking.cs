@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 public static class Tasking
 {
     private static readonly Random rnd;
-    private static readonly List<PoliceTask> CopsToTask = new List<PoliceTask>();
+    private static List<PoliceTask> CopsToTask;
     private static uint LastBust;
     private static int ForceSurrenderTime;
-    private static bool SurrenderBust = false;
+    private static bool SurrenderBust;
     private static uint GameTimeLastResetWeapons;
     public static string CurrentPoliceTickRunning { get; set; }
-    public static bool IsRunning { get; set; } = true;
+    public static bool IsRunning { get; set; }
 
     static Tasking()
     {
@@ -25,6 +25,13 @@ public static class Tasking
     }
     public static void Initialize()
     {
+        IsRunning = true;
+        CopsToTask = new List<PoliceTask>();
+        LastBust = 0;
+        ForceSurrenderTime = 0;
+        SurrenderBust = false;
+        GameTimeLastResetWeapons = 0;
+        CurrentPoliceTickRunning = "";
         MainLoop();
     }
     private static void MainLoop()
@@ -39,8 +46,6 @@ public static class Tasking
                     GameFiber.Sleep(50);//was 100
                     PoliceStateTick();
                     GameFiber.Sleep(50);
-
-
                 }
             }
             catch (Exception e)
@@ -59,7 +64,7 @@ public static class Tasking
                     if(Game.LocalPlayer.WantedLevel > 0)//Dont need to do this each tick if we arent wanted?
                         PoliceVehicleTick();
 
-                    DisplayQueue(); //Temp Crap to show me the queue
+                    //DisplayQueue(); //Temp Crap to show me the queue
 
                     GameFiber.Yield();
                 }
@@ -72,6 +77,10 @@ public static class Tasking
         });
         
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
     private static void DisplayQueue()
     {
         string Tasking = "";//string.Format("ToTask: {0}", CopsToTask.Count());
@@ -80,10 +89,6 @@ public static class Tasking
             Tasking = MyTask.CopToAssign.CopPed.Handle.ToString() + ":" + MyTask.TaskToAssign.ToString();
         }
         UI.Text(Tasking, 0.8f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
     }
     private static void ProcessQueue()
     {

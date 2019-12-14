@@ -23,7 +23,6 @@ internal static class Menus
     private static UIMenuItem menuMainChangeHelmet;
     private static UIMenuItem menuDebugKillPlayer;
     private static UIMenuListItem menuDebugRandomWeapon;
-    private static UIMenuListItem menuDebugScreenEffect;
     private static UIMenuCheckboxItem menuDebugEnabled;
     private static UIMenuItem menuDeathUndie;
     private static UIMenuItem menuDeathRespawnInPlace;
@@ -47,20 +46,153 @@ internal static class Menus
     private static UIMenu optionsMenu;
     private static UIMenu actionsMenu;
 
-    private static int RandomWeaponCategory = 0;
-    private static Vector3 WorldPos = new Vector3(0f, 0f, 0f);
-    //private static List<int> BribeList = new List<int> { 250, 500, 1000, 1250, 1750, 2000, 3500 };
-   // private static List<int> UndieLimit = new List<int> { 0,1,2,3,4,5 };
-    private static string CurrentScreenEffect = "Rampage";
+    private static int RandomWeaponCategory;
+    private static Vector3 WorldPos;
+    private static string CurrentScreenEffect;
 
     private static List<string> SmokingOptionsList;
     private static Location CurrentSelectedSurrenderLocation;
     private static Location CurrentSelectedHospitalLocation;
 
-    public static float TakeoverRadius = -1f;
-    public static int ChangePlateIndex = 0;
+    public static float TakeoverRadius;
+    public static int ChangePlateIndex;
+    public static bool IsRunning { get; set; }
+    public static void Intitialize()
+    {
+        IsRunning = true;
+        RandomWeaponCategory = 0;
+        WorldPos = new Vector3(0f, 0f, 0f);
+        CurrentScreenEffect = "Rampage";
 
+        SmokingOptionsList = default;
+        CurrentSelectedSurrenderLocation = null;
+        CurrentSelectedHospitalLocation = null;
 
+        TakeoverRadius = -1f;
+        ChangePlateIndex = 0;
+        menuPool = new MenuPool();
+        mainMenu = new UIMenu("Instant Action", "Select an Option");
+        menuPool.Add(mainMenu);
+        deathMenu = new UIMenu("Instant Action", "Choose Respawn (Wasted)");
+        menuPool.Add(deathMenu);
+        debugMenu = new UIMenu("Instant Action", "Debug");
+        menuPool.Add(debugMenu);
+        bustedMenu = new UIMenu("Instant Action", "Choose Respawn (Busted)");
+        menuPool.Add(bustedMenu);
+
+        CreateMainMenu();
+
+        menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
+        menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
+        menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", new List<dynamic> { "Melee", "Pistol", "Shotgun", "SMG", "AR", "LMG", "Sniper", "Heavy" });
+        menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
+        menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
+        menuDebugHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
+
+        debugMenu.AddItem(menuDebugResetCharacter);
+        debugMenu.AddItem(menuDebugKillPlayer);
+        debugMenu.AddItem(menuDebugRandomWeapon);
+        debugMenu.AddItem(menuDebugEnabled);
+        debugMenu.AddItem(menuDebugGiveMoney);
+        debugMenu.AddItem(menuDebugHealthAndArmor);
+
+        menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
+        menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
+        menuDeathHospitalRespawn = new UIMenuListItem("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Hospital));
+        menuDeathNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the hospital (standard game logc).");
+        menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
+
+        deathMenu.AddItem(menuDeathUndie);
+        deathMenu.AddItem(menuDeathHospitalRespawn);
+        deathMenu.AddItem(menuDeathTakeoverRandomPed);
+
+        menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
+        menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
+        menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));
+        menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
+        menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
+
+        bustedMenu.AddItem(menuBustedResistArrest);
+        bustedMenu.AddItem(menuBustedBribe);
+        bustedMenu.AddItem(menuBustedSurrender);
+        bustedMenu.AddItem(menuBustedTakeoverRandomPed);
+
+        mainMenu.OnItemSelect += MainMenuSelect;
+        mainMenu.OnListChange += OnListChange;
+        mainMenu.OnCheckboxChange += OnCheckboxChange;
+
+        deathMenu.OnItemSelect += DeathMenuSelect;
+        deathMenu.OnListChange += OnListChange;
+
+        bustedMenu.OnItemSelect += BustedMenuSelect;
+        bustedMenu.OnListChange += OnListChange;
+
+        debugMenu.OnItemSelect += DebugMenuSelect;
+        debugMenu.OnListChange += OnListChange;
+        debugMenu.OnCheckboxChange += OnCheckboxChange;
+
+        ProcessLoop();
+
+    }
+    public static void ProcessLoop()
+    {
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (IsRunning)
+                {
+                    if (Game.IsKeyDown(Settings.MenuKey)) // Our menu on/off switch.
+                    {
+                        if (InstantAction.IsDead)
+                        {
+                            if (!deathMenu.Visible)
+                                ShowDeathMenu();
+                            else
+                                deathMenu.Visible = false;
+                        }
+                        else if (InstantAction.IsBusted)
+                        {
+                            if (!bustedMenu.Visible)
+                                ShowBustedMenu();
+                            else
+                                bustedMenu.Visible = false;
+                        }
+                        else if (optionsMenu.Visible)
+                        {
+                            optionsMenu.Visible = !optionsMenu.Visible;
+                        }
+                        else if (actionsMenu.Visible)
+                        {
+                            actionsMenu.Visible = !actionsMenu.Visible;
+                        }
+                        else
+                        {
+                            if (!mainMenu.Visible)
+                                ShowMainMenu();
+                            else
+                                mainMenu.Visible = false;
+                        }
+                    }
+                    else if (Game.IsKeyDown(Keys.F11)) // Our menu on/off switch.
+                    {
+                        debugMenu.Visible = !debugMenu.Visible;
+                    }
+                    menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse.      
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception e)
+            {
+                InstantAction.Dispose();
+                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+            }
+        });
+    }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
     public static void ShowDeathMenu()
     {
         if (Settings.UndieLimit == 0)
@@ -95,159 +227,9 @@ internal static class Menus
 
         bustedMenu.Visible = true;
     }
-    public static bool IsRunning { get; set; } = true;
-    public static void Intitialize()
-    {
-        menuPool = new MenuPool();
-        mainMenu = new UIMenu("Instant Action", "Select an Option");
-        menuPool.Add(mainMenu);
-        deathMenu = new UIMenu("Instant Action", "Choose Respawn (Wasted)");
-        menuPool.Add(deathMenu);
-        debugMenu = new UIMenu("Instant Action", "Debug");
-        menuPool.Add(debugMenu);
-        bustedMenu = new UIMenu("Instant Action", "Choose Respawn (Busted)");
-        menuPool.Add(bustedMenu);
 
-        CreateMainMenu();
+    
 
-        menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
-        menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
-        menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", new List<dynamic> { "Melee", "Pistol", "Shotgun", "SMG", "AR", "LMG", "Sniper", "Heavy" } );
-        menuDebugScreenEffect = new UIMenuListItem("Play Screen Effect", "", new List<dynamic> { "SwitchHUDIn",
-    "SwitchHUDOut",
-    "FocusIn",
-    "FocusOut",
-    "MinigameEndNeutral",
-    "MinigameEndTrevor",
-    "MinigameEndFranklin",
-    "MinigameEndMichael",
-    "MinigameTransitionOut",
-    "MinigameTransitionIn",
-    "SwitchShortNeutralIn",
-    "SwitchShortFranklinIn",
-    "SwitchShortTrevorIn",
-    "SwitchShortMichaelIn",
-    "SwitchOpenMichaelIn",
-    "SwitchOpenFranklinIn",
-    "SwitchOpenTrevorIn",
-    "SwitchHUDMichaelOut",
-    "SwitchHUDFranklinOut",
-    "SwitchHUDTrevorOut",
-    "SwitchShortFranklinMid",
-    "SwitchShortMichaelMid",
-    "SwitchShortTrevorMid",
-    "DeathFailOut",
-    "CamPushInNeutral",
-    "CamPushInFranklin",
-    "CamPushInMichael",
-    "CamPushInTrevor",
-    "SwitchSceneFranklin",
-    "SwitchSceneTrevor",
-    "SwitchSceneMichael",
-    "SwitchSceneNeutral",
-    "MP_Celeb_Win",
-    "MP_Celeb_Win_Out",
-    "MP_Celeb_Lose",
-    "MP_Celeb_Lose_Out",
-    "DeathFailNeutralIn",
-    "DeathFailMPDark",
-    "DeathFailMPIn",
-    "MP_Celeb_Preload_Fade",
-    "PeyoteEndOut",
-    "PeyoteEndIn",
-    "PeyoteIn",
-    "PeyoteOut",
-    "MP_race_crash",
-    "SuccessFranklin",
-    "SuccessTrevor",
-    "SuccessMichael",
-    "DrugsMichaelAliensFightIn",
-    "DrugsMichaelAliensFight",
-    "DrugsMichaelAliensFightOut",
-    "DrugsTrevorClownsFightIn",
-    "DrugsTrevorClownsFight",
-    "DrugsTrevorClownsFightOut",
-    "HeistCelebPass",
-    "HeistCelebPassBW",
-    "HeistCelebEnd",
-    "HeistCelebToast",
-    "MenuMGHeistIn",
-    "MenuMGTournamentIn",
-    "MenuMGSelectionIn",
-    "ChopVision",
-    "DMT_flight_intro",
-    "DMT_flight",
-    "DrugsDrivingIn",
-    "DrugsDrivingOut",
-    "SwitchOpenNeutralFIB5",
-    "HeistLocate",
-    "MP_job_load",
-    "RaceTurbo",
-    "MP_intro_logo",
-    "HeistTripSkipFade",
-    "MenuMGHeistOut",
-    "MP_corona_switch",
-    "MenuMGSelectionTint",
-    "SuccessNeutral",
-    "ExplosionJosh3",
-    "SniperOverlay",
-    "RampageOut",
-    "Rampage",
-    "Dont_tazeme_bro" });
-        menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
-        menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
-        menuDebugHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
-
-        debugMenu.AddItem(menuDebugResetCharacter);
-        debugMenu.AddItem(menuDebugKillPlayer);
-        debugMenu.AddItem(menuDebugRandomWeapon);
-        debugMenu.AddItem(menuDebugScreenEffect);
-        debugMenu.AddItem(menuDebugEnabled);
-        debugMenu.AddItem(menuDebugGiveMoney);
-        debugMenu.AddItem(menuDebugHealthAndArmor);
-
-        menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
-        menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-        menuDeathHospitalRespawn = new UIMenuListItem("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Hospital));
-        menuDeathNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the hospital (standard game logc).");
-        menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-
-        deathMenu.AddItem(menuDeathUndie);
-        deathMenu.AddItem(menuDeathHospitalRespawn);
-        deathMenu.AddItem(menuDeathTakeoverRandomPed);
-
-        menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
-        menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
-        menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));
-        menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-        menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-
-        bustedMenu.AddItem(menuBustedResistArrest);
-        bustedMenu.AddItem(menuBustedBribe);
-        bustedMenu.AddItem(menuBustedSurrender);
-        bustedMenu.AddItem(menuBustedTakeoverRandomPed);
-
-        mainMenu.OnItemSelect += MainMenuSelect;
-        mainMenu.OnListChange += OnListChange;
-        mainMenu.OnCheckboxChange += OnCheckboxChange;
-
-        deathMenu.OnItemSelect += DeathMenuSelect;
-        deathMenu.OnListChange += OnListChange;
-
-        bustedMenu.OnItemSelect += BustedMenuSelect;
-        bustedMenu.OnListChange += OnListChange;
-
-        debugMenu.OnItemSelect += DebugMenuSelect;
-        debugMenu.OnListChange += OnListChange;
-        debugMenu.OnCheckboxChange += OnCheckboxChange;
-
-        ProcessLoop();
-
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
-    }
     private static void CreateMainMenu()
     {
         mainMenu.Clear();
@@ -303,7 +285,7 @@ internal static class Menus
         menuActionSmoking = new UIMenuListItem("Smoking", "Start smoking.", SmokingOptionsList);
 
         actionsMenu.AddItem(menuMainSuicide);
-        actionsMenu.AddItem(menuActionSmoking);
+        //actionsMenu.AddItem(menuActionSmoking);
 
         actionsMenu.OnItemSelect += ActionsMenuSelect;
         actionsMenu.OnListChange += OnListChange;
@@ -375,8 +357,6 @@ internal static class Menus
         }
         else if (sender == debugMenu)
         {
-            if (list == menuDebugScreenEffect)
-                CurrentScreenEffect = list.Collection[index].ToString();
             if (list == menuDebugRandomWeapon)
                 RandomWeaponCategory = list.Index;
         }
@@ -520,10 +500,6 @@ internal static class Menus
         {
             Game.LocalPlayer.Character.GiveCash(5000, Settings.MainCharacterToAlias);
         }
-        if (selectedItem == menuDebugScreenEffect)
-        {
-            NativeFunction.Natives.xB4EDDC19532BFB85();
-        }
         if (selectedItem == menuDebugHealthAndArmor)
         {
             Game.LocalPlayer.Character.Health = 100;
@@ -531,61 +507,7 @@ internal static class Menus
         }
         debugMenu.Visible = false;
     }
-    public static void ProcessLoop()
-    {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    if (Game.IsKeyDown(Settings.MenuKey)) // Our menu on/off switch.
-                    {
-                        if (InstantAction.IsDead)
-                        {
-                            if (!deathMenu.Visible)
-                                ShowDeathMenu();
-                            else
-                                deathMenu.Visible = false;
-                        }
-                        else if (InstantAction.IsBusted)
-                        {
-                            if (!bustedMenu.Visible)
-                                ShowBustedMenu();
-                            else
-                                bustedMenu.Visible = false;
-                        }
-                        else if (optionsMenu.Visible)
-                        {
-                            optionsMenu.Visible = !optionsMenu.Visible;
-                        }
-                        else if (actionsMenu.Visible)
-                        {
-                            actionsMenu.Visible = !actionsMenu.Visible;
-                        }
-                        else
-                        {
-                            if (!mainMenu.Visible)
-                                ShowMainMenu();
-                            else
-                                mainMenu.Visible = false;
-                        }
-                    }
-                    else if (Game.IsKeyDown(Keys.F11)) // Our menu on/off switch.
-                    {
-                        debugMenu.Visible = !debugMenu.Visible;
-                    }
-                    menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse.      
-                    GameFiber.Yield();
-                }
-            }
-            catch (Exception e)
-            {
-                InstantAction.Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
-    }
+   
     public static string GetKeyboardInput()
     {
         NativeFunction.CallByName<bool>("DISPLAY_ONSCREEN_KEYBOARD", true, "FMMC_KEY_TIP8", "", "", "", "", "", 255 + 1);

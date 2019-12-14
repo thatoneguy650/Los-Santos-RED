@@ -10,20 +10,24 @@ using System.Threading.Tasks;
 
 public static class PoliceSpawning
 {
-    private static readonly List<Entity> CreatedEntities = new List<Entity>();
+    private static List<Entity> CreatedEntities;
     private static readonly Random rnd;
    // private static Vehicle NewsChopper;
    // private static List<GTANewsReporter> Reporters = new List<GTANewsReporter>();
    // private static uint K9Interval;
     private static uint RandomCopInterval;
     private static uint CleanupCopInterval;
-    public static bool IsRunning { get; set; } = true;
+    public static bool IsRunning { get; set; }
     static PoliceSpawning()
     {
         rnd = new Random();
     }
     public static void Initialize()
     {
+        CreatedEntities = new List<Entity>();
+        RandomCopInterval = 0;
+        CleanupCopInterval = 0;
+        IsRunning = true;
         MainLoop();
     }
     private static void MainLoop()
@@ -44,19 +48,20 @@ public static class PoliceSpawning
                     //    K9Interval = Game.GameTime;
                     //}
 
-
-                    if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
+                    if(InstantAction.PlayerWantedLevel == 0 || Police.PlayerHasBeenWantedFor >= 15000)
                     {
-                        if (PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)// && Game.LocalPlayer.WantedLevel == 0)
-                            SpawnRandomCop();
-                        RandomCopInterval = Game.GameTime;
-                    }   
-                    else if(Game.GameTime > CleanupCopInterval + 5000)
-                    {
-                        RemoveFarAwayRandomlySpawnedCops();
-                        CleanupCopInterval = Game.GameTime;
+                        if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
+                        {
+                            if (PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)// && Game.LocalPlayer.WantedLevel == 0)
+                                SpawnRandomCop();
+                            RandomCopInterval = Game.GameTime;
+                        }   
+                        else if(Game.GameTime > CleanupCopInterval + 5000)
+                        {
+                            RemoveFarAwayRandomlySpawnedCops();
+                            CleanupCopInterval = Game.GameTime;
+                        }
                     }
-
                     stopwatch.Stop();
                     if (stopwatch.ElapsedMilliseconds >= 16)
                         LocalWriteToLog("PoliceSpawningTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
@@ -261,7 +266,7 @@ public static class PoliceSpawning
         {
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 4, 1, 0, 0);
         }
-        if (_Agency == Agencies.LSSD || _Agency == Agencies.LSPD)
+        if (_Agency == Agencies.LSSD || _Agency == Agencies.LSPD || _Agency == Agencies.BCSO || _Agency == Agencies.LSIAPD)
         {
             if (isMale && rnd.Next(1, 11) <= 4) //40% Chance of Vest
                 NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 9, 2, 0, 2);//Vest male only
@@ -275,7 +280,7 @@ public static class PoliceSpawning
     {
         string CarModel;
         int RandomValue = rnd.Next(1, 20);
-        if (_Agency == Agencies.LSPD)
+        if (_Agency.UsesLSPDVehicles)
         {
             if (RandomValue <= 5)
                 CarModel = "police3";
@@ -288,7 +293,7 @@ public static class PoliceSpawning
             else
                 CarModel = "police";
         }
-        else if (_Agency == Agencies.LSSD)
+        else if (_Agency.UsesLSSDVehicles)
         {
             if (RandomValue <= 10)
                 CarModel = "sheriff2";
@@ -337,6 +342,10 @@ public static class PoliceSpawning
                 CarModel = "fbi";
 
             //CarModel = "policet";
+        }
+        else if (_Agency == Agencies.BCSO)
+        {
+            CarModel = "sheriff2";
         }
         else//fall back to unmarked, goes with everyone
         {

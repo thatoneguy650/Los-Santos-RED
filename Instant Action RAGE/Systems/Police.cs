@@ -13,69 +13,59 @@ internal static class Police
 {
     private static readonly Random rnd;
     private static uint WantedLevelStartTime;
-    private static Vector3 LastWantedCenterPosition = Vector3.Zero;
-    private static int TimeAimedAtPolice = 0;
-    private static bool firedWeapon = false;
-    private static bool aimedAtPolice = false;
-
+    private static Vector3 LastWantedCenterPosition;
+    private static int TimeAimedAtPolice;
+    private static bool firedWeapon;
+    private static bool aimedAtPolice;
     private static uint GameTimeInterval;
     private static uint LOSInterval;
     private static uint GameTimeCheckedLOS;
-
-   // private static GTAVehicle TrackedCar;
-
     private static bool CanReportLastSeen;
     private static uint GameTimeLastGreyedOut;
-
     private static Vector3 PlaceWantedStarted;
     private static Blip LastWantedCenterBlip;
     private static Blip CurrentWantedCenterBlip;
-
     private static uint GameTimeWantedStarted;
     private static uint GameTimeLastWantedEnded;
     public static uint GameTimePoliceStateStart;
     private static uint GameTimeLastSetWanted;
-    private static uint GameTimeLastStartedJacking = 0;
-
+    private static uint GameTimeLastStartedJacking;
     private static bool PrevaimedAtPolice;
-    private static bool PrevPlayerIsJacking = false;
+    private static bool PrevPlayerIsJacking;
     private static int PrevCiviliansKilledByPlayer;
-    private static bool PrevfiredWeapon = false;
-    private static bool PrevPlayerHurtPolice = false;
-    private static bool PrevPlayerKilledPolice = false;
+    private static bool PrevfiredWeapon;
+    private static bool PrevPlayerHurtPolice;
+    private static bool PrevPlayerKilledPolice;
     private static int PrevCopsKilledByPlayer = 0;
     private static bool PrevPlayerStarsGreyedOut;
     private static bool PrevAnyCanRecognizePlayer;
-    private static PoliceState PrevPoliceState = PoliceState.Normal;
-
+    private static PoliceState PrevPoliceState;
     public static List<Blip> CreatedBlips = new List<Blip>();
     public static List<Blip> TempBlips = new List<Blip>();
-    public static bool AnyPoliceCanSeePlayer { get; set; } = false;
-    public static bool AnyPoliceCanRecognizePlayer { get; set; } = false;
-    public static bool AnyPoliceCanRecognizePlayerAfterWanted { get; set; } = false;
-    public static bool AnyPoliceRecentlySeenPlayer { get; set; } = false;
+    public static bool AnyPoliceCanSeePlayer { get; set; }
+    public static bool AnyPoliceCanRecognizePlayer { get; set; }
+    public static bool AnyPoliceCanRecognizePlayerAfterWanted { get; set; }
+    public static bool AnyPoliceRecentlySeenPlayer { get; set; }
     public static PoliceState CurrentPoliceState { get; set; }
-    public static bool PlayerStarsGreyedOut { get; set; } = false;
-    public static bool AnyPoliceSeenPlayerThisWanted { get; set; } = false;
+    public static bool PlayerStarsGreyedOut { get; set; }
+    public static bool AnyPoliceSeenPlayerThisWanted { get; set; }
     public static GTACop PrimaryPursuer { get; set; }
-    public static int CopsKilledByPlayer { get; set; } = 0;
-    public static int CiviliansKilledByPlayer { get; set; } = 0;
-    public static bool PlayerHurtPolice { get; set; } = false;
-    public static bool PlayerKilledPolice { get; set; } = false;
-    public static bool PlayerKilledCivilians { get; set; } = false;
+    public static int CopsKilledByPlayer { get; set; }
+    public static int CiviliansKilledByPlayer { get; set; }
+    public static bool PlayerHurtPolice { get; set; }
+    public static bool PlayerKilledPolice { get; set; }
+    public static bool PlayerKilledCivilians { get; set; }
     public static Vector3 PlacePlayerLastSeen { get; set; }
-    public static bool PlayerArtificiallyShooting { get; set; } = false;
-    public static PoliceState LastPoliceState { get; set; } = PoliceState.Normal;
-    public static bool PlayerIsPersonOfInterest { get; set; } = false;
+    public static bool PlayerArtificiallyShooting { get; set; }
+    public static PoliceState LastPoliceState { get; set; }
+    public static bool PlayerIsPersonOfInterest { get; set; }
     public static bool PlayerIsJacking { get; set; } = false;
-    public static bool PlayerLastSeenInVehicle { get; set; } = false;
-    public static float PlayerLastSeenHeading { get; set; } = 0f;
+    public static bool PlayerLastSeenInVehicle { get; set; }
+    public static float PlayerLastSeenHeading { get; set; }
     public static Vector3 PlayerLastSeenForwardVector { get; set; }
-
-    public static bool IsNightTime { get; set; } = false;
-
+    public static bool IsNightTime { get; set; }
     public static int PreviousWantedLevel { get; set; }
-    public static int ScanningInterval { get; set; } = 5000;
+    public static int ScanningInterval { get; set; }
     public static bool PoliceInSearchMode
     {
         get
@@ -145,8 +135,60 @@ internal static class Police
     }
     public static void Initialize()
     {
-        ScanningInterval = 5000;
+        WantedLevelStartTime = 0;
+        LastWantedCenterPosition = default;
+        TimeAimedAtPolice = 0;
+        firedWeapon = false;
+        aimedAtPolice = false;
+        GameTimeInterval = default;
         LOSInterval = 500;//500//750
+        GameTimeCheckedLOS = 0;
+        CanReportLastSeen = false;
+        GameTimeLastGreyedOut = 0;
+        PlaceWantedStarted = default;
+        LastWantedCenterBlip = default;
+        CurrentWantedCenterBlip = default;
+        GameTimeWantedStarted = 0;
+        GameTimeLastWantedEnded = 0;
+        GameTimePoliceStateStart = 0;
+        GameTimeLastSetWanted = 0;
+        GameTimeLastStartedJacking = 0;
+        PrevaimedAtPolice = false;
+        PrevPlayerIsJacking = false;
+        PrevCiviliansKilledByPlayer = default;
+        PrevfiredWeapon = false;
+        PrevPlayerHurtPolice = false;
+        PrevPlayerKilledPolice = false;
+        PrevCopsKilledByPlayer = 0;
+        PrevPlayerStarsGreyedOut = false;
+        PrevAnyCanRecognizePlayer = false;
+        PrevPoliceState = PoliceState.Normal;
+        CreatedBlips = new List<Blip>();
+        TempBlips = new List<Blip>();
+        AnyPoliceCanSeePlayer = false;
+        AnyPoliceCanRecognizePlayer  = false;
+        AnyPoliceCanRecognizePlayerAfterWanted = false;
+        AnyPoliceRecentlySeenPlayer = false;
+        CurrentPoliceState = PoliceState.Normal;
+        PlayerStarsGreyedOut = false;
+        AnyPoliceSeenPlayerThisWanted = false;
+        PrimaryPursuer = null;
+        CopsKilledByPlayer = 0;
+        CiviliansKilledByPlayer  = 0;
+        PlayerHurtPolice = false;
+        PlayerKilledPolice = false;
+        PlayerKilledCivilians  = false;
+        PlacePlayerLastSeen = default;
+        PlayerArtificiallyShooting = false;
+        LastPoliceState = PoliceState.Normal;
+        PlayerIsPersonOfInterest = false;
+        PlayerIsJacking = false;
+        PlayerLastSeenInVehicle = false;
+        PlayerLastSeenHeading = 0f;
+        PlayerLastSeenForwardVector = default;
+        IsNightTime = false;
+        PreviousWantedLevel = 0;
+        ScanningInterval = 5000;
         MainLoop();
     }
     private static void MainLoop()
@@ -843,8 +885,8 @@ internal static class Police
     {
         IsNightTime = false;
         int HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-
-        if (HourOfDay >= 20 || HourOfDay <= 5)
+        int MinuteOfDay = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES"); 
+        if (HourOfDay >= 20 || (HourOfDay >= 19 && MinuteOfDay >= 30) || HourOfDay <= 5)
             IsNightTime = true;
     }
     public static void ResetPersonOfInterest()
