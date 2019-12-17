@@ -294,6 +294,11 @@ public static class CarStealing
                         Cancel = true;
                         break;
                     }
+                    if(Game.LocalPlayer.Character.IsDead)
+                    {
+                        Cancel = true;
+                        break;
+                    }
 
                     if (!locOpenDoor && ScenePhase > 0.05f && TargetVehicle.Doors[0].IsValid() && !TargetVehicle.Doors[0].IsFullyOpen)
                     {
@@ -305,7 +310,7 @@ public static class CarStealing
                         Cancel = true;
                         break;
                     }
-                    if (Game.LocalPlayer.Character.isConsideredArmed() && Game.IsControlPressed(2, GameControl.Attack))
+                    if (Game.LocalPlayer.Character.IsConsideredArmed() && Game.IsControlPressed(2, GameControl.Attack))
                     {
                         Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                         NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
@@ -319,7 +324,7 @@ public static class CarStealing
                             break;
                         }
                     }
-                    if (Game.LocalPlayer.Character.isConsideredArmed() && Game.IsControlJustPressed(2, GameControl.Aim))
+                    if (Game.LocalPlayer.Character.IsConsideredArmed() && Game.IsControlJustPressed(2, GameControl.Aim))
                     {
                         if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) <= 0.4f)
                         {
@@ -331,6 +336,12 @@ public static class CarStealing
                     }
                 }
 
+
+                if(Game.LocalPlayer.Character.IsDead)
+                {
+                    PlayerBreakingIntoCar = false;
+                    return;
+                }
                 Police.PlayerArtificiallyShooting = false;
 
                 float FinalScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);

@@ -88,7 +88,7 @@ internal static class PedSwapping
                 {
                     AlreadyTakenOver = true;
                     ChangeModel(OriginalModel.Name);
-                    if (!Game.LocalPlayer.Character.isMainCharacter())
+                    if (!Game.LocalPlayer.Character.IsMainCharacter())
                         ReplacePedComponentVariation(Game.LocalPlayer.Character);
                 }
             }
@@ -141,7 +141,7 @@ internal static class PedSwapping
             }
 
 
-            if (!Game.LocalPlayer.Character.isMainCharacter())
+            if (!Game.LocalPlayer.Character.IsMainCharacter())
                 ReplacePedComponentVariation(Game.LocalPlayer.Character);
 
             if (wasInVehicle)

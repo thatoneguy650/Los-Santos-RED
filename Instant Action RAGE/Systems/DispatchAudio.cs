@@ -1475,7 +1475,7 @@ internal static class DispatchAudio
 
         System.Drawing.Color MyColor = PrimaryColor;
 
-        int Index = Extensions.closestColor2(BaseColorList, MyColor);
+        int Index = Extensions.ClosestColor2(BaseColorList, MyColor);
 
         return BaseColorList[Index];
     }

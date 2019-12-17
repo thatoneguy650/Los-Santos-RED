@@ -303,7 +303,7 @@ public static class Zones
         Zone ListResult = ZoneList.Where(x => x.GameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
         if(ListResult == null)
         {
-            if (Game.LocalPlayer.Character.isInLosSantosCity())
+            if (Game.LocalPlayer.Character.IsInLosSantosCity())
                 return UNK_LSCITY;
             else
                 return UNK_LSCOUNTY;
@@ -366,17 +366,6 @@ public class Zone
         ZoneCounty = _ZoneCounty;
         DispatchUnitAudio = _DispatchUnitAudio;
     }
-    //public Zone(string _GameName, string _TextName, string _ScannerValue, County _ZoneCounty, Agency _MainZoneAgency, List<Agency> _SecondaryZoneAgencies, Agency _MainZoneAgencyNonVanilla, List<Agency> _SecondaryZoneAgenciesNonVanilla)
-    //{
-    //    GameName = _GameName;
-    //    TextName = _TextName;
-    //    ScannerValue = _ScannerValue;
-    //    MainZoneAgency = _MainZoneAgency;
-    //    SecondaryZoneAgencies = _SecondaryZoneAgencies;
-    //    ZoneCounty = _ZoneCounty;
-    //    MainZoneAgencyNonVanilla = _MainZoneAgencyNonVanilla;
-    //    SecondaryZoneAgenciesNonVanilla = _SecondaryZoneAgenciesNonVanilla;
-    //}
     public string GameName { get; set; }
     public string TextName { get; set; }
     public County ZoneCounty { get; set; }
@@ -384,8 +373,6 @@ public class Zone
     public string ScannerValue { get; set; }
     public Agency MainZoneAgency { get; set; } = Agencies.LSPD;
     public List<Agency> SecondaryZoneAgencies { get; set; } = new List<Agency>();
-    //public Agency MainZoneAgencyNonVanilla { get; set; } = Agencies.LSPD;
-    //public List<Agency> SecondaryZoneAgenciesNonVanilla { get; set; } = new List<Agency>();
 }
 public enum County
 {

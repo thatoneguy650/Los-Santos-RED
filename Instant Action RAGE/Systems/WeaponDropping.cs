@@ -39,7 +39,7 @@ public static class WeaponDropping
                     if (PrevCountWeapons != WeaponCount)
                         WeaponInventoryChanged(WeaponCount);
 
-                    if (Game.IsKeyDownRightNow(Settings.DropWeaponKey) && !DroppingWeapon && !InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.isConsideredArmed())
+                    if (Game.IsKeyDownRightNow(Settings.DropWeaponKey) && !DroppingWeapon && !InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
                     {
                         DropWeapon();
                     }

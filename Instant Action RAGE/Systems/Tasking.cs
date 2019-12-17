@@ -200,7 +200,7 @@ public static class Tasking
     private static void PoliceTickNormal()
     {
         CurrentPoliceTickRunning = "Normal";
-        foreach (GTACop Cop in PoliceScanning.CopPeds)
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists()))
         {
             if (Cop.isTasked && !Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.RandomSpawnIdle)
             {
@@ -213,7 +213,7 @@ public static class Tasking
         }
         if (Game.GameTime - Police.GameTimePoliceStateStart >= 8000 && Game.GameTime - GameTimeLastResetWeapons >= 10000)//Only reset them every 10 seconds if they need it after 8 seconds of being at normal. Incase you go from normal to deadly real fast.
         {
-            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.SetDeadly || x.SetTazer || x.SetUnarmed))
+            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && (x.SetDeadly || x.SetTazer || x.SetUnarmed)))
             {
                 ResetCopWeapons(Cop);//just in case they get stuck
             }
@@ -223,7 +223,7 @@ public static class Tasking
     private static void PoliceTickUnarmedChase()
     {
         CurrentPoliceTickRunning = "Unarmed Chase";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked && x.CopPed.Exists()))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.isTasked))
         {
             if (Cop.CopPed.IsOnBike || Cop.CopPed.IsInHelicopter)
                 SetUnarmed(Cop);
@@ -261,7 +261,7 @@ public static class Tasking
     private static void PoliceTickArrestedWait()
     {
         CurrentPoliceTickRunning = "Arrested Wait";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked && x.CopPed.Exists())) // Exist/Dead Check
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.isTasked && x.CopPed.Exists())) // Exist/Dead Check
         {
             bool InVehicle = Cop.CopPed.IsInAnyVehicle(false);
             if (InVehicle)
@@ -303,7 +303,7 @@ public static class Tasking
     private static void PoliceTickCautiousChase()
     {
         CurrentPoliceTickRunning = "Cautious Chase";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked && !x.isInVehicle && !x.isInHelicopter && x.CopPed.Exists()))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.isTasked && !x.isInVehicle && !x.isInHelicopter))
         {
             SetCopDeadly(Cop);
             if (!Cop.TaskIsQueued && PoliceScanning.CopPeds.Where(x => x.isTasked || x.TaskIsQueued).Count() <= 4 && Cop.DistanceToPlayer <= 45f)
@@ -325,7 +325,7 @@ public static class Tasking
             }
 
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isTasked && x.TaskType != PoliceTask.Task.NoTask))//foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isTasked && x.SimpleTaskName != "")) NoTask
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && x.isTasked && x.TaskType != PoliceTask.Task.NoTask))//foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isTasked && x.SimpleTaskName != "")) NoTask
         {
             if (!Cop.TaskIsQueued && Game.GameTime - Cop.GameTimeLastTask > 20000 && Cop.RecentlySeenPlayer() && Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress && Cop.DistanceToPlayer > 25f)
             {
@@ -340,7 +340,7 @@ public static class Tasking
             }
 
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked && (x.isInHelicopter || x.isOnBike)))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.isTasked && (x.isInHelicopter || x.isOnBike)))
         {
             SetUnarmed(Cop);
         }
@@ -362,7 +362,7 @@ public static class Tasking
     private static void PoliceTickDeadlyChase()
     {
         CurrentPoliceTickRunning = "Deadly Chase";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isInVehicle))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.isInVehicle))
         {
             SetCopDeadly(Cop);
             if (!InstantAction.HandsAreUp && !InstantAction.BeingArrested && !Cop.TaskIsQueued && Cop.isTasked)
@@ -371,7 +371,7 @@ public static class Tasking
                 AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
             }
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => !x.isTasked && x.isInHelicopter))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.isTasked && x.isInHelicopter))
         {
             if (!InstantAction.HandsAreUp && Game.LocalPlayer.WantedLevel >= 4)
                 SetCopDeadly(Cop);
@@ -380,7 +380,7 @@ public static class Tasking
         }
         if (Settings.IssuePoliceHeavyWeapons)
         {
-            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isInVehicle && x.IssuedHeavyWeapon == null))
+            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && x.isInVehicle && x.IssuedHeavyWeapon == null))
             {
                 Police.IssueCopHeavyWeapon(Cop);
                 break;
@@ -399,7 +399,7 @@ public static class Tasking
     private static void PoliceTickSearchMode()
     {
         CurrentPoliceTickRunning = "Search Mode";
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.DistanceToLastSeen <= 350f || x.DistanceToPlayer <= 250f))//.Where(x => !x.isTasked))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && (x.DistanceToLastSeen <= 350f || x.DistanceToPlayer <= 250f)))//.Where(x => !x.isTasked))
         {
             if (Cop.isInVehicle)
             {

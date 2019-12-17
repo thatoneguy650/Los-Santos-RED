@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 public static class PoliceSpawning
 {
+    private static List<Vehicle> CreatedPoliceVehicles = new List<Vehicle>();
     private static List<Entity> CreatedEntities;
     private static readonly Random rnd;
    // private static Vehicle NewsChopper;
@@ -105,14 +106,16 @@ public static class PoliceSpawning
             if (SpawnLocation == Vector3.Zero)
                 return;
 
-            if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 250f)
+            if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)//250f
                 return;
 
-            if (PoliceScanning.CopPeds.Any(x => x.CopPed.DistanceTo2D(SpawnLocation) <= 500f))
+            if (PoliceScanning.CopPeds.Any(x => x.CopPed.DistanceTo2D(SpawnLocation) <= 350f))//500f
                 return;
 
 
             Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
+            if (ZoneName == Zones.OCEANA)
+                return;
             string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
             Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
 
@@ -120,7 +123,7 @@ public static class PoliceSpawning
             {
                 SpawnCop(Agencies.SAHP, SpawnLocation);
             }
-            else if (ZoneName.MainZoneAgency != null && ZoneName.SecondaryZoneAgencies.Any())
+            else if (ZoneName.MainZoneAgency != null && ZoneName.SecondaryZoneAgencies != null && ZoneName.SecondaryZoneAgencies.Any())
             {
                 int Value = rnd.Next(1, 11);
                 if (Value <= 7)
@@ -128,7 +131,7 @@ public static class PoliceSpawning
                 else
                     SpawnCop(ZoneName.SecondaryZoneAgencies.PickRandom(), SpawnLocation);
             }
-            else if (ZoneName.MainZoneAgency != null && !ZoneName.SecondaryZoneAgencies.Any())
+            else if (ZoneName.MainZoneAgency != null && ZoneName.SecondaryZoneAgencies == null && !ZoneName.SecondaryZoneAgencies.Any())
             {
                 SpawnCop(ZoneName.MainZoneAgency, SpawnLocation);
             }
@@ -171,6 +174,14 @@ public static class PoliceSpawning
                 }
             }
         }
+        foreach(Vehicle PoliceCar in CreatedPoliceVehicles.Where(x => x.Exists() && x.IsEmpty))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
+        {
+            if(PoliceCar.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+            {
+                PoliceCar.Delete();
+            }
+        }
+        CreatedPoliceVehicles.RemoveAll(x => !x.Exists());
     }
     public static void SpawnCop(Agency _Agency, Vector3 SpawnLocation)
     {
@@ -178,13 +189,20 @@ public static class PoliceSpawning
             return;
         if (_Agency == null)
             return;
-        bool isBikeCop = rnd.Next(1, 11) <= 9; //90% chance Bike Cop
-        Ped Cop = SpawnCopPed(_Agency, SpawnLocation, isBikeCop);
+
+        var SpawnCop = SpawnCopPed(_Agency, SpawnLocation);
+        Ped Cop = SpawnCop.Item1;
+        bool isBike = SpawnCop.Item2;
         GameFiber.Yield();
         if (Cop == null)
             return;
         CreatedEntities.Add(Cop);
-        Vehicle CopCar = SpawnCopCruiser(_Agency, SpawnLocation, isBikeCop);
+        Vehicle CopCar;
+        if (isBike)
+            CopCar = SpawnCopMotorcycle(_Agency, SpawnLocation);
+        else
+            CopCar = SpawnCopCruiser(_Agency, SpawnLocation);
+
         GameFiber.Yield();
         if (CopCar == null)
         {
@@ -192,18 +210,18 @@ public static class PoliceSpawning
                 Cop.Delete();
             return;
         }
+        CreatedPoliceVehicles.Add(CopCar);
         CreatedEntities.Add(CopCar);
         Cop.WarpIntoVehicle(CopCar, -1);
         Cop.IsPersistent = true;
         CopCar.IsPersistent = true;
         Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
-        //Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections);
         GTACop MyNewCop = new GTACop(Cop, false, Cop.Health, _Agency);
         Police.IssueCopPistol(MyNewCop);
         MyNewCop.WasRandomSpawn = true;
         MyNewCop.WasMarkedNonPersistent = true;
         MyNewCop.WasRandomSpawnDriver = true;
-        MyNewCop.IsBikeCop = isBikeCop;
+        MyNewCop.IsBikeCop = isBike;
 
         if (Settings.SpawnedRandomPoliceHaveBlip && Cop.Exists())
         {
@@ -217,9 +235,10 @@ public static class PoliceSpawning
         GameFiber.Yield();
 
         bool AddPartner = rnd.Next(1, 11) <= 5;
-        if (AddPartner && !isBikeCop)
+        if (AddPartner && !isBike)
         {
-            Ped PartnerCop = SpawnCopPed(_Agency, SpawnLocation, false);
+            var PartnerSpawn = SpawnCopPed(_Agency, SpawnLocation);
+            Ped PartnerCop = PartnerSpawn.Item1;
             GameFiber.Yield();
             if (PartnerCop == null)
                 return;
@@ -238,26 +257,28 @@ public static class PoliceSpawning
             MyNewPartnerCop.WasMarkedNonPersistent = true;
             PoliceScanning.CopPeds.Add(MyNewPartnerCop);
         }
-
-        //LocalWriteToLog("SpawnCop", string.Format("CopSpawned: Handled {0},Agency{1},AddedPartner{2}", Cop.Handle, _Agency.Initials, AddPartner));
     }
-    public static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBikeCop)
+    public static (Ped,bool) SpawnCopPed(Agency _Agency,Vector3 SpawnLocation)
     {
         bool isMale = true;
+        bool isBike = false;
         if (_Agency == null)
-            return null;
+            return (null,false);
         if (_Agency.CopModels.Any(x => !x.isMale))
             isMale = rnd.Next(1, 11) <= 7; //70% chance Male
+
+        if (_Agency == Agencies.SAHP)
+            isBike = rnd.Next(1, 11) <= 5; //50% bike cop for SAHP
 
         Agency.ModelInformation MyInfo = _Agency.CopModels.Where(x => x.isMale == isMale && x.UseForRandomSpawn).PickRandom();
         Vector3 SafeSpawnLocation = new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 10f);
         Ped Cop = new Ped(MyInfo.ModelName, SafeSpawnLocation, 0f);
         if (!Cop.Exists())
-            return null;
+            return (null, false);
 
         NativeFunction.CallByName<bool>("SET_PED_AS_COP", Cop, true);
         Cop.RandomizeVariation();
-        if (IsBikeCop)
+        if (isBike)
         {
             Cop.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 4, 0, 0, 0);
@@ -274,85 +295,15 @@ public static class PoliceSpawning
                 NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", Cop, 1, 0, 0, 2);//Sunglasses
         }
 
-        return Cop;
+        return (Cop,isBike);
     }
-    public static Vehicle SpawnCopCruiser(Agency _Agency, Vector3 SpawnLocation, bool IsBikeCop)
+    public static Vehicle SpawnCopCruiser(Agency _Agency, Vector3 SpawnLocation)
     {
-        string CarModel;
-        int RandomValue = rnd.Next(1, 20);
-        if (_Agency.UsesLSPDVehicles)
-        {
-            if (RandomValue <= 5)
-                CarModel = "police3";
-            else if (RandomValue <= 10)
-                CarModel = "police2";
-            else if (RandomValue <= 12)
-                CarModel = "police4";
-            else if (RandomValue <= 15)
-                CarModel = "fbi2";
-            else
-                CarModel = "police";
-        }
-        else if (_Agency.UsesLSSDVehicles)
-        {
-            if (RandomValue <= 10)
-                CarModel = "sheriff2";
-            else
-                CarModel = "sheriff";
-        }
-        else if (_Agency == Agencies.DOA)
-        {
-            CarModel = "police4";
-        }
-        else if (_Agency == Agencies.SAPR)
-        {
-            CarModel = "pranger";
-        }
-        else if (_Agency == Agencies.FIB)
-        {
-            if (RandomValue <= 10)
-                CarModel = "fbi";
-            else
-                CarModel = "fbi2";
-        }
-        else if (_Agency == Agencies.IAA)
-        {
-            CarModel = "police4";
-        }
-        else if (_Agency == Agencies.SAHP)
-        {
-            if (IsBikeCop)
-                CarModel = "policeb";
-            else
-                CarModel = "police4";
-        }
-        else if (_Agency == Agencies.PRISEC || _Agency == Agencies.LSPA)
-        {
-            CarModel = "police4";
-        }
-        else if (_Agency == Agencies.SASPA)
-        {
-            if (RandomValue <= 6)
-                CarModel = "police4";
-            else if (RandomValue <= 16)
-                CarModel = "policet";
-            else if (RandomValue <= 18)
-                CarModel = "fbi2";
-            else
-                CarModel = "fbi";
-
-            //CarModel = "policet";
-        }
-        else if (_Agency == Agencies.BCSO)
-        {
-            CarModel = "sheriff2";
-        }
-        else//fall back to unmarked, goes with everyone
-        {
-            CarModel = "police4";
-        }
-
-        Vehicle CopCar = new Vehicle(CarModel, SpawnLocation, 0f);
+        string ModelName = "police4";
+        Agency.VehicleInformation MyCar = _Agency.GetRandomVehicle(false);
+        if (MyCar != null)
+            ModelName = MyCar.ModelName;
+        Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
         GameFiber.Yield();
         if(CopCar.Exists())
         {
@@ -364,6 +315,23 @@ public static class PoliceSpawning
             return null;
         }
         
+    }
+    public static Vehicle SpawnCopMotorcycle(Agency _Agency, Vector3 SpawnLocation)
+    {  
+        string ModelName = "policeb";
+        Agency.VehicleInformation MyVehicle = _Agency.GetRandomVehicle(true);
+        if (MyVehicle != null)
+            ModelName = MyVehicle.ModelName;
+        Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
+        GameFiber.Yield();
+        if (CopCar.Exists())
+        {
+            return CopCar;
+        }
+        else
+        {
+            return null;
+        }
     }
     public static void UpgradeCruiser(Vehicle CopCruiser)
     {

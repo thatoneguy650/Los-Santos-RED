@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 public static class InstantAction
 {
-    private static readonly Random rnd;
+    public static readonly Random rnd;
     private static Police.PoliceState HandsUpPreviousPoliceState;
     private static bool PrevPlayerIsGettingIntoVehicle;
     private static bool PrevPlayerInVehicle;
@@ -208,7 +208,7 @@ public static class InstantAction
         }
         PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
         PlayerWantedLevel = Game.LocalPlayer.WantedLevel;
-        PlayerIsConsideredArmed = Game.LocalPlayer.Character.isConsideredArmed();
+        PlayerIsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
         PlayerAimingInVehicle = PlayerInVehicle && Game.LocalPlayer.IsFreeAiming;
         WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
         if (PlayerCurrentWeapon != null)

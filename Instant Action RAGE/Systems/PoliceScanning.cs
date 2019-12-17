@@ -53,7 +53,7 @@ public static class PoliceScanning
         Ped[] Pedestrians = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250
         foreach (Ped Pedestrian in Pedestrians.Where(s => s.Exists() && !s.IsDead && s.IsVisible))
         {
-            if(Pedestrian.isPoliceArmy())
+            if(Pedestrian.IsPoliceArmy())
             {
                 if (!CopPeds.Any(x => x.CopPed == Pedestrian))
                 {

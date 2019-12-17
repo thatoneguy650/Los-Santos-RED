@@ -450,7 +450,7 @@ public static class Smoking
     }
     private static SmokingAnimation GetSmokingAnimationForPed(Ped MyPed)
     {
-        if (MyPed.isMainCharacter())
+        if (MyPed.IsMainCharacter())
             return StandardCigarettePlayerZero;
         else if (MyPed.IsMale)
             return StandardCigaretteMale;

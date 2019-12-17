@@ -149,7 +149,7 @@ public class GTAVehicle
 
         if (IsStolen && WillBeReportedStolen && PreviousOwner != null && PreviousOwner.Handle != Game.LocalPlayer.Character.Handle)
         {
-            if (PreviousOwner.isPoliceArmy())
+            if (PreviousOwner.IsPoliceArmy())
             {
                 Debugging.WriteToLog("StolenVehicles", "Previous Owner is Cop reported immediately");
                 WillBeReportedStolen = true;

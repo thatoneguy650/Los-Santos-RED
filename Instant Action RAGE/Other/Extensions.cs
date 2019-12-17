@@ -23,7 +23,7 @@ namespace ExtensionsMethods
                     return false;
             }
         //Pedestrian
-        public static bool isPoliceArmy(this Ped myPed)
+        public static bool IsPoliceArmy(this Ped myPed)
         {
             string ModelName = myPed.Model.Name.ToLower();
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
@@ -44,7 +44,7 @@ namespace ExtensionsMethods
             else
                 return false;
         }
-        public static bool isPolice(this Ped myPed)
+        public static bool IsPolice(this Ped myPed)
         {
             string ModelName = myPed.Model.Name.ToLower();
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
@@ -57,7 +57,7 @@ namespace ExtensionsMethods
                 return false;
             }
         }
-        public static bool isArmy(this Ped myPed)
+        public static bool IsArmy(this Ped myPed)
         {
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
             if (PedType == 29)
@@ -69,7 +69,7 @@ namespace ExtensionsMethods
                 return false;
             }
         }
-        public static bool isMainCharacter(this Ped myPed)
+        public static bool IsMainCharacter(this Ped myPed)
         {
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
             if (PedType == 0 || PedType == 1 || PedType == 2)
@@ -81,7 +81,7 @@ namespace ExtensionsMethods
                 return false;
             }
         }
-        public static bool isConsideredArmed(this Ped myPed)
+        public static bool IsConsideredArmed(this Ped myPed)
         {
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.IsFreeAiming)
                 return false;
@@ -108,14 +108,14 @@ namespace ExtensionsMethods
                 return false;
             }
         }
-        public static bool isInLosSantosCity(this Ped myPed)
+        public static bool IsInLosSantosCity(this Ped myPed)
         {
             if (Game.LocalPlayer.Character.Position.Y <= 0f && Game.LocalPlayer.Character.Position.X <= 1500)
                 return true;
             else
                 return false;
         }  
-        public static bool inSameCar(this Ped myPed, Ped PedToCompare)
+        public static bool InSameCar(this Ped myPed, Ped PedToCompare)
         {
             bool ImInVehicle = myPed.IsInAnyVehicle(false);
             bool YourInVehicle = PedToCompare.IsInAnyVehicle(false);
@@ -129,7 +129,7 @@ namespace ExtensionsMethods
             else
                 return false;
         }
-        public static bool isBelowWorld(this Ped myPed)
+        public static bool IsBelowWorld(this Ped myPed)
         {
             if (myPed.Position.Z <= -50)
                 return true;
@@ -138,7 +138,7 @@ namespace ExtensionsMethods
         }
         public static bool CanTakeoverPed(this Ped myPed)
         {
-            if (myPed.Exists() && myPed != Game.LocalPlayer.Character && myPed.IsAlive && myPed.IsHuman && !myPed.isPoliceArmy() && !myPed.inSameCar(Game.LocalPlayer.Character) && myPed.IsNormalPed() && !myPed.isBelowWorld())
+            if (myPed.Exists() && myPed != Game.LocalPlayer.Character && myPed.IsAlive && myPed.IsHuman && !myPed.IsPoliceArmy() && !myPed.InSameCar(Game.LocalPlayer.Character) && myPed.IsNormalPed() && !myPed.IsBelowWorld())
                 return true;
             else
                 return false;
@@ -273,7 +273,7 @@ namespace ExtensionsMethods
         {
             return value >= minimum && value <= maximum;
         }
-        public static float getDotVectorResult(Ped source, Ped target)
+        public static float GetDotVectorResult(Ped source, Ped target)
         {
             if (source.Exists() && target.Exists())
             {
@@ -282,7 +282,7 @@ namespace ExtensionsMethods
             }
             else return -1.0f;
         }
-        public static float getDotVectorResult(Entity source, Entity target)
+        public static float GetDotVectorResult(Entity source, Entity target)
         {
             if (source.Exists() && target.Exists())
             {
@@ -291,7 +291,7 @@ namespace ExtensionsMethods
             }
             else return -1.0f;
         }
-        public static float getDotVectorResult(Vehicle source, Vehicle target)
+        public static float GetDotVectorResult(Vehicle source, Vehicle target)
         {
             if (source.Exists() && target.Exists())
             {
@@ -302,7 +302,7 @@ namespace ExtensionsMethods
         }
         public static bool PlayerIsInFront(this Ped myPed)
         {
-            float Result = getDotVectorResult(myPed, Game.LocalPlayer.Character);
+            float Result = GetDotVectorResult(myPed, Game.LocalPlayer.Character);
             if (Result > 0)
                 return true;
             else
@@ -311,7 +311,7 @@ namespace ExtensionsMethods
         }
         public static bool IsInFront(this Entity Target,Entity Source)
         {
-            float Result = getDotVectorResult(Target, Source);
+            float Result = GetDotVectorResult(Target, Source);
             if (Result > 0)
                 return true;
             else
@@ -320,7 +320,7 @@ namespace ExtensionsMethods
         }
         public static bool PlayerVehicleIsBehind(this Vehicle myVehicle)
         {
-            float Result = getDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, myVehicle);
+            float Result = GetDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, myVehicle);
             if (Result > 0)
                 return true;
             else
@@ -372,7 +372,7 @@ namespace ExtensionsMethods
         public static T PickRandom<T>(this IEnumerable<T> source)
         {
             if (source.Count() == 0)
-                return default(T);
+                return default;
             else
                 return source.PickRandom(1).Single();
         }
@@ -387,7 +387,7 @@ namespace ExtensionsMethods
             return source.OrderBy(x => Guid.NewGuid());
     }
         //Color Picking
-        public static int closestColor1(List<Color> colors, Color target)
+        public static int ClosestColor1(List<Color> colors, Color target)
         {
             var hue1 = target.GetHue();
             var diffs = colors.Select(n => getHueDistance(n.GetHue(), hue1));
@@ -396,7 +396,7 @@ namespace ExtensionsMethods
         }
 
         // closed match in RGB space
-        public static int closestColor2(List<Color> colors, Color target)
+        public static int ClosestColor2(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
             return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
@@ -450,7 +450,7 @@ namespace ExtensionsMethods
         }
         public static bool PlayerVehicleIsInFront(this Vehicle myvehicle)
         {
-            float Result = getDotVectorResult(myvehicle, Game.LocalPlayer.Character.CurrentVehicle);
+            float Result = GetDotVectorResult(myvehicle, Game.LocalPlayer.Character.CurrentVehicle);
             if (Result > 0)
                 return true;
             else
@@ -459,7 +459,7 @@ namespace ExtensionsMethods
         }
         public static bool InFrontOf(this Vehicle Source, Vehicle Target)
         {
-            float Result = getDotVectorResult(Target, Source);
+            float Result = GetDotVectorResult(Target, Source);
             if (Result > 0)
                 return true;
             else
