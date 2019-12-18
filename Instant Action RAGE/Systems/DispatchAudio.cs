@@ -65,6 +65,7 @@ internal static class DispatchAudio
         ReportSuspectSpotted = 20,
         ReportIncreasedWanted = 21,
         ReportRunningRed = 22,
+        ReportLocalSuspectSpotted = 23,
     }
     public enum NearType
     {
@@ -94,7 +95,7 @@ internal static class DispatchAudio
         ColorLookups = new List<ColorLookup>();
         DamagedScannerAliases = new List<string>();
         CancelAudio = false;
-        IsPlayingAudio = false; ;
+        IsPlayingAudio = false;
         SetupLists();
         MainLoop();
     }
@@ -430,6 +431,8 @@ internal static class DispatchAudio
                         ReportIncreasedWanted(Item.ResultsInLethalForce);
                     else if(Item.Type == ReportDispatch.ReportRunningRed)
                         ReportRunningRed(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportLocalSuspectSpotted)
+                        ReportLocalSuspectSpotted();
                     //else
                     //    //ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
@@ -443,7 +446,7 @@ internal static class DispatchAudio
     private static void ReportGenericStart(ref List<string> myList)
     {
         myList.Add(AudioBeeps.AudioStart());
-        myList.Add(new List<string>() { attention_all_units_gen.Attentionallunits.FileName, attention_all_units_gen.Attentionallunits1.FileName, attention_all_units_gen.Attentionallunits3.FileName, attention_all_units_gen.Attentionallunits3.FileName }.PickRandom());
+        //myList.Add(new List<string>() { attention_all_units_gen.Attentionallunits.FileName, attention_all_units_gen.Attentionallunits1.FileName, attention_all_units_gen.Attentionallunits3.FileName, attention_all_units_gen.Attentionallunits3.FileName }.PickRandom());
         myList.Add(we_have.OfficersReport());
     }
     private static void ReportGenericTrafficStart(ref List<string> ScannerList)
@@ -629,6 +632,11 @@ internal static class DispatchAudio
         {
             Subtitles += " ~s~in a possible stolen vehicle~s~";
             AddStolenVehicle(ref ScannerList);
+        }
+        else
+        {
+            //Subtitles += " ~s~in a ~s~";
+           // ScannerList.Add(new List<string>() { conjunctives.INA01.FileName, conjunctives.INA02.FileName, conjunctives.INA03.FileName }.PickRandom());
         }
 
         AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles);
@@ -1183,7 +1191,8 @@ internal static class DispatchAudio
             AudioBeeps.AudioStart(),
             attention_all_units_gen.Attentionallunits.FileName
         };
-        List<string> PossibleVariations = new List<string>() { assistance_required.Assistanceneeded.FileName, assistance_required.Assistancerequired.FileName, assistance_required.Backupneeded.FileName, assistance_required.Backuprequired.FileName, assistance_required.Officersneeded.FileName, assistance_required.Officersrequired.FileName };
+        List<string> PossibleVariations = new List<string>() { assistance_required.Assistanceneeded.FileName, assistance_required.Assistancerequired.FileName, assistance_required.Backupneeded.FileName, assistance_required.Backuprequired.FileName, assistance_required.Officersneeded.FileName, assistance_required.Officersrequired.FileName,
+                                                                officer_requests_backup.Officersrequestingbackup.FileName,officer_requests_backup.Unitsrequirebackup.FileName,officer_requests_backup.Unitsrequireimmediateassistance.FileName,officer_requests_backup.Unitsrequestingbackup.FileName,officer_requests_backup.Officerneedsimmediateassistance.FileName };
         ScannerList.Add(PossibleVariations.PickRandom());
         string Subtitles = "Attention all units, ~r~Assistance Needed~s~";
         AddZone(ref ScannerList, ref Subtitles);
@@ -1338,6 +1347,15 @@ internal static class DispatchAudio
             stolenVehicle.WasReportedStolen = true;
             if (stolenVehicle.CarPlate.PlateNumber == stolenVehicle.OriginalLicensePlate.PlateNumber) //if you changed it between when it was reported, dont count it
                 stolenVehicle.CarPlate.IsWanted = true;
+
+
+            foreach(GTALicensePlate Plate in LicensePlateChanging.SpareLicensePlates)
+            {
+                if(Plate.PlateNumber == stolenVehicle.OriginalLicensePlate.PlateNumber)
+                {
+                    Plate.IsWanted = true;
+                }
+            }
             LocalWriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", stolenVehicle.VehicleEnt.Handle));
 
         }, "PlayDispatchQueue");
@@ -1415,6 +1433,19 @@ internal static class DispatchAudio
         ReportGenericEnd(ScannerList, NearType.Zone, ref Subtitles);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
+    public static void ReportLocalSuspectSpotted()
+    {
+        List<string> ScannerList = new List<string>
+        {
+            AudioBeeps.AudioStart()
+        };
+        string Subtitles = "";
+        //List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };
+        //List<string> Possibilites = new List<string>() { suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName };
+        //ScannerList.Add(Possibilites.PickRandom());
+        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet, ref Subtitles);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
     public static void PopQuizHotShot()
     {
         List<string> ScannerList = new List<string>
@@ -1423,8 +1454,6 @@ internal static class DispatchAudio
         };
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, "Pop quiz hot shot"));
     }
-
-
 
     //Helper
     public static void AddStolenVehicle(ref List<string> ScannerList)
@@ -1663,7 +1692,7 @@ internal static class DispatchAudio
     }
     private static void AddLethalForceAuthorized(ref List<string> ScannerList)
     {
-        int Num = rnd.Next(1, 5);
+        int Num = rnd.Next(1, 6);
         if (Num == 1)
         {
             ScannerList.Add(ScannerAudio.lethal_force.Useofdeadlyforceauthorized.FileName);
@@ -1735,8 +1764,8 @@ internal static class DispatchAudio
         if (IncludeLicensePlate)
         {
             ScannerList.Add(suspect_license_plate.SuspectsLicensePlate.FileName);
-            Subtitles += "~s~. Suspects License Plate: ~u~" + VehicleDescription.VehicleEnt.LicensePlate.ToUpper() + "~s~";
-            foreach (char c in VehicleDescription.VehicleEnt.LicensePlate)
+            Subtitles += "~s~. Suspects License Plate: ~u~" + VehicleDescription.OriginalLicensePlate.PlateNumber.ToUpper() + "~s~";//VehicleDescription.VehicleEnt.LicensePlate.ToUpper() + "~s~";
+            foreach (char c in VehicleDescription.OriginalLicensePlate.PlateNumber)
             {
                 string DispatchFileName = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).PickRandom().ScannerFile;
                 ScannerList.Add(DispatchFileName);
@@ -1858,7 +1887,8 @@ internal static class DispatchAudio
     {
         if (Speed >= 70f)
         {
-            //ScannerList.Add(suspect_is.CriminalIs.FileName);
+            ScannerList.Add(suspect_last_seen.TargetLastReported.FileName);
+            Subtitles += " ~s~target last reported~s~";
             if (Speed >= 70f && Speed < 80f)
             {
                 ScannerList.Add(doing_speed.Doing70mph.FileName);

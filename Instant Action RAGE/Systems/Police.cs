@@ -1024,6 +1024,10 @@ internal static class Police
                 }
             }
             CanReportLastSeen = false;
+            if (AnyPoliceSeenPlayerThisWanted && AnyPoliceRecentlySeenPlayer)// && Game.GameTime - GameTimeLastGreyedOut >= 7000)
+            {
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLocalSuspectSpotted, 10, false));
+            }
         }
         PrevPlayerStarsGreyedOut = PlayerStarsGreyedOut;
     }

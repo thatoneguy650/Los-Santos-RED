@@ -393,7 +393,7 @@ public static class CarStealing
                     Driver.Tasks.ClearImmediately();
                     Driver.IsRagdoll = false;
                     Driver.BlockPermanentEvents = false;
-                    if (rnd.Next(1, 11) >= 11)
+                    if (rnd.Next(1, 11) >= 10)
                     {
                         GiveGunAndAttackPlayer(Driver);
                     }
@@ -476,7 +476,7 @@ public static class CarStealing
                 VictimAnimation = "truck_victim_ds_a";
             }
         }
-        else if (DriverDistanceToGround > 1.75f)
+        else if (DriverDistanceToGround > 2f)//1.75f
         {
             if (MyGun.IsTwoHanded)
             {
