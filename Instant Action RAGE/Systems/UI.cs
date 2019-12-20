@@ -82,6 +82,10 @@ public static class UI
         string ZoneString = "";
         if (PlayerLocation.PlayerCurrentZone != null)
             ZoneString = GetZoneDisplay();
+
+        //if (InstantAction.PlayerWantedLevel > 0 && PoliceScanning.CopPeds.Any(x => x.isInHelicopter && x.RecentlySeenPlayer()))
+        //    ZoneString += " Heli";
+
         Text(ZoneString, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
 
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -103,7 +107,6 @@ public static class UI
 
             if(TrafficViolations.ViolatingTrafficLaws)
                 SpeedDisplay += " !";
-
 
             if(TrafficViolations.PlayerIsRunningRedLight)
                 SpeedDisplay += " Running Red";
@@ -203,7 +206,7 @@ public static class UI
         //Game.Console.Print("Set dropshadow");
         NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
         //Game.Console.Print("Set edge");
-        NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 205);
+        NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 350);//NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 205);
         //Game.Console.Print("Set leading");
         NativeFunction.Natives.SetTextLeading(1);
         //Game.Console.Print("Set entry type");

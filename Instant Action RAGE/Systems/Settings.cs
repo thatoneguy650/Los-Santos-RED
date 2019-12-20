@@ -98,6 +98,7 @@ static class Settings
 
     public static bool DebugShowUI = false;
     public static bool DispatchWorks = false;
+    public static float LastWantedCenterSize = 400f;
     public static string MainCharacterToAliasModelName
     {
         get

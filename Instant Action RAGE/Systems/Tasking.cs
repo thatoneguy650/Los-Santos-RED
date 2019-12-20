@@ -125,6 +125,8 @@ public static class Tasking
                     TaskGoToWantedCenter(_policeTask.CopToAssign);
                 else if (_policeTask.TaskToAssign == PoliceTask.Task.RandomSpawnIdle)
                     RandomSpawnIdle(_policeTask.CopToAssign);
+                else if(_policeTask.TaskToAssign == PoliceTask.Task.HeliChase)
+                    TaskHeliChase(_policeTask.CopToAssign);
 
                 _policeTask.CopToAssign.TaskIsQueued = false;
                 CopsToTask.RemoveAt(0);
@@ -144,32 +146,44 @@ public static class Tasking
     }
     private static void PoliceVehicleTick()
     {
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isInVehicle && !x.isInHelicopter))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.isInVehicle && !x.isTasked))
         {
-            if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
+            if (!Cop.isInHelicopter)
             {
-                NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 8, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 16, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 512, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 262144, true);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.CopPed, 8f);
-            }
-            else
-            {
-                NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.CopPed, 8f);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 32, true);
-            }
+                if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
+                {
+                    NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 8, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 16, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 512, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 262144, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.CopPed, 8f);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.CopPed, 8f);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 32, true);
+                }
 
-            if (PlayerLocation.PlayerIsOffroad && Cop.DistanceToPlayer <= 200f)
-            {
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4194304, true);
+                if (PlayerLocation.PlayerIsOffroad && Cop.DistanceToPlayer <= 200f)
+                {
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4194304, true);
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4194304, false);
+                }
             }
             else
             {
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.CopPed, 4194304, false);
+                if(!Cop.TaskIsQueued && Cop.CopPed.IsDriver() && Cop.RecentlySeenPlayer())
+                {
+                    Cop.TaskIsQueued = true;
+                    AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.HeliChase));
+                }
+                
             }
         }
     }
@@ -834,15 +848,23 @@ public static class Tasking
             return;
         Cop.TaskType = PoliceTask.Task.GoToWantedCenter;
         Cop.CopPed.BlockPermanentEvents = false;
-        //Cop.SimpleTaskName = "GoToWantedCenter";
         Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
         if (Cop.isInVehicle)
             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.CopPed, Cop.CopPed.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 70f, 4 | 16 | 32 | 262144, 35f);
         else
             NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.CopPed, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 500f, -1, 0f, 2f);
 
-        //Cop.CopPed.KeepTasks = true;
         LocalWriteToLog("TaskGoToWantedCenter", string.Format("Started GoToWantedCenter: {0}", Cop.CopPed.Handle));
+    }
+    private static void TaskHeliChase(GTACop Cop)
+    {
+        if (!Cop.CopPed.Exists())
+            return;
+        Cop.TaskType = PoliceTask.Task.HeliChase;
+        Cop.CopPed.BlockPermanentEvents = true;
+        NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.CopPed, Game.LocalPlayer.Character, 25f, 25f, 40f);
+
+        LocalWriteToLog("TaskGoToWantedCenter", string.Format("Started HeliChase: {0}", Cop.CopPed.Handle));
     }
     public static void TaskK9(GTACop Cop)
     {

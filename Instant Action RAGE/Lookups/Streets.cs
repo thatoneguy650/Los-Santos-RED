@@ -40,6 +40,7 @@ public static class Streets
             new Street("Duluoz Ave", 35f, ScannerAudio.streets.DelouasAve.FileName),
             new Street("Procopio Dr", 35f, ScannerAudio.streets.ProcopioDrive.FileName),
             new Street("Cascabel Ave", 30f),
+            new Street("Peaceful St", 30f,ScannerAudio.streets.PeacefulStreet.FileName),
             new Street("Procopio Promenade", 25f, ScannerAudio.streets.ProcopioPromenade.FileName),
             new Street("Pyrite Ave", 30f, ScannerAudio.streets.PyriteAve.FileName),
             new Street("Fort Zancudo Approach Rd", 25f, ScannerAudio.streets.FortZancudoApproachRoad.FileName),

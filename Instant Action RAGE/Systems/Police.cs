@@ -797,7 +797,7 @@ internal static class Police
             SetWantedLevel(3, "Cops Reacquired after losing them");
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3, false));
         }
-        if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= 250f)
+        if (PlayerIsPersonOfInterest && InstantAction.PlayerWantedLevel == 0 && AnyPoliceCanSeePlayer && PlayerHasBeenNotWantedFor >= 5000 && PlayerHasBeenNotWantedFor <= 120000 && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= Settings.LastWantedCenterSize)
         {
             SetWantedLevel(3, "Cops Reacquired after losing them in the same area");
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3, false));
@@ -934,11 +934,18 @@ internal static class Police
         }
         if (PreviousWantedLevel == 0 && Game.LocalPlayer.WantedLevel > 0)
         {
-            if (Game.LocalPlayer.WantedLevel == 1 && !RecentlySetWanted && !AnyPoliceRecentlySeenPlayer && !World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Any(x => x.IsAlive))
+            if (Game.LocalPlayer.WantedLevel <= 2)
             {
-                SetWantedLevel(0,"Reset a fake wanted level as there is nobody within 25 meters and no police have recently seen you");
-                AddUpdateLastWantedBlip(Vector3.Zero);
-                return;
+                if (!RecentlySetWanted && !AnyPoliceRecentlySeenPlayer && !World.GetEntities(Game.LocalPlayer.Character.Position, 25f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Any(x => x.IsAlive))
+                {
+                    SetWantedLevel(0, "Reset a fake wanted level as there is nobody within 25 meters and no police have recently seen you");
+                    AddUpdateLastWantedBlip(Vector3.Zero);
+                    return;
+                }
+                else
+                {
+                    AddDispatchToUnknownWanted();
+                }
             }
 
             GameTimeWantedStarted = Game.GameTime;
@@ -956,6 +963,15 @@ internal static class Police
         WantedLevelStartTime = Game.GameTime;
         LocalWriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}", Game.LocalPlayer.WantedLevel));
         PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
+    }
+    public static void AddDispatchToUnknownWanted()//temp public
+    {
+        if (InstantAction.PlayerRecentlyShot)
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelShotsFired, 20, false));
+        else if (CarStealing.PlayerBreakingIntoCar)
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelGrandTheftAuto, 20, false));
+        else
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCriminalActivity, 20, false));
     }
     private static void CopsKilledChanged()
     {
@@ -1024,9 +1040,13 @@ internal static class Police
                 }
             }
             CanReportLastSeen = false;
-            if (AnyPoliceSeenPlayerThisWanted && AnyPoliceRecentlySeenPlayer)// && Game.GameTime - GameTimeLastGreyedOut >= 7000)
+            if (AnyPoliceSeenPlayerThisWanted && (AnyPoliceCanSeePlayer || PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 65f)))// && Game.GameTime - GameTimeLastGreyedOut >= 7000)
             {
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLocalSuspectSpotted, 10, false));
+                LocalWriteToLog("ValueChecker", "Should have player spotted");
+                //if (InstantAction.rnd.Next(1, 6) <= 4)//80% chance
+                //{
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLocalSuspectSpotted, 10, false));
+                //}
             }
         }
         PrevPlayerStarsGreyedOut = PlayerStarsGreyedOut;
@@ -1070,7 +1090,7 @@ internal static class Police
         }
         if (!LastWantedCenterBlip.Exists())
         {
-            LastWantedCenterBlip = new Blip(LastWantedCenterPosition, 250f)
+            LastWantedCenterBlip = new Blip(LastWantedCenterPosition, Settings.LastWantedCenterSize)
             {
                 Name = "Last Wanted Center Position",
                 Color = Color.Yellow,

@@ -16,7 +16,7 @@ public static class PoliceScanning
     {
         get
         {
-            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(30000)).Select(x => x.AssignedAgency.ColorPrefix + x.AssignedAgency.Initials).Distinct().ToArray());
+            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(30000)).Select(x => x.AssignedAgency.ColorPrefix + x.AssignedAgency.Initials + (x.isInHelicopter ? "-ASD" : "")).Distinct().ToArray());
         }
     }
     public static void Initialize()

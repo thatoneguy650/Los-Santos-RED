@@ -543,7 +543,7 @@ public static class Debugging
 
         //WriteToLog("WantedLevel2", string.Format("LastWantedCenterPosition: {0}", Police.LastWantedCenterPosition));
 
-        
+
 
 
 
@@ -554,7 +554,7 @@ public static class Debugging
         Vehicle myCar = VehicleDescription.VehicleEnt;
 
 
-        DispatchAudio.ReportFelonySpeeding(VehicleDescription, 50f);
+
 
         //if (myCar.Health <= 500 || myCar.EngineHealth <= 300)
         Debugging.WriteToLog("RoadWorthyness", string.Format("CurrentCar: Health: {0},Engine Health {1}", myCar.Health, myCar.EngineHealth));
@@ -680,6 +680,9 @@ public static class Debugging
     {
         try
         {
+
+
+            Police.AddDispatchToUnknownWanted();
 
             //string report =  WeatherReporting.GetAudioFromWeatherType(WeatherReporting.WeatherTypeHash.Clearing);
             bool JustTaken = PedSwapping.JustTakenOver(5000);

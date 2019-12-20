@@ -66,6 +66,9 @@ internal static class DispatchAudio
         ReportIncreasedWanted = 21,
         ReportRunningRed = 22,
         ReportLocalSuspectSpotted = 23,
+        ReportLowLevelCriminalActivity = 24,
+        ReportLowLevelShotsFired = 25,
+        ReportLowLevelGrandTheftAuto = 26,
     }
     public enum NearType
     {
@@ -74,6 +77,7 @@ internal static class DispatchAudio
         HeadingAndZone = 2,
         HeadingAndStreet = 3,
         HeadingStreetAndZone = 4,
+        StreetAndZone = 5,
     }
     static DispatchAudio()
     {
@@ -371,6 +375,10 @@ internal static class DispatchAudio
                 {
                     DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSuspiciousVehicle);
                 }
+                if (DispatchQueue.Any(x => x.Priority < 20))
+                {
+                    DispatchQueue.RemoveAll(x => x.Priority >= 20);
+                }
 
                 if (DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
                 {
@@ -390,7 +398,7 @@ internal static class DispatchAudio
                     else if (Item.Type == ReportDispatch.ReportCarryingWeapon)
                         ReportCarryingWeapon(Item.WeaponToReport);
                     else if (Item.Type == ReportDispatch.ReportFelonySpeeding)
-                        ReportFelonySpeeding(Item.VehicleToReport,Item.Speed);
+                        ReportFelonySpeeding(Item.VehicleToReport, Item.Speed);
                     else if (Item.Type == ReportDispatch.ReportLethalForceAuthorized)
                         ReportLethalForceAuthorized();
                     else if (Item.Type == ReportDispatch.ReportOfficerDown)
@@ -429,10 +437,16 @@ internal static class DispatchAudio
                         ReportSuspectSpotted();
                     else if (Item.Type == ReportDispatch.ReportIncreasedWanted)
                         ReportIncreasedWanted(Item.ResultsInLethalForce);
-                    else if(Item.Type == ReportDispatch.ReportRunningRed)
+                    else if (Item.Type == ReportDispatch.ReportRunningRed)
                         ReportRunningRed(Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportLocalSuspectSpotted)
                         ReportLocalSuspectSpotted();
+                    else if (Item.Type == ReportDispatch.ReportLowLevelCriminalActivity)
+                        ReportLowLevelCriminalActivity();
+                    else if (Item.Type == ReportDispatch.ReportLowLevelShotsFired)
+                        ReportLowLevelShotsFired();
+                    else if (Item.Type == ReportDispatch.ReportLowLevelGrandTheftAuto)
+                        ReportLowLevelGrandTheftAuto();
                     //else
                     //    //ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
@@ -483,6 +497,11 @@ internal static class DispatchAudio
         {
             AddHeading(ref ScannerList, true,ref Subtitles);
             AddZone(ref ScannerList,ref Subtitles);
+        }
+        else if (Near == NearType.StreetAndZone)
+        {
+            AddStreet(ref ScannerList, ref Subtitles);
+            AddZone(ref ScannerList, ref Subtitles);
         }
         ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
     }
@@ -1299,6 +1318,68 @@ internal static class DispatchAudio
         //ReportedThreateningWithAFirearm = false;
     }
 
+    //Civilians Reporting
+    public static void ReportLowLevelCriminalActivity()
+    {
+        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+            return;
+
+        List<string> ScannerList = new List<string>() { AudioBeeps.AudioStart() };
+        string Subtitles = "";
+        int rnd = InstantAction.rnd.Next(1, 11);
+        if (rnd <= 2)
+        {
+            ScannerList.Add(new List<String>() { we_have.CitizensReport_1.FileName, we_have.CitizensReport_2.FileName, we_have.CitizensReport_3.FileName, we_have.CitizensReport_4.FileName }.PickRandom());
+            ScannerList.Add(new List<String>() { crime_criminal_activity.Criminalactivity.FileName, crime_criminal_activity.Illegalactivity.FileName, crime_criminal_activity.Prohibitedactivity.FileName }.PickRandom());
+            Subtitles += "Civilians report, ~r~criminal activity~s~";
+        }
+        else if (rnd <= 5)
+        {
+            ScannerList.Add(new List<String>() { we_have.We_Have_1.FileName, we_have.We_Have_2.FileName }.PickRandom());
+            ScannerList.Add(new List<String>() { crime_civilian_needing_assistance.Acivilianinneedofassistance.FileName }.PickRandom());
+            Subtitles += "We have a ~r~civilian in need of assistance~s~";
+        }
+        else if (rnd <= 8)
+        {
+            ScannerList.Add(new List<String>() { we_have.We_Have_1.FileName, we_have.We_Have_2.FileName }.PickRandom());
+            ScannerList.Add(new List<String>() { crime_criminal_activity.Areportofacriminalactivity.FileName, crime_criminal_activity.Areportofcriminalactivity.FileName, crime_criminal_activity.Areportofillegalactivity.FileName }.PickRandom());
+            Subtitles += "We have a report of ~r~criminal activity~s~";
+        }
+        else
+        {
+            ScannerList.Add(new List<String>() { assistance_required.Officersneeded.FileName, assistance_required.Officersrequired.FileName }.PickRandom());
+            Subtitles += "Officers required";
+        }
+        ReportGenericEnd(ScannerList, NearType.StreetAndZone, ref Subtitles);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
+    public static void ReportLowLevelShotsFired()
+    {
+        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+            return;
+
+        List<string> ScannerList = new List<string>() { AudioBeeps.AudioStart() };
+        string Subtitles = "";
+        ScannerList.Add(new List<String>() { we_have.CitizensReport_1.FileName, we_have.CitizensReport_2.FileName, we_have.CitizensReport_3.FileName, we_have.CitizensReport_4.FileName }.PickRandom());
+        ScannerList.Add(new List<String>() { crime_shooting.Afirearmssituationseveralshotsfired.FileName, crime_shooting.Aweaponsincidentshotsfired.FileName, crime_shoot_out.Ashootout.FileName, crime_firearm_discharged_in_a_public_place.Afirearmdischargedinapublicplace.FileName
+            , crime_firearms_incident.AfirearmsincidentShotsfired.FileName, crime_firearms_incident.Anincidentinvolvingshotsfired.FileName, crime_firearms_incident.AweaponsincidentShotsfired.FileName }.PickRandom());
+        Subtitles += "Civilians report, a ~r~firearms discharge~s~";
+        ReportGenericEnd(ScannerList, NearType.StreetAndZone, ref Subtitles);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
+    public static void ReportLowLevelGrandTheftAuto()
+    {
+        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+            return;
+
+        List<string> ScannerList = new List<string>() { AudioBeeps.AudioStart() };
+        ScannerList.Add(new List<String>() { we_have.CitizensReport_1.FileName, we_have.CitizensReport_2.FileName, we_have.CitizensReport_3.FileName, we_have.CitizensReport_4.FileName }.PickRandom());
+        ScannerList.Add(new List<String>() { crime_grand_theft_auto.Agrandtheftauto.FileName, crime_grand_theft_auto.Agrandtheftautoinprogress.FileName, crime_grand_theft_auto.AGTAinprogress.FileName, crime_grand_theft_auto.AGTAinprogress1.FileName }.PickRandom());
+        string Subtitles = "Civilians Report, a ~y~GTA~s~ in progress";
+        ReportGenericEnd(ScannerList, NearType.StreetAndZone, ref Subtitles);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
+
     //StolenCar
     public static void ReportStolenVehicle(GTAVehicle stolenVehicle)
     {
@@ -1435,16 +1516,76 @@ internal static class DispatchAudio
     }
     public static void ReportLocalSuspectSpotted()
     {
+        LocalWriteToLog("ReportLocalSuspectSpotted", "Should Have Played");
         List<string> ScannerList = new List<string>
         {
             AudioBeeps.AudioStart()
         };
         string Subtitles = "";
-        //List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };
-        //List<string> Possibilites = new List<string>() { suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName };
-        //ScannerList.Add(Possibilites.PickRandom());
-        ReportGenericEnd(ScannerList, NearType.HeadingAndStreet, ref Subtitles);
+        if (!ReportHeadingAndStreet(ref ScannerList,ref Subtitles))
+        {
+            List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };
+            ScannerList.Add(Possibilites.PickRandom());
+            Subtitles += "Dispatch, we have ~r~eyes on~r~ the suspect";
+        }
+        ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
+    public static bool ReportHeadingAndStreet(ref List<string> ScannerList, ref string Subtitles)
+    {
+        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.DispatchFile != "")
+        {
+            ScannerList.Add((new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
+            Subtitles += "Target spotted heading~s~";
+            string heading = GetSimpleCompassHeading();
+            if (heading == "N")
+            {
+                ScannerList.Add(direction_heading.North.FileName);
+                Subtitles += " North";
+            }
+            else if (heading == "S")
+            {
+                ScannerList.Add(direction_heading.South.FileName);
+                Subtitles += " South";
+            }
+            else if (heading == "E")
+            {
+                ScannerList.Add(direction_heading.East.FileName);
+                Subtitles += " East";
+            }
+            else if (heading == "W")
+            {
+                ScannerList.Add(direction_heading.West.FileName);
+                Subtitles += " West";
+            }
+
+            if (PlayerLocation.PlayerCurrentStreet != null)
+            {
+                Street MyStreet = PlayerLocation.PlayerCurrentStreet;
+                if (MyStreet != null && MyStreet.DispatchFile != "")
+                {
+                    ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
+                    ScannerList.Add(MyStreet.DispatchFile);
+                    Subtitles += " ~s~on " + MyStreet.Name + "~s~";
+
+                    if (PlayerLocation.PlayerCurrentCrossStreet != null)
+                    {
+                        Street MyCrossStreet = PlayerLocation.PlayerCurrentCrossStreet;
+                        if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
+                        {
+                            ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());
+                            ScannerList.Add(MyCrossStreet.DispatchFile);
+                            Subtitles += " ~s~at " + MyCrossStreet.Name + "~s~";
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     public static void PopQuizHotShot()
     {
@@ -1802,25 +1943,7 @@ internal static class DispatchAudio
 
             if (IncludeStreet && PlayerLocation.PlayerCurrentStreet != null)
             {
-                Street MyStreet = PlayerLocation.PlayerCurrentStreet;
-                if (MyStreet != null && MyStreet.DispatchFile != "")
-                {
-                    ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
-                    ScannerList.Add(MyStreet.DispatchFile);
-                    Subtitles += " ~s~on " + MyStreet.Name +"~s~";
-
-                    if (PlayerLocation.PlayerCurrentCrossStreet != null)
-                    {
-                        Street MyCrossStreet = PlayerLocation.PlayerCurrentCrossStreet;
-                        if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
-                        {
-                            ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());
-                            ScannerList.Add(MyCrossStreet.DispatchFile);
-                            Subtitles += " ~s~at " + MyCrossStreet.Name + "~s~";
-                        }
-                    }
-                    return true;
-                }
+                return AddStreet(ref ScannerList, ref Subtitles);
             }
             return false;
         }
@@ -1836,6 +1959,29 @@ internal static class DispatchAudio
             ScannerList.Add(conjunctives.NearGenericRandom());
             ScannerList.Add(MyZone.ScannerValue);
             Subtitles += " ~s~near ~p~" + MyZone.TextName + "~s~";
+            return true;
+        }
+        return false;
+    }
+    public static bool AddStreet(ref List<string> ScannerList, ref string Subtitles)
+    {
+        Street MyStreet = PlayerLocation.PlayerCurrentStreet;
+        if (MyStreet != null && MyStreet.DispatchFile != "")
+        {
+            ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
+            ScannerList.Add(MyStreet.DispatchFile);
+            Subtitles += " ~s~on " + MyStreet.Name + "~s~";
+
+            if (PlayerLocation.PlayerCurrentCrossStreet != null)
+            {
+                Street MyCrossStreet = PlayerLocation.PlayerCurrentCrossStreet;
+                if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
+                {
+                    ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());
+                    ScannerList.Add(MyCrossStreet.DispatchFile);
+                    Subtitles += " ~s~at " + MyCrossStreet.Name + "~s~";
+                }
+            }
             return true;
         }
         return false;

@@ -22,6 +22,7 @@ public static class InstantAction
     private static bool PrevPlayerIsGettingIntoVehicle;
     private static bool PrevPlayerInVehicle;
     private static bool PrevPlayerAimingInVehicle;
+    private static uint GameTimePlayerLastShot;
     public static bool IsRunning { get; set; }
     public static bool IsDead { get; set; }
     public static bool IsBusted { get; set; }
@@ -67,6 +68,18 @@ public static class InstantAction
             }    
         }
     }
+    public static bool PlayerRecentlyShot
+    {
+        get
+        {
+            if (GameTimePlayerLastShot == 0)
+                return false;
+            else if (Game.GameTime - GameTimePlayerLastShot <= 5000)
+                return true;
+            else
+                return false;
+        }
+    }
     static InstantAction()
     {
         rnd = new Random();
@@ -96,6 +109,7 @@ public static class InstantAction
         TrackedVehicles = new List<GTAVehicle>();
         OwnedCar = null;
         CreatedObjects = new List<Rage.Object>();
+        GameTimePlayerLastShot = 0;
 
         while (Game.IsLoading)
             GameFiber.Yield();
@@ -206,6 +220,8 @@ public static class InstantAction
             else
                 PlayerInAutomobile = true;
         }
+        if (Game.LocalPlayer.Character.IsShooting)
+            GameTimePlayerLastShot = Game.GameTime;
         PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
         PlayerWantedLevel = Game.LocalPlayer.WantedLevel;
         PlayerIsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
@@ -230,6 +246,7 @@ public static class InstantAction
 
         if (PrevPlayerInVehicle != PlayerInVehicle)
             PlayerInVehicleChanged();
+
     }
     private static void StateTick()
     {
