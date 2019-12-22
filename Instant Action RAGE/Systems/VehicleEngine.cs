@@ -135,6 +135,10 @@ internal static class VehicleEngine
             }
         });
     }
+    public static void TurnOffEngine()
+    {
+        ToggleEngine(false, false);
+    }
     private static void IsHotWiringChanged()
     {
         if(IsHotwiring)

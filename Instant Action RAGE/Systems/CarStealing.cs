@@ -13,7 +13,22 @@ public static class CarStealing
 
     private static uint GameTimeLastTriedCarJacking;
     private static Random rnd;
+    private static uint GameTimePlayerLastBrokeIntoCar;
 
+    public static bool PlayerRecentlyBrokeIntoCar
+    {
+        get
+        {
+            if (PlayerBreakingIntoCar)
+                return true;
+            else if (GameTimePlayerLastBrokeIntoCar == 0)
+                return false;
+            else if (Game.GameTime - GameTimePlayerLastBrokeIntoCar <= 15000)
+                return true;
+            else
+                return false;
+        }
+    }
     public static bool PlayerBreakingIntoCar { get; set; } = false;
 
     static CarStealing()
@@ -22,8 +37,12 @@ public static class CarStealing
     }
     public static void UnlockCarDoor(Vehicle ToEnter, int SeatTryingToEnter)
     {
-        if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
+        //if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
+        //    return;
+        if (!InstantAction.PlayerHoldingEnter)
+        {
             return;
+        }
 
         if (ToEnter.Exists() && (ToEnter.IsBike || ToEnter.IsBoat || ToEnter.IsHelicopter || ToEnter.IsPlane || ToEnter.IsBicycle))
             return;
@@ -198,21 +217,6 @@ public static class CarStealing
         else if (MyVehicle.VehicleEnt.Handle != InstantAction.OwnedCar.Handle && !MyVehicle.IsStolen)
             MyVehicle.IsStolen = true;
     }
-    //public static Vector3 GetHandlePosition(Vehicle TargetVehicle)
-    //{
-    //    Vector3 GameEntryPosition = Vector3.Zero;
-    //    if (TargetVehicle.HasBone("handle_dside_f") && 1 == 0)
-    //    {
-    //        GameEntryPosition = TargetVehicle.GetBonePosition("handle_dside_f");
-    //        LocalWriteToLog("CarJackPedWithWeapon", string.Format("Handle Pos: {0}", GameEntryPosition));
-    //    }
-    //    else
-    //    {
-    //        GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
-    //        LocalWriteToLog("CarJackPedWithWeapon", string.Format("Game Entry Pos: {0}", GameEntryPosition));
-    //    }
-    //    return GameEntryPosition;
-    //}
     public static Vector3 GetHandlePosition(Vehicle TargetVehicle,string Bone)
     {
         Vector3 GameEntryPosition = Vector3.Zero;
@@ -228,14 +232,25 @@ public static class CarStealing
     }
     public static void CarJackPedWithWeapon(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
     {
-        if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
+        //if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
+        //    return;
+
+        if (!InstantAction.PlayerHoldingEnter)
             return;
-        if (Game.GameTime - GameTimeLastTriedCarJacking <= 5000)
+        if (Game.GameTime - GameTimeLastTriedCarJacking <= 500)//5000
             return;
         try
         {
             if (SeatTryingToEnter != -1)
                 return;
+
+            if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
+            {
+                if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
+                {
+                    return;//Closer to passenger side, animations dont work
+                }
+            }
 
             GTAWeapon myGun = InstantAction.GetCurrentWeapon();
             if (myGun == null)
@@ -403,6 +418,7 @@ public static class CarStealing
                     }
                 }
                 GameFiber.Sleep(5000);
+                GameTimePlayerLastBrokeIntoCar = Game.GameTime;
                 PlayerBreakingIntoCar = false;
             }, "CarJackPedWithWeapon");
             Debugging.GameFibers.Add(CarJackPedWithWeapon);

@@ -120,7 +120,7 @@ public static class TrafficViolations
             ViolationRunningRed = false;
         }
         
-        if (InstantAction.PlayerInVehicle && InstantAction.PlayerInAutomobile && !PedSwapping.JustTakenOver(5000))
+        if (InstantAction.PlayerInVehicle && (InstantAction.PlayerInAutomobile || InstantAction.PlayerOnMotorcycle) && !PedSwapping.JustTakenOver(5000))
         {
             float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
             Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
@@ -161,53 +161,53 @@ public static class TrafficViolations
             {
                 ViolationDrivingAgainstTraffic = true;
                 Police.SetWantedLevel(1,"Driving Against Traffic");
-                DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar)
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10)
                 {
-                    IsTrafficViolation = true
-                };
-                DispatchAudio.AddDispatchToQueue(RecklessDriver);
+                    IsTrafficViolation = true,
+                    VehicleToReport = MyCar
+                });
             }
             if (Settings.TrafficViolationsDrivingOnPavement && TrafficAnyPoliceCanSeePlayer && !ViolationDrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 ViolationDrivingOnPavement = true;
                 Police.SetWantedLevel(1,"Driving On Pavement");
-                DispatchAudio.DispatchQueueItem RecklessDriver = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10, false, true, MyCar)
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10)
                 {
-                    IsTrafficViolation = true
-                };
-                DispatchAudio.AddDispatchToQueue(RecklessDriver);
+                    IsTrafficViolation = true,
+                    VehicleToReport = MyCar
+                });
             }
             int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
             if (Settings.TrafficViolationsHitPed && TrafficAnyPoliceCanSeePlayer && !ViolationHitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
             {
                 ViolationHitPed = true;
                 Police.SetWantedLevel(2,"Hit a Pedestrian");
-                DispatchAudio.DispatchQueueItem PedHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPedHitAndRun, 8, false, true, MyCar)
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPedHitAndRun, 8)
                 {
-                    IsTrafficViolation = true
-                };
-                DispatchAudio.AddDispatchToQueue(PedHitAndRun);
+                    IsTrafficViolation = true,
+                    VehicleToReport = MyCar
+                });
             }
             int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
             if (Settings.TrafficViolationsHitVehicle && TrafficAnyPoliceCanSeePlayer && !ViolationHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
             {
                 ViolationHitVehicle = true;
                 Police.SetWantedLevel(1,"Hit a vehicle");
-                DispatchAudio.DispatchQueueItem VehicleHitAndRun = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportVehicleHitAndRun, 9, false, true, MyCar)
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportVehicleHitAndRun, 9)
                 {
-                    IsTrafficViolation = true
-                };
-                DispatchAudio.AddDispatchToQueue(VehicleHitAndRun);
+                    IsTrafficViolation = true,
+                    VehicleToReport = MyCar
+                });
             }
             if (Settings.TrafficViolationsNotRoadworthy && TrafficAnyPoliceCanSeePlayer && !ViolationNonRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
             {
                 ViolationNonRoadworthy = true;
                 Police.SetWantedLevel(1,"Driving a non-roadworthy vehicle");
-                DispatchAudio.DispatchQueueItem NonRoadWorthy = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10, false, true, MyCar)
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10)
                 {
-                    IsTrafficViolation = true
-                };
-                DispatchAudio.AddDispatchToQueue(NonRoadWorthy);
+                    IsTrafficViolation = true,
+                    VehicleToReport = MyCar
+                });
             }
             if (Settings.TrafficViolationsSpeeding)
             {
@@ -226,14 +226,17 @@ public static class TrafficViolations
                     else
                         Police.SetWantedLevel(1, "Going over speed limit");
 
-                    DispatchAudio.DispatchQueueItem FelonySpeeding = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportFelonySpeeding, 10, false, true, MyCar)
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportFelonySpeeding, 10)
                     {
                         Speed = VehicleSpeedMPH,
-                        IsTrafficViolation = true
-                    };
-                    DispatchAudio.AddDispatchToQueue(FelonySpeeding);
+                        IsTrafficViolation = true,
+                        VehicleToReport = MyCar
+                    });
                 }
             }
+            else
+                PlayerIsSpeeding = false;
+
             if (Settings.TrafficViolationsRunningRedLight)
             {
                 PlayerIsRunningRedLight = CheckRedLight();
@@ -241,11 +244,11 @@ public static class TrafficViolations
                 {
                     ViolationRunningRed = true;
                     Police.SetWantedLevel(1, "Running a Red Light");
-                    DispatchAudio.DispatchQueueItem RunningRed = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRunningRed, 10, false, true, MyCar)
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRunningRed, 10)
                     {
-                        IsTrafficViolation = true
-                    };
-                    DispatchAudio.AddDispatchToQueue(RunningRed);
+                        IsTrafficViolation = true,
+                        VehicleToReport = MyCar
+                    });
                 }
             }
             else

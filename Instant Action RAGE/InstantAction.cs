@@ -17,12 +17,14 @@ using System.Windows.Forms;
 
 public static class InstantAction
 {
-    public static readonly Random rnd;
+    public static readonly Random MyRand;
     private static Police.PoliceState HandsUpPreviousPoliceState;
     private static bool PrevPlayerIsGettingIntoVehicle;
     private static bool PrevPlayerInVehicle;
     private static bool PrevPlayerAimingInVehicle;
     private static uint GameTimePlayerLastShot;
+    private static uint GameTimeStartedHoldingEnter;
+
     public static bool IsRunning { get; set; }
     public static bool IsDead { get; set; }
     public static bool IsBusted { get; set; }
@@ -35,6 +37,7 @@ public static class InstantAction
     public static WeaponHash LastWeapon { get; set; }
     public static bool PlayerInVehicle { get; set; }
     public static bool PlayerInAutomobile { get; set; }
+    public static bool PlayerOnMotorcycle { get; set; }
     public static bool PlayerAimingInVehicle { get; set; }
     public static bool PlayerIsGettingIntoVehicle { get; set; }
     public static int PlayerWantedLevel { get; set; }
@@ -74,7 +77,19 @@ public static class InstantAction
         {
             if (GameTimePlayerLastShot == 0)
                 return false;
-            else if (Game.GameTime - GameTimePlayerLastShot <= 5000)
+            else if (Game.GameTime - GameTimePlayerLastShot <= 15000)
+                return true;
+            else
+                return false;
+        }
+    }
+    public static bool PlayerHoldingEnter
+    {
+        get
+        {
+            if (GameTimeStartedHoldingEnter == 0)
+                return false;
+            else if (Game.GameTime - GameTimeStartedHoldingEnter >= 75)
                 return true;
             else
                 return false;
@@ -82,7 +97,7 @@ public static class InstantAction
     }
     static InstantAction()
     {
-        rnd = new Random();
+        MyRand = new Random();
     }
     public static void Initialize()
     {
@@ -102,6 +117,7 @@ public static class InstantAction
         LastWeapon = 0;
         PlayerInVehicle = false;
         PlayerInAutomobile = false;
+        PlayerOnMotorcycle = false;
         PlayerAimingInVehicle = false;
         PlayerIsGettingIntoVehicle = false; 
         PlayerWantedLevel = 0;
@@ -110,6 +126,7 @@ public static class InstantAction
         OwnedCar = null;
         CreatedObjects = new List<Rage.Object>();
         GameTimePlayerLastShot = 0;
+        GameTimeStartedHoldingEnter = 0;
 
         while (Game.IsLoading)
             GameFiber.Yield();
@@ -143,6 +160,7 @@ public static class InstantAction
         TrafficViolations.Initialize();
         SearchModeStopping.Initialize();
         UI.Initialize();
+        PedSwapping.Initialize();
         MainLoop();
     }
     public static void MainLoop()
@@ -208,6 +226,7 @@ public static class InstantAction
         TrafficViolations.Dispose();
         SearchModeStopping.Dispose();
         WeatherReporting.Dispose();
+        PedSwapping.Dispose();
     }
 
     private static void UpdatePlayer()
@@ -219,6 +238,11 @@ public static class InstantAction
                 PlayerInAutomobile = false;
             else
                 PlayerInAutomobile = true;
+
+            if (Game.LocalPlayer.Character.IsOnBike)
+                PlayerOnMotorcycle = true;
+            else
+                PlayerOnMotorcycle = false;
         }
         if (Game.LocalPlayer.Character.IsShooting)
             GameTimePlayerLastShot = Game.GameTime;
@@ -267,7 +291,7 @@ public static class InstantAction
         if (PlayerWantedLevel > MaxWantedLastLife) // The max wanted level i saw in the last life, not just right before being busted
             MaxWantedLastLife = PlayerWantedLevel;
 
-        if (PedSwapping.JustTakenOver(1000) && PlayerWantedLevel > 0)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
+        if (PedSwapping.JustTakenOver(10000) && PlayerWantedLevel > 0 && !Police.RecentlySetWanted)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
         {
             Police.SetWantedLevel(0,"Resetting wanted just after takeover");
         }
@@ -306,7 +330,7 @@ public static class InstantAction
         TransitionToSlowMo();
         HandsAreUp = false;
         Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false);
-        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectArrested, 5, false));
+        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectArrested, 5));
         GameFiber HandleBusted = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
@@ -326,7 +350,7 @@ public static class InstantAction
         //Game.TimeScale = 0.4f;
         TransitionToSlowMo();
         if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked))
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5, false));
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
@@ -388,7 +412,18 @@ public static class InstantAction
                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
             }
         }
+
+        if(Game.IsControlPressed(2, GameControl.Enter))
+        {
+            if (GameTimeStartedHoldingEnter == 0)
+                GameTimeStartedHoldingEnter = Game.GameTime;
+        }
+        else
+        {
+            GameTimeStartedHoldingEnter = 0;
+        }
     }
+
     private static void AudioTick()
     {
         if (Settings.DisableAmbientScanner)
@@ -569,34 +604,36 @@ public static class InstantAction
     }
     public static void TransitionToSlowMo()
     {
-        GameFiber Transition = GameFiber.StartNew(delegate
-        {
-            int WaitTime = 100;
-            while (Game.TimeScale > 0.4f)
-            {
-                Game.TimeScale -= 0.05f;
-                GameFiber.Wait(WaitTime);
-                if (WaitTime <= 200)
-                    WaitTime += 1;
-            }
+        Game.TimeScale = 0.4f;//Stuff below works, could add it back, it just doesnt really do much
+        //GameFiber Transition = GameFiber.StartNew(delegate
+        //{
+        //    int WaitTime = 100;
+        //    while (Game.TimeScale > 0.4f)
+        //    {
+        //        Game.TimeScale -= 0.05f;
+        //        GameFiber.Wait(WaitTime);
+        //        if (WaitTime <= 200)
+        //            WaitTime += 1;
+        //    }
 
-        }, "TransitionIn");
-        Debugging.GameFibers.Add(Transition);
+        //}, "TransitionIn");
+        //Debugging.GameFibers.Add(Transition);
     }
     public static void TransitionToRegularSpeed()
     {
-        GameFiber Transition = GameFiber.StartNew(delegate
-        {
-            int WaitTime = 100;
-            while (Game.TimeScale < 1f)
-            {
-                Game.TimeScale += 0.05f;
-                GameFiber.Wait(WaitTime);
-                if (WaitTime >= 12)
-                    WaitTime -= 1;
-            }
+        Game.TimeScale = 1f;//Stuff below works, could add it back, it just doesnt really do much
+        //GameFiber Transition = GameFiber.StartNew(delegate
+        //{
+        //    int WaitTime = 100;
+        //    while (Game.TimeScale < 1f)
+        //    {
+        //        Game.TimeScale += 0.05f;
+        //        GameFiber.Wait(WaitTime);
+        //        if (WaitTime >= 12)
+        //            WaitTime -= 1;
+        //    }
 
-        }, "TransitionOut");
-        Debugging.GameFibers.Add(Transition);
+        //}, "TransitionOut");
+        //Debugging.GameFibers.Add(Transition);
     }
 }

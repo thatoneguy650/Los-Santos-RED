@@ -21,6 +21,14 @@ internal static class PedSwapping
     {
         rnd = new Random();
     }
+    public static void Initialize()
+    {
+
+    }
+    public static void Dispose()
+    {
+       // ResetModel();
+    }
     public static bool JustTakenOver(int Duration)
     {
         if (Game.GameTime - GameTimeLastTakenOver <= Duration)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
@@ -156,7 +164,7 @@ internal static class PedSwapping
             }
 
             if (Settings.PedTakeoverSetRandomMoney)
-                Game.LocalPlayer.Character.SetCash(rnd.Next(Settings.PedTakeoverRandomMoneyMin, Settings.PedTakeoverRandomMoneyMax), Settings.MainCharacterToAlias);
+                Game.LocalPlayer.Character.SetCash(rnd.Next(Settings.PedTakeoverRandomMoneyMin, Settings.PedTakeoverRandomMoneyMax));
 
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
             Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
@@ -308,6 +316,24 @@ internal static class PedSwapping
         characterModel.LoadCollisionAndWait();
         Game.LocalPlayer.Model = characterModel;
         Game.LocalPlayer.Character.IsCollisionEnabled = true;
+    }
+    public static void ResetModel()
+    {
+        bool WasInVehicle = false;
+        Vehicle vehicleWasIn = null;
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        {
+            WasInVehicle = true;
+            vehicleWasIn = Game.LocalPlayer.Character.CurrentVehicle;
+        }
+
+        Model characterModel = new Model(Settings.MainCharacterToAliasModelName);//should not need to load player models?
+        Game.LocalPlayer.Model = characterModel;
+        Game.LocalPlayer.Character.IsCollisionEnabled = true;
+        if(WasInVehicle)
+        {
+            Game.LocalPlayer.Character.WarpIntoVehicle(vehicleWasIn, -1);
+        }
     }
     internal static void AddRemovePlayerHelmet()
     {

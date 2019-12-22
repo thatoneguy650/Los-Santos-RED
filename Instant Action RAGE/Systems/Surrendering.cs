@@ -17,6 +17,8 @@ public static class Surrendering
         if (InstantAction.HandsAreUp)
             return;
 
+        VehicleEngine.TurnOffEngine();
+
         InstantAction.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";

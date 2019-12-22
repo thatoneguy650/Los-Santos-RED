@@ -73,46 +73,54 @@ public static class UI
     }
     private static void ShowTrafficUI()
     {
-        string CompassHeading = GetCompassHeading();
-        string StreetString = GetStreetDisplay();
-        string TextToShow = CompassHeading + " | " + StreetString;
+        string PlayerStatusLine;
+        if (Police.PlayerIsPersonOfInterest)
+        {
+            if(InstantAction.PlayerWantedLevel > 0)
+                PlayerStatusLine = "~r~Arrest Warrant Issued~s~";
+            else if (Police.PlayerHasBeenNotWantedFor <= 45000)
+                PlayerStatusLine = "~o~Arrest Warrant Issued~s~";
+            else
+                PlayerStatusLine = "~y~Arrest Warrant Issued~s~";
+        }
+        else
+            PlayerStatusLine = "";
 
+        string StreetLine = GetCompassHeading() + " | " + GetStreetDisplay();  
 
-        Text(TextToShow, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
-        string ZoneString = "";
+        string PlayerZoneLine = "";
         if (PlayerLocation.PlayerCurrentZone != null)
-            ZoneString = GetZoneDisplay();
+            PlayerZoneLine = GetZoneDisplay();
 
-        //if (InstantAction.PlayerWantedLevel > 0 && PoliceScanning.CopPeds.Any(x => x.isInHelicopter && x.RecentlySeenPlayer()))
-        //    ZoneString += " Heli";
-
-        Text(ZoneString, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
-
+        string PlayerSpeedLine = "";
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
         {
-            string SpeedDisplay = "";
+            
             float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
             if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
-                SpeedDisplay = "ENGINE OFF";
+                PlayerSpeedLine = "ENGINE OFF";
             else
             {
                 string ColorPrefx = "~s~";
                 if (TrafficViolations.PlayerIsSpeeding)
                     ColorPrefx = "~r~";
                 if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentCrossStreet != null)
-                    SpeedDisplay = string.Format("{0}{1} ~s~MPH ({2}) / ({3})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit, PlayerLocation.PlayerCurrentCrossStreet.SpeedLimit);
+                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2}) / ({3})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit, PlayerLocation.PlayerCurrentCrossStreet.SpeedLimit);
                 else if (PlayerLocation.PlayerCurrentStreet != null)
-                    SpeedDisplay = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit);
+                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocation.PlayerCurrentStreet.SpeedLimit);
             }
 
             if(TrafficViolations.ViolatingTrafficLaws)
-                SpeedDisplay += " !";
+                PlayerSpeedLine += " !";
 
             if(TrafficViolations.PlayerIsRunningRedLight)
-                SpeedDisplay += " Running Red";
+                PlayerSpeedLine += " Running Red";
 
-            Text(SpeedDisplay, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
         }
+        Text(PlayerStatusLine, Settings.TrafficInfoUIPositionX - Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
+        Text(StreetLine, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
+        Text(PlayerZoneLine, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
+        Text(PlayerSpeedLine, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
     }
     private static string GetCompassHeading()
     {

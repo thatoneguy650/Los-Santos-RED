@@ -22,6 +22,10 @@ internal static class RespawnStopper
     public static void Dispose()
     {
         IsRunning = false;
+        IntPtr MyPtr = Game.GetScriptGlobalVariableAddress(4);
+        Marshal.WriteInt32(MyPtr, 0);
+        Game.StartNewScript("respawn_controller");
+        Game.StartNewScript("selector");
     }
     private static void MainLoop()
     {

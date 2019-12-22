@@ -202,7 +202,6 @@ public class Agency
     public bool CanCheckTrafficViolations = true;
     public bool UsesLSPDVehicles = false;
     public bool UsesLSSDVehicles = false;
-    private static readonly Random rnd;
     public string ColoredInitials
     {
         get
@@ -213,7 +212,7 @@ public class Agency
     public VehicleInformation GetRandomVehicle(bool IsMotorcycle)
     {
         int Total = Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle).Sum(x => x.SpawnChance);
-        int RandomPick = InstantAction.rnd.Next(0, Total);
+        int RandomPick = InstantAction.MyRand.Next(0, Total);
         foreach (VehicleInformation Vehicle in Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle))
         {
             if (RandomPick < Vehicle.SpawnChance)

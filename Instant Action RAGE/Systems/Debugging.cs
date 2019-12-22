@@ -223,7 +223,7 @@ public static class Debugging
         //    Game.LocalPlayer.WantedLevel = 2;
 
 
-        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousActivity, 3, false));
+        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousActivity, 3));
 
     }
     private static void DebugNumpad3()
@@ -543,7 +543,7 @@ public static class Debugging
 
         //WriteToLog("WantedLevel2", string.Format("LastWantedCenterPosition: {0}", Police.LastWantedCenterPosition));
 
-
+        DispatchAudio.ReportLocalSuspectSpotted();
 
 
 

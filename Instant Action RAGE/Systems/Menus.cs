@@ -110,12 +110,12 @@ internal static class Menus
         menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));
         menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-        menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
+       // menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
         bustedMenu.AddItem(menuBustedResistArrest);
         bustedMenu.AddItem(menuBustedBribe);
         bustedMenu.AddItem(menuBustedSurrender);
-        bustedMenu.AddItem(menuBustedTakeoverRandomPed);
+        //bustedMenu.AddItem(menuBustedTakeoverRandomPed);
 
         mainMenu.OnItemSelect += MainMenuSelect;
         mainMenu.OnListChange += OnListChange;
@@ -498,7 +498,7 @@ internal static class Menus
         }
         if (selectedItem == menuDebugGiveMoney)
         {
-            Game.LocalPlayer.Character.GiveCash(5000, Settings.MainCharacterToAlias);
+            Game.LocalPlayer.Character.GiveCash(5000);
         }
         if (selectedItem == menuDebugHealthAndArmor)
         {

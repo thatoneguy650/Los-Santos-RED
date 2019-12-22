@@ -305,7 +305,7 @@ public static class Tasking
         }
         Police.SetWantedLevel(InstantAction.MaxWantedLastLife,"Changing it back to what it was max during your last life");
 
-        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.isInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
+        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.isInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !InstantAction.IsBusted)// && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
             SurrenderBust = true;
 
         if (SurrenderBust && !IsBustTimeOut())
@@ -404,7 +404,7 @@ public static class Tasking
         if (Police.CopsKilledByPlayer >= Settings.PoliceKilledSurrenderLimit && InstantAction.PlayerWantedLevel < 4)
         {
             Police.SetWantedLevel(4,"You killed too many cops");
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportWeaponsFree, 2, false));
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportWeaponsFree, 2));
         }
 
         if (SurrenderBust && !IsBustTimeOut())
@@ -583,7 +583,7 @@ public static class Tasking
 
                     if (Cop.CopPed.IsGettingIntoVehicle)
                     {
-                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == Cop.CopPed.VehicleTryingToEnter.Handle)
+                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Cop.CopPed.VehicleTryingToEnter.Exists() && Game.LocalPlayer.Character.CurrentVehicle.Handle == Cop.CopPed.VehicleTryingToEnter.Handle)
                         {
                             Cop.CopPed.Tasks.Clear();
                             NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.CopPed, Game.LocalPlayer.Character, 4f, 20f);

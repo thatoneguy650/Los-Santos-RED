@@ -144,10 +144,10 @@ namespace ExtensionsMethods
                 return false;
 
         }
-        public static void GiveCash(this Ped myPed, int Amount, String PlayerName)
+        public static void GiveCash(this Ped myPed, int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = CashHash(PlayerName);
+            uint PlayerCashHash = CashHash(Settings.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -157,19 +157,19 @@ namespace ExtensionsMethods
             else
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
         }
-        public static int GetCash(this Ped myPed, String PlayerName)
+        public static int GetCash(this Ped myPed)
         {
             int CurrentCash;
             unsafe
             {
-                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(PlayerName), &CurrentCash, -1);
+                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Settings.MainCharacterToAlias), &CurrentCash, -1);
             }
 
             return CurrentCash;
         }
-        public static void SetCash(this Ped myPed, int Amount, String PlayerName)
+        public static void SetCash(this Ped myPed, int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(PlayerName), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Settings.MainCharacterToAlias), Amount, 1);
         }
         private static uint CashHash(String PlayerName)
         {
