@@ -132,7 +132,7 @@ public static class TrafficViolations
 
             if (Settings.TrafficViolationsExemptCode3 && CurrVehicle != null && CurrVehicle.IsPoliceVehicle && MyCar != null && !MyCar.WasReportedStolen)
             {
-                if (CurrVehicle.IsSirenOn && Police.AnyPoliceCanRecognizePlayer && PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 10f)) //see thru ur disguise if ur too close
+                if (CurrVehicle.IsSirenOn && !Police.AnyPoliceCanRecognizePlayer) //see thru ur disguise if ur too close
                 {
                     TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
                 }
@@ -163,6 +163,7 @@ public static class TrafficViolations
                 Police.SetWantedLevel(1,"Driving Against Traffic");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10)
                 {
+                    ResultsInStolenCarSpotted = true,
                     IsTrafficViolation = true,
                     VehicleToReport = MyCar
                 });
@@ -173,6 +174,7 @@ public static class TrafficViolations
                 Police.SetWantedLevel(1,"Driving On Pavement");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRecklessDriver, 10)
                 {
+                    ResultsInStolenCarSpotted = true,
                     IsTrafficViolation = true,
                     VehicleToReport = MyCar
                 });
@@ -184,6 +186,7 @@ public static class TrafficViolations
                 Police.SetWantedLevel(2,"Hit a Pedestrian");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPedHitAndRun, 8)
                 {
+                    ResultsInStolenCarSpotted = true,
                     IsTrafficViolation = true,
                     VehicleToReport = MyCar
                 });
@@ -195,6 +198,7 @@ public static class TrafficViolations
                 Police.SetWantedLevel(1,"Hit a vehicle");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportVehicleHitAndRun, 9)
                 {
+                    ResultsInStolenCarSpotted = true,
                     IsTrafficViolation = true,
                     VehicleToReport = MyCar
                 });
@@ -205,6 +209,7 @@ public static class TrafficViolations
                 Police.SetWantedLevel(1,"Driving a non-roadworthy vehicle");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10)
                 {
+                    ResultsInStolenCarSpotted = true,
                     IsTrafficViolation = true,
                     VehicleToReport = MyCar
                 });
@@ -228,6 +233,7 @@ public static class TrafficViolations
 
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportFelonySpeeding, 10)
                     {
+                        ResultsInStolenCarSpotted = true,
                         Speed = VehicleSpeedMPH,
                         IsTrafficViolation = true,
                         VehicleToReport = MyCar
@@ -246,6 +252,7 @@ public static class TrafficViolations
                     Police.SetWantedLevel(1, "Running a Red Light");
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportRunningRed, 10)
                     {
+                        ResultsInStolenCarSpotted = true,
                         IsTrafficViolation = true,
                         VehicleToReport = MyCar
                     });

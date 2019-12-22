@@ -22,7 +22,7 @@ public static class InstantAction
     private static bool PrevPlayerIsGettingIntoVehicle;
     private static bool PrevPlayerInVehicle;
     private static bool PrevPlayerAimingInVehicle;
-    private static uint GameTimePlayerLastShot;
+    
     private static uint GameTimeStartedHoldingEnter;
 
     public static bool IsRunning { get; set; }
@@ -45,6 +45,7 @@ public static class InstantAction
     public static List<GTAVehicle> TrackedVehicles { get; set; }
     public static Vehicle OwnedCar { get; set; }
     public static List<Rage.Object> CreatedObjects { get; set; }
+    public static uint GameTimePlayerLastShot { get; set; }
     public static bool IsHardToSeeInWeather
     {
         get
@@ -77,7 +78,7 @@ public static class InstantAction
         {
             if (GameTimePlayerLastShot == 0)
                 return false;
-            else if (Game.GameTime - GameTimePlayerLastShot <= 15000)
+            else if (Game.GameTime - GameTimePlayerLastShot <= 20000)
                 return true;
             else
                 return false;

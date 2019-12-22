@@ -330,6 +330,7 @@ public static class CarStealing
                         Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                         NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
                         Police.PlayerArtificiallyShooting = true;
+                        InstantAction.GameTimePlayerLastShot = Game.GameTime;
 
                         if (ScenePhase <= 0.35f)
                         {

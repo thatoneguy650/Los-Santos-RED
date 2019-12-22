@@ -54,7 +54,6 @@ public static class Respawning
 
         Game.LocalPlayer.Character.Position = Hospital.LocationPosition;
         Game.LocalPlayer.Character.Heading = Hospital.Heading;
-
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
         Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in Hospital fees.", Settings.HospitalFee));
@@ -124,6 +123,7 @@ public static class Respawning
         if (ClearWanted)
         {
             Police.SetWantedLevel(0,"Reset player with Clear Wanted");
+            InstantAction.MaxWantedLastLife = 0;
             Police.ResetPoliceStats();
             TrafficViolations.ResetTrafficViolations();
             Police.ResetPersonOfInterest();

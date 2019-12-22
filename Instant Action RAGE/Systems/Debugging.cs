@@ -217,13 +217,17 @@ public static class Debugging
     }
     private static void DebugNumpad2()
     {
-        //if (Game.LocalPlayer.WantedLevel > 0)
-        //    Game.LocalPlayer.WantedLevel = 0;
-        //else
-        //    Game.LocalPlayer.WantedLevel = 2;
+        if (Game.LocalPlayer.WantedLevel > 0)
+            Police.SetWantedLevel(0, "Debugging set 0");
+        else
+            Police.SetWantedLevel(2, "Debugging set 2");
 
 
-        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousActivity, 3));
+
+
+
+
+        // DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousActivity, 3));
 
     }
     private static void DebugNumpad3()
