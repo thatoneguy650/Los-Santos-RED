@@ -434,6 +434,8 @@ public static class InstantAction
     }
     public static GTAWeapon GetCurrentWeapon()
     {
+        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)
+            return null;
         ulong myHash = (ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
         GTAWeapon CurrentGun = GTAWeapons.GetWeaponFromHash(myHash);//Weapons.Where(x => (WeaponHash)x.Hash == MyWeapon.Hash).FirstOrDefault();
         if (CurrentGun != null)
@@ -550,6 +552,8 @@ public static class InstantAction
     public static Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
     {
         Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+        if (!Screwdriver.Exists())
+            return null;
         CreatedObjects.Add(Screwdriver);
         int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005);
         Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));

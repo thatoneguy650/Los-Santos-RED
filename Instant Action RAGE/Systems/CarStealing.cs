@@ -98,7 +98,8 @@ public static class CarStealing
                 if (!Continue)
                 {
                     Game.LocalPlayer.Character.Tasks.Clear();
-                    Screwdriver.Delete();
+                    if (Screwdriver != null && Screwdriver.Exists())
+                        Screwdriver.Delete();
                     PlayerBreakingIntoCar = false;
                     return;
                 }
@@ -126,7 +127,8 @@ public static class CarStealing
                     GameFiber.Sleep(5000);
                 else
                     GameFiber.Sleep(8000);//Passengfer takes longer
-                Screwdriver.Delete();
+                if (Screwdriver != null && Screwdriver.Exists())
+                    Screwdriver.Delete();
                 PlayerBreakingIntoCar = false;
                 LocalWriteToLog("UnlockCarDoor", string.Format("Made it to the end: {0}", SeatTryingToEnter));
             }, "UnlockCarDoor");

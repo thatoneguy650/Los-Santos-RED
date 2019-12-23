@@ -38,8 +38,18 @@ public static class Respawning
     {
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
+
+        bool prePlayerKilledPolice = Police.PlayerKilledPolice;
+
         InstantAction.IsDead = false;
         InstantAction.IsBusted = false;
+
+        int HospitalFee = Settings.HospitalFee * (1+InstantAction.MaxWantedLastLife);
+        int OfficerFee = 0;
+        if (prePlayerKilledPolice)
+            OfficerFee = HospitalFee * Police.CopsKilledByPlayer;
+
+        HospitalFee += OfficerFee;
 
         Police.CurrentPoliceState = Police.PoliceState.Normal;
         Police.PlayerIsPersonOfInterest = false;
@@ -56,8 +66,13 @@ public static class Respawning
         Game.LocalPlayer.Character.Heading = Hospital.Heading;
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
-        Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in Hospital fees.", Settings.HospitalFee));
-        Game.LocalPlayer.Character.GiveCash(-1 * Settings.HospitalFee);
+
+        if(!prePlayerKilledPolice)
+            Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in Hospital fees.", HospitalFee));
+        else
+            Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in Hospital fees and ~r~${1} ~s~in ~o~Officers funeral expenses~s~", HospitalFee, OfficerFee));
+
+        Game.LocalPlayer.Character.GiveCash(-1 * HospitalFee);
     }
     public static void ResistArrest()
     {
@@ -104,8 +119,16 @@ public static class Respawning
         Police.CurrentPoliceState = Police.PoliceState.Normal;
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
-        Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in bail money, try to stay out of trouble.", bailMoney));
-        Game.LocalPlayer.Character.GiveCash(-1 * bailMoney);
+        bool DABlewTheCase = InstantAction.MyRand.Next(1, 11) == 1;
+        if (!DABlewTheCase)
+        {
+            Game.DisplayNotification(string.Format("You got out with only ~r~${0} ~s~in bail money, try to stay out of trouble.", bailMoney));
+            Game.LocalPlayer.Character.GiveCash(-1 * bailMoney);
+        }
+        else
+        {
+            Game.DisplayNotification(string.Format("The DA Blew the case, you got off! Saved ~g~${0} ~s~in bail money", bailMoney));
+        }
     }
     public static void UnDie()
     {
@@ -189,99 +212,29 @@ public static class Respawning
     }
     public static void RemoveIllegalWeapons()
     {
-        //int Index = 0;
-        //bool Continue = true;
-        //while(Continue)
-        //{
-        //    if (!RemoveIllegalWeapon(Index))
-        //        break;
-        //    else
-        //        Index++;
-        //}
-
-
+        //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
+        //Make a list of my old guns
+        List<DroppedWeapon> MyOldGuns = new List<DroppedWeapon>();
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
-            GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash((ulong)Weapon.Hash);
-            if (MyGun == null || !MyGun.IsLegal)
-            {
-                if (Weapon.Hash != (WeaponHash)2725352035)
-                {
-                    NativeFunction.CallByName<bool>("REMOVE_WEAPON_FROM_PED", Game.LocalPlayer.Character, (uint)Weapon.Hash);
-                    Debugging.WriteToLog("DebugNumpad6", "Remove: " + Weapon.Hash);
-                }
-            }
-            else
-            {
-                Debugging.WriteToLog("DebugNumpad6", "Keep: " + Weapon.Hash);
-            }
+            WeaponVariation DroppedGunVariation = InstantAction.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation,Weapon.Ammo);
+            MyOldGuns.Add(MyGun);
         }
-        //int Weapons = Game.LocalPlayer.Character.Inventory.Weapons.Count();
-        //for (int i = 0; i <= Weapons - 1; i++)
-        //{
-        //    if (CurrentWeapons[i] == null)
-        //        break;
-        //    WeaponHash MyHash = CurrentWeapons[i].Hash;
-        //    GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash((ulong)MyHash);
-        //    if (MyGun == null || !MyGun.IsLegal)
-        //    {
-        //        if (MyHash != (WeaponHash)2725352035)
-        //        {
-        //            NativeFunction.CallByName<bool>("REMOVE_WEAPON_FROM_PED", Game.LocalPlayer.Character, (uint)MyHash);
-        //            Debugging.WriteToLog("DebugNumpad6", "Remove: " + MyHash);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Debugging.WriteToLog("DebugNumpad6", "Keep: " + MyHash);
-        //    }
-
-
-
-
-        //    Debugging.WriteToLog("DebugNumpad6       ", "           AllWeapons: " + Game.LocalPlayer.Character.Inventory.Weapons[i].Hash);
-
-        //}
-        // Game.LocalPlayer.Character.Inventory.Weapons[0].Hash
-        //WeaponHash MyEquipped = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
-        //GTAWeapon MyGun2 = GTAWeapons.GetWeaponFromHash((ulong)MyEquipped);
-        //if (MyGun2 == null || !MyGun2.IsLegal)
-        //{
-        //    if (MyEquipped != (WeaponHash)2725352035)
-        //    {
-        //        NativeFunction.CallByName<bool>("REMOVE_WEAPON_FROM_PED", Game.LocalPlayer.Character, (uint)MyEquipped);
-        //        Debugging.WriteToLog("DebugNumpad6", "Remove: " + MyEquipped);
-        //    }
-        //}
-        //else
-        //{
-        //    Debugging.WriteToLog("DebugNumpad6", "Keep: " + MyEquipped);
-        //}
-    }
-    private static bool RemoveIllegalWeapon(int Index)
-    {
-        if (Game.LocalPlayer.Character.Inventory.Weapons[Index] == null)
-            return false;
-        GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash((ulong)Game.LocalPlayer.Character.Inventory.Weapons[Index].Hash);
-        WeaponHash MyHash = Game.LocalPlayer.Character.Inventory.Weapons[Index].Hash;
-        if (MyGun == null || !MyGun.IsLegal)
+        //Totally clear our guns
+        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+        //Add out guns back with variations
+        foreach (DroppedWeapon MyNewGun in MyOldGuns)
         {
-            if (MyHash != (WeaponHash)2725352035)
+            GTAWeapon MyGTANewGun = GTAWeapons.GetWeaponFromHash((ulong)MyNewGun.Weapon.Hash);
+            if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
             {
-                NativeFunction.CallByName<bool>("REMOVE_WEAPON_FROM_PED", Game.LocalPlayer.Character, (uint)MyHash);
-                Debugging.WriteToLog("DebugNumpad6", "Remove: " + MyHash);
-                return true;
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.Weapon.Hash, (short)MyNewGun.Ammo, false);
+                InstantAction.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyNewGun.Weapon.Hash, MyNewGun.Variation);
+                NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.Weapon.Hash, MyNewGun.Ammo + 1);
             }
-            return false;
-        }
-        else
-        {
-            Debugging.WriteToLog("DebugNumpad6", "Keep: " + MyHash);
-            return false;
         }
     }
-
-
 }
 
