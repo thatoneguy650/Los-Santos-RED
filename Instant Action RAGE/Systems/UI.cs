@@ -77,14 +77,21 @@ public static class UI
         if (Police.PlayerIsPersonOfInterest)
         {
             if(InstantAction.PlayerWantedLevel > 0)
-                PlayerStatusLine = "~r~Arrest Warrant Issued~s~";
+                PlayerStatusLine = "~r~Wanted Felon~s~ ";
             else if (Police.PlayerHasBeenNotWantedFor <= 45000)
-                PlayerStatusLine = "~o~Arrest Warrant Issued~s~";
+                PlayerStatusLine = "~o~Wanted Felon~s~ ";
             else
-                PlayerStatusLine = "~y~Arrest Warrant Issued~s~";
+                PlayerStatusLine = "~y~Wanted Felon~s~ ";
         }
         else
             PlayerStatusLine = "";
+
+        if (InstantAction.PlayerWantedLevel > 0)
+        {
+            string AgenciesChasingPlayer = PoliceScanning.AgenciesChasingPlayer;
+            if (AgenciesChasingPlayer != "")
+                PlayerStatusLine += "~s~(" + AgenciesChasingPlayer + "~s~)";
+        }
 
         string StreetLine = GetCompassHeading() + " | " + GetStreetDisplay();  
 
@@ -178,21 +185,10 @@ public static class UI
         string ZoneDisplay = "";
         string CopZoneName = "";
         ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone);
-        if (Game.LocalPlayer.WantedLevel == 0)
-        {
-            if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
-                CopZoneName = Agencies.SAHP.ColoredInitials;
-            else
-                CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
-        }
+        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
+            CopZoneName = Agencies.SAHP.ColoredInitials;
         else
-        {
-            string AgenciesChasingPlayer = PoliceScanning.AgenciesChasingPlayer;
-            if (AgenciesChasingPlayer != "")
-                CopZoneName = "~s~(" + AgenciesChasingPlayer + "~s~)";
-            else
-                CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
-        }
+            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
     }

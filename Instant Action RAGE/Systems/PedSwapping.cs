@@ -73,7 +73,7 @@ internal static class PedSwapping
             PedToAlly.StaysInVehiclesWhenJacked = true;
         }
     }
-    public static void TakeoverPed(Ped TargetPed, bool DeleteOld, bool ArrestOld)
+    public static void TakeoverPed(Ped TargetPed, bool DeleteOld, bool ArrestOld, bool ClearNearPolice,bool AdvanceTime)
     {
         try
         {
@@ -179,11 +179,12 @@ internal static class PedSwapping
             Police.RemoveWantedBlips();
             InstantAction.IsDead = false;
             InstantAction.IsBusted = false;
-            Police.CurrentPoliceState = Police.PoliceState.Normal;
+            
             InstantAction.BeingArrested = false;
             TrafficViolations.ResetTrafficViolations();
             Police.ResetPoliceStats();
             Police.ResetPersonOfInterest();
+            Police.CurrentPoliceState = Police.PoliceState.Normal;
             GameTimeLastTakenOver = Game.GameTime;
             Menus.TakeoverRadius = -1f;//reset this on the menu
             InstantAction.LastWeapon = 0;
@@ -191,6 +192,15 @@ internal static class PedSwapping
             if (Game.LocalPlayer.Character.IsWearingHelmet)
             {
                 PedOriginallyHadHelmet = true;
+            }
+            if(ClearNearPolice)
+            {
+                PoliceScanning.ClearPoliceAroundPlayer(150f);
+            }
+
+            if(AdvanceTime)
+            {
+                World.DateTime.AddHours(18);
             }
         }
         catch (Exception e3)

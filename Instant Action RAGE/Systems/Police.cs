@@ -362,9 +362,7 @@ internal static class Police
                 {
                     PlayerHurtPolice = true;
                     Cop.HurtByPlayer = true;
-                    LocalWriteToLog("UpdatePolice", String.Format("Cop {0}, Was hurt by player", Cop.CopPed.Handle));
                 }
-                LocalWriteToLog("UpdatePolice", String.Format("Cop {0}, Health Changed from {1} to {2}", Cop.CopPed.Handle, Cop.Health, NewHealth));
                 Cop.Health = NewHealth;
             }
             Cop.isInVehicle = Cop.CopPed.IsInAnyVehicle(false);
@@ -624,7 +622,7 @@ internal static class Police
             CurrentPoliceState = PoliceState.DeadlyChase;
 
 
-        if (!PlayerFiredWeaponNearPolice && (Game.LocalPlayer.Character.IsShooting || PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 100f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
+        if (!PlayerFiredWeaponNearPolice && (Game.LocalPlayer.Character.IsShooting || PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 20f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
         {
             SetWantedLevel(2, "Fired a Weapon");
             PlayerFiredWeaponNearPolice = true;
@@ -699,6 +697,7 @@ internal static class Police
                 SetWantedLevel(3, "You aimed at the police too long");
                 PlayerAimedAtPolice = true;
             }
+
         }
     }
     private static void CheckPoliceEvents()
@@ -807,13 +806,18 @@ internal static class Police
     {
         if (InstantAction.PlayerWantedLevel > 0)
         {
-            if (Settings.WantedLevelIncreasesOverTime && Game.GameTime - WantedLevelStartTime > Settings.WantedLevelIncreaseTime && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 0 && InstantAction.PlayerWantedLevel <= Settings.WantedLevelInceaseOverTimeLimit)
+            uint WantedLevelInceaseTime = Settings.WantedLevelIncreaseTime;
+            if (InstantAction.PlayerWantedLevel >= 3)
+            {
+                WantedLevelInceaseTime = 2 * WantedLevelInceaseTime;
+            }
+            if (Settings.WantedLevelIncreasesOverTime && Game.GameTime - WantedLevelStartTime > WantedLevelInceaseTime && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 0 && InstantAction.PlayerWantedLevel <= Settings.WantedLevelInceaseOverTimeLimit)
             {
                 SetWantedLevel(InstantAction.PlayerWantedLevel + 1, "Wanted Level increased over time");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportIncreasedWanted, 3)
                 {
                     ResultsInLethalForce = Game.LocalPlayer.WantedLevel == 4
-                });
+                }); 
             }
 
             //if (Settings.SpawnNewsChopper && Game.GameTime - WantedLevelStartTime > 180000 && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 4 && !PoliceScanning.Reporters.Any())
@@ -826,7 +830,10 @@ internal static class Police
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLostVisual, 10));
                 CanReportLastSeen = false;
             }
-
+            if (CurrentPoliceState == PoliceState.DeadlyChase && InstantAction.PlayerWantedLevel < 3)
+            {
+                SetWantedLevel(3, "Deadly chase requires 3+ wanted level");
+            }
 
         }
     }
@@ -877,7 +884,10 @@ internal static class Police
             //}
             if (AnyPoliceCanSeePlayer && LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= Settings.LastWantedCenterSize)
             {
-                SetWantedLevel(3, "Cops Reacquired after losing them in the same area");
+                int WantedLevel = 2;
+                if (PreviousWantedStats != null && PreviousWantedStats.MaxWantedLevel > 0)
+                    WantedLevel = PreviousWantedStats.MaxWantedLevel;
+                SetWantedLevel(WantedLevel, "Cops Reacquired after losing them in the same area");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3));
             }
         }
@@ -896,6 +906,7 @@ internal static class Police
         }
         PlayerAimedAtPolice = false;
         PlayerFiredWeaponNearPolice = false;
+
         DispatchAudio.ResetReportedItems();
     }
     public static void SetWantedLevel(int WantedLevel,string Reason)
@@ -989,7 +1000,7 @@ internal static class Police
     }
     private static void WantedLevelRemoved()
     {
-        if (AnyPoliceSeenPlayerThisWanted && PreviousWantedLevel != 0)//maxwantedlastlife
+        if (AnyPoliceSeenPlayerThisWanted && PreviousWantedLevel != 0 && !RecentlySetWanted)//i didnt make it go to zero, the chase was lost organically
         {
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLost, 5));
         }
@@ -1074,12 +1085,12 @@ internal static class Police
     }
     private static void CopsKilledChanged()
     {
-        LocalWriteToLog("ValueChecker", string.Format("CopsKilledByPlayer Changed to: {0}", CopsKilledByPlayer));
+        //LocalWriteToLog("ValueChecker", string.Format("CopsKilledByPlayer Changed to: {0}", CopsKilledByPlayer));
         PrevCopsKilledByPlayer = CopsKilledByPlayer;
     }
     private static void CiviliansKilledChanged()
     {
-        LocalWriteToLog("ValueChecker", String.Format("CiviliansKilledChanged Changed to: {0}", CiviliansKilledByPlayer));
+        //LocalWriteToLog("ValueChecker", String.Format("CiviliansKilledChanged Changed to: {0}", CiviliansKilledByPlayer));
         PrevCiviliansKilledByPlayer = CiviliansKilledByPlayer;
     }
     private static void PlayerHurtPoliceChanged()
@@ -1273,7 +1284,7 @@ internal static class Police
         RemoveBlip(Cop.CopPed);
         Cop.CopPed.Delete();
         Cop.WasMarkedNonPersistent = false;
-        LocalWriteToLog("SpawnCop", string.Format("Cop Deleted: Handled {0}", Cop.CopPed.Handle));
+        //LocalWriteToLog("SpawnCop", string.Format("Cop Deleted: Handled {0}", Cop.CopPed.Handle));
     }
     public static void MarkNonPersistent(GTACop Cop)
     {
@@ -1297,7 +1308,7 @@ internal static class Police
         }
         Cop.CopPed.IsPersistent = false;
         Cop.WasMarkedNonPersistent = false;
-        LocalWriteToLog("SpawnCop", string.Format("CopMarkedNonPersistant: Handled {0}", Cop.CopPed.Handle));
+        //LocalWriteToLog("SpawnCop", string.Format("CopMarkedNonPersistant: Handled {0}", Cop.CopPed.Handle));
     }
 
 }

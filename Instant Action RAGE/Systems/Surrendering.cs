@@ -11,6 +11,9 @@ public static class Surrendering
 {
     public static void RaiseHands()
     {
+        if (Game.LocalPlayer.Character.IsWearingHelmet)
+            Game.LocalPlayer.Character.RemoveHelmet(true);
+
         if (Game.LocalPlayer.WantedLevel > 0 && Police.CopsKilledByPlayer < 5)
             Police.CurrentPoliceState = Police.PoliceState.ArrestedWait;
 

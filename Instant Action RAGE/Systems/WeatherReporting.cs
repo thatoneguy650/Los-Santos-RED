@@ -239,7 +239,7 @@ public static class WeatherReporting
             {
                 GameFiber ChangeRadioBack = GameFiber.StartNew(delegate
                 {
-                    while (DispatchAudio.AudioPlaying && IsReportingWeather)
+                    while (DispatchAudio.AudioPlaying)
                         GameFiber.Sleep(500);
                     IsReportingWeather = false;
                     Debugging.WriteToLog("ReportWeather", "Setting back to " + RadioStationName);

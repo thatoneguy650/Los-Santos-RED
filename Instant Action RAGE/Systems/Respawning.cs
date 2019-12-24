@@ -28,10 +28,8 @@ public static class Respawning
             Game.DisplayNotification("Thanks for the cash, now beat it.");
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
         }
-        Police.PlayerIsPersonOfInterest = false;
-        Police.CurrentPoliceState = Police.PoliceState.Normal;
+
         Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
-        NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(true, false);
     }
     public static void RespawnAtHospital(Location Hospital)
@@ -51,19 +49,14 @@ public static class Respawning
 
         HospitalFee += OfficerFee;
 
-        Police.CurrentPoliceState = Police.PoliceState.Normal;
-        Police.PlayerIsPersonOfInterest = false;
-        ResetPlayer(true, true);
-
-        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-        InstantAction.LastWeapon = 0;
         RespawnInPlace(false);
-        Police.SetWantedLevel(0,"Respawning at hospital");
+
         if (Hospital == null)
             Hospital = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Hospital);
 
         Game.LocalPlayer.Character.Position = Hospital.LocationPosition;
         Game.LocalPlayer.Character.Heading = Hospital.Heading;
+
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
 
@@ -89,16 +82,17 @@ public static class Respawning
     {
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
+
         bool prePlayerKilledPolice = Police.PlayerKilledPolice;
         int bailMoney = InstantAction.MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
+
         InstantAction.BeingArrested = false;
         InstantAction.IsBusted = false;
-        Police.SetWantedLevel(0,"Surrendering");
-        Police.PlayerIsPersonOfInterest = false;
+
         Surrendering.RaiseHands();
         ResetPlayer(true, true);
-        NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-        if(PoliceStation == null)
+
+        if (PoliceStation == null)
             PoliceStation = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Police);
 
         Game.LocalPlayer.Character.Position = PoliceStation.LocationPosition;
@@ -114,11 +108,10 @@ public static class Respawning
         {
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         }
-        InstantAction.LastWeapon = 0;
-        ResetPlayer(true, true);
-        Police.CurrentPoliceState = Police.PoliceState.Normal;
+
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
+
         bool DABlewTheCase = InstantAction.MyRand.Next(1, 11) == 1;
         if (!DABlewTheCase)
         {
@@ -145,9 +138,9 @@ public static class Respawning
         Game.TimeScale = 1f;
         if (ClearWanted)
         {
-            Police.SetWantedLevel(0,"Reset player with Clear Wanted");
-            InstantAction.MaxWantedLastLife = 0;
             Police.ResetPoliceStats();
+            Police.SetWantedLevel(0,"Reset player with Clear Wanted");
+            InstantAction.MaxWantedLastLife = 0;  
             TrafficViolations.ResetTrafficViolations();
             Police.ResetPersonOfInterest();
             DispatchAudio.ResetReportedItems();
@@ -157,7 +150,7 @@ public static class Respawning
 
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
         if (ResetHealth)
-            Game.LocalPlayer.Character.Health = 100;
+            Game.LocalPlayer.Character.Health = 200;
 
         NativeFunction.CallByName<bool>("RESET_HUD_COMPONENT_VALUES", 0);
 
@@ -218,7 +211,7 @@ public static class Respawning
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
-            WeaponVariation DroppedGunVariation = InstantAction.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            WeaponVariation DroppedGunVariation = InstantAction.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
             DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation,Weapon.Ammo);
             MyOldGuns.Add(MyGun);
         }

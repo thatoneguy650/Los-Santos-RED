@@ -96,7 +96,7 @@ public static class Tasking
 
         if (_ToTask > 0)
         {
-            LocalWriteToLog("TaskQueue", string.Format("Cops To Task: {0}", _ToTask));
+            //LocalWriteToLog("TaskQueue", string.Format("Cops To Task: {0}", _ToTask));
             PoliceTask _policeTask = CopsToTask[0];
             _policeTask.CopToAssign.isTasked = true;
 
@@ -178,7 +178,8 @@ public static class Tasking
             }
             else
             {
-                if(!Cop.TaskIsQueued && Cop.CopPed.IsDriver() && Cop.RecentlySeenPlayer())
+                NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.CopPed, 100f);
+                if (!Cop.TaskIsQueued && Cop.CopPed.IsDriver())
                 {
                     Cop.TaskIsQueued = true;
                     AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.HeliChase));
@@ -186,6 +187,7 @@ public static class Tasking
                 
             }
         }
+        SearchModeStopping.StopSearchMode = true;
     }
     private static void PoliceStateTick()
     {
@@ -548,7 +550,7 @@ public static class Tasking
             Cop.CopPed.BlockPermanentEvents = false;
             Cop.TaskFiber.Abort();
             Cop.TaskFiber = null;
-            LocalWriteToLog("Task Chasing", string.Format("Initial Return: {0}", Cop.CopPed.Handle));
+            //LocalWriteToLog("Task Chasing", string.Format("Initial Return: {0}", Cop.CopPed.Handle));
             return;
         }
         
@@ -557,7 +559,7 @@ public static class Tasking
         {
             if (!Cop.CopPed.Exists())
                 return;
-            LocalWriteToLog("Task Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
+            //LocalWriteToLog("Task Chasing", string.Format("Started Chase: {0}", Cop.CopPed.Handle));
             uint TaskTime = 0;// = Game.GameTime;
             string LocalTaskName = "GoTo";
             double cool = rnd.NextDouble() * (1.17 - 1.075) + 1.075;//(1.175 - 1.1) + 1.1;
@@ -590,7 +592,7 @@ public static class Tasking
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Arrest";
-                            LocalWriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest From Carjacking!!!!, {0}", Cop.CopPed.Handle));
+                            //LocalWriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest From Carjacking!!!!, {0}", Cop.CopPed.Handle));
                         }
                     }
 
@@ -605,7 +607,7 @@ public static class Tasking
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "CarJack";
-                            LocalWriteToLog("TaskChasing", "Primary Cop SubTasked with CarJack 2");
+                            //LocalWriteToLog("TaskChasing", "Primary Cop SubTasked with CarJack 2");
                         }
                         else if (!Cop.isPursuitPrimary && Cop.DistanceToPlayer <= 25f && LocalTaskName != "Arrest")
                         {
@@ -613,7 +615,7 @@ public static class Tasking
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Arrest";
-                            LocalWriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest, {0}", Cop.CopPed.Handle));
+                            //LocalWriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest, {0}", Cop.CopPed.Handle));
                         }
                     }
                     else
@@ -684,7 +686,7 @@ public static class Tasking
                 if (Cop.CopPed.LastVehicle.Exists() && !Cop.CopPed.LastVehicle.IsPoliceVehicle)
                     Cop.CopPed.ClearLastVehicle();
             }
-            LocalWriteToLog("Task Chasing", string.Format("Loop End: {0}", Cop.CopPed.Handle));
+           // LocalWriteToLog("Task Chasing", string.Format("Loop End: {0}", Cop.CopPed.Handle));
             Cop.TaskFiber = null;
             Cop.isTasked = false;
             Cop.TaskType = PoliceTask.Task.NoTask;
@@ -702,7 +704,7 @@ public static class Tasking
         //Cop.SimpleTaskName = "SimpleChase";
         Cop.CopPed.Tasks.GoToWhileAiming(Game.LocalPlayer.Character, 10f, 40f);
         Cop.CopPed.KeepTasks = true;
-        LocalWriteToLog("TaskSimpleChase", "How many times i this getting called?");
+       // LocalWriteToLog("TaskSimpleChase", "How many times i this getting called?");
     }
     private static void TaskSimpleArrest(GTACop Cop)
     {
@@ -722,20 +724,20 @@ public static class Tasking
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
         Cop.CopPed.KeepTasks = true;
-        LocalWriteToLog("TaskSimpleArrest", string.Format("Started SimpleArrest: {0}", Cop.CopPed.Handle));
+       // LocalWriteToLog("TaskSimpleArrest", string.Format("Started SimpleArrest: {0}", Cop.CopPed.Handle));
     }
     private static void TaskVehicleChase(GTACop Cop)
     {
         if (!PoliceScanning.CopPeds.Any(x => x.TaskType == PoliceTask.Task.Chase))
         {
-            LocalWriteToLog("Task Vehicle Chasing", string.Format("Didn't Start Vehicle Chase: {0}", Cop.CopPed.Handle));
+           // LocalWriteToLog("Task Vehicle Chasing", string.Format("Didn't Start Vehicle Chase: {0}", Cop.CopPed.Handle));
             return; //Only task this is we already have officers on foot
         }
 
         Cop.TaskFiber =
         GameFiber.StartNew(delegate
         {
-            LocalWriteToLog("Task Vehicle Chasing", string.Format("Started Vehicle Chase: {0}", Cop.CopPed.Handle));
+           // LocalWriteToLog("Task Vehicle Chasing", string.Format("Started Vehicle Chase: {0}", Cop.CopPed.Handle));
             uint TaskTime = Game.GameTime;
             Cop.CopPed.BlockPermanentEvents = true;
             Cop.TaskType = PoliceTask.Task.VehicleChase;
@@ -752,17 +754,17 @@ public static class Tasking
                 {
                     if (!Cop.CopPed.IsInAnyVehicle(false))
                     {
-                        LocalWriteToLog("Task Vehicle Chase", string.Format("I got out of my car like a dummy: {0}", Cop.CopPed.Handle));
+                       // LocalWriteToLog("Task Vehicle Chase", string.Format("I got out of my car like a dummy: {0}", Cop.CopPed.Handle));
                         break;
                     }
                     if (InstantAction.PlayerInVehicle)
                     {
-                        LocalWriteToLog("Task Vehicle Chase", string.Format("Player got in a vehicle, letting ai takeover: {0}", Cop.CopPed.Handle));
+                       // LocalWriteToLog("Task Vehicle Chase", string.Format("Player got in a vehicle, letting ai takeover: {0}", Cop.CopPed.Handle));
                         break;
                     }
                     if (!Cop.RecentlySeenPlayer())
                     {
-                        LocalWriteToLog("Task Vehicle Chase", string.Format("Lost the player, let AI takeover: {0}", Cop.CopPed.Handle));
+                      //  LocalWriteToLog("Task Vehicle Chase", string.Format("Lost the player, let AI takeover: {0}", Cop.CopPed.Handle));
                         break;
                     }
                     Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
@@ -785,7 +787,7 @@ public static class Tasking
                 Cop.CopPed.BlockPermanentEvents = false;
                 Cop.CopPed.Tasks.Clear();
             }
-            LocalWriteToLog("Task Vehicle Chase", string.Format("Loop End: {0}", Cop.CopPed.Handle));
+            //LocalWriteToLog("Task Vehicle Chase", string.Format("Loop End: {0}", Cop.CopPed.Handle));
             Cop.TaskFiber = null;
             Cop.isTasked = false;
             //Cop.SimpleTaskName = "";
@@ -812,7 +814,7 @@ public static class Tasking
         if (Cop.isInVehicle && Police.PlayerLastSeenInVehicle)
         {
             Cop.CopPed.Tasks.CruiseWithVehicle(30f, VehicleDrivingFlags.Emergency);
-            LocalWriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(CruiseWithVehicle): {0}", Cop.CopPed.Handle));
+            //LocalWriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(CruiseWithVehicle): {0}", Cop.CopPed.Handle));
         }
         if (Cop.isInVehicle && !Police.PlayerLastSeenInVehicle && Police.AnyPoliceSeenPlayerThisWanted)
         {
@@ -833,11 +835,11 @@ public static class Tasking
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.CopPed, lol);
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
-            LocalWriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(ExitVehicleWander): {0}", Cop.CopPed.Handle));
+            //LocalWriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(ExitVehicleWander): {0}", Cop.CopPed.Handle));
         }
         else if(!Cop.isInVehicle)
         {
-            LocalWriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(Wander): {0}", Cop.CopPed.Handle));
+            //LocalWriteToLog("TaskSimpleInvestigate", string.Format("Started SimpleInvestigate(Wander): {0}", Cop.CopPed.Handle));
             Cop.CopPed.Tasks.GoStraightToPosition(TargetLocation, 500f, Police.PlayerLastSeenHeading, 1f, -1);
             //Cop.CopPed.Tasks.Wander();
         }
@@ -854,7 +856,7 @@ public static class Tasking
         else
             NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.CopPed, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 500f, -1, 0f, 2f);
 
-        LocalWriteToLog("TaskGoToWantedCenter", string.Format("Started GoToWantedCenter: {0}", Cop.CopPed.Handle));
+       // LocalWriteToLog("TaskGoToWantedCenter", string.Format("Started GoToWantedCenter: {0}", Cop.CopPed.Handle));
     }
     private static void TaskHeliChase(GTACop Cop)
     {
@@ -864,7 +866,7 @@ public static class Tasking
         Cop.CopPed.BlockPermanentEvents = true;
         NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.CopPed, Game.LocalPlayer.Character, 25f, 25f, 40f);
 
-        LocalWriteToLog("TaskGoToWantedCenter", string.Format("Started HeliChase: {0}", Cop.CopPed.Handle));
+        //LocalWriteToLog("TaskGoToWantedCenter", string.Format("Started HeliChase: {0}", Cop.CopPed.Handle));
     }
     public static void TaskK9(GTACop Cop)
     {
@@ -879,7 +881,7 @@ public static class Tasking
             while (Cop.CopPed.Exists() && !Cop.CopPed.IsDead && Cop.CopPed.IsInAnyVehicle(false) && !Cop.CopPed.CurrentVehicle.IsSeatFree(-1))
                 GameFiber.Sleep(2000);
 
-            LocalWriteToLog("Task K9 Chasing", string.Format("Near Player Chase: {0}", Cop.CopPed.Handle));
+           // LocalWriteToLog("Task K9 Chasing", string.Format("Near Player Chase: {0}", Cop.CopPed.Handle));
 
             while (Cop.CopPed.Exists() && !Cop.CopPed.IsDead)
             {
@@ -898,14 +900,14 @@ public static class Tasking
                         //Cop.CopPed.Heading = Game.LocalPlayer.Character.Heading;
                         TaskTime = Game.GameTime;
                         LocalTaskName = "Exit";
-                        LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Exit");
+                       // LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Exit");
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait && LocalTaskName != "Arrest")
                     {
                         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.CopPed, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
                         TaskTime = Game.GameTime;
                         LocalTaskName = "Arrest";
-                        LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Arresting");
+                       // LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Arresting");
                     }
                     else if ((Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase) && LocalTaskName != "GotoFighting" && _locrangeTo <= 10f) //was 10f
                     {
@@ -914,7 +916,7 @@ public static class Tasking
                         TaskTime = Game.GameTime;
                         LocalTaskName = "GotoFighting";
                         //GameFiber.Sleep(25000);
-                        LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Fighting");
+                       // LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with Fighting");
                     }
                     else if ((Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase) && LocalTaskName != "Goto" && _locrangeTo >= 15f) //was 15f
                     {
@@ -922,7 +924,7 @@ public static class Tasking
                         Cop.CopPed.KeepTasks = true;
                         TaskTime = Game.GameTime;
                         LocalTaskName = "Goto";
-                        LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with GoTo");
+                       // LocalWriteToLog("TaskK9Chasing", "Cop SubTasked with GoTo");
                     }
 
                     if (Police.CurrentPoliceState == Police.PoliceState.Normal || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
@@ -956,7 +958,7 @@ public static class Tasking
                 AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.RandomSpawnIdle));
             }
         }
-        LocalWriteToLog("RetaskAllRandomSpawns", "Done");
+       // LocalWriteToLog("RetaskAllRandomSpawns", "Done");
     }
     private static void RandomSpawnIdle(GTACop Cop)
     {
@@ -978,12 +980,12 @@ public static class Tasking
                         NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.CopPed, lol);
                         NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                     }
-                    LocalWriteToLog("RetaskAllRandomSpawns", "Told him to get in and drive");
+                   // LocalWriteToLog("RetaskAllRandomSpawns", "Told him to get in and drive");
                 }
                 else
                 {
                     Cop.CopPed.Tasks.Wander();
-                    LocalWriteToLog("RetaskAllRandomSpawns", "Told him to wander");
+                 //   LocalWriteToLog("RetaskAllRandomSpawns", "Told him to wander");
                 }
             }
             else
@@ -992,7 +994,7 @@ public static class Tasking
                 Cop.CopPed.CurrentVehicle.IsSirenOn = false;
                 //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Cop.CopPed, Cop.CopPed.CurrentVehicle, 18f, 183);
                 //Cop.CopPed.Tasks.Wander();
-                LocalWriteToLog("RetaskAllRandomSpawns", "Told him to drive");
+               // LocalWriteToLog("RetaskAllRandomSpawns", "Told him to drive");
             }
         }
 
@@ -1021,7 +1023,7 @@ public static class Tasking
                 AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
             }
         }
-        LocalWriteToLog("UntaskAll", "");
+       // LocalWriteToLog("UntaskAll", "");
     }
     public static void UntaskAllRandomSpawns(bool OnlyTasked)
     {
@@ -1039,7 +1041,7 @@ public static class Tasking
             }
         }
 
-        LocalWriteToLog("UntaskAll Random", "");
+        //LocalWriteToLog("UntaskAll Random", "");
     }
     private static void Untask(GTACop Cop)
     {
@@ -1072,10 +1074,10 @@ public static class Tasking
 
             }
 
-            if (WasInVehicle)
-                LocalWriteToLog("Untask", string.Format("Untasked: {0} in vehicle", Cop.CopPed.Handle));
-            else
-                LocalWriteToLog("Untask", string.Format("Untasked: {0}", Cop.CopPed.Handle));
+            //if (WasInVehicle)
+            //    LocalWriteToLog("Untask", string.Format("Untasked: {0} in vehicle", Cop.CopPed.Handle));
+            //else
+            //    LocalWriteToLog("Untask", string.Format("Untasked: {0}", Cop.CopPed.Handle));
         }
 
         Cop.TaskType = PoliceTask.Task.NoTask;

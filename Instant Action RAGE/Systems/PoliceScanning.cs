@@ -91,4 +91,25 @@ public static class PoliceScanning
         //Civilians.RemoveAll(x => !x.Exists() || x.IsDead);
         // Police.CheckKilled();
     }
+    public static void ClearPoliceAroundPlayer(float Radius)
+    {
+        foreach (GTACop Cop in CopPeds.Where(x => x.DistanceToPlayer <= Radius))
+        {
+            if (Cop.CopPed.Exists())
+            {
+                if (Cop.CopPed.IsInAnyVehicle(false))
+                    Cop.CopPed.CurrentVehicle.Delete();
+                Cop.CopPed.Delete();
+            }
+        }
+        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, Radius, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        foreach (Vehicle MyVehicle in Vehicles.Where(s => s.Exists()))
+        {
+            if(MyVehicle.IsPoliceVehicle)
+            {
+                MyVehicle.Delete();
+            }
+        }
+
+    }
 }

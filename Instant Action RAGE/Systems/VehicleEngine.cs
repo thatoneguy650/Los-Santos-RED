@@ -161,11 +161,11 @@ internal static class VehicleEngine
     {
         if(PlayerInVehicle)
         {
-            LocalWriteToLog("EnterExitVehicleEvent", "You got into a vehicle");
+           // LocalWriteToLog("EnterExitVehicleEvent", "You got into a vehicle");
             if (Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
             {
                 EngineRunning = true;
-                LocalWriteToLog("EnterExitVehicleEvent", "The Engine was already on");
+                //LocalWriteToLog("EnterExitVehicleEvent", "The Engine was already on");
             }
             else
             {
@@ -175,15 +175,15 @@ internal static class VehicleEngine
                 if(Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
                 {
                     GameTimeStartedHotwiring = Game.GameTime;
-                    LocalWriteToLog("EnterExitVehicleEvent", "The Engine was off and Needed Hotwire");
+                    //LocalWriteToLog("EnterExitVehicleEvent", "The Engine was off and Needed Hotwire");
                 }
 
-                LocalWriteToLog("EnterExitVehicleEvent", "The Engine was off");
+                //LocalWriteToLog("EnterExitVehicleEvent", "The Engine was off");
             }
         }
         else
         {
-            LocalWriteToLog("EnterExitVehicleEvent", "You got out of a vehicle");
+          // LocalWriteToLog("EnterExitVehicleEvent", "You got out of a vehicle");
             if(Game.LocalPlayer.Character.LastVehicle.Exists())
                 Game.LocalPlayer.Character.LastVehicle.IsEngineOn = EngineRunning;
         }
@@ -222,7 +222,7 @@ internal static class VehicleEngine
                     EngineRunning = true;
             }
         }
-        LocalWriteToLog("ToggleEngine", "toggled");
+        //LocalWriteToLog("ToggleEngine", "toggled");
         TogglingEngine = false;
     }
     private static bool StartEngineAnimation()
@@ -268,7 +268,7 @@ internal static class VehicleEngine
                 NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
             }
         }
-        LocalWriteToLog("ToggleEngine", "toggled");
+        //LocalWriteToLog("ToggleEngine", "toggled");
         //ChangingStation = false;
     }
     private static bool ChangeStationAnimation()

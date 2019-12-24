@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-[assembly: Rage.Attributes.Plugin("Instant Action", Description = "Oh yeah.", Author = "notPhoon")]
+[assembly: Rage.Attributes.Plugin("Instant Action", Description = "My first mod, please don't hurt me", Author = "Greskrendtregk")]
 
 public static class EntryPoint
 {

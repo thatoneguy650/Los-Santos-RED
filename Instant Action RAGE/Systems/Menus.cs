@@ -71,13 +71,13 @@ internal static class Menus
         TakeoverRadius = -1f;
         ChangePlateIndex = 0;
         menuPool = new MenuPool();
-        mainMenu = new UIMenu("Instant Action", "Select an Option");
+        mainMenu = new UIMenu("Los Santos RED", "Select an Option");
         menuPool.Add(mainMenu);
-        deathMenu = new UIMenu("Instant Action", "Choose Respawn (Wasted)");
+        deathMenu = new UIMenu("Wasted", "Choose Respawn");
         menuPool.Add(deathMenu);
-        debugMenu = new UIMenu("Instant Action", "Debug");
+        debugMenu = new UIMenu("Debug", "Debug Settings");
         menuPool.Add(debugMenu);
-        bustedMenu = new UIMenu("Instant Action", "Choose Respawn (Busted)");
+        bustedMenu = new UIMenu("Busted", "Choose Respawn");
         menuPool.Add(bustedMenu);
 
         CreateMainMenu();
@@ -110,12 +110,12 @@ internal static class Menus
         menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));
         menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-       // menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
+        menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
         bustedMenu.AddItem(menuBustedResistArrest);
         bustedMenu.AddItem(menuBustedBribe);
         bustedMenu.AddItem(menuBustedSurrender);
-        //bustedMenu.AddItem(menuBustedTakeoverRandomPed);
+        bustedMenu.AddItem(menuBustedTakeoverRandomPed);
 
         mainMenu.OnItemSelect += MainMenuSelect;
         mainMenu.OnListChange += OnListChange;
@@ -365,10 +365,15 @@ internal static class Menus
     {
         if (selectedItem == menuMainTakeoverRandomPed)
         {
+            if(InstantAction.PlayerWantedLevel > 0)
+            {
+                Game.DisplayNotification("Lose your wanted level first");
+                return;
+            }
             if (TakeoverRadius == -1f)
-                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false,true,false);
             else
-                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false,true,false);
         }
         else if (selectedItem == menuMainSuicide)
         {
@@ -408,9 +413,9 @@ internal static class Menus
         else if (selectedItem == menuBustedTakeoverRandomPed)
         {
             if (TakeoverRadius == -1f)
-                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), true, false,true,true);
             else
-                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), true, false,true,true);
         }
         bustedMenu.Visible = false;
     }
@@ -427,9 +432,9 @@ internal static class Menus
         else if (selectedItem == menuDeathTakeoverRandomPed)
         {
             if (TakeoverRadius == -1f)
-                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), false, false);
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(500f, true), true, false,true,true);
             else
-                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false);
+                PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), true, false,true,true);
         }
         deathMenu.Visible = false;
     }

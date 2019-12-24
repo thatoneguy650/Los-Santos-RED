@@ -14,16 +14,16 @@ internal static class RespawnStopper
     public static void Initialize()
     {
         IsRunning = true;
-        IntPtr MyPtr = Game.GetScriptGlobalVariableAddress(4);
-        Marshal.WriteInt32(MyPtr, 1);
+        IntPtr MyPtr = Game.GetScriptGlobalVariableAddress(4);//the script id for respawn_controller
+        Marshal.WriteInt32(MyPtr, 1);//setting it to 1 turns it off somehow?
         Game.TerminateAllScriptsWithName("respawn_controller");
         MainLoop();
     }
     public static void Dispose()
     {
         IsRunning = false;
-        IntPtr MyPtr = Game.GetScriptGlobalVariableAddress(4);
-        Marshal.WriteInt32(MyPtr, 0);
+        IntPtr MyPtr = Game.GetScriptGlobalVariableAddress(4);//the script id for respawn_controller
+        Marshal.WriteInt32(MyPtr, 0);//setting it to 0 turns it on somehow?
         Game.StartNewScript("respawn_controller");
         Game.StartNewScript("selector");
     }
@@ -42,7 +42,7 @@ internal static class RespawnStopper
                     //GameFiber.Yield();
                     //Game.TerminateAllScriptsWithName("respawn_controller");
                     //GameFiber.Yield();
-                    Game.TerminateAllScriptsWithName("selector");
+                    Game.TerminateAllScriptsWithName("selector");//dont allow you to change main characters either
                     // GameFiber.Yield();
 
                     //NativeFunction.Natives.x4A18E01DF2C87B86(false);

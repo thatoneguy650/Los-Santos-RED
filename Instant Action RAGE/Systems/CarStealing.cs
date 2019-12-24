@@ -450,7 +450,7 @@ public static class CarStealing
             GroundZ = 0f;
         float DriverDistanceToGround = DriverSeatCoordinates.Z - (float)GroundZ;
         LocalWriteToLog("GetCarjackingAnimations", string.Format("VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
-        if (VehicleClass == Vehicles.VehicleClass.Vans)
+        if (VehicleClass == Vehicles.VehicleClass.Vans && DriverDistanceToGround > 1.5f)
         {
             if (MyGun.IsTwoHanded)
             {

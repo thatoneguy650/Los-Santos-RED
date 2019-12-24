@@ -284,11 +284,11 @@ internal static class DispatchAudio
 
         GameFiber PlayAudioList = GameFiber.StartNew(delegate
         {
-            if (WeatherReporting.IsReportingWeather)
-            {
-                AbortAllAudio();
-                WeatherReporting.IsReportingWeather = false;
-            }
+            //if (WeatherReporting.IsReportingWeather)
+            //{
+            //    AbortAllAudio();
+            //    WeatherReporting.IsReportingWeather = false;
+            //}
 
             while (IsPlayingAudio)
                 GameFiber.Yield();
@@ -541,7 +541,7 @@ internal static class DispatchAudio
         if (MyZone != null && MyZone.DispatchUnitAudio.Any())
         {
             ScannerList.Add(MyZone.DispatchUnitAudio.PickRandom());
-            Subtitles += "Attention any " + MyZone.TextName + " units,";
+            Subtitles += "Attention any ~g~" + MyZone.DispatchUnitName + "~s~,";
             return true;
         }
         else
@@ -1140,7 +1140,7 @@ internal static class DispatchAudio
             Subtitles += " a possible ~r~Stolen Vehicle~s~";
         }
         AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles);
-        ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles,stolenVehicle.PositionOriginallyEntered);
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles,stolenVehicle.PositionOriginallyEntered);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
         GameFiber ReportStolenVehicle = GameFiber.StartNew(delegate
         {
@@ -1201,7 +1201,7 @@ internal static class DispatchAudio
 
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.AllUnits, ReportType.Nobody, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<string>() { officer_begin_patrol.Beginpatrol.FileName, officer_begin_patrol.Beginbeat.FileName, officer_begin_patrol.Assigntopatrol.FileName, officer_begin_patrol.Proceedtopatrolarea.FileName, officer_begin_patrol.Proceedwithpatrol.FileName }.PickRandom());
-        Subtitles += "~s~, process with patrol";
+        Subtitles += " ~g~proceed with patrol~s~";
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Police.LastWantedCenterPosition);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -1781,6 +1781,7 @@ internal static class DispatchAudio
         CancelAudio = true;
         if (AudioPlaying)
             outputDevice.Stop();
+        CancelAudio = false;
     }
     public class DispatchAudioEvent
     {

@@ -535,7 +535,7 @@ public static class Debugging
     {
 
         Settings.Logging = true;
-
+        DispatchAudio.ReportLowLevelShotsFired();
 
 
         WriteToLog("WantedLevel", string.Format("Player Position: {0},Heading: {1}", Game.LocalPlayer.Character.Position, Game.LocalPlayer.Character.Heading));

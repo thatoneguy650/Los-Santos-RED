@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 public class WantedLevelStats
 {
-    private int MaxWantedLevel = 0;
+    public int MaxWantedLevel = 0;
     private int CopsKilledByPlayer = 0;
     private int CiviliansKilledByPlayer = 0;
     private bool PlayerHurtPolice = false;
@@ -58,6 +58,7 @@ public class WantedLevelStats
         Police.PlayerKilledCivilians = PlayerKilledCivilians;
         Police.PlayerAimedAtPolice = PlayerAimedAtPolice;
         Police.PlayerFiredWeaponNearPolice = PlayerFiredWeaponNearPolice;
+        Police.CurrentPoliceState = MaxPoliceState;
 
         DispatchAudio.ReportedOfficerDown = DispatchReportedOfficerDown;
         DispatchAudio.ReportedLethalForceAuthorized = DispatchReportedLethalForceAuthorized;
