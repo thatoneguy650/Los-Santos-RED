@@ -199,6 +199,13 @@ public static class WeatherReporting
     {
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && InstantAction.PlayerWantedLevel == 0 && Police.PlayerHasBeenNotWantedFor > 15000)//Aren;t wanted and haven't been wanted for 15 seconds
         {
+            string WeatherFile = GetAudioFromWeatherType(WeatherToReport);
+            if (WeatherFile == "")
+            {
+                Debugging.WriteToLog("ReportWeather", "No weather file found looking for " + WeatherToReport);
+                return;
+            }
+
             string RadioStationName;
             unsafe
             {
@@ -219,12 +226,7 @@ public static class WeatherReporting
             };
             if ((WeatherToReport == WeatherTypeHash.Clear || WeatherToReport == WeatherTypeHash.ExtraSunny) && Police.IsNightTime)//Audio files don't really make sense at night
                 return;
-            string WeatherFile = GetAudioFromWeatherType(WeatherToReport);
-            if (WeatherFile == "")
-            {
-                Debugging.WriteToLog("ReportWeather", "No weather file found looking for " + WeatherToReport);
-                return;
-            }
+
             else
             {
                 ScannerList.Add(WeatherFile);

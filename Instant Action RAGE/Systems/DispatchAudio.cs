@@ -76,7 +76,8 @@ internal static class DispatchAudio
         ReportPersonOfInterestExpire = 27,
         ReportSuspectLostVisual = 28,
         ReportLowLevelTerroristActivity = 29,
-}
+        ReportTrespassingOnGovernmentProperty = 30,
+    }
     public enum NearType
     {
         Nothing = 0,
@@ -476,6 +477,8 @@ internal static class DispatchAudio
                         ReportSuspectLostVisual();
                     else if (Item.Type == ReportDispatch.ReportLowLevelTerroristActivity)
                         ReportLowLevelTerroristActivity();
+                    else if (Item.Type == ReportDispatch.ReportTrespassingOnGovernmentProperty)
+                        ReportTrespassingOnGovernmentProperty();
                     //else
                     //    //ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
@@ -485,6 +488,7 @@ internal static class DispatchAudio
             Debugging.GameFibers.Add(PlayDispatchQueue);
         }
     }
+
     public static void ClearDispatchQueue()
     {
         DispatchQueue.Clear();
@@ -685,6 +689,22 @@ internal static class DispatchAudio
         AddLethalForceAuthorized(ref ScannerList, ref Subtitles);
         ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false,Subtitles));
+    }
+    private static void ReportTrespassingOnGovernmentProperty()
+    {
+        if (ReportedShotsFired || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+            return;
+
+        ReportedLethalForceAuthorized = true;
+
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
+        ScannerList.Add(crime_trespassing_on_government_property.Trespassingongovernmentproperty.FileName);
+        Subtitles += " ~r~Trespassing on Government Propertyr~s~";
+        AddLethalForceAuthorized(ref ScannerList, ref Subtitles);
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
     public static void ReportCarryingWeapon(GTAWeapon CarryingWeapon)
     {
