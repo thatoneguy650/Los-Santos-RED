@@ -78,10 +78,24 @@ public static class InstantAction
         {
             if (GameTimePlayerLastShot == 0)
                 return false;
-            else if (Game.GameTime - GameTimePlayerLastShot <= 20000)
+            else if (Game.GameTime - GameTimePlayerLastShot <= 15000)
                 return true;
             else
                 return false;
+        }
+    }
+    public static bool PlayerIsNotWanted
+    {
+        get
+        {
+            return PlayerWantedLevel == 0;
+        }
+    }
+    public static bool PlayerIsWanted
+    {
+        get
+        {
+            return PlayerWantedLevel > 0;
         }
     }
     public static bool PlayerHoldingEnter
@@ -129,6 +143,8 @@ public static class InstantAction
         GameTimePlayerLastShot = 0;
         GameTimeStartedHoldingEnter = 0;
 
+        Game.LocalPlayer.Character.CanBePulledOutOfVehicles = true;
+
         while (Game.IsLoading)
             GameFiber.Yield();
 
@@ -162,12 +178,11 @@ public static class InstantAction
         SearchModeStopping.Initialize();
         UI.Initialize();
         PedSwapping.Initialize();
+        PersonOfInterest.Initialize();
         MainLoop();
     }
     public static void MainLoop()
     {
-        Game.LocalPlayer.Character.CanBePulledOutOfVehicles = true;
-
         var stopwatch = new Stopwatch();
         GameFiber.StartNew(delegate
         {
@@ -228,6 +243,7 @@ public static class InstantAction
         SearchModeStopping.Dispose();
         WeatherReporting.Dispose();
         PedSwapping.Dispose();
+        PersonOfInterest.Dispose();
     }
 
     private static void UpdatePlayer()
@@ -245,6 +261,12 @@ public static class InstantAction
             else
                 PlayerOnMotorcycle = false;
         }
+        else
+        {
+            PlayerOnMotorcycle = false;
+            PlayerInAutomobile = false;
+        }
+
         if (Game.LocalPlayer.Character.IsShooting)
             GameTimePlayerLastShot = Game.GameTime;
         PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
@@ -252,6 +274,8 @@ public static class InstantAction
         PlayerIsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
         PlayerAimingInVehicle = PlayerInVehicle && Game.LocalPlayer.IsFreeAiming;
         WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
+        
+
         if (PlayerCurrentWeapon != null)
             PlayerCurrentWeaponHash = PlayerCurrentWeapon.Hash;
         else
@@ -292,10 +316,10 @@ public static class InstantAction
         if (PlayerWantedLevel > MaxWantedLastLife) // The max wanted level i saw in the last life, not just right before being busted
             MaxWantedLastLife = PlayerWantedLevel;
 
-        if (PedSwapping.JustTakenOver(10000) && PlayerWantedLevel > 0 && !Police.RecentlySetWanted)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
-        {
-            Police.SetWantedLevel(0,"Resetting wanted just after takeover");
-        }
+        //if (PedSwapping.JustTakenOver(10000) && PlayerWantedLevel > 0 && !Police.RecentlySetWanted)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
+        //{
+        //    Police.SetWantedLevel(0,"Resetting wanted just after takeover");
+        //}
     }
     private static void TrackCurrentVehicle()
     {
@@ -322,12 +346,11 @@ public static class InstantAction
     }
     private static void PlayerBustedEvent()
     {
-        DiedInVehicle = PlayerInVehicle; //Game.LocalPlayer.Character.IsInAnyVehicle(false);
+        DiedInVehicle = PlayerInVehicle;
         IsBusted = true;
         BeingArrested = true;
         Game.LocalPlayer.Character.Tasks.Clear();
         NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);//_START_SCREEN_EFFECT
-        //Game.TimeScale = 0.4f;
         TransitionToSlowMo();
         HandsAreUp = false;
         Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false);
@@ -348,9 +371,8 @@ public static class InstantAction
         Game.LocalPlayer.Character.Health = 0;
         Game.LocalPlayer.Character.IsInvincible = true;
         Police.SetWantedLevel(0,"You died");
-        //Game.TimeScale = 0.4f;
         TransitionToSlowMo();
-        if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked))
+        if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked || x.canSeePlayer))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {

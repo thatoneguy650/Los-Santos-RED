@@ -100,7 +100,7 @@ public static class Streets
             new Street("Plaice Pl", 30f),
             new Street("Chum St", 40f, ScannerAudio.streets.ChumStreet.FileName),
             new Street("Chupacabra St", 30f),
-            new Street("Miriam Turner Overpass", 30f, ScannerAudio.streets.MiriamTurnerOverpass.FileName),
+            new Street("Miriam Turner Overpass", 60f, ScannerAudio.streets.MiriamTurnerOverpass.FileName),
             new Street("Autopia Pkwy", 35f, ScannerAudio.streets.AltopiaParkway.FileName),
             new Street("Exceptionalists Way", 35f, ScannerAudio.streets.ExceptionalistWay.FileName),
             new Street("La Puerta Fwy", 60f, "", true),
@@ -236,7 +236,6 @@ public static class Streets
     {
 
     }
-
     public static Street GetStreetFromName(string StreetName)
     {
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();

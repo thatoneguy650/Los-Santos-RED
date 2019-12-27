@@ -79,6 +79,9 @@ internal static class PedSwapping
         {
             if (TargetPed == null)
                 return;
+            PoliceScanning.ClearPolice();
+            Vector3 CurrentPosition = Game.LocalPlayer.Character.Position;
+            Vector3 TargetPedPosition = TargetPed.Position;
 
 
             if (Game.LocalPlayer.Character.IsDead)
@@ -128,9 +131,7 @@ internal static class PedSwapping
             }
 
             NativeFunction.CallByName<uint>("CHANGE_PLAYER_PED", Game.LocalPlayer, TargetPed, false, false);
-
             CurrentPed.IsPersistent = false;
-
 
             if (DeleteOld)
                 CurrentPed.Delete();
@@ -168,37 +169,40 @@ internal static class PedSwapping
 
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
             Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
+
+            InstantAction.IsDead = false;
+            InstantAction.IsBusted = false;
+            InstantAction.BeingArrested = false;
             InstantAction.TimesDied = 0;
             InstantAction.MaxWantedLastLife = 0;
+            InstantAction.LastWeapon = 0;
+
             Game.TimeScale = 1f;
             Police.SetWantedLevel(0,"Reset After Takeover as a precaution");
+
             NativeFunction.Natives.xB4EDDC19532BFB85();
             Game.HandleRespawn();
             NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
             NativeFunction.Natives.xC0AA53F866B3134D();
+
             Police.RemoveWantedBlips();
-            InstantAction.IsDead = false;
-            InstantAction.IsBusted = false;
-            
-            InstantAction.BeingArrested = false;
-            TrafficViolations.ResetTrafficViolations();
             Police.ResetPoliceStats();
-            Police.ResetPersonOfInterest();
-            Police.CurrentPoliceState = Police.PoliceState.Normal;
+
             GameTimeLastTakenOver = Game.GameTime;
             Menus.TakeoverRadius = -1f;//reset this on the menu
-            InstantAction.LastWeapon = 0;
+
             CurrentPed.IsPersistent = false;
             if (Game.LocalPlayer.Character.IsWearingHelmet)
             {
                 PedOriginallyHadHelmet = true;
             }
-            if(ClearNearPolice)
-            {
-                PoliceScanning.ClearPoliceAroundPlayer(150f);
-            }
+            //if(ClearNearPolice)
+            //{
+            //    PoliceScanning.ClearPolice();
+            //}
+            
 
-            if(AdvanceTime)
+            if (AdvanceTime)
             {
                 World.DateTime.AddHours(18);
             }

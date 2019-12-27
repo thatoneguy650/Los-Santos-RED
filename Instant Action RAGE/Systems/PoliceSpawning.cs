@@ -18,6 +18,8 @@ public static class PoliceSpawning
    // private static uint K9Interval;
     private static uint RandomCopInterval;
     private static uint CleanupCopInterval;
+    private static uint K9Interval;
+
     public static bool IsRunning { get; set; }
     static PoliceSpawning()
     {
@@ -28,6 +30,7 @@ public static class PoliceSpawning
         CreatedEntities = new List<Entity>();
         RandomCopInterval = 0;
         CleanupCopInterval = 0;
+        K9Interval = 0;
         IsRunning = true;
         MainLoop();
     }
@@ -43,13 +46,13 @@ public static class PoliceSpawning
                     stopwatch.Start();
                     //if (Settings.SpawnPoliceK9 && Game.GameTime > K9Interval + 5555) // was 2000
                     //{
-                    //    if (Game.LocalPlayer.WantedLevel > 0 && 1==0 && !InstantAction.PlayerInVehicle && PoliceScanning.K9Peds.Count < 3)
+                    //    if (Game.LocalPlayer.WantedLevel > 0 && !InstantAction.PlayerInVehicle && PoliceScanning.K9Peds.Count < 3)
                     //        CreateK9();
                     //    MoveK9s();
                     //    K9Interval = Game.GameTime;
                     //}
 
-                    if(InstantAction.PlayerWantedLevel == 0 || Police.PlayerHasBeenWantedFor >= 15000)
+                    if (InstantAction.PlayerWantedLevel == 0 || Police.PlayerHasBeenWantedFor >= 15000)
                     {
                         if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
                         {
@@ -357,12 +360,12 @@ public static class PoliceSpawning
                 CreatedEntities.Add(Doggo);
                 Doggo.BlockPermanentEvents = true;
                 Doggo.IsPersistent = false;
-                Doggo.RelationshipGroup = "COPDOGS";
-                Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
-                Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
-                //Doggo.Health = 50;
-                Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
-                Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
+                //Doggo.RelationshipGroup = "COPDOGS";
+                //Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
+                //Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
+                ////Doggo.Health = 50;
+                //Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
+                //Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
                 GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health, ClosestDriver.AssignedAgency);
                 PoliceScanning.K9Peds.Add(DoggoCop);
                 Tasking.TaskK9(DoggoCop);

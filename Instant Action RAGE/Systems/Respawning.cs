@@ -138,14 +138,11 @@ public static class Respawning
         Game.TimeScale = 1f;
         if (ClearWanted)
         {
+            PersonOfInterest.ResetPersonOfInterest();
             Police.ResetPoliceStats();
             Police.SetWantedLevel(0,"Reset player with Clear Wanted");
             InstantAction.MaxWantedLastLife = 0;  
-            TrafficViolations.ResetTrafficViolations();
-            Police.ResetPersonOfInterest();
-            DispatchAudio.ResetReportedItems();
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-            Police.StopWantedTemporarily(15000);
         }
 
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;

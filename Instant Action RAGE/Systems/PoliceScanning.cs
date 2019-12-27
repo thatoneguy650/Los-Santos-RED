@@ -91,9 +91,9 @@ public static class PoliceScanning
         //Civilians.RemoveAll(x => !x.Exists() || x.IsDead);
         // Police.CheckKilled();
     }
-    public static void ClearPoliceAroundPlayer(float Radius)
+    public static void ClearPoliceAroundArea(Vector3 Location,float Radius)
     {
-        foreach (GTACop Cop in CopPeds.Where(x => x.DistanceToPlayer <= Radius))
+        foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.DistanceTo2D(Location) <= Radius))
         {
             if (Cop.CopPed.Exists())
             {
@@ -102,7 +102,7 @@ public static class PoliceScanning
                 Cop.CopPed.Delete();
             }
         }
-        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, Radius, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Location, Radius, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
         foreach (Vehicle MyVehicle in Vehicles.Where(s => s.Exists()))
         {
             if(MyVehicle.IsPoliceVehicle)
@@ -111,5 +111,33 @@ public static class PoliceScanning
             }
         }
 
+    }
+
+    public static void ClearPolice()
+    {
+        Tasking.UntaskAll(true);
+        foreach (GTACop Cop in K9Peds.Where(x => x.CopPed.Exists() && !x.CopPed.IsInHelicopter))
+        {
+            Cop.CopPed.Delete();
+        }
+        foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsInAnyVehicle(false) && !x.CopPed.IsInHelicopter))
+        {
+            Cop.CopPed.Delete();
+        }
+        foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && x.CopPed.IsInAnyVehicle(false) && !x.CopPed.IsInHelicopter))
+        {
+            Cop.CopPed.CurrentVehicle.Delete();
+            Cop.CopPed.Delete();
+        }
+        Ped[] closestPed = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 400f, GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAnimalPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
+        foreach (Ped dog in closestPed)
+        {
+            dog.Delete();
+        }
+        Vehicle[] PoliceCars = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 500f, GetEntitiesFlags.ExcludePlayerVehicle | GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        foreach (Vehicle Veh in PoliceCars.Where(x => x.Exists() && x.IsPoliceVehicle))
+        {
+            Veh.Delete();
+        }
     }
 }

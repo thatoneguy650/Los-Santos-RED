@@ -187,7 +187,9 @@ public static class Tasking
                 
             }
         }
-        SearchModeStopping.StopSearchMode = true;
+
+        //Maybe causing phantom busts?
+        //SearchModeStopping.StopSearchMode = true;
     }
     private static void PoliceStateTick()
     {
@@ -460,12 +462,14 @@ public static class Tasking
             return;
         if (Settings.OverridePoliceAccuracy)
             Cop.CopPed.Accuracy = Settings.PoliceGeneralAccuracy;
+        
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.CopPed, 0);
         if (!(Cop.CopPed.Inventory.EquippedWeapon == null))
         {
             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.CopPed, (uint)2725352035, true); //Unequip weapon so you don't get shot
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, false);
         }
+        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.CopPed, 2, false);//cant do drivebys
         Cop.SetTazer = false;
         Cop.SetUnarmed = true;
         Cop.SetDeadly = false;
@@ -481,6 +485,7 @@ public static class Tasking
         if (!Cop.CopPed.Inventory.Weapons.Contains(Cop.IssuedPistol.Name))
             Cop.CopPed.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, false);
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, true);
+        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.CopPed, 2, true);//can do drivebys
         Cop.SetTazer = false;
         Cop.SetUnarmed = false;
         Cop.SetDeadly = false;
@@ -502,6 +507,7 @@ public static class Tasking
         if (Settings.AllowPoliceWeaponVariations)
             InstantAction.ApplyWeaponVariation(Cop.CopPed, (uint)Cop.IssuedPistol.Hash, Cop.PistolVariation);
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.CopPed, true);
+        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.CopPed, 2, true);//can do drivebys
         Cop.SetTazer = false;
         Cop.SetUnarmed = false;
         Cop.SetDeadly = true;
@@ -583,18 +589,18 @@ public static class Tasking
                     if (Cop.DistanceToPlayer > 100f || !Cop.RecentlySeenPlayer())
                         break;
 
-                    if (Cop.CopPed.IsGettingIntoVehicle)
-                    {
-                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Cop.CopPed.VehicleTryingToEnter.Exists() && Game.LocalPlayer.Character.CurrentVehicle.Handle == Cop.CopPed.VehicleTryingToEnter.Handle)
-                        {
-                            Cop.CopPed.Tasks.Clear();
-                            NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.CopPed, Game.LocalPlayer.Character, 4f, 20f);
-                            Cop.CopPed.KeepTasks = true;
-                            TaskTime = Game.GameTime;
-                            LocalTaskName = "Arrest";
-                            //LocalWriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest From Carjacking!!!!, {0}", Cop.CopPed.Handle));
-                        }
-                    }
+                    //if (Cop.CopPed.IsGettingIntoVehicle)
+                    //{
+                    //    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Cop.CopPed.VehicleTryingToEnter.Exists() && Game.LocalPlayer.Character.CurrentVehicle.Handle == Cop.CopPed.VehicleTryingToEnter.Handle)
+                    //    {
+                    //        Cop.CopPed.Tasks.Clear();
+                    //        NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.CopPed, Game.LocalPlayer.Character, 2f, 20f);
+                    //        Cop.CopPed.KeepTasks = true;
+                    //        TaskTime = Game.GameTime;
+                    //        LocalTaskName = "Arrest";
+                    //        //LocalWriteToLog("TaskChasing", string.Format("Cop SubTasked with Car Arrest From Carjacking!!!!, {0}", Cop.CopPed.Handle));
+                    //    }
+                    //}
 
                     if (InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 2.5f)
                     {
@@ -611,7 +617,7 @@ public static class Tasking
                         }
                         else if (!Cop.isPursuitPrimary && Cop.DistanceToPlayer <= 25f && LocalTaskName != "Arrest")
                         {
-                            NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.CopPed, Game.LocalPlayer.Character, 4f, 20f);
+                            NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.CopPed, Game.LocalPlayer.Character, 2f, 20f);
                             Cop.CopPed.KeepTasks = true;
                             TaskTime = Game.GameTime;
                             LocalTaskName = "Arrest";

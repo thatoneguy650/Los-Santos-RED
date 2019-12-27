@@ -36,6 +36,12 @@ internal static class DispatchAudio
     public static bool ReportedShotsFired = false;
     public static bool ReportedAssaultOnOfficer = false;
     public static bool ReportedLethalForceAuthorized = false;
+    public static bool ReportedTrespassingOnGovernmentProperty = false;
+    public static bool ReportedCarryingWeapon = false;
+    public static bool ReportedThreateningWithAFirearm = false;
+    public static bool ReportedGrandTheftAuto = false;
+    public static bool ReportedSuspiciousVehicle = false;
+
     public static bool AudioPlaying
     {
         get
@@ -77,6 +83,7 @@ internal static class DispatchAudio
         ReportSuspectLostVisual = 28,
         ReportLowLevelTerroristActivity = 29,
         ReportTrespassingOnGovernmentProperty = 30,
+        ReportChangedVehicle = 31,
     }
     public enum NearType
     {
@@ -116,6 +123,11 @@ internal static class DispatchAudio
         ReportedShotsFired = false;
         ReportedAssaultOnOfficer = false;
         ReportedLethalForceAuthorized = false;
+        ReportedTrespassingOnGovernmentProperty = false;
+        ReportedCarryingWeapon = false;
+        ReportedThreateningWithAFirearm = false;
+        ReportedGrandTheftAuto = false;
+        ReportedSuspiciousVehicle = false;
 
         LettersAndNumbersLookup = new List<DispatchLettersNumber>();
         ColorLookups = new List<ColorLookup>();
@@ -479,6 +491,8 @@ internal static class DispatchAudio
                         ReportLowLevelTerroristActivity();
                     else if (Item.Type == ReportDispatch.ReportTrespassingOnGovernmentProperty)
                         ReportTrespassingOnGovernmentProperty();
+                    else if (Item.Type == ReportDispatch.ReportChangedVehicle)
+                        ReportChangedVehicle(Item.VehicleToReport);
                     //else
                     //    //ReportAssualtOnOfficer();
                     DispatchQueue.RemoveAt(0);
@@ -622,7 +636,7 @@ internal static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -637,7 +651,7 @@ internal static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -652,7 +666,7 @@ internal static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -668,7 +682,7 @@ internal static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -692,10 +706,11 @@ internal static class DispatchAudio
     }
     private static void ReportTrespassingOnGovernmentProperty()
     {
-        if (ReportedShotsFired || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+        if (ReportedTrespassingOnGovernmentProperty || ReportedShotsFired || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         ReportedLethalForceAuthorized = true;
+        ReportedTrespassingOnGovernmentProperty = true;
 
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
@@ -708,8 +723,10 @@ internal static class DispatchAudio
     }
     public static void ReportCarryingWeapon(GTAWeapon CarryingWeapon)
     {
-        if (ReportedOfficerDown || ReportedLethalForceAuthorized || ReportedAssaultOnOfficer || InstantAction.IsBusted || InstantAction.IsDead)
+        if (ReportedCarryingWeapon || ReportedOfficerDown || ReportedLethalForceAuthorized || ReportedAssaultOnOfficer || InstantAction.IsBusted || InstantAction.IsDead)
             return;
+
+        ReportedCarryingWeapon = true;
 
         string Subtitles = "";
         List<string> ScannerList = new List<string>();
@@ -879,7 +896,7 @@ internal static class DispatchAudio
     }
     public static void ReportAssualtOnOfficer()
     {
-        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+        if (ReportedAssaultOnOfficer|| ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
         ReportedAssaultOnOfficer = true;
@@ -897,9 +914,10 @@ internal static class DispatchAudio
     }
     public static void ReportThreateningWithFirearm()
     {
-        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+        if (ReportedThreateningWithAFirearm || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
 
+        ReportedThreateningWithAFirearm = true;
         ReportedLethalForceAuthorized = true;
 
         List<string> ScannerList = new List<string>();
@@ -979,8 +997,10 @@ internal static class DispatchAudio
     }
     public static void ReportGrandTheftAuto()
     {
-        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+        if (ReportedGrandTheftAuto || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
+
+        ReportedGrandTheftAuto = true;
 
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
@@ -988,6 +1008,23 @@ internal static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_grand_theft_auto.Agrandtheftauto.FileName, crime_grand_theft_auto.Agrandtheftautoinprogress.FileName, crime_grand_theft_auto.AGTAinprogress.FileName, crime_grand_theft_auto.AGTAinprogress1.FileName }.PickRandom());
         Subtitles += " a ~y~GTA~s~ in progress";
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
+    public static void ReportChangedVehicle(GTAVehicle vehicle)
+    {
+        if (InstantAction.IsBusted || InstantAction.IsDead)
+            return;
+
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
+        ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
+        Subtitles += "Suspect spotted driving a";
+        ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName}.PickRandom());
+        AddVehicleDescription(vehicle, ref ScannerList, true, ref Subtitles,false,true);
+
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -1019,8 +1056,10 @@ internal static class DispatchAudio
     }
     public static void ReportSuspiciousVehicle(GTAVehicle myCar)
     {
-        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+        if (ReportedSuspiciousVehicle || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
             return;
+
+        ReportedSuspiciousVehicle = true;
 
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
@@ -1028,7 +1067,7 @@ internal static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_suspicious_vehicle.Asuspiciousvehicle.FileName }.PickRandom());
         Subtitles += " a ~r~Suspicious Vehicle~s~";
-        AddVehicleDescription(myCar, ref ScannerList, false, ref Subtitles);
+        AddVehicleDescription(myCar, ref ScannerList, false, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -1049,11 +1088,14 @@ internal static class DispatchAudio
     public static void ResetReportedItems()
     {
         ReportedAssaultOnOfficer = false;
-        //ReportedCarryingWeapon = false;
         ReportedLethalForceAuthorized = false;
         ReportedOfficerDown = false;
         ReportedShotsFired = false;
-        //ReportedThreateningWithAFirearm = false;
+        ReportedTrespassingOnGovernmentProperty = false;
+        ReportedCarryingWeapon = false;
+        ReportedThreateningWithAFirearm = false;
+        ReportedGrandTheftAuto = false;
+        ReportedSuspiciousVehicle = false;
     }
 
     //Civilians Reporting
@@ -1159,7 +1201,7 @@ internal static class DispatchAudio
             ScannerList.Add(new List<string>() { crime_stolen_vehicle.Apossiblestolenvehicle.FileName }.PickRandom());
             Subtitles += " a possible ~r~Stolen Vehicle~s~";
         }
-        AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles);
+        AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles,stolenVehicle.PositionOriginallyEntered);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
         GameFiber ReportStolenVehicle = GameFiber.StartNew(delegate
@@ -1395,7 +1437,7 @@ internal static class DispatchAudio
             return ScannerAudio.manufacturer.ANNIS01.FileName;
         else if (manufacturer == Vehicles.Manufacturer.Benefactor)
             return ScannerAudio.manufacturer.BENEFACTOR01.FileName;
-        else if (manufacturer == Vehicles.Manufacturer.Bürgerfahrzeug)
+        else if (manufacturer == Vehicles.Manufacturer.Burgerfahrzeug)
             return ScannerAudio.manufacturer.BF01.FileName;
         else if (manufacturer == Vehicles.Manufacturer.Bollokan)
             return ScannerAudio.manufacturer.BOLLOKAN01.FileName;
@@ -1469,7 +1511,7 @@ internal static class DispatchAudio
             return ScannerAudio.manufacturer.OBEY01.FileName;
         else if (manufacturer == Vehicles.Manufacturer.Ocelot)
             return ScannerAudio.manufacturer.OCELOT01.FileName;
-        else if (manufacturer == Vehicles.Manufacturer.Överflöd)
+        else if (manufacturer == Vehicles.Manufacturer.Overflod)
             return ScannerAudio.manufacturer.OVERFLOD01.FileName;
         else if (manufacturer == Vehicles.Manufacturer.Pegassi)
             return ScannerAudio.manufacturer.PEGASI01.FileName;
@@ -1495,7 +1537,7 @@ internal static class DispatchAudio
             return ScannerAudio.manufacturer.STEELHORSE01.FileName;
         else if (manufacturer == Vehicles.Manufacturer.Truffade)
             return ScannerAudio.manufacturer.TRUFFADE01.FileName;
-        else if (manufacturer == Vehicles.Manufacturer.Übermacht)
+        else if (manufacturer == Vehicles.Manufacturer.Ubermacht)
             return ScannerAudio.manufacturer.UBERMACHT01.FileName;
         else if (manufacturer == Vehicles.Manufacturer.Vapid)
             return ScannerAudio.manufacturer.VAPID01.FileName;
@@ -1574,15 +1616,18 @@ internal static class DispatchAudio
         ScannerList.Add(new List<string>() { lethal_force.Useofdeadlyforceauthorized.FileName, lethal_force.Useofdeadlyforceisauthorized.FileName, lethal_force.Useofdeadlyforceisauthorized1.FileName, lethal_force.Useoflethalforceisauthorized.FileName, lethal_force.Useofdeadlyforcepermitted1.FileName }.PickRandom());
         Subtitles += " use of ~r~Deadly Force~s~ is authorized";
     }
-    public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles)
+    public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles, bool IncludeAAudio, bool IncludePoliceDescription)
     {
         if (VehicleDescription.VehicleEnt.IsPoliceVehicle)
         {
-
+            if (IncludePoliceDescription)
+            {
+                Subtitles += " ~r~Police Car~s~";
+                ScannerList.Add(vehicle_category.PoliceSedan01.FileName);
+            }
         }
         else
         {
-
             Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(VehicleDescription);
             System.Drawing.Color BaseColor = GetBaseColor(VehicleDescription.DescriptionColor);
             ColorLookup LookupColor = ColorLookups.Where(x => x.BaseColor == BaseColor).PickRandom();
@@ -1595,40 +1640,33 @@ internal static class DispatchAudio
                 VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
                 if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != "" || VehicleClassScannerFile != ""))
                 {
-                    //Subtitles += " ~s~a~s~";
-                    ScannerList.Add(new List<string>() { conjunctives.A01.FileName, conjunctives.A02.FileName }.PickRandom());
-                    if (VehicleDescription.VehicleEnt.IsDamaged())
+                    if (IncludeAAudio)
                     {
-                        ScannerList.Add(DamagedScannerAliases.PickRandom());
-                        //Subtitles += " ~s~damaged~s~";
+                        Subtitles += " ~s~a~s~";
+                        ScannerList.Add(new List<string>() { conjunctives.A01.FileName, conjunctives.A02.FileName }.PickRandom());
                     }
-
                     if (VehicleInformation.VehicleClass != Vehicles.VehicleClass.Emergency)
                     {
-                        //Subtitles += " ~s~" + LookupColor.BaseColor.Name + "~s~";
+                        Subtitles += " ~s~" + LookupColor.BaseColor.Name + "~s~";
                         ScannerList.Add(LookupColor.ScannerFile);
                     }
-
                     if (ManufacturerScannerFile != "")
                     {
-                        //Subtitles += " ~u~" + VehicleInformation.Manufacturer + "~s~";
+                        Subtitles += " ~o~" + VehicleInformation.Manufacturer + "~s~";
                         ScannerList.Add(ManufacturerScannerFile);
                     }
-
                     if (VehicleInformation.ModelScannerFile != "")
                     {
-                        //Subtitles += " ~u~" + VehicleInformation.Name.ToUpper() + "~s~";
+                        Subtitles += " ~g~" + VehicleInformation.Name.ToUpper() + "~s~";
                         ScannerList.Add(VehicleInformation.ModelScannerFile);
                     }
                     else if (VehicleClassScannerFile != "")
                     {
-                        //Subtitles += " ~m~" + VehicleInformation.VehicleClass + "~s~";
+                        Subtitles += " ~b~" + VehicleInformation.VehicleClass + "~s~";
                         ScannerList.Add(VehicleClassScannerFile);
                     }
                 }
-            }
-
-            
+            }        
         }
         if (IncludeLicensePlate)
         {

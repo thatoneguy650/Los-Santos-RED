@@ -408,9 +408,12 @@ public static class CarStealing
                 else
                 {
                     LocalWriteToLog("CarjackAnimation", "Driver Out of Vehicle");
-                    Driver.Tasks.ClearImmediately();
-                    Driver.IsRagdoll = false;
-                    Driver.BlockPermanentEvents = false;
+                    if (Driver.IsAlive)
+                    {
+                        Driver.Tasks.ClearImmediately();
+                        Driver.IsRagdoll = false;
+                        Driver.BlockPermanentEvents = false;
+                    }
                     if (rnd.Next(1, 11) >= 10)
                     {
                         GiveGunAndAttackPlayer(Driver);

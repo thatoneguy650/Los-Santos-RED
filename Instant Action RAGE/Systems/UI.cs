@@ -74,7 +74,7 @@ public static class UI
     private static void ShowTrafficUI()
     {
         string PlayerStatusLine;
-        if (Police.PlayerIsPersonOfInterest)
+        if (PersonOfInterest.PlayerIsPersonOfInterest)
         {
             if(InstantAction.PlayerWantedLevel > 0)
                 PlayerStatusLine = "~r~Wanted Felon~s~ ";

@@ -13,7 +13,7 @@ public static class Vehicles
         Albany = 1,
         Annis = 2,
         Benefactor = 3,
-        Bürgerfahrzeug = 4,
+        Burgerfahrzeug = 4,
         Bollokan = 5,
         Bravado = 6,
         Brute = 7,
@@ -50,7 +50,7 @@ public static class Vehicles
         Nagasaki = 38,
         Obey = 39,
         Ocelot = 40,
-        Överflöd = 41,
+        Overflod = 41,
         Pegassi = 42,
         Pfister = 43,
         Principe = 44,
@@ -63,7 +63,7 @@ public static class Vehicles
         Stanley = 51,
         SteelHorse = 52,
         Truffade = 53,
-        Übermacht = 54,
+        Ubermacht = 54,
         Vapid = 55,
         Vulcar = 56,
         Vysser = 57,
@@ -136,7 +136,7 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("asea", 0x94204D89, Manufacturer.Declasse, VehicleClass.Sedans, ScannerAudio.model.ASEA01.FileName));
         VehiclesList.Add(new VehicleInfo("asea2", 0x9441D8D5, Manufacturer.Declasse, VehicleClass.Sedans, ScannerAudio.model.ASEA01.FileName));
         VehiclesList.Add(new VehicleInfo("asterope", 0x8E9254FB, Manufacturer.Karin, VehicleClass.Sedans, ScannerAudio.model.ASTEROPE01.FileName));
-        VehiclesList.Add(new VehicleInfo("autarch", 0xED552C74, Manufacturer.Överflöd, VehicleClass.Super));
+        VehiclesList.Add(new VehicleInfo("autarch", 0xED552C74, Manufacturer.Overflod, VehicleClass.Super));
         VehiclesList.Add(new VehicleInfo("avarus", 0x81E38F7F, Manufacturer.LibertyCityCycles, VehicleClass.Motorcycles));
         VehiclesList.Add(new VehicleInfo("avenger", 0x81BD2ED0, Manufacturer.Mammoth, VehicleClass.Planes));
         VehiclesList.Add(new VehicleInfo("bagger", 0x806B9CC3, Manufacturer.WesternMotorcycleCompany, VehicleClass.Motorcycles, ScannerAudio.model.BAGGER01.FileName));
@@ -159,9 +159,9 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("besra", 0x6CBD1D6D, Manufacturer.WesternCompany, VehicleClass.Planes));
         VehiclesList.Add(new VehicleInfo("bestiagts", 0x4BFCF28B, Manufacturer.Grotti, VehicleClass.Sports));
         VehiclesList.Add(new VehicleInfo("bf400", 0x5283265, Manufacturer.Nagasaki, VehicleClass.Motorcycles));
-        VehiclesList.Add(new VehicleInfo("bfinjection", 0x432AA566, Manufacturer.Bürgerfahrzeug, VehicleClass.OffRoad, ScannerAudio.model.BFINJECTION01.FileName));
+        VehiclesList.Add(new VehicleInfo("bfinjection", 0x432AA566, Manufacturer.Burgerfahrzeug, VehicleClass.OffRoad, ScannerAudio.model.BFINJECTION01.FileName));
         VehiclesList.Add(new VehicleInfo("biff", 0x32B91AE8, Manufacturer.HVY, VehicleClass.Commercial, ScannerAudio.model.BIFF01.FileName));
-        VehiclesList.Add(new VehicleInfo("bifta", 0xEB298297, Manufacturer.Bürgerfahrzeug, VehicleClass.OffRoad));
+        VehiclesList.Add(new VehicleInfo("bifta", 0xEB298297, Manufacturer.Burgerfahrzeug, VehicleClass.OffRoad));
         VehiclesList.Add(new VehicleInfo("bison", 0xFEFD644F, Manufacturer.Bravado, VehicleClass.Vans, ScannerAudio.model.BISON01.FileName));
         VehiclesList.Add(new VehicleInfo("bison2", 0x7B8297C5, Manufacturer.Bravado, VehicleClass.Vans, ScannerAudio.model.BISON01.FileName));
         VehiclesList.Add(new VehicleInfo("bison3", 0x67B3F020, Manufacturer.Bravado, VehicleClass.Vans, ScannerAudio.model.BISON01.FileName));
@@ -298,11 +298,11 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("dukes", 0x2B26F456, Manufacturer.Imponte, VehicleClass.Muscle, ScannerAudio.model.DUKES01.FileName));
         VehiclesList.Add(new VehicleInfo("dukes2", 0xEC8F7094, Manufacturer.Imponte, VehicleClass.Muscle, ScannerAudio.model.DUKES01.FileName));
         VehiclesList.Add(new VehicleInfo("dump", 0x810369E2, Manufacturer.HVY, VehicleClass.Industrial));
-        VehiclesList.Add(new VehicleInfo("dune", 0x9CF21E0F, Manufacturer.Bürgerfahrzeug, VehicleClass.OffRoad));
-        VehiclesList.Add(new VehicleInfo("dune2", 0x1FD824AF, Manufacturer.Bürgerfahrzeug, VehicleClass.OffRoad));
-        VehiclesList.Add(new VehicleInfo("dune3", 0x711D4738, Manufacturer.Bürgerfahrzeug, VehicleClass.OffRoad));
-        VehiclesList.Add(new VehicleInfo("dune4", 0xCEB28249, Manufacturer.Bürgerfahrzeug, VehicleClass.OffRoad));
-        VehiclesList.Add(new VehicleInfo("dune5", 0xED62BFA9, Manufacturer.Bürgerfahrzeug, VehicleClass.OffRoad));
+        VehiclesList.Add(new VehicleInfo("dune", 0x9CF21E0F, Manufacturer.Burgerfahrzeug, VehicleClass.OffRoad));
+        VehiclesList.Add(new VehicleInfo("dune2", 0x1FD824AF, Manufacturer.Burgerfahrzeug, VehicleClass.OffRoad));
+        VehiclesList.Add(new VehicleInfo("dune3", 0x711D4738, Manufacturer.Burgerfahrzeug, VehicleClass.OffRoad));
+        VehiclesList.Add(new VehicleInfo("dune4", 0xCEB28249, Manufacturer.Burgerfahrzeug, VehicleClass.OffRoad));
+        VehiclesList.Add(new VehicleInfo("dune5", 0xED62BFA9, Manufacturer.Burgerfahrzeug, VehicleClass.OffRoad));
         VehiclesList.Add(new VehicleInfo("duster", 0x39D6779E, Manufacturer.WesternCompany, VehicleClass.Planes));
 
         VehiclesList.Add(new VehicleInfo("dynasty", 0, Manufacturer.Weeny,VehicleClass.Sports));
@@ -313,7 +313,7 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("emperor2", 0x8FC3AADC, Manufacturer.Albany, VehicleClass.Sedans, ScannerAudio.model.EMPEROR01.FileName));
         VehiclesList.Add(new VehicleInfo("emperor3", 0xB5FCF74E, Manufacturer.Albany, VehicleClass.Sedans, ScannerAudio.model.EMPEROR01.FileName));
         VehiclesList.Add(new VehicleInfo("enduro", 0x6882FA73, Manufacturer.Dinka, VehicleClass.Motorcycles));
-        VehiclesList.Add(new VehicleInfo("entityxf", 0xB2FE5CF9, Manufacturer.Överflöd, VehicleClass.Super, ScannerAudio.model.ENTITYXF01.FileName));
+        VehiclesList.Add(new VehicleInfo("entityxf", 0xB2FE5CF9, Manufacturer.Overflod, VehicleClass.Super, ScannerAudio.model.ENTITYXF01.FileName));
         VehiclesList.Add(new VehicleInfo("esskey", 0x794CB30C, Manufacturer.Pegassi, VehicleClass.Motorcycles));
         VehiclesList.Add(new VehicleInfo("exemplar", 0xFFB15B5E, Manufacturer.Dewbauchee, VehicleClass.Coupes, ScannerAudio.model.EXEMPLAR01.FileName));
         VehiclesList.Add(new VehicleInfo("f620", 0xDCBCBE48, Manufacturer.Ocelot, VehicleClass.Coupes, ScannerAudio.model.F62001.FileName));
@@ -494,8 +494,8 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("omnis", 0xD1AD4937, Manufacturer.Obey, VehicleClass.Sports));
         VehiclesList.Add(new VehicleInfo("oppressor", 0x34B82784, Manufacturer.Pegassi, VehicleClass.Motorcycles));
         VehiclesList.Add(new VehicleInfo("oppressor2", 0x7B54A9D3, Manufacturer.Pegassi, VehicleClass.Motorcycles));
-        VehiclesList.Add(new VehicleInfo("oracle", 0x506434F6, Manufacturer.Übermacht, VehicleClass.Coupes, ScannerAudio.model.ORACLE01.FileName));
-        VehiclesList.Add(new VehicleInfo("oracle2", 0xE18195B2, Manufacturer.Übermacht, VehicleClass.Coupes, ScannerAudio.model.ORACLE01.FileName));
+        VehiclesList.Add(new VehicleInfo("oracle", 0x506434F6, Manufacturer.Ubermacht, VehicleClass.Coupes, ScannerAudio.model.ORACLE01.FileName));
+        VehiclesList.Add(new VehicleInfo("oracle2", 0xE18195B2, Manufacturer.Ubermacht, VehicleClass.Coupes, ScannerAudio.model.ORACLE01.FileName));
         VehiclesList.Add(new VehicleInfo("osiris", 0x767164D6, Manufacturer.Unknown, VehicleClass.Super));
 
         VehiclesList.Add(new VehicleInfo("paragon", 0xE550775B, Manufacturer.Enus, VehicleClass.Sports));
@@ -554,7 +554,7 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("rapidgt", 0x8CB29A14, Manufacturer.Dewbauchee, VehicleClass.Sports, ScannerAudio.model.RAPIDGT01.FileName));
         VehiclesList.Add(new VehicleInfo("rapidgt2", 0x679450AF, Manufacturer.Dewbauchee, VehicleClass.Sports, ScannerAudio.model.RAPIDGT01.FileName));
         VehiclesList.Add(new VehicleInfo("rapidgt3", 0x7A2EF5E4, Manufacturer.Dewbauchee, VehicleClass.SportsClassics, ScannerAudio.model.RAPIDGT01.FileName));
-        VehiclesList.Add(new VehicleInfo("raptor", 0xD7C56D39, Manufacturer.Bürgerfahrzeug, VehicleClass.Sports));
+        VehiclesList.Add(new VehicleInfo("raptor", 0xD7C56D39, Manufacturer.Burgerfahrzeug, VehicleClass.Sports));
         VehiclesList.Add(new VehicleInfo("ratbike", 0x6FACDF31, Manufacturer.Unknown, VehicleClass.Motorcycles));
         VehiclesList.Add(new VehicleInfo("ratloader", 0xD83C13CE, Manufacturer.Bravado, VehicleClass.Muscle, ScannerAudio.model.RATLOADER01.FileName));
         VehiclesList.Add(new VehicleInfo("ratloader2", 0xDCE1D9F7, Manufacturer.Bravado, VehicleClass.Muscle, ScannerAudio.model.RATLOADER01.FileName));
@@ -565,7 +565,7 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("regina", 0xFF22D208, Manufacturer.Dundreary, VehicleClass.Sedans, ScannerAudio.model.REGINA01.FileName));
         VehiclesList.Add(new VehicleInfo("rentalbus", 0xBE819C63, Manufacturer.Unknown, VehicleClass.Service));
         VehiclesList.Add(new VehicleInfo("retinue", 0x6DBD6C0A, Manufacturer.Unknown, VehicleClass.SportsClassics));
-        VehiclesList.Add(new VehicleInfo("revolter", 0xE78CC3D9, Manufacturer.Übermacht, VehicleClass.Sports));
+        VehiclesList.Add(new VehicleInfo("revolter", 0xE78CC3D9, Manufacturer.Ubermacht, VehicleClass.Sports));
         VehiclesList.Add(new VehicleInfo("rhapsody", 0x322CF98F, Manufacturer.Unknown, VehicleClass.Compacts));
         VehiclesList.Add(new VehicleInfo("rhino", 0x2EA68690, Manufacturer.Unknown, VehicleClass.Military, ScannerAudio.model.RHINO01.FileName));
         VehiclesList.Add(new VehicleInfo("riata", 0xA4A4E453, Manufacturer.Unknown, VehicleClass.OffRoad));
@@ -597,7 +597,7 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("sandking2", 0x3AF8C345, Manufacturer.Vapid, VehicleClass.OffRoad));
         VehiclesList.Add(new VehicleInfo("savage", 0xFB133A17, Manufacturer.Unknown, VehicleClass.Helicopters));
         VehiclesList.Add(new VehicleInfo("savestra", 0x35DED0DD, Manufacturer.Unknown, VehicleClass.SportsClassics));
-        VehiclesList.Add(new VehicleInfo("sc1", 0x5097F589, Manufacturer.Übermacht, VehicleClass.Super));
+        VehiclesList.Add(new VehicleInfo("sc1", 0x5097F589, Manufacturer.Ubermacht, VehicleClass.Super));
         VehiclesList.Add(new VehicleInfo("scarab", 0xBBA2A2F7, Manufacturer.Unknown, VehicleClass.Military));
         VehiclesList.Add(new VehicleInfo("scarab2", 0x5BEB3CE0, Manufacturer.Unknown, VehicleClass.Military));
         VehiclesList.Add(new VehicleInfo("scarab3", 0xDD71BFEB, Manufacturer.Unknown, VehicleClass.Military));
@@ -617,9 +617,9 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("seashark3", 0xED762D49, Manufacturer.Speedophile, VehicleClass.Boats));
         VehiclesList.Add(new VehicleInfo("seasparrow", 0xD4AE63D9, Manufacturer.Unknown, VehicleClass.Helicopters));
         VehiclesList.Add(new VehicleInfo("seminole", 0x48CECED3, Manufacturer.Canis, VehicleClass.SUVs));
-        VehiclesList.Add(new VehicleInfo("sentinel", 0x50732C82, Manufacturer.Übermacht, VehicleClass.Coupes));
-        VehiclesList.Add(new VehicleInfo("sentinel2", 0x3412AE2D, Manufacturer.Übermacht, VehicleClass.Coupes));
-        VehiclesList.Add(new VehicleInfo("sentinel3", 0x41D149AA, Manufacturer.Übermacht, VehicleClass.Sports));
+        VehiclesList.Add(new VehicleInfo("sentinel", 0x50732C82, Manufacturer.Ubermacht, VehicleClass.Coupes));
+        VehiclesList.Add(new VehicleInfo("sentinel2", 0x3412AE2D, Manufacturer.Ubermacht, VehicleClass.Coupes));
+        VehiclesList.Add(new VehicleInfo("sentinel3", 0x41D149AA, Manufacturer.Ubermacht, VehicleClass.Sports));
         VehiclesList.Add(new VehicleInfo("serrano", 0x4FB1A214, Manufacturer.Benefactor, VehicleClass.SUVs));
         VehiclesList.Add(new VehicleInfo("seven70", 0x97398A4B, Manufacturer.Unknown, VehicleClass.Sports));
         VehiclesList.Add(new VehicleInfo("shamal", 0xB79C1BF5, Manufacturer.Buckingham, VehicleClass.Planes));
@@ -667,8 +667,8 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("supervolito", 0x2A54C47D, Manufacturer.Unknown, VehicleClass.Helicopters));
         VehiclesList.Add(new VehicleInfo("supervolito2", 0x9C5E5644, Manufacturer.Unknown, VehicleClass.Helicopters));
         VehiclesList.Add(new VehicleInfo("surano", 0x16E478C1, Manufacturer.Benefactor, VehicleClass.Sports));
-        VehiclesList.Add(new VehicleInfo("surfer", 0x29B0DA97, Manufacturer.Bürgerfahrzeug, VehicleClass.Vans));
-        VehiclesList.Add(new VehicleInfo("surfer2", 0xB1D80E06, Manufacturer.Bürgerfahrzeug, VehicleClass.Vans));
+        VehiclesList.Add(new VehicleInfo("surfer", 0x29B0DA97, Manufacturer.Burgerfahrzeug, VehicleClass.Vans));
+        VehiclesList.Add(new VehicleInfo("surfer2", 0xB1D80E06, Manufacturer.Burgerfahrzeug, VehicleClass.Vans));
         VehiclesList.Add(new VehicleInfo("surge", 0x8F0E3594, Manufacturer.Cheval, VehicleClass.Sedans));
         VehiclesList.Add(new VehicleInfo("swift", 0xEBC24DF2, Manufacturer.Unknown, VehicleClass.Helicopters));
         VehiclesList.Add(new VehicleInfo("swift2", 0x4019CB4C, Manufacturer.Unknown, VehicleClass.Helicopters));
@@ -777,9 +777,9 @@ public static class Vehicles
         VehiclesList.Add(new VehicleInfo("youga", 0x03E5F6B8, Manufacturer.Bravado, VehicleClass.Vans));
         VehiclesList.Add(new VehicleInfo("youga2", 0x3D29CD2B, Manufacturer.Bravado, VehicleClass.Vans));
         VehiclesList.Add(new VehicleInfo("zentorno", 0xAC5DF515, Manufacturer.Pegassi, VehicleClass.Super));
-        VehiclesList.Add(new VehicleInfo("zion", 0xBD1B39C3, Manufacturer.Übermacht, VehicleClass.Coupes));
-        VehiclesList.Add(new VehicleInfo("zion2", 0xB8E2AE18, Manufacturer.Übermacht, VehicleClass.Coupes));
-        VehiclesList.Add(new VehicleInfo("zion3", 0x6F039A67, Manufacturer.Übermacht, VehicleClass.SportsClassics));
+        VehiclesList.Add(new VehicleInfo("zion", 0xBD1B39C3, Manufacturer.Ubermacht, VehicleClass.Coupes));
+        VehiclesList.Add(new VehicleInfo("zion2", 0xB8E2AE18, Manufacturer.Ubermacht, VehicleClass.Coupes));
+        VehiclesList.Add(new VehicleInfo("zion3", 0x6F039A67, Manufacturer.Ubermacht, VehicleClass.SportsClassics));
         VehiclesList.Add(new VehicleInfo("zombiea", 0xC3D7C72B, Manufacturer.LibertyChopShop, VehicleClass.Motorcycles));
         VehiclesList.Add(new VehicleInfo("zombieb", 0xDE05FB87, Manufacturer.LibertyChopShop, VehicleClass.Motorcycles));
         VehiclesList.Add(new VehicleInfo("zr380", 0x20314B42, Manufacturer.Unknown, VehicleClass.Sports));

@@ -118,6 +118,7 @@
     <Compile Include="Entities\Ped Variation\PropComponent.cs" />
     <Compile Include="Entities\Other\PoliceTask.cs" />
     <Compile Include="Lookups\Locations.cs" />
+    <Compile Include="Systems\PersonofInterest.cs" />
     <Compile Include="Systems\WeatherReporting.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Other\Extensions.cs" />

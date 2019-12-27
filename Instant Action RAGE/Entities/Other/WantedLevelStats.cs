@@ -9,25 +9,45 @@ using System.Threading.Tasks;
 public class WantedLevelStats
 {
     public int MaxWantedLevel = 0;
-    private int CopsKilledByPlayer = 0;
-    private int CiviliansKilledByPlayer = 0;
-    private bool PlayerHurtPolice = false;
-    private bool PlayerKilledPolice = false;
-    private bool PlayerKilledCivilians = false;
-    private bool PlayerAimedAtPolice = false;
-    private bool PlayerFiredWeaponNearPolice = false;
-    private Police.PoliceState MaxPoliceState = Police.PoliceState.Normal;
+    public int CopsKilledByPlayer = 0;
+    public int CiviliansKilledByPlayer = 0;
+    public bool PlayerHurtPolice = false;
+    public bool PlayerKilledPolice = false;
+    public bool PlayerKilledCivilians = false;
+    public bool PlayerAimedAtPolice = false;
+    public bool PlayerFiredWeaponNearPolice = false;
+    public bool PlayerWentNearPrisonDuringChase = false;
+    public bool PlayerCaughtWithGun = false;
+    public bool PlayerGotInAirVehicleDuringChase = false;
+    public bool PlayerCaughtChangingPlates = false;
+    public bool PlayerCaughtBreakingIntoCar = false;
 
-    private bool DispatchReportedOfficerDown = false;
-    private bool DispatchReportedLethalForceAuthorized = false;
-    private bool DispatchReportedAssaultOnOfficer = false;
-    private bool DispatchReportedShotsFired = false;
+    public bool DispatchReportedOfficerDown = false;
+    public bool DispatchReportedLethalForceAuthorized = false;
+    public bool DispatchReportedAssaultOnOfficer = false;
+    public bool DispatchReportedShotsFired = false;
+    public bool DispatchReportedTrespassingOnGovernmentProperty;
+    public bool DispatchReportedCarryingWeapon;
+    public bool DispatchReportedThreateningWithAFirearm;
+    public bool DispatchReportedGrandTheftAuto;
+    public bool DispatchReportedSuspiciousVehicle;
+
+    public List<GTALicensePlate> WantedPlates = new List<GTALicensePlate>();
+    public uint GameTimeWantedStarted;
+    public uint GameTimeWantedEnded;
+    public bool PlayerSeenDuringWanted = false;
+
     public WantedLevelStats()
     {
         StoreValues();
     }
     public void StoreValues()
     {
+
+        PlayerSeenDuringWanted = Police.AnyPoliceSeenPlayerThisWanted;
+        GameTimeWantedStarted = Police.GameTimePoliceStateStart;
+        GameTimeWantedEnded = Game.GameTime;
+
         MaxWantedLevel = InstantAction.MaxWantedLastLife;
         CopsKilledByPlayer = Police.CopsKilledByPlayer;
         CiviliansKilledByPlayer = Police.CiviliansKilledByPlayer;
@@ -36,53 +56,25 @@ public class WantedLevelStats
         PlayerKilledCivilians = Police.PlayerKilledCivilians;
         PlayerAimedAtPolice = Police.PlayerAimedAtPolice;
         PlayerFiredWeaponNearPolice = Police.PlayerFiredWeaponNearPolice;
-        MaxPoliceState = Police.CurrentPoliceState;
+        PlayerWentNearPrisonDuringChase = Police.PlayerWentNearPrisonDuringChase;
+        PlayerCaughtWithGun = Police.PlayerCaughtWithGun;
+        PlayerGotInAirVehicleDuringChase = Police.PlayerGotInAirVehicleDuringChase;
+        PlayerCaughtChangingPlates = Police.PlayerCaughtChangingPlates;
+        PlayerCaughtBreakingIntoCar = Police.PlayerCaughtBreakingIntoCar;
 
         DispatchReportedOfficerDown = DispatchAudio.ReportedOfficerDown;
         DispatchReportedLethalForceAuthorized = DispatchAudio.ReportedLethalForceAuthorized;
         DispatchReportedAssaultOnOfficer = DispatchAudio.ReportedAssaultOnOfficer;
         DispatchReportedShotsFired = DispatchAudio.ReportedShotsFired;
+        DispatchReportedTrespassingOnGovernmentProperty = DispatchAudio.ReportedTrespassingOnGovernmentProperty;
+        DispatchReportedCarryingWeapon = DispatchAudio.ReportedCarryingWeapon;
+        DispatchReportedThreateningWithAFirearm = DispatchAudio.ReportedThreateningWithAFirearm;
+        DispatchReportedGrandTheftAuto = DispatchAudio.ReportedGrandTheftAuto;
+        DispatchReportedSuspiciousVehicle = DispatchAudio.ReportedSuspiciousVehicle;
 
-        Debugging.WriteToLog("WantedLevelStats Store", string.Format("CopsKilledByPlayer: {0},CiviliansKilledByPlayer: {1},PlayerHurtPolice: {2},PlayerKilledPolice {3},PlayerKilledCivilians {4},PlayerAimedAtPolice: {5},PlayerFiredWeaponNearPolice: {6},MaxPoliceState: {7},MaxWantedLevel {8}",
-            CopsKilledByPlayer, CiviliansKilledByPlayer, PlayerHurtPolice, PlayerKilledPolice, PlayerKilledCivilians, PlayerAimedAtPolice, PlayerFiredWeaponNearPolice, MaxPoliceState, MaxWantedLevel));
-    }
-    public void ReplaceValues()
-    {
-        if (Game.LocalPlayer.WantedLevel < MaxWantedLevel)
-            Game.LocalPlayer.WantedLevel = MaxWantedLevel;
-
-        Police.CopsKilledByPlayer = CopsKilledByPlayer;
-        Police.CiviliansKilledByPlayer = CiviliansKilledByPlayer;
-        Police.PlayerHurtPolice = PlayerHurtPolice;
-        Police.PlayerKilledPolice = PlayerKilledPolice;
-        Police.PlayerKilledCivilians = PlayerKilledCivilians;
-        Police.PlayerAimedAtPolice = PlayerAimedAtPolice;
-        Police.PlayerFiredWeaponNearPolice = PlayerFiredWeaponNearPolice;
-        Police.CurrentPoliceState = MaxPoliceState;
-
-        DispatchAudio.ReportedOfficerDown = DispatchReportedOfficerDown;
-        DispatchAudio.ReportedLethalForceAuthorized = DispatchReportedLethalForceAuthorized;
-        DispatchAudio.ReportedAssaultOnOfficer = DispatchReportedAssaultOnOfficer;
-        DispatchAudio.ReportedShotsFired = DispatchReportedShotsFired;
-
-
-        Debugging.WriteToLog("WantedLevelStats Replace", string.Format("CopsKilledByPlayer: {0},CiviliansKilledByPlayer: {1},PlayerHurtPolice: {2},PlayerKilledPolice {3},PlayerKilledCivilians {4},PlayerAimedAtPolice: {5},PlayerFiredWeaponNearPolice: {6},CurrentPoliceState: {7},Game.LocalPlayer.WantedLevel: {8}",
-         Police.CopsKilledByPlayer, Police.CiviliansKilledByPlayer, Police.PlayerHurtPolice, Police.PlayerKilledPolice, Police.PlayerKilledCivilians, Police.PlayerAimedAtPolice, Police.PlayerFiredWeaponNearPolice, Police.CurrentPoliceState, Game.LocalPlayer.WantedLevel));
-    }
-    public void ClearValues()
-    {
-        if(MaxWantedLevel != 0 || CopsKilledByPlayer != 0 || CiviliansKilledByPlayer != 0 || PlayerHurtPolice || PlayerKilledPolice || PlayerKilledCivilians || PlayerAimedAtPolice || PlayerFiredWeaponNearPolice || MaxPoliceState != Police.PoliceState.Normal)
+        foreach (GTALicensePlate Plate in LicensePlateChanging.SpareLicensePlates.Where(x => x.IsWanted))
         {
-            Debugging.WriteToLog("WantedLevelStats ClearValues", "Needed to clear values");
-            MaxWantedLevel = 0;
-            CopsKilledByPlayer = 0;
-            CiviliansKilledByPlayer = 0;
-            PlayerHurtPolice = false;
-            PlayerKilledPolice = false;
-            PlayerKilledCivilians = false;
-            PlayerAimedAtPolice = false;
-            PlayerFiredWeaponNearPolice = false;
-            MaxPoliceState = Police.PoliceState.Normal;
+            WantedPlates.Add(Plate);
         }
 
     }

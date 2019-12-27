@@ -33,8 +33,6 @@ public static class Agencies
     public static Agency SACG;
     public static void Initialize()
     {
-
-
         List<Agency.ModelInformation> StandardCops = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_cop_01", true), new Agency.ModelInformation("s_f_y_cop_01", false) };
         List<Agency.ModelInformation> ParkRangers = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_ranger_01", true), new Agency.ModelInformation("s_f_y_ranger_01", false) };
         List<Agency.ModelInformation> SheriffPeds = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_sheriff_01", true), new Agency.ModelInformation("s_f_y_sheriff_01", false) };
@@ -55,7 +53,6 @@ public static class Agencies
         List<Agency.VehicleInformation> FIBVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("fbi", true, true, 70), new Agency.VehicleInformation("fbi2", true, true, 30) };
         List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policeb", true, true, 70,true), new Agency.VehicleInformation("police4", true, true, 30) };
         List<Agency.VehicleInformation> PrisonVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policet", true, true, 70), new Agency.VehicleInformation("police4", true, true, 30) };
-
 
         AgenciesList = new List<Agency>();
         LSPD = new Agency("~b~", "LSPD", "Los Santos Police Department", Color.Blue, true, StandardCops, StandardPoliceVehicles);

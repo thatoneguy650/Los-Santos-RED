@@ -19,6 +19,7 @@ public static class WeatherReporting
     private static WeatherTypeHash PrevCurrentWeather;
     private static float CurrentWindSpeed;
     private static uint GameTimeLastReportedWeather;
+    private static string RadioStationLastTuned;
     public static bool IsRunning { get; set; }
     public static bool IsReportingWeather { get; set; }
     public static bool CanReportWeather
@@ -61,6 +62,7 @@ public static class WeatherReporting
         GameTimeLastReportedWeather = 0;
         IsRunning = true;
         IsReportingWeather = false;
+        RadioStationLastTuned = "";
         WeatherFiles.Add(Cloudy.Cloudy1);
         WeatherFiles.Add(Cloudy.Cloudy2);
         WeatherFiles.Add(Cloudy.Cloudy3);
@@ -163,7 +165,7 @@ public static class WeatherReporting
         {
             if(CurrentWindSpeed >= 11.5)
             {
-                ReportWeather(WeatherTypeHash.Clearing);
+                ReportWindy();
             }
         }
         if (CanReportWeather)
@@ -201,54 +203,43 @@ public static class WeatherReporting
         {
             string WeatherFile = GetAudioFromWeatherType(WeatherToReport);
             if (WeatherFile == "")
-            {
-                Debugging.WriteToLog("ReportWeather", "No weather file found looking for " + WeatherToReport);
-                return;
-            }
-
-            string RadioStationName;
-            unsafe
-            {
-                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
-                RadioStationName = Marshal.PtrToStringAnsi(ptr);
-            }
-
-            Debugging.WriteToLog("ReportWeather", RadioStationName);
-            if(RadioStationName != "OFF")
-            {
-                Debugging.WriteToLog("ReportWeather", "Setting to OFF");
-                NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "OFF");
-            }
-
-            List<string> ScannerList = new List<string>
-            {
-                Weazel.Outro2.FileName
-            };
-            if ((WeatherToReport == WeatherTypeHash.Clear || WeatherToReport == WeatherTypeHash.ExtraSunny) && Police.IsNightTime)//Audio files don't really make sense at night
                 return;
 
-            else
-            {
-                ScannerList.Add(WeatherFile);
-            }
-
-            ScannerList.Add(Weazel.Outro.FileName);
-            string Subtitles = "";
-            IsReportingWeather = true;
-            DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(ScannerList, false, Subtitles));
+            StoredAndTurnOffRadio();
             GameTimeLastReportedWeather = Game.GameTime;
-            if(RadioStationName != "OFF")
+            DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(new List<string> { Weazel.Outro2.FileName, WeatherFile, Weazel.Outro.FileName }, false, ""));      
+        }
+    }
+    private static void StoredAndTurnOffRadio()
+    {
+        RadioStationLastTuned = "OFF";
+        unsafe
+        {
+            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
+            RadioStationLastTuned = Marshal.PtrToStringAnsi(ptr);
+        }
+        if (RadioStationLastTuned != "OFF")
+        {
+            NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "OFF");
+            GameFiber ChangeRadioBack = GameFiber.StartNew(delegate
             {
-                GameFiber ChangeRadioBack = GameFiber.StartNew(delegate
-                {
-                    while (DispatchAudio.AudioPlaying)
-                        GameFiber.Sleep(500);
-                    IsReportingWeather = false;
-                    Debugging.WriteToLog("ReportWeather", "Setting back to " + RadioStationName);
-                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
-                        NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, RadioStationName);
-                }, "ChangeRadioBack");
-            }
+                GameFiber.Sleep(2000);
+
+                while (DispatchAudio.AudioPlaying)
+                    GameFiber.Sleep(500);
+
+                if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, RadioStationLastTuned);
+            }, "ChangeRadioBack");
+        }
+    }
+    private static void ReportWindy()
+    {
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && InstantAction.PlayerWantedLevel == 0 && Police.PlayerHasBeenNotWantedFor > 15000)//Aren;t wanted and haven't been wanted for 15 seconds
+        {
+            StoredAndTurnOffRadio();
+            GameTimeLastReportedWeather = Game.GameTime;
+            DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(new List<string> { Weazel.Outro2.FileName, new List<string> { Windy.Windy1.FileName, Windy.Windy2.FileName, Windy.Windy3.FileName, Windy.Windy4.FileName, Windy.Windy6.FileName, Windy.Windy7.FileName, Windy.Windy8.FileName }.PickRandom(), Weazel.Outro.FileName }, false, ""));
         }
     }
     public class Cloudy
@@ -327,6 +318,10 @@ public static class WeatherReporting
     }
     public static string GetAudioFromWeatherType(WeatherTypeHash MyWeather)
     {
+        if ((MyWeather == WeatherTypeHash.Clear || MyWeather == WeatherTypeHash.ExtraSunny) && Police.IsNightTime)//Audio files don't really make sense at night
+        {
+            return "";
+        }
         WeatherFile TheWeather = WeatherFiles.Where(p => p.WeatherTypes.Any(c => c == MyWeather)).PickRandom();
         if (TheWeather == null)
             return "";

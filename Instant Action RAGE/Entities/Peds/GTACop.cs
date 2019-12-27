@@ -47,6 +47,7 @@ public class GTACop
     public bool SetDeadly { get; set; } = false;
     public bool TaskIsQueued { get; set; } = false;
     public uint GameTimeLastWeaponCheck { get; set; }
+    public uint GameTimeLastDistanceCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
     public uint GameTimeLastLOSCheck { get; set; }
@@ -80,6 +81,18 @@ public class GTACop
             else
                 return false;
         }       
+    }
+    public bool NeedsDistanceCheck
+    {
+        get
+        {
+            if (GameTimeLastDistanceCheck == 0)
+                return true;
+            else if (Game.GameTime > GameTimeLastDistanceCheck + 25)
+                return true;
+            else
+                return false;
+        }
     }
     public uint HasSeenPlayerFor
     {
@@ -127,6 +140,16 @@ public class GTACop
         {
             GameTimeContinuoslySeenPlayerSince = Game.GameTime;
         }
+    }
+    public void UpdateDistance()
+    {
+        if(NeedsDistanceCheck)
+        {
+            DistanceToPlayer = CopPed.DistanceTo(Game.LocalPlayer.Character.Position);
+            DistanceToLastSeen = CopPed.DistanceTo(Police.PlacePlayerLastSeen);
+            GameTimeLastDistanceCheck = Game.GameTime;
+        }
+
     }
 }
 
