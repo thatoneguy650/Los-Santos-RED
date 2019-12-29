@@ -31,24 +31,24 @@ public static class PlayerLocation
     }
     public static void MainLoop()
     {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    UpdateLocation();
-                    GameFiber.Sleep(2000);
-                }
-            }
-            catch (Exception e)
-            {
-                InstantAction.Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (IsRunning)
+        //        {
+        //            UpdateLocation();
+        //            GameFiber.Sleep(2000);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        InstantAction.Dispose();
+        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //    }
+        //});
     }
-    private static void UpdateLocation()
+    public static void UpdateLocation()
     {
         PlayerCurrentZone = Zones.GetZoneAtLocation(Game.LocalPlayer.Character.Position);
         if (World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position).DistanceTo2D(Game.LocalPlayer.Character) >= 25f)

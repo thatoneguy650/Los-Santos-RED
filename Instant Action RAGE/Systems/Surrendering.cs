@@ -47,7 +47,7 @@ public static class Surrendering
             if (!PedToArrest.Exists())
                 return;
 
-            while (PedToArrest.IsRagdoll || PedToArrest.IsStunned)
+            while (PedToArrest.Exists() && (PedToArrest.IsRagdoll || PedToArrest.IsStunned))
                 GameFiber.Yield();
 
             if (!PedToArrest.Exists())

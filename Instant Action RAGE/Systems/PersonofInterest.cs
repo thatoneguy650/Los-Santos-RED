@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 public static class PersonOfInterest
 {
+    private static WantedLevelStats LastWantedStats;
     private static bool PrevPlayerIsWanted;
     private static List<WantedLevelStats> PreviousWantedStats;
-
-    private static bool CheckPreviousWantedOnSight;
     public static bool PlayerIsPersonOfInterest { get; set; }
     public static bool IsRunning { get; set; } = true;
 
@@ -22,7 +21,6 @@ public static class PersonOfInterest
 
         PreviousWantedStats = new List<WantedLevelStats>();
         PlayerIsPersonOfInterest = false;
-        CheckPreviousWantedOnSight = false;
         MainLoop();
     }
     public static void Dispose()
@@ -31,61 +29,109 @@ public static class PersonOfInterest
     }
     public static void MainLoop()
     {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    PersonOfInterestTick();
-                    GameFiber.Sleep(500);
-                }
-            }
-            catch (Exception e)
-            {
-                InstantAction.Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (IsRunning)
+        //        {
+        //            PersonOfInterestTick();
+        //            GameFiber.Sleep(500);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        InstantAction.Dispose();
+        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //    }
+        //});
     }
     
-    private static void PersonOfInterestTick()
+    public static void PersonOfInterestTick()
     {
+        LastWantedStats = GetLastWantedStats();
+
         if (PrevPlayerIsWanted != InstantAction.PlayerIsWanted)
             WantedLevelAddedOrRemoved();
 
+        CheckCurrentVehicle();
+
         if (InstantAction.PlayerIsNotWanted)
-        {
+        {       
+            CheckSight();          
+
             if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 120000)
             {
                 ResetPersonOfInterest();
-            }
-
-            if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
-            {
-                if (Police.AnyPoliceCanSeePlayer && Police.NearLastWanted())
-                {
-                    Police.SetWantedLevel(1, "Cops Reacquired after losing them in the same area, actual wanted will be applied");
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3));
-                }
-                else if (Police.AnyPoliceCanRecognizePlayer && 1 == 0)
-                {
-                    Police.SetWantedLevel(1, "Cops Reacquired after losing them you were recognized");
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3));
-                }
             }
         }
         else
         {
             if (!PlayerIsPersonOfInterest && Police.AnyPoliceCanSeePlayer)
             {
-                PlayerIsPersonOfInterest = true;
-                if (PreviousWantedStats.Any())
-                {
-                    ApplyWantedStats(GetLastWantedStats());
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
-                }
+                PlayerBecamePersonOfInterest();
             }
+        }
+    }
+    private static void PlayerBecamePersonOfInterest()
+    {
+        PlayerIsPersonOfInterest = true;
+        if (PreviousWantedStats.Any())
+        {
+            if(ApplyLastWantedStats())
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+        }
+
+        Debugging.WriteToLog("PlayerBecamePersonOfInterest", "Happened");
+    }
+    public static void CheckCurrentVehicle()
+    {
+        if ((InstantAction.PlayerIsNotWanted || InstantAction.PlayerWantedLevel == 1) && Police.AnyPoliceCanRecognizePlayer && InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+        {
+            GTAVehicle VehicleToCheck = InstantAction.GetPlayersCurrentTrackedVehicle();
+
+            if (VehicleToCheck == null)
+                return;
+
+            if (VehicleToCheck.WasReportedStolen && VehicleToCheck.IsStolen && VehicleToCheck.MatchesOriginalDescription)
+            {
+                if (!ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber))
+                    Police.SetWantedLevel(2, "Car was reported stolen and it matches the original description (formerly First)");
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSpottedStolenCar, 10)
+                {
+                    ResultsInStolenCarSpotted = true,
+                    VehicleToReport = VehicleToCheck,
+                    Speed = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f
+                });
+            }
+            else if (VehicleToCheck.CarPlate.IsWanted && !VehicleToCheck.IsStolen && VehicleToCheck.ColorMatchesDescription)
+            {
+                if (!ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber))
+                    Police.SetWantedLevel(2, "Car plate is wanted and color matches original (formerly Second)");
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10)
+                {
+                    ResultsInStolenCarSpotted = true,
+                    VehicleToReport = VehicleToCheck
+                });
+            }
+        }
+    }
+    public static void CheckSight()
+    {
+        if (InstantAction.PlayerIsNotWanted && PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
+        {
+            if (Police.AnyPoliceCanSeePlayer && Police.NearLastWanted())
+            {
+                if(!ApplyLastWantedStats())
+                    Police.SetWantedLevel(2, "Cops Reacquired after losing them in the same area, actual wanted not found");
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3));
+            }
+            //else if (Police.AnyPoliceCanRecognizePlayer && 1 == 0)
+            //{
+            //    if (!ApplyLastWantedStats())
+            //        Police.SetWantedLevel(2, "Cops Reacquired after losing them you were recognized, actual wanted not found");
+            //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3));
+            //}
         }
     }
     private static void WantedLevelAddedOrRemoved()
@@ -100,8 +146,6 @@ public static class PersonOfInterest
                 Police.AddUpdateLastWantedBlip(Police.LastWantedCenterPosition);
             else
                 Police.AddUpdateLastWantedBlip(Vector3.Zero);
-
-            Police.AddUpdateCurrentWantedBlip(Vector3.Zero);
         }
         PrevPlayerIsWanted = InstantAction.PlayerIsWanted;
     }
@@ -129,6 +173,23 @@ public static class PersonOfInterest
         }
         return false;
     }
+    public static bool ApplyLastWantedStats()
+    {
+        WantedLevelStats MyLastWantedStats = GetLastWantedStats();
+        if (MyLastWantedStats == null)
+            return false;
+        else
+            ApplyWantedStats(MyLastWantedStats);
+
+        return true;
+    }
+    public static int LastWantedLevel()
+    {
+        if (LastWantedStats == null)
+            return 0;
+        else
+            return LastWantedStats.MaxWantedLevel;
+    }
     public static void ApplyWantedStats(WantedLevelStats WantedStatsToApply)
     {
         if (WantedStatsToApply == null)
@@ -150,6 +211,7 @@ public static class PersonOfInterest
         Police.PlayerCaughtChangingPlates = WantedStatsToApply.PlayerCaughtChangingPlates;
         Police.PlayerCaughtWithGun = WantedStatsToApply.PlayerCaughtWithGun;
         Police.PlayerGotInAirVehicleDuringChase = WantedStatsToApply.PlayerGotInAirVehicleDuringChase;
+        Police.PlayerKilledCiviliansInFrontOfPolice = WantedStatsToApply.PlayerKilledCiviliansInFrontOfPolice;
 
         DispatchAudio.ReportedOfficerDown = WantedStatsToApply.DispatchReportedOfficerDown;
         DispatchAudio.ReportedLethalForceAuthorized = WantedStatsToApply.DispatchReportedLethalForceAuthorized;
@@ -161,6 +223,11 @@ public static class PersonOfInterest
         DispatchAudio.ReportedGrandTheftAuto = WantedStatsToApply.DispatchReportedGrandTheftAuto;
         DispatchAudio.ReportedSuspiciousVehicle = WantedStatsToApply.DispatchReportedSuspiciousVehicle;
 
+
+        DispatchAudio.ReportedCivilianKilled = WantedStatsToApply.DispatchReportedCivilianShot;
+        DispatchAudio.ReportedWeaponsFree = WantedStatsToApply.DispatchReportedWeaponsFree;
+
+
         DispatchAudio.ClearDispatchQueue();
 
         Debugging.WriteToLog("WantedLevelStats Replace", "Replaced Wanted Stats");
@@ -168,14 +235,14 @@ public static class PersonOfInterest
 
     public static WantedLevelStats GetLastWantedStats()
     {
-        if (PreviousWantedStats == null || !PreviousWantedStats.Any())
+        if (PreviousWantedStats == null || !PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted).Any())
             return null;
 
         return PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
     }
     public static WantedLevelStats GetWantedLevelStatsForPlate(string PlateNumber)
     {
-        if (PreviousWantedStats == null || !PreviousWantedStats.Any())
+        if (PreviousWantedStats == null || !PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted).Any())
             return null;
 
         return PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();

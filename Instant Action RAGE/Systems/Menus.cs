@@ -25,12 +25,12 @@ internal static class Menus
     private static UIMenuListItem menuDebugRandomWeapon;
     private static UIMenuCheckboxItem menuDebugEnabled;
     private static UIMenuItem menuDeathUndie;
-    private static UIMenuItem menuDeathRespawnInPlace;
-    private static UIMenuItem menuDeathNormalRespawn;
+    //private static UIMenuItem menuDeathRespawnInPlace;
+   // private static UIMenuItem menuDeathNormalRespawn;
     private static UIMenuListItem menuDeathTakeoverRandomPed;
     private static UIMenuItem menuBustedResistArrest;
     private static UIMenuItem menuBustedBribe;
-    private static UIMenuItem menuBustedRespawnInPlace;
+    //private static UIMenuItem menuBustedRespawnInPlace;
     private static UIMenuListItem menuBustedTakeoverRandomPed;
     private static UIMenuListItem menuBustedSurrender;
     private static UIMenuListItem menuDeathHospitalRespawn;
@@ -47,8 +47,7 @@ internal static class Menus
     private static UIMenu actionsMenu;
 
     private static int RandomWeaponCategory;
-    private static Vector3 WorldPos;
-    private static string CurrentScreenEffect;
+    //private static Vector3 WorldPos;
 
     private static List<string> SmokingOptionsList;
     private static Location CurrentSelectedSurrenderLocation;
@@ -61,8 +60,7 @@ internal static class Menus
     {
         IsRunning = true;
         RandomWeaponCategory = 0;
-        WorldPos = new Vector3(0f, 0f, 0f);
-        CurrentScreenEffect = "Rampage";
+        //WorldPos = new Vector3(0f, 0f, 0f);
 
         SmokingOptionsList = default;
         CurrentSelectedSurrenderLocation = null;
@@ -97,9 +95,9 @@ internal static class Menus
         debugMenu.AddItem(menuDebugHealthAndArmor);
 
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
-        menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
+        //menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
         menuDeathHospitalRespawn = new UIMenuListItem("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Hospital));
-        menuDeathNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the hospital (standard game logc).");
+        //menuDeathNormalRespawn = new UIMenuItem("Standard Respawn", "Respawn at the hospital (standard game logc).");
         menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
         deathMenu.AddItem(menuDeathUndie);
@@ -109,7 +107,7 @@ internal static class Menus
         menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
         menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));
-        menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
+        //menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
         menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
         bustedMenu.AddItem(menuBustedResistArrest);

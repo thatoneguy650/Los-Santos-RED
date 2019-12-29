@@ -19,6 +19,8 @@ public static class EntryPoint
         {
             GameFiber.Yield();
         }
+
+        ScriptController.Initialize();
         InstantAction.Initialize();
         while (true)
         {
@@ -26,6 +28,7 @@ public static class EntryPoint
             {
                 if(Game.IsAltKeyDownRightNow && Game.IsKeyDown(Settings.MenuKey))
                 {
+                    ScriptController.Initialize();
                     InstantAction.Initialize();
                 }
             }

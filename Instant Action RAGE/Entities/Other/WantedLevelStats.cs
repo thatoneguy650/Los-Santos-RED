@@ -21,6 +21,7 @@ public class WantedLevelStats
     public bool PlayerGotInAirVehicleDuringChase = false;
     public bool PlayerCaughtChangingPlates = false;
     public bool PlayerCaughtBreakingIntoCar = false;
+    public bool PlayerKilledCiviliansInFrontOfPolice = false;
 
     public bool DispatchReportedOfficerDown = false;
     public bool DispatchReportedLethalForceAuthorized = false;
@@ -31,6 +32,8 @@ public class WantedLevelStats
     public bool DispatchReportedThreateningWithAFirearm;
     public bool DispatchReportedGrandTheftAuto;
     public bool DispatchReportedSuspiciousVehicle;
+    public bool DispatchReportedCivilianShot;
+    public bool DispatchReportedWeaponsFree;
 
     public List<GTALicensePlate> WantedPlates = new List<GTALicensePlate>();
     public uint GameTimeWantedStarted;
@@ -61,6 +64,7 @@ public class WantedLevelStats
         PlayerGotInAirVehicleDuringChase = Police.PlayerGotInAirVehicleDuringChase;
         PlayerCaughtChangingPlates = Police.PlayerCaughtChangingPlates;
         PlayerCaughtBreakingIntoCar = Police.PlayerCaughtBreakingIntoCar;
+        PlayerKilledCiviliansInFrontOfPolice = Police.PlayerKilledCiviliansInFrontOfPolice;
 
         DispatchReportedOfficerDown = DispatchAudio.ReportedOfficerDown;
         DispatchReportedLethalForceAuthorized = DispatchAudio.ReportedLethalForceAuthorized;
@@ -71,6 +75,8 @@ public class WantedLevelStats
         DispatchReportedThreateningWithAFirearm = DispatchAudio.ReportedThreateningWithAFirearm;
         DispatchReportedGrandTheftAuto = DispatchAudio.ReportedGrandTheftAuto;
         DispatchReportedSuspiciousVehicle = DispatchAudio.ReportedSuspiciousVehicle;
+        DispatchReportedCivilianShot = DispatchAudio.ReportedCivilianKilled;
+        DispatchReportedWeaponsFree = DispatchAudio.ReportedWeaponsFree;
 
         foreach (GTALicensePlate Plate in LicensePlateChanging.SpareLicensePlates.Where(x => x.IsWanted))
         {

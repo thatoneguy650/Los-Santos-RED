@@ -34,23 +34,23 @@ public static class SearchModeStopping
     }
     private static void MainLoop()
     {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    if (StopSearchMode)
-                        HauntPlayer();
-                    GameFiber.Sleep(50);
-                }
-            }
-            catch (Exception e)
-            {
-                InstantAction.Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (IsRunning)
+        //        {
+        //            if (StopSearchMode)
+        //                StopPoliceSearchMode();
+        //            GameFiber.Sleep(50);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        InstantAction.Dispose();
+        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //    }
+        //});
     }
     public static void Dispose()
     {
@@ -88,8 +88,10 @@ public static class SearchModeStopping
 
         Debugging.GameFibers.Add(StopSearchSingle);
     }
-    private static void HauntPlayer()
+    public static void StopPoliceSearchMode()
     {
+        if (!StopSearchMode)
+            return;
         if (InstantAction.PlayerInVehicle)
             return;
         if (!GhostCop.Exists())

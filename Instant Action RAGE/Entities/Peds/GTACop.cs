@@ -7,19 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GTACop
+public class GTACop : GTAPed
 {
-    public GTACop(Ped _Cop,bool _canSeePlayer, int _Health,Agency _Agency)
+    public GTACop(Ped _Pedestrian, bool _canSeePlayer, int _Health,Agency _Agency) : base (_Pedestrian, _canSeePlayer, _Health)
     {
-        CopPed = _Cop;
-        canSeePlayer = _canSeePlayer;
-        Health = _Health;
+        //Pedestrian = _Pedestrian;
+        //canSeePlayer = _canSeePlayer;
+        //Health = _Health;
         AssignedAgency = _Agency;
         SetAccuracyAndSightRange();
     }
-    public GTACop(Ped _Cop, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health,Agency _Agency)
+    public GTACop(Ped _Pedestrian, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health,Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
     {
-        CopPed = _Cop;
+        Pedestrian = _Pedestrian;
         canSeePlayer = _canSeePlayer;
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
         PositionLastSeenPlayer = _positionLastSeenPlayer;
@@ -27,36 +27,21 @@ public class GTACop
         AssignedAgency = _Agency;
         SetAccuracyAndSightRange();
     }
-    public int Health { get; set; }
-    public Ped CopPed { get; set; }
-   // public string SimpleTaskName { get; set; }
-    public bool canSeePlayer { get; set; }
+
     public bool isTasked { get; set; } = false;
     public bool WasRandomSpawn { get; set; } = false;
     public bool WasRandomSpawnDriver { get; set; } = false;
     public bool IsBikeCop { get; set; } = false;
-    public uint GameTimeLastSeenPlayer { get; set; }
-    public uint GameTimeContinuoslySeenPlayerSince { get; set; }
-    public Vector3 PositionLastSeenPlayer { get; set; }
     public bool isPursuitPrimary { get; set; } = false;
     public PoliceTask.Task TaskType { get; set; } = PoliceTask.Task.NoTask;
-    public bool HurtByPlayer { get; set; } = false;
     public GameFiber TaskFiber { get; set; }
     public bool SetTazer { get; set; } = false;
     public bool SetUnarmed { get; set; } = false;
     public bool SetDeadly { get; set; } = false;
     public bool TaskIsQueued { get; set; } = false;
     public uint GameTimeLastWeaponCheck { get; set; }
-    public uint GameTimeLastDistanceCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
-    public uint GameTimeLastLOSCheck { get; set; }
-    public bool isInVehicle { get; set; } = false;
-    public bool isInHelicopter { get; set; } = false;
-    public bool isOnBike { get; set; } = false;
-    public float DistanceToPlayer { get; set; }
-    public float DistanceToLastSeen { get; set; }
-    public bool WasMarkedNonPersistent { get; set; } = false;
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false,true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public WeaponVariation PistolVariation { get; set; }
@@ -65,10 +50,10 @@ public class GTACop
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public void SetAccuracyAndSightRange()
     {
-        CopPed.VisionRange = 55f;
-        CopPed.HearingRange = 25;
+        Pedestrian.VisionRange = 55f;
+        Pedestrian.HearingRange = 25;
         if(Settings.OverridePoliceAccuracy)
-            CopPed.Accuracy = Settings.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
     }
     public bool NeedsWeaponCheck
     {
@@ -82,28 +67,6 @@ public class GTACop
                 return false;
         }       
     }
-    public bool NeedsDistanceCheck
-    {
-        get
-        {
-            if (GameTimeLastDistanceCheck == 0)
-                return true;
-            else if (Game.GameTime > GameTimeLastDistanceCheck + 25)
-                return true;
-            else
-                return false;
-        }
-    }
-    public uint HasSeenPlayerFor
-    {
-        get
-        {
-            if (GameTimeContinuoslySeenPlayerSince == 0)
-                return 0;
-            else
-                return (Game.GameTime - GameTimeContinuoslySeenPlayerSince);
-        }
-    }
     public bool CanSpeak
     {
         get
@@ -115,41 +78,6 @@ public class GTACop
             else
                 return false;
         }
-    }
-    public bool RecentlySeenPlayer()
-    {
-        if (canSeePlayer)
-            return true;
-        else if (Game.GameTime - GameTimeLastSeenPlayer <= 10000)//Seen in last 10 seconds?
-            return true;
-        else
-            return false;
-    }
-    public bool SeenPlayerSince(int _Duration)
-    {
-        if (canSeePlayer)
-            return true;
-        else if (Game.GameTime - GameTimeLastSeenPlayer <= _Duration)
-            return true;
-        else
-            return false;
-    }
-    public void UpdateContinuouslySeen()
-    {
-        if (GameTimeContinuoslySeenPlayerSince == 0)
-        {
-            GameTimeContinuoslySeenPlayerSince = Game.GameTime;
-        }
-    }
-    public void UpdateDistance()
-    {
-        if(NeedsDistanceCheck)
-        {
-            DistanceToPlayer = CopPed.DistanceTo(Game.LocalPlayer.Character.Position);
-            DistanceToLastSeen = CopPed.DistanceTo(Police.PlacePlayerLastSeen);
-            GameTimeLastDistanceCheck = Game.GameTime;
-        }
-
     }
 }
 

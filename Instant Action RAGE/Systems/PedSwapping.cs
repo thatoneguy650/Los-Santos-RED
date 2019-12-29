@@ -10,20 +10,19 @@ using System.Threading.Tasks;
 
 internal static class PedSwapping
 {
-    private static Random rnd;
-    private static List<TakenOverPed> TakenOverPeds = new List<TakenOverPed>();
+    private static List<TakenOverPed> TakenOverPeds;
     private static Model OriginalModel;
     private static string LastModelHash;
     private static PedVariation myPedVariation;
-    private static bool PedOriginallyHadHelmet = false;
-    private static uint GameTimeLastTakenOver = Game.GameTime;
-    static PedSwapping()
-    {
-        rnd = new Random();
-    }
+    private static bool PedOriginallyHadHelmet;
+    private static uint GameTimeLastTakenOver;
     public static void Initialize()
     {
-
+        OriginalModel = default;
+        LastModelHash = "";
+        TakenOverPeds = new List<TakenOverPed>();
+        PedOriginallyHadHelmet = false;
+        GameTimeLastTakenOver = Game.GameTime;
     }
     public static void Dispose()
     {
@@ -43,7 +42,7 @@ internal static class PedSwapping
         if (Nearest)
             PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
         else
-            PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => rnd.Next()).FirstOrDefault();
+            PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => InstantAction.MyRand.Next()).FirstOrDefault();
         if (PedToReturn == null)
             return null;
         else if (PedToReturn.IsInAnyVehicle(false))
@@ -79,7 +78,9 @@ internal static class PedSwapping
         {
             if (TargetPed == null)
                 return;
-            PoliceScanning.ClearPolice();
+            if(ClearNearPolice)
+                PoliceScanning.ClearPoliceCompletely();
+
             Vector3 CurrentPosition = Game.LocalPlayer.Character.Position;
             Vector3 TargetPedPosition = TargetPed.Position;
 
@@ -165,7 +166,7 @@ internal static class PedSwapping
             }
 
             if (Settings.PedTakeoverSetRandomMoney)
-                Game.LocalPlayer.Character.SetCash(rnd.Next(Settings.PedTakeoverRandomMoneyMin, Settings.PedTakeoverRandomMoneyMax));
+                Game.LocalPlayer.Character.SetCash(InstantAction.MyRand.Next(Settings.PedTakeoverRandomMoneyMin, Settings.PedTakeoverRandomMoneyMax));
 
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
             Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
@@ -187,6 +188,7 @@ internal static class PedSwapping
 
             Police.RemoveWantedBlips();
             Police.ResetPoliceStats();
+            PersonOfInterest.ResetPersonOfInterest();
 
             GameTimeLastTakenOver = Game.GameTime;
             Menus.TakeoverRadius = -1f;//reset this on the menu
@@ -195,13 +197,7 @@ internal static class PedSwapping
             if (Game.LocalPlayer.Character.IsWearingHelmet)
             {
                 PedOriginallyHadHelmet = true;
-            }
-            //if(ClearNearPolice)
-            //{
-            //    PoliceScanning.ClearPolice();
-            //}
-            
-
+            }           
             if (AdvanceTime)
             {
                 World.DateTime.AddHours(18);
@@ -228,9 +224,11 @@ internal static class PedSwapping
     {
         try
         {
-            myPedVariation = new PedVariation();
-            myPedVariation.MyPedComponents = new List<PedComponent>();
-            myPedVariation.MyPedProps = new List<PropComponent>();
+            myPedVariation = new PedVariation
+            {
+                MyPedComponents = new List<PedComponent>(),
+                MyPedProps = new List<PropComponent>()
+            };
             for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
                 myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
@@ -249,9 +247,11 @@ internal static class PedSwapping
     {
         try
         {
-            myPedVariation = new PedVariation();
-            myPedVariation.MyPedComponents = new List<PedComponent>();
-            myPedVariation.MyPedProps = new List<PropComponent>();
+            myPedVariation = new PedVariation
+            {
+                MyPedComponents = new List<PedComponent>(),
+                MyPedProps = new List<PropComponent>()
+            };
             for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
                 myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));

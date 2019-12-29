@@ -102,6 +102,7 @@
     <Compile Include="AlexGuirre\LoopedParticles.cs" />
     <Compile Include="AlexGuirre\PedHeadshot.cs" />
     <Compile Include="Entities\Other\WantedLevelStats.cs" />
+    <Compile Include="Entities\Peds\GTAPed.cs" />
     <Compile Include="Lookups\Agencies.cs" />
     <Compile Include="Lookups\GTAWeapons.cs" />
     <Compile Include="Lookups\Streets.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Entities\Other\PoliceTask.cs" />
     <Compile Include="Lookups\Locations.cs" />
     <Compile Include="Systems\PersonofInterest.cs" />
+    <Compile Include="Systems\ScriptController.cs" />
     <Compile Include="Systems\WeatherReporting.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Other\Extensions.cs" />

@@ -40,7 +40,7 @@ public static class InstantAction
     public static bool PlayerOnMotorcycle { get; set; }
     public static bool PlayerAimingInVehicle { get; set; }
     public static bool PlayerIsGettingIntoVehicle { get; set; }
-    public static int PlayerWantedLevel { get; set; }
+    //public static int PlayerWantedLevel { get; set; }
     public static WeaponHash PlayerCurrentWeaponHash { get; set; }
     public static List<GTAVehicle> TrackedVehicles { get; set; }
     public static Vehicle OwnedCar { get; set; }
@@ -88,14 +88,21 @@ public static class InstantAction
     {
         get
         {
-            return PlayerWantedLevel == 0;
+            return Game.LocalPlayer.WantedLevel == 0;
         }
     }
     public static bool PlayerIsWanted
     {
         get
         {
-            return PlayerWantedLevel > 0;
+            return Game.LocalPlayer.WantedLevel > 0;
+        }
+    }
+    public static int PlayerWantedLevel
+    {
+        get
+        {
+            return Game.LocalPlayer.WantedLevel;
         }
     }
     public static bool PlayerHoldingEnter
@@ -135,7 +142,6 @@ public static class InstantAction
         PlayerOnMotorcycle = false;
         PlayerAimingInVehicle = false;
         PlayerIsGettingIntoVehicle = false; 
-        PlayerWantedLevel = 0;
         PlayerCurrentWeaponHash = 0;
         TrackedVehicles = new List<GTAVehicle>();
         OwnedCar = null;
@@ -183,31 +189,141 @@ public static class InstantAction
     }
     public static void MainLoop()
     {
-        var stopwatch = new Stopwatch();
-        GameFiber.StartNew(delegate
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (IsRunning)
+        //        {
+        //            UpdatePlayer();
+        //            StateTick();
+        //            ControlTick();
+        //            AudioTick();
+        //            GameFiber.Yield();
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Dispose();
+        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //    }
+        //});
+    }
+
+    public static void UpdatePlayer()
+    {
+        PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+        if (PlayerInVehicle)
         {
-            try
+            if (Game.LocalPlayer.Character.IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike)
+                PlayerInAutomobile = false;
+            else
+                PlayerInAutomobile = true;
+
+            if (Game.LocalPlayer.Character.IsOnBike)
+                PlayerOnMotorcycle = true;
+            else
+                PlayerOnMotorcycle = false;
+        }
+        else
+        {
+            PlayerOnMotorcycle = false;
+            PlayerInAutomobile = false;
+        }
+
+        if (Game.LocalPlayer.Character.IsShooting)
+            GameTimePlayerLastShot = Game.GameTime;
+        PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
+        PlayerIsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
+        PlayerAimingInVehicle = PlayerInVehicle && Game.LocalPlayer.IsFreeAiming;
+        WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
+
+        if (PlayerCurrentWeapon != null)
+            PlayerCurrentWeaponHash = PlayerCurrentWeapon.Hash;
+        else
+            PlayerCurrentWeaponHash = 0;
+
+        if (PrevPlayerIsGettingIntoVehicle != PlayerIsGettingIntoVehicle)
+            PlayerIsGettingIntoVehicleChanged();
+
+        if (PlayerInVehicle && !IsCurrentVehicleTracked)
+            TrackCurrentVehicle();
+
+        if (PlayerCurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeapon)
+            LastWeapon = PlayerCurrentWeapon.Hash;
+
+        if (PrevPlayerAimingInVehicle != PlayerAimingInVehicle)
+            PlayerAimingInVehicleChanged();
+
+        if (PrevPlayerInVehicle != PlayerInVehicle)
+            PlayerInVehicleChanged();
+
+    }
+    public static void StateTick()
+    {
+        if (Game.LocalPlayer.Character.IsDead && !IsDead)
+            PlayerDeathEvent();
+
+        if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 0))
+            BeingArrested = true;
+        if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 1))
+        {
+            BeingArrested = true;
+            Game.LocalPlayer.Character.Tasks.Clear();
+        }
+
+        if (BeingArrested && !IsBusted)
+            PlayerBustedEvent();
+
+        if (PlayerWantedLevel > MaxWantedLastLife) // The max wanted level i saw in the last life, not just right before being busted
+            MaxWantedLastLife = PlayerWantedLevel;
+
+        //if (PedSwapping.JustTakenOver(10000) && PlayerWantedLevel > 0 && !Police.RecentlySetWanted)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
+        //{
+        //    Police.SetWantedLevel(0,"Resetting wanted just after takeover");
+        //}
+    }
+    public static void AudioTick()
+    {
+        if (Settings.DisableAmbientScanner)
+            NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
+        if (Settings.WantedMusicDisable)
+            NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
+    }
+    public static void ControlTick()
+    {
+        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+        {
+            if (!HandsAreUp && !IsBusted)
             {
-                while (IsRunning)
-                {
-                    stopwatch.Start();
-                    UpdatePlayer();
-                    StateTick();
-                    ControlTick();
-                    AudioTick();
-                    stopwatch.Stop();
-                    if (stopwatch.ElapsedMilliseconds >= 16)
-                        LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
-                    stopwatch.Reset();
-                    GameFiber.Yield();
-                }
+                SetPedUnarmed(Game.LocalPlayer.Character, false);
+                HandsUpPreviousPoliceState = Police.CurrentPoliceState;
+                Surrendering.RaiseHands();
+                if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 10f)
+                    Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
             }
-            catch (Exception e)
+        }
+        else
+        {
+            if (HandsAreUp && !IsBusted)
             {
-                Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                HandsAreUp = false; // You put your hands down
+                Police.CurrentPoliceState = HandsUpPreviousPoliceState;
+                Game.LocalPlayer.Character.Tasks.Clear();
+                if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                    Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
             }
-        });
+        }
+
+        if (Game.IsControlPressed(2, GameControl.Enter))
+        {
+            if (GameTimeStartedHoldingEnter == 0)
+                GameTimeStartedHoldingEnter = Game.GameTime;
+        }
+        else
+        {
+            GameTimeStartedHoldingEnter = 0;
+        }
     }
     public static void Dispose()
     {
@@ -246,81 +362,7 @@ public static class InstantAction
         PersonOfInterest.Dispose();
     }
 
-    private static void UpdatePlayer()
-    {
-        PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-        if(PlayerInVehicle)
-        {
-            if (Game.LocalPlayer.Character.IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike)
-                PlayerInAutomobile = false;
-            else
-                PlayerInAutomobile = true;
-
-            if (Game.LocalPlayer.Character.IsOnBike)
-                PlayerOnMotorcycle = true;
-            else
-                PlayerOnMotorcycle = false;
-        }
-        else
-        {
-            PlayerOnMotorcycle = false;
-            PlayerInAutomobile = false;
-        }
-
-        if (Game.LocalPlayer.Character.IsShooting)
-            GameTimePlayerLastShot = Game.GameTime;
-        PlayerIsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
-        PlayerWantedLevel = Game.LocalPlayer.WantedLevel;
-        PlayerIsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
-        PlayerAimingInVehicle = PlayerInVehicle && Game.LocalPlayer.IsFreeAiming;
-        WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
-        
-
-        if (PlayerCurrentWeapon != null)
-            PlayerCurrentWeaponHash = PlayerCurrentWeapon.Hash;
-        else
-            PlayerCurrentWeaponHash = 0;
-
-        if (PrevPlayerIsGettingIntoVehicle != PlayerIsGettingIntoVehicle)
-            PlayerIsGettingIntoVehicleChanged();
-
-        if (PlayerInVehicle && !IsCurrentVehicleTracked)
-            TrackCurrentVehicle();
-
-        if (PlayerCurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeapon)
-            LastWeapon = PlayerCurrentWeapon.Hash;
-
-        if (PrevPlayerAimingInVehicle != PlayerAimingInVehicle)
-            PlayerAimingInVehicleChanged();
-
-        if (PrevPlayerInVehicle != PlayerInVehicle)
-            PlayerInVehicleChanged();
-
-    }
-    private static void StateTick()
-    {
-        if (Game.LocalPlayer.Character.IsDead && !IsDead)
-            PlayerDeathEvent();
-
-        if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 0))
-            BeingArrested = true;
-        if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 1))
-        {
-            BeingArrested = true;
-            Game.LocalPlayer.Character.Tasks.Clear();
-        }
-
-        if (BeingArrested && !IsBusted)
-            PlayerBustedEvent();
-
-        if (PlayerWantedLevel > MaxWantedLastLife) // The max wanted level i saw in the last life, not just right before being busted
-            MaxWantedLastLife = PlayerWantedLevel;
-
-        //if (PedSwapping.JustTakenOver(10000) && PlayerWantedLevel > 0 && !Police.RecentlySetWanted)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
-        //{
-        //    Police.SetWantedLevel(0,"Resetting wanted just after takeover");
-        //}
-    }
+    
     private static void TrackCurrentVehicle()
     {
         Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
@@ -411,49 +453,9 @@ public static class InstantAction
         PrevPlayerAimingInVehicle = PlayerAimingInVehicle;
         LocalWriteToLog("ValueChecker", String.Format("PlayerAimingInVehicle Changed to: {0}", PlayerAimingInVehicle));
     }
-    private static void ControlTick()
-    {
-        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
-        {
-            if (!HandsAreUp && !IsBusted)
-            {
-                SetPedUnarmed(Game.LocalPlayer.Character, false);
-                HandsUpPreviousPoliceState = Police.CurrentPoliceState;
-                Surrendering.RaiseHands();
-                if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 10f)
-                    Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
-            }
-        }
-        else
-        {
-            if (HandsAreUp && !IsBusted)
-            {
-                HandsAreUp = false; // You put your hands down
-                Police.CurrentPoliceState = HandsUpPreviousPoliceState;
-                Game.LocalPlayer.Character.Tasks.Clear();
-                if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
-                    Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
-            }
-        }
+    
 
-        if(Game.IsControlPressed(2, GameControl.Enter))
-        {
-            if (GameTimeStartedHoldingEnter == 0)
-                GameTimeStartedHoldingEnter = Game.GameTime;
-        }
-        else
-        {
-            GameTimeStartedHoldingEnter = 0;
-        }
-    }
 
-    private static void AudioTick()
-    {
-        if (Settings.DisableAmbientScanner)
-            NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
-        if (Settings.WantedMusicDisable)
-            NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
-    }
     public static GTAWeapon GetCurrentWeapon()
     {
         if (Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)

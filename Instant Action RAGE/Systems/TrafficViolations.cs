@@ -81,27 +81,27 @@ public static class TrafficViolations
     }
     private static void MainLoop()
     {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    CheckViolations();
-                    GameFiber.Sleep(500);
-                }
-            }
-            catch (Exception e)
-            {
-                Debugging.WriteToLog("TrafficViolations",e.Message + " : " + e.StackTrace);
-            }
-        });  
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (IsRunning)
+        //        {
+        //            CheckViolations();
+        //            GameFiber.Sleep(500);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debugging.WriteToLog("TrafficViolations",e.Message + " : " + e.StackTrace);
+        //    }
+        //});  
     }
     public static void Dispose()
     {
         IsRunning = false;
     }
-    private static void CheckViolations()
+    public static void CheckViolations()
     {
         if (Police.CurrentPoliceState != Police.PoliceState.Normal || !Settings.TrafficViolations)
         {
@@ -245,7 +245,7 @@ public static class TrafficViolations
 
             if (Settings.TrafficViolationsRunningRedLight)
             {
-                PlayerIsRunningRedLight = CheckRedLight();
+                PlayerIsRunningRedLight = false;//CheckRedLight();
                 if (PlayerIsRunningRedLight && TrafficAnyPoliceCanSeePlayer && !ViolationRunningRed && !TreatAsCop)
                 {
                     ViolationRunningRed = true;

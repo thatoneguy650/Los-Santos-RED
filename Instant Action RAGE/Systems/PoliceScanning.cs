@@ -11,7 +11,8 @@ public static class PoliceScanning
 {
     public static List<GTACop> CopPeds { get; private set; }
     public static List<GTACop> K9Peds { get; set; }
-    //public static List<Ped> Civilians { get; private set; }
+    public static List<Vehicle> PoliceVehicles { get; set; }
+    public static List<GTAPed> Civilians { get; private set; }
     public static string AgenciesChasingPlayer
     {
         get
@@ -23,30 +24,12 @@ public static class PoliceScanning
     {
         CopPeds = new List<GTACop>();
         K9Peds = new List<GTACop>();
-        //Civilians = new List<Ped>();
+        Civilians = new List<GTAPed>();
+        PoliceVehicles = new List<Vehicle>();
     }
     public static void Dispose()
     {
-        foreach(GTACop Cop in CopPeds)
-        {
-            if(Cop.CopPed.Exists())
-            {
-                if (Cop.CopPed.IsInAnyVehicle(false))
-                    Cop.CopPed.CurrentVehicle.Delete();
-                Cop.CopPed.Delete();
-            }
-        }
-        CopPeds.Clear();
-        foreach (GTACop Cop in K9Peds)
-        {
-            if (Cop.CopPed.Exists())
-            {
-                if (Cop.CopPed.IsInAnyVehicle(false))
-                    Cop.CopPed.CurrentVehicle.Delete();
-                Cop.CopPed.Delete();
-            }
-        }
-        K9Peds.Clear();
+        ClearPolice();
     }
     public static void ScanForPolice()
     {
@@ -55,7 +38,10 @@ public static class PoliceScanning
         {
             if(Pedestrian.IsPoliceArmy())
             {
-                if (!CopPeds.Any(x => x.CopPed == Pedestrian))
+                if (SearchModeStopping.SpotterCop != null && SearchModeStopping.SpotterCop.Handle == Pedestrian.Handle)
+                    continue;
+
+                if (!CopPeds.Any(x => x.Pedestrian == Pedestrian))
                 {
                     bool canSee = false;
                     if (Pedestrian.PlayerIsInFront() && Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 55f) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, Game.LocalPlayer.Character))
@@ -68,9 +54,14 @@ public static class PoliceScanning
                     Pedestrian.Inventory.Weapons.Clear();
                     Police.IssueCopPistol(myCop);
                     NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
-                    if (SearchModeStopping.SpotterCop != null && SearchModeStopping.SpotterCop.Handle == Pedestrian.Handle)
-                        continue;
 
+
+                    if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
+                    {
+                        Vehicle PoliceCar = Pedestrian.CurrentVehicle;
+                        PoliceSpawning.UpgradeCruiser(PoliceCar);
+                        PoliceVehicles.Add(PoliceCar);
+                    }   
                     CopPeds.Add(myCop);
 
                     if (Settings.IssuePoliceHeavyWeapons && Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
@@ -79,27 +70,23 @@ public static class PoliceScanning
             }
             else
             {
-                //if (!Civilians.Any(x => x == Pedestrian))
-                //{
-                //    Civilians.Add(Pedestrian);
-                //}
+                if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
+                {
+                    Civilians.Add(new GTAPed(Pedestrian,false,Pedestrian.Health));
+                }
             }
         }
         Police.UpdatedCopsStats();
-        //CopPeds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
-        //K9Peds.RemoveAll(x => !x.CopPed.Exists() || x.CopPed.IsDead);
-        //Civilians.RemoveAll(x => !x.Exists() || x.IsDead);
-        // Police.CheckKilled();
     }
     public static void ClearPoliceAroundArea(Vector3 Location,float Radius)
     {
-        foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.DistanceTo2D(Location) <= Radius))
+        foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.DistanceTo2D(Location) <= Radius))
         {
-            if (Cop.CopPed.Exists())
+            if (Cop.Pedestrian.Exists())
             {
-                if (Cop.CopPed.IsInAnyVehicle(false))
-                    Cop.CopPed.CurrentVehicle.Delete();
-                Cop.CopPed.Delete();
+                if (Cop.Pedestrian.IsInAnyVehicle(false))
+                    Cop.Pedestrian.CurrentVehicle.Delete();
+                Cop.Pedestrian.Delete();
             }
         }
         Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Location, Radius, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
@@ -110,24 +97,45 @@ public static class PoliceScanning
                 MyVehicle.Delete();
             }
         }
-
     }
-
     public static void ClearPolice()
     {
-        Tasking.UntaskAll(true);
-        foreach (GTACop Cop in K9Peds.Where(x => x.CopPed.Exists() && !x.CopPed.IsInHelicopter))
+        foreach (GTACop Cop in CopPeds)
         {
-            Cop.CopPed.Delete();
+            if (Cop.Pedestrian.Exists())
+            {
+                if (Cop.Pedestrian.IsInAnyVehicle(false))
+                    Cop.Pedestrian.CurrentVehicle.Delete();
+                Cop.Pedestrian.Delete();
+            }
         }
-        foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsInAnyVehicle(false) && !x.CopPed.IsInHelicopter))
+        CopPeds.Clear();
+        foreach (GTACop Cop in K9Peds)
         {
-            Cop.CopPed.Delete();
+            if (Cop.Pedestrian.Exists())
+            {
+                if (Cop.Pedestrian.IsInAnyVehicle(false))
+                    Cop.Pedestrian.CurrentVehicle.Delete();
+                Cop.Pedestrian.Delete();
+            }
         }
-        foreach (GTACop Cop in CopPeds.Where(x => x.CopPed.Exists() && x.CopPed.IsInAnyVehicle(false) && !x.CopPed.IsInHelicopter))
+        K9Peds.Clear();
+    }
+    public static void ClearPoliceCompletely()
+    {
+        //Tasking.UntaskAll(true);
+        foreach (GTACop Cop in K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsInHelicopter))
         {
-            Cop.CopPed.CurrentVehicle.Delete();
-            Cop.CopPed.Delete();
+            Cop.Pedestrian.Delete();
+        }
+        foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
+        {
+            Cop.Pedestrian.Delete();
+        }
+        foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
+        {
+            Cop.Pedestrian.CurrentVehicle.Delete();
+            Cop.Pedestrian.Delete();
         }
         Ped[] closestPed = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 400f, GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAnimalPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
         foreach (Ped dog in closestPed)

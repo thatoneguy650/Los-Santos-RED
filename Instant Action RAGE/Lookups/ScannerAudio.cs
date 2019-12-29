@@ -565,19 +565,7 @@ public class colour
 }
 public class conjunctives
 {
-        public static String NearGenericRandom()
-        {
-            int rnd = random.Next(1, 4);
-            if (rnd == 1)
-                return Nearumm.FileName;
-            else if(rnd == 2)
-                return Closetoum.FileName;
-            else if (rnd == 3)
-                return Closetoum.FileName;
-            else
-                return Closetouhh.FileName;
-        }
-        public static ScannerFile Onuh { get { return new ScannerFile("01_conjunctives\\0x011A8195.wav", "On, uh...", "conjunctives"); } }
+    public static ScannerFile Onuh { get { return new ScannerFile("01_conjunctives\\0x011A8195.wav", "On, uh...", "conjunctives"); } }
     public static ScannerFile In { get { return new ScannerFile("01_conjunctives\\0x03D81B43.wav", "In...", "conjunctives"); } }
     public static ScannerFile after { get { return new ScannerFile("01_conjunctives\\0x04E066E1.wav", "after(?)", "conjunctives"); } }
     public static ScannerFile In_1 { get { return new ScannerFile("01_conjunctives\\0x0504FCB6.wav", "In...", "conjunctives"); } }

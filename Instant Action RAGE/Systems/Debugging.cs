@@ -125,22 +125,22 @@ public static class Debugging
         }
         if (ShowCopTaskStatus)
         {
-            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead))
+            foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead))
             {
-                if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
-                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Green);
-                else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
-                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Purple);
-                else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
-                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
-                else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
-                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Orange);
-                else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
-                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-                else if (Cop.CopPed.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
-                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
+                if (Cop.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.InProgress)
+                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.Pedestrian.Position.X, Cop.Pedestrian.Position.Y, Cop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Green);
+                else if (Cop.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
+                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.Pedestrian.Position.X, Cop.Pedestrian.Position.Y, Cop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Purple);
+                else if (Cop.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.None)
+                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.Pedestrian.Position.X, Cop.Pedestrian.Position.Y, Cop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+                else if (Cop.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.Pedestrian.Position.X, Cop.Pedestrian.Position.Y, Cop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Orange);
+                else if (Cop.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.Preparing)
+                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.Pedestrian.Position.X, Cop.Pedestrian.Position.Y, Cop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+                else if (Cop.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.Unknown)
+                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.Pedestrian.Position.X, Cop.Pedestrian.Position.Y, Cop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
                 else
-                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.CopPed.Position.X, Cop.CopPed.Position.Y, Cop.CopPed.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+                    Rage.Debug.DrawArrowDebug(new Vector3(Cop.Pedestrian.Position.X, Cop.Pedestrian.Position.Y, Cop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
             }
             //if (Game.LocalPlayer.WantedLevel > 0)
             //{
@@ -176,20 +176,20 @@ public static class Debugging
         Tasking.UntaskAll(true);
 
 
-        foreach (GTACop Cop in PoliceScanning.K9Peds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead && !x.CopPed.IsInHelicopter))
+        foreach (GTACop Cop in PoliceScanning.K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
-            Cop.CopPed.Delete();
+            Cop.Pedestrian.Delete();
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead && !x.CopPed.IsInAnyVehicle(false) && !x.CopPed.IsInHelicopter))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
         {
-            Cop.CopPed.Delete();
+            Cop.Pedestrian.Delete();
         }
 
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && !x.CopPed.IsDead && x.CopPed.IsInAnyVehicle(false) && !x.CopPed.IsInHelicopter))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
         {
-            Cop.CopPed.CurrentVehicle.Delete();
+            Cop.Pedestrian.CurrentVehicle.Delete();
 
-            Cop.CopPed.Delete();
+            Cop.Pedestrian.Delete();
         }
 
 
@@ -878,10 +878,17 @@ public static class Debugging
     {
         //Settings.Logging = true;
         //Settings.Debug = true;
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CopPed.Exists() && x.CopPed.IsAlive))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         {
             Debugging.WriteToLog("Debug", string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11},Agency: {12}",
-                    Cop.CopPed.Handle, Cop.CopPed.Model.Name, Cop.isTasked, Cop.canSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.CopPed.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials));
+                    Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.isTasked, Cop.canSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials));
+        }
+
+
+        foreach (GTAPed MyPed in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+        {
+            Debugging.WriteToLog("Debug", string.Format("MyPed: {0},Model.Name:{1},HurtByPlayer: {2}",
+                    MyPed.Pedestrian.Handle, MyPed.Pedestrian.Model.Name, MyPed.HurtByPlayer));
         }
 
         Vector3 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(5f, 25f));
@@ -941,7 +948,7 @@ public static class Debugging
     {
         DebugCopReset();
         Game.DisplayNotification("Instant Action Deactivated");
-        InstantAction.Dispose();
+        ScriptController.Dispose();
     }
     public static void WriteToLog(String ProcedureString, String TextToLog)
     {
