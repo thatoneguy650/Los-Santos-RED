@@ -65,75 +65,78 @@ internal static class VehicleEngine
     }
     public static void MainLoop()
     {
-        GameFiber.StartNew(delegate
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (IsRunning)
+        //        {
+        //            VehicleEngineTick();
+        //            GameFiber.Yield();
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        InstantAction.Dispose();
+        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //    }
+        //});
+    }
+    public static void VehicleEngineTick()
+    {
+        bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+
+        if (WasinVehicle != PlayerInVehicle)
         {
-            try
+            EnterExitVehicleEvent(PlayerInVehicle);
+        }
+
+        if (PrevIsHotwiring != IsHotwiring)
+            IsHotWiringChanged();
+
+        if (PlayerInVehicle)
+        {
+            if (Game.LocalPlayer.Character.IsInAnyPoliceVehicle && EngineRunning)
             {
-                while (IsRunning)
+                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
+            }
+            else if (!EngineRunning)
+            {
+                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+            }
+
+            if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))
+            {
+                LocalWriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
+                TogglingEngine = true;
+                ToggleEngine(true, !EngineRunning);
+                LocalWriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
+            }
+
+            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
+            {
+                if (!EngineRunning)
                 {
-
-                    bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-
-                    if (WasinVehicle != PlayerInVehicle)
-                    {
-                        EnterExitVehicleEvent(PlayerInVehicle);
-                    }
-
-                    if (PrevIsHotwiring != IsHotwiring)
-                        IsHotWiringChanged();
-
-                    if (PlayerInVehicle)
-                    {
-                        if (Game.LocalPlayer.Character.IsInAnyPoliceVehicle && EngineRunning)
-                        {                        
-                            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
-                        }
-                        else if(!EngineRunning)
-                        {
-                            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-                        }
-
-                        if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))
-                        {
-                            LocalWriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
-                            TogglingEngine = true;
-                            ToggleEngine(true, !EngineRunning);
-                            LocalWriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
-                        }
-
-                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
-                        {
-                            if (!EngineRunning)
-                            {
-                                Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
-                            }
-                            else
-                            {
-                                Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
-                                Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
-                                //if (WantedLevelTune)
-                                //    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "RADIO_19_USER");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GameTimeStartedHotwiring = 0;
-                        NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-                    }                     
-                    if (PrevEngineRunning != EngineRunning)
-                    {
-                        EngineRunningEvent();
-                    }
-                    GameFiber.Yield();
+                    Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
+                }
+                else
+                {
+                    Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
+                    Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
+                    //if (WantedLevelTune)
+                    //    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "RADIO_19_USER");
                 }
             }
-            catch (Exception e)
-            {
-                InstantAction.Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
+        }
+        else
+        {
+            GameTimeStartedHotwiring = 0;
+            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+        }
+        if (PrevEngineRunning != EngineRunning)
+        {
+            EngineRunningEvent();
+        }
     }
     public static void TurnOffEngine()
     {

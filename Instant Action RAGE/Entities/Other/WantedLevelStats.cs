@@ -39,6 +39,7 @@ public class WantedLevelStats
     public uint GameTimeWantedStarted;
     public uint GameTimeWantedEnded;
     public bool PlayerSeenDuringWanted = false;
+    public bool IsExpired = false;
 
     public WantedLevelStats()
     {

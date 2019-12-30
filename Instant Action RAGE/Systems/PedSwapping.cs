@@ -188,7 +188,7 @@ internal static class PedSwapping
 
             Police.RemoveWantedBlips();
             Police.ResetPoliceStats();
-            PersonOfInterest.ResetPersonOfInterest();
+            PersonOfInterest.ResetPersonOfInterest(false);
 
             GameTimeLastTakenOver = Game.GameTime;
             Menus.TakeoverRadius = -1f;//reset this on the menu

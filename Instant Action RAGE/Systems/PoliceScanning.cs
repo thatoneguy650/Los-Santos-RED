@@ -72,7 +72,7 @@ public static class PoliceScanning
             {
                 if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
                 {
-                    Civilians.Add(new GTAPed(Pedestrian,false,Pedestrian.Health));
+                    Civilians.Add(new GTAPed(Pedestrian, false, Pedestrian.Health));
                 }
             }
         }

@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 public static class WeatherReporting
 {
     private static List<WeatherFile> WeatherFiles;
-    private static uint GameTimeLastCheckedWeather;
     private static WeatherTypeHash NextWeather;
     private static WeatherTypeHash PrevNextWeather;
     private static WeatherTypeHash CurrentWeather;
@@ -53,7 +52,6 @@ public static class WeatherReporting
     public static void Initialize()
     {
         WeatherFiles = new List<WeatherFile>();
-        GameTimeLastCheckedWeather = 0;
         NextWeather = WeatherTypeHash.Neutral;
         PrevNextWeather = WeatherTypeHash.Neutral;
         CurrentWeather = WeatherTypeHash.Neutral;
@@ -117,46 +115,41 @@ public static class WeatherReporting
         WeatherFiles.Add(Sunny.Sunny10);
         WeatherFiles.Add(Sunny.Sunny11);
         WeatherFiles.Add(Sunny.Sunny12);
-        GameTimeLastCheckedWeather = Game.GameTime;
         GameTimeLastReportedWeather = Game.GameTime;
         CheckWeather();
         MainLoop();
     }
     public static void MainLoop()
     {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    if(Game.GameTime - GameTimeLastCheckedWeather > 5000)
-                    {
-                        CheckWeather();
-                        GameTimeLastCheckedWeather = Game.GameTime;
-                    }
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (IsRunning)
+        //        {
 
-                    if (Settings.DebugShowUI)
-                    {
-                        string Tasking = string.Format("Weather: Current: {0}, Next: {1}, Wind: {2}", CurrentWeather, NextWeather, WindSpeed);//string.Format("ToTask: {0}", CopsToTask.Count());
-                        UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
-                    }
-                    GameFiber.Yield();
-                }
-            }
-            catch (Exception e)
-            {
-                Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
+
+        //            if (Settings.DebugShowUI)
+        //            {
+        //                string Tasking = string.Format("Weather: Current: {0}, Next: {1}, Wind: {2}", CurrentWeather, NextWeather, WindSpeed);//string.Format("ToTask: {0}", CopsToTask.Count());
+        //                UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
+        //            }
+        //            GameFiber.Yield();
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Dispose();
+        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //    }
+        //});
     }
     public static void Dispose()
     {
         IsRunning = false;
         DispatchAudio.AbortAllAudio();
     }
-    private static void CheckWeather()
+    public static void CheckWeather()
     {
         CurrentWindSpeed = NativeFunction.CallByName<float>("GET_WIND_SPEED");
         CurrentWeather = (WeatherTypeHash)NativeFunction.CallByName<int>("GET_PREV_WEATHER_TYPE_HASH_NAME");

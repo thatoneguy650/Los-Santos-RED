@@ -138,7 +138,7 @@ public static class Respawning
         Game.TimeScale = 1f;
         if (ClearWanted)
         {
-            PersonOfInterest.ResetPersonOfInterest();
+            PersonOfInterest.ResetPersonOfInterest(false);
             Police.ResetPoliceStats();
             Police.SetWantedLevel(0,"Reset player with Clear Wanted");
             InstantAction.MaxWantedLastLife = 0;  

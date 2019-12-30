@@ -43,6 +43,21 @@ public static class ScriptController
     private static uint SearchModeStoppingInterval;
     private static uint GameTimeLastStoppedSearchMode;
 
+    private static uint DispatchAudioInterval;
+    private static uint GameTimeLastCheckedDispatchAudio;
+
+    private static uint WeaponDroppingInterval;
+    private static uint GameTimeCheckedWeaponDropping;
+
+    private static uint WeatherCheckingInterval;
+    private static uint GameTimeLastCheckedWeather;
+
+    private static uint InstantActionInterval;
+    private static uint GameTimeLastRanInstantAction;
+
+    private static uint PoliceInterval;
+    private static uint GameTimeLastRanPolice;
+
     private static bool RanLOS;
     private static bool ScannedForPolice;
     private static bool SpawnedRandomCop;
@@ -54,7 +69,13 @@ public static class ScriptController
     private static bool UpdatedPlayerLocation;
     private static bool CheckedPersonOfInterest;
     private static bool PoliceSpeechRan;
+    private static bool CheckedDispatchAudio;
+    private static bool RanWeaponDropping;
+    private static bool CheckedWeather;
+    private static bool RanVehicleEngine;
 
+    private static bool RanInstantAction;
+    private static bool RanPolice;
     public static bool IsRunning { get; set; }
     public enum RunSeverity
     {
@@ -105,6 +126,25 @@ public static class ScriptController
         SearchModeStoppingInterval = 50;
         GameTimeLastStoppedSearchMode = 0;
 
+        DispatchAudioInterval = 500;
+        GameTimeLastCheckedDispatchAudio = 0;
+
+        WeaponDroppingInterval = 100;
+        GameTimeCheckedWeaponDropping = 0;
+
+        WeatherCheckingInterval = 5000;
+        GameTimeLastCheckedWeather = 0;
+
+        InstantActionInterval = 25;
+        GameTimeLastRanInstantAction = 0;
+
+        PoliceInterval = 25;
+        GameTimeLastRanPolice = 0;
+
+
+        RanInstantAction = false;
+        RanPolice = false;
+
         RanLOS = false;
         ScannedForPolice = false;
         SpawnedRandomCop = false;
@@ -116,6 +156,11 @@ public static class ScriptController
         UpdatedPlayerLocation = false;
         CheckedPersonOfInterest = false;
         PoliceSpeechRan = false;
+        CheckedDispatchAudio = false;
+        RanWeaponDropping = false;
+        CheckedWeather = false;
+        RanVehicleEngine = false;
+
 
         GameStopWatch = new Stopwatch();
 
@@ -142,22 +187,35 @@ public static class ScriptController
                     GameStopWatch.Start();
 
                     //Required
-                    if (InstantAction.IsRunning)
+                    if (InstantAction.IsRunning && Game.GameTime - GameTimeLastRanInstantAction > InstantActionInterval)
                     {
+                        RanInstantAction = true;
                         InstantAction.UpdatePlayer();
                         InstantAction.StateTick();
                         InstantAction.ControlTick();
                         InstantAction.AudioTick();
+                        GameTimeLastRanInstantAction = Game.GameTime;
                     }
-                    if (Police.IsRunning)
+                    else if (Police.IsRunning && Game.GameTime - GameTimeLastRanPolice > PoliceInterval)
                     {
+                        RanPolice = true;
                         Police.Tick();
+                        GameTimeLastRanPolice = Game.GameTime;
                     }
+
 
                     if (Tasking.IsRunning && InstantAction.PlayerIsWanted)//Dont need to do this each tick if we arent wanted?
                     {
                         Tasking.PoliceVehicleTick();
                     }
+                    if (VehicleEngine.IsRunning)
+                    {
+                        VehicleEngine.VehicleEngineTick();
+                    }
+                    //were okay about 5 fps
+
+
+
 
                     if (Police.IsRunning && Game.GameTime > GameTimeLastScannedForPolice + PoliceScanningInterval)
                     {
@@ -186,11 +244,19 @@ public static class ScriptController
                         Tasking.PoliceStateTick();//50 ms
                         GameTimeLastPoliceState = Game.GameTime;
                     }
-                    else if (SearchModeStopping.IsRunning && Game.GameTime > GameTimeLastStoppedSearchMode + SearchModeStoppingInterval)
+
+                    if (SearchModeStopping.IsRunning && Game.GameTime > GameTimeLastStoppedSearchMode + SearchModeStoppingInterval)
                     {
                         RanSearchModeStopping = true;
                         SearchModeStopping.StopPoliceSearchMode();
                         GameTimeLastStoppedSearchMode = Game.GameTime;
+                    }
+
+                    if (WeaponDropping.IsRunning && Game.GameTime > GameTimeCheckedWeaponDropping + WeaponDroppingInterval)
+                    {
+                        RanWeaponDropping = true;
+                        WeaponDropping.WeaponDroppingTick();
+                        GameTimeCheckedWeaponDropping = Game.GameTime;
                     }
 
                     //Needed eventually
@@ -212,10 +278,26 @@ public static class ScriptController
                         PersonOfInterest.PersonOfInterestTick();
                         GameTimeLastCheckedPersonOfInterest = Game.GameTime;
                     }
-                    
+
+
+
                     //Low priority
-                    if (CanRunLowPriority)
+                    if (CanRunLowPriority && GameStopWatch.ElapsedMilliseconds <= 10)
                     {
+                        //Audio Reporting
+                        if (DispatchAudio.IsRunning && Game.GameTime > GameTimeLastCheckedDispatchAudio + DispatchAudioInterval)
+                        {
+                            CheckedDispatchAudio = true;
+                            DispatchAudio.PlayDispatchQueue();
+                            GameTimeLastCheckedDispatchAudio = Game.GameTime;
+                        }
+                        else if (WeatherReporting.IsRunning && Game.GameTime - GameTimeLastCheckedWeather > 5000)
+                        {
+                            CheckedWeather = true;
+                            WeatherReporting.CheckWeather();
+                            GameTimeLastCheckedWeather = Game.GameTime;
+                        }
+
                         if (PoliceSpeech.IsRunning && Game.GameTime > GameTimeLastPoliceSpeech + PoliceSpeechInterval)
                         {
                             PoliceSpeechRan = true;
@@ -229,7 +311,9 @@ public static class ScriptController
                             {
                                 SpawnedRandomCop = true;
                                 if (PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+                                {
                                     PoliceSpawning.SpawnRandomCop();
+                                }
                                 GameTimeLastSpawnedCop = Game.GameTime;
                             }
                             else if (Police.IsRunning && Game.GameTime > GameTimeLastCleanedUpCops + CleanupCopInterval)
@@ -244,8 +328,8 @@ public static class ScriptController
                     GameStopWatch.Stop();
 
                     if (GameStopWatch.ElapsedMilliseconds >= 10)
-                        LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms: RanLOS {1}, ScannedForPolice {2},SpawnedRandomCop {3},CleanedUpCops {4},ProcessedTaskQueue {5},UpdatedPoliceState {6},RanTrafficViolation {7},UpdatedPlayerLocation {8},CheckedPersonOfInterest {9},PoliceSpeechRan {10}", 
-                                    GameStopWatch.ElapsedMilliseconds, RanLOS, ScannedForPolice,SpawnedRandomCop,CleanedUpCops,ProcessedTaskQueue,UpdatedPoliceState,RanTrafficViolation,UpdatedPlayerLocation,CheckedPersonOfInterest,PoliceSpeechRan));
+                        LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms: RanLOS {1}, ScannedForPolice {2},SpawnedRandomCop {3},CleanedUpCops {4},ProcessedTaskQueue {5},UpdatedPoliceState {6},RanTrafficViolation {7},UpdatedPlayerLocation {8},CheckedPersonOfInterest {9},PoliceSpeechRan {10},CheckedDispatchAudio {11},RanWeaponDropping {12},CheckedWeather {13},RanVehicleEngine {14},RanSearchModeStopping {15}", 
+                                    GameStopWatch.ElapsedMilliseconds, RanLOS, ScannedForPolice,SpawnedRandomCop,CleanedUpCops,ProcessedTaskQueue,UpdatedPoliceState,RanTrafficViolation,UpdatedPlayerLocation,CheckedPersonOfInterest,PoliceSpeechRan, CheckedDispatchAudio, RanWeaponDropping, CheckedWeather, RanVehicleEngine, RanSearchModeStopping));
 
 
                     ResetRanItems();
@@ -279,6 +363,14 @@ public static class ScriptController
         UpdatedPlayerLocation = false;
         CheckedPersonOfInterest = false;
         PoliceSpeechRan = false;
+
+        CheckedDispatchAudio = false;
+        RanWeaponDropping = false;
+        CheckedWeather = false;
+        RanVehicleEngine = false;
+
+        RanInstantAction = false;
+        RanPolice = false;
     }
     private static void LocalWriteToLog(string ProcedureString, string TextToLog)
     {

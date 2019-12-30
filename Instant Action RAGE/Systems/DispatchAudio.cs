@@ -281,25 +281,22 @@ internal static class DispatchAudio
     }
     private static void MainLoop()
     {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    if (Settings.DispatchAudio)
-                        PlayDispatchQueue();
-                    else
-                        DispatchQueue.Clear();
-                    GameFiber.Sleep(500);
-                }
-            }
-            catch (Exception e)
-            {
-                InstantAction.Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
+        //GameFiber.StartNew(delegate
+        //{
+        //    try
+        //    {
+        //        while (IsRunning)
+        //        {
+        //            PlayDispatchQueue();
+        //            GameFiber.Sleep(500);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        InstantAction.Dispose();
+        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //    }
+        //});
     }
     public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
@@ -386,8 +383,16 @@ internal static class DispatchAudio
         if (!DispatchQueue.Any(x => x.Type == _ItemToAdd.Type))
             DispatchQueue.Add(_ItemToAdd);
     }
-    private static void PlayDispatchQueue()
+    public static void PlayDispatchQueue()
     {
+
+        if (!Settings.DispatchAudio)
+        {
+            DispatchQueue.Clear();
+            return;
+        }
+
+
         if (DispatchQueue.Count > 0 && !ExecutingQueue)
         {
             LocalWriteToLog("PlayDispatchQueue", "Delegate Started");

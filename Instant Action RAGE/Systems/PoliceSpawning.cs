@@ -12,12 +12,13 @@ public static class PoliceSpawning
 {
     private static List<Vehicle> CreatedPoliceVehicles;
     private static List<Entity> CreatedEntities;
-   // private static Vehicle NewsChopper;
-   // private static List<GTANewsReporter> Reporters = new List<GTANewsReporter>();
-   // private static uint K9Interval;
+    // private static Vehicle NewsChopper;
+    // private static List<GTANewsReporter> Reporters = new List<GTANewsReporter>();
+    // private static uint K9Interval;
     //private static uint RandomCopInterval;
     //private static uint CleanupCopInterval;
-   //private static uint K9Interval;
+    //private static uint K9Interval;
+    private static RandomPoliceSpawn NextPoliceSpawn;
 
     public static bool IsRunning { get; set; }
     public static void Initialize()
@@ -98,52 +99,65 @@ public static class PoliceSpawning
     {
         try
         {
-            Vector3 SpawnLocation = Vector3.Zero;
-
-            SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(750f, 1500f));
-
-            if (SpawnLocation == Vector3.Zero)
-                return;
-
-            if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)//250f
-                return;
-
-            if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 350f))//500f
-                return;
-
-
-            Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
-            if (ZoneName == Zones.OCEANA)
-                return;
-            string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
-            Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
-
-            if (ZoneName == null || (MyGTAStreet != null && MyGTAStreet.isFreeway && InstantAction.MyRand.Next(1, 11) <= 4))
+            if (NextPoliceSpawn == null)
             {
-                SpawnCop(Agencies.SAHP, SpawnLocation);
+                GetRandomSpawnLocation();
+                return;
             }
-            else if (ZoneName.MainZoneAgency != null && ZoneName.SecondaryZoneAgencies != null && ZoneName.SecondaryZoneAgencies.Any())
+
+            if (NextPoliceSpawn.IsFreeway && InstantAction.MyRand.Next(1, 11) <= 4)
+            {
+                SpawnCop(Agencies.SAHP, NextPoliceSpawn.SpawnLocation);
+            }
+            else if (NextPoliceSpawn.ZoneAtLocation.MainZoneAgency != null && NextPoliceSpawn.ZoneAtLocation.SecondaryZoneAgencies != null && NextPoliceSpawn.ZoneAtLocation.SecondaryZoneAgencies.Any())
             {
                 int Value = InstantAction.MyRand.Next(1, 11);
                 if (Value <= 7)
-                    SpawnCop(ZoneName.MainZoneAgency, SpawnLocation);
+                    SpawnCop(NextPoliceSpawn.ZoneAtLocation.MainZoneAgency, NextPoliceSpawn.SpawnLocation);
                 else
-                    SpawnCop(ZoneName.SecondaryZoneAgencies.PickRandom(), SpawnLocation);
+                    SpawnCop(NextPoliceSpawn.ZoneAtLocation.SecondaryZoneAgencies.PickRandom(), NextPoliceSpawn.SpawnLocation);
             }
-            else if (ZoneName.MainZoneAgency != null && ZoneName.SecondaryZoneAgencies == null && !ZoneName.SecondaryZoneAgencies.Any())
+            else if (NextPoliceSpawn.ZoneAtLocation.MainZoneAgency != null && NextPoliceSpawn.ZoneAtLocation.SecondaryZoneAgencies == null && !NextPoliceSpawn.ZoneAtLocation.SecondaryZoneAgencies.Any())
             {
-                SpawnCop(ZoneName.MainZoneAgency, SpawnLocation);
+                SpawnCop(NextPoliceSpawn.ZoneAtLocation.MainZoneAgency, NextPoliceSpawn.SpawnLocation);
             }
             else
             {
-                SpawnCop(Agencies.LSPD, SpawnLocation);
+                SpawnCop(Agencies.LSPD, NextPoliceSpawn.SpawnLocation);
             }
+
+            NextPoliceSpawn = null;
         }
         catch (Exception e)
         {
             LocalWriteToLog("SpawnRandomCop",e.Message + " : " + e.StackTrace);
         }
 
+    }
+    public static void GetRandomSpawnLocation()
+    {
+        NextPoliceSpawn = null;
+
+        Vector3 SpawnLocation = Vector3.Zero;
+        SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(750f, 1500f));
+
+        if (SpawnLocation == Vector3.Zero)
+            return;
+
+        if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)//250f
+            return;
+
+        if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 350f))//500f
+            return;
+
+        Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
+        if (ZoneName == Zones.OCEANA)
+            return;
+
+        string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
+        Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
+
+        NextPoliceSpawn = new RandomPoliceSpawn(SpawnLocation, ZoneName, MyGTAStreet != null && MyGTAStreet.isFreeway);
     }
     public static void RemoveFarAwayRandomlySpawnedCops()
     {
@@ -487,5 +501,17 @@ public static class PoliceSpawning
     //        NewsChopper.Delete();
     //    LocalWriteToLog("DeleteNewsTeam", "News Team Deleted");
     //}
+}
+public class RandomPoliceSpawn
+{
+    public Vector3 SpawnLocation;
+    public Zone ZoneAtLocation;
+    public bool IsFreeway;
+    public RandomPoliceSpawn(Vector3 _SpawnLocation,Zone _ZoneAtLocation,bool _IsFreeway)
+    {
+        SpawnLocation = _SpawnLocation;
+        ZoneAtLocation = _ZoneAtLocation;
+        IsFreeway = _IsFreeway;
+    }
 }
 

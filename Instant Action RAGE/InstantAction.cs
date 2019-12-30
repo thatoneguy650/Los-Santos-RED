@@ -175,7 +175,7 @@ public static class InstantAction
         Tasking.Initialize();
 
         GTAWeapons.Initialize();
-        Speed.Initialize();
+        //Speed.Initialize();
         WeaponDropping.Initialize();
         Streets.Initialize();
         Debugging.Initialize();

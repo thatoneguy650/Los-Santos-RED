@@ -62,7 +62,7 @@ public static class PersonOfInterest
 
             if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 120000)
             {
-                ResetPersonOfInterest();
+                ResetPersonOfInterest(true);
             }
         }
         else
@@ -76,12 +76,11 @@ public static class PersonOfInterest
     private static void PlayerBecamePersonOfInterest()
     {
         PlayerIsPersonOfInterest = true;
-        if (PreviousWantedStats.Any())
+        if (ApplyLastWantedStats())
         {
-            if(ApplyLastWantedStats())
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+            Debugging.WriteToLog("PlayerBecamePersonOfInterest", "There was previous wanted stats that were applied");
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
         }
-
         Debugging.WriteToLog("PlayerBecamePersonOfInterest", "Happened");
     }
     public static void CheckCurrentVehicle()
@@ -150,14 +149,16 @@ public static class PersonOfInterest
         PrevPlayerIsWanted = InstantAction.PlayerIsWanted;
     }
 
-    public static void ResetPersonOfInterest()
+    public static void ResetPersonOfInterest(bool PlayAudio)
     {
         PlayerIsPersonOfInterest = false;
-        PreviousWantedStats.Clear();
+        PreviousWantedStats.ForEach(x => x.IsExpired = true);
+        Debugging.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are expired");
         Police.LastWantedCenterPosition = Vector3.Zero;
         Police.AddUpdateLastWantedBlip(Vector3.Zero);
 
-        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPersonOfInterestExpire, 3));
+        if(PlayAudio)
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPersonOfInterestExpire, 3));
     }
     public static void StoreWantedStats()
     {
@@ -235,10 +236,10 @@ public static class PersonOfInterest
 
     public static WantedLevelStats GetLastWantedStats()
     {
-        if (PreviousWantedStats == null || !PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted).Any())
+        if (PreviousWantedStats == null || !PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted && !x.IsExpired).Any())
             return null;
 
-        return PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
+        return PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted && !x.IsExpired).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
     }
     public static WantedLevelStats GetWantedLevelStatsForPlate(string PlateNumber)
     {
