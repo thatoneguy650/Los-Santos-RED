@@ -31,6 +31,7 @@ public static class Agencies
     public static Agency VWPD;
     public static Agency RHPD;
     public static Agency SACG;
+    public static Agency NOOSE;
     public static void Initialize()
     {
         List<Agency.ModelInformation> StandardCops = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_cop_01", true), new Agency.ModelInformation("s_f_y_cop_01", false) };
@@ -73,8 +74,11 @@ public static class Agencies
         VWPD = new Agency("~HUD_COLOUR_BLUE~", "VWPD", "Vinewood Police Department", Color.Blue, true, StandardCops, StandardPoliceVehicles);
         RHPD = new Agency("~HUD_COLOUR_BLUELIGHT~", "RHPD", "Rockford Hills Police Department", Color.LightBlue, true, StandardCops, StandardPoliceVehicles);
         SACG = new Agency("~o~", "SACG", "San Andreas Coast Guard", Color.DarkOrange, true, CoastGuardPeds,UnmarkedVehicles);
+        NOOSE = new Agency("~r~", "NOOSE", "National Office of Security Enforcement", Color.DarkRed, true, SWAT, FIBVehicles);
 
         PRISEC.CanCheckTrafficViolations = false;
+        PRISEC.UsesSecurityPeds = true;
+        LSPA.UsesSecurityPeds = true;
         UNK.CanCheckTrafficViolations = false;
 
         AgenciesList.Add(LSPD);
@@ -95,6 +99,7 @@ public static class Agencies
         AgenciesList.Add(VWPD);
         AgenciesList.Add(RHPD);
         AgenciesList.Add(SACG);
+        AgenciesList.Add(NOOSE);
     }
     public static void Dispose()
     {
@@ -163,20 +168,21 @@ public static class Agencies
     }
     private static Agency GetAgencyFromSwat(Ped Cop)
     {
-        if(InstantAction.PlayerWantedLevel >= 5)
-        {
-            NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 10, 0, 1, 0);//Set them as FIB
-        }
-        int TextureVariation = NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", Cop, 10);
-        if (TextureVariation == 0)
-            return LSPD;
-        else
-            return FIB;
+        return NOOSE;
+        //if(InstantAction.PlayerWantedLevel >= 5)
+        //{
+        //    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 10, 0, 1, 0);//Set them as FIB
+        //}
+        //int TextureVariation = NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", Cop, 10);
+        //if (TextureVariation == 0)
+        //    return NOOSE;
+        //else
+        //    return FIB;
     }
     private static Agency GetAgencyFromSecurity(Ped Cop)
     {
         Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
-        if (PedZone != null)
+        if (PedZone != null && PedZone.MainZoneAgency.UsesSecurityPeds)//only other that uses security peds
         {
             return PedZone.MainZoneAgency;
         }
@@ -199,6 +205,7 @@ public class Agency
     public bool CanCheckTrafficViolations = true;
     public bool UsesLSPDVehicles = false;
     public bool UsesLSSDVehicles = false;
+    public bool UsesSecurityPeds = false;
     public string ColoredInitials
     {
         get

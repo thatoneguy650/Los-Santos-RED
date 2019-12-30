@@ -123,7 +123,7 @@ public static class PersonOfInterest
             {
                 if(!ApplyLastWantedStats())
                     Police.SetWantedLevel(2, "Cops Reacquired after losing them in the same area, actual wanted not found");
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3));
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
             }
             //else if (Police.AnyPoliceCanRecognizePlayer && 1 == 0)
             //{
@@ -196,42 +196,7 @@ public static class PersonOfInterest
         if (WantedStatsToApply == null)
             return;
 
-        if (Game.LocalPlayer.WantedLevel < WantedStatsToApply.MaxWantedLevel)
-            Police.SetWantedLevel(WantedStatsToApply.MaxWantedLevel, "Applying old Wanted stats");
-
-        Police.CopsKilledByPlayer = WantedStatsToApply.CopsKilledByPlayer;
-        Police.CiviliansKilledByPlayer = WantedStatsToApply.CiviliansKilledByPlayer;
-        Police.PlayerHurtPolice = WantedStatsToApply.PlayerHurtPolice;
-        Police.PlayerKilledPolice = WantedStatsToApply.PlayerKilledPolice;
-        Police.PlayerKilledCivilians = WantedStatsToApply.PlayerKilledCivilians;
-        Police.PlayerAimedAtPolice = WantedStatsToApply.PlayerAimedAtPolice;
-        Police.PlayerFiredWeaponNearPolice = WantedStatsToApply.PlayerFiredWeaponNearPolice;
-        Police.PlayerWentNearPrisonDuringChase = WantedStatsToApply.PlayerWentNearPrisonDuringChase;
-
-        Police.PlayerCaughtBreakingIntoCar = WantedStatsToApply.PlayerCaughtBreakingIntoCar;
-        Police.PlayerCaughtChangingPlates = WantedStatsToApply.PlayerCaughtChangingPlates;
-        Police.PlayerCaughtWithGun = WantedStatsToApply.PlayerCaughtWithGun;
-        Police.PlayerGotInAirVehicleDuringChase = WantedStatsToApply.PlayerGotInAirVehicleDuringChase;
-        Police.PlayerKilledCiviliansInFrontOfPolice = WantedStatsToApply.PlayerKilledCiviliansInFrontOfPolice;
-
-        DispatchAudio.ReportedOfficerDown = WantedStatsToApply.DispatchReportedOfficerDown;
-        DispatchAudio.ReportedLethalForceAuthorized = WantedStatsToApply.DispatchReportedLethalForceAuthorized;
-        DispatchAudio.ReportedAssaultOnOfficer = WantedStatsToApply.DispatchReportedAssaultOnOfficer;
-        DispatchAudio.ReportedShotsFired = WantedStatsToApply.DispatchReportedShotsFired;
-        DispatchAudio.ReportedTrespassingOnGovernmentProperty = WantedStatsToApply.DispatchReportedTrespassingOnGovernmentProperty;
-        DispatchAudio.ReportedCarryingWeapon = WantedStatsToApply.DispatchReportedCarryingWeapon;
-        DispatchAudio.ReportedThreateningWithAFirearm = WantedStatsToApply.DispatchReportedThreateningWithAFirearm;
-        DispatchAudio.ReportedGrandTheftAuto = WantedStatsToApply.DispatchReportedGrandTheftAuto;
-        DispatchAudio.ReportedSuspiciousVehicle = WantedStatsToApply.DispatchReportedSuspiciousVehicle;
-
-
-        DispatchAudio.ReportedCivilianKilled = WantedStatsToApply.DispatchReportedCivilianShot;
-        DispatchAudio.ReportedWeaponsFree = WantedStatsToApply.DispatchReportedWeaponsFree;
-
-
-        DispatchAudio.ClearDispatchQueue();
-
-        Debugging.WriteToLog("WantedLevelStats Replace", "Replaced Wanted Stats");
+        WantedStatsToApply.ApplyValues();
     }
 
     public static WantedLevelStats GetLastWantedStats()

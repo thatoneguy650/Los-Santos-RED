@@ -46,6 +46,7 @@ internal static class DispatchAudio
     public static bool ReportedSuspiciousVehicle = false;
     public static bool ReportedCivilianKilled = false;
     public static bool ReportedWeaponsFree = false;
+    public static bool ReportedStolenAirVehicle = false;
 
     public static bool AudioPlaying
     {
@@ -93,7 +94,8 @@ internal static class DispatchAudio
         ReportLowLevelCiviliansInjured = 33,
         ReportLowLevelCiviliansShot = 34,
         ReportCivilianKilled = 35,
-}
+        ReportStolenAirVehicle = 36,
+    }
     public enum NearType
     {
         Nothing = 0,
@@ -139,6 +141,7 @@ internal static class DispatchAudio
         ReportedThreateningWithAFirearm = false;
         ReportedGrandTheftAuto = false;
         ReportedSuspiciousVehicle = false;
+        ReportedStolenAirVehicle = false;
 
         LettersAndNumbersLookup = new List<DispatchLettersNumber>();
         ColorLookups = new List<ColorLookup>();
@@ -510,7 +513,6 @@ internal static class DispatchAudio
                         ReportTrespassingOnGovernmentProperty();
                     else if (Item.Type == ReportDispatch.ReportChangedVehicle)
                         ReportChangedVehicle(Item.VehicleToReport);
-
                     else if (Item.Type == ReportDispatch.ReportLowLevelCiviliansKilled)
                         ReportLowLevelCiviliansKilled();
                     else if (Item.Type == ReportDispatch.ReportLowLevelCiviliansInjured)
@@ -519,6 +521,8 @@ internal static class DispatchAudio
                         ReportLowLevelCiviliansShot();
                     else if (Item.Type == ReportDispatch.ReportCivilianKilled)
                         ReportCivilianKilled();
+                    else if (Item.Type == ReportDispatch.ReportStolenAirVehicle)
+                        ReportStolenAirVehicle(Item.VehicleToReport);
 
                     DispatchQueue.RemoveAt(0);
                 }
@@ -777,7 +781,7 @@ internal static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
+        //AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -792,7 +796,7 @@ internal static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
+        //AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -807,7 +811,7 @@ internal static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
+        //AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
@@ -823,8 +827,8 @@ internal static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
-        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
+        //AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
 
@@ -1152,6 +1156,37 @@ internal static class DispatchAudio
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
+    public static void ReportStolenAirVehicle(GTAVehicle vehicle)
+    {
+        if (ReportedStolenAirVehicle || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+            return;
+
+        ReportedStolenAirVehicle = true;
+        ReportedLethalForceAuthorized = true;
+
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
+
+        if (vehicle.VehicleEnt.IsHelicopter)
+        {
+            ScannerList.Add(new List<string>() { crime_stolen_helicopter.Astolenhelicopter.FileName }.PickRandom());
+            Subtitles += " a ~r~Stolen Helicopter~s~";
+        }
+        else if (vehicle.VehicleEnt.IsPlane)
+        {
+            ScannerList.Add(new List<string>() { crime_stolen_aircraft.Astolenaircraft.FileName, crime_stolen_aircraft.Astolenaircraft.FileName, crime_hijacked_aircraft.Ahijackedaircraft.FileName, crime_theft_of_an_aircraft.Theftofanaircraft.FileName }.PickRandom());
+            Subtitles += " a ~r~Stolen Aircraft~s~";
+        }
+        else
+            return;
+
+        AddLethalForceAuthorized(ref ScannerList, ref Subtitles);
+        
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+    }
     public static void ReportChangedVehicle(GTAVehicle vehicle)
     {
         if (InstantAction.IsBusted || InstantAction.IsDead)
@@ -1257,6 +1292,7 @@ internal static class DispatchAudio
         ReportedSuspiciousVehicle = false;
         ReportedWeaponsFree = false;
         ReportedCivilianKilled = false;
+        ReportedStolenAirVehicle = false;
     }
 
     //Civilians Reporting

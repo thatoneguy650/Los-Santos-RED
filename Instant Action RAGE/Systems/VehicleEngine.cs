@@ -123,8 +123,6 @@ internal static class VehicleEngine
                 {
                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
                     Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
-                    //if (WantedLevelTune)
-                    //    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, "RADIO_19_USER");
                 }
             }
         }
@@ -164,11 +162,9 @@ internal static class VehicleEngine
     {
         if(PlayerInVehicle)
         {
-           // LocalWriteToLog("EnterExitVehicleEvent", "You got into a vehicle");
             if (Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
             {
                 EngineRunning = true;
-                //LocalWriteToLog("EnterExitVehicleEvent", "The Engine was already on");
             }
             else
             {
@@ -178,15 +174,11 @@ internal static class VehicleEngine
                 if(Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
                 {
                     GameTimeStartedHotwiring = Game.GameTime;
-                    //LocalWriteToLog("EnterExitVehicleEvent", "The Engine was off and Needed Hotwire");
                 }
-
-                //LocalWriteToLog("EnterExitVehicleEvent", "The Engine was off");
             }
         }
         else
         {
-          // LocalWriteToLog("EnterExitVehicleEvent", "You got out of a vehicle");
             if(Game.LocalPlayer.Character.LastVehicle.Exists())
                 Game.LocalPlayer.Character.LastVehicle.IsEngineOn = EngineRunning;
         }
@@ -207,15 +199,9 @@ internal static class VehicleEngine
                 TogglingEngine = false;
                 return;
             }
-
             if (!Game.LocalPlayer.Character.IsOnBike && _animation)
             {
-
-                if (!StartEngineAnimation())
-                {
-                    TogglingEngine = false;
-                    return;
-                }
+                StartEngineAnimation();
             }
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
             {
@@ -228,27 +214,33 @@ internal static class VehicleEngine
         //LocalWriteToLog("ToggleEngine", "toggled");
         TogglingEngine = false;
     }
-    private static bool StartEngineAnimation()
+    private static void StartEngineAnimation()
     {
-        var sDict = "veh@van@ds@base";
-        NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
-        while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
-            GameFiber.Yield();
-        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
-
-        uint GameTimeStartedAnimation = Game.GameTime;
-        while(Game.GameTime - GameTimeStartedAnimation <= 1000)
+        GameFiber.StartNew(delegate
         {
-            if(Game.IsControlJustPressed(0,GameControl.VehicleExit))
+            var sDict = "veh@van@ds@base";
+            NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
+            while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
+                GameFiber.Yield();
+            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
+
+            bool Cancel = false;
+            uint GameTimeStartedAnimation = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedAnimation <= 1000)
             {
-                NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
-                TogglingEngine = false;
-                return false;
+                if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
+                {
+                    Cancel = true;
+                    NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
+                    TogglingEngine = false;
+                }
+                GameFiber.Sleep(200);
             }
-            GameFiber.Sleep(200);
-        }
-        return true;
-        //GameFiber.Sleep(1000);// is there a way to wait for the animation to finish?
+            if(Cancel)
+            {
+                TogglingEngine = false;
+            }
+        });
     }
     public static void ChangeStation(string StationName)
     {
@@ -262,38 +254,46 @@ internal static class VehicleEngine
 
             if (!Game.LocalPlayer.Character.IsOnBike)
             {
-                //ChangingStation = true;
-                if (!ChangeStationAnimation())
-                    return;
+                ChangeStationAnimation(StationName);
             }
-            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+            else
             {
-                NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
+                SetRadioStation(StationName);
             }
         }
-        //LocalWriteToLog("ToggleEngine", "toggled");
-        //ChangingStation = false;
     }
-    private static bool ChangeStationAnimation()
+    private static void ChangeStationAnimation(string StationName)
     {
-        var sDict = "veh@van@ds@base";
-        NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
-        while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
-            GameFiber.Yield();
-        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
-
-        uint GameTimeStartedAnimation = Game.GameTime;
-        while (Game.GameTime - GameTimeStartedAnimation <= 1000)
+        GameFiber.StartNew(delegate
         {
-            if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
+            var sDict = "veh@van@ds@base";
+            NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
+            while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
+                GameFiber.Yield();
+            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
+
+            bool Cancel = false;
+            uint GameTimeStartedAnimation = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedAnimation <= 1000)
             {
-                NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
-                //ChangingStation = false;
-                return false;
+                if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
+                {
+                    NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
+                    Cancel = true;
+                }
+                GameFiber.Sleep(200);
             }
-            GameFiber.Sleep(200);
+            if (!Cancel)
+                SetRadioStation(StationName);
+
+        });
+    }
+    private static void SetRadioStation(string  StationName)
+    {
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+        {
+            NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
         }
-        return true;
     }
     private static void LocalWriteToLog(string ProcedureString, string TextToLog)
     {

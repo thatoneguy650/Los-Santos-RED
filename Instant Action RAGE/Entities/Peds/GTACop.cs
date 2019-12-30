@@ -16,6 +16,8 @@ public class GTACop : GTAPed
         //Health = _Health;
         AssignedAgency = _Agency;
         SetAccuracyAndSightRange();
+        if (_Pedestrian.Model.Name.ToLower() == "s_m_y_swat_01")
+            IsSwat = true;
     }
     public GTACop(Ped _Pedestrian, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health,Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
     {
@@ -26,12 +28,15 @@ public class GTACop : GTAPed
         Health = _Health;
         AssignedAgency = _Agency;
         SetAccuracyAndSightRange();
+        if (_Pedestrian.Model.Name.ToLower() == "s_m_y_swat_01")
+            IsSwat = true;
     }
 
     public bool isTasked { get; set; } = false;
     public bool WasRandomSpawn { get; set; } = false;
     public bool WasRandomSpawnDriver { get; set; } = false;
     public bool IsBikeCop { get; set; } = false;
+    public bool IsSwat { get; set; } = false;
     public bool isPursuitPrimary { get; set; } = false;
     public PoliceTask.Task TaskType { get; set; } = PoliceTask.Task.NoTask;
     public GameFiber TaskFiber { get; set; }

@@ -29,11 +29,11 @@ internal static class Police
     private static uint GameTimeLastStartedJacking;
     private static bool PrevaimedAtPolice;
     private static bool PrevPlayerIsJacking;
-    private static int PrevCiviliansKilledByPlayer;
+
     private static bool PrevfiredWeapon;
     private static bool PrevPlayerHurtPolice;
     private static bool PrevPlayerKilledPolice;
-    private static bool PrevPlayerKilledCivilians;
+
     private static int PrevCopsKilledByPlayer = 0;
     private static bool PrevPlayerStarsGreyedOut;
     private static PoliceState PrevPoliceState;
@@ -41,10 +41,10 @@ internal static class Police
     public static List<Blip> CreatedBlips = new List<Blip>();
     public static List<Blip> TempBlips = new List<Blip>();
     private static uint GameTimeLastReportedSpotted;
-    private static uint GameTimeLastKilledCivilian;
+    public static uint GameTimeLastKilledCivilian;
     private static uint GameTimeLastKilledCop;
     private static uint GameTimeLastHurtPolice;
-    private static uint GameTimeLastHurtCivilian;
+    public static uint GameTimeLastHurtCivilian;
 
     private static bool PrevPlayerWentNearPrisonDuringChase;
     private static bool PrevPlayerCaughtWithGun;
@@ -216,16 +216,13 @@ internal static class Police
         GameTimeLastStartedJacking = 0;
         PrevaimedAtPolice = false;
         PrevPlayerIsJacking = false;
-        PrevCiviliansKilledByPlayer = default;
         PrevfiredWeapon = false;
         PrevPlayerHurtPolice = false;
         PrevPlayerKilledPolice = false;
-        PrevPlayerKilledCivilians = false;
         PrevPlayerKilledCiviliansInFrontOfPolice = false;
         PrevCopsKilledByPlayer = 0;
         CopsKilledByPlayer = 0;
         CiviliansKilledByPlayer = 0;
-        PrevCiviliansKilledByPlayer = 0;
         PrevPlayerStarsGreyedOut = false;
         PrevPoliceState = PoliceState.Normal;
         CreatedBlips = new List<Blip>();
@@ -269,6 +266,8 @@ internal static class Police
         GameTimeLastHurtPolice = 0;
         GameTimeLastHurtCivilian = 0;
         LastWantedCenterBlipSize = Settings.LastWantedCenterSize;
+
+        IsRunning = true;
 
         MainLoop();
     }
@@ -370,7 +369,6 @@ internal static class Police
             PlayerJackingChanged(PlayerIsJacking);
 
         UpdatedCopsStats();
-        UpdateCiviliansStats();
         CheckRecognition();
     }
     public static void UpdatedCopsStats()
@@ -381,13 +379,13 @@ internal static class Police
         {
             if (Cop.Pedestrian.IsDead)
             {
-                CheckKilled(Cop,true);
+                CheckCopKilled(Cop);
                 continue;
             }
             int NewHealth = Cop.Pedestrian.Health;
             if (NewHealth != Cop.Health)
             {
-                if (PlayerHurtPed(Cop))
+                if (InstantAction.PlayerHurtPed(Cop))
                 {
                     PlayerHurtPolice = true;
                     Cop.HurtByPlayer = true;
@@ -420,127 +418,23 @@ internal static class Police
 
         if (PrevCopsKilledByPlayer != CopsKilledByPlayer)
             CopsKilledChanged();
-
     }
-    public static void UpdateCiviliansStats()
+    public static void CheckCopKilled(GTAPed MyPed)
     {
-        PoliceScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
-        foreach (GTAPed MyPed in PoliceScanning.Civilians)
-        {
-            if (MyPed.Pedestrian.IsDead)
-            {
-                CheckKilled(MyPed,false);
-                continue;
-            }
-            int NewHealth = MyPed.Pedestrian.Health;
-            if (NewHealth != MyPed.Health)
-            {
-                if (PlayerHurtPed(MyPed))
-                {
-                    MyPed.HurtByPlayer = true;
-                }
-                MyPed.Health = NewHealth;
-            }
-        }
-        PoliceScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
-
-        if (PrevPlayerKilledCivilians != PlayerKilledCivilians)
-            PlayerKilledCiviliansChanged();
-
-        if (PrevCiviliansKilledByPlayer != CiviliansKilledByPlayer)
-            CiviliansKilledChanged();
-    }
-    public static void CheckKilled(GTAPed MyPed, bool isCop)
-    {
-        if (PlayerHurtPed(MyPed))
+        if (InstantAction.PlayerHurtPed(MyPed))
         {
             MyPed.HurtByPlayer = true;
-            if(isCop)
-            {
-                GameTimeLastHurtPolice = Game.GameTime;
-            }
-            else
-            {
-                GameTimeLastHurtCivilian = Game.GameTime;
-            }
+            GameTimeLastHurtPolice = Game.GameTime;       
         }
-        if (PlayerKilledPed(MyPed))
+        if (InstantAction.PlayerKilledPed(MyPed))
         {
-            if (isCop)
-            {
-                GameTimeLastKilledCop = Game.GameTime;
-                CopsKilledByPlayer++;
-                PlayerKilledPolice = true;
-            }
-            else
-            {
-                GameTimeLastKilledCivilian = Game.GameTime;
-                CiviliansKilledByPlayer++;
-                PlayerKilledCivilians = true;
-            }
+            GameTimeLastKilledCop = Game.GameTime;
+            CopsKilledByPlayer++;
+            PlayerKilledPolice = true;
             LocalWriteToLog("CheckKilled", String.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
         }
     }
-    private static bool PlayerHurtPed(GTAPed MyPed)
-    {
-        if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", MyPed.Pedestrian, Game.LocalPlayer.Character, true))
-        {
-            return true;
-
-        }
-        else if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", MyPed.Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, true))
-        {
-            return true;
-        }
-        return false;
-    }
-    private static bool PlayerKilledPed(GTAPed MyPed)
-    {
-        try
-        {
-            if (MyPed.Pedestrian.IsDead)
-            {
-                Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(MyPed.Pedestrian);
-                if (killer.Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == killer.Handle))
-                    return true;
-                else
-                    return false;
-            }
-            else
-                return false;
-        }
-        catch
-        {
-            if (MyPed.HurtByPlayer)
-                return true;
-            else
-                return false;
-        }
-    }
-    private static bool PlayerKilledPed(Ped Pedestrian)
-    {
-        try
-        {
-            if (Pedestrian.IsDead)
-            {
-                Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
-                if (killer.Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == killer.Handle))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-                return false;
-        }
-        catch
-        {
-            return false;
-        }
-    }
+    
     public static void CheckLOS(Entity EntityToCheck)
     {
         int TotalEntityNativeLOSChecks = 0;
@@ -751,6 +645,12 @@ internal static class Police
         if(PlayerGotInAirVehicleDuringChase)
         {
             SetWantedLevel(4, "You tried to get away in an air vehicle during a chase");
+            if (InstantAction.PlayerWantedLevel <= 4)
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportStolenAirVehicle, 1)
+                {
+                    ResultsInLethalForce = true,
+                    VehicleToReport = InstantAction.GetPlayersCurrentTrackedVehicle()
+                });
         }
         PrevPlayerGotInAirVehicleDuringChase = PlayerGotInAirVehicleDuringChase;
     }
@@ -768,11 +668,7 @@ internal static class Police
     {
         PrevCopsKilledByPlayer = CopsKilledByPlayer;
     }
-    private static void CiviliansKilledChanged()
-    {
-        LocalWriteToLog("ValueChecker", String.Format("CiviliansKilledChanged Changed to: {0}", CiviliansKilledByPlayer));
-        PrevCiviliansKilledByPlayer = CiviliansKilledByPlayer;
-    }
+
     private static void PlayerHurtPoliceChanged()
     {
         LocalWriteToLog("ValueChecker", String.Format("PlayerHurtPolice Changed to: {0}", PlayerHurtPolice));
@@ -795,17 +691,7 @@ internal static class Police
         }
         PrevPlayerKilledPolice = PlayerKilledPolice;
     }
-    private static void PlayerKilledCiviliansChanged()
-    {
-        LocalWriteToLog("ValueChecker", String.Format("PlayerKilledCivilians Changed to: {0}", PlayerKilledCivilians));
-        if (PlayerKilledCivilians)
-        {
-            //SetWantedLevel(3, "You killed a police officer");
-            //if (InstantAction.PlayerWantedLevel <= 3)
-            //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportOfficerDown, 1) { ResultsInLethalForce = true });
-        }
-        PrevPlayerKilledCivilians = PlayerKilledCivilians;
-    }
+
     private static void FiredWeaponChanged()
     {
         LocalWriteToLog("ValueChecker", String.Format("firedWeapon Changed to: {0}", PlayerFiredWeaponNearPolice));

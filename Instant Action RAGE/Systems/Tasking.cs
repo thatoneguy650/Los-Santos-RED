@@ -210,7 +210,10 @@ public static class Tasking
         else
             CurrentPoliceTickRunning = "";
 
-        if(Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
+        if(InstantAction.PlayerIsWanted)
+            PoliceVehicleTick();
+
+        if (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase || Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
             SearchModeStopping.StopSearchMode = true;
         else
             SearchModeStopping.StopSearchMode = false;
@@ -358,7 +361,7 @@ public static class Tasking
             }
 
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.isTasked && (x.isInHelicopter || x.isOnBike)))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.isTasked && x.isInVehicle))
         {
             SetUnarmed(Cop);
         }
@@ -530,6 +533,7 @@ public static class Tasking
             Cop.Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
+        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
         Cop.SetTazer = true;
         Cop.SetUnarmed = false;
         Cop.SetDeadly = false;

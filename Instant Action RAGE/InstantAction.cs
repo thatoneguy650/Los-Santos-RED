@@ -185,6 +185,7 @@ public static class InstantAction
         UI.Initialize();
         PedSwapping.Initialize();
         PersonOfInterest.Initialize();
+        Civilians.Initialize();
         MainLoop();
     }
     public static void MainLoop()
@@ -215,7 +216,7 @@ public static class InstantAction
         PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         if (PlayerInVehicle)
         {
-            if (Game.LocalPlayer.Character.IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike)
+            if (Game.LocalPlayer.Character.IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter)
                 PlayerInAutomobile = false;
             else
                 PlayerInAutomobile = true;
@@ -360,6 +361,7 @@ public static class InstantAction
         WeatherReporting.Dispose();
         PedSwapping.Dispose();
         PersonOfInterest.Dispose();
+        Civilians.Dispose();
     }
 
     
@@ -453,8 +455,43 @@ public static class InstantAction
         PrevPlayerAimingInVehicle = PlayerAimingInVehicle;
         LocalWriteToLog("ValueChecker", String.Format("PlayerAimingInVehicle Changed to: {0}", PlayerAimingInVehicle));
     }
-    
 
+    public static bool PlayerHurtPed(GTAPed MyPed)
+    {
+        if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", MyPed.Pedestrian, Game.LocalPlayer.Character, true))
+        {
+            return true;
+
+        }
+        else if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", MyPed.Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, true))
+        {
+            return true;
+        }
+        return false;
+    }
+    public static bool PlayerKilledPed(GTAPed MyPed)
+    {
+        try
+        {
+            if (MyPed.Pedestrian.IsDead)
+            {
+                Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(MyPed.Pedestrian);
+                if (killer.Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == killer.Handle))
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        catch
+        {
+            if (MyPed.HurtByPlayer)
+                return true;
+            else
+                return false;
+        }
+    }
 
     public static GTAWeapon GetCurrentWeapon()
     {

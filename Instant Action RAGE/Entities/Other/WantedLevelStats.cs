@@ -27,13 +27,14 @@ public class WantedLevelStats
     public bool DispatchReportedLethalForceAuthorized = false;
     public bool DispatchReportedAssaultOnOfficer = false;
     public bool DispatchReportedShotsFired = false;
-    public bool DispatchReportedTrespassingOnGovernmentProperty;
-    public bool DispatchReportedCarryingWeapon;
-    public bool DispatchReportedThreateningWithAFirearm;
-    public bool DispatchReportedGrandTheftAuto;
-    public bool DispatchReportedSuspiciousVehicle;
-    public bool DispatchReportedCivilianShot;
-    public bool DispatchReportedWeaponsFree;
+    public bool DispatchReportedTrespassingOnGovernmentProperty = false;
+    public bool DispatchReportedCarryingWeapon = false;
+    public bool DispatchReportedThreateningWithAFirearm = false;
+    public bool DispatchReportedGrandTheftAuto = false;
+    public bool DispatchReportedSuspiciousVehicle = false;
+    public bool DispatchReportedCivilianShot = false;
+    public bool DispatchReportedWeaponsFree = false;
+    public bool DispatchReportedStolenAirVehicle = false;
 
     public List<GTALicensePlate> WantedPlates = new List<GTALicensePlate>();
     public uint GameTimeWantedStarted;
@@ -78,12 +79,51 @@ public class WantedLevelStats
         DispatchReportedSuspiciousVehicle = DispatchAudio.ReportedSuspiciousVehicle;
         DispatchReportedCivilianShot = DispatchAudio.ReportedCivilianKilled;
         DispatchReportedWeaponsFree = DispatchAudio.ReportedWeaponsFree;
+        DispatchReportedStolenAirVehicle = DispatchAudio.ReportedStolenAirVehicle;
 
         foreach (GTALicensePlate Plate in LicensePlateChanging.SpareLicensePlates.Where(x => x.IsWanted))
         {
             WantedPlates.Add(Plate);
         }
 
+    }
+    public void ApplyValues()
+    {
+        if (Game.LocalPlayer.WantedLevel < MaxWantedLevel)
+            Police.SetWantedLevel(MaxWantedLevel, "Applying old Wanted stats");
+
+        Police.CopsKilledByPlayer = CopsKilledByPlayer;
+        Police.CiviliansKilledByPlayer = CiviliansKilledByPlayer;
+        Police.PlayerHurtPolice = PlayerHurtPolice;
+        Police.PlayerKilledPolice = PlayerKilledPolice;
+        Police.PlayerKilledCivilians = PlayerKilledCivilians;
+        Police.PlayerAimedAtPolice = PlayerAimedAtPolice;
+        Police.PlayerFiredWeaponNearPolice = PlayerFiredWeaponNearPolice;
+        Police.PlayerWentNearPrisonDuringChase = PlayerWentNearPrisonDuringChase;
+
+        Police.PlayerCaughtBreakingIntoCar = PlayerCaughtBreakingIntoCar;
+        Police.PlayerCaughtChangingPlates = PlayerCaughtChangingPlates;
+        Police.PlayerCaughtWithGun = PlayerCaughtWithGun;
+        Police.PlayerGotInAirVehicleDuringChase = PlayerGotInAirVehicleDuringChase;
+        Police.PlayerKilledCiviliansInFrontOfPolice = PlayerKilledCiviliansInFrontOfPolice;
+
+        DispatchAudio.ReportedOfficerDown = DispatchReportedOfficerDown;
+        DispatchAudio.ReportedLethalForceAuthorized = DispatchReportedLethalForceAuthorized;
+        DispatchAudio.ReportedAssaultOnOfficer = DispatchReportedAssaultOnOfficer;
+        DispatchAudio.ReportedShotsFired = DispatchReportedShotsFired;
+        DispatchAudio.ReportedTrespassingOnGovernmentProperty = DispatchReportedTrespassingOnGovernmentProperty;
+        DispatchAudio.ReportedCarryingWeapon = DispatchReportedCarryingWeapon;
+        DispatchAudio.ReportedThreateningWithAFirearm = DispatchReportedThreateningWithAFirearm;
+        DispatchAudio.ReportedGrandTheftAuto = DispatchReportedGrandTheftAuto;
+        DispatchAudio.ReportedSuspiciousVehicle = DispatchReportedSuspiciousVehicle;
+        DispatchAudio.ReportedStolenAirVehicle = DispatchReportedStolenAirVehicle;
+        DispatchAudio.ReportedCivilianKilled = DispatchReportedCivilianShot;
+        DispatchAudio.ReportedWeaponsFree = DispatchReportedWeaponsFree;
+
+
+        DispatchAudio.ClearDispatchQueue();
+
+        Debugging.WriteToLog("WantedLevelStats Replace", "Replaced Wanted Stats");
     }
 }
 

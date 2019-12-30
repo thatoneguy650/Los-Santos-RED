@@ -891,17 +891,20 @@ public static class Debugging
                     MyPed.Pedestrian.Handle, MyPed.Pedestrian.Model.Name, MyPed.HurtByPlayer));
         }
 
-        Vector3 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(5f, 25f));
+        //Vector3 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(5f, 25f));
 
-        if (SpawnLocation == Vector3.Zero)
-            return;
+        //if (SpawnLocation == Vector3.Zero)
+        //    return;
 
-        Vehicle CopCar = new Vehicle("police", SpawnLocation, 0f);
-        int Livery = InstantAction.MyRand.Next(0, 6);
-        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, Livery);
-        GameFiber.Yield();
+        //Vehicle CopCar = new Vehicle("police", SpawnLocation, 0f);
+        //int Livery = InstantAction.MyRand.Next(0, 6);
+        //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, Livery);
+        //GameFiber.Yield();
 
-        WriteToLog("DebugNumpad7", string.Format("Livery {0}", Livery));
+        //WriteToLog("DebugNumpad7", string.Format("Livery {0}", Livery));
+
+        WriteToLog("Debug", ScriptController.GetStatus());
+        
 
     }
     private static void DebugNumpad8()

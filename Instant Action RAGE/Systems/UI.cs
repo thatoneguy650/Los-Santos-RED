@@ -77,11 +77,11 @@ public static class UI
         if (PersonOfInterest.PlayerIsPersonOfInterest)
         {
             if(InstantAction.PlayerIsWanted)
-                PlayerStatusLine = "~r~Wanted~s~ ";
+                PlayerStatusLine = "~r~Arrest on Sight~s~ ";
             else if (Police.PlayerHasBeenNotWantedFor <= 45000)
-                PlayerStatusLine = "~o~Wanted~s~ ";
+                PlayerStatusLine = "~o~Arrest on Sight~s~ ";
             else
-                PlayerStatusLine = "~y~Wanted~s~ ";
+                PlayerStatusLine = "~y~Arrest on Sight~s~ ";
         }
         else
             PlayerStatusLine = "";
