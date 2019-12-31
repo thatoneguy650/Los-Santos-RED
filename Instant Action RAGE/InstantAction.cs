@@ -186,6 +186,7 @@ public static class InstantAction
         PedSwapping.Initialize();
         PersonOfInterest.Initialize();
         Civilians.Initialize();
+        //CameraSystem.Initialize();
         MainLoop();
     }
     public static void MainLoop()
@@ -210,7 +211,13 @@ public static class InstantAction
         //    }
         //});
     }
-
+    public static void InstantActionTick()
+    {
+        UpdatePlayer();
+        StateTick();
+        ControlTick();
+        AudioTick();
+    }
     public static void UpdatePlayer()
     {
         PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
@@ -362,6 +369,7 @@ public static class InstantAction
         PedSwapping.Dispose();
         PersonOfInterest.Dispose();
         Civilians.Dispose();
+        //CameraSystem.Idspose();
     }
 
     

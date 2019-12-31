@@ -78,6 +78,13 @@ public static class PoliceSpawning
 
         //});
     }
+    public static void RandomCopTick()
+    {
+        if (PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+        {
+            SpawnRandomCop();
+        }
+    }
     public static void Dispose()
     {
         IsRunning = false;
@@ -133,6 +140,15 @@ public static class PoliceSpawning
             LocalWriteToLog("SpawnRandomCop",e.Message + " : " + e.StackTrace);
         }
 
+    }
+    public static float GetClosestVehicleNodeHeading(this Vector3 v3)
+    {
+        float outHeading;
+        Vector3 outPosition;
+
+        NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING(v3.X, v3.Y, v3.Z, out outPosition, out outHeading, 12, 0x40400000, 0);
+
+        return outHeading;
     }
     public static void GetRandomSpawnLocation()
     {

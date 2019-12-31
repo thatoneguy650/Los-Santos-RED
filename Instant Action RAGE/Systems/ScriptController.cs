@@ -36,31 +36,37 @@ public static class ScriptController
     {    
         IsRunning = true;
 
-        LineOfSightTick = new TickTask(500, "LineOfSightTick");
-        PoliceScanningTick = new TickTask(5000, "PoliceScanningTick");
-        CleanupCopTick = new TickTask(5000, "CleanupCopTick");
-        RandomCopSpawningTick = new TickTask(5000, "RandomCopSpawningTick");//was 500
-        VehicleEngineTick = new TickTask(0, "VehicleEngineTick");
-        ProcessTaskQueueTick = new TickTask(50, "ProcessTaskQueueTick");
-        PoliceStateTick = new TickTask(50, "PoliceStateTick");
-        TrafficViolationsTick = new TickTask(500, "TrafficViolationsTick");
-        PlayerLocationTick = new TickTask(2000, "PlayerLocationTick");
-        PersonOfInterestTick = new TickTask(500, "PersonOfInterestTick");
-        PoliceSpeechTick = new TickTask(500, "PoliceSpeechTick");
-        SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick");//was 50
-        DispatchAudioTick = new TickTask(500, "DispatchAudioTick");
-        WeaponDroppingTick = new TickTask(100, "WeaponDroppingTick");
-        WeatherCheckingTick = new TickTask(5000, "WeatherCheckingTick");
-        InstantActionTick = new TickTask(25, "InstantActionTick");
-        PoliceTick = new TickTask(25, "PoliceTick");
-        CivilianTick = new TickTask(150, "Civilian");
+
+        InstantActionTick = new TickTask(25, "InstantActionTick", InstantAction.InstantActionTick, TickTask.Type.RequiredGeneral);
+        PoliceTick = new TickTask(25, "PoliceTick", Police.PoliceGeneralTick, TickTask.Type.RequiredGeneral);
+        VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);
+
+        PoliceScanningTick = new TickTask(5000, "PoliceScanningTick", PoliceScanning.Tick, TickTask.Type.Police);
+        LineOfSightTick = new TickTask(500, "LineOfSightTick",Police.CheckPoliceSight, TickTask.Type.Police);
+        ProcessTaskQueueTick = new TickTask(50, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);
+        PoliceStateTick = new TickTask(50, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);
+        SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);//was 50
+
+        WeaponDroppingTick = new TickTask(100, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);
+        CivilianTick = new TickTask(150, "Civilian", Civilians.CivilianTick, TickTask.Type.RequiredGeneral);
+
+        TrafficViolationsTick = new TickTask(500, "TrafficViolationsTick", TrafficViolations.CheckViolations, TickTask.Type.Normal);
+        PlayerLocationTick = new TickTask(2000, "PlayerLocationTick", PlayerLocation.UpdateLocation, TickTask.Type.Normal);
+        PersonOfInterestTick = new TickTask(500, "PersonOfInterestTick", PersonOfInterest.PersonOfInterestTick, TickTask.Type.Normal);
+
+        DispatchAudioTick = new TickTask(500, "DispatchAudioTick", DispatchAudio.PlayDispatchQueue, TickTask.Type.Optional);
+        WeatherCheckingTick = new TickTask(5000, "WeatherCheckingTick", WeatherReporting.CheckWeather, TickTask.Type.Optional);
+        PoliceSpeechTick = new TickTask(500, "PoliceSpeechTick", PoliceSpeech.CheckSpeech, TickTask.Type.Optional);
+        RandomCopSpawningTick = new TickTask(5000, "RandomCopSpawningTick", PoliceSpawning.RandomCopTick, TickTask.Type.Optional);//was 500
+        CleanupCopTick = new TickTask(5000, "CleanupCopTick", PoliceSpawning.RemoveFarAwayRandomlySpawnedCops, TickTask.Type.Optional);
+
         GameStopWatch = new Stopwatch();
 
         MyTickTasks = new List<TickTask>()
         {
-            LineOfSightTick,PoliceScanningTick,CleanupCopTick,RandomCopSpawningTick,VehicleEngineTick,ProcessTaskQueueTick
-            ,PoliceStateTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,PoliceSpeechTick,SearchModeStopperTick,DispatchAudioTick
-            ,WeaponDroppingTick,WeatherCheckingTick,InstantActionTick,PoliceTick,CivilianTick
+
+            InstantActionTick,PoliceTick,VehicleEngineTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,WeaponDroppingTick
+            ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick,WeatherCheckingTick,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick
         };
 
         MainLoop();
@@ -77,135 +83,61 @@ public static class ScriptController
 
                     //Required
                     if (InstantAction.IsRunning && InstantActionTick.ShouldRun)
-                    {
-                        InstantAction.UpdatePlayer();
-                        InstantAction.StateTick();
-                        InstantAction.ControlTick();
-                        InstantAction.AudioTick();
-
-                        InstantActionTick.RanTask();
-                    }
+                        InstantActionTick.RunTask();
                     else if (Police.IsRunning && PoliceTick.ShouldRun)
-                    {
-                        Police.Tick();
-                        PoliceTick.RanTask();
-                    }
+                        PoliceTick.RunTask();
 
                     if (VehicleEngine.IsRunning && VehicleEngineTick.ShouldRun)//needs to be separate?
-                    {
-                        VehicleEngine.VehicleEngineTick();
-                        VehicleEngineTick.RanTask();
-                    }
+                        VehicleEngineTick.RunTask();
 
                     //Police Stuff
                     if (Police.IsRunning && PoliceScanningTick.ShouldRun)
-                    {
-                        PoliceScanning.ScanForPolice();
-                        PoliceScanningTick.RanTask();
-                    }
+                        PoliceScanningTick.RunTask();
                     else if (Police.IsRunning && LineOfSightTick.ShouldRun)
-                    {
-                        Police.CheckLOS((Game.LocalPlayer.Character.IsInAnyVehicle(false)) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
-                        Police.SetPrimaryPursuer();
-                        LineOfSightTick.RanTask();
-                    }
+                        LineOfSightTick.RunTask();
                     else if (Tasking.IsRunning && ProcessTaskQueueTick.ShouldRun)//used to be IF
-                    {
-                        Tasking.ProcessQueue();
-                        ProcessTaskQueueTick.RanTask();
-                    }
+                        ProcessTaskQueueTick.RunTask();
                     else if (Tasking.IsRunning && PoliceStateTick.ShouldRun)
-                    {
-                        Tasking.PoliceStateTick();
-                        PoliceStateTick.RanTask();
-                    }
+                        PoliceStateTick.RunTask();
                     else if (SearchModeStopping.IsRunning && SearchModeStopperTick.ShouldRun)//used to be IF
-                    {
-                        SearchModeStopping.StopPoliceSearchMode();
-                        SearchModeStopperTick.RanTask();
-                    }
-
+                        SearchModeStopperTick.RunTask();
 
                     //Weapon dropping kinda important
                     if (WeaponDropping.IsRunning && WeaponDroppingTick.ShouldRun)
-                    {
-                        WeaponDropping.WeaponDroppingTick();
-                        WeaponDroppingTick.RanTask();
-                    }
+                        WeaponDroppingTick.RunTask();
+
                     //Civilians 
                     if (Civilians.IsRunning && CivilianTick.ShouldRun)
-                    {
-                        Civilians.CivilianTick();
-                        CivilianTick.RanTask();
-                    }
-
-
+                        CivilianTick.RunTask();
 
                     //Low priority, can happen whenever
-                    if (GameStopWatch.ElapsedMilliseconds <= 10)
+                    if (GameStopWatch.ElapsedMilliseconds <= 10 && !MyTickTasks.Any(x => x.RunGroup == TickTask.Type.Police && x.RanThisTick))
                     {
                         //Needed eventually, but less important
                         if (TrafficViolations.IsRunning && TrafficViolationsTick.ShouldRun)
-                        {
-                            TrafficViolations.CheckViolations();
-                            TrafficViolationsTick.RanTask();
-                        }
+                            TrafficViolationsTick.RunTask();
                         else if (PlayerLocation.IsRunning && PlayerLocationTick.ShouldRun)
-                        {
-                            PlayerLocation.UpdateLocation();
-                            PlayerLocationTick.RanTask();
-                        }
+                            PlayerLocationTick.RunTask();
                         else if (PersonOfInterest.IsRunning && PersonOfInterestTick.ShouldRun)
-                        {
-                            PersonOfInterest.PersonOfInterestTick();
-                            PersonOfInterestTick.RanTask();
-                        }
+                            PersonOfInterestTick.RunTask();
 
-
-
+                        //Least Important
                         if (DispatchAudio.IsRunning && DispatchAudioTick.ShouldRun)
-                        {
-                            DispatchAudio.PlayDispatchQueue();
-                            DispatchAudioTick.RanTask();
-                        }
+                            DispatchAudioTick.RunTask();
                         else if (WeatherReporting.IsRunning && WeatherCheckingTick.ShouldRun)
-                        {
-                            WeatherReporting.CheckWeather();
-                            WeatherCheckingTick.RanTask();
-                        }
+                            WeatherCheckingTick.RunTask();
                         else if (PoliceSpeech.IsRunning && PoliceSpeechTick.ShouldRun)//used to be IF
-                        {
-                            PoliceSpeech.CheckSpeech();
-                            PoliceSpeechTick.RanTask();
-                        }
+                            PoliceSpeechTick.RunTask();
                         else if (Police.IsRunning && Settings.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF
-                        {
-                            if (PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
-                            {
-                                PoliceSpawning.SpawnRandomCop();
-                            }
-                            RandomCopSpawningTick.RanTask();
-                        }
+                            RandomCopSpawningTick.RunTask();
                         else if (Police.IsRunning && CleanupCopTick.ShouldRun)
-                        {
-                            PoliceSpawning.RemoveFarAwayRandomlySpawnedCops();
-                            CleanupCopTick.RanTask();
-                        }
-                        
+                            CleanupCopTick.RunTask();       
                     }
 
                     GameStopWatch.Stop();
 
-                    if (GameStopWatch.ElapsedMilliseconds >= 10)
-                    {
+                    if (GameStopWatch.ElapsedMilliseconds >= 10 || MyTickTasks.Any(x=> x.MissedInterval))
                         LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, GetStatus()));
-                    }
-
-
-                    if (MyTickTasks.Any(x => x.MissedInterval))
-                    {
-                        LocalWriteToLog("InstantActionTick", string.Format("Missed Intervals Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, string.Join(",", MyTickTasks.Where(x => x.MissedInterval).Select(x => x.DebugName + "; RanThisTick:" + x.RanThisTick + ";GameTimeLastRan:" + x.GameTimeLastRan + ";MissedInterval" + x.MissedInterval + Environment.NewLine))));
-                    }
 
                     ResetRanItems();
 
@@ -231,7 +163,7 @@ public static class ScriptController
     }
     public static string GetStatus()
     {
-        return "Name:RanThisTick:GameTimeLastRan:MissedInterval" + Environment.NewLine + string.Join(",",MyTickTasks.Select(x => x.DebugName + ":" + x.RanThisTick + ":" + x.GameTimeLastRan + ":" + x.MissedInterval + Environment.NewLine));
+        return "Name:RanThisTick:GameTimeLastRan:MissedInterval" + Environment.NewLine + string.Join(",",MyTickTasks.Where(x => x.RanThisTick || x.MissedInterval).Select(x => x.DebugName + ":" + x.RanThisTick + ":" + x.GameTimeLastRan + ":" + x.MissedInterval + Environment.NewLine));
     }
     private static void LocalWriteToLog(string ProcedureString, string TextToLog)
     {
@@ -245,29 +177,24 @@ public class TickTask
     public uint GameTimeLastRan = 0;
     public uint Interval = 500;
     public uint IntervalMissLength;
-    public RunSeverity OftenToRun;
     public string DebugName;
-    public enum RunSeverity
+    public Action TickToRun;
+    public Type RunGroup;
+    public enum Type
     {
-        Optional = 0,
-        Low = 1,
-        Medium = 2,
-        High = 3,
-        Required = 5,
+        RequiredGeneral = 0,
+        Police = 1,
+        Normal = 2,
+        Optional = 3,
     }
-    public TickTask(uint _GameTimeLastRan,uint _Interval, string _DebugName)
-    {
-        GameTimeLastRan = _GameTimeLastRan;
-        Interval = _Interval;
-        IntervalMissLength = Interval * 2;
-        DebugName = _DebugName;
-    }
-    public TickTask(uint _Interval, string _DebugName)
+    public TickTask(uint _Interval, string _DebugName, Action _TickToRun, Type _RunGroup)
     {
         GameTimeLastRan = 0;
         Interval = _Interval;
         IntervalMissLength = Interval * 2;
         DebugName = _DebugName;
+        TickToRun = _TickToRun;
+        RunGroup = _RunGroup;
     }
     public bool ShouldRun
     {
@@ -295,10 +222,11 @@ public class TickTask
                 return false;
         }
     }
-    public void RanTask()
+    public void RunTask()
     {
+        TickToRun();
         GameTimeLastRan = Game.GameTime;
-        RanThisTick = true;
+        RanThisTick = true;    
     }
 
 }

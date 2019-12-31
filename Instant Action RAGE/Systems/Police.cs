@@ -348,7 +348,7 @@ internal static class Police
         //}
 
     }
-    public static void Tick()
+    public static void PoliceGeneralTick()
     {
         UpdatePolice();
         CheckCrimes();
@@ -434,7 +434,11 @@ internal static class Police
             LocalWriteToLog("CheckKilled", String.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
         }
     }
-    
+    public static void CheckPoliceSight()
+    {
+        Police.CheckLOS((Game.LocalPlayer.Character.IsInAnyVehicle(false)) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
+        Police.SetPrimaryPursuer();
+    }
     public static void CheckLOS(Entity EntityToCheck)
     {
         int TotalEntityNativeLOSChecks = 0;
@@ -785,7 +789,7 @@ internal static class Police
             if (CurrTrackedVehicle == null)
                 return;
 
-            if(AnyPoliceCanSeePlayer)
+            if(AnyPoliceCanSeePlayer && InstantAction.PlayerIsWanted && !PlayerStarsGreyedOut)
             {
                 if (LastSeenVehicleHandle != 0 && LastSeenVehicleHandle != CurrTrackedVehicle.VehicleEnt.Handle)
                 {
@@ -1134,20 +1138,6 @@ internal static class Police
         if (Settings.PoliceLogging)
             Debugging.WriteToLog(ProcedureString, TextToLog);
     }
-    //public static void StopWantedTemporarily(int TimeToStop)
-    //{
-    //    GameFiber StopWantedLevel = GameFiber.StartNew(delegate
-    //    {
-    //        uint GameTimeStarted = Game.GameTime;
-    //        while (!RecentlySetWanted && Game.GameTime - GameTimeStarted < TimeToStop)
-    //        {
-    //            Game.LocalPlayer.WantedLevel = 0;
-    //            GameFiber.Yield();
-    //        }
-
-    //    }, "StopWantedLevel");
-    //    Debugging.GameFibers.Add(StopWantedLevel);
-    //}
     public static void RemoveBlip(Ped MyPed)
     {
         Blip MyBlip = MyPed.GetAttachedBlip();

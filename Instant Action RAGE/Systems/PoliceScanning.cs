@@ -27,6 +27,10 @@ public static class PoliceScanning
         Civilians = new List<GTAPed>();
         PoliceVehicles = new List<Vehicle>();
     }
+    public static void Tick()
+    {
+        ScanForPolice();
+    }
     public static void Dispose()
     {
         ClearPolice();

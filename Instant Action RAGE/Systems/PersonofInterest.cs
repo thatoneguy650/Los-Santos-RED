@@ -117,7 +117,7 @@ public static class PersonOfInterest
     }
     public static void CheckSight()
     {
-        if (InstantAction.PlayerIsNotWanted && PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
+        if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
         {
             if (Police.AnyPoliceCanSeePlayer && Police.NearLastWanted())
             {
