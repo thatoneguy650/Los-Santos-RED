@@ -559,6 +559,29 @@ public static class InstantAction
         }
 
     }
+    public static void GetStreetPositionandHeading(Vector3 PositionNear, out Vector3 SpawnPosition, out float Heading)
+    {
+        Vector3 pos = PositionNear;
+        SpawnPosition = Vector3.Zero;
+        Heading = 0f;
+
+        for (int i = 1; i < 40; i++)
+        {
+            Vector3 outPos;
+            float heading;
+            float val;
+            unsafe
+            {
+                NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, i, &outPos, &heading, &val, 1, 0x40400000, 0);
+            }
+            if (!NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
+            {
+                SpawnPosition = outPos;
+                Heading = heading;
+                break;
+            }
+        }
+    }
     public static void SetPedUnarmed(Ped Pedestrian, bool SetCantChange)
     {
         if (!(Pedestrian.Inventory.EquippedWeapon == null))

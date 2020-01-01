@@ -38,6 +38,7 @@ public static class CameraSystem
             Cam.Active = true;
             UsingOtherCamera = true;
             IsTransitioning = false;
+           
         });
        
     }

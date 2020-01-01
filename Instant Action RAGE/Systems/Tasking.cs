@@ -361,9 +361,12 @@ public static class Tasking
             }
 
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.isTasked && x.isInVehicle))
+        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.isTasked))
         {
-            SetUnarmed(Cop);
+            if (Cop.isInVehicle)
+                SetUnarmed(Cop);
+            else
+                SetCopTazer(Cop);
         }
 
         if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 8f && !x.isInVehicle) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !InstantAction.IsBusted && !Police.PlayerWasJustJacking)

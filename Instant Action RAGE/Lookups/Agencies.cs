@@ -47,13 +47,25 @@ public static class Agencies
         List<Agency.ModelInformation> SecurityPeds = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_m_security_01", true) };
         List<Agency.ModelInformation> CoastGuardPeds = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_uscg_01", true) };
         
-        List<Agency.VehicleInformation> StandardPoliceVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("police", true, true, 25), new Agency.VehicleInformation("police2", true, true, 25), new Agency.VehicleInformation("police3", true, true, 25), new Agency.VehicleInformation("police4", true, true, 10), new Agency.VehicleInformation("fbi2", true, true, 15) };
-        List<Agency.VehicleInformation> StandardSheriffVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("sheriff", true, true, 50), new Agency.VehicleInformation("sheriff2", true, true, 50) };
+        List<Agency.VehicleInformation> StandardPoliceVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("police", true, true, 100)
+           
+            
+            
+            //, new Agency.VehicleInformation("police2", true, true, 25), new Agency.VehicleInformation("police3", true, true, 25), new Agency.VehicleInformation("police4", true, true, 10), new Agency.VehicleInformation("fbi2", true, true, 15)
+
+
+
+        };
+        List<Agency.VehicleInformation> StandardSheriffVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("sheriff", true, true, 50, false, new List<int> { 0, 1, 2, 3 }), new Agency.VehicleInformation("sheriff2", true, true, 50) };
         List<Agency.VehicleInformation> UnmarkedVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("police4", true, true, 100) };
         List<Agency.VehicleInformation> ParkRangerVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("pranger", true, true, 100) };
         List<Agency.VehicleInformation> FIBVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("fbi", true, true, 70), new Agency.VehicleInformation("fbi2", true, true, 30) };
         List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policeb", true, true, 70,true), new Agency.VehicleInformation("police4", true, true, 30) };
         List<Agency.VehicleInformation> PrisonVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policet", true, true, 70), new Agency.VehicleInformation("police4", true, true, 30) };
+
+        //List<Agency.VehicleInformation> BCSOVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("sheriff", true, true, 100,false, new List<int> { 4,5,6,7 }) };
+
+        
 
         AgenciesList = new List<Agency>();
         LSPD = new Agency("~b~", "LSPD", "Los Santos Police Department", Color.Blue, true, StandardCops, StandardPoliceVehicles);
@@ -145,12 +157,19 @@ public static class Agencies
     private static Agency GetAgencyFromVanillaSheriff(Ped Cop)
     {
         Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
-        if (PedZone != null && PedZone.MainZoneAgency == BCSO)
+        if (PedZone == null)
+            return LSSD;
+
+        
+
+        if (PedZone.MainZoneAgency == BCSO || PedZone.ZoneCounty == County.BlaineCounty)
         {
-            return PedZone.MainZoneAgency;
+            Debugging.WriteToLog("GetSheriff", string.Format("Zone: {0},{1}, RETURN BCSO", PedZone.TextName, PedZone.MainZoneAgency.FullName));
+            return BCSO;
         }
         else
         {
+            Debugging.WriteToLog("GetSheriff", string.Format("Zone: {0},{1}, RETURN LSSD", PedZone.TextName, PedZone.MainZoneAgency.FullName));
             return LSSD;
         }
     }
@@ -191,8 +210,31 @@ public static class Agencies
             return PRISEC;
         }
     }
-
-}
+    public static Agency GetAgencyFromEmptyVehicle(Vehicle CopCar)
+    {
+        Zone CarZone = Zones.GetZoneAtLocation(CopCar.Position);
+        if (CarZone == null)
+            return null;
+        if (CopCar.Model.Name.ToLower() == "sheriff" || CopCar.Model.Name.ToLower() == "sheriff2")
+        {
+            if (CarZone.ZoneCounty == County.BlaineCounty)
+                return BCSO;
+            else
+                return LSSD;
+        }
+        else if (CopCar.Model.Name.ToLower() == "police")
+        {
+            if (CarZone.MainZoneAgency == RHPD || CarZone.MainZoneAgency == VPPD)
+                return CarZone.MainZoneAgency;
+            else
+                return LSPD;
+        }
+        else
+        {
+            return LSPD;
+        }
+    }
+ }
 public class Agency
 {
     public string ColorPrefix = "~s~";
@@ -279,6 +321,7 @@ public class Agency
         public bool IsVanilla = true;
         public int SpawnChance;
         public bool IsMotorcycle = false;
+        public List<int> Liveries = new List<int>();
         public VehicleInformation(string modelName)
         {
             ModelName = modelName;
@@ -298,6 +341,11 @@ public class Agency
         public VehicleInformation(string modelName, bool useForRandomSpawn, bool isVanilla, int spawnChance, bool isMotorcycle) : this(modelName, useForRandomSpawn, isVanilla, spawnChance)
         {
             IsMotorcycle = isMotorcycle;
+        }
+        public VehicleInformation(string modelName, bool useForRandomSpawn, bool isVanilla, int spawnChance, bool isMotorcycle, List<int> _Liveries) : this(modelName, useForRandomSpawn, isVanilla, spawnChance)
+        {
+            IsMotorcycle = isMotorcycle;
+            Liveries = _Liveries;
         }
     }
 }

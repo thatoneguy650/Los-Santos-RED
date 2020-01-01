@@ -50,8 +50,8 @@ public static class PoliceScanning
                     bool canSee = false;
                     if (Pedestrian.PlayerIsInFront() && Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 55f) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, Game.LocalPlayer.Character))
                         canSee = true;
-
-                    GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health,Agencies.GetAgencyFromPed(Pedestrian,true));
+                    Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian, true);
+                    GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health, AssignedAgency);
                     Pedestrian.IsPersistent = false;
                     if (Settings.OverridePoliceAccuracy)
                         Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
@@ -63,8 +63,14 @@ public static class PoliceScanning
                     if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
                     {
                         Vehicle PoliceCar = Pedestrian.CurrentVehicle;
-                        PoliceSpawning.UpgradeCruiser(PoliceCar);
-                        PoliceVehicles.Add(PoliceCar);
+
+                        if (!PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
+                        {
+                            Debugging.WriteToLog("LiveryChanger", "CheckingLivery");
+                            PoliceSpawning.CheckandChangeLivery(PoliceCar, AssignedAgency);
+                            PoliceSpawning.UpgradeCruiser(PoliceCar);
+                            PoliceVehicles.Add(PoliceCar);
+                        }
                     }   
                     CopPeds.Add(myCop);
 
@@ -79,8 +85,27 @@ public static class PoliceScanning
                     Civilians.Add(new GTAPed(Pedestrian, false, Pedestrian.Health));
                 }
             }
+        }  
+            //Police.UpdatedCopsStats();
+    }
+    public static void ScanforPoliceVehicles()
+    {
+        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludeOccupiedVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
+        foreach (Vehicle Veh in Vehicles.Where(s => s.Exists()))
+        {
+            if (Veh.IsPoliceVehicle)
+            {
+                if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
+                {
+                    Agency AssignedAgency = Agencies.GetAgencyFromEmptyVehicle(Veh);
+                    Debugging.WriteToLog("LiveryChanger", "CheckingLivery");
+                    PoliceSpawning.CheckandChangeLivery(Veh, AssignedAgency);
+                    PoliceSpawning.UpgradeCruiser(Veh);
+                    PoliceVehicles.Add(Veh);
+                }
+            }
+
         }
-        //Police.UpdatedCopsStats();
     }
     public static void ClearPoliceAroundArea(Vector3 Location,float Radius)
     {

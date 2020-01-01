@@ -885,30 +885,55 @@ public static class Debugging
         }
 
 
-        foreach (GTAPed MyPed in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+        //foreach (GTAPed MyPed in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+        //{
+        //    Debugging.WriteToLog("Debug", string.Format("MyPed: {0},Model.Name:{1},HurtByPlayer: {2}",
+        //            MyPed.Pedestrian.Handle, MyPed.Pedestrian.Model.Name, MyPed.HurtByPlayer));
+        //}
+
+        Vector3 SpawnLocation;// = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(5f, 25f));
+        float Heading = 0f;
+
+        InstantAction.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(5f, 25f), out SpawnLocation, out Heading);
+
+        if (SpawnLocation == Vector3.Zero)
+            return;
+
+        Vehicle CopCar = new Vehicle("police", SpawnLocation, Heading);
+
+
+        if(NativeFunction.CallByName<bool>("DOES_EXTRA_EXIST",CopCar,1))
         {
-            Debugging.WriteToLog("Debug", string.Format("MyPed: {0},Model.Name:{1},HurtByPlayer: {2}",
-                    MyPed.Pedestrian.Handle, MyPed.Pedestrian.Model.Name, MyPed.HurtByPlayer));
+            NativeFunction.CallByName<bool>("SET_VEHICLE_EXTRA", CopCar, 1, false);
         }
 
-        //Vector3 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(5f, 25f));
 
-        //if (SpawnLocation == Vector3.Zero)
-        //    return;
+        int Livery = InstantAction.MyRand.Next(0, 18);
+        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, Livery);
+        WriteToLog("DebugNumpad7", string.Format("Livery {0}", Livery));
+        //GameFiber.Sleep(5000);
 
-        //Vehicle CopCar = new Vehicle("police", SpawnLocation, 0f);
-        //int Livery = InstantAction.MyRand.Next(0, 6);
-        //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, Livery);
-        //GameFiber.Yield();
+        //if (CopCar.Exists())
+        //    CopCar.Delete();
 
-        //WriteToLog("DebugNumpad7", string.Format("Livery {0}", Livery));
 
-        WriteToLog("Debug", ScriptController.GetStatus());
+
+       // WriteToLog("Debug", ScriptController.GetStatus());
         
 
     }
     private static void DebugNumpad8()
     {
+        if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        {
+            string Value = Menus.GetKeyboardInput();
+
+            int Livery;
+            int.TryParse(Value,out Livery);
+            NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Game.LocalPlayer.Character.CurrentVehicle, Livery);
+            WriteToLog("DebugNumpad7", string.Format("Livery {0}", Livery));
+        }
+
         //if (PlayerLocation.PlayerCurrentStreet == null)
         //{
         //    WriteToLog("PlayerCurrentStreet", "No STreet");
@@ -923,14 +948,14 @@ public static class Debugging
         //InstantAction.TransitionToRegularSpeed();
 
 
-        if(Game.TimeScale < 1.0f)
-        {
-            InstantAction.TransitionToRegularSpeed();
-        }
-        else
-        {
-            InstantAction.TransitionToSlowMo();
-        }
+        //if(Game.TimeScale < 1.0f)
+        //{
+        //    InstantAction.TransitionToRegularSpeed();
+        //}
+        //else
+        //{
+        //    InstantAction.TransitionToSlowMo();
+        //}
 
         //GTACop MyCop = PoliceScanning.CopPeds.PickRandom();
         //if (MyCop == null)

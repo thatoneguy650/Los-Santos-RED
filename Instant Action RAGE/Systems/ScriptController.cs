@@ -21,6 +21,7 @@ public static class ScriptController
     private static TickTask PersonOfInterestTick;
     private static TickTask PoliceSpeechTick;
     private static TickTask SearchModeStopperTick;
+    private static TickTask PoliceVehicleScanningTick;
     private static TickTask DispatchAudioTick;
     private static TickTask WeaponDroppingTick;
     private static TickTask WeatherCheckingTick;
@@ -46,6 +47,7 @@ public static class ScriptController
         ProcessTaskQueueTick = new TickTask(50, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);
         PoliceStateTick = new TickTask(50, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);
         SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);//was 50
+        PoliceVehicleScanningTick = new TickTask(5000, "PoliceVehicleScanningTick", PoliceScanning.ScanforPoliceVehicles, TickTask.Type.Police);
 
         WeaponDroppingTick = new TickTask(100, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);
         CivilianTick = new TickTask(150, "Civilian", Civilians.CivilianTick, TickTask.Type.RequiredGeneral);
@@ -57,7 +59,7 @@ public static class ScriptController
         DispatchAudioTick = new TickTask(500, "DispatchAudioTick", DispatchAudio.PlayDispatchQueue, TickTask.Type.Optional);
         WeatherCheckingTick = new TickTask(5000, "WeatherCheckingTick", WeatherReporting.CheckWeather, TickTask.Type.Optional);
         PoliceSpeechTick = new TickTask(500, "PoliceSpeechTick", PoliceSpeech.CheckSpeech, TickTask.Type.Optional);
-        RandomCopSpawningTick = new TickTask(5000, "RandomCopSpawningTick", PoliceSpawning.RandomCopTick, TickTask.Type.Optional);//was 500
+        RandomCopSpawningTick = new TickTask(3000, "RandomCopSpawningTick", PoliceSpawning.RandomCopTick, TickTask.Type.Optional);//was 500
         CleanupCopTick = new TickTask(5000, "CleanupCopTick", PoliceSpawning.RemoveFarAwayRandomlySpawnedCops, TickTask.Type.Optional);
 
         GameStopWatch = new Stopwatch();
@@ -65,7 +67,7 @@ public static class ScriptController
         MyTickTasks = new List<TickTask>()
         {
 
-            InstantActionTick,PoliceTick,VehicleEngineTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,WeaponDroppingTick
+            InstantActionTick,PoliceTick,VehicleEngineTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
             ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick,WeatherCheckingTick,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick
         };
 
@@ -101,6 +103,8 @@ public static class ScriptController
                         PoliceStateTick.RunTask();
                     else if (SearchModeStopping.IsRunning && SearchModeStopperTick.ShouldRun)//used to be IF
                         SearchModeStopperTick.RunTask();
+                    else if (Police.IsRunning && PoliceVehicleScanningTick.ShouldRun)
+                        PoliceVehicleScanningTick.RunTask();
 
                     //Weapon dropping kinda important
                     if (WeaponDropping.IsRunning && WeaponDroppingTick.ShouldRun)
@@ -136,7 +140,7 @@ public static class ScriptController
 
                     GameStopWatch.Stop();
 
-                    if (GameStopWatch.ElapsedMilliseconds >= 10 || MyTickTasks.Any(x=> x.MissedInterval))
+                    if (GameStopWatch.ElapsedMilliseconds >= 20)
                         LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, GetStatus()));
 
                     ResetRanItems();
