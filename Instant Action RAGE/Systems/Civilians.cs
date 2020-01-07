@@ -46,10 +46,10 @@ public static class Civilians
         }
         PoliceScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
 
-        if (PrevPlayerKilledCivilians != Police.PlayerKilledCivilians)
+        if (PrevPlayerKilledCivilians != Police.CurrentCrimes.PlayerKilledCivilians)
             PlayerKilledCiviliansChanged();
 
-        if (PrevCiviliansKilledByPlayer != Police.CiviliansKilledByPlayer)
+        if (PrevCiviliansKilledByPlayer != Police.CurrentCrimes.CiviliansKilledByPlayer)
             CiviliansKilledChanged();
     }
     public static void CheckCivilianKilled(GTAPed MyPed)
@@ -57,31 +57,31 @@ public static class Civilians
         if (InstantAction.PlayerHurtPed(MyPed))
         {
             MyPed.HurtByPlayer = true;
-            Police.GameTimeLastHurtCivilian = Game.GameTime;
+            Police.CurrentCrimes.GameTimeLastHurtCivilian = Game.GameTime;
         }
         if (InstantAction.PlayerKilledPed(MyPed))
         {
-            Police.GameTimeLastKilledCivilian = Game.GameTime;
-            Police.CiviliansKilledByPlayer++;
-            Police.PlayerKilledCivilians = true;
+            Police.CurrentCrimes.GameTimeLastKilledCivilian = Game.GameTime;
+            Police.CurrentCrimes.CiviliansKilledByPlayer++;
+            Police.CurrentCrimes.PlayerKilledCivilians = true;
             LocalWriteToLog("CheckKilled", string.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
         }
     }
     private static void PlayerKilledCiviliansChanged()
     {
-        LocalWriteToLog("ValueChecker", String.Format("PlayerKilledCivilians Changed to: {0}", Police.PlayerKilledCivilians));
-        if (Police.PlayerKilledCivilians)
+        LocalWriteToLog("ValueChecker", String.Format("PlayerKilledCivilians Changed to: {0}", Police.CurrentCrimes.PlayerKilledCivilians));
+        if (Police.CurrentCrimes.PlayerKilledCivilians)
         {
             //SetWantedLevel(3, "You killed a police officer");
             //if (InstantAction.PlayerWantedLevel <= 3)
             //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportOfficerDown, 1) { ResultsInLethalForce = true });
         }
-        PrevPlayerKilledCivilians = Police.PlayerKilledCivilians;
+        PrevPlayerKilledCivilians = Police.CurrentCrimes.PlayerKilledCivilians;
     }
     private static void CiviliansKilledChanged()
     {
-        LocalWriteToLog("ValueChecker", String.Format("CiviliansKilledChanged Changed to: {0}", Police.CiviliansKilledByPlayer));
-        PrevCiviliansKilledByPlayer = Police.CiviliansKilledByPlayer;
+        LocalWriteToLog("ValueChecker", String.Format("CiviliansKilledChanged Changed to: {0}", Police.CurrentCrimes.CiviliansKilledByPlayer));
+        PrevCiviliansKilledByPlayer = Police.CurrentCrimes.CiviliansKilledByPlayer;
     }
     private static void LocalWriteToLog(string ProcedureString, string TextToLog)
     {

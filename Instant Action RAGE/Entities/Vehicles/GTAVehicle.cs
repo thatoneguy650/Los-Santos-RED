@@ -34,6 +34,7 @@ public class GTAVehicle
     public GTALicensePlate OriginalLicensePlate;
     public bool ManuallyRolledDriverWindowDown = false;
     public Vector3 PositionOriginallyEntered = Vector3.Zero;
+    public bool HasBeenDescribedByDispatch = false;
     public bool PlayerHasEntered
     {
         get

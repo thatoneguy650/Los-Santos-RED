@@ -17,7 +17,7 @@ public static class PoliceScanning
     {
         get
         {
-            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(30000)).Select(x => x.AssignedAgency.ColorPrefix +  (x.isInHelicopter ? "~b~LSPD-ASD~s~" : x.AssignedAgency.ColorPrefix + x.AssignedAgency.Initials)).Distinct().ToArray());
+            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(10000)).Select(x => (x.isInHelicopter ? "~b~LSPD-ASD~s~" : x.AssignedAgency.ColoredInitials)).Distinct().ToArray());
         }
     }
     public static void Initialize()
@@ -66,7 +66,6 @@ public static class PoliceScanning
 
                         if (!PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
                         {
-                            Debugging.WriteToLog("LiveryChanger", "CheckingLivery");
                             PoliceSpawning.CheckandChangeLivery(PoliceCar, AssignedAgency);
                             PoliceSpawning.UpgradeCruiser(PoliceCar);
                             PoliceVehicles.Add(PoliceCar);
@@ -90,7 +89,7 @@ public static class PoliceScanning
     }
     public static void ScanforPoliceVehicles()
     {
-        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludeOccupiedVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
+        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderGroundVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
         foreach (Vehicle Veh in Vehicles.Where(s => s.Exists()))
         {
             if (Veh.IsPoliceVehicle)

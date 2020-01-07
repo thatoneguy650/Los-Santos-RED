@@ -37,6 +37,7 @@ public static class InstantAction
     public static WeaponHash LastWeapon { get; set; }
     public static bool PlayerInVehicle { get; set; }
     public static bool PlayerInAutomobile { get; set; }
+    public static GTAVehicle PlayersCurrentTrackedVehicle { get; set; }
     public static bool PlayerOnMotorcycle { get; set; }
     public static bool PlayerAimingInVehicle { get; set; }
     public static bool PlayerIsGettingIntoVehicle { get; set; }
@@ -232,11 +233,14 @@ public static class InstantAction
                 PlayerOnMotorcycle = true;
             else
                 PlayerOnMotorcycle = false;
+
+            PlayersCurrentTrackedVehicle = GetPlayersCurrentTrackedVehicle();
         }
         else
         {
             PlayerOnMotorcycle = false;
             PlayerInAutomobile = false;
+            PlayersCurrentTrackedVehicle = null;
         }
 
         if (Game.LocalPlayer.Character.IsShooting)
@@ -254,7 +258,7 @@ public static class InstantAction
         if (PrevPlayerIsGettingIntoVehicle != PlayerIsGettingIntoVehicle)
             PlayerIsGettingIntoVehicleChanged();
 
-        if (PlayerInVehicle && !IsCurrentVehicleTracked)
+        if (PlayerInVehicle && PlayersCurrentTrackedVehicle == null)//!IsCurrentVehicleTracked)
             TrackCurrentVehicle();
 
         if (PlayerCurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeapon)

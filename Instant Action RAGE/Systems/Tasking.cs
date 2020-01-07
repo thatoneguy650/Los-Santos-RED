@@ -411,7 +411,7 @@ public static class Tasking
             }
         }
 
-        if (Police.CopsKilledByPlayer >= Settings.PoliceKilledSurrenderLimit && InstantAction.PlayerWantedLevel < 4)
+        if (Police.CurrentCrimes.CopsKilledByPlayer >= Settings.PoliceKilledSurrenderLimit && InstantAction.PlayerWantedLevel < 4)
         {
             Police.SetWantedLevel(4,"You killed too many cops");
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportWeaponsFree, 2));
@@ -429,16 +429,19 @@ public static class Tasking
             {
                 SetUnarmed(Cop);
             }
-            if (!Cop.AtWantedCenterDuringSearchMode && !Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.GoToWantedCenter && Cop.DistanceToLastSeen >= 35f && Cop.Pedestrian.IsDriver())//((InVehicle && Cop.CopPed.CurrentVehicle.Driver == Cop.CopPed) || !InVehicle))
+            if (!Cop.isInHelicopter)
             {
-                Cop.TaskIsQueued = true;
-                AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.GoToWantedCenter));
-            }
-            else if (!Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.SimpleInvestigate && Cop.DistanceToLastSeen < 35f)
-            {
-                Cop.AtWantedCenterDuringSearchMode = true;
-                Cop.TaskIsQueued = true;
-                AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleInvestigate));
+                if (!Cop.AtWantedCenterDuringSearchMode && !Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.GoToWantedCenter && Cop.DistanceToLastSeen >= 35f && Cop.Pedestrian.IsDriver())//((InVehicle && Cop.CopPed.CurrentVehicle.Driver == Cop.CopPed) || !InVehicle))
+                {
+                    Cop.TaskIsQueued = true;
+                    AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.GoToWantedCenter));
+                }
+                else if (!Cop.TaskIsQueued && Cop.TaskType != PoliceTask.Task.SimpleInvestigate && Cop.DistanceToLastSeen < 35f)
+                {
+                    Cop.AtWantedCenterDuringSearchMode = true;
+                    Cop.TaskIsQueued = true;
+                    AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleInvestigate));
+                }
             }
         }
 
@@ -609,7 +612,7 @@ public static class Tasking
                     //    }
                     //}
 
-                    if (InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 2.5f)
+                    if (InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 2.5f)
                     {
                         if (Cop.isPursuitPrimary && Cop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
                         {

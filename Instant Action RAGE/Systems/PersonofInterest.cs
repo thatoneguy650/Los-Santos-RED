@@ -8,18 +8,22 @@ using System.Threading.Tasks;
 
 public static class PersonOfInterest
 {
-    private static WantedLevelStats LastWantedStats;
+    //private static WantedLevelStats LastWantedStats;
     private static bool PrevPlayerIsWanted;
-    private static List<WantedLevelStats> PreviousWantedStats;
+    //private static List<WantedLevelStats> PreviousWantedStats;
+   // public static List<RapSheet> CriminalHistory;
+
     public static bool PlayerIsPersonOfInterest { get; set; }
     public static bool IsRunning { get; set; } = true;
+    public static List<RapSheet> CriminalHistory { get; set; }
 
     public static void Initialize()
     {
         IsRunning = true;
         PrevPlayerIsWanted = false;
 
-        PreviousWantedStats = new List<WantedLevelStats>();
+        //PreviousWantedStats = new List<WantedLevelStats>();
+        CriminalHistory = new List<RapSheet>();
         PlayerIsPersonOfInterest = false;
         MainLoop();
     }
@@ -29,28 +33,11 @@ public static class PersonOfInterest
     }
     public static void MainLoop()
     {
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            PersonOfInterestTick();
-        //            GameFiber.Sleep(500);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-        //});
+
     }
     
     public static void PersonOfInterestTick()
     {
-        LastWantedStats = GetLastWantedStats();
-
         if (PrevPlayerIsWanted != InstantAction.PlayerIsWanted)
             WantedLevelAddedOrRemoved();
 
@@ -117,7 +104,7 @@ public static class PersonOfInterest
     }
     public static void CheckSight()
     {
-        if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
+        if (PlayerIsPersonOfInterest && (Police.PlayerHasBeenNotWantedFor >= 5000 || InstantAction.PlayerIsWanted))//Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
         {
             if (Police.AnyPoliceCanSeePlayer && Police.NearLastWanted())
             {
@@ -152,7 +139,8 @@ public static class PersonOfInterest
     public static void ResetPersonOfInterest(bool PlayAudio)
     {
         PlayerIsPersonOfInterest = false;
-        PreviousWantedStats.ForEach(x => x.IsExpired = true);
+        //PreviousWantedStats.ForEach(x => x.IsExpired = true);
+        //CriminalHistory.ForEach(x => x.IsExpired = true);
         Debugging.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are expired");
         Police.LastWantedCenterPosition = Vector3.Zero;
         Police.AddUpdateLastWantedBlip(Vector3.Zero);
@@ -160,13 +148,9 @@ public static class PersonOfInterest
         if(PlayAudio)
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPersonOfInterestExpire, 3));
     }
-    public static void StoreWantedStats()
-    {
-        PreviousWantedStats.Add(new WantedLevelStats());
-    }
     public static bool ApplyWantedStatsForPlate(string PlateNumber)
     {
-        WantedLevelStats StatsForPlate = GetWantedLevelStatsForPlate(PlateNumber);
+        RapSheet StatsForPlate = GetWantedLevelStatsForPlate(PlateNumber);
         if (StatsForPlate != null)
         {
             ApplyWantedStats(StatsForPlate);
@@ -176,42 +160,55 @@ public static class PersonOfInterest
     }
     public static bool ApplyLastWantedStats()
     {
-        WantedLevelStats MyLastWantedStats = GetLastWantedStats();
-        if (MyLastWantedStats == null)
+        RapSheet CriminalHistory = GetLastWantedStats();
+        if (CriminalHistory == null)
             return false;
         else
-            ApplyWantedStats(MyLastWantedStats);
+            ApplyWantedStats(CriminalHistory);
 
         return true;
     }
     public static int LastWantedLevel()
     {
-        if (LastWantedStats == null)
+        RapSheet MyRapSheet = GetLastWantedStats();
+        if (MyRapSheet == null)
             return 0;
         else
-            return LastWantedStats.MaxWantedLevel;
+            return MyRapSheet.MaxWantedLevel;
     }
-    public static void ApplyWantedStats(WantedLevelStats WantedStatsToApply)
+    public static void ApplyWantedStats(RapSheet CriminalHistory)
     {
-        if (WantedStatsToApply == null)
+        if (CriminalHistory == null)
             return;
 
-        WantedStatsToApply.ApplyValues();
+        if (Game.LocalPlayer.WantedLevel < CriminalHistory.MaxWantedLevel)
+            Police.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats");
+
+        Police.CurrentCrimes = CriminalHistory;
+
+        DispatchAudio.ClearDispatchQueue();
+        Debugging.WriteToLog("WantedLevelStats Replace", Police.CurrentCrimes.PrintCrimes());
     }
 
-    public static WantedLevelStats GetLastWantedStats()
+    public static RapSheet GetLastWantedStats()
     {
-        if (PreviousWantedStats == null || !PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted && !x.IsExpired).Any())
+        if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
             return null;
 
-        return PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted && !x.IsExpired).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
+        return CriminalHistory.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
     }
-    public static WantedLevelStats GetWantedLevelStatsForPlate(string PlateNumber)
+    public static RapSheet GetWantedLevelStatsForPlate(string PlateNumber)
     {
-        if (PreviousWantedStats == null || !PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted).Any())
+        if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
             return null;
 
-        return PreviousWantedStats.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
+        return CriminalHistory.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
     }
 
+    internal static void StoreCriminalHistory(RapSheet rapSheet)
+    {
+        //rapSheet.IsExpired = true;
+        CriminalHistory.Add(rapSheet);
+        Debugging.WriteToLog("StoreCriminalHistory", "Stored this Rap Sheet");
+    }
 }

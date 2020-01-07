@@ -180,25 +180,33 @@ public static class PoliceSpawning
     
     public static void RemoveFarAwayRandomlySpawnedCops()
     {
+        float DeleteDistance = 2000;
+        float NonPersistDistance = 1750f;
+
+        if(InstantAction.PlayerIsWanted)
+        {
+            DeleteDistance = 1250f;
+            NonPersistDistance = 550f;
+        }
         foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.WasRandomSpawn))
         {
-            if (Cop.DistanceToPlayer >= 2000f)//2000f
+            if (Cop.DistanceToPlayer >= DeleteDistance)//2000f
             {
                 Police.DeleteCop(Cop);
             }
-            else if (Cop.WasMarkedNonPersistent && Cop.DistanceToPlayer >= 1750f)//1750f
+            else if (Cop.WasMarkedNonPersistent && Cop.DistanceToPlayer >= NonPersistDistance)//1750f
             {
                 Police.MarkNonPersistent(Cop);
                 break;
             }
-            if (Cop.DistanceToPlayer >= 250f && Cop.Pedestrian.IsInAnyVehicle(false))//750f
+            if (Cop.DistanceToPlayer >= 125f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
             {
                 if (Cop.Pedestrian.CurrentVehicle.Health <= 800 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 800)
                 {
-                    if (Cop.AssignedAgency == Agencies.LSPD || Cop.AssignedAgency == Agencies.LSSD)//Only repiar naturally spawning cars so they appear to have just been another spawned car
-                    {
+                    //if (Cop.AssignedAgency == Agencies.LSPD || Cop.AssignedAgency == Agencies.LSSD)//Only repiar naturally spawning cars so they appear to have just been another spawned car
+                    //{
                         Cop.Pedestrian.CurrentVehicle.Repair();
-                    }
+                    //}
                 }
                 else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
                 {
@@ -336,25 +344,7 @@ public static class PoliceSpawning
         if (MyCar != null)
             ModelName = MyCar.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
-
         CheckandChangeLivery(CopCar, _Agency);
-
-        //if(MyCar.ModelName.ToLower() == "police")
-        //{
-        //    if(_Agency == Agencies.RHPD)
-        //        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, InstantAction.MyRand.Next(6,12));
-        //    else if (_Agency == Agencies.VPPD)
-        //        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, InstantAction.MyRand.Next(12, 18));
-        //    else
-        //        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, InstantAction.MyRand.Next(0, 6));
-        //}
-        //else if(MyCar.ModelName.ToLower() == "sheriff")
-        //{
-        //    if (_Agency == Agencies.LSSD)
-        //        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, InstantAction.MyRand.Next(0, 5));
-        //    else if (_Agency == Agencies.BCSO)
-        //        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, InstantAction.MyRand.Next(4, 8));
-        //}
         GameFiber.Yield();
         if(CopCar.Exists())
         {
@@ -364,8 +354,7 @@ public static class PoliceSpawning
         else
         {
             return null;
-        }
-        
+        }    
     }
     public static Vehicle SpawnCopMotorcycle(Agency _Agency, Vector3 SpawnLocation)
     {  
@@ -394,7 +383,12 @@ public static class PoliceSpawning
         NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 13) - 1, true);//Tranny
         NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 15) - 1, true);//Suspension
 
-        NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
+        if (NativeFunction.CallByName<bool>("DOES_EXTRA_EXIST", CopCruiser, 1) && InstantAction.MyRand.Next(1,11) <= 9)//rarely do we want slicktop
+        {
+            NativeFunction.CallByName<bool>("SET_VEHICLE_EXTRA", CopCruiser, 1, false);//make sure the siren is there
+        }
+
+        // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
     }
     public static void CreateK9()
     {
@@ -437,58 +431,19 @@ public static class PoliceSpawning
     }
     public static void CheckandChangeLivery(Vehicle CopCar,Agency AssignedAgency)
     {
-        bool ChangedLivery = false;
-        int LiveryNumber = 0;
-        if (CopCar.Model.Name.ToLower() == "police")
-        {
-            if (AssignedAgency == Agencies.RHPD)
-            {
-                LiveryNumber = InstantAction.MyRand.Next(6, 12);
-                ChangedLivery = true;  
-            }
-            else if (AssignedAgency == Agencies.VPPD)
-            {
-                LiveryNumber = InstantAction.MyRand.Next(12, 18);
-                ChangedLivery = true;
-            }
-            else
-            {
-                LiveryNumber = InstantAction.MyRand.Next(0, 6);
-                ChangedLivery = true;
-            }
-        }
-        else if (CopCar.Model.Name.ToLower() == "sheriff")
-        {
-            if (AssignedAgency == Agencies.LSSD)
-            {
-                LiveryNumber = InstantAction.MyRand.Next(0, 5);
-                ChangedLivery = true;
-            }
-            else if (AssignedAgency == Agencies.BCSO)
-            {
-                LiveryNumber = InstantAction.MyRand.Next(4, 8);
-                ChangedLivery = true;
-            }
-        }
-        else if (CopCar.Model.Name.ToLower() == "sheriff2")
-        {
-            if (AssignedAgency == Agencies.LSSD)
-            {
-                LiveryNumber = InstantAction.MyRand.Next(0, 2);
-                ChangedLivery = true;
-            }
-            else if (AssignedAgency == Agencies.BCSO)
-            {
-                LiveryNumber = InstantAction.MyRand.Next(2, 4);
-                ChangedLivery = true;
-            }
-        }
+        if (AssignedAgency.Vehicles == null)
+            return;
+        Agency.VehicleInformation MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+        if (MyVehicle == null)
+            return;
 
-        if (ChangedLivery)
-        {
-            Debugging.WriteToLog("LiveryChanger", string.Format("Changed Livery: Agency {0}, Livery {1}", AssignedAgency.FullName, LiveryNumber));
-            NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, LiveryNumber);
-        }
+        if (MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
+            return;
+
+        int LiveryNumber = NativeFunction.CallByName<int>("GET_VEHICLE_LIVERY", CopCar);
+        int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+
+        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
     }
     public static void MoveK9s()
     {

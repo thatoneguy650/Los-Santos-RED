@@ -884,6 +884,27 @@ public static class Debugging
                     Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.isTasked, Cop.canSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials));
         }
 
+        string PlayerStatusLine;
+        if (PersonOfInterest.PlayerIsPersonOfInterest)
+        {
+            if (InstantAction.PlayerIsWanted)
+                PlayerStatusLine = "~r~Arrest on Sight~s~ ";
+            else if (Police.PlayerHasBeenNotWantedFor <= 45000)
+                PlayerStatusLine = "~o~Arrest on Sight~s~ ";
+            else
+                PlayerStatusLine = "~y~Arrest on Sight~s~ ";
+        }
+        else
+            PlayerStatusLine = "";
+
+        if (InstantAction.PlayerWantedLevel > 0)
+        {
+            string AgenciesChasingPlayer = PoliceScanning.AgenciesChasingPlayer;
+            if (AgenciesChasingPlayer != "")
+                PlayerStatusLine += "~s~(" + AgenciesChasingPlayer + "~s~)";
+        }
+        Debugging.WriteToLog("PlayerStatusLine", PlayerStatusLine);
+
 
         //foreach (GTAPed MyPed in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         //{
@@ -891,26 +912,6 @@ public static class Debugging
         //            MyPed.Pedestrian.Handle, MyPed.Pedestrian.Model.Name, MyPed.HurtByPlayer));
         //}
 
-        Vector3 SpawnLocation;// = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(5f, 25f));
-        float Heading = 0f;
-
-        InstantAction.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(5f, 25f), out SpawnLocation, out Heading);
-
-        if (SpawnLocation == Vector3.Zero)
-            return;
-
-        Vehicle CopCar = new Vehicle("police", SpawnLocation, Heading);
-
-
-        if(NativeFunction.CallByName<bool>("DOES_EXTRA_EXIST",CopCar,1))
-        {
-            NativeFunction.CallByName<bool>("SET_VEHICLE_EXTRA", CopCar, 1, false);
-        }
-
-
-        int Livery = InstantAction.MyRand.Next(0, 18);
-        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, Livery);
-        WriteToLog("DebugNumpad7", string.Format("Livery {0}", Livery));
         //GameFiber.Sleep(5000);
 
         //if (CopCar.Exists())
@@ -924,15 +925,55 @@ public static class Debugging
     }
     private static void DebugNumpad8()
     {
-        if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
-        {
-            string Value = Menus.GetKeyboardInput();
 
-            int Livery;
-            int.TryParse(Value,out Livery);
-            NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Game.LocalPlayer.Character.CurrentVehicle, Livery);
-            WriteToLog("DebugNumpad7", string.Format("Livery {0}", Livery));
+        PoliceScanning.ClearPoliceCompletely();
+
+        int ItemSelect = 0;
+        string Value = Menus.GetKeyboardInput();
+        int.TryParse(Value, out ItemSelect);
+
+        Agency MyAgency = Agencies.AgenciesList[ItemSelect];
+        WriteToLog("DebugNumpad7", string.Format("MyAgency {0}", MyAgency.FullName));
+
+        foreach (Agency.VehicleInformation MyVehicles in MyAgency.Vehicles)
+        {
+            Vector3 SpawnLocation;
+            float Heading = 0f;
+
+            InstantAction.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(5f, 35f), out SpawnLocation, out Heading);
+
+            if (SpawnLocation == Vector3.Zero)
+                break;
+
+            Vehicle CopCar = new Vehicle(MyVehicles.ModelName, SpawnLocation, Heading);
+            CopCar.IsPersistent = true;
+            PoliceScanning.PoliceVehicles.Add(CopCar);
+            PoliceSpawning.CheckandChangeLivery(CopCar, MyAgency);
+            
         }
+
+        
+
+
+
+        //if (NativeFunction.CallByName<bool>("DOES_EXTRA_EXIST", CopCar, 1))
+        //{
+        //    NativeFunction.CallByName<bool>("SET_VEHICLE_EXTRA", CopCar, 1, false);
+        //}
+
+
+
+        //int Livery = 0;
+
+        //if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        //{
+        //    string Value = Menus.GetKeyboardInput();
+
+
+        //    int.TryParse(Value,out Livery);
+        //    NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Game.LocalPlayer.Character.CurrentVehicle, Livery);
+        //    WriteToLog("DebugNumpad7", string.Format("Livery {0}", Livery));
+        //}
 
         //if (PlayerLocation.PlayerCurrentStreet == null)
         //{
@@ -967,8 +1008,8 @@ public static class Debugging
         //    float myValue = NativeFunction.CallByName<float>("GET_COMBAT_FLOAT", MyCop.CopPed, i);
         //    Debugging.WriteToLog("Debug", string.Format("CombatFloat {0}: {1}", i, myValue));
         //}
-        
-     
+
+
 
         // Smoking.Start();
     }

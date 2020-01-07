@@ -28,10 +28,14 @@ public static class Agencies
     public static Agency LSIAPD;
     public static Agency BCSO;
     public static Agency VPPD;
-    public static Agency VWPD;
+    public static Agency LSPDVW;
+    public static Agency LSPDELS;
     public static Agency RHPD;
     public static Agency SACG;
     public static Agency NOOSE;
+
+    public static Agency LSSDVW;
+    public static Agency LSSDCH;
     public static void Initialize()
     {
         List<Agency.ModelInformation> StandardCops = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_cop_01", true), new Agency.ModelInformation("s_f_y_cop_01", false) };
@@ -47,71 +51,129 @@ public static class Agencies
         List<Agency.ModelInformation> SecurityPeds = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_m_security_01", true) };
         List<Agency.ModelInformation> CoastGuardPeds = new List<Agency.ModelInformation>() { new Agency.ModelInformation("s_m_y_uscg_01", true) };
         
-        List<Agency.VehicleInformation> StandardPoliceVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("police", true, true, 100)
-           
-            
-            
-            //, new Agency.VehicleInformation("police2", true, true, 25), new Agency.VehicleInformation("police3", true, true, 25), new Agency.VehicleInformation("police4", true, true, 10), new Agency.VehicleInformation("fbi2", true, true, 15)
-
-
-
-        };
-        List<Agency.VehicleInformation> StandardSheriffVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("sheriff", true, true, 50, false, new List<int> { 0, 1, 2, 3 }), new Agency.VehicleInformation("sheriff2", true, true, 50) };
         List<Agency.VehicleInformation> UnmarkedVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("police4", true, true, 100) };
         List<Agency.VehicleInformation> ParkRangerVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("pranger", true, true, 100) };
         List<Agency.VehicleInformation> FIBVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("fbi", true, true, 70), new Agency.VehicleInformation("fbi2", true, true, 30) };
-        List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policeb", true, true, 70,true), new Agency.VehicleInformation("police4", true, true, 30) };
+        //List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policeb", true, true, 70,true), new Agency.VehicleInformation("police4", true, true, 30) };
         List<Agency.VehicleInformation> PrisonVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policet", true, true, 70), new Agency.VehicleInformation("police4", true, true, 30) };
 
-        //List<Agency.VehicleInformation> BCSOVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("sheriff", true, true, 100,false, new List<int> { 4,5,6,7 }) };
+        List<Agency.VehicleInformation> LSPDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 0,1,2 }),
+            new Agency.VehicleInformation("police2", true, true, 30, false,new List<int>() { 0,1 }),
+            new Agency.VehicleInformation("police3", true, true, 3, false,new List<int>() { 0,1,2,3 }),
+            new Agency.VehicleInformation("pscout", true, true, 30, false,new List<int>() { 0, 1 }),
+            new Agency.VehicleInformation("police4", true, true, 3),
+            new Agency.VehicleInformation("fbi2", true, true, 4) };
 
-        
+        List<Agency.VehicleInformation> RHPDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 6,7,8 }),
+            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 2,3,4 }),
+            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 4,5,6 }),
+            new Agency.VehicleInformation("pscout", true, true, 35, false,new List<int>() { 4,5 })};
+
+        List<Agency.VehicleInformation> VPPDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 9,10,11 }),
+            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 5,6,7 }),
+            new Agency.VehicleInformation("police3", true, true, 10,false,new List<int>() { 7,8,9 }),
+            new Agency.VehicleInformation("pscout", true, true, 35, false,new List<int>() { 6,7 })};
+
+        List<Agency.VehicleInformation> VWPDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 3,4,5 }),
+            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 8,9 }),
+            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 10,11,12 }),
+            new Agency.VehicleInformation("pscout", true, true, 35, false, new List<int>() { 2,3 }) };
+
+        List<Agency.VehicleInformation> LSSDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 0, 1, 2, 3 }),
+            new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 0, 1 }) };
+
+        List<Agency.VehicleInformation> BCSOVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 4,5,6 }),
+            new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 2,3 })};
+
+        List<Agency.VehicleInformation> VWHillsLSSDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 7,8 }),
+            new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 4,5 }) };
+
+        List<Agency.VehicleInformation> ChumashLSSDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 9,10}),
+            new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 6,7 }) };
+
+        List<Agency.VehicleInformation> SAHPVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("policeb", true, true, 35, true),
+            new Agency.VehicleInformation("police4", true, true, 5),
+            new Agency.VehicleInformation("police", true, true, 30,false, new List<int>() { 12,13 }),
+            new Agency.VehicleInformation("polscout", true, true, 30,false, new List<int>() { 8,9 })};
+
+        //List<Agency.VehicleInformation> LSPDVehiclesVanilla = new List<Agency.VehicleInformation>() {
+        //    new Agency.VehicleInformation("police", true, true, 25,false,new List<int>() { 0,1,2,3,4,5 }),
+        //    new Agency.VehicleInformation("police2", true, true, 25, false,new List<int>() { 0,1,2,3,4,5,6,7 }),
+        //    new Agency.VehicleInformation("police3", true, true, 25, false,new List<int>() { 0,1,2,3,4,5,6,7 }),
+        //    new Agency.VehicleInformation("police4", true, true, 10),
+        //    new Agency.VehicleInformation("fbi2", true, true, 15) };
+
+        //List<Agency.VehicleInformation> LSSDVehiclesVanilla = new List<Agency.VehicleInformation>() {
+        //    new Agency.VehicleInformation("sheriff", true, true, 50, false, new List<int> { 0, 1, 2, 3 }),
+        //    new Agency.VehicleInformation("sheriff2", true, true, 50, false, new List<int> { 0, 1, 2, 3 }) };
 
         AgenciesList = new List<Agency>();
-        LSPD = new Agency("~b~", "LSPD", "Los Santos Police Department", Color.Blue, true, StandardCops, StandardPoliceVehicles);
-        LSSD = new Agency("~r~", "LSSD", "Los Santos County Sheriff", Color.Red, true, SheriffPeds, StandardSheriffVehicles);
-        SAPR = new Agency("~g~", "SAPR", "San Andreas Park Ranger", Color.Green, true, ParkRangers, ParkRangerVehicles);
-        DOA = new Agency("~p~", "DOA", "Drug Observation Agency", Color.Purple, true, DOAPeds,UnmarkedVehicles);
-        FIB = new Agency("~p~", "FIB", "Federal Investigation Bureau", Color.Purple, true,FIBPeds,FIBVehicles);
-        IAA = new Agency("~p~", "IAA", "International Affairs Agency", Color.Purple, true,IAAPeds,UnmarkedVehicles);
-        SAHP = new Agency("~y~", "SAHP", "San Andreas Highway Patrol", Color.Yellow, true, SAHPPeds, HighwayPatrolVehicles);
-        SASPA = new Agency("~o~", "SASPA", "San Andreas State Prison Authority", Color.Orange, true,PrisonPeds,PrisonVehicles);
-        ARMY = new Agency("~u~", "ARMY", "Army", Color.Black, true,MilitaryPeds,null);
-        UNK = new Agency("~s~", "UNK", "Unknown Agency", Color.White, true);
-        PRISEC = new Agency("~HUD_COLOUR_ORANGELIGHT~", "PRISEC", "Private Security", Color.White, true, SecurityPeds,UnmarkedVehicles);
-        LSPA = new Agency("~HUD_COLOUR_PURPLEDARK~", "LSPA", "Port Authority of Los Santos", Color.LightGray, true, SecurityPeds,UnmarkedVehicles);
-        LSIAPD = new Agency("~HUD_COLOUR_PURPLELIGHT~", "LSIAPD", "Los Santos International Airport Police Department", Color.LightBlue, true, StandardCops, StandardPoliceVehicles);
-        BCSO = new Agency("~HUD_COLOUR_REDDARK~", "BCSO", "Blaine County Sheriffs Office", Color.DarkRed, true, SheriffPeds, StandardSheriffVehicles);
-        VPPD = new Agency("~HUD_COLOUR_BLUEDARK~", "VPPD", "Vespucci Police Department", Color.DarkBlue, true, StandardCops, StandardPoliceVehicles);
-        VWPD = new Agency("~HUD_COLOUR_BLUE~", "VWPD", "Vinewood Police Department", Color.Blue, true, StandardCops, StandardPoliceVehicles);
-        RHPD = new Agency("~HUD_COLOUR_BLUELIGHT~", "RHPD", "Rockford Hills Police Department", Color.LightBlue, true, StandardCops, StandardPoliceVehicles);
-        SACG = new Agency("~o~", "SACG", "San Andreas Coast Guard", Color.DarkOrange, true, CoastGuardPeds,UnmarkedVehicles);
-        NOOSE = new Agency("~r~", "NOOSE", "National Office of Security Enforcement", Color.DarkRed, true, SWAT, FIBVehicles);
+        LSPD = new Agency("~b~", "LSPD", "Los Santos Police Department", Color.Blue,Agency.Classification.Police,true, true, StandardCops, LSPDVehicles);
+        SAHP = new Agency("~y~", "SAHP", "San Andreas Highway Patrol", Color.Yellow, Agency.Classification.Police, true, true, SAHPPeds, SAHPVehicles);
+        LSIAPD = new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", Color.LightBlue, Agency.Classification.Police, true, true, StandardCops, LSPDVehicles);
+        VPPD = new Agency("~b~", "VPPD", "Vespucci Police Department", Color.DarkBlue, Agency.Classification.Police, false, true, StandardCops, VPPDVehicles);   
+        RHPD = new Agency("~b~", "RHPD", "Rockford Hills Police Department", Color.LightBlue, Agency.Classification.Police, false, true, StandardCops, RHPDVehicles);
 
-        PRISEC.CanCheckTrafficViolations = false;
-        PRISEC.UsesSecurityPeds = true;
-        LSPA.UsesSecurityPeds = true;
-        UNK.CanCheckTrafficViolations = false;
+        LSPDVW = new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", Color.Blue, Agency.Classification.Police, false, true, StandardCops, VWPDVehicles);
+        LSPDELS = new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", Color.Blue, Agency.Classification.Police, false, true, StandardCops, VWPDVehicles);
+
+        LSSD = new Agency("~r~", "LSSD", "Los Santos County Sheriff", Color.Red, Agency.Classification.Sheriff,true, true, SheriffPeds, LSSDVehicles);
+        BCSO = new Agency("~r~", "BCSO", "Blaine County Sheriffs Office", Color.DarkRed, Agency.Classification.Sheriff, false, true, SheriffPeds, BCSOVehicles);
+
+        LSSDVW = new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", Color.Red, Agency.Classification.Sheriff, false, true, SheriffPeds, VWHillsLSSDVehicles);
+        LSSDCH = new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", Color.Red, Agency.Classification.Sheriff, false, true, SheriffPeds, ChumashLSSDVehicles);
+
+        SAPR = new Agency("~g~", "SAPR", "San Andreas Park Ranger", Color.Green, Agency.Classification.Federal,true, true, ParkRangers, ParkRangerVehicles);
+        DOA = new Agency("~p~", "DOA", "Drug Observation Agency", Color.Purple, Agency.Classification.Federal,true, true, DOAPeds,UnmarkedVehicles);
+        FIB = new Agency("~p~", "FIB", "Federal Investigation Bureau", Color.Purple, Agency.Classification.Federal,true, true,FIBPeds,FIBVehicles);
+        IAA = new Agency("~p~", "IAA", "International Affairs Agency", Color.Purple, Agency.Classification.Federal,true, false,IAAPeds,UnmarkedVehicles);
+        ARMY = new Agency("~u~", "ARMY", "Army", Color.Black, Agency.Classification.Federal, true, false, MilitaryPeds, null);
+        NOOSE = new Agency("~r~", "NOOSE", "National Office of Security Enforcement", Color.DarkRed, Agency.Classification.Federal, true, false, SWAT, FIBVehicles);
+
+        PRISEC = new Agency("~o~", "PRISEC", "Private Security", Color.White, Agency.Classification.Security, true, true, SecurityPeds, UnmarkedVehicles);
+        LSPA = new Agency("~p~", "LSPA", "Port Authority of Los Santos", Color.LightGray, Agency.Classification.Security, true, true, SecurityPeds, UnmarkedVehicles);
+
+        SASPA = new Agency("~o~", "SASPA", "San Andreas State Prison Authority", Color.Orange, Agency.Classification.Other,true, true,PrisonPeds,PrisonVehicles);
+        UNK = new Agency("~s~", "UNK", "Unknown Agency", Color.White, Agency.Classification.Other, true, false, null, null);
+        SACG = new Agency("~o~", "SACG", "San Andreas Coast Guard", Color.DarkOrange, Agency.Classification.Other, true, false, CoastGuardPeds, UnmarkedVehicles);
 
         AgenciesList.Add(LSPD);
+        AgenciesList.Add(SAHP);
+        AgenciesList.Add(LSIAPD);
+        AgenciesList.Add(VPPD);
+        AgenciesList.Add(RHPD);
+
+        AgenciesList.Add(LSPDVW);
+        AgenciesList.Add(LSPDELS);
+
         AgenciesList.Add(LSSD);
+        AgenciesList.Add(BCSO);
+        AgenciesList.Add(LSSDVW);
+        AgenciesList.Add(LSSDCH);
+
         AgenciesList.Add(SAPR);
         AgenciesList.Add(DOA);
         AgenciesList.Add(FIB);
         AgenciesList.Add(IAA);
-        AgenciesList.Add(SAHP);
-        AgenciesList.Add(SASPA);
         AgenciesList.Add(ARMY);
-        AgenciesList.Add(UNK);
+        AgenciesList.Add(NOOSE);
+
         AgenciesList.Add(PRISEC);
         AgenciesList.Add(LSPA);
-        AgenciesList.Add(LSIAPD);
-        AgenciesList.Add(BCSO);
-        AgenciesList.Add(VPPD);
-        AgenciesList.Add(VWPD);
-        AgenciesList.Add(RHPD);
+
+        AgenciesList.Add(SASPA);
+        AgenciesList.Add(UNK);
         AgenciesList.Add(SACG);
-        AgenciesList.Add(NOOSE);
+
     }
     public static void Dispose()
     {
@@ -164,26 +226,28 @@ public static class Agencies
 
         if (PedZone.MainZoneAgency == BCSO || PedZone.ZoneCounty == County.BlaineCounty)
         {
-            Debugging.WriteToLog("GetSheriff", string.Format("Zone: {0},{1}, RETURN BCSO", PedZone.TextName, PedZone.MainZoneAgency.FullName));
+            //Debugging.WriteToLog("GetSheriff", string.Format("Zone: {0},{1}, RETURN BCSO", PedZone.TextName, PedZone.MainZoneAgency.FullName));
             return BCSO;
+        }
+        else if(PedZone.MainZoneAgency.AgencyClassification == Agency.Classification.Sheriff)
+        {
+            return PedZone.MainZoneAgency;
+            //Debugging.WriteToLog("GetSheriff", string.Format("Zone: {0},{1}, RETURN LSSD", PedZone.TextName, PedZone.MainZoneAgency.FullName));
+            //return LSSD;
         }
         else
         {
-            Debugging.WriteToLog("GetSheriff", string.Format("Zone: {0},{1}, RETURN LSSD", PedZone.TextName, PedZone.MainZoneAgency.FullName));
             return LSSD;
         }
     }
     private static Agency GetAgencyFromVanillaCop(Ped Cop)
     {
         Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
-        if (PedZone != null && PedZone.MainZoneAgency.UsesLSPDVehicles)
-        {
-            return PedZone.MainZoneAgency;
-        }
-        else
-        {
+        if (PedZone == null)
             return LSPD;
-        }
+        else
+            return PedZone.MainZoneAgency;
+        
     }
     private static Agency GetAgencyFromSwat(Ped Cop)
     {
@@ -201,7 +265,7 @@ public static class Agencies
     private static Agency GetAgencyFromSecurity(Ped Cop)
     {
         Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
-        if (PedZone != null && PedZone.MainZoneAgency.UsesSecurityPeds)//only other that uses security peds
+        if (PedZone != null && PedZone.MainZoneAgency.AgencyClassification == Agency.Classification.Security)//only other that uses security peds
         {
             return PedZone.MainZoneAgency;
         }
@@ -214,26 +278,16 @@ public static class Agencies
     {
         Zone CarZone = Zones.GetZoneAtLocation(CopCar.Position);
         if (CarZone == null)
-            return null;
-        if (CopCar.Model.Name.ToLower() == "sheriff" || CopCar.Model.Name.ToLower() == "sheriff2")
-        {
-            if (CarZone.ZoneCounty == County.BlaineCounty)
-                return BCSO;
-            else
-                return LSSD;
-        }
-        else if (CopCar.Model.Name.ToLower() == "police")
-        {
-            if (CarZone.MainZoneAgency == RHPD || CarZone.MainZoneAgency == VPPD)
-                return CarZone.MainZoneAgency;
-            else
-                return LSPD;
-        }
-        else
-        {
             return LSPD;
-        }
+
+        if (CarZone.MainZoneAgency.Vehicles.Any(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()))//if the main agency at the zone has the car choose that
+            return CarZone.MainZoneAgency;
+        else if (CarZone.ZoneCounty == County.LosSantosCounty || CarZone.ZoneCounty == County.BlaineCounty)//otherwise fallback to sheriff if rural
+            return LSSD;
+        else
+            return LSPD;//and lspd if in the city
     }
+
  }
 public class Agency
 {
@@ -244,16 +298,33 @@ public class Agency
     public List<VehicleInformation> Vehicles;
     public Color AgencyColor = Color.White;
     public bool IsVanilla = false;
-    public bool CanCheckTrafficViolations = true;
-    public bool UsesLSPDVehicles = false;
-    public bool UsesLSSDVehicles = false;
-    public bool UsesSecurityPeds = false;
+    public Classification AgencyClassification;
+    public bool CanSpawnAmbient = false;
     public string ColoredInitials
     {
         get
         {
             return ColorPrefix + Initials;
         }
+    }
+
+    public bool CanCheckTrafficViolations
+    {
+        get
+        {
+            if (AgencyClassification == Classification.Police || AgencyClassification == Classification.Federal || AgencyClassification == Classification.Sheriff)
+                return true;
+            else
+                return false;
+        }
+    }
+    public enum Classification
+    {
+        Police = 0,
+        Sheriff = 1,
+        Federal = 2,
+        Security = 3,
+        Other = 4,
     }
     public VehicleInformation GetRandomVehicle(bool IsMotorcycle)
     {
@@ -269,24 +340,7 @@ public class Agency
         }
         return null;
     }
-    public Agency(string _ColorPrefix, string _Initials, string _FullName, Color _AgencyColor, bool _IsVanilla)
-    {
-        ColorPrefix = _ColorPrefix;
-        Initials = _Initials;
-        FullName = _FullName;
-        AgencyColor = _AgencyColor;
-        IsVanilla = _IsVanilla;
-    }
-    public Agency(string _ColorPrefix, string _Initials, string _FullName, List<ModelInformation> _CopModels, Color _AgencyColor,bool _IsVanilla)
-    {
-        ColorPrefix = _ColorPrefix;
-        Initials = _Initials;
-        FullName = _FullName;
-        CopModels = _CopModels;
-        AgencyColor = _AgencyColor;
-        IsVanilla = _IsVanilla;
-    }
-    public Agency(string _ColorPrefix, string _Initials, string _FullName, Color _AgencyColor, bool _IsVanilla, List<ModelInformation> _CopModels, List<VehicleInformation> _Vehicles)
+    public Agency(string _ColorPrefix, string _Initials, string _FullName, Color _AgencyColor, Classification _AgencyClassification, bool _IsVanilla,bool _CanSpawnAmbient, List<ModelInformation> _CopModels, List<VehicleInformation> _Vehicles)
     {
         ColorPrefix = _ColorPrefix;
         Initials = _Initials;
@@ -295,6 +349,8 @@ public class Agency
         AgencyColor = _AgencyColor;
         IsVanilla = _IsVanilla;
         Vehicles = _Vehicles;
+        AgencyClassification = _AgencyClassification;
+        CanSpawnAmbient = _CanSpawnAmbient;
     }
     public class ModelInformation
     {
@@ -302,6 +358,7 @@ public class Agency
         public bool isMale = true;
         public bool UseForRandomSpawn = true;
         public bool IsVanilla = true;
+
         public ModelInformation(string _ModelName,bool _isMale)
         {
             ModelName = _ModelName;
@@ -349,3 +406,4 @@ public class Agency
         }
     }
 }
+

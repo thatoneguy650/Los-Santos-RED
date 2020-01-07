@@ -37,7 +37,7 @@ public static class Respawning
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
 
-        bool prePlayerKilledPolice = Police.PlayerKilledPolice;
+        bool prePlayerKilledPolice = Police.CurrentCrimes.PlayerKilledPolice;
 
         InstantAction.IsDead = false;
         InstantAction.IsBusted = false;
@@ -45,7 +45,7 @@ public static class Respawning
         int HospitalFee = Settings.HospitalFee * (1+InstantAction.MaxWantedLastLife);
         int OfficerFee = 0;
         if (prePlayerKilledPolice)
-            OfficerFee = HospitalFee * Police.CopsKilledByPlayer;
+            OfficerFee = HospitalFee * Police.CurrentCrimes.CopsKilledByPlayer;
 
         HospitalFee += OfficerFee;
 
@@ -83,7 +83,7 @@ public static class Respawning
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
 
-        bool prePlayerKilledPolice = Police.PlayerKilledPolice;
+        bool prePlayerKilledPolice = Police.CurrentCrimes.PlayerKilledPolice;
         int bailMoney = InstantAction.MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
 
         InstantAction.BeingArrested = false;

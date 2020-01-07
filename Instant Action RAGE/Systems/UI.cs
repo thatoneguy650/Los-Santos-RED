@@ -77,11 +77,11 @@ public static class UI
         if (PersonOfInterest.PlayerIsPersonOfInterest)
         {
             if(InstantAction.PlayerIsWanted)
-                PlayerStatusLine = "~r~Arrest on Sight~s~ ";
+                PlayerStatusLine = "~r~Arrest on Sight~s~";
             else if (Police.PlayerHasBeenNotWantedFor <= 45000)
-                PlayerStatusLine = "~o~Arrest on Sight~s~ ";
+                PlayerStatusLine = "~o~Arrest on Sight~s~";
             else
-                PlayerStatusLine = "~y~Arrest on Sight~s~ ";
+                PlayerStatusLine = "~y~Arrest on Sight~s~";
         }
         else
             PlayerStatusLine = "";
@@ -90,7 +90,7 @@ public static class UI
         {
             string AgenciesChasingPlayer = PoliceScanning.AgenciesChasingPlayer;
             if (AgenciesChasingPlayer != "")
-                PlayerStatusLine += "~s~(" + AgenciesChasingPlayer + "~s~)";
+                PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
         }
 
         string StreetLine = GetCompassHeading() + " | " + GetStreetDisplay();  
@@ -186,7 +186,7 @@ public static class UI
         string CopZoneName = "";
         ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone);
         if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
-            CopZoneName = Agencies.SAHP.ColoredInitials;
+            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials +  "~s~ / " + Agencies.SAHP.ColoredInitials;
         else
             CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;

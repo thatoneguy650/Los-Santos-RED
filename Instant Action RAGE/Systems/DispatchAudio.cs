@@ -436,6 +436,12 @@ internal static class DispatchAudio
                     DispatchQueue.RemoveAll(x => x.IsAmbient);
                 }
 
+
+                if (DispatchQueue.Any(x => x.Type == ReportDispatch.ReportChangedVehicle))
+                {
+                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLocalSuspectSpotted || x.Type == ReportDispatch.ReportSuspectSpotted || x.Type == ReportDispatch.ReportSpottedStolenCar);
+                }
+
                 if (DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
                 {
                     DispatchQueueItem HighestItem = DispatchQueue.Where(x => x.IsTrafficViolation).OrderBy(x => x.Priority).FirstOrDefault();
@@ -1526,7 +1532,7 @@ internal static class DispatchAudio
             ScannerList.Add(crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName);
             Subtitles += " ~r~A Wanted Felon~s~ on the loose";
         }        
-        if(Police.PlayerKilledPolice || Police.PlayerKilledCivilians)
+        if(Police.CurrentCrimes.PlayerKilledPolice || Police.CurrentCrimes.PlayerKilledCivilians)
         {
             ScannerList.Add(new List<String>() { proceed_with_caution.Approachwithcaution.FileName, proceed_with_caution.Officersproceedwithcaution.FileName, proceed_with_caution.Proceedwithcaution.FileName }.PickRandom());
             Subtitles += " ~s~proceed with caution~s~";
@@ -1857,6 +1863,11 @@ internal static class DispatchAudio
     }
     public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles, bool IncludeAAudio, bool IncludePoliceDescription)
     {
+        if (VehicleDescription.HasBeenDescribedByDispatch)
+            return;
+        else
+            VehicleDescription.HasBeenDescribedByDispatch = true;
+
         if (VehicleDescription.VehicleEnt.IsPoliceVehicle)
         {
             if (IncludePoliceDescription)
