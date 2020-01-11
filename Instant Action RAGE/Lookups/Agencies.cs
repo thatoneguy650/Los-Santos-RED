@@ -282,10 +282,10 @@ public static class Agencies
 
         if (CarZone.MainZoneAgency.Vehicles.Any(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()))//if the main agency at the zone has the car choose that
             return CarZone.MainZoneAgency;
-        else if (CarZone.ZoneCounty == County.LosSantosCounty || CarZone.ZoneCounty == County.BlaineCounty)//otherwise fallback to sheriff if rural
-            return LSSD;
         else
-            return LSPD;//and lspd if in the city
+        {
+            return Zones.GetCountyAgencyByZone(CarZone);
+        }
     }
 
  }

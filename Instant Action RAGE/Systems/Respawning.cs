@@ -72,7 +72,8 @@ public static class Respawning
         InstantAction.IsBusted = false;
         InstantAction.BeingArrested = false;
         InstantAction.HandsAreUp = false;
-        Police.CurrentPoliceState = Police.PoliceState.DeadlyChase;
+        Police.CurrentPoliceState = Police.LastPoliceState;
+        Police.SetWantedLevel(InstantAction.PlayerWantedLevel, "Resisting Arrest");
         Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);

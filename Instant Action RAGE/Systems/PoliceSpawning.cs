@@ -344,7 +344,7 @@ public static class PoliceSpawning
         if (MyCar != null)
             ModelName = MyCar.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
-        CheckandChangeLivery(CopCar, _Agency);
+        CheckandChangeLivery(CopCar, _Agency,null);
         GameFiber.Yield();
         if(CopCar.Exists())
         {
@@ -429,15 +429,28 @@ public static class PoliceSpawning
             DoggoCop.Pedestrian.WarpIntoVehicle(Cop.Pedestrian.CurrentVehicle, 2);
         LocalWriteToLog("PutK9InCar", String.Format("K9 {0}, put in Car", DoggoCop.Pedestrian.Handle));
     }
-    public static void CheckandChangeLivery(Vehicle CopCar,Agency AssignedAgency)
+    public static void CheckandChangeLivery(Vehicle CopCar,Agency AssignedAgency, Zone ZoneFound)
     {
-        if (AssignedAgency.Vehicles == null)
-            return;
-        Agency.VehicleInformation MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
-        if (MyVehicle == null)
-            return;
+        if(AssignedAgency == null && ZoneFound == null)
+        {
+            ZoneFound = Zones.GetZoneAtLocation(CopCar.Position);
+        }
+        Agency.VehicleInformation MyVehicle = null;
+        if (AssignedAgency != null && AssignedAgency.Vehicles != null)
+        {
+            MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+        }
+        
+        if (MyVehicle == null && ZoneFound != null)//make sure we find some agency they they can be assigned to
+        {
+            Agency ZoneAgency = Zones.GetCountyAgencyByZone(ZoneFound);
+            if (ZoneAgency != null && ZoneAgency.Vehicles != null)
+            {
+                MyVehicle = ZoneAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+            }
+        }
 
-        if (MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
+        if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
             return;
 
         int LiveryNumber = NativeFunction.CallByName<int>("GET_VEHICLE_LIVERY", CopCar);

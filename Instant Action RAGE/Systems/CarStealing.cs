@@ -271,11 +271,29 @@ public static class CarStealing
             }
 
             GTAWeapon myGun = InstantAction.GetCurrentWeapon();
-            if (myGun == null)
+            if (myGun == null || myGun.Category == GTAWeapon.WeaponCategory.Melee)
+            {
+                InstantAction.SetPedUnarmed(Game.LocalPlayer.Character, false);
+                Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, -1, EnterVehicleFlags.AllowJacking);
                 return;
+            }
 
             GameFiber CarJackPedWithWeapon = GameFiber.StartNew(delegate
             {
+
+                //if(myGun.Category == GTAWeapon.WeaponCategory.Melee)
+                //{
+                //    InstantAction.SetPedUnarmed(Game.LocalPlayer.Character, false);
+                //    Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, -1, EnterVehicleFlags.AllowJacking);
+                //    while(Driver.IsInAnyVehicle(false))
+                //    {
+                //        GameFiber.Wait(100);
+                //    }
+                //    Game.LocalPlayer.Character.Tasks.Clear();
+                //    InstantAction.SetPlayerToLastWeapon();
+
+                //    return;
+                //}
                 InstantAction.SetPlayerToLastWeapon();
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
                 Driver.BlockPermanentEvents = true;
@@ -381,8 +399,10 @@ public static class CarStealing
                     }
                 }
 
+                if (CameraSystem.UsingOtherCamera)
+                    CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
 
-                if(Game.LocalPlayer.Character.IsDead)
+                if (Game.LocalPlayer.Character.IsDead)
                 {
                     PlayerBreakingIntoCar = false;
                     return;

@@ -94,13 +94,17 @@ public class RapSheet
     }
     public string PrintCrimes()
     {
-        return string.Format("MaxWantedLevel: {0},PlayerHurtPolice: {1}, PlayerKilledPolice: {2},PlayerKilledCivilians: {3},PlayerAimedAtPolice: {4},PlayerFiredWeaponNearPolice {5},PlayerWentNearPrisonDuringChase: {6},PlayerCaughtWithGun: {7},PlayerGotInAirVehicleDuringChase: {8},PlayerCaughtChangingPlates: {9},PlayerCaughtBreakingIntoCar: {10},PlayerKilledCiviliansInFrontOfPolice: {11}",
-                                                                MaxWantedLevel, PlayerHurtPolice, PlayerKilledPolice, PlayerKilledCivilians, PlayerAimedAtPolice, PlayerFiredWeaponNearPolice, PlayerWentNearPrisonDuringChase, PlayerCaughtWithGun, PlayerGotInAirVehicleDuringChase, PlayerCaughtChangingPlates, PlayerCaughtBreakingIntoCar, PlayerKilledCiviliansInFrontOfPolice);
+        return string.Format("---MaxWantedLevel: {0},PlayerHurtPolice: {1}, PlayerKilledPolice: {2},PlayerKilledCivilians: {3},PlayerAimedAtPolice: {4},PlayerFiredWeaponNearPolice {5}" + Environment.NewLine +
+                        ",PlayerWentNearPrisonDuringChase: {6},PlayerCaughtWithGun: {7},PlayerGotInAirVehicleDuringChase: {8},PlayerCaughtChangingPlates: {9},PlayerCaughtBreakingIntoCar: {10},PlayerKilledCiviliansInFrontOfPolice: {11}" + Environment.NewLine +
+                        ",GameTimeWantedStarted: {12}, GameTimeWantedEnded: {13},PlayerSeenDuringWanted: {14}---",
+
+                                                                MaxWantedLevel, PlayerHurtPolice, PlayerKilledPolice, PlayerKilledCivilians, PlayerAimedAtPolice, PlayerFiredWeaponNearPolice, PlayerWentNearPrisonDuringChase, PlayerCaughtWithGun, PlayerGotInAirVehicleDuringChase, PlayerCaughtChangingPlates, 
+                                                                PlayerCaughtBreakingIntoCar, PlayerKilledCiviliansInFrontOfPolice, GameTimeWantedStarted, GameTimeWantedEnded, PlayerSeenDuringWanted);
     }
     public void CheckCrimes()
     {
-        if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
-            return;
+        //if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait || Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
+        //    return;
 
         if (!PlayerKilledCiviliansInFrontOfPolice && RecentlyKilledCivilian(5000) && Police.AnyPoliceCanSeePlayer)
         {

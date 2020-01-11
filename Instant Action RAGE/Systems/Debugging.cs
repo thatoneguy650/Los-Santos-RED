@@ -685,6 +685,20 @@ public static class Debugging
         try
         {
 
+            //teleport away from police
+
+            Vector3 DesiredPosition = Game.LocalPlayer.Character.Position.Around2D(750f, 1500f);
+            Vector3 PlacedPosition = Vector3.Zero;
+            bool FoundPlace;
+            unsafe
+            {
+                FoundPlace = NativeFunction.CallByName<bool>("GET_SAFE_COORD_FOR_PED", DesiredPosition.X, DesiredPosition.Y, DesiredPosition.Z, false, &PlacedPosition, 16);
+            }
+
+            if(FoundPlace)
+                Game.LocalPlayer.Character.Position = PlacedPosition;
+
+
            // Ped Doggo = new Ped("a_c_shepherd", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
            //// Doggo.WarpIntoVehicle(ClosestDriver.CopPed.CurrentVehicle, 1);
            // //PoliceSpawning.CreatedEntities.Add(Doggo);
@@ -699,30 +713,30 @@ public static class Debugging
            // GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health, Agencies.LSPD);
            // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ABILITY", Doggo, 2);
            // NativeFunction.CallByName<bool>("SET_PED_COMBAT_MOVEMENT", Doggo, 3);
-            
-           // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Doggo, 5,true);//can fight armed when not armed
-           // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Doggo, 46, true);//always fight
-           // PoliceScanning.K9Peds.Add(DoggoCop);
-           // unsafe
-           // {
-           //     int lol = 0;
-           //     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-           //     NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 2.0f, 500f, 1073741824, 1); //Original and works ok
-           //     NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", 0, 25f, 0);
-                
-           //     // NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Game.LocalPlayer.Character, 0, 16);
-           //     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-           //     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-           //     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Doggo, lol);
-           //     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-           // }
+
+            // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Doggo, 5,true);//can fight armed when not armed
+            // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Doggo, 46, true);//always fight
+            // PoliceScanning.K9Peds.Add(DoggoCop);
+            // unsafe
+            // {
+            //     int lol = 0;
+            //     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //     NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 2.0f, 500f, 1073741824, 1); //Original and works ok
+            //     NativeFunction.CallByName<bool>("TASK_COMBAT_HATED_TARGETS_AROUND_PED", 0, 25f, 0);
+
+            //     // NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Game.LocalPlayer.Character, 0, 16);
+            //     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            //     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Doggo, lol);
+            //     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            // }
 
 
 
             //Doggo.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
 
-           // Tasking.TaskK9(DoggoCop);
-           // LocalWriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
+            // Tasking.TaskK9(DoggoCop);
+            // LocalWriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
 
 
 
@@ -905,7 +919,6 @@ public static class Debugging
         }
         Debugging.WriteToLog("PlayerStatusLine", PlayerStatusLine);
 
-
         //foreach (GTAPed MyPed in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         //{
         //    Debugging.WriteToLog("Debug", string.Format("MyPed: {0},Model.Name:{1},HurtByPlayer: {2}",
@@ -919,40 +932,52 @@ public static class Debugging
 
 
 
-       // WriteToLog("Debug", ScriptController.GetStatus());
-        
+        // WriteToLog("Debug", ScriptController.GetStatus());
+
 
     }
     private static void DebugNumpad8()
     {
 
-        PoliceScanning.ClearPoliceCompletely();
 
-        int ItemSelect = 0;
-        string Value = Menus.GetKeyboardInput();
-        int.TryParse(Value, out ItemSelect);
-
-        Agency MyAgency = Agencies.AgenciesList[ItemSelect];
-        WriteToLog("DebugNumpad7", string.Format("MyAgency {0}", MyAgency.FullName));
-
-        foreach (Agency.VehicleInformation MyVehicles in MyAgency.Vehicles)
+        Debugging.WriteToLog("Debug", "--------------------------------");
+        Debugging.WriteToLog("Debug", "-------Criminal History---------");
+        Debugging.WriteToLog("Debug", Game.GameTime.ToString());
+        foreach (RapSheet MyRapSheet in PersonOfInterest.CriminalHistory)
         {
-            Vector3 SpawnLocation;
-            float Heading = 0f;
-
-            InstantAction.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(5f, 35f), out SpawnLocation, out Heading);
-
-            if (SpawnLocation == Vector3.Zero)
-                break;
-
-            Vehicle CopCar = new Vehicle(MyVehicles.ModelName, SpawnLocation, Heading);
-            CopCar.IsPersistent = true;
-            PoliceScanning.PoliceVehicles.Add(CopCar);
-            PoliceSpawning.CheckandChangeLivery(CopCar, MyAgency);
-            
+            Debugging.WriteToLog("Debug", MyRapSheet.PrintCrimes());
         }
+        Debugging.WriteToLog("Debug", "--------------------------------");
 
-        
+        Debugging.WriteToLog("Debug Current Crimes", Police.CurrentCrimes.PrintCrimes());
+
+        //PoliceScanning.ClearPoliceCompletely();
+
+        //int ItemSelect = 0;
+        //string Value = Menus.GetKeyboardInput();
+        //int.TryParse(Value, out ItemSelect);
+
+        //Agency MyAgency = Agencies.AgenciesList[ItemSelect];
+        //WriteToLog("DebugNumpad7", string.Format("MyAgency {0}", MyAgency.FullName));
+
+        //foreach (Agency.VehicleInformation MyVehicles in MyAgency.Vehicles)
+        //{
+        //    Vector3 SpawnLocation;
+        //    float Heading = 0f;
+
+        //    InstantAction.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(5f, 35f), out SpawnLocation, out Heading);
+
+        //    if (SpawnLocation == Vector3.Zero)
+        //        break;
+
+        //    Vehicle CopCar = new Vehicle(MyVehicles.ModelName, SpawnLocation, Heading);
+        //    CopCar.IsPersistent = true;
+        //    PoliceScanning.PoliceVehicles.Add(CopCar);
+        //    PoliceSpawning.CheckandChangeLivery(CopCar, MyAgency);
+
+        //}
+
+
 
 
 

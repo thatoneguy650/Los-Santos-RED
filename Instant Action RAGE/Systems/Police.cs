@@ -19,7 +19,7 @@ internal static class Police
     private static Vector3 PlaceWantedStarted;
     private static Blip LastWantedCenterBlip;
     private static Blip CurrentWantedCenterBlip;
-    private static uint GameTimeWantedStarted;
+    //private static uint GameTimeWantedStarted;
     private static uint GameTimeLastWantedEnded;
     public static uint GameTimePoliceStateStart;
     private static uint GameTimeLastSetWanted;
@@ -138,7 +138,6 @@ internal static class Police
         PlaceWantedStarted = default;
         LastWantedCenterBlip = default;
         CurrentWantedCenterBlip = default;
-        GameTimeWantedStarted = 0;
         GameTimeLastWantedEnded = 0;
         GameTimePoliceStateStart = 0;
         GameTimeLastSetWanted = 0;
@@ -603,7 +602,7 @@ internal static class Police
         CurrentPoliceState = PoliceState.Normal;
         AnyPoliceSeenPlayerThisWanted = false;
         WantedLevelStartTime = 0;
-        GameTimeWantedStarted = 0;
+        //GameTimeWantedStarted = 0;
         GameTimeLastWantedEnded = Game.GameTime;
 
         TrafficViolations.ResetTrafficViolations();
@@ -679,13 +678,16 @@ internal static class Police
         if (PreviousWantedLevel == 0 && Game.LocalPlayer.WantedLevel > 0)
             WantedLevelAdded();
 
+        CurrentCrimes.MaxWantedLevel = InstantAction.PlayerWantedLevel;
         WantedLevelStartTime = Game.GameTime;
         LocalWriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}", Game.LocalPlayer.WantedLevel));
         PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
     }
     private static void WantedLevelRemoved()
     {
-        if (AnyPoliceSeenPlayerThisWanted && PreviousWantedLevel != 0 && !RecentlySetWanted)//i didnt make it go to zero, the chase was lost organically
+        CurrentCrimes.GameTimeWantedEnded = Game.GameTime;
+        CurrentCrimes.MaxWantedLevel = InstantAction.MaxWantedLastLife;
+        if (CurrentCrimes.PlayerSeenDuringWanted && PreviousWantedLevel != 0)// && !RecentlySetWanted)//i didnt make it go to zero, the chase was lost organically
         {
             PersonOfInterest.StoreCriminalHistory(CurrentCrimes);
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLost, 5));
@@ -710,8 +712,8 @@ internal static class Police
         {
             AddDispatchToUnknownWanted();
         }
-
-        GameTimeWantedStarted = Game.GameTime;
+        CurrentCrimes.GameTimeWantedStarted = Game.GameTime;
+        CurrentCrimes.MaxWantedLevel = InstantAction.PlayerWantedLevel;
         PlaceWantedStarted = Game.LocalPlayer.Character.Position;
         Tasking.UntaskAllRandomSpawns(false);
     }

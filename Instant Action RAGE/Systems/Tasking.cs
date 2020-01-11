@@ -549,7 +549,9 @@ public static class Tasking
 
     private static bool IsBustTimeOut()
     {
-        if (Game.GameTime - LastBust >= 10000)
+        if (Police.PlayerHasBeenWantedFor <= 3000)
+            return true;
+        else if (Game.GameTime - LastBust >= 10000)
             return false;
         else
             return true;
@@ -820,12 +822,12 @@ public static class Tasking
         //Cop.SimpleTaskName = "SimpleInvestigate";
 
         Vector3 TargetLocation = Police.PlacePlayerLastSeen.Around2D(65f);//(Police.PlayerLastSeenForwardVector * 55f).Around2D(75f);
-        Blip MyBlip = new Blip(TargetLocation, 15f)
-        {
-            Color = Color.Purple,
-            Alpha = 0.5f
-        };
-        Police.TempBlips.Add(MyBlip);
+        //Blip MyBlip = new Blip(TargetLocation, 15f)
+        //{
+        //    Color = Color.Purple,
+        //    Alpha = 0.5f
+        //};
+        //Police.TempBlips.Add(MyBlip);
 
         if (Cop.isInVehicle && Police.PlayerLastSeenInVehicle)
         {

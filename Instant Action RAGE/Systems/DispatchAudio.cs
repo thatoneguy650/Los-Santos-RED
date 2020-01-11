@@ -1205,7 +1205,7 @@ internal static class DispatchAudio
         ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
         Subtitles += "Suspect spotted driving a";
         ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName}.PickRandom());
-        AddVehicleDescription(vehicle, ref ScannerList, true, ref Subtitles,false,true);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,false,true);
 
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
@@ -1519,23 +1519,19 @@ internal static class DispatchAudio
 
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        int MyInt = InstantAction.MyRand.Next(1, 11);
-        if(MyInt <= 9)
-        {
-            ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
-            ScannerList.Add(new List<String>() { suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName }.PickRandom());
-            Subtitles += "~r~Suspect spotted~s~";
-        }
-        else
+        if(Police.CurrentCrimes.PlayerKilledPolice || Police.CurrentCrimes.PlayerKilledCiviliansInFrontOfPolice)
         {
             ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
             ScannerList.Add(crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName);
-            Subtitles += " ~r~A Wanted Felon~s~ on the loose";
-        }        
-        if(Police.CurrentCrimes.PlayerKilledPolice || Police.CurrentCrimes.PlayerKilledCivilians)
-        {
-            ScannerList.Add(new List<String>() { proceed_with_caution.Approachwithcaution.FileName, proceed_with_caution.Officersproceedwithcaution.FileName, proceed_with_caution.Proceedwithcaution.FileName }.PickRandom());
+            Subtitles += " ~r~A Wanted Felon~s~ on the loose";       
+            ScannerList.Add(new List<string>() { proceed_with_caution.Approachwithcaution.FileName, proceed_with_caution.Officersproceedwithcaution.FileName, proceed_with_caution.Proceedwithcaution.FileName }.PickRandom());
             Subtitles += " ~s~proceed with caution~s~";
+        }
+        else
+        {
+            ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
+            ScannerList.Add(new List<string>() { suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName }.PickRandom());
+            Subtitles += "~r~Suspect spotted~s~";
         }
         ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles,Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));

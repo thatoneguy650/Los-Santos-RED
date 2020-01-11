@@ -159,7 +159,7 @@ public static class Zones
         MURRI = new Zone("MURRI", "Murrieta Heights", ScannerAudio.areas.MuriettaHeights.FileName, County.CityOfLosSantos, Agencies.LSPD, new List<Agency>() { Agencies.IAA, Agencies.DOA, Agencies.FIB }, new List<string>() { ScannerAudio.attention_all_area_units.EastLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.EastLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.EastLosSantos2.FileName }, "East Los Santos Units");
         NCHU = new Zone("NCHU", "North Chumash", ScannerAudio.areas.NorthChumash.FileName, County.BlaineCounty, Agencies.BCSO, new List<Agency>() { Agencies.DOA });
         NOOSE = new Zone("NOOSE", "N.O.O.S.E", "", County.LosSantosCounty, Agencies.LSPD, new List<Agency>() { Agencies.IAA, Agencies.DOA, Agencies.FIB });
-        OCEANA = new Zone("OCEANA", "Pacific Ocean", ScannerAudio.areas.TheOcean.FileName, County.BlaineCounty, Agencies.SACG);
+        OCEANA = new Zone("OCEANA", "Pacific Ocean", ScannerAudio.areas.TheOcean.FileName, County.PacificOcean, Agencies.SACG);
         PALCOV = new Zone("PALCOV", "Paleto Cove", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty, Agencies.BCSO, new List<Agency>() { Agencies.DOA });
         PALETO = new Zone("PALETO", "Paleto Bay", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty, Agencies.BCSO, new List<Agency>() { Agencies.DOA }, new List<string>() { ScannerAudio.attention_all_area_units.PaletoaBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits3.FileName }, "Paleto Bay Units");
         PALFOR = new Zone("PALFOR", "Paleto Forest", ScannerAudio.areas.PaletoForest.FileName, County.BlaineCounty, Agencies.SAPR);
@@ -336,6 +336,29 @@ public static class Zones
 
         return MyZone.TextName + ", " + CountyName;
     }
+    public static Agency GetCountyAgencyByZone(Zone MyZone)
+    {
+        if (MyZone.ZoneCounty == County.BlaineCounty)
+        {
+            return Agencies.BCSO;
+        }
+        else if (MyZone.ZoneCounty == County.LosSantosCounty)
+        {
+            return Agencies.LSSD;
+        }
+        else if (MyZone.ZoneCounty == County.CityOfLosSantos)
+        {
+            return Agencies.LSPD;
+        }
+        else if (MyZone.ZoneCounty == County.PacificOcean)
+        {
+            return Agencies.LSPD;
+        }
+        else
+        {
+            return Agencies.LSPD;
+        }
+    }
 }
 public class Zone
 {
@@ -381,6 +404,7 @@ public enum County
     CityOfLosSantos = 0,
     LosSantosCounty = 1,
     BlaineCounty = 2,
+    PacificOcean = 3,
 }
 
 

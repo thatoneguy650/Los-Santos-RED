@@ -42,11 +42,9 @@ public static class PersonOfInterest
             WantedLevelAddedOrRemoved();
 
         CheckCurrentVehicle();
-
+        CheckSight();
         if (InstantAction.PlayerIsNotWanted)
         {       
-            CheckSight();          
-
             if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 120000)
             {
                 ResetPersonOfInterest(true);
@@ -56,6 +54,7 @@ public static class PersonOfInterest
         {
             if (!PlayerIsPersonOfInterest && Police.AnyPoliceCanSeePlayer)
             {
+                Police.CurrentCrimes.PlayerSeenDuringWanted = true;
                 PlayerBecamePersonOfInterest();
             }
         }
@@ -63,11 +62,11 @@ public static class PersonOfInterest
     private static void PlayerBecamePersonOfInterest()
     {
         PlayerIsPersonOfInterest = true;
-        if (ApplyLastWantedStats())
-        {
-            Debugging.WriteToLog("PlayerBecamePersonOfInterest", "There was previous wanted stats that were applied");
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
-        }
+        //if (ApplyLastWantedStats())
+        //{
+        //    Debugging.WriteToLog("PlayerBecamePersonOfInterest", "There was previous wanted stats that were applied");
+        //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+        //}
         Debugging.WriteToLog("PlayerBecamePersonOfInterest", "Happened");
     }
     public static void CheckCurrentVehicle()
@@ -104,13 +103,21 @@ public static class PersonOfInterest
     }
     public static void CheckSight()
     {
-        if (PlayerIsPersonOfInterest && (Police.PlayerHasBeenNotWantedFor >= 5000 || InstantAction.PlayerIsWanted))//Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
+        if (PlayerIsPersonOfInterest && Police.AnyPoliceCanSeePlayer)//(Police.PlayerHasBeenNotWantedFor >= 5000 || InstantAction.PlayerIsWanted))//Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
         {
-            if (Police.AnyPoliceCanSeePlayer && Police.NearLastWanted())
+            if (Police.PlayerHasBeenNotWantedFor >= 5000 && Police.NearLastWanted())
             {
                 if(!ApplyLastWantedStats())
                     Police.SetWantedLevel(2, "Cops Reacquired after losing them in the same area, actual wanted not found");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+            }
+            else if(InstantAction.PlayerIsWanted)
+            {
+                if (ApplyLastWantedStats())
+                {
+                    Debugging.WriteToLog("PlayerBecamePersonOfInterest", "There was previous wanted stats that were applied");
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+                }
             }
             //else if (Police.AnyPoliceCanRecognizePlayer && 1 == 0)
             //{
@@ -139,14 +146,14 @@ public static class PersonOfInterest
     public static void ResetPersonOfInterest(bool PlayAudio)
     {
         PlayerIsPersonOfInterest = false;
-        //PreviousWantedStats.ForEach(x => x.IsExpired = true);
-        //CriminalHistory.ForEach(x => x.IsExpired = true);
-        Debugging.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are expired");
+        CriminalHistory.Clear();
+        Debugging.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are cleared");
         Police.LastWantedCenterPosition = Vector3.Zero;
         Police.AddUpdateLastWantedBlip(Vector3.Zero);
 
         if(PlayAudio)
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPersonOfInterestExpire, 3));
+
     }
     public static bool ApplyWantedStatsForPlate(string PlateNumber)
     {
@@ -184,6 +191,8 @@ public static class PersonOfInterest
         if (Game.LocalPlayer.WantedLevel < CriminalHistory.MaxWantedLevel)
             Police.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats");
 
+
+        PersonOfInterest.CriminalHistory.Remove(CriminalHistory);
         Police.CurrentCrimes = CriminalHistory;
 
         DispatchAudio.ClearDispatchQueue();
