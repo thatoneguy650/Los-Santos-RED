@@ -411,7 +411,7 @@ public static class Tasking
             }
         }
 
-        if (Police.CurrentCrimes.CopsKilledByPlayer >= Settings.PoliceKilledSurrenderLimit && InstantAction.PlayerWantedLevel < 4)
+        if (Police.CurrentCrimes.KillingPolice.InstancesObserved >= Settings.PoliceKilledSurrenderLimit && InstantAction.PlayerWantedLevel < 4)
         {
             Police.SetWantedLevel(4,"You killed too many cops");
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportWeaponsFree, 2));
@@ -681,7 +681,7 @@ public static class Tasking
                     if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !InstantAction.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking && !Cop.isInVehicle)
                         SurrenderBust = true;
 
-                    if (InstantAction.PlayerInVehicle && (Cop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f))
+                    if (InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null  && (Cop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f))
                     {
                         GameFiber.Sleep(rnd.Next(500, 2000));//GameFiber.Sleep(rnd.Next(900, 1500));//reaction time?
                         break;

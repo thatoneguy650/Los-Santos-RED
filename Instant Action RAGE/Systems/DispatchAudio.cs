@@ -16,7 +16,7 @@ using System.Windows.Media;
 using static ScannerAudio;
 using static Zones;
 
-internal static class DispatchAudio
+public static class DispatchAudio
 {
     private static readonly Random rnd;
     private static WaveOutEvent outputDevice;
@@ -1285,21 +1285,21 @@ internal static class DispatchAudio
         ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
-    public static void ResetReportedItems()
-    {
-        ReportedAssaultOnOfficer = false;
-        ReportedLethalForceAuthorized = false;
-        ReportedOfficerDown = false;
-        ReportedShotsFired = false;
-        ReportedTrespassingOnGovernmentProperty = false;
-        ReportedCarryingWeapon = false;
-        ReportedThreateningWithAFirearm = false;
-        ReportedGrandTheftAuto = false;
-        ReportedSuspiciousVehicle = false;
-        ReportedWeaponsFree = false;
-        ReportedCivilianKilled = false;
-        ReportedStolenAirVehicle = false;
-    }
+    //public static void ResetReportedItems()
+    //{
+    //    ReportedAssaultOnOfficer = false;
+    //    ReportedLethalForceAuthorized = false;
+    //    ReportedOfficerDown = false;
+    //    ReportedShotsFired = false;
+    //    ReportedTrespassingOnGovernmentProperty = false;
+    //    ReportedCarryingWeapon = false;
+    //    ReportedThreateningWithAFirearm = false;
+    //    ReportedGrandTheftAuto = false;
+    //    ReportedSuspiciousVehicle = false;
+    //    ReportedWeaponsFree = false;
+    //    ReportedCivilianKilled = false;
+    //    ReportedStolenAirVehicle = false;
+    //}
 
     //Civilians Reporting
     public static void ReportLowLevelCriminalActivity()
@@ -1519,7 +1519,7 @@ internal static class DispatchAudio
 
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        if(Police.CurrentCrimes.PlayerKilledPolice || Police.CurrentCrimes.PlayerKilledCiviliansInFrontOfPolice)
+        if(Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || Police.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
         {
             ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
             ScannerList.Add(crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName);

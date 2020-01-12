@@ -289,7 +289,7 @@ internal static class Police
             {
                 if (InstantAction.PlayerHurtPed(Cop))
                 {
-                    CurrentCrimes.PlayerHurtPolice = true;
+                    CurrentCrimes.HurtingPolice.Log();
                     Cop.HurtByPlayer = true;
                 }
                 Cop.Health = NewHealth;
@@ -321,13 +321,11 @@ internal static class Police
         if (InstantAction.PlayerHurtPed(MyPed))
         {
             MyPed.HurtByPlayer = true;
-            CurrentCrimes.GameTimeLastHurtPolice = Game.GameTime;       
+            CurrentCrimes.HurtingPolice.Log();   
         }
         if (InstantAction.PlayerKilledPed(MyPed))
         {
-            CurrentCrimes.GameTimeLastKilledCop = Game.GameTime;
-            CurrentCrimes.CopsKilledByPlayer++;
-            CurrentCrimes.PlayerKilledPolice = true;
+            CurrentCrimes.KillingPolice.Log();
             LocalWriteToLog("CheckKilled", String.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
         }
     }
@@ -470,7 +468,7 @@ internal static class Police
             CurrentPoliceState = PoliceState.Normal;//Default state
         else if (InstantAction.PlayerWantedLevel >= 1 && InstantAction.PlayerWantedLevel <= 3 && AnyPoliceCanSeePlayer)//AnyCanSeePlayer)
         {
-            bool IsDeadly = (CurrentCrimes.PlayerFiredWeaponNearPolice || CurrentCrimes.PlayerHurtPolice || CurrentCrimes.PlayerAimedAtPolice || CurrentCrimes.PlayerWentNearPrisonDuringChase || CurrentCrimes.PlayerKilledPolice);
+            bool IsDeadly = (CurrentCrimes.FiringWeaponNearPolice.HasBeenWitnessedByPolice || CurrentCrimes.HurtingPolice.HasBeenWitnessedByPolice || CurrentCrimes.AimingWeaponAtPolice.HasBeenWitnessedByPolice || CurrentCrimes.TrespessingOnGovtProperty.HasBeenWitnessedByPolice || CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice);
             if (!IsDeadly && !InstantAction.PlayerIsConsideredArmed) // Unarmed and you havent killed anyone
                 CurrentPoliceState = PoliceState.UnarmedChase;
             else if (!IsDeadly)
@@ -605,8 +603,8 @@ internal static class Police
         //GameTimeWantedStarted = 0;
         GameTimeLastWantedEnded = Game.GameTime;
 
-        TrafficViolations.ResetTrafficViolations();
-        DispatchAudio.ResetReportedItems();
+        //TrafficViolations.ResetTrafficViolations();
+        //DispatchAudio.ResetReportedItems();
     }
     public static void SetWantedLevel(int WantedLevel,string Reason)
     {
@@ -721,9 +719,9 @@ internal static class Police
     {
         LocalWriteToLog("AddDispatchToUnknownWanted", "Got wanted without being manually set");
         GTAWeapon MyGun = InstantAction.GetCurrentWeapon();
-        if(InstantAction.PlayerRecentlyShot && CurrentCrimes.RecentlyKilledCivilian(10000))
+        if(InstantAction.PlayerRecentlyShot && Civilians.RecentlyKilledCivilian(10000))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCiviliansShot, 20) { IsAmbient = true });
-        else if (!InstantAction.PlayerRecentlyShot && CurrentCrimes.RecentlyKilledCivilian(10000))
+        else if (!InstantAction.PlayerRecentlyShot && Civilians.RecentlyKilledCivilian(10000))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCiviliansKilled, 20) { IsAmbient = true }); 
         else if (InstantAction.PlayerRecentlyShot && InstantAction.PlayerIsConsideredArmed && MyGun != null && MyGun.WeaponLevel >= 3)
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelTerroristActivity, 20) { IsAmbient = true });
@@ -731,7 +729,7 @@ internal static class Police
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelShotsFired, 20) { IsAmbient = true });
         else if (CarStealing.PlayerBreakingIntoCar)
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelGrandTheftAuto, 20) { IsAmbient = true });
-        else if (CurrentCrimes.RecentlyHurtCivilian(10000))
+        else if (Civilians.RecentlyHurtCivilian(10000))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCiviliansInjured, 20) { IsAmbient = true });
         else
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCriminalActivity, 20) { IsAmbient = true });

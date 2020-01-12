@@ -164,7 +164,7 @@ public static class PoliceSpawning
         if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)//250f
             return;
 
-        if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 350f))//500f
+        if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
             return;
 
         Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
@@ -452,6 +452,9 @@ public static class PoliceSpawning
 
         if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
             return;
+
+        //if (CopCar.IsOnScreen)
+        //    return;
 
         int LiveryNumber = NativeFunction.CallByName<int>("GET_VEHICLE_LIVERY", CopCar);
         int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
