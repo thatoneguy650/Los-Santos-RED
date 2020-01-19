@@ -41,6 +41,10 @@ public static class PersonOfInterest
         if (PrevPlayerIsWanted != InstantAction.PlayerIsWanted)
             WantedLevelAddedOrRemoved();
 
+
+        if (InstantAction.IsDead || InstantAction.IsBusted)
+            return;
+
         CheckCurrentVehicle();
         CheckSight();
         if (InstantAction.PlayerIsNotWanted)

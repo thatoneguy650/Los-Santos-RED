@@ -47,7 +47,7 @@ public static class ScriptController
         ProcessTaskQueueTick = new TickTask(50, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);
         PoliceStateTick = new TickTask(50, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);
         SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);//was 50
-        PoliceVehicleScanningTick = new TickTask(5000, "PoliceVehicleScanningTick", PoliceScanning.ScanforPoliceVehicles, TickTask.Type.Police);
+        PoliceVehicleScanningTick = new TickTask(1500, "PoliceVehicleScanningTick", PoliceScanning.ScanforPoliceVehicles, TickTask.Type.Police);//was 5000
 
         WeaponDroppingTick = new TickTask(100, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);
         CivilianTick = new TickTask(150, "Civilian", Civilians.CivilianTick, TickTask.Type.RequiredGeneral);
@@ -59,7 +59,7 @@ public static class ScriptController
         DispatchAudioTick = new TickTask(500, "DispatchAudioTick", DispatchAudio.PlayDispatchQueue, TickTask.Type.Optional);
         WeatherCheckingTick = new TickTask(5000, "WeatherCheckingTick", WeatherReporting.CheckWeather, TickTask.Type.Optional);
         PoliceSpeechTick = new TickTask(500, "PoliceSpeechTick", PoliceSpeech.CheckSpeech, TickTask.Type.Optional);
-        RandomCopSpawningTick = new TickTask(3000, "RandomCopSpawningTick", PoliceSpawning.RandomCopTick, TickTask.Type.Optional);//was 500
+        RandomCopSpawningTick = new TickTask(500, "RandomCopSpawningTick", PoliceSpawning.RandomCopTick, TickTask.Type.Optional);//was 500//was 3000
         CleanupCopTick = new TickTask(5000, "CleanupCopTick", PoliceSpawning.RemoveFarAwayRandomlySpawnedCops, TickTask.Type.Optional);
 
         GameStopWatch = new Stopwatch();
@@ -125,17 +125,20 @@ public static class ScriptController
                         else if (PersonOfInterest.IsRunning && PersonOfInterestTick.ShouldRun)
                             PersonOfInterestTick.RunTask();
 
-                        //Least Important
-                        if (DispatchAudio.IsRunning && DispatchAudioTick.ShouldRun)
-                            DispatchAudioTick.RunTask();
-                        else if (WeatherReporting.IsRunning && WeatherCheckingTick.ShouldRun)
-                            WeatherCheckingTick.RunTask();
-                        else if (PoliceSpeech.IsRunning && PoliceSpeechTick.ShouldRun)//used to be IF
-                            PoliceSpeechTick.RunTask();
-                        else if (Police.IsRunning && Settings.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF
-                            RandomCopSpawningTick.RunTask();
-                        else if (Police.IsRunning && CleanupCopTick.ShouldRun)
-                            CleanupCopTick.RunTask();       
+                        if (GameStopWatch.ElapsedMilliseconds <= 2 || !MyTickTasks.Any(x => x.RanThisTick))
+                        {
+                            //Least Important
+                            if (DispatchAudio.IsRunning && DispatchAudioTick.ShouldRun)
+                                DispatchAudioTick.RunTask();
+                            else if (WeatherReporting.IsRunning && WeatherCheckingTick.ShouldRun)
+                                WeatherCheckingTick.RunTask();
+                            else if (PoliceSpeech.IsRunning && PoliceSpeechTick.ShouldRun)//used to be IF
+                                PoliceSpeechTick.RunTask();
+                            else if (Police.IsRunning && Settings.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF
+                                RandomCopSpawningTick.RunTask();
+                            else if (Police.IsRunning && CleanupCopTick.ShouldRun)
+                                CleanupCopTick.RunTask();
+                        }
                     }
 
                     GameStopWatch.Stop();

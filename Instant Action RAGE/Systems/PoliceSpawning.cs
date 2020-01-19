@@ -112,32 +112,36 @@ public static class PoliceSpawning
                 return;
             }
 
-            if (NextPoliceSpawn.IsFreeway && InstantAction.MyRand.Next(1, 11) <= 4)
-            {
-                SpawnCop(Agencies.SAHP, NextPoliceSpawn.SpawnLocation);
-            }
-            else if (NextPoliceSpawn.ZoneAtLocation.MainZoneAgency != null && NextPoliceSpawn.ZoneAtLocation.SecondaryZoneAgencies != null && NextPoliceSpawn.ZoneAtLocation.SecondaryZoneAgencies.Any())
-            {
-                int Value = InstantAction.MyRand.Next(1, 11);
-                if (Value <= 9)
-                    SpawnCop(NextPoliceSpawn.ZoneAtLocation.MainZoneAgency, NextPoliceSpawn.SpawnLocation);
-                else
-                    SpawnCop(NextPoliceSpawn.ZoneAtLocation.SecondaryZoneAgencies.PickRandom(), NextPoliceSpawn.SpawnLocation);
-            }
-            else if (NextPoliceSpawn.ZoneAtLocation.MainZoneAgency != null)
-            {
-                SpawnCop(NextPoliceSpawn.ZoneAtLocation.MainZoneAgency, NextPoliceSpawn.SpawnLocation);
-            }
-            else
-            {
-                SpawnCop(Agencies.LSPD, NextPoliceSpawn.SpawnLocation);
-            }
+           // Debugging.WriteToLog("SpawnRandomCop", "Starting Spawning Cop");
+            int RandomValue = InstantAction.MyRand.Next(1, 11);
+            Agency AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.MainZoneAgency;
+            if (NextPoliceSpawn.IsFreeway && RandomValue <= 4)
+                AgencyToSpawn = Agencies.SAHP;
+            else if(RandomValue <= 9 && NextPoliceSpawn.ZoneAtLocation.HasAgencies)
+                AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.MainZoneAgency;
+            else if(NextPoliceSpawn.ZoneAtLocation.HasSecondaryAgencies)
+                AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.ZoneAgencies.Where(x=> !x.IsMain).PickRandom().AssiciatedAgency;
+
+
+
+            //if(NextPoliceSpawn.ZoneAtLocation != null)
+            //    Debugging.WriteToLog("SpawnRandomCop", string.Format("Zone {0}", NextPoliceSpawn.ZoneAtLocation.TextName));
+            //if(AgencyToSpawn != null)
+            //    Debugging.WriteToLog("SpawnRandomCop", string.Format("Agency {0}", AgencyToSpawn.FullName));
+
+            if (AgencyToSpawn != null)
+                SpawnCop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation);
+
+
+
 
             NextPoliceSpawn = null;
+
+            Debugging.WriteToLog("SpawnRandomCop", "Finished Spawning Cop");
         }
         catch (Exception e)
         {
-            LocalWriteToLog("SpawnRandomCop",e.Message + " : " + e.StackTrace);
+            Debugging.WriteToLog("SpawnRandomCopError",e.Message + " : " + e.StackTrace);
         }
 
     }
@@ -168,7 +172,7 @@ public static class PoliceSpawning
             return;
 
         Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
-        if (ZoneName == Zones.OCEANA)
+        if (ZoneName == null || ZoneName == Zones.OCEANA)
             return;
 
         string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
@@ -186,7 +190,7 @@ public static class PoliceSpawning
         if(InstantAction.PlayerIsWanted)
         {
             DeleteDistance = 1250f;
-            NonPersistDistance = 550f;
+            NonPersistDistance = 1000f;//was 550f
         }
         foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.WasRandomSpawn))
         {
@@ -344,7 +348,7 @@ public static class PoliceSpawning
         if (MyCar != null)
             ModelName = MyCar.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
-        CheckandChangeLivery(CopCar, _Agency,null);
+        Agencies.ChangeLivery(CopCar, _Agency);
         GameFiber.Yield();
         if(CopCar.Exists())
         {
@@ -429,38 +433,29 @@ public static class PoliceSpawning
             DoggoCop.Pedestrian.WarpIntoVehicle(Cop.Pedestrian.CurrentVehicle, 2);
         LocalWriteToLog("PutK9InCar", String.Format("K9 {0}, put in Car", DoggoCop.Pedestrian.Handle));
     }
-    public static void CheckandChangeLivery(Vehicle CopCar,Agency AssignedAgency, Zone ZoneFound)
-    {
-        if(AssignedAgency == null && ZoneFound == null)
-        {
-            ZoneFound = Zones.GetZoneAtLocation(CopCar.Position);
-        }
-        Agency.VehicleInformation MyVehicle = null;
-        if (AssignedAgency != null && AssignedAgency.Vehicles != null)
-        {
-            MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
-        }
+    //public static void CheckandChangeLivery(Vehicle CopCar,Agency AssignedAgency, Zone ZoneFound)
+    //{
+    //    Agency.VehicleInformation MyVehicle = null;
+    //    if (AssignedAgency != null && AssignedAgency.Vehicles != null)
+    //    {
+    //        MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+    //    }
         
-        if (MyVehicle == null && ZoneFound != null)//make sure we find some agency they they can be assigned to
-        {
-            Agency ZoneAgency = Zones.GetCountyAgencyByZone(ZoneFound);
-            if (ZoneAgency != null && ZoneAgency.Vehicles != null)
-            {
-                MyVehicle = ZoneAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
-            }
-        }
+    //    if (MyVehicle == null && ZoneFound != null)//make sure we find some agency they they can be assigned to
+    //    {
+    //        Agency ZoneAgency = Zones.GetCountyAgencyByZone(ZoneFound);
+    //        if (ZoneAgency != null && ZoneAgency.Vehicles != null)
+    //        {
+    //            MyVehicle = ZoneAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+    //        }
+    //    }
 
-        if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
-            return;
+    //    if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
+    //        return;
 
-        //if (CopCar.IsOnScreen)
-        //    return;
-
-        int LiveryNumber = NativeFunction.CallByName<int>("GET_VEHICLE_LIVERY", CopCar);
-        int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
-
-        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
-    }
+    //    int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+    //    NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
+    //}
     public static void MoveK9s()
     {
         foreach (GTACop K9 in PoliceScanning.K9Peds)

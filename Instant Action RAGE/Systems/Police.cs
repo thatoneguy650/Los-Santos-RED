@@ -289,7 +289,7 @@ internal static class Police
             {
                 if (InstantAction.PlayerHurtPed(Cop))
                 {
-                    CurrentCrimes.HurtingPolice.Log();
+                    CurrentCrimes.HurtingPolice.CrimeObserved();
                     Cop.HurtByPlayer = true;
                 }
                 Cop.Health = NewHealth;
@@ -316,16 +316,16 @@ internal static class Police
         PoliceScanning.PoliceVehicles.RemoveAll(x => !x.Exists());         
 
     }
-    public static void CheckCopKilled(GTAPed MyPed)
+    public static void CheckCopKilled(GTACop MyPed)
     {
         if (InstantAction.PlayerHurtPed(MyPed))
         {
             MyPed.HurtByPlayer = true;
-            CurrentCrimes.HurtingPolice.Log();   
+            CurrentCrimes.HurtingPolice.CrimeObserved();   
         }
         if (InstantAction.PlayerKilledPed(MyPed))
         {
-            CurrentCrimes.KillingPolice.Log();
+            CurrentCrimes.KillingPolice.CrimeObserved();
             LocalWriteToLog("CheckKilled", String.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
         }
     }
@@ -468,7 +468,7 @@ internal static class Police
             CurrentPoliceState = PoliceState.Normal;//Default state
         else if (InstantAction.PlayerWantedLevel >= 1 && InstantAction.PlayerWantedLevel <= 3 && AnyPoliceCanSeePlayer)//AnyCanSeePlayer)
         {
-            bool IsDeadly = (CurrentCrimes.FiringWeaponNearPolice.HasBeenWitnessedByPolice || CurrentCrimes.HurtingPolice.HasBeenWitnessedByPolice || CurrentCrimes.AimingWeaponAtPolice.HasBeenWitnessedByPolice || CurrentCrimes.TrespessingOnGovtProperty.HasBeenWitnessedByPolice || CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice);
+            bool IsDeadly = CurrentCrimes.LethalForceAuthorized;//(CurrentCrimes.FiringWeaponNearPolice.HasBeenWitnessedByPolice || CurrentCrimes.HurtingPolice.HasBeenWitnessedByPolice || CurrentCrimes.AimingWeaponAtPolice.HasBeenWitnessedByPolice || CurrentCrimes.TrespessingOnGovtProperty.HasBeenWitnessedByPolice || CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice);
             if (!IsDeadly && !InstantAction.PlayerIsConsideredArmed) // Unarmed and you havent killed anyone
                 CurrentPoliceState = PoliceState.UnarmedChase;
             else if (!IsDeadly)
@@ -563,11 +563,12 @@ internal static class Police
            
             if (Settings.WantedLevelIncreasesOverTime && PlayerHasBeenWantedFor > Settings.WantedLevelIncreaseTime && AnyPoliceCanSeePlayer && InstantAction.PlayerWantedLevel <= Settings.WantedLevelInceaseOverTimeLimit)
             {
-                SetWantedLevel(InstantAction.PlayerWantedLevel + 1, "Wanted Level increased over time");
+                //SetWantedLevel(InstantAction.PlayerWantedLevel + 1, "Wanted Level increased over time");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportIncreasedWanted, 3)
                 {
                     ResultsInLethalForce = Game.LocalPlayer.WantedLevel == 4 && CurrentPoliceState != PoliceState.DeadlyChase
-                }); ; 
+                    ,ResultingWantedLevel = InstantAction.PlayerWantedLevel + 1
+                }); ; ; 
             }
 
             //if (Settings.SpawnNewsChopper && Game.GameTime - WantedLevelStartTime > 180000 && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 4 && !PoliceScanning.Reporters.Any())
@@ -604,7 +605,7 @@ internal static class Police
         GameTimeLastWantedEnded = Game.GameTime;
 
         //TrafficViolations.ResetTrafficViolations();
-        //DispatchAudio.ResetReportedItems();
+        DispatchAudio.ResetReportedItems();
     }
     public static void SetWantedLevel(int WantedLevel,string Reason)
     {
@@ -683,18 +684,21 @@ internal static class Police
     }
     private static void WantedLevelRemoved()
     {
-        CurrentCrimes.GameTimeWantedEnded = Game.GameTime;
-        CurrentCrimes.MaxWantedLevel = InstantAction.MaxWantedLastLife;
-        if (CurrentCrimes.PlayerSeenDuringWanted && PreviousWantedLevel != 0)// && !RecentlySetWanted)//i didnt make it go to zero, the chase was lost organically
+        if (!InstantAction.IsDead)//they might choose the respawn as the same character, so do not replace it yet?
         {
-            PersonOfInterest.StoreCriminalHistory(CurrentCrimes);
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLost, 5));
+            CurrentCrimes.GameTimeWantedEnded = Game.GameTime;
+            CurrentCrimes.MaxWantedLevel = InstantAction.MaxWantedLastLife;
+            if (CurrentCrimes.PlayerSeenDuringWanted && PreviousWantedLevel != 0)// && !RecentlySetWanted)//i didnt make it go to zero, the chase was lost organically
+            {
+                PersonOfInterest.StoreCriminalHistory(CurrentCrimes);
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLost, 5));
+            }
+
+            ResetPoliceStats();
+
+            Tasking.UntaskAll(false);
+            Tasking.RetaskAllRandomSpawns();
         }
-
-        ResetPoliceStats();
-
-        Tasking.UntaskAll(false);
-        Tasking.RetaskAllRandomSpawns();
 
         foreach (Blip myBlip in TempBlips)
         {
@@ -773,7 +777,7 @@ internal static class Police
         }
         if (CurrentPoliceState == PoliceState.DeadlyChase)
         {
-            if (PrevPoliceState != PoliceState.ArrestedWait && !DispatchAudio.ReportedLethalForceAuthorized)
+            if (PrevPoliceState != PoliceState.ArrestedWait && !DispatchAudio.ReportedLethalForceAuthorized && !InstantAction.IsDead && !InstantAction.IsBusted)
             {
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLethalForceAuthorized, 1) { ResultsInLethalForce = true });
             }

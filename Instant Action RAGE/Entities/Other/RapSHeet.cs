@@ -41,16 +41,26 @@ public class RapSheet
 
     public uint GameTimeLastKilledCivilian;
     public uint GameTimeLastKilledCop;
-
+    public bool LethalForceAuthorized
+    {
+        get
+        {
+            return GetListOfCrimes().Any(x => x.ResultsInLethalForce && x.HasBeenWitnessedByPolice);
+        }
+    }
+    public List<Crime> GetListOfCrimes()
+    {
+        List<Crime> CrimeList = new List<Crime>() { KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon, ChangingPlates, BreakingIntoCars, HurtingCivilians, DrivingAgainstTraffic, DrivingOnPavement, HitPedWithCar, HitCarWithCar, NonRoadworthyVehicle, FelonySpeeding, RunningARedLight };
+        return CrimeList;
+    }
     public RapSheet()
     {
 
     }
     public string PrintCrimes()
     {
-        List<Crime> CrimeList = new List<Crime>() { KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon, ChangingPlates, BreakingIntoCars, HurtingCivilians, DrivingAgainstTraffic, DrivingOnPavement, HitPedWithCar, HitCarWithCar, NonRoadworthyVehicle, FelonySpeeding, RunningARedLight };
         string CrimeString = "";
-        foreach(Crime MyCrime in CrimeList.Where(x => x.HasBeenWitnessedByPolice))
+        foreach(Crime MyCrime in GetListOfCrimes().Where(x => x.HasBeenWitnessedByPolice))
         {
             CrimeString += Environment.NewLine + MyCrime.CrimeStats();
         }
@@ -58,30 +68,33 @@ public class RapSheet
     }
     public void CheckCrimes()
     {
+        if (InstantAction.IsBusted || InstantAction.IsDead)
+            return;
+
         if (!KillingCivilians.HasBeenWitnessedByPolice && Civilians.RecentlyKilledCivilian(5000) && Police.AnyPoliceCanSeePlayer)
         {
-            KillingCivilians.Log();
+            KillingCivilians.CrimeObserved();
         }
 
         if (!HurtingCivilians.HasBeenWitnessedByPolice && Civilians.RecentlyHurtCivilian(5000) && Police.AnyPoliceCanSeePlayer)
         {
-            HurtingCivilians.Log();
+            HurtingCivilians.CrimeObserved();
         }
 
         if (!FiringWeaponNearPolice.HasBeenWitnessedByPolice && (Game.LocalPlayer.Character.IsShooting || Police.PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
         {
-            FiringWeaponNearPolice.Log();
+            FiringWeaponNearPolice.CrimeObserved();
         }
 
         if (!TrespessingOnGovtProperty.HasBeenWitnessedByPolice && InstantAction.PlayerIsWanted && PlayerLocation.PlayerCurrentZone == Zones.JAIL && Police.AnyPoliceCanSeePlayer)
         {
-            TrespessingOnGovtProperty.Log();
+            TrespessingOnGovtProperty.CrimeObserved();
         }
 
         CheckAimingAtPolice();
         if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && TimeAimedAtPolice >= 100)
         {
-            AimingWeaponAtPolice.Log();
+            AimingWeaponAtPolice.CrimeObserved();
         }
 
         if (!BrandishingWeapon.HasBeenWitnessedByPolice && Police.AnyPoliceCanSeePlayer && InstantAction.PlayerIsConsideredArmed && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !InstantAction.PlayerInVehicle)
@@ -91,22 +104,22 @@ public class RapSheet
                 BrandishingWeapon.ResultingWantedLevel = MatchedWeapon.WeaponLevel;
 
             BrandishingWeapon.DispatchToPlay.WeaponToReport = MatchedWeapon;
-            BrandishingWeapon.Log();
+            BrandishingWeapon.CrimeObserved();
         }
 
         if (!ChangingPlates.HasBeenWitnessedByPolice && LicensePlateChanging.PlayerChangingPlate && Police.AnyPoliceCanSeePlayer)
         {
-            ChangingPlates.Log();
+            ChangingPlates.CrimeObserved();
         }
 
         if (!BreakingIntoCars.HasBeenWitnessedByPolice && CarStealing.PlayerBreakingIntoCar && Police.AnyPoliceCanSeePlayer)
         {
-            BreakingIntoCars.Log();
+            BreakingIntoCars.CrimeObserved();
         }
 
         if (!GotInAirVehicleDuringChase.HasBeenWitnessedByPolice && InstantAction.PlayerIsWanted && InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
         {
-            GotInAirVehicleDuringChase.Log();
+            GotInAirVehicleDuringChase.CrimeObserved();
         }
     }
     private void CheckAimingAtPolice()
@@ -128,6 +141,9 @@ public class Crime
     public CrimeLevel Severity = CrimeLevel.Unknown;
     public int InstancesObserved = 0;
     public DispatchAudio.DispatchQueueItem DispatchToPlay;
+    private uint GameTimeLastReported;
+
+   // public bool SetOnDispatchEnd = false;
     public bool RecentlyCommittedCrime(uint TimeSince)
     {
         if (!HasBeenWitnessedByPolice)
@@ -137,14 +153,24 @@ public class Crime
         else
             return false;
     }
+    public bool RecentlyReportedCrime(uint TimeSince)
+    {
+        if (!HasBeenReportedByDispatch)
+            return false;
+        else if (Game.GameTime - GameTimeLastReported <= TimeSince)
+            return true;
+        else
+            return false;
+    }
     public Crime()
     {
 
     }
-    public void Log()
+    public void CrimeObserved()
     {
-        if (!HasBeenWitnessedByPolice && !HasBeenReportedByDispatch && InstantAction.PlayerWantedLevel <= ResultingWantedLevel)
+        if ((!HasBeenReportedByDispatch || Severity == CrimeLevel.Felony) && !RecentlyReportedCrime(25000) && InstantAction.PlayerWantedLevel <= ResultingWantedLevel)//if (!HasBeenWitnessedByPolice && !HasBeenReportedByDispatch && InstantAction.PlayerWantedLevel <= ResultingWantedLevel)
         {
+            GameTimeLastReported = Game.GameTime;
             DispatchToPlay.ResultsInLethalForce = ResultsInLethalForce;
             DispatchAudio.AddDispatchToQueue(DispatchToPlay);
         }
@@ -154,7 +180,28 @@ public class Crime
         Police.SetWantedLevel(ResultingWantedLevel, DebugName);
         HasBeenReportedByDispatch = true;
         Debugging.WriteToLog("Crime Logged", DebugName);
+
+        //if (SetOnDispatchEnd)
+        //{
+        //    GameFiber WaitDispatchEnd = GameFiber.StartNew(delegate
+        //    {
+        //        while (DispatchAudio.IsPlayingAudio)
+        //            GameFiber.Sleep(200);
+
+        //        LogCrime();
+        //    }, "WaitDispatchEnd");
+        //    Debugging.GameFibers.Add(WaitDispatchEnd);
+        //}
+        //else
+        //{
+        //    LogCrime();
+        //}
+        
     }
+    //private void LogCrime()
+    //{
+
+    //}
     public string CrimeStats()
     {
         return string.Format("CrimeName {0}, HasBeenWitnessedByPolice: {1},GameTimeLastWitnessed {2},InstancesObserved {3},HasBeenReportedByDispatch {4}", DebugName, HasBeenWitnessedByPolice, GameTimeLastWitnessed, InstancesObserved, HasBeenReportedByDispatch);

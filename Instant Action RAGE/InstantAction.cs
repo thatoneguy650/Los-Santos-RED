@@ -426,7 +426,7 @@ public static class InstantAction
         Game.LocalPlayer.Character.Kill();
         Game.LocalPlayer.Character.Health = 0;
         Game.LocalPlayer.Character.IsInvincible = true;
-        Police.SetWantedLevel(0,"You died");
+        //Police.SetWantedLevel(0,"You died");
         TransitionToSlowMo();
         if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked || x.canSeePlayer))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5));

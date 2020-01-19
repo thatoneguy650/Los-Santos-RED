@@ -10,6 +10,19 @@ using System.Threading.Tasks;
 
 public static class Respawning
 {
+    private static uint GameTimeLastUndied;
+    public static bool RecentlyUndied
+    {
+        get
+        {
+            if (GameTimeLastUndied == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastUndied <= 5000)
+                return true;
+            else
+                return false;
+        }
+    }
     public static void BribePolice(int Amount)
     {
         if (Game.LocalPlayer.Character.GetCash() < Amount)
@@ -116,7 +129,9 @@ public static class Respawning
     }
     public static void UnDie()
     {
+        GameTimeLastUndied = Game.GameTime;
         RespawnInPlace(true);
+        DispatchAudio.AbortAllAudio();
     }
     public static void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {

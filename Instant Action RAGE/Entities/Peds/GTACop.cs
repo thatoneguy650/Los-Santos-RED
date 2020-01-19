@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 public class GTACop : GTAPed
 {
-    public GTACop(Ped _Pedestrian, bool _canSeePlayer, int _Health,Agency _Agency) : base (_Pedestrian, _canSeePlayer, _Health)
+    private PoliceTask.Task PreviousTaskAssigned { get; set; } = PoliceTask.Task.NoTask;
+    private PoliceTask.Task taskAssigned { get; set; } = PoliceTask.Task.NoTask;
+    public GTACop(Ped _Pedestrian, bool _canSeePlayer, int _Health, Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
     {
         //Pedestrian = _Pedestrian;
         //canSeePlayer = _canSeePlayer;
@@ -19,7 +21,7 @@ public class GTACop : GTAPed
         if (_Pedestrian.Model.Name.ToLower() == "s_m_y_swat_01")
             IsSwat = true;
     }
-    public GTACop(Ped _Pedestrian, bool _canSeePlayer, uint _gameTimeLastSeenPlayer,Vector3 _positionLastSeenPlayer, int _Health,Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
+    public GTACop(Ped _Pedestrian, bool _canSeePlayer, uint _gameTimeLastSeenPlayer, Vector3 _positionLastSeenPlayer, int _Health, Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
     {
         Pedestrian = _Pedestrian;
         canSeePlayer = _canSeePlayer;
@@ -38,7 +40,22 @@ public class GTACop : GTAPed
     public bool IsBikeCop { get; set; } = false;
     public bool IsSwat { get; set; } = false;
     public bool isPursuitPrimary { get; set; } = false;
-    public PoliceTask.Task TaskType { get; set; } = PoliceTask.Task.NoTask;
+    private PoliceTask.Task taskType = PoliceTask.Task.NoTask;
+    public PoliceTask.Task TaskType {//temp like this to check for task loops
+        get { return taskType; }
+        set
+        {
+            if(taskType != value)
+            {
+                if(PreviousTaskAssigned == value && taskType != PoliceTask.Task.Untask && taskType != PoliceTask.Task.NoTask)
+                {
+                    Debugging.WriteToLog("GTACop", string.Format("Cop {0} Possile Task Loop: Previous: {1} Current: {2} New: {3}", Pedestrian.Handle, PreviousTaskAssigned, taskType, value));
+                }
+                PreviousTaskAssigned = taskType;
+                taskType = value;
+            }
+        }
+    }
     public GameFiber TaskFiber { get; set; }
     public bool SetTazer { get; set; } = false;
     public bool SetUnarmed { get; set; } = false;
@@ -83,6 +100,14 @@ public class GTACop : GTAPed
             else
                 return false;
         }
+    }
+
+
+
+    public void SetTask(PoliceTask.Task MyTaskType)
+    {
+
+        TaskType = MyTaskType;
     }
 }
 

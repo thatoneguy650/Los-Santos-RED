@@ -37,6 +37,8 @@ internal static class Menus
     private static UIMenuItem menuDebugGiveMoney;
     private static UIMenuItem menuDebugHealthAndArmor;
     private static UIMenuItem menuActionSmoking;
+    private static UIMenuCheckboxItem menuRadioOff;
+    private static UIMenuListItem menuAutoSetRadioStation;
 
     private static MenuPool menuPool;
     private static UIMenu mainMenu;
@@ -52,6 +54,10 @@ internal static class Menus
     private static List<string> SmokingOptionsList;
     private static Location CurrentSelectedSurrenderLocation;
     private static Location CurrentSelectedHospitalLocation;
+    //private static string CurrentSelectedRadioStation;
+
+    private static List<string> strRadioStations = new List<string> { "NONE", "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
+
 
     public static float TakeoverRadius;
     public static int ChangePlateIndex;
@@ -65,6 +71,7 @@ internal static class Menus
         SmokingOptionsList = default;
         CurrentSelectedSurrenderLocation = null;
         CurrentSelectedHospitalLocation = null;
+        //CurrentSelectedRadioStation = null;
 
         TakeoverRadius = -1f;
         ChangePlateIndex = 0;
@@ -83,16 +90,22 @@ internal static class Menus
         menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
         menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", new List<dynamic> { "Melee", "Pistol", "Shotgun", "SMG", "AR", "LMG", "Sniper", "Heavy" });
-        menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
+        //menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
         menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
         menuDebugHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
+
+        //menuRadioOff = new UIMenuCheckboxItem("Radio Enabled", Settings.RadioAlwaysOff, "Will Auto Turn off Radio");
+        menuAutoSetRadioStation = new UIMenuListItem("Auto-Set Station", "Will auto set the station any time the radio is on", strRadioStations);
 
         debugMenu.AddItem(menuDebugResetCharacter);
         debugMenu.AddItem(menuDebugKillPlayer);
         debugMenu.AddItem(menuDebugRandomWeapon);
-        debugMenu.AddItem(menuDebugEnabled);
+        //debugMenu.AddItem(menuDebugEnabled);
         debugMenu.AddItem(menuDebugGiveMoney);
         debugMenu.AddItem(menuDebugHealthAndArmor);
+        //debugMenu.AddItem(menuRadioOff);
+        debugMenu.AddItem(menuAutoSetRadioStation);
+
 
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
         //menuDeathRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
@@ -312,6 +325,13 @@ internal static class Menus
             MySetting.SetValue(null, Checked);
             Settings.WriteSettings();
         }
+        //if(sender == debugMenu)
+        //{
+        //    if(checkbox == menuRadioOff)
+        //    {
+        //        Settings.RadioAlwaysOff = Checked;
+        //    }
+        //}
     }
     public static void OnListChange(UIMenu sender, UIMenuListItem list, int index)
     {
@@ -357,6 +377,8 @@ internal static class Menus
         {
             if (list == menuDebugRandomWeapon)
                 RandomWeaponCategory = list.Index;
+            else if (list == menuAutoSetRadioStation)
+                VehicleEngine.AutoTuneStation = strRadioStations[index];
         }
     }
     private static void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)

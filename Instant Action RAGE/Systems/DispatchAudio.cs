@@ -34,19 +34,20 @@ public static class DispatchAudio
     public static bool IsPlayingAudio;
 
     private static uint GameTimeLastDisplayerSubtitle;
-
-    public static bool ReportedOfficerDown = false;
-    public static bool ReportedShotsFired = false;
-    public static bool ReportedAssaultOnOfficer = false;
     public static bool ReportedLethalForceAuthorized = false;
-    public static bool ReportedTrespassingOnGovernmentProperty = false;
-    public static bool ReportedCarryingWeapon = false;
-    public static bool ReportedThreateningWithAFirearm = false;
-    public static bool ReportedGrandTheftAuto = false;
-    public static bool ReportedSuspiciousVehicle = false;
-    public static bool ReportedCivilianKilled = false;
     public static bool ReportedWeaponsFree = false;
-    public static bool ReportedStolenAirVehicle = false;
+    //public static bool ReportedOfficerDown = false;
+    //public static bool ReportedShotsFired = false;
+    //public static bool ReportedAssaultOnOfficer = false;
+
+    //public static bool ReportedTrespassingOnGovernmentProperty = false;
+    //public static bool ReportedCarryingWeapon = false;
+    //public static bool ReportedThreateningWithAFirearm = false;
+    //public static bool ReportedGrandTheftAuto = false;
+    //public static bool ReportedSuspiciousVehicle = false;
+    //public static bool ReportedCivilianKilled = false;
+    //public static bool ReportedWeaponsFree = false;
+    //public static bool ReportedStolenAirVehicle = false;
 
     public static bool AudioPlaying
     {
@@ -132,16 +133,17 @@ public static class DispatchAudio
         ExecutingQueue = false;
         DispatchQueue = new List<DispatchQueueItem>();
 
-        ReportedOfficerDown = false;
-        ReportedShotsFired = false;
-        ReportedAssaultOnOfficer = false;
+        //ReportedOfficerDown = false;
+        //ReportedShotsFired = false;
+        //ReportedAssaultOnOfficer = false;
         ReportedLethalForceAuthorized = false;
-        ReportedTrespassingOnGovernmentProperty = false;
-        ReportedCarryingWeapon = false;
-        ReportedThreateningWithAFirearm = false;
-        ReportedGrandTheftAuto = false;
-        ReportedSuspiciousVehicle = false;
-        ReportedStolenAirVehicle = false;
+        ReportedWeaponsFree = false;
+        //ReportedTrespassingOnGovernmentProperty = false;
+        //ReportedCarryingWeapon = false;
+        //ReportedThreateningWithAFirearm = false;
+        //ReportedGrandTheftAuto = false;
+        //ReportedSuspiciousVehicle = false;
+        //ReportedStolenAirVehicle = false;
 
         LettersAndNumbersLookup = new List<DispatchLettersNumber>();
         ColorLookups = new List<ColorLookup>();
@@ -531,13 +533,18 @@ public static class DispatchAudio
                         ReportStolenAirVehicle(Item.VehicleToReport);
 
                     DispatchQueue.RemoveAt(0);
+
+                    if(Item.ResultingWantedLevel > 0)
+                    {
+                        Police.SetWantedLevel(Item.ResultingWantedLevel, string.Format("Set Wanted After Dispatch: {0}",Item.Type));
+                    }
+
                 }
                 ExecutingQueue = false;
             }, "PlayDispatchQueue");
             Debugging.GameFibers.Add(PlayDispatchQueue);
         }
     }
-
     public static void ClearDispatchQueue()
     {
         DispatchQueue.Clear();
@@ -750,9 +757,6 @@ public static class DispatchAudio
     //Traffic
     public static void ReportSpottedStolenCar(float Speed)
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead || ReportedLethalForceAuthorized)
-            return;
-
         string Subtitles = "";
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.LocalUnits,ReportType.Officers, Game.LocalPlayer.Character.Position);
@@ -840,12 +844,8 @@ public static class DispatchAudio
 
     public static void ReportShotsFired()
     {
-        if (ReportedShotsFired || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
+        if (ReportedLethalForceAuthorized)
             return;
-
-        ReportedShotsFired = true;
-        ReportedLethalForceAuthorized = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
@@ -857,12 +857,6 @@ public static class DispatchAudio
     }
     private static void ReportTrespassingOnGovernmentProperty()
     {
-        if (ReportedTrespassingOnGovernmentProperty || ReportedShotsFired || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        ReportedLethalForceAuthorized = true;
-        ReportedTrespassingOnGovernmentProperty = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
@@ -874,11 +868,6 @@ public static class DispatchAudio
     }
     public static void ReportCarryingWeapon(GTAWeapon CarryingWeapon)
     {
-        if (ReportedCarryingWeapon || ReportedOfficerDown || ReportedLethalForceAuthorized || ReportedAssaultOnOfficer || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        ReportedCarryingWeapon = true;
-
         string Subtitles = "";
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.Nobody,ReportType.Officers, Game.LocalPlayer.Character.Position);
@@ -988,13 +977,6 @@ public static class DispatchAudio
     }
     public static void ReportOfficerDown()
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead || ReportedOfficerDown)
-            return;
-
-        ReportedOfficerDown = true;
-
-        bool locReportedLethalForceAuthorized = ReportedLethalForceAuthorized;
-        ReportedLethalForceAuthorized = true;
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.AllUnits,ReportType.Nobody, Game.LocalPlayer.Character.Position);
@@ -1038,21 +1020,12 @@ public static class DispatchAudio
                                         ,custom_wanted_level_line.Wehavea1099allavailableunitsrespond.FileName,dispatch_respond_code.Code99allunitsrespond.FileName,dispatch_respond_code.EmergencyallunitsrespondCode99.FileName}.PickRandom());
             Subtitles += " ~s~all units repond ~o~Code-99 Emergency~s~";
         }
-        if (!locReportedLethalForceAuthorized)
-        {
-            AddLethalForceAuthorized(ref ScannerList, ref Subtitles);   
-        }
+        AddLethalForceAuthorized(ref ScannerList, ref Subtitles);   
         ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
     public static void ReportAssualtOnOfficer()
     {
-        if (ReportedAssaultOnOfficer|| ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        ReportedAssaultOnOfficer = true;
-        ReportedLethalForceAuthorized = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1065,12 +1038,6 @@ public static class DispatchAudio
     }
     public static void ReportThreateningWithFirearm()
     {
-        if (ReportedThreateningWithAFirearm || ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        ReportedThreateningWithAFirearm = true;
-        ReportedLethalForceAuthorized = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.Nobody,ReportType.Officers, Game.LocalPlayer.Character.Position);
@@ -1082,9 +1049,6 @@ public static class DispatchAudio
     }
     public static void ReportSuspectLastSeen()
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
             return;
 
@@ -1118,7 +1082,7 @@ public static class DispatchAudio
     }
     public static void ReportLethalForceAuthorized()
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead || ReportedLethalForceAuthorized)
+        if (ReportedLethalForceAuthorized)
             return;
 
         ReportedLethalForceAuthorized = true;
@@ -1133,10 +1097,6 @@ public static class DispatchAudio
     }
     public static void ReportSuspiciousActivity()
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead || ReportedLethalForceAuthorized)
-            return;
-
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1148,11 +1108,6 @@ public static class DispatchAudio
     }
     public static void ReportGrandTheftAuto()
     {
-        if (ReportedGrandTheftAuto || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        ReportedGrandTheftAuto = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1164,12 +1119,6 @@ public static class DispatchAudio
     }
     public static void ReportStolenAirVehicle(GTAVehicle vehicle)
     {
-        if (ReportedStolenAirVehicle || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        ReportedStolenAirVehicle = true;
-        ReportedLethalForceAuthorized = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1188,16 +1137,12 @@ public static class DispatchAudio
         else
             return;
 
-        AddLethalForceAuthorized(ref ScannerList, ref Subtitles);
-        
+        AddLethalForceAuthorized(ref ScannerList, ref Subtitles); 
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
     public static void ReportChangedVehicle(GTAVehicle vehicle)
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1212,12 +1157,6 @@ public static class DispatchAudio
     }
     public static void ReportIncreasedWanted(bool ResultsInLethalForce)
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        if(ResultsInLethalForce)
-            ReportedLethalForceAuthorized = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1238,11 +1177,6 @@ public static class DispatchAudio
     }
     public static void ReportSuspiciousVehicle(GTAVehicle myCar)
     {
-        if (ReportedSuspiciousVehicle || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        ReportedSuspiciousVehicle = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1255,11 +1189,9 @@ public static class DispatchAudio
     }
     public static void ReportWeaponsFree()
     {
-        if (ReportedWeaponsFree || InstantAction.IsBusted || InstantAction.IsDead)
+        if (ReportedWeaponsFree)
             return;
-
         ReportedWeaponsFree = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1271,11 +1203,6 @@ public static class DispatchAudio
     }
     public static void ReportCivilianKilled()
     {
-        if (ReportedCivilianKilled || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
-        ReportedCivilianKilled = true;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1285,28 +1212,15 @@ public static class DispatchAudio
         ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
     }
-    //public static void ResetReportedItems()
-    //{
-    //    ReportedAssaultOnOfficer = false;
-    //    ReportedLethalForceAuthorized = false;
-    //    ReportedOfficerDown = false;
-    //    ReportedShotsFired = false;
-    //    ReportedTrespassingOnGovernmentProperty = false;
-    //    ReportedCarryingWeapon = false;
-    //    ReportedThreateningWithAFirearm = false;
-    //    ReportedGrandTheftAuto = false;
-    //    ReportedSuspiciousVehicle = false;
-    //    ReportedWeaponsFree = false;
-    //    ReportedCivilianKilled = false;
-    //    ReportedStolenAirVehicle = false;
-    //}
+    public static void ResetReportedItems()
+    {
+        ReportedWeaponsFree = false;
+        ReportedLethalForceAuthorized = false;
+    }
 
     //Civilians Reporting
     public static void ReportLowLevelCriminalActivity()
     {
-        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1340,9 +1254,6 @@ public static class DispatchAudio
     }
     public static void ReportLowLevelShotsFired()
     {
-        if (ReportedOfficerDown || ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1355,9 +1266,6 @@ public static class DispatchAudio
     }
     public static void ReportLowLevelGrandTheftAuto()
     {
-        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1369,9 +1277,6 @@ public static class DispatchAudio
     }
     public static void ReportLowLevelTerroristActivity()
     {
-        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1384,9 +1289,6 @@ public static class DispatchAudio
 
     public static void ReportLowLevelCiviliansKilled()
     {
-        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1398,9 +1300,6 @@ public static class DispatchAudio
     }
     public static void ReportLowLevelCiviliansInjured()
     {
-        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1412,9 +1311,6 @@ public static class DispatchAudio
     }
     public static void ReportLowLevelCiviliansShot()
     {
-        if (ReportedLethalForceAuthorized || InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1427,9 +1323,6 @@ public static class DispatchAudio
     //StolenCar
     public static void ReportStolenVehicle(GTAVehicle stolenVehicle)
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1472,9 +1365,6 @@ public static class DispatchAudio
     //Visuals
     public static void ReportSuspectLost()//called when wanted level is removed
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1486,9 +1376,6 @@ public static class DispatchAudio
     }
     public static void ReportSuspectLostVisual()
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1500,9 +1387,6 @@ public static class DispatchAudio
     }
     public static void ReportPersonOfInterestExpire()
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
@@ -1514,9 +1398,6 @@ public static class DispatchAudio
     }
     public static void ReportSuspectSpotted()
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         if(Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || Police.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
@@ -1538,9 +1419,6 @@ public static class DispatchAudio
     }
     public static void ReportLocalSuspectSpotted()
     {
-        if (InstantAction.IsBusted || InstantAction.IsDead)
-            return;
-
         List<string> ScannerList = new List<string>
         {
             AudioBeeps.AudioStart()
@@ -1854,8 +1732,12 @@ public static class DispatchAudio
     }
     private static void AddLethalForceAuthorized(ref List<string> ScannerList, ref string Subtitles)
     {
-        ScannerList.Add(new List<string>() { lethal_force.Useofdeadlyforceauthorized.FileName, lethal_force.Useofdeadlyforceisauthorized.FileName, lethal_force.Useofdeadlyforceisauthorized1.FileName, lethal_force.Useoflethalforceisauthorized.FileName, lethal_force.Useofdeadlyforcepermitted1.FileName }.PickRandom());
-        Subtitles += " use of ~r~Deadly Force~s~ is authorized";
+        if (!ReportedLethalForceAuthorized)
+        {
+            ScannerList.Add(new List<string>() { lethal_force.Useofdeadlyforceauthorized.FileName, lethal_force.Useofdeadlyforceisauthorized.FileName, lethal_force.Useofdeadlyforceisauthorized1.FileName, lethal_force.Useoflethalforceisauthorized.FileName, lethal_force.Useofdeadlyforcepermitted1.FileName }.PickRandom());
+            Subtitles += " use of ~r~Deadly Force~s~ is authorized";
+            ReportedLethalForceAuthorized = true;
+        }
     }
     public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles, bool IncludeAAudio, bool IncludePoliceDescription)
     {
@@ -1978,6 +1860,10 @@ public static class DispatchAudio
         CancelAudio = true;
         if (AudioPlaying)
             outputDevice.Stop();
+        DispatchQueue.Clear();
+        if (AudioPlaying)
+            outputDevice.Stop();
+        DispatchQueue.Clear();
         CancelAudio = false;
     }
     public class DispatchAudioEvent
@@ -2026,6 +1912,7 @@ public static class DispatchAudio
         public bool IsTrafficViolation { get; set; } = false;
         public bool IsAmbient { get; set; } = false;
         public float Speed { get; set; }
+        public int ResultingWantedLevel { get; set; }
         public GTAWeapon WeaponToReport { get; set; }
         public GTAVehicle VehicleToReport { get; set; }
         public DispatchQueueItem(ReportDispatch _Type,int _Priority)

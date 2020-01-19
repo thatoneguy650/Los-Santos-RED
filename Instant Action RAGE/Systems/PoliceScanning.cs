@@ -51,9 +51,7 @@ public static class PoliceScanning
                     if (Pedestrian.PlayerIsInFront() && Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 55f) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, Game.LocalPlayer.Character))
                         canSee = true;
 
-                    Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian, true);
-                    Zone MyZone = Zones.GetZoneAtLocation(Pedestrian.Position);
-
+                    Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian);
                     GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health, AssignedAgency);
                     Pedestrian.IsPersistent = false;
                     if (Settings.OverridePoliceAccuracy)
@@ -69,7 +67,7 @@ public static class PoliceScanning
 
                         if (!PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
                         {
-                            PoliceSpawning.CheckandChangeLivery(PoliceCar, AssignedAgency, MyZone);
+                            Agencies.ChangeLivery(PoliceCar, AssignedAgency);
                             PoliceSpawning.UpgradeCruiser(PoliceCar);
                             PoliceVehicles.Add(PoliceCar);
                         }
@@ -100,8 +98,8 @@ public static class PoliceScanning
                 if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
                 {
                     //Agency AssignedAgency = Agencies.GetAgencyFromEmptyVehicle(Veh);
-                    Debugging.WriteToLog("LiveryChanger", "CheckingLivery");
-                    PoliceSpawning.CheckandChangeLivery(Veh, null,null);
+                    //Debugging.WriteToLog("LiveryChanger", "CheckingLivery");
+                    Agencies.CheckandChangeLivery(Veh);
                     PoliceSpawning.UpgradeCruiser(Veh);
                     PoliceVehicles.Add(Veh);
                 }

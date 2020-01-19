@@ -30,6 +30,7 @@ public static class Agencies
     public static Agency VPPD;
     public static Agency LSPDVW;
     public static Agency LSPDELS;
+    public static Agency LSPDCH;
     public static Agency RHPD;
     public static Agency SACG;
     public static Agency NOOSE;
@@ -58,30 +59,48 @@ public static class Agencies
         List<Agency.VehicleInformation> PrisonVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policet", true, true, 70), new Agency.VehicleInformation("police4", true, true, 30) };
 
         List<Agency.VehicleInformation> LSPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 0,1,2 }),
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 0,1 }),
             new Agency.VehicleInformation("police2", true, true, 30, false,new List<int>() { 0,1 }),
-            new Agency.VehicleInformation("police3", true, true, 3, false,new List<int>() { 0,1,2,3 }),
-            new Agency.VehicleInformation("pscout", true, true, 30, false,new List<int>() { 0, 1 }),
+            new Agency.VehicleInformation("police3", true, true, 3, false,new List<int>() { 0,1 }),
+            new Agency.VehicleInformation("pscout", true, true, 30, false,new List<int>() { 0,1 }),
             new Agency.VehicleInformation("police4", true, true, 3),
             new Agency.VehicleInformation("fbi2", true, true, 4) };
 
+        List<Agency.VehicleInformation> VWPDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 2,3 }),
+            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 2,3 }),
+            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 2,3 }),
+            new Agency.VehicleInformation("pscout", true, true, 35, false, new List<int>() { 2,3 }) };
+
+        List<Agency.VehicleInformation> ChumashLSPDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 4,5 }),
+            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 4,5 }),
+            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 4,5 }),
+            new Agency.VehicleInformation("pscout", true, true, 35, false, new List<int>() { 4,5 }) };
+
+        List<Agency.VehicleInformation> EastLSPDVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 6,7 }),
+            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 6,7 }),
+            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 6,7 }),
+            new Agency.VehicleInformation("pscout", true, true, 35, false, new List<int>() { 6,7 }) };
+
         List<Agency.VehicleInformation> RHPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 6,7,8 }),
-            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 2,3,4 }),
-            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 4,5,6 }),
-            new Agency.VehicleInformation("pscout", true, true, 35, false,new List<int>() { 4,5 })};
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 8,9 }),
+            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 8,9 }),
+            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 8,9 }),
+            new Agency.VehicleInformation("pscout", true, true, 35, false,new List<int>() { 8,9 })};
 
         List<Agency.VehicleInformation> VPPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 9,10,11 }),
-            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 5,6,7 }),
-            new Agency.VehicleInformation("police3", true, true, 10,false,new List<int>() { 7,8,9 }),
-            new Agency.VehicleInformation("pscout", true, true, 35, false,new List<int>() { 6,7 })};
+            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 10,11 }),
+            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 10,11 }),
+            new Agency.VehicleInformation("police3", true, true, 10,false,new List<int>() { 10,11 }),
+            new Agency.VehicleInformation("pscout", true, true, 35, false,new List<int>() { 10,11 })};
 
-        List<Agency.VehicleInformation> VWPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 3,4,5 }),
-            new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 8,9 }),
-            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 10,11,12 }),
-            new Agency.VehicleInformation("pscout", true, true, 35, false, new List<int>() { 2,3 }) };
+        List<Agency.VehicleInformation> SAHPVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("policeb", true, true, 35, true),
+            new Agency.VehicleInformation("police4", true, true, 5),
+            new Agency.VehicleInformation("police", true, true, 30,false, new List<int>() { 12,13 }),
+            new Agency.VehicleInformation("polscout", true, true, 30,false, new List<int>() { 12,13 })};
 
         List<Agency.VehicleInformation> LSSDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 0, 1, 2, 3 }),
@@ -99,11 +118,7 @@ public static class Agencies
             new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 9,10}),
             new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 6,7 }) };
 
-        List<Agency.VehicleInformation> SAHPVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("policeb", true, true, 35, true),
-            new Agency.VehicleInformation("police4", true, true, 5),
-            new Agency.VehicleInformation("police", true, true, 30,false, new List<int>() { 12,13 }),
-            new Agency.VehicleInformation("polscout", true, true, 30,false, new List<int>() { 8,9 })};
+
 
         //List<Agency.VehicleInformation> LSPDVehiclesVanilla = new List<Agency.VehicleInformation>() {
         //    new Agency.VehicleInformation("police", true, true, 25,false,new List<int>() { 0,1,2,3,4,5 }),
@@ -124,7 +139,8 @@ public static class Agencies
         RHPD = new Agency("~b~", "RHPD", "Rockford Hills Police Department", Color.LightBlue, Agency.Classification.Police, false, true, StandardCops, RHPDVehicles);
 
         LSPDVW = new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", Color.Blue, Agency.Classification.Police, false, true, StandardCops, VWPDVehicles);
-        LSPDELS = new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", Color.Blue, Agency.Classification.Police, false, true, StandardCops, VWPDVehicles);
+        LSPDELS = new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", Color.Blue, Agency.Classification.Police, false, true, StandardCops, EastLSPDVehicles);
+        LSPDCH = new Agency("~b~", "LSPD-CH", "Los Santos Police - Chumash Division", Color.Blue, Agency.Classification.Police, false, true, StandardCops, ChumashLSPDVehicles);
 
         LSSD = new Agency("~r~", "LSSD", "Los Santos County Sheriff", Color.Red, Agency.Classification.Sheriff,true, true, SheriffPeds, LSSDVehicles);
         BCSO = new Agency("~r~", "BCSO", "Blaine County Sheriffs Office", Color.DarkRed, Agency.Classification.Sheriff, false, true, SheriffPeds, BCSOVehicles);
@@ -154,6 +170,7 @@ public static class Agencies
 
         AgenciesList.Add(LSPDVW);
         AgenciesList.Add(LSPDELS);
+        AgenciesList.Add(LSPDCH);
 
         AgenciesList.Add(LSSD);
         AgenciesList.Add(BCSO);
@@ -179,7 +196,7 @@ public static class Agencies
     {
 
     }
-    public static Agency GetAgencyFromPed(Ped Cop,bool OnlyVanilla)
+    public static Agency GetAgencyFromPed(Ped Cop)
     {
         if (!Cop.IsPoliceArmy())
             return UNK;
@@ -188,15 +205,7 @@ public static class Agencies
         else if (Cop.IsPolice())
         {
             Agency ToReturn;
-            if (Cop.Model.Name.ToLower() == "s_m_y_cop_01" || Cop.Model.Name.ToLower() == "s_f_y_cop_01")//Pick based on zone
-            {
-                ToReturn = GetAgencyFromVanillaCop(Cop);
-            }
-            else if (Cop.Model.Name.ToLower() == "s_m_y_sheriff_01" || Cop.Model.Name.ToLower() == "s_f_y_sheriff_01")//pick based on zone
-            {
-                ToReturn = GetAgencyFromVanillaSheriff(Cop);
-            }
-            else if (Cop.Model.Name.ToLower() == "s_m_y_swat_01")//Swat depends on unit insignias
+            if (Cop.Model.Name.ToLower() == "s_m_y_swat_01")//Swat depends on unit insignias
              {
                 ToReturn = GetAgencyFromSwat(Cop);
             }
@@ -206,49 +215,132 @@ public static class Agencies
             }
             else
             {
-                ToReturn = AgenciesList.Where(p => p.IsVanilla == OnlyVanilla && p.CopModels.Any(c => c.ModelName == Cop.Model.Name.ToLower())).FirstOrDefault();
+                ToReturn = GetPedAgencyFromZone(Cop);
             }
-            if (ToReturn == null)
-                return LSPD;
-            else
-                return ToReturn;
+            return ToReturn;
         }
         else
             return null;
     }
-    private static Agency GetAgencyFromVanillaSheriff(Ped Cop)
+    private static Agency GetPedAgencyFromZone(Ped Cop)
     {
-        Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
-        if (PedZone == null)
-            return LSSD;
-
-        
-
-        if (PedZone.MainZoneAgency == BCSO || PedZone.ZoneCounty == County.BlaineCounty)
+        Zone ZoneFound = Zones.GetZoneAtLocation(Cop.Position);
+        Agency ZoneAgency = LSPD;
+        if (ZoneFound != null)
         {
-            //Debugging.WriteToLog("GetSheriff", string.Format("Zone: {0},{1}, RETURN BCSO", PedZone.TextName, PedZone.MainZoneAgency.FullName));
-            return BCSO;
+            foreach (ZoneAgency MyAgency in ZoneFound.ZoneAgencies)
+            {
+                if (MyAgency.AssiciatedAgency.CopModels != null && MyAgency.AssiciatedAgency.CopModels.Any())
+                {
+                    if (MyAgency.AssiciatedAgency.CopModels.Any(x => x.ModelName == Cop.Model.Name.ToLower()))
+                    {
+                        ZoneAgency = MyAgency.AssiciatedAgency;
+                        break;
+                    }
+                }
+            }
         }
-        else if(PedZone.MainZoneAgency.AgencyClassification == Agency.Classification.Sheriff)
-        {
-            return PedZone.MainZoneAgency;
-            //Debugging.WriteToLog("GetSheriff", string.Format("Zone: {0},{1}, RETURN LSSD", PedZone.TextName, PedZone.MainZoneAgency.FullName));
-            //return LSSD;
-        }
-        else
-        {
-            return LSSD;
-        }
+        return ZoneAgency;
     }
-    private static Agency GetAgencyFromVanillaCop(Ped Cop)
+    public static void ChangeLivery(Vehicle CopCar, Agency AssignedAgency)
     {
-        Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
-        if (PedZone == null)
-            return LSPD;
-        else
-            return PedZone.MainZoneAgency;
-        
+        Agency.VehicleInformation MyVehicle = null;
+        if (AssignedAgency != null && AssignedAgency.Vehicles != null)
+        {
+            MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+        }
+        if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
+        {
+            ChangeToDefaultLivery(CopCar);
+            return;
+        }
+
+        int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
     }
+    public static void CheckandChangeLivery(Vehicle CopCar)
+    {
+        //Debugging.WriteToLog("LiveryChanger", string.Format("Car Model {0}", CopCar.Model.Name));
+        Zone ZoneFound = Zones.GetZoneAtLocation(CopCar.Position);
+        Agency.VehicleInformation MyVehicle = null;
+        if (ZoneFound != null)
+        {
+            //Debugging.WriteToLog("LiveryChanger", string.Format("Zone At Location {0}", ZoneFound.TextName));
+            Agency ZoneAgency = null;
+            foreach (ZoneAgency MyAgency in ZoneFound.ZoneAgencies)
+            {
+                if (MyAgency.AssiciatedAgency.Vehicles != null && MyAgency.AssiciatedAgency.Vehicles.Any())
+                {
+                    if (MyAgency.AssiciatedAgency.Vehicles.Any(x => x.ModelName == CopCar.Model.Name.ToLower()))
+                    {
+                        ZoneAgency = MyAgency.AssiciatedAgency;
+                        break;
+                    }
+                }
+            }
+            if (ZoneAgency != null && ZoneAgency.Vehicles != null)
+            {
+                //Debugging.WriteToLog("LiveryChanger", string.Format("Agency At Location {0}", ZoneAgency.FullName));
+                MyVehicle = ZoneAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+            }
+        }
+        if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
+        {
+            //Debugging.WriteToLog("LiveryChanger", "Livery Not Found Trying Defualt");
+            ChangeToDefaultLivery(CopCar);
+            return;
+        }
+
+        int LiveryNumber = NativeFunction.CallByName<int>("GET_VEHICLE_LIVERY", CopCar);
+        int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+        //Debugging.WriteToLog("LiveryChanger", string.Format("Current Livery {0}, New Livery {1}", LiveryNumber, NewLiveryNumber));
+
+        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
+    }
+    public static void ChangeToDefaultLivery(Vehicle CopCar)
+    {
+        Agency.VehicleInformation MyVehicle = LSPD.GetVehicleInfo(CopCar);
+        if (MyVehicle == null)
+            MyVehicle = LSSD.GetVehicleInfo(CopCar);
+
+        if (MyVehicle == null)
+            return;
+
+        int LiveryNumber = NativeFunction.CallByName<int>("GET_VEHICLE_LIVERY", CopCar);
+        int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+
+        //Debugging.WriteToLog("LiveryChanger", string.Format("Default! Current Livery {0}, New Livery {1}", LiveryNumber, NewLiveryNumber));
+        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
+    }
+
+
+
+    //private static Agency GetAgencyFromVanillaSheriff(Ped Cop)
+    //{
+    //    Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
+    //    if (PedZone == null)
+    //        return LSSD;
+
+    //    Agency AgencyToReturn = PedZone.ZoneAgencies.Where(x => x.AssiciatedAgency.CopModels.Any(y => y.ModelName.ToLower() == Cop.Model.Name.ToLower())).OrderBy(x => x.Priority).FirstOrDefault().AssiciatedAgency;
+
+    //    if (AgencyToReturn != null)
+    //        return AgencyToReturn;
+    //    else
+    //        return LSSD;
+    //}
+    //private static Agency GetAgencyFromVanillaCop(Ped Cop)
+    //{
+    //    Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
+    //    if (PedZone == null)
+    //        return LSPD;
+    //    else if (PedZone.MainZoneAgency.AgencyClassification == Agency.Classification.Police)
+    //        return PedZone.MainZoneAgency;
+    //    else if (PedZone.MainZoneAgency.CopModels.Any(x => x.ModelName.ToLower() == Cop.Model.Name.ToLower()))
+    //        return PedZone.MainZoneAgency;
+    //    else
+    //        return LSPD;
+
+    //}
     private static Agency GetAgencyFromSwat(Ped Cop)
     {
         return NOOSE;
@@ -274,19 +366,20 @@ public static class Agencies
             return PRISEC;
         }
     }
-    public static Agency GetAgencyFromEmptyVehicle(Vehicle CopCar)
-    {
-        Zone CarZone = Zones.GetZoneAtLocation(CopCar.Position);
-        if (CarZone == null)
-            return LSPD;
 
-        if (CarZone.MainZoneAgency.Vehicles.Any(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()))//if the main agency at the zone has the car choose that
-            return CarZone.MainZoneAgency;
-        else
-        {
-            return Zones.GetCountyAgencyByZone(CarZone);
-        }
-    }
+    //public static Agency GetAgencyFromEmptyVehicle(Vehicle CopCar)
+    //{
+    //    Zone CarZone = Zones.GetZoneAtLocation(CopCar.Position);
+    //    if (CarZone == null)
+    //        return LSPD;
+
+    //    if (CarZone.MainZoneAgency.Vehicles.Any(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()))//if the main agency at the zone has the car choose that
+    //        return CarZone.MainZoneAgency;
+    //    else
+    //    {
+    //        return Zones.GetCountyAgencyByZone(CarZone);
+    //    }
+    //}
 
  }
 public class Agency
@@ -326,8 +419,14 @@ public class Agency
         Security = 3,
         Other = 4,
     }
+    public VehicleInformation GetVehicleInfo(Vehicle CopCar)
+    {
+        return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+    }
     public VehicleInformation GetRandomVehicle(bool IsMotorcycle)
     {
+        if (Vehicles == null || !Vehicles.Any())
+            return null;
         int Total = Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle).Sum(x => x.SpawnChance);
         int RandomPick = InstantAction.MyRand.Next(0, Total);
         foreach (VehicleInformation Vehicle in Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle))

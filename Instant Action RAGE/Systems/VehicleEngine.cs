@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,7 +20,9 @@ internal static class VehicleEngine
     //private static bool ChangingStation;
     private static uint GameTimeStartedHotwiring;
     private static bool PrevIsHotwiring;
-   // private static bool PrevWantedLevelTune = false;
+
+    //public static string AutoSetRadioStation = "NONE";
+    // private static bool PrevWantedLevelTune = false;
     //private static List<string> strRadioStations = new List<string> { "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
     public static bool AutoTune { get; private set; }
     public static string AutoTuneStation { get; set; }
@@ -123,6 +126,20 @@ internal static class VehicleEngine
                 {
                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
                     Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
+                }
+            }
+
+            if (AutoTuneStation.ToUpper() != "NONE")
+            {
+                string RadioStationLastTuned = "OFF";
+                unsafe
+                {
+                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
+                    RadioStationLastTuned = Marshal.PtrToStringAnsi(ptr);
+                }
+                if (RadioStationLastTuned != AutoTuneStation)
+                {
+                    NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, AutoTuneStation);
                 }
             }
         }
