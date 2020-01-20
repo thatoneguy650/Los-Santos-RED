@@ -42,12 +42,12 @@ public static class ScriptController
         PoliceTick = new TickTask(25, "PoliceTick", Police.PoliceGeneralTick, TickTask.Type.RequiredGeneral);
         VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);
 
-        PoliceScanningTick = new TickTask(5000, "PoliceScanningTick", PoliceScanning.Tick, TickTask.Type.Police);
+        PoliceScanningTick = new TickTask(1000, "PoliceScanningTick", PoliceScanning.Tick, TickTask.Type.Police);//was 5000
         LineOfSightTick = new TickTask(500, "LineOfSightTick",Police.CheckPoliceSight, TickTask.Type.Police);
         ProcessTaskQueueTick = new TickTask(50, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);
         PoliceStateTick = new TickTask(50, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);
         SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);//was 50
-        PoliceVehicleScanningTick = new TickTask(1500, "PoliceVehicleScanningTick", PoliceScanning.ScanforPoliceVehicles, TickTask.Type.Police);//was 5000
+        PoliceVehicleScanningTick = new TickTask(1000, "PoliceVehicleScanningTick", PoliceScanning.ScanforPoliceVehicles, TickTask.Type.Police);//was 5000//was 1500
 
         WeaponDroppingTick = new TickTask(100, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);
         CivilianTick = new TickTask(150, "Civilian", Civilians.CivilianTick, TickTask.Type.RequiredGeneral);
