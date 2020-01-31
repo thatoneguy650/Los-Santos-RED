@@ -59,31 +59,11 @@ internal static class VehicleEngine
         {
             if(Game.LocalPlayer.Character.CurrentVehicle != null)
                 EngineRunning = Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
-        }
-        MainLoop();         
+        }      
     }
     public static void Dispose()
     {
         IsRunning = false;
-    }
-    public static void MainLoop()
-    {
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            VehicleEngineTick();
-        //            GameFiber.Yield();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-        //});
     }
     public static void VehicleEngineTick()
     {

@@ -23,10 +23,6 @@ public static class DispatchAudio
     private static AudioFileReader audioFile;
     private static bool ExecutingQueue = false;
     private static List<DispatchQueueItem> DispatchQueue = new List<DispatchQueueItem>();
-    //private static bool ReportedOfficerDown = false;
-    //private static bool ReportedShotsFired  = false;
-    //private static bool ReportedAssaultOnOfficer = false;
-    //private static bool ReportedLethalForceAuthorized = false;
     private static List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
     private static List<ColorLookup> ColorLookups = new List<ColorLookup>();
     private static List<string> DamagedScannerAliases = new List<string>();
@@ -36,18 +32,6 @@ public static class DispatchAudio
     private static uint GameTimeLastDisplayerSubtitle;
     public static bool ReportedLethalForceAuthorized = false;
     public static bool ReportedWeaponsFree = false;
-    //public static bool ReportedOfficerDown = false;
-    //public static bool ReportedShotsFired = false;
-    //public static bool ReportedAssaultOnOfficer = false;
-
-    //public static bool ReportedTrespassingOnGovernmentProperty = false;
-    //public static bool ReportedCarryingWeapon = false;
-    //public static bool ReportedThreateningWithAFirearm = false;
-    //public static bool ReportedGrandTheftAuto = false;
-    //public static bool ReportedSuspiciousVehicle = false;
-    //public static bool ReportedCivilianKilled = false;
-    //public static bool ReportedWeaponsFree = false;
-    //public static bool ReportedStolenAirVehicle = false;
 
     public static bool AudioPlaying
     {
@@ -132,26 +116,14 @@ public static class DispatchAudio
         audioFile = default;
         ExecutingQueue = false;
         DispatchQueue = new List<DispatchQueueItem>();
-
-        //ReportedOfficerDown = false;
-        //ReportedShotsFired = false;
-        //ReportedAssaultOnOfficer = false;
         ReportedLethalForceAuthorized = false;
         ReportedWeaponsFree = false;
-        //ReportedTrespassingOnGovernmentProperty = false;
-        //ReportedCarryingWeapon = false;
-        //ReportedThreateningWithAFirearm = false;
-        //ReportedGrandTheftAuto = false;
-        //ReportedSuspiciousVehicle = false;
-        //ReportedStolenAirVehicle = false;
-
         LettersAndNumbersLookup = new List<DispatchLettersNumber>();
         ColorLookups = new List<ColorLookup>();
         DamagedScannerAliases = new List<string>();
         CancelAudio = false;
         IsPlayingAudio = false;
         SetupLists();
-        MainLoop();
     }
     public static void Dispose()
     {
@@ -284,25 +256,6 @@ public static class DispatchAudio
        // DamagedScannerAliases.Add(extra_prefix.Rundown1.FileName);
 
     }
-    private static void MainLoop()
-    {
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            PlayDispatchQueue();
-        //            GameFiber.Sleep(500);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-        //});
-    }
     public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
         if (MyAudioEvent.CheckSight && !PoliceScanning.CopPeds.Any(x => x.canSeePlayer))
@@ -310,12 +263,6 @@ public static class DispatchAudio
 
         GameFiber PlayAudioList = GameFiber.StartNew(delegate
         {
-            //if (WeatherReporting.IsReportingWeather)
-            //{
-            //    AbortAllAudio();
-            //    WeatherReporting.IsReportingWeather = false;
-            //}
-
             while (IsPlayingAudio)
                 GameFiber.Yield();
 
@@ -354,7 +301,7 @@ public static class DispatchAudio
             }
             if (audioFile == null)
             {
-                audioFile = new AudioFileReader(string.Format("Plugins\\InstantAction\\audio\\{0}", _Audio))
+                audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", _Audio))
                 {
                     Volume = Settings.DispatchAudioVolume
                 };

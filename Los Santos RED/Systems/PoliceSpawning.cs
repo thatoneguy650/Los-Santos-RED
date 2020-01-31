@@ -12,12 +12,6 @@ public static class PoliceSpawning
 {
     private static List<Vehicle> CreatedPoliceVehicles;
     private static List<Entity> CreatedEntities;
-    // private static Vehicle NewsChopper;
-    // private static List<GTANewsReporter> Reporters = new List<GTANewsReporter>();
-    // private static uint K9Interval;
-    //private static uint RandomCopInterval;
-    //private static uint CleanupCopInterval;
-    //private static uint K9Interval;
     private static RandomPoliceSpawn NextPoliceSpawn;
 
     public static bool IsRunning { get; set; }
@@ -25,58 +19,12 @@ public static class PoliceSpawning
     {
         CreatedPoliceVehicles = new List<Vehicle>();
         CreatedEntities = new List<Entity>();
-        //RandomCopInterval = 0;
-        //CleanupCopInterval = 0;
-        //K9Interval = 0;
         IsRunning = true;
         MainLoop();
     }
     private static void MainLoop()
     {
-        //var stopwatch = new Stopwatch();
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            stopwatch.Start();
-        //            //if (Settings.SpawnPoliceK9 && Game.GameTime > K9Interval + 5555) // was 2000
-        //            //{
-        //            //    if (Game.LocalPlayer.WantedLevel > 0 && !InstantAction.PlayerInVehicle && PoliceScanning.K9Peds.Count < 3)
-        //            //        CreateK9();
-        //            //    MoveK9s();
-        //            //    K9Interval = Game.GameTime;
-        //            //}
-
-        //            if (InstantAction.PlayerWantedLevel == 0 || Police.PlayerHasBeenWantedFor >= 15000)
-        //            {
-        //                if (Settings.SpawnRandomPolice && Game.GameTime > RandomCopInterval + 2000)
-        //                {
-        //                    if (PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)// && Game.LocalPlayer.WantedLevel == 0)
-        //                        SpawnRandomCop();
-        //                    RandomCopInterval = Game.GameTime;
-        //                }   
-        //                else if(Game.GameTime > CleanupCopInterval + 5000)
-        //                {
-        //                    RemoveFarAwayRandomlySpawnedCops();
-        //                    CleanupCopInterval = Game.GameTime;
-        //                }
-        //            }
-        //            stopwatch.Stop();
-        //            if (stopwatch.ElapsedMilliseconds >= 16)
-        //                LocalWriteToLog("PoliceSpawningTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
-        //            stopwatch.Reset();
-        //            GameFiber.Yield();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-
-        //});
+       
     }
     public static void RandomCopTick()
     {
@@ -122,18 +70,8 @@ public static class PoliceSpawning
             else if(NextPoliceSpawn.ZoneAtLocation.HasSecondaryAgencies)
                 AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.ZoneAgencies.Where(x=> !x.IsMain).PickRandom().AssiciatedAgency;
 
-
-
-            //if(NextPoliceSpawn.ZoneAtLocation != null)
-            //    Debugging.WriteToLog("SpawnRandomCop", string.Format("Zone {0}", NextPoliceSpawn.ZoneAtLocation.TextName));
-            //if(AgencyToSpawn != null)
-            //    Debugging.WriteToLog("SpawnRandomCop", string.Format("Agency {0}", AgencyToSpawn.FullName));
-
             if (AgencyToSpawn != null)
                 SpawnCop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation);
-
-
-
 
             NextPoliceSpawn = null;
 

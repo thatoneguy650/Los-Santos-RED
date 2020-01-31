@@ -142,10 +142,10 @@ static class Settings
     {
         try
         {
-            if (File.Exists("Plugins\\InstantAction\\InstantAction.xml"))
+            if (File.Exists("Plugins\\LosSantosRED\\LosSantosRED.xml"))
             { 
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load("Plugins\\InstantAction\\InstantAction.xml");
+                xmlDocument.Load("Plugins\\LosSantosRED\\LosSantosRED.xml");
                 XmlElement documentElement = xmlDocument.DocumentElement;
                 FieldInfo[] myFields = Type.GetType("Settings", false).GetFields();          
                 foreach(XmlNode myNode in documentElement.ChildNodes)
@@ -194,17 +194,17 @@ static class Settings
     {
         try
         {
-            if (File.Exists("Plugins\\InstantAction\\InstantAction.xml"))
+            if (File.Exists("Plugins\\LosSantosRED\\LosSantosRED.xml"))
             {
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load("Plugins\\InstantAction\\InstantAction.xml");
+                xmlDocument.Load("Plugins\\LosSantosRED\\LosSantosRED.xml");
 
                 foreach (FieldInfo fi in Type.GetType("Settings", false).GetFields())
                 {
                     XmlNode xmlNode = xmlDocument.SelectSingleNode("//" + fi.Name);
                     xmlNode.InnerText = fi.GetValue(null).ToString();
                 }
-                xmlDocument.Save("Plugins\\InstantAction\\InstantAction.xml");
+                xmlDocument.Save("Plugins\\LosSantosRED\\LosSantosRED.xml");
             }
             else
             {
@@ -223,7 +223,7 @@ static class Settings
         XmlElement root = xmlDocument.DocumentElement;
         xmlDocument.InsertBefore(xmlDeclaration, root);
 
-        XmlElement element1 = xmlDocument.CreateElement(string.Empty, "InstantAction", string.Empty);
+        XmlElement element1 = xmlDocument.CreateElement(string.Empty, "LosSantosRED", string.Empty);
         xmlDocument.AppendChild(element1);
         foreach (FieldInfo fi in Type.GetType("Settings", false).GetFields())
         {
@@ -231,7 +231,7 @@ static class Settings
             NewElement.AppendChild(xmlDocument.CreateTextNode(fi.GetValue(null).ToString()));
             xmlDocument.DocumentElement.AppendChild(NewElement);
         }
-        xmlDocument.Save("Plugins\\InstantAction\\InstantAction.xml");
+        xmlDocument.Save("Plugins\\LosSantosRED\\LosSantosRED.xml");
     }
 }
 

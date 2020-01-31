@@ -31,30 +31,10 @@ internal static class PoliceSpeech
         CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
         ArrestedWaitSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "SURROUNDED" };
         PlayerDeadSpeech = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE" };
-        MainLoop();
     }
     public static void Dispose()
     {
         IsRunning = false;
-    }
-    private static void MainLoop()
-    {
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            CheckSpeech();
-        //            GameFiber.Sleep(500);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-        //});
     }
     public static void CheckSpeech()
     {

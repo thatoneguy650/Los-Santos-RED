@@ -25,7 +25,7 @@ public static class ScriptController
     private static TickTask DispatchAudioTick;
     private static TickTask WeaponDroppingTick;
     private static TickTask WeatherCheckingTick;
-    private static TickTask InstantActionTick;
+    private static TickTask LosSantosREDTick;
     private static TickTask PoliceTick;
     private static TickTask CivilianTick;
     private static List<TickTask> MyTickTasks;
@@ -38,7 +38,7 @@ public static class ScriptController
         IsRunning = true;
 
 
-        InstantActionTick = new TickTask(25, "InstantActionTick", LosSantosRED.InstantActionTick, TickTask.Type.RequiredGeneral);
+        LosSantosREDTick = new TickTask(25, "InstantActionTick", LosSantosRED.InstantActionTick, TickTask.Type.RequiredGeneral);
         PoliceTick = new TickTask(25, "PoliceTick", Police.PoliceGeneralTick, TickTask.Type.RequiredGeneral);
         VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);
 
@@ -67,7 +67,7 @@ public static class ScriptController
         MyTickTasks = new List<TickTask>()
         {
 
-            InstantActionTick,PoliceTick,VehicleEngineTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
+            LosSantosREDTick,PoliceTick,VehicleEngineTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
             ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick,WeatherCheckingTick,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick
         };
 
@@ -84,8 +84,8 @@ public static class ScriptController
                     GameStopWatch.Start();
 
                     //Required
-                    if (LosSantosRED.IsRunning && InstantActionTick.ShouldRun)
-                        InstantActionTick.RunTask();
+                    if (LosSantosRED.IsRunning && LosSantosREDTick.ShouldRun)
+                        LosSantosREDTick.RunTask();
                     else if (Police.IsRunning && PoliceTick.ShouldRun)
                         PoliceTick.RunTask();
 

@@ -32,50 +32,6 @@ public static class Tasking
         SurrenderBust = false;
         GameTimeLastResetWeapons = 0;
         CurrentPoliceTickRunning = "";
-        MainLoop();
-    }
-    private static void MainLoop()
-    {
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            ProcessQueue();
-        //            GameFiber.Sleep(50);//was 100
-        //            PoliceStateTick();
-        //            GameFiber.Sleep(50);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-        //});
-
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            if(Game.LocalPlayer.WantedLevel > 0)//Dont need to do this each tick if we arent wanted?
-        //                PoliceVehicleTick();
-
-        //            //DisplayQueue(); //Temp Crap to show me the queue
-
-        //            GameFiber.Yield();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-        //});
-        
     }
     public static void Dispose()
     {

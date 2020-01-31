@@ -21,30 +21,10 @@ public static class WeaponDropping
         DroppingWeapon = false;
         PrevCountWeapons = 1;
         IsRunning = true;
-        MainLoop();
     }
     public static void Dispose()
     {
         IsRunning = false;
-    }
-    private static void MainLoop()
-    {
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            WeaponDroppingTick();
-        //            GameFiber.Sleep(100);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-        //});
     }
     public static void WeaponDroppingTick()
     {

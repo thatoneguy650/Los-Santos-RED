@@ -103,7 +103,6 @@
     <Compile Include="AlexGuirre\PedHeadshot.cs" />
     <Compile Include="Entities\Other\ColorMapper.cs" />
     <Compile Include="Entities\Other\RapSheet.cs" />
-    <Compile Include="Entities\Other\WantedLevelStats.cs" />
     <Compile Include="Entities\Peds\GTAPed.cs" />
     <Compile Include="Lookups\Agencies.cs" />
     <Compile Include="Lookups\GTAWeapons.cs" />

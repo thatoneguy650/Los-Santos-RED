@@ -30,27 +30,6 @@ public static class SearchModeStopping
         IsRunning = true;
         CopModel.LoadAndWait();
         CopModel.LoadCollisionAndWait();
-        MainLoop();
-    }
-    private static void MainLoop()
-    {
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            if (StopSearchMode)
-        //                StopPoliceSearchMode();
-        //            GameFiber.Sleep(50);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-        //});
     }
     public static void Dispose()
     {

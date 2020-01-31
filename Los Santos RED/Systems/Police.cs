@@ -169,85 +169,10 @@ internal static class Police
         LastWantedCenterBlipSize = Settings.LastWantedCenterSize;
 
         IsRunning = true;
-
-        MainLoop();
-    }
-    private static void MainLoop()
-    {
-        //var stopwatch = new Stopwatch();
-        //GameFiber.StartNew(delegate
-        //{
-        //    try
-        //    {
-        //        while (IsRunning)
-        //        {
-        //            Tick();//Every Tick
-        //            if (Game.GameTime > GameTimeInterval + ScanningInterval)
-        //            {
-        //                PoliceScanning.ScanForPolice();
-        //                GameTimeInterval = Game.GameTime;
-        //            }
-        //            else if (Game.GameTime > GameTimeCheckedLOS + LOSInterval) // was 2000
-        //            {
-        //                //UpdateTrackedObjects();
-        //                CheckLOS((Game.LocalPlayer.Character.IsInAnyVehicle(false)) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
-        //                SetPrimaryPursuer();
-        //                GameTimeCheckedLOS = Game.GameTime;
-        //            }
-        //            GameFiber.Yield();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        InstantAction.Dispose();
-        //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //    }
-
-        //});
     }
     public static void Dispose()
     {
         IsRunning = false;
-    }
-    private static void UpdateTrackedObjects()
-    {
-       
-        //if (TrackedCar != null && !TrackedCar.VehicleEnt.Exists())
-        //{
-        //    TrackedCar = null;
-        //    LocalWriteToLog("UpdateTrackedObjects", "Removing abandoned car it doesnt exist");
-        //}
-
-        //if (PoliceInSearchMode && !InstantAction.PlayerInVehicle && Game.LocalPlayer.Character.LastVehicle.Exists())
-        //{
-        //    GTAVehicle AbandonedCar = InstantAction.TrackedVehicles.Where(x => x.VehicleEnt.Handle == Game.LocalPlayer.Character.LastVehicle.Handle).FirstOrDefault();
-        //    if(AbandonedCar != null)
-        //    {
-        //        if(TrackedCar != null && TrackedCar.VehicleEnt.Exists() && TrackedCar.VehicleEnt.Handle != AbandonedCar.VehicleEnt.Handle)
-        //        {
-        //            TrackedCar = AbandonedCar;
-        //            LocalWriteToLog("UpdateTrackedObjects", "Tracking your abandoned car");
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        //    if (TrackedCar != null)
-        //    {
-        //        TrackedCar = null;
-        //        LocalWriteToLog("UpdateTrackedObjects", "Removing tracked car as we arent in need of it");
-        //    }
-        //}
-
-        //if(TrackedCar != null && TrackedCar.VehicleEnt.Exists())
-        //{
-        //    if(PlacePlayerLastSeen != TrackedCar.VehicleEnt.Position && PoliceCanSeeEntity(TrackedCar.VehicleEnt))
-        //    {
-        //        PlacePlayerLastSeen = TrackedCar.VehicleEnt.Position;
-        //        LocalWriteToLog("UpdateTrackedObjects", "Updated place player last seen as they saw your abandoned vehicle");
-        //    }
-        //}
-
     }
     public static void PoliceGeneralTick()
     {
