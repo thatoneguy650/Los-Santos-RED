@@ -126,6 +126,11 @@ internal static class PedSwapping
                 Scenario = true;
             }
 
+            if(Game.LocalPlayer.Character.LastVehicle.Exists())
+            {
+                Game.LocalPlayer.Character.LastVehicle.Delete();
+            }
+
             //IS_PED_USING_ANY_SCENARIO
             //TASK_USE_NEAREST_SCENARIO_TO_COORD
             //TASK_START_SCENARIO_IN_PLACE

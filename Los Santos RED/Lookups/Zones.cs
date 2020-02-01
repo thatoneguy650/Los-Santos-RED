@@ -155,6 +155,8 @@ public static class Zones
         PBLUFF = new Zone("PBLUFF", "Pacific Bluffs", ScannerAudio.areas.PacificBluffs.FileName, County.CityOfLosSantos, VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies };//Was County
 
 
+        DELSOL = new Zone("DELSOL", "Puerto Del Sol", ScannerAudio.areas.PuertoDelSoul.FileName, County.CityOfLosSantos, VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies };//was sheriff
+
         //Central
         List<string> CentralAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.CentralUnits.FileName, ScannerAudio.attention_all_area_units.CentralUnits1.FileName, ScannerAudio.attention_all_area_units.CentralAreaUnits.FileName };
         BANNING = new Zone("BANNING", "Banning", ScannerAudio.areas.Banning.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies };
@@ -230,7 +232,7 @@ public static class Zones
         //Other
         List<ZoneAgency> StandardSheriffAgencies = new List<ZoneAgency>() { new ZoneAgency(Agencies.LSSD, 0, true, true), new ZoneAgency(Agencies.DOA, 1, false, true) };
         BAYTRE = new Zone("BAYTRE", "Baytree Canyon", ScannerAudio.areas.BayTreeCanyon.FileName, County.LosSantosCounty) { ZoneAgencies = StandardSheriffAgencies };
-        DELSOL = new Zone("DELSOL", "Puerto Del Sol", ScannerAudio.areas.LaPorta.FileName, County.LosSantosCounty) { ZoneAgencies = StandardSheriffAgencies };
+        
         HARMO = new Zone("HARMO", "Harmony", ScannerAudio.areas.Harmony.FileName, County.LosSantosCounty) { ZoneAgencies = StandardSheriffAgencies };
         LACT = new Zone("LACT", "Land Act Reservoir", "", County.LosSantosCounty) { ZoneAgencies = StandardSheriffAgencies };
         LDAM = new Zone("LDAM", "Land Act Dam", "", County.LosSantosCounty) { ZoneAgencies = StandardSheriffAgencies };

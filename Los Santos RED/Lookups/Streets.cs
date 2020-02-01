@@ -229,7 +229,9 @@ public static class Streets
             new Street("Chianski Passage", 30f),
             new Street("Lolita Ave", 35f, ScannerAudio.streets.LolitaAve.FileName),
             new Street("Meringue Ln", 35f, ScannerAudio.streets.MirangeLane.FileName),
-            new Street("Strangeways Dr", 30f, ScannerAudio.streets.StrangeWaysDrive.FileName)
+            new Street("Strangeways Dr", 30f, ScannerAudio.streets.StrangeWaysDrive.FileName),
+
+            new Street("Mt Haan Dr", 40f, ScannerAudio.streets.MtHaanDrive.FileName)
         };
     }
     public static void Dispose()

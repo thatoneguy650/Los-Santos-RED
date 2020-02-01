@@ -32,7 +32,7 @@ public static class PlayerLocation
     {
         PlayerCurrentZone = Zones.GetZoneAtLocation(Game.LocalPlayer.Character.Position);
         Vector3 PlayerClosestNode = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position);
-        if (PlayerClosestNode.DistanceTo2D(Game.LocalPlayer.Character) >= 25f)
+        if (PlayerClosestNode.DistanceTo2D(Game.LocalPlayer.Character) >= 15f)//was 25f
         {
             PlayerIsOffroad = true;
         }
@@ -85,6 +85,11 @@ public static class PlayerLocation
 
         PlayerCurrentStreet = Streets.GetStreetFromName(PlayerCurrentStreetName);
         PlayerCurrentCrossStreet = Streets.GetStreetFromName(PlayerCurrentCrossStreetName);
+
+        if(PlayerCurrentStreet == null)
+        {
+            PlayerCurrentStreet = new Street(GetCurrentStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
+        }
 
     }
     public static string GetCurrentStreet(Vector3 Position)
