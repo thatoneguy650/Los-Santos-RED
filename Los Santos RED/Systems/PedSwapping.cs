@@ -120,6 +120,16 @@ internal static class PedSwapping
 
             CopyPedComponentVariation(TargetPed);
 
+            bool Scenario = false;
+            if(NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", TargetPed))
+            {
+                Scenario = true;
+            }
+
+            //IS_PED_USING_ANY_SCENARIO
+            //TASK_USE_NEAREST_SCENARIO_TO_COORD
+            //TASK_START_SCENARIO_IN_PLACE
+
             Ped CurrentPed = Game.LocalPlayer.Character;
             if (TargetPed.IsInAnyVehicle(false))
             {
@@ -128,7 +138,7 @@ internal static class PedSwapping
             }
             else
             {
-                AllyPedsToPlayer(Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 3f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x)));
+                AllyPedsToPlayer(Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 5f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x)));
             }
 
             NativeFunction.CallByName<uint>("CHANGE_PLAYER_PED", Game.LocalPlayer, TargetPed, false, false);
@@ -202,6 +212,37 @@ internal static class PedSwapping
             {
                 World.DateTime.AddHours(18);
             }
+
+
+            if(Scenario)
+            {
+                LocalWriteToLog("TakeoverPed", string.Format("Using Scenario: {0}", Scenario));
+
+                foreach(Ped MyPed in Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 5f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x)))
+                {
+                    if(NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", MyPed))
+                    {
+                        NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", MyPed, MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z, 2f, 0);
+                    }
+                }
+
+
+                NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
+                GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
+                {
+                    while (1==1)
+                    {
+                        GameFiber.Sleep(50);
+                        if (Extensions.IsMoveControlPressed())
+                        {
+                            Game.LocalPlayer.Character.Tasks.Clear();
+                            break;
+                        }
+                    }
+                }, "ScenarioWatcher");
+                Debugging.GameFibers.Add(ScenarioWatcher);
+            }
+
         }
         catch (Exception e3)
         {
@@ -316,6 +357,10 @@ internal static class PedSwapping
         if (FormerPlayer.IsInAnyVehicle(false))
         {
             FormerPlayer.Tasks.CruiseWithVehicle(FormerPlayer.CurrentVehicle, 30f, VehicleDrivingFlags.Normal); //normal driving style
+        }
+        if(NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", FormerPlayer))
+        {
+            return;
         }
         else
         {
