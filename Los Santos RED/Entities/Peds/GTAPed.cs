@@ -22,6 +22,7 @@ public class GTAPed
     public uint GameTimeContinuoslySeenPlayerSince { get; set; }
     public Vector3 PositionLastSeenPlayer { get; set; }
     public bool HurtByPlayer { get; set; } = false;
+    public bool KilledByPlayer { get; set; } = false;
     public uint GameTimeLastDistanceCheck { get; set; }
     public uint GameTimeLastLOSCheck { get; set; }
     public bool isInVehicle { get; set; } = false;
@@ -85,7 +86,6 @@ public class GTAPed
             DistanceToLastSeen = Pedestrian.DistanceTo(Police.PlacePlayerLastSeen);
             GameTimeLastDistanceCheck = Game.GameTime;
         }
-
     }
 }
 

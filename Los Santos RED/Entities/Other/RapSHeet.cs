@@ -20,6 +20,9 @@ public class RapSheet
     public Crime TrespessingOnGovtProperty = new Crime() { Severity = CrimeLevel.Felony, ResultsInLethalForce = true, ResultingWantedLevel = 3, DispatchToPlay = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportTrespassingOnGovernmentProperty, 5), DebugName = "TrespessingOnGovtProperty" };
     public Crime GotInAirVehicleDuringChase = new Crime() { Severity = CrimeLevel.Felony, ResultsInLethalForce = true, ResultingWantedLevel = 4, DispatchToPlay = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportStolenAirVehicle, 6), DebugName = "GotInAirVehicleDuringChase" };
 
+
+    public Crime ResistingArrest = new Crime() { Severity = CrimeLevel.Felony, ResultsInLethalForce = false, ResultingWantedLevel = 2, DispatchToPlay = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportIncreasedWanted, 6), DebugName = "ResistedArrest" };
+
     public Crime KillingCivilians = new Crime() { Severity = CrimeLevel.Misdemeanor, ResultsInLethalForce = false, ResultingWantedLevel = 2, DispatchToPlay = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportCivilianKilled, 7), DebugName = "KillingCivilians" };
     public Crime BrandishingWeapon = new Crime() { Severity = CrimeLevel.Misdemeanor, ResultsInLethalForce = false, ResultingWantedLevel = 2, DispatchToPlay = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportCarryingWeapon, 8), DebugName = "BrandishingWeapon" };
     public Crime ChangingPlates = new Crime() { Severity = CrimeLevel.Misdemeanor, ResultsInLethalForce = false, ResultingWantedLevel = 2, DispatchToPlay = new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousActivity, 9), DebugName = "ChangingPlates" };
@@ -71,7 +74,7 @@ public class RapSheet
         if (LosSantosRED.IsBusted || LosSantosRED.IsDead)
             return;
 
-        if (!KillingCivilians.HasBeenWitnessedByPolice && Civilians.RecentlyKilledCivilian(5000) && Police.AnyPoliceCanSeePlayer)
+        if (!KillingCivilians.HasBeenWitnessedByPolice && (Civilians.RecentlyKilledCivilian(5000) || Civilians.NearMurderVictim(15f)) && Police.AnyPoliceCanSeePlayer)
         {
             KillingCivilians.CrimeObserved();
         }
@@ -81,7 +84,7 @@ public class RapSheet
             HurtingCivilians.CrimeObserved();
         }
 
-        if (!FiringWeaponNearPolice.HasBeenWitnessedByPolice && (Game.LocalPlayer.Character.IsShooting || Police.PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || (x.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
+        if (!FiringWeaponNearPolice.HasBeenWitnessedByPolice && (LosSantosRED.PlayerRecentlyShot || Police.PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || (x.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
         {
             FiringWeaponNearPolice.CrimeObserved();
         }

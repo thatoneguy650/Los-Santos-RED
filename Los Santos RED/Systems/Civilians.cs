@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public static class Civilians
 {
+    public static List<GTAPed> PlayerKilledCivilians;
     public static uint GameTimeLastHurtCivilian;
     public static uint GameTimeLastKilledCivilian;
     public static bool IsRunning;
@@ -24,6 +25,13 @@ public static class Civilians
         if (GameTimeLastKilledCivilian == 0)
             return false;
         else if (Game.GameTime - GameTimeLastKilledCivilian <= TimeSince)
+            return true;
+        else
+            return false;
+    }
+    public static bool NearMurderVictim(float Distance)
+    {
+        if (PoliceScanning.PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
             return true;
         else
             return false;
@@ -50,18 +58,19 @@ public static class Civilians
             if (MyPed.Pedestrian.IsDead)
             {
                 CheckCivilianKilled(MyPed);
-                continue;
+                if(MyPed.KilledByPlayer)
+                    PoliceScanning.PlayerKilledCivilians.Add(MyPed);
+                //continue;
             }
             int NewHealth = MyPed.Pedestrian.Health;
             if (NewHealth != MyPed.Health)
             {
                 if (LosSantosRED.PlayerHurtPed(MyPed))
-                {
                     MyPed.HurtByPlayer = true;
-                }
                 MyPed.Health = NewHealth;
             }
         }
+        PoliceScanning.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
         PoliceScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
     }
     public static void CheckCivilianKilled(GTAPed MyPed)
@@ -73,6 +82,7 @@ public static class Civilians
         }
         if (LosSantosRED.PlayerKilledPed(MyPed))
         {
+            MyPed.KilledByPlayer = true;
             GameTimeLastKilledCivilian = Game.GameTime;
             LocalWriteToLog("CheckKilled", string.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
         }

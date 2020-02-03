@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 
 internal static class PedSwapping
 {
+    private static Ped HeadShotPed;
     private static List<TakenOverPed> TakenOverPeds;
     private static Model OriginalModel;
     private static string LastModelHash;
     private static PedVariation myPedVariation;
     private static bool PedOriginallyHadHelmet;
     private static uint GameTimeLastTakenOver;
+
+    public static PedHeadshot CurrentHeadshot;
     public static void Initialize()
     {
         OriginalModel = default;
@@ -119,6 +122,14 @@ internal static class PedSwapping
                 carWasIn = TargetPed.CurrentVehicle;
 
             CopyPedComponentVariation(TargetPed);
+
+
+            //HeadShotPed = new Ped(TargetPed.Model.Name, Vector3.Zero,0f);
+            //HeadShotPed.IsPersistent = true;
+            //ReplacePedComponentVariation(HeadShotPed);
+
+            //CurrentHeadshot = new PedHeadshot(HeadShotPed);
+            //CurrentHeadshot.Register();
 
             bool Scenario = false;
             if(NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", TargetPed))
@@ -237,7 +248,7 @@ internal static class PedSwapping
                 {
                     while (1==1)
                     {
-                        GameFiber.Sleep(50);
+                        GameFiber.Yield();
                         if (Extensions.IsMoveControlPressed())
                         {
                             Game.LocalPlayer.Character.Tasks.Clear();
@@ -247,7 +258,6 @@ internal static class PedSwapping
                 }, "ScenarioWatcher");
                 Debugging.GameFibers.Add(ScenarioWatcher);
             }
-
         }
         catch (Exception e3)
         {

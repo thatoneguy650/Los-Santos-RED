@@ -256,8 +256,8 @@ internal static class Police
     }
     public static void CheckPoliceSight()
     {
-        Police.CheckLOS((Game.LocalPlayer.Character.IsInAnyVehicle(false)) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
-        Police.SetPrimaryPursuer();
+        CheckLOS(Game.LocalPlayer.Character.IsInAnyVehicle(false) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character);
+        SetPrimaryPursuer();
     }
     public static void CheckLOS(Entity EntityToCheck)
     {

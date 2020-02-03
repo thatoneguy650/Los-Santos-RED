@@ -1,7 +1,7 @@
 ﻿using Rage;
 using Rage.Native;
 
-internal class PedHeadshot
+public class PedHeadshot
 {
     private uint handle;
     public uint Handle { get { return handle; } }

@@ -78,6 +78,7 @@ static class Settings
     public static float TrafficInfoUISpacing = 0.02f;
     public static float TrafficInfoUIScale = 0.35f;
     public static bool DispatchSubtitles = false;
+    public static bool DispatchNotifications = false;
 
     public static bool Logging = true;
     public static bool GeneralLogging = true;

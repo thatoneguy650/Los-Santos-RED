@@ -18,6 +18,7 @@ using static Zones;
 
 public static class DispatchAudio
 {
+    private static List<uint> NotificationHandles = new List<uint>();
     private static readonly Random rnd;
     private static WaveOutEvent outputDevice;
     private static AudioFileReader audioFile;
@@ -29,7 +30,7 @@ public static class DispatchAudio
     public static bool CancelAudio;
     public static bool IsPlayingAudio;
 
-    private static uint GameTimeLastDisplayerSubtitle;
+    private static uint GameTimeLastDisplayedSubtitle;
     public static bool ReportedLethalForceAuthorized = false;
     public static bool ReportedWeaponsFree = false;
 
@@ -111,7 +112,7 @@ public static class DispatchAudio
     }
     public static void Initialize()
     {
-        GameTimeLastDisplayerSubtitle = 0;
+        GameTimeLastDisplayedSubtitle = 0;
         outputDevice = null;
         audioFile = default;
         ExecutingQueue = false;
@@ -120,6 +121,7 @@ public static class DispatchAudio
         ReportedWeaponsFree = false;
         LettersAndNumbersLookup = new List<DispatchLettersNumber>();
         ColorLookups = new List<ColorLookup>();
+        NotificationHandles = new List<uint>();
         DamagedScannerAliases = new List<string>();
         CancelAudio = false;
         IsPlayingAudio = false;
@@ -269,14 +271,17 @@ public static class DispatchAudio
             foreach (string audioname in MyAudioEvent.SoundsToPlay)
             {
                 PlayAudio(audioname);
+                if (MyAudioEvent.NotificationToDisplay != null && Settings.DispatchNotifications)
+                {
+                    NotificationHandles.Add(Game.DisplayNotification(MyAudioEvent.NotificationToDisplay.TextureDict, MyAudioEvent.NotificationToDisplay.TextureName, MyAudioEvent.NotificationToDisplay.Title, MyAudioEvent.NotificationToDisplay.Subtitle, MyAudioEvent.NotificationToDisplay.Text));
+                }
                 while (IsPlayingAudio)
                 {
-                    if (MyAudioEvent.Subtitles != "" && Settings.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayerSubtitle >= 1500)
+                    if (MyAudioEvent.Subtitles != "" && Settings.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                     {
                         Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
-                        GameTimeLastDisplayerSubtitle = Game.GameTime;
+                        GameTimeLastDisplayedSubtitle = Game.GameTime;
                     }
-
                     GameFiber.Yield();
                 }
                 if (CancelAudio)
@@ -556,38 +561,38 @@ public static class DispatchAudio
             return false;
         }
     }
-    private static void ReportGenericEnd(ref List<string> ScannerList,NearType Near, ref string Subtitles,Vector3 LocationToReport)
+    private static void ReportGenericEnd(ref List<string> ScannerList,NearType Near, ref string Subtitles, ref DispatchNotification Notification, Vector3 LocationToReport)
     {
         if(Near == NearType.Zone)
         {
-            AddZone(ref ScannerList,ref Subtitles, LocationToReport);
+            AddZone(ref ScannerList,ref Subtitles, LocationToReport,ref Notification);
         }
         else if(Near == NearType.HeadingAndZone)
         {
             AddHeading(ref ScannerList,ref Subtitles);
-            AddZone(ref ScannerList, ref Subtitles, LocationToReport);
+            AddZone(ref ScannerList, ref Subtitles, LocationToReport,ref Notification);
         }
         else if (Near == NearType.HeadingAndStreet)
         {
             AddHeading(ref ScannerList, ref Subtitles);  
-            if (!AddStreet(ref ScannerList, ref Subtitles))
-                AddZone(ref ScannerList,ref Subtitles, LocationToReport);
+            if (!AddStreet(ref ScannerList, ref Subtitles,ref Notification))
+                AddZone(ref ScannerList,ref Subtitles, LocationToReport,ref Notification);
         }
         else if (Near == NearType.HeadingStreetAndZone)
         {
             AddHeading(ref ScannerList,ref Subtitles);
-            AddStreet(ref ScannerList, ref Subtitles);
-            AddZone(ref ScannerList,ref Subtitles, LocationToReport);
+            AddStreet(ref ScannerList, ref Subtitles, ref Notification);
+            AddZone(ref ScannerList,ref Subtitles, LocationToReport, ref Notification);
         }
         else if (Near == NearType.Street)
         {
-            if (!AddStreet(ref ScannerList, ref Subtitles))
-                AddZone(ref ScannerList, ref Subtitles, LocationToReport);
+            if (!AddStreet(ref ScannerList, ref Subtitles, ref Notification))
+                AddZone(ref ScannerList, ref Subtitles, LocationToReport, ref Notification);
         }
         else if (Near == NearType.StreetAndZone)
         {
-            AddStreet(ref ScannerList, ref Subtitles);
-            AddZone(ref ScannerList, ref Subtitles, LocationToReport);
+            AddStreet(ref ScannerList, ref Subtitles, ref Notification);
+            AddZone(ref ScannerList, ref Subtitles, LocationToReport, ref Notification);
         }
         ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
     }
@@ -623,13 +628,14 @@ public static class DispatchAudio
         else
             return false;
     }
-    public static bool AddStreet(ref List<string> ScannerList, ref string Subtitles)
+    public static bool AddStreet(ref List<string> ScannerList, ref string Subtitles, ref DispatchNotification Notification)
     {
         Street MyStreet = PlayerLocation.PlayerCurrentStreet;
         if (MyStreet != null && MyStreet.DispatchFile != "")
         {
             ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
             ScannerList.Add(MyStreet.DispatchFile);
+            Notification.Text += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
             Subtitles += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
 
             if (PlayerLocation.PlayerCurrentCrossStreet != null)
@@ -639,6 +645,7 @@ public static class DispatchAudio
                 {
                     ScannerList.Add((new List<string>() { conjunctives.AT01.FileName }).PickRandom());
                     ScannerList.Add(MyCrossStreet.DispatchFile);
+                    Notification.Text += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
                     Subtitles += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
                 }
             }
@@ -646,7 +653,7 @@ public static class DispatchAudio
         }
         return false;
     }
-    public static bool AddZone(ref List<string> ScannerList, ref string Subtitles, Vector3 LocationToGetZone)
+    public static bool AddZone(ref List<string> ScannerList, ref string Subtitles, Vector3 LocationToGetZone, ref DispatchNotification Notification)
     {
         Zone MyZone = GetZoneAtLocation(LocationToGetZone);
         if (MyZone != null && MyZone.ScannerValue != "")
@@ -654,6 +661,7 @@ public static class DispatchAudio
             ScannerList.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
             ScannerList.Add(MyZone.ScannerValue);
             Subtitles += " ~s~near ~p~" + MyZone.TextName + "~s~";
+            Notification.Text += " ~s~near ~p~" + MyZone.TextName + "~s~";
             return true;
         }
         return false;
@@ -705,18 +713,20 @@ public static class DispatchAudio
     public static void ReportSpottedStolenCar(float Speed)
     {
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Driving a Stolen Vehicle");
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.LocalUnits,ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_person_in_a_stolen_car.Apersoninastolencar.FileName, crime_person_in_a_stolen_vehicle.Apersoninastolenvehicle.FileName, crime_person_in_a_stolen_car.Apersoninastolencar.FileName}.PickRandom());
         Subtitles += " a person in a ~r~Stolen Vehicle~s~";
-        AddSpeed(ref ScannerList, Speed,ref Subtitles);
-        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles,Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        AddSpeed(ref ScannerList, Speed,ref Subtitles,ref Notification);
+        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles,ref Notification,Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles,Notification));
     }
     public static void ReportPedHitAndRun(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Pedestrian Hit-and-Run");
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_ped_struck_by_veh.Apedestrianstruck.FileName, crime_ped_struck_by_veh.Apedestrianstruck1.FileName, crime_ped_struck_by_veh.Apedestrianstruckbyavehicle.FileName, crime_ped_struck_by_veh.Apedestrianstruckbyavehicle1.FileName }.PickRandom());
         Subtitles += " a ~r~Pedestrian Struck~s~";
@@ -724,13 +734,14 @@ public static class DispatchAudio
         {
             AddStolenVehicle(ref ScannerList,vehicle,ref Subtitles);
         }
-        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportVehicleHitAndRun(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Hit-and-Run");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_dangerous_driving.Dangerousdriving.FileName, crime_dangerous_driving.Dangerousdriving1.FileName, crime_reckless_driver.Arecklessdriver.FileName, crime_traffic_felony.Atrafficfelony.FileName }.PickRandom());
         Subtitles += " a ~r~Hit and Run~s~";
@@ -739,13 +750,14 @@ public static class DispatchAudio
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
         //AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
-        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportRecklessDriver(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Reckless Driving");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_reckless_driver.Arecklessdriver.FileName }.PickRandom());
         Subtitles += " a ~r~Reckless Driver~s~";
@@ -754,13 +766,14 @@ public static class DispatchAudio
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
         //AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
-        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     private static void ReportRunningRed(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Running a Red Light");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_person_running_a_red_light.Apersonrunningaredlight.FileName }.PickRandom());
         Subtitles += " a person ~r~Running a Red Light~s~";
@@ -769,24 +782,25 @@ public static class DispatchAudio
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
         //AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
-        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportFelonySpeeding(GTAVehicle vehicle,float Speed)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Felony Speeding");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_speeding_felony.Aspeedingfelony.FileName }.PickRandom());
         Subtitles += " a ~r~Speeding Felony~s~";
-        AddSpeed(ref ScannerList, Speed, ref Subtitles);
+        AddSpeed(ref ScannerList, Speed, ref Subtitles,ref Notification);
         if (vehicle.IsStolen)
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
         //AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,true,false);
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
 
     public static void ReportShotsFired()
@@ -795,23 +809,25 @@ public static class DispatchAudio
             return;
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Shots Fired at an Officer");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(crime_shots_fired_at_an_officer.Shotsfiredatanofficer.FileName);
         Subtitles += " ~r~Shots Fired at an Officer~s~";
         AddLethalForceAuthorized(ref ScannerList, ref Subtitles);
-        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false,Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     private static void ReportTrespassingOnGovernmentProperty()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Trespassing on Government Property");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(crime_trespassing_on_government_property.Trespassingongovernmentproperty.FileName);
         Subtitles += " ~r~Trespassing on Government Property~s~";
         AddLethalForceAuthorized(ref ScannerList, ref Subtitles);
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportCarryingWeapon(GTAWeapon CarryingWeapon)
     {
@@ -819,80 +835,96 @@ public static class DispatchAudio
         List<string> ScannerList = new List<string>();
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.Nobody,ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(suspect_is.SuspectIs.FileName);
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Brandishing");
         if (CarryingWeapon == null)
         {
             ScannerList.Add(carrying_weapon.Carryingaweapon.FileName);
             Subtitles += " suspect is carrying a ~r~weapon~s~";
+            Notification.Text += " a Weapon";
         }
         else if (CarryingWeapon.Name == "weapon_rpg")
         {
             ScannerList.Add(carrying_weapon.ArmedwithanRPG.FileName);
             Subtitles += " suspect is armed with an ~r~RPG~s~";
+            Notification.Text += " an RPG";
         }
         else if (CarryingWeapon.Name == "weapon_bat")
         {
             ScannerList.Add(carrying_weapon.Armedwithabat.FileName);
             Subtitles += " suspect is armed with a ~r~bat~s~";
+            Notification.Text += " a Bat";
         }
         else if (CarryingWeapon.Name == "weapon_grenadelauncher" || CarryingWeapon.Name == "weapon_grenadelauncher_smoke" || CarryingWeapon.Name == "weapon_compactlauncher")
         {
             ScannerList.Add(carrying_weapon.Armedwithagrenadelauncher.FileName);
             Subtitles += " suspect is armed with a ~r~grenade launcher~s~";
+            Notification.Text += " a Grenade Launcher";
         }
         else if (CarryingWeapon.Name == "weapon_dagger" || CarryingWeapon.Name == "weapon_knife" || CarryingWeapon.Name == "weapon_switchblade")
         {
             ScannerList.Add(carrying_weapon.Armedwithaknife.FileName);
             Subtitles += " suspect is armed with a ~r~knife~s~";
+            Notification.Text += " a Knife";
         }
         else if (CarryingWeapon.Name == "weapon_minigun")
         {
             ScannerList.Add(carrying_weapon.Armedwithaminigun.FileName);
             Subtitles += " suspect is armed with a ~r~minigun~s~";
+            Notification.Text += " a Minigun";
         }
         else if (CarryingWeapon.Name == "weapon_sawnoffshotgun")
         {
             ScannerList.Add(carrying_weapon.Armedwithasawedoffshotgun.FileName);
             Subtitles += " suspect is armed with a ~r~sawed off shotgun~s~";
+            Notification.Text += " Sawed Off Shotgun";
         }
         else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.LMG)
         {
             ScannerList.Add(carrying_weapon.Armedwithamachinegun.FileName);
             Subtitles += " suspect is armed with a ~r~machine gun~s~";
+            Notification.Text += " a Machine Gun";
         }
         else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Pistol)
         {
             ScannerList.Add(carrying_weapon.Armedwithafirearm.FileName);
             Subtitles += " suspect is armed with a ~r~pistol~s~";
+            Notification.Text += " a Pistol";
         }
         else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Shotgun)
         {
             ScannerList.Add(carrying_weapon.Armedwithashotgun.FileName);
             Subtitles += " suspect is armed with a ~r~shotgun~s~";
+            Notification.Text += " a Shotgun";
         }
         else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.SMG)
         {
             ScannerList.Add(carrying_weapon.Armedwithasubmachinegun.FileName);
             Subtitles += " suspect is armed with a ~r~submachine gun~s~";
+            Notification.Text += " a Submachine Gun";
         }
         else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.AR)
         {
             ScannerList.Add(carrying_weapon.Carryinganassaultrifle.FileName);
             Subtitles += " suspect is carrying an ~r~assault rifle~s~";
+            Notification.Text += " an Assault Rifle";
         }
         else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Sniper)
         {
             ScannerList.Add(carrying_weapon.Armedwithasniperrifle.FileName);
             Subtitles += " suspect is armed with a ~r~sniper rifle~s~";
+            Notification.Text += " a Sniper Rifle";
         }
         else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Heavy)
         {
             ScannerList.Add(status_message.HeavilyArmed.FileName);
             Subtitles += " suspect is ~r~heaviy armed~s~";
+            Notification.Text += " Heavy Weapons";
         }
         else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Melee)
         {
             ScannerList.Add(carrying_weapon.Carryingaweapon.FileName);
             Subtitles += " suspect is carrying a ~r~weapon~s~";
+            Notification.Text += " a melee weapon";
         }
         else
         {
@@ -917,15 +949,17 @@ public static class DispatchAudio
                 ScannerList.Add(carrying_weapon.Carryingagat.FileName);
                 Subtitles += " suspect is carrying a ~r~gat~s~";
             }
+            Notification.Text += " a Gat";
         }
         Subtitles += "~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, true, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, true, Subtitles, Notification));
     }
     public static void ReportOfficerDown()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Officer Down");
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.AllUnits,ReportType.Nobody, Game.LocalPlayer.Character.Position);
         Subtitles += " we have an ~r~Officer Down~s~";
         bool addRespondCode = true;
@@ -968,8 +1002,8 @@ public static class DispatchAudio
             Subtitles += " ~s~all units repond ~o~Code-99 Emergency~s~";
         }
         AddLethalForceAuthorized(ref ScannerList, ref Subtitles);   
-        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportAssualtOnOfficer()
     {
@@ -978,21 +1012,23 @@ public static class DispatchAudio
 
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.Nobody,ReportType.Officers, Game.LocalPlayer.Character.Position);
         Subtitles += " we have an ~r~Assault on an Officer~s~";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Assault on an Officer");
         ScannerList.Add(new List<string>() { crime_assault_on_an_officer.Anassaultonanofficer.FileName, crime_assault_on_an_officer.Anofficerassault.FileName }.PickRandom());
         AddLethalForceAuthorized(ref ScannerList,ref Subtitles);
-        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, true, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, true, Subtitles, Notification));
     }
     public static void ReportThreateningWithFirearm()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Threatening Officers with a Firearm");
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.Nobody,ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName);
         Subtitles += " we have a suspect ~r~Threatening an Officer with a Firearm~s~";
         AddLethalForceAuthorized(ref ScannerList,ref Subtitles);
-        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, true, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, true, Subtitles, Notification));
     }
     public static void ReportSuspectLastSeen()
     {
@@ -1002,29 +1038,30 @@ public static class DispatchAudio
         List<string> ScannerList = new List<string>() { AudioBeeps.AudioStart() };
         ScannerList.Add(new List<string>() { suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName, suspect_eluded_pt_1.OfficiersHaveLostVisualOnSuspect.FileName }.PickRandom());
         string Subtitles = "Suspect evaded pursuing officers,~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Zone,ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Evaded");
+        ReportGenericEnd(ref ScannerList, NearType.Zone,ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportSuspectArrested()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Arrested");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crook_arrested.Officershaveapprehendedsuspect.FileName, crook_arrested.Officershaveapprehendedsuspect1.FileName }.PickRandom());
         Subtitles += "Officers have apprehended suspect";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles,ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, true, Subtitles));
     }
     public static void ReportSuspectWasted()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Wasted");
         ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.Nobody,ReportType.Nobody, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crook_killed.Criminaldown.FileName, crook_killed.Suspectdown.FileName, crook_killed.Suspectneutralized.FileName, crook_killed.Suspectdownmedicalexaminerenroute.FileName, crook_killed.Suspectdowncoronerenroute.FileName, crook_killed.Officershavepacifiedsuspect.FileName }.PickRandom());
         Subtitles += "Criminal down";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles,ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, true, Subtitles));
     }
     public static void ReportLethalForceAuthorized()
@@ -1035,40 +1072,40 @@ public static class DispatchAudio
         ReportedLethalForceAuthorized = true;
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "~r~Lethal Force Authorized~s~");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.AllUnits, ReportType.Nobody, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { lethal_force.Useofdeadlyforceauthorized.FileName, lethal_force.Useofdeadlyforceisauthorized.FileName, lethal_force.Useofdeadlyforceisauthorized1.FileName, lethal_force.Useoflethalforceisauthorized.FileName, lethal_force.Useofdeadlyforcepermitted1.FileName }.PickRandom());
         Subtitles += " use of ~r~Deadly Force~s~ is authorized";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing,ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportSuspiciousActivity()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Suspicious Activity");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Civilians, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_suspicious_activity.Suspiciousactivity.FileName, crime_theft.Apossibletheft.FileName }.PickRandom());
         Subtitles += " ~y~Suspicious Activity~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportGrandTheftAuto()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "A GTA in progress");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_grand_theft_auto.Agrandtheftauto.FileName, crime_grand_theft_auto.Agrandtheftautoinprogress.FileName, crime_grand_theft_auto.AGTAinprogress.FileName, crime_grand_theft_auto.AGTAinprogress1.FileName }.PickRandom());
         Subtitles += " a ~y~GTA~s~ in progress";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportStolenAirVehicle(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Stolen Air Vehicle");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
 
         if (vehicle.VehicleEnt.IsHelicopter)
@@ -1085,54 +1122,54 @@ public static class DispatchAudio
             return;
 
         AddLethalForceAuthorized(ref ScannerList, ref Subtitles); 
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportChangedVehicle(GTAVehicle vehicle)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Updated Vehicle");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
         ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
         Subtitles += "Suspect spotted driving a";
         ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName}.PickRandom());
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,false,true);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles,ref Notification,false,true);
 
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportIncreasedWanted(bool ResultsInLethalForce)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Backup Required");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.AllUnits, ReportType.Nobody, Game.LocalPlayer.Character.Position);
         List<string> PossibleVariations = new List<string>() { assistance_required.Assistanceneeded.FileName, assistance_required.Assistancerequired.FileName, assistance_required.Backupneeded.FileName, assistance_required.Backuprequired.FileName, assistance_required.Officersneeded.FileName, assistance_required.Officersrequired.FileName,
                                                                 officer_requests_backup.Officersrequestingbackup.FileName,officer_requests_backup.Unitsrequirebackup.FileName,officer_requests_backup.Unitsrequireimmediateassistance.FileName,officer_requests_backup.Unitsrequestingbackup.FileName,officer_requests_backup.Officerneedsimmediateassistance.FileName };
         ScannerList.Add(PossibleVariations.PickRandom());
         Subtitles += " ~r~Assistance Needed~s~";
-        AddZone(ref ScannerList, ref Subtitles, Game.LocalPlayer.Character.Position);
+        AddZone(ref ScannerList, ref Subtitles, Game.LocalPlayer.Character.Position,ref Notification);
         if (ResultsInLethalForce)
         {
             AddLethalForceAuthorized(ref ScannerList,ref Subtitles);
         }
         ScannerList.Add(dispatch_respond_code.UnitsrespondCode3.FileName);
         Subtitles += " ~s~Units Repond ~o~Code-3~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportSuspiciousVehicle(GTAVehicle myCar)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Suspicious Vehicle");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_suspicious_vehicle.Asuspiciousvehicle.FileName }.PickRandom());
         Subtitles += " a ~r~Suspicious Vehicle~s~";
-        AddVehicleDescription(myCar, ref ScannerList, false, ref Subtitles,true,false);
-        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        AddVehicleDescription(myCar, ref ScannerList, false, ref Subtitles, ref Notification, true,false);
+        ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportWeaponsFree()
     {
@@ -1141,23 +1178,23 @@ public static class DispatchAudio
         ReportedWeaponsFree = true;
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Officers are ~r~Weapons Free~s~");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.AllUnits, ReportType.Nobody, Game.LocalPlayer.Character.Position);
         ScannerList.Add(custom_wanted_level_line.Suspectisarmedanddangerousweaponsfree.FileName);
         Subtitles += " suspect is ~r~Armed and Dangerous~s~, you are ~r~Weapons Free~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportCivilianKilled()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Civilian Fatality");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_civilian_fatality.Acivilianfatality.FileName, crime_civilian_down.Aciviliandown.FileName }.PickRandom());
         Subtitles += " ~r~Civilian Down~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ResetReportedItems()
     {
@@ -1170,7 +1207,7 @@ public static class DispatchAudio
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "Officers Needed");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Police.LastWantedCenterPosition);
         int rnd = LosSantosRED.MyRand.Next(1, 11);
         if (rnd <= 2)
@@ -1196,76 +1233,76 @@ public static class DispatchAudio
             ScannerList.Add(new List<string>() { assistance_required.Officersneeded.FileName, assistance_required.Officersrequired.FileName }.PickRandom());
             Subtitles += "~y~Officers required~s~";
         }
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportLowLevelShotsFired()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "Shots Fired");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Civilians, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<String>() { crime_shooting.Afirearmssituationseveralshotsfired.FileName, crime_shooting.Aweaponsincidentshotsfired.FileName, crime_shoot_out.Ashootout.FileName, crime_firearm_discharged_in_a_public_place.Afirearmdischargedinapublicplace.FileName
             , crime_firearms_incident.AfirearmsincidentShotsfired.FileName, crime_firearms_incident.Anincidentinvolvingshotsfired.FileName, crime_firearms_incident.AweaponsincidentShotsfired.FileName }.PickRandom());
         Subtitles += " a ~y~Firearms Discharge~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportLowLevelGrandTheftAuto()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "GTA");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Civilians, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<String>() { crime_grand_theft_auto.Agrandtheftauto.FileName, crime_grand_theft_auto.Agrandtheftautoinprogress.FileName, crime_grand_theft_auto.AGTAinprogress.FileName, crime_grand_theft_auto.AGTAinprogress1.FileName }.PickRandom());
         Subtitles += " a ~y~GTA~s~ in progress";
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles,Notification));
     }
     public static void ReportLowLevelTerroristActivity()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "Terrorist Activity");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Civilians, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<string>() { crime_terrorist_activity.Possibleterroristactivity.FileName, crime_terrorist_activity.Possibleterroristactivity1.FileName,crime_terrorist_activity.Possibleterroristactivity2.FileName, crime_terrorist_activity.Terroristactivity.FileName }.PickRandom());
         Subtitles += " possible ~y~Terrorist Activity~s~ in progress";
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles,Notification));
     }
 
     public static void ReportLowLevelCiviliansKilled()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "Civilian Fatality");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Civilians, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<string>() { crime_civilian_fatality.Acivilianfatality.FileName,crime_civilian_down.Aciviliandown.FileName}.PickRandom());
         Subtitles += " ~y~Civilian fatality~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportLowLevelCiviliansInjured()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "Civilian Injury");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Civilians, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<string>() { crime_injured_civilian.Aninjuredcivilian.FileName, crime_civilian_needing_assistance.Acivilianinneedofassistance.FileName, crime_civilian_needing_assistance.Acivilianrequiringassistance.FileName, crime_assault_on_a_civilian.Anassaultonacivilian.FileName }.PickRandom());
         Subtitles += " ~y~Civilian Injured~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportLowLevelCiviliansShot()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "Civilian Shot");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Civilians, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<string>() { crime_civillian_gsw.AcivilianGSW.FileName, crime_civillian_gsw.Acivilianshot.FileName, crime_civillian_gsw.Agunshotwound.FileName }.PickRandom());
         Subtitles += " ~y~Civilian Shot~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     //StolenCar
     public static void ReportStolenVehicle(GTAVehicle stolenVehicle)
@@ -1273,7 +1310,7 @@ public static class DispatchAudio
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
 
-        
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "Stolen Vehicle Reported");
         if (stolenVehicle.VehicleEnt.IsPoliceVehicle)
         {
             ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.AllUnits, ReportType.WeHave,stolenVehicle.PositionOriginallyEntered);
@@ -1286,9 +1323,9 @@ public static class DispatchAudio
             ScannerList.Add(new List<string>() { crime_stolen_vehicle.Apossiblestolenvehicle.FileName }.PickRandom());
             Subtitles += " a possible ~r~Stolen Vehicle~s~";
         }
-        AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles,true,false);
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles,stolenVehicle.PositionOriginallyEntered);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles, ref Notification, true,false);
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, stolenVehicle.PositionOriginallyEntered);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
         GameFiber ReportStolenVehicle = GameFiber.StartNew(delegate
         {
             GameFiber.Sleep(15000);
@@ -1314,40 +1351,41 @@ public static class DispatchAudio
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Lost");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName, attempt_to_find.Allunitsattempttoreacquire.FileName, attempt_to_find.Allunitsattempttoreacquirevisual.FileName, attempt_to_find.RemainintheareaATL20onsuspect.FileName, attempt_to_find.RemainintheareaATL20onsuspect1.FileName }.PickRandom());
         Subtitles += "Remain in the area, ATL20 on suspect";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles,Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportSuspectLostVisual()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Officers have lost visual contact with suspect");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<string>() { suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName, suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName, suspect_eluded_pt_2.AllUnitsStandby.FileName, suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName, suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName }.PickRandom());
         Subtitles += "All units standby";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportPersonOfInterestExpire()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Resume Patrol");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.AllUnits, ReportType.Nobody, Police.LastWantedCenterPosition);
         ScannerList.Add(new List<string>() { officer_begin_patrol.Beginpatrol.FileName, officer_begin_patrol.Beginbeat.FileName, officer_begin_patrol.Assigntopatrol.FileName, officer_begin_patrol.Proceedtopatrolarea.FileName, officer_begin_patrol.Proceedwithpatrol.FileName }.PickRandom());
         Subtitles += " ~g~proceed with patrol~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, Police.LastWantedCenterPosition);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportSuspectSpotted()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        if(Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || Police.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Reacquired");
+        if (Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || Police.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
         {
             ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
             ScannerList.Add(crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName);
@@ -1361,8 +1399,8 @@ public static class DispatchAudio
             ScannerList.Add(new List<string>() { suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName }.PickRandom());
             Subtitles += "~r~Suspect spotted~s~";
         }
-        ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles,Game.LocalPlayer.Character.Position);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportLocalSuspectSpotted()
     {
@@ -1371,6 +1409,7 @@ public static class DispatchAudio
             AudioBeeps.AudioStart()
         };
         string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Reacquired");
         if (!ReportHeadingAndStreet(ref ScannerList,ref Subtitles))
         {
             List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };
@@ -1378,7 +1417,7 @@ public static class DispatchAudio
             Subtitles += "Dispatch, we have ~r~eyes on~r~ the suspect";
         }
         ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles));
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static bool ReportHeadingAndStreet(ref List<string> ScannerList, ref string Subtitles)
     {
@@ -1686,7 +1725,7 @@ public static class DispatchAudio
             ReportedLethalForceAuthorized = true;
         }
     }
-    public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles, bool IncludeAAudio, bool IncludePoliceDescription)
+    public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles,ref DispatchNotification Notification, bool IncludeAAudio, bool IncludePoliceDescription)
     {
         if (VehicleDescription.HasBeenDescribedByDispatch)
             return;
@@ -1698,6 +1737,7 @@ public static class DispatchAudio
             if (IncludePoliceDescription)
             {
                 Subtitles += " ~r~Police Car~s~";
+                Notification.Text += " ~r~Police Car~s~";
                 ScannerList.Add(vehicle_category.PoliceSedan01.FileName);
             }
         }
@@ -1718,16 +1758,19 @@ public static class DispatchAudio
                     if (IncludeAAudio)
                     {
                         Subtitles += " ~s~a~s~";
+                        Notification.Text += " ~s~a~s~";
                         ScannerList.Add(new List<string>() { conjunctives.A01.FileName, conjunctives.A02.FileName }.PickRandom());
                     }
                     if (VehicleInformation.VehicleClass != Vehicles.VehicleClass.Emergency)
                     {
                         Subtitles += " ~s~" + LookupColor.BaseColor.Name + "~s~";
+                        Notification.Text += " ~s~" + LookupColor.BaseColor.Name + "~s~";
                         ScannerList.Add(LookupColor.ScannerFile);
                     }
                     if (ManufacturerScannerFile != "")
                     {
-                        Subtitles += " ~s~" + VehicleInformation.Manufacturer + "~s~";
+                        Subtitles += " ~p~" + VehicleInformation.Manufacturer + "~s~";
+                        Notification.Text += " ~p~" + VehicleInformation.Manufacturer + "~s~";
                         ScannerList.Add(ManufacturerScannerFile);
                     }
                     if (VehicleInformation.ModelScannerFile != "")
@@ -1746,12 +1789,15 @@ public static class DispatchAudio
                         if (ModelName == "CARNOTFOUND" || ModelName == "NULL")
                             ModelName = VehicleInformation.Name.ToLower();
 
-                        Subtitles += " ~s~" + ModelName + "~s~";
+                        Subtitles += " ~g~" + ModelName + "~s~";
+                        Notification.Text += " ~g~" + ModelName + "~s~";
                         ScannerList.Add(VehicleInformation.ModelScannerFile);
                     }
                     else if (VehicleClassScannerFile != "")
                     {
-                        Subtitles += " ~s~" + Vehicles.GetVehicleTypeSubtitle(VehicleInformation.VehicleClass) + "~s~";
+                        string subText = Vehicles.GetVehicleTypeSubtitle(VehicleInformation.VehicleClass);
+                        Subtitles += " ~b~" + subText + "~s~";
+                        Notification.Text += " ~b~" + subText + "~s~";
                         ScannerList.Add(VehicleClassScannerFile);
                     }
                 }
@@ -1761,6 +1807,7 @@ public static class DispatchAudio
         {
             ScannerList.Add(suspect_license_plate.SuspectsLicensePlate.FileName);
             Subtitles += "~s~. Suspects License Plate: ~y~" + VehicleDescription.OriginalLicensePlate.PlateNumber.ToUpper() + "~s~";//VehicleDescription.VehicleEnt.LicensePlate.ToUpper() + "~s~";
+            Notification.Text += " ~s~License Plate: ~y~" + VehicleDescription.OriginalLicensePlate.PlateNumber.ToUpper() + "~s~";
             foreach (char c in VehicleDescription.OriginalLicensePlate.PlateNumber)
             {
                 string DispatchFileName = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).PickRandom().ScannerFile;
@@ -1768,7 +1815,7 @@ public static class DispatchAudio
             }
         }
     }
-    public static void AddSpeed(ref List<string> ScannerList,float Speed, ref string Subtitles)
+    public static void AddSpeed(ref List<string> ScannerList,float Speed, ref string Subtitles,ref DispatchNotification Notification)
     {
         if (Speed >= 70f)
         {
@@ -1778,26 +1825,31 @@ public static class DispatchAudio
             {
                 ScannerList.Add(doing_speed.Doing70mph.FileName);
                 Subtitles += " ~s~doing ~o~70 mph~s~";
+                Notification.Text += " Exceeding ~o~70 mph~s~";
             }
             else if (Speed >= 80f && Speed < 90f)
             {
                 ScannerList.Add(doing_speed.Doing80mph.FileName);
                 Subtitles += " ~s~doing ~o~80 mph~s~";
+                Notification.Text += " Exceeding ~o~80 mph~s~";
             }
             else if (Speed >= 90f && Speed < 100f)
             {
                 ScannerList.Add(doing_speed.Doing90mph.FileName);
                 Subtitles += " ~s~doing ~o~90 mph~s~";
+                Notification.Text += " Exceeding ~o~90 mph~s~";
             }
             else if (Speed >= 100f && Speed < 104f)
             {
                 ScannerList.Add(doing_speed.Doing100mph.FileName);
                 Subtitles += " ~s~doing ~o~100 mph~s~";
+                Notification.Text += " Exceeding ~o~100 mph~s~";
             }
             else if (Speed >= 105f)
             {
                 ScannerList.Add(doing_speed.Doingover100mph.FileName);
                 Subtitles += " ~s~doing ~o~over 100 mph~s~";
+                Notification.Text += " Exceeding ~o~105 mph~s~";
             }
         }
     }
@@ -1817,12 +1869,19 @@ public static class DispatchAudio
             outputDevice.Stop();
         DispatchQueue.Clear();
         CancelAudio = false;
+
+        foreach(uint handles in NotificationHandles)
+        {
+            Game.RemoveNotification(handles);
+        }
+        NotificationHandles.Clear();
     }
     public class DispatchAudioEvent
     {
         public List<string> SoundsToPlay;
         public bool CheckSight = false;
         public string Subtitles = "";
+        public DispatchNotification NotificationToDisplay;
         public DispatchAudioEvent(List<string> _SoundsToPlay, bool _CheckSight)
         {
             SoundsToPlay = _SoundsToPlay;
@@ -1833,6 +1892,28 @@ public static class DispatchAudio
             SoundsToPlay = _SoundsToPlay;
             CheckSight = _CheckSight;
             Subtitles = _Subtitles;
+        }
+        public DispatchAudioEvent(List<string> _SoundsToPlay, bool _CheckSight,string _Subtitles, DispatchNotification _NotificationToDisplay)
+        {
+            SoundsToPlay = _SoundsToPlay;
+            CheckSight = _CheckSight;
+            Subtitles = _Subtitles;
+            NotificationToDisplay = _NotificationToDisplay;
+        }
+    }
+    public class DispatchNotification
+    {
+        public string Title;
+        public string Subtitle;
+        public string Text;
+        public string TextureDict = "CHAR_CALL911";
+        public string TextureName = "CHAR_CALL911";
+   
+        public DispatchNotification(string _Title,string _Subtitle,string _Text)
+        {
+            Title = _Title;
+            Subtitle = _Subtitle;
+            Text = _Text;
         }
     }
 

@@ -144,7 +144,7 @@ public static class ScriptController
                     GameStopWatch.Stop();
 
                     if (GameStopWatch.ElapsedMilliseconds >= 20)
-                        LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, GetStatus()));
+                        LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, ""));//GetStatus()
 
                     ResetRanItems();
 
