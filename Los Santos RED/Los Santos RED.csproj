@@ -106,6 +106,7 @@
     <Compile Include="Entities\Peds\GTAPed.cs" />
     <Compile Include="Lookups\Agencies.cs" />
     <Compile Include="Lookups\GTAWeapons.cs" />
+    <Compile Include="Lookups\PedNames.cs" />
     <Compile Include="Lookups\Streets.cs" />
     <Compile Include="Entities\Weapons\DroppedWeapon.cs" />
     <Compile Include="Entities\Peds\GTANewsReporter.cs" />

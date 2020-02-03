@@ -200,7 +200,7 @@ public static class PersonOfInterest
         Police.CurrentCrimes = CriminalHistory;
 
         DispatchAudio.ClearDispatchQueue();
-        Debugging.WriteToLog("WantedLevelStats Replace", Police.CurrentCrimes.PrintCrimes());
+        Debugging.WriteToLog("WantedLevelStats Replace", Police.CurrentCrimes.DebugPrintCrimes());
     }
 
     public static RapSheet GetLastWantedStats()

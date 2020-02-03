@@ -602,11 +602,11 @@ public static class Debugging
     {
 
 
-        Game.DisplayNotification("I bet this will work");
+        DispatchAudio.ReportLowLevelShotsFired();
         return;
 
         Settings.Logging = true;
-        DispatchAudio.ReportLowLevelShotsFired();
+        
 
 
         WriteToLog("WantedLevel", string.Format("Player Position: {0},Heading: {1}", Game.LocalPlayer.Character.Position, Game.LocalPlayer.Character.Heading));
@@ -1022,11 +1022,11 @@ public static class Debugging
         Debugging.WriteToLog("Debug", Game.GameTime.ToString());
         foreach (RapSheet MyRapSheet in PersonOfInterest.CriminalHistory)
         {
-            Debugging.WriteToLog("Debug", MyRapSheet.PrintCrimes());
+            Debugging.WriteToLog("Debug", MyRapSheet.DebugPrintCrimes());
         }
         Debugging.WriteToLog("Debug", "--------------------------------");
 
-        Debugging.WriteToLog("Debug Current Crimes", Police.CurrentCrimes.PrintCrimes());
+        Debugging.WriteToLog("Debug Current Crimes", Police.CurrentCrimes.DebugPrintCrimes());
 
 
 

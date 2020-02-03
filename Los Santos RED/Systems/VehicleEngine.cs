@@ -170,7 +170,10 @@ internal static class VehicleEngine
 
                 if(Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
                 {
-                    GameTimeStartedHotwiring = Game.GameTime;
+                    if(Game.LocalPlayer.Character.SeatIndex == -1)
+                        GameTimeStartedHotwiring = Game.GameTime;
+                    else
+                        GameTimeStartedHotwiring = Game.GameTime + 2000;
                 }
             }
         }

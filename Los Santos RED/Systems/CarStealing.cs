@@ -36,7 +36,7 @@ public static class CarStealing
     {
         rnd = new Random();
     }
-    public static void UnlockCarDoor(Vehicle ToEnter, int SeatTryingToEnter)
+    public static void UnlockCarDoor(Vehicle TargetVehicle, int SeatTryingToEnter)
     {
         //if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
         //    return;
@@ -45,10 +45,10 @@ public static class CarStealing
             return;
         }
 
-        if (ToEnter.Exists() && (ToEnter.IsBike || ToEnter.IsBoat || ToEnter.IsHelicopter || ToEnter.IsPlane || ToEnter.IsBicycle))
+        if (TargetVehicle.Exists() && (TargetVehicle.IsBike || TargetVehicle.IsBoat || TargetVehicle.IsHelicopter || TargetVehicle.IsPlane || TargetVehicle.IsBicycle))
             return;
 
-        if (!CanLockPick(ToEnter))
+        if (!CanLockPick(TargetVehicle))
             return;
 
         try
@@ -57,20 +57,21 @@ public static class CarStealing
             {
                 LosSantosRED.SetPedUnarmed(Game.LocalPlayer.Character, false);
                 bool Continue = true;
-                ToEnter.MustBeHotwired = true;
+                TargetVehicle.MustBeHotwired = true;
                 string AnimationName = "std_force_entry_ds";
                 int DoorIndex = 0;
                 int WaitTime = 1750;
+                float DesiredHeading = TargetVehicle.Heading - 90f;
 
 
-
-                if (ToEnter.HasBone("door_dside_f") && ToEnter.HasBone("door_pside_f"))
+                if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
                 {
-                    if (Game.LocalPlayer.Character.DistanceTo2D(ToEnter.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(ToEnter.GetBonePosition("door_pside_f")))
+                    if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
                     {
                         AnimationName = "std_force_entry_ps";
                         DoorIndex = 1;
                         WaitTime = 2200;
+                        DesiredHeading = TargetVehicle.Heading + 90f;
                     }
                     else
                     {
@@ -80,8 +81,10 @@ public static class CarStealing
                     }
                 }
 
+                
+                LosSantosRED.MovePedToCarPosition(TargetVehicle, Game.LocalPlayer.Character, DesiredHeading, Game.LocalPlayer.Character.Position, false);
 
-                CameraSystem.HighLightCarjacking(ToEnter,DoorIndex == 0);              
+                //CameraSystem.HighLightCarjacking(ToEnter,DoorIndex == 0);              
 
                 LocalWriteToLog("UnlockCarDoor", string.Format("DoorIndex: {0},AnimationName: {1}", DoorIndex, AnimationName));
                 Rage.Object Screwdriver = LosSantosRED.AttachScrewdriverToPed(Game.LocalPlayer.Character);
@@ -97,8 +100,8 @@ public static class CarStealing
                     if (Extensions.IsMoveControlPressed())
                     {
                         Continue = false;
-                        if (CameraSystem.UsingOtherCamera)
-                            CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
+                        //if (CameraSystem.UsingOtherCamera)
+                            //CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
                         break;
 
                     }
@@ -113,30 +116,30 @@ public static class CarStealing
                     return;
                 }
 
-                ToEnter.LockStatus = VehicleLockStatus.Unlocked;
-                ToEnter.Doors[DoorIndex].Open(true, false);
+                TargetVehicle.LockStatus = VehicleLockStatus.Unlocked;
+                TargetVehicle.Doors[DoorIndex].Open(true, false);
 
                 //GameFiber.Sleep(500);
 
                 LocalWriteToLog("UnlockCarDoor", string.Format("Open Door: {0}", DoorIndex));
                 GameTimeStarted = Game.GameTime;
-                Game.LocalPlayer.Character.Tasks.EnterVehicle(ToEnter, SeatTryingToEnter);
+                Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                 while (!Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 10000)
                 {
                     GameFiber.Yield();
                     if (Extensions.IsMoveControlPressed())
                     {
                         Continue = false;
-                        if (CameraSystem.UsingOtherCamera)
-                            CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
+                        //if (CameraSystem.UsingOtherCamera)
+                            //CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
                         break;
                     }
                 }
-                if (CameraSystem.UsingOtherCamera)
-                    CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
+                //if (CameraSystem.UsingOtherCamera)
+                    //CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
 
-                if (ToEnter.Doors[DoorIndex].IsValid())
-                    NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", ToEnter, DoorIndex, 4, 0f);
+                if (TargetVehicle.Doors[DoorIndex].IsValid())
+                    NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, DoorIndex, 4, 0f);
                 if(DoorIndex == 0)//Driver side
                     GameFiber.Sleep(5000);
                 else
@@ -323,7 +326,7 @@ public static class CarStealing
                 LosSantosRED.RequestAnimationDictionay(dict);
                 LosSantosRED.SetPlayerToLastWeapon();
 
-                CameraSystem.HighLightCarjacking(TargetVehicle, true);
+                //CameraSystem.HighLightCarjacking(TargetVehicle, true);
 
                 float DriverHeading = Driver.Heading;
                 int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
@@ -394,13 +397,13 @@ public static class CarStealing
                     }
                     if(ScenePhase >= 0.5f)
                     {
-                        if (CameraSystem.UsingOtherCamera)
-                            CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
+                        //if (CameraSystem.UsingOtherCamera)
+                            //CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
                     }
                 }
 
-                if (CameraSystem.UsingOtherCamera)
-                    CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
+               // if (CameraSystem.UsingOtherCamera)
+                   // CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
 
                 if (Game.LocalPlayer.Character.IsDead)
                 {
@@ -439,8 +442,8 @@ public static class CarStealing
                 if (Cancel)
                 {
                     PlayerBreakingIntoCar = false;
-                    if (CameraSystem.UsingOtherCamera)
-                        CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
+                    //if (CameraSystem.UsingOtherCamera)
+                    //    CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
                     return;
                 }
 
@@ -448,8 +451,8 @@ public static class CarStealing
                 if (TargetVehicle.Doors[0].IsValid())
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
 
-                if (CameraSystem.UsingOtherCamera)
-                    CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
+                //if (CameraSystem.UsingOtherCamera)
+                    //CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
 
                 if (Driver.IsInAnyVehicle(false))
                 {

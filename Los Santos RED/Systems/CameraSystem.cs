@@ -20,6 +20,9 @@ public static class CameraSystem
         if (IsTransitioning)
             return;
 
+
+
+
         GameFiber.StartNew(delegate
         {
             IsTransitioning = true;

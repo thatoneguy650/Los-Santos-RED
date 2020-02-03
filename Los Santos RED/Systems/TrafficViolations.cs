@@ -74,7 +74,7 @@ public static class TrafficViolations
     }
     public static void CheckViolations()
     {
-        if (Police.CurrentPoliceState != Police.PoliceState.Normal || !Settings.TrafficViolations)
+        if (!Settings.TrafficViolations)//if (Police.CurrentPoliceState != Police.PoliceState.Normal || !Settings.TrafficViolations)
         {
             GameTimeStartedDrivingOnPavement = 0;
             GameTimeStartedDrivingAgainstTraffic = 0;

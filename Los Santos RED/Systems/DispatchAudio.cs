@@ -1384,7 +1384,8 @@ public static class DispatchAudio
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Reacquired");
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", string.Format("Suspect {0} Reacquired", PedSwapping.SuspectName)) { TextureDict = PedSwapping.CurrentHeadshot.Txd, TextureName = PedSwapping.CurrentHeadshot.Txd };
+
         if (Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || Police.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
         {
             ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
@@ -1400,6 +1401,9 @@ public static class DispatchAudio
             Subtitles += "~r~Suspect spotted~s~";
         }
         ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        if(Police.CurrentCrimes.CommittedAnyCrimes)
+            Notification.Text += ", Wanted For:" + Police.CurrentCrimes.PrintCrimes();
+
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportLocalSuspectSpotted()
