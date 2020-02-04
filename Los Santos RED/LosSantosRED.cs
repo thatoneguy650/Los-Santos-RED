@@ -73,17 +73,14 @@ public static class LosSantosRED
             }    
         }
     }
-    public static bool PlayerRecentlyShot
+    public static bool PlayerRecentlyShot(uint Duration)
     {
-        get
-        {
-            if (GameTimePlayerLastShot == 0)
-                return false;
-            else if (Game.GameTime - GameTimePlayerLastShot <= 15000)
-                return true;
-            else
-                return false;
-        }
+        if (GameTimePlayerLastShot == 0)
+            return false;
+        else if (Game.GameTime - GameTimePlayerLastShot <= Duration)//15000
+            return true;
+        else
+            return false;
     }
     public static bool PlayerIsNotWanted
     {
@@ -651,9 +648,19 @@ public static class LosSantosRED
         if (!Screwdriver.Exists())
             return null;
         CreatedObjects.Add(Screwdriver);
-        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005);
+        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
         Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
         return Screwdriver;
+    }
+    public static Rage.Object AttachMoneyToPed(Ped Pedestrian)
+    {
+        Rage.Object Money = new Rage.Object("xs_prop_arena_cash_pile_m", Pedestrian.GetOffsetPositionUp(50f));
+        if (!Money.Exists())
+            return null;
+        CreatedObjects.Add(Money);
+        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
+        Money.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.12f, 0.03f, -0.01f), new Rotator(0f, -45f, 90f));
+        return Money;
     }
     public static void LoadInteriors()
     {

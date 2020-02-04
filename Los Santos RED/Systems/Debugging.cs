@@ -755,10 +755,74 @@ public static class Debugging
     {
         try
         {
+            Ped MyPed = new Ped(Game.LocalPlayer.Character.Position.Around2D(2f, 7f), 0f);
+            //GameFiber.Wait(1500);
+            // MyPed.IsPersistent = false;
+            //MyPed.BlockPermanentEvents = true;
+
+            Respawning.BribePoliceAnimation(new GTACop(MyPed, false, MyPed.Health, Agencies.LSPD),0);
 
 
+            GameFiber.Wait(10000);
+            if (MyPed.Exists())
+                MyPed.Delete();
+
+            //MyPed.IsPersistent = false;
+            //MyPed.BlockPermanentEvents = true;
+
+            //Ped PedToMove = Game.LocalPlayer.Character;
+            //Ped PedToMoveTo = MyPed;
+
+            //bool Continue = true;
+            //Vector3 PositionToMoveTo = PedToMoveTo.GetOffsetPositionFront(1f);
+            //float DesiredHeading = PedToMoveTo.Heading - 180;
+            //NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading);
+            //uint GameTimeStarted = Game.GameTime;
+            //while (Game.GameTime - GameTimeStarted <= 15000 && !(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.FacingOppositeDirection(PedToMoveTo)))// PedToMove.Heading.IsWithin(DesiredHeading - 15f, DesiredHeading + 15f)))
+            //{
+            //    GameFiber.Yield();
+            //    if (Extensions.IsMoveControlPressed())
+            //    {
+            //        Continue = false;
+            //        break;
+            //    }
+            //}
+            //if (!Continue)
+            //{
+            //    PedToMove.Tasks.Clear();
+            //}
+            
 
 
+            //LosSantosRED.RequestAnimationDictionay("mp_common");
+
+            //NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+            //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", MyPed, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+
+            //Rage.Object MoneyPile = LosSantosRED.AttachMoneyToPed(PedToMove);
+
+            //GameFiber.Wait(1500);
+            //if(MoneyPile.Exists())
+            //    MoneyPile.Delete();
+
+            //MoneyPile = LosSantosRED.AttachMoneyToPed(PedToMoveTo);
+            //GameFiber.Wait(1500);
+            //if (MoneyPile.Exists())
+            //    MoneyPile.Delete();
+
+
+            //Game.LocalPlayer.Character.Tasks.Clear();
+            //MyPed.Tasks.Clear();
+
+
+            //GameFiber.Wait(10000);
+            //if (MyPed.Exists())
+            //    MyPed.Delete();
+
+
+            //GameFiber.Sleep(5000);
+            //if (MyPed.Exists())
+            //    MyPed.Delete();
             //teleport away from police
 
             //Vector3 DesiredPosition = Game.LocalPlayer.Character.Position.Around2D(750f, 1500f);
@@ -774,22 +838,22 @@ public static class Debugging
 
 
 
-            
 
-           // Ped Doggo = new Ped("a_c_shepherd", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
-           //// Doggo.WarpIntoVehicle(ClosestDriver.CopPed.CurrentVehicle, 1);
-           // //PoliceSpawning.CreatedEntities.Add(Doggo);
-           // Doggo.BlockPermanentEvents = true;
-           // Doggo.IsPersistent = false;
-           // Doggo.RelationshipGroup = "COPDOGS";
-           // Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
-           // Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
-           // //Doggo.Health = 50;
-           // Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
-           // Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
-           // GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health, Agencies.LSPD);
-           // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ABILITY", Doggo, 2);
-           // NativeFunction.CallByName<bool>("SET_PED_COMBAT_MOVEMENT", Doggo, 3);
+
+            // Ped Doggo = new Ped("a_c_shepherd", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
+            //// Doggo.WarpIntoVehicle(ClosestDriver.CopPed.CurrentVehicle, 1);
+            // //PoliceSpawning.CreatedEntities.Add(Doggo);
+            // Doggo.BlockPermanentEvents = true;
+            // Doggo.IsPersistent = false;
+            // Doggo.RelationshipGroup = "COPDOGS";
+            // Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "COP", Relationship.Like);
+            // Game.SetRelationshipBetweenRelationshipGroups("COP", "COPDOGS", Relationship.Like);
+            // //Doggo.Health = 50;
+            // Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
+            // Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
+            // GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health, Agencies.LSPD);
+            // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ABILITY", Doggo, 2);
+            // NativeFunction.CallByName<bool>("SET_PED_COMBAT_MOVEMENT", Doggo, 3);
 
             // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Doggo, 5,true);//can fight armed when not armed
             // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Doggo, 46, true);//always fight

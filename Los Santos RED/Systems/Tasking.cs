@@ -429,7 +429,7 @@ public static class Tasking
         }
     }
 
-    private static void SetUnarmed(GTACop Cop)
+    public static void SetUnarmed(GTACop Cop)
     {
         if (!Cop.Pedestrian.Exists() || (Cop.SetUnarmed && !Cop.NeedsWeaponCheck))
             return;

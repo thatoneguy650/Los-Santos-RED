@@ -30,7 +30,8 @@ public static class Respawning
 
         if (Amount < Police.PreviousWantedLevel * Settings.PoliceBribeWantedLevelScale)
         {
-            Game.DisplayNotification("Thats it? Thanks for the cash, but you're going downtown.");
+            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Bribe", "", string.Format("Thats it? ${0}?", Amount));
+            //Game.DisplayNotification("Thats it? Thanks for the cash, but you're going downtown.");
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
             return;
         }
@@ -38,12 +39,79 @@ public static class Respawning
         {
             LosSantosRED.BeingArrested = false;
             LosSantosRED.IsBusted = false;
-            Game.DisplayNotification("Thanks for the cash, now beat it.");
-            Game.LocalPlayer.Character.GiveCash(-1 * Amount);
+            GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            if (ClosestCop == null)
+            {
+                Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Bribe", "", "Thanks for the cash, now beat it.");
+                Game.LocalPlayer.Character.GiveCash(-1 * Amount);
+                Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+            }
+            else
+            {
+                BribePoliceAnimation(ClosestCop, Amount);
+            }
         }
 
-        Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+
         ResetPlayer(true, false);
+    }
+    public static void BribePoliceAnimation(GTACop CopToBribe,int Amount)//temp public
+    {
+        //GameFiber.StartNew(delegate
+        //{
+        NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
+        Game.TimeScale = 1.0f;
+        Tasking.SetUnarmed(CopToBribe);
+
+        Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+        CopToBribe.Pedestrian.BlockPermanentEvents = true;
+
+
+        Ped PedToMove = Game.LocalPlayer.Character;
+        Ped PedToMoveTo = CopToBribe.Pedestrian;
+
+
+        bool Continue = true;
+        Vector3 PositionToMoveTo = PedToMoveTo.GetOffsetPositionFront(1f);
+        float DesiredHeading = PedToMoveTo.Heading - 180;
+        NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading);
+        uint GameTimeStarted = Game.GameTime;
+        while (Game.GameTime - GameTimeStarted <= 15000 && !(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.FacingOppositeDirection(PedToMoveTo)))// PedToMove.Heading.IsWithin(DesiredHeading - 15f, DesiredHeading + 15f)))
+        {
+            GameFiber.Yield();
+            if (Extensions.IsMoveControlPressed())
+            {
+                Continue = false;
+                break;
+            }
+        }
+        if (!Continue)
+        {
+            PedToMove.Tasks.Clear();
+            return;
+        }
+
+        LosSantosRED.RequestAnimationDictionay("mp_common");
+
+        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+
+        Rage.Object MoneyPile = LosSantosRED.AttachMoneyToPed(PedToMove);
+
+        GameFiber.Wait(1500);
+        if (MoneyPile.Exists())
+            MoneyPile.Delete();
+
+        MoneyPile = LosSantosRED.AttachMoneyToPed(PedToMoveTo);
+        GameFiber.Wait(1500);
+        if (MoneyPile.Exists())
+            MoneyPile.Delete();
+
+        Game.LocalPlayer.Character.Tasks.Clear();
+        PedToMoveTo.Tasks.Clear();
+
+        Game.LocalPlayer.Character.GiveCash(-1 * Amount);
+        //});
     }
     public static void RespawnAtHospital(Location Hospital)
     {
@@ -66,7 +134,7 @@ public static class Respawning
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
 
-            Game.DisplayNotification(string.Format("You have been charged ~r~${0} ~s~in Hospital fees.", HospitalFee));
+            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA",Hospital.Name,"Hospital Fees",string.Format("~r~${0}", HospitalFee));
 
         Game.LocalPlayer.Character.GiveCash(-1 * HospitalFee);
     }
@@ -116,15 +184,15 @@ public static class Respawning
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
 
-        bool DABlewTheCase = LosSantosRED.MyRand.Next(1, 11) == 1;
-        if (!DABlewTheCase)
+        bool LesterHelp = LosSantosRED.MyRand.Next(1, 11) <= 4;
+        if (!LesterHelp)
         {
-            Game.DisplayNotification(string.Format("You got out with only ~r~${0} ~s~in bail money, try to stay out of trouble.", bailMoney));
+            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStation.Name, "Bail Fees", string.Format("~r~${0} ~s~", bailMoney));
             Game.LocalPlayer.Character.GiveCash(-1 * bailMoney);
         }
         else
         {
-            Game.DisplayNotification(string.Format("The DA Blew the case, you got off! Saved ~g~${0} ~s~in bail money", bailMoney));
+            Game.DisplayNotification("CHAR_LESTER", "CHAR_LESTER", PoliceStation.Name, "Bail Fees", string.Format("~g~${0} ~s~", 0));
         }
     }
     public static void UnDie()

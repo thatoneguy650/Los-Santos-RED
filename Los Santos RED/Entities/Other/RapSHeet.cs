@@ -72,7 +72,7 @@ public class RapSheet
         string CrimeString = "";
         foreach (Crime MyCrime in GetListOfCrimes().Where(x => x.HasBeenWitnessedByPolice).OrderByDescending(x => x.Severity).Take(3))
         {
-            CrimeString += string.Format("~n~{0}{1}~s~", GetColorSeverity(MyCrime.Severity),MyCrime.DebugName);
+            CrimeString += string.Format("~n~{0}{1} ({2})~s~", GetColorSeverity(MyCrime.Severity),MyCrime.DebugName,MyCrime.InstancesObserved);
         }
         return CrimeString;
     }
@@ -102,33 +102,33 @@ public class RapSheet
         if (LosSantosRED.IsBusted || LosSantosRED.IsDead)
             return;
 
-        if (!KillingCivilians.HasBeenWitnessedByPolice && (Civilians.RecentlyKilledCivilian(5000) || Civilians.NearMurderVictim(15f)) && Police.AnyPoliceCanSeePlayer)
+        if (KillingCivilians.CanObserveCrime && (Civilians.RecentlyKilledCivilian(5000) || Civilians.NearMurderVictim(15f)) && Police.AnyPoliceCanSeePlayer)///HasBeenWitnessedByPolice
         {
             KillingCivilians.CrimeObserved();
         }
 
-        if (!HurtingCivilians.HasBeenWitnessedByPolice && Civilians.RecentlyHurtCivilian(5000) && Police.AnyPoliceCanSeePlayer)
+        if (HurtingCivilians.CanObserveCrime && Civilians.RecentlyHurtCivilian(5000) && Police.AnyPoliceCanSeePlayer)//HasBeenWitnessedByPolice
         {
             HurtingCivilians.CrimeObserved();
         }
 
-        if (!FiringWeaponNearPolice.HasBeenWitnessedByPolice && (LosSantosRED.PlayerRecentlyShot || Police.PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || (x.DistanceToPlayer <= 55f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
+        if (FiringWeaponNearPolice.CanObserveCrime && (LosSantosRED.PlayerRecentlyShot(3000) || Police.PlayerArtificiallyShooting) && (PoliceScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || (x.DistanceToPlayer <= 45f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))) //if (!firedWeapon && Game.LocalPlayer.Character.IsShooting && (PoliceScanning.CopPeds.Any(x => x.canSeePlayer || x.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f))))
         {
             FiringWeaponNearPolice.CrimeObserved();
         }
 
-        if (!TrespessingOnGovtProperty.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsWanted && PlayerLocation.PlayerCurrentZone == Zones.JAIL && Police.AnyPoliceCanSeePlayer)
+        if (TrespessingOnGovtProperty.CanObserveCrime && LosSantosRED.PlayerIsWanted && PlayerLocation.PlayerCurrentZone == Zones.JAIL && Police.AnyPoliceCanSeePlayer)
         {
             TrespessingOnGovtProperty.CrimeObserved();
         }
 
         CheckAimingAtPolice();
-        if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && TimeAimedAtPolice >= 100)
+        if (!AimingWeaponAtPolice.CanObserveCrime && TimeAimedAtPolice >= 100)
         {
             AimingWeaponAtPolice.CrimeObserved();
         }
 
-        if (!BrandishingWeapon.HasBeenWitnessedByPolice && Police.AnyPoliceCanSeePlayer && LosSantosRED.PlayerIsConsideredArmed && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !LosSantosRED.PlayerInVehicle)
+        if (BrandishingWeapon.CanObserveCrime && Police.AnyPoliceCanSeePlayer && LosSantosRED.PlayerIsConsideredArmed && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !LosSantosRED.PlayerInVehicle)
         {
             GTAWeapon MatchedWeapon = GTAWeapons.GetWeaponFromHash((ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
             if (MatchedWeapon != null && MatchedWeapon.WeaponLevel >= 2)
@@ -138,17 +138,17 @@ public class RapSheet
             BrandishingWeapon.CrimeObserved();
         }
 
-        if (!ChangingPlates.HasBeenWitnessedByPolice && LicensePlateChanging.PlayerChangingPlate && Police.AnyPoliceCanSeePlayer)
+        if (ChangingPlates.CanObserveCrime && LicensePlateChanging.PlayerChangingPlate && Police.AnyPoliceCanSeePlayer)
         {
             ChangingPlates.CrimeObserved();
         }
 
-        if (!BreakingIntoCars.HasBeenWitnessedByPolice && CarStealing.PlayerBreakingIntoCar && Police.AnyPoliceCanSeePlayer)
+        if (BreakingIntoCars.CanObserveCrime && CarStealing.PlayerBreakingIntoCar && Police.AnyPoliceCanSeePlayer)
         {
             BreakingIntoCars.CrimeObserved();
         }
 
-        if (!GotInAirVehicleDuringChase.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsWanted && LosSantosRED.PlayerInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
+        if (GotInAirVehicleDuringChase.CanObserveCrime && LosSantosRED.PlayerIsWanted && LosSantosRED.PlayerInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
         {
             GotInAirVehicleDuringChase.CrimeObserved();
         }
@@ -173,8 +173,19 @@ public class Crime
     public int InstancesObserved = 0;
     public DispatchAudio.DispatchQueueItem DispatchToPlay;
     private uint GameTimeLastReported;
-
-   // public bool SetOnDispatchEnd = false;
+    private uint InstanceDuration = 20000;
+   public bool CanObserveCrime
+    {
+        get
+        {
+            if (!HasBeenWitnessedByPolice)
+                return true;
+            else if (Game.GameTime - GameTimeLastWitnessed >= InstanceDuration)
+                return true;
+            else
+                return false;
+        }
+    }
     public bool RecentlyCommittedCrime(uint TimeSince)
     {
         if (!HasBeenWitnessedByPolice)

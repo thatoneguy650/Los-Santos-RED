@@ -358,7 +358,7 @@ namespace ExtensionsMethods
         public static bool FacingOppositeDirection(this Entity Entity1, Entity Entity2)
         {
             float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
-            if (MyAngle >= 140f && MyAngle <= 220f)
+            if (MyAngle >= 170 && MyAngle <= 190)//if (MyAngle >= 140f && MyAngle <= 220f)
             {
                 return true;
             }

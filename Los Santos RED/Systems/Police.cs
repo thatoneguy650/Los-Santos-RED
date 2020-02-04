@@ -648,13 +648,13 @@ internal static class Police
     {
         LocalWriteToLog("AddDispatchToUnknownWanted", "Got wanted without being manually set");
         GTAWeapon MyGun = LosSantosRED.GetCurrentWeapon();
-        if(LosSantosRED.PlayerRecentlyShot && Civilians.RecentlyKilledCivilian(10000))
+        if(LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCiviliansShot, 20) { IsAmbient = true });
-        else if (!LosSantosRED.PlayerRecentlyShot && Civilians.RecentlyKilledCivilian(10000))
+        else if (!LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCiviliansKilled, 20) { IsAmbient = true }); 
-        else if (LosSantosRED.PlayerRecentlyShot && LosSantosRED.PlayerIsConsideredArmed && MyGun != null && MyGun.WeaponLevel >= 3)
+        else if (LosSantosRED.PlayerRecentlyShot(20000) && LosSantosRED.PlayerIsConsideredArmed && MyGun != null && MyGun.WeaponLevel >= 3)
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelTerroristActivity, 20) { IsAmbient = true });
-        else if (LosSantosRED.PlayerRecentlyShot)
+        else if (LosSantosRED.PlayerRecentlyShot(20000))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelShotsFired, 20) { IsAmbient = true });
         else if (CarStealing.PlayerBreakingIntoCar)
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelGrandTheftAuto, 20) { IsAmbient = true });
