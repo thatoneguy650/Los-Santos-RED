@@ -90,24 +90,24 @@ public static class Surrendering
     }
     public static void UnSetArrestedAnimation(Ped PedToArrest)
     {
-        GameFiber UnSetArrestedAnimation = GameFiber.StartNew(delegate
-        {
-            LosSantosRED.RequestAnimationDictionay("random@arrests");
-            LosSantosRED.RequestAnimationDictionay("busted");
-            LosSantosRED.RequestAnimationDictionay("ped");
+            GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
+            {
+                LosSantosRED.RequestAnimationDictionay("random@arrests");
+                LosSantosRED.RequestAnimationDictionay("busted");
+                LosSantosRED.RequestAnimationDictionay("ped");
 
-            if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 1) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 1))
-            {
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
-                GameFiber.Wait(1000);//1250
-                PedToArrest.Tasks.Clear();
-            }
-            else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 1))
-            {
-                PedToArrest.Tasks.Clear();
-            }
-        }, "UnSetArrestedAnimation");
-        Debugging.GameFibers.Add(UnSetArrestedAnimation);
+                if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 1) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 1))
+                {
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
+                    GameFiber.Wait(1000);//1250
+                    PedToArrest.Tasks.Clear();
+                }
+                else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 1))
+                {
+                    PedToArrest.Tasks.Clear();
+                }
+            }, "UnSetArrestedAnimation");
+            Debugging.GameFibers.Add(UnSetArrestedAnimationGF);
     }
     public static void CommitSuicide(Ped PedToSuicide)
     {

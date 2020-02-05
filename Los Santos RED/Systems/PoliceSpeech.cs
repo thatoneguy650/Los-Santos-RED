@@ -17,7 +17,7 @@ internal static class PoliceSpeech
     private static List<string> CautiousChaseSpeech;
     private static List<string> ArrestedWaitSpeech;
     private static List<string> PlayerDeadSpeech;
-
+    private static List<string> AmbientSpeech;
     public static bool IsRunning { get; set; }
     static PoliceSpeech()
     {
@@ -29,7 +29,10 @@ internal static class PoliceSpeech
         DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
         UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
         CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
+        AmbientSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
+
         ArrestedWaitSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "SURROUNDED" };
+
         PlayerDeadSpeech = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE" };
     }
     public static void Dispose()
@@ -63,7 +66,13 @@ internal static class PoliceSpeech
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
                     {
-                        string Speech = ArrestedWaitSpeech.PickRandom();
+                        //string Speech = ArrestedWaitSpeech.PickRandom();
+                        //Cop.Pedestrian.PlayAmbientSpeech(Speech);
+                        //LocalWriteToLog("CheckSpeech", Speech);
+                    }
+                    else if (Police.CurrentPoliceState == Police.PoliceState.Normal && Respawning.RecentlyBribedPolice)
+                    {
+                        string Speech = AmbientSpeech.PickRandom();
                         Cop.Pedestrian.PlayAmbientSpeech(Speech);
                         LocalWriteToLog("CheckSpeech", Speech);
                     }

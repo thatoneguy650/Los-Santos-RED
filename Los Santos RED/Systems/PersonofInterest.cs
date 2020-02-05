@@ -156,7 +156,7 @@ public static class PersonOfInterest
         Police.AddUpdateLastWantedBlip(Vector3.Zero);
 
         if(PlayAudio)
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportPersonOfInterestExpire, 3));
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportResumePatrol, 3));
 
     }
     public static bool ApplyWantedStatsForPlate(string PlateNumber)

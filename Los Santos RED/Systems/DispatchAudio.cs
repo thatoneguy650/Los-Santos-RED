@@ -71,7 +71,7 @@ public static class DispatchAudio
         ReportLowLevelCriminalActivity = 24,
         ReportLowLevelShotsFired = 25,
         ReportLowLevelGrandTheftAuto = 26,
-        ReportPersonOfInterestExpire = 27,
+        ReportResumePatrol = 27,
         ReportSuspectLostVisual = 28,
         ReportLowLevelTerroristActivity = 29,
         ReportTrespassingOnGovernmentProperty = 30,
@@ -463,8 +463,8 @@ public static class DispatchAudio
                         ReportLowLevelShotsFired();
                     else if (Item.Type == ReportDispatch.ReportLowLevelGrandTheftAuto)
                         ReportLowLevelGrandTheftAuto();
-                    else if (Item.Type == ReportDispatch.ReportPersonOfInterestExpire)
-                        ReportPersonOfInterestExpire();
+                    else if (Item.Type == ReportDispatch.ReportResumePatrol)
+                        ReportResumePatrol();
                     else if (Item.Type == ReportDispatch.ReportSuspectLostVisual)
                         ReportSuspectLostVisual();
                     else if (Item.Type == ReportDispatch.ReportLowLevelTerroristActivity)
@@ -635,9 +635,9 @@ public static class DispatchAudio
         {
             ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
             ScannerList.Add(MyStreet.DispatchFile);
-            Notification.Text += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
-            Subtitles += "~n~Location: ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
-
+            Subtitles += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
+            Notification.Text += "~n~Location: ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
+            
             if (PlayerLocation.PlayerCurrentCrossStreet != null)
             {
                 Street MyCrossStreet = PlayerLocation.PlayerCurrentCrossStreet;
@@ -1370,7 +1370,7 @@ public static class DispatchAudio
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
-    public static void ReportPersonOfInterestExpire()
+    public static void ReportResumePatrol()
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
@@ -1385,7 +1385,7 @@ public static class DispatchAudio
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", string.Format("Suspect: {0}", PedSwapping.SuspectName)) { TextureDict = PedSwapping.CurrentHeadshot.Txd, TextureName = PedSwapping.CurrentHeadshot.Txd };
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", string.Format("Suspect {0}", PedSwapping.SuspectName), "") { TextureDict = PedSwapping.CurrentHeadshot.Txd, TextureName = PedSwapping.CurrentHeadshot.Txd };
 
         if (Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || Police.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
         {
@@ -1403,7 +1403,7 @@ public static class DispatchAudio
         }
         ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         if(Police.CurrentCrimes.CommittedAnyCrimes)
-            Notification.Text += "~n~Wanted For:" + Police.CurrentCrimes.PrintCrimes();
+            Notification.Text += "Wanted For:" + Police.CurrentCrimes.PrintCrimes();
 
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }

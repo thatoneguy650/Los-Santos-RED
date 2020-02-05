@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 public static class Respawning
 {
+    private static uint GameTimeLastBribedPolice;
     private static uint GameTimeLastUndied;
     public static bool RecentlyUndied
     {
@@ -23,6 +24,18 @@ public static class Respawning
                 return false;
         }
     }
+    public static bool RecentlyBribedPolice
+    {
+        get
+        {
+            if (GameTimeLastBribedPolice == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastBribedPolice <= 10000)
+                return true;
+            else
+                return false;
+        }
+    }
     public static void BribePolice(int Amount)
     {
         if (Game.LocalPlayer.Character.GetCash() < Amount)
@@ -30,88 +43,100 @@ public static class Respawning
 
         if (Amount < Police.PreviousWantedLevel * Settings.PoliceBribeWantedLevelScale)
         {
-            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Bribe", "", string.Format("Thats it? ${0}?", Amount));
-            //Game.DisplayNotification("Thats it? Thanks for the cash, but you're going downtown.");
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
             return;
         }
         else
         {
-            LosSantosRED.BeingArrested = false;
-            LosSantosRED.IsBusted = false;
+            GameTimeLastBribedPolice = Game.GameTime;
             GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             if (ClosestCop == null)
             {
-                Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Bribe", "", "Thanks for the cash, now beat it.");
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
                 Game.LocalPlayer.Character.GiveCash(-1 * Amount);
                 Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+                ResetPlayer(true, false);
             }
             else
             {
                 BribePoliceAnimation(ClosestCop, Amount);
             }
         }
-
-
-        ResetPlayer(true, false);
     }
     public static void BribePoliceAnimation(GTACop CopToBribe,int Amount)//temp public
     {
-        //GameFiber.StartNew(delegate
-        //{
-        NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
-        Game.TimeScale = 1.0f;
-        Tasking.SetUnarmed(CopToBribe);
-
-        Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
-        CopToBribe.Pedestrian.BlockPermanentEvents = true;
-
-
-        Ped PedToMove = Game.LocalPlayer.Character;
-        Ped PedToMoveTo = CopToBribe.Pedestrian;
-
-
-        bool Continue = true;
-        Vector3 PositionToMoveTo = PedToMoveTo.GetOffsetPositionFront(1f);
-        float DesiredHeading = PedToMoveTo.Heading - 180;
-        NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading);
-        uint GameTimeStarted = Game.GameTime;
-        while (Game.GameTime - GameTimeStarted <= 15000 && !(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.FacingOppositeDirection(PedToMoveTo)))// PedToMove.Heading.IsWithin(DesiredHeading - 15f, DesiredHeading + 15f)))
+        GameFiber.StartNew(delegate
         {
-            GameFiber.Yield();
-            if (Extensions.IsMoveControlPressed())
+            NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
+            Game.TimeScale = 1.0f;
+            Tasking.SetUnarmed(CopToBribe);
+
+            Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+
+            while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Game.LocalPlayer.Character, "random@arrests", "kneeling_arrest_escape", 1))
+                GameFiber.Wait(250);
+
+
+            GameFiber.Wait(2000);
+
+            CopToBribe.Pedestrian.BlockPermanentEvents = true;
+            CopToBribe.Pedestrian.IsPositionFrozen = true;
+
+
+            Ped PedToMove = Game.LocalPlayer.Character;
+            Ped PedToMoveTo = CopToBribe.Pedestrian;
+            Vector3 OriginalPosition = PedToMoveTo.Position;
+
+            bool Continue = true;
+            Vector3 PositionToMoveTo = PedToMoveTo.GetOffsetPositionFront(1f);
+            float DesiredHeading = PedToMoveTo.Heading - 180;
+            NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading);
+            uint GameTimeStarted = Game.GameTime;
+            while (Game.GameTime - GameTimeStarted <= 15000 && !(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.FacingOppositeDirection(PedToMoveTo)))// PedToMove.Heading.IsWithin(DesiredHeading - 15f, DesiredHeading + 15f)))
             {
-                Continue = false;
-                break;
+                GameFiber.Yield();
+                if (Extensions.IsMoveControlPressed() || PedToMoveTo.DistanceTo2D(OriginalPosition) >= 0.1f)
+                {
+                    Continue = false;
+                    break;
+                }
             }
-        }
-        if (!Continue)
-        {
-            PedToMove.Tasks.Clear();
-            return;
-        }
+            if (!Continue)
+            {
+                CopToBribe.Pedestrian.BlockPermanentEvents = false;
+                CopToBribe.Pedestrian.IsPositionFrozen = false;
+                PedToMove.Tasks.Clear();
+                return;
+            }
 
-        LosSantosRED.RequestAnimationDictionay("mp_common");
+            LosSantosRED.RequestAnimationDictionay("mp_common");
 
-        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
 
-        Rage.Object MoneyPile = LosSantosRED.AttachMoneyToPed(PedToMove);
+            Rage.Object MoneyPile = LosSantosRED.AttachMoneyToPed(PedToMove);
 
-        GameFiber.Wait(1500);
-        if (MoneyPile.Exists())
-            MoneyPile.Delete();
+            GameFiber.Wait(1500);
+            if (MoneyPile.Exists())
+                MoneyPile.Delete();
 
-        MoneyPile = LosSantosRED.AttachMoneyToPed(PedToMoveTo);
-        GameFiber.Wait(1500);
-        if (MoneyPile.Exists())
-            MoneyPile.Delete();
+            MoneyPile = LosSantosRED.AttachMoneyToPed(PedToMoveTo);
+            GameFiber.Wait(1500);
+            if (MoneyPile.Exists())
+                MoneyPile.Delete();
 
-        Game.LocalPlayer.Character.Tasks.Clear();
-        PedToMoveTo.Tasks.Clear();
+            Game.LocalPlayer.Character.Tasks.Clear();
+            PedToMoveTo.Tasks.Clear();
+            CopToBribe.Pedestrian.BlockPermanentEvents = false;
+            CopToBribe.Pedestrian.IsPositionFrozen = false;
 
-        Game.LocalPlayer.Character.GiveCash(-1 * Amount);
-        //});
+            Game.LocalPlayer.Character.GiveCash(-1 * Amount);
+            CopToBribe.Pedestrian.PlayAmbientSpeech("GENERIC_THANKS");
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportResumePatrol, 3));
+
+            ResetPlayer(true, false);
+        });
     }
     public static void RespawnAtHospital(Location Hospital)
     {
