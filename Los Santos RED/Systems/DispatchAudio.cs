@@ -81,6 +81,7 @@ public static class DispatchAudio
         ReportLowLevelCiviliansShot = 34,
         ReportCivilianKilled = 35,
         ReportStolenAirVehicle = 36,
+        ReportResistingArrest = 37,
     }
     public enum NearType
     {
@@ -268,13 +269,16 @@ public static class DispatchAudio
             while (IsPlayingAudio)
                 GameFiber.Yield();
 
+            if (MyAudioEvent.NotificationToDisplay != null && Settings.DispatchNotifications)
+            {
+                RemoveAllNotifications();
+                NotificationHandles.Add(Game.DisplayNotification(MyAudioEvent.NotificationToDisplay.TextureDict, MyAudioEvent.NotificationToDisplay.TextureName, MyAudioEvent.NotificationToDisplay.Title, MyAudioEvent.NotificationToDisplay.Subtitle, MyAudioEvent.NotificationToDisplay.Text));
+            }
+
             foreach (string audioname in MyAudioEvent.SoundsToPlay)
             {
                 PlayAudio(audioname);
-                if (MyAudioEvent.NotificationToDisplay != null && Settings.DispatchNotifications)
-                {
-                    NotificationHandles.Add(Game.DisplayNotification(MyAudioEvent.NotificationToDisplay.TextureDict, MyAudioEvent.NotificationToDisplay.TextureName, MyAudioEvent.NotificationToDisplay.Title, MyAudioEvent.NotificationToDisplay.Subtitle, MyAudioEvent.NotificationToDisplay.Text));
-                }
+
                 while (IsPlayingAudio)
                 {
                     if (MyAudioEvent.Subtitles != "" && Settings.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
@@ -483,6 +487,8 @@ public static class DispatchAudio
                         ReportCivilianKilled();
                     else if (Item.Type == ReportDispatch.ReportStolenAirVehicle)
                         ReportStolenAirVehicle(Item.VehicleToReport);
+                    else if (Item.Type == ReportDispatch.ReportResistingArrest)
+                        ReportResistingArrest();
 
                     DispatchQueue.RemoveAt(0);
 
@@ -1202,6 +1208,17 @@ public static class DispatchAudio
         ReportedWeaponsFree = false;
         ReportedLethalForceAuthorized = false;
     }
+    private static void ReportResistingArrest()
+    {
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Resisting Arrest");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
+        ScannerList.Add(new List<string>() { crime_person_resisting_arrest.Apersonresistingarrest.FileName, crime_suspect_resisting_arrest.Asuspectresistingarrest.FileName }.PickRandom());
+        Subtitles += " a ~r~Suspect Resisting Arrest~s~";
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
+    }
 
     //Civilians Reporting
     public static void ReportLowLevelCriminalActivity()
@@ -1401,9 +1418,10 @@ public static class DispatchAudio
             ScannerList.Add(new List<string>() { suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetSpotted.FileName, suspect_last_seen.SuspectSpotted.FileName }.PickRandom());
             Subtitles += "~r~Suspect spotted~s~";
         }
-        ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
-        if(Police.CurrentCrimes.CommittedAnyCrimes)
+        if (Police.CurrentCrimes.CommittedAnyCrimes)
             Notification.Text += "Wanted For:" + Police.CurrentCrimes.PrintCrimes();
+        ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+
 
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
@@ -1824,6 +1842,24 @@ public static class DispatchAudio
             }
         }
     }
+    public static string GetVehicleDisplayName(Vehicle VehicleDescription)
+    {
+        string ModelName = "";
+        unsafe
+        {
+            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", VehicleDescription.Model.Hash);
+            ModelName = Marshal.PtrToStringAnsi(ptr);
+        }
+        unsafe
+        {
+            IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, ModelName);
+            ModelName = Marshal.PtrToStringAnsi(ptr2);
+        }
+        if (ModelName == "CARNOTFOUND" || ModelName == "NULL")
+            ModelName = "";
+
+        return ModelName;
+    }
     public static void AddSpeed(ref List<string> ScannerList,float Speed, ref string Subtitles,ref DispatchNotification Notification)
     {
         if (Speed >= 70f)
@@ -1879,7 +1915,11 @@ public static class DispatchAudio
         DispatchQueue.Clear();
         CancelAudio = false;
 
-        foreach(uint handles in NotificationHandles)
+        RemoveAllNotifications();
+    }
+    private static void RemoveAllNotifications()
+    {
+        foreach (uint handles in NotificationHandles)
         {
             Game.RemoveNotification(handles);
         }

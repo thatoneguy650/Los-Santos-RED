@@ -231,11 +231,11 @@ public static class Tasking
                     AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.VehicleChase));
                 }
                 if ((LosSantosRED.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !LosSantosRED.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking && !Cop.isInVehicle)
-                    SurrenderBust = true;
+                    SetSurrenderBust(true, "Unarmed Chase Tick 1");
             }
         }
         if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.isInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !LosSantosRED.PlayerInVehicle && !LosSantosRED.IsBusted)
-            SurrenderBust = true;
+            SetSurrenderBust(true,"Unarmed Chase Tick 2");
 
         if (SurrenderBust && !IsBustTimeOut())
             SurrenderBustEvent();
@@ -277,7 +277,7 @@ public static class Tasking
         Police.SetWantedLevel(LosSantosRED.MaxWantedLastLife,"Changing it back to what it was max during your last life");
 
         if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.isInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !LosSantosRED.IsBusted)// && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
-            SurrenderBust = true;
+            SetSurrenderBust(true, "Arrested Wait Tcik");
 
         if (SurrenderBust && !IsBustTimeOut())
             SurrenderBustEvent();
@@ -339,7 +339,7 @@ public static class Tasking
             ForceSurrenderTime = 0;
 
         if (ForceSurrenderTime >= 500)
-            SurrenderBust = true;
+            SetSurrenderBust(true, "Force Surrender Time Over 500");
 
         if (SurrenderBust && !IsBustTimeOut())
             SurrenderBustEvent();
@@ -415,6 +415,7 @@ public static class Tasking
     {
         if (Game.LocalPlayer.WantedLevel == 0)
         {
+            SetSurrenderBust(false, "Reset SurrenderBustEvent Wanted = 0");
             SurrenderBust = false;
         }
         else
@@ -423,7 +424,7 @@ public static class Tasking
             Police.CurrentPoliceState = Police.PoliceState.ArrestedWait;
             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
             LosSantosRED.HandsAreUp = false;
-            SurrenderBust = false;
+            SetSurrenderBust(false, "Reset SurrenderBustEvent");
             LastBust = Game.GameTime;
             LocalWriteToLog("SurrenderBust", "SurrenderBust Executed");
         }
@@ -510,7 +511,11 @@ public static class Tasking
         Cop.GameTimeLastWeaponCheck = Game.GameTime;
     }
 
-
+    private static void SetSurrenderBust(bool ValueToSet,string DebugReason)
+    {
+        SurrenderBust = ValueToSet;
+        Debugging.WriteToLog("SetSurrenderBust", string.Format("Reason: {0}",DebugReason));
+    }
     private static bool IsBustTimeOut()
     {
         if (Police.PlayerHasBeenWantedFor <= 3000)
@@ -602,48 +607,60 @@ public static class Tasking
                     }
                     else
                     {
-                        if (LocalTaskName != "Arrest" && (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait || (Police.CurrentPoliceState == Police.PoliceState.CautiousChase && Cop.DistanceToPlayer <= 15f)))
+                        if (LosSantosRED.PlayerWantedLevel <= 1)
                         {
-                            unsafe
+                            if (LocalTaskName != "Approach" && Police.CurrentPoliceState == Police.PoliceState.UnarmedChase && Cop.DistanceToPlayer >= 7f)
                             {
-                                int lol = 0;
-                                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 20f, 500f, 1073741824, 1); //Original and works ok
-                                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Game.LocalPlayer.Character, 4f, 20f);
-                                NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, Game.LocalPlayer.Character, 10000, false);
-                                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.Pedestrian, lol);
-                                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 4f, 0.5f, 1073741824, 1); //Original and works ok
+                                TaskTime = Game.GameTime;
+                                Cop.Pedestrian.KeepTasks = true;
+                                LocalTaskName = "Approach";
                             }
-                            TaskTime = Game.GameTime;
-                            Cop.Pedestrian.KeepTasks = true;
-                            LocalTaskName = "Arrest";
                         }
-                        else if (LocalTaskName != "GotoShooting" && Police.CurrentPoliceState == Police.PoliceState.UnarmedChase && Cop.DistanceToPlayer <= 7f)
+                        else
                         {
-                            Cop.Pedestrian.CanRagdoll = true;
-                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", Cop.Pedestrian, Game.LocalPlayer.Character, Game.LocalPlayer.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
-                            Cop.Pedestrian.KeepTasks = true;
-                            TaskTime = Game.GameTime;
-                            LocalTaskName = "GotoShooting";
+                            if (LocalTaskName != "Arrest" && (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait || (Police.CurrentPoliceState == Police.PoliceState.CautiousChase && Cop.DistanceToPlayer <= 15f)))
+                            {
+                                unsafe
+                                {
+                                    int lol = 0;
+                                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                                    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 20f, 500f, 1073741824, 1); //Original and works ok
+                                    NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Game.LocalPlayer.Character, 4f, 20f);
+                                    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, Game.LocalPlayer.Character, 10000, false);
+                                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.Pedestrian, lol);
+                                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                                }
+                                TaskTime = Game.GameTime;
+                                Cop.Pedestrian.KeepTasks = true;
+                                LocalTaskName = "Arrest";
+                            }
+                            else if (LocalTaskName != "GotoShooting" && Police.CurrentPoliceState == Police.PoliceState.UnarmedChase && Cop.DistanceToPlayer <= 7f)
+                            {
+                                Cop.Pedestrian.CanRagdoll = true;
+                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", Cop.Pedestrian, Game.LocalPlayer.Character, Game.LocalPlayer.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                                Cop.Pedestrian.KeepTasks = true;
+                                TaskTime = Game.GameTime;
+                                LocalTaskName = "GotoShooting";
+                            }
+                            else if (LocalTaskName != "Goto" && (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase) && Cop.DistanceToPlayer >= 15) //was 15f
+                            {
+                                Cop.Pedestrian.CanRagdoll = true;
+                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.Pedestrian, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
+                                Cop.Pedestrian.KeepTasks = true;
+                                TaskTime = Game.GameTime;
+                                LocalTaskName = "Goto";
+                            }
                         }
-                        else if (LocalTaskName != "Goto" && (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase || Police.CurrentPoliceState == Police.PoliceState.CautiousChase) && Cop.DistanceToPlayer >= 15) //was 15f
-                        {
-                            Cop.Pedestrian.CanRagdoll = true;
-                            NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.Pedestrian, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
-                            Cop.Pedestrian.KeepTasks = true;
-                            TaskTime = Game.GameTime;
-                            LocalTaskName = "Goto";
-                        }
-
                     }
 
                     if ((LosSantosRED.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !LosSantosRED.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking && !Cop.isInVehicle)
-                        SurrenderBust = true;
+                        SetSurrenderBust(true, "Chase Tick1");
 
                     if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 4f && !LosSantosRED.IsBusted && Cop.DistanceToPlayer <= 4f && !Police.PlayerWasJustJacking && !Cop.isInVehicle)
-                        SurrenderBust = true;
+                        SetSurrenderBust(true, "Chase Tick2");
 
                     if (LosSantosRED.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null  && (Cop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f))
                     {

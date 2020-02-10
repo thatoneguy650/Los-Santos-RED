@@ -252,238 +252,238 @@ public static class Debugging
         //TestStreetCall();
         //DisplayNotification("IDK", "1", "@@@");
         //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Title", "Subtitle", "Test");
+        LosSantosRED.DisplayPlayerNotification();
+        //DispatchAudio.ReportSuspectSpotted();
 
-        DispatchAudio.ReportSuspectSpotted();
+        // Game.DisplayNotification("mpcharselect", "mp_generic_avatar", "STATE ISSUED IDENTIFICATION", "BANANA SMITH", "~b~" + "COOL");
 
-       // Game.DisplayNotification("mpcharselect", "mp_generic_avatar", "STATE ISSUED IDENTIFICATION", "BANANA SMITH", "~b~" + "COOL");
-    
-    //        NativeFunction.CallByName<bool>("REQUEST_STREAMED_TEXTURE_DICT", "CHAR_CALL911", true);
-    //        NativeFunction.CallByName<bool>("REQUEST_STREAMED_TEXTURE_DICT", "char_call911", true);
+        //        NativeFunction.CallByName<bool>("REQUEST_STREAMED_TEXTURE_DICT", "CHAR_CALL911", true);
+        //        NativeFunction.CallByName<bool>("REQUEST_STREAMED_TEXTURE_DICT", "char_call911", true);
 
 
-    //        while (!NativeFunction.CallByName<bool>("HAS_STREAMED_TEXTURE_DICT_LOADED", "char_call911"))
-    //            GameFiber.Yield();
+        //        while (!NativeFunction.CallByName<bool>("HAS_STREAMED_TEXTURE_DICT_LOADED", "char_call911"))
+        //            GameFiber.Yield();
 
-    //        Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Title", "Subtitle","Test");
+        //        Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Title", "Subtitle","Test");
 
 
 
-    //        int handle;
+        //        int handle;
 
 
 
 
-    //handle = NativeFunction.Natives.RegisterPedheadshot<int>(Game.LocalPlayer.Character);
-    //            if (NativeFunction.Natives.IsPedheadshotReady<bool>(handle))
-    //            {
-    //                string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(handle);
-    //    Game.DisplayNotification(str, str, "title", "subtitle", "text");
-    //            }
+        //handle = NativeFunction.Natives.RegisterPedheadshot<int>(Game.LocalPlayer.Character);
+        //            if (NativeFunction.Natives.IsPedheadshotReady<bool>(handle))
+        //            {
+        //                string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(handle);
+        //    Game.DisplayNotification(str, str, "title", "subtitle", "text");
+        //            }
 
-    //PoliceScanning.RemoveAllCreatedEntities();
+        //PoliceScanning.RemoveAllCreatedEntities();
 
 
-    //foreach (Location loc in Locations.GetAllLocationsOfType(Location.LocationType.Police))
-    //{
-    //    WriteToLog("", loc.ToString());
-    //}
-    //if (PlayerLocation.PlayerCurrentZone != null)
-    //{
-    //    WriteToLog("PlayerCurrentZone", string.Format("Zone: {0},MainAgency: {1}", PlayerLocation.PlayerCurrentZone.TextName, PlayerLocation.PlayerCurrentZone.MainZoneAgency.FullName));
+        //foreach (Location loc in Locations.GetAllLocationsOfType(Location.LocationType.Police))
+        //{
+        //    WriteToLog("", loc.ToString());
+        //}
+        //if (PlayerLocation.PlayerCurrentZone != null)
+        //{
+        //    WriteToLog("PlayerCurrentZone", string.Format("Zone: {0},MainAgency: {1}", PlayerLocation.PlayerCurrentZone.TextName, PlayerLocation.PlayerCurrentZone.MainZoneAgency.FullName));
 
-    //}
-    //else
-    //{
-    //    WriteToLog("PlayerCurrentZone", string.Format("Zone: {0}", "No Zone"));
-    //}
+        //}
+        //else
+        //{
+        //    WriteToLog("PlayerCurrentZone", string.Format("Zone: {0}", "No Zone"));
+        //}
 
-    //if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
-    //{
+        //if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        //{
 
-    //    string ModelName = "";
-    //    string ModelName2 = "";
-    //    unsafe
-    //    {
-    //        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", Game.LocalPlayer.Character.CurrentVehicle.Model.Hash);
-    //        ModelName = Marshal.PtrToStringAnsi(ptr);
-    //    }
-    //    unsafe
-    //    {
-    //        IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, ModelName);
-    //        ModelName2 = Marshal.PtrToStringAnsi(ptr2);
-    //    }
-    //    WriteToLog("PlayerCurrentCarNiceName", string.Format("NiceName: {0},{1}", ModelName, ModelName2));
+        //    string ModelName = "";
+        //    string ModelName2 = "";
+        //    unsafe
+        //    {
+        //        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", Game.LocalPlayer.Character.CurrentVehicle.Model.Hash);
+        //        ModelName = Marshal.PtrToStringAnsi(ptr);
+        //    }
+        //    unsafe
+        //    {
+        //        IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, ModelName);
+        //        ModelName2 = Marshal.PtrToStringAnsi(ptr2);
+        //    }
+        //    WriteToLog("PlayerCurrentCarNiceName", string.Format("NiceName: {0},{1}", ModelName, ModelName2));
 
 
-    //    DispatchAudio.ReportStolenVehicle(LosSantosRED.GetPlayersCurrentTrackedVehicle());
+        //    DispatchAudio.ReportStolenVehicle(LosSantosRED.GetPlayersCurrentTrackedVehicle());
 
-    //    System.Drawing.Color MyColor = LosSantosRED.GetPlayersCurrentTrackedVehicle().VehicleEnt.PrimaryColor;
-    //    string FoundName = ColorMapper.GetNearestName(MyColor);
-    //    WriteToLog("PlayerCurrentCarColorName", string.Format("Color: {0}, FoundName: {1}", MyColor.Name,FoundName));
-    //}
+        //    System.Drawing.Color MyColor = LosSantosRED.GetPlayersCurrentTrackedVehicle().VehicleEnt.PrimaryColor;
+        //    string FoundName = ColorMapper.GetNearestName(MyColor);
+        //    WriteToLog("PlayerCurrentCarColorName", string.Format("Color: {0}, FoundName: {1}", MyColor.Name,FoundName));
+        //}
 
 
 
 
 
-    ////Tasking.RetaskAllRandomSpawns();
-    //return;
+        ////Tasking.RetaskAllRandomSpawns();
+        //return;
 
 
 
-    //PoliceSpawning.SpawnCop(Agencies.SAHP, Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
+        //PoliceSpawning.SpawnCop(Agencies.SAHP, Game.LocalPlayer.Character.GetOffsetPositionFront(10f));
 
 
 
 
-    //GTACop MyCop = PoliceScanning.CopPeds.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-    //if (MyCop != null)
-    //{
+        //GTACop MyCop = PoliceScanning.CopPeds.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if (MyCop != null)
+        //{
 
-    //    MyCop.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f);
+        //    MyCop.CopPed.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f);
 
 
 
-    //    Tasking.AddItemToQueue(new PoliceTask(MyCop, PoliceTask.Task.RandomSpawnIdle));
+        //    Tasking.AddItemToQueue(new PoliceTask(MyCop, PoliceTask.Task.RandomSpawnIdle));
 
-    //    return;
+        //    return;
 
 
 
 
-    //    MyCop.CopPed.Tasks.StandStill(-1);
+        //    MyCop.CopPed.Tasks.StandStill(-1);
 
-    //    Ped PedToMove = Game.LocalPlayer.Character;
-    //    Vector3 PositionToMoveTo = MyCop.CopPed.GetOffsetPositionFront(1f);
+        //    Ped PedToMove = Game.LocalPlayer.Character;
+        //    Vector3 PositionToMoveTo = MyCop.CopPed.GetOffsetPositionFront(1f);
 
-    //    // 
-    //    bool Continue = true;
-    //    bool isPlayer = true;
-    //    //Vector3 Resultant = Vector3.Subtract(PositionToMoveTo, MyCop.CopPed.Position);
-    //    //float DesiredHeading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        //    // 
+        //    bool Continue = true;
+        //    bool isPlayer = true;
+        //    //Vector3 Resultant = Vector3.Subtract(PositionToMoveTo, MyCop.CopPed.Position);
+        //    //float DesiredHeading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
 
 
 
 
 
-    //    //NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
+        //    //NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
 
-    //    Game.LocalPlayer.Character.Tasks.GoToOffsetFromEntity(MyCop.CopPed, -1, 1f, 0f, 2f);
+        //    Game.LocalPlayer.Character.Tasks.GoToOffsetFromEntity(MyCop.CopPed, -1, 1f, 0f, 2f);
 
 
-    //    while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.2f))
-    //    {
-    //        GameFiber.Yield();
-    //        if (isPlayer && Extensions.IsMoveControlPressed())
-    //        {
-    //            Continue = false;
-    //            break;
-    //        }
-    //    }
-    //    if (!Continue)
-    //    {
-    //        PedToMove.Tasks.Clear();
-    //    }
+        //    while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.2f))
+        //    {
+        //        GameFiber.Yield();
+        //        if (isPlayer && Extensions.IsMoveControlPressed())
+        //        {
+        //            Continue = false;
+        //            break;
+        //        }
+        //    }
+        //    if (!Continue)
+        //    {
+        //        PedToMove.Tasks.Clear();
+        //    }
 
 
 
-    //    GameFiber.Sleep(1000);
+        //    GameFiber.Sleep(1000);
 
-    //    //Respawning.BribeAnimation(MyCop.CopPed, Game.LocalPlayer.Character);
-    //    //MyCop.CopPed.Tasks.LeaveVehicle(MyCop.CopPed.CurrentVehicle, LeaveVehicleFlags.None);
-    //    //GameFiber.Sleep(4000);
-    //    //PoliceScanning.Untask(MyCop);
+        //    //Respawning.BribeAnimation(MyCop.CopPed, Game.LocalPlayer.Character);
+        //    //MyCop.CopPed.Tasks.LeaveVehicle(MyCop.CopPed.CurrentVehicle, LeaveVehicleFlags.None);
+        //    //GameFiber.Sleep(4000);
+        //    //PoliceScanning.Untask(MyCop);
 
-    //    GameFiber.Sleep(15000);
+        //    GameFiber.Sleep(15000);
 
-    //    //PoliceScanning.RandomSpawnIdle(MyCop);
+        //    //PoliceScanning.RandomSpawnIdle(MyCop);
 
-    //    if (MyCop.CopPed.CurrentVehicle.Exists())
-    //        MyCop.CopPed.CurrentVehicle.Delete();
-    //    if (MyCop.CopPed.LastVehicle.Exists())
-    //        MyCop.CopPed.LastVehicle.Delete();
-    //    MyCop.CopPed.Delete();
+        //    if (MyCop.CopPed.CurrentVehicle.Exists())
+        //        MyCop.CopPed.CurrentVehicle.Delete();
+        //    if (MyCop.CopPed.LastVehicle.Exists())
+        //        MyCop.CopPed.LastVehicle.Delete();
+        //    MyCop.CopPed.Delete();
 
-    //}
+        //}
 
 
 
 
 
 
-    //GameFiber.StartNew(delegate
-    //{
-    //    VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass != VehicleLookup.VehicleClass.Utility).PickRandom();
-    //    Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
-    //    Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
-    //    PoliceScanning.CreatedEntities.Add(MyCar);
-    //    PoliceScanning.CreatedEntities.Add(Driver);
-    //    Driver.WarpIntoVehicle(MyCar, -1);
-    //    uint GameTimeStarted = Game.GameTime;
-    //    //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
-    //    //  GameFiber.Yield();
+        //GameFiber.StartNew(delegate
+        //{
+        //    VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass != VehicleLookup.VehicleClass.Utility).PickRandom();
+        //    Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+        //    Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
+        //    PoliceScanning.CreatedEntities.Add(MyCar);
+        //    PoliceScanning.CreatedEntities.Add(Driver);
+        //    Driver.WarpIntoVehicle(MyCar, -1);
+        //    uint GameTimeStarted = Game.GameTime;
+        //    //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
+        //    //  GameFiber.Yield();
 
-    //    Debugging.WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
-    //    Debugging.WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
+        //    Debugging.WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
+        //    Debugging.WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
 
-    //    // CarJackPedWithWeapon(MyCar, Driver, -1);
-    //    while(Game.GameTime - GameTimeStarted <= 20000)
-    //    {
-    //        //Text(myLookup.VehicleClass.ToString(), 0.5f, 0.5f, 0.75f, true, Color.Black);
-    //        GameFiber.Yield();
-    //    }
+        //    // CarJackPedWithWeapon(MyCar, Driver, -1);
+        //    while(Game.GameTime - GameTimeStarted <= 20000)
+        //    {
+        //        //Text(myLookup.VehicleClass.ToString(), 0.5f, 0.5f, 0.75f, true, Color.Black);
+        //        GameFiber.Yield();
+        //    }
 
-    //    if (Driver.Exists())
-    //        Driver.Delete();
+        //    if (Driver.Exists())
+        //        Driver.Delete();
 
-    //    if (MyCar.Exists())
-    //        MyCar.Delete();
+        //    if (MyCar.Exists())
+        //        MyCar.Delete();
 
-    //});
+        //});
 
-    //GameFiber.StartNew(delegate
-    //{
-    //    VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass == VehicleLookup.VehicleClass.Coupe || x.VehicleClass == VehicleLookup.VehicleClass.Sedan || x.VehicleClass == VehicleLookup.VehicleClass.Sports || x.VehicleClass == VehicleLookup.VehicleClass.SUV || x.VehicleClass == VehicleLookup.VehicleClass.Compact).PickRandom();
-    //    Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
-    //    Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
-    //    PoliceScanning.CreatedEntities.Add(MyCar);
-    //    PoliceScanning.CreatedEntities.Add(Driver);
-    //    Driver.WarpIntoVehicle(MyCar, -1);
-    //    uint GameTimeStarted = Game.GameTime;
-    //    //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
-    //    //  GameFiber.Yield();
+        //GameFiber.StartNew(delegate
+        //{
+        //    VehicleInfo myLookup = Vehicles.Where(x => x.VehicleClass == VehicleLookup.VehicleClass.Coupe || x.VehicleClass == VehicleLookup.VehicleClass.Sedan || x.VehicleClass == VehicleLookup.VehicleClass.Sports || x.VehicleClass == VehicleLookup.VehicleClass.SUV || x.VehicleClass == VehicleLookup.VehicleClass.Compact).PickRandom();
+        //    Vehicle MyCar = new Vehicle(myLookup.Name, Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+        //    Ped Driver = new Ped("a_m_y_hipster_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
+        //    PoliceScanning.CreatedEntities.Add(MyCar);
+        //    PoliceScanning.CreatedEntities.Add(Driver);
+        //    Driver.WarpIntoVehicle(MyCar, -1);
+        //    uint GameTimeStarted = Game.GameTime;
+        //    //while (!Game.LocalPlayer.Character.IsGettingIntoVehicle)
+        //    //  GameFiber.Yield();
 
-    //    Debugging.WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
-    //    Debugging.WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
+        //    Debugging.WriteToLog("Bones", string.Format("Driver Position: {0}", Driver.Position));
+        //    Debugging.WriteToLog("Bones", string.Format("MyCar Position: {0}", MyCar.Position));
 
-    //    // CarJackPedWithWeapon(MyCar, Driver, -1);
-    //    GameFiber.Sleep(20000);
-    //    if (Driver.Exists())
-    //        Driver.Delete();
+        //    // CarJackPedWithWeapon(MyCar, Driver, -1);
+        //    GameFiber.Sleep(20000);
+        //    if (Driver.Exists())
+        //        Driver.Delete();
 
-    //    if (MyCar.Exists())
-    //        MyCar.Delete();
+        //    if (MyCar.Exists())
+        //        MyCar.Delete();
 
-    //});
+        //});
 
 
 
 
 
 
-    //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-    //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-    //if (ClosestVehicle != null)
-    //{
-    //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
-    //}
+        //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+        //if (ClosestVehicle != null)
+        //{
+        //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
+        //}
 
 
 
 
 
 
-    //DispatchAudioSystem.AbortAllAudio();
+        //DispatchAudioSystem.AbortAllAudio();
 
 
 
@@ -491,113 +491,113 @@ public static class Debugging
 
 
 
-    //Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
-    //Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
-    //Driver.BlockPermanentEvents = true;
+        //Vehicle MyCar = new Vehicle("gauntlet", Game.LocalPlayer.Character.GetOffsetPositionFront(4f));
+        //Ped Driver = new Ped("u_m_y_hippie_01", Game.LocalPlayer.Character.Position.Around2D(5f), 0f);
+        //Driver.BlockPermanentEvents = true;
 
-    //Driver.WarpIntoVehicle(MyCar, -1);
+        //Driver.WarpIntoVehicle(MyCar, -1);
 
-    ////uint GameTimeStarted = Game.GameTime;
-    ////while (Game.GameTime - GameTimeStarted <= 10000)
-    ////{
-    ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
-    ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-    ////    GameFiber.Yield();
-    ////}
-    //GameFiber.Sleep(3000);
+        ////uint GameTimeStarted = Game.GameTime;
+        ////while (Game.GameTime - GameTimeStarted <= 10000)
+        ////{
+        ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
+        ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        ////    GameFiber.Yield();
+        ////}
+        //GameFiber.Sleep(3000);
 
-    //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
-    //Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+        //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 11816);
+        //Vector3 DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
 
 
 
-    //uint GameTimeStarted = Game.GameTime;
-    ////while (Game.GameTime - GameTimeStarted <= 10000)
-    ////{
-    ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
-    ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
-    ////    GameFiber.Yield();
-    ////}
+        //uint GameTimeStarted = Game.GameTime;
+        ////while (Game.GameTime - GameTimeStarted <= 10000)
+        ////{
+        ////    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, Driver.Position);
+        ////    Driver.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+        ////    GameFiber.Yield();
+        ////}
 
 
 
-    //Driver.Position = DriverSeatCoordinates;
+        //Driver.Position = DriverSeatCoordinates;
 
-    //GameFiber.Sleep(3000);
+        //GameFiber.Sleep(3000);
 
-    //Driver.WarpIntoVehicle(MyCar, -1);
+        //Driver.WarpIntoVehicle(MyCar, -1);
 
-    //GameFiber.Sleep(3000);
+        //GameFiber.Sleep(3000);
 
-    ////GameFiber.Sleep(3000);
+        ////GameFiber.Sleep(3000);
 
-    //if (MyCar.Exists())
-    //    MyCar.Delete();
+        //if (MyCar.Exists())
+        //    MyCar.Delete();
 
-    //if (Driver.Exists())
-    //    Driver.Delete();
+        //if (Driver.Exists())
+        //    Driver.Delete();
 
 
 
-    //foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
-    //{
+        //foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
+        //{
 
-    //    Debugging.WriteToLog("WeaponInventoryChanged", string.Format("Dropped Gun {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
+        //    Debugging.WriteToLog("WeaponInventoryChanged", string.Format("Dropped Gun {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
 
-    //}
+        //}
 
 
 
 
-    //List<string> Bones = new List<string> { "SKEL_ROOT", "skel_root", "SKEL_Pelvis", "SKEL_PELVIS", "skel_pelvis", "SKEL_Spine_Root", "SKEL_SPINE_ROOT", "skel_spine_root", "SKEL_Spine0","SKEL_SPINE0","skel_spine0" };
+        //List<string> Bones = new List<string> { "SKEL_ROOT", "skel_root", "SKEL_Pelvis", "SKEL_PELVIS", "skel_pelvis", "SKEL_Spine_Root", "SKEL_SPINE_ROOT", "skel_spine_root", "SKEL_Spine0","SKEL_SPINE0","skel_spine0" };
 
 
-    //foreach(string Stuff in Bones)
-    //{
-    //    if(Game.LocalPlayer.Character.HasBone(Stuff))
-    //    {
-    //        Debugging.WriteToLog("Bones", string.Format("I have bone: {0}", Stuff));
-    //    }
-    //}
+        //foreach(string Stuff in Bones)
+        //{
+        //    if(Game.LocalPlayer.Character.HasBone(Stuff))
+        //    {
+        //        Debugging.WriteToLog("Bones", string.Format("I have bone: {0}", Stuff));
+        //    }
+        //}
 
 
-    //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0);
-    //Vector3 MyPosition = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Game.LocalPlayer.Character, BoneIndexSpine, 0f, 0f, 0f);
-    // Debugging.WriteToLog("Bones", string.Format("Spine Bone?: {0}", MyPosition));
+        //int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0);
+        //Vector3 MyPosition = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Game.LocalPlayer.Character, BoneIndexSpine, 0f, 0f, 0f);
+        // Debugging.WriteToLog("Bones", string.Format("Spine Bone?: {0}", MyPosition));
 
-    //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-    //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-    //if (ClosestVehicle != null)
-    //{
-    //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
+        //Vehicle[] NearbyVehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
+        //Vehicle ClosestVehicle = NearbyVehicles.OrderBy(x => x.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+        //if (ClosestVehicle != null)
+        //{
+        //    ClosestVehicle.LockStatus = (Rage.VehicleLockStatus)7;
 
 
 
 
-    //    //Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
-    //    //Vector3 CarPosition = ClosestVehicle.Position;
-    //    //float DesiredHeading = ClosestVehicle.Heading - 90f;
-    //    ////NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Game.LocalPlayer.Character, GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, DesiredHeading, 3000);
+        //    //Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, ClosestVehicle, 0);
+        //    //Vector3 CarPosition = ClosestVehicle.Position;
+        //    //float DesiredHeading = ClosestVehicle.Heading - 90f;
+        //    ////NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Game.LocalPlayer.Character, GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z, DesiredHeading, 3000);
 
-    //    //uint GameTimeStarted = Game.GameTime;
+        //    //uint GameTimeStarted = Game.GameTime;
 
-    //    //while (Game.GameTime - GameTimeStarted <= 10000)
-    //    //{
-    //    //    Rage.Debug.DrawArrowDebug(new Vector3(GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
-    //    //    GameFiber.Yield();
-    //    //}
+        //    //while (Game.GameTime - GameTimeStarted <= 10000)
+        //    //{
+        //    //    Rage.Debug.DrawArrowDebug(new Vector3(GameEntryPosition.X, GameEntryPosition.Y, GameEntryPosition.Z), Vector3.Zero, Rage.Rotator.Zero, 1f, Color.Yellow);
+        //    //    GameFiber.Yield();
+        //    //}
 
 
-    //   // GameFiber.Sleep(3000);
+        //   // GameFiber.Sleep(3000);
 
-    //}
+        //}
 
 
 
 
 
 
-}
+    }
     private static void DebugNumpad5()
     {
 

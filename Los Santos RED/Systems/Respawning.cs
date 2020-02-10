@@ -174,6 +174,10 @@ public static class Respawning
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
         Tasking.UntaskAll(true);
+
+        Police.CurrentCrimes.ResistingArrest.CrimeObserved();
+
+        //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportResistingArrest, 2));
     }
     public static void Surrender(Location PoliceStation)
     {

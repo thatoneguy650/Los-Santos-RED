@@ -257,6 +257,8 @@ public static class PedSwapping
 
         ActivateScenariosAfterTakeover();
         NamePed();
+        GameFiber.Wait(50);
+        LosSantosRED.DisplayPlayerNotification();
     }
     private static void ActivateScenariosAfterTakeover()
     {

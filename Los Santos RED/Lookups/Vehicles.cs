@@ -115,6 +115,8 @@ public static class Vehicles
     }
     public static VehicleInfo GetVehicleInfo(GTAVehicle Vehicle)
     {
+        if (VehiclesList == null)
+            Initialize();
         VehicleInfo ToReturn = VehiclesList.Where(x => x.Hash == Vehicle.VehicleEnt.Model.Hash).FirstOrDefault();
         return ToReturn;
     }

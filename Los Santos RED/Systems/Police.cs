@@ -638,6 +638,7 @@ internal static class Police
         if (!RecentlySetWanted)
         {
             AddDispatchToUnknownWanted();
+            //NativeFunction.CallByName<bool>("SET_FAKE_WANTED_LEVEL", 0);
         }
         CurrentCrimes.GameTimeWantedStarted = Game.GameTime;
         CurrentCrimes.MaxWantedLevel = LosSantosRED.PlayerWantedLevel;

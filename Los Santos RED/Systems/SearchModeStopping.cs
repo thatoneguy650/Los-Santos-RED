@@ -12,6 +12,7 @@ public static class SearchModeStopping
     private static Model CopModel;
     private static bool SingleStopActive = false;
     private static Ped GhostCop;
+    private static uint GameTimeLastGhostCopCreated;
     public static bool StopSearchMode { get; set; }
     public static bool IsRunning { get; set; }
     public static Ped SpotterCop
@@ -19,6 +20,18 @@ public static class SearchModeStopping
         get
         {
             return GhostCop;
+        }
+    }
+    public static bool CanCreateGhostCop
+    {
+        get
+        {
+            if (GameTimeLastGhostCopCreated == 0)
+                return true;
+            else if (Game.GameTime - GameTimeLastGhostCopCreated >= 4000)
+                return true;
+            else
+                return false;
         }
     }
     public static void Initialize()
@@ -30,10 +43,13 @@ public static class SearchModeStopping
         IsRunning = true;
         CopModel.LoadAndWait();
         CopModel.LoadCollisionAndWait();
+        GameTimeLastGhostCopCreated = 0;
     }
     public static void Dispose()
     {
         IsRunning = false;
+        if (GhostCop.Exists())
+            GhostCop.Delete();
     }
     public static void StopSearchModeSingle()
     {
@@ -118,14 +134,16 @@ public static class SearchModeStopping
             GhostCop.Position = new Vector3(0f, 0f, 0f);
     }
     private static void CreateGhostCop()
-    {
-        GhostCop = new Ped(CopModel, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), Game.LocalPlayer.Character.Heading)
+    {    
+        GhostCop = new Ped(CopModel, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), Game.LocalPlayer.Character.Heading);
+        GameTimeLastGhostCopCreated = Game.GameTime;
+        if (GhostCop.Exists())
         {
-            BlockPermanentEvents = false,
-            IsPersistent = true,
-            IsCollisionEnabled = false,
-            IsVisible = false
-        };
+            GhostCop.BlockPermanentEvents = false;
+            GhostCop.IsPersistent = true;
+            GhostCop.IsCollisionEnabled = false;
+            GhostCop.IsVisible = false;
+        }
         Blip myBlip = GhostCop.GetAttachedBlip();
         if (myBlip != null)
             myBlip.Delete();

@@ -502,6 +502,43 @@ public static class LosSantosRED
         }
     }
 
+    public static void DisplayPlayerNotification()
+    {
+        GTAVehicle MyCar = GetPlayersCurrentTrackedVehicle();
+
+        string NotifcationText = "Warrants: ~g~None~s~";
+        int Cash = Game.LocalPlayer.Character.GetCash();
+        int Health = Game.LocalPlayer.Character.Health;
+        if(Cash >= 2000)
+            NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~g~", Cash);
+        else if(Cash >= 500)
+            NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~o~", Cash);
+        else
+            NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~r~", Cash);
+
+        if (Health >= 80)
+            NotifcationText += string.Format("~n~Health: {0}{1}~s~", "~g~", Health);
+        else if (Health >= 50)
+            NotifcationText += string.Format("~n~Health: {0}{1}~s~", "~o~", Health);
+        else
+            NotifcationText += string.Format("~n~Health: {0}{1}~s~", "~r~", Health);
+
+        if (MyCar != null && MyCar.IsPlayersVehicle)
+        {
+            Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(MyCar);
+            string VehicleName = "";
+            if (VehicleInformation != null)
+                VehicleName = VehicleInformation.Manufacturer.ToString();
+            string DisplayName = DispatchAudio.GetVehicleDisplayName(MyCar.VehicleEnt);
+            if (DisplayName != "")
+                VehicleName += " " + DisplayName;
+
+            NotifcationText += string.Format("~n~Vehicle: ~p~{0}~s~", VehicleName);
+            NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", MyCar.CarPlate.PlateNumber);
+        }
+
+        Game.DisplayNotification(PedSwapping.CurrentHeadshot.Txd, PedSwapping.CurrentHeadshot.Txd, "~b~Personal Info", string.Format("~y~{0}",PedSwapping.SuspectName), NotifcationText);
+    }
     public static GTAWeapon GetCurrentWeapon()
     {
         if (Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)
