@@ -123,6 +123,7 @@
     <Compile Include="Lookups\Locations.cs" />
     <Compile Include="Systems\CameraSystem.cs" />
     <Compile Include="Systems\Civilians.cs" />
+    <Compile Include="Systems\ClockSystem.cs" />
     <Compile Include="Systems\PersonofInterest.cs" />
     <Compile Include="Systems\ScriptController.cs" />
     <Compile Include="Systems\WeatherReporting.cs" />

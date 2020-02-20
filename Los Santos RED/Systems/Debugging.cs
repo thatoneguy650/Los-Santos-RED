@@ -64,7 +64,7 @@ public static class Debugging
 
             //GameFibers.
             string DebugString = string.Format("Fibers: {0} LastWeapon: {1}", MyGameFibers, LosSantosRED.LastWeapon);
-            UI.Text(DebugString, 0.86f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
+            //UI.Text(DebugString, 0.86f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
             //if (DispatchAudioGameFibersRunning)
             //    DebugString = DebugString + " DA!";
 
@@ -252,7 +252,14 @@ public static class Debugging
         //TestStreetCall();
         //DisplayNotification("IDK", "1", "@@@");
         //Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", "Title", "Subtitle", "Test");
-        LosSantosRED.DisplayPlayerNotification();
+        //LosSantosRED.DisplayPlayerNotification();
+
+
+        DispatchAudio.ReportSuspectLost();
+
+
+
+
         //DispatchAudio.ReportSuspectSpotted();
 
         // Game.DisplayNotification("mpcharselect", "mp_generic_avatar", "STATE ISSUED IDENTIFICATION", "BANANA SMITH", "~b~" + "COOL");
@@ -602,7 +609,7 @@ public static class Debugging
     {
 
 
-        DispatchAudio.ReportLowLevelShotsFired();
+        DispatchAudio.ReportIncreasedWanted(true);
         return;
 
         Settings.Logging = true;

@@ -58,7 +58,7 @@ public class RapSheet
     }
     public List<Crime> GetListOfCrimes()
     {
-        List<Crime> CrimeList = new List<Crime>() { KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon, ChangingPlates, GrandTheftAuto, HurtingCivilians, DrivingAgainstTraffic, DrivingOnPavement, HitPedWithCar, HitCarWithCar, NonRoadworthyVehicle, FelonySpeeding, RunningARedLight };
+        List<Crime> CrimeList = new List<Crime>() { ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon, ChangingPlates, GrandTheftAuto, HurtingCivilians, DrivingAgainstTraffic, DrivingOnPavement, HitPedWithCar, HitCarWithCar, NonRoadworthyVehicle, FelonySpeeding, RunningARedLight };
         return CrimeList;
     }
     public RapSheet()
@@ -124,6 +124,11 @@ public class RapSheet
         if (!AimingWeaponAtPolice.CanObserveCrime && TimeAimedAtPolice >= 100)
         {
             AimingWeaponAtPolice.CrimeObserved();
+        }
+
+        if(ResistingArrest.CanObserveCrime && !ResistingArrest.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsWanted && Police.AnyPoliceCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !LosSantosRED.HandsAreUp)
+        {
+            ResistingArrest.CrimeObserved();
         }
 
         if (BrandishingWeapon.CanObserveCrime && Police.AnyPoliceCanSeePlayer && LosSantosRED.PlayerIsConsideredArmed && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !LosSantosRED.PlayerInVehicle)

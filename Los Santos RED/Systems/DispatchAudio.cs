@@ -367,38 +367,38 @@ public static class DispatchAudio
                     DispatchQueue.RemoveAll(x => x.Priority > 3);
                 }
 
-                // Remove and order items, needs to be fixed up 
-                if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
-                {
-                    DispatchQueue.RemoveAll(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted && !x.IsAmbient);
-                }
+                //// Remove and order items, needs to be fixed up 
+                //if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
+                //{
+                //    DispatchQueue.RemoveAll(x => x.Priority > 3 && x.Type != ReportDispatch.ReportSuspectArrested && x.Type != ReportDispatch.ReportSuspectWasted && !x.IsAmbient);
+                //}
 
-                if (DispatchQueue.Any(x => x.Priority <= 1) && DispatchQueue.Any(x => x.Priority > 1 && x.Type == ReportDispatch.ReportLethalForceAuthorized))
-                {
-                    DispatchQueue.RemoveAll(x => x.Priority > 1);
-                }
-                if (DispatchQueue.Any(x => x.ResultsInLethalForce && x.Type != ReportDispatch.ReportLethalForceAuthorized))
-                {
-                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLethalForceAuthorized);
-                }
-                if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSpottedStolenCar))
-                {
-                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSpottedStolenCar);
-                }
-                if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSuspiciousVehicle))
-                {
-                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSuspiciousVehicle);
-                }
+                //if (DispatchQueue.Any(x => x.Priority <= 1) && DispatchQueue.Any(x => x.Priority > 1 && x.Type == ReportDispatch.ReportLethalForceAuthorized))
+                //{
+                //    DispatchQueue.RemoveAll(x => x.Priority > 1);
+                //}
+                //if (DispatchQueue.Any(x => x.ResultsInLethalForce && x.Type != ReportDispatch.ReportLethalForceAuthorized))
+                //{
+                //    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLethalForceAuthorized);
+                //}
+                //if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSpottedStolenCar))
+                //{
+                //    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSpottedStolenCar);
+                //}
+                //if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSuspiciousVehicle))
+                //{
+                //    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSuspiciousVehicle);
+                //}
                 if (DispatchQueue.Any(x => !x.IsAmbient))
                 {
                     DispatchQueue.RemoveAll(x => x.IsAmbient);
                 }
 
 
-                if (DispatchQueue.Any(x => x.Type == ReportDispatch.ReportChangedVehicle))
-                {
-                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLocalSuspectSpotted || x.Type == ReportDispatch.ReportSuspectSpotted || x.Type == ReportDispatch.ReportSpottedStolenCar);
-                }
+                //if (DispatchQueue.Any(x => x.Type == ReportDispatch.ReportChangedVehicle))
+                //{
+                //    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLocalSuspectSpotted || x.Type == ReportDispatch.ReportSuspectSpotted || x.Type == ReportDispatch.ReportSpottedStolenCar);
+                //}
 
                 if (DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
                 {
@@ -1115,18 +1115,25 @@ public static class DispatchAudio
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Stolen Air Vehicle");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
 
-        if (vehicle.VehicleEnt.IsHelicopter)
+        if (vehicle == null)
+            vehicle = LosSantosRED.GetPlayersCurrentTrackedVehicle();
+
+
+        if (vehicle == null || vehicle.VehicleEnt == null)
+
+
+        if (vehicle != null && vehicle.VehicleEnt != null && vehicle.VehicleEnt.IsHelicopter)
         {
             ScannerList.Add(new List<string>() { crime_stolen_helicopter.Astolenhelicopter.FileName }.PickRandom());
             Subtitles += " a ~r~Stolen Helicopter~s~";
         }
-        else if (vehicle.VehicleEnt.IsPlane)
+        else //if (vehicle.VehicleEnt.IsPlane)
         {
             ScannerList.Add(new List<string>() { crime_stolen_aircraft.Astolenaircraft.FileName, crime_stolen_aircraft.Astolenaircraft.FileName, crime_hijacked_aircraft.Ahijackedaircraft.FileName, crime_theft_of_an_aircraft.Theftofanaircraft.FileName }.PickRandom());
             Subtitles += " a ~r~Stolen Aircraft~s~";
         }
-        else
-            return;
+        //else
+        //    return;
 
         AddLethalForceAuthorized(ref ScannerList, ref Subtitles); 
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
@@ -1151,12 +1158,22 @@ public static class DispatchAudio
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Backup Required");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
+        List<string> OfficerVariations = new List<string>() { s_m_y_cop_white_full_01.RequestingBackup.FileName, s_m_y_cop_white_full_01.RequestingBackupWeNeedBackup.FileName, s_m_y_cop_white_full_01.WeNeedBackupNow.FileName, s_m_y_cop_white_full_02.MikeOscarSamInHotNeedOfBackup.FileName, s_m_y_cop_white_full_02.MikeOScarSamRequestingBackup.FileName
+                            ,s_m_y_cop_white_mini_02.INeedSomeSeriousBackupHere.FileName,s_m_y_cop_white_mini_03.OfficerInNeedofSomeBackupHere.FileName};
+        ScannerList.Add(OfficerVariations.PickRandom());
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+
+
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.AllUnits, ReportType.Nobody, Game.LocalPlayer.Character.Position);
         List<string> PossibleVariations = new List<string>() { assistance_required.Assistanceneeded.FileName, assistance_required.Assistancerequired.FileName, assistance_required.Backupneeded.FileName, assistance_required.Backuprequired.FileName, assistance_required.Officersneeded.FileName, assistance_required.Officersrequired.FileName,
                                                                 officer_requests_backup.Officersrequestingbackup.FileName,officer_requests_backup.Unitsrequirebackup.FileName,officer_requests_backup.Unitsrequireimmediateassistance.FileName,officer_requests_backup.Unitsrequestingbackup.FileName,officer_requests_backup.Officerneedsimmediateassistance.FileName };
         ScannerList.Add(PossibleVariations.PickRandom());
         Subtitles += " ~r~Assistance Needed~s~";
-        AddZone(ref ScannerList, ref Subtitles, Game.LocalPlayer.Character.Position,ref Notification);
+
+        if (!AddStreet(ref ScannerList, ref Subtitles, ref Notification))
+            AddZone(ref ScannerList, ref Subtitles, Game.LocalPlayer.Character.Position, ref Notification);
+
         if (ResultsInLethalForce)
         {
             AddLethalForceAuthorized(ref ScannerList,ref Subtitles);
@@ -1374,6 +1391,15 @@ public static class DispatchAudio
         ScannerList.Add(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName, attempt_to_find.Allunitsattempttoreacquire.FileName, attempt_to_find.Allunitsattempttoreacquirevisual.FileName, attempt_to_find.RemainintheareaATL20onsuspect.FileName, attempt_to_find.RemainintheareaATL20onsuspect1.FileName }.PickRandom());
         Subtitles += "Remain in the area, ATL20 on suspect";
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+
+
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Police.LastWantedCenterPosition);
+        ScannerList.Add(new List<string>() { s_m_y_cop_white_full_02.Charlie4WellLookForThoseMaggots.FileName, s_m_y_cop_white_full_02.CopyThatDIspatchWellFindThoseAnimals.FileName, s_m_y_cop_white_full_02.CharlieFourRogerThatWereIntheArea.FileName
+        ,s_m_y_cop_white_mini_03.AdamFourCopy.FileName,s_m_y_cop_white_mini_03.DispatchNeedSomeGuidanceHere.FileName}.PickRandom());
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+
+
+
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
     public static void ReportSuspectLostVisual()

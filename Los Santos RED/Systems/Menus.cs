@@ -30,6 +30,7 @@ internal static class Menus
     private static UIMenuListItem menuDeathTakeoverRandomPed;
     private static UIMenuItem menuBustedResistArrest;
     private static UIMenuItem menuBustedBribe;
+    private static UIMenuItem menuBustedTalk;
     //private static UIMenuItem menuBustedRespawnInPlace;
     private static UIMenuListItem menuBustedTakeoverRandomPed;
     private static UIMenuListItem menuBustedSurrender;
@@ -48,6 +49,8 @@ internal static class Menus
     private static UIMenu optionsMenu;
     private static UIMenu actionsMenu;
 
+    private static UIMenu talkMenu;
+
     private static int RandomWeaponCategory;
     //private static Vector3 WorldPos;
 
@@ -61,6 +64,8 @@ internal static class Menus
 
     public static float TakeoverRadius;
     public static int ChangePlateIndex;
+
+
     public static bool IsRunning { get; set; }
     public static void Intitialize()
     {
@@ -117,16 +122,7 @@ internal static class Menus
         deathMenu.AddItem(menuDeathHospitalRespawn);
         deathMenu.AddItem(menuDeathTakeoverRandomPed);
 
-        menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
-        menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
-        menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));
-        //menuBustedRespawnInPlace = new UIMenuItem("Respawn In Place", "Respawn at this exact spot.");
-        menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-
-        bustedMenu.AddItem(menuBustedResistArrest);
-        bustedMenu.AddItem(menuBustedBribe);
-        bustedMenu.AddItem(menuBustedSurrender);
-        bustedMenu.AddItem(menuBustedTakeoverRandomPed);
+        CreateBustedMenu();
 
         mainMenu.OnItemSelect += MainMenuSelect;
         mainMenu.OnListChange += OnListChange;
@@ -142,9 +138,15 @@ internal static class Menus
         debugMenu.OnListChange += OnListChange;
         debugMenu.OnCheckboxChange += OnCheckboxChange;
 
+
+        //talkMenu.OnItemSelect += TalkMenuSelect;
+
         ProcessLoop();
 
     }
+
+
+
     public static void ProcessLoop()
     {
         GameFiber.StartNew(delegate
@@ -229,6 +231,9 @@ internal static class Menus
     }
     public static void ShowBustedMenu()
     {
+        CreateBustedMenu();
+
+
         UpdateClosestPoliceStationIndex();
         mainMenu.Visible = false;
         deathMenu.Visible = false;
@@ -257,6 +262,28 @@ internal static class Menus
         }
         CreateOptionsMenu();
         CreateActionsMenu();
+    }
+
+
+    private static void CreateBustedMenu()
+    {
+        bustedMenu.Clear();
+        menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
+        menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
+        menuBustedSurrender = new UIMenuListItem("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", Locations.GetAllLocationsOfType(Location.LocationType.Police));
+        menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
+
+
+        bustedMenu.AddItem(menuBustedResistArrest);
+        bustedMenu.AddItem(menuBustedBribe);
+        bustedMenu.AddItem(menuBustedSurrender);
+        if (LosSantosRED.PlayerWantedLevel <= 1 || !Police.CurrentCrimes.CommittedAnyCrimes)
+        {
+            menuBustedTalk = new UIMenuItem("Talk", "Try to talk your way out of an arrest.");
+            bustedMenu.AddItem(menuBustedTalk);
+        }        
+        bustedMenu.AddItem(menuBustedTakeoverRandomPed);
+
     }
     private static void CreateOptionsMenu()
     {
@@ -430,6 +457,10 @@ internal static class Menus
         {
             Respawning.Surrender(CurrentSelectedSurrenderLocation);
         }
+        else if (selectedItem == menuBustedTalk)
+        {
+            Respawning.Talk();
+        }
         else if (selectedItem == menuBustedTakeoverRandomPed)
         {
             if (TakeoverRadius == -1f)
@@ -549,7 +580,6 @@ internal static class Menus
         }
         return Value;
     }
-        
 
 }
 

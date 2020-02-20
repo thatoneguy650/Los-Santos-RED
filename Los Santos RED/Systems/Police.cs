@@ -267,10 +267,10 @@ internal static class Police
 
         foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
-            if (SawPlayerThisCheck && TotalEntityNativeLOSChecks >= 3 && Cop.GameTimeLastLOSCheck <= 1500)//we have already done 3 checks, saw us and they were looked at last check
-            {
-                break;
-            }
+            //if (SawPlayerThisCheck && TotalEntityNativeLOSChecks >= 3 && Cop.GameTimeLastLOSCheck <= 1500)//we have already done 3 checks, saw us and they were looked at last check
+            //{
+            //    break;
+            //}
             Cop.GameTimeLastLOSCheck = Game.GameTime;
             if (Cop.DistanceToPlayer <= RangeToCheck && Cop.Pedestrian.PlayerIsInFront() && !Cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.Pedestrian, EntityToCheck))//if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
             {
@@ -604,7 +604,7 @@ internal static class Police
 
         CurrentCrimes.MaxWantedLevel = LosSantosRED.PlayerWantedLevel;
         WantedLevelStartTime = Game.GameTime;
-        LocalWriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}", Game.LocalPlayer.WantedLevel));
+        LocalWriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel,RecentlySetWanted));
         PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
     }
     private static void WantedLevelRemoved()

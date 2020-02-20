@@ -4005,18 +4005,18 @@ public class s_m_y_cop_black_mini_04
 }
 public class s_m_y_cop_white_full_01
 {
-    public static ScannerFile HASH00FFC2DB { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x00FFC2DB.wav", "0x00FFC2DB", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH017221AA { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x017221AA.wav", "0x017221AA", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH01A10324 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x01A10324.wav", "0x01A10324", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH030276D5 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x030276D5.wav", "0x030276D5", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH046135A4 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x046135A4.wav", "0x046135A4", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH0496792A { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0496792A.wav", "0x0496792A", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH0513FA72 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0513FA72.wav", "0x0513FA72", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH0846F27E { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0846F27E.wav", "0x0846F27E", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile SuspectIsOnFoot { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x00FFC2DB.wav", "SuspectIsOnFoot", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile SuspectInACar { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x017221AA.wav", "SuspectInACar", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile RequestingBackupWeNeedBackup { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x01A10324.wav", "RequestingBackupWeNeedBackup", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile MaydayWeAreGoingDown { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x030276D5.wav", "MaydayWeAreGoingDown", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile CopyThatWeAreInTheVecinity { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x046135A4.wav", "CopyThatWeAreInTheVecinity", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile WeHaveAVisualOnTheSuspectMovingSouth { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0496792A.wav", "WeHaveAVisualOnTheSuspectMovingSouth", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile WeAreAirbornAndMovingIn { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0513FA72.wav", "WeAreAirbornAndMovingIn", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile DispatchSuspectsVehicleInACollision { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0846F27E.wav", "0x0846F27E", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH08DB544A { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x08DB544A.wav", "0x08DB544A", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH08E377EE { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x08E377EE.wav", "0x08E377EE", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH09D5A5ED { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x09D5A5ED.wav", "0x09D5A5ED", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH0AF015F7 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0AF015F7.wav", "0x0AF015F7", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile WeNeedBackupNow { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0AF015F7.wav", "WeNeedBackupNow", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH0B5B6665 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0B5B6665.wav", "0x0B5B6665", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH0B78C3D3 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0B78C3D3.wav", "0x0B78C3D3", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH0D3B44AE { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0D3B44AE.wav", "0x0D3B44AE", "s_m_y_cop_white_full_01"); } }
@@ -4028,7 +4028,7 @@ public class s_m_y_cop_white_full_01
     public static ScannerFile HASH118A68BD { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x118A68BD.wav", "0x118A68BD", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH12461560 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x12461560.wav", "0x12461560", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH137027BC { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x137027BC.wav", "0x137027BC", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH144A2876 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x144A2876.wav", "0x144A2876", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile RequestingBackup { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x144A2876.wav", "RequestingBackup", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH14C47BCF { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x14C47BCF.wav", "0x14C47BCF", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH16A41369 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x16A41369.wav", "0x16A41369", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH16D11D9F { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x16D11D9F.wav", "0x16D11D9F", "s_m_y_cop_white_full_01"); } }
@@ -4047,16 +4047,16 @@ public class s_m_y_cop_white_full_02
 {
     public static ScannerFile HASH00FFC2DB { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x00FFC2DB.wav", "0x00FFC2DB", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH017221AA { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x017221AA.wav", "0x017221AA", "s_m_y_cop_white_full_02"); } }
-    public static ScannerFile HASH01A10324 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x01A10324.wav", "0x01A10324", "s_m_y_cop_white_full_02"); } }
+    public static ScannerFile MikeOscarSamInHotNeedOfBackup { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x01A10324.wav", "MikeOscarSamInHotNeedOfBackup", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH030276D5 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x030276D5.wav", "0x030276D5", "s_m_y_cop_white_full_02"); } }
-    public static ScannerFile HASH046135A4 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x046135A4.wav", "0x046135A4", "s_m_y_cop_white_full_02"); } }
+    public static ScannerFile CharlieFourRogerThatWereIntheArea { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x046135A4.wav", "CharlieFourRogerThatWereIntheArea", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH0496792A { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x0496792A.wav", "0x0496792A", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH0513FA72 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x0513FA72.wav", "0x0513FA72", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH0846F27E { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x0846F27E.wav", "0x0846F27E", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH08DB544A { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x08DB544A.wav", "0x08DB544A", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH08E377EE { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x08E377EE.wav", "0x08E377EE", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH09D5A5ED { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x09D5A5ED.wav", "0x09D5A5ED", "s_m_y_cop_white_full_02"); } }
-    public static ScannerFile HASH0AF015F7 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x0AF015F7.wav", "0x0AF015F7", "s_m_y_cop_white_full_02"); } }
+    public static ScannerFile MikeOScarSamRequestingBackup { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x0AF015F7.wav", "MikeOScarSamRequestingBackup", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH0B5B6665 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x0B5B6665.wav", "0x0B5B6665", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH0B78C3D3 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x0B78C3D3.wav", "0x0B78C3D3", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH0D3B44AE { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x0D3B44AE.wav", "0x0D3B44AE", "s_m_y_cop_white_full_02"); } }
@@ -4078,9 +4078,9 @@ public class s_m_y_cop_white_full_02
     public static ScannerFile HASH1B2B551D { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1B2B551D.wav", "0x1B2B551D", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH1BCC27E6 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1BCC27E6.wav", "0x1BCC27E6", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH1BD2FDBA { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1BD2FDBA.wav", "0x1BD2FDBA", "s_m_y_cop_white_full_02"); } }
-    public static ScannerFile HASH1C086912 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1C086912.wav", "0x1C086912", "s_m_y_cop_white_full_02"); } }
+    public static ScannerFile CopyThatDIspatchWellFindThoseAnimals { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1C086912.wav", "0x1C086912", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH1E65C2A3 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1E65C2A3.wav", "0x1E65C2A3", "s_m_y_cop_white_full_02"); } }
-    public static ScannerFile HASH1EB82E73 { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1EB82E73.wav", "0x1EB82E73", "s_m_y_cop_white_full_02"); } }
+    public static ScannerFile Charlie4WellLookForThoseMaggots { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1EB82E73.wav", "0x1EB82E73", "s_m_y_cop_white_full_02"); } }
     public static ScannerFile HASH1F7C154B { get { return new ScannerFile("s_m_y_cop_01_white_full_02\\0x1F7C154B.wav", "0x1F7C154B", "s_m_y_cop_white_full_02"); } }
 }
 public class s_m_y_cop_white_mini_01
@@ -4104,7 +4104,7 @@ public class s_m_y_cop_white_mini_02
     public static ScannerFile HASH08DB544A { get { return new ScannerFile("s_m_y_cop_01_white_mini_02\\0x08DB544A.wav", "0x08DB544A", "s_m_y_cop_white_mini_02"); } }
     public static ScannerFile HASH08E377EE { get { return new ScannerFile("s_m_y_cop_01_white_mini_02\\0x08E377EE.wav", "0x08E377EE", "s_m_y_cop_white_mini_02"); } }
     public static ScannerFile HASH09D5A5ED { get { return new ScannerFile("s_m_y_cop_01_white_mini_02\\0x09D5A5ED.wav", "0x09D5A5ED", "s_m_y_cop_white_mini_02"); } }
-    public static ScannerFile HASH0AF015F7 { get { return new ScannerFile("s_m_y_cop_01_white_mini_02\\0x0AF015F7.wav", "0x0AF015F7", "s_m_y_cop_white_mini_02"); } }
+    public static ScannerFile INeedSomeSeriousBackupHere { get { return new ScannerFile("s_m_y_cop_01_white_mini_02\\0x0AF015F7.wav", "INeedSomeSeriousBackupHere", "s_m_y_cop_white_mini_02"); } }
     public static ScannerFile HASH0B5B6665 { get { return new ScannerFile("s_m_y_cop_01_white_mini_02\\0x0B5B6665.wav", "0x0B5B6665", "s_m_y_cop_white_mini_02"); } }
     public static ScannerFile HASH0B78C3D3 { get { return new ScannerFile("s_m_y_cop_01_white_mini_02\\0x0B78C3D3.wav", "0x0B78C3D3", "s_m_y_cop_white_mini_02"); } }
     public static ScannerFile HASH0D3B44AE { get { return new ScannerFile("s_m_y_cop_01_white_mini_02\\0x0D3B44AE.wav", "0x0D3B44AE", "s_m_y_cop_white_mini_02"); } }
@@ -4134,10 +4134,10 @@ public class s_m_y_cop_white_mini_03
     public static ScannerFile HASH046135A4 { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x046135A4.wav", "0x046135A4", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH0496792A { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x0496792A.wav", "0x0496792A", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH0513FA72 { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x0513FA72.wav", "0x0513FA72", "s_m_y_cop_white_mini_03"); } }
-    public static ScannerFile HASH08DB544A { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x08DB544A.wav", "0x08DB544A", "s_m_y_cop_white_mini_03"); } }
+    public static ScannerFile DispatchNeedSomeGuidanceHere { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x08DB544A.wav", "0x08DB544A", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH08E377EE { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x08E377EE.wav", "0x08E377EE", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH09D5A5ED { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x09D5A5ED.wav", "0x09D5A5ED", "s_m_y_cop_white_mini_03"); } }
-    public static ScannerFile HASH0AF015F7 { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x0AF015F7.wav", "0x0AF015F7", "s_m_y_cop_white_mini_03"); } }
+    public static ScannerFile OfficerInNeedofSomeBackupHere { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x0AF015F7.wav", "OfficerInNeedofSomeBackupHere", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH0B5B6665 { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x0B5B6665.wav", "0x0B5B6665", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH0B78C3D3 { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x0B78C3D3.wav", "0x0B78C3D3", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH0D3B44AE { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x0D3B44AE.wav", "0x0D3B44AE", "s_m_y_cop_white_mini_03"); } }
@@ -4157,7 +4157,7 @@ public class s_m_y_cop_white_mini_03
     public static ScannerFile HASH1BD2FDBA { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x1BD2FDBA.wav", "0x1BD2FDBA", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH1C086912 { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x1C086912.wav", "0x1C086912", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH1E65C2A3 { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x1E65C2A3.wav", "0x1E65C2A3", "s_m_y_cop_white_mini_03"); } }
-    public static ScannerFile HASH1EB82E73 { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x1EB82E73.wav", "0x1EB82E73", "s_m_y_cop_white_mini_03"); } }
+    public static ScannerFile AdamFourCopy { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x1EB82E73.wav", "AdamFourCopy", "s_m_y_cop_white_mini_03"); } }
     public static ScannerFile HASH1F7C154B { get { return new ScannerFile("s_m_y_cop_01_white_mini_03\\0x1F7C154B.wav", "0x1F7C154B", "s_m_y_cop_white_mini_03"); } }
 }
 public class s_m_y_cop_white_mini_04
@@ -4207,7 +4207,7 @@ public class s_m_y_hwaycop_black_full_01
     public static ScannerFile HASH08DB544A { get { return new ScannerFile("s_m_y_hwaycop_01_black_full_01\\0x08DB544A.wav", "0x08DB544A", "s_m_y_hwaycop_black_full_01"); } }
     public static ScannerFile HASH08E377EE { get { return new ScannerFile("s_m_y_hwaycop_01_black_full_01\\0x08E377EE.wav", "0x08E377EE", "s_m_y_hwaycop_black_full_01"); } }
     public static ScannerFile HASH09D5A5ED { get { return new ScannerFile("s_m_y_hwaycop_01_black_full_01\\0x09D5A5ED.wav", "0x09D5A5ED", "s_m_y_hwaycop_black_full_01"); } }
-    public static ScannerFile HASH0AF015F7 { get { return new ScannerFile("s_m_y_hwaycop_01_black_full_01\\0x0AF015F7.wav", "0x0AF015F7", "s_m_y_hwaycop_black_full_01"); } }
+    public static ScannerFile WeNeedBackupQuick { get { return new ScannerFile("s_m_y_hwaycop_01_black_full_01\\0x0AF015F7.wav", "WeNeedBackupQuick", "s_m_y_hwaycop_black_full_01"); } }
     public static ScannerFile HASH0B5B6665 { get { return new ScannerFile("s_m_y_hwaycop_01_black_full_01\\0x0B5B6665.wav", "0x0B5B6665", "s_m_y_hwaycop_black_full_01"); } }
     public static ScannerFile HASH0B78C3D3 { get { return new ScannerFile("s_m_y_hwaycop_01_black_full_01\\0x0B78C3D3.wav", "0x0B78C3D3", "s_m_y_hwaycop_black_full_01"); } }
     public static ScannerFile HASH0D3B44AE { get { return new ScannerFile("s_m_y_hwaycop_01_black_full_01\\0x0D3B44AE.wav", "0x0D3B44AE", "s_m_y_hwaycop_black_full_01"); } }

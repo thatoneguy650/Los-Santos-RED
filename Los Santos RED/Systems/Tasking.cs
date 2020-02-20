@@ -106,7 +106,7 @@ public static class Tasking
         {
             if (!Cop.isInHelicopter)
             {
-                if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
+                if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase && (Police.CurrentCrimes.KillingPolice.InstancesObserved >= 1 || Police.CurrentCrimes.KillingCivilians.InstancesObserved >= 1 || LosSantosRED.PlayerWantedLevel >= 4))
                 {
                     NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.Pedestrian, 100f);
                     NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4, true);
@@ -563,7 +563,10 @@ public static class Tasking
             {
                 Cop.Pedestrian.BlockPermanentEvents = true;
 
-                NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.Pedestrian, MoveRate);
+
+                if(LosSantosRED.PlayerWantedLevel >= 2)
+                    NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.Pedestrian, MoveRate);
+
                 if (TaskTime == 0 || Game.GameTime - TaskTime >= 250)//250
                 {
                     ArmCopAppropriately(Cop);
@@ -611,7 +614,7 @@ public static class Tasking
                         {
                             if (LocalTaskName != "Approach" && Police.CurrentPoliceState == Police.PoliceState.UnarmedChase && Cop.DistanceToPlayer >= 7f)
                             {
-                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 4f, 0.5f, 1073741824, 1); //Original and works ok
+                                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 4f, 0.25f, 1073741824, 1); //Original and works ok
                                 TaskTime = Game.GameTime;
                                 Cop.Pedestrian.KeepTasks = true;
                                 LocalTaskName = "Approach";
