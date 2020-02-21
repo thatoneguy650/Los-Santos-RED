@@ -69,6 +69,7 @@ public static class Civilians
                     MyPed.HurtByPlayer = true;
                 MyPed.Health = NewHealth;
             }
+            MyPed.UpdateDistance();
         }
         PoliceScanning.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
         PoliceScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);

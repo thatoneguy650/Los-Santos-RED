@@ -124,6 +124,10 @@ public static class UI
                 PlayerSpeedLine += " Running Red";
 
         }
+
+        string PlayerCLockLine = string.Format("{0} Multiplier: {1}", ClockSystem.ClockTime, ClockSystem.ClockSpeed);
+
+        Text(PlayerCLockLine, Settings.TrafficInfoUIPositionX - 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
         Text(PlayerStatusLine, Settings.TrafficInfoUIPositionX - Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
         Text(StreetLine, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
         Text(PlayerZoneLine, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);

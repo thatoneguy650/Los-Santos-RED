@@ -185,6 +185,7 @@ public static class LosSantosRED
         PersonOfInterest.Initialize();
         Civilians.Initialize();
         ClockSystem.Initialize();
+        MuggingSystem.Initialize();
         //CameraSystem.Initialize();
         MainLoop();
     }
@@ -374,6 +375,7 @@ public static class LosSantosRED
         //CameraSystem.Idspose();
 
         ClockSystem.Dispose();
+        MuggingSystem.Dispose();
     }
 
     

@@ -82,6 +82,7 @@ public static class DispatchAudio
         ReportCivilianKilled = 35,
         ReportStolenAirVehicle = 36,
         ReportResistingArrest = 37,
+        ReportLowLevelMugging = 38,
     }
     public enum NearType
     {
@@ -489,6 +490,8 @@ public static class DispatchAudio
                         ReportStolenAirVehicle(Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportResistingArrest)
                         ReportResistingArrest();
+                    else if (Item.Type == ReportDispatch.ReportLowLevelMugging)
+                        ReportLowLevelMugging();
 
                     DispatchQueue.RemoveAt(0);
 
@@ -1339,6 +1342,18 @@ public static class DispatchAudio
         ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
+    public static void ReportLowLevelMugging()
+    {
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~y~Crime Reported~s~", "Civilian Mugged");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Civilians, Police.LastWantedCenterPosition);
+        ScannerList.Add(new List<string>() { crime_mugging.Apossiblemugging.FileName }.PickRandom());
+        Subtitles += " ~y~Civilian Mugged~s~";
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
+    }
+
     //StolenCar
     public static void ReportStolenVehicle(GTAVehicle stolenVehicle)
     {

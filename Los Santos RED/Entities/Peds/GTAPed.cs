@@ -31,6 +31,7 @@ public class GTAPed
     public float DistanceToPlayer { get; set; }
     public float DistanceToLastSeen { get; set; }
     public bool WasMarkedNonPersistent { get; set; } = false;
+    public bool HasBeenMugged { get; set; } = false;
     public bool NeedsDistanceCheck
     {
         get

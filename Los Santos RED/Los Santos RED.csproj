@@ -124,6 +124,7 @@
     <Compile Include="Systems\CameraSystem.cs" />
     <Compile Include="Systems\Civilians.cs" />
     <Compile Include="Systems\ClockSystem.cs" />
+    <Compile Include="Systems\MuggingSystem.cs" />
     <Compile Include="Systems\PersonofInterest.cs" />
     <Compile Include="Systems\ScriptController.cs" />
     <Compile Include="Systems\WeatherReporting.cs" />

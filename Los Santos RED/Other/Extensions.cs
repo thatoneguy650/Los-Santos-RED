@@ -193,6 +193,14 @@ namespace ExtensionsMethods
         {
             return Math.Abs(Vector3.Subtract(myPed.Position, position).Length());
         }
+
+        public static bool CanSeePlayer(this Ped myPed)
+        {
+            if (myPed.PlayerIsInFront() && myPed.IsInRangeOf(Game.LocalPlayer.Character.Position, 55f) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", myPed, Game.LocalPlayer.Character))
+                return true;
+            else
+                return false;
+        }
         //Math
         public static double GetRandomNumber(double minimum, double maximum)
             {
