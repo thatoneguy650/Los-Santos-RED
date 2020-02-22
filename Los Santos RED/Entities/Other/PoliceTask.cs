@@ -23,6 +23,7 @@ public class PoliceTask
         GoToWantedCenter = 8,
         RandomSpawnIdle = 9,
         HeliChase = 10,
+        TaskInvestigateCrime = 11,
     }
 
     public PoliceTask(GTACop _CopToAssign,Task _TaskToAssign)

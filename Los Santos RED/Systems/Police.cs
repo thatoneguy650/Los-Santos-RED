@@ -33,6 +33,7 @@ internal static class Police
     public static List<Blip> TempBlips = new List<Blip>();
     private static uint GameTimeLastReportedSpotted;
     private static uint LastSeenVehicleHandle;
+    private static uint GameTimeLastStartedInvestigation;
 
     public static bool AnyPoliceCanSeePlayer { get; set; }
     public static bool AnyPoliceCanRecognizePlayer { get; set; }
@@ -54,6 +55,19 @@ internal static class Police
         get
         {
             if (PlayerStarsGreyedOut && PoliceScanning.CopPeds.All(x => !x.RecentlySeenPlayer()))
+                return true;
+            else
+                return false;
+        }
+    }
+
+    public static bool PoliceInInvestigationMode
+    {
+        get
+        {
+            if (GameTimeLastStartedInvestigation == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastStartedInvestigation <= 60000)
                 return true;
             else
                 return false;
@@ -95,6 +109,21 @@ internal static class Police
                 return false;
         }
     }
+
+    internal static void StartedInvestigation()
+    {
+        GameTimeLastStartedInvestigation = Game.GameTime;
+    }
+    internal static void StopInvestigation()
+    {
+        GameTimeLastStartedInvestigation = 0;
+
+        if(LosSantosRED.PlayerIsNotWanted)
+        {
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportNoFurtherUnits, 5));
+        }
+    }
+
     public static uint PlayerHasBeenNotWantedFor//seconds
     {
         get
@@ -537,9 +566,9 @@ internal static class Police
         GameTimeLastSetWanted = Game.GameTime;
         if (Game.LocalPlayer.WantedLevel < WantedLevel || WantedLevel == 0)
         {
-            LocalWriteToLog("SetWantedLevel", string.Format("Current Wanted: {0}, Desired Wanted: {1}", Game.LocalPlayer.WantedLevel, WantedLevel));
+            Debugging.WriteToLog("SetWantedLevel", string.Format("Current Wanted: {0}, Desired Wanted: {1}", Game.LocalPlayer.WantedLevel, WantedLevel));
             Game.LocalPlayer.WantedLevel = WantedLevel;
-            LocalWriteToLog("SetWantedLevel", string.Format("Manually set to: {0}: {1}", WantedLevel, Reason));
+            Debugging.WriteToLog("SetWantedLevel", string.Format("Manually set to: {0}: {1}", WantedLevel, Reason));
         }
         //else
         //{
@@ -637,7 +666,11 @@ internal static class Police
     {
         if (!RecentlySetWanted)
         {
+            SetWantedLevel(0, "Resetting Unknown Wanted");
+            PoliceSpawning.SpawnInvestigatingCop(Game.LocalPlayer.Character.Position);
             AddDispatchToUnknownWanted();
+
+            return;
             //NativeFunction.CallByName<bool>("SET_FAKE_WANTED_LEVEL", 0);
         }
         CurrentCrimes.GameTimeWantedStarted = Game.GameTime;

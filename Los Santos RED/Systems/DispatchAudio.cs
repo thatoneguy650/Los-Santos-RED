@@ -83,6 +83,9 @@ public static class DispatchAudio
         ReportStolenAirVehicle = 36,
         ReportResistingArrest = 37,
         ReportLowLevelMugging = 38,
+
+
+        ReportNoFurtherUnits = 39,
     }
     public enum NearType
     {
@@ -492,6 +495,8 @@ public static class DispatchAudio
                         ReportResistingArrest();
                     else if (Item.Type == ReportDispatch.ReportLowLevelMugging)
                         ReportLowLevelMugging();
+                    else if (Item.Type == ReportDispatch.ReportNoFurtherUnits)
+                        ReportNoFurtherUnits();
 
                     DispatchQueue.RemoveAt(0);
 
@@ -506,6 +511,8 @@ public static class DispatchAudio
             Debugging.GameFibers.Add(PlayDispatchQueue);
         }
     }
+
+
     public static void ClearDispatchQueue()
     {
         DispatchQueue.Clear();
@@ -1236,7 +1243,7 @@ public static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_person_resisting_arrest.Apersonresistingarrest.FileName, crime_suspect_resisting_arrest.Asuspectresistingarrest.FileName }.PickRandom());
         Subtitles += " a ~r~Suspect Resisting Arrest~s~";
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
 
@@ -1417,6 +1424,17 @@ public static class DispatchAudio
 
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
+    private static void ReportNoFurtherUnits()
+    {
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Code 4-ADAM");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Police.LastWantedCenterPosition);
+        ScannerList.Add(new List<string>() { no_further_units.Noadditionalofficersneeded.FileName, no_further_units.Noadditionalofficersneeded1.FileName, no_further_units.Nofurtherunitsrequired.FileName, no_further_units.WereCode4Adam.FileName, no_further_units.Code4Adamnoadditionalsupportneeded.FileName }.PickRandom());
+        Subtitles += "We are Code 4-ADAM, no additional officers needed";
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
+    }
     public static void ReportSuspectLostVisual()
     {
         List<string> ScannerList = new List<string>();
@@ -1548,6 +1566,7 @@ public static class DispatchAudio
         };
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, "Pop quiz hot shot"));
     }
+
 
     //Helper
     public static void AddStolenVehicle(ref List<string> ScannerList,GTAVehicle StolenCar, ref string Subtitles)
