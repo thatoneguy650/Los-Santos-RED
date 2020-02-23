@@ -1428,10 +1428,12 @@ public static class DispatchAudio
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Code 4-ADAM");
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Officers On-Site, Code 4-ADAM");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Police.LastWantedCenterPosition);
-        ScannerList.Add(new List<string>() { no_further_units.Noadditionalofficersneeded.FileName, no_further_units.Noadditionalofficersneeded1.FileName, no_further_units.Nofurtherunitsrequired.FileName, no_further_units.WereCode4Adam.FileName, no_further_units.Code4Adamnoadditionalsupportneeded.FileName }.PickRandom());
-        Subtitles += "We are Code 4-ADAM, no additional officers needed";
+        ScannerList.Add(new List<string>() { officers_on_scene.Officersareatthescene.FileName, officers_on_scene.Officersarrivedonscene.FileName, officers_on_scene.Officershavearrived.FileName, officers_on_scene.Officersonscene.FileName, officers_on_scene.Officersonsite.FileName }.PickRandom());
+        ScannerList.Add(new List<string>() { no_further_units.Noadditionalofficersneeded.FileName, no_further_units.Noadditionalofficersneeded1.FileName, no_further_units.Nofurtherunitsrequired.FileName, no_further_units.WereCode4Adam.FileName, no_further_units.Code4Adamnoadditionalsupportneeded.FileName
+        , stand_down.ReturnToPatrol.FileName, stand_down.ReturnToPatrol1.FileName, stand_down.ReturnToPatrol2.FileName}.PickRandom());
+        Subtitles += "Officers on site, we are Code 4-ADAM. No additional officers needed";
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Police.LastWantedCenterPosition);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }

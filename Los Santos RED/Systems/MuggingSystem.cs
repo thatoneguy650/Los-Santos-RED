@@ -10,8 +10,21 @@ using System.Threading.Tasks;
 public static class MuggingSystem
 {
     private static bool IsMugging = false;
+    private static uint GameTimeLastDispatchedMugging;
     public static bool IsRunning { get; set; }
     public static Vector3 LastMuggingPosition { get; set; }
+    public static bool RecentlyDispatchedMugging
+    {
+        get
+        {
+            if (GameTimeLastDispatchedMugging == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastDispatchedMugging <= 60000)
+                return true;
+            else
+                return false;
+        }
+    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -96,8 +109,11 @@ public static class MuggingSystem
 
             uint GameTimeStartedMugging = Game.GameTime;
             bool Intimidated = false;
-            while (Game.GameTime - GameTimeStartedMugging <= 4000)
-            {                
+            while (Game.GameTime - GameTimeStartedMugging <= 2000)
+            {      
+                if(Game.GameTime - GameTimeStartedMugging >= 500 && Game.GameTime - GameTimeStartedMugging <= 1500)
+                    Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");
+
                 if (!Game.LocalPlayer.IsFreeAiming)
                 {
                     Intimidated = false;
@@ -116,6 +132,11 @@ public static class MuggingSystem
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, LosSantosRED.MyRand.Next(15, 450), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
                 LastMuggingPosition = MuggingTarget.Pedestrian.Position;
+            }
+            else if(LosSantosRED.MyRand.Next(1,11) <= 4)
+            {
+                MuggingTarget.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, 15000);
+                MuggingTarget.Pedestrian.PlayAmbientSpeech("CHALLENGE_THREATEN");
             }
             MuggingTarget.Pedestrian.BlockPermanentEvents = false;
             //MuggingTarget.Pedestrian.Tasks.Clear();
@@ -152,10 +173,11 @@ public static class MuggingSystem
 
                     //Police.SetWantedLevel(1, "Mugging Peds");
 
-                    if (LosSantosRED.PlayerIsNotWanted)
+                    if (LosSantosRED.PlayerIsNotWanted && !RecentlyDispatchedMugging)
                     {
                         PoliceSpawning.SpawnInvestigatingCop(LastMuggingPosition);
                         DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelMugging, 10));
+                        GameTimeLastDispatchedMugging = Game.GameTime;
                     }
 
                     if (MyPed.Pedestrian.Exists() && !MyPed.Pedestrian.IsDead && !MyPed.Pedestrian.IsRagdoll)

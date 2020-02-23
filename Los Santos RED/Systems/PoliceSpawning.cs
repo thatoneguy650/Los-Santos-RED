@@ -13,6 +13,8 @@ public static class PoliceSpawning
     private static List<Vehicle> CreatedPoliceVehicles;
     private static List<Entity> CreatedEntities;
     private static RandomPoliceSpawn NextPoliceSpawn;
+    private static RandomPoliceSpawn NextPoliceInvestigationSpawn;
+    private static bool NeedInvestigationCop;
 
     public static bool IsRunning { get; set; }
     public static void Initialize()
@@ -31,6 +33,10 @@ public static class PoliceSpawning
         if (PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
         {
             SpawnRandomCop();
+        }
+        if(NeedInvestigationCop)
+        {
+            SpawnInvestigatingCop(Vector3.Zero);
         }
     }
     public static void Dispose()
@@ -56,11 +62,9 @@ public static class PoliceSpawning
         {
             if (NextPoliceSpawn == null)
             {
-                GetRandomSpawnLocation(750f,1500f,false);
+                NextPoliceSpawn = GetPoliceSpawn(750f,1500f,false);
                 return;
             }
-
-           // Debugging.WriteToLog("SpawnRandomCop", "Starting Spawning Cop");
             int RandomValue = LosSantosRED.MyRand.Next(1, 11);
             Agency AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.MainZoneAgency;
             if (NextPoliceSpawn.IsFreeway && RandomValue <= 4)
@@ -85,28 +89,44 @@ public static class PoliceSpawning
     }
     public static void SpawnInvestigatingCop(Vector3 PositionToInvestigate)
     {
-        GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position) <= 350f && x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-        if (ClosestCop == null)
-        {
-            GetRandomSpawnLocation(150f, 300f,true);
-            if (NextPoliceSpawn != null)
+        try
+        { 
+            if(NextPoliceInvestigationSpawn == null)
             {
-                Agency AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.MainZoneAgency;
-                ClosestCop = SpawnCop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation);
+                NeedInvestigationCop = true;
+                NextPoliceInvestigationSpawn = GetPoliceSpawn(150f, 300f, true);
+                return;
             }
-            else
+
+            GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position) <= 350f && x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+            if (ClosestCop == null)
             {
-                ClosestCop = PoliceScanning.CopPeds.Where(x =>  x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+                if (NextPoliceInvestigationSpawn != null)
+                {
+                    Agency AgencyToSpawn = NextPoliceInvestigationSpawn.ZoneAtLocation.MainZoneAgency;
+                    ClosestCop = SpawnCop(AgencyToSpawn, NextPoliceInvestigationSpawn.SpawnLocation);
+                    NextPoliceInvestigationSpawn = null;                    
+                }
+                else
+                {
+                    ClosestCop = PoliceScanning.CopPeds.Where(x =>  x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+                }
             }
+
+            if (ClosestCop == null)
+            {
+                NextPoliceInvestigationSpawn = null;
+                return;
+            }
+
+            NeedInvestigationCop = false;
+            Tasking.PositionOfInterest = PositionToInvestigate;
+            Tasking.AddItemToQueue(new PoliceTask(ClosestCop, PoliceTask.Task.TaskInvestigateCrime));
         }
-
-        if (ClosestCop == null)
-            return;
-
-
-        Tasking.PositionOfInterest = PositionToInvestigate;
-        Police.StartedInvestigation();
-        Tasking.AddItemToQueue(new PoliceTask(ClosestCop, PoliceTask.Task.TaskInvestigateCrime));
+        catch (Exception e)
+        {
+            Debugging.WriteToLog("SpawnRandomCopError", e.Message + " : " + e.StackTrace);
+        }
 
     }
     public static float GetClosestVehicleNodeHeading(this Vector3 v3)
@@ -118,36 +138,64 @@ public static class PoliceSpawning
 
         return outHeading;
     }
-    public static void GetRandomSpawnLocation(float DistanceFrom,float DistanceTo,bool AllowClosePoliceSpawns)
-    {
-        NextPoliceSpawn = null;
+    //public static void GetRandomSpawnLocation(float DistanceFrom,float DistanceTo,bool AllowClosePoliceSpawns)
+    //{
+    //    NextPoliceSpawn = null;
 
+    //    Vector3 SpawnLocation = Vector3.Zero;
+    //    float Heading = 0f;
+    //    LosSantosRED.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(DistanceFrom, DistanceTo), out SpawnLocation, out Heading);//LosSantosRED.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(750f, 1500f), out SpawnLocation, out Heading);
+
+    //    if (SpawnLocation == Vector3.Zero)
+    //        return;
+
+    //    if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)//250f
+    //        return;
+
+    //    if (!AllowClosePoliceSpawns)
+    //    {
+    //        if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
+    //            return;
+    //    }
+
+    //    Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
+    //    if (ZoneName == null || ZoneName == Zones.OCEANA)
+    //        return;
+
+    //    string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
+    //    Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
+
+    //    NextPoliceSpawn = new RandomPoliceSpawn(SpawnLocation, ZoneName, MyGTAStreet != null && MyGTAStreet.isFreeway);
+    //}
+
+    public static RandomPoliceSpawn GetPoliceSpawn(float DistanceFrom, float DistanceTo, bool AllowClosePoliceSpawns)
+    {
         Vector3 SpawnLocation = Vector3.Zero;
         float Heading = 0f;
-        LosSantosRED.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(DistanceFrom, DistanceTo), out SpawnLocation, out Heading);//LosSantosRED.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(750f, 1500f), out SpawnLocation, out Heading);
+        LosSantosRED.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(DistanceFrom, DistanceTo), out SpawnLocation, out Heading);
 
         if (SpawnLocation == Vector3.Zero)
-            return;
+            return null;
 
-        if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)//250f
-            return;
+        if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 150f)//250f
+            return null;
 
         if (!AllowClosePoliceSpawns)
         {
             if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
-                return;
+                return null;
         }
 
         Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
         if (ZoneName == null || ZoneName == Zones.OCEANA)
-            return;
+            return null;
 
         string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
         Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
 
-        NextPoliceSpawn = new RandomPoliceSpawn(SpawnLocation, ZoneName, MyGTAStreet != null && MyGTAStreet.isFreeway);
+        return new RandomPoliceSpawn(SpawnLocation, ZoneName, MyGTAStreet != null && MyGTAStreet.isFreeway);
     }
-  
+
 
 
     public static void RemoveFarAwayRandomlySpawnedCops()

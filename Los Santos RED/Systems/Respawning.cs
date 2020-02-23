@@ -12,6 +12,8 @@ public static class Respawning
 {
     private static uint GameTimeLastBribedPolice;
     private static uint GameTimeLastUndied;
+    private static int HospitalBillPastDue;
+    private static int BailFeePastDue;
     public static bool RecentlyUndied
     {
         get
@@ -152,8 +154,6 @@ public static class Respawning
         LosSantosRED.IsDead = false;
         LosSantosRED.IsBusted = false;
 
-        int HospitalFee = Settings.HospitalFee * (1+LosSantosRED.MaxWantedLastLife);
-
         RespawnInPlace(false);
 
         if (Hospital == null)
@@ -165,9 +165,27 @@ public static class Respawning
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
 
-            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA",Hospital.Name,"Hospital Fees",string.Format("~r~${0}", HospitalFee));
 
-        Game.LocalPlayer.Character.GiveCash(-1 * HospitalFee);
+        int HospitalFee = Settings.HospitalFee * (1 + LosSantosRED.MaxWantedLastLife);
+        int CurrentCash = Game.LocalPlayer.Character.GetCash();
+        int TodaysPayment = 0;
+
+        int TotalNeededPayment = HospitalFee + HospitalBillPastDue;
+        
+        if(TotalNeededPayment > CurrentCash)
+        {
+            HospitalBillPastDue = TotalNeededPayment - CurrentCash;
+            TodaysPayment = CurrentCash;
+        }
+        else
+        {
+            HospitalBillPastDue = 0;
+            TodaysPayment = TotalNeededPayment;
+        }
+
+        Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA",Hospital.Name,"Hospital Fees",string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", HospitalFee, TodaysPayment,HospitalBillPastDue));
+
+        Game.LocalPlayer.Character.GiveCash(-1 * TodaysPayment);
     }
     public static void ResistArrest()
     {
@@ -191,7 +209,7 @@ public static class Respawning
         GameFiber.Wait(1500);
 
         bool prePlayerKilledPolice = Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice;
-        int bailMoney = LosSantosRED.MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
+        int BailFee = LosSantosRED.MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
 
         LosSantosRED.BeingArrested = false;
         LosSantosRED.IsBusted = false;
@@ -219,11 +237,27 @@ public static class Respawning
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
 
+        int CurrentCash = Game.LocalPlayer.Character.GetCash();
+        int TodaysPayment = 0;
+
+        int TotalNeededPayment = BailFee + BailFeePastDue;
+
+        if (TotalNeededPayment > CurrentCash)
+        {
+            BailFeePastDue = TotalNeededPayment - CurrentCash;
+            TodaysPayment = CurrentCash;
+        }
+        else
+        {
+            BailFeePastDue = 0;
+            TodaysPayment = TotalNeededPayment;
+        }
+
         bool LesterHelp = LosSantosRED.MyRand.Next(1, 11) <= 4;
         if (!LesterHelp)
         {
-            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStation.Name, "Bail Fees", string.Format("~r~${0} ~s~", bailMoney));
-            Game.LocalPlayer.Character.GiveCash(-1 * bailMoney);
+            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStation.Name, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", BailFee, TodaysPayment, BailFeePastDue));
+            Game.LocalPlayer.Character.GiveCash(-1 * TodaysPayment);
         }
         else
         {

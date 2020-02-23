@@ -152,7 +152,7 @@ namespace ExtensionsMethods
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
             }
-            if(CurrentCash+ Amount < 0)
+            if(CurrentCash + Amount < 0)
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, 0, 1);
             else
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);

@@ -3038,13 +3038,13 @@ public class specific_location
 }
 public class stand_down
 {
-    public static ScannerFile HASH05C0A263 { get { return new ScannerFile("01_stand_down\\0x05C0A263.wav", "0x05C0A263", "stand_down"); } }
-    public static ScannerFile HASH0A396B54 { get { return new ScannerFile("01_stand_down\\0x0A396B54.wav", "0x0A396B54", "stand_down"); } }
-    public static ScannerFile HASH1120B929 { get { return new ScannerFile("01_stand_down\\0x1120B929.wav", "0x1120B929", "stand_down"); } }
-    public static ScannerFile HASH187347C8 { get { return new ScannerFile("01_stand_down\\0x187347C8.wav", "0x187347C8", "stand_down"); } }
-    public static ScannerFile HASH18CE0883 { get { return new ScannerFile("01_stand_down\\0x18CE0883.wav", "0x18CE0883", "stand_down"); } }
-    public static ScannerFile HASH195C899A { get { return new ScannerFile("01_stand_down\\0x195C899A.wav", "0x195C899A", "stand_down"); } }
-    public static ScannerFile HASH1F379557 { get { return new ScannerFile("01_stand_down\\0x1F379557.wav", "0x1F379557", "stand_down"); } }
+    public static ScannerFile Code4 { get { return new ScannerFile("01_stand_down\\0x05C0A263.wav", "0x05C0A263", "stand_down"); } }
+    public static ScannerFile StandDownReturnToPatrol { get { return new ScannerFile("01_stand_down\\0x0A396B54.wav", "0x0A396B54", "stand_down"); } }
+    public static ScannerFile AllUnitsCode4 { get { return new ScannerFile("01_stand_down\\0x1120B929.wav", "0x1120B929", "stand_down"); } }
+    public static ScannerFile AllUnitsStandDown { get { return new ScannerFile("01_stand_down\\0x187347C8.wav", "0x187347C8", "stand_down"); } }
+    public static ScannerFile ReturnToPatrol { get { return new ScannerFile("01_stand_down\\0x18CE0883.wav", "0x18CE0883", "stand_down"); } }
+    public static ScannerFile ReturnToPatrol1 { get { return new ScannerFile("01_stand_down\\0x195C899A.wav", "0x195C899A", "stand_down"); } }
+    public static ScannerFile ReturnToPatrol2 { get { return new ScannerFile("01_stand_down\\0x1F379557.wav", "0x1F379557", "stand_down"); } }
 }
 public class status_message
 {
