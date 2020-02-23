@@ -381,10 +381,10 @@ public static class DispatchAudio
                 //{
                 //    DispatchQueue.RemoveAll(x => x.Priority > 1);
                 //}
-                //if (DispatchQueue.Any(x => x.ResultsInLethalForce && x.Type != ReportDispatch.ReportLethalForceAuthorized))
-                //{
-                //    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLethalForceAuthorized);
-                //}
+                if (DispatchQueue.Any(x => x.ResultsInLethalForce && x.Type != ReportDispatch.ReportLethalForceAuthorized))
+                {
+                    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLethalForceAuthorized);
+                }
                 //if (DispatchQueue.Any(x => x.ResultsInStolenCarSpotted && x.Type != ReportDispatch.ReportSpottedStolenCar))
                 //{
                 //    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportSpottedStolenCar);
@@ -404,15 +404,30 @@ public static class DispatchAudio
                 //    DispatchQueue.RemoveAll(x => x.Type == ReportDispatch.ReportLocalSuspectSpotted || x.Type == ReportDispatch.ReportSuspectSpotted || x.Type == ReportDispatch.ReportSpottedStolenCar);
                 //}
 
-                if (DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
+                if (DispatchQueue.Count() > 1)
                 {
-                    DispatchQueueItem HighestItem = DispatchQueue.Where(x => x.IsTrafficViolation).OrderBy(x => x.Priority).FirstOrDefault();
-                    DispatchQueue.RemoveAll(x => x.IsTrafficViolation);
+                    DispatchQueueItem HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
+                    DispatchQueue.Clear();
                     if (HighestItem != null)
                     {
                         DispatchQueue.Add(HighestItem);
                     }
                 }
+
+
+
+
+
+
+                //if (DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
+                //{
+                //    DispatchQueueItem HighestItem = DispatchQueue.Where(x => x.IsTrafficViolation).OrderBy(x => x.Priority).FirstOrDefault();
+                //    DispatchQueue.RemoveAll(x => x.IsTrafficViolation);
+                //    if (HighestItem != null)
+                //    {
+                //        DispatchQueue.Add(HighestItem);
+                //    }
+                //}
 
                 while (DispatchQueue.Count > 0)
                 {

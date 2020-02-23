@@ -157,6 +157,14 @@ public static class Debugging
         //float ForwardVectorDiff = Extensions.Angle(Vector3.Subtract(MyCar.Position, Game.LocalPlayer.Character.Position), Game.LocalPlayer.Character.ForwardVector);
         //UI.Text(string.Format("AngleBetween {0}, ForawardVectorDiff {1}",AngleBetween,ForwardVectorDiff), 0.76f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
 
+
+
+
+        //if(Police.PoliceInInvestigationMode)
+        //{
+        //    Rage.Debug.DrawArrowDebug(new Vector3(Tasking.PositionOfInterest.X, Tasking.PositionOfInterest.Y, Tasking.PositionOfInterest.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //}
+
     }
     private static void DebugNonInvincible()
     {

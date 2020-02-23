@@ -120,7 +120,7 @@ internal static class Police
 
         if(LosSantosRED.PlayerIsNotWanted)
         {
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportNoFurtherUnits, 5));
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportNoFurtherUnits, 10) { IsAmbient = true });
         }
     }
 

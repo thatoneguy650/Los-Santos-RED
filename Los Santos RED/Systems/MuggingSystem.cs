@@ -11,6 +11,8 @@ public static class MuggingSystem
 {
     private static bool IsMugging = false;
     private static uint GameTimeLastDispatchedMugging;
+    private static Ped LastAimedAtPed;
+    private static uint TimeAimedAtMuggingTarget;
     public static bool IsRunning { get; set; }
     public static Vector3 LastMuggingPosition { get; set; }
     public static bool RecentlyDispatchedMugging
@@ -71,25 +73,32 @@ public static class MuggingSystem
                 GTAPedTarget = new GTAPed((Ped)Target, false, 100);
 
             bool CanSee = GTAPedTarget.Pedestrian.CanSeePlayer();
+            LastAimedAtPed = GTAPedTarget.Pedestrian;
 
-            if (!GTAPedTarget.HasBeenMugged && CanSee && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false))
+            if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false))
             {
-                //Game.DisplayHelp("Press E to Mug Ped",5000);
-                //uint GameTimeStartedMugging = Game.GameTime;
-                //bool StartMugging = false;
-                //while (Game.GameTime - GameTimeStartedMugging <= 5000)
-                //{
-                //    if (Game.IsKeyDownRightNow(Settings.SurrenderKey))
-                //    {
-                //        StartMugging = true;
-                //        break;
-                //    }
-                //    GameFiber.Yield();
-                //}
-                    
-                //if(StartMugging)
+                 if(CanSee)
                     MugTarget(GTAPedTarget);
-            }
+                 else
+                {
+                    if (LastAimedAtPed == GTAPedTarget.Pedestrian)
+                    {
+                        if(TimeAimedAtMuggingTarget== 0)
+                        {
+                            if(!Game.LocalPlayer.Character.IsAnySpeechPlaying)
+                                Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");
+                        }
+                        TimeAimedAtMuggingTarget++;
+                    }
+                    else
+                    {
+                        TimeAimedAtMuggingTarget = 0;
+                    }
+                }
+
+                 if(TimeAimedAtMuggingTarget >= 50)
+                    MugTarget(GTAPedTarget);
+            }      
         }
     }
     private static void MugTarget(GTAPed MuggingTarget)
@@ -101,19 +110,22 @@ public static class MuggingSystem
 
             LosSantosRED.RequestAnimationDictionay("ped");
 
-            Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");
-
-            GameFiber.Sleep(500);
+            if (!Game.LocalPlayer.Character.IsAnySpeechPlaying)
+                Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");
+            
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", MuggingTarget.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+            GameFiber.Sleep(750);
             MuggingTarget.Pedestrian.PlayAmbientSpeech("GUN_BEG");
+            while (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", MuggingTarget.Pedestrian, "ped", "handsup_enter", 1))
+            {
+                GameFiber.Sleep(100);
+            }
+            GameFiber.Sleep(500);
 
             uint GameTimeStartedMugging = Game.GameTime;
             bool Intimidated = false;
-            while (Game.GameTime - GameTimeStartedMugging <= 2000)
+            while (Game.GameTime - GameTimeStartedMugging <= 1500)
             {      
-                if(Game.GameTime - GameTimeStartedMugging >= 500 && Game.GameTime - GameTimeStartedMugging <= 1500)
-                    Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");
-
                 if (!Game.LocalPlayer.IsFreeAiming)
                 {
                     Intimidated = false;
@@ -123,32 +135,29 @@ public static class MuggingSystem
                 GameFiber.Yield();
             }
 
+            MuggingTarget.Pedestrian.BlockPermanentEvents = false;
             if (Intimidated)
             {
-                Game.LocalPlayer.Character.PlayAmbientSpeech("GENERIC_INSULT");
-
-                GameFiber.Sleep(250);
+                NativeFunction.CallByName<bool>("SET_PED_MONEY", MuggingTarget.Pedestrian, 0);
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
-                NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, LosSantosRED.MyRand.Next(15, 450), 1, false, true);
+                NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, LosSantosRED.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
                 LastMuggingPosition = MuggingTarget.Pedestrian.Position;
+                MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
+                if(LosSantosRED.MyRand.Next(1,11) <= 8) //some people just dont call the police for whatever reason, even when they are robbed
+                    WatchForDeath(MuggingTarget);
             }
             else if(LosSantosRED.MyRand.Next(1,11) <= 4)
             {
                 MuggingTarget.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, 15000);
                 MuggingTarget.Pedestrian.PlayAmbientSpeech("CHALLENGE_THREATEN");
             }
-            MuggingTarget.Pedestrian.BlockPermanentEvents = false;
-            //MuggingTarget.Pedestrian.Tasks.Clear();
-
-
-            MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
-            IsMugging = false;
-
-           // if(LosSantosRED.MyRand.Next(1,11)<= 4)
-                WatchForDeath(MuggingTarget);
-
-
+            else
+            {
+                MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
+            }
+            
+            IsMugging = false;      
         });
     }
     public static void WatchForDeath(GTAPed MyPed)
@@ -159,13 +168,14 @@ public static class MuggingSystem
             while (MyPed.Pedestrian.Exists())
             {
                 MyPed.Pedestrian.IsPersistent = true;
+                int TimeToCall = LosSantosRED.MyRand.Next(7000, 15000);
 
                 if (MyPed.Pedestrian.IsDead)
                 {
                     MyPed.Pedestrian.IsPersistent = false;
                     break;
                 }
-                else if (Game.GameTime - GameTimeStolen > 15000 && !MyPed.Pedestrian.IsRagdoll)
+                else if (Game.GameTime - GameTimeStolen > TimeToCall && !MyPed.Pedestrian.IsRagdoll)
                 {
                     NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", MyPed.Pedestrian, 10000);
                     MyPed.Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
