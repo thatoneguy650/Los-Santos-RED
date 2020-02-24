@@ -14,7 +14,6 @@ public static class MuggingSystem
     private static Ped LastAimedAtPed;
     private static uint TimeAimedAtMuggingTarget;
     public static bool IsRunning { get; set; }
-    public static Vector3 LastMuggingPosition { get; set; }
     public static bool RecentlyDispatchedMugging
     {
         get
@@ -78,7 +77,7 @@ public static class MuggingSystem
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false))
             {
                  if(CanSee)
-                    MugTarget(GTAPedTarget);
+                    MugTarget(GTAPedTarget,true);
                  else
                 {
                     if (LastAimedAtPed == GTAPedTarget.Pedestrian)
@@ -97,11 +96,11 @@ public static class MuggingSystem
                 }
 
                  if(TimeAimedAtMuggingTarget >= 50)
-                    MugTarget(GTAPedTarget);
+                    MugTarget(GTAPedTarget,false);
             }      
         }
     }
-    private static void MugTarget(GTAPed MuggingTarget)
+    private static void MugTarget(GTAPed MuggingTarget,bool CanSee)
     {
         GameFiber.StartNew(delegate
         {
@@ -142,10 +141,12 @@ public static class MuggingSystem
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, LosSantosRED.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
-                LastMuggingPosition = MuggingTarget.Pedestrian.Position;
+                Police.InvestigationPosition = MuggingTarget.Pedestrian.Position;
                 MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
-                if(LosSantosRED.MyRand.Next(1,11) <= 8) //some people just dont call the police for whatever reason, even when they are robbed
-                    WatchForDeath(MuggingTarget);
+                bool CallPolice = LosSantosRED.MyRand.Next(1, 11) <= 8;//some people just dont call the police for whatever reason, even when they are robbed
+                bool HaveDescription = CanSee || LosSantosRED.MyRand.Next(1, 11) <= 3;
+                if (CallPolice)
+                    WatchForDeath(MuggingTarget, HaveDescription);
             }
             else if(LosSantosRED.MyRand.Next(1,11) <= 4)
             {
@@ -160,7 +161,7 @@ public static class MuggingSystem
             IsMugging = false;      
         });
     }
-    public static void WatchForDeath(GTAPed MyPed)
+    public static void WatchForDeath(GTAPed MyPed,bool HaveDescription)
     {
         GameFiber WatchForDeath = GameFiber.StartNew(delegate
         {
@@ -181,13 +182,16 @@ public static class MuggingSystem
                     MyPed.Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
                     GameFiber.Sleep(5000);
 
-                    //Police.SetWantedLevel(1, "Mugging Peds");
 
                     if (LosSantosRED.PlayerIsNotWanted && !RecentlyDispatchedMugging)
                     {
-                        PoliceSpawning.SpawnInvestigatingCop(LastMuggingPosition);
-                        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelMugging, 10));
+                        Police.PedReportedCrime(DispatchAudio.ReportDispatch.ReportLowLevelMugging);
                         GameTimeLastDispatchedMugging = Game.GameTime;
+
+                        if(HaveDescription)
+                        {
+                            PersonOfInterest.PlayerBecamePersonOfInterest();
+                        }
                     }
 
                     if (MyPed.Pedestrian.Exists() && !MyPed.Pedestrian.IsDead && !MyPed.Pedestrian.IsRagdoll)
@@ -202,7 +206,4 @@ public static class MuggingSystem
         }, "WatchForDeath");
         Debugging.GameFibers.Add(WatchForDeath);
     }
-
-    //DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN","GUN_BEG" };
-
 }

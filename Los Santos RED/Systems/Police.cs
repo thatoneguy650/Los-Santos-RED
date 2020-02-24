@@ -19,6 +19,8 @@ internal static class Police
     private static Vector3 PlaceWantedStarted;
     private static Blip LastWantedCenterBlip;
     private static Blip CurrentWantedCenterBlip;
+    private static Blip InvestigationBlip;
+
     //private static uint GameTimeWantedStarted;
     private static uint GameTimeLastWantedEnded;
     public static uint GameTimePoliceStateStart;
@@ -33,7 +35,8 @@ internal static class Police
     public static List<Blip> TempBlips = new List<Blip>();
     private static uint GameTimeLastReportedSpotted;
     private static uint LastSeenVehicleHandle;
-    private static uint GameTimeLastStartedInvestigation;
+    private static bool PrevPoliceInVestigationMode;
+    private static uint GameTimeStartedInvestigation;
 
     public static bool AnyPoliceCanSeePlayer { get; set; }
     public static bool AnyPoliceCanRecognizePlayer { get; set; }
@@ -60,19 +63,9 @@ internal static class Police
                 return false;
         }
     }
-
-    public static bool PoliceInInvestigationMode
-    {
-        get
-        {
-            if (GameTimeLastStartedInvestigation == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastStartedInvestigation <= 60000)
-                return true;
-            else
-                return false;
-        }
-    }
+    public static float InvestigationDistance { get; set; }
+    public static Vector3 InvestigationPosition { get; set; }
+    public static bool PoliceInInvestigationMode { get; set; }
     public static bool PlayerWasJustJacking
     {
         get
@@ -95,6 +88,18 @@ internal static class Police
                 return false;
         }
     }
+    public static bool InvestigationModeExpired
+    {
+        get
+        {
+            if (GameTimeStartedInvestigation == 0)
+                return false;
+            else if (Game.GameTime - GameTimeStartedInvestigation >= 180000)
+                return true;
+            else
+                return false;
+        }
+    }
     public static bool CanPlaySuspectSpotted
     {
         get
@@ -109,21 +114,6 @@ internal static class Police
                 return false;
         }
     }
-
-    internal static void StartedInvestigation()
-    {
-        GameTimeLastStartedInvestigation = Game.GameTime;
-    }
-    internal static void StopInvestigation()
-    {
-        GameTimeLastStartedInvestigation = 0;
-
-        if(LosSantosRED.PlayerIsNotWanted)
-        {
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportNoFurtherUnits, 10) { IsAmbient = true });
-        }
-    }
-
     public static uint PlayerHasBeenNotWantedFor//seconds
     {
         get
@@ -197,6 +187,9 @@ internal static class Police
         LastSeenVehicleHandle = 0;
         LastWantedCenterBlipSize = Settings.LastWantedCenterSize;
 
+        InvestigationPosition = Vector3.Zero;
+        InvestigationDistance = 350f;
+
         IsRunning = true;
     }
     public static void Dispose()
@@ -209,7 +202,49 @@ internal static class Police
         GetPoliceState();
         TrackedVehiclesTick();
         WantedLevelTick();
+        InvestigationTick();
     }
+
+    private static void InvestigationTick()
+    {
+        if (InvestigationModeExpired) //remove after 3 minutes
+            PoliceInInvestigationMode = false;
+
+
+        if(PrevPoliceInVestigationMode != PoliceInInvestigationMode)
+            PoliceInInvestigationModeChanged();
+    }
+
+    private static void PoliceInInvestigationModeChanged()
+    {
+        if (PoliceInInvestigationMode) //added
+        {
+            //GO to the nearest road node
+            Vector3 SpawnLocation = Vector3.Zero;
+            float Heading = 0f;
+            LosSantosRED.GetStreetPositionandHeading(InvestigationPosition, out SpawnLocation, out Heading);
+            if (SpawnLocation != Vector3.Zero)
+                InvestigationPosition = SpawnLocation;
+
+            AddUpdateInvestigationBlip(InvestigationPosition, 55f);
+
+            GameTimeStartedInvestigation = Game.GameTime;
+        }
+        else //removed
+        {
+            AddUpdateInvestigationBlip(Vector3.Zero, 55f);
+            if (LosSantosRED.PlayerIsNotWanted)
+            {
+                if(PersonOfInterest.PlayerIsPersonOfInterest)
+                    PersonOfInterest.ResetPersonOfInterest(false);
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportNoFurtherUnits, 20) { IsAmbient = true });
+            }
+            GameTimeStartedInvestigation = 0;
+        }
+        LocalWriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", PoliceInInvestigationMode));
+        PrevPoliceInVestigationMode = PoliceInInvestigationMode;
+    }
+
     private static void UpdatePolice()
     {
         PlayerStarsGreyedOut = NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
@@ -541,7 +576,18 @@ internal static class Police
             }
         }
     }
-
+    public static void PedReportedCrime(DispatchAudio.ReportDispatch ReportDispatch)
+    {
+        PoliceInInvestigationMode = true;
+        if (LosSantosRED.PlayerIsNotWanted)
+        {
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(ReportDispatch, 20) { IsAmbient = true });
+        }
+    }
+    public static void PoliceReportedAllClear()
+    {
+        PoliceInInvestigationMode = false;
+    }
     public static void ResetPoliceStats()
     {
         foreach (GTACop Cop in PoliceScanning.CopPeds)
@@ -578,6 +624,10 @@ internal static class Police
     public static bool NearLastWanted()
     {
         return LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= LastWantedCenterBlipSize;
+    }
+    public static bool NearInvestigationPosition()
+    {
+        return InvestigationPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition) <= 55f;
     }
     public static void CheckRecognition()
     {
@@ -667,35 +717,41 @@ internal static class Police
         if (!RecentlySetWanted)
         {
             SetWantedLevel(0, "Resetting Unknown Wanted");
-            PoliceSpawning.SpawnInvestigatingCop(Game.LocalPlayer.Character.Position);
-            AddDispatchToUnknownWanted();
+            //PoliceSpawning.SpawnInvestigatingCop(Game.LocalPlayer.Character.Position);
+            GetReportedCrimeFromUnknown();
 
             return;
-            //NativeFunction.CallByName<bool>("SET_FAKE_WANTED_LEVEL", 0);
         }
+
+        PoliceInInvestigationMode = false;
         CurrentCrimes.GameTimeWantedStarted = Game.GameTime;
         CurrentCrimes.MaxWantedLevel = LosSantosRED.PlayerWantedLevel;
         PlaceWantedStarted = Game.LocalPlayer.Character.Position;
         Tasking.UntaskAllRandomSpawns(false);
     }
-    public static void AddDispatchToUnknownWanted()//temp public
+    public static void GetReportedCrimeFromUnknown()//temp public
     {
         LocalWriteToLog("AddDispatchToUnknownWanted", "Got wanted without being manually set");
         GTAWeapon MyGun = LosSantosRED.GetCurrentWeapon();
-        if(LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCiviliansShot, 20) { IsAmbient = true });
+        DispatchAudio.ReportDispatch ToReport;
+
+        if (LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
+            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCiviliansShot;
         else if (!LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCiviliansKilled, 20) { IsAmbient = true }); 
+            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCiviliansKilled;
         else if (LosSantosRED.PlayerRecentlyShot(20000) && LosSantosRED.PlayerIsConsideredArmed && MyGun != null && MyGun.WeaponLevel >= 3)
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelTerroristActivity, 20) { IsAmbient = true });
+            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelTerroristActivity;
         else if (LosSantosRED.PlayerRecentlyShot(20000))
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelShotsFired, 20) { IsAmbient = true });
+            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelShotsFired;
         else if (CarStealing.PlayerBreakingIntoCar)
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelGrandTheftAuto, 20) { IsAmbient = true });
+            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelGrandTheftAuto;
         else if (Civilians.RecentlyHurtCivilian(10000))
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCiviliansInjured, 20) { IsAmbient = true });
+            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCiviliansInjured;
         else
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLowLevelCriminalActivity, 20) { IsAmbient = true });
+            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCriminalActivity;
+
+
+        PedReportedCrime(ToReport);
     }
 
     private static void PlayerStarsGreyedOutChanged()
@@ -805,6 +861,29 @@ internal static class Police
         }
         if (CurrentWantedCenterBlip.Exists())
             CurrentWantedCenterBlip.Position = Position;
+    }
+    public static void AddUpdateInvestigationBlip(Vector3 Position,float Size)
+    {
+        if (Position == Vector3.Zero)
+        {
+            if (InvestigationBlip.Exists())
+                InvestigationBlip.Delete();
+            return;
+        }
+        if (!InvestigationBlip.Exists())
+        {
+            InvestigationBlip = new Blip(Position, Size)
+            {
+                Name = "Investigation Center",
+                Color = Color.Orange,
+                Alpha = 0.25f
+            };
+
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)InvestigationBlip.Handle, true);
+            CreatedBlips.Add(InvestigationBlip);
+        }
+        if (InvestigationBlip.Exists())
+            InvestigationBlip.Position = Position;
     }
     public static void RemoveWantedBlips()
     {

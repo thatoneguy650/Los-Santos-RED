@@ -11,8 +11,8 @@ public static class PersonOfInterest
     //private static WantedLevelStats LastWantedStats;
     private static bool PrevPlayerIsWanted;
     //private static List<WantedLevelStats> PreviousWantedStats;
-   // public static List<RapSheet> CriminalHistory;
-
+    // public static List<RapSheet> CriminalHistory;
+    public static bool SizeOfPOIArea { get; set; }
     public static bool PlayerIsPersonOfInterest { get; set; }
     public static bool IsRunning { get; set; } = true;
     public static List<RapSheet> CriminalHistory { get; set; }
@@ -42,6 +42,9 @@ public static class PersonOfInterest
             WantedLevelAddedOrRemoved();
 
 
+
+
+
         if (LosSantosRED.IsDead || LosSantosRED.IsBusted)
             return;
 
@@ -63,14 +66,9 @@ public static class PersonOfInterest
             }
         }
     }
-    private static void PlayerBecamePersonOfInterest()
+    public static void PlayerBecamePersonOfInterest()
     {
         PlayerIsPersonOfInterest = true;
-        //if (ApplyLastWantedStats())
-        //{
-        //    Debugging.WriteToLog("PlayerBecamePersonOfInterest", "There was previous wanted stats that were applied");
-        //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
-        //}
         Debugging.WriteToLog("PlayerBecamePersonOfInterest", "Happened");
     }
     public static void CheckCurrentVehicle()
@@ -123,12 +121,11 @@ public static class PersonOfInterest
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
                 }
             }
-            //else if (Police.AnyPoliceCanRecognizePlayer && 1 == 0)
-            //{
-            //    if (!ApplyLastWantedStats())
-            //        Police.SetWantedLevel(2, "Cops Reacquired after losing them you were recognized, actual wanted not found");
-            //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 3));
-            //}
+            else if (Police.PoliceInInvestigationMode && LosSantosRED.PlayerIsNotWanted && Police.NearInvestigationPosition())
+            {
+                Police.SetWantedLevel(2, "you are a suspect!");
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+            }
         }
     }
     private static void WantedLevelAddedOrRemoved()

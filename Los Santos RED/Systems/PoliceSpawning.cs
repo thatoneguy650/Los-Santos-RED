@@ -13,8 +13,8 @@ public static class PoliceSpawning
     private static List<Vehicle> CreatedPoliceVehicles;
     private static List<Entity> CreatedEntities;
     private static RandomPoliceSpawn NextPoliceSpawn;
+
     private static RandomPoliceSpawn NextPoliceInvestigationSpawn;
-    private static bool NeedInvestigationCop;
 
     public static bool IsRunning { get; set; }
     public static void Initialize()
@@ -34,9 +34,9 @@ public static class PoliceSpawning
         {
             SpawnRandomCop();
         }
-        if(NeedInvestigationCop)
+        if(Police.PoliceInInvestigationMode && !PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance && x.Pedestrian.IsDriver()))
         {
-            SpawnInvestigatingCop(Vector3.Zero);
+            SpawnInvestigatingCop();
         }
     }
     public static void Dispose()
@@ -87,40 +87,21 @@ public static class PoliceSpawning
         }
 
     }
-    public static void SpawnInvestigatingCop(Vector3 PositionToInvestigate)
+    public static void SpawnInvestigatingCop()
     {
         try
         { 
             if(NextPoliceInvestigationSpawn == null)
             {
-                NeedInvestigationCop = true;
-                NextPoliceInvestigationSpawn = GetPoliceSpawn(150f, 300f, true);
+                NextPoliceInvestigationSpawn = GetPoliceSpawn(Police.InvestigationDistance/2, Police.InvestigationDistance, true);
                 return;
             }
-
-            GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position) <= 350f && x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+            Agency AgencyToSpawn = NextPoliceInvestigationSpawn.ZoneAtLocation.MainZoneAgency;
+            GTACop ClosestCop = SpawnCop(AgencyToSpawn, NextPoliceInvestigationSpawn.SpawnLocation);
+            Debugging.WriteToLog("SpawnInvestigatingCop", "Attempting to Spawn Cop");
+            NextPoliceInvestigationSpawn = null;                    
             if (ClosestCop == null)
-            {
-                if (NextPoliceInvestigationSpawn != null)
-                {
-                    Agency AgencyToSpawn = NextPoliceInvestigationSpawn.ZoneAtLocation.MainZoneAgency;
-                    ClosestCop = SpawnCop(AgencyToSpawn, NextPoliceInvestigationSpawn.SpawnLocation);
-                    NextPoliceInvestigationSpawn = null;                    
-                }
-                else
-                {
-                    ClosestCop = PoliceScanning.CopPeds.Where(x =>  x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-                }
-            }
-
-            if (ClosestCop == null)
-            {
-                NextPoliceInvestigationSpawn = null;
                 return;
-            }
-
-            NeedInvestigationCop = false;
-            Tasking.PositionOfInterest = PositionToInvestigate;
             Tasking.AddItemToQueue(new PoliceTask(ClosestCop, PoliceTask.Task.TaskInvestigateCrime));
         }
         catch (Exception e)
@@ -129,6 +110,48 @@ public static class PoliceSpawning
         }
 
     }
+
+    //public static void SpawnInvestigatingCop(Vector3 PositionToInvestigate)
+    //{
+    //    try
+    //    {
+    //        if (NextPoliceInvestigationSpawn == null)
+    //        {
+    //            NextPoliceInvestigationSpawn = GetPoliceSpawn(150f, 300f, true);
+    //            return;
+    //        }
+
+    //        GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position) <= Tasking.InvestigationDistance && x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+    //        if (ClosestCop == null)
+    //        {
+    //            if (NextPoliceInvestigationSpawn != null)
+    //            {
+    //                Agency AgencyToSpawn = NextPoliceInvestigationSpawn.ZoneAtLocation.MainZoneAgency;
+    //                ClosestCop = SpawnCop(AgencyToSpawn, NextPoliceInvestigationSpawn.SpawnLocation);
+    //                NextPoliceInvestigationSpawn = null;
+    //            }
+    //            else
+    //            {
+    //                ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
+    //            }
+    //        }
+
+    //        if (ClosestCop == null)
+    //        {
+    //            NextPoliceInvestigationSpawn = null;
+    //            return;
+    //        }
+
+    //        SpawnInvestigationCop = false;
+    //        Tasking.InvestigationPosition = PositionToInvestigate;
+    //        Tasking.AddItemToQueue(new PoliceTask(ClosestCop, PoliceTask.Task.TaskInvestigateCrime));
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Debugging.WriteToLog("SpawnRandomCopError", e.Message + " : " + e.StackTrace);
+    //    }
+
+    //}
     public static float GetClosestVehicleNodeHeading(this Vector3 v3)
     {
         float outHeading;

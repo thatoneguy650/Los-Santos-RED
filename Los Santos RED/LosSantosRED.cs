@@ -303,7 +303,7 @@ public static class LosSantosRED
     }
     public static void ControlTick()
     {
-        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
         {
             if (!HandsAreUp && !IsBusted)
             {

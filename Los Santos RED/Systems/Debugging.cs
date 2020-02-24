@@ -160,9 +160,9 @@ public static class Debugging
 
 
 
-        //if(Police.PoliceInInvestigationMode)
+        //if (Police.PoliceInInvestigationMode)
         //{
-        //    Rage.Debug.DrawArrowDebug(new Vector3(Tasking.PositionOfInterest.X, Tasking.PositionOfInterest.Y, Tasking.PositionOfInterest.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //    Rage.Debug.DrawArrowDebug(new Vector3(Police.InvestigationPosition.X, Police.InvestigationPosition.Y, Police.InvestigationPosition.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
         //}
 
     }
@@ -1050,8 +1050,8 @@ public static class Debugging
         //Settings.Debug = true;
         foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         {
-            Debugging.WriteToLog("Debug", string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11},Agency: {12}",
-                    Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.isTasked, Cop.canSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials));
+            Debugging.WriteToLog("Debug", string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11},Agency: {12}, DistancetoInvestigation: {13}",
+                    Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.isTasked, Cop.canSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials,Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
         }
 
         string PlayerStatusLine;
@@ -1074,6 +1074,19 @@ public static class Debugging
                 PlayerStatusLine += "~s~(" + AgenciesChasingPlayer + "~s~)";
         }
         Debugging.WriteToLog("PlayerStatusLine", PlayerStatusLine);
+
+
+
+
+        Debugging.WriteToLog("PoliceInInvestigationMode", string.Format("PoliceInInvestigationMode: {0}", Police.PoliceInInvestigationMode));
+        Debugging.WriteToLog("PoliceInInvestigationMode", string.Format("InvestigationPosition: {0}", Police.InvestigationPosition));
+        Debugging.WriteToLog("PoliceInInvestigationMode", string.Format("InvestigationDistance: {0}", Police.InvestigationDistance));
+        Debugging.WriteToLog("PoliceInInvestigationMode", string.Format("AnyNear: {0}", PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance)));
+
+
+
+
+
 
         //foreach (GTAPed MyPed in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         //{
