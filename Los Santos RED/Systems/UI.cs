@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 public static class UI
 {
+    public static string DebugLine { get; set; }
     public enum EFont
     {
         FontChaletLondon = 0,
@@ -126,6 +127,9 @@ public static class UI
         }
 
         string PlayerCLockLine = string.Format("{0} Multiplier: {1}", ClockSystem.ClockTime, ClockSystem.ClockSpeed);
+
+        if (DebugLine != "")
+            Text(DebugLine, Settings.TrafficInfoUIPositionX - 3 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
 
         Text(PlayerCLockLine, Settings.TrafficInfoUIPositionX - 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
         Text(PlayerStatusLine, Settings.TrafficInfoUIPositionX - Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);

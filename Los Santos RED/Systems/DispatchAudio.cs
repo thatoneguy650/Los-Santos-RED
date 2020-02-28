@@ -1019,6 +1019,8 @@ public static class DispatchAudio
         }
         else if (Num == 5)
         {
+            Debugging.WriteToLog("ReportOfficerDown", "5");
+            Debugging.WriteToLog("ReportOfficerDown", custom_wanted_level_line.Wehavea1099allavailableunitsrespond.FileName);
             ScannerList.Add(custom_wanted_level_line.Wehavea1099allavailableunitsrespond.FileName);
             addRespondCode = false;
         }

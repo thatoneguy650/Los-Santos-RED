@@ -83,6 +83,10 @@ public static class Debugging
 
             UI.Text(TextToShow, 0.84f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
 
+
+
+
+
         }
         if (Game.IsKeyDown(Keys.NumPad0))
         {
@@ -158,7 +162,7 @@ public static class Debugging
         //UI.Text(string.Format("AngleBetween {0}, ForawardVectorDiff {1}",AngleBetween,ForwardVectorDiff), 0.76f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
 
 
-
+        UI.DebugLine = string.Format("PlayerGettingIntoVehicle: {0}", Game.LocalPlayer.Character.IsGettingIntoVehicle);
 
         //if (Police.PoliceInInvestigationMode)
         //{
@@ -263,7 +267,7 @@ public static class Debugging
         //LosSantosRED.DisplayPlayerNotification();
 
 
-        DispatchAudio.ReportSuspectLost();
+        DispatchAudio.ReportOfficerDown();
 
 
 

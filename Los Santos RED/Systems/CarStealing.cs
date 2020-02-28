@@ -55,6 +55,14 @@ public static class CarStealing
         {
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
+
+
+                VehicleLockStatus LockStatusBefore = TargetVehicle.LockStatus;
+
+
+                LockCarDoor(TargetVehicle, (VehicleLockStatus)3);//Attempt to lock most car doors
+
+
                 LosSantosRED.SetPedUnarmed(Game.LocalPlayer.Character, false);
                 bool Continue = true;
                 TargetVehicle.MustBeHotwired = true;
@@ -63,6 +71,28 @@ public static class CarStealing
                 int WaitTime = 1750;
                 float DesiredHeading = TargetVehicle.Heading - 90f;
 
+
+
+                Debugging.WriteToLog("UnlockCarDoor", "Pre Sleep");
+
+                uint GameTimeStartedStealing = Game.GameTime;
+                bool StartAnimation = true;
+                while(Game.LocalPlayer.Character.IsGettingIntoVehicle && Game.GameTime - GameTimeStartedStealing <= 3500)
+                {
+                    if (Extensions.IsMoveControlPressed())
+                    {
+                        StartAnimation = false;
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+
+                if(!StartAnimation)
+                {
+                    TargetVehicle.LockStatus = LockStatusBefore;
+                    return;
+                }
+                Debugging.WriteToLog("UnlockCarDoor", "Post Sleep");
 
                 if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
                 {
@@ -82,7 +112,7 @@ public static class CarStealing
                 }
 
                 
-                LosSantosRED.MovePedToCarPosition(TargetVehicle, Game.LocalPlayer.Character, DesiredHeading, Game.LocalPlayer.Character.Position, false);
+                //LosSantosRED.MovePedToCarPosition(TargetVehicle, Game.LocalPlayer.Character, DesiredHeading, Game.LocalPlayer.Character.Position, false);
 
                 //CameraSystem.HighLightCarjacking(ToEnter,DoorIndex == 0);              
 
@@ -113,6 +143,7 @@ public static class CarStealing
                     if (Screwdriver != null && Screwdriver.Exists())
                         Screwdriver.Delete();
                     PlayerBreakingIntoCar = false;
+                    TargetVehicle.LockStatus = LockStatusBefore;
                     return;
                 }
 
@@ -159,24 +190,24 @@ public static class CarStealing
             LocalWriteToLog("UnlockCarDoor", e.Message);
         }
     }
-    public static void LockCarDoor(Vehicle ToLock)
+    public static void LockCarDoor(Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
     {
-        LocalWriteToLog("LockCarDoor", string.Format("Go To Start, Lock Status {0}", ToLock.LockStatus));
-        if (ToLock.LockStatus != (VehicleLockStatus)1) //unlocked
+        Debugging.WriteToLog("LockCarDoor", string.Format("Start, Lock Status {0}", ToLock.LockStatus));
+        if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)//if (ToLock.LockStatus != (VehicleLockStatus)1) //unlocked
             return;
-        LocalWriteToLog("LockCarDoor", "1");
+        //Debugging.WriteToLog("LockCarDoor", "1");
         if (ToLock.HasDriver)//If they have a driver 
             return;
-        LocalWriteToLog("LockCarDoor", "2");
+        //Debugging.WriteToLog("LockCarDoor", "2");
         foreach (VehicleDoor myDoor in ToLock.GetDoors())
         {
             if (!myDoor.IsValid() || myDoor.IsOpen)
                 return;//invalid doors make the car not locked
         }
-        LocalWriteToLog("LockCarDoor", "3");
+        //Debugging.WriteToLog("LockCarDoor", "3");
         if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
             return;//broken windows == not locked
-        LocalWriteToLog("LockCarDoor", "4");
+        //Debugging.WriteToLog("LockCarDoor", "4");
         if (LosSantosRED.TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
             return; //previously entered vehicle arent locked
         if (ToLock.IsConvertible && ToLock.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
@@ -184,8 +215,9 @@ public static class CarStealing
         if (ToLock.IsBike || ToLock.IsPlane || ToLock.IsHelicopter)
             return;
 
-        LocalWriteToLog("LockCarDoor", "Locked");
-        ToLock.LockStatus = (VehicleLockStatus)7;
+        Debugging.WriteToLog("LockCarDoor", "Locked");
+        ToLock.LockStatus = DesiredLockStatus;//Locked for player
+        //ToLock.LockStatus = (VehicleLockStatus)7;//CanBeBrokenInto
     }
     public static bool CanLockPick(Vehicle ToEnter)
     {
@@ -202,9 +234,16 @@ public static class CarStealing
     {
         Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
         int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-        LockCarDoor(TargetVeh);//Attempt to lock most car doors
+        LockCarDoor(TargetVeh,(VehicleLockStatus)7);//Attempt to lock most car doors
         int LockStatus = (int)TargetVeh.LockStatus;//Get the result of the function
-        if (LockStatus == 7)//Locked but can be broken into
+
+
+        Debugging.WriteToLog("EnterVehicleEvent", string.Format("Lockstatus: {0}", LockStatus));
+        //if (LockStatus == 7)//Locked but can be broken into
+        //{
+        //    UnlockCarDoor(TargetVeh, SeatTryingToEnter);
+        //}
+        if (LockStatus == 7)//Locked For Player
         {
             UnlockCarDoor(TargetVeh, SeatTryingToEnter);
         }
