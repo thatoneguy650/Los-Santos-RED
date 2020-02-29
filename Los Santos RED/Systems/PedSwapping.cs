@@ -17,6 +17,7 @@ public static class PedSwapping
     private static bool TargetPedInVehicle;
     private static Vehicle TargetPedVehicle;
     private static bool TargetPedAlreadyTakenOver;
+    private static Vector3 DopplegangerPosition;
 
     private static Ped Doppleganger;
 
@@ -36,13 +37,19 @@ public static class PedSwapping
         TakenOverPeds = new List<TakenOverPed>();
         PedOriginallyHadHelmet = false;
         GameTimeLastTakenOver = Game.GameTime;
-        CreateDoppleganger(Game.LocalPlayer.Character.Model);
         PedNames.Initialize();
+        CreateUpdateHeadshot();
         NamePed();
     }
     public static void NamePed()
     {
-        int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Doppleganger);
+        int PedType;
+            
+        if(Doppleganger.Exists())
+            PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Doppleganger);
+        else
+            PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Game.LocalPlayer.Character);
+
         if (PedType == 0)
             SuspectName = "Michael De Santa";
         else if (PedType == 1)
@@ -134,8 +141,8 @@ public static class PedSwapping
 
             PostTakeover();
 
-            if (AdvanceTime)
-                World.DateTime.AddHours(18);
+            //if (AdvanceTime)
+            //    World.DateTime.AddHours(18);
 
         }
         catch (Exception e3)
@@ -237,7 +244,7 @@ public static class PedSwapping
         LosSantosRED.LastWeapon = 0;
 
         Game.TimeScale = 1f;
-        Police.SetWantedLevel(0, "Reset After Takeover as a precaution");
+        Police.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
 
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();
@@ -297,18 +304,11 @@ public static class PedSwapping
         CurrentHeadshot.Register();
         GameFiber.Sleep(150);
     }
-    public static void UpdateHeadshot()
+    public static void CreateUpdateHeadshot()
     {
-        if (CurrentHeadshot == null)
-        {
-            if (!Doppleganger.Exists())
-            {
-                CreateDoppleganger(OriginalModel);
-            }
-            CurrentHeadshot = new PedHeadshot(Doppleganger);
-            CurrentHeadshot.Register();
-            GameFiber.Sleep(150);
-        }
+        CurrentHeadshot = new PedHeadshot(Game.LocalPlayer.Character);
+        CurrentHeadshot.Register();
+        GameFiber.Sleep(150);
     }
     private static void AddPedToTakenOverPeds(TakenOverPed MyPed)
     {

@@ -572,7 +572,7 @@ internal static class Police
             }
             if (CurrentPoliceState == PoliceState.DeadlyChase && LosSantosRED.PlayerWantedLevel < 3)
             {
-                SetWantedLevel(3, "Deadly chase requires 3+ wanted level");
+                SetWantedLevel(3, "Deadly chase requires 3+ wanted level",true);
             }
         }
     }
@@ -607,9 +607,10 @@ internal static class Police
         //TrafficViolations.ResetTrafficViolations();
         DispatchAudio.ResetReportedItems();
     }
-    public static void SetWantedLevel(int WantedLevel,string Reason)
+    public static void SetWantedLevel(int WantedLevel,string Reason,bool UpdateRecent)
     {
-        GameTimeLastSetWanted = Game.GameTime;
+        if(UpdateRecent)
+            GameTimeLastSetWanted = Game.GameTime;
         if (Game.LocalPlayer.WantedLevel < WantedLevel || WantedLevel == 0)
         {
             Debugging.WriteToLog("SetWantedLevel", string.Format("Current Wanted: {0}, Desired Wanted: {1}", Game.LocalPlayer.WantedLevel, WantedLevel));
@@ -716,7 +717,7 @@ internal static class Police
     {
         if (!RecentlySetWanted)
         {
-            SetWantedLevel(0, "Resetting Unknown Wanted");
+            SetWantedLevel(0, "Resetting Unknown Wanted",false);
             //PoliceSpawning.SpawnInvestigatingCop(Game.LocalPlayer.Character.Position);
             GetReportedCrimeFromUnknown();
 

@@ -162,7 +162,7 @@ public static class Debugging
         //UI.Text(string.Format("AngleBetween {0}, ForawardVectorDiff {1}",AngleBetween,ForwardVectorDiff), 0.76f, 0.16f, 0.35f, false, Color.White, UI.eFont.FontChaletComprimeCologne);
 
 
-        UI.DebugLine = string.Format("PlayerGettingIntoVehicle: {0}", Game.LocalPlayer.Character.IsGettingIntoVehicle);
+       // UI.DebugLine = string.Format("PlayerGettingIntoVehicle: {0}", Game.LocalPlayer.Character.IsGettingIntoVehicle);
 
         //if (Police.PoliceInInvestigationMode)
         //{
@@ -231,9 +231,9 @@ public static class Debugging
     private static void DebugNumpad2()
     {
         if (Game.LocalPlayer.WantedLevel > 0)
-            Police.SetWantedLevel(0, "Debugging set 0");
+            Police.SetWantedLevel(0, "Debugging set 0",true);
         else
-            Police.SetWantedLevel(2, "Debugging set 2");
+            Police.SetWantedLevel(2, "Debugging set 2",true);
 
 
 
@@ -620,8 +620,71 @@ public static class Debugging
     private static void DebugNumpad5()
     {
 
+        GameFiber Suicide = GameFiber.StartNew(delegate
+        {
+            Ped PedToSuicide = Game.LocalPlayer.Character;
+            if (!PedToSuicide.IsInAnyVehicle(false))
+            {
+                LosSantosRED.RequestAnimationDictionay("mp_suicide");
 
-        DispatchAudio.ReportIncreasedWanted(true);
+                GTAWeapon CurrentGun = null;
+                if (PedToSuicide.Inventory.EquippedWeapon != null)
+                    CurrentGun = GTAWeapons.WeaponsList.Where(x => (WeaponHash)x.Hash == PedToSuicide.Inventory.EquippedWeapon.Hash && x.CanPistolSuicide).FirstOrDefault();
+
+                if (CurrentGun != null)
+                {
+                    Vector3 SuicidePosition = PedToSuicide.Position;
+
+                    int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", SuicidePosition.X, SuicidePosition.Y, SuicidePosition.Z, 0.0f, 0.0f, PedToSuicide.Heading, 2);//270f //old
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
+                    NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", PedToSuicide, Scene1, "mp_suicide", "pistol", 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                    NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene1, 0.0f);
+
+                    uint GameTimeStartedSuicide = Game.GameTime;
+                    bool Cancel = false;
+                    while (Game.GameTime - GameTimeStartedSuicide <= 5000)
+                    {
+                        float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
+                        if (Extensions.IsMoveControlPressed())
+                        {
+                            Cancel = true;
+                            break;
+                        }
+                        if (Game.LocalPlayer.Character.IsDead)
+                        {
+                            Cancel = true;
+                            break;
+                        }
+                        if (ScenePhase >= 0.3f)
+                        {
+                            NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", Scene1, 0f);
+                            if (Game.IsControlJustPressed(2, GameControl.Attack))
+                            {
+                                Vector3 HeadCoordinated = PedToSuicide.GetBonePosition(PedBoneId.Head);
+                                NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", PedToSuicide, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
+                                Game.LocalPlayer.Character.Kill();
+                                break;
+                            }
+                        }
+                        GameFiber.Yield();
+                    }
+
+
+                        PedToSuicide.Tasks.Clear();
+                                     
+                }
+
+
+                GameFiber.Sleep(3000);
+                PedToSuicide.Tasks.Clear();
+            }
+        }, "Suicide");
+        Debugging.GameFibers.Add(Suicide);
+
+
+
+
+        //DispatchAudio.ReportIncreasedWanted(true);
         return;
 
         Settings.Logging = true;

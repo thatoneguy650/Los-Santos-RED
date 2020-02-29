@@ -193,7 +193,7 @@ public static class Respawning
         LosSantosRED.BeingArrested = false;
         LosSantosRED.HandsAreUp = false;
         Police.CurrentPoliceState = Police.LastPoliceState;
-        Police.SetWantedLevel(LosSantosRED.PlayerWantedLevel, "Resisting Arrest");
+        Police.SetWantedLevel(LosSantosRED.PlayerWantedLevel, "Resisting Arrest",true);
         Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
@@ -283,7 +283,7 @@ public static class Respawning
         {
             PersonOfInterest.ResetPersonOfInterest(false);
             Police.ResetPoliceStats();
-            Police.SetWantedLevel(0,"Reset player with Clear Wanted");
+            Police.SetWantedLevel(0,"Reset player with Clear Wanted",false);
             LosSantosRED.MaxWantedLastLife = 0;  
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         }
@@ -323,7 +323,7 @@ public static class Respawning
             if (AsOldCharacter)
             {
                 ResetPlayer(false, false);
-                Police.SetWantedLevel(LosSantosRED.MaxWantedLastLife,"Resetting to max wanted last life after respawn in place");
+                Police.SetWantedLevel(LosSantosRED.MaxWantedLastLife,"Resetting to max wanted last life after respawn in place",true);
                 ++LosSantosRED.TimesDied;
             }
             else

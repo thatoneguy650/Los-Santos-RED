@@ -188,6 +188,9 @@ public static class LosSantosRED
         MuggingSystem.Initialize();
         //CameraSystem.Initialize();
         MainLoop();
+
+        LosSantosRED.DisplayPlayerNotification();
+
     }
     public static void MainLoop()
     {
@@ -325,6 +328,16 @@ public static class LosSantosRED
                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
             }
         }
+
+        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && Game.IsShiftKeyDownRightNow)
+        {
+            Surrendering.CommitSuicide(Game.LocalPlayer.Character);
+        }
+
+
+        //CommitSuicideRequiringIntervention()
+
+
 
         if (Game.IsControlPressed(2, GameControl.Enter))
         {
@@ -512,21 +525,18 @@ public static class LosSantosRED
         GTAVehicle MyCar = GetPlayersCurrentTrackedVehicle();
 
         string NotifcationText = "Warrants: ~g~None~s~";
-        int Cash = Game.LocalPlayer.Character.GetCash();
-        int Health = Game.LocalPlayer.Character.Health;
-        if(Cash >= 2000)
-            NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~g~", Cash);
-        else if(Cash >= 500)
-            NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~o~", Cash);
-        else
-            NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~r~", Cash);
 
-        if (Health >= 80)
-            NotifcationText += string.Format("~n~Health: {0}{1}~s~", "~g~", Health);
-        else if (Health >= 50)
-            NotifcationText += string.Format("~n~Health: {0}{1}~s~", "~o~", Health);
-        else
-            NotifcationText += string.Format("~n~Health: {0}{1}~s~", "~r~", Health);
+        if(Police.CurrentCrimes.CommittedAnyCrimes)
+            NotifcationText = "Wanted For:" + Police.CurrentCrimes.PrintCrimes();
+
+        //int Cash = Game.LocalPlayer.Character.GetCash();
+        //int Health = Game.LocalPlayer.Character.Health;
+        //if(Cash >= 2000)
+        //    NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~g~", Cash);
+        //else if(Cash >= 500)
+        //    NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~o~", Cash);
+        //else
+        //    NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~r~", Cash);
 
         if (MyCar != null && MyCar.IsPlayersVehicle)
         {

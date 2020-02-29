@@ -17,7 +17,7 @@ namespace ExtensionsMethods
         //Controls
         public static bool IsMoveControlPressed()
             {
-                if (Game.IsControlPressed(2, GameControl.MoveUp) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDown) || Game.IsControlPressed(2, GameControl.MoveLeft))
+                if (Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft))
                     return true;
                 else
                     return false;

@@ -20,6 +20,7 @@ internal static class Menus
     private static UIMenuItem menuMainSuicide;
     private static UIMenuItem menuMainChangeLicensePlate;
     private static UIMenuItem menuMainRemoveLicensePlate;
+    private static UIMenuItem menuMainShowPlayerStatus;
     private static UIMenuItem menuMainChangeHelmet;
     private static UIMenuItem menuDebugKillPlayer;
     private static UIMenuListItem menuDebugRandomWeapon;
@@ -252,9 +253,11 @@ internal static class Menus
         menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
         menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", LicensePlateChanging.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
+        menuMainShowPlayerStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
         menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
        
         mainMenu.AddItem(menuMainTakeoverRandomPed);
+        mainMenu.AddItem(menuMainShowPlayerStatus);
         if (!LosSantosRED.PlayerInVehicle)
         {
             mainMenu.AddItem(menuMainChangeLicensePlate);
@@ -437,6 +440,10 @@ internal static class Menus
         else if (selectedItem == menuMainChangeHelmet)
         {
             PedSwapping.AddRemovePlayerHelmet();
+        }
+        else if(selectedItem == menuMainShowPlayerStatus)
+        {
+            LosSantosRED.DisplayPlayerNotification();
         }
         mainMenu.Visible = false;
     }

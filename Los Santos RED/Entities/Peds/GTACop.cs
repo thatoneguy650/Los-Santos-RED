@@ -37,6 +37,7 @@ public class GTACop : GTAPed
     public bool isTasked { get; set; } = false;
     public bool WasRandomSpawn { get; set; } = false;
     public bool WasRandomSpawnDriver { get; set; } = false;
+    public bool WasInvestigationSpawn { get; set; } = false;
     public bool IsBikeCop { get; set; } = false;
     public bool IsSwat { get; set; } = false;
     public bool isPursuitPrimary { get; set; } = false;

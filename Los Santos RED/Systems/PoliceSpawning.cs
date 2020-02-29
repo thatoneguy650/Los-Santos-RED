@@ -34,7 +34,7 @@ public static class PoliceSpawning
         {
             SpawnRandomCop();
         }
-        if(Police.PoliceInInvestigationMode && !PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance && x.Pedestrian.IsDriver()))
+        if(Police.PoliceInInvestigationMode && !PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance && x.Pedestrian.IsDriver()) && PoliceScanning.CopPeds.Where(x => x.WasInvestigationSpawn).Count() < 4)
         {
             SpawnInvestigatingCop();
         }
@@ -98,6 +98,8 @@ public static class PoliceSpawning
             }
             Agency AgencyToSpawn = NextPoliceInvestigationSpawn.ZoneAtLocation.MainZoneAgency;
             GTACop ClosestCop = SpawnCop(AgencyToSpawn, NextPoliceInvestigationSpawn.SpawnLocation);
+
+            ClosestCop.WasInvestigationSpawn = true;
             Debugging.WriteToLog("SpawnInvestigatingCop", "Attempting to Spawn Cop");
             NextPoliceInvestigationSpawn = null;                    
             if (ClosestCop == null)

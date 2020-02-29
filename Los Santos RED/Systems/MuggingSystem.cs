@@ -79,7 +79,7 @@ public static class MuggingSystem
                  if(CanSee)
                     MugTarget(GTAPedTarget,true);
                  else
-                {
+                 {
                     if (LastAimedAtPed == GTAPedTarget.Pedestrian)
                     {
                         if(TimeAimedAtMuggingTarget== 0)
@@ -93,18 +93,26 @@ public static class MuggingSystem
                     {
                         TimeAimedAtMuggingTarget = 0;
                     }
-                }
-
+                 }
                  if(TimeAimedAtMuggingTarget >= 50)
                     MugTarget(GTAPedTarget,false);
-            }      
+            }
+            else
+            {
+                TimeAimedAtMuggingTarget = 0;
+            }
         }
+        if(!Game.LocalPlayer.Character.IsAiming)
+            TimeAimedAtMuggingTarget = 0; 
+
+       // UI.DebugLine = string.Format("IsMugging: {0},TimeAimedAtMuggingTarget: {1},RecentlyDispatchedMugging: {2}", IsMugging, TimeAimedAtMuggingTarget, RecentlyDispatchedMugging);
     }
     private static void MugTarget(GTAPed MuggingTarget,bool CanSee)
     {
         GameFiber.StartNew(delegate
         {
             IsMugging = true;
+            uint GameTimeStartedMugging = Game.GameTime;
             MuggingTarget.Pedestrian.BlockPermanentEvents = true;
 
             LosSantosRED.RequestAnimationDictionay("ped");
@@ -118,10 +126,21 @@ public static class MuggingSystem
             while (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", MuggingTarget.Pedestrian, "ped", "handsup_enter", 1))
             {
                 GameFiber.Sleep(100);
+
+
+                if(Game.GameTime - GameTimeStartedMugging >= 2500)
+                {
+                    IsMugging = false;
+                    break;
+                }
             }
+
+            if (!IsMugging)
+                return;
+
             GameFiber.Sleep(500);
 
-            uint GameTimeStartedMugging = Game.GameTime;
+            GameTimeStartedMugging = Game.GameTime;
             bool Intimidated = false;
             while (Game.GameTime - GameTimeStartedMugging <= 1500)
             {      

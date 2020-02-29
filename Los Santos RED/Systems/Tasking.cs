@@ -300,7 +300,7 @@ public static class Tasking
                 }
             }
         }
-        Police.SetWantedLevel(LosSantosRED.MaxWantedLastLife,"Changing it back to what it was max during your last life");
+        Police.SetWantedLevel(LosSantosRED.MaxWantedLastLife,"Changing it back to what it was max during your last life",true);
 
         if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.isInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !LosSantosRED.IsBusted)// && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
             SetSurrenderBust(true, "Arrested Wait Tcik");
@@ -405,7 +405,7 @@ public static class Tasking
 
         if (Police.CurrentCrimes.KillingPolice.InstancesObserved >= Settings.PoliceKilledSurrenderLimit && LosSantosRED.PlayerWantedLevel < 4)
         {
-            Police.SetWantedLevel(4,"You killed too many cops");
+            Police.SetWantedLevel(4,"You killed too many cops",true);
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportWeaponsFree, 2));
         }
 

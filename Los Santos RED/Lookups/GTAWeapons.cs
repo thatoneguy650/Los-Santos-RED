@@ -24,7 +24,7 @@ public static class GTAWeapons
         WeaponsList.Add(new GTAWeapon("weapon_golfclub", 0, GTAWeapon.WeaponCategory.Melee, 0, 1141786504, false, false, false, true));
         WeaponsList.Add(new GTAWeapon("weapon_hammer", 0, GTAWeapon.WeaponCategory.Melee, 0, 1317494643, false, false, false, true));
         WeaponsList.Add(new GTAWeapon("weapon_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 4191993645, false, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_knuckle", 0, GTAWeapon.WeaponCategory.Melee, 0, 3638508604, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_knuckle", 0, GTAWeapon.WeaponCategory.Melee, 0, 3638508604, false, false, false, true) { IsRegularGun = false });
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Base Model", "COMPONENT_KNUCKLE_VARMOD_BASE", 0xF3462F33, false, "weapon_knuckle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("The Pimp", "COMPONENT_KNUCKLE_VARMOD_PIMP", 0xC613F685, false, "weapon_knuckle"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("The Ballas", "COMPONENT_KNUCKLE_VARMOD_BALLAS", 0xEED9FD63, false, "weapon_knuckle"));
@@ -43,9 +43,9 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Bodyguard Variant", "COMPONENT_SWITCHBLADE_VARMOD_VAR2", 0xE7939662, false, "weapon_switchblade"));
         WeaponsList.Add(new GTAWeapon("weapon_nightstick", 0, GTAWeapon.WeaponCategory.Melee, 0, 1737195953, false, false, false, true));
         WeaponsList.Add(new GTAWeapon("weapon_wrench", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x19044EE0, false, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_battleaxe", 0, GTAWeapon.WeaponCategory.Melee, 0, 3441901897, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_battleaxe", 0, GTAWeapon.WeaponCategory.Melee, 0, 3441901897, false, false, false, true) { IsRegularGun = false });
         WeaponsList.Add(new GTAWeapon("weapon_poolcue", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x94117305, false, false, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_stone_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x3813FC08, false, false, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_stone_hatchet", 0, GTAWeapon.WeaponCategory.Melee, 0, 0x3813FC08, false, false, false, true) { IsRegularGun = false });
         //Pistol
         WeaponsList.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_PISTOL_CLIP_01", 0xFED0FD71, false, "weapon_pistol"));
@@ -98,7 +98,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_appistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_appistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_APPISTOL_VARMOD_LUXE", 0x9B76C72C, false, "weapon_appistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153, false, true, false, true) { IsRegularGun = false });
         WeaponsList.Add(new GTAWeapon("weapon_pistol50", 60, GTAWeapon.WeaponCategory.Pistol, 1, 2578377531, false, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_PISTOL50_CLIP_01", 0x2297BE19, false, "weapon_pistol50"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL50_CLIP_02", 0xD9D3AC92, false, "weapon_pistol50"));
@@ -152,8 +152,8 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_VINTAGEPISTOL_CLIP_01", 0x45A3B6BB, false, "weapon_vintagepistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_VINTAGEPISTOL_CLIP_02", 0x33BA12E8, false, "weapon_vintagepistol"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_vintagepistol"));
-        WeaponsList.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012, false, true, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012, false, true, false, true) { IsRegularGun = false });
+        WeaponsList.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510, false, true, false, true) { IsRegularGun = false });
         WeaponsList.Add(new GTAWeapon("weapon_revolver", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3249783761, false, true, false, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("VIP Variant", "COMPONENT_REVOLVER_VARMOD_BOSS", 0x16EE3040, false, "weapon_revolver"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Bodyguard Variant", "COMPONENT_REVOLVER_VARMOD_GOON", 0x9493B80D, false, "weapon_revolver"));
@@ -180,7 +180,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Boom!", "COMPONENT_REVOLVER_MK2_CAMO_10", 0x20ED9B5B, false, "weapon_revolver_mk2"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Patriotic", "COMPONENT_REVOLVER_MK2_CAMO_IND_01", 0xD951E867, false, "weapon_revolver_mk2"));
         WeaponsList.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8, false, true, false, true));
-        WeaponsList.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1, false, true, false,false));
+        WeaponsList.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1, false, true, false,false) { IsRegularGun = false });
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Festive tint", "COMPONENT_RAYPISTOL_VARMOD_XMAS18", 0xD7DBF707, false, "weapon_raypistol"));
         //Shotgun
         WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true, false, true, true));
@@ -222,7 +222,7 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_bullpupshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_bullpupshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_bullpupshotgun"));
-        WeaponsList.Add(new GTAWeapon("weapon_musket", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2828843422, false, false, true, true));
+        WeaponsList.Add(new GTAWeapon("weapon_musket", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 2828843422, false, false, true, true) { IsRegularGun = false });
         WeaponsList.Add(new GTAWeapon("weapon_heavyshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 984333226, false, false, true, true));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_HEAVYSHOTGUN_CLIP_01", 0x324F2D5F, false, "weapon_heavyshotgun"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_HEAVYSHOTGUN_CLIP_02", 0x971CF6FD, false, "weapon_heavyshotgun"));
@@ -302,7 +302,7 @@ public static class GTAWeapons
         WeaponsList.Add(new GTAWeapon("weapon_minismg", 32, GTAWeapon.WeaponCategory.SMG, 2, 3173288789, false, true, false, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_MINISMG_CLIP_01", 0x84C8B2D3, false, "weapon_minismg"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_MINISMG_CLIP_02", 0x937ED0B7, false, "weapon_minismg"));
-        WeaponsList.Add(new GTAWeapon("weapon_raycarbine", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x476BF155, false, true, false, false));
+        WeaponsList.Add(new GTAWeapon("weapon_raycarbine", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x476BF155, false, true, false, false) { IsRegularGun = false });
         //AR
         WeaponsList.Add(new GTAWeapon("weapon_assaultrifle", 120, GTAWeapon.WeaponCategory.AR, 3, 3220176749, false, false, true, false));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Default Clip", "COMPONENT_ASSAULTRIFLE_CLIP_01", 0xBE5EEA16, false, "weapon_assaultrifle"));
@@ -614,13 +614,13 @@ public static class GTAWeapons
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_grenadelauncher"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_grenadelauncher"));
         WeaponComponentsList.Add(new WeaponVariation.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_grenadelauncher"));
-        WeaponsList.Add(new GTAWeapon("weapon_grenadelauncher_smoke", 32, GTAWeapon.WeaponCategory.Heavy, 4, 1305664598, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_grenadelauncher_smoke", 32, GTAWeapon.WeaponCategory.Heavy, 4, 1305664598, false, false, true, false) { IsRegularGun = false });
         WeaponsList.Add(new GTAWeapon("weapon_minigun", 500, GTAWeapon.WeaponCategory.Heavy, 4, 1119849093, false, false, true, false));
-        WeaponsList.Add(new GTAWeapon("weapon_firework", 20, GTAWeapon.WeaponCategory.Heavy, 4, 0x7F7497E5, false, false, true, false));
-        WeaponsList.Add(new GTAWeapon("weapon_railgun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0x6D544C99, false, false, true, false));
-        WeaponsList.Add(new GTAWeapon("weapon_hominglauncher", 3, GTAWeapon.WeaponCategory.Heavy, 4, 0x63AB0442, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_firework", 20, GTAWeapon.WeaponCategory.Heavy, 4, 0x7F7497E5, false, false, true, false) { IsRegularGun = false });
+        WeaponsList.Add(new GTAWeapon("weapon_railgun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0x6D544C99, false, false, true, false) { IsRegularGun = false });
+        WeaponsList.Add(new GTAWeapon("weapon_hominglauncher", 3, GTAWeapon.WeaponCategory.Heavy, 4, 0x63AB0442, false, false, true, false) { IsRegularGun = false });
         WeaponsList.Add(new GTAWeapon("weapon_compactlauncher", 10, GTAWeapon.WeaponCategory.Heavy, 4, 125959754, false, false, true, false));
-        WeaponsList.Add(new GTAWeapon("weapon_rayminigun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0xB62D1F67, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_rayminigun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0xB62D1F67, false, false, true, false) { IsRegularGun = false }) ;
 
         foreach (GTAWeapon Weapon in WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol))
         {
@@ -860,7 +860,7 @@ public static class GTAWeapons
     }
     public static GTAWeapon GetRandomWeapon(GTAWeapon.WeaponCategory Category)
     {
-        return WeaponsList.Where(s => s.Category == Category).PickRandom();
+        return WeaponsList.Where(s => s.Category == Category && s.IsRegularGun).PickRandom();
     }
 }
 public class GTAWeapon
@@ -899,6 +899,7 @@ public class GTAWeapon
     public bool IsTwoHanded = false;
     public bool IsOneHanded = false;
     public bool IsLegal = false;
+    public bool IsRegularGun = true;
     public List<WeaponVariation> PoliceVariations = new List<WeaponVariation>();
     public List<WeaponVariation> PlayerVariations = new List<WeaponVariation>();
 

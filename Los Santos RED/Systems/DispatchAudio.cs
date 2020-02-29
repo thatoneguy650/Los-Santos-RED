@@ -86,6 +86,7 @@ public static class DispatchAudio
 
 
         ReportNoFurtherUnits = 39,
+        ReportAttemptingSuicide = 40,
     }
     public enum NearType
     {
@@ -512,12 +513,14 @@ public static class DispatchAudio
                         ReportLowLevelMugging();
                     else if (Item.Type == ReportDispatch.ReportNoFurtherUnits)
                         ReportNoFurtherUnits();
+                    else if (Item.Type == ReportDispatch.ReportAttemptingSuicide)
+                        ReportAttemptingSuicide();
 
                     DispatchQueue.RemoveAt(0);
 
                     if(Item.ResultingWantedLevel > 0)
                     {
-                        Police.SetWantedLevel(Item.ResultingWantedLevel, string.Format("Set Wanted After Dispatch: {0}",Item.Type));
+                        Police.SetWantedLevel(Item.ResultingWantedLevel, string.Format("Set Wanted After Dispatch: {0}",Item.Type),true);
                     }
 
                 }
@@ -526,6 +529,7 @@ public static class DispatchAudio
             Debugging.GameFibers.Add(PlayDispatchQueue);
         }
     }
+
 
 
     public static void ClearDispatchQueue()
@@ -1129,9 +1133,19 @@ public static class DispatchAudio
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Grand Theft Auto");
-        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
+
+
         ScannerList.Add(new List<string>() { crime_grand_theft_auto.Agrandtheftauto.FileName, crime_grand_theft_auto.Agrandtheftautoinprogress.FileName, crime_grand_theft_auto.AGTAinprogress.FileName, crime_grand_theft_auto.AGTAinprogress1.FileName }.PickRandom());
         Subtitles += " a ~y~GTA~s~ in progress";
+        GTAVehicle StolenCar = LosSantosRED.GetPlayersCurrentTrackedVehicle();
+        if (LosSantosRED.PlayerIsWanted && StolenCar != null)
+        {
+            ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
+            Subtitles += "Suspect spotted driving a";
+            ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
+            AddVehicleDescription(StolenCar, ref ScannerList, false, ref Subtitles, ref Notification, false, true);
+        }
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
@@ -1261,6 +1275,17 @@ public static class DispatchAudio
         ScannerList.Add(new List<string>() { crime_person_resisting_arrest.Apersonresistingarrest.FileName, crime_suspect_resisting_arrest.Asuspectresistingarrest.FileName }.PickRandom());
         Subtitles += " a ~r~Suspect Resisting Arrest~s~";
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
+    }
+    private static void ReportAttemptingSuicide()
+    {
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Suicide Attempt");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
+        ScannerList.Add(new List<string>() { crime_9_14a_attempted_suicide.Anattemptedsuicide.FileName, crime_9_14a_attempted_suicide.Apossibleattemptedsuicide.FileName }.PickRandom());
+        Subtitles += " an ~r~Attempted Suicide~s~";
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
 
@@ -1551,7 +1576,7 @@ public static class DispatchAudio
         };
         string Subtitles = "";
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Reacquired");
-        if (!ReportHeadingAndStreet(ref ScannerList,ref Subtitles))
+        if (!ReportHeadingAndStreet(ref ScannerList,ref Subtitles,ref Notification))
         {
             List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };
             ScannerList.Add(Possibilites.PickRandom());
@@ -1560,32 +1585,37 @@ public static class DispatchAudio
         ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
-    public static bool ReportHeadingAndStreet(ref List<string> ScannerList, ref string Subtitles)
+    public static bool ReportHeadingAndStreet(ref List<string> ScannerList, ref string Subtitles,ref DispatchNotification Notification)
     {
         if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.DispatchFile != "")
         {
             ScannerList.Add((new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             Subtitles += "~r~Target spotted~s~ heading~s~";
+            Notification.Text += "~n~Heading";
             string heading = GetSimpleCompassHeading();
             if (heading == "N")
             {
                 ScannerList.Add(direction_heading.North.FileName);
-                Subtitles += " ~g~North~s~";
+                Subtitles += " North";
+                Notification.Text += " North";
             }
             else if (heading == "S")
             {
                 ScannerList.Add(direction_heading.South.FileName);
-                Subtitles += " ~g~South";
+                Subtitles += " South";
+                Notification.Text += " South";
             }
             else if (heading == "E")
             {
                 ScannerList.Add(direction_heading.East.FileName);
-                Subtitles += " ~g~East~s~";
+                Subtitles += " East";
+                Notification.Text += " East";
             }
             else if (heading == "W")
             {
                 ScannerList.Add(direction_heading.West.FileName);
-                Subtitles += " ~g~West~s~";
+                Subtitles += " West";
+                Notification.Text += " West";
             }
 
             if (PlayerLocation.PlayerCurrentStreet != null)
@@ -1596,6 +1626,7 @@ public static class DispatchAudio
                     ScannerList.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
                     ScannerList.Add(MyStreet.DispatchFile);
                     Subtitles += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
+                    Notification.Text += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
 
                     if (PlayerLocation.PlayerCurrentCrossStreet != null)
                     {
@@ -1605,6 +1636,7 @@ public static class DispatchAudio
                             ScannerList.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());
                             ScannerList.Add(MyCrossStreet.DispatchFile);
                             Subtitles += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
+                            Notification.Text += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
                         }
                     }
                     return true;
