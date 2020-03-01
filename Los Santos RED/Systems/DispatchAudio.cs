@@ -1545,7 +1545,7 @@ public static class DispatchAudio
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        DispatchNotification Notification = new DispatchNotification("Police Scanner", string.Format("Suspect {0}", PedSwapping.SuspectName), "") { TextureDict = PedSwapping.CurrentHeadshot.Txd, TextureName = PedSwapping.CurrentHeadshot.Txd };
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", string.Format("Suspect {0}", PedSwapping.SuspectName), "");
 
         if (Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || Police.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
         {

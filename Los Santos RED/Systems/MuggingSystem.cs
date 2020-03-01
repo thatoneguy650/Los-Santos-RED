@@ -13,6 +13,7 @@ public static class MuggingSystem
     private static uint GameTimeLastDispatchedMugging;
     private static Ped LastAimedAtPed;
     private static uint TimeAimedAtMuggingTarget;
+    private static Vector3 PlaceLastMugged;
     public static bool IsRunning { get; set; }
     public static bool RecentlyDispatchedMugging
     {
@@ -160,7 +161,8 @@ public static class MuggingSystem
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, LosSantosRED.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
-                Police.InvestigationPosition = MuggingTarget.Pedestrian.Position;
+                //Police.InvestigationPosition = MuggingTarget.Pedestrian.Position;
+                PlaceLastMugged = MuggingTarget.Pedestrian.Position;
                 MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
                 bool CallPolice = LosSantosRED.MyRand.Next(1, 11) <= 8;//some people just dont call the police for whatever reason, even when they are robbed
                 bool HaveDescription = CanSee || LosSantosRED.MyRand.Next(1, 11) <= 3;
@@ -202,15 +204,19 @@ public static class MuggingSystem
                     GameFiber.Sleep(5000);
 
 
-                    if (LosSantosRED.PlayerIsNotWanted && !RecentlyDispatchedMugging)
+                    if (LosSantosRED.PlayerIsNotWanted)
                     {
-                        Police.PedReportedCrime(DispatchAudio.ReportDispatch.ReportLowLevelMugging);
-                        GameTimeLastDispatchedMugging = Game.GameTime;
-
-                        if(HaveDescription)
+                        if (!RecentlyDispatchedMugging)
                         {
-                            PersonOfInterest.PlayerBecamePersonOfInterest();
+                            Police.PedReportedCrime(DispatchAudio.ReportDispatch.ReportLowLevelMugging);
+                            GameTimeLastDispatchedMugging = Game.GameTime;
+
+                            if (HaveDescription)
+                            {
+                                PersonOfInterest.PlayerBecamePersonOfInterest();
+                            }
                         }
+                        Police.InvestigationPosition = PlaceLastMugged;
                     }
 
                     if (MyPed.Pedestrian.Exists() && !MyPed.Pedestrian.IsDead && !MyPed.Pedestrian.IsRagdoll)

@@ -227,6 +227,8 @@ public static class CarStealing
             || VehicleClass == Vehicles.VehicleClass.Planes || VehicleClass == Vehicles.VehicleClass.Service || VehicleClass == Vehicles.VehicleClass.Trailer || VehicleClass == Vehicles.VehicleClass.Trains 
             || VehicleClass == Vehicles.VehicleClass.Helicopters)
             return false;//maybe add utility?
+        else if(!ToEnter.Doors[0].IsValid() || !ToEnter.Doors[1].IsValid())
+            return false;
         else
             return true;
     }

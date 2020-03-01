@@ -103,6 +103,10 @@ namespace ExtensionsMethods
                 else
                     return true;
             }
+            else if(myPed.Model.Hash != 225514697 && myPed.Model.Hash != 2602752943 && myPed.Model.Hash != 2608926626)
+            {
+                return false;
+            }
             else
             {
                 return false;

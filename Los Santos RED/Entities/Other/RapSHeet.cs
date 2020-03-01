@@ -68,6 +68,19 @@ public class RapSheet
     {
 
     }
+    public void GiveCriminalHistory()
+    {
+        if (LosSantosRED.MyRand.Next(1, 10) <= 3)
+        {
+            foreach (Crime myCrime in GetListOfCrimes().Where(x => !x.HasBeenWitnessedByPolice).Take(LosSantosRED.MyRand.Next(1, 4)))
+            {
+                myCrime.HasBeenWitnessedByPolice = true;
+                myCrime.InstancesObserved++;
+                myCrime.GameTimeLastWitnessed = Game.GameTime;
+                myCrime.HasBeenReportedByDispatch = true;
+            }
+        }
+    }
     public string PrintCrimes()
     {
         string CrimeString = "";

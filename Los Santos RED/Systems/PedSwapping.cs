@@ -17,9 +17,9 @@ public static class PedSwapping
     private static bool TargetPedInVehicle;
     private static Vehicle TargetPedVehicle;
     private static bool TargetPedAlreadyTakenOver;
-    private static Vector3 DopplegangerPosition;
+   // private static Vector3 DopplegangerPosition;
 
-    private static Ped Doppleganger;
+   // public static Ped Doppleganger;//temp public
 
     private static List<TakenOverPed> TakenOverPeds;
     private static Model OriginalModel;
@@ -28,7 +28,9 @@ public static class PedSwapping
     private static bool PedOriginallyHadHelmet;
     private static uint GameTimeLastTakenOver;
 
-    public static PedHeadshot CurrentHeadshot;
+    public static string CurrentPlayerModel;//temp public
+
+    //public static PedHeadshot CurrentHeadshot;
     public static string SuspectName { get; set; }
     public static void Initialize()
     {
@@ -38,40 +40,34 @@ public static class PedSwapping
         PedOriginallyHadHelmet = false;
         GameTimeLastTakenOver = Game.GameTime;
         PedNames.Initialize();
-        CreateUpdateHeadshot();
+        CurrentPlayerModel = Game.LocalPlayer.Character.Model.Name;
+        CopyPedComponentVariation(Game.LocalPlayer.Character);
         NamePed();
     }
     public static void NamePed()
     {
-        int PedType;
-            
-        if(Doppleganger.Exists())
-            PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Doppleganger);
-        else
-            PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Game.LocalPlayer.Character);
-
-        if (PedType == 0)
+        if (CurrentPlayerModel.ToLower() == "player_zero")
             SuspectName = "Michael De Santa";
-        else if (PedType == 1)
+        else if (CurrentPlayerModel.ToLower() == "player_one")
             SuspectName = "Franklin Clinton";
-        else if (PedType == 2)
+        else if (CurrentPlayerModel.ToLower() == "player_two")
             SuspectName = "Trevor Philips";
         else
             GenerateNameForPed();
     }
     private static void GenerateNameForPed()
     {
+        Ped Doppleganger = new Ped(CurrentPlayerModel, new Vector3(0f, 0f, 0f), 0f);
+        SuspectName = PedNames.GetRandomName(Doppleganger.IsMale);
         if (Doppleganger.Exists())
-            SuspectName = PedNames.GetRandomName(Doppleganger.IsMale);
-        else
-            SuspectName = "John Doe";
+            Doppleganger.Delete();
     }
     public static void Dispose()
     {
         // ResetModel();
 
-        if (Doppleganger.Exists())
-            Doppleganger.Delete();
+        //if (Doppleganger.Exists())
+        //    Doppleganger.Delete();
     }
     public static bool JustTakenOver(int Duration)
     {
@@ -89,7 +85,10 @@ public static class PedSwapping
         else
             PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => LosSantosRED.MyRand.Next()).FirstOrDefault();
         if (PedToReturn == null)
+        {
+            Debugging.WriteToLog("Ped Takeover", "No Peds Found");
             return null;
+        }
         else if (PedToReturn.IsInAnyVehicle(false))
         {
             if (PedToReturn.CurrentVehicle.Driver.Exists())
@@ -153,7 +152,7 @@ public static class PedSwapping
     private static void StoreTargetPedData(Ped TargetPed)
     {
         CopyPedComponentVariation(TargetPed);
-        CreateDoppleganger(TargetPed.Model);
+        CurrentPlayerModel = TargetPed.Model.Name;
 
         CurrentPedPosition = Game.LocalPlayer.Character.Position;//Vector3 CurrentPosition = Game.LocalPlayer.Character.Position;
         TargetPedPosition = TargetPed.Position;// Vector3 TargetPedPosition = TargetPed.Position;
@@ -264,9 +263,28 @@ public static class PedSwapping
 
         ActivateScenariosAfterTakeover();
         NamePed();
+
+
+
         GameFiber.Wait(50);
         LosSantosRED.DisplayPlayerNotification();
     }
+    private static void GivePedHistory()
+    {
+        Police.CurrentCrimes.GiveCriminalHistory();
+    }
+    //private static void CreateDoppleganger()
+    //{
+    //    if (Doppleganger.Exists())
+    //        Doppleganger.Delete();
+    //    Doppleganger = new Ped(CurrentPlayerModel.Name, new Vector3(0f,0f,0f), 0f);
+    //    Doppleganger.IsPersistent = true;
+    //    ReplacePedComponentVariation(Doppleganger);
+    //    Doppleganger.IsPositionFrozen = true;
+    //    CurrentHeadshot = new PedHeadshot(Doppleganger);
+    //    CurrentHeadshot.Register();
+    //    GameFiber.Sleep(150);
+    //}
     private static void ActivateScenariosAfterTakeover()
     {
         if (TargetPedUsingScenario)
@@ -290,25 +308,6 @@ public static class PedSwapping
         }, "ScenarioWatcher");
             Debugging.GameFibers.Add(ScenarioWatcher);
         }
-    }
-    private static void CreateDoppleganger(Model OriginalModel)
-    {
-        if (Doppleganger.Exists())
-            Doppleganger.Delete();
-
-        Doppleganger = new Ped(OriginalModel.Name, Vector3.Zero, 0f);
-        Doppleganger.IsPersistent = true;
-        ReplacePedComponentVariation(Doppleganger);
-
-        CurrentHeadshot = new PedHeadshot(Doppleganger);
-        CurrentHeadshot.Register();
-        GameFiber.Sleep(150);
-    }
-    public static void CreateUpdateHeadshot()
-    {
-        CurrentHeadshot = new PedHeadshot(Game.LocalPlayer.Character);
-        CurrentHeadshot.Register();
-        GameFiber.Sleep(150);
     }
     private static void AddPedToTakenOverPeds(TakenOverPed MyPed)
     {

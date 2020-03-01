@@ -37,6 +37,7 @@ internal static class Police
     private static uint LastSeenVehicleHandle;
     private static bool PrevPoliceInVestigationMode;
     private static uint GameTimeStartedInvestigation;
+    private static Vector3 PrevInvestigationPosition;
 
     public static bool AnyPoliceCanSeePlayer { get; set; }
     public static bool AnyPoliceCanRecognizePlayer { get; set; }
@@ -189,6 +190,7 @@ internal static class Police
 
         InvestigationPosition = Vector3.Zero;
         InvestigationDistance = 350f;
+        PrevInvestigationPosition = Vector3.Zero;
 
         IsRunning = true;
     }
@@ -210,23 +212,25 @@ internal static class Police
         if (InvestigationModeExpired) //remove after 3 minutes
             PoliceInInvestigationMode = false;
 
+        if (PrevInvestigationPosition != InvestigationPosition)
+            InvestigationPositionChanged();
 
         if(PrevPoliceInVestigationMode != PoliceInInvestigationMode)
             PoliceInInvestigationModeChanged();
+    }
+
+    private static void InvestigationPositionChanged()
+    {
+        UpdateInvestigationUI();
+        Debugging.WriteToLog("ValueChecker", string.Format("InvestigationPosition Changed to: {0}", InvestigationPosition));
+        PrevInvestigationPosition = InvestigationPosition;
     }
 
     private static void PoliceInInvestigationModeChanged()
     {
         if (PoliceInInvestigationMode) //added
         {
-            //GO to the nearest road node
-            Vector3 SpawnLocation = Vector3.Zero;
-            float Heading = 0f;
-            LosSantosRED.GetStreetPositionandHeading(InvestigationPosition, out SpawnLocation, out Heading);
-            if (SpawnLocation != Vector3.Zero)
-                InvestigationPosition = SpawnLocation;
-
-            AddUpdateInvestigationBlip(InvestigationPosition, 55f);
+            UpdateInvestigationUI();
 
             GameTimeStartedInvestigation = Game.GameTime;
         }
@@ -237,14 +241,28 @@ internal static class Police
             {
                 if(PersonOfInterest.PlayerIsPersonOfInterest)
                     PersonOfInterest.ResetPersonOfInterest(false);
+
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportNoFurtherUnits, 20) { IsAmbient = true });
             }
             GameTimeStartedInvestigation = 0;
         }
-        LocalWriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", PoliceInInvestigationMode));
+        Debugging.WriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", PoliceInInvestigationMode));
         PrevPoliceInVestigationMode = PoliceInInvestigationMode;
     }
-
+    private static void UpdateInvestigationUI()
+    {
+        UpdateInvestigationPosition();
+        AddUpdateInvestigationBlip(InvestigationPosition, 55f);
+    }
+    private static void UpdateInvestigationPosition()
+    {
+        //GO to the nearest road node
+        Vector3 SpawnLocation = Vector3.Zero;
+        float Heading = 0f;
+        LosSantosRED.GetStreetPositionandHeading(InvestigationPosition, out SpawnLocation, out Heading);
+        if (SpawnLocation != Vector3.Zero)
+            InvestigationPosition = SpawnLocation;
+    }
     private static void UpdatePolice()
     {
         PlayerStarsGreyedOut = NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
@@ -557,7 +575,7 @@ internal static class Police
                 {
                     ResultsInLethalForce = Game.LocalPlayer.WantedLevel == 4 && CurrentPoliceState != PoliceState.DeadlyChase
                     ,ResultingWantedLevel = LosSantosRED.PlayerWantedLevel + 1
-                }); ; ; 
+                });
             }
 
             //if (Settings.SpawnNewsChopper && Game.GameTime - WantedLevelStartTime > 180000 && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 4 && !PoliceScanning.Reporters.Any())
@@ -736,6 +754,10 @@ internal static class Police
         GTAWeapon MyGun = LosSantosRED.GetCurrentWeapon();
         DispatchAudio.ReportDispatch ToReport;
 
+
+        InvestigationPosition = Game.LocalPlayer.Character.Position;
+        UpdateInvestigationPosition();
+
         if (LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
             ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCiviliansShot;
         else if (!LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
@@ -866,6 +888,12 @@ internal static class Police
     public static void AddUpdateInvestigationBlip(Vector3 Position,float Size)
     {
         if (Position == Vector3.Zero)
+        {
+            if (InvestigationBlip.Exists())
+                InvestigationBlip.Delete();
+            return;
+        }
+        if (!PoliceInInvestigationMode)
         {
             if (InvestigationBlip.Exists())
                 InvestigationBlip.Delete();

@@ -188,9 +188,6 @@ public static class LosSantosRED
         MuggingSystem.Initialize();
         //CameraSystem.Initialize();
         MainLoop();
-
-        LosSantosRED.DisplayPlayerNotification();
-
     }
     public static void MainLoop()
     {
@@ -333,11 +330,6 @@ public static class LosSantosRED
         {
             Surrendering.CommitSuicide(Game.LocalPlayer.Character);
         }
-
-
-        //CommitSuicideRequiringIntervention()
-
-
 
         if (Game.IsControlPressed(2, GameControl.Enter))
         {
@@ -522,22 +514,11 @@ public static class LosSantosRED
 
     public static void DisplayPlayerNotification()
     {
-        GTAVehicle MyCar = GetPlayersCurrentTrackedVehicle();
-
         string NotifcationText = "Warrants: ~g~None~s~";
-
         if(Police.CurrentCrimes.CommittedAnyCrimes)
             NotifcationText = "Wanted For:" + Police.CurrentCrimes.PrintCrimes();
 
-        //int Cash = Game.LocalPlayer.Character.GetCash();
-        //int Health = Game.LocalPlayer.Character.Health;
-        //if(Cash >= 2000)
-        //    NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~g~", Cash);
-        //else if(Cash >= 500)
-        //    NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~o~", Cash);
-        //else
-        //    NotifcationText += string.Format("~n~Cash: {0}${1}~s~", "~r~", Cash);
-
+        GTAVehicle MyCar = GetPlayersCurrentTrackedVehicle();
         if (MyCar != null && MyCar.IsPlayersVehicle)
         {
             Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(MyCar);
@@ -552,7 +533,9 @@ public static class LosSantosRED
             NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", MyCar.CarPlate.PlateNumber);
         }
 
-        Game.DisplayNotification(PedSwapping.CurrentHeadshot.Txd, PedSwapping.CurrentHeadshot.Txd, "~b~Personal Info", string.Format("~y~{0}",PedSwapping.SuspectName), NotifcationText);
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}",PedSwapping.SuspectName), NotifcationText);
+
+
     }
     public static GTAWeapon GetCurrentWeapon()
     {

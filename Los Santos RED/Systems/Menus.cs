@@ -232,6 +232,8 @@ internal static class Menus
     }
     public static void ShowBustedMenu()
     {
+        if (LosSantosRED.IsDead)
+            return;
         CreateBustedMenu();
 
 

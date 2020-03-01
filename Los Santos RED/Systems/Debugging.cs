@@ -1152,9 +1152,6 @@ public static class Debugging
 
 
 
-
-
-
         //foreach (GTAPed MyPed in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         //{
         //    Debugging.WriteToLog("Debug", string.Format("MyPed: {0},Model.Name:{1},HurtByPlayer: {2}",
