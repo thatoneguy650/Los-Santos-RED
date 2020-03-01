@@ -41,10 +41,6 @@ public static class PersonOfInterest
         if (PrevPlayerIsWanted != LosSantosRED.PlayerIsWanted)
             WantedLevelAddedOrRemoved();
 
-
-
-
-
         if (LosSantosRED.IsDead || LosSantosRED.IsBusted)
             return;
 
@@ -152,9 +148,8 @@ public static class PersonOfInterest
         Police.LastWantedCenterPosition = Vector3.Zero;
         Police.AddUpdateLastWantedBlip(Vector3.Zero);
 
-        if(PlayAudio)
+        if (PlayAudio && !Police.PoliceInInvestigationMode)
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportResumePatrol, 3));
-
     }
     public static bool ApplyWantedStatsForPlate(string PlateNumber)
     {

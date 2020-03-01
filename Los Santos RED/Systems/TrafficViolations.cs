@@ -87,7 +87,7 @@ public static class TrafficViolations
         if (LosSantosRED.IsBusted || LosSantosRED.IsDead)
             return;
 
-        if (LosSantosRED.PlayerInVehicle && (LosSantosRED.PlayerInAutomobile || LosSantosRED.PlayerOnMotorcycle) && !PedSwapping.JustTakenOver(10000))
+        if (LosSantosRED.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (LosSantosRED.PlayerInAutomobile || LosSantosRED.PlayerOnMotorcycle) && !PedSwapping.JustTakenOver(10000))
         {
             float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
             Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;

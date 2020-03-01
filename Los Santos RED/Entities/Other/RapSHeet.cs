@@ -70,7 +70,7 @@ public class RapSheet
     }
     public void GiveCriminalHistory()
     {
-        if (LosSantosRED.MyRand.Next(1, 10) <= 3)
+        if (LosSantosRED.MyRand.Next(1, 10) <= 8)
         {
             foreach (Crime myCrime in GetListOfCrimes().Where(x => !x.HasBeenWitnessedByPolice).Take(LosSantosRED.MyRand.Next(1, 4)))
             {

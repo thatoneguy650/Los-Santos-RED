@@ -186,6 +186,8 @@ public static class MuggingSystem
     {
         GameFiber WatchForDeath = GameFiber.StartNew(delegate
         {
+
+            Debugging.WriteToLog("Mugging WatchForDeath", string.Format("HaveDescription: {0}", HaveDescription));
             uint GameTimeStolen = Game.GameTime;
             while (MyPed.Pedestrian.Exists())
             {

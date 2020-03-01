@@ -94,18 +94,18 @@ namespace ExtensionsMethods
         }
         public static bool IsNormalPed(this Ped myPed)
         {
+            if (myPed.Model.Hash == 225514697 || myPed.Model.Hash == 2602752943 || myPed.Model.Hash == 2608926626)
+            {
+                return false;
+            }
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);
             if (PedType == 4 || PedType == 5 || PedType == 26)
             {
-            string ModelName = myPed.Model.Name.ToLower();
+                string ModelName = myPed.Model.Name.ToLower();
                 if (ShopPeds.Contains(ModelName))
                     return false;
                 else
                     return true;
-            }
-            else if(myPed.Model.Hash != 225514697 && myPed.Model.Hash != 2602752943 && myPed.Model.Hash != 2608926626)
-            {
-                return false;
             }
             else
             {

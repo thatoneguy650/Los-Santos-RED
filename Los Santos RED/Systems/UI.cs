@@ -124,6 +124,7 @@ public static class UI
             if(TrafficViolations.PlayerIsRunningRedLight)
                 PlayerSpeedLine += " Running Red";
 
+            PlayerSpeedLine += VehicleEngine.VehicleIndicatorStatus;
         }
 
         string PlayerCLockLine = string.Format("{0} Multiplier: {1}", ClockSystem.ClockTime, ClockSystem.ClockSpeed);

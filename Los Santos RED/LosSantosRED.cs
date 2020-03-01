@@ -326,7 +326,7 @@ public static class LosSantosRED
             }
         }
 
-        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && Game.IsShiftKeyDownRightNow)
+        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
         {
             Surrendering.CommitSuicide(Game.LocalPlayer.Character);
         }

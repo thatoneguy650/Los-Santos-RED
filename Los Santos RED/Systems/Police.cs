@@ -66,6 +66,7 @@ internal static class Police
     }
     public static float InvestigationDistance { get; set; }
     public static Vector3 InvestigationPosition { get; set; }
+    public static float NearInvestigationDistance { get; set; }
     public static bool PoliceInInvestigationMode { get; set; }
     public static bool PlayerWasJustJacking
     {
@@ -191,7 +192,7 @@ internal static class Police
         InvestigationPosition = Vector3.Zero;
         InvestigationDistance = 350f;
         PrevInvestigationPosition = Vector3.Zero;
-
+        NearInvestigationDistance = 100f;
         IsRunning = true;
     }
     public static void Dispose()
@@ -236,7 +237,7 @@ internal static class Police
         }
         else //removed
         {
-            AddUpdateInvestigationBlip(Vector3.Zero, 55f);
+            AddUpdateInvestigationBlip(Vector3.Zero, NearInvestigationDistance);
             if (LosSantosRED.PlayerIsNotWanted)
             {
                 if(PersonOfInterest.PlayerIsPersonOfInterest)
@@ -252,7 +253,7 @@ internal static class Police
     private static void UpdateInvestigationUI()
     {
         UpdateInvestigationPosition();
-        AddUpdateInvestigationBlip(InvestigationPosition, 55f);
+        AddUpdateInvestigationBlip(InvestigationPosition, NearInvestigationDistance);
     }
     private static void UpdateInvestigationPosition()
     {
@@ -646,7 +647,7 @@ internal static class Police
     }
     public static bool NearInvestigationPosition()
     {
-        return InvestigationPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition) <= 55f;
+        return InvestigationPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition) <= NearInvestigationDistance;
     }
     public static void CheckRecognition()
     {

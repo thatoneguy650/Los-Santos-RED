@@ -154,6 +154,8 @@ public static class PedSwapping
         CopyPedComponentVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
 
+        Debugging.WriteToLog("StoreTargetPedData", string.Format("CurrentPlayerModel: {0}",CurrentPlayerModel));
+
         CurrentPedPosition = Game.LocalPlayer.Character.Position;//Vector3 CurrentPosition = Game.LocalPlayer.Character.Position;
         TargetPedPosition = TargetPed.Position;// Vector3 TargetPedPosition = TargetPed.Position;
 
