@@ -736,11 +736,14 @@ internal static class Police
     {
         if (!RecentlySetWanted)
         {
-            SetWantedLevel(0, "Resetting Unknown Wanted",false);
-            //PoliceSpawning.SpawnInvestigatingCop(Game.LocalPlayer.Character.Position);
-            GetReportedCrimeFromUnknown();
+            if (LosSantosRED.PlayerWantedLevel <= 2)
+            {
+                SetWantedLevel(0, "Resetting Unknown Wanted", false);
+                //PoliceSpawning.SpawnInvestigatingCop(Game.LocalPlayer.Character.Position);
+                GetReportedCrimeFromUnknown();
 
-            return;
+                return;
+            }
         }
 
         PoliceInInvestigationMode = false;

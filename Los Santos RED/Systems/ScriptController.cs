@@ -28,6 +28,8 @@ public static class ScriptController
     private static TickTask LosSantosREDTick;
     private static TickTask PoliceTick;
     private static TickTask CivilianTick;
+    private static TickTask MuggingTick;
+    private static TickTask ClockTick;
     private static List<TickTask> MyTickTasks;
  
     public static bool IsRunning { get; set; }
@@ -41,6 +43,11 @@ public static class ScriptController
         LosSantosREDTick = new TickTask(25, "InstantActionTick", LosSantosRED.InstantActionTick, TickTask.Type.RequiredGeneral);
         PoliceTick = new TickTask(25, "PoliceTick", Police.PoliceGeneralTick, TickTask.Type.RequiredGeneral);
         VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);
+
+
+        MuggingTick = new TickTask(50, "MuggingTick", MuggingSystem.MuggingTick, TickTask.Type.RequiredGeneral);
+        ClockTick = new TickTask(0, "ClockTick", ClockSystem.ClockTick, TickTask.Type.RequiredGeneral);
+
 
         PoliceScanningTick = new TickTask(1000, "PoliceScanningTick", PoliceScanning.Tick, TickTask.Type.Police);//was 5000
         LineOfSightTick = new TickTask(500, "LineOfSightTick",Police.CheckPoliceSight, TickTask.Type.Police);
@@ -68,7 +75,7 @@ public static class ScriptController
         {
 
             LosSantosREDTick,PoliceTick,VehicleEngineTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
-            ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick,WeatherCheckingTick,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick
+            ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick,WeatherCheckingTick,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick,MuggingTick,ClockTick
         };
 
         MainLoop();
@@ -91,6 +98,12 @@ public static class ScriptController
 
                     if (VehicleEngine.IsRunning && VehicleEngineTick.ShouldRun)//needs to be separate?
                         VehicleEngineTick.RunTask();
+
+                    if (MuggingSystem.IsRunning && MuggingTick.ShouldRun)//needs to be separate?
+                        MuggingTick.RunTask();
+
+                    if (ClockSystem.IsRunning && ClockTick.ShouldRun)//needs to be separate?
+                        ClockTick.RunTask();
 
                     //Police Stuff
                     if (Police.IsRunning && PoliceScanningTick.ShouldRun)

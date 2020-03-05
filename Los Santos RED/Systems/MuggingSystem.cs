@@ -30,32 +30,32 @@ public static class MuggingSystem
     public static void Initialize()
     {
         IsRunning = true;
-        MainLoop();
+        //MainLoop();
     }
-    public static void MainLoop()
-    {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    MuggingTick();
-                    GameFiber.Yield();
-                }
-            }
-            catch (Exception e)
-            {
-                Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
-    }
+    //public static void MainLoop()
+    //{
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        try
+    //        {
+    //            while (IsRunning)
+    //            {
+    //                MuggingTick();
+    //                GameFiber.Yield();
+    //            }
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Dispose();
+    //            Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+    //        }
+    //    });
+    //}
     public static void Dispose()
     {
         IsRunning = false;
     }
-    private static void MuggingTick()
+    public static void MuggingTick()
     {
         if(!IsMugging && Game.LocalPlayer.Character.IsAiming && Game.LocalPlayer.IsFreeAimingAtAnyEntity)
         {

@@ -29,33 +29,33 @@ public static class ClockSystem
         ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
         ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
         ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-        MainLoop();
+        //MainLoop();
     }
-    public static void MainLoop()
-    {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                while (IsRunning)
-                {
-                    ClockTick();
-                    GameFiber.Yield();
-                }
-            }
-            catch (Exception e)
-            {
-                Dispose();
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
-    }
+    //public static void MainLoop()
+    //{
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        try
+    //        {
+    //            while (IsRunning)
+    //            {
+    //                ClockTick();
+    //                GameFiber.Yield();
+    //            }
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Dispose();
+    //            Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+    //        }
+    //    });
+    //}
     public static void Dispose()
     {
         IsRunning = false;
         NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
     }
-    private static void ClockTick()
+    public static void ClockTick()
     {
         float Speed = Game.LocalPlayer.Character.Speed;
         int Interval = 1000;
