@@ -17,6 +17,11 @@ public static class ClockSystem
     private static uint GameTimeLastSetClock;
     private static int ClockMultiplier;
 
+
+    private static int StoredClockSeconds;
+    private static int StoredClockMinutes;
+    private static int StoredClockHours;
+
     public static bool IsRunning { get; set; }
     public static string ClockSpeed { get; set; }
     public static string ClockTime { get; set; }
@@ -29,27 +34,7 @@ public static class ClockSystem
         ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
         ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
         ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-        //MainLoop();
     }
-    //public static void MainLoop()
-    //{
-    //    GameFiber.StartNew(delegate
-    //    {
-    //        try
-    //        {
-    //            while (IsRunning)
-    //            {
-    //                ClockTick();
-    //                GameFiber.Yield();
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            Dispose();
-    //            Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-    //        }
-    //    });
-    //}
     public static void Dispose()
     {
         IsRunning = false;
@@ -132,6 +117,16 @@ public static class ClockSystem
             DOW = "Saturday";
 
         ClockTime = string.Format("{0} {1}", DOW,MyTime.ToString("hh:mm tt"));
+    }
+    public static void StoreTime()
+    {
+        StoredClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
+        StoredClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
+        StoredClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+    }
+    public static void ResetTime()
+    {
+        NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds); 
     }
 
 }

@@ -81,19 +81,6 @@ static class Settings
     public static bool DispatchNotifications = false;
 
     public static bool Logging = true;
-    public static bool GeneralLogging = true;
-    public static bool SmokingLogging = true;
-    public static bool PoliceSpawningLogging = false;
-    public static bool PoliceTaskingLogging = false;
-    public static bool PoliceLogging = true;
-    public static bool DispatchAudioLogging = true;
-    public static bool CarStealingLogging = false;
-    public static bool LicensePlateChanging = false;
-    public static bool PedSwappingLogging = false;
-    public static bool PlayerLocationLogging = false;
-    public static bool PoliceSpeechLogging = false;
-    public static bool VehicleEngineLogging = false;
-    public static bool WeaponDroppingLogging = false;
     public static bool AllowDeathMenus = true;
     public static bool AlwaysShowRadar = true;
 

@@ -85,12 +85,7 @@ public static class Civilians
         {
             MyPed.KilledByPlayer = true;
             GameTimeLastKilledCivilian = Game.GameTime;
-            LocalWriteToLog("CheckKilled", string.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
+            Debugging.WriteToLog("CheckKilled", string.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
         }
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.PoliceLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }

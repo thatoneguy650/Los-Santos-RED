@@ -50,19 +50,19 @@ internal static class PoliceSpeech
                     if (LosSantosRED.IsBusted && Cop.DistanceToPlayer <= 20f)
                     {
                         Cop.Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
-                       LocalWriteToLog("CheckSpeech", "ARREST_PLAYER");
+                        Debugging.WriteToLog("CheckSpeech", "ARREST_PLAYER");
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase)
                     {
                         string Speech = UnarmedChaseSpeech.PickRandom();
                         Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                        LocalWriteToLog("CheckSpeech", Speech);
+                        Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.CautiousChase)
                     {
                         string Speech = CautiousChaseSpeech.PickRandom();
                         Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                        LocalWriteToLog("CheckSpeech", Speech);
+                        Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
                     {
@@ -74,20 +74,20 @@ internal static class PoliceSpeech
                     {
                         string Speech = AmbientSpeech.PickRandom();
                         Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                        LocalWriteToLog("CheckSpeech", Speech);
+                        Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                     else if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                     {
                         string Speech = DeadlyChaseSpeech.PickRandom();
                         Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                        LocalWriteToLog("CheckSpeech", Speech);
+                        Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                     else //Normal State
                     {
                         if(Cop.DistanceToPlayer <= 4f)
                         {
                             Cop.Pedestrian.PlayAmbientSpeech("CRIMINAL_WARNING");
-                            LocalWriteToLog("CheckSpeech", "CRIMINAL_WARNING");
+                            Debugging.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
                         }
                     }
                 }
@@ -97,7 +97,7 @@ internal static class PoliceSpeech
                     {
                         string Speech = PlayerDeadSpeech.PickRandom();
                         Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                        LocalWriteToLog("CheckSpeech", Speech);
+                        Debugging.WriteToLog("CheckSpeech", Speech);
                     }
                 }
                 Cop.GameTimeLastSpoke = Game.GameTime - (uint)rnd.Next(500,1000);
@@ -105,13 +105,8 @@ internal static class PoliceSpeech
         }
         catch (Exception e)
         {
-            Game.Console.Print(e.Message);
+            Debugging.WriteToLog(e.Message,e.StackTrace);
         }
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.PoliceSpeechLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 
 }

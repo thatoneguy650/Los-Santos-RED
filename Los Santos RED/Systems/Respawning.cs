@@ -40,6 +40,9 @@ public static class Respawning
     }
     public static void BribePolice(int Amount)
     {
+        if (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.IsSwimming)
+            return;
+
         if (Game.LocalPlayer.Character.GetCash() < Amount)
             return;
 
@@ -87,6 +90,9 @@ public static class Respawning
 
 
             GameFiber.Wait(2000);
+
+            if (!CopToBribe.Pedestrian.Exists())
+                return;
 
             CopToBribe.Pedestrian.BlockPermanentEvents = true;
             CopToBribe.Pedestrian.IsPositionFrozen = true;
@@ -340,7 +346,7 @@ public static class Respawning
         }
         catch (Exception e)
         {
-            Game.LogTrivial(e.Message);
+            Debugging.WriteToLog("RespawnInPlace",e.Message);
         }
     }
     public static void RemoveIllegalWeapons()

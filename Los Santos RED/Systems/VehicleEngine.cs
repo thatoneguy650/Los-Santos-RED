@@ -114,10 +114,10 @@ internal static class VehicleEngine
 
             if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))
             {
-                LocalWriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
+                Debugging.WriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
                 TogglingEngine = true;
                 ToggleEngine(true, !EngineRunning);
-                LocalWriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
+                Debugging.WriteToLog("ToggleEngine", string.Format("End {0}", EngineRunning));
             }
 
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
@@ -164,7 +164,7 @@ internal static class VehicleEngine
         if (MyCar == null || !MyCar.Exists())
             return;
 
-        if (Game.IsKeyDown(Keys.E) && Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow)
+        if (Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow)
         {
             if (HazardsOn)
             {
@@ -181,6 +181,7 @@ internal static class VehicleEngine
             }
         }
 
+        
         RightBlinkerTick(MyCar);
         LeftBlinkerTick(MyCar);
 
@@ -299,7 +300,7 @@ internal static class VehicleEngine
     }
     private static void EngineRunningEvent()
     {
-        LocalWriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",EngineRunning));
+        Debugging.WriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",EngineRunning));
         PrevEngineRunning = EngineRunning;
     }
     public static void EnterExitVehicleEvent(bool PlayerInVehicle)
@@ -443,11 +444,6 @@ internal static class VehicleEngine
         {
             NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
         }
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.VehicleEngineLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }
 

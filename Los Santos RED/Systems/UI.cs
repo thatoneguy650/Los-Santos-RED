@@ -127,7 +127,9 @@ public static class UI
             PlayerSpeedLine += VehicleEngine.VehicleIndicatorStatus;
         }
 
-        string PlayerCLockLine = string.Format("{0} Multiplier: {1}", ClockSystem.ClockTime, ClockSystem.ClockSpeed);
+        string PlayerCLockLine = string.Format("{0}", ClockSystem.ClockTime);
+        if (ClockSystem.ClockSpeed != "1x")
+            PlayerCLockLine = string.Format("{0} ({1})", ClockSystem.ClockTime, ClockSystem.ClockSpeed);
 
         if (DebugLine != "")
             Text(DebugLine, Settings.TrafficInfoUIPositionX - 3 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);

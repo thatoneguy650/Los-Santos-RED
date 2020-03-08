@@ -334,7 +334,7 @@ internal static class Police
         if (LosSantosRED.PlayerKilledPed(MyPed))
         {
             CurrentCrimes.KillingPolice.CrimeObserved();
-            LocalWriteToLog("CheckKilled", String.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
+            Debugging.WriteToLog("CheckKilled", String.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
         }
     }
     public static void CheckPoliceSight()
@@ -595,14 +595,6 @@ internal static class Police
             }
         }
     }
-    public static void PedReportedCrime(DispatchAudio.ReportDispatch ReportDispatch)
-    {
-        PoliceInInvestigationMode = true;
-        if (LosSantosRED.PlayerIsNotWanted)
-        {
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(ReportDispatch, 20) { IsAmbient = true });
-        }
-    }
     public static void PoliceReportedAllClear()
     {
         PoliceInInvestigationMode = false;
@@ -614,7 +606,7 @@ internal static class Police
             Cop.HurtByPlayer = false;
         }
         CurrentCrimes = new RapSheet();
-        LocalWriteToLog("ResetPoliceStats", "Ran (Made New Rap Sheet)");
+        Debugging.WriteToLog("ResetPoliceStats", "Ran (Made New Rap Sheet)");
 
 
         CurrentPoliceState = PoliceState.Normal;
@@ -703,7 +695,7 @@ internal static class Police
 
         CurrentCrimes.MaxWantedLevel = LosSantosRED.PlayerWantedLevel;
         WantedLevelStartTime = Game.GameTime;
-        LocalWriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel,RecentlySetWanted));
+        Debugging.WriteToLog("ValueChecker", String.Format("WantedLevel Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel,RecentlySetWanted));
         PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
     }
     private static void WantedLevelRemoved()
@@ -734,14 +726,12 @@ internal static class Police
     }
     private static void WantedLevelAdded()
     {
-        if (!RecentlySetWanted)
+        if (!RecentlySetWanted)//randomly set by the game
         {
-            if (LosSantosRED.PlayerWantedLevel <= 2)
+            if (LosSantosRED.PlayerWantedLevel <= 2)//let some level 3 and 4 wanted override and be set
             {
                 SetWantedLevel(0, "Resetting Unknown Wanted", false);
-                //PoliceSpawning.SpawnInvestigatingCop(Game.LocalPlayer.Character.Position);
                 GetReportedCrimeFromUnknown();
-
                 return;
             }
         }
@@ -753,11 +743,10 @@ internal static class Police
         Tasking.UntaskAllRandomSpawns(false);
     }
     public static void GetReportedCrimeFromUnknown()//temp public
-    {
-        LocalWriteToLog("AddDispatchToUnknownWanted", "Got wanted without being manually set");
+    {       
+        Debugging.WriteToLog("AddDispatchToUnknownWanted", "Got wanted without being manually set");
         GTAWeapon MyGun = LosSantosRED.GetCurrentWeapon();
         DispatchAudio.ReportDispatch ToReport;
-
 
         InvestigationPosition = Game.LocalPlayer.Character.Position;
         UpdateInvestigationPosition();
@@ -776,14 +765,16 @@ internal static class Police
             ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCiviliansInjured;
         else
             ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCriminalActivity;
+     
 
-
-        PedReportedCrime(ToReport);
+        PoliceInInvestigationMode = true;
+        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(ToReport, 20) { IsAmbient = true });
+        
     }
 
     private static void PlayerStarsGreyedOutChanged()
     {
-        LocalWriteToLog("ValueChecker", String.Format("PlayerStarsGreyedOut Changed to: {0}", PlayerStarsGreyedOut));
+        Debugging.WriteToLog("ValueChecker", String.Format("PlayerStarsGreyedOut Changed to: {0}", PlayerStarsGreyedOut));
         if (PlayerStarsGreyedOut)
         {
             CanReportLastSeen = true;
@@ -800,7 +791,7 @@ internal static class Police
                 }
             }
             CanReportLastSeen = false;
-            if (AnyPoliceSeenPlayerThisWanted && CanPlaySuspectSpotted && LosSantosRED.PlayerInVehicle && !DispatchAudio.IsPlayingAudio && LosSantosRED.PlayerInAutomobile && LosSantosRED.PlayersCurrentTrackedVehicle != null)
+            if (LosSantosRED.PlayerIsWanted && AnyPoliceSeenPlayerThisWanted && CanPlaySuspectSpotted && LosSantosRED.PlayerInVehicle && !DispatchAudio.IsPlayingAudio && LosSantosRED.PlayerInAutomobile && LosSantosRED.PlayersCurrentTrackedVehicle != null)
             {
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLocalSuspectSpotted, 20) { IsAmbient = true });
                 GameTimeLastReportedSpotted = Game.GameTime;  
@@ -810,8 +801,8 @@ internal static class Police
     }
     private static void PoliceStateChanged()
     {
-        LocalWriteToLog("ValueChecker", String.Format("PoliceState Changed to: {0}", CurrentPoliceState));
-        LocalWriteToLog("ValueChecker", String.Format("PreviousPoliceState Changed to: {0}", PrevPoliceState));
+        Debugging.WriteToLog("ValueChecker", String.Format("PoliceState Changed to: {0}", CurrentPoliceState));
+        Debugging.WriteToLog("ValueChecker", String.Format("PreviousPoliceState Changed to: {0}", PrevPoliceState));
         LastPoliceState = PrevPoliceState;
         if (CurrentPoliceState == PoliceState.Normal && !LosSantosRED.IsDead)
         {
@@ -830,7 +821,7 @@ internal static class Police
     private static void PlayerJackingChanged(bool isJacking)
     {
         PlayerIsJacking = isJacking;
-        LocalWriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to: {0}", PlayerIsJacking));
+        Debugging.WriteToLog("ValueChecker", String.Format("PlayerIsJacking Changed to: {0}", PlayerIsJacking));
         if (PlayerIsJacking)
         {
             GameTimeLastStartedJacking = Game.GameTime;
@@ -925,11 +916,6 @@ internal static class Police
             LastWantedCenterBlip.Delete();
         if (CurrentWantedCenterBlip.Exists())
             CurrentWantedCenterBlip.Delete();
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.PoliceLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
     public static void RemoveBlip(Ped MyPed)
     {

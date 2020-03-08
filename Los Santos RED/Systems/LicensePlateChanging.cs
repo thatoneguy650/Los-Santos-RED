@@ -143,7 +143,7 @@ public static class LicensePlateChanging
                 LicensePlate = null;
                 Screwdriver = null;
                 PlayerChangingPlate = false;
-                LocalWriteToLog("ChangeLicensePlate", e.StackTrace);
+                Debugging.WriteToLog("ChangeLicensePlate", e.StackTrace);
             }
         }, "PlayDispatchQueue");
         Debugging.GameFibers.Add(ChangeLicensePlateAnimation);
@@ -275,11 +275,6 @@ public static class LicensePlateChanging
             Attacker.BlockPermanentEvents = true;
             Attacker.KeepTasks = true;
         }
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.LicensePlateChanging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }
 

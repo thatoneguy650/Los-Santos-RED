@@ -111,12 +111,12 @@ public static class CarStealing
                     }
                 }
 
-                
+
                 //LosSantosRED.MovePedToCarPosition(TargetVehicle, Game.LocalPlayer.Character, DesiredHeading, Game.LocalPlayer.Character.Position, false);
+                //Vector3 CameraPosition = GetCameraPosition(TargetVehicle, DoorIndex == 0);
+                //CameraSystem.TransitionToAltCam(TargetVehicle, CameraPosition);              
 
-                //CameraSystem.HighLightCarjacking(ToEnter,DoorIndex == 0);              
-
-                LocalWriteToLog("UnlockCarDoor", string.Format("DoorIndex: {0},AnimationName: {1}", DoorIndex, AnimationName));
+                Debugging.WriteToLog("UnlockCarDoor", string.Format("DoorIndex: {0},AnimationName: {1}", DoorIndex, AnimationName));
                 Rage.Object Screwdriver = LosSantosRED.AttachScrewdriverToPed(Game.LocalPlayer.Character);
                 LosSantosRED.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@break_in@0h@p_m_one@", AnimationName, 2.0f, -2.0f, -1, 0, 0, false, false, false);
@@ -152,7 +152,7 @@ public static class CarStealing
 
                 //GameFiber.Sleep(500);
 
-                LocalWriteToLog("UnlockCarDoor", string.Format("Open Door: {0}", DoorIndex));
+                Debugging.WriteToLog("UnlockCarDoor", string.Format("Open Door: {0}", DoorIndex));
                 GameTimeStarted = Game.GameTime;
                 Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                 while (!Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 10000)
@@ -178,7 +178,7 @@ public static class CarStealing
                 if (Screwdriver != null && Screwdriver.Exists())
                     Screwdriver.Delete();
                 PlayerBreakingIntoCar = false;
-                LocalWriteToLog("UnlockCarDoor", string.Format("Made it to the end: {0}", SeatTryingToEnter));
+                Debugging.WriteToLog("UnlockCarDoor", string.Format("Made it to the end: {0}", SeatTryingToEnter));
 
                 
             }, "UnlockCarDoor");
@@ -187,8 +187,18 @@ public static class CarStealing
         catch (Exception e)
         {
             PlayerBreakingIntoCar = false;
-            LocalWriteToLog("UnlockCarDoor", e.Message);
+            Debugging.WriteToLog("UnlockCarDoor", e.Message);
         }
+    }
+    private static Vector3 GetCameraPosition(Vehicle VehicleToLookAt, bool IsDriverSide)
+    {
+        Vector3 CameraPosition;
+        if (IsDriverSide)
+            CameraPosition = VehicleToLookAt.GetOffsetPositionRight(-6f);
+        else
+            CameraPosition = VehicleToLookAt.GetOffsetPositionRight(6f);
+        CameraPosition += new Vector3(0f, 0f, 1.8f);
+        return CameraPosition;
     }
     public static void LockCarDoor(Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
     {
@@ -256,16 +266,16 @@ public static class CarStealing
             if (Driver != null && Driver.IsAlive)
             {
                 CarJackPedWithWeapon(TargetVeh, Driver, SeatTryingToEnter);
-                LocalWriteToLog("EnterVehicle", "CarJacking");
+                Debugging.WriteToLog("EnterVehicle", "CarJacking");
             }
             else
             {
-                LocalWriteToLog("EnterVehicle", "Regular Enter No Driver");
+                Debugging.WriteToLog("EnterVehicle", "Regular Enter No Driver");
             }
         }
         else
         {
-            LocalWriteToLog("EnterVehicle", "Regular Enter");
+            Debugging.WriteToLog("EnterVehicle", "Regular Enter");
         }
     }
     public static void UpdateStolenStatus()
@@ -454,7 +464,7 @@ public static class CarStealing
                 Police.PlayerArtificiallyShooting = false;
 
                 float FinalScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                LocalWriteToLog("CarJackPedWithWeapon", string.Format("Scene1 Phase: {0}", FinalScenePhase));
+                Debugging.WriteToLog("CarJackPedWithWeapon", string.Format("Scene1 Phase: {0}", FinalScenePhase));
                 if (FinalScenePhase <= 0.4f)
                 {
                     if (Cancel || Driver.IsDead)
@@ -497,11 +507,11 @@ public static class CarStealing
 
                 if (Driver.IsInAnyVehicle(false))
                 {
-                    LocalWriteToLog("CarjackAnimation", "Driver In Vehicle");
+                    Debugging.WriteToLog("CarjackAnimation", "Driver In Vehicle");
                 }
                 else
                 {
-                    LocalWriteToLog("CarjackAnimation", "Driver Out of Vehicle");
+                    Debugging.WriteToLog("CarjackAnimation", "Driver Out of Vehicle");
                     if (Driver.IsAlive)
                     {
                         Driver.Tasks.ClearImmediately();
@@ -526,7 +536,7 @@ public static class CarStealing
         catch (Exception e)
         {
             PlayerBreakingIntoCar = false;
-            LocalWriteToLog("UnlockCarDoor", e.Message);
+            Debugging.WriteToLog("UnlockCarDoor", e.Message);
         }
     }
     private static bool GetCarjackingAnimations(Vehicle TargetVehicle, Vector3 DriverSeatCoordinates, GTAWeapon MyGun, ref string Dictionary, ref string PerpAnimation, ref string VictimAnimation)
@@ -546,7 +556,7 @@ public static class CarStealing
         if (GroundZ == null)
             GroundZ = 0f;
         float DriverDistanceToGround = DriverSeatCoordinates.Z - (float)GroundZ;
-        LocalWriteToLog("GetCarjackingAnimations", string.Format("VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
+        Debugging.WriteToLog("GetCarjackingAnimations", string.Format("VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
         if (VehicleClass == Vehicles.VehicleClass.Vans && DriverDistanceToGround > 1.5f)
         {
             if (MyGun.IsTwoHanded)
@@ -647,12 +657,6 @@ public static class CarStealing
         Attacker.BlockPermanentEvents = true;
         Attacker.KeepTasks = true;
     }
- 
 
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.CarStealingLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
-    }
 }
 

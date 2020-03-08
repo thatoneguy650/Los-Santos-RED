@@ -466,12 +466,12 @@ public static class PoliceSpawning
                 GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health, ClosestDriver.AssignedAgency);
                 PoliceScanning.K9Peds.Add(DoggoCop);
                 Tasking.TaskK9(DoggoCop);
-                LocalWriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
+                Debugging.WriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
             }
         }
         catch (Exception e)
         {
-            LocalWriteToLog("CreateK9", e.Message);
+            Debugging.WriteToLog("CreateK9", e.Message);
         }
     }  
     private static void PutK9InCar(GTACop DoggoCop, GTACop Cop)
@@ -482,7 +482,7 @@ public static class PoliceSpawning
             DoggoCop.Pedestrian.WarpIntoVehicle(Cop.Pedestrian.CurrentVehicle, 1);
         else
             DoggoCop.Pedestrian.WarpIntoVehicle(Cop.Pedestrian.CurrentVehicle, 2);
-        LocalWriteToLog("PutK9InCar", String.Format("K9 {0}, put in Car", DoggoCop.Pedestrian.Handle));
+        Debugging.WriteToLog("PutK9InCar", String.Format("K9 {0}, put in Car", DoggoCop.Pedestrian.Handle));
     }
     //public static void CheckandChangeLivery(Vehicle CopCar,Agency AssignedAgency, Zone ZoneFound)
     //{
@@ -520,11 +520,6 @@ public static class PoliceSpawning
                 }
             }
         }
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.PoliceSpawningLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 
 

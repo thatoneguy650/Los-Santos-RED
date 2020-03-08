@@ -9,25 +9,43 @@ using System.Threading.Tasks;
 
 public static class CameraSystem
 {
-    //private static readonly Vector3 camOffsetFromPlayer = /*new Vector3(-0.31125f, 0.0f, 0.5f)*/Game.LocalPlayer.Character.GetPositionOffset(Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head)) + new Vector3(0.485f, 0.0f, -0.01225f);
-    public static Camera Cam { get; set; } = new Camera(false);
-    public static Camera InterpolationTempCam { get; set; } = new Camera(false);
-    public static bool UsingOtherCamera = false;
-    public static bool IsTransitioning = false;
+    private static uint GameTimeStartedAltCamera;
+    private static Camera Cam = new Camera(false);
+    private static Camera InterpolationTempCam = new Camera(false);
+    private static bool IsTransitioning = false;
+    private static bool AltCameraActive;
+    private static bool IsInterpolating;
 
-    public static void HighLightCarjacking(Vehicle VehicleToLookAt,bool IsDriverSide)
+    public static bool AltCameraTimeOut
+    {
+        get
+        {
+            if (GameTimeStartedAltCamera == 0)
+                return false;
+            else if (Game.GameTime - GameTimeStartedAltCamera >= 20000)
+                return true;
+            else return false;
+        }
+    }
+    public static void Tick()
+    {
+        if(AltCameraActive && AltCameraTimeOut)
+        {
+
+        }
+    }
+    public static void TransitionToAltCam(Entity EntityToLookAt,Vector3 CameraPosition)
     {
         if (IsTransitioning)
             return;
 
-
-
-
         GameFiber.StartNew(delegate
         {
+            GameTimeStartedAltCamera = Game.GameTime;
+            AltCameraActive = true;
             IsTransitioning = true;
-            Cam.Position = GetCameraPosition(VehicleToLookAt,IsDriverSide);
-            Cam.PointAtEntity(VehicleToLookAt, Vector3.Zero, false);
+            Cam.Position = CameraPosition;
+            Cam.PointAtEntity(EntityToLookAt, Vector3.Zero, false);
 
             Cam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
             InterpolationTempCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
@@ -39,14 +57,11 @@ public static class CameraSystem
             InterpolationTempCam.Interpolate(Cam, 1500, true, true, true);
             Game.LocalPlayer.Character.IsPositionFrozen = false;
             Cam.Active = true;
-            UsingOtherCamera = true;
-            IsTransitioning = false;
-           
-        });
-       
+            IsTransitioning = false;         
+        });     
     }
 
-    public static void UnHighLightCarjacking(Vehicle VehicleToLookAt, bool IsDriverSide)
+    public static void RestoreGameplayerCamera(Entity EntityToLookAt, Vector3 CameraPosition)
     {
         if (IsTransitioning)
             return;
@@ -54,8 +69,8 @@ public static class CameraSystem
         GameFiber.StartNew(delegate
         {
             IsTransitioning = true;
-            Cam.Position = GetCameraPosition(VehicleToLookAt, IsDriverSide);
-            Cam.PointAtEntity(VehicleToLookAt, Vector3.Zero, false);
+            Cam.Position = CameraPosition;
+            Cam.PointAtEntity(EntityToLookAt, Vector3.Zero, false);
             Cam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
             InterpolationTempCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
             InterpolationTempCam.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
@@ -65,25 +80,22 @@ public static class CameraSystem
             Cam.Interpolate(InterpolationTempCam, 1500, true, true, true);
             InterpolationTempCam.Active = false;
             Cam.Active = false;
-            UsingOtherCamera = false;
             IsTransitioning = false;
+            GameTimeStartedAltCamera = 0;
+            AltCameraActive = false;
         });
     }
-    public static void Interpolate(this Camera from, Camera to, int time, bool easeLocation, bool easeRotation, bool waitForCompletion)
+    private static void Interpolate(this Camera from, Camera to, int time, bool easeLocation, bool easeRotation, bool waitForCompletion)
     {
+        uint GameTimeStartedInterpolating = Game.GameTime;
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(to, from, time, easeLocation, easeRotation);
-        if (waitForCompletion)
-            GameFiber.Sleep(time);
+        if (waitForCompletion && Game.GameTime - GameTimeStartedInterpolating <= time)
+        {
+            IsInterpolating = true;
+            GameFiber.Sleep(25);
+        }
+        IsInterpolating = false;
     }
-    public static Vector3 GetCameraPosition(Vehicle VehicleToLookAt, bool IsDriverSide)
-    {
-        Vector3 CameraPosition;
-        if (IsDriverSide)
-            CameraPosition = VehicleToLookAt.GetOffsetPositionRight(-6f);
-        else
-            CameraPosition = VehicleToLookAt.GetOffsetPositionRight(6f);
-        CameraPosition += new Vector3(0f, 0f, 1.8f);
-        return CameraPosition;
-    }
+
 }
 

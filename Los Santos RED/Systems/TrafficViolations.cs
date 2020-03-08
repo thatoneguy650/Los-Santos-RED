@@ -124,29 +124,58 @@ public static class TrafficViolations
 
             bool TrafficAnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.canSeePlayer && x.AssignedAgency.CanCheckTrafficViolations);
 
-            if (Settings.TrafficViolationsDrivingAgainstTraffic && TrafficAnyPoliceCanSeePlayer && !Police.CurrentCrimes.DrivingAgainstTraffic.HasBeenWitnessedByPolice && !TreatAsCop && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+            if (Settings.TrafficViolationsDrivingAgainstTraffic && TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.DrivingAgainstTraffic.CanObserveCrime && !TreatAsCop && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 Police.CurrentCrimes.DrivingAgainstTraffic.DispatchToPlay.VehicleToReport = MyCar;
                 Police.CurrentCrimes.DrivingAgainstTraffic.CrimeObserved();
             }
-            if (Settings.TrafficViolationsDrivingOnPavement && TrafficAnyPoliceCanSeePlayer && !Police.CurrentCrimes.DrivingOnPavement.HasBeenWitnessedByPolice && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+            if (Settings.TrafficViolationsDrivingOnPavement && TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.DrivingOnPavement.CanObserveCrime && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 Police.CurrentCrimes.DrivingOnPavement.DispatchToPlay.VehicleToReport = MyCar;
                 Police.CurrentCrimes.DrivingOnPavement.CrimeObserved();
             }
+
+
             int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
-            if (Settings.TrafficViolationsHitPed && TrafficAnyPoliceCanSeePlayer && !Police.CurrentCrimes.HitPedWithCar.HasBeenWitnessedByPolice && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
+            if (Settings.TrafficViolationsHitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
             {
-                Police.CurrentCrimes.HitPedWithCar.DispatchToPlay.VehicleToReport = MyCar;
-                Police.CurrentCrimes.HitPedWithCar.CrimeObserved();
+                if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.HitPedWithCar.CanObserveCrime)
+                {
+                    Police.CurrentCrimes.HitPedWithCar.DispatchToPlay.VehicleToReport = MyCar;
+                    Police.CurrentCrimes.HitPedWithCar.CrimeObserved();
+                }
+                else
+                {
+                    if (LosSantosRED.MyRand.Next(1, 101) <= 60 && PoliceScanning.Civilians.Any(x => x.DistanceToPlayer <= 25f && x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.Pedestrian.IsRagdoll))
+                    {
+                        Police.CurrentCrimes.HitPedWithCar.DispatchToPlay.VehicleToReport = MyCar;
+                        Police.CurrentCrimes.HitPedWithCar.CrimeCalledInByCivilians(false,true);
+                        Debugging.WriteToLog("TrafficViolationsHitPed", "CrimeReported");
+                    }
+                }
             }
+
+
             int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
-            if (Settings.TrafficViolationsHitVehicle && TrafficAnyPoliceCanSeePlayer && !Police.CurrentCrimes.HitCarWithCar.HasBeenWitnessedByPolice && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
+            if (Settings.TrafficViolationsHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
             {
-                Police.CurrentCrimes.HitCarWithCar.DispatchToPlay.VehicleToReport = MyCar;
-                Police.CurrentCrimes.HitCarWithCar.CrimeObserved();
+                if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.HitCarWithCar.CanObserveCrime)
+                {
+                    Police.CurrentCrimes.HitCarWithCar.DispatchToPlay.VehicleToReport = MyCar;
+                    Police.CurrentCrimes.HitCarWithCar.CrimeObserved();
+                }
+                else
+                {
+                    if(LosSantosRED.MyRand.Next(1,101) <= 5 && PoliceScanning.Civilians.Any(x => x.DistanceToPlayer <= 25f && x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.Pedestrian.IsRagdoll))
+                    {
+                        Police.CurrentCrimes.HitCarWithCar.DispatchToPlay.VehicleToReport = MyCar;
+                        Police.CurrentCrimes.HitCarWithCar.CrimeCalledInByCivilians(false,true);
+                        Debugging.WriteToLog("TrafficViolationsHitVehicle", "CrimeReported");
+                    }  
+                }
             }
-            if (Settings.TrafficViolationsNotRoadworthy && TrafficAnyPoliceCanSeePlayer && !Police.CurrentCrimes.NonRoadworthyVehicle.HasBeenWitnessedByPolice && !TreatAsCop && PlayersVehicleIsSuspicious)
+
+            if (Settings.TrafficViolationsNotRoadworthy && TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.NonRoadworthyVehicle.CanObserveCrime && !TreatAsCop && PlayersVehicleIsSuspicious)
             {
                 Police.CurrentCrimes.NonRoadworthyVehicle.DispatchToPlay.VehicleToReport = MyCar;
                 Police.CurrentCrimes.NonRoadworthyVehicle.CrimeObserved();
@@ -158,7 +187,7 @@ public static class TrafficViolations
                     SpeedLimit = PlayerLocation.PlayerCurrentStreet.SpeedLimit;
                 PlayerIsSpeeding = VehicleSpeedMPH > SpeedLimit + Settings.TrafficViolationsSpeedingOverLimitThreshold;
 
-                if (PlayerIsSpeeding && TrafficAnyPoliceCanSeePlayer && !Police.CurrentCrimes.FelonySpeeding.HasBeenWitnessedByPolice && !TreatAsCop)
+                if (PlayerIsSpeeding && TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.FelonySpeeding.CanObserveCrime && !TreatAsCop)
                 {
                     Police.CurrentCrimes.FelonySpeeding.DispatchToPlay.VehicleToReport = MyCar;
                     Police.CurrentCrimes.FelonySpeeding.DispatchToPlay.Speed = VehicleSpeedMPH;
@@ -171,7 +200,7 @@ public static class TrafficViolations
             if (Settings.TrafficViolationsRunningRedLight)
             {
                 PlayerIsRunningRedLight = false;//CheckRedLight();
-                if (PlayerIsRunningRedLight && TrafficAnyPoliceCanSeePlayer && !Police.CurrentCrimes.RunningARedLight.HasBeenWitnessedByPolice && !TreatAsCop)
+                if (PlayerIsRunningRedLight && TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.RunningARedLight.CanObserveCrime && !TreatAsCop)
                 {
                     Police.CurrentCrimes.RunningARedLight.DispatchToPlay.Speed = VehicleSpeedMPH;
                     Police.CurrentCrimes.RunningARedLight.CrimeObserved();

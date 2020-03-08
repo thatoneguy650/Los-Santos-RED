@@ -45,7 +45,7 @@ public static class ScriptController
         VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);
 
 
-        MuggingTick = new TickTask(50, "MuggingTick", MuggingSystem.MuggingTick, TickTask.Type.RequiredGeneral);
+        MuggingTick = new TickTask(50, "MuggingTick", MuggingSystem.Tick, TickTask.Type.RequiredGeneral);
         ClockTick = new TickTask(0, "ClockTick", ClockSystem.ClockTick, TickTask.Type.RequiredGeneral);
 
 
@@ -157,7 +157,7 @@ public static class ScriptController
                     GameStopWatch.Stop();
 
                     if (GameStopWatch.ElapsedMilliseconds >= 20)
-                        LocalWriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, ""));//GetStatus()
+                        Debugging.WriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, ""));//GetStatus()
 
                     ResetRanItems();
 
@@ -184,11 +184,6 @@ public static class ScriptController
     public static string GetStatus()
     {
         return "Name:RanThisTick:GameTimeLastRan:MissedInterval" + Environment.NewLine + string.Join(",",MyTickTasks.Where(x => x.RanThisTick || x.MissedInterval).Select(x => x.DebugName + ":" + x.RanThisTick + ":" + x.GameTimeLastRan + ":" + x.MissedInterval + Environment.NewLine));
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.GeneralLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }
 public class TickTask

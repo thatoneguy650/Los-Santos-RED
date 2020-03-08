@@ -46,6 +46,9 @@ public static class PedSwapping
     }
     public static void NamePed()
     {
+
+        Debugging.WriteToLog("Named Ped", "Pre Name");
+
         if (CurrentPlayerModel.ToLower() == "player_zero")
             SuspectName = "Michael De Santa";
         else if (CurrentPlayerModel.ToLower() == "player_one")
@@ -54,6 +57,9 @@ public static class PedSwapping
             SuspectName = "Trevor Philips";
         else
             GenerateNameForPed();
+
+
+        Debugging.WriteToLog("Named Ped", string.Format("CurrentPlayerModel: {0}, CurrentName: {1}", CurrentPlayerModel.ToLower(), SuspectName));
     }
     private static void GenerateNameForPed()
     {
@@ -146,13 +152,19 @@ public static class PedSwapping
         }
         catch (Exception e3)
         {
-            LocalWriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message);
+            Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message);
         }
     }
     private static void StoreTargetPedData(Ped TargetPed)
     {
         CopyPedComponentVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
+        ClockSystem.StoreTime();
+
+
+
+
+            
 
         Debugging.WriteToLog("StoreTargetPedData", string.Format("CurrentPlayerModel: {0}",CurrentPlayerModel));
 
@@ -216,7 +228,6 @@ public static class PedSwapping
             ChangeModel(LastModelHash);
         }
 
-
         if (!Game.LocalPlayer.Character.IsMainCharacter())
             ReplacePedComponentVariation(Game.LocalPlayer.Character);
 
@@ -255,51 +266,30 @@ public static class PedSwapping
         Police.RemoveWantedBlips();
         Police.ResetPoliceStats();
         PersonOfInterest.ResetPersonOfInterest(false);
-
         GameTimeLastTakenOver = Game.GameTime;
         Menus.TakeoverRadius = -1f;//reset this on the menu
-
-        CurrentPed.IsPersistent = false;
-        if (Game.LocalPlayer.Character.IsWearingHelmet)
-            PedOriginallyHadHelmet = true;
-
+        if(CurrentPed.Exists())
+            CurrentPed.IsPersistent = false;
         ActivateScenariosAfterTakeover();
+
+        GivePedHistory();
+        LosSantosRED.SetPedUnarmed(Game.LocalPlayer.Character, false);
         NamePed();
-
-
+        ClockSystem.ResetTime();
 
         GameFiber.Wait(50);
         LosSantosRED.DisplayPlayerNotification();
+
     }
     private static void GivePedHistory()
     {
         Police.CurrentCrimes.GiveCriminalHistory();
     }
-    //private static void CreateDoppleganger()
-    //{
-    //    if (Doppleganger.Exists())
-    //        Doppleganger.Delete();
-    //    Doppleganger = new Ped(CurrentPlayerModel.Name, new Vector3(0f,0f,0f), 0f);
-    //    Doppleganger.IsPersistent = true;
-    //    ReplacePedComponentVariation(Doppleganger);
-    //    Doppleganger.IsPositionFrozen = true;
-    //    CurrentHeadshot = new PedHeadshot(Doppleganger);
-    //    CurrentHeadshot.Register();
-    //    GameFiber.Sleep(150);
-    //}
     private static void ActivateScenariosAfterTakeover()
     {
         if (TargetPedUsingScenario)
         {
-            LocalWriteToLog("TakeoverPed", string.Format("Using Scenario: {0}", TargetPedUsingScenario));
-
-            foreach (Ped MyPed in Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 5f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x)))
-            {
-                if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", MyPed))
-                {
-                    NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", MyPed, MyPed.Position.X, MyPed.Position.Y, MyPed.Position.Z, 2f, 0);
-                }
-            }
+            Debugging.WriteToLog("TakeoverPed", string.Format("Using Scenario: {0}", TargetPedUsingScenario));
 
             NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
@@ -316,11 +306,11 @@ public static class PedSwapping
         if (!TakenOverPeds.Any(x => x.OriginalHandle == MyPed.Pedestrian.Handle))
         {
             TakenOverPeds.Add(MyPed);
-            LocalWriteToLog("AddPedToTakenOverPeds", string.Format("Added Ped to List {0} ", MyPed.Pedestrian.Handle));
+            Debugging.WriteToLog("AddPedToTakenOverPeds", string.Format("Added Ped to List {0} ", MyPed.Pedestrian.Handle));
         }
         else
         {
-            LocalWriteToLog("AddPedToTakenOverPeds", string.Format("Ped already in list {0} ", MyPed.Pedestrian.Handle));
+            Debugging.WriteToLog("AddPedToTakenOverPeds", string.Format("Ped already in list {0} ", MyPed.Pedestrian.Handle));
         }
     }
     private static void CopyPedComponentVariation(Ped myPed)
@@ -340,10 +330,19 @@ public static class PedSwapping
             {
                 myPedVariation.MyPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
             }
+            NativeFunction.CallByName<int>("CLEAR_ALL_PED_PROPS", myPed);
+            Rage.Object[] MyObjects = World.GetAllObjects();
+            foreach(Rage.Object What in MyObjects)
+            {
+                if (What.Exists() && What.DistanceTo2D(Game.LocalPlayer.Character) <= 0.25f)
+                {
+                    What.Delete();
+                }
+            }
         }
         catch (Exception e)
         {
-            LocalWriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
         }
     }
     private static PedVariation GetPedVariation(Ped myPed)
@@ -367,7 +366,7 @@ public static class PedSwapping
         }
         catch (Exception e)
         {
-            LocalWriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
             return null;
         }
     }
@@ -386,7 +385,7 @@ public static class PedSwapping
         }
         catch (Exception e)
         {
-            LocalWriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
+            Debugging.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
         }
     }
     private static void SetPlayerOffset()
@@ -469,19 +468,14 @@ public static class PedSwapping
                     return;
 
                 Game.LocalPlayer.Character.GiveHelmet(true, (Rage.HelmetTypes)MyPropComponent.DrawableID, MyPropComponent.TextureID);
-                LocalWriteToLog("AddRemovePlayerHelmet", "Original");
+                Debugging.WriteToLog("AddRemovePlayerHelmet", "Original");
             }
             else
             {
                 Game.LocalPlayer.Character.GiveHelmet(true, HelmetTypes.RegularMotorcycleHelmet, 0);
-                LocalWriteToLog("AddRemovePlayerHelmet", "Not Original");
+                Debugging.WriteToLog("AddRemovePlayerHelmet", "Not Original");
             }
         }
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.PedSwappingLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
 }
 

@@ -320,7 +320,21 @@ public static class LosSantosRED
             {
                 HandsAreUp = false; // You put your hands down
                 Police.CurrentPoliceState = HandsUpPreviousPoliceState;
-                Game.LocalPlayer.Character.Tasks.Clear();
+
+
+
+
+                //Game.LocalPlayer.Character.Tasks.Clear();
+
+                Surrendering.LowerHands();
+
+
+
+
+
+
+
+
                 if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
                     Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
             }
@@ -459,7 +473,7 @@ public static class LosSantosRED
             CarStealing.UpdateStolenStatus();
         }
         PrevPlayerInVehicle = PlayerInVehicle;
-        LocalWriteToLog("ValueChecker", String.Format("PlayerInVehicle Changed to: {0}", PlayerInVehicle));
+        Debugging.WriteToLog("ValueChecker", String.Format("PlayerInVehicle Changed to: {0}", PlayerInVehicle));
     }
     private static void PlayerAimingInVehicleChanged()
     {
@@ -472,7 +486,7 @@ public static class LosSantosRED
             TrafficViolations.SetDriverWindow(false);
         }
         PrevPlayerAimingInVehicle = PlayerAimingInVehicle;
-        LocalWriteToLog("ValueChecker", String.Format("PlayerAimingInVehicle Changed to: {0}", PlayerAimingInVehicle));
+        Debugging.WriteToLog("ValueChecker", String.Format("PlayerAimingInVehicle Changed to: {0}", PlayerAimingInVehicle));
     }
 
     public static bool PlayerHurtPed(GTAPed MyPed)
@@ -537,6 +551,13 @@ public static class LosSantosRED
 
 
     }
+    public static void GivePlayerRandomWeapon(GTAWeapon.WeaponCategory RandomWeaponCategory)
+    {
+        GTAWeapon myGun = GTAWeapons.GetRandomWeapon(RandomWeaponCategory);
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+        if (myGun.PlayerVariations.Any())
+            ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
+    }
     public static GTAWeapon GetCurrentWeapon()
     {
         if (Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)
@@ -553,7 +574,7 @@ public static class LosSantosRED
         if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeapon != 0)
         {
             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon, true);
-            LocalWriteToLog("SetPlayerToLastWeapon", LastWeapon.ToString());
+            Debugging.WriteToLog("SetPlayerToLastWeapon", LastWeapon.ToString());
         }
     }
     public static bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
@@ -739,11 +760,6 @@ public static class LosSantosRED
         NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, 993120320, -565.1712f, 276.6259f, 83.28626f, false, 0.0f, 0.0f, 0.0f);// front door
         NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, 993120320, -561.2866f, 293.5044f, 87.77851f, false, 0.0f, 0.0f, 0.0f);// back door
 
-    }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.GeneralLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
     public static void TransitionToSlowMo()
     {

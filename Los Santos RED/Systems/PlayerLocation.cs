@@ -113,10 +113,5 @@ public static class PlayerLocation
         }
         return StreetName;
     }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.PlayerLocationLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
-    }
 }
 

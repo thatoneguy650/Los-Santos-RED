@@ -119,8 +119,19 @@ public static class PersonOfInterest
             }
             else if (Police.PoliceInInvestigationMode && LosSantosRED.PlayerIsNotWanted && Police.NearInvestigationPosition())
             {
+                ApplyReportedCrimes();
                 Police.SetWantedLevel(2, "you are a suspect!",true);
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+            }
+        }
+    }
+    private static void ApplyReportedCrimes()
+    {
+        foreach(Crime MyCrimes in Police.CurrentCrimes.GetListOfCrimes())
+        {
+            if(MyCrimes.RecentlyCalledInByCivilians(180000) && !MyCrimes.HasBeenWitnessedByPolice)
+            {
+                MyCrimes.CrimeObserved();
             }
         }
     }

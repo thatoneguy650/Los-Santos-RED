@@ -206,7 +206,7 @@ public static class Smoking
         }
         catch (Exception e)
         {
-            LocalWriteToLog("Smoking", e.Message + " : " + e.StackTrace);
+            Debugging.WriteToLog("Smoking", e.Message + " : " + e.StackTrace);
         }
     }
     public static void Start()
@@ -300,7 +300,7 @@ public static class Smoking
     private static void PuffCigarette()
     {
         CurrentIdleAnimation = CurrentSmokingAnimation.IdleAnimations.PickRandom();
-        LocalWriteToLog("CurrentIdleAnimation", string.Format("CurrentIdleAnimation.Animation {0}", CurrentIdleAnimation.Animation));
+        Debugging.WriteToLog("CurrentIdleAnimation", string.Format("CurrentIdleAnimation.Animation {0}", CurrentIdleAnimation.Animation));
         LosSantosRED.RequestAnimationDictionay(CurrentIdleAnimation.Dictionary);
 
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentIdleAnimation.Dictionary, CurrentIdleAnimation.Animation, 4.0f, -4.0f, -1, 49, 0, false, false, false);
@@ -458,11 +458,6 @@ public static class Smoking
             return StandardCigaretteFemale;
         else
             return StandardCigaretteMale;
-    }
-    private static void LocalWriteToLog(string ProcedureString,string TextToLog)
-    {
-        if (Settings.SmokingLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
     }
     public class SmokingAnimation
     {

@@ -330,7 +330,7 @@ public static class DispatchAudio
         }
         catch (Exception e)
         {
-            Game.Console.Print(e.Message);
+            Debugging.WriteToLog("PlayAudio",e.Message);
         }
     }
     private static void OnPlaybackStopped(object sender, StoppedEventArgs args)
@@ -361,7 +361,7 @@ public static class DispatchAudio
 
         if (DispatchQueue.Count > 0 && !ExecutingQueue)
         {
-            LocalWriteToLog("PlayDispatchQueue", "Delegate Started");
+            Debugging.WriteToLog("PlayDispatchQueue", "Delegate Started");
             ExecutingQueue = true;
             GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
             {
@@ -444,7 +444,7 @@ public static class DispatchAudio
                     else if (Item.Type == ReportDispatch.ReportOfficerDown)
                         ReportOfficerDown();
                     else if (Item.Type == ReportDispatch.ReportPedHitAndRun)
-                        ReportPedHitAndRun(Item.VehicleToReport);
+                        ReportPedHitAndRun(Item.VehicleToReport,Item.IsObservation);
                     else if (Item.Type == ReportDispatch.ReportRecklessDriver)
                         ReportRecklessDriver(Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportShotsFired)
@@ -464,7 +464,7 @@ public static class DispatchAudio
                     else if (Item.Type == ReportDispatch.ReportThreateningWithFirearm)
                         ReportThreateningWithFirearm();
                     else if (Item.Type == ReportDispatch.ReportVehicleHitAndRun)
-                        ReportVehicleHitAndRun(Item.VehicleToReport);
+                        ReportVehicleHitAndRun(Item.VehicleToReport, Item.IsObservation);
                     else if (Item.Type == ReportDispatch.ReportWeaponsFree)
                         ReportWeaponsFree();
                     else if (Item.Type == ReportDispatch.ReportSuspiciousActivity)
@@ -508,7 +508,7 @@ public static class DispatchAudio
                     else if (Item.Type == ReportDispatch.ReportStolenAirVehicle)
                         ReportStolenAirVehicle(Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportResistingArrest)
-                        ReportResistingArrest();
+                        ReportResistingArrest(Item.VehicleToReport,Item.SuspectStatusOnFoot);
                     else if (Item.Type == ReportDispatch.ReportLowLevelMugging)
                         ReportLowLevelMugging();
                     else if (Item.Type == ReportDispatch.ReportNoFurtherUnits)
@@ -757,30 +757,52 @@ public static class DispatchAudio
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles,ref Notification,Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles,Notification));
     }
-    public static void ReportPedHitAndRun(GTAVehicle vehicle)
+    public static void ReportPedHitAndRun(GTAVehicle vehicle, bool IsObservation)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Pedestrian Hit-and-Run");
-        ReportGenericStart(ref ScannerList,ref Subtitles,AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
+
+        string NotificationTitle = "~o~Crime Observed~s~";
+        ReportType ToReport = ReportType.Officers;
+        AttentionType WhoToNotifiy = AttentionType.Nobody;
+        if (!IsObservation)
+        {
+            NotificationTitle = "~y~Crime Reported~s~";
+            ToReport = ReportType.Civilians;
+            WhoToNotifiy = AttentionType.LocalUnits;
+        }
+
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Pedestrian Hit-and-Run");
+        ReportGenericStart(ref ScannerList,ref Subtitles, WhoToNotifiy, ToReport, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_ped_struck_by_veh.Apedestrianstruck.FileName, crime_ped_struck_by_veh.Apedestrianstruck1.FileName, crime_ped_struck_by_veh.Apedestrianstruckbyavehicle.FileName, crime_ped_struck_by_veh.Apedestrianstruckbyavehicle1.FileName }.PickRandom());
         Subtitles += " a ~r~Pedestrian Struck~s~";
-        if (vehicle.IsStolen)
+        if (vehicle.IsStolen && IsObservation)
         {
             AddStolenVehicle(ref ScannerList,vehicle,ref Subtitles);
         }
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
-    public static void ReportVehicleHitAndRun(GTAVehicle vehicle)
+    public static void ReportVehicleHitAndRun(GTAVehicle vehicle,bool IsObservation)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
-        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Hit-and-Run");
-        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.LocalUnits, ReportType.Officers, Game.LocalPlayer.Character.Position);
+
+        string NotificationTitle = "~o~Crime Observed~s~";
+        ReportType ToReport = ReportType.Officers;
+        AttentionType WhoToNotifiy = AttentionType.Nobody;
+        if (!IsObservation)
+        {
+            NotificationTitle = "~y~Crime Reported~s~";
+            ToReport = ReportType.Civilians;
+            WhoToNotifiy = AttentionType.LocalUnits;
+        }
+
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Hit-and-Run");
+        ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ToReport, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_dangerous_driving.Dangerousdriving.FileName, crime_dangerous_driving.Dangerousdriving1.FileName, crime_reckless_driver.Arecklessdriver.FileName, crime_traffic_felony.Atrafficfelony.FileName }.PickRandom());
         Subtitles += " a ~r~Hit and Run~s~";
-        if (vehicle.IsStolen)
+        if (vehicle.IsStolen && IsObservation)
         {
             AddStolenVehicle(ref ScannerList, vehicle, ref Subtitles);
         }
@@ -1266,7 +1288,7 @@ public static class DispatchAudio
         ReportedWeaponsFree = false;
         ReportedLethalForceAuthorized = false;
     }
-    private static void ReportResistingArrest()
+    private static void ReportResistingArrest(GTAVehicle vehicle,bool OnFoot)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
@@ -1274,6 +1296,21 @@ public static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_person_resisting_arrest.Apersonresistingarrest.FileName, crime_suspect_resisting_arrest.Asuspectresistingarrest.FileName }.PickRandom());
         Subtitles += " a ~r~Suspect Resisting Arrest~s~";
+
+        if (OnFoot)
+        {
+            ScannerList.Add(new List<string>() { suspect_last_seen.TargetIs.FileName, suspect_last_seen.TargetLastReported.FileName, suspect_last_seen.TargetSpotted.FileName }.PickRandom());
+            ScannerList.Add(new List<string>() { on_foot.Onfoot.FileName, on_foot.Onfoot.FileName }.PickRandom());
+            Subtitles += " target last seen on foot";
+        }
+        else
+        {
+            Subtitles += " driving a";
+            ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
+            AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, false, true);
+        }
+
+
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, false, Subtitles, Notification));
     }
@@ -1479,7 +1516,7 @@ public static class DispatchAudio
                     Plate.IsWanted = true;
                 }
             }
-            LocalWriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", stolenVehicle.VehicleEnt.Handle));
+            Debugging.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", stolenVehicle.VehicleEnt.Handle));
 
         }, "PlayDispatchQueue");
         Debugging.GameFibers.Add(ReportStolenVehicle);
@@ -1929,7 +1966,7 @@ public static class DispatchAudio
             string VehicleClassScannerFile;
             if (VehicleInformation != null)
             {
-                LocalWriteToLog("Description", string.Format("VehicleInformation.ModelScannerFile {0}", VehicleInformation.ModelScannerFile.ToString()));
+                Debugging.WriteToLog("Description", string.Format("VehicleInformation.ModelScannerFile {0}", VehicleInformation.ModelScannerFile.ToString()));
                 ManufacturerScannerFile = GetManufacturerScannerFile(VehicleInformation.Manufacturer);
                 VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
                 if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != "" || VehicleClassScannerFile != ""))
@@ -2049,11 +2086,6 @@ public static class DispatchAudio
             }
         }
     }
-    private static void LocalWriteToLog(string ProcedureString, string TextToLog)
-    {
-        if (Settings.DispatchAudioLogging)
-            Debugging.WriteToLog(ProcedureString, TextToLog);
-    }
     public static void AbortAllAudio()
     {
         DispatchQueue.Clear();
@@ -2148,6 +2180,8 @@ public static class DispatchAudio
         public int ResultingWantedLevel { get; set; }
         public GTAWeapon WeaponToReport { get; set; }
         public GTAVehicle VehicleToReport { get; set; }
+        public bool IsObservation { get; set; } = true;
+        public bool SuspectStatusOnFoot { get; set; } = true;
         public DispatchQueueItem(ReportDispatch _Type,int _Priority)
         {
             Type = _Type;

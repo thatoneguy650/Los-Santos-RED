@@ -12,8 +12,8 @@ public static class MuggingSystem
     private static bool IsMugging = false;
     private static uint GameTimeLastDispatchedMugging;
     private static Ped LastAimedAtPed;
-    private static uint TimeAimedAtMuggingTarget;
     private static Vector3 PlaceLastMugged;
+    private static uint GameTimeStartedAimingAtTarget;
     public static bool IsRunning { get; set; }
     public static bool RecentlyDispatchedMugging
     {
@@ -27,37 +27,30 @@ public static class MuggingSystem
                 return false;
         }
     }
+    public static bool CanMugFromBehind
+    {
+        get
+        {
+            if (GameTimeStartedAimingAtTarget == 0)
+                return false;
+            else if (Game.GameTime - GameTimeStartedAimingAtTarget >= 2000)
+                return true;
+            else
+                return false;
+        }
+    }
     public static void Initialize()
     {
         IsRunning = true;
-        //MainLoop();
     }
-    //public static void MainLoop()
-    //{
-    //    GameFiber.StartNew(delegate
-    //    {
-    //        try
-    //        {
-    //            while (IsRunning)
-    //            {
-    //                MuggingTick();
-    //                GameFiber.Yield();
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            Dispose();
-    //            Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-    //        }
-    //    });
-    //}
     public static void Dispose()
     {
         IsRunning = false;
     }
-    public static void MuggingTick()
+    public static void Tick()
     {
-        if(!IsMugging && Game.LocalPlayer.Character.IsAiming && Game.LocalPlayer.IsFreeAimingAtAnyEntity)
+
+        if (!IsMugging && Game.LocalPlayer.Character.IsAiming && Game.LocalPlayer.IsFreeAimingAtAnyEntity)
         {
             Entity Target = Game.LocalPlayer.GetFreeAimingTarget();
 
@@ -73,42 +66,72 @@ public static class MuggingSystem
                 GTAPedTarget = new GTAPed((Ped)Target, false, 100);
 
             bool CanSee = GTAPedTarget.Pedestrian.CanSeePlayer();
-            LastAimedAtPed = GTAPedTarget.Pedestrian;
+            // 
 
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false))
             {
-                 if(CanSee)
-                    MugTarget(GTAPedTarget,true);
-                 else
-                 {
+                if (CanSee)
+                    MugTarget(GTAPedTarget, true,false);
+                else
+                {
                     if (LastAimedAtPed == GTAPedTarget.Pedestrian)
                     {
-                        if(TimeAimedAtMuggingTarget== 0)
-                        {
-                            if(!Game.LocalPlayer.Character.IsAnySpeechPlaying)
-                                Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");
-                        }
-                        TimeAimedAtMuggingTarget++;
+                        StartedAimingAtTarget();
                     }
                     else
                     {
-                        TimeAimedAtMuggingTarget = 0;
+                        StoppedAimingAtTarget();
+                        LastAimedAtPed = GTAPedTarget.Pedestrian;
                     }
-                 }
-                 if(TimeAimedAtMuggingTarget >= 50)
-                    MugTarget(GTAPedTarget,false);
+                }
+                if (CanMugFromBehind)
+                    MugTarget(GTAPedTarget, true,false);
             }
             else
             {
-                TimeAimedAtMuggingTarget = 0;
+                StoppedAimingAtTarget();
             }
         }
-        if(!Game.LocalPlayer.Character.IsAiming)
-            TimeAimedAtMuggingTarget = 0; 
+        else if (!IsMugging && !Game.LocalPlayer.Character.IsAiming && NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING",Game.LocalPlayer))
+        {
+            GTAWeapon MyWeapon = LosSantosRED.GetCurrentWeapon();
+            if (MyWeapon == null || MyWeapon.Category != GTAWeapon.WeaponCategory.Melee)
+                return;
 
-       // UI.DebugLine = string.Format("IsMugging: {0},TimeAimedAtMuggingTarget: {1},RecentlyDispatchedMugging: {2}", IsMugging, TimeAimedAtMuggingTarget, RecentlyDispatchedMugging);
+            int TargetEntity;
+            bool Found;
+            unsafe
+            {
+                Found = NativeFunction.CallByName<bool>("GET_PLAYER_TARGET_ENTITY", Game.LocalPlayer, &TargetEntity);
+            }
+            if (!Found)
+                return;
+     
+            int Handle = TargetEntity;
+            Debugging.WriteToLog("Muggin Melee", string.Format("Middle Handle: {0}", Handle));
+
+
+
+            if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.Handle == Handle))
+                return;//aiming at cop
+
+            GTAPed GTAPedTarget = PoliceScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+
+            if (GTAPedTarget == null)
+                return;
+
+            if(!GTAPedTarget.HasBeenMugged)
+                MugTarget(GTAPedTarget, true,true);
+
+            Debugging.WriteToLog("Muggin Melee", string.Format("Made it to the End Ped Handle: {0}", Handle));
+        }
+
+            if (!Game.LocalPlayer.Character.IsAiming)
+            StoppedAimingAtTarget();
+
+        // UI.DebugLine = string.Format("IsMugging: {0},TimeAimedAtMuggingTarget: {1},RecentlyDispatchedMugging: {2}", IsMugging, TimeAimedAtMuggingTarget, RecentlyDispatchedMugging);
     }
-    private static void MugTarget(GTAPed MuggingTarget,bool CanSee)
+    private static void MugTarget(GTAPed MuggingTarget,bool CanSee,bool IsMelee)
     {
         GameFiber.StartNew(delegate
         {
@@ -145,7 +168,12 @@ public static class MuggingSystem
             bool Intimidated = false;
             while (Game.GameTime - GameTimeStartedMugging <= 1500)
             {      
-                if (!Game.LocalPlayer.IsFreeAiming)
+                if (!IsMelee && !Game.LocalPlayer.IsFreeAiming)
+                {
+                    Intimidated = false;
+                    break;
+                }
+                else if (IsMelee && !NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING", Game.LocalPlayer))
                 {
                     Intimidated = false;
                     break;
@@ -203,24 +231,13 @@ public static class MuggingSystem
                 {
                     NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", MyPed.Pedestrian, 10000);
                     MyPed.Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
-                    GameFiber.Sleep(5000);
-
+                    //GameFiber.Sleep(5000);
 
                     if (LosSantosRED.PlayerIsNotWanted)
                     {
-                        if (!RecentlyDispatchedMugging)
-                        {
-                            Police.PedReportedCrime(DispatchAudio.ReportDispatch.ReportLowLevelMugging);
-                            GameTimeLastDispatchedMugging = Game.GameTime;
-
-                            if (HaveDescription)
-                            {
-                                PersonOfInterest.PlayerBecamePersonOfInterest();
-                            }
-                        }
+                        Police.CurrentCrimes.Mugging.CrimeCalledInByCivilians(HaveDescription,false);
                         Police.InvestigationPosition = PlaceLastMugged;
                     }
-
                     if (MyPed.Pedestrian.Exists() && !MyPed.Pedestrian.IsDead && !MyPed.Pedestrian.IsRagdoll)
                     {
                         MyPed.Pedestrian.IsPersistent = false;
@@ -232,5 +249,13 @@ public static class MuggingSystem
             }
         }, "WatchForDeath");
         Debugging.GameFibers.Add(WatchForDeath);
+    }
+    public static void StartedAimingAtTarget()
+    {
+        GameTimeStartedAimingAtTarget = Game.GameTime;
+    }
+    public static void StoppedAimingAtTarget()
+    {
+        GameTimeStartedAimingAtTarget = 0;
     }
 }

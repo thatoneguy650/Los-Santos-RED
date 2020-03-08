@@ -10,6 +10,7 @@ using ExtensionsMethods;
 
 public static class Surrendering
 {
+    private static bool AreHandsRaised = false;
     public static bool IsCommitingSuicide { get; set; }
     public static void RaiseHands()
     {
@@ -28,6 +29,8 @@ public static class Surrendering
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
         LosSantosRED.RequestAnimationDictionay(sDict);
+        LosSantosRED.RequestAnimationDictionay("busted");
+        AreHandsRaised = true;
         if (inVehicle)
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, true, false, true);
@@ -35,8 +38,56 @@ public static class Surrendering
         else
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-        }
 
+            //works but need to change the unset arrested animation to work with it
+            //GameFiber RaiseHandsAnimation = GameFiber.StartNew(delegate
+            //{
+            //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+            //    uint GameTimeStartedRaisingHands = Game.GameTime;
+            //    bool Cancel = false;
+            //    while(Game.GameTime - GameTimeStartedRaisingHands <= 5500)
+            //    {
+            //        if(!Game.IsKeyDownRightNow(Settings.SurrenderKey))
+            //        {
+            //            Cancel = true;
+            //            break;
+            //        }
+            //        GameFiber.Sleep(100);
+            //    }
+            //    if(Cancel)
+            //    {
+            //        AreHandsRaised = false;
+            //        Game.LocalPlayer.Character.Tasks.Clear();
+            //    }
+            //    else
+            //    {
+            //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+
+            //        while(Game.IsKeyDownRightNow(Settings.SurrenderKey))
+            //        {
+            //            GameFiber.Sleep(100);
+            //        }
+            //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "busted", "hands_up_2_idle", 8.0f, -2.0f, -1, 1, 0, false, false, false);
+            //        GameFiber.Sleep(2000);
+            //        AreHandsRaised = false;
+            //        Game.LocalPlayer.Character.Tasks.Clear();
+
+            //    }
+            //    AreHandsRaised = false;
+            //    Debugging.WriteToLog("RaiseHands", "Finish");
+            //}, "SetArrestedAnimation");
+            //Debugging.GameFibers.Add(RaiseHandsAnimation);
+        }
+    }
+    public static void LowerHands()
+    {
+        if (!LosSantosRED.HandsAreUp)
+            return;
+
+        if (AreHandsRaised)
+            return;
+        else
+            Game.LocalPlayer.Character.Tasks.Clear();
     }
     public static void SetArrestedAnimation(Ped PedToArrest, bool MarkAsNoLongerNeeded)
     {
