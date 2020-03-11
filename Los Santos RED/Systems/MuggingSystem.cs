@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 
 public static class MuggingSystem
 {
-    private static bool IsMugging = false;
+    
     private static uint GameTimeLastDispatchedMugging;
     private static Ped LastAimedAtPed;
     private static Vector3 PlaceLastMugged;
     private static uint GameTimeStartedAimingAtTarget;
     public static bool IsRunning { get; set; }
+    public static bool IsMugging { get; set; }
     public static bool RecentlyDispatchedMugging
     {
         get
@@ -63,7 +64,7 @@ public static class MuggingSystem
             GTAPed GTAPedTarget = PoliceScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Target.Handle);
 
             if (GTAPedTarget == null)
-                GTAPedTarget = new GTAPed((Ped)Target, false, 100);
+                GTAPedTarget = new GTAPed((Ped)Target, false, Target.Health);
 
             bool CanSee = GTAPedTarget.Pedestrian.CanSeePlayer();
             // 
@@ -136,6 +137,7 @@ public static class MuggingSystem
         GameFiber.StartNew(delegate
         {
             IsMugging = true;
+            MuggingTarget.CanFlee = false;
             uint GameTimeStartedMugging = Game.GameTime;
             MuggingTarget.Pedestrian.BlockPermanentEvents = true;
 
@@ -155,6 +157,7 @@ public static class MuggingSystem
                 if(Game.GameTime - GameTimeStartedMugging >= 2500)
                 {
                     IsMugging = false;
+                    MuggingTarget.CanFlee = true;
                     break;
                 }
             }
@@ -192,10 +195,12 @@ public static class MuggingSystem
                 //Police.InvestigationPosition = MuggingTarget.Pedestrian.Position;
                 PlaceLastMugged = MuggingTarget.Pedestrian.Position;
                 MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
-                bool CallPolice = LosSantosRED.MyRand.Next(1, 11) <= 8;//some people just dont call the police for whatever reason, even when they are robbed
-                bool HaveDescription = CanSee || LosSantosRED.MyRand.Next(1, 11) <= 3;
-                if (CallPolice)
-                    WatchForDeath(MuggingTarget, HaveDescription);
+                MuggingTarget.AddCrime(Police.CurrentCrimes.Mugging);
+                MuggingTarget.WillCallPolice = true;
+                //bool CallPolice = LosSantosRED.MyRand.Next(1, 11) <= 8;//some people just dont call the police for whatever reason, even when they are robbed
+                //bool HaveDescription = CanSee || LosSantosRED.MyRand.Next(1, 11) <= 3;
+                //if (CallPolice)
+                //    WatchForDeath(MuggingTarget, HaveDescription);
             }
             else if(LosSantosRED.MyRand.Next(1,11) <= 4)
             {
@@ -206,50 +211,47 @@ public static class MuggingSystem
             {
                 MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
             }
-            
+            MuggingTarget.CanFlee = true;
             IsMugging = false;      
         });
     }
-    public static void WatchForDeath(GTAPed MyPed,bool HaveDescription)
-    {
-        GameFiber WatchForDeath = GameFiber.StartNew(delegate
-        {
+    //public static void WatchForDeath(GTAPed MyPed,bool HaveDescription)
+    //{
+    //    GameFiber WatchForDeath = GameFiber.StartNew(delegate
+    //    {
 
-            Debugging.WriteToLog("Mugging WatchForDeath", string.Format("HaveDescription: {0}", HaveDescription));
-            uint GameTimeStolen = Game.GameTime;
-            while (MyPed.Pedestrian.Exists())
-            {
-                MyPed.Pedestrian.IsPersistent = true;
-                int TimeToCall = LosSantosRED.MyRand.Next(7000, 15000);
+    //        Debugging.WriteToLog("Mugging WatchForDeath", string.Format("HaveDescription: {0}", HaveDescription));
+    //        uint GameTimeStolen = Game.GameTime;
+    //        while (MyPed.Pedestrian.Exists())
+    //        {
+    //            MyPed.Pedestrian.IsPersistent = true;
+    //            int TimeToCall = LosSantosRED.MyRand.Next(7000, 15000);
 
-                if (MyPed.Pedestrian.IsDead)
-                {
-                    MyPed.Pedestrian.IsPersistent = false;
-                    break;
-                }
-                else if (Game.GameTime - GameTimeStolen > TimeToCall && !MyPed.Pedestrian.IsRagdoll)
-                {
-                    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", MyPed.Pedestrian, 10000);
-                    MyPed.Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
-                    //GameFiber.Sleep(5000);
+    //            if (MyPed.Pedestrian.IsDead)
+    //            {
+    //                MyPed.Pedestrian.IsPersistent = false;
+    //                break;
+    //            }
+    //            else if (Game.GameTime - GameTimeStolen > TimeToCall && !MyPed.Pedestrian.IsRagdoll)
+    //            {
+    //                MyPed.AddCrime(Police.CurrentCrimes.Mugging);
+    //                if (LosSantosRED.PlayerIsNotWanted)
+    //                {
+    //                    //Police.CurrentCrimes.Mugging.CrimeCalledInByCivilians(HaveDescription,false);
+    //                    Police.InvestigationPosition = PlaceLastMugged;
+    //                }
+    //                if (MyPed.Pedestrian.Exists() && !MyPed.Pedestrian.IsDead && !MyPed.Pedestrian.IsRagdoll)
+    //                {
+    //                    MyPed.Pedestrian.IsPersistent = false;
+    //                }
+    //                break;
+    //            }
 
-                    if (LosSantosRED.PlayerIsNotWanted)
-                    {
-                        Police.CurrentCrimes.Mugging.CrimeCalledInByCivilians(HaveDescription,false);
-                        Police.InvestigationPosition = PlaceLastMugged;
-                    }
-                    if (MyPed.Pedestrian.Exists() && !MyPed.Pedestrian.IsDead && !MyPed.Pedestrian.IsRagdoll)
-                    {
-                        MyPed.Pedestrian.IsPersistent = false;
-                    }
-                    break;
-                }
-
-                GameFiber.Yield();
-            }
-        }, "WatchForDeath");
-        Debugging.GameFibers.Add(WatchForDeath);
-    }
+    //            GameFiber.Yield();
+    //        }
+    //    }, "WatchForDeath");
+    //    Debugging.GameFibers.Add(WatchForDeath);
+    //}
     public static void StartedAimingAtTarget()
     {
         GameTimeStartedAimingAtTarget = Game.GameTime;

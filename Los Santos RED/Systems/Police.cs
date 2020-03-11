@@ -39,6 +39,7 @@ internal static class Police
     private static uint GameTimeStartedInvestigation;
     private static Vector3 PrevInvestigationPosition;
 
+
     public static bool AnyPoliceCanSeePlayer { get; set; }
     public static bool AnyPoliceCanRecognizePlayer { get; set; }
     public static bool AnyPoliceRecentlySeenPlayer { get; set; }
@@ -140,6 +141,7 @@ internal static class Police
     }
     public static bool IsRunning { get; set; } = true;
     public static Vector3 LastWantedCenterPosition { get; set; }
+    public static uint GameTimeCiviliansLastCalledInCrime { get; set; }
 
     public enum PoliceState
     {
@@ -207,7 +209,6 @@ internal static class Police
         WantedLevelTick();
         InvestigationTick();
     }
-
     private static void InvestigationTick()
     {
         if (InvestigationModeExpired) //remove after 3 minutes
@@ -219,14 +220,12 @@ internal static class Police
         if(PrevPoliceInVestigationMode != PoliceInInvestigationMode)
             PoliceInInvestigationModeChanged();
     }
-
     private static void InvestigationPositionChanged()
     {
         UpdateInvestigationUI();
         Debugging.WriteToLog("ValueChecker", string.Format("InvestigationPosition Changed to: {0}", InvestigationPosition));
         PrevInvestigationPosition = InvestigationPosition;
     }
-
     private static void PoliceInInvestigationModeChanged()
     {
         if (PoliceInInvestigationMode) //added
@@ -394,6 +393,27 @@ internal static class Police
                 Cop.GameTimeContinuoslySeenPlayerSince = 0;
                 Cop.canSeePlayer = false;
             }
+        }
+        if (SawPlayerThisCheck)
+            return;
+
+        foreach (GTAPed Civi in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
+        {
+            Civi.GameTimeLastLOSCheck = Game.GameTime;
+            if (Civi.DistanceToPlayer <= 35f && Civi.Pedestrian.PlayerIsInFront() && !Civi.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Civi.Pedestrian, EntityToCheck))//if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
+            {
+                Civi.UpdateContinuouslySeen();
+                Civi.canSeePlayer = true;
+                Civi.GameTimeLastSeenPlayer = Game.GameTime;
+                Civi.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
+                SawPlayerThisCheck = true;
+            }
+            else
+            {
+                Civi.GameTimeContinuoslySeenPlayerSince = 0;
+                Civi.canSeePlayer = false;
+            }
+            TotalEntityNativeLOSChecks++;
         }
     }
     private static bool PoliceCanSeeEntity(Entity EntityToCheck)
@@ -614,6 +634,7 @@ internal static class Police
         WantedLevelStartTime = 0;
         //GameTimeWantedStarted = 0;
         GameTimeLastWantedEnded = Game.GameTime;
+        PoliceInInvestigationMode = false;
 
         //TrafficViolations.ResetTrafficViolations();
         DispatchAudio.ResetReportedItems();
@@ -644,6 +665,7 @@ internal static class Police
     public static void CheckRecognition()
     {
         AnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.canSeePlayer) && !PlayerStarsGreyedOut;
+        
 
         if (AnyPoliceCanSeePlayer)
             AnyPoliceRecentlySeenPlayer = true;
@@ -651,6 +673,7 @@ internal static class Police
             AnyPoliceRecentlySeenPlayer = PoliceScanning.CopPeds.Any(x => x.SeenPlayerSince(Settings.PoliceRecentlySeenTime));
 
         AnyPoliceCanRecognizePlayer = PoliceScanning.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecognize() || (x.canSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
+        
 
         if (!AnyPoliceSeenPlayerThisWanted)
             PlacePlayerLastSeen = PlaceWantedStarted;
@@ -663,6 +686,9 @@ internal static class Police
 
         if (!AnyPoliceSeenPlayerThisWanted && AnyPoliceRecentlySeenPlayer)
             AnyPoliceSeenPlayerThisWanted = true;
+
+
+        
     }
     public static float TimeToRecognize()
     {
@@ -731,7 +757,7 @@ internal static class Police
             if (LosSantosRED.PlayerWantedLevel <= 2)//let some level 3 and 4 wanted override and be set
             {
                 SetWantedLevel(0, "Resetting Unknown Wanted", false);
-                GetReportedCrimeFromUnknown();
+                //GetReportedCrimeFromUnknown();
                 return;
             }
         }
@@ -742,35 +768,36 @@ internal static class Police
         PlaceWantedStarted = Game.LocalPlayer.Character.Position;
         Tasking.UntaskAllRandomSpawns(false);
     }
-    public static void GetReportedCrimeFromUnknown()//temp public
-    {       
-        Debugging.WriteToLog("AddDispatchToUnknownWanted", "Got wanted without being manually set");
-        GTAWeapon MyGun = LosSantosRED.GetCurrentWeapon();
-        DispatchAudio.ReportDispatch ToReport;
+    //public static void GetReportedCrimeFromUnknown()//temp public
+    //{       
+    //    Debugging.WriteToLog("AddDispatchToUnknownWanted", "Got wanted without being manually set");
+    //    GTAWeapon MyGun = LosSantosRED.GetCurrentWeapon();
+    //    DispatchAudio.ReportDispatch ToReport;
 
-        InvestigationPosition = Game.LocalPlayer.Character.Position;
-        UpdateInvestigationPosition();
+    //    InvestigationPosition = Game.LocalPlayer.Character.Position;
+    //    UpdateInvestigationPosition();
 
-        if (LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
-            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCiviliansShot;
-        else if (!LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
-            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCiviliansKilled;
-        else if (LosSantosRED.PlayerRecentlyShot(20000) && LosSantosRED.PlayerIsConsideredArmed && MyGun != null && MyGun.WeaponLevel >= 3)
-            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelTerroristActivity;
-        else if (LosSantosRED.PlayerRecentlyShot(20000))
-            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelShotsFired;
-        else if (CarStealing.PlayerBreakingIntoCar)
-            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelGrandTheftAuto;
-        else if (Civilians.RecentlyHurtCivilian(10000))
-            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCiviliansInjured;
-        else
-            ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCriminalActivity;
-     
+    //    if (LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
+    //        ToReport = DispatchAudio.ReportDispatch.ReportCivilianShot;
+    //    else if (!LosSantosRED.PlayerRecentlyShot(20000) && Civilians.RecentlyKilledCivilian(10000))
+    //        ToReport = DispatchAudio.ReportDispatch.ReportCivilianFatality;
+    //    else if (LosSantosRED.PlayerRecentlyShot(20000) && LosSantosRED.PlayerIsConsideredArmed && MyGun != null && MyGun.WeaponLevel >= 3)
+    //        ToReport = DispatchAudio.ReportDispatch.ReportLowLevelTerroristActivity;
+    //    else if (LosSantosRED.PlayerRecentlyShot(20000))
+    //        ToReport = DispatchAudio.ReportDispatch.ReportShotsFired;
+    //    else if (CarStealing.PlayerBreakingIntoCar)
+    //        ToReport = DispatchAudio.ReportDispatch.ReportGrandTheftAuto;
+    //    else if (Civilians.RecentlyHurtCivilian(10000))
+    //        ToReport = DispatchAudio.ReportDispatch.ReportCivilianInjury;
+    //    else
+    //        ToReport = DispatchAudio.ReportDispatch.ReportLowLevelCriminalActivity;
 
-        PoliceInInvestigationMode = true;
-        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(ToReport, 20) { IsAmbient = true });
-        
-    }
+    //    if (LosSantosRED.PlayerIsNotWanted)
+    //    {
+    //        PoliceInInvestigationMode = true;
+    //        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(ToReport, 20) { IsAmbient = true, ReportedBy = DispatchAudio.ReportType.Civilians });
+    //    }
+    //}
 
     private static void PlayerStarsGreyedOutChanged()
     {

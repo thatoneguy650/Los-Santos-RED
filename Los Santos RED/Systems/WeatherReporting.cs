@@ -202,7 +202,7 @@ public static class WeatherReporting
 
             StoredAndTurnOffRadio();
             GameTimeLastReportedWeather = Game.GameTime;
-            DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(new List<string> { Weazel.Outro2.FileName, WeatherFile, Weazel.Outro.FileName }, false, ""));      
+            DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(new List<string> { Weazel.Outro2.FileName, WeatherFile, Weazel.Outro.FileName }, ""));      
         }
     }
     private static void StoredAndTurnOffRadio()
@@ -234,7 +234,7 @@ public static class WeatherReporting
         {
             StoredAndTurnOffRadio();
             GameTimeLastReportedWeather = Game.GameTime;
-            DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(new List<string> { Weazel.Outro2.FileName, new List<string> { Windy.Windy1.FileName, Windy.Windy2.FileName, Windy.Windy3.FileName, Windy.Windy4.FileName, Windy.Windy6.FileName, Windy.Windy7.FileName, Windy.Windy8.FileName }.PickRandom(), Weazel.Outro.FileName }, false, ""));
+            DispatchAudio.PlayAudioList(new DispatchAudio.DispatchAudioEvent(new List<string> { Weazel.Outro2.FileName, new List<string> { Windy.Windy1.FileName, Windy.Windy2.FileName, Windy.Windy3.FileName, Windy.Windy4.FileName, Windy.Windy6.FileName, Windy.Windy7.FileName, Windy.Windy8.FileName }.PickRandom(), Weazel.Outro.FileName }, ""));
         }
     }
     public class Cloudy

@@ -13,22 +13,7 @@ public static class CarStealing
 
     private static uint GameTimeLastTriedCarJacking;
     private static Random rnd;
-    private static uint GameTimePlayerLastBrokeIntoCar;
 
-    public static bool PlayerRecentlyBrokeIntoCar
-    {
-        get
-        {
-            if (PlayerBreakingIntoCar)
-                return true;
-            else if (GameTimePlayerLastBrokeIntoCar == 0)
-                return false;
-            else if (Game.GameTime - GameTimePlayerLastBrokeIntoCar <= 15000)
-                return true;
-            else
-                return false;
-        }
-    }
     public static bool PlayerBreakingIntoCar { get; set; } = false;
 
 
@@ -90,6 +75,13 @@ public static class CarStealing
                 if(!StartAnimation)
                 {
                     TargetVehicle.LockStatus = LockStatusBefore;
+                    return;
+                }
+
+
+                if(TargetVehicle.LockStatus == (VehicleLockStatus)1)
+                {
+                    Debugging.WriteToLog("UnlockCarDoor", "Vehicle was unlocked?");
                     return;
                 }
                 Debugging.WriteToLog("UnlockCarDoor", "Post Sleep");
@@ -265,7 +257,7 @@ public static class CarStealing
             Ped Driver = TargetVeh.Driver;
             if (Driver != null && Driver.IsAlive)
             {
-                CarJackPedWithWeapon(TargetVeh, Driver, SeatTryingToEnter);
+                CarJackPed(TargetVeh, Driver, SeatTryingToEnter);
                 Debugging.WriteToLog("EnterVehicle", "CarJacking");
             }
             else
@@ -302,61 +294,44 @@ public static class CarStealing
     {
         return NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
     }
-    public static void CarJackPedWithWeapon(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
+    public static void CarJackPed(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
     {
-        //if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
-        //    return;
+        if (SeatTryingToEnter != -1)
+            return;
 
-        if (!LosSantosRED.PlayerHoldingEnter)
-            return;
-        if (Game.GameTime - GameTimeLastTriedCarJacking <= 500)//5000
-            return;
+        if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
+        {
+            if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
+            {
+                return;//Closer to passenger side, animations dont work
+            }
+        }
+        GTAWeapon myGun = LosSantosRED.GetCurrentWeapon();
+        if (LosSantosRED.PlayerHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && myGun != null && myGun.Category != GTAWeapon.WeaponCategory.Melee)
+        {
+            Debugging.WriteToLog("CarJackPed", "CarJackPedWithWeapon");
+            CarJackPedWithWeapon(TargetVehicle, Driver, SeatTryingToEnter, myGun);
+        }
+        else
+        {
+            Debugging.WriteToLog("CarJackPed", "CarJackPedRegular");
+            CarJackPedRegular(TargetVehicle, Driver);
+        }
+
+
+    }
+    public static void CarJackPedWithWeapon(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter,GTAWeapon myGun)
+    {
         try
         {
-            if (SeatTryingToEnter != -1)
-                return;
-
-            if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
-            {
-                if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
-                {
-                    return;//Closer to passenger side, animations dont work
-                }
-            }
-
-            GTAWeapon myGun = LosSantosRED.GetCurrentWeapon();
-            if (myGun == null || myGun.Category == GTAWeapon.WeaponCategory.Melee)
-            {
-                LosSantosRED.SetPedUnarmed(Game.LocalPlayer.Character, false);
-                Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, -1, EnterVehicleFlags.AllowJacking);
-                return;
-            }
-
             GameFiber CarJackPedWithWeapon = GameFiber.StartNew(delegate
             {
-
-                //if(myGun.Category == GTAWeapon.WeaponCategory.Melee)
-                //{
-                //    InstantAction.SetPedUnarmed(Game.LocalPlayer.Character, false);
-                //    Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, -1, EnterVehicleFlags.AllowJacking);
-                //    while(Driver.IsInAnyVehicle(false))
-                //    {
-                //        GameFiber.Wait(100);
-                //    }
-                //    Game.LocalPlayer.Character.Tasks.Clear();
-                //    InstantAction.SetPlayerToLastWeapon();
-
-                //    return;
-                //}
                 LosSantosRED.SetPlayerToLastWeapon();
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
                 Driver.BlockPermanentEvents = true;
 
                 Vector3 GameEntryPosition = GetEntryPosition(TargetVehicle);
                 float DesiredHeading = TargetVehicle.Heading - 90f;
-
-
-
 
                 string dict = "";
                 string PerpAnim = "";
@@ -528,7 +503,6 @@ public static class CarStealing
                     }
                 }
                 GameFiber.Sleep(5000);
-                GameTimePlayerLastBrokeIntoCar = Game.GameTime;
                 PlayerBreakingIntoCar = false;
             }, "CarJackPedWithWeapon");
             Debugging.GameFibers.Add(CarJackPedWithWeapon);
@@ -538,6 +512,25 @@ public static class CarStealing
             PlayerBreakingIntoCar = false;
             Debugging.WriteToLog("UnlockCarDoor", e.Message);
         }
+    }
+    public static void CarJackPedRegular(Vehicle TargetVehicle, Ped Driver)
+    {
+        GameFiber CarJackPed = GameFiber.StartNew(delegate
+        {
+            PlayerBreakingIntoCar = true;
+
+            GTAPed CarjackingVictim = PoliceScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
+            if (CarjackingVictim != null)
+                CarjackingVictim.CanFlee = false;
+
+            GameFiber.Sleep(4000);
+            if (CarjackingVictim != null)
+                CarjackingVictim.CanFlee = true;
+
+            GameFiber.Sleep(4000);
+            PlayerBreakingIntoCar = false;
+        }, "CarJackPed");
+        Debugging.GameFibers.Add(CarJackPed);
     }
     private static bool GetCarjackingAnimations(Vehicle TargetVehicle, Vector3 DriverSeatCoordinates, GTAWeapon MyGun, ref string Dictionary, ref string PerpAnimation, ref string VictimAnimation)
     {

@@ -81,12 +81,12 @@ public static class Surrendering
     }
     public static void LowerHands()
     {
-        if (!LosSantosRED.HandsAreUp)
-            return;
+        //if (!LosSantosRED.HandsAreUp)
+        //    return;
 
-        if (AreHandsRaised)
-            return;
-        else
+        //if (AreHandsRaised)
+        //    return;
+        //else
             Game.LocalPlayer.Character.Tasks.Clear();
     }
     public static void SetArrestedAnimation(Ped PedToArrest, bool MarkAsNoLongerNeeded)

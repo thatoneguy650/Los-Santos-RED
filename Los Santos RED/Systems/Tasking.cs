@@ -305,6 +305,12 @@ public static class Tasking
                     Cop.GameTimeLastTask = Game.GameTime;
                     AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.SimpleArrest)); //retask the arrest
                 }
+                else if(!Cop.TaskIsQueued && LosSantosRED.IsDead)
+                {
+                    Cop.TaskIsQueued = true;
+                    Cop.GameTimeLastTask = Game.GameTime;
+                    AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask)); //retask the arrest
+                }
             }
         }
         Police.SetWantedLevel(LosSantosRED.MaxWantedLastLife,"Changing it back to what it was max during your last life",true);
@@ -913,6 +919,9 @@ public static class Tasking
     private static void TaskInvestigateCrime(GTACop Cop)
     {
         if (!Cop.Pedestrian.Exists())
+            return;
+
+        if (LosSantosRED.PlayerIsWanted)
             return;
 
         Cop.TaskFiber =

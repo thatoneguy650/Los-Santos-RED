@@ -32,6 +32,11 @@ public class GTAPed
     public float DistanceToLastSeen { get; set; }
     public bool WasMarkedNonPersistent { get; set; } = false;
     public bool HasBeenMugged { get; set; } = false;
+    public bool CanFlee { get; set; } = true;
+    public bool WillCallPolice { get; set; } = true;
+    public uint GameTimeLastTaskedFlee { get; set; }
+    public List<Crime> CrimesWitnessed { get; set; } = new List<Crime>();
+
     public bool NeedsDistanceCheck
     {
         get
@@ -86,6 +91,13 @@ public class GTAPed
             DistanceToPlayer = Pedestrian.DistanceTo(Game.LocalPlayer.Character.Position);
             DistanceToLastSeen = Pedestrian.DistanceTo(Police.PlacePlayerLastSeen);
             GameTimeLastDistanceCheck = Game.GameTime;
+        }
+    }
+    public void AddCrime(Crime CrimeToAdd)
+    {
+        if(!CrimesWitnessed.Any(x => x.DebugName == CrimeToAdd.DebugName))
+        {
+            CrimesWitnessed.Add(CrimeToAdd);
         }
     }
 }
