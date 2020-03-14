@@ -38,8 +38,6 @@ internal static class Police
     private static bool PrevPoliceInVestigationMode;
     private static uint GameTimeStartedInvestigation;
     private static Vector3 PrevInvestigationPosition;
-
-
     public static bool AnyPoliceCanSeePlayer { get; set; }
     public static bool AnyPoliceCanRecognizePlayer { get; set; }
     public static bool AnyPoliceRecentlySeenPlayer { get; set; }
@@ -357,7 +355,7 @@ internal static class Police
             if (Cop.DistanceToPlayer <= RangeToCheck && Cop.Pedestrian.PlayerIsInFront() && !Cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.Pedestrian, EntityToCheck))//if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
             {
                 Cop.UpdateContinuouslySeen();
-                Cop.canSeePlayer = true;
+                Cop.CanSeePlayer = true;
                 Cop.GameTimeLastSeenPlayer = Game.GameTime;
                 Cop.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 PlayerLastSeenInVehicle = LosSantosRED.PlayerInVehicle;
@@ -368,7 +366,7 @@ internal static class Police
             else
             {
                 Cop.GameTimeContinuoslySeenPlayerSince = 0;
-                Cop.canSeePlayer = false;
+                Cop.CanSeePlayer = false;
             }
             TotalEntityNativeLOSChecks++;
         }
@@ -380,7 +378,7 @@ internal static class Police
             if (Cop.DistanceToPlayer <= 250f && !Cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Cop.Pedestrian, EntityToCheck, 17)) //was 55f
             {
                 Cop.UpdateContinuouslySeen();
-                Cop.canSeePlayer = true;
+                Cop.CanSeePlayer = true;
                 Cop.GameTimeLastSeenPlayer = Game.GameTime;
                 Cop.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 PlayerLastSeenInVehicle = LosSantosRED.PlayerInVehicle;
@@ -391,7 +389,7 @@ internal static class Police
             else
             {
                 Cop.GameTimeContinuoslySeenPlayerSince = 0;
-                Cop.canSeePlayer = false;
+                Cop.CanSeePlayer = false;
             }
         }
         if (SawPlayerThisCheck)
@@ -400,18 +398,32 @@ internal static class Police
         foreach (GTAPed Civi in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
             Civi.GameTimeLastLOSCheck = Game.GameTime;
-            if (Civi.DistanceToPlayer <= 35f && Civi.Pedestrian.PlayerIsInFront() && !Civi.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Civi.Pedestrian, EntityToCheck))//if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
+            if (Civi.DistanceToPlayer <= RangeToCheck && Civi.Pedestrian.PlayerIsInFront() && !Civi.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Civi.Pedestrian, EntityToCheck))//if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
             {
                 Civi.UpdateContinuouslySeen();
-                Civi.canSeePlayer = true;
+                Civi.CanSeePlayer = true;
                 Civi.GameTimeLastSeenPlayer = Game.GameTime;
                 Civi.PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 SawPlayerThisCheck = true;
+
+                if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                    if (Civi.CanSeePlayer || Civi.DistanceToPlayer <= 7f)
+                        Civi.CanRecognizePlayer = true;
+                    else
+                        Civi.CanRecognizePlayer = false;
+                else
+                    if (Civi.HasSeenPlayerFor >= 2000 && Civi.DistanceToPlayer <= 25f)
+                    Civi.CanRecognizePlayer = true;
+                else if (Civi.DistanceToPlayer <= 1f && Civi.DistanceToPlayer > 0f)
+                    Civi.CanRecognizePlayer = true;
+                else
+                    Civi.CanRecognizePlayer = false;
             }
             else
             {
                 Civi.GameTimeContinuoslySeenPlayerSince = 0;
-                Civi.canSeePlayer = false;
+                Civi.CanSeePlayer = false;
+                Civi.CanRecognizePlayer = false;
             }
             TotalEntityNativeLOSChecks++;
         }
@@ -513,9 +525,9 @@ internal static class Police
         LosSantosRED.TrackedVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
         if (LosSantosRED.PlayerIsNotWanted)
         {
-            foreach (GTAVehicle StolenCar in LosSantosRED.TrackedVehicles.Where(x => x.ShouldReportStolen))
+            foreach (GTAVehicle StolenCar in LosSantosRED.TrackedVehicles.Where(x => x.NeedsToBeReportedStolen))
             {
-                StolenCar.QuedeReportedStolen = true;
+                StolenCar.WasReportedStolen = true;
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportStolenVehicle, 10)
                 {
                     ResultsInStolenCarSpotted = true,
@@ -525,24 +537,11 @@ internal static class Police
         }
         if (LosSantosRED.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
-            //GTAVehicle CurrTrackedVehicle = InstantAction.GetPlayersCurrentTrackedVehicle();
-
             if (LosSantosRED.PlayersCurrentTrackedVehicle == null)
                 return;
 
             if(AnyPoliceCanSeePlayer && LosSantosRED.PlayerIsWanted && !PlayerStarsGreyedOut)
             {
-                //if (LastSeenVehicleHandle != 0 && LastSeenVehicleHandle != CurrTrackedVehicle.VehicleEnt.Handle)
-                //{
-                //    GameTimeLastReportedSpotted = Game.GameTime;
-                //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportChangedVehicle, 20)
-                //    {
-                //        IsAmbient = true,
-                //        VehicleToReport = CurrTrackedVehicle
-                //    });
-                //}
-
-
                 if (LastSeenVehicleHandle != 0 && LastSeenVehicleHandle != LosSantosRED.PlayersCurrentTrackedVehicle.VehicleEnt.Handle && !LosSantosRED.PlayersCurrentTrackedVehicle.HasBeenDescribedByDispatch)
                 {
                     GameTimeLastReportedSpotted = Game.GameTime;
@@ -613,6 +612,14 @@ internal static class Police
             {
                 SetWantedLevel(3, "Deadly chase requires 3+ wanted level",true);
             }
+
+
+            if (!DispatchAudio.RecentAnnouncedDispatch && AnyPoliceSeenPlayerThisWanted && CanPlaySuspectSpotted && AnyPoliceCanSeePlayer && LosSantosRED.PlayerInVehicle && !DispatchAudio.IsPlayingAudio && LosSantosRED.PlayerInAutomobile && LosSantosRED.PlayersCurrentTrackedVehicle != null)
+            {
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportLocalSuspectSpotted, 20) { IsAmbient = true });
+                GameTimeLastReportedSpotted = Game.GameTime;
+            }
+
         }
     }
     public static void PoliceReportedAllClear()
@@ -664,7 +671,7 @@ internal static class Police
     }
     public static void CheckRecognition()
     {
-        AnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.canSeePlayer) && !PlayerStarsGreyedOut;
+        AnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.CanSeePlayer) && !PlayerStarsGreyedOut;
         
 
         if (AnyPoliceCanSeePlayer)
@@ -672,7 +679,7 @@ internal static class Police
         else
             AnyPoliceRecentlySeenPlayer = PoliceScanning.CopPeds.Any(x => x.SeenPlayerSince(Settings.PoliceRecentlySeenTime));
 
-        AnyPoliceCanRecognizePlayer = PoliceScanning.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecognize() || (x.canSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
+        AnyPoliceCanRecognizePlayer = PoliceScanning.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecognize() || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
         
 
         if (!AnyPoliceSeenPlayerThisWanted)
@@ -812,9 +819,9 @@ internal static class Police
             foreach (GTACop Cop in PoliceScanning.CopPeds)
             {
                 Cop.AtWantedCenterDuringSearchMode = false;
-                if (Cop.isTasked && (Cop.TaskType == PoliceTask.Task.GoToWantedCenter || Cop.TaskType == PoliceTask.Task.SimpleInvestigate || Cop.TaskType == PoliceTask.Task.RandomSpawnIdle))
+                if (Cop.isTasked && (Cop.TaskType == Tasking.AssignableTasks.GoToWantedCenter || Cop.TaskType == Tasking.AssignableTasks.SimpleInvestigate || Cop.TaskType == Tasking.AssignableTasks.RandomSpawnIdle))
                 {
-                    Tasking.AddItemToQueue(new PoliceTask(Cop, PoliceTask.Task.Untask));
+                    Tasking.AddItemToQueue(new CopTask(Cop, Tasking.AssignableTasks.Untask));
                 }
             }
             CanReportLastSeen = false;

@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="AlexGuirre\LoopedParticles.cs" />
     <Compile Include="AlexGuirre\PedHeadshot.cs" />
+    <Compile Include="Entities\Other\CivilianTask.cs" />
     <Compile Include="Entities\Other\ColorMapper.cs" />
     <Compile Include="Entities\Other\RapSheet.cs" />
     <Compile Include="Entities\Peds\GTAPed.cs" />

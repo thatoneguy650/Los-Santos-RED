@@ -43,7 +43,7 @@ public static class LicensePlateChanging
             GTAVehicle VehicleToChange = LosSantosRED.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
-                VehicleToChange = new GTAVehicle(ClosestVehicle, false, false, new GTALicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
+                VehicleToChange = new GTAVehicle(ClosestVehicle,0, false, false,null, true, new GTALicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle),false));
                 LosSantosRED.TrackedVehicles.Add(VehicleToChange);
             }
 
@@ -66,7 +66,7 @@ public static class LicensePlateChanging
             GTAVehicle VehicleToChange = LosSantosRED.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
-                VehicleToChange = new GTAVehicle(ClosestVehicle, false, false, new GTALicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
+                VehicleToChange = new GTAVehicle(ClosestVehicle,0, false, false,null,true, new GTALicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
                 LosSantosRED.TrackedVehicles.Add(VehicleToChange);
             }
 

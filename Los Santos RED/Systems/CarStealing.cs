@@ -349,6 +349,11 @@ public static class CarStealing
                     Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     return;
                 }
+
+                GTAPed CarjackingVictim = PoliceScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
+                if (CarjackingVictim != null)
+                    CarjackingVictim.CanFlee = false;
+
                 LosSantosRED.RequestAnimationDictionay(dict);
                 LosSantosRED.SetPlayerToLastWeapon();
 
@@ -434,6 +439,8 @@ public static class CarStealing
                 if (Game.LocalPlayer.Character.IsDead)
                 {
                     PlayerBreakingIntoCar = false;
+                    if (CarjackingVictim != null)
+                        CarjackingVictim.CanFlee = true;
                     return;
                 }
                 Police.PlayerArtificiallyShooting = false;
@@ -464,6 +471,9 @@ public static class CarStealing
                             NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
                     }
                 }
+
+                if (CarjackingVictim != null)
+                    CarjackingVictim.CanFlee = true;
 
                 if (Cancel)
                 {

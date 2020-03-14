@@ -18,6 +18,7 @@ using static Zones;
 
 public static class DispatchAudio
 {
+    private static uint GameTimeLastAnnouncedDispatch;
     private static List<uint> NotificationHandles = new List<uint>();
     private static readonly Random rnd;
     private static WaveOutEvent outputDevice;
@@ -34,6 +35,18 @@ public static class DispatchAudio
     public static bool ReportedLethalForceAuthorized = false;
     public static bool ReportedWeaponsFree = false;
 
+    public static bool RecentAnnouncedDispatch
+    {
+        get
+        {
+            if (GameTimeLastAnnouncedDispatch == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastAnnouncedDispatch <= 30000)
+                return true;
+            else
+                return false;
+        }
+    }
     public static bool AudioPlaying
     {
         get
@@ -293,6 +306,7 @@ public static class DispatchAudio
                     CancelAudio = false;
                     break;
                 }
+                GameTimeLastAnnouncedDispatch = Game.GameTime;
             }
         }, "PlayAudioList");
         Debugging.GameFibers.Add(PlayAudioList);
@@ -460,7 +474,7 @@ public static class DispatchAudio
                     else if (Item.Type == ReportDispatch.ReportSuspiciousVehicle)
                         ReportSuspiciousVehicle(Item.ReportedBy,Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportGrandTheftAuto)
-                        ReportGrandTheftAuto(Item.ReportedBy);
+                        ReportGrandTheftAuto(Item.ReportedBy,Item.VehicleToReport);
                     else if (Item.Type == ReportDispatch.ReportSuspectSpotted)
                         ReportSuspectSpotted();
                     else if (Item.Type == ReportDispatch.ReportIncreasedWanted)
@@ -820,24 +834,7 @@ public static class DispatchAudio
         AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles, ref Notification, true, false,false);
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, stolenVehicle.PositionOriginallyEntered);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
-        GameFiber ReportStolenVehicle = GameFiber.StartNew(delegate
-        {
-            GameFiber.Sleep(15000);
-            stolenVehicle.WasReportedStolen = true;
-            if (stolenVehicle.CarPlate.PlateNumber == stolenVehicle.OriginalLicensePlate.PlateNumber) //if you changed it between when it was reported, dont count it
-                stolenVehicle.CarPlate.IsWanted = true;
-
-            foreach (GTALicensePlate Plate in LicensePlateChanging.SpareLicensePlates)
-            {
-                if (Plate.PlateNumber == stolenVehicle.OriginalLicensePlate.PlateNumber)
-                {
-                    Plate.IsWanted = true;
-                }
-            }
-            Debugging.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", stolenVehicle.VehicleEnt.Handle));
-
-        }, "PlayDispatchQueue");
-        Debugging.GameFibers.Add(ReportStolenVehicle);
+        MarkVehicleAsStolen(stolenVehicle);
     }
     public static void ReportThreateningOfficerWithFirearm(ReportType ReportedBy)
     {
@@ -894,7 +891,7 @@ public static class DispatchAudio
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
     }
-    public static void ReportGrandTheftAuto(ReportType ReportedBy)
+    public static void ReportGrandTheftAuto(ReportType ReportedBy, GTAVehicle StolenCar)
     {
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
@@ -904,16 +901,52 @@ public static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ReportedBy, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_grand_theft_auto.Agrandtheftauto.FileName, crime_grand_theft_auto.Agrandtheftautoinprogress.FileName, crime_grand_theft_auto.AGTAinprogress.FileName, crime_grand_theft_auto.AGTAinprogress1.FileName }.PickRandom());
         Subtitles += " a ~y~GTA~s~ in progress";
-        GTAVehicle StolenCar = LosSantosRED.GetPlayersCurrentTrackedVehicle();
-        if (LosSantosRED.PlayerIsWanted && StolenCar != null)
+        if(StolenCar == null)
         {
-            ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
-            Subtitles += "Suspect spotted driving a";
+            StolenCar = LosSantosRED.GetPlayersCurrentTrackedVehicle();
+        }
+        if (StolenCar != null)
+        {
+            if (LosSantosRED.PlayerIsWanted)
+            {
+                ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
+                Subtitles += "Suspect spotted driving a";
+            }
+            else
+            {
+                ScannerList.Add(suspect_last_seen.TargetLastReported.FileName);
+                Subtitles += "Target last reported driving a";
+            }
             ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
-            AddVehicleDescription(StolenCar, ref ScannerList, false, ref Subtitles, ref Notification, false, true,false);
+            AddVehicleDescription(StolenCar, ref ScannerList, true, ref Subtitles, ref Notification, false, true,false);
         }
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
+        if (StolenCar != null)
+        {
+            MarkVehicleAsStolen(StolenCar);
+        }
+    }
+    private static void MarkVehicleAsStolen(GTAVehicle StolenCar)
+    {
+        GameFiber ReportStolenVehicle = GameFiber.StartNew(delegate
+        {
+            GameFiber.Sleep(15000);
+            StolenCar.WasReportedStolen = true;
+            if (StolenCar.CarPlate.PlateNumber == StolenCar.OriginalLicensePlate.PlateNumber) //if you changed it between when it was reported, dont count it
+                StolenCar.CarPlate.IsWanted = true;
+
+            foreach (GTALicensePlate Plate in LicensePlateChanging.SpareLicensePlates)
+            {
+                if (Plate.PlateNumber == StolenCar.OriginalLicensePlate.PlateNumber)
+                {
+                    Plate.IsWanted = true;
+                }
+            }
+            Debugging.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", StolenCar.VehicleEnt.Handle));
+
+        }, "PlayDispatchQueue");
+        Debugging.GameFibers.Add(ReportStolenVehicle);
     }
     private static void ReportRunningRed(ReportType ReportedBy,GTAVehicle vehicle)
     {
@@ -1340,7 +1373,7 @@ public static class DispatchAudio
             AudioBeeps.AudioStart()
         };
         string Subtitles = "";
-        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Reacquired");
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Spotted");
         if (!ReportHeadingAndStreet(ref ScannerList, ref Subtitles, ref Notification))
         {
             List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };

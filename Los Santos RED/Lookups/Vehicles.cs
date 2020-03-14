@@ -627,9 +627,9 @@ public static class Vehicles
 
         VehiclesList.Add(new VehicleInfo("rubble", 0x9A5B1DCC, Manufacturer.Unknown, VehicleClass.Industrial));
         VehiclesList.Add(new VehicleInfo("ruffian", 0xCABD11E8, Manufacturer.Unknown, VehicleClass.Motorcycles));
-        VehiclesList.Add(new VehicleInfo("ruiner", 0xF26CEFF9, Manufacturer.Unknown, VehicleClass.Muscle, ScannerAudio.model.RUINER01.FileName));
-        VehiclesList.Add(new VehicleInfo("ruiner2", 0x381E10BD, Manufacturer.Unknown, VehicleClass.Muscle, ScannerAudio.model.RUINER01.FileName));
-        VehiclesList.Add(new VehicleInfo("ruiner3", 0x2E5AFD37, Manufacturer.Unknown, VehicleClass.Muscle));
+        VehiclesList.Add(new VehicleInfo("ruiner", 0xF26CEFF9, Manufacturer.Imponte, VehicleClass.Muscle, ScannerAudio.model.RUINER01.FileName));
+        VehiclesList.Add(new VehicleInfo("ruiner2", 0x381E10BD, Manufacturer.Imponte, VehicleClass.Muscle, ScannerAudio.model.RUINER01.FileName));
+        VehiclesList.Add(new VehicleInfo("ruiner3", 0x2E5AFD37, Manufacturer.Imponte, VehicleClass.Muscle, ScannerAudio.model.RUINER01.FileName));
         VehiclesList.Add(new VehicleInfo("rumpo", 0x4543B74D, Manufacturer.Bravado, VehicleClass.Vans));
         VehiclesList.Add(new VehicleInfo("rumpo2", 0x961AFEF7, Manufacturer.Bravado, VehicleClass.Vans));
         VehiclesList.Add(new VehicleInfo("rumpo3", 0x57F682AF, Manufacturer.Bravado, VehicleClass.Vans));

@@ -81,6 +81,13 @@ public static class TrafficViolations
             PlayerIsSpeeding = false;
             PlayerIsRunningRedLight = false;
             PlayersVehicleIsSuspicious = false;
+
+            Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
             return;
         }
 
@@ -96,7 +103,7 @@ public static class TrafficViolations
             if (!CurrVehicle.IsRoadWorthy() || CurrVehicle.IsDamaged())
                 PlayersVehicleIsSuspicious = true;
             bool TreatAsCop = false;
-            bool TrafficAnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.canSeePlayer && x.AssignedAgency.CanCheckTrafficViolations);
+            bool TrafficAnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.CanSeePlayer && x.AssignedAgency.CanCheckTrafficViolations);
 
             if (Settings.TrafficViolationsExemptCode3 && CurrVehicle != null && CurrVehicle.IsPoliceVehicle && MyCar != null && !MyCar.WasReportedStolen)
             {
@@ -237,6 +244,15 @@ public static class TrafficViolations
             //}
             //else
             //    PlayerIsRunningRedLight = false;
+        }
+        else
+        {
+            Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = false;
+            Police.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
         }
     }
 

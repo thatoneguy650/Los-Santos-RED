@@ -234,6 +234,8 @@ public static class LosSantosRED
                 PlayerOnMotorcycle = false;
 
             PlayersCurrentTrackedVehicle = GetPlayersCurrentTrackedVehicle();
+            if (PlayersCurrentTrackedVehicle != null && PlayersCurrentTrackedVehicle.GameTimeEntered == 0)
+                PlayersCurrentTrackedVehicle.GameTimeEntered = Game.GameTime;
         }
         else
         {
@@ -401,11 +403,11 @@ public static class LosSantosRED
     private static void TrackCurrentVehicle()
     {
         Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-        bool stolen = true;
+        bool IsStolen = true;
         if (OwnedCar != null && OwnedCar.Handle == CurrVehicle.Handle)
-            stolen = false;
+            IsStolen = false;
 
-        CurrVehicle.IsStolen = stolen;
+        CurrVehicle.IsStolen = IsStolen;
         bool AmStealingCarFromPrerson = Police.PlayerIsJacking;
         Ped PreviousOwner;
 
@@ -419,7 +421,17 @@ public static class LosSantosRED
             AmStealingCarFromPrerson = true;
         }
         GTALicensePlate MyPlate = new GTALicensePlate(CurrVehicle.LicensePlate, (uint)CurrVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CurrVehicle), false);
-        TrackedVehicles.Add(new GTAVehicle(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding, PreviousOwner, !stolen, stolen, MyPlate));
+        GTAVehicle MyNewCar = new GTAVehicle(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding, PreviousOwner, IsStolen, MyPlate);
+        if (IsStolen && PreviousOwner.Exists())
+        {
+            GTAPed MyPrevOwner = PoliceScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
+            if(MyPrevOwner != null)
+            {
+                Police.CurrentCrimes.GrandTheftAuto.DispatchToPlay.VehicleToReport = MyNewCar;
+                MyPrevOwner.AddCrime(Police.CurrentCrimes.GrandTheftAuto);
+            }
+        }
+        TrackedVehicles.Add(MyNewCar);
     }
     private static void PlayerBustedEvent()
     {
@@ -449,7 +461,7 @@ public static class LosSantosRED
         Game.LocalPlayer.Character.IsInvincible = true;
         //Police.SetWantedLevel(0,"You died");
         TransitionToSlowMo();
-        if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked || x.canSeePlayer))
+        if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked || x.CanSeePlayer))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {
@@ -488,7 +500,6 @@ public static class LosSantosRED
         PrevPlayerAimingInVehicle = PlayerAimingInVehicle;
         Debugging.WriteToLog("ValueChecker", String.Format("PlayerAimingInVehicle Changed to: {0}", PlayerAimingInVehicle));
     }
-
     public static bool PlayerHurtPed(GTAPed MyPed)
     {
         if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", MyPed.Pedestrian, Game.LocalPlayer.Character, true))
@@ -533,7 +544,7 @@ public static class LosSantosRED
             NotifcationText = "Wanted For:" + Police.CurrentCrimes.PrintCrimes();
 
         GTAVehicle MyCar = GetPlayersCurrentTrackedVehicle();
-        if (MyCar != null && MyCar.IsPlayersVehicle)
+        if (MyCar != null && !MyCar.IsStolen)
         {
             Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(MyCar);
             string VehicleName = "";

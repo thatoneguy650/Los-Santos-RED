@@ -69,92 +69,41 @@ public static class Civilians
     }
     private static void CheckSnitchCivilians()
     {
-
-       bool CiviliansCanReport = Police.CurrentCrimes.CiviliansCanReport;
-       if (LosSantosRED.PlayerIsNotWanted && AnyCiviliansCanRecognizePlayer && CiviliansCanReport)
+       List<Crime> CrimesToCallIn = Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians;
+       if (LosSantosRED.PlayerIsNotWanted && CrimesToCallIn.Any())
         {
-            foreach(GTAPed Snitch in PoliceScanning.Civilians.Where(x => (x.HasSeenPlayerFor >= 5000 && x.DistanceToPlayer <= 10f) || (x.DistanceToPlayer <= 5f && x.DistanceToPlayer > 0f)))
+            foreach(GTAPed Snitch in PoliceScanning.Civilians)
             {
-                foreach(Crime Bad in Police.CurrentCrimes.CurrentlyViolating)
+                if (Snitch.CanRecognizePlayer)
                 {
-                    Snitch.AddCrime(Bad);
+                    foreach (Crime Bad in CrimesToCallIn)
+                    {
+                        Snitch.AddCrime(Bad);
+                    }
+                    if (!Snitch.isTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
+                    {
+                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
+                    }
                 }
-
-                if (!Snitch.CanFlee)
-                    continue;
-                if (Game.GameTime - Snitch.GameTimeLastTaskedFlee >= 15000 || Snitch.GameTimeLastTaskedFlee == 0)
+                else if (Snitch.CanHearPlayer)
                 {
-                    
-                    if (Snitch.WillCallPolice)
-                        CivilianReportCrime(Snitch);
-
-                    Snitch.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
-                    Snitch.GameTimeLastTaskedFlee = Game.GameTime;
-                } 
+                    foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanBeCalledInBySound))
+                    {
+                        Snitch.AddCrime(Bad);
+                    }
+                    if (!Snitch.isTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
+                    {
+                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
+                    }
+                }
+                else if(Snitch.isTasked && !Snitch.CanSeePlayer && !Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 100f)
+                {
+                    Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
+                }
             }
         }
-        UI.DebugLine = string.Format("CiviSee: {0},CiviRec: {1},Violate: {2},RecentReport: {3}", AnyCiviliansCanSeePlayer, AnyCiviliansCanRecognizePlayer, CiviliansCanReport, CivilianRecentlyReportedCrime(25000));
-    }
-    private static void CivilianReportCrime(GTAPed CivilianToReport)
-    {
-        if (CivilianToReport == null)
-            return;
-        if (!CivilianToReport.Pedestrian.Exists())
-            return;
-
-        GameFiber CrimeReportedFiber = GameFiber.StartNew(delegate
-        {
-            uint GameTimeStarted = Game.GameTime;
-            int TimeToWait = LosSantosRED.MyRand.Next(3000, 7000);
-            while (Game.GameTime - GameTimeStarted <= TimeToWait)
-            {
-                if (!CivilianToReport.CanFlee)
-                    return;
-                if (PedSwapping.JustTakenOver(2000))
-                    return;
-                GameFiber.Sleep(200);
-            }
-            if (CivilianToReport == null)
-                return;
-            if (!CivilianToReport.Pedestrian.Exists())
-                return;
-
-            Debugging.WriteToLog("Check Snitches", string.Format("Civilian Reporting: {0},Crimes: {1}", CivilianToReport.Pedestrian.Handle, string.Join(",", CivilianToReport.CrimesWitnessed.Select(x => x.DebugName))));
-
-            //Call It In
-            Rage.Native.NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", CivilianToReport.Pedestrian, 10000);
-            CivilianToReport.Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
-
-
-            Crime WorstCrime = CivilianToReport.CrimesWitnessed.Where(x => !x.RecentlyReportedCrime(60000)).OrderBy(x => x.DispatchToPlay.Priority).FirstOrDefault();
-            if (WorstCrime == null)
-            {
-                return;
-            }
-
-            Debugging.WriteToLog("Crime Pre Reported", WorstCrime.DebugName);
-            GameTimeStarted = Game.GameTime;
-            TimeToWait = LosSantosRED.MyRand.Next(3000, 7000);
-            while (Game.GameTime - GameTimeStarted <= TimeToWait)
-            {
-                if (PedSwapping.JustTakenOver(2000))
-                    return;
-                GameFiber.Sleep(200);
-            }
-
-            if (LosSantosRED.PlayerIsWanted)
-                return;
-
-            WorstCrime.DispatchToPlay.ReportedBy = DispatchAudio.ReportType.Civilians;
-            if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
-                WorstCrime.DispatchToPlay.VehicleToReport = LosSantosRED.GetPlayersCurrentTrackedVehicle();
-            
-            DispatchAudio.AddDispatchToQueue(WorstCrime.DispatchToPlay);
-            Police.PoliceInInvestigationMode = true;
-            Police.InvestigationPosition = Game.LocalPlayer.Character.Position;
-
-        }, "CrimeCalledInByCivilians");
-        Debugging.GameFibers.Add(CrimeReportedFiber);
+        int TotalCivisTasked = PoliceScanning.Civilians.Count(x => x.isTasked && x.TaskType == Tasking.AssignableTasks.ReactToCrime);
+        UI.DebugLine = string.Format("CiviRec: {0},Violate: {1},Cnt: {2}", AnyCiviliansCanRecognizePlayer, string.Join(",",CrimesToCallIn.Select(x => x.DebugName)), TotalCivisTasked);
     }
     public static void UpdateCivilians()
     {
@@ -182,9 +131,8 @@ public static class Civilians
     }
     private static void CheckRecognition()
     {
-        AnyCiviliansCanSeePlayer = PoliceScanning.Civilians.Any(x => x.canSeePlayer);
-        AnyCiviliansCanRecognizePlayer = PoliceScanning.Civilians.Any(x => (x.HasSeenPlayerFor >= 5000 && x.DistanceToPlayer <= 10f) || (x.DistanceToPlayer <= 5f && x.DistanceToPlayer > 0f));
-        
+        AnyCiviliansCanSeePlayer = PoliceScanning.Civilians.Any(x => x.CanSeePlayer);
+        AnyCiviliansCanRecognizePlayer = PoliceScanning.Civilians.Any(x => x.CanRecognizePlayer);
     }
     public static void CheckCivilianKilled(GTAPed MyPed)
     {

@@ -104,7 +104,7 @@ public static class PoliceSpawning
             NextPoliceInvestigationSpawn = null;                    
             if (ClosestCop == null)
                 return;
-            Tasking.AddItemToQueue(new PoliceTask(ClosestCop, PoliceTask.Task.TaskInvestigateCrime));
+            Tasking.AddItemToQueue(new CopTask(ClosestCop, Tasking.AssignableTasks.TaskInvestigateCrime));
         }
         catch (Exception e)
         {
