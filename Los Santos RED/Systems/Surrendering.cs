@@ -10,7 +10,7 @@ using ExtensionsMethods;
 
 public static class Surrendering
 {
-    private static bool AreHandsRaised = false;
+   // private static bool AreHandsRaised = false;
     public static bool IsCommitingSuicide { get; set; }
     public static void RaiseHands()
     {
@@ -30,7 +30,7 @@ public static class Surrendering
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
         LosSantosRED.RequestAnimationDictionay(sDict);
         LosSantosRED.RequestAnimationDictionay("busted");
-        AreHandsRaised = true;
+       // AreHandsRaised = true;
         if (inVehicle)
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, true, false, true);

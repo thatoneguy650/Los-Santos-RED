@@ -7,22 +7,11 @@ using System.Threading.Tasks;
 
 public static class Civilians
 {
-    private static uint GameTimeCiviliansLastReported;
-    public static List<GTAPed> PlayerKilledCivilians { get; set; }
     public static uint GameTimeLastHurtCivilian { get; set; }
     public static uint GameTimeLastKilledCivilian { get; set; }
     public static bool IsRunning { get; set; }
     public static bool AnyCiviliansCanSeePlayer { get; set; }
     public static bool AnyCiviliansCanRecognizePlayer { get; set; }
-    public static bool CivilianRecentlyReportedCrime(uint TimeSince)
-    {
-        if (GameTimeCiviliansLastReported == 0)
-            return false;
-        else if (Game.GameTime - GameTimeCiviliansLastReported <= TimeSince)
-            return true;
-        else
-            return false;
-    }
     public static bool RecentlyHurtCivilian(uint TimeSince)
     {
         if (GameTimeLastHurtCivilian == 0)
@@ -80,30 +69,34 @@ public static class Civilians
                     {
                         Snitch.AddCrime(Bad);
                     }
-                    if (!Snitch.isTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
+                    if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
                     {
                         Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
                     }
                 }
-                else if (Snitch.CanHearPlayer)
+                else if (Snitch.CanHearPlayer && CrimesToCallIn.Any(x => x.CanBeCalledInBySound))
                 {
                     foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanBeCalledInBySound))
                     {
                         Snitch.AddCrime(Bad);
                     }
-                    if (!Snitch.isTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
+                    if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
                     {
                         Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
                     }
                 }
-                else if(Snitch.isTasked && !Snitch.CanSeePlayer && !Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 100f)
+                else if(Snitch.IsTasked && !Snitch.CanSeePlayer && !Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 100f)
+                {
+                    Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
+                }
+                else if (!Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 350f)
                 {
                     Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
                 }
             }
         }
-        int TotalCivisTasked = PoliceScanning.Civilians.Count(x => x.isTasked && x.TaskType == Tasking.AssignableTasks.ReactToCrime);
-        UI.DebugLine = string.Format("CiviRec: {0},Violate: {1},Cnt: {2}", AnyCiviliansCanRecognizePlayer, string.Join(",",CrimesToCallIn.Select(x => x.DebugName)), TotalCivisTasked);
+        int TotalCivisTasked = PoliceScanning.Civilians.Count(x => x.IsTasked && x.TaskType == Tasking.AssignableTasks.ReactToCrime);
+        UI.DebugLine = string.Format("CiviRec: {0},Violate: {1},Cnt: {2},Rpt: {3}", AnyCiviliansCanRecognizePlayer, string.Join(",",CrimesToCallIn.Select(x => x.DebugName)), TotalCivisTasked, Tasking.CiviliansReportingCrimes);
     }
     public static void UpdateCivilians()
     {

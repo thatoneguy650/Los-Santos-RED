@@ -548,143 +548,151 @@ public static class DispatchAudio
     }
     public static void ReportCarryingWeapon(ReportType ReportedBy,GTAWeapon CarryingWeapon)
     {
-        Debugging.WriteToLog("ReportCarryingWeapon", "Start 1");
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         string NotificationTitle = GetNotificationTitle(ReportedBy);
         AttentionType WhoToNotifiy = GetWhoToNotify(ReportedBy);
         ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ReportedBy, Game.LocalPlayer.Character.Position);
-        ScannerList.Add(suspect_is.SuspectIs.FileName);
+        
         DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Brandishing");
-        Notification.Text += "~n~Weapon:~s~";
-        Debugging.WriteToLog("ReportCarryingWeapon", "Start 2");
-        if (CarryingWeapon == null)
+        if (ReportedBy == ReportType.Civilians)
         {
-            ScannerList.Add(carrying_weapon.Carryingaweapon.FileName);
-            Subtitles += " suspect is carrying a ~r~weapon~s~";
-            Notification.Text += " Unknown";
-        }
-        else if (CarryingWeapon.Name == "weapon_rpg")
-        {
-            ScannerList.Add(carrying_weapon.ArmedwithanRPG.FileName);
-            Subtitles += " suspect is armed with an ~r~RPG~s~";
-            Notification.Text += " RPG";
-        }
-        else if (CarryingWeapon.Name == "weapon_bat")
-        {
-            ScannerList.Add(carrying_weapon.Armedwithabat.FileName);
-            Subtitles += " suspect is armed with a ~r~bat~s~";
-            Notification.Text += " Bat";
-        }
-        else if (CarryingWeapon.Name == "weapon_grenadelauncher" || CarryingWeapon.Name == "weapon_grenadelauncher_smoke" || CarryingWeapon.Name == "weapon_compactlauncher")
-        {
-            ScannerList.Add(carrying_weapon.Armedwithagrenadelauncher.FileName);
-            Subtitles += " suspect is armed with a ~r~grenade launcher~s~";
-            Notification.Text += " Grenade Launcher";
-        }
-        else if (CarryingWeapon.Name == "weapon_dagger" || CarryingWeapon.Name == "weapon_knife" || CarryingWeapon.Name == "weapon_switchblade")
-        {
-            ScannerList.Add(carrying_weapon.Armedwithaknife.FileName);
-            Subtitles += " suspect is armed with a ~r~knife~s~";
-            Notification.Text += " Knife";
-        }
-        else if (CarryingWeapon.Name == "weapon_minigun")
-        {
-            ScannerList.Add(carrying_weapon.Armedwithaminigun.FileName);
-            Subtitles += " suspect is armed with a ~r~minigun~s~";
-            Notification.Text += " Minigun";
-        }
-        else if (CarryingWeapon.Name == "weapon_sawnoffshotgun")
-        {
-            ScannerList.Add(carrying_weapon.Armedwithasawedoffshotgun.FileName);
-            Subtitles += " suspect is armed with a ~r~sawed off shotgun~s~";
-            Notification.Text += " Sawed Off Shotgun";
-        }
-        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.LMG)
-        {
-            ScannerList.Add(carrying_weapon.Armedwithamachinegun.FileName);
-            Subtitles += " suspect is armed with a ~r~machine gun~s~";
-            Notification.Text += " Machine Gun";
-        }
-        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Pistol)
-        {
-            ScannerList.Add(carrying_weapon.Armedwithafirearm.FileName);
-            Subtitles += " suspect is armed with a ~r~pistol~s~";
-            Notification.Text += " Pistol";
-        }
-        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Shotgun)
-        {
-            ScannerList.Add(carrying_weapon.Armedwithashotgun.FileName);
-            Subtitles += " suspect is armed with a ~r~shotgun~s~";
-            Notification.Text += " Shotgun";
-        }
-        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.SMG)
-        {
-            ScannerList.Add(carrying_weapon.Armedwithasubmachinegun.FileName);
-            Subtitles += " suspect is armed with a ~r~submachine gun~s~";
-            Notification.Text += " Submachine Gun";
-        }
-        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.AR)
-        {
-            ScannerList.Add(carrying_weapon.Carryinganassaultrifle.FileName);
-            Subtitles += " suspect is carrying an ~r~assault rifle~s~";
-            Notification.Text += " Assault Rifle";
-        }
-        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Sniper)
-        {
-            ScannerList.Add(carrying_weapon.Armedwithasniperrifle.FileName);
-            Subtitles += " suspect is armed with a ~r~sniper rifle~s~";
-            Notification.Text += " Sniper Rifle";
-        }
-        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Heavy)
-        {
-            ScannerList.Add(status_message.HeavilyArmed.FileName);
-            Subtitles += " suspect is ~r~heaviy armed~s~";
-            Notification.Text += " Heavy Weapon";
-        }
-        else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Melee)
-        {
-            ScannerList.Add(carrying_weapon.Carryingaweapon.FileName);
-            Subtitles += " suspect is carrying a ~r~weapon~s~";
-            Notification.Text += " melee weapon";
-        }
-        else
-        {
-            int Num = rnd.Next(1, 5);
-            if (Num == 1)
+            if (CarryingWeapon == null || CarryingWeapon.Category == GTAWeapon.WeaponCategory.Melee)
             {
-                ScannerList.Add(carrying_weapon.Armedwithafirearm.FileName);
-                Subtitles += " suspect is armed with a ~r~firearm~s~";
-            }
-            else if (Num == 2)
-            {
-                ScannerList.Add(carrying_weapon.Armedwithagat.FileName);
-                Subtitles += " suspect is armed with a ~r~gat~s~";
-            }
-            else if (Num == 3)
-            {
-                ScannerList.Add(carrying_weapon.Carryingafirearm.FileName);
-                Subtitles += " suspect is carrying a ~r~firearm~s~";
+                ScannerList.Add(crime_suspect_armed_and_dangerous.Asuspectarmedanddangerous.FileName);
+                Subtitles += " a suspect ~r~armed and dangerous~s~";
+                Notification.Text += " Unknown";
             }
             else
             {
-                ScannerList.Add(carrying_weapon.Carryingagat.FileName);
-                Subtitles += " suspect is carrying a ~r~gat~s~";
+                ScannerList.Add(crime_firearms_possession.Afirearmspossession.FileName);
+                Subtitles += " a ~r~firearms possession~s~";
+                Notification.Text += " Unknown";
             }
-            Notification.Text += " Gat";
+        }
+        else
+        {
+            Notification.Text += "~n~Weapon:~s~";
+            ScannerList.Add(suspect_is.SuspectIs.FileName);
+            if (CarryingWeapon == null)
+            {
+                ScannerList.Add(carrying_weapon.Carryingaweapon.FileName);
+                Subtitles += " suspect is carrying a ~r~weapon~s~";
+                Notification.Text += " Unknown";
+            }
+            else if (CarryingWeapon.Name == "weapon_rpg")
+            {
+                ScannerList.Add(carrying_weapon.ArmedwithanRPG.FileName);
+                Subtitles += " suspect is armed with an ~r~RPG~s~";
+                Notification.Text += " RPG";
+            }
+            else if (CarryingWeapon.Name == "weapon_bat")
+            {
+                ScannerList.Add(carrying_weapon.Armedwithabat.FileName);
+                Subtitles += " suspect is armed with a ~r~bat~s~";
+                Notification.Text += " Bat";
+            }
+            else if (CarryingWeapon.Name == "weapon_grenadelauncher" || CarryingWeapon.Name == "weapon_grenadelauncher_smoke" || CarryingWeapon.Name == "weapon_compactlauncher")
+            {
+                ScannerList.Add(carrying_weapon.Armedwithagrenadelauncher.FileName);
+                Subtitles += " suspect is armed with a ~r~grenade launcher~s~";
+                Notification.Text += " Grenade Launcher";
+            }
+            else if (CarryingWeapon.Name == "weapon_dagger" || CarryingWeapon.Name == "weapon_knife" || CarryingWeapon.Name == "weapon_switchblade")
+            {
+                ScannerList.Add(carrying_weapon.Armedwithaknife.FileName);
+                Subtitles += " suspect is armed with a ~r~knife~s~";
+                Notification.Text += " Knife";
+            }
+            else if (CarryingWeapon.Name == "weapon_minigun")
+            {
+                ScannerList.Add(carrying_weapon.Armedwithaminigun.FileName);
+                Subtitles += " suspect is armed with a ~r~minigun~s~";
+                Notification.Text += " Minigun";
+            }
+            else if (CarryingWeapon.Name == "weapon_sawnoffshotgun")
+            {
+                ScannerList.Add(carrying_weapon.Armedwithasawedoffshotgun.FileName);
+                Subtitles += " suspect is armed with a ~r~sawed off shotgun~s~";
+                Notification.Text += " Sawed Off Shotgun";
+            }
+            else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.LMG)
+            {
+                ScannerList.Add(carrying_weapon.Armedwithamachinegun.FileName);
+                Subtitles += " suspect is armed with a ~r~machine gun~s~";
+                Notification.Text += " Machine Gun";
+            }
+            else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Pistol)
+            {
+                ScannerList.Add(carrying_weapon.Armedwithafirearm.FileName);
+                Subtitles += " suspect is armed with a ~r~pistol~s~";
+                Notification.Text += " Pistol";
+            }
+            else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Shotgun)
+            {
+                ScannerList.Add(carrying_weapon.Armedwithashotgun.FileName);
+                Subtitles += " suspect is armed with a ~r~shotgun~s~";
+                Notification.Text += " Shotgun";
+            }
+            else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.SMG)
+            {
+                ScannerList.Add(carrying_weapon.Armedwithasubmachinegun.FileName);
+                Subtitles += " suspect is armed with a ~r~submachine gun~s~";
+                Notification.Text += " Submachine Gun";
+            }
+            else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.AR)
+            {
+                ScannerList.Add(carrying_weapon.Carryinganassaultrifle.FileName);
+                Subtitles += " suspect is carrying an ~r~assault rifle~s~";
+                Notification.Text += " Assault Rifle";
+            }
+            else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Sniper)
+            {
+                ScannerList.Add(carrying_weapon.Armedwithasniperrifle.FileName);
+                Subtitles += " suspect is armed with a ~r~sniper rifle~s~";
+                Notification.Text += " Sniper Rifle";
+            }
+            else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Heavy)
+            {
+                ScannerList.Add(status_message.HeavilyArmed.FileName);
+                Subtitles += " suspect is ~r~heaviy armed~s~";
+                Notification.Text += " Heavy Weapon";
+            }
+            else if (CarryingWeapon.Category == GTAWeapon.WeaponCategory.Melee)
+            {
+                ScannerList.Add(carrying_weapon.Carryingaweapon.FileName);
+                Subtitles += " suspect is carrying a ~r~weapon~s~";
+                Notification.Text += " melee weapon";
+            }
+            else
+            {
+                int Num = rnd.Next(1, 5);
+                if (Num == 1)
+                {
+                    ScannerList.Add(carrying_weapon.Armedwithafirearm.FileName);
+                    Subtitles += " suspect is armed with a ~r~firearm~s~";
+                }
+                else if (Num == 2)
+                {
+                    ScannerList.Add(carrying_weapon.Armedwithagat.FileName);
+                    Subtitles += " suspect is armed with a ~r~gat~s~";
+                }
+                else if (Num == 3)
+                {
+                    ScannerList.Add(carrying_weapon.Carryingafirearm.FileName);
+                    Subtitles += " suspect is carrying a ~r~firearm~s~";
+                }
+                else
+                {
+                    ScannerList.Add(carrying_weapon.Carryingagat.FileName);
+                    Subtitles += " suspect is carrying a ~r~gat~s~";
+                }
+                Notification.Text += " Gat";
+            }
         }
         Subtitles += "~s~";
-        Debugging.WriteToLog("ReportCarryingWeapon", "Start 3");
-        Debugging.WriteToLog("ReportCarryingWeapon", Subtitles);
-
-
-        foreach(string mystring in ScannerList)
-        {
-            Debugging.WriteToLog("ReportCarryingWeapon List", mystring);
-        }
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
-        Debugging.WriteToLog("ReportCarryingWeapon", "Finish");
     }
     public static void ReportFelonySpeeding(ReportType ReportedBy, GTAVehicle vehicle, float Speed)
     {
@@ -905,7 +913,7 @@ public static class DispatchAudio
         {
             StolenCar = LosSantosRED.GetPlayersCurrentTrackedVehicle();
         }
-        if (StolenCar != null)
+        if (StolenCar != null && !StolenCar.HasBeenDescribedByDispatch)
         {
             if (LosSantosRED.PlayerIsWanted)
             {
@@ -918,7 +926,7 @@ public static class DispatchAudio
                 Subtitles += "Target last reported driving a";
             }
             ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
-            AddVehicleDescription(StolenCar, ref ScannerList, true, ref Subtitles, ref Notification, false, true,false);
+            AddVehicleDescription(StolenCar, ref ScannerList, ReportedBy == ReportType.Civilians, ref Subtitles, ref Notification, false, true,false);
         }
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
@@ -1103,7 +1111,6 @@ public static class DispatchAudio
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         string NotificationTitle = GetNotificationTitle(ReportedBy);
-        AttentionType WhoToNotifiy = GetWhoToNotify(ReportedBy);
         DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Suicide Attempt");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportedBy, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_9_14a_attempted_suicide.Anattemptedsuicide.FileName, crime_9_14a_attempted_suicide.Apossibleattemptedsuicide.FileName }.PickRandom());
@@ -2017,7 +2024,7 @@ public static class DispatchAudio
     }
     public static string GetVehicleDisplayName(Vehicle VehicleDescription)
     {
-        string ModelName = "";
+        string ModelName;
         unsafe
         {
             IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", VehicleDescription.Model.Hash);

@@ -24,7 +24,7 @@ public static class ScriptController
     private static TickTask PoliceVehicleScanningTick;
     private static TickTask DispatchAudioTick;
     private static TickTask WeaponDroppingTick;
-    private static TickTask WeatherCheckingTick;
+    //private static TickTask WeatherCheckingTick;
     private static TickTask LosSantosREDTick;
     private static TickTask PoliceTick;
     private static TickTask CivilianTick;
@@ -64,7 +64,7 @@ public static class ScriptController
         PersonOfInterestTick = new TickTask(500, "PersonOfInterestTick", PersonOfInterest.PersonOfInterestTick, TickTask.Type.Normal);
 
         DispatchAudioTick = new TickTask(500, "DispatchAudioTick", DispatchAudio.PlayDispatchQueue, TickTask.Type.Optional);
-        WeatherCheckingTick = new TickTask(5000, "WeatherCheckingTick", WeatherReporting.CheckWeather, TickTask.Type.Optional);
+        //WeatherCheckingTick = new TickTask(5000, "WeatherCheckingTick", WeatherReporting.CheckWeather, TickTask.Type.Optional);
         PoliceSpeechTick = new TickTask(500, "PoliceSpeechTick", PoliceSpeech.CheckSpeech, TickTask.Type.Optional);
         RandomCopSpawningTick = new TickTask(500, "RandomCopSpawningTick", PoliceSpawning.RandomCopTick, TickTask.Type.Optional);//was 500//was 3000
         CleanupCopTick = new TickTask(5000, "CleanupCopTick", PoliceSpawning.RemoveFarAwayRandomlySpawnedCops, TickTask.Type.Optional);
@@ -75,7 +75,7 @@ public static class ScriptController
         {
 
             LosSantosREDTick,PoliceTick,VehicleEngineTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
-            ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick,WeatherCheckingTick,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick,MuggingTick,ClockTick
+            ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick/*,WeatherCheckingTick*/,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick,MuggingTick,ClockTick
         };
 
         MainLoop();
@@ -143,8 +143,8 @@ public static class ScriptController
                             //Least Important
                             if (DispatchAudio.IsRunning && DispatchAudioTick.ShouldRun)
                                 DispatchAudioTick.RunTask();
-                            else if (WeatherReporting.IsRunning && WeatherCheckingTick.ShouldRun)
-                                WeatherCheckingTick.RunTask();
+                            //else if (WeatherReporting.IsRunning && WeatherCheckingTick.ShouldRun)
+                            //    WeatherCheckingTick.RunTask();
                             else if (PoliceSpeech.IsRunning && PoliceSpeechTick.ShouldRun)//used to be IF
                                 PoliceSpeechTick.RunTask();
                             else if (Police.IsRunning && Settings.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF

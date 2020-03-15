@@ -89,6 +89,8 @@ namespace ExtensionsMethods
                 return false;
             else if (Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)2725352035 || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)966099553)
                 return false;
+            else if(!NativeFunction.CallByName<bool>("IS_PLAYER_CONTROL_ON", Game.LocalPlayer))
+                return false;
             else
                 return true;
         }

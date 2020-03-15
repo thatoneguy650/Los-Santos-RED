@@ -18,7 +18,7 @@ public static class PoliceScanning
     {
         get
         {
-            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(10000) || x.DistanceToPlayer <= 25f).Select(x => (x.isInHelicopter ? "~b~LSPD-ASD~s~" : x.AssignedAgency.ColoredInitials)).Distinct().ToArray());
+            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(10000) || x.DistanceToPlayer <= 25f).Select(x => (x.IsInHelicopter ? "~b~LSPD-ASD~s~" : x.AssignedAgency.ColoredInitials)).Distinct().ToArray());
         }
     }
     public static void Initialize()
@@ -84,7 +84,7 @@ public static class PoliceScanning
             {
                 if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
                 {
-                    Civilians.Add(new GTAPed(Pedestrian, false, Pedestrian.Health) { WillCallPolice = LosSantosRED.MyRand.Next(1, 11) <= 4 });
+                    Civilians.Add(new GTAPed(Pedestrian, false, Pedestrian.Health) { WillCallPolice = LosSantosRED.MyRand.Next(1, 11) <= 6 });
                 }
             }
         }  

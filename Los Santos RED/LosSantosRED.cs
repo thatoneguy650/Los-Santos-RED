@@ -461,7 +461,7 @@ public static class LosSantosRED
         Game.LocalPlayer.Character.IsInvincible = true;
         //Police.SetWantedLevel(0,"You died");
         TransitionToSlowMo();
-        if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.isTasked || x.CanSeePlayer))
+        if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.IsTasked || x.CanSeePlayer))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {

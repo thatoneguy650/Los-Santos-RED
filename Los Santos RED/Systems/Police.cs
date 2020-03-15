@@ -234,13 +234,14 @@ internal static class Police
         }
         else //removed
         {
+            bool PlayDispatch = Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition) <= 250f;
             AddUpdateInvestigationBlip(Vector3.Zero, NearInvestigationDistance);
             if (LosSantosRED.PlayerIsNotWanted)
             {
                 if(PersonOfInterest.PlayerIsPersonOfInterest)
                     PersonOfInterest.ResetPersonOfInterest(false);
-
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportNoFurtherUnits, 20) { IsAmbient = true });
+                if(PlayDispatch)
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportNoFurtherUnits, 20) { IsAmbient = true });
             }
             GameTimeStartedInvestigation = 0;
         }
@@ -256,8 +257,7 @@ internal static class Police
     {
         //GO to the nearest road node
         Vector3 SpawnLocation = Vector3.Zero;
-        float Heading = 0f;
-        LosSantosRED.GetStreetPositionandHeading(InvestigationPosition, out SpawnLocation, out Heading);
+        LosSantosRED.GetStreetPositionandHeading(InvestigationPosition, out SpawnLocation, out float Heading);
         if (SpawnLocation != Vector3.Zero)
             InvestigationPosition = SpawnLocation;
     }
@@ -299,17 +299,17 @@ internal static class Police
                 }
                 Cop.Health = NewHealth;
             }
-            Cop.isInVehicle = Cop.Pedestrian.IsInAnyVehicle(false);
-            if (Cop.isInVehicle)
+            Cop.IsInVehicle = Cop.Pedestrian.IsInAnyVehicle(false);
+            if (Cop.IsInVehicle)
             {
-                Cop.isInHelicopter = Cop.Pedestrian.IsInHelicopter;
-                if (!Cop.isInHelicopter)
-                    Cop.isOnBike = Cop.Pedestrian.IsOnBike;
+                Cop.IsInHelicopter = Cop.Pedestrian.IsInHelicopter;
+                if (!Cop.IsInHelicopter)
+                    Cop.IsOnBike = Cop.Pedestrian.IsOnBike;
             }
             else
             {
-                Cop.isInHelicopter = false;
-                Cop.isOnBike = false;
+                Cop.IsInHelicopter = false;
+                Cop.IsOnBike = false;
             }
             Cop.UpdateDistance();
         }
@@ -407,17 +407,21 @@ internal static class Police
                 SawPlayerThisCheck = true;
 
                 if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                {
                     if (Civi.CanSeePlayer || Civi.DistanceToPlayer <= 7f)
                         Civi.CanRecognizePlayer = true;
                     else
                         Civi.CanRecognizePlayer = false;
+                }
                 else
+                {
                     if (Civi.HasSeenPlayerFor >= 2000 && Civi.DistanceToPlayer <= 25f)
-                    Civi.CanRecognizePlayer = true;
-                else if (Civi.DistanceToPlayer <= 1f && Civi.DistanceToPlayer > 0f)
-                    Civi.CanRecognizePlayer = true;
-                else
-                    Civi.CanRecognizePlayer = false;
+                        Civi.CanRecognizePlayer = true;
+                    //else if (Civi.DistanceToPlayer <= 1f && Civi.DistanceToPlayer > 0f)
+                    //    Civi.CanRecognizePlayer = true;
+                    else
+                        Civi.CanRecognizePlayer = false;
+                }
             }
             else
             {
@@ -428,36 +432,36 @@ internal static class Police
             TotalEntityNativeLOSChecks++;
         }
     }
-    private static bool PoliceCanSeeEntity(Entity EntityToCheck)
-    {
-        if (!EntityToCheck.Exists())
-            return false;
+    //private static bool PoliceCanSeeEntity(Entity EntityToCheck)
+    //{
+    //    if (!EntityToCheck.Exists())
+    //        return false;
 
-        float RangeToCheck = 55f;
+    //    float RangeToCheck = 55f;
 
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
-        {
-            if (EntityToCheck.IsInFront(Cop.Pedestrian) && Cop.Pedestrian.IsInRangeOf(EntityToCheck.Position, RangeToCheck) && !Cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.Pedestrian, EntityToCheck)) //was 55f
-            {
-                return true;
-            }
-        }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInHelicopter))
-        {
-            if (Cop.Pedestrian.IsInRangeOf(EntityToCheck.Position, 250f) && !Cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Cop.Pedestrian, EntityToCheck, 17)) //was 55f
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    //    foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
+    //    {
+    //        if (EntityToCheck.IsInFront(Cop.Pedestrian) && Cop.Pedestrian.IsInRangeOf(EntityToCheck.Position, RangeToCheck) && !Cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.Pedestrian, EntityToCheck)) //was 55f
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //    foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInHelicopter))
+    //    {
+    //        if (Cop.Pedestrian.IsInRangeOf(EntityToCheck.Position, 250f) && !Cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Cop.Pedestrian, EntityToCheck, 17)) //was 55f
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //}
     public static void SetPrimaryPursuer()
     {
         if (PoliceScanning.CopPeds.Count == 0)
             return;
         foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
-            Cop.isPursuitPrimary = false;
+            Cop.IsPursuitPrimary = false;
         }
     }
     public static void IssueCopPistol(GTACop Cop)
@@ -819,7 +823,7 @@ internal static class Police
             foreach (GTACop Cop in PoliceScanning.CopPeds)
             {
                 Cop.AtWantedCenterDuringSearchMode = false;
-                if (Cop.isTasked && (Cop.TaskType == Tasking.AssignableTasks.GoToWantedCenter || Cop.TaskType == Tasking.AssignableTasks.SimpleInvestigate || Cop.TaskType == Tasking.AssignableTasks.RandomSpawnIdle))
+                if (Cop.IsTasked && (Cop.TaskType == Tasking.AssignableTasks.GoToWantedCenter || Cop.TaskType == Tasking.AssignableTasks.SimpleInvestigate || Cop.TaskType == Tasking.AssignableTasks.RandomSpawnIdle))
                 {
                     Tasking.AddItemToQueue(new CopTask(Cop, Tasking.AssignableTasks.Untask));
                 }

@@ -45,7 +45,7 @@ internal static class PoliceSpeech
         {
             foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.CanSpeak && x.DistanceToPlayer <= 45f && x.Pedestrian.Exists() && !x.Pedestrian.IsDead))
             {
-                if (Cop.isTasked)
+                if (Cop.IsTasked)
                 {
                     if (LosSantosRED.IsBusted && Cop.DistanceToPlayer <= 20f)
                     {

@@ -449,7 +449,7 @@ public static class PoliceSpawning
     {
         try
         {
-            GTACop ClosestDriver = PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsInAnyVehicle(false) && !x.isInHelicopter && x.Pedestrian.CurrentVehicle.Driver == x.Pedestrian && x.Pedestrian.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            GTACop ClosestDriver = PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsInAnyVehicle(false) && !x.IsInHelicopter && x.Pedestrian.CurrentVehicle.Driver == x.Pedestrian && x.Pedestrian.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             if (ClosestDriver != null)
             {
                 Ped Doggo = new Ped("a_c_shepherd", ClosestDriver.Pedestrian.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
@@ -513,7 +513,7 @@ public static class PoliceSpawning
         {
             if (K9.Pedestrian.IsInAnyVehicle(false))
             {
-                GTACop ClosestDriver = PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsInAnyVehicle(false) && !x.isInHelicopter && x.Pedestrian.CurrentVehicle.Driver == x.Pedestrian && x.Pedestrian.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                GTACop ClosestDriver = PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsInAnyVehicle(false) && !x.IsInHelicopter && x.Pedestrian.CurrentVehicle.Driver == x.Pedestrian && x.Pedestrian.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
                 if (ClosestDriver != null)
                 {
                     PutK9InCar(K9, ClosestDriver);

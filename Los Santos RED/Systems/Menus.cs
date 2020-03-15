@@ -24,7 +24,7 @@ internal static class Menus
     private static UIMenuItem menuMainChangeHelmet;
     private static UIMenuItem menuDebugKillPlayer;
     private static UIMenuListItem menuDebugRandomWeapon;
-    private static UIMenuCheckboxItem menuDebugEnabled;
+   // private static UIMenuCheckboxItem menuDebugEnabled;
     private static UIMenuItem menuDeathUndie;
     //private static UIMenuItem menuDeathRespawnInPlace;
    // private static UIMenuItem menuDeathNormalRespawn;
@@ -39,7 +39,7 @@ internal static class Menus
     private static UIMenuItem menuDebugGiveMoney;
     private static UIMenuItem menuDebugHealthAndArmor;
     private static UIMenuItem menuActionSmoking;
-    private static UIMenuCheckboxItem menuRadioOff;
+   // private static UIMenuCheckboxItem menuRadioOff;
     private static UIMenuListItem menuAutoSetRadioStation;
 
     private static MenuPool menuPool;
@@ -50,7 +50,7 @@ internal static class Menus
     private static UIMenu optionsMenu;
     private static UIMenu actionsMenu;
 
-    private static UIMenu talkMenu;
+   // private static UIMenu talkMenu;
 
     private static int RandomWeaponCategory;
     //private static Vector3 WorldPos;
@@ -60,7 +60,7 @@ internal static class Menus
     private static Location CurrentSelectedHospitalLocation;
     //private static string CurrentSelectedRadioStation;
 
-    private static List<string> strRadioStations = new List<string> { "NONE", "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
+    private static readonly List<string> strRadioStations = new List<string> { "NONE", "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
 
 
     public static float TakeoverRadius;

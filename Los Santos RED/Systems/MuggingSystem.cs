@@ -10,24 +10,11 @@ using System.Threading.Tasks;
 public static class MuggingSystem
 {
     
-    private static uint GameTimeLastDispatchedMugging;
     private static Ped LastAimedAtPed;
-    private static Vector3 PlaceLastMugged;
+   // private static Vector3 PlaceLastMugged;
     private static uint GameTimeStartedAimingAtTarget;
     public static bool IsRunning { get; set; }
     public static bool IsMugging { get; set; }
-    public static bool RecentlyDispatchedMugging
-    {
-        get
-        {
-            if (GameTimeLastDispatchedMugging == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastDispatchedMugging <= 60000)
-                return true;
-            else
-                return false;
-        }
-    }
     public static bool CanMugFromBehind
     {
         get
@@ -72,7 +59,7 @@ public static class MuggingSystem
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false))
             {
                 if (CanSee)
-                    MugTarget(GTAPedTarget, true,false);
+                    MugTarget(GTAPedTarget,false);
                 else
                 {
                     if (LastAimedAtPed == GTAPedTarget.Pedestrian)
@@ -86,7 +73,7 @@ public static class MuggingSystem
                     }
                 }
                 if (CanMugFromBehind)
-                    MugTarget(GTAPedTarget, true,false);
+                    MugTarget(GTAPedTarget,false);
             }
             else
             {
@@ -122,7 +109,7 @@ public static class MuggingSystem
                 return;
 
             if(!GTAPedTarget.HasBeenMugged)
-                MugTarget(GTAPedTarget, true,true);
+                MugTarget(GTAPedTarget,true);
 
             Debugging.WriteToLog("Muggin Melee", string.Format("Made it to the End Ped Handle: {0}", Handle));
         }
@@ -132,7 +119,7 @@ public static class MuggingSystem
 
         // UI.DebugLine = string.Format("IsMugging: {0},TimeAimedAtMuggingTarget: {1},RecentlyDispatchedMugging: {2}", IsMugging, TimeAimedAtMuggingTarget, RecentlyDispatchedMugging);
     }
-    private static void MugTarget(GTAPed MuggingTarget,bool CanSee,bool IsMelee)
+    private static void MugTarget(GTAPed MuggingTarget,bool IsMelee)
     {
         GameFiber.StartNew(delegate
         {
@@ -192,11 +179,12 @@ public static class MuggingSystem
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, LosSantosRED.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
+                //MuggingTarget.PositionLastSeenCrime = MuggingTarget.Pedestrian.Position;
                 //Police.InvestigationPosition = MuggingTarget.Pedestrian.Position;
-                PlaceLastMugged = MuggingTarget.Pedestrian.Position;
-                MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
+                //PlaceLastMugged = MuggingTarget.Pedestrian.Position;
+                //MuggingTarget.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
                 MuggingTarget.AddCrime(Police.CurrentCrimes.Mugging);
-                MuggingTarget.WillCallPolice = true;
+                //MuggingTarget.WillCallPolice = true;
                 //bool CallPolice = LosSantosRED.MyRand.Next(1, 11) <= 8;//some people just dont call the police for whatever reason, even when they are robbed
                 //bool HaveDescription = CanSee || LosSantosRED.MyRand.Next(1, 11) <= 3;
                 //if (CallPolice)

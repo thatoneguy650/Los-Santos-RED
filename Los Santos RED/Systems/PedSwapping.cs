@@ -64,7 +64,11 @@ public static class PedSwapping
     private static void GenerateNameForPed()
     {
         Ped Doppleganger = new Ped(CurrentPlayerModel, new Vector3(0f, 0f, 0f), 0f);
-        SuspectName = PedNames.GetRandomName(Doppleganger.IsMale);
+        if (Doppleganger.Exists())
+            SuspectName = PedNames.GetRandomName(Doppleganger.IsMale);
+        else
+            SuspectName = PedNames.GetRandomName();
+
         if (Doppleganger.Exists())
             Doppleganger.Delete();
     }
@@ -152,7 +156,7 @@ public static class PedSwapping
         }
         catch (Exception e3)
         {
-            Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message);
+            Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
     private static void StoreTargetPedData(Ped TargetPed)

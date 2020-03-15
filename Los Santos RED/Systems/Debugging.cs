@@ -190,7 +190,7 @@ public static class Debugging
         foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         {
             WriteToLog("DebugNumpad7", string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11},Agency: {12}, DistancetoInvestigation: {13}",
-                    Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.isTasked, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
+                    Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.IsTasked, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
         }
 
         WriteToLog("DebugNumpad7", string.Format("PoliceInInvestigationMode: {0}", Police.PoliceInInvestigationMode));
@@ -217,7 +217,6 @@ public static class Debugging
         WriteToLog("DebugNumpad7", string.Format("Near Any MurderVictim: {0}", Civilians.NearMurderVictim(15f)));
         WriteToLog("DebugNumpad7", "--------------------------------");
         WriteToLog("DebugNumpad7", "-------Criminal History---------");
-        WriteToLog("DebugNumpad7", Game.GameTime.ToString());
         foreach (RapSheet MyRapSheet in PersonOfInterest.CriminalHistory)
         {
             WriteToLog("DebugNumpad7", MyRapSheet.DebugPrintCrimes());
@@ -229,6 +228,13 @@ public static class Debugging
         WriteToLog("DebugNumpad7", "-------Game Fibers-----------");
         WriteToLog("DebugNumpad7", string.Join(";", GameFibers.Where(x => x.IsAlive).GroupBy(g => g.Name).Select(group => group.Key + ":" + group.Count())));
         WriteToLog("DebugNumpad7", "--------------------------------");
+        WriteToLog("DebugNumpad7", "-------Player State-------------");
+        WriteToLog("DebugNumpad8", string.Format("CAN_PLAYER_START_MISSION: {0}", NativeFunction.CallByName<bool>("CAN_PLAYER_START_MISSION", Game.LocalPlayer)));
+        WriteToLog("DebugNumpad8", string.Format("IS_PLAYER_CONTROL_ON: {0}", NativeFunction.CallByName<bool>("IS_PLAYER_CONTROL_ON", Game.LocalPlayer)));
+        WriteToLog("DebugNumpad8", string.Format("_IS_PLAYER_CAM_CONTROL_DISABLED: {0}", NativeFunction.CallByHash<bool>(0x7C814D2FB49F40C0, Game.LocalPlayer)));
+        WriteToLog("DebugNumpad8", string.Format("IS_PLAYER_SCRIPT_CONTROL_ON: {0}", NativeFunction.CallByName<bool>("IS_PLAYER_SCRIPT_CONTROL_ON", Game.LocalPlayer)));
+        WriteToLog("DebugNumpad8", string.Format("IsConsideredArmed: {0}", Game.LocalPlayer.Character.IsConsideredArmed()));
+
     }
     private static void DebugNumpad9()
     {

@@ -151,7 +151,7 @@ public static class WeatherReporting
     }
     public static void CheckWeather()
     {
-        return;
+      //  return;
 
         CurrentWindSpeed = NativeFunction.CallByName<float>("GET_WIND_SPEED");
         CurrentWeather = (WeatherTypeHash)NativeFunction.CallByName<int>("GET_PREV_WEATHER_TYPE_HASH_NAME");
