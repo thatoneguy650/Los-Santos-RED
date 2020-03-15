@@ -24,7 +24,9 @@ internal static class Menus
     private static UIMenuItem menuMainChangeHelmet;
     private static UIMenuItem menuDebugKillPlayer;
     private static UIMenuListItem menuDebugRandomWeapon;
-   // private static UIMenuCheckboxItem menuDebugEnabled;
+    private static UIMenuItem menuDebugRandomVariation;
+
+    // private static UIMenuCheckboxItem menuDebugEnabled;
     private static UIMenuItem menuDeathUndie;
     //private static UIMenuItem menuDeathRespawnInPlace;
    // private static UIMenuItem menuDeathNormalRespawn;
@@ -96,6 +98,9 @@ internal static class Menus
         menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
         menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", new List<dynamic> { "Melee", "Pistol", "Shotgun", "SMG", "AR", "LMG", "Sniper", "Heavy" });
+        menuDebugRandomVariation = new UIMenuItem("Apply Random Variation", "Add some cool stuff to your gun");
+
+
         //menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
         menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
         menuDebugHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
@@ -106,6 +111,7 @@ internal static class Menus
         debugMenu.AddItem(menuDebugResetCharacter);
         debugMenu.AddItem(menuDebugKillPlayer);
         debugMenu.AddItem(menuDebugRandomWeapon);
+        debugMenu.AddItem(menuDebugRandomVariation);
         //debugMenu.AddItem(menuDebugEnabled);
         debugMenu.AddItem(menuDebugGiveMoney);
         debugMenu.AddItem(menuDebugHealthAndArmor);
@@ -558,6 +564,14 @@ internal static class Menus
         {
             GTAWeapon myGun = GTAWeapons.GetRandomWeapon((GTAWeapon.WeaponCategory)RandomWeaponCategory);
             Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+            if (myGun.PlayerVariations.Any())
+                LosSantosRED.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
+        }
+        if (selectedItem == menuDebugRandomVariation)
+        {
+            GTAWeapon myGun = LosSantosRED.GetCurrentWeapon();
+            if (myGun == null)
+                return;
             if (myGun.PlayerVariations.Any())
                 LosSantosRED.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
         }

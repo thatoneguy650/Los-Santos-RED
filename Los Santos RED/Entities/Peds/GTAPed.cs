@@ -28,6 +28,7 @@ public class GTAPed
     public float DistanceToLastSeen { get; set; }
     public bool WasMarkedNonPersistent { get; set; } = false;
     public bool HasBeenMugged { get; set; } = false;
+    public bool WillFight { get; set; } = false;
     public Vector3 PositionLastSeenCrime { get; set; } = Vector3.Zero;
     public bool CanFlee { get; set; } = true;
     public bool WillCallPolice { get; set; } = true;
@@ -105,12 +106,12 @@ public class GTAPed
         }
     }
 
-    public void AddCrime(Crime CrimeToAdd)
+    public void AddCrime(Crime CrimeToAdd,Vector3 PositionToReport)
     {
         if(!CrimesWitnessed.Any(x => x.DebugName == CrimeToAdd.DebugName))
         {
             CrimesWitnessed.Add(CrimeToAdd);
-            PositionLastSeenCrime = Pedestrian.Position;
+            PositionLastSeenCrime = PositionToReport;
         }
     }
 }

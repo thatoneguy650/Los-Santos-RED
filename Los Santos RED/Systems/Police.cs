@@ -415,10 +415,10 @@ internal static class Police
                 }
                 else
                 {
-                    if (Civi.HasSeenPlayerFor >= 2000 && Civi.DistanceToPlayer <= 25f)
+                    if (Civi.HasSeenPlayerFor >= 1000)
                         Civi.CanRecognizePlayer = true;
-                    //else if (Civi.DistanceToPlayer <= 1f && Civi.DistanceToPlayer > 0f)
-                    //    Civi.CanRecognizePlayer = true;
+                    else if (Civi.DistanceToPlayer <= 2f && Civi.DistanceToPlayer > 0f)
+                        Civi.CanRecognizePlayer = true;
                     else
                         Civi.CanRecognizePlayer = false;
                 }

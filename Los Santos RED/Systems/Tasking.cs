@@ -143,24 +143,7 @@ public static class Tasking
         }
         else
         {
-            if(Snitch.Pedestrian.IsInAnyVehicle(false))
-            {
-                if (LosSantosRED.MyRand.Next(1, 11) <= 7)
-                {
-                    Snitch.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character,100f,-1);
-                }
-            }
-            else
-            {
-                if (LosSantosRED.MyRand.Next(1, 11) <= 9)
-                {
-                    Snitch.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
-                }
-                else
-                {
-                    Snitch.Pedestrian.Tasks.Cower(-1);
-                }
-            }
+            PickReactTask(Snitch);
         }
     }
     private static void CivilianReportCrime(GTAPed CivilianToReport)
@@ -177,11 +160,24 @@ public static class Tasking
             CivilianToReport.Pedestrian.IsPersistent = true;
             CiviliansReportingCrimes++;
 
-            if (LosSantosRED.MyRand.Next(1, 11) <= 5)
-                CivilianToReport.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
+            if (CivilianToReport.Pedestrian.IsInAnyVehicle(false))
+            {
+                if (LosSantosRED.MyRand.Next(1, 11) <= 7 && CivilianToReport.Pedestrian.IsDriver())
+                {
+                    CivilianToReport.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 100f, -1);
+                }
+            }
             else
-                CivilianToReport.Pedestrian.Tasks.Cower(-1);
-
+            {
+                if (LosSantosRED.MyRand.Next(1, 11) <= 9)
+                {
+                    CivilianToReport.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
+                }
+                else
+                {
+                    CivilianToReport.Pedestrian.Tasks.Cower(-1);
+                }
+            }
 
             int TimeToWait = LosSantosRED.MyRand.Next(3000, 5000);
 
@@ -215,7 +211,7 @@ public static class Tasking
                 return;
             }
 
-            if (!CivilianToReport.Pedestrian.Exists() || CivilianToReport.Pedestrian.IsDead)
+            if (!CivilianToReport.Pedestrian.Exists() || CivilianToReport.Pedestrian.IsDead || LosSantosRED.IsDead || LosSantosRED.IsBusted)
             {
                 if (CivilianToReport.Pedestrian.Exists())
                     CivilianToReport.Pedestrian.IsPersistent = false;
@@ -263,6 +259,44 @@ public static class Tasking
 
         }, "CrimeCalledInByCivilians");
         Debugging.GameFibers.Add(CrimeReportedFiber);
+    }
+    private static void PickReactTask(GTAPed Snitch)
+    {
+        if (Snitch.Pedestrian.IsInAnyVehicle(false))
+        {
+            if (LosSantosRED.MyRand.Next(1, 11) <= 7 && Snitch.Pedestrian.IsDriver())
+            {
+                Snitch.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 100f, -1);
+            }
+            else if (Snitch.Pedestrian.IsInAnyVehicle(false) && Snitch.Pedestrian.CurrentVehicle.Speed == 0f)
+            {
+                Snitch.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 100f, -1);
+            }
+        }
+        else
+        {
+            if(Snitch.WillFight)
+            {
+                NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Snitch.Pedestrian, 5, true);//BF_CanFightArmedPedsWhenNotArmed = 5,
+                // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Snitch.Pedestrian, 46, true);//BF_AlwaysFight = 46,
+                GTAWeapon GunToGive = GTAWeapons.GetRandomWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
+                Snitch.Pedestrian.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
+                Snitch.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                //Snitch.Pedestrian.BlockPermanentEvents = true;
+                Snitch.Pedestrian.KeepTasks = true;
+            }
+            else
+            {        
+                if (LosSantosRED.MyRand.Next(1, 11) <= 9)
+                {
+                    Snitch.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
+                }
+                else
+                {
+                    Snitch.Pedestrian.Tasks.Cower(-1);
+                }
+            }
+        }
     }
     public static void AddItemToQueue(CopTask MyTask)
     {

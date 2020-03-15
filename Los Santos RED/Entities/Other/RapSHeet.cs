@@ -190,10 +190,10 @@ public class RapSheet
             HurtingCivilians.IsCurrentlyViolating = false;
         }
 
-        if(LosSantosRED.PlayerRecentlyShot(3000) || Police.PlayerArtificiallyShooting)
+        if((LosSantosRED.PlayerRecentlyShot(3000) || Police.PlayerArtificiallyShooting) && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
         {
             FiringWeapon.IsCurrentlyViolating = true;
-            if (PoliceScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || (x.DistanceToPlayer <= 45f && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)))
+            if (PoliceScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
             {
                 FiringWeaponNearPolice.IsCurrentlyViolating = true;
                 if (FiringWeaponNearPolice.CanObserveCrime)

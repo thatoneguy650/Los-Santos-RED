@@ -428,7 +428,7 @@ public static class LosSantosRED
             if(MyPrevOwner != null)
             {
                 Police.CurrentCrimes.GrandTheftAuto.DispatchToPlay.VehicleToReport = MyNewCar;
-                MyPrevOwner.AddCrime(Police.CurrentCrimes.GrandTheftAuto);
+                MyPrevOwner.AddCrime(Police.CurrentCrimes.GrandTheftAuto,MyPrevOwner.Pedestrian.Position);
             }
         }
         TrackedVehicles.Add(MyNewCar);

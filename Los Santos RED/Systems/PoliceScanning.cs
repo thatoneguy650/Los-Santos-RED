@@ -84,7 +84,7 @@ public static class PoliceScanning
             {
                 if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
                 {
-                    Civilians.Add(new GTAPed(Pedestrian, false, Pedestrian.Health) { WillCallPolice = LosSantosRED.MyRand.Next(1, 11) <= 6 });
+                    Civilians.Add(new GTAPed(Pedestrian, false, Pedestrian.Health) { WillCallPolice = LosSantosRED.MyRand.Next(1, 11) <= 9, WillFight = LosSantosRED.MyRand.Next(1, 21) <= 1 });
                 }
             }
         }  

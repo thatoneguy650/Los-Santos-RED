@@ -34,7 +34,7 @@ public class GTAVehicle
     {
         get
         {
-            if (!WasReportedStolen && Game.GameTime > GameTimeToReportStolen)
+            if (!WasReportedStolen && Game.GameTime > GameTimeToReportStolen && GameTimeEntered > 0)
                 return true;
             else
                 return false;

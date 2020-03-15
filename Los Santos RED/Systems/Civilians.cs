@@ -67,7 +67,7 @@ public static class Civilians
                 {
                     foreach (Crime Bad in CrimesToCallIn)
                     {
-                        Snitch.AddCrime(Bad);
+                        Snitch.AddCrime(Bad,Snitch.Pedestrian.Position);
                     }
                     if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
                     {
@@ -78,7 +78,7 @@ public static class Civilians
                 {
                     foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanBeCalledInBySound))
                     {
-                        Snitch.AddCrime(Bad);
+                        Snitch.AddCrime(Bad,Game.LocalPlayer.Character.Position);
                     }
                     if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
                     {
