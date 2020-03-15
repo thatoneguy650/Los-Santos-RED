@@ -135,7 +135,7 @@ public static class Tasking
 
         Snitch.IsTasked = true;
         Snitch.TaskType = AssignableTasks.ReactToCrime;
-        Debugging.WriteToLog("ReactToCrime", string.Format("Handle: {0}, Crimes: {1}",Snitch.Pedestrian.Handle, string.Join(",", Snitch.CrimesWitnessed.Where(x => x.CanBeReportedByCivilians).Select(x => x.DebugName))));
+        Debugging.WriteToLog("ReactToCrime", string.Format("Handle: {0}, Crimes: {1}",Snitch.Pedestrian.Handle, string.Join(",", Snitch.CrimesWitnessed.Where(x => x.CanBeReportedByCivilians).Select(x => x.Name))));
         bool ShouldCallIn = Snitch.CrimesWitnessed.Any(x => x.CanBeReportedByCivilians);
         if(ShouldCallIn && Snitch.WillCallPolice && CiviliansReportingCrimes <= 5)
         {
@@ -221,7 +221,7 @@ public static class Tasking
             }
 
             GTAVehicle VehToReport = LosSantosRED.GetPlayersCurrentTrackedVehicle(); ;
-            Debugging.WriteToLog("Check Snitches", string.Format("Civilian Reporting: {0},Crimes: {1}", CivilianToReport.Pedestrian.Handle, string.Join(",", CivilianToReport.CrimesWitnessed.Select(x => x.DebugName))));
+            Debugging.WriteToLog("Check Snitches", string.Format("Civilian Reporting: {0},Crimes: {1}", CivilianToReport.Pedestrian.Handle, string.Join(",", CivilianToReport.CrimesWitnessed.Select(x => x.Name))));
 
             //Call It In
             NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", CivilianToReport.Pedestrian, 10000);
@@ -241,8 +241,8 @@ public static class Tasking
                 return;
             }
             GameFiber.Sleep(LosSantosRED.MyRand.Next(3000, 7000));
-            Debugging.WriteToLog("Crime Pre Reported", WorstCrime.DebugName);
-            if (CivilianToReport.Pedestrian.Exists() && CivilianToReport.Pedestrian.IsAlive && !WorstCrime.RecentlyCalledInByCivilians(60000))
+            Debugging.WriteToLog("Crime Pre Reported", WorstCrime.Name);
+            if (CivilianToReport.Pedestrian.Exists() && CivilianToReport.Pedestrian.IsAlive && !WorstCrime.RecentlyCalledInByCivilians(60000) && !CivilianToReport.Pedestrian.IsRagdoll)
             {
                 WorstCrime.DispatchToPlay.ReportedBy = DispatchAudio.ReportType.Civilians;
                 WorstCrime.GameTimeLastCalledInByCivilians = Game.GameTime;
@@ -275,18 +275,36 @@ public static class Tasking
         }
         else
         {
-            if(Snitch.WillFight)
+            if(Snitch.CrimesWitnessed.Any(x => x.CiviliansCanFightIfObserved) && !Snitch.CrimesWitnessed.Any(x => !x.CiviliansCanFightIfObserved && x.Severity != CrimeLevel.Traffic))
             {
-                NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Snitch.Pedestrian, 5, true);//BF_CanFightArmedPedsWhenNotArmed = 5,
-                // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Snitch.Pedestrian, 46, true);//BF_AlwaysFight = 46,
-                GTAWeapon GunToGive = GTAWeapons.GetRandomWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
-                Snitch.Pedestrian.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
-                Snitch.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                //Snitch.Pedestrian.BlockPermanentEvents = true;
-                Snitch.Pedestrian.KeepTasks = true;
+                int Random = LosSantosRED.MyRand.Next(1, 11);
+                if (Snitch.WillFight) //atack player
+                {
+                    NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Snitch.Pedestrian, 5, true);//BF_CanFightArmedPedsWhenNotArmed = 5,
+                                                                                                             // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Snitch.Pedestrian, 46, true);//BF_AlwaysFight = 46,
+                    if (LosSantosRED.MyRand.Next(1, 2) <= 1)
+                    {
+                        GTAWeapon GunToGive = GTAWeapons.GetRandomWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
+                        Snitch.Pedestrian.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
+                    }
+                    Snitch.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                    Snitch.Pedestrian.KeepTasks = true;
+                }
+                else if (Random <= 5)
+                {
+                    Snitch.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);
+                }
+                else if (Random <= 9)
+                {
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Snitch.Pedestrian, Game.LocalPlayer.Character, -1, 2048, 3);
+                }
+                else
+                {
+                    Snitch.Pedestrian.Tasks.Cower(-1);
+                }
             }
-            else
-            {        
+            else //regular react
+            {
                 if (LosSantosRED.MyRand.Next(1, 11) <= 9)
                 {
                     Snitch.Pedestrian.Tasks.ReactAndFlee(Game.LocalPlayer.Character);

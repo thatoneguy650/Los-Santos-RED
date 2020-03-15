@@ -108,7 +108,7 @@ public class GTAPed
 
     public void AddCrime(Crime CrimeToAdd,Vector3 PositionToReport)
     {
-        if(!CrimesWitnessed.Any(x => x.DebugName == CrimeToAdd.DebugName))
+        if(!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
         {
             CrimesWitnessed.Add(CrimeToAdd);
             PositionLastSeenCrime = PositionToReport;

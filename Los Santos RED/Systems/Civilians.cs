@@ -89,14 +89,10 @@ public static class Civilians
                 {
                     Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
                 }
-                else if (!Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 350f)
-                {
-                    Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
-                }
             }
         }
         int TotalCivisTasked = PoliceScanning.Civilians.Count(x => x.IsTasked && x.TaskType == Tasking.AssignableTasks.ReactToCrime);
-        UI.DebugLine = string.Format("CiviRec: {0},Violate: {1},Cnt: {2},Rpt: {3}", AnyCiviliansCanRecognizePlayer, string.Join(",",CrimesToCallIn.Select(x => x.DebugName)), TotalCivisTasked, Tasking.CiviliansReportingCrimes);
+        UI.DebugLine = string.Format("CiviRec: {0},Violate: {1},Cnt: {2},Rpt: {3}", AnyCiviliansCanRecognizePlayer, string.Join(",",CrimesToCallIn.Select(x => x.Name)), TotalCivisTasked, Tasking.CiviliansReportingCrimes);
     }
     public static void UpdateCivilians()
     {

@@ -2175,6 +2175,12 @@ public static class DispatchAudio
             Type = _Type;
             Priority = _Priority;
         }
+        public DispatchQueueItem(ReportDispatch _Type, int _Priority,bool _ResultsInLethalForce)
+        {
+            Type = _Type;
+            Priority = _Priority;
+            ResultsInLethalForce = _ResultsInLethalForce;
+        }
     }
 
     public class VehicleModelNameLookup
