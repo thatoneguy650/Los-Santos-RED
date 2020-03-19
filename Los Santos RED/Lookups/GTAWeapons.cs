@@ -646,6 +646,10 @@ public static class GTAWeapons
                 Police4.Components.Add(new WeaponVariation.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_pistol"));
                 Police4.Components.Add(new WeaponVariation.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_CLIP_02", 0xED265A1C, true, "weapon_pistol"));
                 Weapon.PoliceVariations.Add(Police4);
+
+                WeaponVariation Player1 = new WeaponVariation(0);
+                Player1.Components.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol"));
+                Weapon.PlayerVariations.Add(Player1);
             }
             if (Weapon.Name == "weapon_pistol_mk2")
             {
@@ -667,6 +671,7 @@ public static class GTAWeapons
 
                 WeaponVariation Player1 = new WeaponVariation(0);
                 Player1.Components.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol_mk2"));
+                Weapon.PlayerVariations.Add(Player1);
 
 
             }
@@ -690,6 +695,7 @@ public static class GTAWeapons
 
                 WeaponVariation Player1 = new WeaponVariation(0);
                 Player1.Components.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_combatpistol"));
+                Weapon.PlayerVariations.Add(Player1);
             }
             if (Weapon.Name == "weapon_heavypistol")
             {

@@ -59,40 +59,60 @@ public static class Civilians
     private static void CheckSnitchCivilians()
     {
        List<Crime> CrimesToCallIn = Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians;
-       if (LosSantosRED.PlayerIsNotWanted && CrimesToCallIn.Any())
+       if (CrimesToCallIn.Any())
         {
             foreach(GTAPed Snitch in PoliceScanning.Civilians)
             {
-                if (Snitch.CanRecognizePlayer)
+                if (LosSantosRED.PlayerIsNotWanted)
                 {
-                    foreach (Crime Bad in CrimesToCallIn)
+                    if (Snitch.CanRecognizePlayer)
                     {
-                        Snitch.AddCrime(Bad,Snitch.Pedestrian.Position);
+                        foreach (Crime Bad in CrimesToCallIn)
+                        {
+                            Snitch.AddCrime(Bad, Snitch.Pedestrian.Position);
+                        }
+                        if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
+                        {
+                            Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
+                        }
                     }
-                    if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
+                    else if (Snitch.CanHearPlayer && CrimesToCallIn.Any(x => x.CanBeCalledInBySound))
                     {
-                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
+                        foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanBeCalledInBySound))
+                        {
+                            Snitch.AddCrime(Bad, Game.LocalPlayer.Character.Position);
+                        }
+                        if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
+                        {
+                            Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
+                        }
+                    }
+                    else if (Snitch.IsTasked && !Snitch.CanSeePlayer && !Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 100f)
+                    {
+                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
                     }
                 }
-                else if (Snitch.CanHearPlayer && CrimesToCallIn.Any(x => x.CanBeCalledInBySound))
+                else
                 {
-                    foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanBeCalledInBySound))
+                    if (Snitch.IsTasked && !Snitch.TaskIsQueued)
                     {
-                        Snitch.AddCrime(Bad,Game.LocalPlayer.Character.Position);
+                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
                     }
-                    if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
-                    {
-                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
-                    }
-                }
-                else if(Snitch.IsTasked && !Snitch.CanSeePlayer && !Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 100f)
-                {
-                    Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
                 }
             }
         }
-        int TotalCivisTasked = PoliceScanning.Civilians.Count(x => x.IsTasked && x.TaskType == Tasking.AssignableTasks.ReactToCrime);
-        UI.DebugLine = string.Format("CiviRec: {0},Violate: {1},Cnt: {2},Rpt: {3}", AnyCiviliansCanRecognizePlayer, string.Join(",",CrimesToCallIn.Select(x => x.Name)), TotalCivisTasked, Tasking.CiviliansReportingCrimes);
+        //int TotalCivisTasked = PoliceScanning.Civilians.Count(x => x.IsTasked && x.TaskType == Tasking.AssignableTasks.ReactToCrime);
+
+        //string CiviLine = "";
+        //if (AnyCiviliansCanRecognizePlayer)
+        //{
+        //    if (CrimesToCallIn.Any())
+        //        CiviLine += "~r~(SEEN)";
+        //    else
+        //        CiviLine += "~s~(SEEN)";
+        //}
+
+        //UI.DebugLine = CiviLine;// string.Format("(SEEN): {0},Violate: {1},Cnt: {2},Rpt: {3}", AnyCiviliansCanRecognizePlayer, string.Join(",", CrimesToCallIn.Select(x => x.Name)), TotalCivisTasked, Tasking.CiviliansReportingCrimes);
     }
     public static void UpdateCivilians()
     {

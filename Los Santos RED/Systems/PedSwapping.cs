@@ -31,6 +31,7 @@ public static class PedSwapping
     public static string CurrentPlayerModel;//temp public
 
     //public static PedHeadshot CurrentHeadshot;
+    public static Vehicle OwnedCar { get; set; }
     public static string SuspectName { get; set; }
     public static void Initialize()
     {
@@ -239,7 +240,10 @@ public static class PedSwapping
         {
             Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
             NativeFunction.CallByName<bool>("SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER", Game.LocalPlayer.Character.CurrentVehicle, true);
-            LosSantosRED.OwnedCar = TargetPedVehicle;
+            if (OwnedCar != null && OwnedCar.Exists())
+                OwnedCar.IsPersistent = false;
+            OwnedCar = TargetPedVehicle;
+            OwnedCar.IsPersistent = true;
         }
         else
         {

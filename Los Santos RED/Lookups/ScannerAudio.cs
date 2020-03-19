@@ -3819,7 +3819,7 @@ public class s_m_y_cop_black_full_01
     public static ScannerFile HASH00FFC2DB { get { return new ScannerFile("s_m_y_cop_01_black_full_01\\0x00FFC2DB.wav", "0x00FFC2DB", "s_m_y_cop_black_full_01"); } }
     public static ScannerFile HASH017221AA { get { return new ScannerFile("s_m_y_cop_01_black_full_01\\0x017221AA.wav", "0x017221AA", "s_m_y_cop_black_full_01"); } }
     public static ScannerFile HASH01A10324 { get { return new ScannerFile("s_m_y_cop_01_black_full_01\\0x01A10324.wav", "0x01A10324", "s_m_y_cop_black_full_01"); } }
-    public static ScannerFile HASH0846F27E { get { return new ScannerFile("s_m_y_cop_01_black_full_01\\0x0846F27E.wav", "0x0846F27E", "s_m_y_cop_black_full_01"); } }
+    public static ScannerFile SuspectsVehicleHasCrashed { get { return new ScannerFile("s_m_y_cop_01_black_full_01\\0x0846F27E.wav", "0x0846F27E", "s_m_y_cop_black_full_01"); } }
     public static ScannerFile HASH0AF015F7 { get { return new ScannerFile("s_m_y_cop_01_black_full_01\\0x0AF015F7.wav", "0x0AF015F7", "s_m_y_cop_black_full_01"); } }
     public static ScannerFile HASH0D3B44AE { get { return new ScannerFile("s_m_y_cop_01_black_full_01\\0x0D3B44AE.wav", "0x0D3B44AE", "s_m_y_cop_black_full_01"); } }
     public static ScannerFile HASH0D59A0C8 { get { return new ScannerFile("s_m_y_cop_01_black_full_01\\0x0D59A0C8.wav", "0x0D59A0C8", "s_m_y_cop_black_full_01"); } }
@@ -3840,7 +3840,7 @@ public class s_m_y_cop_black_full_02
     public static ScannerFile HASH046135A4 { get { return new ScannerFile("s_m_y_cop_01_black_full_02\\0x046135A4.wav", "0x046135A4", "s_m_y_cop_black_full_02"); } }
     public static ScannerFile HASH0496792A { get { return new ScannerFile("s_m_y_cop_01_black_full_02\\0x0496792A.wav", "0x0496792A", "s_m_y_cop_black_full_02"); } }
     public static ScannerFile HASH0513FA72 { get { return new ScannerFile("s_m_y_cop_01_black_full_02\\0x0513FA72.wav", "0x0513FA72", "s_m_y_cop_black_full_02"); } }
-    public static ScannerFile HASH0846F27E { get { return new ScannerFile("s_m_y_cop_01_black_full_02\\0x0846F27E.wav", "0x0846F27E", "s_m_y_cop_black_full_02"); } }
+    public static ScannerFile WeHaveACollision { get { return new ScannerFile("s_m_y_cop_01_black_full_02\\0x0846F27E.wav", "0x0846F27E", "s_m_y_cop_black_full_02"); } }
     public static ScannerFile HASH08DB544A { get { return new ScannerFile("s_m_y_cop_01_black_full_02\\0x08DB544A.wav", "0x08DB544A", "s_m_y_cop_black_full_02"); } }
     public static ScannerFile HASH08E377EE { get { return new ScannerFile("s_m_y_cop_01_black_full_02\\0x08E377EE.wav", "0x08E377EE", "s_m_y_cop_black_full_02"); } }
     public static ScannerFile HASH09D5A5ED { get { return new ScannerFile("s_m_y_cop_01_black_full_02\\0x09D5A5ED.wav", "0x09D5A5ED", "s_m_y_cop_black_full_02"); } }
@@ -4021,7 +4021,7 @@ public class s_m_y_cop_white_full_01
     public static ScannerFile HASH0B78C3D3 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0B78C3D3.wav", "0x0B78C3D3", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH0D3B44AE { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0D3B44AE.wav", "0x0D3B44AE", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH0D59A0C8 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0D59A0C8.wav", "0x0D59A0C8", "s_m_y_cop_white_full_01"); } }
-    public static ScannerFile HASH0ED8BFA8 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0ED8BFA8.wav", "0x0ED8BFA8", "s_m_y_cop_white_full_01"); } }
+    public static ScannerFile SuspectHasFuckingCrashed { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0ED8BFA8.wav", "0x0ED8BFA8", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH0F80B554 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0F80B554.wav", "0x0F80B554", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH0FD39C10 { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x0FD39C10.wav", "0x0FD39C10", "s_m_y_cop_white_full_01"); } }
     public static ScannerFile HASH1046DF8A { get { return new ScannerFile("s_m_y_cop_01_white_full_01\\0x1046DF8A.wav", "0x1046DF8A", "s_m_y_cop_white_full_01"); } }

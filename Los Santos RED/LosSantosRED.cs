@@ -44,7 +44,6 @@ public static class LosSantosRED
     //public static int PlayerWantedLevel { get; set; }
     public static WeaponHash PlayerCurrentWeaponHash { get; set; }
     public static List<GTAVehicle> TrackedVehicles { get; set; }
-    public static Vehicle OwnedCar { get; set; }
     public static List<Rage.Object> CreatedObjects { get; set; }
     public static uint GameTimePlayerLastShot { get; set; }
     public static bool IsHardToSeeInWeather
@@ -142,7 +141,6 @@ public static class LosSantosRED
         PlayerIsGettingIntoVehicle = false; 
         PlayerCurrentWeaponHash = 0;
         TrackedVehicles = new List<GTAVehicle>();
-        OwnedCar = null;
         CreatedObjects = new List<Rage.Object>();
         GameTimePlayerLastShot = 0;
         GameTimeStartedHoldingEnter = 0;
@@ -404,7 +402,7 @@ public static class LosSantosRED
     {
         Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
         bool IsStolen = true;
-        if (OwnedCar != null && OwnedCar.Handle == CurrVehicle.Handle)
+        if (PedSwapping.OwnedCar != null && PedSwapping.OwnedCar.Handle == CurrVehicle.Handle)
             IsStolen = false;
 
         CurrVehicle.IsStolen = IsStolen;

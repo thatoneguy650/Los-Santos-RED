@@ -87,6 +87,16 @@ public static class UI
         else
             PlayerStatusLine = "";
 
+            if (PlayerStatusLine != "" && (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any() || Civilians.AnyCiviliansCanRecognizePlayer))
+                PlayerStatusLine += " ";
+
+            if (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any() && Civilians.AnyCiviliansCanRecognizePlayer)
+                PlayerStatusLine += "~r~(Seen Violating)";
+            else if(Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any())
+                PlayerStatusLine += "~o~(Violating)";
+            else if(Civilians.AnyCiviliansCanRecognizePlayer)
+                PlayerStatusLine += "~s~(Seen)";
+
         if (LosSantosRED.PlayerWantedLevel > 0)
         {
             string AgenciesChasingPlayer = PoliceScanning.AgenciesChasingPlayer;

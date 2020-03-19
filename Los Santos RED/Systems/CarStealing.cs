@@ -276,9 +276,9 @@ public static class CarStealing
         if (MyVehicle == null || MyVehicle.IsStolen)
             return;
 
-        if (LosSantosRED.OwnedCar == null)
+        if (PedSwapping.OwnedCar == null)
             MyVehicle.IsStolen = true;
-        else if (MyVehicle.VehicleEnt.Handle != LosSantosRED.OwnedCar.Handle && !MyVehicle.IsStolen)
+        else if (MyVehicle.VehicleEnt.Handle != PedSwapping.OwnedCar.Handle && !MyVehicle.IsStolen)
             MyVehicle.IsStolen = true;
     }
     public static Vector3 GetHandlePosition(Vehicle TargetVehicle,string Bone)

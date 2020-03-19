@@ -28,15 +28,15 @@ public class RapSheet
     public Crime BrandishingWeapon = new Crime("Brandishing Weapon", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportCarryingWeapon, 11)) { CiviliansCanFightIfObserved = true };
     public Crime HitPedWithCar = new Crime("Pedestrian Hit and Run", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportPedHitAndRun, 12)) { CiviliansCanFightIfObserved = true };
     public Crime HurtingCivilians = new Crime("Assaulting Civilians", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportCivilianInjury, 13)) { CiviliansCanFightIfObserved = true };
-    public Crime HitCarWithCar = new Crime("Hit and Run", CrimeLevel.Misdemeanor, 1, false, new DispatchQueueItem(ReportDispatch.ReportVehicleHitAndRun, 14) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CiviliansCanFightIfObserved = true };
+    public Crime HitCarWithCar = new Crime("Hit and Run", CrimeLevel.Misdemeanor, 1, false, new DispatchQueueItem(ReportDispatch.ReportVehicleHitAndRun, 14) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CiviliansCanFightIfObserved = true, CanBeReportedMultipleTimes = false };
     public Crime ChangingPlates = new Crime("Stealing License Plates", CrimeLevel.Misdemeanor, 1, false, new DispatchQueueItem(ReportDispatch.ReportSuspiciousActivity, 15)) { CiviliansCanFightIfObserved = true };
     public Crime ResistingArrest = new Crime("Resisting Arrest", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportResistingArrest, 16));   
 
-    public Crime DrivingAgainstTraffic = new Crime("Driving Against Traffic", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRecklessDriver, 17) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false };
-    public Crime DrivingOnPavement = new Crime("Driving On Pavement", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRecklessDriver, 18) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false };
-    public Crime NonRoadworthyVehicle = new Crime("Non-Roadworthy Vehicle", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportSuspiciousVehicle, 19) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false };
-    public Crime FelonySpeeding = new Crime("Speeding", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportFelonySpeeding, 20) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false };
-    public Crime RunningARedLight = new Crime("Running a Red Light", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRunningRed, 21) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false };
+    public Crime DrivingAgainstTraffic = new Crime("Driving Against Traffic", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRecklessDriver, 17) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
+    public Crime DrivingOnPavement = new Crime("Driving On Pavement", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRecklessDriver, 18) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
+    public Crime NonRoadworthyVehicle = new Crime("Non-Roadworthy Vehicle", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportSuspiciousVehicle, 19) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
+    public Crime FelonySpeeding = new Crime("Speeding", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportFelonySpeeding, 20) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
+    public Crime RunningARedLight = new Crime("Running a Red Light", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRunningRed, 21) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
 
     public List<GTALicensePlate> WantedPlates = new List<GTALicensePlate>();
     public uint GameTimeWantedStarted;
@@ -45,6 +45,16 @@ public class RapSheet
 
     public uint GameTimeLastKilledCivilian;
     public uint GameTimeLastKilledCop;
+    public bool RecentlyReportedAnyCrime
+    {
+        get
+        {
+            if (GetListOfCrimes().Any(x => x.RecentlyReportedCrime(60000)))
+                return true;
+            else
+                return false;
+        }
+    }
     public bool IsViolatingAnyCivilianReportedCrimes
     {
         get
@@ -336,6 +346,7 @@ public class Crime
     public bool CanBeReportedByCivilians = true;
     public bool CanBeCalledInBySound = false;
     public bool CiviliansCanFightIfObserved = false;
+    public bool CanBeReportedMultipleTimes = true;
     public bool CanObserveCrime
     {
         get
@@ -407,8 +418,16 @@ public class Crime
         {
             GameTimeLastReported = Game.GameTime;
             DispatchToPlay.ResultsInLethalForce = ResultsInLethalForce;
-            DispatchToPlay.ReportedBy = DispatchAudio.ReportType.Officers;
-            DispatchAudio.AddDispatchToQueue(DispatchToPlay);
+            DispatchToPlay.ReportedBy = ReportType.Officers;
+            AddDispatchToQueue(DispatchToPlay);
+        }
+        else if (!Police.CurrentCrimes.RecentlyReportedAnyCrime && CanBeReportedMultipleTimes && !RecentlyReportedCrime(25000))//if (!HasBeenWitnessedByPolice && !HasBeenReportedByDispatch && InstantAction.PlayerWantedLevel <= ResultingWantedLevel)
+        {
+            Debugging.WriteToLog("Crime Logged No Dispatch Activity", Name);
+            GameTimeLastReported = Game.GameTime;
+            DispatchToPlay.ResultsInLethalForce = ResultsInLethalForce;
+            DispatchToPlay.ReportedBy = ReportType.Officers;
+            AddDispatchToQueue(DispatchToPlay);
         }
         HasBeenWitnessedByPolice = true;
         InstancesObserved++;
