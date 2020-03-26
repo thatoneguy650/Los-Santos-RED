@@ -142,7 +142,7 @@
     <Compile Include="Systems\Menus.cs" />
     <Compile Include="Systems\PlayerLocation.cs" />
     <Compile Include="Systems\Police.cs" />
-    <Compile Include="Systems\PoliceScanning.cs" />
+    <Compile Include="Systems\PedScanning.cs" />
     <Compile Include="Systems\PoliceSpawning.cs" />
     <Compile Include="Systems\PoliceSpeech.cs" />
     <Compile Include="Systems\Respawning.cs" />

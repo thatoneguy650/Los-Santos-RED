@@ -279,8 +279,7 @@ public static class DispatchAudio
     }
     public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
-        if(CurrentlyPlayingCanBeInterrupted && MyAudioEvent.CanInterrupt)
-            AbortAllAudio();
+
         CurrentlyPlayingCanBeInterrupted = MyAudioEvent.CanBeInterrupted;
         GameFiber PlayAudioList = GameFiber.StartNew(delegate
         {
@@ -416,12 +415,17 @@ public static class DispatchAudio
                 //}
                 if (DispatchQueue.Count() > 1)
                 {
+                   // List<DispatchQueueItem> ToReAdd = DispatchQueue.Where(x => x.Priority == 1).ToList();
                     DispatchQueueItem HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
                     DispatchQueue.Clear();
                     if (HighestItem != null)
                     {
                         DispatchQueue.Add(HighestItem);
                     }
+                    //foreach(DispatchQueueItem Cool in ToReAdd)
+                    //{
+                    //    DispatchQueue.Add(Cool);
+                    //}
                 }
                 //if (DispatchQueue.Where(x => x.IsTrafficViolation).Count() > 1)
                 //{
@@ -711,7 +715,7 @@ public static class DispatchAudio
         ScannerList.Add(new List<string>() { crime_speeding_felony.Aspeedingfelony.FileName }.PickRandom());
         Subtitles += " a ~r~Speeding Felony~s~";
         AddSpeed(ref ScannerList, Speed, ref Subtitles, ref Notification);
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true,ReportedBy == ReportType.Officers);
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
     }
@@ -779,7 +783,7 @@ public static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ReportedBy, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_ped_struck_by_veh.Apedestrianstruck.FileName, crime_ped_struck_by_veh.Apedestrianstruck1.FileName, crime_ped_struck_by_veh.Apedestrianstruckbyavehicle.FileName, crime_ped_struck_by_veh.Apedestrianstruckbyavehicle1.FileName }.PickRandom());
         Subtitles += " a ~r~Pedestrian Struck~s~";
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true, ReportedBy == ReportType.Officers);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
     }
@@ -794,7 +798,7 @@ public static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ReportedBy, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_reckless_driver.Arecklessdriver.FileName }.PickRandom());
         Subtitles += " a ~r~Reckless Driver~s~";
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true, ReportedBy == ReportType.Officers);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification,true,false));
     }
@@ -847,7 +851,7 @@ public static class DispatchAudio
             ScannerList.Add(new List<string>() { crime_stolen_vehicle.Apossiblestolenvehicle.FileName }.PickRandom());
             Subtitles += " a possible ~r~Stolen Vehicle~s~";
         }
-        AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles, ref Notification, true, false,false);
+        AddVehicleDescription(stolenVehicle, ref ScannerList, true, ref Subtitles, ref Notification, true, false,false,true);
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, stolenVehicle.PositionOriginallyEntered);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
         MarkVehicleAsStolen(stolenVehicle);
@@ -889,7 +893,7 @@ public static class DispatchAudio
             ScannerList.Add(new List<string>() { crime_motor_vehicle_accident.Amotorvehicleaccident.FileName, crime_motor_vehicle_accident.AnAEincident.FileName, crime_motor_vehicle_accident.AseriousMVA.FileName }.PickRandom());
 
         Subtitles += " a ~r~Motor Vehicle Accident~s~";
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true, ReportedBy == ReportType.Officers);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
     }
@@ -916,7 +920,7 @@ public static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ReportedBy, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_suspicious_vehicle.Asuspiciousvehicle.FileName }.PickRandom());
         Subtitles += " a ~r~Suspicious Vehicle~s~";
-        AddVehicleDescription(myCar, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true);
+        AddVehicleDescription(myCar, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true, ReportedBy == ReportType.Officers);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
     }
@@ -947,7 +951,7 @@ public static class DispatchAudio
                 Subtitles += "Target last reported driving a";
             }
             ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
-            AddVehicleDescription(StolenCar, ref ScannerList, ReportedBy == ReportType.Civilians, ref Subtitles, ref Notification, false, true,false);
+            AddVehicleDescription(StolenCar, ref ScannerList, ReportedBy == ReportType.Civilians, ref Subtitles, ref Notification, false, true,false, ReportedBy == ReportType.Officers);
         }
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
@@ -987,7 +991,7 @@ public static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ReportedBy, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_person_running_a_red_light.Apersonrunningaredlight.FileName }.PickRandom());
         Subtitles += " a person ~r~Running a Red Light~s~";
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true, ReportedBy == ReportType.Officers);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
     }
@@ -1178,7 +1182,7 @@ public static class DispatchAudio
 
     public static void ReportSuspectLastSeen()
     {
-        if (PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
+        if (PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
             return;
 
         List<string> ScannerList = new List<string>() { AudioBeeps.AudioStart() };
@@ -1220,7 +1224,7 @@ public static class DispatchAudio
         Subtitles += "Suspect spotted driving a";
         ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
         ScannerList.Add(conjunctives.Drivinga.FileName);
-        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, false, true,false);
+        AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, false, true,false, true);
 
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
@@ -1294,7 +1298,7 @@ public static class DispatchAudio
         {    
             Subtitles += " driving a";
             ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
-            AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, false, true,false);
+            AddVehicleDescription(vehicle, ref ScannerList, false, ref Subtitles, ref Notification, false, true,false,true);
         }
 
 
@@ -1940,7 +1944,7 @@ public static class DispatchAudio
             ReportedLethalForceAuthorized = true;
         }
     }
-    public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles,ref DispatchNotification Notification, bool IncludeAAudio, bool IncludePoliceDescription,bool IncludeIn)
+    public static void AddVehicleDescription(GTAVehicle VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles,ref DispatchNotification Notification, bool IncludeAAudio, bool IncludePoliceDescription,bool IncludeIn, bool AddPossiblyStolenStolen)
     {
         if (VehicleDescription == null)
             return;
@@ -1965,7 +1969,7 @@ public static class DispatchAudio
             if (IncludeIn)
             {
                 ScannerList.Add(new List<string>() { conjunctives.Inuhh2.FileName, conjunctives.Inuhh3.FileName }.PickRandom());
-                if (VehicleDescription.IsStolen)
+                if (VehicleDescription.IsStolen & AddPossiblyStolenStolen)
                 {
 
                     ScannerList.Add(crime_stolen_vehicle.Apossiblestolenvehicle.FileName);

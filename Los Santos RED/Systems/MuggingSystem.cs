@@ -45,10 +45,10 @@ public static class MuggingSystem
             if (!(Target is Ped))
                 return;
 
-            if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.Handle == Target.Handle))
+            if (PedScanning.CopPeds.Any(x => x.Pedestrian.Handle == Target.Handle))
                 return;//aiming at cop
 
-            GTAPed GTAPedTarget = PoliceScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Target.Handle);
+            GTAPed GTAPedTarget = PedScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Target.Handle);
 
             if (GTAPedTarget == null)
                 GTAPedTarget = new GTAPed((Ped)Target, false, Target.Health);
@@ -100,10 +100,10 @@ public static class MuggingSystem
 
 
 
-            if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.Handle == Handle))
+            if (PedScanning.CopPeds.Any(x => x.Pedestrian.Handle == Handle))
                 return;//aiming at cop
 
-            GTAPed GTAPedTarget = PoliceScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+            GTAPed GTAPedTarget = PedScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
 
             if (GTAPedTarget == null)
                 return;

@@ -24,8 +24,7 @@ public static class LicensePlateChanging
         Screwdriver = null;
         LicensePlate = null;
         PlayerChangingPlate = false;
-        List<string> StartingPlateOptions = new List<string> { "BRNEBRO", "IMWITHER", "JOE30303", "JEBSGUAC", "MAGA2020", "YNGGANG", "POCAHNTS", "NOTPHOON", "LYINTED" };
-        SpareLicensePlates.Add(new GTALicensePlate(StartingPlateOptions.PickRandom(), 1, 1, false));
+        SpareLicensePlates.Add(new GTALicensePlate(LosSantosRED.RandomString(8), 1, 1, false));
     }
     public static void Dispose()
     {
@@ -255,7 +254,7 @@ public static class LicensePlateChanging
     public static void PedReactToThreatening(Ped Attacker)
     {
         int RandomNum = rnd.Next(1, 20);
-        if (RandomNum <= 4) //Murder
+        if (RandomNum <= 4 && LosSantosRED.PlayerIsNotWanted) //Murder
         {
             GTAWeapon GunToGive = GTAWeapons.GetRandomWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
             Attacker.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);

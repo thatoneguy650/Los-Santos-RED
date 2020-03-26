@@ -57,7 +57,7 @@ internal static class Police
     {
         get
         {
-            if (PlayerStarsGreyedOut && PoliceScanning.CopPeds.All(x => !x.RecentlySeenPlayer()))
+            if (PlayerStarsGreyedOut && PedScanning.CopPeds.All(x => !x.RecentlySeenPlayer()))
                 return true;
             else
                 return false;
@@ -280,9 +280,9 @@ internal static class Police
     }
     public static void UpdatedCopsStats()
     {
-        PoliceScanning.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
-        PoliceScanning.K9Peds.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
-        foreach (GTACop Cop in PoliceScanning.CopPeds)
+        PedScanning.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
+        PedScanning.K9Peds.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
+        foreach (GTACop Cop in PedScanning.CopPeds)
         {
             if (Cop.Pedestrian.IsDead)
             {
@@ -313,12 +313,12 @@ internal static class Police
             }
             Cop.UpdateDistance();
         }
-        foreach(GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsDead))
+        foreach(GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.IsDead))
         {
             MarkNonPersistent(Cop);
         }
-        PoliceScanning.CopPeds.RemoveAll(x => x.Pedestrian.IsDead);
-        PoliceScanning.PoliceVehicles.RemoveAll(x => !x.Exists());         
+        PedScanning.CopPeds.RemoveAll(x => x.Pedestrian.IsDead);
+        PedScanning.PoliceVehicles.RemoveAll(x => !x.Exists());         
 
     }
     public static void CheckCopKilled(GTACop MyPed)
@@ -345,7 +345,7 @@ internal static class Police
         bool SawPlayerThisCheck = false;
         float RangeToCheck = 55f;
 
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
             //if (SawPlayerThisCheck && TotalEntityNativeLOSChecks >= 3 && Cop.GameTimeLastLOSCheck <= 1500)//we have already done 3 checks, saw us and they were looked at last check
             //{
@@ -372,7 +372,7 @@ internal static class Police
         }
         if (SawPlayerThisCheck)
             return;
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInHelicopter))
         {
             Cop.GameTimeLastLOSCheck = Game.GameTime;
             if (Cop.DistanceToPlayer <= 250f && !Cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Cop.Pedestrian, EntityToCheck, 17)) //was 55f
@@ -395,10 +395,10 @@ internal static class Police
         if (SawPlayerThisCheck)
             return;
 
-        foreach (GTAPed Civi in PoliceScanning.Civilians.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
+        foreach (GTAPed Civi in PedScanning.Civilians.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
             Civi.GameTimeLastLOSCheck = Game.GameTime;
-            if (Civi.DistanceToPlayer <= 45f && Civi.Pedestrian.PlayerIsInFront() && !Civi.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Civi.Pedestrian, EntityToCheck))//if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
+            if (Civi.DistanceToPlayer <= 40f && Civi.Pedestrian.PlayerIsInFront() && !Civi.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Civi.Pedestrian, EntityToCheck))//if (Cop.CopPed.PlayerIsInFront() && Cop.CopPed.IsInRangeOf(Game.LocalPlayer.Character.Position, RangeToCheck) && !Cop.CopPed.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Cop.CopPed, EntityToCheck)) //was 55f
             {
                 Civi.UpdateContinuouslySeen();
                 Civi.CanSeePlayer = true;
@@ -415,7 +415,7 @@ internal static class Police
                 }
                 else
                 {
-                    if (Civi.HasSeenPlayerFor >= 1000)
+                    if (Civi.HasSeenPlayerFor >= 1250)
                         Civi.CanRecognizePlayer = true;
                     else if (Civi.DistanceToPlayer <= 2f && Civi.DistanceToPlayer > 0f)
                         Civi.CanRecognizePlayer = true;
@@ -457,9 +457,9 @@ internal static class Police
     //}
     public static void SetPrimaryPursuer()
     {
-        if (PoliceScanning.CopPeds.Count == 0)
+        if (PedScanning.CopPeds.Count == 0)
             return;
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
             Cop.IsPursuitPrimary = false;
         }
@@ -607,7 +607,7 @@ internal static class Police
             //    PoliceSpawning.SpawnNewsChopper();
             //    LocalWriteToLog("WantedLevelTick", "Been at this wanted for a while, wanted news chopper spawned (if they dont already exist)");
             //}
-            if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 15000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000 && !PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 150f))
+            if (CanReportLastSeen && Game.GameTime - GameTimeLastGreyedOut > 15000 && AnyPoliceSeenPlayerThisWanted && PlayerHasBeenWantedFor > 45000 && !PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 150f))
             {
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectLostVisual, 10));
                 CanReportLastSeen = false;
@@ -632,7 +632,7 @@ internal static class Police
     }
     public static void ResetPoliceStats()
     {
-        foreach (GTACop Cop in PoliceScanning.CopPeds)
+        foreach (GTACop Cop in PedScanning.CopPeds)
         {
             Cop.HurtByPlayer = false;
         }
@@ -675,15 +675,15 @@ internal static class Police
     }
     public static void CheckRecognition()
     {
-        AnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.CanSeePlayer) && !PlayerStarsGreyedOut;
+        AnyPoliceCanSeePlayer = PedScanning.CopPeds.Any(x => x.CanSeePlayer) && !PlayerStarsGreyedOut;
         
 
         if (AnyPoliceCanSeePlayer)
             AnyPoliceRecentlySeenPlayer = true;
         else
-            AnyPoliceRecentlySeenPlayer = PoliceScanning.CopPeds.Any(x => x.SeenPlayerSince(Settings.PoliceRecentlySeenTime));
+            AnyPoliceRecentlySeenPlayer = PedScanning.CopPeds.Any(x => x.SeenPlayerSince(Settings.PoliceRecentlySeenTime));
 
-        AnyPoliceCanRecognizePlayer = PoliceScanning.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecognize() || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
+        AnyPoliceCanRecognizePlayer = PedScanning.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecognize() || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
         
 
         if (!AnyPoliceSeenPlayerThisWanted)
@@ -820,7 +820,7 @@ internal static class Police
         }
         else
         {
-            foreach (GTACop Cop in PoliceScanning.CopPeds)
+            foreach (GTACop Cop in PedScanning.CopPeds)
             {
                 Cop.AtWantedCenterDuringSearchMode = false;
                 if (Cop.IsTasked && (Cop.TaskType == Tasking.AssignableTasks.GoToWantedCenter || Cop.TaskType == Tasking.AssignableTasks.SimpleInvestigate || Cop.TaskType == Tasking.AssignableTasks.RandomSpawnIdle))
@@ -993,7 +993,7 @@ internal static class Police
             {
                 foreach (Ped Passenger in Cop.Pedestrian.CurrentVehicle.Passengers)
                 {
-                    GTACop PassengerCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.Handle == Passenger.Handle).FirstOrDefault();
+                    GTACop PassengerCop = PedScanning.CopPeds.Where(x => x.Pedestrian.Handle == Passenger.Handle).FirstOrDefault();
                     if(PassengerCop != null)
                     {
                         PassengerCop.Pedestrian.IsPersistent = false;

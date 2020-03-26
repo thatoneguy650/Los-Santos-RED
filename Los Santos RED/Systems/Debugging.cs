@@ -116,16 +116,16 @@ public static class Debugging
         Tasking.UntaskAll(true);
 
 
-        foreach (GTACop Cop in PoliceScanning.K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedScanning.K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
             Cop.Pedestrian.Delete();
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
         {
             Cop.Pedestrian.Delete();
         }
 
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
         {
             Cop.Pedestrian.CurrentVehicle.Delete();
 
@@ -181,13 +181,13 @@ public static class Debugging
     private static void DebugNumpad7()
     {
 
-
+        DispatchAudio.AbortAllAudio();
     }
     private static void DebugNumpad8()
     {
         WriteToLog("DebugNumpad7", "--------------------------------");
         WriteToLog("DebugNumpad7", "--------Police Status-----------");
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         {
             WriteToLog("DebugNumpad7", string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11},Agency: {12}, DistancetoInvestigation: {13}",
                     Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.IsTasked, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
@@ -196,7 +196,7 @@ public static class Debugging
         WriteToLog("DebugNumpad7", string.Format("PoliceInInvestigationMode: {0}", Police.PoliceInInvestigationMode));
         WriteToLog("DebugNumpad7", string.Format("InvestigationPosition: {0}", Police.InvestigationPosition));
         WriteToLog("DebugNumpad7", string.Format("InvestigationDistance: {0}", Police.InvestigationDistance));
-        WriteToLog("DebugNumpad7", string.Format("AnyNear Investigation Position: {0}", PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance)));
+        WriteToLog("DebugNumpad7", string.Format("AnyNear Investigation Position: {0}", PedScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance)));
 
         WriteToLog("DebugNumpad7", "--------------------------------");
         WriteToLog("DebugNumpad7", "");
@@ -209,7 +209,7 @@ public static class Debugging
         if (PlayerLocation.PlayerCurrentCrossStreet != null)
             WriteToLog("DebugNumpad6", string.Format("Cross Street: {0}", PlayerLocation.PlayerCurrentCrossStreet.Name));
         WriteToLog("DebugNumpad6", string.Format("PlayerCoordinates: {0},{1},{2}", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
-        foreach (GTAPed DeadPerson in PoliceScanning.PlayerKilledCivilians)
+        foreach (GTAPed DeadPerson in PedScanning.PlayerKilledCivilians)
         {
             WriteToLog("DebugNumpad7", string.Format("Player Killed: Handle: {0}, Distance: {1}", DeadPerson.Pedestrian.Handle, Game.LocalPlayer.Character.DistanceTo2D(DeadPerson.Pedestrian)));
         }

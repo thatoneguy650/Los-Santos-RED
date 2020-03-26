@@ -97,7 +97,7 @@ public class GTAPed
             DistanceToPlayer = Pedestrian.DistanceTo(Game.LocalPlayer.Character.Position);
             DistanceToLastSeen = Pedestrian.DistanceTo(Police.PlacePlayerLastSeen);
 
-            if (DistanceToPlayer <= 45f)
+            if (DistanceToPlayer <= 35f)
                 CanHearPlayer = true;
             else
                 CanHearPlayer = false;

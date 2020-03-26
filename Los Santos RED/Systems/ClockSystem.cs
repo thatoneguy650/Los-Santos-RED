@@ -25,6 +25,7 @@ public static class ClockSystem
     public static bool IsRunning { get; set; }
     public static string ClockSpeed { get; set; }
     public static string ClockTime { get; set; }
+    public static bool OverrideToFastest { get; set; } = false;
     public static void Initialize()
     {
         IsRunning = true;
@@ -79,6 +80,13 @@ public static class ClockSystem
             Interval = 10;
             ClockMultiplier = 3;
             ClockSpeed = "300x";
+        }
+
+        if(OverrideToFastest)
+        {
+            Interval = 1;
+            ClockMultiplier = 2;
+            ClockSpeed = "2000x";
         }
 
         if (Game.GameTime - GameTimeLastSetClock >= Interval)

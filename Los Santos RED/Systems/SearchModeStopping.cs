@@ -143,20 +143,21 @@ public static class SearchModeStopping
             GhostCop.IsPersistent = true;
             GhostCop.IsCollisionEnabled = false;
             GhostCop.IsVisible = false;
+        
+            Blip myBlip = GhostCop.GetAttachedBlip();
+            if (myBlip != null)
+                myBlip.Delete();
+            GhostCop.VisionRange = 100f;
+            GhostCop.HearingRange = 100f;
+            GhostCop.CanRagdoll = false;
+            const ulong SetPedMute = 0x7A73D05A607734C7;
+            NativeFunction.CallByHash<uint>(SetPedMute, GhostCop);
+            NativeFunction.CallByName<bool>("STOP_PED_SPEAKING", GhostCop, true);
+            NativeFunction.CallByName<uint>("SET_PED_CONFIG_FLAG", GhostCop, 69, true);
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, (uint)2725352035, true); //Unequip weapon so you don't get shot
+            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
+            NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", GhostCop, 0f);
         }
-        Blip myBlip = GhostCop.GetAttachedBlip();
-        if (myBlip != null)
-            myBlip.Delete();
-        GhostCop.VisionRange = 100f;
-        GhostCop.HearingRange = 100f;
-        GhostCop.CanRagdoll = false;
-        const ulong SetPedMute = 0x7A73D05A607734C7;
-        NativeFunction.CallByHash<uint>(SetPedMute, GhostCop);
-        NativeFunction.CallByName<bool>("STOP_PED_SPEAKING", GhostCop, true);
-        NativeFunction.CallByName<uint>("SET_PED_CONFIG_FLAG", GhostCop, 69, true);
-        NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, (uint)2725352035, true); //Unequip weapon so you don't get shot
-        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
-        NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", GhostCop, 0f);
     }
 }
 

@@ -28,15 +28,17 @@ public class RapSheet
     public Crime BrandishingWeapon = new Crime("Brandishing Weapon", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportCarryingWeapon, 11)) { CiviliansCanFightIfObserved = true };
     public Crime HitPedWithCar = new Crime("Pedestrian Hit and Run", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportPedHitAndRun, 12)) { CiviliansCanFightIfObserved = true };
     public Crime HurtingCivilians = new Crime("Assaulting Civilians", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportCivilianInjury, 13)) { CiviliansCanFightIfObserved = true };
-    public Crime HitCarWithCar = new Crime("Hit and Run", CrimeLevel.Misdemeanor, 1, false, new DispatchQueueItem(ReportDispatch.ReportVehicleHitAndRun, 14) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CiviliansCanFightIfObserved = true, CanBeReportedMultipleTimes = false };
-    public Crime ChangingPlates = new Crime("Stealing License Plates", CrimeLevel.Misdemeanor, 1, false, new DispatchQueueItem(ReportDispatch.ReportSuspiciousActivity, 15)) { CiviliansCanFightIfObserved = true };
-    public Crime ResistingArrest = new Crime("Resisting Arrest", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportResistingArrest, 16));   
+    public Crime HitCarWithCar = new Crime("Hit and Run", CrimeLevel.Misdemeanor, 1, false, new DispatchQueueItem(ReportDispatch.ReportVehicleHitAndRun, 14) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CiviliansCanFightIfObserved = true, CanBeReportedMultipleTimes = false, WillScareCivilians = false };
+    public Crime ChangingPlates = new Crime("Stealing License Plates", CrimeLevel.Misdemeanor, 1, false, new DispatchQueueItem(ReportDispatch.ReportSuspiciousActivity, 15)) { CiviliansCanFightIfObserved = true, WillScareCivilians = false };
 
-    public Crime DrivingAgainstTraffic = new Crime("Driving Against Traffic", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRecklessDriver, 17) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
-    public Crime DrivingOnPavement = new Crime("Driving On Pavement", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRecklessDriver, 18) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
-    public Crime NonRoadworthyVehicle = new Crime("Non-Roadworthy Vehicle", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportSuspiciousVehicle, 19) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
-    public Crime FelonySpeeding = new Crime("Speeding", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportFelonySpeeding, 20) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
-    public Crime RunningARedLight = new Crime("Running a Red Light", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRunningRed, 21) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false };
+
+    public Crime ResistingArrest = new Crime("Resisting Arrest", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(ReportDispatch.ReportResistingArrest, 22));   
+
+    public Crime DrivingAgainstTraffic = new Crime("Driving Against Traffic", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRecklessDriver, 17) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false, WillScareCivilians = false };
+    public Crime DrivingOnPavement = new Crime("Driving On Pavement", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportRecklessDriver, 18) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false, WillScareCivilians = false };
+    public Crime NonRoadworthyVehicle = new Crime("Non-Roadworthy Vehicle", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportSuspiciousVehicle, 19) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false, WillScareCivilians = false };
+    public Crime FelonySpeeding = new Crime("Speeding", CrimeLevel.Traffic,1,false, new DispatchQueueItem(ReportDispatch.ReportFelonySpeeding, 20) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false, WillScareCivilians = false };
+    public Crime RunningARedLight = new Crime("Running a Red Light", CrimeLevel.Traffic, 1, false, new DispatchQueueItem(ReportDispatch.ReportRunningRed, 21) { ResultsInStolenCarSpotted = true, IsTrafficViolation = true }) { CanBeReportedByCivilians = false, CiviliansCanFightIfObserved = false, CanBeReportedMultipleTimes = false, WillScareCivilians = false };
 
     public List<GTALicensePlate> WantedPlates = new List<GTALicensePlate>();
     public uint GameTimeWantedStarted;
@@ -174,7 +176,7 @@ public class RapSheet
         if (LosSantosRED.IsBusted || LosSantosRED.IsDead)
             return;
  
-        if (Civilians.RecentlyKilledCivilian(5000) || Civilians.NearMurderVictim(15f))
+        if (Civilians.RecentlyKilledCivilian(5000) || Civilians.NearMurderVictim(9f))
         {
             KillingCivilians.IsCurrentlyViolating = true;
             if (KillingCivilians.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
@@ -196,10 +198,10 @@ public class RapSheet
             HurtingCivilians.IsCurrentlyViolating = false;
         }
 
-        if((LosSantosRED.PlayerRecentlyShot(3000) || Police.PlayerArtificiallyShooting) && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
+        if((LosSantosRED.PlayerRecentlyShot(1500) || Police.PlayerArtificiallyShooting) && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
         {
             FiringWeapon.IsCurrentlyViolating = true;
-            if (PoliceScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
+            if (PedScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
             {
                 FiringWeaponNearPolice.IsCurrentlyViolating = true;
                 if (FiringWeaponNearPolice.CanObserveCrime)
@@ -298,7 +300,7 @@ public class RapSheet
         {
             AimingWeaponAtPolice.CrimeObserved();
         }
-        if(ResistingArrest.CanObserveCrime && !ResistingArrest.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsWanted && Police.AnyPoliceCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !LosSantosRED.HandsAreUp)
+        if(ResistingArrest.CanObserveCrime && !ResistingArrest.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsWanted && Police.AnyPoliceCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !LosSantosRED.HandsAreUp && Police.PlayerHasBeenWantedFor >= 5000)
         {
             bool InVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             ResistingArrest.DispatchToPlay.SuspectStatusOnFoot = true;
@@ -309,7 +311,7 @@ public class RapSheet
             }
             ResistingArrest.CrimeObserved();
         }
-        if (GrandTheftAuto.CanObserveCrime && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.IsInAnyPoliceVehicle && Police.AnyPoliceCanSeePlayer && PoliceScanning.CopPeds.Any(x => x.DistanceToPlayer <= 17f))
+        if (GrandTheftAuto.CanObserveCrime && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.IsInAnyPoliceVehicle && Police.AnyPoliceCanSeePlayer && PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 17f))
         {
             GrandTheftAuto.CrimeObserved();
         }
@@ -320,7 +322,7 @@ public class RapSheet
     }
     private void CheckAimingAtPolice()
     {
-        if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsConsideredArmed && Game.LocalPlayer.IsFreeAiming && Police.AnyPoliceCanSeePlayer && PoliceScanning.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.Pedestrian)))
+        if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsConsideredArmed && Game.LocalPlayer.IsFreeAiming && Police.AnyPoliceCanSeePlayer && PedScanning.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.Pedestrian)))
             TimeAimedAtPolice++;
         else
             TimeAimedAtPolice = 0;
@@ -337,7 +339,7 @@ public class Crime
     public CrimeLevel Severity = CrimeLevel.Unknown;
     public int InstancesObserved = 0;
     public int TotalInstances = 0;
-    public DispatchAudio.DispatchQueueItem DispatchToPlay;
+    public DispatchQueueItem DispatchToPlay;
     private uint GameTimeLastReported;
     private uint InstanceDuration = 20000;
     public bool IsMurder = false;
@@ -347,6 +349,7 @@ public class Crime
     public bool CanBeCalledInBySound = false;
     public bool CiviliansCanFightIfObserved = false;
     public bool CanBeReportedMultipleTimes = true;
+    public bool WillScareCivilians = true;
     public bool CanObserveCrime
     {
         get
@@ -404,7 +407,7 @@ public class Crime
     {
 
     }
-    public Crime(string _Name, CrimeLevel _Severity, int _ResultingWantedLevel, bool _ResultsInLethalForce, DispatchAudio.DispatchQueueItem _DispatchToPlay)
+    public Crime(string _Name, CrimeLevel _Severity, int _ResultingWantedLevel, bool _ResultsInLethalForce, DispatchQueueItem _DispatchToPlay)
     {
         Severity = _Severity;
         ResultsInLethalForce = _ResultsInLethalForce;

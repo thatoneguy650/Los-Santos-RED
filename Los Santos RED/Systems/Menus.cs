@@ -334,7 +334,7 @@ internal static class Menus
         menuActionSmoking = new UIMenuListItem("Smoking", "Start smoking.", SmokingOptionsList);
 
         actionsMenu.AddItem(menuMainSuicide);
-        //actionsMenu.AddItem(menuActionSmoking);
+        actionsMenu.AddItem(menuActionSmoking);
 
         actionsMenu.OnItemSelect += ActionsMenuSelect;
         actionsMenu.OnListChange += OnListChange;
@@ -544,14 +544,15 @@ internal static class Menus
         }
         if (selectedItem == menuActionSmoking)
         {
-            if (SmokingOptionsList[index-1].ToString() == "Start")
-            {
-                Smoking.Start();
-            }
-            else
-            {
-                //Smoking.StopWithAnimation();
-            }
+            Smoking.StartScenario();
+            //if (SmokingOptionsList[index-1].ToString() == "Start")
+            //{
+            //    Smoking.Start();
+            //}
+            //else
+            //{
+            //    //Smoking.StopWithAnimation();
+            //}
         }
     }
     private static void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)

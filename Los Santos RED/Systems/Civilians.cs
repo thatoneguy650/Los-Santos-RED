@@ -32,7 +32,7 @@ public static class Civilians
     }
     public static bool NearMurderVictim(float Distance)
     {
-        if (PoliceScanning.PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
+        if (PedScanning.PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
             return true;
         else
             return false;
@@ -50,8 +50,13 @@ public static class Civilians
     public static void CivilianTick()
     {
         if (LosSantosRED.PlayerIsWanted)//for now dont do any work when we are wanted, the base game can do that for us
+        {
+            AnyCiviliansCanSeePlayer = false;
+            AnyCiviliansCanRecognizePlayer = false;
+            UI.DebugLine = "";
             return;
-
+        }
+            
         UpdateCivilians();
         CheckRecognition();
         CheckSnitchCivilians();
@@ -61,7 +66,7 @@ public static class Civilians
        List<Crime> CrimesToCallIn = Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians;
        if (CrimesToCallIn.Any())
         {
-            foreach(GTAPed Snitch in PoliceScanning.Civilians)
+            foreach(GTAPed Snitch in PedScanning.Civilians)
             {
                 if (LosSantosRED.PlayerIsNotWanted)
                 {
@@ -112,18 +117,18 @@ public static class Civilians
         //        CiviLine += "~s~(SEEN)";
         //}
 
-        //UI.DebugLine = CiviLine;// string.Format("(SEEN): {0},Violate: {1},Cnt: {2},Rpt: {3}", AnyCiviliansCanRecognizePlayer, string.Join(",", CrimesToCallIn.Select(x => x.Name)), TotalCivisTasked, Tasking.CiviliansReportingCrimes);
+        UI.DebugLine = string.Format("{0}", string.Join(",", Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Select(x => x.Name)));
     }
     public static void UpdateCivilians()
     {
-        PoliceScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
-        foreach (GTAPed MyPed in PoliceScanning.Civilians)
+        PedScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
+        foreach (GTAPed MyPed in PedScanning.Civilians)
         {
             if (MyPed.Pedestrian.IsDead)
             {
                 CheckCivilianKilled(MyPed);
                 if(MyPed.KilledByPlayer)
-                    PoliceScanning.PlayerKilledCivilians.Add(MyPed);
+                    PedScanning.PlayerKilledCivilians.Add(MyPed);
                 //continue;
             }
             int NewHealth = MyPed.Pedestrian.Health;
@@ -135,13 +140,13 @@ public static class Civilians
             }
             MyPed.UpdateDistance();
         }
-        PoliceScanning.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
-        PoliceScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
+        PedScanning.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
+        PedScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
     }
     private static void CheckRecognition()
     {
-        AnyCiviliansCanSeePlayer = PoliceScanning.Civilians.Any(x => x.CanSeePlayer);
-        AnyCiviliansCanRecognizePlayer = PoliceScanning.Civilians.Any(x => x.CanRecognizePlayer);
+        AnyCiviliansCanSeePlayer = PedScanning.Civilians.Any(x => x.CanSeePlayer);
+        AnyCiviliansCanRecognizePlayer = PedScanning.Civilians.Any(x => x.CanRecognizePlayer);
     }
     public static void CheckCivilianKilled(GTAPed MyPed)
     {

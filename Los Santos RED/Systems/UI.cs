@@ -74,32 +74,33 @@ public static class UI
     }
     private static void ShowTrafficUI()
     {
-        string PlayerStatusLine;
+        string PlayerStatusLine = "";
         if (PersonOfInterest.PlayerIsPersonOfInterest)
         {
-            if(LosSantosRED.PlayerIsWanted)
+            if (LosSantosRED.PlayerIsWanted)
                 PlayerStatusLine = "~r~Arrest on Sight~s~";
             else if (Police.PlayerHasBeenNotWantedFor <= 45000)
                 PlayerStatusLine = "~o~Arrest on Sight~s~";
             else
                 PlayerStatusLine = "~y~Arrest on Sight~s~";
         }
-        else
-            PlayerStatusLine = "";
-
+        
+        
+        if (LosSantosRED.PlayerIsNotWanted)
+        {
             if (PlayerStatusLine != "" && (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any() || Civilians.AnyCiviliansCanRecognizePlayer))
                 PlayerStatusLine += " ";
 
             if (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any() && Civilians.AnyCiviliansCanRecognizePlayer)
                 PlayerStatusLine += "~r~(Seen Violating)";
-            else if(Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any())
+            else if (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any())
                 PlayerStatusLine += "~o~(Violating)";
-            else if(Civilians.AnyCiviliansCanRecognizePlayer)
+            else if (Civilians.AnyCiviliansCanRecognizePlayer)
                 PlayerStatusLine += "~s~(Seen)";
-
-        if (LosSantosRED.PlayerWantedLevel > 0)
+        }
+        else
         {
-            string AgenciesChasingPlayer = PoliceScanning.AgenciesChasingPlayer;
+            string AgenciesChasingPlayer = PedScanning.AgenciesChasingPlayer;
             if (AgenciesChasingPlayer != "")
                 PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
         }

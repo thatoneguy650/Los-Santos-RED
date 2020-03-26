@@ -209,10 +209,10 @@ namespace ExtensionsMethods
         }
         //Math
         public static double GetRandomNumber(double minimum, double maximum)
-            {
-                Random random = new Random();
-                return random.NextDouble() * (maximum - minimum) + minimum;
-            }
+        {
+            Random random = new Random();
+            return random.NextDouble() * (maximum - minimum) + minimum;
+        }
         //Car Stuff
         public static bool IsRoadWorthy(this Vehicle myCar)
         {

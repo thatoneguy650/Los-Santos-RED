@@ -103,7 +103,7 @@ public static class TrafficViolations
             if (!CurrVehicle.IsRoadWorthy() || CurrVehicle.IsDamaged())
                 PlayersVehicleIsSuspicious = true;
             bool TreatAsCop = false;
-            bool TrafficAnyPoliceCanSeePlayer = PoliceScanning.CopPeds.Any(x => x.CanSeePlayer && x.AssignedAgency.CanCheckTrafficViolations);
+            bool TrafficAnyPoliceCanSeePlayer = PedScanning.CopPeds.Any(x => x.CanSeePlayer && x.AssignedAgency.CanCheckTrafficViolations);
 
             if (Settings.TrafficViolationsExemptCode3 && CurrVehicle != null && CurrVehicle.IsPoliceVehicle && MyCar != null && !MyCar.WasReportedStolen)
             {

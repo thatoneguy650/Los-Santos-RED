@@ -378,7 +378,7 @@ internal static class VehicleEngine
             uint GameTimeStartedAnimation = Game.GameTime;
             while (Game.GameTime - GameTimeStartedAnimation <= 1000)
             {
-                if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
+                if (Game.IsControlJustPressed(0, GameControl.VehicleExit) || !Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 {
                     Cancel = true;
                     NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);

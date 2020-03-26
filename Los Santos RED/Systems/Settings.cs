@@ -43,7 +43,7 @@ static class Settings
 
     public static bool IssuePoliceHeavyWeapons = true;
 
-    public static int PoliceKilledSurrenderLimit = 5;
+    public static int PoliceKilledSurrenderLimit = 2;
 
     public static bool OverridePoliceAccuracy = true;
     public static int PoliceGeneralAccuracy = 10;

@@ -209,6 +209,23 @@ public static class Smoking
             Debugging.WriteToLog("Smoking", e.Message + " : " + e.StackTrace);
         }
     }
+    public static void StartScenario()
+    {
+        GameFiber CreateSmoke = GameFiber.StartNew(delegate
+        {
+            NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_SMOKING", 0, true);
+            ClockSystem.OverrideToFastest = true;
+            while (!Extensions.IsMoveControlPressed())
+            {
+                GameFiber.Sleep(100);
+            }
+            Game.LocalPlayer.Character.Tasks.Clear();
+            ClockSystem.OverrideToFastest = false;
+        }, "SmokeParticles");
+        Debugging.GameFibers.Add(CreateSmoke);
+        
+        
+    }
     public static void Start()
     {
         if (CurrentAnimationCategory == CigaretteAnimation.Puffing || CurrentAnimationCategory == CigaretteAnimation.Start)

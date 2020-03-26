@@ -22,7 +22,6 @@ public static class LosSantosRED
     private static bool PrevPlayerIsGettingIntoVehicle;
     private static bool PrevPlayerInVehicle;
     private static bool PrevPlayerAimingInVehicle;
-    
     private static uint GameTimeStartedHoldingEnter;
 
     public static bool IsRunning { get; set; }
@@ -41,7 +40,6 @@ public static class LosSantosRED
     public static bool PlayerOnMotorcycle { get; set; }
     public static bool PlayerAimingInVehicle { get; set; }
     public static bool PlayerIsGettingIntoVehicle { get; set; }
-    //public static int PlayerWantedLevel { get; set; }
     public static WeaponHash PlayerCurrentWeaponHash { get; set; }
     public static List<GTAVehicle> TrackedVehicles { get; set; }
     public static List<Rage.Object> CreatedObjects { get; set; }
@@ -162,7 +160,7 @@ public static class LosSantosRED
         Settings.Initialize();
         Menus.Intitialize();//Somewhat the procees each tick is taking frames
         RespawnStopper.Initialize(); //maye some slowness
-        PoliceScanning.Initialize();
+        PedScanning.Initialize();
         DispatchAudio.Initialize();//slow? moved to 500 ms
         PoliceSpeech.Initialize();//slow? moved to 500 ms
         Vehicles.Initialize();
@@ -367,7 +365,7 @@ public static class LosSantosRED
         Settings.Dispose();
         Menus.Dispose();
         RespawnStopper.Dispose(); //maye some slowness
-        PoliceScanning.Dispose();
+        PedScanning.Dispose();
         DispatchAudio.Dispose();
         PoliceSpeech.Dispose();
         Vehicles.Dispose();
@@ -422,7 +420,7 @@ public static class LosSantosRED
         GTAVehicle MyNewCar = new GTAVehicle(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding, PreviousOwner, IsStolen, MyPlate);
         if (IsStolen && PreviousOwner.Exists())
         {
-            GTAPed MyPrevOwner = PoliceScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
+            GTAPed MyPrevOwner = PedScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
             if(MyPrevOwner != null)
             {
                 Police.CurrentCrimes.GrandTheftAuto.DispatchToPlay.VehicleToReport = MyNewCar;
@@ -459,7 +457,7 @@ public static class LosSantosRED
         Game.LocalPlayer.Character.IsInvincible = true;
         //Police.SetWantedLevel(0,"You died");
         TransitionToSlowMo();
-        if (Police.PreviousWantedLevel > 0 || PoliceScanning.CopPeds.Any(x => x.IsTasked || x.CanSeePlayer))
+        if (Police.PreviousWantedLevel > 0 || PedScanning.CopPeds.Any(x => x.RecentlySeenPlayer()))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {
@@ -803,5 +801,11 @@ public static class LosSantosRED
 
         //}, "TransitionOut");
         //Debugging.GameFibers.Add(Transition);
+    }
+    public static string RandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+          .Select(s => s[MyRand.Next(s.Length)]).ToArray());
     }
 }

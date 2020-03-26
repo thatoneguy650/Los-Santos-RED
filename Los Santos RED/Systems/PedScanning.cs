@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 
 
-public static class PoliceScanning
+public static class PedScanning
 {
     public static List<GTACop> CopPeds { get; private set; }
     public static List<GTACop> K9Peds { get; set; }
@@ -29,18 +29,14 @@ public static class PoliceScanning
         PlayerKilledCivilians = new List<GTAPed>();
         PoliceVehicles = new List<Vehicle>();
     }
-    public static void Tick()
-    {
-        ScanForPolice();
-    }
     public static void Dispose()
     {
         ClearPolice();
     }
-    public static void ScanForPolice()
+    public static void ScanForPeds()
     {
         Ped[] Pedestrians = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250
-        foreach (Ped Pedestrian in Pedestrians.Where(s => s.Exists() && !s.IsDead && s.IsVisible))
+        foreach (Ped Pedestrian in Pedestrians.Where(s => s.Exists() && !s.IsDead && s.IsVisible && s.IsHuman))
         {
             if(Pedestrian.IsPoliceArmy())
             {
@@ -49,46 +45,51 @@ public static class PoliceScanning
 
                 if (!CopPeds.Any(x => x.Pedestrian == Pedestrian))
                 {
-                    bool canSee = false;
-                    if (Pedestrian.PlayerIsInFront() && Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 55f) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, Game.LocalPlayer.Character))
-                        canSee = true;
-
-                    Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian);
-                    GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health, AssignedAgency);
-                    Pedestrian.IsPersistent = false;
-                    if (Settings.OverridePoliceAccuracy)
-                        Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
-                    Pedestrian.Inventory.Weapons.Clear();
-                    Police.IssueCopPistol(myCop);
-                    NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
-
-
-                    if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
-                    {
-                        Vehicle PoliceCar = Pedestrian.CurrentVehicle;
-
-                        if (!PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
-                        {
-                            Agencies.ChangeLivery(PoliceCar, AssignedAgency);
-                            PoliceSpawning.UpgradeCruiser(PoliceCar);
-                            PoliceVehicles.Add(PoliceCar);
-                        }
-                    }   
-                    CopPeds.Add(myCop);
-
-                    if (Settings.IssuePoliceHeavyWeapons && Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
-                        Police.IssueCopHeavyWeapon(myCop);
+                    AddCop(Pedestrian);
                 }
             }
             else
             {
                 if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
                 {
-                    Civilians.Add(new GTAPed(Pedestrian, false, Pedestrian.Health) { WillCallPolice = LosSantosRED.MyRand.Next(1, 11) <= 9, WillFight = LosSantosRED.MyRand.Next(1, 21) <= 4 });
+                    AddCivilian(Pedestrian);
                 }
             }
         }  
-            //Police.UpdatedCopsStats();
+    }
+    private static void AddCop(Ped Pedestrian)
+    {
+        bool canSee = false;
+        if (Pedestrian.PlayerIsInFront() && Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 55f) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, Game.LocalPlayer.Character))
+            canSee = true;
+
+        Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian);
+        GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health, AssignedAgency);
+        Pedestrian.IsPersistent = false;
+        if (Settings.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
+        Pedestrian.Inventory.Weapons.Clear();
+        Police.IssueCopPistol(myCop);
+        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
+
+        if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
+        {
+            Vehicle PoliceCar = Pedestrian.CurrentVehicle;
+            if (!PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
+            {
+                Agencies.ChangeLivery(PoliceCar, AssignedAgency);
+                PoliceSpawning.UpgradeCruiser(PoliceCar);
+                PoliceVehicles.Add(PoliceCar);
+            }
+        }
+        CopPeds.Add(myCop);
+
+        if (Settings.IssuePoliceHeavyWeapons && Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
+            Police.IssueCopHeavyWeapon(myCop);
+    }
+    private static void AddCivilian(Ped Pedestrian)
+    {
+        Civilians.Add(new GTAPed(Pedestrian, false, Pedestrian.Health) { WillCallPolice = LosSantosRED.MyRand.Next(1, 11) <= 4, WillFight = LosSantosRED.MyRand.Next(1, 21) <= 1 });
     }
     public static void ScanforPoliceVehicles()
     {
@@ -99,17 +100,14 @@ public static class PoliceScanning
             {
                 if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
                 {
-                    //Agency AssignedAgency = Agencies.GetAgencyFromEmptyVehicle(Veh);
-                    //Debugging.WriteToLog("LiveryChanger", "CheckingLivery");
                     Agencies.CheckandChangeLivery(Veh);
                     PoliceSpawning.UpgradeCruiser(Veh);
                     PoliceVehicles.Add(Veh);
                 }
             }
-
         }
     }
-    public static void ClearPoliceAroundArea(Vector3 Location,float Radius)
+    private static void ClearPoliceAroundArea(Vector3 Location,float Radius)
     {
         foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.DistanceTo2D(Location) <= Radius))
         {
@@ -154,7 +152,6 @@ public static class PoliceScanning
     }
     public static void ClearPoliceCompletely()
     {
-        //Tasking.UntaskAll(true);
         foreach (GTACop Cop in K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsInHelicopter))
         {
             Cop.Pedestrian.Delete();

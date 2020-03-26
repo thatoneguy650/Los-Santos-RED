@@ -13,28 +13,21 @@ public static class PoliceSpawning
     private static List<Vehicle> CreatedPoliceVehicles;
     private static List<Entity> CreatedEntities;
     private static RandomPoliceSpawn NextPoliceSpawn;
-
     private static RandomPoliceSpawn NextPoliceInvestigationSpawn;
-
     public static bool IsRunning { get; set; }
     public static void Initialize()
     {
         CreatedPoliceVehicles = new List<Vehicle>();
         CreatedEntities = new List<Entity>();
         IsRunning = true;
-        MainLoop();
-    }
-    private static void MainLoop()
-    {
-       
     }
     public static void RandomCopTick()
     {
-        if (PoliceScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+        if (PedScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
         {
             SpawnRandomCop();
         }
-        if(Police.PoliceInInvestigationMode && !PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance && x.Pedestrian.IsDriver()) && PoliceScanning.CopPeds.Where(x => x.WasInvestigationSpawn).Count() < 4)
+        if(Police.PoliceInInvestigationMode && !PedScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance && x.Pedestrian.IsDriver()) && PedScanning.CopPeds.Where(x => x.WasInvestigationSpawn).Count() < 4)
         {
             SpawnInvestigatingCop();
         }
@@ -112,48 +105,6 @@ public static class PoliceSpawning
         }
 
     }
-
-    //public static void SpawnInvestigatingCop(Vector3 PositionToInvestigate)
-    //{
-    //    try
-    //    {
-    //        if (NextPoliceInvestigationSpawn == null)
-    //        {
-    //            NextPoliceInvestigationSpawn = GetPoliceSpawn(150f, 300f, true);
-    //            return;
-    //        }
-
-    //        GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position) <= Tasking.InvestigationDistance && x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-    //        if (ClosestCop == null)
-    //        {
-    //            if (NextPoliceInvestigationSpawn != null)
-    //            {
-    //                Agency AgencyToSpawn = NextPoliceInvestigationSpawn.ZoneAtLocation.MainZoneAgency;
-    //                ClosestCop = SpawnCop(AgencyToSpawn, NextPoliceInvestigationSpawn.SpawnLocation);
-    //                NextPoliceInvestigationSpawn = null;
-    //            }
-    //            else
-    //            {
-    //                ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsDriver()).OrderBy(x => x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position)).FirstOrDefault();
-    //            }
-    //        }
-
-    //        if (ClosestCop == null)
-    //        {
-    //            NextPoliceInvestigationSpawn = null;
-    //            return;
-    //        }
-
-    //        SpawnInvestigationCop = false;
-    //        Tasking.InvestigationPosition = PositionToInvestigate;
-    //        Tasking.AddItemToQueue(new PoliceTask(ClosestCop, PoliceTask.Task.TaskInvestigateCrime));
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Debugging.WriteToLog("SpawnRandomCopError", e.Message + " : " + e.StackTrace);
-    //    }
-
-    //}
     public static float GetClosestVehicleNodeHeading(this Vector3 v3)
     {
         float outHeading;
@@ -163,36 +114,6 @@ public static class PoliceSpawning
 
         return outHeading;
     }
-    //public static void GetRandomSpawnLocation(float DistanceFrom,float DistanceTo,bool AllowClosePoliceSpawns)
-    //{
-    //    NextPoliceSpawn = null;
-
-    //    Vector3 SpawnLocation = Vector3.Zero;
-    //    float Heading = 0f;
-    //    LosSantosRED.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(DistanceFrom, DistanceTo), out SpawnLocation, out Heading);//LosSantosRED.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position.Around2D(750f, 1500f), out SpawnLocation, out Heading);
-
-    //    if (SpawnLocation == Vector3.Zero)
-    //        return;
-
-    //    if (SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)//250f
-    //        return;
-
-    //    if (!AllowClosePoliceSpawns)
-    //    {
-    //        if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
-    //            return;
-    //    }
-
-    //    Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
-    //    if (ZoneName == null || ZoneName == Zones.OCEANA)
-    //        return;
-
-    //    string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
-    //    Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
-
-    //    NextPoliceSpawn = new RandomPoliceSpawn(SpawnLocation, ZoneName, MyGTAStreet != null && MyGTAStreet.isFreeway);
-    //}
-
     public static RandomPoliceSpawn GetPoliceSpawn(float DistanceFrom, float DistanceTo, bool AllowClosePoliceSpawns)
     {
         Vector3 SpawnLocation = Vector3.Zero;
@@ -207,7 +128,7 @@ public static class PoliceSpawning
 
         if (!AllowClosePoliceSpawns)
         {
-            if (PoliceScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
+            if (PedScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
                 return null;
         }
 
@@ -220,9 +141,6 @@ public static class PoliceSpawning
 
         return new RandomPoliceSpawn(SpawnLocation, ZoneName, MyGTAStreet != null && MyGTAStreet.isFreeway);
     }
-
-
-
     public static void RemoveFarAwayRandomlySpawnedCops()
     {
         float DeleteDistance = 2000;
@@ -237,7 +155,7 @@ public static class PoliceSpawning
             DeleteDistance = 1250f;
             NonPersistDistance = 1000f;//was 550f
         }
-        foreach (GTACop Cop in PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.WasRandomSpawn))
+        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.WasRandomSpawn))
         {
             if (Cop.DistanceToPlayer >= DeleteDistance)//2000f
             {
@@ -322,7 +240,7 @@ public static class PoliceSpawning
                 Police.CreatedBlips.Add(myBlip);
             }
 
-            PoliceScanning.CopPeds.Add(MyNewCop);
+            PedScanning.CopPeds.Add(MyNewCop);
 
             bool AddPartner = LosSantosRED.MyRand.Next(1, 11) <= 5;
             if (AddPartner && !isBike)
@@ -345,7 +263,7 @@ public static class PoliceSpawning
                         Police.IssueCopPistol(MyNewPartnerCop);
                         MyNewPartnerCop.WasRandomSpawn = true;
                         MyNewPartnerCop.WasMarkedNonPersistent = true;
-                        PoliceScanning.CopPeds.Add(MyNewPartnerCop);
+                        PedScanning.CopPeds.Add(MyNewPartnerCop);
                     }
                 }
             }
@@ -398,6 +316,8 @@ public static class PoliceSpawning
         Agency.VehicleInformation MyCar = _Agency.GetRandomVehicle(false);
         if (MyCar != null)
             ModelName = MyCar.ModelName;
+
+        Debugging.WriteToLog("SpawnCopCruiser", string.Format("Trying to spawn: {0}, For: {1}",ModelName, _Agency.FullName));
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
         Agencies.ChangeLivery(CopCar, _Agency);
         GameFiber.Yield();
@@ -449,7 +369,7 @@ public static class PoliceSpawning
     {
         try
         {
-            GTACop ClosestDriver = PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsInAnyVehicle(false) && !x.IsInHelicopter && x.Pedestrian.CurrentVehicle.Driver == x.Pedestrian && x.Pedestrian.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            GTACop ClosestDriver = PedScanning.CopPeds.Where(x => x.Pedestrian.IsInAnyVehicle(false) && !x.IsInHelicopter && x.Pedestrian.CurrentVehicle.Driver == x.Pedestrian && x.Pedestrian.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             if (ClosestDriver != null)
             {
                 Ped Doggo = new Ped("a_c_shepherd", ClosestDriver.Pedestrian.GetOffsetPosition(new Vector3(0f, -10f, 0f)), 180);
@@ -464,7 +384,7 @@ public static class PoliceSpawning
                 Game.SetRelationshipBetweenRelationshipGroups("COPDOGS", "PLAYER", Relationship.Hate);
                 Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
                 GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health, ClosestDriver.AssignedAgency);
-                PoliceScanning.K9Peds.Add(DoggoCop);
+                PedScanning.K9Peds.Add(DoggoCop);
                 Tasking.TaskK9(DoggoCop);
                 Debugging.WriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
             }
@@ -484,36 +404,13 @@ public static class PoliceSpawning
             DoggoCop.Pedestrian.WarpIntoVehicle(Cop.Pedestrian.CurrentVehicle, 2);
         Debugging.WriteToLog("PutK9InCar", String.Format("K9 {0}, put in Car", DoggoCop.Pedestrian.Handle));
     }
-    //public static void CheckandChangeLivery(Vehicle CopCar,Agency AssignedAgency, Zone ZoneFound)
-    //{
-    //    Agency.VehicleInformation MyVehicle = null;
-    //    if (AssignedAgency != null && AssignedAgency.Vehicles != null)
-    //    {
-    //        MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
-    //    }
-        
-    //    if (MyVehicle == null && ZoneFound != null)//make sure we find some agency they they can be assigned to
-    //    {
-    //        Agency ZoneAgency = Zones.GetCountyAgencyByZone(ZoneFound);
-    //        if (ZoneAgency != null && ZoneAgency.Vehicles != null)
-    //        {
-    //            MyVehicle = ZoneAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
-    //        }
-    //    }
-
-    //    if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
-    //        return;
-
-    //    int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
-    //    NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
-    //}
     public static void MoveK9s()
     {
-        foreach (GTACop K9 in PoliceScanning.K9Peds)
+        foreach (GTACop K9 in PedScanning.K9Peds)
         {
             if (K9.Pedestrian.IsInAnyVehicle(false))
             {
-                GTACop ClosestDriver = PoliceScanning.CopPeds.Where(x => x.Pedestrian.IsInAnyVehicle(false) && !x.IsInHelicopter && x.Pedestrian.CurrentVehicle.Driver == x.Pedestrian && x.Pedestrian.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                GTACop ClosestDriver = PedScanning.CopPeds.Where(x => x.Pedestrian.IsInAnyVehicle(false) && !x.IsInHelicopter && x.Pedestrian.CurrentVehicle.Driver == x.Pedestrian && x.Pedestrian.CurrentVehicle.IsSeatFree(1)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
                 if (ClosestDriver != null)
                 {
                     PutK9InCar(K9, ClosestDriver);
@@ -521,93 +418,6 @@ public static class PoliceSpawning
             }
         }
     }
-
-
-    //News Spawning
-    //public static void SpawnNewsChopper()
-    //{
-
-    //    Ped NewsPilot = new Ped("s_m_m_pilot_01", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 400f)), 0f);
-    //    CreatedEntities.Add(NewsPilot);
-    //    Ped CameraMan = new Ped("ig_beverly", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 410f)), 0f);
-    //    CreatedEntities.Add(CameraMan);
-    //    Ped Assistant = new Ped("s_m_y_grip_01", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 420f)), 0f);
-    //    CreatedEntities.Add(Assistant);
-    //    NewsChopper = new Vehicle("maverick", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 0.0f, 500f)), NewsPilot.Heading);
-    //    CreatedEntities.Add(NewsChopper);
-    //    NewsPilot.WarpIntoVehicle(NewsChopper, -1);
-    //    CameraMan.WarpIntoVehicle(NewsChopper, 1);
-    //    Assistant.WarpIntoVehicle(NewsChopper, 2);
-    //    NewsPilot.BlockPermanentEvents = true;
-    //    CameraMan.BlockPermanentEvents = true;
-    //    Assistant.BlockPermanentEvents = true;
-    //    NativeFunction.CallByName<bool>("TASK_HELI_CHASE", NewsPilot, Game.LocalPlayer.Character, 25f, 25f, 40f);
-    //    Reporters.Add(new GTANewsReporter(NewsPilot, false, NewsPilot.Health));
-    //    Reporters.Add(new GTANewsReporter(CameraMan, false, CameraMan.Health));
-    //    Reporters.Add(new GTANewsReporter(Assistant, false, Assistant.Health));
-    //    NewsPilot.KeepTasks = true;
-    //    LocalWriteToLog("SpawnNewsChopper", "News Chopper Spawned");
-    //}
-    //public static void SpawnNewsVan()
-    //{
-
-    //    Ped CameraMan = new Ped("ig_beverly", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 5f, 0f)), 0f);
-    //    CreatedEntities.Add(CameraMan);
-    //    Ped Assistant = new Ped("s_m_y_grip_01", Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0.0f, 5f, 0f)), 0f);
-    //    CreatedEntities.Add(Assistant);
-
-
-
-
-    //    //Rage.Object camera = new Rage.Object("prop_ing_camera_01", CameraMan.GetOffsetPosition(Vector3.RelativeTop * 30));
-    //    //CameraMan.Tasks.PlayAnimation("anim@mp_player_intupperphotography", "idle_a_fp", 8.0F, AnimationFlags.Loop);
-
-    //    //camera.AttachTo(CameraMan, 28252, Vector3.Zero, Rotator.Zero);
-
-    //    //camera.Heading = CameraMan.Heading - 180;
-    //    //camera.Position = CameraMan.GetOffsetPosition(Vector3.RelativeTop * 0.0f + Vector3.RelativeFront * 0.33f);
-    //    //camera.IsPositionFrozen = true;
-
-
-    //    //Vector3 SpawnLocation = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around2D(50f));
-    //    //Vehicle NewsVan = new Vehicle("rumpo", SpawnLocation, Assistant.Heading);
-    //    //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", NewsVan, 0);
-    //    //NewsVan.PrimaryColor = Color.Gray;
-    //    // CameraMan.WarpIntoVehicle(NewsVan, 0);
-    //    //Assistant.WarpIntoVehicle(NewsVan, -1);
-    //    CameraMan.BlockPermanentEvents = true;
-    //    Assistant.BlockPermanentEvents = true;
-
-
-
-    //    // NativeFunction.CallByName<bool>("TASK_VEHICLE_ESCORT",
-    //    //NativeFunction.Natives.xFC545A9F0626E3B6(Assistant, NewsVan,Game.LocalPlayer.Character,40.0f, 262144, 10.0f);
-
-    //    //Assistant.Tasks.ChaseWithGroundVehicle(Game.LocalPlayer.Character);
-
-    //    //NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Assistant, 100f);
-    //    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Assistant, 8f);
-    //    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Assistant, 32, true);
-
-    //    //Assistant.Tasks.FollowToOffsetFromEntity(Game.LocalPlayer.Character, new Vector3(0f, -20f, 0f));
-    //    Assistant.KeepTasks = true;
-
-    //    //NewsTeam.Add(NewsVan);
-    //    //NewsTeam.Add(CameraMan);
-    //    //NewsTeam.Add(Assistant);
-    //}
-    //public static void DeleteNewsTeam()
-    //{
-    //    foreach (GTANewsReporter Reporter in Reporters)
-    //    {
-    //        if (Reporter.ReporterPed.Exists())
-    //            Reporter.ReporterPed.Delete();
-    //    }
-    //    Reporters.Clear();
-    //    if (NewsChopper.Exists())
-    //        NewsChopper.Delete();
-    //    LocalWriteToLog("DeleteNewsTeam", "News Team Deleted");
-    //}
 }
 public class RandomPoliceSpawn
 {

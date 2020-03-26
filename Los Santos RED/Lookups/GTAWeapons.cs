@@ -650,6 +650,9 @@ public static class GTAWeapons
                 WeaponVariation Player1 = new WeaponVariation(0);
                 Player1.Components.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol"));
                 Weapon.PlayerVariations.Add(Player1);
+
+                WeaponVariation Player2 = new WeaponVariation(0);
+                Weapon.PlayerVariations.Add(Player2);
             }
             if (Weapon.Name == "weapon_pistol_mk2")
             {
@@ -672,6 +675,9 @@ public static class GTAWeapons
                 WeaponVariation Player1 = new WeaponVariation(0);
                 Player1.Components.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol_mk2"));
                 Weapon.PlayerVariations.Add(Player1);
+
+                WeaponVariation Player2 = new WeaponVariation(0);
+                Weapon.PlayerVariations.Add(Player2);
 
 
             }
@@ -696,6 +702,9 @@ public static class GTAWeapons
                 WeaponVariation Player1 = new WeaponVariation(0);
                 Player1.Components.Add(new WeaponVariation.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_combatpistol"));
                 Weapon.PlayerVariations.Add(Player1);
+
+                WeaponVariation Player2 = new WeaponVariation(0);
+                Weapon.PlayerVariations.Add(Player2);
             }
             if (Weapon.Name == "weapon_heavypistol")
             {
