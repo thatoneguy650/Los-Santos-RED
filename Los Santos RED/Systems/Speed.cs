@@ -62,7 +62,7 @@ public static class Speed
                 SpeedBus = Game.LocalPlayer.Character.CurrentVehicle;
                 SpeedModeBombActive = true;
                 Game.DisplaySubtitle("Bomb Activated, Don't Drop Below 50 MPH");
-                DispatchAudio.PopQuizHotShot();
+                DispatchAudio.PopQuizHotShot(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.AssaultingOfficer,1));//needs some garbade
             }
         }
     }

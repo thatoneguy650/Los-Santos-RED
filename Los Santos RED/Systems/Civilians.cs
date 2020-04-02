@@ -150,12 +150,12 @@ public static class Civilians
     }
     public static void CheckCivilianKilled(GTAPed MyPed)
     {
-        if (LosSantosRED.PlayerHurtPed(MyPed))
+        if (!MyPed.HurtByPlayer && LosSantosRED.PlayerHurtPed(MyPed))
         {
             MyPed.HurtByPlayer = true;
             GameTimeLastHurtCivilian = Game.GameTime;
         }
-        if (LosSantosRED.PlayerKilledPed(MyPed))
+        if (!MyPed.KilledByPlayer && LosSantosRED.PlayerKilledPed(MyPed))
         {
             MyPed.KilledByPlayer = true;
             GameTimeLastKilledCivilian = Game.GameTime;

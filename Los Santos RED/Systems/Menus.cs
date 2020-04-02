@@ -258,21 +258,13 @@ internal static class Menus
     private static void CreateMainMenu()
     {
         mainMenu.Clear();
-        menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
-        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", LicensePlateChanging.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
-        menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Removes the plate of the nearest vehicle");
+        menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "100 M", "500 M" });
         menuMainShowPlayerStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
-        menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
-       
         mainMenu.AddItem(menuMainTakeoverRandomPed);
         mainMenu.AddItem(menuMainShowPlayerStatus);
-        if (!LosSantosRED.PlayerInVehicle)
-        {
-            mainMenu.AddItem(menuMainChangeLicensePlate);
-            mainMenu.AddItem(menuMainRemoveLicensePlate);
-        }
-        CreateOptionsMenu();
+
         CreateActionsMenu();
+        CreateOptionsMenu();     
     }
 
 
@@ -333,8 +325,19 @@ internal static class Menus
 
         menuActionSmoking = new UIMenuListItem("Smoking", "Start smoking.", SmokingOptionsList);
 
+
+        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", LicensePlateChanging.SpareLicensePlates);//new UIMenuItem("Change Plate", "Change your license plate if you have spares");
+        menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         actionsMenu.AddItem(menuMainSuicide);
         actionsMenu.AddItem(menuActionSmoking);
+
+        if (!LosSantosRED.PlayerInVehicle)
+        {
+            actionsMenu.AddItem(menuMainChangeLicensePlate);
+            actionsMenu.AddItem(menuMainRemoveLicensePlate);
+        }
+
+        menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
 
         actionsMenu.OnItemSelect += ActionsMenuSelect;
         actionsMenu.OnListChange += OnListChange;
@@ -380,14 +383,8 @@ internal static class Menus
                 if (index == 0)
                     TakeoverRadius = -1f;
                 else if(index == 1)
-                    TakeoverRadius = 20f;
-                else if (index == 2)
-                    TakeoverRadius = 40f;
-                else if (index == 3)
-                    TakeoverRadius = 60f;
-                else if (index == 4)
                     TakeoverRadius = 100f;
-                else if (index == 5)
+                else if (index == 2)
                     TakeoverRadius = 500f;
             }
             if(list == menuMainChangeLicensePlate)
@@ -433,22 +430,22 @@ internal static class Menus
             else
                 PedSwapping.TakeoverPed(PedSwapping.GetPedestrian(TakeoverRadius, false), false, false,true,false);
         }
-        else if (selectedItem == menuMainSuicide)
-        {
-            Surrendering.CommitSuicide(Game.LocalPlayer.Character);
-        }
-        else if (selectedItem == menuMainChangeLicensePlate)
-        {
-            LicensePlateChanging.ChangeNearestLicensePlate();
-        }
-        else if (selectedItem == menuMainRemoveLicensePlate)
-        {
-            LicensePlateChanging.RemoveNearestLicensePlate();
-        }
-        else if (selectedItem == menuMainChangeHelmet)
-        {
-            PedSwapping.AddRemovePlayerHelmet();
-        }
+        //else if (selectedItem == menuMainSuicide)
+        //{
+        //    Surrendering.CommitSuicide(Game.LocalPlayer.Character);
+        //}
+        //else if (selectedItem == menuMainChangeLicensePlate)
+        //{
+        //    LicensePlateChanging.ChangeNearestLicensePlate();
+        //}
+        //else if (selectedItem == menuMainRemoveLicensePlate)
+        //{
+        //    LicensePlateChanging.RemoveNearestLicensePlate();
+        //}
+        //else if (selectedItem == menuMainChangeHelmet)
+        //{
+        //    PedSwapping.AddRemovePlayerHelmet();
+        //}
         else if(selectedItem == menuMainShowPlayerStatus)
         {
             LosSantosRED.DisplayPlayerNotification();
@@ -542,17 +539,17 @@ internal static class Menus
         {
             Surrendering.CommitSuicide(Game.LocalPlayer.Character);
         }
-        if (selectedItem == menuActionSmoking)
+        else if (selectedItem == menuActionSmoking)
         {
             Smoking.StartScenario();
-            //if (SmokingOptionsList[index-1].ToString() == "Start")
-            //{
-            //    Smoking.Start();
-            //}
-            //else
-            //{
-            //    //Smoking.StopWithAnimation();
-            //}
+        }
+        else if (selectedItem == menuMainChangeLicensePlate)
+        {
+            LicensePlateChanging.ChangeNearestLicensePlate();
+        }
+        else if (selectedItem == menuMainRemoveLicensePlate)
+        {
+            LicensePlateChanging.RemoveNearestLicensePlate();
         }
     }
     private static void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)

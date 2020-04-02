@@ -174,7 +174,7 @@ public static class Tasking
                     AbortReport = true;
                     break;
                 }
-                if (PedSwapping.JustTakenOver(2000))
+                if (PedSwapping.JustTakenOver(2000) || LosSantosRED.PlayerIsWanted)
                 {
                     AbortReport = true;
                     break;
@@ -226,7 +226,7 @@ public static class Tasking
             }
             GameFiber.Sleep(LosSantosRED.MyRand.Next(3000, 7000));
             Debugging.WriteToLog("Crime Pre Reported", WorstCrime.Name);
-            if (CivilianToReport.Pedestrian.Exists() && CivilianToReport.Pedestrian.IsAlive && !WorstCrime.RecentlyCalledInByCivilians(60000) && !CivilianToReport.Pedestrian.IsRagdoll)
+            if (CivilianToReport.Pedestrian.Exists() && CivilianToReport.Pedestrian.IsAlive && !WorstCrime.RecentlyCalledInByCivilians(60000) && !CivilianToReport.Pedestrian.IsRagdoll && LosSantosRED.PlayerIsNotWanted)
             {
                 WorstCrime.DispatchToPlay.ReportedBy = DispatchAudio.ReportType.Civilians;
                 WorstCrime.GameTimeLastCalledInByCivilians = Game.GameTime;
@@ -641,10 +641,10 @@ public static class Tasking
             }
         }
 
-        if (Police.CurrentCrimes.KillingPolice.InstancesObserved >= Settings.PoliceKilledSurrenderLimit && LosSantosRED.PlayerWantedLevel < 4)
+        if (Police.CurrentCrimes.KillingPolice.InstancesObserved >= Settings.PoliceKilledSurrenderLimit && LosSantosRED.PlayerWantedLevel < 4 && !LosSantosRED.IsDead && !LosSantosRED.IsBusted)
         {
             Police.SetWantedLevel(4,"You killed too many cops",true);
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportWeaponsFree, 1));
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.WeaponsFree, 1));
         }
 
         if (SurrenderBust && !IsBustTimeOut())

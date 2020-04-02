@@ -147,7 +147,7 @@ public static class Respawning
 
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
             CopToBribe.Pedestrian.PlayAmbientSpeech("GENERIC_THANKS");
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportResumePatrol, 3));
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
 
             ResetPlayer(true, false);
         });

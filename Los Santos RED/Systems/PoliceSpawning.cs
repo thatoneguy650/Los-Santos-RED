@@ -27,7 +27,7 @@ public static class PoliceSpawning
         {
             SpawnRandomCop();
         }
-        if(Police.PoliceInInvestigationMode && !PedScanning.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance && x.Pedestrian.IsDriver()) && PedScanning.CopPeds.Where(x => x.WasInvestigationSpawn).Count() < 4)
+        if(Police.PoliceInInvestigationMode && !PedScanning.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance && x.Pedestrian.IsDriver()) && PedScanning.CopPeds.Where(x => x.WasInvestigationSpawn).Count() < 4)
         {
             SpawnInvestigatingCop();
         }

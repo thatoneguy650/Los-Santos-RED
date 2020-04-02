@@ -80,7 +80,7 @@ public static class PersonOfInterest
             {
                 if (!ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber))
                     Police.SetWantedLevel(2, "Car was reported stolen and it matches the original description (formerly First)",true);
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSpottedStolenCar, 10)
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SpottedStolenCar, 10)
                 {
                     ResultsInStolenCarSpotted = true,
                     VehicleToReport = VehicleToCheck,
@@ -91,7 +91,7 @@ public static class PersonOfInterest
             {
                 if (!ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber))
                     Police.SetWantedLevel(2, "Car plate is wanted and color matches original (formerly Second)",true);
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspiciousVehicle, 10)
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspiciousVehicle, 10)
                 {
                     ResultsInStolenCarSpotted = true,
                     VehicleToReport = VehicleToCheck
@@ -107,21 +107,21 @@ public static class PersonOfInterest
             {
                 if(!ApplyLastWantedStats())
                     Police.SetWantedLevel(2, "Cops Reacquired after losing them in the same area, actual wanted not found",true);
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
             }
             else if(LosSantosRED.PlayerIsWanted)
             {
                 if (ApplyLastWantedStats())
                 {
                     Debugging.WriteToLog("PlayerBecamePersonOfInterest", "There was previous wanted stats that were applied");
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
                 }
             }
             else if (Police.PoliceInInvestigationMode && LosSantosRED.PlayerIsNotWanted && Police.NearInvestigationPosition())
             {
                 ApplyReportedCrimes();
                 Police.SetWantedLevel(2, "you are a suspect!",true);
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectSpotted, 1));
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
             }
         }
     }
@@ -160,7 +160,7 @@ public static class PersonOfInterest
         Police.AddUpdateLastWantedBlip(Vector3.Zero);
 
         if (PlayAudio && !Police.PoliceInInvestigationMode)
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportResumePatrol, 3));
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
     }
     public static bool ApplyWantedStatsForPlate(string PlateNumber)
     {

@@ -439,7 +439,7 @@ public static class LosSantosRED
         TransitionToSlowMo();
         HandsAreUp = false;
         Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false);
-        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectArrested, 5));
+        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectArrested, 5));
         GameFiber HandleBusted = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
@@ -458,7 +458,7 @@ public static class LosSantosRED
         //Police.SetWantedLevel(0,"You died");
         TransitionToSlowMo();
         if (Police.PreviousWantedLevel > 0 || PedScanning.CopPeds.Any(x => x.RecentlySeenPlayer()))
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportSuspectWasted, 5));
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectWasted, 5));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
@@ -804,7 +804,7 @@ public static class LosSantosRED
     }
     public static string RandomString(int length)
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789";
         return new string(Enumerable.Repeat(chars, length)
           .Select(s => s[MyRand.Next(s.Length)]).ToArray());
     }

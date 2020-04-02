@@ -295,19 +295,9 @@ public static class CarStealing
         return NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
     }
     public static void CarJackPed(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
-    {
-        if (SeatTryingToEnter != -1)
-            return;
-
-        if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
-        {
-            if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
-            {
-                return;//Closer to passenger side, animations dont work
-            }
-        }
+    { 
         GTAWeapon myGun = LosSantosRED.GetCurrentWeapon();
-        if (LosSantosRED.PlayerHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && myGun != null && myGun.Category != GTAWeapon.WeaponCategory.Melee)
+        if (CarArmedCarjack(TargetVehicle, Driver, SeatTryingToEnter) && LosSantosRED.PlayerHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && myGun != null && myGun.Category != GTAWeapon.WeaponCategory.Melee)
         {
             Debugging.WriteToLog("CarJackPed", "CarJackPedWithWeapon");
             CarJackPedWithWeapon(TargetVehicle, Driver, SeatTryingToEnter, myGun);
@@ -319,6 +309,20 @@ public static class CarStealing
         }
 
 
+    }
+    private static bool CarArmedCarjack(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
+    {
+        if (SeatTryingToEnter != -1)
+            return false;
+
+        if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
+        {
+            if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
+            {
+                return false;//Closer to passenger side, animations dont work
+            }
+        }
+        return true;
     }
     public static void CarJackPedWithWeapon(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter,GTAWeapon myGun)
     {

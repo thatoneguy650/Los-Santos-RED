@@ -171,12 +171,15 @@ public static class Debugging
     }
     private static void DebugNumpad5()
     {
-
-
+        GameFiber.StartNew(delegate
+        {
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.CivilianInjury, 7) { ReportedBy = DispatchAudio.ReportType.Civilians });
+            GameFiber.Sleep(3500);
+            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.OfficerDown, 1));
+        });
     }
     private static void DebugNumpad6()
     {
-       
     }
     private static void DebugNumpad7()
     {

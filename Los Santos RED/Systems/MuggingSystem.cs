@@ -9,24 +9,8 @@ using System.Threading.Tasks;
 
 public static class MuggingSystem
 {
-    
-    private static Ped LastAimedAtPed;
-   // private static Vector3 PlaceLastMugged;
-    private static uint GameTimeStartedAimingAtTarget;
     public static bool IsRunning { get; set; }
     public static bool IsMugging { get; set; }
-    public static bool CanMugFromBehind
-    {
-        get
-        {
-            if (GameTimeStartedAimingAtTarget == 0)
-                return false;
-            else if (Game.GameTime - GameTimeStartedAimingAtTarget >= 2000)
-                return true;
-            else
-                return false;
-        }
-    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -37,8 +21,7 @@ public static class MuggingSystem
     }
     public static void Tick()
     {
-
-        if (!IsMugging && Game.LocalPlayer.Character.IsAiming && Game.LocalPlayer.IsFreeAimingAtAnyEntity)
+        if (!IsMugging && Game.LocalPlayer.Character.IsAiming && Game.LocalPlayer.IsFreeAimingAtAnyEntity && Game.LocalPlayer.Character.IsConsideredArmed())
         {
             Entity Target = Game.LocalPlayer.GetFreeAimingTarget();
 
@@ -54,33 +37,14 @@ public static class MuggingSystem
                 GTAPedTarget = new GTAPed((Ped)Target, false, Target.Health);
 
             bool CanSee = GTAPedTarget.Pedestrian.CanSeePlayer();
-            // 
+            bool CanMugFromBehind = GTAPedTarget.DistanceToPlayer <= 7f;
 
-            if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false))
+            if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && (CanSee || CanMugFromBehind))
             {
-                if (CanSee)
-                    MugTarget(GTAPedTarget,false);
-                else
-                {
-                    if (LastAimedAtPed == GTAPedTarget.Pedestrian)
-                    {
-                        StartedAimingAtTarget();
-                    }
-                    else
-                    {
-                        StoppedAimingAtTarget();
-                        LastAimedAtPed = GTAPedTarget.Pedestrian;
-                    }
-                }
-                if (GameTimeStartedAimingAtTarget > 0 && Game.GameTime - GameTimeStartedAimingAtTarget > 1500)
-                    MugTarget(GTAPedTarget,false);
-            }
-            else
-            {
-                StoppedAimingAtTarget();
+                MugTarget(GTAPedTarget,false);
             }
         }
-        else if (!IsMugging && !Game.LocalPlayer.Character.IsAiming && NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING",Game.LocalPlayer))
+        else if (!IsMugging && !Game.LocalPlayer.Character.IsAiming && NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING",Game.LocalPlayer) && Game.LocalPlayer.Character.IsConsideredArmed())
         {
             GTAWeapon MyWeapon = LosSantosRED.GetCurrentWeapon();
             if (MyWeapon == null || MyWeapon.Category != GTAWeapon.WeaponCategory.Melee)
@@ -98,8 +62,6 @@ public static class MuggingSystem
             int Handle = TargetEntity;
             Debugging.WriteToLog("Muggin Melee", string.Format("Middle Handle: {0}", Handle));
 
-
-
             if (PedScanning.CopPeds.Any(x => x.Pedestrian.Handle == Handle))
                 return;//aiming at cop
 
@@ -114,8 +76,6 @@ public static class MuggingSystem
             Debugging.WriteToLog("Muggin Melee", string.Format("Made it to the End Ped Handle: {0}", Handle));
         }
 
-        if (!Game.LocalPlayer.Character.IsAiming)
-            StoppedAimingAtTarget();
     }
     private static void MugTarget(GTAPed MuggingTarget,bool IsMelee)
     {
@@ -182,13 +142,5 @@ public static class MuggingSystem
             MuggingTarget.CanFlee = true;
             IsMugging = false;      
         });
-    }
-    public static void StartedAimingAtTarget()
-    {
-        GameTimeStartedAimingAtTarget = Game.GameTime;
-    }
-    public static void StoppedAimingAtTarget()
-    {
-        GameTimeStartedAimingAtTarget = 0;
     }
 }
