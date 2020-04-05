@@ -285,6 +285,9 @@ public static class PedSwapping
         NamePed();
         ClockSystem.ResetTime();
 
+        PlayerHealth.Health = Game.LocalPlayer.Character.Health;
+        PlayerHealth.Armor = Game.LocalPlayer.Character.Armor;
+
         GameFiber.Wait(50);
         LosSantosRED.DisplayPlayerNotification();
 

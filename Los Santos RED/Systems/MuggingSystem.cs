@@ -46,7 +46,7 @@ public static class MuggingSystem
         }
         else if (!IsMugging && !Game.LocalPlayer.Character.IsAiming && NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING",Game.LocalPlayer) && Game.LocalPlayer.Character.IsConsideredArmed())
         {
-            GTAWeapon MyWeapon = LosSantosRED.GetCurrentWeapon();
+            GTAWeapon MyWeapon = LosSantosRED.GetCurrentWeapon(Game.LocalPlayer.Character);
             if (MyWeapon == null || MyWeapon.Category != GTAWeapon.WeaponCategory.Melee)
                 return;
 

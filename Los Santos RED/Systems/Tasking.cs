@@ -157,6 +157,10 @@ public static class Tasking
         {
 
             uint GameTimeStarted = Game.GameTime;
+
+            if (!CivilianToReport.Pedestrian.Exists() || CivilianToReport.Pedestrian.IsDead)
+                return;
+
             CivilianToReport.Pedestrian.IsPersistent = true;
             CiviliansReportingCrimes++;
 
@@ -317,7 +321,7 @@ public static class Tasking
             MyTask.GameTimeAssigned = Game.GameTime;
             CopsToTask.Add(MyTask);
             MyTask.CopToAssign.TaskIsQueued = true;
-            Debugging.WriteToLog("InstantActionTick", string.Format("Queued: {0}, For: {1}", MyTask.TaskToAssign, MyTask.CopToAssign.Pedestrian.Handle));
+            //Debugging.WriteToLog("InstantActionTick", string.Format("Queued: {0}, For: {1}", MyTask.TaskToAssign, MyTask.CopToAssign.Pedestrian.Handle));
         }
     }
     public static void AddCivilianTaskToQueue(CivilianTask MyTask)
@@ -327,7 +331,7 @@ public static class Tasking
             MyTask.GameTimeAssigned = Game.GameTime;
             CiviliansToTask.Add(MyTask);
             MyTask.CivilianToAssign.TaskIsQueued = true;
-            Debugging.WriteToLog("InstantActionTick", string.Format("Queued: {0}, For: {1}", MyTask.TaskToAssign, MyTask.CivilianToAssign.Pedestrian.Handle));
+            //Debugging.WriteToLog("InstantActionTick", string.Format("Queued: {0}, For: {1}", MyTask.TaskToAssign, MyTask.CivilianToAssign.Pedestrian.Handle));
         }
     }
     public static void PoliceVehicleTick()

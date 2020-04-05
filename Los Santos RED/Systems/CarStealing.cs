@@ -296,7 +296,7 @@ public static class CarStealing
     }
     public static void CarJackPed(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
     { 
-        GTAWeapon myGun = LosSantosRED.GetCurrentWeapon();
+        GTAWeapon myGun = LosSantosRED.GetCurrentWeapon(Game.LocalPlayer.Character);
         if (CarArmedCarjack(TargetVehicle, Driver, SeatTryingToEnter) && LosSantosRED.PlayerHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && myGun != null && myGun.Category != GTAWeapon.WeaponCategory.Melee)
         {
             Debugging.WriteToLog("CarJackPed", "CarJackPedWithWeapon");

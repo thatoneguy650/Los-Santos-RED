@@ -68,7 +68,7 @@ public static class Civilians
         {
             foreach(GTAPed Snitch in PedScanning.Civilians)
             {
-                if (LosSantosRED.PlayerIsNotWanted)
+                if (1==1)//LosSantosRED.PlayerIsNotWanted)
                 {
                     if (Snitch.CanRecognizePlayer)
                     {

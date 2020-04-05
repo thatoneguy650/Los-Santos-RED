@@ -176,7 +176,7 @@ public static class TrafficViolations
             }
 
             int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
-            if (Settings.TrafficViolationsHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
+            if (Settings.TrafficViolationsHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000 && PedScanning.Civilians.Any(x => x.DistanceToPlayer <= 10f))//otherwise we get non humans
             {
                 Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = true;
                 if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.HitCarWithCar.CanObserveCrime)

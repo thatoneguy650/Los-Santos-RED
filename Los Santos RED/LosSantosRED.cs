@@ -183,6 +183,7 @@ public static class LosSantosRED
         ClockSystem.Initialize();
         MuggingSystem.Initialize();
         //CameraSystem.Initialize();
+        PlayerHealth.Initialize();
         MainLoop();
     }
     public static void MainLoop()
@@ -301,7 +302,7 @@ public static class LosSantosRED
     }
     public static void ControlTick()
     {
-        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
         {
             if (!HandsAreUp && !IsBusted)
             {
@@ -342,6 +343,14 @@ public static class LosSantosRED
         {
             Surrendering.CommitSuicide(Game.LocalPlayer.Character);
         }
+
+
+        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && Game.IsControlKeyDownRightNow)
+        {
+            PlayerHealth.BandagePed(Game.LocalPlayer.Character);
+        }
+
+
 
         if (Game.IsControlPressed(2, GameControl.Enter))
         {
@@ -390,7 +399,7 @@ public static class LosSantosRED
         PersonOfInterest.Dispose();
         Civilians.Dispose();
         //CameraSystem.Idspose();
-
+        PlayerHealth.Dispose();
         ClockSystem.Dispose();
         MuggingSystem.Dispose();
     }
@@ -436,6 +445,7 @@ public static class LosSantosRED
         BeingArrested = true;
         Game.LocalPlayer.Character.Tasks.Clear();
         NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);//_START_SCREEN_EFFECT
+        NativeFunction.Natives.x80C8B1846639BB19(1);
         TransitionToSlowMo();
         HandsAreUp = false;
         Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false);
@@ -452,6 +462,7 @@ public static class LosSantosRED
         DiedInVehicle = PlayerInVehicle;//Game.LocalPlayer.Character.IsInAnyVehicle(false);
         IsDead = true;
         NativeFunction.Natives.x2206BF9A37B7F724("DeathFailOut", 0, 0);//_START_SCREEN_EFFECT
+        NativeFunction.Natives.x80C8B1846639BB19(1);
         Game.LocalPlayer.Character.Kill();
         Game.LocalPlayer.Character.Health = 0;
         Game.LocalPlayer.Character.IsInvincible = true;
@@ -532,7 +543,13 @@ public static class LosSantosRED
                 return false;
         }
     }
-
+    public static bool RandomPercent(float Percent)
+    {
+        if (MyRand.Next(1, 101) <= Percent)
+            return true;
+        else
+            return false;
+    }
     public static void DisplayPlayerNotification()
     {
         string NotifcationText = "Warrants: ~g~None~s~";
@@ -565,11 +582,11 @@ public static class LosSantosRED
         if (myGun.PlayerVariations.Any())
             ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
     }
-    public static GTAWeapon GetCurrentWeapon()
+    public static GTAWeapon GetCurrentWeapon(Ped Pedestrian)
     {
-        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)
+        if (Pedestrian.Inventory.EquippedWeapon == null)
             return null;
-        ulong myHash = (ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
+        ulong myHash = (ulong)Pedestrian.Inventory.EquippedWeapon.Hash;
         GTAWeapon CurrentGun = GTAWeapons.GetWeaponFromHash(myHash);//Weapons.Where(x => (WeaponHash)x.Hash == MyWeapon.Hash).FirstOrDefault();
         if (CurrentGun != null)
             return CurrentGun;

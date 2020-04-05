@@ -25,6 +25,7 @@ internal static class Menus
     private static UIMenuItem menuDebugKillPlayer;
     private static UIMenuListItem menuDebugRandomWeapon;
     private static UIMenuItem menuDebugRandomVariation;
+    private static UIMenuListItem menuDebugScreenEffect;
 
     // private static UIMenuCheckboxItem menuDebugEnabled;
     private static UIMenuItem menuDeathUndie;
@@ -63,11 +64,91 @@ internal static class Menus
     //private static string CurrentSelectedRadioStation;
 
     private static readonly List<string> strRadioStations = new List<string> { "NONE", "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
-
+    private static readonly new List<string> ScreenEffects = new List<string>  { "SwitchHUDIn",
+        "SwitchHUDOut",
+        "FocusIn",
+        "FocusOut",
+        "MinigameEndNeutral",
+        "MinigameEndTrevor",
+        "MinigameEndFranklin",
+        "MinigameEndMichael",
+        "MinigameTransitionOut",
+        "MinigameTransitionIn",
+        "SwitchShortNeutralIn",
+        "SwitchShortFranklinIn",
+        "SwitchShortTrevorIn",
+        "SwitchShortMichaelIn",
+        "SwitchOpenMichaelIn",
+        "SwitchOpenFranklinIn",
+        "SwitchOpenTrevorIn",
+        "SwitchHUDMichaelOut",
+        "SwitchHUDFranklinOut",
+        "SwitchHUDTrevorOut",
+        "SwitchShortFranklinMid",
+        "SwitchShortMichaelMid",
+        "SwitchShortTrevorMid",
+        "DeathFailOut",
+        "CamPushInNeutral",
+        "CamPushInFranklin",
+        "CamPushInMichael",
+        "CamPushInTrevor",
+        "SwitchSceneFranklin",
+        "SwitchSceneTrevor",
+        "SwitchSceneMichael",
+        "SwitchSceneNeutral",
+        "MP_Celeb_Win",
+        "MP_Celeb_Win_Out",
+        "MP_Celeb_Lose",
+        "MP_Celeb_Lose_Out",
+        "DeathFailNeutralIn",
+        "DeathFailMPDark",
+        "DeathFailMPIn",
+        "MP_Celeb_Preload_Fade",
+        "PeyoteEndOut",
+        "PeyoteEndIn",
+        "PeyoteIn",
+        "PeyoteOut",
+        "MP_race_crash",
+        "SuccessFranklin",
+        "SuccessTrevor",
+        "SuccessMichael",
+        "DrugsMichaelAliensFightIn",
+        "DrugsMichaelAliensFight",
+        "DrugsMichaelAliensFightOut",
+        "DrugsTrevorClownsFightIn",
+        "DrugsTrevorClownsFight",
+        "DrugsTrevorClownsFightOut",
+        "HeistCelebPass",
+        "HeistCelebPassBW",
+        "HeistCelebEnd",
+        "HeistCelebToast",
+        "MenuMGHeistIn",
+        "MenuMGTournamentIn",
+        "MenuMGSelectionIn",
+        "ChopVision",
+        "DMT_flight_intro",
+        "DMT_flight",
+        "DrugsDrivingIn",
+        "DrugsDrivingOut",
+        "SwitchOpenNeutralFIB5",
+        "HeistLocate",
+        "MP_job_load",
+        "RaceTurbo",
+        "MP_intro_logo",
+        "HeistTripSkipFade",
+        "MenuMGHeistOut",
+        "MP_corona_switch",
+        "MenuMGSelectionTint",
+        "SuccessNeutral",
+        "ExplosionJosh3",
+        "SniperOverlay",
+        "RampageOut",
+        "Rampage",
+        "Dont_tazeme_bro" };
 
     public static float TakeoverRadius;
     public static int ChangePlateIndex;
-
+    private static string CurrentScreenEffect = "SwitchHUDIn";
 
     public static bool IsRunning { get; set; }
     public static void Intitialize()
@@ -101,6 +182,10 @@ internal static class Menus
         menuDebugRandomVariation = new UIMenuItem("Apply Random Variation", "Add some cool stuff to your gun");
 
 
+
+        menuDebugScreenEffect = new UIMenuListItem("Play Screen Effect", "Choose Screen Effect To Play", ScreenEffects);
+
+
         //menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
         menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
         menuDebugHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
@@ -117,6 +202,7 @@ internal static class Menus
         debugMenu.AddItem(menuDebugHealthAndArmor);
         //debugMenu.AddItem(menuRadioOff);
         debugMenu.AddItem(menuAutoSetRadioStation);
+        debugMenu.AddItem(menuDebugScreenEffect);
 
 
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
@@ -414,6 +500,8 @@ internal static class Menus
                 RandomWeaponCategory = list.Index;
             else if (list == menuAutoSetRadioStation)
                 VehicleEngine.AutoTuneStation = strRadioStations[index];
+            if (list == menuDebugScreenEffect)
+                CurrentScreenEffect = ScreenEffects[index];
         }
     }
     private static void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -567,7 +655,7 @@ internal static class Menus
         }
         if (selectedItem == menuDebugRandomVariation)
         {
-            GTAWeapon myGun = LosSantosRED.GetCurrentWeapon();
+            GTAWeapon myGun = LosSantosRED.GetCurrentWeapon(Game.LocalPlayer.Character);
             if (myGun == null)
                 return;
             if (myGun.PlayerVariations.Any())
@@ -579,8 +667,19 @@ internal static class Menus
         }
         if (selectedItem == menuDebugHealthAndArmor)
         {
-            Game.LocalPlayer.Character.Health = 100;
+            Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
             Game.LocalPlayer.Character.Armor = 100;
+        }
+        if(selectedItem == menuDebugScreenEffect)
+        {
+            NativeFunction.Natives.xB4EDDC19532BFB85();//ANIMPOSTFX_STOP_ALL
+            Debugging.WriteToLog("Screen Effect: ", CurrentScreenEffect);
+
+
+            if (CurrentScreenEffect != "")
+            {
+                NativeFunction.Natives.x2206BF9A37B7F724(CurrentScreenEffect, 0, true);//ANIMPOSTFX_PLAY
+            }
         }
         debugMenu.Visible = false;
     }

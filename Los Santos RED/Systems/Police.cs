@@ -241,7 +241,7 @@ internal static class Police
                 if(PersonOfInterest.PlayerIsPersonOfInterest)
                     PersonOfInterest.ResetPersonOfInterest(false);
                 if(PlayDispatch)
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.NoFurtherUnitsNeeded, 20) { IsAmbient = true });
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.NoFurtherUnitsNeeded, 30) { IsAmbient = true });
             }
             GameTimeStartedInvestigation = 0;
         }
@@ -550,11 +550,7 @@ internal static class Police
                 if (LastSeenVehicleHandle != 0 && LastSeenVehicleHandle != LosSantosRED.PlayersCurrentTrackedVehicle.VehicleEnt.Handle && !LosSantosRED.PlayersCurrentTrackedVehicle.HasBeenDescribedByDispatch)
                 {
                     GameTimeLastReportedSpotted = Game.GameTime;
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectChangedVehicle, 20)
-                    {
-                        IsAmbient = true,
-                        VehicleToReport = LosSantosRED.PlayersCurrentTrackedVehicle
-                    });
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectChangedVehicle, 21) {IsAmbient = true,VehicleToReport = LosSantosRED.PlayersCurrentTrackedVehicle});
                 }
 
 
@@ -628,12 +624,13 @@ internal static class Police
                 {
                     Debugging.WriteToLog("Reporting Crime Instead of Spotted", ToReportInstead.Name);
                     ToReportInstead.DispatchToPlay.IsAmbient = true;
+                    ToReportInstead.DispatchToPlay.ReportedBy = DispatchAudio.ReportType.Officers;
                     DispatchAudio.AddDispatchToQueue(ToReportInstead.DispatchToPlay);
                 }
                 else
                 {
                     Debugging.WriteToLog("Spotted", "Playing Spotted");
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 20) { IsAmbient = true });
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 25) { IsAmbient = true });
                 }
                 
                 GameTimeLastReportedSpotted = Game.GameTime;
@@ -846,7 +843,7 @@ internal static class Police
             CanReportLastSeen = false;
             if (LosSantosRED.PlayerIsWanted && AnyPoliceSeenPlayerThisWanted && CanPlaySuspectSpotted && LosSantosRED.PlayerInVehicle && !DispatchAudio.IsPlayingAudio && LosSantosRED.PlayerInAutomobile && LosSantosRED.PlayersCurrentTrackedVehicle != null)
             {
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 20) { IsAmbient = true });
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 25) { IsAmbient = true });
                 GameTimeLastReportedSpotted = Game.GameTime;  
             }
         }

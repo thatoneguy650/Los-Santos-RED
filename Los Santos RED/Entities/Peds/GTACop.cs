@@ -21,6 +21,8 @@ public class GTACop : GTAPed
     public uint GameTimeLastWeaponCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
+    public uint GameTimeLastRadioed { get; set; }
+    public bool HasItemsToRadioIn { get; set; }
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false,true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public WeaponVariation PistolVariation { get; set; }
@@ -52,7 +54,7 @@ public class GTACop : GTAPed
         {
             if (GameTimeLastSpoke == 0)
                 return true;
-            else if (Game.GameTime > GameTimeLastSpoke + 15000)
+            else if (Game.GameTime - GameTimeLastSpoke >= 15000)
                 return true;
             else
                 return false;

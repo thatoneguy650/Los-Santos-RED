@@ -295,6 +295,7 @@ public static class Respawning
         }
 
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
+        NativeFunction.Natives.x80C8B1846639BB19(0);
         if (ResetHealth)
             Game.LocalPlayer.Character.Health = 200;
 
@@ -310,7 +311,7 @@ public static class Respawning
             LosSantosRED.IsDead = false;
             LosSantosRED.IsBusted = false;
             LosSantosRED.BeingArrested = false;
-            Game.LocalPlayer.Character.Health = 100;
+            Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
             NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
             if (LosSantosRED.DiedInVehicle)
             {

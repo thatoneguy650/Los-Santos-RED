@@ -100,13 +100,13 @@ public static class Debugging
     private static void DebugNonInvincible()
     {
         Game.LocalPlayer.Character.IsInvincible = false;
-        Game.LocalPlayer.Character.Health = 100;
+        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
         Debugging.WriteToLog("KeyDown", "You are NOT invicible");
     }
     private static void DebugInvincible()
     {
         Game.LocalPlayer.Character.IsInvincible = true;
-        Game.LocalPlayer.Character.Health = 100;
+        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
         Debugging.WriteToLog("KeyDown", "You are invicible");
     }
     private static void DebugCopReset()
@@ -157,34 +157,40 @@ public static class Debugging
     }
     private static void DebugNumpad2()
     {
-
+        Police.SetWantedLevel(2, "Debug", true);
 
     }
     private static void DebugNumpad3()
     {
-
+        Police.SetWantedLevel(0, "Debug", true);
     }
 
     private static void DebugNumpad4()
     {
- 
+        PlayerHealth.IsBleeding = true;
     }
     private static void DebugNumpad5()
     {
-        GameFiber.StartNew(delegate
-        {
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.CivilianInjury, 7) { ReportedBy = DispatchAudio.ReportType.Civilians });
-            GameFiber.Sleep(3500);
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.OfficerDown, 1));
-        });
+        PlayerHealth.IsBleeding = false;
     }
     private static void DebugNumpad6()
     {
+        foreach(GTACop MyCop in PedScanning.CopPeds.Where(x => x.RecentlySeenPlayer()))
+        {
+            MyCop.HasItemsToRadioIn = true;
+        }
     }
+        
     private static void DebugNumpad7()
     {
+        Game.LocalPlayer.Character.PlayAmbientSpeech("REQUEST_BACKUP");
+        LosSantosRED.RequestAnimationDictionay("random@arrests");
 
-        DispatchAudio.AbortAllAudio();
+        List<string> ToChoose = new List<string>() { "generic_radio_enter", "generic_radio_exit", "generic_radio_chatter", "radio_chatter", "radio_enter", "radio_exit" };
+        string ToAnimate = ToChoose.PickRandom();
+        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "random@arrests", ToAnimate, 2.0f, -2.0f, -1, 52, 0, false, false, false);
+
+        Debugging.WriteToLog("DebugNumpad7", ToAnimate);
     }
     private static void DebugNumpad8()
     {

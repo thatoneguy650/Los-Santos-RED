@@ -898,6 +898,7 @@ public class GTAWeapon
         LMG = 5,
         Sniper = 6,
         Heavy = 7,
+        Unknown = 8,
     }
     public GTAWeapon(String _Name, short _AmmoAmount, WeaponCategory _Category, int _WeaponLevel, ulong _Hash, bool _isPoliceIssue, bool _IsOneHanded, bool _IsTwoHanded,bool _IsLegal)
     {

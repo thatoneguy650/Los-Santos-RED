@@ -583,7 +583,7 @@ public class conjunctives
     public static ScannerFile After { get { return new ScannerFile("01_conjunctives\\0x17EF8D06.wav", "After(?)", "conjunctives"); } }
     public static ScannerFile Nearumm { get { return new ScannerFile("01_conjunctives\\0x18AA0841.wav", "Near, umm...", "conjunctives"); } }
     public static ScannerFile PossiblyAttheneedsconfirmation3 { get { return new ScannerFile("01_conjunctives\\0x19BE50A4.wav", "(Possibly At the, needs confirmation)", "conjunctives"); } }
-    public static ScannerFile Drivingoncombinationofuhhandpossiblyayawn { get { return new ScannerFile("01_conjunctives\\0x1AF7F545.wav", "Driving on... (combination of uhh and possibly a yawn)", "conjunctives"); } }
+    public static ScannerFile DrivingAUmmm { get { return new ScannerFile("01_conjunctives\\0x1AF7F545.wav", "Driving on... (combination of uhh and possibly a yawn)", "conjunctives"); } }
     public static ScannerFile Inside { get { return new ScannerFile("01_conjunctives\\0x1C248AAD.wav", "Inside...", "conjunctives"); } }
     public static ScannerFile PossiblyAttheneedsconfirmation4 { get { return new ScannerFile("01_conjunctives\\0x1D19175A.wav", "(Possibly At the, needs confirmation)", "conjunctives"); } }
     public static ScannerFile Over1 { get { return new ScannerFile("01_conjunctives\\0x1DC1DFC1.wav", "Over...", "conjunctives"); } }

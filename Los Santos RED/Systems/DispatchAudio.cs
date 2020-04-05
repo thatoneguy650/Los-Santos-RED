@@ -36,7 +36,10 @@ public static class DispatchAudio
     public static bool ReportedLethalForceAuthorized = false;
     public static bool ReportedWeaponsFree = false;
     public static bool ReportedOfficerDown = false;
+    private static uint GameTimeLastOfficersReported;
+    private static uint GameTimeLastCivilianReported;
 
+    public static int LastCivilianReportedPriority { get; set; }
 
     public static bool RecentAnnouncedDispatch
     {
@@ -372,7 +375,9 @@ public static class DispatchAudio
     public static void AddDispatchToQueue(DispatchQueueItem _ItemToAdd)
     {
         if (!DispatchQueue.Any(x => x.Type == _ItemToAdd.Type))
+        {
             DispatchQueue.Add(_ItemToAdd);
+        }
     }
     public static void PlayDispatchQueue()
     {
@@ -404,7 +409,7 @@ public static class DispatchAudio
                 {
                     DispatchQueue.RemoveAll(x => x.ReportedBy != ReportType.Officers);
                 }
-                if (DispatchQueue.Count() > 2)
+                if (DispatchQueue.Count() > 1)
                 {
                     DispatchQueueItem HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
                     DispatchQueue.Clear();
@@ -414,6 +419,17 @@ public static class DispatchAudio
                     }
                 }
 
+                if(DispatchQueue.Any(x => x.ReportedBy == ReportType.Civilians) && Game.GameTime - GameTimeLastCivilianReported <= 45000)
+                {
+                    foreach(DispatchQueueItem ItemToPlay in DispatchQueue)
+                    {
+                        if(ItemToPlay.Priority <= LastCivilianReportedPriority)
+                        {
+                            Debugging.WriteToLog("Ignoring Low Priority", ItemToPlay.Type.ToString());
+                        }
+                    }
+                    DispatchQueue.RemoveAll(x => x.Priority <= LastCivilianReportedPriority);
+                }
 
                 while (DispatchQueue.Count > 0)
                 {
@@ -425,6 +441,11 @@ public static class DispatchAudio
                     }
                     else
                     {
+                        if (Item.ReportedBy == ReportType.Civilians)
+                        {
+                            GameTimeLastCivilianReported = Game.GameTime;
+                            LastCivilianReportedPriority = Item.Priority;
+                        }
                         Debugging.WriteToLog("Playing", Item.Type.ToString());
                         if (Item.Type == AvailableDispatch.AssaultingOfficer)
                             AssaultingOfficer(Item);
@@ -693,7 +714,10 @@ public static class DispatchAudio
         AttentionType WhoToNotifiy = GetWhoToNotify(ItemToPlay.ReportedBy);
         DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Felony Speeding");
         ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ItemToPlay.ReportedBy, Game.LocalPlayer.Character.Position);
-        ScannerList.Add(new List<string>() { crime_speeding_felony.Aspeedingfelony.FileName }.PickRandom());
+
+        if(Police.PlayerHasBeenWantedFor <= 15000 || ItemToPlay.Speed < 40f)
+            ScannerList.Add(new List<string>() { crime_speeding_felony.Aspeedingfelony.FileName }.PickRandom());
+
         Subtitles += " a ~r~Speeding Felony~s~";
         AddSpeed(ref ScannerList, ItemToPlay.Speed, ref Subtitles, ref Notification);
         AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true, ItemToPlay.ReportedBy == ReportType.Officers);
@@ -860,20 +884,21 @@ public static class DispatchAudio
         AttentionType WhoToNotifiy = GetWhoToNotify(ItemToPlay.ReportedBy);
         DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Motor Vehicle Accident");
 
-        if (ItemToPlay.ReportedBy == ReportType.Officers)
+        if (ItemToPlay.ReportedBy == ReportType.Officers && Police.PlayerHasBeenWantedFor > 15000)
         {
             ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
-            List<string> OfficerVariations = new List<string>() { s_m_y_cop_white_full_01.DispatchSuspectsVehicleInACollision.FileName, s_m_y_cop_black_full_01.SuspectsVehicleHasCrashed.FileName, s_m_y_cop_black_full_02.WeHaveACollision.FileName};
+            List<string> OfficerVariations = new List<string>() { s_m_y_cop_white_full_01.DispatchSuspectsVehicleInACollision.FileName, s_m_y_cop_black_full_01.SuspectsVehicleHasCrashed.FileName, s_m_y_cop_black_full_02.WeHaveACollision.FileName };
             ScannerList.Add(OfficerVariations.PickRandom());
             ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         }
-
-        ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ItemToPlay.ReportedBy, Game.LocalPlayer.Character.Position);
-        if (ItemToPlay.ReportedBy == ReportType.Civilians)
-            ScannerList.Add(new List<string>() { crime_dangerous_driving.Dangerousdriving.FileName, crime_dangerous_driving.Dangerousdriving1.FileName, crime_reckless_driver.Arecklessdriver.FileName, crime_traffic_felony.Atrafficfelony.FileName }.PickRandom());
-        else if (ItemToPlay.ReportedBy == ReportType.Officers)
-            ScannerList.Add(new List<string>() { crime_motor_vehicle_accident.Amotorvehicleaccident.FileName, crime_motor_vehicle_accident.AnAEincident.FileName, crime_motor_vehicle_accident.AseriousMVA.FileName }.PickRandom());
-
+        else
+        {
+            ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ItemToPlay.ReportedBy, Game.LocalPlayer.Character.Position);
+            //if (ItemToPlay.ReportedBy == ReportType.Civilians)
+            //    ScannerList.Add(new List<string>() { crime_dangerous_driving.Dangerousdriving.FileName, crime_dangerous_driving.Dangerousdriving1.FileName, crime_reckless_driver.Arecklessdriver.FileName, crime_traffic_felony.Atrafficfelony.FileName }.PickRandom());
+            //else if (ItemToPlay.ReportedBy == ReportType.Officers)
+                ScannerList.Add(new List<string>() { crime_motor_vehicle_accident.Amotorvehicleaccident.FileName, crime_motor_vehicle_accident.AnAEincident.FileName, crime_motor_vehicle_accident.AseriousMVA.FileName }.PickRandom());
+        }
         Subtitles += " a ~r~Motor Vehicle Accident~s~";
         AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true, ItemToPlay.ReportedBy == ReportType.Officers);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
@@ -1246,23 +1271,33 @@ public static class DispatchAudio
         string Subtitles = "";
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~o~Crime Observed~s~", "Resisting Arrest");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
-        ScannerList.Add(new List<string>() { crime_person_resisting_arrest.Apersonresistingarrest.FileName, crime_suspect_resisting_arrest.Asuspectresistingarrest.FileName }.PickRandom());
+        ScannerList.Add(new List<string>() { crime_person_resisting_arrest.Apersonresistingarrest.FileName, crime_suspect_resisting_arrest.Asuspectresistingarrest.FileName, crime_1_48_resist_arrest.Acriminalresistingarrest.FileName,
+            crime_1_48_resist_arrest.Acriminalresistingarrest1.FileName, crime_1_48_resist_arrest.Asuspectfleeingacrimescene.FileName, crime_1_48_resist_arrest.Asuspectontherun.FileName }.PickRandom());
         Subtitles += " a ~r~Suspect Resisting Arrest~s~";
 
-        if (ItemToPlay.SuspectStatusOnFoot)
-        {
-            ScannerList.Add(new List<string>() { suspect_last_seen.TargetIs.FileName, suspect_last_seen.TargetLastReported.FileName, suspect_last_seen.TargetSpotted.FileName }.PickRandom());
+        ScannerList.Add(new List<string>() { suspect_last_seen.TargetIs.FileName, suspect_last_seen.TargetLastReported.FileName, suspect_last_seen.TargetSpotted.FileName }.PickRandom());
+
+        if (!Police.PlayerLastSeenInVehicle)
+        {    
             ScannerList.Add(new List<string>() { on_foot.Onfoot.FileName, on_foot.Onfoot.FileName }.PickRandom());
             Subtitles += " target last seen on foot";
+            Notification.Text += "~n~Last Seen on Foot";
         }
-        else if (!ItemToPlay.VehicleToReport.HasBeenDescribedByDispatch)
-        {    
-            Subtitles += " driving a";
-            ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
-            AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, false, ref Subtitles, ref Notification, false, true,false,true);
+        else
+        {
+            if (ItemToPlay.VehicleToReport != null && !ItemToPlay.VehicleToReport.HasBeenDescribedByDispatch)
+            {
+                Notification.Text += "~n~Last Seen driving a ";
+                Subtitles += " driving a";
+                ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
+                AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, false, ref Subtitles, ref Notification, false, true, false, true);
+            }
+            else if(ItemToPlay.VehicleToReport != null && ItemToPlay.VehicleToReport.HasBeenDescribedByDispatch)
+            {
+                AddVehicleClass(ItemToPlay.VehicleToReport, ref ScannerList, ref Subtitles, ref Notification);
+            }
+            
         }
-
-
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
     }
@@ -2029,6 +2064,29 @@ public static class DispatchAudio
             }
         }
     }
+    public static void AddVehicleClass(GTAVehicle VehicleDescription, ref List<string> ScannerList, ref string Subtitles, ref DispatchNotification Notification)
+    {
+        if(VehicleDescription != null)
+        {
+            Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(VehicleDescription);
+            if (VehicleInformation != null)
+            {
+                string VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
+                if (VehicleClassScannerFile != "")
+                {
+                    string subText = Vehicles.GetVehicleTypeSubtitle(VehicleInformation.VehicleClass);
+                    Subtitles += " driving a ~b~" + subText + "~s~";
+                    Notification.Text += "~n~Vehicle: ~b~" + subText + "~s~";
+                    ScannerList.Add(conjunctives.Drivinga.FileName);
+                    ScannerList.Add(VehicleClassScannerFile);
+                    return;
+                }
+            }
+        }
+        Notification.Text += "~n~Vehicle: Unknown";
+        Subtitles += " driving a um";
+        ScannerList.Add(conjunctives.DrivingAUmmm.FileName);
+    }
     public static string GetVehicleDisplayName(Vehicle VehicleDescription)
     {
         string ModelName;
@@ -2049,11 +2107,29 @@ public static class DispatchAudio
     }
     public static void AddSpeed(ref List<string> ScannerList,float Speed, ref string Subtitles,ref DispatchNotification Notification)
     {
-        if (Speed >= 70f)
+        if (Speed >= 40f)
         {
             ScannerList.Add(suspect_last_seen.TargetLastReported.FileName);
             Subtitles += " ~s~target last reported~s~";
-            if (Speed >= 70f && Speed < 80f)
+            if (Speed >= 40f && Speed < 50f)
+            {
+                ScannerList.Add(doing_speed.Doing40mph.FileName);
+                Subtitles += " ~s~doing ~o~40 mph~s~";
+                Notification.Text += "~n~Speed Exceeding: ~o~40 mph~s~";
+            }
+            else if (Speed >= 50f && Speed < 60f)
+            {
+                ScannerList.Add(doing_speed.Doing50mph.FileName);
+                Subtitles += " ~s~doing ~o~50 mph~s~";
+                Notification.Text += "~n~Speed Exceeding: ~o~50 mph~s~";
+            }
+            else if (Speed >= 60f && Speed < 70f)
+            {
+                ScannerList.Add(doing_speed.Doing60mph.FileName);
+                Subtitles += " ~s~doing ~o~60 mph~s~";
+                Notification.Text += "~n~Speed Exceeding: ~o~60 mph~s~";
+            }
+            else if (Speed >= 70f && Speed < 80f)
             {
                 ScannerList.Add(doing_speed.Doing70mph.FileName);
                 Subtitles += " ~s~doing ~o~70 mph~s~";

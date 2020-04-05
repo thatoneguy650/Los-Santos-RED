@@ -198,14 +198,26 @@ public class RapSheet
             HurtingCivilians.IsCurrentlyViolating = false;
         }
 
-        if((LosSantosRED.PlayerRecentlyShot(1500) || Police.PlayerArtificiallyShooting) && !Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
+        if(LosSantosRED.PlayerRecentlyShot(5000) || Police.PlayerArtificiallyShooting || Game.LocalPlayer.Character.IsShooting)
         {
             FiringWeapon.IsCurrentlyViolating = true;
-            if (PedScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
+            if (Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
             {
-                FiringWeaponNearPolice.IsCurrentlyViolating = true;
-                if (FiringWeaponNearPolice.CanObserveCrime)
-                    FiringWeaponNearPolice.CrimeObserved();
+                if (PedScanning.CopPeds.Any(x => x.RecentlySeenPlayer()))
+                {
+                    FiringWeaponNearPolice.IsCurrentlyViolating = true;
+                    if (FiringWeaponNearPolice.CanObserveCrime)
+                        FiringWeaponNearPolice.CrimeObserved();
+                }
+            }
+            else
+            {
+                if (PedScanning.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
+                {
+                    FiringWeaponNearPolice.IsCurrentlyViolating = true;
+                    if (FiringWeaponNearPolice.CanObserveCrime)
+                        FiringWeaponNearPolice.CrimeObserved();
+                }
             }
         }
         else
@@ -300,7 +312,7 @@ public class RapSheet
         {
             AimingWeaponAtPolice.CrimeObserved();
         }
-        if(ResistingArrest.CanObserveCrime && !ResistingArrest.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsWanted && Police.AnyPoliceCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !LosSantosRED.HandsAreUp && Police.PlayerHasBeenWantedFor >= 5000)
+        if(ResistingArrest.CanObserveCrime && !ResistingArrest.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsWanted && Police.AnyPoliceCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !LosSantosRED.HandsAreUp && Police.PlayerHasBeenWantedFor >= 15000)
         {
             bool InVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             ResistingArrest.DispatchToPlay.SuspectStatusOnFoot = true;
@@ -432,12 +444,32 @@ public class Crime
             DispatchToPlay.ReportedBy = ReportType.Officers;
             AddDispatchToQueue(DispatchToPlay);
         }
+        int CopsToRadio = 0;
+        foreach(GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.RecentlySeenPlayer()).OrderBy(x=> x.DistanceToPlayer).Take(6))
+        {
+            if (CopsToRadio == 0)
+            {
+                Cop.HasItemsToRadioIn = true;
+                CopsToRadio++;
+            }
+            else if (LosSantosRED.RandomPercent(40))
+            {
+                Cop.HasItemsToRadioIn = true;
+                CopsToRadio++;
+            }
+        }
         HasBeenWitnessedByPolice = true;
         InstancesObserved++;
         GameTimeLastWitnessed = Game.GameTime;
         Police.SetWantedLevel(ResultingWantedLevel, Name,true);
         HasBeenReportedByDispatch = true;
         Debugging.WriteToLog("Crime Logged", Name);        
+    }
+    private void PickCopToRadioIn()
+    {
+        LosSantosRED.RequestAnimationDictionay("random@arrests");
+
+        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "random@arrests", "generic_radio_enter", 2.0f, -2.0f, -1, 48, 0, false, false, false);
     }
     //public void CrimeCalledInByCivilians(bool HaveDescription,bool ResultsInWanted)
     //{
