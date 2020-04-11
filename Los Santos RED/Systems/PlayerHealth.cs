@@ -13,6 +13,9 @@ public static class PlayerHealth
     private static uint GameTimeLastBled;
     private static List<PedBone> PedBones;
     private static bool PrevIsBleeding;
+    private static uint GameTimeLastHealed;
+    private static uint GameTimeLastDamaged;
+
     public enum BodyLocation
     {
         Head = 0,
@@ -37,13 +40,18 @@ public static class PlayerHealth
     public static int Armor { get; set; }
     public static bool IsBleeding { get; set; }
     public static bool IsBandaging { get; set; }
+    public static bool IsHealing { get; set; }
     public static void Initialize()
     {
         IsRunning = true;
+        ResetDamageStats();
+        SetupLists();
+    }
+    public static void ResetDamageStats()
+    {
         NativeFunction.CallByName<bool>("SET_PLAYER_WEAPON_DAMAGE_MODIFIER", Game.LocalPlayer, 2.0f);
         NativeFunction.CallByName<bool>("SET_AI_WEAPON_DAMAGE_MODIFIER", 1.0f);
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
-        SetupLists();
     }
     private static void SetupLists()
     {
@@ -156,7 +164,7 @@ public static class PlayerHealth
     }
     public static void Tick()
     {
-
+        ResetDamageStats();
         int CurrentHealth = Game.LocalPlayer.Character.Health;
         int CurrentArmor = Game.LocalPlayer.Character.Armor;
 
@@ -231,20 +239,20 @@ public static class PlayerHealth
 
             Debugging.WriteToLog("Player Damage Detected", string.Format("Location: {0},Weapon: {1},{2}, Type: {3}, Total Damage: {4}, HealthDamage: {5}, ArmorDamage: {6},NewHealthDamage: {7}, NewArmorDamage: {8}, DamageModifier: {9},ArmorWillProtect: {10}", 
                                                                         DamagedLocation, DamagingWeapon.Name, DamagingWeapon.Category, HealthInjury, TotalDamage, HealthDamage, ArmorDamage, NewHealthDamage, NewArmorDamage, HealthDamageModifier, ArmorWillProtect));
+            if(ArmorWillProtect)
+                UI.DebugLine = string.Format("{0} ap hit at {1}", HealthInjury, DamagedLocation);
+            else
+                UI.DebugLine = string.Format("{0} hit at {1}", HealthInjury, DamagedLocation);
 
+            GameTimeLastDamaged = Game.GameTime;
             //Game.DisplayNotification(string.Format("Damage Detected~n~Location: {0}~n~Weapon: {1},{2}~n~Type: {3}~n~New Total Damage: {4}, StoppedBy Armor: {5}",
             //                                                            DamagedLocation, DamagingWeapon.Name, DamagingWeapon.Category, HealthInjury, NewHealthDamage + NewArmorDamage, ArmorWillProtect));
-
         }
-
-
-
 
         if (Health != CurrentHealth)
         {
             PlayerHealthChanged(CurrentHealth);
         }
-
 
         if (Armor != CurrentArmor)
         {
@@ -252,6 +260,24 @@ public static class PlayerHealth
         }
 
         CheckBleeding();
+
+        if(IsHealing)
+        {
+            if (Game.GameTime - GameTimeLastHealed >= 5000)
+            {
+                int RandomNumber = LosSantosRED.MyRand.Next(1, 5);
+                if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth)
+
+                    Game.LocalPlayer.Character.Health += RandomNumber;
+
+                GameTimeLastHealed = Game.GameTime;
+            }
+        }
+
+        if(Game.GameTime - GameTimeLastDamaged >= 15000)
+        {
+            UI.DebugLine = "";
+        }
     }
     private static void CheckBleeding()
     {
@@ -355,7 +381,7 @@ public static class PlayerHealth
         }
         else if(NewHealth > Health)
         {
-            IsBleeding = false;
+            //IsBleeding = false;
             Debugging.WriteToLog("PlayerHealthChanged", string.Format("Healed"));
         }
         else// Health went down, you got hurt

@@ -70,9 +70,11 @@ public static class LosSantosRED
             }    
         }
     }
-    public static bool PlayerRecentlyShot(uint Duration)
+    public static bool PlayerRecentlyShot(int Duration)
     {
         if (GameTimePlayerLastShot == 0)
+            return false;
+        else if (PedSwapping.JustTakenOver(Duration))
             return false;
         else if (Game.GameTime - GameTimePlayerLastShot <= Duration)//15000
             return true;

@@ -303,6 +303,8 @@ public static class Respawning
 
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
+
+        PlayerHealth.ResetDamageStats();
     }
     public static void RespawnInPlace(bool AsOldCharacter)
     {

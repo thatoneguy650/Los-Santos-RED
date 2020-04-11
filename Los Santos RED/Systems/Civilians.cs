@@ -53,7 +53,7 @@ public static class Civilians
         {
             AnyCiviliansCanSeePlayer = false;
             AnyCiviliansCanRecognizePlayer = false;
-            UI.DebugLine = "";
+            //UI.DebugLine = "";
             return;
         }
             
@@ -117,7 +117,7 @@ public static class Civilians
         //        CiviLine += "~s~(SEEN)";
         //}
 
-        UI.DebugLine = string.Format("{0}", string.Join(",", Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Select(x => x.Name)));
+       // UI.DebugLine = string.Format("{0}", string.Join(",", Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Select(x => x.Name)));
     }
     public static void UpdateCivilians()
     {

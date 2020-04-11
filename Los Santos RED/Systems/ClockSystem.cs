@@ -85,8 +85,8 @@ public static class ClockSystem
         if(OverrideToFastest)
         {
             Interval = 1;
-            ClockMultiplier = 2;
-            ClockSpeed = "2000x";
+            ClockMultiplier = 50;
+            ClockSpeed = "50000x";
         }
 
         if (Game.GameTime - GameTimeLastSetClock >= Interval)

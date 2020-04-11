@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 public static class Agencies
 {
-    
+    public static bool UsingCustomLiveries { get; set; } = false;
     public static List<Agency> AgenciesList { get; set; }
     public static Agency LSPD;
     public static Agency LSSD;
@@ -55,10 +55,24 @@ public static class Agencies
         List<Agency.VehicleInformation> UnmarkedVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("police4", true, true, 100) };
         List<Agency.VehicleInformation> ParkRangerVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("pranger", true, true, 100) };
         List<Agency.VehicleInformation> FIBVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("fbi", true, true, 70), new Agency.VehicleInformation("fbi2", true, true, 30) };
-        //List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policeb", true, true, 70,true), new Agency.VehicleInformation("police4", true, true, 30) };
+        List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policeb", true, true, 70,true), new Agency.VehicleInformation("police4", true, true, 30) };
         List<Agency.VehicleInformation> PrisonVehicles = new List<Agency.VehicleInformation>() { new Agency.VehicleInformation("policet", true, true, 70), new Agency.VehicleInformation("police4", true, true, 30) };
 
-        List<Agency.VehicleInformation> LSPDVehicles = new List<Agency.VehicleInformation>() {
+        List<Agency.VehicleInformation> LSPDVehicles;
+        List<Agency.VehicleInformation> VWPDVehicles;
+        List<Agency.VehicleInformation> ChumashLSPDVehicles;
+        List<Agency.VehicleInformation> EastLSPDVehicles;
+        List<Agency.VehicleInformation> RHPDVehicles;
+        List<Agency.VehicleInformation> VPPDVehicles;
+        List<Agency.VehicleInformation> SAHPVehicles;
+        List<Agency.VehicleInformation> LSSDVehicles;
+        List<Agency.VehicleInformation> BCSOVehicles;
+        List<Agency.VehicleInformation> VWHillsLSSDVehicles;
+        List<Agency.VehicleInformation> ChumashLSSDVehicles;
+
+        if (UsingCustomLiveries)
+        {
+            LSPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police", true, true, 5,false,new List<int>() { 0,1 }),
             new Agency.VehicleInformation("police2", true, true, 55, false,new List<int>() { 0,1 }),
             new Agency.VehicleInformation("police3", true, true, 3, false,new List<int>() { 0,1 }),
@@ -66,72 +80,81 @@ public static class Agencies
             new Agency.VehicleInformation("police4", true, true, 3),
             new Agency.VehicleInformation("fbi2", true, true, 4) };
 
-        List<Agency.VehicleInformation> VWPDVehicles = new List<Agency.VehicleInformation>() {
+            VWPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police", true, true, 5,false,new List<int>() { 2,3 }),
             new Agency.VehicleInformation("police2", true, true, 5,false,new List<int>() { 2,3 }),
             new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 2,3 }),
             new Agency.VehicleInformation("pscout", true, true, 85, false, new List<int>() { 2,3 }) };
 
-        List<Agency.VehicleInformation> ChumashLSPDVehicles = new List<Agency.VehicleInformation>() {
+            ChumashLSPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police", true, true, 45,false,new List<int>() { 4,5 }),
             new Agency.VehicleInformation("police2", true, true, 45,false,new List<int>() { 4,5 }),
             new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 4,5 }),
             new Agency.VehicleInformation("pscout", true, true, 5, false, new List<int>() { 4,5 }) };
 
-        List<Agency.VehicleInformation> EastLSPDVehicles = new List<Agency.VehicleInformation>() {
+            EastLSPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police", true, true, 95,false,new List<int>() { 6,7 }),
-            //new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 6,7 }),
-            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 6,7 }),
-           // new Agency.VehicleInformation("pscout", true, true, 35, false, new List<int>() { 6,7 })
+            new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 6,7 }) };
 
-        };
-
-        List<Agency.VehicleInformation> RHPDVehicles = new List<Agency.VehicleInformation>() {
+            RHPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 8,9 }),
             new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 8,9 }),
             new Agency.VehicleInformation("police3", true, true, 5,false,new List<int>() { 8,9 }),
             new Agency.VehicleInformation("pscout", true, true, 35, false,new List<int>() { 8,9 })};
 
-        List<Agency.VehicleInformation> VPPDVehicles = new List<Agency.VehicleInformation>() {
+            VPPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police", true, true, 30,false,new List<int>() { 10,11 }),
             new Agency.VehicleInformation("police2", true, true, 30,false,new List<int>() { 10,11 }),
             new Agency.VehicleInformation("police3", true, true, 10,false,new List<int>() { 10,11 }),
             new Agency.VehicleInformation("pscout", true, true, 35, false,new List<int>() { 10,11 })};
 
-        List<Agency.VehicleInformation> SAHPVehicles = new List<Agency.VehicleInformation>() {
+            SAHPVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("policeb", true, true, 35, true),
             new Agency.VehicleInformation("police4", true, true, 5),
             new Agency.VehicleInformation("police", true, true, 30,false, new List<int>() { 12,13 }),
             new Agency.VehicleInformation("pscout", true, true, 30,false, new List<int>() { 12,13 })};
 
-        List<Agency.VehicleInformation> LSSDVehicles = new List<Agency.VehicleInformation>() {
+            LSSDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 0, 1, 2, 3 }),
             new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 0, 1 }) };
 
-        List<Agency.VehicleInformation> BCSOVehicles = new List<Agency.VehicleInformation>() {
+            BCSOVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 4,5,6 }),
             new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 2,3 })};
 
-        List<Agency.VehicleInformation> VWHillsLSSDVehicles = new List<Agency.VehicleInformation>() {
+            VWHillsLSSDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 7,8 }),
             new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 4,5 }) };
 
-        List<Agency.VehicleInformation> ChumashLSSDVehicles = new List<Agency.VehicleInformation>() {
+            ChumashLSSDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", true, true, 10, false, new List<int> { 9,10}),
             new Agency.VehicleInformation("sheriff2", true, true, 90, false, new List<int> { 6,7 }) };
+        }
+        else
+        {
+            List<Agency.VehicleInformation> LSPDVehiclesVanilla = new List<Agency.VehicleInformation>() {
+                new Agency.VehicleInformation("police", true, true, 25,false,new List<int>() { 0,1,2,3,4,5 }),
+                new Agency.VehicleInformation("police2", true, true, 25, false,new List<int>() { 0,1,2,3,4,5,6,7 }),
+                new Agency.VehicleInformation("police3", true, true, 25, false,new List<int>() { 0,1,2,3,4,5,6,7 }),
+                new Agency.VehicleInformation("police4", true, true, 10),
+                new Agency.VehicleInformation("fbi2", true, true, 15) };
 
+            List<Agency.VehicleInformation> LSSDVehiclesVanilla = new List<Agency.VehicleInformation>() {
+                new Agency.VehicleInformation("sheriff", true, true, 50, false, new List<int> { 0, 1, 2, 3 }),
+                new Agency.VehicleInformation("sheriff2", true, true, 50, false, new List<int> { 0, 1, 2, 3 }) };
 
-
-        //List<Agency.VehicleInformation> LSPDVehiclesVanilla = new List<Agency.VehicleInformation>() {
-        //    new Agency.VehicleInformation("police", true, true, 25,false,new List<int>() { 0,1,2,3,4,5 }),
-        //    new Agency.VehicleInformation("police2", true, true, 25, false,new List<int>() { 0,1,2,3,4,5,6,7 }),
-        //    new Agency.VehicleInformation("police3", true, true, 25, false,new List<int>() { 0,1,2,3,4,5,6,7 }),
-        //    new Agency.VehicleInformation("police4", true, true, 10),
-        //    new Agency.VehicleInformation("fbi2", true, true, 15) };
-
-        //List<Agency.VehicleInformation> LSSDVehiclesVanilla = new List<Agency.VehicleInformation>() {
-        //    new Agency.VehicleInformation("sheriff", true, true, 50, false, new List<int> { 0, 1, 2, 3 }),
-        //    new Agency.VehicleInformation("sheriff2", true, true, 50, false, new List<int> { 0, 1, 2, 3 }) };
+            LSPDVehicles = LSPDVehiclesVanilla;
+            VWPDVehicles = LSPDVehiclesVanilla;
+            ChumashLSPDVehicles = LSPDVehiclesVanilla;
+            EastLSPDVehicles = LSPDVehiclesVanilla;
+            RHPDVehicles = LSPDVehiclesVanilla;
+            VPPDVehicles = LSPDVehiclesVanilla;
+            SAHPVehicles = HighwayPatrolVehicles;
+            LSSDVehicles = LSSDVehiclesVanilla;
+            BCSOVehicles = LSSDVehiclesVanilla;
+            VWHillsLSSDVehicles = LSSDVehiclesVanilla;
+            ChumashLSSDVehicles = LSSDVehiclesVanilla;
+        }
 
         AgenciesList = new List<Agency>();
         LSPD = new Agency("~b~", "LSPD", "Los Santos Police Department", Color.Blue,Agency.Classification.Police,true, true, StandardCops, LSPDVehicles,"LS ");
