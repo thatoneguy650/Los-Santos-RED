@@ -91,7 +91,17 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol"),
             new GTAWeapon.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_PISTOL_VARMOD_LUXE", 0xD7391086, false, "weapon_pistol")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true, true, false, true) { PossibleComponents = PistolComponents });
+        List<GTAWeapon.WeaponVariation> PistolVariations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player0", 0),
+            new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
+            
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true, true, false, true) { PossibleComponents = PistolComponents,Variations = PistolVariations });
 
         List<GTAWeapon.WeaponComponent> PistolMK2Components = new List<GTAWeapon.WeaponComponent>
         {
@@ -128,7 +138,16 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Digital Camo", "COMPONENT_PISTOL_MK2_CAMO_10_SLIDE", 0x43B1B173, false, "weapon_pistol_mk2"),
             new GTAWeapon.WeaponComponent("Patriotic", "COMPONENT_PISTOL_MK2_CAMO_IND_01_SLIDE", 0x4ABDA3FA, false, "weapon_pistol_mk2")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true, true, false, true) { PossibleComponents = PistolMK2Components });
+        List<GTAWeapon.WeaponVariation> PistolMK2Variations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player0", 0),
+            new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true, true, false, true) { PossibleComponents = PistolMK2Components,Variations = PistolMK2Variations });
 
         List<GTAWeapon.WeaponComponent> CombatPistolComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -138,7 +157,16 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_combatpistol"),
             new GTAWeapon.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_COMBATPISTOL_VARMOD_LOWRIDER", 0xC6654D72, false, "weapon_combatpistol")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true, true, false, true) { PossibleComponents = CombatPistolComponents });
+        List<GTAWeapon.WeaponVariation> CombatPistolVariations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player0", 0),
+            new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true, true, false, true) { PossibleComponents = CombatPistolComponents,Variations = CombatPistolVariations });
 
 
         List<GTAWeapon.WeaponComponent> APPistolComponents = new List<GTAWeapon.WeaponComponent>
@@ -151,7 +179,8 @@ public static class GTAWeapons
         };
         WeaponsList.Add(new GTAWeapon("weapon_appistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 584646201, false, true, false, false) { PossibleComponents = APPistolComponents });
 
-        WeaponsList.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153, false, true, false, true) { IsRegularGun = false });
+        WeaponsList.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Pistol, 1, 911657153, false, true, false, true) { IsRegularGun = false,CanPistolSuicide = false });
+
         List<GTAWeapon.WeaponComponent> Pistol50Components = new List<GTAWeapon.WeaponComponent>
         {
             new GTAWeapon.WeaponComponent("Default Clip", "COMPONENT_PISTOL50_CLIP_01", 0x2297BE19, false, "weapon_pistol50"),
@@ -205,7 +234,7 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Boom!", "COMPONENT_SNSPISTOL_MK2_CAMO_10_SLIDE", 0x8D0D5ECD, false, "weapon_snspistol_mk2"),
             new GTAWeapon.WeaponComponent("Patriotic", "COMPONENT_SNSPISTOL_MK2_CAMO_IND_01_SLIDE", 0x1F07150A, false, "weapon_snspistol_mk2")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054, false, true, false, true) { PossibleComponents = SNSPistolMK2Components });
 
         List<GTAWeapon.WeaponComponent> HeavyPistolComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -215,7 +244,15 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_heavypistol"),
             new GTAWeapon.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", 0x7A6A7B7B, false, "weapon_heavypistol")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true, true, false, true) { PossibleComponents = HeavyPistolComponents });
+        List<GTAWeapon.WeaponVariation> HeavyPistolVariations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Etched Wood Grip Finish" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Flashlight","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player0", 0),
+            new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Flashlight","Etched Wood Grip Finish" }),       
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true, true, false, true) { PossibleComponents = HeavyPistolComponents,Variations = HeavyPistolVariations });
 
         List<GTAWeapon.WeaponComponent> VintagePistolComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -226,8 +263,8 @@ public static class GTAWeapons
         WeaponsList.Add(new GTAWeapon("weapon_vintagepistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 137902532, false, true, false, true) { PossibleComponents = VintagePistolComponents });
         
 
-        WeaponsList.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012, false, true, false, true) { IsRegularGun = false });
-        WeaponsList.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510, false, true, false, true) { IsRegularGun = false });
+        WeaponsList.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012, false, true, false, true) { IsRegularGun = false,CanPistolSuicide = false });
+        WeaponsList.Add(new GTAWeapon("weapon_marksmanpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3696079510, false, true, false, true) { IsRegularGun = false,CanPistolSuicide = false });
 
         List<GTAWeapon.WeaponComponent> RevolverComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -260,14 +297,14 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Boom!", "COMPONENT_REVOLVER_MK2_CAMO_10", 0x20ED9B5B, false, "weapon_revolver_mk2"),
             new GTAWeapon.WeaponComponent("Patriotic", "COMPONENT_REVOLVER_MK2_CAMO_IND_01", 0xD951E867, false, "weapon_revolver_mk2")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F, false, true, false, true) { PossibleComponents = RevolverMK2Components });
         
         WeaponsList.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8, false, true, false, true));
         List<GTAWeapon.WeaponComponent> RayGunComponents = new List<GTAWeapon.WeaponComponent>
         {
             new GTAWeapon.WeaponComponent("Festive tint", "COMPONENT_RAYPISTOL_VARMOD_XMAS18", 0xD7DBF707, false, "weapon_raypistol")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1, false, true, false, false) { IsRegularGun = false, PossibleComponents = RayGunComponents });
+        WeaponsList.Add(new GTAWeapon("weapon_raypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xAF3696A1, false, true, false, false) { IsRegularGun = false, PossibleComponents = RayGunComponents,CanPistolSuicide = false });
 
         //Shotgun
         List<GTAWeapon.WeaponComponent> PumpShotgunComponents = new List<GTAWeapon.WeaponComponent>
@@ -276,7 +313,12 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_SR_SUPP", 0xE608B35E, false, "weapon_pumpshotgun"),
             new GTAWeapon.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_PUMPSHOTGUN_VARMOD_LOWRIDER", 0xA2D79DDB, false, "weapon_pumpshotgun")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true, false, true, true) { PossibleComponents = PumpShotgunComponents });
+        List<GTAWeapon.WeaponVariation> PumpShotgunVariations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true, false, true, true) { PossibleComponents = PumpShotgunComponents,Variations = PumpShotgunVariations });
 
         List<GTAWeapon.WeaponComponent> PumpShotgunMK2Components = new List<GTAWeapon.WeaponComponent>
         {
@@ -303,7 +345,14 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Boom!", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_10", 0x67AEB165, false, "weapon_pumpshotgun_mk2"),
             new GTAWeapon.WeaponComponent("Patriotic", "COMPONENT_PUMPSHOTGUN_MK2_CAMO_IND_01", 0x46411A1D, false, "weapon_pumpshotgun_mk2")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 0x555AF99A, true, false, true, true) { PossibleComponents = PumpShotgunMK2Components });
+        List<GTAWeapon.WeaponVariation> PumpShotgunMK2Variations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Holographic Sight"}),
+            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Holographic Sight","Flashlight" }),
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 0x555AF99A, true, false, true, true) { PossibleComponents = PumpShotgunMK2Components,Variations = PumpShotgunMK2Variations });
 
         List<GTAWeapon.WeaponComponent> SawnOffShotgunComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -342,7 +391,7 @@ public static class GTAWeapons
         };
         WeaponsList.Add(new GTAWeapon("weapon_heavyshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 984333226, false, false, true, true) { PossibleComponents = HeavyShotgunComponents });
         
-        WeaponsList.Add(new GTAWeapon("weapon_dbshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 4019527611, false, false, true, false));
+        WeaponsList.Add(new GTAWeapon("weapon_dbshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 4019527611, false, false, true, false) { CanPistolSuicide = true });
         WeaponsList.Add(new GTAWeapon("weapon_autoshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 317205821, false, false, true, false));
         //SMG
 
@@ -354,8 +403,15 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MACRO", 0x9D2FBF29, false, "weapon_microsmg"),
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_microsmg"),
             new GTAWeapon.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_MICROSMG_VARMOD_LUXE", 0x487AAE09, false, "weapon_microsmg")
-        };      
-        WeaponsList.Add(new GTAWeapon("weapon_microsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 324215364, false, true, false, false) { PossibleComponents = MicroSMGComponents });
+        };
+        List<GTAWeapon.WeaponVariation> MicroSMGVariations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Player0", 0),
+            new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Extended Clip", "Flashlight" }),
+            new GTAWeapon.WeaponVariation("Player2", 0, new List<string> { "Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player3", 0, new List<string> { "Extended Clip", "Suppressor" }),
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_microsmg", 32, GTAWeapon.WeaponCategory.SMG, 2, 324215364, false, true, false, false) { PossibleComponents = MicroSMGComponents,Variations = MicroSMGVariations ,CanPistolSuicide = true});
 
 
         List<GTAWeapon.WeaponComponent> SMGComponents = new List<GTAWeapon.WeaponComponent>
@@ -429,8 +485,18 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"),
             new GTAWeapon.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_combatpdw", 32, GTAWeapon.WeaponCategory.SMG, 2, 171789620, true, false, true, false) { PossibleComponents = CombatPDWComponents });
-
+        List<GTAWeapon.WeaponVariation> CombatPDWVariations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Scope","Grip","Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Scope", "Grip","Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Scope", "Grip","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player0", 0),
+            new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Scope", "Grip","Flashlight","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player2", 0, new List<string> { "Scope", "Grip" }),
+            new GTAWeapon.WeaponVariation("Player3", 0, new List<string> { "Grip","Flashlight","Extended Clip" }),
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_combatpdw", 32, GTAWeapon.WeaponCategory.SMG, 2, 171789620, true, false, true, false) { PossibleComponents = CombatPDWComponents,Variations = CombatPDWVariations });
 
 
         List<GTAWeapon.WeaponComponent> MachinePistolComponents = new List<GTAWeapon.WeaponComponent>
@@ -440,7 +506,7 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Drum Magazine", "COMPONENT_MACHINEPISTOL_CLIP_03", 0xA9E9CAF4, false, "weapon_machinepistol"),
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_machinepistol")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_machinepistol", 32, GTAWeapon.WeaponCategory.SMG, 2, 3675956304, false, true, false, false) { PossibleComponents = MachinePistolComponents });
+        WeaponsList.Add(new GTAWeapon("weapon_machinepistol", 32, GTAWeapon.WeaponCategory.SMG, 2, 3675956304, false, true, false, false) { PossibleComponents = MachinePistolComponents,CanPistolSuicide = true });
 
 
 
@@ -449,7 +515,7 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Default Clip", "COMPONENT_MINISMG_CLIP_01", 0x84C8B2D3, false, "weapon_minismg"),
             new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_MINISMG_CLIP_02", 0x937ED0B7, false, "weapon_minismg")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_minismg", 32, GTAWeapon.WeaponCategory.SMG, 2, 3173288789, false, true, false, false) { PossibleComponents = MiniSMGComponents });
+        WeaponsList.Add(new GTAWeapon("weapon_minismg", 32, GTAWeapon.WeaponCategory.SMG, 2, 3173288789, false, true, false, false) { PossibleComponents = MiniSMGComponents,CanPistolSuicide = true });
 
         WeaponsList.Add(new GTAWeapon("weapon_raycarbine", 32, GTAWeapon.WeaponCategory.SMG, 2, 0x476BF155, false, true, false, false) { IsRegularGun = false });
         //AR
@@ -516,7 +582,18 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_carbinerifle"),
             new GTAWeapon.WeaponComponent("Yusuf Amir Luxury Finish", "COMPONENT_CARBINERIFLE_VARMOD_LUXE", 0xD89B9658, false, "weapon_carbinerifle")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_carbinerifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2210333304, true, false, true, false) { PossibleComponents = CarbineRifleComponents });
+        List<GTAWeapon.WeaponVariation> CarbineRifleVariations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Grip","Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Scope", "Grip","Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Scope", "Grip","Flashlight","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player0", 0),
+            new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Scope", "Grip","Flashlight","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player2", 0, new List<string> { "Scope", "Grip" }),
+            new GTAWeapon.WeaponVariation("Player3", 0, new List<string> { "Grip","Flashlight","Extended Clip" }),
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_carbinerifle", 120, GTAWeapon.WeaponCategory.AR, 3, 2210333304, true, false, true, false) { PossibleComponents = CarbineRifleComponents,Variations = CarbineRifleVariations });
 
 
         List<GTAWeapon.WeaponComponent> CarbineRifleMK2Components = new List<GTAWeapon.WeaponComponent>
@@ -554,7 +631,18 @@ public static class GTAWeapons
             new GTAWeapon.WeaponComponent("Boom!", "COMPONENT_CARBINERIFLE_MK2_CAMO_10", 0x6B13CD3E, false, "weapon_carbinerifle_mk2"),
             new GTAWeapon.WeaponComponent("Patriotic", "COMPONENT_CARBINERIFLE_MK2_CAMO_IND_01", 0xDA55CD3F, false, "weapon_carbinerifle_mk2")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0xFAD1F1C9, true, false, true, false) { PossibleComponents = CarbineRifleMK2Components });
+        List<GTAWeapon.WeaponVariation> CarbineRifleMK2Variations = new List<GTAWeapon.WeaponVariation>
+        {
+            new GTAWeapon.WeaponVariation("Police0", 0),
+            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Holographic Sight","Grip","Flashlight" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Holographic Sight", "Grip","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" }),
+            new GTAWeapon.WeaponVariation("Player0", 0),
+            new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Holographic Sight","Grip","Flashlight" }),
+            new GTAWeapon.WeaponVariation("Player2", 0, new List<string> { "Holographic Sight", "Grip","Flashlight","Extended Clip"  }),
+            new GTAWeapon.WeaponVariation("Player3", 0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip"  }),
+        };
+        WeaponsList.Add(new GTAWeapon("weapon_carbinerifle_mk2", 120, GTAWeapon.WeaponCategory.AR, 3, 0xFAD1F1C9, true, false, true, false) { PossibleComponents = CarbineRifleMK2Components,Variations = CarbineRifleMK2Variations });
 
 
         List<GTAWeapon.WeaponComponent> AdvancedRifleComponents = new List<GTAWeapon.WeaponComponent>
@@ -869,243 +957,6 @@ public static class GTAWeapons
         WeaponsList.Add(new GTAWeapon("weapon_compactlauncher", 10, GTAWeapon.WeaponCategory.Heavy, 4, 125959754, false, false, true, false));
         WeaponsList.Add(new GTAWeapon("weapon_rayminigun", 50, GTAWeapon.WeaponCategory.Heavy, 4, 0xB62D1F67, false, false, true, false) { IsRegularGun = false });
 
-        foreach (GTAWeapon Weapon in WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol))
-        {
-            if (Weapon.Name == "weapon_marksmanpistol" || Weapon.Name == "weapon_stungun" || Weapon.Name == "weapon_flaregun" || Weapon.Name == "weapon_raypistol")
-                Weapon.CanPistolSuicide = false;
-            else
-                Weapon.CanPistolSuicide = true;
-
-            if (Weapon.Name == "weapon_pistol")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_pistol"));
-                Weapon.PoliceVariations.Add(Police2);
-
-                GTAWeapon.WeaponVariation Police3 = new GTAWeapon.WeaponVariation(0);
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_CLIP_02", 0xED265A1C, true, "weapon_pistol"));
-                Weapon.PoliceVariations.Add(Police3);
-
-                GTAWeapon.WeaponVariation Police4 = new GTAWeapon.WeaponVariation(0);
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_pistol"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_CLIP_02", 0xED265A1C, true, "weapon_pistol"));
-                Weapon.PoliceVariations.Add(Police4);
-
-                GTAWeapon.WeaponVariation Player1 = new GTAWeapon.WeaponVariation(0);
-                Player1.Components.Add(new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol"));
-                Weapon.PlayerVariations.Add(Player1);
-
-                GTAWeapon.WeaponVariation Player2 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PlayerVariations.Add(Player2);
-            }
-            if (Weapon.Name == "weapon_pistol_mk2")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH_02", 0x43FD595B, true, "weapon_pistol_mk2"));
-                Weapon.PoliceVariations.Add(Police2);
-
-                GTAWeapon.WeaponVariation Police3 = new GTAWeapon.WeaponVariation(0);
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_MK2_CLIP_02", 0x5ED6C128, true, "weapon_pistol_mk2"));
-                Weapon.PoliceVariations.Add(Police3);
-
-                GTAWeapon.WeaponVariation Police4 = new GTAWeapon.WeaponVariation(0);
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH_02", 0x43FD595B, true, "weapon_pistol_mk2"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_PISTOL_MK2_CLIP_02", 0x5ED6C128, true, "weapon_pistol_mk2"));
-                Weapon.PoliceVariations.Add(Police4);
-
-                GTAWeapon.WeaponVariation Player1 = new GTAWeapon.WeaponVariation(0);
-                Player1.Components.Add(new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP_02", 0x65EA7EBB, false, "weapon_pistol_mk2"));
-                Weapon.PlayerVariations.Add(Player1);
-
-                GTAWeapon.WeaponVariation Player2 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PlayerVariations.Add(Player2);
-            }
-            if (Weapon.Name == "weapon_combatpistol")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_combatpistol"));
-                Weapon.PoliceVariations.Add(Police2);
-
-                GTAWeapon.WeaponVariation Police3 = new GTAWeapon.WeaponVariation(0);
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_COMBATPISTOL_CLIP_02", 0xD67B4F2D, true, "weapon_combatpistol"));
-                Weapon.PoliceVariations.Add(Police3);
-
-                GTAWeapon.WeaponVariation Police4 = new GTAWeapon.WeaponVariation(0);
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_combatpistol"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_COMBATPISTOL_CLIP_02", 0xD67B4F2D, true, "weapon_combatpistol"));
-                Weapon.PoliceVariations.Add(Police4);
-
-                GTAWeapon.WeaponVariation Player1 = new GTAWeapon.WeaponVariation(0);
-                Player1.Components.Add(new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_combatpistol"));
-                Weapon.PlayerVariations.Add(Player1);
-
-                GTAWeapon.WeaponVariation Player2 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PlayerVariations.Add(Player2);
-            }
-            if (Weapon.Name == "weapon_heavypistol")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", 0x7A6A7B7B, true, "weapon_heavypistol"));
-                Weapon.PoliceVariations.Add(Police2);
-
-                GTAWeapon.WeaponVariation Police3 = new GTAWeapon.WeaponVariation(0);
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_heavypistol"));
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_HEAVYPISTOL_CLIP_02", 0x64F9C62B, true, "weapon_heavypistol"));
-                Weapon.PoliceVariations.Add(Police3);
-
-                GTAWeapon.WeaponVariation Police4 = new GTAWeapon.WeaponVariation(0);
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, true, "weapon_heavypistol"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_HEAVYPISTOL_VARMOD_LUXE", 0x7A6A7B7B, true, "weapon_heavypistol"));
-                Weapon.PoliceVariations.Add(Police4);
-            }
-        }
-        foreach (GTAWeapon Weapon in WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.AR))
-        {
-            if (Weapon.Name == "weapon_carbinerifle")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, true, "weapon_carbinerifle"));
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, true, "weapon_carbinerifle"));
-                Weapon.PoliceVariations.Add(Police2);
-
-                GTAWeapon.WeaponVariation Police3 = new GTAWeapon.WeaponVariation(0);
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MEDIUM", 0xA0D89C42, true, "weapon_carbinerifle"));
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, true, "weapon_carbinerifle"));
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_CARBINERIFLE_CLIP_02", 0x91109691, true, "weapon_carbinerifle"));
-                Weapon.PoliceVariations.Add(Police3);
-
-                GTAWeapon.WeaponVariation Police4 = new GTAWeapon.WeaponVariation(0);
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_MEDIUM", 0xA0D89C42, true, "weapon_carbinerifle"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, true, "weapon_carbinerifle"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, true, "weapon_carbinerifle"));
-                Weapon.PoliceVariations.Add(Police4);
-            }
-            if (Weapon.Name == "weapon_carbinerifle_mk2")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, true, "weapon_carbinerifle_mk2"));
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, true, "weapon_carbinerifle_mk2"));
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, true, "weapon_carbinerifle_mk2"));
-                Weapon.PoliceVariations.Add(Police2);
-
-                GTAWeapon.WeaponVariation Police3 = new GTAWeapon.WeaponVariation(0);
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, true, "weapon_carbinerifle_mk2"));
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, true, "weapon_carbinerifle_mk2"));
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_CARBINERIFLE_MK2_CLIP_02", 0x5DD5DBD5, true, "weapon_carbinerifle_mk2"));
-                Weapon.PoliceVariations.Add(Police3);
-
-                GTAWeapon.WeaponVariation Police4 = new GTAWeapon.WeaponVariation(0);
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Large Scope", "COMPONENT_AT_SCOPE_MEDIUM_MK2", 0xC66B6542, true, "weapon_carbinerifle_mk2"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP_02", 0x9D65907A, true, "weapon_carbinerifle_mk2"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, true, "weapon_carbinerifle_mk2"));
-                Weapon.PoliceVariations.Add(Police4);
-            }
-        }
-        foreach (GTAWeapon Weapon in WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.SMG))
-        {
-            if (Weapon.Name == "weapon_minismg" || Weapon.Name == "weapon_machinepistol" || Weapon.Name == "weapon_microsmg")
-                Weapon.CanPistolSuicide = true;
-            else
-                Weapon.CanPistolSuicide = false;
-
-            if (Weapon.Name == "weapon_combatpdw")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw"));
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"));
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_combatpdw"));
-                Weapon.PoliceVariations.Add(Police2);
-
-                GTAWeapon.WeaponVariation Police3 = new GTAWeapon.WeaponVariation(0);
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw"));
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"));
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_COMBATPDW_CLIP_02", 0x334A5203, false, "weapon_combatpdw"));
-                Weapon.PoliceVariations.Add(Police3);
-
-                GTAWeapon.WeaponVariation Police4 = new GTAWeapon.WeaponVariation(0);
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Scope", "COMPONENT_AT_SCOPE_SMALL", 0xAA2C45B4, false, "weapon_combatpdw"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_combatpdw"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_combatpdw"));
-                Weapon.PoliceVariations.Add(Police4);
-            }
-            if (Weapon.Name == "weapon_microsmg")
-            {
-                GTAWeapon.WeaponVariation Player1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PlayerVariations.Add(Player1);
-
-                GTAWeapon.WeaponVariation Player2 = new GTAWeapon.WeaponVariation(0);
-                Player2.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_MICROSMG_CLIP_02", 0x10E6BA2B, false, "weapon_microsmg"));
-                Player2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_PI_FLSH", 0x359B7AAE, false, "weapon_microsmg"));
-                Weapon.PlayerVariations.Add(Player2);
-
-                GTAWeapon.WeaponVariation Player3 = new GTAWeapon.WeaponVariation(0);
-                Player3.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_MICROSMG_CLIP_02", 0x10E6BA2B, false, "weapon_microsmg"));
-                Weapon.PlayerVariations.Add(Player3);
-
-                GTAWeapon.WeaponVariation Player4 = new GTAWeapon.WeaponVariation(0);
-                Player4.Components.Add(new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_MICROSMG_CLIP_02", 0x10E6BA2B, false, "weapon_microsmg"));
-                Player4.Components.Add(new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_microsmg"));
-                Weapon.PlayerVariations.Add(Player4);
-            }
-
-        }
-
-        foreach (GTAWeapon Weapon in WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.Shotgun))
-        {
-            if (Weapon.Name == "weapon_dbshotgun")
-                Weapon.CanPistolSuicide = true;
-            else
-                Weapon.CanPistolSuicide = false;
-
-            if (Weapon.Name == "weapon_pumpshotgun")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun"));
-                Weapon.PoliceVariations.Add(Police2);
-            }
-            if (Weapon.Name == "weapon_pumpshotgun_mk2")
-            {
-                GTAWeapon.WeaponVariation Police1 = new GTAWeapon.WeaponVariation(0);
-                Weapon.PoliceVariations.Add(Police1);
-
-                GTAWeapon.WeaponVariation Police2 = new GTAWeapon.WeaponVariation(0);
-                Police2.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun_mk2"));
-                Weapon.PoliceVariations.Add(Police2);
-
-                GTAWeapon.WeaponVariation Police3 = new GTAWeapon.WeaponVariation(0);
-                Police3.Components.Add(new GTAWeapon.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_pumpshotgun_mk2"));
-                Weapon.PoliceVariations.Add(Police3);
-
-                GTAWeapon.WeaponVariation Police4 = new GTAWeapon.WeaponVariation(0);
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Holographic Sight", "COMPONENT_AT_SIGHTS", 0x420FD713, false, "weapon_pumpshotgun_mk2"));
-                Police4.Components.Add(new GTAWeapon.WeaponComponent("Flashlight", "COMPONENT_AT_AR_FLSH", 0x7BC4CDDC, false, "weapon_pumpshotgun_mk2"));
-                Weapon.PoliceVariations.Add(Police4);
-            }
-        }
     }
     public static GTAWeapon GetWeaponFromHash(ulong WeaponHash)
     {
@@ -1167,28 +1018,40 @@ public class GTAWeapon
     public bool IsOneHanded = false;
     public bool IsLegal = false;
     public bool IsRegularGun = true;
-    public List<WeaponVariation> PoliceVariations = new List<WeaponVariation>();
-    public List<WeaponVariation> PlayerVariations = new List<WeaponVariation>();
-    public List<WeaponComponent> PossibleComponents;
+    public List<WeaponVariation> Variations = new List<WeaponVariation>();
+    public List<WeaponComponent> PossibleComponents = new List<WeaponComponent>();
+    public List<WeaponVariation> PlayerVariations
+    {
+        get
+        {
+            return Variations.Where(x => x.Name.ToLower().Contains("player")).ToList();
+        }
+    }
+    public List<WeaponVariation> PoliceVariations
+    {
+        get
+        {
+            return Variations.Where(x => x.Name.ToLower().Contains("police")).ToList();
+        }
+    }
     public class WeaponVariation
     {
+        public string Name;
         public int Tint;
-        public List<WeaponComponent> Components = new List<WeaponComponent>();
-        public WeaponVariation(List<WeaponComponent> _Components)
-        {
-            Components = _Components;
-        }
+        public List<string> Components = new List<string>();
         public WeaponVariation()
         {
 
         }
-        public WeaponVariation(int _Tint, List<WeaponComponent> _Components)
+        public WeaponVariation(string _name,int _Tint, List<string> _Components)
         {
+            Name = _name;
             Tint = _Tint;
             Components = _Components;
         }
-        public WeaponVariation(int _Tint)
+        public WeaponVariation(string _name, int _Tint)
         {
+            Name = _name;
             Tint = _Tint;
         }
     }

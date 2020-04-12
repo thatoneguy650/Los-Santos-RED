@@ -55,7 +55,10 @@ public static class PoliceSpawning
         {
             if (NextPoliceSpawn == null)
             {
-                NextPoliceSpawn = GetPoliceSpawn(750f,1500f,false);
+                if(LosSantosRED.PlayerIsWanted)
+                    NextPoliceSpawn = GetPoliceSpawn(250f,750f,true);
+                else
+                    NextPoliceSpawn = GetPoliceSpawn(750f, 1500f, false);
                 return;
             }
             int RandomValue = LosSantosRED.MyRand.Next(1, 11);
@@ -146,14 +149,14 @@ public static class PoliceSpawning
         float DeleteDistance = 2000;
         float NonPersistDistance = 1750f;
 
-        if (LosSantosRED.PlayerIsWanted)
-            return;//dont do this for now?
+        //if (LosSantosRED.PlayerIsWanted)
+        //    return;//dont do this for now?
 
 
         if(LosSantosRED.PlayerIsWanted)
         {
-            DeleteDistance = 1250f;
-            NonPersistDistance = 1000f;//was 550f
+            DeleteDistance = 900f;//1250f;
+            NonPersistDistance = 850f;//1000f;//was 550f
         }
         foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.WasRandomSpawn))
         {

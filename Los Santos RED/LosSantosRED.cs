@@ -728,22 +728,23 @@ public static class LosSantosRED
         int Tint = NativeFunction.CallByName<int>("GET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash);
         GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash(WeaponHash);
         if (MyGun == null)
-            return new GTAWeapon.WeaponVariation(Tint);
+            return new GTAWeapon.WeaponVariation("Variation1",Tint);
 
-        List<GTAWeapon.WeaponComponent> Components = new List<GTAWeapon.WeaponComponent>();
+        // List<GTAWeapon.WeaponComponent> Components = new List<GTAWeapon.WeaponComponent>();
 
-        if (!Components.Any())
-            return new GTAWeapon.WeaponVariation(Tint);
+        //if (!Components.Any())
+        //    return new GTAWeapon.WeaponVariation("Variation1",Tint);
+        List<string> ComponentsOnGun = new List<string>();
 
         foreach (GTAWeapon.WeaponComponent PossibleComponent in MyGun.PossibleComponents)
         {
             if (NativeFunction.CallByName<bool>("HAS_PED_GOT_WEAPON_COMPONENT", WeaponOwner, WeaponHash, PossibleComponent.Hash))
             {
-                Components.Add(new GTAWeapon.WeaponComponent(PossibleComponent.Name, PossibleComponent.HashKey, PossibleComponent.Hash, true));
+                ComponentsOnGun.Add(PossibleComponent.Name);
             }
 
         }
-        return new GTAWeapon.WeaponVariation(Tint, Components);
+        return new GTAWeapon.WeaponVariation("Variation1",Tint, ComponentsOnGun);
 
     }
     public static void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, GTAWeapon.WeaponVariation _WeaponVariation)
@@ -758,9 +759,11 @@ public static class LosSantosRED
         {
             NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, WeaponHash, ToRemove.Hash);
         }
-        foreach (GTAWeapon.WeaponComponent ToAdd in _WeaponVariation.Components)
+        foreach (string ToAdd in _WeaponVariation.Components)
         {
-            NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, ToAdd.Hash);
+            GTAWeapon.WeaponComponent MyComponent = LookupGun.PossibleComponents.Where(x => x.Name == ToAdd).FirstOrDefault();
+            if(MyComponent != null)
+                NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, MyComponent.Hash);
         }
     }
     public static void RequestAnimationDictionay(String sDict)

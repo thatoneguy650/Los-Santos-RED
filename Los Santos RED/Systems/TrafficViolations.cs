@@ -103,7 +103,7 @@ public static class TrafficViolations
             if (!CurrVehicle.IsRoadWorthy() || CurrVehicle.IsDamaged())
                 PlayersVehicleIsSuspicious = true;
             bool TreatAsCop = false;
-            bool TrafficAnyPoliceCanSeePlayer = PedScanning.CopPeds.Any(x => x.CanSeePlayer && x.AssignedAgency.CanCheckTrafficViolations);
+            bool TrafficAnyPoliceCanSeePlayer = PedScanning.CopPeds.Any(x => x.CanSeePlayer && x.AssignedAgency != null && x.AssignedAgency.CanCheckTrafficViolations);
 
             if (LosSantosRED.MySettings.TrafficViolations.ExemptCode3 && CurrVehicle != null && CurrVehicle.IsPoliceVehicle && MyCar != null && !MyCar.WasReportedStolen)
             {

@@ -149,6 +149,24 @@ internal static class Police
         DeadlyChase = 3,
         ArrestedWait = 4,
     }
+    enum DispatchType
+    {
+        PoliceAutomobile = 1,
+        PoliceHelicopter = 2,
+        FireDepartment = 3,
+        SwatAutomobile = 4,
+        AmbulanceDepartment = 5,
+        PoliceRiders = 6,
+        PoliceVehicleRequest = 7,
+        PoliceRoadBlock = 8,
+        PoliceAutomobileWaitPulledOver = 9,
+        PoliceAutomobileWaitCruising = 10,
+        Gangs = 11,
+        SwatHelicopter = 12,
+        PoliceBoat = 13,
+        ArmyVehicle = 14,
+        BikerBackup = 15
+    };
     public static void Initialize()
     {
         CurrentCrimes = new RapSheet();
@@ -206,6 +224,18 @@ internal static class Police
         TrackedVehiclesTick();
         WantedLevelTick();
         InvestigationTick();
+        DispatchTick();
+    }
+    private static void DispatchTick()
+    {
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, false);
+        //NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceHelicopter, false);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceVehicleRequest, false);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatAutomobile, false);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatHelicopter, false);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRiders, false);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRoadBlock, false);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitCruising, false);
     }
     private static void InvestigationTick()
     {
@@ -575,6 +605,10 @@ internal static class Police
     }
     private static void WantedLevelTick()
     {
+
+        
+
+
         if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
             WantedLevelChanged();
 

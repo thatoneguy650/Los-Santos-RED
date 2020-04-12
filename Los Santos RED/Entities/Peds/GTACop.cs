@@ -30,6 +30,7 @@ public class GTACop : GTAPed
     public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
     public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", Color.White, Agency.Classification.Other, true, false, null, null, "");
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
+    public bool AtWantedCenterDuringChase { get; set; } = false;
     public void SetAccuracyAndSightRange()
     {
         Pedestrian.VisionRange = 55f;
