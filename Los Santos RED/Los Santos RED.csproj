@@ -158,7 +158,7 @@
     <Compile Include="Old\Transmission.cs" />
     <Compile Include="Systems\UI.cs" />
     <Compile Include="Systems\VehicleEngine.cs" />
-    <Compile Include="Systems\Settings.cs" />
+    <Compile Include="Lookups\Settings.cs" />
     <Compile Include="Lookups\Vehicles.cs" />
     <Compile Include="Lookups\Zones.cs" />
     <Compile Include="Systems\WeaponDropping.cs" />

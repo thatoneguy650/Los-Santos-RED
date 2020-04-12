@@ -46,7 +46,7 @@ public static class Respawning
         if (Game.LocalPlayer.Character.GetCash() < Amount)
             return;
 
-        if (Amount < Police.PreviousWantedLevel * Settings.PoliceBribeWantedLevelScale)
+        if (Amount < Police.PreviousWantedLevel * LosSantosRED.MySettings.Police.PoliceBribeWantedLevelScale)
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
@@ -172,7 +172,7 @@ public static class Respawning
         Game.FadeScreenIn(1500);
 
 
-        int HospitalFee = Settings.HospitalFee * (1 + LosSantosRED.MaxWantedLastLife);
+        int HospitalFee = LosSantosRED.MySettings.Police.HospitalFee * (1 + LosSantosRED.MaxWantedLastLife);
         int CurrentCash = Game.LocalPlayer.Character.GetCash();
         int TodaysPayment = 0;
 
@@ -215,7 +215,7 @@ public static class Respawning
         GameFiber.Wait(1500);
 
         bool prePlayerKilledPolice = Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice;
-        int BailFee = LosSantosRED.MaxWantedLastLife * Settings.PoliceBailWantedLevelScale;
+        int BailFee = LosSantosRED.MaxWantedLastLife * LosSantosRED.MySettings.Police.PoliceBailWantedLevelScale;
 
         LosSantosRED.BeingArrested = false;
         LosSantosRED.IsBusted = false;
@@ -360,7 +360,7 @@ public static class Respawning
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
-            WeaponVariation DroppedGunVariation = LosSantosRED.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
+            GTAWeapon.WeaponVariation DroppedGunVariation = LosSantosRED.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
             DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation,Weapon.Ammo);
             MyOldGuns.Add(MyGun);
         }

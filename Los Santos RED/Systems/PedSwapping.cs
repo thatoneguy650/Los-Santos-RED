@@ -229,7 +229,7 @@ public static class PedSwapping
         if (!TargetPedAlreadyTakenOver)
         {
             SetPlayerOffset();
-            ChangeModel(Settings.MainCharacterToAliasModelName);
+            ChangeModel(LosSantosRED.MySettings.MainCharacterToAliasModelName);
             ChangeModel(LastModelHash);
         }
 
@@ -250,8 +250,8 @@ public static class PedSwapping
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
 
-        if (Settings.PedTakeoverSetRandomMoney)
-            Game.LocalPlayer.Character.SetCash(LosSantosRED.MyRand.Next(Settings.PedTakeoverRandomMoneyMin, Settings.PedTakeoverRandomMoneyMax));
+        if (LosSantosRED.MySettings.General.PedTakeoverSetRandomMoney)
+            Game.LocalPlayer.Character.SetCash(LosSantosRED.MyRand.Next(LosSantosRED.MySettings.General.PedTakeoverRandomMoneyMin, LosSantosRED.MySettings.General.PedTakeoverRandomMoneyMax));
 
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
@@ -412,11 +412,11 @@ public static class PedSwapping
         UInt64 Second = GTA.Read<UInt64>(Player + SECOND_OFFSET);
         UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
 
-        if (Settings.MainCharacterToAlias == "Michael")
+        if (LosSantosRED.MySettings.General.MainCharacterToAlias == "Michael")
             GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
-        else if (Settings.MainCharacterToAlias == "Franklin")
+        else if (LosSantosRED.MySettings.General.MainCharacterToAlias == "Franklin")
             GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
-        else if (Settings.MainCharacterToAlias == "Trevor")
+        else if (LosSantosRED.MySettings.General.MainCharacterToAlias == "Trevor")
             GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
 
     }
@@ -458,7 +458,7 @@ public static class PedSwapping
             vehicleWasIn = Game.LocalPlayer.Character.CurrentVehicle;
         }
 
-        Model characterModel = new Model(Settings.MainCharacterToAliasModelName);//should not need to load player models?
+        Model characterModel = new Model(LosSantosRED.MySettings.MainCharacterToAliasModelName);//should not need to load player models?
         Game.LocalPlayer.Model = characterModel;
         Game.LocalPlayer.Character.IsCollisionEnabled = true;
         if(WasInVehicle)

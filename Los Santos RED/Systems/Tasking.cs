@@ -636,7 +636,7 @@ public static class Tasking
             else
                 SetUnarmed(Cop);
         }
-        if (Settings.IssuePoliceHeavyWeapons)
+        if (LosSantosRED.MySettings.Police.IssuePoliceHeavyWeapons)
         {
             foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.IsInVehicle && x.IssuedHeavyWeapon == null))
             {
@@ -645,7 +645,7 @@ public static class Tasking
             }
         }
 
-        if (Police.CurrentCrimes.KillingPolice.InstancesObserved >= Settings.PoliceKilledSurrenderLimit && LosSantosRED.PlayerWantedLevel < 4 && !LosSantosRED.IsDead && !LosSantosRED.IsBusted)
+        if (Police.CurrentCrimes.KillingPolice.InstancesObserved >= LosSantosRED.MySettings.Police.PoliceKilledSurrenderLimit && LosSantosRED.PlayerWantedLevel < 4 && !LosSantosRED.IsDead && !LosSantosRED.IsBusted)
         {
             Police.SetWantedLevel(4,"You killed too many cops",true);
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.WeaponsFree, 1));
@@ -704,8 +704,8 @@ public static class Tasking
     {
         if (!Cop.Pedestrian.Exists() || (Cop.SetUnarmed && !Cop.NeedsWeaponCheck))
             return;
-        if (Settings.OverridePoliceAccuracy)
-            Cop.Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
+        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Cop.Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceGeneralAccuracy;
         
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 0);
         if (!(Cop.Pedestrian.Inventory.EquippedWeapon == null))
@@ -723,8 +723,8 @@ public static class Tasking
     {
         if (!Cop.Pedestrian.Exists() || (!Cop.SetDeadly && !Cop.SetTazer && !Cop.SetUnarmed && !Cop.NeedsWeaponCheck))
             return;
-        if (Settings.OverridePoliceAccuracy)
-            Cop.Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
+        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Cop.Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceGeneralAccuracy;
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 30);
         if (!Cop.Pedestrian.Inventory.Weapons.Contains(Cop.IssuedPistol.Name))
             Cop.Pedestrian.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, false);
@@ -739,8 +739,8 @@ public static class Tasking
     {
         if (!Cop.Pedestrian.Exists() || (Cop.SetDeadly && !Cop.NeedsWeaponCheck))
             return;
-        if (Settings.OverridePoliceAccuracy)
-            Cop.Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
+        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Cop.Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceGeneralAccuracy;
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 30);
         if (!Cop.Pedestrian.Inventory.Weapons.Contains(Cop.IssuedPistol.Name))
             Cop.Pedestrian.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, true);
@@ -748,7 +748,7 @@ public static class Tasking
         if ((Cop.Pedestrian.Inventory.EquippedWeapon == null || Cop.Pedestrian.Inventory.EquippedWeapon.Hash == WeaponHash.StunGun) && Game.LocalPlayer.WantedLevel >= 0)
             Cop.Pedestrian.Inventory.GiveNewWeapon(Cop.IssuedPistol.Name, -1, true);
 
-        if (Settings.AllowPoliceWeaponVariations)
+        if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
             LosSantosRED.ApplyWeaponVariation(Cop.Pedestrian, (uint)Cop.IssuedPistol.Hash, Cop.PistolVariation);
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys
@@ -762,8 +762,8 @@ public static class Tasking
         if (!Cop.Pedestrian.Exists() || (Cop.SetTazer && !Cop.NeedsWeaponCheck))
             return;
 
-        if (Settings.OverridePoliceAccuracy)
-            Cop.Pedestrian.Accuracy = Settings.PoliceTazerAccuracy;
+        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Cop.Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceTazerAccuracy;
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 100);
         if (!Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
         {

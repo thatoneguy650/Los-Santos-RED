@@ -167,11 +167,11 @@ public static class Debugging
 
     private static void DebugNumpad4()
     {
-        PlayerHealth.IsBleeding = true;
+        Agencies.ReadConfig();
     }
     private static void DebugNumpad5()
     {
-        PlayerHealth.IsBleeding = false;
+
     }
     private static void DebugNumpad6()
     {
@@ -179,6 +179,9 @@ public static class Debugging
         {
             MyCop.HasItemsToRadioIn = true;
         }
+
+        Agencies.PrintAgencies();
+
     }
         
     private static void DebugNumpad7()
@@ -260,7 +263,7 @@ public static class Debugging
             Game.DisplayNotification("Instant Action has Crashed and needs to be restarted");
         }
 
-        if (Settings.Logging)
+        if (LosSantosRED.MySettings != null && LosSantosRED.MySettings.General.Logging)
             Game.Console.Print(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog);
     }
 

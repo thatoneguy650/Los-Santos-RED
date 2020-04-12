@@ -74,7 +74,7 @@ public static class TrafficViolations
     }
     public static void CheckViolations()
     {
-        if (!Settings.TrafficViolations)//if (Police.CurrentPoliceState != Police.PoliceState.Normal || !Settings.TrafficViolations)
+        if (!LosSantosRED.MySettings.TrafficViolations.Enabled)//if (Police.CurrentPoliceState != Police.PoliceState.Normal || !LosSantosRED.MySettings.TrafficViolations)
         {
             GameTimeStartedDrivingOnPavement = 0;
             GameTimeStartedDrivingAgainstTraffic = 0;
@@ -105,7 +105,7 @@ public static class TrafficViolations
             bool TreatAsCop = false;
             bool TrafficAnyPoliceCanSeePlayer = PedScanning.CopPeds.Any(x => x.CanSeePlayer && x.AssignedAgency.CanCheckTrafficViolations);
 
-            if (Settings.TrafficViolationsExemptCode3 && CurrVehicle != null && CurrVehicle.IsPoliceVehicle && MyCar != null && !MyCar.WasReportedStolen)
+            if (LosSantosRED.MySettings.TrafficViolations.ExemptCode3 && CurrVehicle != null && CurrVehicle.IsPoliceVehicle && MyCar != null && !MyCar.WasReportedStolen)
             {
                 if (CurrVehicle.IsSirenOn && !Police.AnyPoliceCanRecognizePlayer) //see thru ur disguise if ur too close
                 {
@@ -130,7 +130,7 @@ public static class TrafficViolations
                 GameTimeStartedDrivingAgainstTraffic = 0;
 
 
-            if (Settings.TrafficViolationsDrivingAgainstTraffic && !TreatAsCop && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+            if (LosSantosRED.MySettings.TrafficViolations.DrivingAgainstTraffic && !TreatAsCop && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 Police.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = true;
                 if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.DrivingAgainstTraffic.CanObserveCrime)
@@ -145,7 +145,7 @@ public static class TrafficViolations
             }
 
 
-            if (Settings.TrafficViolationsDrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+            if (LosSantosRED.MySettings.TrafficViolations.DrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
                 Police.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = true;
                 if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.DrivingOnPavement.CanObserveCrime)
@@ -161,7 +161,7 @@ public static class TrafficViolations
 
 
             int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
-            if (Settings.TrafficViolationsHitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
+            if (LosSantosRED.MySettings.TrafficViolations.HitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000)
             {
                 Police.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = true;
                 if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.HitPedWithCar.CanObserveCrime)
@@ -176,7 +176,7 @@ public static class TrafficViolations
             }
 
             int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
-            if (Settings.TrafficViolationsHitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000 && PedScanning.Civilians.Any(x => x.DistanceToPlayer <= 10f))//otherwise we get non humans
+            if (LosSantosRED.MySettings.TrafficViolations.HitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000 && PedScanning.Civilians.Any(x => x.DistanceToPlayer <= 10f))//otherwise we get non humans
             {
                 Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = true;
                 if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.HitCarWithCar.CanObserveCrime)
@@ -190,7 +190,7 @@ public static class TrafficViolations
                 Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
             }
 
-            if (Settings.TrafficViolationsNotRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
+            if (LosSantosRED.MySettings.TrafficViolations.NotRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
             {
                 Police.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = true;
                 if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.NonRoadworthyVehicle.CanObserveCrime)
@@ -205,12 +205,12 @@ public static class TrafficViolations
             }
 
 
-            if (Settings.TrafficViolationsSpeeding)
+            if (LosSantosRED.MySettings.TrafficViolations.Speeding)
             {
                 float SpeedLimit = 60f;
                 if (PlayerLocation.PlayerCurrentStreet != null)
                     SpeedLimit = PlayerLocation.PlayerCurrentStreet.SpeedLimit;
-                PlayerIsSpeeding = VehicleSpeedMPH > SpeedLimit + Settings.TrafficViolationsSpeedingOverLimitThreshold;
+                PlayerIsSpeeding = VehicleSpeedMPH > SpeedLimit + LosSantosRED.MySettings.TrafficViolations.SpeedingOverLimitThreshold;
 
                 if (PlayerIsSpeeding && !TreatAsCop)
                 {
@@ -233,7 +233,7 @@ public static class TrafficViolations
                 PlayerIsSpeeding = false;
             }
             //not implemented yet
-            //if (Settings.TrafficViolationsRunningRedLight)
+            //if (LosSantosRED.MySettings.TrafficViolationsRunningRedLight)
             //{
             //    PlayerIsRunningRedLight = false;//CheckRedLight();
             //    if (PlayerIsRunningRedLight && TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.RunningARedLight.CanObserveCrime && !TreatAsCop)

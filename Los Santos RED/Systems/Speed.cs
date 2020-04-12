@@ -42,7 +42,7 @@ public static class Speed
     }
     public static void CheckSpeed()
     {
-        if (Settings.Keanu)
+        if (LosSantosRED.MySettings.General.Keanu)
         {
             if (SpeedModeBombActive)
             {

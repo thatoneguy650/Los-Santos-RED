@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,8 +8,29 @@ using System.Threading.Tasks;
 
 public static class Streets
 {
+    private static string ConfigFileName = "Plugins\\LosSantosRED\\Streets.xml";
     public static List<Street> StreetsList;
     public static void Initialize()
+    {
+        ReadConfig();
+    }
+    public static void Dispose()
+    {
+
+    }
+    public static void ReadConfig()
+    {
+        if (File.Exists(ConfigFileName))
+        {
+            StreetsList = LosSantosRED.DeserializeParams<Street>(ConfigFileName);
+        }
+        else
+        {
+            DefaultConfig();
+            LosSantosRED.SerializeParams(StreetsList, ConfigFileName);
+        }
+    }
+    public static void DefaultConfig()
     {
         StreetsList = new List<Street>
         {
@@ -234,10 +256,6 @@ public static class Streets
             new Street("Mt Haan Dr", 40f, ScannerAudio.streets.MtHaanDrive.FileName)
         };
     }
-    public static void Dispose()
-    {
-
-    }
     public static Street GetStreetFromName(string StreetName)
     {
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
@@ -249,6 +267,10 @@ public class Street
     public float SpeedLimit = 50f;
     public string DispatchFile = "";
     public bool isFreeway = false;
+    public Street()
+    {
+
+    }
     public Street(string _Name, float _SpeedLimit)
     {
         Name = _Name;

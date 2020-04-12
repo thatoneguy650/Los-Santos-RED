@@ -32,7 +32,7 @@ public static class WeaponDropping
         if (PrevCountWeapons != WeaponCount)
             WeaponInventoryChanged(WeaponCount);
 
-        if (Game.IsKeyDownRightNow(Settings.DropWeaponKey) && !DroppingWeapon && !LosSantosRED.PlayerInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
+        if (Game.IsKeyDownRightNow(LosSantosRED.MySettings.KeyBinding.DropWeaponKey) && !DroppingWeapon && !LosSantosRED.PlayerInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
         {
             DropWeapon();
         }
@@ -59,7 +59,7 @@ public static class WeaponDropping
 
             NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
 
-            WeaponVariation DroppedGunVariation = LosSantosRED.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            GTAWeapon.WeaponVariation DroppedGunVariation = LosSantosRED.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
             DroppedWeapons.Add(new DroppedWeapon(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
 
             NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);

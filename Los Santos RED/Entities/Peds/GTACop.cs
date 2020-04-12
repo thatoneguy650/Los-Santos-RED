@@ -2,6 +2,7 @@
 using Rage;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,16 +26,16 @@ public class GTACop : GTAPed
     public bool HasItemsToRadioIn { get; set; }
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false,true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
-    public WeaponVariation PistolVariation { get; set; }
-    public WeaponVariation HeavyVariation { get; set; }
-    public Agency AssignedAgency { get; set; } = Agencies.LSPD;
+    public GTAWeapon.WeaponVariation PistolVariation { get; set; }
+    public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
+    public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", Color.White, Agency.Classification.Other, true, false, null, null, "");
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public void SetAccuracyAndSightRange()
     {
         Pedestrian.VisionRange = 55f;
         Pedestrian.HearingRange = 25;
-        if(Settings.OverridePoliceAccuracy)
-            Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
+        if(LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceGeneralAccuracy;
     }
     public bool NeedsWeaponCheck
     {

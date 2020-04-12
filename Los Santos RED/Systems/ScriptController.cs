@@ -153,7 +153,7 @@ public static class ScriptController
                             //    WeatherCheckingTick.RunTask();
                             else if (PoliceSpeech.IsRunning && PoliceSpeechTick.ShouldRun)//used to be IF
                                 PoliceSpeechTick.RunTask();
-                            else if (Police.IsRunning && Settings.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF
+                            else if (Police.IsRunning && LosSantosRED.MySettings.Police.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF
                                 RandomCopSpawningTick.RunTask();
                             else if (Police.IsRunning && CleanupCopTick.ShouldRun)
                                 CleanupCopTick.RunTask();

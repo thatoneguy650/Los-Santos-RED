@@ -44,6 +44,7 @@ internal static class Menus
     private static UIMenuItem menuActionSmoking;
    // private static UIMenuCheckboxItem menuRadioOff;
     private static UIMenuListItem menuAutoSetRadioStation;
+    private static UIMenuItem ReloadSettings;
 
     private static MenuPool menuPool;
     private static UIMenu mainMenu;
@@ -186,11 +187,11 @@ internal static class Menus
         menuDebugScreenEffect = new UIMenuListItem("Play Screen Effect", "Choose Screen Effect To Play", ScreenEffects);
 
 
-        //menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", Settings.Debug, "Debug for testing");
+        //menuDebugEnabled = new UIMenuCheckboxItem("Debug Enabled", LosSantosRED.MySettings.Debug, "Debug for testing");
         menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
         menuDebugHealthAndArmor = new UIMenuItem("Health and Armor", "Get loaded for bear");
 
-        //menuRadioOff = new UIMenuCheckboxItem("Radio Enabled", Settings.RadioAlwaysOff, "Will Auto Turn off Radio");
+        //menuRadioOff = new UIMenuCheckboxItem("Radio Enabled", LosSantosRED.MySettings.RadioAlwaysOff, "Will Auto Turn off Radio");
         menuAutoSetRadioStation = new UIMenuListItem("Auto-Set Station", "Will auto set the station any time the radio is on", strRadioStations);
 
         debugMenu.AddItem(menuDebugResetCharacter);
@@ -248,7 +249,7 @@ internal static class Menus
             {
                 while (IsRunning)
                 {
-                    if (Game.IsKeyDown(Settings.MenuKey)) // Our menu on/off switch.
+                    if (Game.IsKeyDown(LosSantosRED.MySettings.KeyBinding.MenuKey)) // Our menu on/off switch.
                     {
                         if (LosSantosRED.IsDead)
                         {
@@ -301,11 +302,11 @@ internal static class Menus
     }
     public static void ShowDeathMenu()
     {
-        if (Settings.UndieLimit == 0)
+        if (LosSantosRED.MySettings.General.UndieLimit == 0)
         {
             menuDeathUndie.Enabled = true;
         }
-        else if (LosSantosRED.TimesDied < Settings.UndieLimit)
+        else if (LosSantosRED.TimesDied < LosSantosRED.MySettings.General.UndieLimit)
         {
             menuDeathUndie.Enabled = true;
         }
@@ -377,21 +378,21 @@ internal static class Menus
     private static void CreateOptionsMenu()
     {
         optionsMenu = menuPool.AddSubMenu(mainMenu, "Options");
-        UIMenuItem ReloadSettings = new UIMenuItem("Reload Settings", "Reload settings from XML");
+       ReloadSettings = new UIMenuItem("Reload Settings", "Reload All settings from XML");
         optionsMenu.AddItem(ReloadSettings);
-        foreach (FieldInfo fi in Type.GetType("Settings", false).GetFields())
-        {
-            if (fi.FieldType == typeof(bool))
-            {
-                UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(null));
-                optionsMenu.AddItem(MySetting);
-            }
-            if (fi.FieldType == typeof(int) || fi.FieldType == typeof(string) || fi.FieldType == typeof(float))
-            {
-                UIMenuItem MySetting = new UIMenuItem(string.Format("{0}: {1}", fi.Name, fi.GetValue(null)));
-                optionsMenu.AddItem(MySetting);
-            }
-        }
+        //foreach (FieldInfo fi in Type.GetType("Settings", false).GetFields())
+        //{
+        //    if (fi.FieldType == typeof(bool))
+        //    {
+        //        UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(null));
+        //        optionsMenu.AddItem(MySetting);
+        //    }
+        //    if (fi.FieldType == typeof(int) || fi.FieldType == typeof(string) || fi.FieldType == typeof(float))
+        //    {
+        //        UIMenuItem MySetting = new UIMenuItem(string.Format("{0}: {1}", fi.Name, fi.GetValue(null)));
+        //        optionsMenu.AddItem(MySetting);
+        //    }
+        //}
         optionsMenu.OnItemSelect += OptionsMenuSelect;
         optionsMenu.OnListChange += OnListChange;
         optionsMenu.OnCheckboxChange += OnCheckboxChange;
@@ -445,18 +446,18 @@ internal static class Menus
     }
     public static void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
     {
-        if (sender == optionsMenu)
-        {
-            FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
-            FieldInfo MySetting = MyFields.Where(x => x.Name == checkbox.Text).FirstOrDefault();
-            MySetting.SetValue(null, Checked);
-            Settings.WriteSettings();
-        }
+        //if (sender == optionsMenu)
+        //{
+        //    FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
+        //    FieldInfo MySetting = MyFields.Where(x => x.Name == checkbox.Text).FirstOrDefault();
+        //    MySetting.SetValue(null, Checked);
+        //    LosSantosRED.MySettings.WriteSettings();
+        //}
         //if(sender == debugMenu)
         //{
         //    if(checkbox == menuRadioOff)
         //    {
-        //        Settings.RadioAlwaysOff = Checked;
+        //        LosSantosRED.MySettings.RadioAlwaysOff = Checked;
         //    }
         //}
     }
@@ -591,35 +592,39 @@ internal static class Menus
     }
     private static void OptionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        string mySettingName = selectedItem.Text.Split(':')[0];
-        FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
-        FieldInfo MySetting = MyFields.Where(x => x.Name == mySettingName).FirstOrDefault();
+        if(selectedItem == ReloadSettings)
+        {
+            LosSantosRED.ReadAllConfigs();
+        }
+        //string mySettingName = selectedItem.Text.Split(':')[0];
+        //FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
+        //FieldInfo MySetting = MyFields.Where(x => x.Name == mySettingName).FirstOrDefault();
 
-        string Value = GetKeyboardInput();
-        if (MySetting.FieldType == typeof(float))
-        {
-            if (float.TryParse(Value, out float myFloat))
-            {
-                MySetting.SetValue(null, myFloat);
-                selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
-                Settings.WriteSettings();
-            }
-        }
-        else if (MySetting.FieldType == typeof(int))
-        {
-            if (int.TryParse(Value, out int myInt))
-            {
-                MySetting.SetValue(null, myInt);
-                selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
-                Settings.WriteSettings();
-            }
-        }
-        else if (MySetting.FieldType == typeof(string))
-        {
-            MySetting.SetValue(null, Value);
-            selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
-            Settings.WriteSettings();
-        }
+        //string Value = GetKeyboardInput();
+        //if (MySetting.FieldType == typeof(float))
+        //{
+        //    if (float.TryParse(Value, out float myFloat))
+        //    {
+        //        MySetting.SetValue(null, myFloat);
+        //        selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+        //        LosSantosRED.MySettings.WriteSettings();
+        //    }
+        //}
+        //else if (MySetting.FieldType == typeof(int))
+        //{
+        //    if (int.TryParse(Value, out int myInt))
+        //    {
+        //        MySetting.SetValue(null, myInt);
+        //        selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+        //        LosSantosRED.MySettings.WriteSettings();
+        //    }
+        //}
+        //else if (MySetting.FieldType == typeof(string))
+        //{
+        //    MySetting.SetValue(null, Value);
+        //    selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+        //    LosSantosRED.MySettings.WriteSettings();
+        //}
     }
     private static void ActionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

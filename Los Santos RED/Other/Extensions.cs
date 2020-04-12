@@ -153,7 +153,7 @@ namespace ExtensionsMethods
         public static void GiveCash(this Ped myPed, int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = CashHash(Settings.MainCharacterToAlias);
+            uint PlayerCashHash = CashHash(LosSantosRED.MySettings.General.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -168,14 +168,14 @@ namespace ExtensionsMethods
             int CurrentCash;
             unsafe
             {
-                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Settings.MainCharacterToAlias), &CurrentCash, -1);
+                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(LosSantosRED.MySettings.General.MainCharacterToAlias), &CurrentCash, -1);
             }
 
             return CurrentCash;
         }
         public static void SetCash(this Ped myPed, int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Settings.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(LosSantosRED.MySettings.General.MainCharacterToAlias), Amount, 1);
         }
         private static uint CashHash(String PlayerName)
         {

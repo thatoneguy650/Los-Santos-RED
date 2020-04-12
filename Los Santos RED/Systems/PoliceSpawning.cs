@@ -23,7 +23,7 @@ public static class PoliceSpawning
     }
     public static void RandomCopTick()
     {
-        if (PedScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < Settings.SpawnRandomPoliceLimit)
+        if (PedScanning.CopPeds.Where(x => x.WasRandomSpawn).Count() < LosSantosRED.MySettings.Police.SpawnRandomPoliceLimit)
         {
             SpawnRandomCop();
         }
@@ -60,12 +60,12 @@ public static class PoliceSpawning
             }
             int RandomValue = LosSantosRED.MyRand.Next(1, 11);
             Agency AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.MainZoneAgency;
-            if (NextPoliceSpawn.IsFreeway && RandomValue <= 4)
-                AgencyToSpawn = Agencies.SAHP;
-            else if(RandomValue <= 9 && NextPoliceSpawn.ZoneAtLocation.HasAgencies)
+            if (NextPoliceSpawn.IsFreeway && Agencies.AgenciesList.Any(x => x.SpawnsOnHighway) && RandomValue <= 4)
+                AgencyToSpawn = Agencies.AgenciesList.Where(x => x.SpawnsOnHighway).FirstOrDefault();
+            else if (RandomValue <= 9 && NextPoliceSpawn.ZoneAtLocation.HasAgencies)
                 AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.MainZoneAgency;
-            else if(NextPoliceSpawn.ZoneAtLocation.HasSecondaryAgencies)
-                AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.ZoneAgencies.Where(x=> !x.IsMain).PickRandom().AssiciatedAgency;
+            else if (NextPoliceSpawn.ZoneAtLocation.HasSecondaryAgencies)
+                AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.ZoneAgencies.Where(x => !x.IsMain).PickRandom().AssociatedAgency();
 
             if (AgencyToSpawn != null)
                 SpawnCop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation);
@@ -133,7 +133,7 @@ public static class PoliceSpawning
         }
 
         Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
-        if (ZoneName == null || ZoneName == Zones.OCEANA)
+        if (ZoneName == null || ZoneName.GameName == "OCEANA")
             return null;
 
         string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
@@ -232,7 +232,7 @@ public static class PoliceSpawning
             MyNewCop.WasRandomSpawnDriver = true;
             MyNewCop.IsBikeCop = isBike;
 
-            if (Settings.SpawnedRandomPoliceHaveBlip && Cop.Exists())
+            if (LosSantosRED.MySettings.Police.SpawnedRandomPoliceHaveBlip && Cop.Exists())
             {
                 Blip myBlip = Cop.AttachBlip();
                 myBlip.Color = _Agency.AgencyColor;
@@ -280,7 +280,7 @@ public static class PoliceSpawning
         if (_Agency.CopModels.Any(x => !x.isMale))
             isMale = LosSantosRED.MyRand.Next(1, 11) <= 7; //70% chance Male
 
-        if (_Agency == Agencies.SAHP)
+        if (_Agency.HasBikeOfficers)
             isBike = LosSantosRED.MyRand.Next(1, 11) <= 5; //50% bike cop for SAHP
 
         Agency.ModelInformation MyInfo = _Agency.CopModels.Where(x => x.isMale == isMale && x.UseForRandomSpawn).PickRandom();
@@ -300,13 +300,13 @@ public static class PoliceSpawning
         {
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 4, 1, 0, 0);
         }
-        if (_Agency == Agencies.LSSD || _Agency == Agencies.LSPD || _Agency == Agencies.BCSO || _Agency == Agencies.LSIAPD)
-        {
+        //if (_Agency == Agencies.LSSD || _Agency == Agencies.LSPD || _Agency == Agencies.BCSO || _Agency == Agencies.LSIAPD)
+        //{
             if (isMale && LosSantosRED.MyRand.Next(1, 11) <= 4) //40% Chance of Vest
                 NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 9, 2, 0, 2);//Vest male only
             if (!Police.IsNightTime)
                 NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", Cop, 1, 0, 0, 2);//Sunglasses
-        }
+       // }
 
         return (Cop,isBike);
     }

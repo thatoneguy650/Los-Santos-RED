@@ -303,7 +303,7 @@ public class RapSheet
         }
 
         //Police Only
-        if (TrespessingOnGovtProperty.CanObserveCrime && LosSantosRED.PlayerIsWanted && (PlayerLocation.PlayerCurrentZone == Zones.JAIL || PlayerLocation.PlayerCurrentZone == Zones.ARMYB || PlayerLocation.PlayerCurrentZone == Zones.NOOSE || PlayerLocation.PlayerCurrentZone == Zones.AIRP) && Police.AnyPoliceCanSeePlayer)
+        if (TrespessingOnGovtProperty.CanObserveCrime && LosSantosRED.PlayerIsWanted && PlayerLocation.PlayerCurrentZone.IsRestrictedDuringWanted && Police.AnyPoliceCanSeePlayer)
         {
             TrespessingOnGovtProperty.CrimeObserved();
         }

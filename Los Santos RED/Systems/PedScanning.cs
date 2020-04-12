@@ -24,7 +24,7 @@ public static class PedScanning
     {
         get
         {
-            return string.Join(" ", CopPeds.Where(x => x.SeenPlayerSince(10000) || x.DistanceToPlayer <= 25f).Select(x => (x.IsInHelicopter ? "~b~LSPD-ASD~s~" : x.AssignedAgency.ColoredInitials)).Distinct().ToArray());
+            return string.Join(" ", CopPeds.Where(x => (x.SeenPlayerSince(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => (x.IsInHelicopter ? "~b~LSPD-ASD~s~" : x.AssignedAgency.ColoredInitials)).Distinct().ToArray());
         }
     }
     public static void Initialize()
@@ -75,8 +75,8 @@ public static class PedScanning
         Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian);
         GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health, AssignedAgency);
         Pedestrian.IsPersistent = false;
-        if (Settings.OverridePoliceAccuracy)
-            Pedestrian.Accuracy = Settings.PoliceGeneralAccuracy;
+        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceGeneralAccuracy;
         Pedestrian.Inventory.Weapons.Clear();
         Police.IssueCopPistol(myCop);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
@@ -93,7 +93,7 @@ public static class PedScanning
         }
         CopPeds.Add(myCop);
 
-        if (Settings.IssuePoliceHeavyWeapons && Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
+        if (LosSantosRED.MySettings.Police.IssuePoliceHeavyWeapons && Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
             Police.IssueCopHeavyWeapon(myCop);
     }
     private static void AddCivilian(Ped Pedestrian)

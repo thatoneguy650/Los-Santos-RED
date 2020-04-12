@@ -129,7 +129,7 @@ public static class WeatherReporting
         //        {
 
 
-        //            if (Settings.DebugShowUI)
+        //            if (LosSantosRED.MySettings.DebugShowUI)
         //            {
         //                string Tasking = string.Format("Weather: Current: {0}, Next: {1}, Wind: {2}", CurrentWeather, NextWeather, WindSpeed);//string.Format("ToTask: {0}", CopsToTask.Count());
         //                UI.Text(Tasking, 0.78f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);

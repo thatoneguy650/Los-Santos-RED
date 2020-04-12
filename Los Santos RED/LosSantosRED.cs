@@ -14,6 +14,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using Extensions = ExtensionsMethods.Extensions;
 
 public static class LosSantosRED
 {
@@ -23,7 +27,8 @@ public static class LosSantosRED
     private static bool PrevPlayerInVehicle;
     private static bool PrevPlayerAimingInVehicle;
     private static uint GameTimeStartedHoldingEnter;
-
+    private static string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
+    public static Settings MySettings { get; set; }
     public static bool IsRunning { get; set; }
     public static bool IsDead { get; set; }
     public static bool IsBusted { get; set; }
@@ -150,16 +155,38 @@ public static class LosSantosRED
         while (Game.IsLoading)
             GameFiber.Yield();
 
+
+        
+
+
+        if (File.Exists(ConfigFileName))
+        {
+            MySettings = DeserializeParams<Settings>(ConfigFileName).FirstOrDefault();
+        }
+        else
+        {
+            MySettings = new Settings();
+            List<Settings> ToSerialize = new List<Settings>();
+            ToSerialize.Add(MySettings);
+            SerializeParams(ToSerialize, ConfigFileName);
+        }
+
+
+
         RespawnStopper.Initialize(); //maye some slowness
         //LoadInteriors();
         Agencies.Initialize();
+
+
         Zones.Initialize();
+
+
         WeatherReporting.Initialize();
         Locations.Initialize();
         Police.Initialize();
         PoliceSpawning.Initialize();
         LicensePlateChanging.Initialize();
-        Settings.Initialize();
+       // LosSantosRED.MyLosSantosRED.MySettings.Initialize();
         Menus.Intitialize();//Somewhat the procees each tick is taking frames
         RespawnStopper.Initialize(); //maye some slowness
         PedScanning.Initialize();
@@ -297,14 +324,14 @@ public static class LosSantosRED
     }
     public static void AudioTick()
     {
-        if (Settings.DisableAmbientScanner)
+        if (MySettings.Police.DisableAmbientScanner)
             NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
-        if (Settings.WantedMusicDisable)
+        if (MySettings.Police.WantedMusicDisable)
             NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
     }
     public static void ControlTick()
     {
-        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+        if (Game.IsKeyDownRightNow(MySettings.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
         {
             if (!HandsAreUp && !IsBusted)
             {
@@ -341,13 +368,13 @@ public static class LosSantosRED
             }
         }
 
-        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        if (Game.IsKeyDownRightNow(MySettings.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
         {
             Surrendering.CommitSuicide(Game.LocalPlayer.Character);
         }
 
 
-        if (Game.IsKeyDownRightNow(Settings.SurrenderKey) && Game.IsControlKeyDownRightNow)
+        if (Game.IsKeyDownRightNow(MySettings.KeyBinding.SurrenderKey) && Game.IsControlKeyDownRightNow)
         {
             PlayerHealth.BandagePed(Game.LocalPlayer.Character);
         }
@@ -373,7 +400,7 @@ public static class LosSantosRED
                 myBlip.Delete();
         }
         LicensePlateChanging.Dispose();
-        Settings.Dispose();
+        //LosSantosRED.MyLosSantosRED.MySettings.Dispose();
         Menus.Dispose();
         RespawnStopper.Dispose(); //maye some slowness
         PedScanning.Dispose();
@@ -405,8 +432,30 @@ public static class LosSantosRED
         ClockSystem.Dispose();
         MuggingSystem.Dispose();
     }
-
-    
+    private static void ReadConfig()
+    {
+        if (File.Exists(ConfigFileName))
+        {
+            MySettings = DeserializeParams<Settings>(ConfigFileName).FirstOrDefault();
+        }
+        else
+        {
+            MySettings = new Settings();
+            List<Settings> ToSerialize = new List<Settings>();
+            ToSerialize.Add(MySettings);
+            SerializeParams(ToSerialize, ConfigFileName);
+        }
+    }
+    public static void ReadAllConfigs()
+    {
+        ReadConfig();
+        Agencies.ReadConfig();
+        Zones.ReadConfig();
+        GTAWeapons.ReadConfig();
+        Locations.ReadConfig();
+        Vehicles.ReadConfig();
+        Streets.ReadConfig();
+    }
     private static void TrackCurrentVehicle()
     {
         Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
@@ -674,31 +723,30 @@ public static class LosSantosRED
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
         }
     }
-    public static WeaponVariation GetWeaponVariation(Ped WeaponOwner, uint WeaponHash)
+    public static GTAWeapon.WeaponVariation GetWeaponVariation(Ped WeaponOwner, uint WeaponHash)
     {
         int Tint = NativeFunction.CallByName<int>("GET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash);
         GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash(WeaponHash);
         if (MyGun == null)
-            return new WeaponVariation(Tint);
+            return new GTAWeapon.WeaponVariation(Tint);
 
-        List<WeaponVariation.WeaponComponent> Components = new List<WeaponVariation.WeaponComponent>();
-        List<WeaponVariation.WeaponComponent> PossibleComponents = GTAWeapons.GetWeaponVariations(MyGun.Name);
+        List<GTAWeapon.WeaponComponent> Components = new List<GTAWeapon.WeaponComponent>();
 
         if (!Components.Any())
-            return new WeaponVariation(Tint);
+            return new GTAWeapon.WeaponVariation(Tint);
 
-        foreach (WeaponVariation.WeaponComponent PossibleComponent in PossibleComponents)
+        foreach (GTAWeapon.WeaponComponent PossibleComponent in MyGun.PossibleComponents)
         {
             if (NativeFunction.CallByName<bool>("HAS_PED_GOT_WEAPON_COMPONENT", WeaponOwner, WeaponHash, PossibleComponent.Hash))
             {
-                Components.Add(new WeaponVariation.WeaponComponent(PossibleComponent.Name, PossibleComponent.HashKey, PossibleComponent.Hash, true));
+                Components.Add(new GTAWeapon.WeaponComponent(PossibleComponent.Name, PossibleComponent.HashKey, PossibleComponent.Hash, true));
             }
 
         }
-        return new WeaponVariation(Tint, Components);
+        return new GTAWeapon.WeaponVariation(Tint, Components);
 
     }
-    public static void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, WeaponVariation _WeaponVariation)
+    public static void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, GTAWeapon.WeaponVariation _WeaponVariation)
     {
         if (_WeaponVariation == null)
             return;
@@ -706,14 +754,11 @@ public static class LosSantosRED
         GTAWeapon LookupGun = GTAWeapons.GetWeaponFromHash(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
         if (LookupGun == null)
             return;
-        List<WeaponVariation.WeaponComponent> PossibleComponents = GTAWeapons.GetWeaponVariations(LookupGun.Name);//WeaponComponentsLookup.Where(x => x.BaseWeapon == LookupGun.Name).ToList();
-        foreach (WeaponVariation.WeaponComponent ToRemove in PossibleComponents)
+        foreach (GTAWeapon.WeaponComponent ToRemove in LookupGun.PossibleComponents)
         {
             NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, WeaponHash, ToRemove.Hash);
         }
-
-
-        foreach (WeaponVariation.WeaponComponent ToAdd in _WeaponVariation.Components)
+        foreach (GTAWeapon.WeaponComponent ToAdd in _WeaponVariation.Components)
         {
             NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, ToAdd.Hash);
         }
@@ -826,5 +871,25 @@ public static class LosSantosRED
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789";
         return new string(Enumerable.Repeat(chars, length)
           .Select(s => s[MyRand.Next(s.Length)]).ToArray());
+    }
+    public static void SerializeParams<T>(List<T> paramList, string FileName)
+    {
+        XDocument doc = new XDocument();
+        XmlSerializer serializer = new XmlSerializer(paramList.GetType());
+        XmlWriter writer = doc.CreateWriter();
+        serializer.Serialize(writer, paramList);
+        writer.Close();
+        File.WriteAllText(FileName, doc.ToString());
+        Debugging.WriteToLog("Settings ReadConfig", string.Format("Using Default Data {0}", FileName));
+    }
+    public static List<T> DeserializeParams<T>(string FileName)
+    {
+        XDocument doc = new XDocument(XDocument.Load(FileName));
+        XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+        XmlReader reader = doc.CreateReader();
+        List<T> result = (List<T>)serializer.Deserialize(reader);
+        reader.Close();
+        Debugging.WriteToLog("Settings ReadConfig", string.Format("Using Saved Data {0}", FileName));
+        return result;
     }
 }

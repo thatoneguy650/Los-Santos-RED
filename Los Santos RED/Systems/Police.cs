@@ -187,7 +187,7 @@ internal static class Police
         PreviousWantedLevel = 0;
         GameTimeLastReportedSpotted = 0;
         LastSeenVehicleHandle = 0;
-        LastWantedCenterBlipSize = Settings.LastWantedCenterSize;
+        LastWantedCenterBlipSize = LosSantosRED.MySettings.Police.LastWantedCenterSize;
 
         InvestigationPosition = Vector3.Zero;
         InvestigationDistance = 350f;
@@ -471,9 +471,9 @@ internal static class Police
         Pistol = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
         Cop.IssuedPistol = Pistol;
         Cop.Pedestrian.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
-        if (Settings.AllowPoliceWeaponVariations)
+        if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
         {
-            WeaponVariation MyVariation = Pistol.PoliceVariations.PickRandom();
+            GTAWeapon.WeaponVariation MyVariation = Pistol.PoliceVariations.PickRandom();
             Cop.PistolVariation = MyVariation;
             LosSantosRED.ApplyWeaponVariation(Cop.Pedestrian, (uint)Pistol.Hash, MyVariation);
         }
@@ -495,11 +495,11 @@ internal static class Police
 
         Cop.IssuedHeavyWeapon = IssuedHeavy;
         Cop.Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
-        if (Settings.OverridePoliceAccuracy)
-            Cop.Pedestrian.Accuracy = Settings.PoliceHeavyAccuracy;
-        if (Settings.AllowPoliceWeaponVariations)
+        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Cop.Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceHeavyAccuracy;
+        if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
         {
-            WeaponVariation MyVariation = IssuedHeavy.PoliceVariations.PickRandom();
+            GTAWeapon.WeaponVariation MyVariation = IssuedHeavy.PoliceVariations.PickRandom();
             Cop.HeavyVariation = MyVariation;
             LosSantosRED.ApplyWeaponVariation(Cop.Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
         }
@@ -590,7 +590,7 @@ internal static class Police
                 AddUpdateCurrentWantedBlip(CurrentWantedCenter);
             }
            
-            if (Settings.WantedLevelIncreasesOverTime && PlayerHasBeenWantedFor > Settings.WantedLevelIncreaseTime && AnyPoliceCanSeePlayer && LosSantosRED.PlayerWantedLevel <= Settings.WantedLevelInceaseOverTimeLimit)
+            if (LosSantosRED.MySettings.Police.WantedLevelIncreasesOverTime && PlayerHasBeenWantedFor > LosSantosRED.MySettings.Police.WantedLevelIncreaseTime && AnyPoliceCanSeePlayer && LosSantosRED.PlayerWantedLevel <= LosSantosRED.MySettings.Police.WantedLevelInceaseOverTimeLimit)
             {
                 //SetWantedLevel(InstantAction.PlayerWantedLevel + 1, "Wanted Level increased over time");
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.RequestBackup, 3)
@@ -600,7 +600,7 @@ internal static class Police
                 });
             }
 
-            //if (Settings.SpawnNewsChopper && Game.GameTime - WantedLevelStartTime > 180000 && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 4 && !PoliceScanning.Reporters.Any())
+            //if (LosSantosRED.MyLosSantosRED.MySettings.SpawnNewsChopper && Game.GameTime - WantedLevelStartTime > 180000 && WantedLevelStartTime > 0 && AnyPoliceRecentlySeenPlayer && InstantAction.PlayerWantedLevel > 4 && !PoliceScanning.Reporters.Any())
             //{
             //    PoliceSpawning.SpawnNewsChopper();
             //    LocalWriteToLog("WantedLevelTick", "Been at this wanted for a while, wanted news chopper spawned (if they dont already exist)");
@@ -693,7 +693,7 @@ internal static class Police
         if (AnyPoliceCanSeePlayer)
             AnyPoliceRecentlySeenPlayer = true;
         else
-            AnyPoliceRecentlySeenPlayer = PedScanning.CopPeds.Any(x => x.SeenPlayerSince(Settings.PoliceRecentlySeenTime));
+            AnyPoliceRecentlySeenPlayer = PedScanning.CopPeds.Any(x => x.SeenPlayerSince(LosSantosRED.MySettings.Police.PoliceRecentlySeenTime));
 
         AnyPoliceCanRecognizePlayer = PedScanning.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecognize() || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
         
@@ -890,9 +890,9 @@ internal static class Police
         {
             int MaxWanted = PersonOfInterest.LastWantedLevel();
             if (MaxWanted != 0)
-                LastWantedCenterBlipSize = MaxWanted * Settings.LastWantedCenterSize;
+                LastWantedCenterBlipSize = MaxWanted * LosSantosRED.MySettings.Police.LastWantedCenterSize;
             else
-                LastWantedCenterBlipSize = Settings.LastWantedCenterSize;
+                LastWantedCenterBlipSize = LosSantosRED.MySettings.Police.LastWantedCenterSize;
 
             LastWantedCenterBlip = new Blip(LastWantedCenterPosition, LastWantedCenterBlipSize)
             {

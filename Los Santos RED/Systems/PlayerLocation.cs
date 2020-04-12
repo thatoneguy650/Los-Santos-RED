@@ -13,7 +13,7 @@ public static class PlayerLocation
     public static bool IsRunning { get; set; } = true;
     public static Street PlayerCurrentStreet { get; set; }
     public static Street PlayerCurrentCrossStreet { get; set; }
-    public static Zone PlayerCurrentZone { get; set; } = Zones.UNK_LSCOUNTY;
+    public static Zone PlayerCurrentZone { get; set; } = new Zone("UNK_LSCOUNTY", "Los Santos County", "", County.LosSantosCounty);
     public static bool PlayerIsOffroad { get; set; } = false;
 
     public static void Initialize()
@@ -21,7 +21,7 @@ public static class PlayerLocation
         IsRunning = true;
         PlayerCurrentStreet = null;
         PlayerCurrentCrossStreet = null;
-        PlayerCurrentZone = Zones.UNK_LSCOUNTY;
+        PlayerCurrentZone = new Zone("UNK_LSCOUNTY", "Los Santos County", "", County.LosSantosCounty);
         PlayerIsOffroad  = false;
     }
     public static void Dispose()

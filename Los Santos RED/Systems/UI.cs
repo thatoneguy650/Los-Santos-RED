@@ -53,26 +53,26 @@ public static class UI
 
     private static void UITick()
     {
-        if (Settings.AlwaysShowHUD)
+        if (LosSantosRED.MySettings.General.AlwaysShowHUD)
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
 
-        if (Settings.AlwaysShowRadar)
+        if (LosSantosRED.MySettings.General.AlwaysShowRadar)
             NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
 
-        if (Settings.ShowPoliceRadarBlips)
+        if (LosSantosRED.MySettings.Police.ShowPoliceRadarBlips)
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
         else
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
 
-        if (Settings.AlwaysShowCash)
+        if (LosSantosRED.MySettings.General.AlwaysShowCash)
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
 
-        if (Settings.TrafficInfoUI && !LosSantosRED.IsBusted && !LosSantosRED.IsDead)
+        if (LosSantosRED.MySettings.UI.Enabled && !LosSantosRED.IsBusted && !LosSantosRED.IsDead)
         {
-            ShowTrafficUI();
+            ShowUI();
         }
     }
-    private static void ShowTrafficUI()
+    private static void ShowUI()
     {
         string PlayerStatusLine = "";
         if (PersonOfInterest.PlayerIsPersonOfInterest)
@@ -143,13 +143,13 @@ public static class UI
             PlayerCLockLine = string.Format("{0} ({1})", ClockSystem.ClockTime, ClockSystem.ClockSpeed);
 
         if (DebugLine != "")
-            Text(DebugLine, Settings.TrafficInfoUIPositionX - 3 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
+            Text(DebugLine, LosSantosRED.MySettings.UI.PositionX - 3 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
 
-        Text(PlayerCLockLine, Settings.TrafficInfoUIPositionX - 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
-        Text(PlayerStatusLine, Settings.TrafficInfoUIPositionX - Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
-        Text(StreetLine, Settings.TrafficInfoUIPositionX, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
-        Text(PlayerZoneLine, Settings.TrafficInfoUIPositionX + Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
-        Text(PlayerSpeedLine, Settings.TrafficInfoUIPositionX + 2 * Settings.TrafficInfoUISpacing, Settings.TrafficInfoUIPositionY, Settings.TrafficInfoUIScale, false, Color.White, EFont.FontChaletComprimeCologne);
+        Text(PlayerCLockLine, LosSantosRED.MySettings.UI.PositionX - 2 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
+        Text(PlayerStatusLine, LosSantosRED.MySettings.UI.PositionX - LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
+        Text(StreetLine, LosSantosRED.MySettings.UI.PositionX, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
+        Text(PlayerZoneLine, LosSantosRED.MySettings.UI.PositionX + LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
+        Text(PlayerSpeedLine, LosSantosRED.MySettings.UI.PositionX + 2 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
     }
     private static string GetCompassHeading()
     {
@@ -208,8 +208,8 @@ public static class UI
         string CopZoneName = "";
         ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone);
         if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
-            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials +  "~s~ / " + Agencies.SAHP.ColoredInitials;
-        else
+            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;// +  "~s~ / " + Agencies.SAHP.ColoredInitials;
+        else if (PlayerLocation.PlayerCurrentZone != null && PlayerLocation.PlayerCurrentZone.MainZoneAgency != null)
             CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;

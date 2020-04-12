@@ -14,7 +14,7 @@ public class DroppedWeapon
     public uint GameTimeDropped { get; set; }
     public int Tint { get; set; }
 
-    public WeaponVariation Variation { get; set; }
+    public GTAWeapon.WeaponVariation Variation { get; set; }
     public int Ammo { get; set; }
 
     public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped)
@@ -22,13 +22,13 @@ public class DroppedWeapon
         Weapon = _Weapon;
         CoordinatedDropped = _CoordinatedDropped;
     }
-    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped, WeaponVariation _Variation)
+    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped, GTAWeapon.WeaponVariation _Variation)
     {
         Weapon = _Weapon;
         CoordinatedDropped = _CoordinatedDropped;
         Variation = _Variation;
     }
-    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped, WeaponVariation _Variation,int _Ammo)
+    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped, GTAWeapon.WeaponVariation _Variation,int _Ammo)
     {
         Weapon = _Weapon;
         CoordinatedDropped = _CoordinatedDropped;

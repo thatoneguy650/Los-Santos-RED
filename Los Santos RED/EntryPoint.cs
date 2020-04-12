@@ -26,7 +26,7 @@ public static class EntryPoint
         {
             if(!LosSantosRED.IsRunning)
             {
-                if(Game.IsAltKeyDownRightNow && Game.IsKeyDown(Settings.MenuKey))
+                if(Game.IsAltKeyDownRightNow && Game.IsKeyDown(LosSantosRED.MySettings.KeyBinding.MenuKey))
                 {
                     ScriptController.Initialize();
                     LosSantosRED.Initialize();

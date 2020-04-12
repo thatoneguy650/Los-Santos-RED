@@ -299,7 +299,7 @@ public static class DispatchAudio
                 GameFiber.Yield();
             }
 
-            if (MyAudioEvent.NotificationToDisplay != null && Settings.DispatchNotifications)
+            if (MyAudioEvent.NotificationToDisplay != null && LosSantosRED.MySettings.Police.DispatchNotifications)
             {
                 RemoveAllNotifications();
                 NotificationHandles.Add(Game.DisplayNotification(MyAudioEvent.NotificationToDisplay.TextureDict, MyAudioEvent.NotificationToDisplay.TextureName, MyAudioEvent.NotificationToDisplay.Title, MyAudioEvent.NotificationToDisplay.Subtitle, MyAudioEvent.NotificationToDisplay.Text));
@@ -312,7 +312,7 @@ public static class DispatchAudio
 
                 while (IsPlayingAudio)
                 {
-                    if (MyAudioEvent.Subtitles != "" && Settings.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                    if (MyAudioEvent.Subtitles != "" && LosSantosRED.MySettings.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                     {
                         Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
                         GameTimeLastDisplayedSubtitle = Game.GameTime;
@@ -345,7 +345,7 @@ public static class DispatchAudio
             {
                 audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", _Audio))
                 {
-                    Volume = Settings.DispatchAudioVolume
+                    Volume = LosSantosRED.MySettings.Police.DispatchAudioVolume
                 };
                 outputDevice.Init(audioFile);
             }
@@ -382,7 +382,7 @@ public static class DispatchAudio
     public static void PlayDispatchQueue()
     {
 
-        if (!Settings.DispatchAudio)
+        if (!LosSantosRED.MySettings.Police.DispatchAudio)
         {
             DispatchQueue.Clear();
             return;

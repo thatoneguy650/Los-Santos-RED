@@ -47,7 +47,7 @@ public static class Surrendering
             //    bool Cancel = false;
             //    while(Game.GameTime - GameTimeStartedRaisingHands <= 5500)
             //    {
-            //        if(!Game.IsKeyDownRightNow(Settings.SurrenderKey))
+            //        if(!Game.IsKeyDownRightNow(LosSantosRED.MySettings.SurrenderKey))
             //        {
             //            Cancel = true;
             //            break;
@@ -63,7 +63,7 @@ public static class Surrendering
             //    {
             //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
 
-            //        while(Game.IsKeyDownRightNow(Settings.SurrenderKey))
+            //        while(Game.IsKeyDownRightNow(LosSantosRED.MySettings.SurrenderKey))
             //        {
             //            GameFiber.Sleep(100);
             //        }
