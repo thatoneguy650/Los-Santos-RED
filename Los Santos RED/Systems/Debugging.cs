@@ -201,10 +201,14 @@ public static class Debugging
         WriteToLog("DebugNumpad7", "--------Police Status-----------");
         foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         {
-            WriteToLog("DebugNumpad7", string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11},Agency: {12}, DistancetoInvestigation: {13}",
-                    Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.IsTasked, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
-        }
+            WriteToLog("DebugNumpad7", string.Format("Cop {0},  Model {1},  Agency {2},      Tasked {3},    TaskType {4}, TaskQueued {5}, RTask {6}        Spawned {7}, CanSee {8}, Distance {9}, Distant IP {10}",
+                    Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.IsTasked, Cop.TaskType, Cop.TaskIsQueued, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasRandomSpawn,Cop.CanSeePlayer,Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
 
+
+            //WriteToLog("DebugNumpad7", string.Format("Cop: {0},Model.Name:{1},isTasked: {2},canSeePlayer: {3},DistanceToPlayer: {4},HurtByPlayer: {5},IssuedHeavyWeapon {6},TaskIsQueued: {7},TaskType: {8},WasRandomSpawn: {9},TaskFiber: {10},CurrentTaskStatus: {11},Agency: {12}, DistancetoInvestigation: {13}",
+            //        Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.IsTasked, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
+        }
+        WriteToLog("DebugNumpad7", string.Format("CurrentPoliceTickRunning: {0}", Tasking.CurrentPoliceTickRunning));
         WriteToLog("DebugNumpad7", string.Format("PoliceInInvestigationMode: {0}", Police.PoliceInInvestigationMode));
         WriteToLog("DebugNumpad7", string.Format("InvestigationPosition: {0}", Police.InvestigationPosition));
         WriteToLog("DebugNumpad7", string.Format("InvestigationDistance: {0}", Police.InvestigationDistance));

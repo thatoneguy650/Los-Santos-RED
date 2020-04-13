@@ -56,7 +56,7 @@ public static class PoliceSpawning
             if (NextPoliceSpawn == null)
             {
                 if(LosSantosRED.PlayerIsWanted)
-                    NextPoliceSpawn = GetPoliceSpawn(250f,750f,true);
+                    NextPoliceSpawn = GetPoliceSpawn(300f,550f,true);
                 else
                     NextPoliceSpawn = GetPoliceSpawn(750f, 1500f, false);
                 return;
@@ -155,11 +155,12 @@ public static class PoliceSpawning
 
         if(LosSantosRED.PlayerIsWanted)
         {
-            DeleteDistance = 900f;//1250f;
-            NonPersistDistance = 850f;//1000f;//was 550f
+            DeleteDistance = 750f;//1250f;
+            NonPersistDistance = 800f;//1000f;//was 550f
         }
         foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.WasRandomSpawn))
         {
+            Vector3 CurrentLocation = Cop.Pedestrian.Position;
             if (Cop.DistanceToPlayer >= DeleteDistance)//2000f
             {
                 Police.DeleteCop(Cop);
@@ -169,9 +170,24 @@ public static class PoliceSpawning
                 Police.MarkNonPersistent(Cop);
                 break;
             }
+            else if(Cop.DistanceToPlayer >= 200f && LosSantosRED.PlayerIsWanted && Cop.Pedestrian.IsDriver())
+            {
+                if(PedScanning.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsDriver() && Cop.Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 50f))
+                {
+                    Debugging.WriteToLog("Deleting Close Cop", string.Format("Cop: {0}", Cop.Pedestrian.Handle));
+                    Police.DeleteCop(Cop);
+                    break;
+                }
+            }
+            //else if (LosSantosRED.PlayerIsWanted && Cop.DistanceToPlayer >= 350f && PedScanning.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsDriver() && x.Pedestrian.DistanceTo2D(CurrentLocation) <= 50f && x.Pedestrian.Handle != Cop.Pedestrian.Handle))
+            //{
+            //    Debugging.WriteToLog("Deleting Close Cop", string.Format("Cop: {0}", Cop.Pedestrian.Handle));
+            //    Police.DeleteCop(Cop);
+            //}
+
             if (Cop.DistanceToPlayer >= 125f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
             {
-                if (Cop.Pedestrian.CurrentVehicle.Health <= 800 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 800)
+                if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 950)
                 {
                     //if (Cop.AssignedAgency == Agencies.LSPD || Cop.AssignedAgency == Agencies.LSSD)//Only repiar naturally spawning cars so they appear to have just been another spawned car
                     //{
@@ -388,7 +404,7 @@ public static class PoliceSpawning
                 Game.SetRelationshipBetweenRelationshipGroups("PLAYER", "COPDOGS", Relationship.Hate);
                 GTACop DoggoCop = new GTACop(Doggo, false, Doggo.Health, ClosestDriver.AssignedAgency);
                 PedScanning.K9Peds.Add(DoggoCop);
-                Tasking.TaskK9(DoggoCop);
+                //Tasking.TaskK9(DoggoCop);
                 Debugging.WriteToLog("CreateK9", String.Format("Created K9 ", Doggo.Handle));
             }
         }

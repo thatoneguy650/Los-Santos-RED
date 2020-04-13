@@ -208,7 +208,7 @@ internal static class Police
         LastWantedCenterBlipSize = LosSantosRED.MySettings.Police.LastWantedCenterSize;
 
         InvestigationPosition = Vector3.Zero;
-        InvestigationDistance = 350f;
+        InvestigationDistance = 800f;//350f;
         PrevInvestigationPosition = Vector3.Zero;
         NearInvestigationDistance = 100f;
         IsRunning = true;
@@ -551,6 +551,10 @@ internal static class Police
             else
                 CurrentPoliceState = PoliceState.DeadlyChase;
         }
+        else if (LosSantosRED.PlayerWantedLevel >= 1 && LosSantosRED.PlayerWantedLevel <= 3)
+        {
+            CurrentPoliceState = PoliceState.UnarmedChase;
+        }
         else if (LosSantosRED.PlayerWantedLevel >= 4)
             CurrentPoliceState = PoliceState.DeadlyChase;
 
@@ -869,10 +873,10 @@ internal static class Police
             foreach (GTACop Cop in PedScanning.CopPeds)
             {
                 Cop.AtWantedCenterDuringSearchMode = false;
-                if (Cop.IsTasked && (Cop.TaskType == Tasking.AssignableTasks.GoToWantedCenter || Cop.TaskType == Tasking.AssignableTasks.SimpleInvestigate || Cop.TaskType == Tasking.AssignableTasks.RandomSpawnIdle))
-                {
-                    Tasking.AddItemToQueue(new CopTask(Cop, Tasking.AssignableTasks.Untask));
-                }
+                //if (Cop.IsTasked && (Cop.TaskType == Tasking.AssignableTasks.GoToWantedCenter || Cop.TaskType == Tasking.AssignableTasks.SimpleInvestigate || Cop.TaskType == Tasking.AssignableTasks.RandomSpawnIdle))
+                //{
+                //    Tasking.AddItemToQueue(new CopTask(Cop, Tasking.AssignableTasks.Untask));
+                //}
             }
             CanReportLastSeen = false;
             if (LosSantosRED.PlayerIsWanted && AnyPoliceSeenPlayerThisWanted && CanPlaySuspectSpotted && LosSantosRED.PlayerInVehicle && !DispatchAudio.IsPlayingAudio && LosSantosRED.PlayerInAutomobile && LosSantosRED.PlayersCurrentTrackedVehicle != null)
@@ -1021,7 +1025,7 @@ internal static class Police
                     Passenger.Delete();
                 }
             }
-            if(Cop.Pedestrian.CurrentVehicle.Exists())
+            if(Cop.Pedestrian.Exists() && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle != null)
                 Cop.Pedestrian.CurrentVehicle.Delete();
         }
         RemoveBlip(Cop.Pedestrian);
