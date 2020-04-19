@@ -445,7 +445,7 @@ public class Crime
             AddDispatchToQueue(DispatchToPlay);
         }
         int CopsToRadio = 0;
-        foreach(GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.RecentlySeenPlayer()).OrderBy(x=> x.DistanceToPlayer).Take(6))
+        foreach(GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.RecentlySeenPlayer()).OrderBy(x=> x.DistanceToPlayer).Take(2))
         {
             if (CopsToRadio == 0)
             {

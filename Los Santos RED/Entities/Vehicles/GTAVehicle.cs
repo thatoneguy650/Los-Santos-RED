@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 public class GTAVehicle
 {
-    private static Random rnd;
 
     public Vehicle VehicleEnt = null;
     public uint GameTimeEntered = 0;
@@ -29,6 +28,7 @@ public class GTAVehicle
     public bool ManuallyRolledDriverWindowDown = false;
     public Vector3 PositionOriginallyEntered = Vector3.Zero;
     public bool HasBeenDescribedByDispatch = false;
+    public Agency.VehicleInformation ExtendedAgencyVehicleInformation;
 
     public bool NeedsToBeReportedStolen
     {
@@ -72,10 +72,7 @@ public class GTAVehicle
                 return false;
         }
     }
-    static GTAVehicle()
-    {
-        rnd = new Random();
-    }
+
     public GTAVehicle(Vehicle _Vehicle,uint _GameTimeEntered,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsStolen, GTALicensePlate _CarPlate)
     {
         VehicleEnt = _Vehicle;
@@ -94,7 +91,7 @@ public class GTAVehicle
         else
             PositionOriginallyEntered = Game.LocalPlayer.Character.Position;
 
-        Debugging.WriteToLog("GTAVehicle", string.Format("Vehicle Created: Handle {0},GTEntered,{1},GTReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WatchLastOwner {6}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, PreviousOwner != null));
+        //Debugging.WriteToLog("GTAVehicle", string.Format("Vehicle Created: Handle {0},GTEntered,{1},GTReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WatchLastOwner {6}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, PreviousOwner != null));
     }
   
 

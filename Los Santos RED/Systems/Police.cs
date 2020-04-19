@@ -140,6 +140,13 @@ internal static class Police
     public static bool IsRunning { get; set; } = true;
     public static Vector3 LastWantedCenterPosition { get; set; }
     public static uint GameTimeCiviliansLastCalledInCrime { get; set; }
+    public static float ActiveDistance
+    {
+        get
+        {
+            return LosSantosRED.PlayerWantedLevel * 500f;
+        }
+    }
 
     public enum PoliceState
     {
@@ -216,6 +223,19 @@ internal static class Police
     public static void Dispose()
     {
         IsRunning = false;
+        SetDispatchService(true);
+        
+    }
+    private static void SetDispatchService(bool ValueToSet)
+    {
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceHelicopter, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceVehicleRequest, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatAutomobile, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatHelicopter, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRiders, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRoadBlock, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitCruising, ValueToSet);
     }
     public static void PoliceGeneralTick()
     {
@@ -228,14 +248,7 @@ internal static class Police
     }
     private static void DispatchTick()
     {
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, false);
-        //NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceHelicopter, false);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceVehicleRequest, false);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatAutomobile, false);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatHelicopter, false);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRiders, false);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRoadBlock, false);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitCruising, false);
+        SetDispatchService(false);
     }
     private static void InvestigationTick()
     {
@@ -1007,6 +1020,8 @@ internal static class Police
     }
     public static void RemoveBlip(Ped MyPed)
     {
+        if (!MyPed.Exists())
+            return;
         Blip MyBlip = MyPed.GetAttachedBlip();
         if (MyBlip.Exists())
             MyBlip.Delete();
@@ -1029,7 +1044,11 @@ internal static class Police
                 Cop.Pedestrian.CurrentVehicle.Delete();
         }
         RemoveBlip(Cop.Pedestrian);
-        Cop.Pedestrian.Delete();
+
+        if (Cop.Pedestrian.Exists())
+        {
+            Cop.Pedestrian.Delete();
+        }
         Cop.WasMarkedNonPersistent = false;
         //LocalWriteToLog("SpawnCop", string.Format("Cop Deleted: Handled {0}", Cop.CopPed.Handle));
     }

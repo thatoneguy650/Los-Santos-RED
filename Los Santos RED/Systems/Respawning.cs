@@ -167,7 +167,7 @@ public static class Respawning
 
         Game.LocalPlayer.Character.Position = Hospital.LocationPosition;
         Game.LocalPlayer.Character.Heading = Hospital.Heading;
-
+        PedScanning.ClearPoliceCompletely();
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
 
@@ -239,6 +239,8 @@ public static class Respawning
         {
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         }
+
+        PedScanning.ClearPoliceCompletely();
 
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);

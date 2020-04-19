@@ -106,9 +106,9 @@ internal static class PoliceSpeech
                 }
                 if(Cop.HasItemsToRadioIn)
                 {
-                    if (!Cop.Pedestrian.IsInAnyVehicle(false) && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting)
+                    if (!Cop.Pedestrian.IsInAnyVehicle(false) && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && Cop.CanRadio)
                     {
-                        Cop.Pedestrian.PlayAmbientSpeech("REQUEST_BACKUP");
+                        Cop.Pedestrian.PlayAmbientSpeech(CautiousChaseSpeech.PickRandom());
                         Cop.GameTimeLastSpoke = Game.GameTime - (uint)rnd.Next(500, 1000);
                         LosSantosRED.RequestAnimationDictionay("random@arrests");
                         string AnimationToPlay = "generic_radio_enter";

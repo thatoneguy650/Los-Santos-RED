@@ -32,38 +32,110 @@ public static class Zones
     {
 
         //Blaine
-        List<ZoneAgency> StandardBlaineAgencies = new List<ZoneAgency>() { new ZoneAgency("BCSO", 0, true, true), new ZoneAgency("DOA", 1, false, true), new ZoneAgency("LSSD", 1, false, false) };
-        List< ZoneAgency > BlaineParkRangerAgencies = new List<ZoneAgency>() { new ZoneAgency("SAPR", 0, true, true), new ZoneAgency("BCSO", 1, false, true), new ZoneAgency("LSSD", 1, false, false) };
-        List<ZoneAgency> BlainePrisonAgencies = new List<ZoneAgency>() { new ZoneAgency("SASPA", 0, true, true), new ZoneAgency("BCSO", 1, false, true), new ZoneAgency("LSSD", 1, false, false) };
+        List<ZoneAgency> StandardBlaineAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("BCSO", 0, 85, 70),
+            new ZoneAgency("DOA", 1, 15, 5),
+            new ZoneAgency("LSSD", 2, 0, 5),
+            new ZoneAgency("LSSD", 3, 0, 5),
+            new ZoneAgency("NOOSE", 4, 0, 15) };
 
-        List<ZoneAgency> StandardCityAgencies = new List<ZoneAgency>() { new ZoneAgency("LSPD", 0, true, true), new ZoneAgency("FIB", 1, false, true), new ZoneAgency("DOA", 1, false, true), new ZoneAgency("LSSD-CH", 2, false, false) };
+        List< ZoneAgency > BlaineParkRangerAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("SAPR", 0, 85, 75),
+            new ZoneAgency("BCSO", 1, 15, 10),
+            new ZoneAgency("NOOSE", 2, 0, 15) };
+
+        List<ZoneAgency> BlainePrisonAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("SASPA",0, 100, 70),
+            new ZoneAgency("BCSO", 1, 0, 15),
+            new ZoneAgency("NOOSE", 2, 0, 15) };
+
+        List<ZoneAgency> StandardCityAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSPD", 0, 85, 70),
+            new ZoneAgency("FIB", 1, 10, 10),
+            new ZoneAgency("DOA", 2, 5, 5),
+            new ZoneAgency("NOOSE", 3, 0, 10),
+            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
+
         List<string> VespucciAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VespucciAreaUnits.FileName, ScannerAudio.attention_all_area_units.VespucciAreaUnits2.FileName };
-        List<ZoneAgency> VespucciAgencies = new List<ZoneAgency>() { new ZoneAgency("VPPD", 0, true, true), new ZoneAgency("LSPD", 1, false, true), new ZoneAgency("FIB", 1, false, true) };
+        List<ZoneAgency> VespucciAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("VPPD", 0, 85, 70),
+            new ZoneAgency("LSPD", 1, 10, 10),
+            new ZoneAgency("FIB", 2, 5, 5),
+            new ZoneAgency("NOOSE", 3, 0, 10),
+            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
 
         List<string> CentralAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.CentralUnits.FileName, ScannerAudio.attention_all_area_units.CentralUnits1.FileName, ScannerAudio.attention_all_area_units.CentralAreaUnits.FileName };
         List<string> EastLosSantosAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.EastLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.EastLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.EastLosSantos2.FileName };
-        List<ZoneAgency> EastLosSantosAgencies = new List<ZoneAgency>() { new ZoneAgency("LSPD-ELS", 0, true, true), new ZoneAgency("LSPD", 1, false, true), new ZoneAgency("FIB", 1, false, true) };
+        List<ZoneAgency> EastLosSantosAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSPD-ELS", 0, 85, 70),
+            new ZoneAgency("LSPD", 1, 10, 10),
+            new ZoneAgency("FIB", 2, 5, 5),
+            new ZoneAgency("NOOSE", 3, 0, 10),
+            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
+
         List<string> VinewoodAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VinewoodAreaUnits.FileName, ScannerAudio.attention_all_area_units.VinewoodUnits2.FileName };
-        List<ZoneAgency> VinewoodAgencies = new List<ZoneAgency>() { new ZoneAgency("LSPD-VW", 0, true, true), new ZoneAgency("FIB", 1, false, true), new ZoneAgency("DOA", 1, false, true), new ZoneAgency("LSSD-VW", 2, false, false) };
-        List<ZoneAgency> PortAgencies = new List<ZoneAgency>() { new ZoneAgency("LSPA", 0, true, true), new ZoneAgency("LSPD", 1, false, false) };
+        List<ZoneAgency> VinewoodAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSPD-VW", 0, 75, 70),
+            new ZoneAgency("LSSD-VW", 1, 10, 10),
+            new ZoneAgency("FIB", 2, 10, 5),
+            new ZoneAgency("NOOSE", 3, 0, 10),
+            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
+
+        List<ZoneAgency> PortAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSPA", 0, 95, 80),
+            new ZoneAgency("LSPD", 1, 5, 5),
+            new ZoneAgency("NOOSE", 2, 0, 10),
+            new ZoneAgency("LSPD-ASD", 3, 0, 5) };
+
         List<string> PortAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.PortOfLosSantosUnits.FileName, ScannerAudio.attention_all_area_units.PortOfLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.PortOfLosSantosUnits2.FileName };
-        List<ZoneAgency> RockfordHillsAgencies = new List<ZoneAgency>() { new ZoneAgency("RHPD", 0, true, true), new ZoneAgency("FIB", 1, false, true), new ZoneAgency("LSPD", 2, false, false) };
+
+        List<ZoneAgency> RockfordHillsAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("RHPD", 0, 85, 70),
+            new ZoneAgency("FIB", 1, 10, 10),
+            new ZoneAgency("LSPD", 2, 5, 5),
+            new ZoneAgency("NOOSE", 3, 0, 10),
+            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
+
         List<string> VinewoodHillsAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VinewoodAreaUnits.FileName, ScannerAudio.attention_all_area_units.VinewoodUnits2.FileName };
-        List<ZoneAgency> VinewoodHillsAgencies = new List<ZoneAgency>() { new ZoneAgency("LSSD-VW", 0, true, true), new ZoneAgency("DOA", 1, false, true) };
+
+        List<ZoneAgency> VinewoodHillsAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSSD-VW", 0, 85, 70),
+            new ZoneAgency("DOA", 1, 15, 15),
+            new ZoneAgency("NOOSE", 2, 0, 10),
+            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
+
         List<string> ChumashsAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.ChumashUnits.FileName, ScannerAudio.attention_all_area_units.ChumashUnits1.FileName, ScannerAudio.attention_all_area_units.ChumashUnits2.FileName };
-        List<ZoneAgency> ChumashAgencies = new List<ZoneAgency>() { new ZoneAgency("LSSD-CH", 0, true, true), new ZoneAgency("DOA", 1, false, true), new ZoneAgency("LSPD-CH", 2, false, true) };
-            
-        List<ZoneAgency> StandardSheriffAgencies = new List<ZoneAgency>() { new ZoneAgency("LSSD", 0, true, true), new ZoneAgency("DOA", 1, false, true) };
+        List<ZoneAgency> ChumashAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSSD-CH", 0, 85, 70),
+            new ZoneAgency("LSPD-CH", 1, 10, 10),
+            new ZoneAgency("DOA", 2, 5, 5),
+            new ZoneAgency("NOOSE", 3, 0, 15) };
+
+        List<ZoneAgency> StandardSheriffAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSSD", 0, 85, 70),
+            new ZoneAgency("DOA", 1, 15, 15),
+            new ZoneAgency("NOOSE", 2, 0, 15) };
+
+        List<ZoneAgency> OceanAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("SACG", 0, 95, 80),
+            new ZoneAgency("LSPD", 1, 5, 5),
+            new ZoneAgency("NOOSE", 2, 0, 15) };
+
+        List<ZoneAgency> AirportAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSIAPD", 0, 95, 80),
+            new ZoneAgency("LSPD", 1, 5, 5),
+            new ZoneAgency("NOOSE", 2, 0, 10),
+            new ZoneAgency("LSPD-ASD", 3, 0, 5) };
 
         ZoneList = new List<Zone>
         {
             //One Off
-            new Zone("OCEANA", "Pacific Ocean", ScannerAudio.areas.TheOcean.FileName, County.PacificOcean) { ZoneAgencies = new List<ZoneAgency>() { new ZoneAgency("SACG", 0, true, false), new ZoneAgency("LSPD", 1, false, false) } },
-            new Zone("AIRP", "Los Santos International Airport", ScannerAudio.areas.LosSantosInternationalAirport.FileName, County.CityOfLosSantos) { IsRestrictedDuringWanted = true, ZoneAgencies = new List<ZoneAgency>() { new ZoneAgency("LSIAPD", 0, true, true), new ZoneAgency("LSPD", 1, false, false) } },
+            new Zone("OCEANA", "Pacific Ocean", ScannerAudio.areas.TheOcean.FileName, County.PacificOcean) { ZoneAgencies = OceanAgencies },
+            new Zone("AIRP", "Los Santos International Airport", ScannerAudio.areas.LosSantosInternationalAirport.FileName, County.CityOfLosSantos) { IsRestrictedDuringWanted = true, ZoneAgencies = OceanAgencies },
 
             //Blaine
             new Zone("ALAMO", "Alamo Sea", ScannerAudio.areas.TheAlamaSea.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("ARMYB", "Fort Zancudo", ScannerAudio.areas.FtZancudo.FileName, County.BlaineCounty) { IsRestrictedDuringWanted = true, ZoneAgencies = new List<ZoneAgency>() { new ZoneAgency("ARMY", 0, true, false), new ZoneAgency("BCSO", 1, false, false), new ZoneAgency("LSSD", 1, false, false) } },
+            new Zone("ARMYB", "Fort Zancudo", ScannerAudio.areas.FtZancudo.FileName, County.BlaineCounty) { IsRestrictedDuringWanted = true, ZoneAgencies = AirportAgencies },
             new Zone("BRADP", "Braddock Pass", ScannerAudio.areas.BraddockPass.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("BRADT", "Braddock Tunnel", ScannerAudio.areas.TheBraddockTunnel.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("CALAFB", "Calafia Bridge", "", County.BlaineCounty) { ZoneAgencies = BlaineParkRangerAgencies },
@@ -217,6 +289,25 @@ public static class Zones
 
         return MyZone.TextName + ", " + CountyName;
     }
+    //public ZoneAgency GetRandomVehicle(bool IsMotorcycle)
+    //{
+    //    if (Vehicles == null || !Vehicles.Any())
+    //        return null;
+
+    //    List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle && LosSantosRED.PlayerWantedLevel >= x.MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= x.MaxWantedLevelSpawn).ToList();
+    //    int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+    //    int RandomPick = LosSantosRED.MyRand.Next(0, Total);
+    //    foreach (VehicleInformation Vehicle in ToPickFrom)
+    //    {
+    //        int SpawnChance = Vehicle.CurrentSpawnChance;
+    //        if (RandomPick < SpawnChance)
+    //        {
+    //            return Vehicle;
+    //        }
+    //        RandomPick -= SpawnChance;
+    //    }
+    //    return null;
+    //}
 }
 [Serializable()]
 public class Zone
@@ -257,6 +348,25 @@ public class Zone
     public string ScannerValue { get; set; }
     public List<ZoneAgency> ZoneAgencies { get; set; }
     public bool IsRestrictedDuringWanted { get; set; } = false;
+    public Agency GetRandomAgency()
+    {
+        if (ZoneAgencies == null || !ZoneAgencies.Any())
+            return null;
+
+        List<ZoneAgency> ToPickFrom = ZoneAgencies.Where(x => x.CanCurrentlySpawn).ToList();
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+        int RandomPick = LosSantosRED.MyRand.Next(0, Total);
+        foreach (ZoneAgency ZA in ToPickFrom)
+        {
+            int SpawnChance = ZA.CurrentSpawnChance;
+            if (RandomPick < SpawnChance)
+            {
+                return ZA.AssociatedAgency();
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
+    }
 
     public Agency MainZoneAgency
     {
@@ -268,12 +378,12 @@ public class Zone
                 return null;
         }
     }
-    public ZoneAgency MainZone
+    public List<ZoneAgency> SecondaryAgencies
     {
         get
         {
             if (HasAgencies)
-                return ZoneAgencies.OrderBy(x => x.Priority).FirstOrDefault();
+                return ZoneAgencies.Where(x => x.AssociatedAgency() != MainZoneAgency).ToList();
             else
                 return null;
         }
@@ -292,7 +402,10 @@ public class Zone
     {
         get
         {
-            if (ZoneAgencies != null && ZoneAgencies.Any(x => !x.IsMain))
+            if (ZoneAgencies == null)
+                return false;
+
+            if (ZoneAgencies.Any(x => x.AssociatedAgency() != MainZoneAgency))
                 return true;
             else
                 return false;
@@ -301,21 +414,47 @@ public class Zone
 }
 public class ZoneAgency
 {
-    //public Agency AssociatedAgency;
     public string AssociatedAgencyName;
     public int Priority;
-    public bool IsMain = false;
-    public bool CanRandomSpawn = false;
+    public int AmbientSpawnChance = 0;
+    public int WantedSpawnChance = 0;
     public ZoneAgency()
     {
 
     }
-    public ZoneAgency(string associatedAgency, int priority, bool isMain, bool canRandomSpawn)
+    public ZoneAgency(string associatedAgencyName, int priority, int ambientSpawnChance, int wantedSpawnChance)
     {
-        AssociatedAgencyName = associatedAgency;
+        AssociatedAgencyName = associatedAgencyName;
         Priority = priority;
-        IsMain = isMain;
-        CanRandomSpawn = canRandomSpawn;
+        AmbientSpawnChance = ambientSpawnChance;
+        WantedSpawnChance = wantedSpawnChance;
+    }
+    public bool CanCurrentlySpawn
+    {
+        get
+        {
+            if (LosSantosRED.PlayerIsWanted)
+            {
+                if (AssociatedAgency().CanSpawn)
+                {
+                    return WantedSpawnChance > 0;
+                }
+                else
+                    return false;
+            }
+            else
+                return AmbientSpawnChance > 0;
+        }
+    }
+    public int CurrentSpawnChance
+    {
+        get
+        {
+            if (LosSantosRED.PlayerIsWanted)
+                return WantedSpawnChance;
+            else
+                return AmbientSpawnChance;
+        }
     }
     public Agency AssociatedAgency()
     {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public class GTACop : GTAPed
 {
-    public bool WasRandomSpawn { get; set; } = false;
+    public bool WasModSpawned { get; set; } = false;
     public bool WasRandomSpawnDriver { get; set; } = false;
     public bool WasInvestigationSpawn { get; set; } = false;
     public bool IsBikeCop { get; set; } = false;
@@ -28,9 +28,16 @@ public class GTACop : GTAPed
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public GTAWeapon.WeaponVariation PistolVariation { get; set; }
     public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
-    public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", Color.White, Agency.Classification.Other, true, false, null, null, "");
+    public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, true, false, null, null, "");
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public bool AtWantedCenterDuringChase { get; set; } = false;
+    public ChaseStatus CurrentChaseStatus { get; set; } = ChaseStatus.Idle;
+    public enum ChaseStatus
+    {
+        Idle = 0,
+        Investigation = 1,
+        Active = 2,
+    }
     public void SetAccuracyAndSightRange()
     {
         Pedestrian.VisionRange = 55f;
@@ -57,6 +64,18 @@ public class GTACop : GTAPed
             if (GameTimeLastSpoke == 0)
                 return true;
             else if (Game.GameTime - GameTimeLastSpoke >= 15000)
+                return true;
+            else
+                return false;
+        }
+    }
+    public bool CanRadio
+    {
+        get
+        {
+            if (GameTimeLastRadioed == 0)
+                return true;
+            else if (Game.GameTime - GameTimeLastRadioed >= 15000)
                 return true;
             else
                 return false;

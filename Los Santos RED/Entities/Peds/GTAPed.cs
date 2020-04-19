@@ -21,6 +21,7 @@ public class GTAPed
     public bool KilledByPlayer { get; set; } = false;
     public uint GameTimeLastDistanceCheck { get; set; }
     public uint GameTimeLastLOSCheck { get; set; }
+    public uint GameTimeSpawned { get; set; }
     public bool IsInVehicle { get; set; } = false;
     public bool IsInHelicopter { get; set; } = false;
     public bool IsOnBike { get; set; } = false;
@@ -67,6 +68,18 @@ public class GTAPed
             return true;
         else
             return false;
+    }
+    public bool EverSeenPlayer
+    {
+        get
+        {
+            if (CanSeePlayer)
+                return true;
+            else if (GameTimeLastSeenPlayer > 0)
+                return true;
+            else
+                return false;
+        }
     }
     public bool SeenPlayerSince(int _Duration)
     {

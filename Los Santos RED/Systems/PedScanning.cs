@@ -24,7 +24,7 @@ public static class PedScanning
     {
         get
         {
-            return string.Join(" ", CopPeds.Where(x => (x.SeenPlayerSince(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => (x.IsInHelicopter ? "~b~LSPD-ASD~s~" : x.AssignedAgency.ColoredInitials)).Distinct().ToArray());
+            return string.Join(" ", CopPeds.Where(x => (x.SeenPlayerSince(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => x.AssignedAgency.ColoredInitials).Distinct().ToArray());
         }
     }
     public static void Initialize()
@@ -129,7 +129,7 @@ public static class PedScanning
     }
     public static void ScanforPoliceVehicles()
     {
-        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderGroundVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
+        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
         foreach (Vehicle Veh in Vehicles.Where(s => s.Exists()))
         {
             if (Veh.IsPoliceVehicle)
