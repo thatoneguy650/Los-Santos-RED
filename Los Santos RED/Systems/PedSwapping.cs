@@ -24,7 +24,7 @@ public static class PedSwapping
     private static List<TakenOverPed> TakenOverPeds;
     private static Model OriginalModel;
     private static string LastModelHash;
-    private static PedVariation myPedVariation;
+    private static PedVariation CurrentPedVariation;
     private static bool PedOriginallyHadHelmet;
     private static uint GameTimeLastTakenOver;
 
@@ -42,7 +42,7 @@ public static class PedSwapping
         GameTimeLastTakenOver = Game.GameTime;
         PedNames.Initialize();
         CurrentPlayerModel = Game.LocalPlayer.Character.Model.Name;
-        CopyPedComponentVariation(Game.LocalPlayer.Character);
+        CurrentPedVariation = LosSantosRED.GetPedVariation(Game.LocalPlayer.Character);
         NamePed();
     }
     public static void NamePed()
@@ -162,7 +162,7 @@ public static class PedSwapping
     }
     private static void StoreTargetPedData(Ped TargetPed)
     {
-        CopyPedComponentVariation(TargetPed);
+        CurrentPedVariation = LosSantosRED.GetPedVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
         ClockSystem.StoreTime();
 
@@ -190,13 +190,13 @@ public static class PedSwapping
                 TargetPedAlreadyTakenOver = true;
                 ChangeModel(OriginalModel.Name);
                 if (!Game.LocalPlayer.Character.IsMainCharacter())
-                    ReplacePedComponentVariation(Game.LocalPlayer.Character);
+                    LosSantosRED.ReplacePedComponentVariation(Game.LocalPlayer.Character, CurrentPedVariation);
             }
         }
 
         OriginalModel = TargetPed.Model;
 
-        AddPedToTakenOverPeds(new TakenOverPed(TargetPed, TargetPed.Handle, GetPedVariation(TargetPed), TargetPed.Model, Game.GameTime));
+        AddPedToTakenOverPeds(new TakenOverPed(TargetPed, TargetPed.Handle, LosSantosRED.GetPedVariation(TargetPed), TargetPed.Model, Game.GameTime));
 
         if (!TargetPedAlreadyTakenOver)
             LastModelHash = TargetPed.Model.Name;
@@ -234,7 +234,7 @@ public static class PedSwapping
         }
 
         if (!Game.LocalPlayer.Character.IsMainCharacter())
-            ReplacePedComponentVariation(Game.LocalPlayer.Character);
+            LosSantosRED.ReplacePedComponentVariation(Game.LocalPlayer.Character,CurrentPedVariation);
 
         if (TargetPedInVehicle)
         {
@@ -324,81 +324,6 @@ public static class PedSwapping
             Debugging.WriteToLog("AddPedToTakenOverPeds", string.Format("Ped already in list {0} ", MyPed.Pedestrian.Handle));
         }
     }
-    private static void CopyPedComponentVariation(Ped myPed)
-    {
-        try
-        {
-            myPedVariation = new PedVariation
-            {
-                MyPedComponents = new List<PedComponent>(),
-                MyPedProps = new List<PropComponent>()
-            };
-            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
-            {
-                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
-            }
-            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
-            {
-                myPedVariation.MyPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
-            }
-            NativeFunction.CallByName<int>("CLEAR_ALL_PED_PROPS", myPed);
-            Rage.Object[] MyObjects = World.GetAllObjects();
-            foreach(Rage.Object What in MyObjects)
-            {
-                if (What.Exists() && What.DistanceTo2D(Game.LocalPlayer.Character) <= 0.25f)
-                {
-                    What.Delete();
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
-        }
-    }
-    private static PedVariation GetPedVariation(Ped myPed)
-    {
-        try
-        {
-            myPedVariation = new PedVariation
-            {
-                MyPedComponents = new List<PedComponent>(),
-                MyPedProps = new List<PropComponent>()
-            };
-            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
-            {
-                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
-            }
-            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
-            {
-                myPedVariation.MyPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
-            }
-            return myPedVariation;
-        }
-        catch (Exception e)
-        {
-            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
-            return null;
-        }
-    }
-    private static void ReplacePedComponentVariation(Ped myPed)
-    {
-        try
-        {
-            foreach (PedComponent Component in myPedVariation.MyPedComponents)
-            {
-                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", myPed, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
-            }
-            foreach (PropComponent Prop in myPedVariation.MyPedProps)
-            {
-                NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", myPed, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
-            }
-        }
-        catch (Exception e)
-        {
-            Debugging.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
-        }
-    }
     private static void SetPlayerOffset()
     {
         const int WORLD_OFFSET = 8;
@@ -474,7 +399,7 @@ public static class PedSwapping
         {
             if (PedOriginallyHadHelmet)
             {
-                PropComponent MyPropComponent = myPedVariation.MyPedProps.Where(x => x.PropID == 0).FirstOrDefault();
+                PropComponent MyPropComponent = CurrentPedVariation.MyPedProps.Where(x => x.PropID == 0).FirstOrDefault();
                 if (MyPropComponent == null)
                     return;
 

@@ -44,6 +44,7 @@ internal static class Menus
     private static UIMenuItem menuActionSmoking;
    // private static UIMenuCheckboxItem menuRadioOff;
     private static UIMenuListItem menuAutoSetRadioStation;
+    private static UIMenuItem menuDebugResetMod;
     private static UIMenuItem ReloadSettings;
 
     private static MenuPool menuPool;
@@ -194,6 +195,9 @@ internal static class Menus
         //menuRadioOff = new UIMenuCheckboxItem("Radio Enabled", LosSantosRED.MySettings.RadioAlwaysOff, "Will Auto Turn off Radio");
         menuAutoSetRadioStation = new UIMenuListItem("Auto-Set Station", "Will auto set the station any time the radio is on", strRadioStations);
 
+
+        menuDebugResetMod = new UIMenuItem("Reset Mod", "Reloads Mod and reads from the XML");
+
         debugMenu.AddItem(menuDebugResetCharacter);
         debugMenu.AddItem(menuDebugKillPlayer);
         debugMenu.AddItem(menuDebugRandomWeapon);
@@ -204,6 +208,7 @@ internal static class Menus
         //debugMenu.AddItem(menuRadioOff);
         debugMenu.AddItem(menuAutoSetRadioStation);
         debugMenu.AddItem(menuDebugScreenEffect);
+        debugMenu.AddItem(menuDebugResetMod);
 
 
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
@@ -669,6 +674,11 @@ internal static class Menus
         if (selectedItem == menuDebugGiveMoney)
         {
             Game.LocalPlayer.Character.GiveCash(5000);
+        }
+        if (selectedItem == menuDebugResetMod)
+        {
+            ScriptController.Dispose();
+            ScriptController.Initialize();
         }
         if (selectedItem == menuDebugHealthAndArmor)
         {

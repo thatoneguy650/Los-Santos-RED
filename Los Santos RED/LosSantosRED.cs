@@ -822,6 +822,83 @@ public static class LosSantosRED
         Money.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.12f, 0.03f, -0.01f), new Rotator(0f, -45f, 90f));
         return Money;
     }
+    //private static PedVariation CopyPedComponentVariation(Ped myPed)
+    //{
+    //    try
+    //    {
+    //        PedVariation myPedVariation = new PedVariation
+    //        {
+    //            MyPedComponents = new List<PedComponent>(),
+    //            MyPedProps = new List<PropComponent>()
+    //        };
+    //        for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
+    //        {
+    //            myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
+    //        }
+    //        for (int PropNumber = 0; PropNumber < 8; PropNumber++)
+    //        {
+    //            myPedVariation.MyPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
+    //        }
+    //        NativeFunction.CallByName<int>("CLEAR_ALL_PED_PROPS", myPed);
+    //        Rage.Object[] MyObjects = World.GetAllObjects();
+    //        foreach (Rage.Object What in MyObjects)
+    //        {
+    //            if (What.Exists() && What.DistanceTo2D(Game.LocalPlayer.Character) <= 0.25f)
+    //            {
+    //                What.Delete();
+    //            }
+    //        }
+
+    //        return myPedVariation;
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+    //    }
+    //}
+    public static PedVariation GetPedVariation(Ped myPed)
+    {
+        try
+        {
+            PedVariation myPedVariation = new PedVariation
+            {
+                MyPedComponents = new List<PedComponent>(),
+                MyPedProps = new List<PropComponent>()
+            };
+            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
+            {
+                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
+            }
+            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
+            {
+                myPedVariation.MyPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
+            }
+            return myPedVariation;
+        }
+        catch (Exception e)
+        {
+            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            return null;
+        }
+    }
+    public static void ReplacePedComponentVariation(Ped myPed,PedVariation myPedVariation)
+    {
+        try
+        {
+            foreach (PedComponent Component in myPedVariation.MyPedComponents)
+            {
+                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", myPed, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
+            }
+            foreach (PropComponent Prop in myPedVariation.MyPedProps)
+            {
+                NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", myPed, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
+            }
+        }
+        catch (Exception e)
+        {
+            Debugging.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
+        }
+    }
     public static void LoadInteriors()
     {
         //Pillbox hill hospital?

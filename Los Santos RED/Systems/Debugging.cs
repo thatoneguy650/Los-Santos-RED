@@ -172,11 +172,19 @@ public static class Debugging
 
     private static void DebugNumpad4()
     {
-        Agencies.ReadConfig();
+        Agency ToChoose = Agencies.AgenciesList.Where(x => x.Initials == "FIB").FirstOrDefault();
+        WriteToLog("DebugNumpad5", ToChoose.FullName);
+        Ped MyCop = PoliceSpawning.SpawnCopPed(ToChoose, Game.LocalPlayer.Character.GetOffsetPositionFront(5f), false, new List<string>() { "s_m_y_swat_01" });
+        if (MyCop.Exists())
+            WriteToLog("DebugNumpad5", "Spawned");
     }
     private static void DebugNumpad5()
     {
-
+        Agency ToChoose = Agencies.AgenciesList.Where(x => x.Initials == "NOOSE").FirstOrDefault();
+        WriteToLog("DebugNumpad5", ToChoose.FullName);
+        Ped MyCop = PoliceSpawning.SpawnCopPed(ToChoose, Game.LocalPlayer.Character.GetOffsetPositionFront(5f), false, null);
+        if(MyCop.Exists())
+            WriteToLog("DebugNumpad5", "Spawned");
 
     }
     private static void DebugNumpad6()
@@ -194,7 +202,7 @@ public static class Debugging
             WriteToLog("DebugNumpad7", string.Format("Agency: {0} CanSpawn: {1} Min: {2} Max: {3}", MyAgency.Initials, MyAgency.CanSpawn, MyAgency.MinWantedLevelSpawn, MyAgency.MaxWantedLevelSpawn));
         }
     }
-    private static void DebugNumpad8()
+    public static void DebugNumpad8()
     {
         try
         {

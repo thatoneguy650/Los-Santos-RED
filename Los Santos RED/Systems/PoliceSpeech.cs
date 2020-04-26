@@ -52,19 +52,19 @@ internal static class PoliceSpeech
                         if (LosSantosRED.IsBusted && Cop.DistanceToPlayer <= 20f)
                         {
                             Cop.Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
-                            Debugging.WriteToLog("CheckSpeech", "ARREST_PLAYER");
+                            //Debugging.WriteToLog("CheckSpeech", "ARREST_PLAYER");
                         }
                         else if (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase)
                         {
                             string Speech = UnarmedChaseSpeech.PickRandom();
                             Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                            Debugging.WriteToLog("CheckSpeech", Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
                         }
                         else if (Police.CurrentPoliceState == Police.PoliceState.CautiousChase)
                         {
                             string Speech = CautiousChaseSpeech.PickRandom();
                             Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                            Debugging.WriteToLog("CheckSpeech", Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
                         }
                         else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
                         {
@@ -76,20 +76,20 @@ internal static class PoliceSpeech
                         {
                             string Speech = AmbientSpeech.PickRandom();
                             Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                            Debugging.WriteToLog("CheckSpeech", Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
                         }
                         else if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
                         {
                             string Speech = DeadlyChaseSpeech.PickRandom();
                             Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                            Debugging.WriteToLog("CheckSpeech", Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
                         }
                         else //Normal State
                         {
                             if (Cop.DistanceToPlayer <= 4f)
                             {
                                 Cop.Pedestrian.PlayAmbientSpeech("CRIMINAL_WARNING");
-                                Debugging.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
+                                //Debugging.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
                             }
                         }
                     }
@@ -99,7 +99,7 @@ internal static class PoliceSpeech
                         {
                             string Speech = PlayerDeadSpeech.PickRandom();
                             Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                            Debugging.WriteToLog("CheckSpeech", Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
                         }
                     }
                     Cop.GameTimeLastSpoke = Game.GameTime;
@@ -116,7 +116,7 @@ internal static class PoliceSpeech
                         if (CurrentGun != null && CurrentGun.IsOneHanded)
                             AnimationToPlay = "radio_enter";
                         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Cop.Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
-                        Debugging.WriteToLog("CopSpeech Radio", string.Format("Cop: {0}, has Radioed In", Cop.Pedestrian.Handle));
+                        //Debugging.WriteToLog("CopSpeech Radio", string.Format("Cop: {0}, has Radioed In", Cop.Pedestrian.Handle));
                     }
                     Cop.HasItemsToRadioIn = false;
                     Cop.GameTimeLastRadioed = Game.GameTime;

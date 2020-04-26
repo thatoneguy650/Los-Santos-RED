@@ -989,6 +989,7 @@ public class GTAWeapon
         Sniper = 6,
         Heavy = 7,
         Unknown = 8,
+        Vehicle = 9,
     }
     public GTAWeapon()
     {

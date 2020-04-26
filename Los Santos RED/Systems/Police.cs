@@ -217,7 +217,7 @@ internal static class Police
         InvestigationPosition = Vector3.Zero;
         InvestigationDistance = 800f;//350f;
         PrevInvestigationPosition = Vector3.Zero;
-        NearInvestigationDistance = 100f;
+        NearInvestigationDistance = 250f;
         IsRunning = true;
     }
     public static void Dispose()
@@ -511,9 +511,18 @@ internal static class Police
     public static void IssueCopPistol(GTACop Cop)
     {
         GTAWeapon Pistol;
-        Debugging.WriteToLog("          Trying to issue pistol for", Cop.AssignedAgency.Initials);
-        Agency.IssuedWeapon PistolToPick = Cop.AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
-        Debugging.WriteToLog("Trying to spawn", PistolToPick.ModelName);
+
+        if (Cop.AssignedAgency == null)
+        {
+            Debugging.WriteToLog("IssueCopPistol", "No Agency");
+            Debugging.WriteToLog("IssueCopPistol", Cop.Pedestrian.Model.Name);
+            Debugging.DebugNumpad8();
+        }
+
+        Agency.IssuedWeapon PistolToPick = new Agency.IssuedWeapon("weapon_pistol", true, null);
+            
+        if(Cop.AssignedAgency != null)
+            PistolToPick = Cop.AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
         Pistol = GTAWeapons.WeaponsList.Where(x => x.Name.ToLower() == PistolToPick.ModelName.ToLower() && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
         Cop.IssuedPistol = Pistol;
         Cop.Pedestrian.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
@@ -527,20 +536,11 @@ internal static class Police
     public static void IssueCopHeavyWeapon(GTACop Cop)
     {
         GTAWeapon IssuedHeavy;
-        //int Num = LosSantosRED.MyRand.Next(1, 5);
-        //if (Num == 1)
-        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
-        //else if (Num == 2)
-        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Shotgun).PickRandom();
-        //else if (Num == 3)
-        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.SMG).PickRandom();
-        //else if (Num == 4)
-        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
-        //else
-        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
 
+        Agency.IssuedWeapon HeavyToPick = new Agency.IssuedWeapon("weapon_shotgun", true, null);
+        if(Cop.AssignedAgency != null)
+            HeavyToPick = Cop.AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
 
-        Agency.IssuedWeapon HeavyToPick = Cop.AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
         IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.Name.ToLower() == HeavyToPick.ModelName.ToLower() && x.Category != GTAWeapon.WeaponCategory.Pistol).PickRandom();
         Cop.IssuedHeavyWeapon = IssuedHeavy;
         Cop.Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
@@ -676,7 +676,7 @@ internal static class Police
             if (!DispatchAudio.RecentAnnouncedDispatch && AnyPoliceSeenPlayerThisWanted && CanPlaySuspectSpotted && AnyPoliceCanSeePlayer && LosSantosRED.PlayerInVehicle && !DispatchAudio.IsPlayingAudio && LosSantosRED.PlayerInAutomobile && LosSantosRED.PlayersCurrentTrackedVehicle != null)
             {
 
-                Crime ToReportInstead = CurrentCrimes.GetListOfCrimes().Where(x => x.RecentlyCommittedCrime(15000) && !x.RecentlyReportedCrime(60000)).OrderBy(x => x.DispatchToPlay.Priority).FirstOrDefault();
+                Crime ToReportInstead = CurrentCrimes.GetListOfCrimes().Where(x => x.RecentlyCommittedCrime(15000) && !x.RecentlyReportedCrime(60000) && x.CanBeReportedMultipleTimes).OrderBy(x => x.DispatchToPlay.Priority).FirstOrDefault();
                 if (ToReportInstead != null)
                 {
                     Debugging.WriteToLog("Reporting Crime Instead of Spotted", ToReportInstead.Name);

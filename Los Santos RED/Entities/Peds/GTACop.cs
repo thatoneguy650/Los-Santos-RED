@@ -88,6 +88,16 @@ public class GTACop : GTAPed
                 return false;
         }
     }
+    public bool CanBeDeleted
+    {
+        get
+        {
+            if (WasModSpawned && HasBeenSpawnedFor >= 20000)
+                return true;
+            else
+                return false;
+        }
+    }
     public GTACop(Ped _Pedestrian, bool _canSeePlayer, int _Health, Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
     {
         AssignedAgency = _Agency;

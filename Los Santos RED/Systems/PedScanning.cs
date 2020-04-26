@@ -20,6 +20,13 @@ public static class PedScanning
     public static List<Vehicle> PoliceVehicles { get; set; }
     public static List<GTAPed> Civilians { get; private set; }
     public static List<GTAPed> PlayerKilledCivilians { get; private set; }
+    public static int TotalSpawnedCops
+    {
+        get
+        {
+            return CopPeds.Where(x => x.WasModSpawned).Count();
+        }
+    }
     public static string AgenciesChasingPlayer
     {
         get

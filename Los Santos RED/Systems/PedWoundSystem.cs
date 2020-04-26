@@ -197,7 +197,17 @@ public static class PedWoundSystem
                 return MyWeapon;
             }
         }
-        return new GTAWeapon("Unknown", 0, GTAWeapon.WeaponCategory.Unknown, 0, 0, false, false, false, false);
+
+        if(NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 1))
+            return new GTAWeapon("Generic Melee", 0, GTAWeapon.WeaponCategory.Melee, 0, 0, false, false, false, false);
+
+        if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 2))
+            return new GTAWeapon("Generic Weapon", 0, GTAWeapon.WeaponCategory.Melee, 0, 0, false, false, false, false);
+
+        if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian))
+            return new GTAWeapon("Vehicle Injury", 0, GTAWeapon.WeaponCategory.Vehicle, 0, 0, false, false, false, false);
+        else
+            return new GTAWeapon("Unknown", 0, GTAWeapon.WeaponCategory.Unknown, 0, 0, false, false, false, false);
     }
     private static BodyLocation GetDamageLocation(Ped Pedestrian)
     {
@@ -268,7 +278,9 @@ public static class PedWoundSystem
         }
         private void ApplyDamage()
         {
-            if(!NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED", Pedestrian) && !NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian))
+            bool HurtByPed = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED", Pedestrian);
+            bool HurtByVehicle = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian);
+            if (!HurtByPed && !HurtByVehicle)
             {
                 return;
             }
@@ -278,6 +290,7 @@ public static class PedWoundSystem
             int HealthDamage = Health - CurrentHealth;
             int ArmorDamage = Armor - CurrentArmor;
             BodyLocation DamagedLocation = GetDamageLocation(Pedestrian);
+
             GTAWeapon DamagingWeapon = GetWeaponLastDamagedBy(Pedestrian);
 
             bool CanBeFatal = false;
@@ -288,19 +301,26 @@ public static class PedWoundSystem
             if (DamagedLocation == BodyLocation.UpperTorso)
                 ArmorWillProtect = true;
 
-            InjuryType HealthInjury = RandomType(CanBeFatal);
-            InjuryType ArmorInjury = RandomType(false);
+            InjuryType HealthInjury = InjuryType.Normal; //RandomType(CanBeFatal);
+            InjuryType ArmorInjury = InjuryType.Normal; //RandomType(false);
+
+            if (DamagingWeapon.Category != GTAWeapon.WeaponCategory.Vehicle)
+            {
+                HealthInjury = RandomType(CanBeFatal);
+                ArmorInjury = RandomType(false);
+            }
+            
 
             float HealthDamageModifier = 1.0f;
 
             if (HealthInjury == InjuryType.Fatal)
                 HealthDamageModifier = 10.0f;
             else if (HealthInjury == InjuryType.Normal)
-                HealthDamageModifier = 3.0f;//1.0f;
+                HealthDamageModifier = 5.0f;//3.0f;//1.0f;
             else if (HealthInjury == InjuryType.Graze)
                 HealthDamageModifier = 0.75f;//0.25f;
             else if (HealthInjury == InjuryType.Critical)
-                HealthDamageModifier = 6.0f;//2.0f;
+                HealthDamageModifier = 8.0f;// 6.0f;//2.0f;
 
             if (Pedestrian.Health == 0)//already dead, we are intercepting
                 HealthInjury = InjuryType.Fatal;

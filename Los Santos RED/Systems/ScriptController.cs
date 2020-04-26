@@ -77,8 +77,8 @@ public static class ScriptController
         DispatchAudioTick = new TickTask(500, "DispatchAudioTick", DispatchAudio.PlayDispatchQueue, TickTask.Type.Optional);
         //WeatherCheckingTick = new TickTask(5000, "WeatherCheckingTick", WeatherReporting.CheckWeather, TickTask.Type.Optional);
         PoliceSpeechTick = new TickTask(500, "PoliceSpeechTick", PoliceSpeech.CheckSpeech, TickTask.Type.Optional);
-        RandomCopSpawningTick = new TickTask(500, "RandomCopSpawningTick", PoliceSpawning.RandomCopTick, TickTask.Type.Optional);//was 500//was 3000
-        CleanupCopTick = new TickTask(500, "CleanupCopTick", PoliceSpawning.RemoveFarAwayRandomlySpawnedCops, TickTask.Type.Optional);
+        RandomCopSpawningTick = new TickTask(500, "RandomCopSpawningTick", PoliceSpawning.PoliceSpawningTick, TickTask.Type.Optional);//was 500//was 3000
+        CleanupCopTick = new TickTask(500, "CleanupCopTick", PoliceSpawning.RemoveCops, TickTask.Type.Optional);
 
         GameStopWatch = new Stopwatch();
 
@@ -90,6 +90,7 @@ public static class ScriptController
         };
 
         MainLoop();
+        LosSantosRED.Initialize();
     }
     public static void MainLoop()
     {     

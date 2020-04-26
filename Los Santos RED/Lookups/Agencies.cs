@@ -40,6 +40,7 @@ public static class Agencies
     }
     private static void DefaultConfig()
     {
+
         //Peds
         List<Agency.ModelInformation> StandardCops = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_y_cop_01", true,85,85),
@@ -76,10 +77,11 @@ public static class Agencies
             new Agency.ModelInformation("s_m_m_pilot_02", true,0,0),
             new Agency.ModelInformation("s_m_y_pilot_01", true,0,0) };
         List<Agency.ModelInformation> FIBPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_m_fibsec_01", true,55,85),
-            new Agency.ModelInformation("s_m_m_fiboffice_01", true,15,5),
-            new Agency.ModelInformation("s_m_m_fiboffice_02", true,15,5),
-            new Agency.ModelInformation("u_m_m_fibarchitect", true,15,5) };
+            new Agency.ModelInformation("s_m_m_fibsec_01", true,55,70),
+            new Agency.ModelInformation("s_m_m_fiboffice_01", true,15,0),
+            new Agency.ModelInformation("s_m_m_fiboffice_02", true,15,0),
+            new Agency.ModelInformation("u_m_m_fibarchitect", true,10,0),
+            new Agency.ModelInformation("s_m_y_swat_01", true, 5,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> PrisonPeds = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_m_prisguard_01", true,100,100) };
         List<Agency.ModelInformation> SecurityPeds = new List<Agency.ModelInformation>() {
@@ -87,7 +89,7 @@ public static class Agencies
         List<Agency.ModelInformation> CoastGuardPeds = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_y_uscg_01", true,100,100) };
         List<Agency.ModelInformation> NOOSEPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_swat_01", true, 0,100) };
+            new Agency.ModelInformation("s_m_y_swat_01", true, 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
 
         //Vehicles
         List<Agency.VehicleInformation> UnmarkedVehicles = new List<Agency.VehicleInformation>() {
@@ -213,8 +215,7 @@ public static class Agencies
         {
             new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation()),
             new Agency.IssuedWeapon("weapon_revolver", true, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation(0,new List<string> { "Flashlight" })),
             new Agency.IssuedWeapon("weapon_pumpshotgun", false, new Agency.WeaponVariation()),
             new Agency.IssuedWeapon("weapon_pumpshotgun", false, new Agency.WeaponVariation(0,new List<string> { "Flashlight" })),
 
@@ -285,7 +286,7 @@ public static class Agencies
             {
                 if (MyAgency.AssociatedAgency != null && MyAgency.AssociatedAgency.CopModels != null && MyAgency.AssociatedAgency.CopModels.Any())
                 {
-                    if (MyAgency.AssociatedAgency.CopModels.Any(x => x.ModelName == Cop.Model.Name.ToLower()))
+                    if (MyAgency.AssociatedAgency.CopModels.Any(x => x.ModelName.ToLower() == Cop.Model.Name.ToLower()))
                     {
                         ZoneAgency = MyAgency.AssociatedAgency;
                         break;
@@ -293,6 +294,9 @@ public static class Agencies
                 }
             }
         }
+
+        if (ZoneAgency == null)
+            ZoneAgency = AgenciesList.Where(x => x.CopModels.Any(y => y.ModelName.ToLower() == Cop.Model.Name.ToLower())).FirstOrDefault();
         return ZoneAgency;
     }
     public static void ChangeLivery(Vehicle CopCar, Agency AssignedAgency)
@@ -307,7 +311,7 @@ public static class Agencies
             ChangeToDefaultLivery(CopCar);
             return;
         }
-        Debugging.WriteToLog("ChangeLivery", string.Format("Agency {0}, {1}, {2}", AssignedAgency.Initials, CopCar.Model.Name,string.Join(",", MyVehicle.Liveries.Select(x => x.ToString()))));
+        //Debugging.WriteToLog("ChangeLivery", string.Format("Agency {0}, {1}, {2}", AssignedAgency.Initials, CopCar.Model.Name,string.Join(",", MyVehicle.Liveries.Select(x => x.ToString()))));
         int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
         NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
         
@@ -422,6 +426,7 @@ public class Agency
     public uint MinWantedLevelSpawn = 0;
     public uint MaxWantedLevelSpawn = 5;
     public List<IssuedWeapon> IssuedWeapons = new List<IssuedWeapon>();
+    public bool IsDefault = false;
     public bool CanSpawn
     {
         get
@@ -487,11 +492,9 @@ public class Agency
         if (Vehicles == null || !Vehicles.Any())
             return null;
 
-        List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle && x.IsHelicopter == IsHelicopter && x.CanCurrentlySpawn).ToList();
-
-        
+        List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle && x.IsHelicopter == IsHelicopter && x.CanCurrentlySpawn).ToList();     
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-        Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
+       // Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
         int RandomPick = LosSantosRED.MyRand.Next(0, Total);
         foreach (VehicleInformation Vehicle in ToPickFrom)
         {
@@ -507,7 +510,7 @@ public class Agency
 
     public ModelInformation GetRandomPed(List<string> RequiredModels)
     {
-        if (Vehicles == null || !Vehicles.Any())
+        if (CopModels == null || !CopModels.Any())
             return null;
 
         List<ModelInformation> ToPickFrom = CopModels.Where(x => LosSantosRED.PlayerWantedLevel >= x.MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= x.MaxWantedLevelSpawn).ToList();
@@ -557,6 +560,7 @@ public class Agency
         public bool IsMale = true;
         public int MinWantedLevelSpawn = 0;
         public int MaxWantedLevelSpawn = 5;
+        public PedVariation RequiredVariation;
         public bool CanCurrentlySpawn
         {
             get

@@ -323,7 +323,7 @@ public class RapSheet
             }
             ResistingArrest.CrimeObserved();
         }
-        if (GrandTheftAuto.CanObserveCrime && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.IsInAnyPoliceVehicle && Police.AnyPoliceCanSeePlayer && !LosSantosRED.GetPlayersCurrentTrackedVehicle().WasReportedStolen && PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 17f))
+        if (GrandTheftAuto.CanObserveCrime && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.IsInAnyPoliceVehicle && Police.AnyPoliceCanSeePlayer && LosSantosRED.GetPlayersCurrentTrackedVehicle() != null && !LosSantosRED.GetPlayersCurrentTrackedVehicle().WasReportedStolen && PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 17f))
         {
             GrandTheftAuto.CrimeObserved();
         }

@@ -291,7 +291,7 @@ public static class DispatchAudio
             Debugging.WriteToLog("PlayAudioList", "Aborting Audio In the Middle");
             AbortAllAudio();
         }
-        Debugging.WriteToLog("PlayAudioList", string.Format("CanBeInterrupted:{0}CanInterrupt:{1}Name:{2}", MyAudioEvent.CanBeInterrupted,MyAudioEvent.CanInterrupt,MyAudioEvent.Subtitles));
+       // Debugging.WriteToLog("PlayAudioList", string.Format("CanBeInterrupted:{0}CanInterrupt:{1}Name:{2}", MyAudioEvent.CanBeInterrupted,MyAudioEvent.CanInterrupt,MyAudioEvent.Subtitles));
         GameFiber PlayAudioList = GameFiber.StartNew(delegate
         {
             while (IsPlayingAudio)
@@ -390,16 +390,16 @@ public static class DispatchAudio
 
         if (DispatchQueue.Count > 0 && !ExecutingQueue)
         {
-            Debugging.WriteToLog("PlayDispatchQueue", "Delegate Started");
+            //Debugging.WriteToLog("PlayDispatchQueue", "Delegate Started");
             ExecutingQueue = true;
             GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
             {
                 GameFiber.Sleep(rnd.Next(1500,2500));
 
-                foreach(DispatchQueueItem Stuff in DispatchQueue.OrderBy(x => x.Priority))
-                {
-                    Debugging.WriteToLog("ToPlay", string.Format("Type: {0} {1}", Stuff.Type,Stuff.Priority));
-                }
+                //foreach(DispatchQueueItem Stuff in DispatchQueue.OrderBy(x => x.Priority))
+                //{
+                //    Debugging.WriteToLog("ToPlay", string.Format("Type: {0} {1}", Stuff.Type,Stuff.Priority));
+                //}
                 DispatchQueue.OrderBy(x => x.Priority);
                 if (DispatchQueue.Any(x => !x.IsAmbient))
                 {
