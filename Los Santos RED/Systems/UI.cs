@@ -135,6 +135,9 @@ public static class UI
             if(TrafficViolations.PlayerIsRunningRedLight)
                 PlayerSpeedLine += " Running Red";
 
+            //if (LosSantosRED.LimitThrottle)
+                PlayerSpeedLine += VehicleFuelSystem.FuelUIText;
+
             PlayerSpeedLine += VehicleEngine.VehicleIndicatorStatus;
         }
 

@@ -127,15 +127,18 @@ public static class Zones
             new ZoneAgency("NOOSE", 2, 0, 10),
             new ZoneAgency("LSPD-ASD", 3, 0, 5) };
 
+        List<ZoneAgency> ArmyAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("ARMY", 0, 100, 100) };
+
         ZoneList = new List<Zone>
         {
             //One Off
             new Zone("OCEANA", "Pacific Ocean", ScannerAudio.areas.TheOcean.FileName, County.PacificOcean) { ZoneAgencies = OceanAgencies },
-            new Zone("AIRP", "Los Santos International Airport", ScannerAudio.areas.LosSantosInternationalAirport.FileName, County.CityOfLosSantos) { IsRestrictedDuringWanted = true, ZoneAgencies = OceanAgencies },
+            new Zone("AIRP", "Los Santos International Airport", ScannerAudio.areas.LosSantosInternationalAirport.FileName, County.CityOfLosSantos) { IsRestrictedDuringWanted = true, ZoneAgencies = AirportAgencies },
 
             //Blaine
             new Zone("ALAMO", "Alamo Sea", ScannerAudio.areas.TheAlamaSea.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("ARMYB", "Fort Zancudo", ScannerAudio.areas.FtZancudo.FileName, County.BlaineCounty) { IsRestrictedDuringWanted = true, ZoneAgencies = AirportAgencies },
+            new Zone("ARMYB", "Fort Zancudo", ScannerAudio.areas.FtZancudo.FileName, County.BlaineCounty) { IsRestrictedDuringWanted = true, ZoneAgencies = ArmyAgencies },
             new Zone("BRADP", "Braddock Pass", ScannerAudio.areas.BraddockPass.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("BRADT", "Braddock Tunnel", ScannerAudio.areas.TheBraddockTunnel.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("CALAFB", "Calafia Bridge", "", County.BlaineCounty) { ZoneAgencies = BlaineParkRangerAgencies },
@@ -361,7 +364,7 @@ public class Zone
             int SpawnChance = ZA.CurrentSpawnChance;
             if (RandomPick < SpawnChance)
             {
-                return ZA.AssociatedAgency();
+                return ZA.AssociatedAgency;
             }
             RandomPick -= SpawnChance;
         }
@@ -373,7 +376,7 @@ public class Zone
         get
         {
             if (HasAgencies)
-                return ZoneAgencies.OrderBy(x => x.Priority).FirstOrDefault().AssociatedAgency();
+                return ZoneAgencies.OrderBy(x => x.Priority).FirstOrDefault().AssociatedAgency;
             else
                 return null;
         }
@@ -383,7 +386,7 @@ public class Zone
         get
         {
             if (HasAgencies)
-                return ZoneAgencies.Where(x => x.AssociatedAgency() != MainZoneAgency).ToList();
+                return ZoneAgencies.Where(x => x.AssociatedAgency != MainZoneAgency).ToList();
             else
                 return null;
         }
@@ -405,7 +408,7 @@ public class Zone
             if (ZoneAgencies == null)
                 return false;
 
-            if (ZoneAgencies.Any(x => x.AssociatedAgency() != MainZoneAgency))
+            if (ZoneAgencies.Any(x => x.AssociatedAgency != MainZoneAgency))
                 return true;
             else
                 return false;
@@ -435,7 +438,7 @@ public class ZoneAgency
         {
             if (LosSantosRED.PlayerIsWanted)
             {
-                if (AssociatedAgency().CanSpawn)
+                if (AssociatedAgency.CanSpawn)
                 {
                     return WantedSpawnChance > 0;
                 }
@@ -456,9 +459,12 @@ public class ZoneAgency
                 return AmbientSpawnChance;
         }
     }
-    public Agency AssociatedAgency()
+    public Agency AssociatedAgency
     {
-        return Agencies.AgenciesList.Where(x => x.Initials == AssociatedAgencyName).FirstOrDefault();
+        get
+        {
+           return Agencies.AgenciesList.Where(x => x.Initials == AssociatedAgencyName).FirstOrDefault();
+        }
     }
 }
 public enum County

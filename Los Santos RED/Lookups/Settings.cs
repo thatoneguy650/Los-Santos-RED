@@ -69,7 +69,7 @@ public class PoliceSettings
     public int PoliceBailWantedLevelScale = 750;
     public int HospitalFee = 5000;
     public float LastWantedCenterSize = 400f;
-    public int PoliceRecentlySeenTime = 15000;//10000
+    public int PoliceRecentlySeenTime = 25000;//15000//10000
     public bool AllowPoliceWeaponVariations = true;
     public bool DispatchAudio = true;
     public bool DispatchAudioOnlyHighPriority = false;

@@ -28,6 +28,7 @@ public static class LosSantosRED
     private static bool PrevPlayerAimingInVehicle;
     private static uint GameTimeStartedHoldingEnter;
     private static string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
+
     public static Settings MySettings { get; set; }
     public static bool IsRunning { get; set; }
     public static bool IsDead { get; set; }
@@ -119,6 +120,7 @@ public static class LosSantosRED
                 return false;
         }
     }
+
     static LosSantosRED()
     {
         MyRand = new Random();
@@ -194,6 +196,7 @@ public static class LosSantosRED
         PoliceSpeech.Initialize();//slow? moved to 500 ms
         Vehicles.Initialize();
         VehicleEngine.Initialize();
+        VehicleFuelSystem.Initialize();
         //Smoking.Initialize();
         Tasking.Initialize();
 
@@ -213,6 +216,7 @@ public static class LosSantosRED
         MuggingSystem.Initialize();
         //CameraSystem.Initialize();
         PlayerHealth.Initialize();
+        PedWoundSystem.Initialize();
         MainLoop();
     }
     public static void MainLoop()
@@ -373,13 +377,10 @@ public static class LosSantosRED
             Surrendering.CommitSuicide(Game.LocalPlayer.Character);
         }
 
-
         if (Game.IsKeyDownRightNow(MySettings.KeyBinding.SurrenderKey) && Game.IsControlKeyDownRightNow)
         {
             PlayerHealth.BandagePed(Game.LocalPlayer.Character);
         }
-
-
 
         if (Game.IsControlPressed(2, GameControl.Enter))
         {
@@ -390,6 +391,14 @@ public static class LosSantosRED
         {
             GameTimeStartedHoldingEnter = 0;
         }
+
+        //if(Game.IsKeyDownRightNow(Keys.B))
+        //{
+        //    bool ToChange = !BigMap;
+        //    NativeFunction.CallByName<bool>("SET_BIGMAP_ACTIVE", ToChange, FullMap);
+        //    BigMap = ToChange;
+        //}
+
     }
     public static void Dispose()
     {
@@ -408,6 +417,7 @@ public static class LosSantosRED
         PoliceSpeech.Dispose();
         Vehicles.Dispose();
         VehicleEngine.Dispose();
+        VehicleFuelSystem.Dispose();
         Smoking.Dispose();
         Tasking.Dispose();
         Agencies.Dispose();
@@ -431,6 +441,7 @@ public static class LosSantosRED
         PlayerHealth.Dispose();
         ClockSystem.Dispose();
         MuggingSystem.Dispose();
+        PedWoundSystem.Dispose();
     }
     private static void ReadConfig()
     {
@@ -630,8 +641,8 @@ public static class LosSantosRED
     {
         GTAWeapon myGun = GTAWeapons.GetRandomWeapon(RandomWeaponCategory);
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
-        if (myGun.PlayerVariations.Any())
-            ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
+        //if (myGun.PlayerVariations.Any())
+        //    ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
     }
     public static GTAWeapon GetCurrentWeapon(Ped Pedestrian)
     {
@@ -747,7 +758,7 @@ public static class LosSantosRED
         return new GTAWeapon.WeaponVariation("Variation1",Tint, ComponentsOnGun);
 
     }
-    public static void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, GTAWeapon.WeaponVariation _WeaponVariation)
+    public static void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, Agency.WeaponVariation _WeaponVariation)
     {
         if (_WeaponVariation == null)
             return;
@@ -763,6 +774,25 @@ public static class LosSantosRED
         {
             GTAWeapon.WeaponComponent MyComponent = LookupGun.PossibleComponents.Where(x => x.Name == ToAdd).FirstOrDefault();
             if(MyComponent != null)
+                NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, MyComponent.Hash);
+        }
+    }
+    public static void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, GTAWeapon.WeaponVariation _WeaponVariation)
+    {
+        if (_WeaponVariation == null)
+            return;
+        NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, _WeaponVariation.Tint);
+        GTAWeapon LookupGun = GTAWeapons.GetWeaponFromHash(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
+        if (LookupGun == null)
+            return;
+        foreach (GTAWeapon.WeaponComponent ToRemove in LookupGun.PossibleComponents)
+        {
+            NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, WeaponHash, ToRemove.Hash);
+        }
+        foreach (string ToAdd in _WeaponVariation.Components)
+        {
+            GTAWeapon.WeaponComponent MyComponent = LookupGun.PossibleComponents.Where(x => x.Name == ToAdd).FirstOrDefault();
+            if (MyComponent != null)
                 NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, MyComponent.Hash);
         }
     }

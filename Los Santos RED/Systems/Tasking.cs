@@ -1184,6 +1184,8 @@ public static class Tasking
     }
     private static void TaskSimpleArrest(GTACop Cop)
     {
+        if (!Cop.Pedestrian.Exists())
+            return;
         Cop.IsTasked = true;
         Cop.TaskType = AssignableTasks.SimpleArrest;
         Cop.Pedestrian.BlockPermanentEvents = true;

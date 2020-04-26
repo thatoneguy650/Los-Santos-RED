@@ -93,10 +93,10 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> PistolVariations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
-            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
             
@@ -140,10 +140,10 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> PistolMK2Variations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
-            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
         };
@@ -159,10 +159,10 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> CombatPistolVariations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
-            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
         };
@@ -246,9 +246,9 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> HeavyPistolVariations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Etched Wood Grip Finish" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Flashlight","Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Etched Wood Grip Finish" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Flashlight","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Flashlight","Etched Wood Grip Finish" }),       
         };
@@ -315,8 +315,8 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> PumpShotgunVariations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
         };
         WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 487013001, true, false, true, true) { PossibleComponents = PumpShotgunComponents,Variations = PumpShotgunVariations });
 
@@ -347,10 +347,10 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> PumpShotgunMK2Variations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Holographic Sight"}),
-            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Holographic Sight","Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Holographic Sight"}),
+            //new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Holographic Sight","Flashlight" }),
         };
         WeaponsList.Add(new GTAWeapon("weapon_pumpshotgun_mk2", 32, GTAWeapon.WeaponCategory.Shotgun, 2, 0x555AF99A, true, false, true, true) { PossibleComponents = PumpShotgunMK2Components,Variations = PumpShotgunMK2Variations });
 
@@ -487,10 +487,10 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> CombatPDWVariations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Scope","Grip","Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Scope", "Grip","Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Scope", "Grip","Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Scope","Grip","Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Scope", "Grip","Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Scope", "Grip","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Scope", "Grip","Flashlight","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player2", 0, new List<string> { "Scope", "Grip" }),
@@ -584,10 +584,10 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> CarbineRifleVariations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Grip","Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Scope", "Grip","Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Scope", "Grip","Flashlight","Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Grip","Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Scope", "Grip","Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police3", 0, new List<string> { "Scope", "Grip","Flashlight","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Scope", "Grip","Flashlight","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player2", 0, new List<string> { "Scope", "Grip" }),
@@ -633,10 +633,10 @@ public static class GTAWeapons
         };
         List<GTAWeapon.WeaponVariation> CarbineRifleMK2Variations = new List<GTAWeapon.WeaponVariation>
         {
-            new GTAWeapon.WeaponVariation("Police0", 0),
-            new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Holographic Sight","Grip","Flashlight" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Holographic Sight", "Grip","Extended Clip" }),
-            new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police0", 0),
+            //new GTAWeapon.WeaponVariation("Police1", 0, new List<string> { "Holographic Sight","Grip","Flashlight" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Holographic Sight", "Grip","Extended Clip" }),
+            //new GTAWeapon.WeaponVariation("Police2", 0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" }),
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Holographic Sight","Grip","Flashlight" }),
             new GTAWeapon.WeaponVariation("Player2", 0, new List<string> { "Holographic Sight", "Grip","Flashlight","Extended Clip"  }),
@@ -1006,7 +1006,7 @@ public class GTAWeapon
         IsTwoHanded = _IsTwoHanded;
         IsLegal = _IsLegal;
     }
-    public string Name;
+    public string Name = "Unknown";
     public short AmmoAmount;
     public WeaponCategory Category;
     public int WeaponLevel;
@@ -1053,6 +1053,11 @@ public class GTAWeapon
         {
             Name = _name;
             Tint = _Tint;
+        }
+        public WeaponVariation(int _Tint, List<string> _Components)
+        {
+            Tint = _Tint;
+            Components = _Components;
         }
     }
     public class WeaponComponent

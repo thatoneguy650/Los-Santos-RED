@@ -9,12 +9,12 @@ using System.Linq;
 
 public static class PedScanning
 {
-    private static int MinCivilianHealth = 10;
-    private static int MaxCivilianHealth = 20;
-    private static int MinCopHealth = 15;
-    private static int MaxCopHealth = 25;
-    private static int MinCopArmor = 0;
-    private static int MaxCopArmor = 25;
+    private static int MinCivilianHealth = 70;//10;
+    private static int MaxCivilianHealth = 100;//20;
+    private static int MinCopHealth = 85;//15;
+    private static int MaxCopHealth = 125;//25;
+    private static int MinCopArmor = 0;//0;
+    private static int MaxCopArmor = 50;//25;
     public static List<GTACop> CopPeds { get; private set; }
     public static List<GTACop> K9Peds { get; set; }
     public static List<Vehicle> PoliceVehicles { get; set; }
@@ -124,7 +124,7 @@ public static class PedScanning
         Pedestrian.MaxHealth = DesiredHealth;
         Pedestrian.Armor = DesiredArmor;
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
-        NativeFunction.CallByName<bool>("SET_PED_SUFFERS_CRITICAL_HITS", Pedestrian, true);
+        //NativeFunction.CallByName<bool>("SET_PED_SUFFERS_CRITICAL_HITS", Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
     }
     public static void ScanforPoliceVehicles()

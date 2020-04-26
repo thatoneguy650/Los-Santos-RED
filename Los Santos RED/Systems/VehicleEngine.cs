@@ -65,6 +65,18 @@ internal static class VehicleEngine
                 return false;
         }
     }
+
+    public static bool LimitThrottle { get; private set; }
+
+    private static uint GameTimeLastSetLimitThrottle;
+    public static bool IsEngineRunning
+    {
+        get
+        {
+            return EngineRunning;
+        }
+    }
+
     public static void Initialize()
     {
         IsRunning = true;
@@ -156,6 +168,40 @@ internal static class VehicleEngine
         if (PrevEngineRunning != EngineRunning)
         {
             EngineRunningEvent();
+        }
+
+        LimiterTick();
+
+    }
+    private static void LimiterTick()
+    {
+        if (Game.IsKeyDownRightNow(Keys.W) && Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsDriver() && Game.GameTime - GameTimeLastSetLimitThrottle >= 500)// && Game.IsControlPressed(0,GameControl.VehicleAccelerate))
+        {
+            LimitThrottle = !LimitThrottle;
+            GameTimeLastSetLimitThrottle = Game.GameTime;
+        }
+
+        if (Game.IsKeyDownRightNow(Keys.W) && Game.LocalPlayer.Character.IsDriver())//Game.IsControlPressed(0,GameControl.VehicleAccelerate))
+        {
+            if (LimitThrottle)
+            {
+                float Limit = 0.5f;
+                float CurrentSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+
+                if (CurrentSpeedMPH <= 15f)
+                    Limit = 0.75f;
+                else if (CurrentSpeedMPH >= 75f)
+                    Limit = 0.3f;
+
+                if (TrafficViolations.PlayerIsSpeeding)
+                    Limit = 0.15f;
+
+                NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 27, 71, Limit);
+            }
+            else
+            {
+                NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 27, 71, 1.0f);
+            }
         }
     }
     private static void IndicatorsTick()

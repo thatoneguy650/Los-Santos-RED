@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public static class SearchModeStopping
 {
+    private static Vector3 GhostCopLastPosition;
     private static Model CopModel;
     private static bool SingleStopActive = false;
     private static Ped GhostCop;
@@ -87,8 +88,12 @@ public static class SearchModeStopping
     {
         if (!StopSearchMode)
             return;
-        if (LosSantosRED.PlayerInVehicle)
-            return;
+
+
+        //if (LosSantosRED.PlayerInVehicle)
+        //    return;
+
+
         if (!GhostCop.Exists())
         {
             CreateGhostCop();

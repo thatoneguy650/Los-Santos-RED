@@ -101,13 +101,13 @@ public static class Debugging
     {
         Game.LocalPlayer.Character.IsInvincible = false;
         Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-        Debugging.WriteToLog("KeyDown", "You are NOT invicible");
+        WriteToLog("KeyDown", "You are NOT invicible");
     }
     private static void DebugInvincible()
     {
         Game.LocalPlayer.Character.IsInvincible = true;
         Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-        Debugging.WriteToLog("KeyDown", "You are invicible");
+        WriteToLog("KeyDown", "You are invicible");
     }
     private static void DebugCopReset()
     {
@@ -166,6 +166,7 @@ public static class Debugging
     }
     private static void DebugNumpad3()
     {
+        PedScanning.ClearPoliceCompletely();
         Police.SetWantedLevel(0, "Debug", true);
     }
 
@@ -181,7 +182,8 @@ public static class Debugging
     private static void DebugNumpad6()
     {
 
-
+        WriteToLog("DebugNumpad6", string.Format("                      PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
+        WriteToLog("DebugNumpad6", string.Format("                      PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
     }
         
     private static void DebugNumpad7()
@@ -230,7 +232,8 @@ public static class Debugging
                 WriteToLog("DebugNumpad6", string.Format("Street: {0}", PlayerLocation.PlayerCurrentStreet.Name));
             if (PlayerLocation.PlayerCurrentCrossStreet != null)
                 WriteToLog("DebugNumpad6", string.Format("Cross Street: {0}", PlayerLocation.PlayerCurrentCrossStreet.Name));
-            WriteToLog("DebugNumpad6", string.Format("PlayerCoordinates: {0},{1},{2}", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
+            WriteToLog("DebugNumpad6", string.Format("PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
+            WriteToLog("DebugNumpad6", string.Format("PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
             foreach (GTAPed DeadPerson in PedScanning.PlayerKilledCivilians)
             {
                 WriteToLog("DebugNumpad7", string.Format("Player Killed: Handle: {0}, Distance: {1}", DeadPerson.Pedestrian.Handle, Game.LocalPlayer.Character.DistanceTo2D(DeadPerson.Pedestrian)));

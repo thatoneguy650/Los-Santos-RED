@@ -511,12 +511,15 @@ internal static class Police
     public static void IssueCopPistol(GTACop Cop)
     {
         GTAWeapon Pistol;
-        Pistol = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
+        Debugging.WriteToLog("          Trying to issue pistol for", Cop.AssignedAgency.Initials);
+        Agency.IssuedWeapon PistolToPick = Cop.AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
+        Debugging.WriteToLog("Trying to spawn", PistolToPick.ModelName);
+        Pistol = GTAWeapons.WeaponsList.Where(x => x.Name.ToLower() == PistolToPick.ModelName.ToLower() && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
         Cop.IssuedPistol = Pistol;
         Cop.Pedestrian.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
         if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
         {
-            GTAWeapon.WeaponVariation MyVariation = Pistol.PoliceVariations.PickRandom();
+            Agency.WeaponVariation MyVariation = PistolToPick.MyVariation;
             Cop.PistolVariation = MyVariation;
             LosSantosRED.ApplyWeaponVariation(Cop.Pedestrian, (uint)Pistol.Hash, MyVariation);
         }
@@ -524,25 +527,28 @@ internal static class Police
     public static void IssueCopHeavyWeapon(GTACop Cop)
     {
         GTAWeapon IssuedHeavy;
-        int Num = LosSantosRED.MyRand.Next(1, 5);
-        if (Num == 1)
-            IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
-        else if (Num == 2)
-            IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Shotgun).PickRandom();
-        else if (Num == 3)
-            IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.SMG).PickRandom();
-        else if (Num == 4)
-            IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
-        else
-            IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
+        //int Num = LosSantosRED.MyRand.Next(1, 5);
+        //if (Num == 1)
+        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
+        //else if (Num == 2)
+        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.Shotgun).PickRandom();
+        //else if (Num == 3)
+        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.SMG).PickRandom();
+        //else if (Num == 4)
+        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
+        //else
+        //    IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.isPoliceIssue && x.Category == GTAWeapon.WeaponCategory.AR).PickRandom();
 
+
+        Agency.IssuedWeapon HeavyToPick = Cop.AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
+        IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.Name.ToLower() == HeavyToPick.ModelName.ToLower() && x.Category != GTAWeapon.WeaponCategory.Pistol).PickRandom();
         Cop.IssuedHeavyWeapon = IssuedHeavy;
         Cop.Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
         if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
             Cop.Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceHeavyAccuracy;
         if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
         {
-            GTAWeapon.WeaponVariation MyVariation = IssuedHeavy.PoliceVariations.PickRandom();
+            Agency.WeaponVariation MyVariation = HeavyToPick.MyVariation;
             Cop.HeavyVariation = MyVariation;
             LosSantosRED.ApplyWeaponVariation(Cop.Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
         }

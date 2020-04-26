@@ -26,9 +26,9 @@ public class GTACop : GTAPed
     public bool HasItemsToRadioIn { get; set; }
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false,true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
-    public GTAWeapon.WeaponVariation PistolVariation { get; set; }
-    public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
-    public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, true, false, null, null, "");
+    public Agency.WeaponVariation PistolVariation { get; set; }
+    public Agency.WeaponVariation HeavyVariation { get; set; }
+    public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, true, false, null, null, "",null);
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public bool AtWantedCenterDuringChase { get; set; } = false;
     public ChaseStatus CurrentChaseStatus { get; set; } = ChaseStatus.Idle;
@@ -56,6 +56,13 @@ public class GTACop : GTAPed
             else
                 return false;
         }       
+    }
+    public uint HasBeenSpawnedFor
+    {
+        get
+        {
+            return Game.GameTime - GameTimeSpawned;
+        }
     }
     public bool CanSpeak
     {

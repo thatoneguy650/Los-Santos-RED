@@ -109,7 +109,7 @@ public static class PoliceSpawning
                 return;
             }
 
-            Debugging.WriteToLog("SpawnActiveChaseCop", string.Format("Possible Agencies: {0}",string.Join(",",NextPoliceSpawn.ZoneAtLocation.ZoneAgencies.Where(x => x.AssociatedAgency() != null).Select(x => x.AssociatedAgency().Initials + " " + x.CanCurrentlySpawn + " " + x.CurrentSpawnChance))));
+            Debugging.WriteToLog("SpawnActiveChaseCop", string.Format("Possible Agencies: {0}",string.Join(",",NextPoliceSpawn.ZoneAtLocation.ZoneAgencies.Where(x => x.AssociatedAgency != null).Select(x => x.AssociatedAgency.Initials + " " + x.CanCurrentlySpawn + " " + x.CurrentSpawnChance))));
 
 
             //bool SpawnMainZoneAgency = LosSantosRED.RandomPercent(100 - ((LosSantosRED.PlayerWantedLevel - 1) * 25));//LosSantosRED.RandomPercent(100 - ((LosSantosRED.PlayerWantedLevel - 1) * 10));//(1) 100% - (5) 60%
@@ -151,7 +151,7 @@ public static class PoliceSpawning
             else if (RandomValue <= 9 && NextPoliceSpawn.ZoneAtLocation.HasAgencies)
                 AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.MainZoneAgency;
             else if (NextPoliceSpawn.ZoneAtLocation.HasSecondaryAgencies)
-                AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.SecondaryAgencies.PickRandom().AssociatedAgency();
+                AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.SecondaryAgencies.PickRandom().AssociatedAgency;
 
             if (AgencyToSpawn != null)
                 SpawnCop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation);
@@ -244,8 +244,8 @@ public static class PoliceSpawning
     }
     public static void RemoveFarAwayRandomlySpawnedCops()
     {
-        float DeleteDistance = 2000;
-        float NonPersistDistance = 1750f;
+        float DeleteDistance = 1000f;//2000
+        float NonPersistDistance = 800f;//1750f
 
         //if (LosSantosRED.PlayerIsWanted)
         //    return;//dont do this for now?
@@ -253,10 +253,10 @@ public static class PoliceSpawning
 
         if(LosSantosRED.PlayerIsWanted)
         {
-            DeleteDistance = 750f;//1250f;
-            NonPersistDistance = 800f;//1000f;//was 550f
+            DeleteDistance = 850f;//1250f;
+            NonPersistDistance = 750f;//1000f;//was 550f
         }
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.WasModSpawned))
+        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.WasModSpawned && x.HasBeenSpawnedFor >= 20000))
         {
             Vector3 CurrentLocation = Cop.Pedestrian.Position;
             if (Cop.DistanceToPlayer >= DeleteDistance)//2000f
@@ -268,14 +268,15 @@ public static class PoliceSpawning
                 Police.MarkNonPersistent(Cop);
                 break;
             }
-            else if (Cop.DistanceToPlayer >= 200f && LosSantosRED.PlayerIsWanted && Cop.Pedestrian.IsDriver() && Cop.EverSeenPlayer)
+            else if (Cop.DistanceToPlayer >= 200f && LosSantosRED.PlayerIsWanted && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && Cop.EverSeenPlayer)
             {
-                if (PedScanning.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsDriver() && x.EverSeenPlayer && Cop.Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 50f))
-                {
-                    Debugging.WriteToLog("Deleting Close Cop", string.Format("Cop: {0}", Cop.Pedestrian.Handle));
-                    Police.DeleteCop(Cop);
-                    break;
-                }
+                Police.DeleteCop(Cop);
+                //if (PedScanning.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsDriver() && x.EverSeenPlayer && Cop.Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 50f))
+                //{
+                //    Debugging.WriteToLog("Deleting Close Cop", string.Format("Cop: {0}", Cop.Pedestrian.Handle));
+                //    Police.DeleteCop(Cop);
+                //    break;
+                //}
             }
 
             if (Cop.DistanceToPlayer >= 125f && Cop.Pedestrian.IsInAnyVehicle(false))//250f

@@ -85,7 +85,7 @@ public static class Civilians
                     {
                         foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanBeCalledInBySound))
                         {
-                            Snitch.AddCrime(Bad, Game.LocalPlayer.Character.Position);
+                            Snitch.AddCrime(Bad, Snitch.Pedestrian.Position);
                         }
                         if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
                         {
@@ -106,18 +106,6 @@ public static class Civilians
                 }
             }
         }
-        //int TotalCivisTasked = PoliceScanning.Civilians.Count(x => x.IsTasked && x.TaskType == Tasking.AssignableTasks.ReactToCrime);
-
-        //string CiviLine = "";
-        //if (AnyCiviliansCanRecognizePlayer)
-        //{
-        //    if (CrimesToCallIn.Any())
-        //        CiviLine += "~r~(SEEN)";
-        //    else
-        //        CiviLine += "~s~(SEEN)";
-        //}
-
-       // UI.DebugLine = string.Format("{0}", string.Join(",", Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Select(x => x.Name)));
     }
     public static void UpdateCivilians()
     {

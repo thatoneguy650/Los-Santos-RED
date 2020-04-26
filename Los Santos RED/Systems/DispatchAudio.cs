@@ -927,7 +927,7 @@ public static class DispatchAudio
         ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ItemToPlay.ReportedBy, Game.LocalPlayer.Character.Position);
         ScannerList.Add(new List<string>() { crime_suspicious_vehicle.Asuspiciousvehicle.FileName }.PickRandom());
         Subtitles += " a ~r~Suspicious Vehicle~s~";
-        AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, false, ref Subtitles, ref Notification, true, false,true, ItemToPlay.ReportedBy == ReportType.Officers);
+        AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, false, ref Subtitles, ref Notification, true, false,false, ItemToPlay.ReportedBy == ReportType.Officers);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification));
     }

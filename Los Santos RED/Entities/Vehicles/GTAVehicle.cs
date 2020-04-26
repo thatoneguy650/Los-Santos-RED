@@ -91,6 +91,8 @@ public class GTAVehicle
         else
             PositionOriginallyEntered = Game.LocalPlayer.Character.Position;
 
+        _Vehicle.FuelLevel = LosSantosRED.MyRand.Next(25, 100);
+
         //Debugging.WriteToLog("GTAVehicle", string.Format("Vehicle Created: Handle {0},GTEntered,{1},GTReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WatchLastOwner {6}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, PreviousOwner != null));
     }
   

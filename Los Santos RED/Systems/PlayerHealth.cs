@@ -49,8 +49,8 @@ public static class PlayerHealth
     }
     public static void ResetDamageStats()
     {
-        NativeFunction.CallByName<bool>("SET_PLAYER_WEAPON_DAMAGE_MODIFIER", Game.LocalPlayer, 2.0f);
-        NativeFunction.CallByName<bool>("SET_AI_WEAPON_DAMAGE_MODIFIER", 1.0f);
+       // NativeFunction.CallByName<bool>("SET_PLAYER_WEAPON_DAMAGE_MODIFIER", Game.LocalPlayer, 2.0f);
+        //NativeFunction.CallByName<bool>("SET_AI_WEAPON_DAMAGE_MODIFIER", 1.0f);
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
     }
     private static void SetupLists()
@@ -165,6 +165,8 @@ public static class PlayerHealth
     public static void Tick()
     {
         ResetDamageStats();
+
+
         int CurrentHealth = Game.LocalPlayer.Character.Health;
         int CurrentArmor = Game.LocalPlayer.Character.Armor;
 
@@ -245,8 +247,6 @@ public static class PlayerHealth
                 UI.DebugLine = string.Format("{0} hit at {1}", HealthInjury, DamagedLocation);
 
             GameTimeLastDamaged = Game.GameTime;
-            //Game.DisplayNotification(string.Format("Damage Detected~n~Location: {0}~n~Weapon: {1},{2}~n~Type: {3}~n~New Total Damage: {4}, StoppedBy Armor: {5}",
-            //                                                            DamagedLocation, DamagingWeapon.Name, DamagingWeapon.Category, HealthInjury, NewHealthDamage + NewArmorDamage, ArmorWillProtect));
         }
 
         if (Health != CurrentHealth)

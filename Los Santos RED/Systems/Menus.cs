@@ -655,16 +655,16 @@ internal static class Menus
         {
             GTAWeapon myGun = GTAWeapons.GetRandomWeapon((GTAWeapon.WeaponCategory)RandomWeaponCategory);
             Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
-            if (myGun.PlayerVariations.Any())
-                LosSantosRED.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
+            //if (myGun.PlayerVariations.Any())
+            //    LosSantosRED.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
         }
         if (selectedItem == menuDebugRandomVariation)
         {
             GTAWeapon myGun = LosSantosRED.GetCurrentWeapon(Game.LocalPlayer.Character);
             if (myGun == null)
                 return;
-            if (myGun.PlayerVariations.Any())
-                LosSantosRED.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
+            //if (myGun.PlayerVariations.Any())
+            //    LosSantosRED.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)myGun.Hash, myGun.PlayerVariations.PickRandom());
         }
         if (selectedItem == menuDebugGiveMoney)
         {

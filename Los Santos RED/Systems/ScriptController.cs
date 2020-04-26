@@ -31,6 +31,8 @@ public static class ScriptController
     private static TickTask MuggingTick;
     private static TickTask ClockTick;
     private static TickTask PlayerHealthTick;
+    private static TickTask PedWoundSystemTick;
+    private static TickTask VehicleFuelTick;
     private static List<TickTask> MyTickTasks;
  
     public static bool IsRunning { get; set; }
@@ -46,7 +48,13 @@ public static class ScriptController
         VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);
 
 
+        VehicleFuelTick = new TickTask(200, "VehicleFuelTick", VehicleFuelSystem.FuelTick, TickTask.Type.RequiredGeneral);
+
+
         PlayerHealthTick = new TickTask(50, "PlayerHealthTick", PlayerHealth.Tick, TickTask.Type.RequiredGeneral);
+
+
+        PedWoundSystemTick = new TickTask(200, "PedHealthTick", PedWoundSystem.Tick, TickTask.Type.RequiredGeneral);
 
         MuggingTick = new TickTask(50, "MuggingTick", MuggingSystem.Tick, TickTask.Type.RequiredGeneral);
         ClockTick = new TickTask(0, "ClockTick", ClockSystem.ClockTick, TickTask.Type.RequiredGeneral);
@@ -77,7 +85,7 @@ public static class ScriptController
         MyTickTasks = new List<TickTask>()
         {
 
-            LosSantosREDTick,PoliceTick,VehicleEngineTick,PlayerHealthTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
+            LosSantosREDTick,PoliceTick,VehicleEngineTick,VehicleFuelTick,PlayerHealthTick,PedWoundSystemTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
             ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick/*,WeatherCheckingTick*/,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick,MuggingTick,ClockTick
         };
 
@@ -102,8 +110,14 @@ public static class ScriptController
                     if (PlayerHealth.IsRunning && PlayerHealthTick.ShouldRun)//needs to be separate?
                         PlayerHealthTick.RunTask();
 
+                    if (PedWoundSystem.IsRunning && PedWoundSystemTick.ShouldRun)//needs to be separate?
+                        PedWoundSystemTick.RunTask();
+
                     if (VehicleEngine.IsRunning && VehicleEngineTick.ShouldRun)//needs to be separate?
                         VehicleEngineTick.RunTask();
+
+                    if (VehicleFuelSystem.IsRunning && VehicleFuelTick.ShouldRun)//needs to be separate?
+                        VehicleFuelTick.RunTask();
 
                     if (MuggingSystem.IsRunning && MuggingTick.ShouldRun)//needs to be separate?
                         MuggingTick.RunTask();

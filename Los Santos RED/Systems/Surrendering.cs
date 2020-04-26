@@ -10,7 +10,6 @@ using ExtensionsMethods;
 
 public static class Surrendering
 {
-   // private static bool AreHandsRaised = false;
     public static bool IsCommitingSuicide { get; set; }
     public static void RaiseHands()
     {
@@ -21,6 +20,9 @@ public static class Surrendering
             Police.CurrentPoliceState = Police.PoliceState.ArrestedWait;
 
         if (LosSantosRED.HandsAreUp)
+            return;
+
+        if (VehicleFuelSystem.CanPumpFuel)
             return;
 
         VehicleEngine.TurnOffEngine();
@@ -167,7 +169,7 @@ public static class Surrendering
         if (IsCommitingSuicide)
             return;
 
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.IsSwimming || Game.LocalPlayer.Character.IsInCover)//tons more should probably be checked
+        if (PedToSuicide.IsInAnyVehicle(false) || PedToSuicide.IsRagdoll || PedToSuicide.IsSwimming || PedToSuicide.IsInCover)
         {
             return;
         }
@@ -233,12 +235,12 @@ public static class Surrendering
                 else
                 {
                     NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", PedToSuicide, (uint)2725352035, true);
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToSuicide, "mp_suicide", "pill", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-
+                    
                     if (PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
                     {
+                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToSuicide, "mp_suicide", "pill", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                         GameFiber.Wait(6000);
-                        Game.LocalPlayer.Character.Kill();
+                        PedToSuicide.Kill();
                     }
                     else
                     {
@@ -281,23 +283,6 @@ public static class Surrendering
                             PedToSuicide.Kill();
                         else
                             PedToSuicide.Tasks.Clear();
-                        //bool Cancel = false;
-                        //uint GameTimeStartedPillSuicide = Game.GameTime;
-                        //while(Game.GameTime - GameTimeStartedPillSuicide <= 2000)
-                        //{
-                        //    if(Extensions.IsMoveControlPressed())
-                        //    {
-                        //        Cancel = true;
-                        //        Game.LocalPlayer.Character.Tasks.Clear();
-                        //        break;
-                        //    }
-                        //    GameFiber.Yield();
-                        //}
-                        //if(!Cancel)
-                        //{
-                        //    GameFiber.Wait(4000);
-                        //    Game.LocalPlayer.Character.Kill();
-                        //}
                     }
                 }
                 IsCommitingSuicide = false;
