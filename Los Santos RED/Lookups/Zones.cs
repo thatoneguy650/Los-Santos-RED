@@ -33,21 +33,23 @@ public static class Zones
 
         //Blaine
         List<ZoneAgency> StandardBlaineAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("BCSO", 0, 85, 70),
+            new ZoneAgency("BCSO", 0, 85, 75),
             new ZoneAgency("DOA", 1, 15, 5),
             new ZoneAgency("LSSD", 2, 0, 5),
-            new ZoneAgency("LSSD", 3, 0, 5),
-            new ZoneAgency("NOOSE", 4, 0, 15) };
+            new ZoneAgency("NOOSE", 3, 0, 10),
+            new ZoneAgency("LSSD-ASD", 4, 0, 5) };
 
         List< ZoneAgency > BlaineParkRangerAgencies = new List<ZoneAgency>() {
             new ZoneAgency("SAPR", 0, 85, 75),
             new ZoneAgency("BCSO", 1, 15, 10),
-            new ZoneAgency("NOOSE", 2, 0, 15) };
+            new ZoneAgency("NOOSE", 2, 0, 10),
+            new ZoneAgency("LSSD-ASD", 3, 0, 5) };
 
         List<ZoneAgency> BlainePrisonAgencies = new List<ZoneAgency>() {
             new ZoneAgency("SASPA",0, 100, 70),
-            new ZoneAgency("BCSO", 1, 0, 15),
-            new ZoneAgency("NOOSE", 2, 0, 15) };
+            new ZoneAgency("BCSO", 1, 0, 10),
+            new ZoneAgency("NOOSE", 2, 0, 15),
+            new ZoneAgency("LSSD-ASD", 3, 0, 5) };
 
         List<ZoneAgency> StandardCityAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSPD", 0, 85, 70),
@@ -107,14 +109,16 @@ public static class Zones
         List<string> ChumashsAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.ChumashUnits.FileName, ScannerAudio.attention_all_area_units.ChumashUnits1.FileName, ScannerAudio.attention_all_area_units.ChumashUnits2.FileName };
         List<ZoneAgency> ChumashAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSSD-CH", 0, 85, 70),
-            new ZoneAgency("LSPD-CH", 1, 10, 10),
+            new ZoneAgency("LSPD-CH", 1, 10, 5),
             new ZoneAgency("DOA", 2, 5, 5),
-            new ZoneAgency("NOOSE", 3, 0, 15) };
+            new ZoneAgency("NOOSE", 3, 0, 15),
+            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
 
         List<ZoneAgency> StandardSheriffAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSSD", 0, 85, 70),
-            new ZoneAgency("DOA", 1, 15, 15),
-            new ZoneAgency("NOOSE", 2, 0, 15) };
+            new ZoneAgency("DOA", 1, 15, 5),
+            new ZoneAgency("NOOSE", 2, 0, 15),
+            new ZoneAgency("LSSD-ASD", 3, 0, 10) };
 
         List<ZoneAgency> OceanAgencies = new List<ZoneAgency>() {
             new ZoneAgency("SACG", 0, 95, 80),

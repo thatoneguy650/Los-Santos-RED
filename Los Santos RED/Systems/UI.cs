@@ -100,7 +100,7 @@ public static class UI
         }
         else
         {
-            string AgenciesChasingPlayer = PedScanning.AgenciesChasingPlayer;
+            string AgenciesChasingPlayer = GTAPeds.AgenciesChasingPlayer;
             if (AgenciesChasingPlayer != "")
                 PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
         }

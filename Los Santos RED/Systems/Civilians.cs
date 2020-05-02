@@ -32,7 +32,7 @@ public static class Civilians
     }
     public static bool NearMurderVictim(float Distance)
     {
-        if (PedScanning.PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
+        if (GTAPeds.PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
             return true;
         else
             return false;
@@ -66,7 +66,7 @@ public static class Civilians
        List<Crime> CrimesToCallIn = Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians;
        if (CrimesToCallIn.Any())
         {
-            foreach(GTAPed Snitch in PedScanning.Civilians)
+            foreach(GTAPed Snitch in GTAPeds.Civilians)
             {
                 if (1==1)//LosSantosRED.PlayerIsNotWanted)
                 {
@@ -109,14 +109,14 @@ public static class Civilians
     }
     public static void UpdateCivilians()
     {
-        PedScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
-        foreach (GTAPed MyPed in PedScanning.Civilians)
+        GTAPeds.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
+        foreach (GTAPed MyPed in GTAPeds.Civilians)
         {
             if (MyPed.Pedestrian.IsDead)
             {
                 CheckCivilianKilled(MyPed);
                 if(MyPed.KilledByPlayer)
-                    PedScanning.PlayerKilledCivilians.Add(MyPed);
+                    GTAPeds.PlayerKilledCivilians.Add(MyPed);
                 //continue;
             }
             int NewHealth = MyPed.Pedestrian.Health;
@@ -128,13 +128,13 @@ public static class Civilians
             }
             MyPed.UpdateDistance();
         }
-        PedScanning.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
-        PedScanning.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
+        GTAPeds.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
+        GTAPeds.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
     }
     private static void CheckRecognition()
     {
-        AnyCiviliansCanSeePlayer = PedScanning.Civilians.Any(x => x.CanSeePlayer);
-        AnyCiviliansCanRecognizePlayer = PedScanning.Civilians.Any(x => x.CanRecognizePlayer);
+        AnyCiviliansCanSeePlayer = GTAPeds.Civilians.Any(x => x.CanSeePlayer);
+        AnyCiviliansCanRecognizePlayer = GTAPeds.Civilians.Any(x => x.CanRecognizePlayer);
     }
     public static void CheckCivilianKilled(GTAPed MyPed)
     {

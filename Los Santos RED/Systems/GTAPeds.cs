@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 
 
-public static class PedScanning
+public static class GTAPeds
 {
     private static int MinCivilianHealth = 70;//10;
     private static int MaxCivilianHealth = 100;//20;
@@ -78,8 +78,11 @@ public static class PedScanning
 
         SetPedestrianStats(Pedestrian, true);
 
-
         Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian);
+
+        if (AssignedAgency == null && !Pedestrian.Exists())
+            return;
+
         GTACop myCop = new GTACop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health, AssignedAgency);
         Pedestrian.IsPersistent = false;
         if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
@@ -136,37 +139,17 @@ public static class PedScanning
     }
     public static void ScanforPoliceVehicles()
     {
-        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
+        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
         foreach (Vehicle Veh in Vehicles.Where(s => s.Exists()))
         {
             if (Veh.IsPoliceVehicle)
             {
                 if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
                 {
-                    Agencies.CheckandChangeLivery(Veh);
+                    Agencies.ChangeLiveryAtZone(Veh, Zones.GetZoneAtLocation(Veh.Position));
                     PoliceSpawning.UpgradeCruiser(Veh);
                     PoliceVehicles.Add(Veh);
                 }
-            }
-        }
-    }
-    private static void ClearPoliceAroundArea(Vector3 Location,float Radius)
-    {
-        foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.DistanceTo2D(Location) <= Radius))
-        {
-            if (Cop.Pedestrian.Exists())
-            {
-                if (Cop.Pedestrian.IsInAnyVehicle(false))
-                    Cop.Pedestrian.CurrentVehicle.Delete();
-                Cop.Pedestrian.Delete();
-            }
-        }
-        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Location, Radius, GetEntitiesFlags.ConsiderAllVehicles | GetEntitiesFlags.ExcludePlayerVehicle).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));
-        foreach (Vehicle MyVehicle in Vehicles.Where(s => s.Exists()))
-        {
-            if(MyVehicle.IsPoliceVehicle)
-            {
-                MyVehicle.Delete();
             }
         }
     }

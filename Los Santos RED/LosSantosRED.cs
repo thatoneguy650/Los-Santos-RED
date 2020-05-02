@@ -191,7 +191,7 @@ public static class LosSantosRED
        // LosSantosRED.MyLosSantosRED.MySettings.Initialize();
         Menus.Intitialize();//Somewhat the procees each tick is taking frames
         RespawnStopper.Initialize(); //maye some slowness
-        PedScanning.Initialize();
+        GTAPeds.Initialize();
         DispatchAudio.Initialize();//slow? moved to 500 ms
         PoliceSpeech.Initialize();//slow? moved to 500 ms
         Vehicles.Initialize();
@@ -412,7 +412,7 @@ public static class LosSantosRED
         //LosSantosRED.MyLosSantosRED.MySettings.Dispose();
         Menus.Dispose();
         RespawnStopper.Dispose(); //maye some slowness
-        PedScanning.Dispose();
+        GTAPeds.Dispose();
         DispatchAudio.Dispose();
         PoliceSpeech.Dispose();
         Vehicles.Dispose();
@@ -491,7 +491,7 @@ public static class LosSantosRED
         GTAVehicle MyNewCar = new GTAVehicle(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding, PreviousOwner, IsStolen, MyPlate);
         if (IsStolen && PreviousOwner.Exists())
         {
-            GTAPed MyPrevOwner = PedScanning.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
+            GTAPed MyPrevOwner = GTAPeds.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
             if(MyPrevOwner != null)
             {
                 Police.CurrentCrimes.GrandTheftAuto.DispatchToPlay.VehicleToReport = MyNewCar;
@@ -530,7 +530,7 @@ public static class LosSantosRED
         Game.LocalPlayer.Character.IsInvincible = true;
         //Police.SetWantedLevel(0,"You died");
         TransitionToSlowMo();
-        if (Police.PreviousWantedLevel > 0 || PedScanning.CopPeds.Any(x => x.RecentlySeenPlayer()))
+        if (Police.PreviousWantedLevel > 0 || GTAPeds.CopPeds.Any(x => x.RecentlySeenPlayer()))
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectWasted, 5));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {
@@ -708,22 +708,33 @@ public static class LosSantosRED
         SpawnPosition = Vector3.Zero;
         Heading = 0f;
 
-        for (int i = 1; i < 40; i++)
+        Vector3 outPos;
+        float heading;
+        float val;
+        unsafe
         {
-            Vector3 outPos;
-            float heading;
-            float val;
-            unsafe
-            {
-                NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, i, &outPos, &heading, &val, 1, 0x40400000, 0);
-            }
-            if (!NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
-            {
-                SpawnPosition = outPos;
-                Heading = heading;
-                break;
-            }
+            NativeFunction.CallByName<bool>("GET_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, &outPos, &heading, 0, 3, 0);
         }
+
+        SpawnPosition = outPos;
+        Heading = heading;
+
+        //for (int i = 1; i < 40; i++)
+        //{
+        //    Vector3 outPos;
+        //    float heading;
+        //    float val;
+        //    unsafe
+        //    {
+        //        NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, i, &outPos, &heading, &val, 1, 0x40400000, 0);
+        //    }
+        //    if (!NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
+        //    {
+        //        SpawnPosition = outPos;
+        //        Heading = heading;
+        //        break;
+        //    }
+        //}
     }
     public static void SetPedUnarmed(Ped Pedestrian, bool SetCantChange)
     {

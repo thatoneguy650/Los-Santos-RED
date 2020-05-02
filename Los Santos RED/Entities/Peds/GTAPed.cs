@@ -30,6 +30,7 @@ public class GTAPed
     public bool WasMarkedNonPersistent { get; set; } = false;
     public bool HasBeenMugged { get; set; } = false;
     public bool WillFight { get; set; } = false;
+    public float ClosestDistanceToPlayer { get; set; } = 2000f;
     public Vector3 PositionLastSeenCrime { get; set; } = Vector3.Zero;
     public bool CanFlee { get; set; } = true;
     public bool WillCallPolice { get; set; } = true;
@@ -107,8 +108,12 @@ public class GTAPed
     {
         if (NeedsDistanceCheck)
         {
-            DistanceToPlayer = Pedestrian.DistanceTo(Game.LocalPlayer.Character.Position);
-            DistanceToLastSeen = Pedestrian.DistanceTo(Police.PlacePlayerLastSeen);
+            DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
+            DistanceToLastSeen = Pedestrian.DistanceTo2D(Police.PlacePlayerLastSeen);
+
+
+            if (DistanceToPlayer <= ClosestDistanceToPlayer)
+                ClosestDistanceToPlayer = DistanceToPlayer;
 
             if (DistanceToPlayer <= 35f)
                 CanHearPlayer = true;
@@ -116,6 +121,25 @@ public class GTAPed
                 CanHearPlayer = false;
 
             GameTimeLastDistanceCheck = Game.GameTime;
+        }
+    }
+    public void UpdateSight()
+    {
+        if (NeedsSightCheck)
+        {
+            DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
+            DistanceToLastSeen = Pedestrian.DistanceTo2D(Police.PlacePlayerLastSeen);
+
+
+            if (DistanceToPlayer <= ClosestDistanceToPlayer)
+                ClosestDistanceToPlayer = DistanceToPlayer;
+
+            if (DistanceToPlayer <= 35f)
+                CanHearPlayer = true;
+            else
+                CanHearPlayer = false;
+
+            GameTimeLastSightCheck = Game.GameTime;
         }
     }
 

@@ -135,7 +135,7 @@ public static class PedSwapping
                 return;
 
             if(ClearNearPolice)
-                PedScanning.ClearPoliceCompletely();
+                GTAPeds.ClearPoliceCompletely();
 
             StoreTargetPedData(TargetPed);
 

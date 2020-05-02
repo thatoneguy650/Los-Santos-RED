@@ -337,7 +337,7 @@ public static class Tasking
     }
     public static void PoliceVehicleTick()
     {
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.IsInVehicle))//&& !x.isTasked))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.IsInVehicle))//&& !x.isTasked))
         {
             if (!Cop.IsInHelicopter)
             {
@@ -391,7 +391,7 @@ public static class Tasking
     }
     public static void PoliceStateTick()
     {
-        PedScanning.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
+        GTAPeds.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
 
         SetPoliceChaseStatus();
 
@@ -427,7 +427,7 @@ public static class Tasking
     }
     private static void SetPoliceChaseStatus()
     {
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists()))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists()))
         {
             if(LosSantosRED.PlayerIsWanted)
             {
@@ -461,7 +461,7 @@ public static class Tasking
     private static void PoliceTickNormal()
     {
         CurrentPoliceTickRunning = "Normal";
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists()))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists()))
         {
             if(Cop.IsTasked)
             {
@@ -492,7 +492,7 @@ public static class Tasking
         }
         if (Game.GameTime - Police.GameTimePoliceStateStart >= 8000 && Game.GameTime - GameTimeLastResetWeapons >= 10000)//Only reset them every 10 seconds if they need it after 8 seconds of being at normal. Incase you go from normal to deadly real fast.
         {
-            foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && (x.SetDeadly || x.SetTazer || x.SetUnarmed)))
+            foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && (x.SetDeadly || x.SetTazer || x.SetUnarmed)))
             {
                 ResetCopWeapons(Cop);//just in case they get stuck
             }
@@ -502,7 +502,7 @@ public static class Tasking
     private static void PoliceTickInvestigation()
     {
         CurrentPoliceTickRunning = "Investigation";
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists()))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists()))
         {
             if ((!Cop.IsTasked || Cop.TaskType != AssignableTasks.RandomSpawnIdle) && !Cop.TaskIsQueued && Cop.CurrentChaseStatus == GTACop.ChaseStatus.Idle)
             {
@@ -518,10 +518,10 @@ public static class Tasking
     {
         CurrentPoliceTickRunning = "Unarmed Chase";
         RemoveAllIdleTasks();
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists()))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists()))
         {
-            int TotalFootChaseTasked = PedScanning.CopPeds.Where(x => (x.IsTasked || x.TaskIsQueued) && x.TaskType == AssignableTasks.Chase).Count();
-            int TotalVehicleChaseTasked = PedScanning.CopPeds.Where(x => (x.IsTasked || x.TaskIsQueued) && x.TaskType == AssignableTasks.VehicleChase).Count();
+            int TotalFootChaseTasked = GTAPeds.CopPeds.Where(x => (x.IsTasked || x.TaskIsQueued) && x.TaskType == AssignableTasks.Chase).Count();
+            int TotalVehicleChaseTasked = GTAPeds.CopPeds.Where(x => (x.IsTasked || x.TaskIsQueued) && x.TaskType == AssignableTasks.VehicleChase).Count();
 
             if (Cop.IsInVehicle)
             {
@@ -559,10 +559,10 @@ public static class Tasking
         }
 
 
-        if (PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.Pedestrian.IsInAnyVehicle(false)) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 0.1f) && !LosSantosRED.PlayerInVehicle && !LosSantosRED.IsBusted)
+        if (GTAPeds.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.Pedestrian.IsInAnyVehicle(false)) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 0.1f) && !LosSantosRED.PlayerInVehicle && !LosSantosRED.IsBusted)
         {
             ///TEMP CRAP
-            foreach(GTACop MyCop in PedScanning.CopPeds.Where(x => x.DistanceToPlayer <= 4f && !x.IsInVehicle))
+            foreach(GTACop MyCop in GTAPeds.CopPeds.Where(x => x.DistanceToPlayer <= 4f && !x.IsInVehicle))
             {
                 Debugging.WriteToLog("", string.Format("Handle: {0}, Distance: {1}", MyCop.Pedestrian.Handle, MyCop.DistanceToPlayer));
             }
@@ -582,7 +582,7 @@ public static class Tasking
         RemoveAllIdleTasks();
 
 
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists()))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists()))
         {
 
             if (Cop.IsInVehicle)
@@ -595,7 +595,7 @@ public static class Tasking
             {
                 if(!Cop.IsTasked)
                 {
-                    if (!Cop.TaskIsQueued && PedScanning.CopPeds.Where(x => x.IsTasked || x.TaskIsQueued).Count() <= 3 && Cop.DistanceToPlayer <= 45f)
+                    if (!Cop.TaskIsQueued && GTAPeds.CopPeds.Where(x => x.IsTasked || x.TaskIsQueued).Count() <= 3 && Cop.DistanceToPlayer <= 45f)
                     {
                         AddItemToQueue(new CopTask(Cop, AssignableTasks.Arrest));
                     }
@@ -616,7 +616,7 @@ public static class Tasking
         }
         Police.SetWantedLevel(LosSantosRED.MaxWantedLastLife,"Changing it back to what it was max during your last life",true);
 
-        if (PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.IsInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !LosSantosRED.IsBusted)// && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
+        if (GTAPeds.CopPeds.Any(x => x.DistanceToPlayer <= 4f && !x.IsInVehicle) && (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 1.0f) && !LosSantosRED.IsBusted)// && !InstantAction.PlayerInVehicle && !InstantAction.IsBusted)
             SetSurrenderBust(true, "Arrested Wait Tcik");
 
         if (SurrenderBust && !IsBustTimeOut())
@@ -632,7 +632,7 @@ public static class Tasking
         RemoveAllIdleTasks();
 
 
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists()))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists()))
         {
             if(Cop.IsInVehicle)
             {
@@ -643,7 +643,7 @@ public static class Tasking
             {
                 if (!Cop.IsTasked || Cop.TaskType == AssignableTasks.DriveToAndChase)
                 {
-                    if (!Cop.TaskIsQueued && PedScanning.CopPeds.Where(x => x.IsTasked || x.TaskIsQueued).Count() <= 4 && Cop.DistanceToPlayer <= 45f)
+                    if (!Cop.TaskIsQueued && GTAPeds.CopPeds.Where(x => x.IsTasked || x.TaskIsQueued).Count() <= 4 && Cop.DistanceToPlayer <= 45f)
                     {
                         SetCopDeadly(Cop);
                         AddItemToQueue(new CopTask(Cop, AssignableTasks.Arrest));
@@ -681,7 +681,7 @@ public static class Tasking
 
 
 
-        if (PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 8f && !x.IsInVehicle) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !LosSantosRED.IsBusted && !Police.PlayerWasJustJacking)
+        if (GTAPeds.CopPeds.Any(x => x.DistanceToPlayer <= 8f && !x.IsInVehicle) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !LosSantosRED.IsBusted && !Police.PlayerWasJustJacking)
             ForceSurrenderTime++;
         else
             ForceSurrenderTime = 0;
@@ -703,7 +703,7 @@ public static class Tasking
         RemoveAllIdleTasks();
 
 
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists()))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists()))
         {
             if(Cop.IsInVehicle)
             {
@@ -730,7 +730,7 @@ public static class Tasking
 
         if (LosSantosRED.MySettings.Police.IssuePoliceHeavyWeapons)
         {
-            foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.IsInVehicle && x.IssuedHeavyWeapon == null))
+            foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && x.IsInVehicle && x.IssuedHeavyWeapon == null))
             {
                 Police.IssueCopHeavyWeapon(Cop);
                 break;
@@ -1327,7 +1327,7 @@ public static class Tasking
     }
     public static void RetaskAllRandomSpawns()
     {
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.WasModSpawned))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.WasModSpawned))
         {
             if (!Cop.TaskIsQueued)
             {
@@ -1339,7 +1339,7 @@ public static class Tasking
     }
     public static void RemoveAllIdleTasks()
     {
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.IsTasked && (x.TaskType == AssignableTasks.RandomSpawnIdle || x.TaskType == AssignableTasks.TaskInvestigateCrime) && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 350f))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.IsTasked && (x.TaskType == AssignableTasks.RandomSpawnIdle || x.TaskType == AssignableTasks.TaskInvestigateCrime) && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 350f))
         {
             Cop.TaskType = AssignableTasks.NoTask;
             Cop.IsTasked = false;
@@ -1405,7 +1405,7 @@ public static class Tasking
             string SubTask;
             if (Police.PoliceInSearchMode)
             {
-                GTACop ClosestCop = PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsDriver()).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
+                GTACop ClosestCop = GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsDriver()).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
                 if (ClosestCop == null)
                     return;
                 NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);
@@ -1426,7 +1426,7 @@ public static class Tasking
                 {
                     if (SubTask != "DriveTo")
                     {
-                        GTACop ClosestCop = PedScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsDriver()).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
+                        GTACop ClosestCop = GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsDriver()).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
                         if (ClosestCop == null)
                             break;
                         NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);
@@ -1456,7 +1456,7 @@ public static class Tasking
     }
     public static void UntaskAll(bool OnlyTasked)
     {
-        foreach (GTACop Cop in PedScanning.CopPeds)
+        foreach (GTACop Cop in GTAPeds.CopPeds)
         {
 
             if (OnlyTasked && Cop.IsTasked && !Cop.TaskIsQueued)
@@ -1470,7 +1470,7 @@ public static class Tasking
                 AddItemToQueue(new CopTask(Cop, AssignableTasks.Untask));
             }
         }
-        foreach (GTACop Cop in PedScanning.K9Peds)
+        foreach (GTACop Cop in GTAPeds.K9Peds)
         {
             if (Cop.IsTasked && !Cop.TaskIsQueued)
             {
@@ -1482,7 +1482,7 @@ public static class Tasking
     }
     public static void UntaskAllRandomSpawns(bool OnlyTasked)
     {
-        foreach (GTACop Cop in PedScanning.CopPeds.Where(x => x.WasModSpawned))
+        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.WasModSpawned))
         {
             if (OnlyTasked && Cop.IsTasked && !Cop.TaskIsQueued)
             {

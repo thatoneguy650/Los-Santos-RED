@@ -56,11 +56,15 @@ public static class Agencies
             new Agency.ModelInformation("s_m_y_sheriff_01", true,75,75),
             new Agency.ModelInformation("s_f_y_sheriff_01", false,25,25) };
         List<Agency.ModelInformation> SWAT = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_swat_01", true, 0,100) };
+            new Agency.ModelInformation("s_m_y_swat_01", true, 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> PoliceAndSwat = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_y_cop_01", true,70,0),
             new Agency.ModelInformation("s_f_y_cop_01", false,30,0),
-            new Agency.ModelInformation("s_m_y_swat_01", true, 0,100) };
+            new Agency.ModelInformation("s_m_y_swat_01", true, 0,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
+        List<Agency.ModelInformation> SheriffAndSwat = new List<Agency.ModelInformation>() {
+            new Agency.ModelInformation("s_m_y_sheriff_01", true, 75, 0),
+            new Agency.ModelInformation("s_f_y_sheriff_01", false, 25, 0),
+            new Agency.ModelInformation("s_m_y_swat_01", true, 0, 100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> DOAPeds = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("u_m_m_doa_01", true,100,100) };
         List<Agency.ModelInformation> IAAPeds = new List<Agency.ModelInformation>() {
@@ -73,7 +77,7 @@ public static class Agencies
             new Agency.ModelInformation("s_m_m_marine_02", true,0,0),
             new Agency.ModelInformation("s_m_y_marine_01", true,25,0),
             new Agency.ModelInformation("s_m_y_marine_02", true,0,0),
-            new Agency.ModelInformation("s_m_y_marine_03", true,0,100),
+            new Agency.ModelInformation("s_m_y_marine_03", true,100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PropComponent>() { new PropComponent(3, 1, 0) }) },
             new Agency.ModelInformation("s_m_m_pilot_02", true,0,0),
             new Agency.ModelInformation("s_m_y_pilot_01", true,0,0) };
         List<Agency.ModelInformation> FIBPeds = new List<Agency.ModelInformation>() {
@@ -102,8 +106,8 @@ public static class Agencies
         List<Agency.VehicleInformation> NOOSEVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("fbi", 70, 70) {MaxWantedLevelSpawn = 3 },
             new Agency.VehicleInformation("fbi2", 30, 30) {MaxWantedLevelSpawn = 3 },
-            new Agency.VehicleInformation("riot", 0, 45) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 4, AllowedPedModels = new List<string>() { "s_m_y_swat_01" } },
-            new Agency.VehicleInformation("riot2", 0, 45) { MinWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" } },
+            new Agency.VehicleInformation("riot", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 2, MaxOccupants = 3 },
+           // new Agency.VehicleInformation("riot2", 0, 45) { MinWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" } },
             new Agency.VehicleInformation("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },IsHelicopter = true,MinOccupants = 3,MaxOccupants = 4 }};
         List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("policeb", 70, 70) { IsMotorcycle = true, MaxOccupants = 1 },
@@ -130,8 +134,8 @@ public static class Agencies
         List<Agency.VehicleInformation> ChumashLSSDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff2", 100, 100) { Liveries = new List<int> { 0, 1, 2, 3 } } };
         List<Agency.VehicleInformation> RHPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police2", 85, 50) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
-            new Agency.VehicleInformation("fbi", 15,25),
+            new Agency.VehicleInformation("police2", 100, 50) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
+            new Agency.VehicleInformation("fbi", 0,25),
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<Agency.VehicleInformation> VPPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police3", 100, 75) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
@@ -147,12 +151,14 @@ public static class Agencies
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<Agency.VehicleInformation> PoliceHeliVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("polmav", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
-
-
+        List<Agency.VehicleInformation> SheriffHeliVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("buzzard2", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> ArmyVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("crusader", 75,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
             new Agency.VehicleInformation("barracks", 25,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 5,MaxWantedLevelSpawn = 4 },
             new Agency.VehicleInformation("rhino", 0,100) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
+            new Agency.VehicleInformation("valkyrie", 0,50) { Liveries = new List<int>() { 0 }, IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
+            new Agency.VehicleInformation("valkyrie2", 0,50) { Liveries = new List<int>() { 0 }, IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
         };
 
 
@@ -224,29 +230,37 @@ public static class Agencies
         AgenciesList = new List<Agency>
         {
             new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, true, true, StandardCops, LSPDVehicles, "LS ",AllWeapons),
-            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "White", Agency.Classification.Police, true, false, PoliceAndSwat, PoliceHeliVehicles, "ASD ",BestWeapons) {MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
-            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.Police, true, true, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) {SpawnsOnHighway = true },
-            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, true, true, StandardCops, LSPDVehicles, "LSA ",AllWeapons),
-            new Agency("~b~", "VPPD", "Vespucci Police Department", "DarkBlue", Agency.Classification.Police, false, true, StandardCops, VPPDVehicles, "VP ",AllWeapons),
-            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "LightBlue", Agency.Classification.Police, false, true, StandardCops, RHPDVehicles, "RH ",AllWeapons),
             new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, false, true, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons),
             new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, false, true, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons),
             new Agency("~b~", "LSPD-CH", "Los Santos Police - Chumash Division", "Blue", Agency.Classification.Police, false, true, StandardCops, ChumashLSPDVehicles, "LSC ",AllWeapons),
+            new Agency("~b~", "VPPD", "Vespucci Police Department", "DarkBlue", Agency.Classification.Police, false, true, StandardCops, VPPDVehicles, "VP ",AllWeapons),
+            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "LightBlue", Agency.Classification.Police, false, true, StandardCops, RHPDVehicles, "RH ",AllWeapons),
+            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, true, true, StandardCops, LSPDVehicles, "LSA ",AllWeapons),
+
+            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "White", Agency.Classification.Police, true, false, PoliceAndSwat, PoliceHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "White", Agency.Classification.Sheriff, true, false, SheriffAndSwat, SheriffHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+
+            new Agency("~r~", "BCSO", "Blaine County Sheriffs Office", "Red", Agency.Classification.Sheriff, false, true, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
+
             new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, true, true, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons),
-            new Agency("~r~", "BCSO", "Blaine County Sheriffs Office", "DarkRed", Agency.Classification.Sheriff, false, true, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, false, true, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, false, true, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons),
-            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Agency.Classification.Federal, true, true, ParkRangers, ParkRangerVehicles, "",AllWeapons),
-            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, true, true, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons) { CanDispatchFromAnywhere = true },
-            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, true, true, FIBPeds, FIBVehicles, "FIB ",BestWeapons) { CanDispatchFromAnywhere = true },
-            new Agency("~p~", "IAA", "International Affairs Agency", "Purple", Agency.Classification.Federal, true, false, IAAPeds, UnmarkedVehicles, "IAA ",AllWeapons),
-            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Federal, true, false, MilitaryPeds, ArmyVehicles, "",BestWeapons) {IsArmy = true },
-            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkRed", Agency.Classification.Federal, true, false, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { CanDispatchFromAnywhere = true,MinWantedLevelSpawn = 3 },
-            new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, true, true, SecurityPeds, UnmarkedVehicles, "",LimitedWeapons),
-            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Security, true, true, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons),
+
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkRed", Agency.Classification.Federal, true, false, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 3,CanSpawnAnywhere = true },
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, true, true, FIBPeds, FIBVehicles, "FIB ",BestWeapons),
+            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, true, true, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons),
             new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Agency.Classification.Other, true, true, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons),
+            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.Police, true, true, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) {SpawnsOnHighway = true,CanSpawnAnywhere = true },
+            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Agency.Classification.Federal, true, true, ParkRangers, ParkRangerVehicles, "",AllWeapons) {MaxWantedLevelSpawn = 3 },      
+            new Agency("~p~", "IAA", "International Affairs Agency", "Purple", Agency.Classification.Federal, true, false, IAAPeds, UnmarkedVehicles, "IAA ",AllWeapons),
+                 
+            new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, true, true, SecurityPeds, UnmarkedVehicles, "",LimitedWeapons) {CanSpawnAnywhere = true },
+            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Security, true, true, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3 },
+            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.Other, true, false, CoastGuardPeds, UnmarkedVehicles, "SACG ",LimitedWeapons){MaxWantedLevelSpawn = 3 },
+
+            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Federal, true, false, MilitaryPeds, ArmyVehicles, "",BestWeapons) {IsArmy = true,CanSpawnAnywhere = true },
+
             new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, true, false, null, null, "",null),
-            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.Other, true, false, CoastGuardPeds, UnmarkedVehicles, "SACG ",LimitedWeapons),
         };
       
     }
@@ -257,22 +271,7 @@ public static class Agencies
         if (Cop.IsArmy())
             return AgenciesList.Where(x => x.IsArmy).FirstOrDefault();
         else if (Cop.IsPolice())
-        {
-            Agency ToReturn;
-            if (Cop.Model.Name.ToLower() == "s_m_y_swat_01")//Swat depends on unit insignias
-             {
-                ToReturn = GetAgencyFromSwat(Cop);
-            }
-            else if (Cop.Model.Name.ToLower() == "s_m_m_security_01")//Security depends on where they are
-            {
-                ToReturn = GetAgencyFromSecurity(Cop);
-            }
-            else
-            {
-                ToReturn = GetPedAgencyFromZone(Cop);
-            }
-            return ToReturn;
-        }
+            return GetPedAgencyFromZone(Cop);
         else
             return null;
     }
@@ -296,7 +295,14 @@ public static class Agencies
         }
 
         if (ZoneAgency == null)
-            ZoneAgency = AgenciesList.Where(x => x.CopModels.Any(y => y.ModelName.ToLower() == Cop.Model.Name.ToLower())).FirstOrDefault();
+        { 
+            ZoneAgency = AgenciesList.Where(x => x.CopModels.Any(y => y.ModelName.ToLower() == Cop.Model.Name.ToLower()) && x.CanSpawnAnywhere).FirstOrDefault();
+            if (ZoneAgency == null)
+            {
+                Debugging.WriteToLog("GetPedAgencyFromZone", string.Format("Couldnt get agency from zone {0} ped {1}", ZoneFound.TextName, Cop.Model.Name));
+                Cop.Delete();
+            }
+        }
         return ZoneAgency;
     }
     public static void ChangeLivery(Vehicle CopCar, Agency AssignedAgency)
@@ -306,20 +312,22 @@ public static class Agencies
         {
             MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
         }
-        if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
+        if (MyVehicle == null)
         {
-            ChangeToDefaultLivery(CopCar);
+            Debugging.WriteToLog("ChangeLivery", string.Format("No Match for Vehicle {0} for {1}", CopCar.Model.Name, AssignedAgency.Initials));
+            CopCar.Delete();
             return;
         }
-        //Debugging.WriteToLog("ChangeLivery", string.Format("Agency {0}, {1}, {2}", AssignedAgency.Initials, CopCar.Model.Name,string.Join(",", MyVehicle.Liveries.Select(x => x.ToString()))));
-        int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
-        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
-        
+        if (MyVehicle.Liveries != null && MyVehicle.Liveries.Any())
+        {
+            //Debugging.WriteToLog("ChangeLivery", string.Format("Agency {0}, {1}, {2}", AssignedAgency.Initials, CopCar.Model.Name,string.Join(",", MyVehicle.Liveries.Select(x => x.ToString()))));
+            int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+            NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
+        }
         CopCar.LicensePlate = AssignedAgency.LicensePlatePrefix + LosSantosRED.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
     }
-    public static void CheckandChangeLivery(Vehicle CopCar)
+    public static void ChangeLiveryAtZone(Vehicle CopCar,Zone ZoneFound)
     {
-        Zone ZoneFound = Zones.GetZoneAtLocation(CopCar.Position);
         Agency.VehicleInformation MyVehicle = null;
         Agency ZoneAgency = null;
         if (ZoneFound != null)
@@ -340,71 +348,21 @@ public static class Agencies
                 MyVehicle = ZoneAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
             }
         }
-        if (MyVehicle == null || MyVehicle.Liveries == null || !MyVehicle.Liveries.Any())
+        if (MyVehicle == null || ZoneAgency == null)
         {
-            ChangeToDefaultLivery(CopCar);
+            Debugging.WriteToLog("CheckandChangeLivery", string.Format("No Match for Vehicle {0} at {1}", CopCar.Model.Name, ZoneFound.TextName));
+            CopCar.Delete();
             return;
         }
-
-        int LiveryNumber = NativeFunction.CallByName<int>("GET_VEHICLE_LIVERY", CopCar);
-        int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
-        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
+        if (MyVehicle.Liveries != null && MyVehicle.Liveries.Any())
+        {
+            int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+            NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
+        }
         if(ZoneAgency != null)
         {
             CopCar.LicensePlate = ZoneAgency.LicensePlatePrefix + LosSantosRED.RandomString(8 - ZoneAgency.LicensePlatePrefix.Length);
-        }
-        
-    }
-    public static void ChangeToDefaultLivery(Vehicle CopCar)
-    {
-        List<Agency.VehicleInformation> LSPDVehiclesVanilla = new List<Agency.VehicleInformation>() {
-                new Agency.VehicleInformation("police", 25,25) {Liveries = new List<int>() { 0,1,2,3,4,5 } },
-                new Agency.VehicleInformation("police2", 25, 25) {Liveries = new List<int>() { 0,1,2,3,4,5,6,7 } },
-                new Agency.VehicleInformation("police3", 25, 25) {Liveries = new List<int>() { 0,1,2,3,4,5,6,7 } },
-                new Agency.VehicleInformation("police4", 10, 10),
-                new Agency.VehicleInformation("fbi2", 15, 15) };
-
-        List<Agency.VehicleInformation> LSSDVehiclesVanilla = new List<Agency.VehicleInformation>() {
-                new Agency.VehicleInformation("sheriff", 50, 50) { Liveries = new List<int> { 0, 1, 2, 3 } },
-                new Agency.VehicleInformation("sheriff2", 50, 50) { Liveries = new List<int> { 0, 1, 2, 3 } } };
-
-
-        Agency.VehicleInformation MyVehicle = LSPDVehiclesVanilla.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
-        if (MyVehicle == null)
-            MyVehicle = LSSDVehiclesVanilla.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
-
-        if (MyVehicle == null)
-            return;
-
-        int LiveryNumber = NativeFunction.CallByName<int>("GET_VEHICLE_LIVERY", CopCar);
-        int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
-        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
-    }
-    private static Agency GetAgencyFromSwat(Ped Cop)
-    {
-        string ModelNameToFind = Cop.Model.Name;
-        return AgenciesList.Where(x => x.CopModels.Any(y => y.ModelName.ToLower() == ModelNameToFind.ToLower())).FirstOrDefault();
-    }
-    private static Agency GetAgencyFromSecurity(Ped Cop)
-    {
-        Zone PedZone = Zones.GetZoneAtLocation(Cop.Position);
-        string ModelNameToFind = Cop.Model.Name;
-        if (PedZone != null && PedZone.ZoneAgencies.Any())
-        {
-            return AgenciesList.Where(x => x.CopModels.Any(y => y.ModelName.ToLower() == ModelNameToFind.ToLower())).FirstOrDefault();//PedZone.ZoneAgencies.Where(x => x.AssociatedAgency != null && x.AssociatedAgency.CopModels.Any(y => y.ModelName.ToLower() == ModelNameToFind.ToLower())).OrderBy(x => x.Priority).FirstOrDefault().AssociatedAgency;
-        }
-        else
-        {
-            
-            return AgenciesList.Where(x => x.CopModels.Any(y => y.ModelName.ToLower() == ModelNameToFind.ToLower())).FirstOrDefault();
-        }
-    }
-    public static void PrintAgencies()
-    {
-        foreach(Agency MyAgency in AgenciesList)
-        {
-            Debugging.WriteToLog("AgencyPrint", string.Format("Name: {0}", MyAgency.FullName));
-        }
+        }     
     }
  }
 [Serializable()]
@@ -421,7 +379,7 @@ public class Agency
     public bool CanSpawnAmbient = false;
     public string LicensePlatePrefix;
     public bool SpawnsOnHighway = false;
-    public bool CanDispatchFromAnywhere = false;
+    public bool CanSpawnAnywhere = false;
     public bool IsArmy = false;
     public uint MinWantedLevelSpawn = 0;
     public uint MaxWantedLevelSpawn = 5;
@@ -520,7 +478,7 @@ public class Agency
         }
 
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-        Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
+        //Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
         int RandomPick = LosSantosRED.MyRand.Next(0, Total);
         foreach (ModelInformation Cop in ToPickFrom)
         {

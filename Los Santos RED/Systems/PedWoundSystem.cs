@@ -158,14 +158,14 @@ public static class PedWoundSystem
     }
     private static void AddPedsToTrack()
     {
-        foreach (GTACop Cop in PedScanning.CopPeds)
+        foreach (GTACop Cop in GTAPeds.CopPeds)
         {
             if (Cop.Pedestrian.Exists() && !PedHealthStates.Any(x => x.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
                 PedHealthStates.Add(new PedHealthState(Cop.Pedestrian));
             }
         }
-        foreach (GTAPed Civilian in PedScanning.Civilians)
+        foreach (GTAPed Civilian in GTAPeds.Civilians)
         {
             if (Civilian.Pedestrian.Exists() && !PedHealthStates.Any(x => x.Pedestrian.Handle == Civilian.Pedestrian.Handle))
             {

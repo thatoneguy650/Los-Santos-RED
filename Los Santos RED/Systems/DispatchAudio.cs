@@ -541,7 +541,6 @@ public static class DispatchAudio
     {
         DispatchQueue.Clear();
     }
-
     private static void AssaultingOfficer(DispatchQueueItem ItemToPlay)
     {
         if (ReportedLethalForceAuthorized || ReportedOfficerDown)
@@ -1173,7 +1172,7 @@ public static class DispatchAudio
     }
     public static void SuspectEvadedOfficers(DispatchQueueItem ItemToPlay)
     {
-        if (PedScanning.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
+        if (GTAPeds.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
             return;
 
         List<string> ScannerList = new List<string>() { AudioBeeps.AudioStart() };

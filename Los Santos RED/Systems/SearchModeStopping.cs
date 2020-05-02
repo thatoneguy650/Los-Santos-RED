@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public static class SearchModeStopping
 {
+    private static bool PrevStopSearchMode;
     private static Vector3 GhostCopLastPosition;
     private static Model CopModel;
     private static bool SingleStopActive = false;
@@ -86,6 +87,13 @@ public static class SearchModeStopping
     }
     public static void StopPoliceSearchMode()
     {
+        if(PrevStopSearchMode != StopSearchMode)
+        {
+            PrevStopSearchMode = StopSearchMode;
+            Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Police.AnyPoliceRecentlySeenPlayer));
+        }
+
+
         if (!StopSearchMode)
             return;
 
