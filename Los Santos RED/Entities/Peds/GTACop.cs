@@ -1,4 +1,5 @@
 ﻿
+using ExtensionsMethods;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,6 @@ public class GTACop : GTAPed
     public bool WasRandomSpawnDriver { get; set; } = false;
     public bool WasInvestigationSpawn { get; set; } = false;
     public bool IsBikeCop { get; set; } = false;
-    public bool IsSwat { get; set; } = false;
     public bool IsPursuitPrimary { get; set; } = false;
     public bool SetTazer { get; set; } = false;
     public bool SetUnarmed { get; set; } = false;
@@ -26,9 +26,9 @@ public class GTACop : GTAPed
     public bool HasItemsToRadioIn { get; set; }
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false,true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
-    public Agency.WeaponVariation PistolVariation { get; set; }
-    public Agency.WeaponVariation HeavyVariation { get; set; }
-    public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, true, false, null, null, "",null);
+    public GTAWeapon.WeaponVariation PistolVariation { get; set; }
+    public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
+    public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null);
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public bool AtWantedCenterDuringChase { get; set; } = false;
     public ChaseStatus CurrentChaseStatus { get; set; } = ChaseStatus.Idle;
@@ -44,6 +44,51 @@ public class GTACop : GTAPed
         Pedestrian.HearingRange = 25;
         if(LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
             Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceGeneralAccuracy;
+    }
+    public void IssuePistol()
+    {
+        GTAWeapon Pistol;
+
+        if (AssignedAgency == null)
+        {
+            Debugging.WriteToLog("IssueCopPistol", "No Agency");
+            Debugging.WriteToLog("IssueCopPistol", Pedestrian.Model.Name);
+            Debugging.DebugNumpad8();
+        }
+
+        Agency.IssuedWeapon PistolToPick = new Agency.IssuedWeapon("weapon_pistol", true, null);
+
+        if (AssignedAgency != null)
+            PistolToPick = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
+        Pistol = GTAWeapons.WeaponsList.Where(x => x.Name.ToLower() == PistolToPick.ModelName.ToLower() && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
+        IssuedPistol = Pistol;
+        Pedestrian.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
+        if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
+        {
+            GTAWeapon.WeaponVariation MyVariation = PistolToPick.MyVariation;
+            PistolVariation = MyVariation;
+            LosSantosRED.ApplyWeaponVariation(Pedestrian, (uint)Pistol.Hash, MyVariation);
+        }
+    }
+    public void IssueHeavyWeapon()
+    {
+        GTAWeapon IssuedHeavy;
+
+        Agency.IssuedWeapon HeavyToPick = new Agency.IssuedWeapon("weapon_shotgun", true, null);
+        if (AssignedAgency != null)
+            HeavyToPick = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
+
+        IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.Name.ToLower() == HeavyToPick.ModelName.ToLower() && x.Category != GTAWeapon.WeaponCategory.Pistol).PickRandom();
+        IssuedHeavyWeapon = IssuedHeavy;
+        Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
+        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceHeavyAccuracy;
+        if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
+        {
+            GTAWeapon.WeaponVariation MyVariation = HeavyToPick.MyVariation;
+            HeavyVariation = MyVariation;
+            LosSantosRED.ApplyWeaponVariation(Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
+        }
     }
     public bool NeedsWeaponCheck
     {
@@ -100,13 +145,13 @@ public class GTACop : GTAPed
     }
     public GTACop(Ped _Pedestrian, bool _canSeePlayer, int _Health, Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
     {
+        IsCop = true;
         AssignedAgency = _Agency;
         SetAccuracyAndSightRange();
-        if (_Pedestrian.Model.Name.ToLower() == "s_m_y_swat_01")
-            IsSwat = true;
     }
     public GTACop(Ped _Pedestrian, bool _canSeePlayer, uint _gameTimeLastSeenPlayer, Vector3 _positionLastSeenPlayer, int _Health, Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
     {
+        IsCop = true;
         Pedestrian = _Pedestrian;
         CanSeePlayer = _canSeePlayer;
         GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
@@ -114,8 +159,6 @@ public class GTACop : GTAPed
         Health = _Health;
         AssignedAgency = _Agency;
         SetAccuracyAndSightRange();
-        if (_Pedestrian.Model.Name.ToLower() == "s_m_y_swat_01")
-            IsSwat = true;
     }
 }
 

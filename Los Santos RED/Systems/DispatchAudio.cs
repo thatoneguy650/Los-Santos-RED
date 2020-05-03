@@ -28,19 +28,16 @@ public static class DispatchAudio
     private static List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
     private static List<ColorLookup> ColorLookups = new List<ColorLookup>();
     private static List<string> DamagedScannerAliases = new List<string>();
-    public static bool CancelAudio;
-    public static bool IsPlayingAudio;
     private static bool CurrentlyPlayingCanBeInterrupted = false;
-
     private static uint GameTimeLastDisplayedSubtitle;
-    public static bool ReportedLethalForceAuthorized = false;
-    public static bool ReportedWeaponsFree = false;
-    public static bool ReportedOfficerDown = false;
-    private static uint GameTimeLastOfficersReported;
     private static uint GameTimeLastCivilianReported;
-
+    public static bool CancelAudio { get; set; }
+    public static bool IsPlayingAudio { get; set; }
+    public static bool ReportedLethalForceAuthorized { get; set; } = false;
+    public static bool ReportedWeaponsFree { get; set; } = false;
+    public static bool ReportedOfficerDown { get; set; } = false;
+    public static bool IsRunning { get; set; } = true;
     public static int LastCivilianReportedPriority { get; set; }
-
     public static bool RecentAnnouncedDispatch
     {
         get
@@ -60,7 +57,6 @@ public static class DispatchAudio
             return outputDevice != null;
         }
     }
-    public static bool IsRunning { get; set; } = true;
     public enum AvailableDispatch
     {
         ShootingAtPolice = 0,
@@ -283,8 +279,6 @@ public static class DispatchAudio
     }
     public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
-
-
         /////////Maybe?
         if (MyAudioEvent.CanInterrupt && CurrentlyPlayingCanBeInterrupted)
         {
@@ -541,6 +535,32 @@ public static class DispatchAudio
     {
         DispatchQueue.Clear();
     }
+    //private static void Generic(DispatchQueueItem ItemToPlay)
+    //{
+    //    if (!CanRun(ItemToPlay))
+    //        return;
+
+    //    List<string> ScannerList = new List<string>();
+    //    string Subtitles = "";
+    //    string NotificationTitle = GetNotificationTitle(ItemToPlay.ReportedBy);
+    //    AttentionType WhoToNotifiy = GetWhoToNotify(ItemToPlay.ReportedBy);
+
+    //    ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ItemToPlay.ReportedBy, Game.LocalPlayer.Character.Position);
+    //    Subtitles += " we have an ~r~Assault on an Officer~s~";
+    //    DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Assault on an Officer");
+    //    ScannerList.Add(new List<string>() { crime_assault_on_an_officer.Anassaultonanofficer.FileName, crime_assault_on_an_officer.Anofficerassault.FileName }.PickRandom());
+    //    AddLethalForceAuthorized(ref ScannerList, ref Subtitles, ref Notification);
+    //    ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+    //    PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, false, true));
+    //}
+
+    //private static bool CanRun(DispatchQueueItem ItemToPlay)
+    //{
+    //    if (ItemToPlay.Type == AvailableDispatch.AssaultingOfficer && (ReportedLethalForceAuthorized || ReportedOfficerDown))
+    //        return false;
+    //    else
+    //        return true;
+    //}
     private static void AssaultingOfficer(DispatchQueueItem ItemToPlay)
     {
         if (ReportedLethalForceAuthorized || ReportedOfficerDown)
@@ -1172,7 +1192,7 @@ public static class DispatchAudio
     }
     public static void SuspectEvadedOfficers(DispatchQueueItem ItemToPlay)
     {
-        if (GTAPeds.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
+        if (PedList.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
             return;
 
         List<string> ScannerList = new List<string>() { AudioBeeps.AudioStart() };

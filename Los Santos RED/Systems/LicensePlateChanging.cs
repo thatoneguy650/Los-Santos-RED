@@ -87,7 +87,7 @@ public static class LicensePlateChanging
                     return;
 
                 LosSantosRED.SetPedUnarmed(Game.LocalPlayer.Character, false);
-                if (!LosSantosRED.MovePedToCarPosition(VehicleToChange.VehicleEnt, Game.LocalPlayer.Character, VehicleToChange.VehicleEnt.Heading, ChangeSpot, true))
+                if (!MovePedToCarPosition(VehicleToChange.VehicleEnt, Game.LocalPlayer.Character, VehicleToChange.VehicleEnt.Heading, ChangeSpot, true))
                     return;
 
                 PlayerChangingPlate = true;
@@ -179,6 +179,34 @@ public static class LicensePlateChanging
             return true;
         }
         return false;
+    }
+    public static bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
+    {
+        bool Continue = true;
+        bool isPlayer = false;
+        if (PedToMove == Game.LocalPlayer.Character)
+            isPlayer = true;
+        Ped Driver = TargetVehicle.Driver;
+        //Vector3 CarPosition = TargetVehicle.Position;
+        NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
+
+        while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.Heading.IsWithin(DesiredHeading - 5f, DesiredHeading + 5f)))
+        {
+            GameFiber.Yield();
+            if (isPlayer && Extensions.IsMoveControlPressed())
+            {
+                Continue = false;
+                break;
+            }
+            if (StopDriver && TargetVehicle.Driver != null)
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+        }
+        if (!Continue)
+        {
+            PedToMove.Tasks.Clear();
+            return false;
+        }
+        return true;
     }
     //public static bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
     //{

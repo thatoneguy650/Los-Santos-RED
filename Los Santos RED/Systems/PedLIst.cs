@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 
 
-public static class GTAPeds
+public static class PedList
 {
     private static int MinCivilianHealth = 70;//10;
     private static int MaxCivilianHealth = 100;//20;
@@ -88,7 +88,7 @@ public static class GTAPeds
         if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
             Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceGeneralAccuracy;
         Pedestrian.Inventory.Weapons.Clear();
-        Police.IssueCopPistol(myCop);
+        myCop.IssuePistol();
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
 
         if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
@@ -104,7 +104,7 @@ public static class GTAPeds
         CopPeds.Add(myCop);
 
         if (LosSantosRED.MySettings.Police.IssuePoliceHeavyWeapons && Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
-            Police.IssueCopHeavyWeapon(myCop);
+            myCop.IssueHeavyWeapon();
     }
     private static void AddCivilian(Ped Pedestrian)
     {
@@ -182,11 +182,11 @@ public static class GTAPeds
         {
             Cop.Pedestrian.Delete();
         }
-        foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsInAnyVehicle(false)))
         {
             Cop.Pedestrian.Delete();
         }
-        foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsInAnyVehicle(false)))
         {
             Cop.Pedestrian.CurrentVehicle.Delete();
             Cop.Pedestrian.Delete();

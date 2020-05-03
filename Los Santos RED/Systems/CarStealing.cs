@@ -354,7 +354,7 @@ public static class CarStealing
                     return;
                 }
 
-                GTAPed CarjackingVictim = GTAPeds.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
+                GTAPed CarjackingVictim = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
                 if (CarjackingVictim != null)
                     CarjackingVictim.CanFlee = false;
 
@@ -533,7 +533,7 @@ public static class CarStealing
         {
             PlayerBreakingIntoCar = true;
 
-            GTAPed CarjackingVictim = GTAPeds.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
+            GTAPed CarjackingVictim = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
             if (CarjackingVictim != null)
                 CarjackingVictim.CanFlee = false;
 

@@ -28,10 +28,10 @@ public static class MuggingSystem
             if (!(Target is Ped))
                 return;
 
-            if (GTAPeds.CopPeds.Any(x => x.Pedestrian.Handle == Target.Handle))
+            if (PedList.CopPeds.Any(x => x.Pedestrian.Handle == Target.Handle))
                 return;//aiming at cop
 
-            GTAPed GTAPedTarget = GTAPeds.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Target.Handle);
+            GTAPed GTAPedTarget = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Target.Handle);
 
             if (GTAPedTarget == null)
                 GTAPedTarget = new GTAPed((Ped)Target, false, Target.Health);
@@ -62,10 +62,10 @@ public static class MuggingSystem
             int Handle = TargetEntity;
             Debugging.WriteToLog("Muggin Melee", string.Format("Middle Handle: {0}", Handle));
 
-            if (GTAPeds.CopPeds.Any(x => x.Pedestrian.Handle == Handle))
+            if (PedList.CopPeds.Any(x => x.Pedestrian.Handle == Handle))
                 return;//aiming at cop
 
-            GTAPed GTAPedTarget = GTAPeds.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+            GTAPed GTAPedTarget = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
 
             if (GTAPedTarget == null)
                 return;

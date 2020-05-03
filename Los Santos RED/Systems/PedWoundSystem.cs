@@ -26,6 +26,7 @@ public static class PedWoundSystem
     }
     public enum InjuryType
     {
+        Vanilla = -1,
         Normal = 0,
         Graze = 1,
         Critical = 2,
@@ -158,14 +159,14 @@ public static class PedWoundSystem
     }
     private static void AddPedsToTrack()
     {
-        foreach (GTACop Cop in GTAPeds.CopPeds)
+        foreach (GTACop Cop in PedList.CopPeds)
         {
             if (Cop.Pedestrian.Exists() && !PedHealthStates.Any(x => x.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
                 PedHealthStates.Add(new PedHealthState(Cop.Pedestrian));
             }
         }
-        foreach (GTAPed Civilian in GTAPeds.Civilians)
+        foreach (GTAPed Civilian in PedList.Civilians)
         {
             if (Civilian.Pedestrian.Exists() && !PedHealthStates.Any(x => x.Pedestrian.Handle == Civilian.Pedestrian.Handle))
             {
@@ -301,8 +302,8 @@ public static class PedWoundSystem
             if (DamagedLocation == BodyLocation.UpperTorso)
                 ArmorWillProtect = true;
 
-            InjuryType HealthInjury = InjuryType.Normal; //RandomType(CanBeFatal);
-            InjuryType ArmorInjury = InjuryType.Normal; //RandomType(false);
+            InjuryType HealthInjury = InjuryType.Vanilla; //RandomType(CanBeFatal);
+            InjuryType ArmorInjury = InjuryType.Vanilla; //RandomType(false);
 
             if (DamagingWeapon.Category != GTAWeapon.WeaponCategory.Vehicle)
             {
@@ -321,6 +322,9 @@ public static class PedWoundSystem
                 HealthDamageModifier = 0.75f;//0.25f;
             else if (HealthInjury == InjuryType.Critical)
                 HealthDamageModifier = 8.0f;// 6.0f;//2.0f;
+            else if (HealthInjury == InjuryType.Vanilla)
+                HealthDamageModifier = 1.0f;// 6.0f;//2.0f;
+
 
             if (Pedestrian.Health == 0)//already dead, we are intercepting
                 HealthInjury = InjuryType.Fatal;
@@ -333,6 +337,8 @@ public static class PedWoundSystem
                 ArmorDamageModifier = 0.25f;
             else if (ArmorInjury == InjuryType.Critical)
                 ArmorDamageModifier = 2.0f;
+            else if (ArmorInjury == InjuryType.Vanilla)
+                ArmorDamageModifier = 1.0f;
 
             int NewHealthDamage = Convert.ToInt32(HealthDamage * HealthDamageModifier);
 

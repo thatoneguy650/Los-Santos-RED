@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 public static class ScriptController
 {
     private static Stopwatch GameStopWatch;
-    private static TickTask LineOfSightTick;
+   // private static TickTask LineOfSightTick;
     private static TickTask PoliceScanningTick;
     private static TickTask CleanupCopTick;
     private static TickTask RandomCopSpawningTick;
@@ -43,8 +43,10 @@ public static class ScriptController
         IsRunning = true;
 
 
-        LosSantosREDTick = new TickTask(25, "InstantActionTick", LosSantosRED.InstantActionTick, TickTask.Type.RequiredGeneral);
+        LosSantosREDTick = new TickTask(25, "InstantActionTick", LosSantosRED.LosSantosREDTick, TickTask.Type.RequiredGeneral);
         PoliceTick = new TickTask(25, "PoliceTick", Police.PoliceGeneralTick, TickTask.Type.RequiredGeneral);
+
+
         VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);
 
 
@@ -60,12 +62,12 @@ public static class ScriptController
         ClockTick = new TickTask(0, "ClockTick", ClockSystem.ClockTick, TickTask.Type.RequiredGeneral);
 
 
-        PoliceScanningTick = new TickTask(1000, "PoliceScanningTick", GTAPeds.ScanForPeds, TickTask.Type.Police);//was 5000
-        LineOfSightTick = new TickTask(500, "LineOfSightTick",Police.CheckPoliceSight, TickTask.Type.Police);
+        PoliceScanningTick = new TickTask(1000, "PoliceScanningTick", PedList.ScanForPeds, TickTask.Type.Police);//was 5000
+        //LineOfSightTick = new TickTask(500, "LineOfSightTick",Police.CheckPoliceSight, TickTask.Type.Police);
         ProcessTaskQueueTick = new TickTask(50, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);
         PoliceStateTick = new TickTask(50, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);
         SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);//was 50
-        PoliceVehicleScanningTick = new TickTask(1000, "PoliceVehicleScanningTick", GTAPeds.ScanforPoliceVehicles, TickTask.Type.Police);//was 5000//was 1500
+        PoliceVehicleScanningTick = new TickTask(1000, "PoliceVehicleScanningTick", PedList.ScanforPoliceVehicles, TickTask.Type.Police);//was 5000//was 1500
 
         WeaponDroppingTick = new TickTask(100, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);
         CivilianTick = new TickTask(150, "Civilian", Civilians.CivilianTick, TickTask.Type.RequiredGeneral);
@@ -85,7 +87,7 @@ public static class ScriptController
         MyTickTasks = new List<TickTask>()
         {
 
-            LosSantosREDTick,PoliceTick,VehicleEngineTick,VehicleFuelTick,PlayerHealthTick,PedWoundSystemTick,PoliceScanningTick,LineOfSightTick,ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
+            LosSantosREDTick,PoliceTick,VehicleEngineTick,VehicleFuelTick,PlayerHealthTick,PedWoundSystemTick,PoliceScanningTick,/*LineOfSightTick,*/ProcessTaskQueueTick,PoliceStateTick,SearchModeStopperTick,PoliceVehicleScanningTick,WeaponDroppingTick
             ,CivilianTick,TrafficViolationsTick,PlayerLocationTick,PersonOfInterestTick,DispatchAudioTick/*,WeatherCheckingTick*/,PoliceSpeechTick,RandomCopSpawningTick,CleanupCopTick,MuggingTick,ClockTick
         };
 
@@ -129,8 +131,8 @@ public static class ScriptController
                     //Police Stuff
                     if (Police.IsRunning && PoliceScanningTick.ShouldRun)
                         PoliceScanningTick.RunTask();
-                    else if (Police.IsRunning && LineOfSightTick.ShouldRun)
-                        LineOfSightTick.RunTask();
+                    //else if (Police.IsRunning && LineOfSightTick.ShouldRun)
+                    //    LineOfSightTick.RunTask();
                     else if (Tasking.IsRunning && ProcessTaskQueueTick.ShouldRun)//used to be IF
                         ProcessTaskQueueTick.RunTask();
                     else if (Tasking.IsRunning && PoliceStateTick.ShouldRun)
@@ -178,7 +180,7 @@ public static class ScriptController
                     GameStopWatch.Stop();
 
                     if (GameStopWatch.ElapsedMilliseconds >= 20)
-                        Debugging.WriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, ""));//GetStatus()
+                        Debugging.WriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, GetStatus()));
 
                     ResetRanItems();
 

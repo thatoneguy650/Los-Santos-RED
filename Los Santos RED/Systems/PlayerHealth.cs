@@ -331,16 +331,16 @@ public static class PlayerHealth
     {
         if(IsBleeding) //started bleeding
         {
-            NativeFunction.Natives.x80C8B1846639BB19(1);
-            NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);//_START_SCREEN_EFFECT
+            //NativeFunction.Natives.x80C8B1846639BB19(1);
+            //NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);//_START_SCREEN_EFFECT
         }
         else
         {
-            NativeFunction.Natives.xB4EDDC19532BFB85();//ANIMPOSTFX_STOP_ALL
-            NativeFunction.Natives.x80C8B1846639BB19(0);
+            //NativeFunction.Natives.xB4EDDC19532BFB85();//ANIMPOSTFX_STOP_ALL
+            //NativeFunction.Natives.x80C8B1846639BB19(0);
 
-            if(Health > 0)
-                NativeFunction.Natives.x2206BF9A37B7F724("MP_corona_switch", 0, false);//_START_SCREEN_EFFECT
+            //if(Health > 0)
+            //    NativeFunction.Natives.x2206BF9A37B7F724("MP_corona_switch", 0, false);//_START_SCREEN_EFFECT
         }
         PrevIsBleeding = IsBleeding;
         Debugging.WriteToLog("BleedingChanged", string.Format("Bleeding: {0}", IsBleeding));
@@ -455,13 +455,13 @@ public static class PlayerHealth
             {  
                 LosSantosRED.RequestAnimationDictionay("move_p_m_two_idles@generic");
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", PedToBandage, (uint)2725352035, true);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToBandage, "move_p_m_two_idles@generic", "fidget_pick_at_face", 8.0f, -8.0f, 5000, 1, 0, false, false, false);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToBandage, "move_p_m_two_idles@generic", "fidget_pick_at_face", 8.0f, -8.0f, 2000, 1, 0, false, false, false);
                 PlayingAnimation = true;
                 Debugging.WriteToLog("BandagePed", string.Format("Started Bandaging Animation"));
             }
             uint GameTimeStartedBandaging = Game.GameTime;
             bool IsFinished = true;
-            while (Game.GameTime - GameTimeStartedBandaging <= 5000)
+            while (Game.GameTime - GameTimeStartedBandaging <= 2000)
             {
                 if (ExtensionsMethods.Extensions.IsMoveControlPressed() || Game.LocalPlayer.Character.IsDead)
                 {
@@ -475,7 +475,7 @@ public static class PlayerHealth
                 Debugging.WriteToLog("BandagePed", string.Format("Finished, Not Bleeding"));
                 IsBleeding = false;
 
-                NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingOut", 3500, 0);//_START_SCREEN_EFFECT
+                //NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingOut", 3500, 0);//_START_SCREEN_EFFECT
 
             }
             else

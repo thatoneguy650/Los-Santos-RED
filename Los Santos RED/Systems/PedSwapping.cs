@@ -135,7 +135,7 @@ public static class PedSwapping
                 return;
 
             if(ClearNearPolice)
-                GTAPeds.ClearPoliceCompletely();
+                PedList.ClearPoliceCompletely();
 
             StoreTargetPedData(TargetPed);
 
@@ -271,7 +271,6 @@ public static class PedSwapping
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
 
-        Police.RemoveWantedBlips();
         Police.ResetPoliceStats();
         PersonOfInterest.ResetPersonOfInterest(false);
         GameTimeLastTakenOver = Game.GameTime;

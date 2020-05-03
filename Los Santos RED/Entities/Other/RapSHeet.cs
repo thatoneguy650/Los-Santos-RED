@@ -203,7 +203,7 @@ public class RapSheet
             FiringWeapon.IsCurrentlyViolating = true;
             if (Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
             {
-                if (GTAPeds.CopPeds.Any(x => x.RecentlySeenPlayer()))
+                if (PedList.CopPeds.Any(x => x.RecentlySeenPlayer()))
                 {
                     FiringWeaponNearPolice.IsCurrentlyViolating = true;
                     if (FiringWeaponNearPolice.CanObserveCrime)
@@ -212,7 +212,7 @@ public class RapSheet
             }
             else
             {
-                if (GTAPeds.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
+                if (PedList.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
                 {
                     FiringWeaponNearPolice.IsCurrentlyViolating = true;
                     if (FiringWeaponNearPolice.CanObserveCrime)
@@ -323,7 +323,7 @@ public class RapSheet
             }
             ResistingArrest.CrimeObserved();
         }
-        if (GrandTheftAuto.CanObserveCrime && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.IsInAnyPoliceVehicle && Police.AnyPoliceCanSeePlayer && LosSantosRED.GetPlayersCurrentTrackedVehicle() != null && !LosSantosRED.GetPlayersCurrentTrackedVehicle().WasReportedStolen && GTAPeds.CopPeds.Any(x => x.DistanceToPlayer <= 17f))
+        if (GrandTheftAuto.CanObserveCrime && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.IsInAnyPoliceVehicle && Police.AnyPoliceCanSeePlayer && LosSantosRED.GetPlayersCurrentTrackedVehicle() != null && !LosSantosRED.GetPlayersCurrentTrackedVehicle().WasReportedStolen && PedList.CopPeds.Any(x => x.DistanceToPlayer <= 17f))
         {
             GrandTheftAuto.CrimeObserved();
         }
@@ -334,7 +334,7 @@ public class RapSheet
     }
     private void CheckAimingAtPolice()
     {
-        if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsConsideredArmed && Game.LocalPlayer.IsFreeAiming && Police.AnyPoliceCanSeePlayer && GTAPeds.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.Pedestrian)))
+        if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && LosSantosRED.PlayerIsConsideredArmed && Game.LocalPlayer.IsFreeAiming && Police.AnyPoliceCanSeePlayer && PedList.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.Pedestrian)))
             TimeAimedAtPolice++;
         else
             TimeAimedAtPolice = 0;
@@ -445,7 +445,7 @@ public class Crime
             AddDispatchToQueue(DispatchToPlay);
         }
         int CopsToRadio = 0;
-        foreach(GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && x.RecentlySeenPlayer()).OrderBy(x=> x.DistanceToPlayer).Take(2))
+        foreach(GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.RecentlySeenPlayer()).OrderBy(x=> x.DistanceToPlayer).Take(2))
         {
             if (CopsToRadio == 0)
             {

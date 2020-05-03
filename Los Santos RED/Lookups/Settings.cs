@@ -124,6 +124,7 @@ public class KeySettings
     public Keys MenuKey = Keys.F10;
     public Keys SurrenderKey = Keys.E;
     public Keys DropWeaponKey = Keys.G;
+    public Keys VehicleKey = Keys.R;
     public KeySettings()
     {
 

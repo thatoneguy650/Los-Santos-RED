@@ -55,7 +55,7 @@ public static class Respawning
         else
         {
             GameTimeLastBribedPolice = Game.GameTime;
-            GTACop ClosestCop = GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            GTACop ClosestCop = PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             if (ClosestCop == null)
             {
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
@@ -167,7 +167,7 @@ public static class Respawning
 
         Game.LocalPlayer.Character.Position = Hospital.LocationPosition;
         Game.LocalPlayer.Character.Heading = Hospital.Heading;
-        GTAPeds.ClearPoliceCompletely();
+        PedList.ClearPoliceCompletely();
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
 
@@ -240,7 +240,7 @@ public static class Respawning
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         }
 
-        GTAPeds.ClearPoliceCompletely();
+        PedList.ClearPoliceCompletely();
 
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);

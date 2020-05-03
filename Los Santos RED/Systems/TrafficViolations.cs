@@ -103,7 +103,7 @@ public static class TrafficViolations
             if (!CurrVehicle.IsRoadWorthy() || CurrVehicle.IsDamaged())
                 PlayersVehicleIsSuspicious = true;
             bool TreatAsCop = false;
-            bool TrafficAnyPoliceCanSeePlayer = GTAPeds.CopPeds.Any(x => x.CanSeePlayer && x.AssignedAgency != null && x.AssignedAgency.CanCheckTrafficViolations);
+            bool TrafficAnyPoliceCanSeePlayer = PedList.CopPeds.Any(x => x.CanSeePlayer && x.AssignedAgency != null && x.AssignedAgency.CanCheckTrafficViolations);
 
             if (LosSantosRED.MySettings.TrafficViolations.ExemptCode3 && CurrVehicle != null && CurrVehicle.IsPoliceVehicle && MyCar != null && !MyCar.WasReportedStolen)
             {
@@ -176,7 +176,7 @@ public static class TrafficViolations
             }
 
             int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
-            if (LosSantosRED.MySettings.TrafficViolations.HitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000 && GTAPeds.Civilians.Any(x => x.DistanceToPlayer <= 10f))//otherwise we get non humans
+            if (LosSantosRED.MySettings.TrafficViolations.HitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000 && PedList.Civilians.Any(x => x.DistanceToPlayer <= 10f))//otherwise we get non humans
             {
                 Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = true;
                 if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.HitCarWithCar.CanObserveCrime)

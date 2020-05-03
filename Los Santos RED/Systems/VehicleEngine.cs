@@ -88,7 +88,7 @@ internal static class VehicleEngine
         PrevIsHotwiring = false; 
         AutoTune = true;
         AutoTuneStation = "RADIO_19_USER";
-        EngineToggleKey = Keys.R;
+        EngineToggleKey = LosSantosRED.MySettings.KeyBinding.VehicleKey;
 
         WantedLevelTune = false;
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
@@ -124,7 +124,7 @@ internal static class VehicleEngine
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
             }
 
-            if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey))
+            if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey) && !Game.IsControlKeyDownRightNow)
             {
                 Debugging.WriteToLog("ToggleEngine", string.Format("Start {0}", EngineRunning));
                 TogglingEngine = true;
@@ -175,7 +175,7 @@ internal static class VehicleEngine
     }
     private static void LimiterTick()
     {
-        if (Game.IsKeyDownRightNow(Keys.W) && Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsDriver() && Game.GameTime - GameTimeLastSetLimitThrottle >= 500)// && Game.IsControlPressed(0,GameControl.VehicleAccelerate))
+        if (Game.IsKeyDownRightNow(LosSantosRED.MySettings.KeyBinding.VehicleKey) && Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsDriver() && Game.GameTime - GameTimeLastSetLimitThrottle >= 500)// && Game.IsControlPressed(0,GameControl.VehicleAccelerate))
         {
             LimitThrottle = !LimitThrottle;
             GameTimeLastSetLimitThrottle = Game.GameTime;
@@ -183,7 +183,7 @@ internal static class VehicleEngine
 
         if (Game.IsKeyDownRightNow(Keys.W) && Game.LocalPlayer.Character.IsDriver())//Game.IsControlPressed(0,GameControl.VehicleAccelerate))
         {
-            if (LimitThrottle)
+            if (LimitThrottle && LosSantosRED.PlayerIsNotWanted)
             {
                 float Limit = 0.5f;
                 float CurrentSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;

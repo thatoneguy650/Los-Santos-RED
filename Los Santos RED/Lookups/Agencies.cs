@@ -6,12 +6,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 
 public static class Agencies
 {
@@ -98,6 +92,12 @@ public static class Agencies
         //Vehicles
         List<Agency.VehicleInformation> UnmarkedVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police4", 100, 100) };
+        List<Agency.VehicleInformation> SecurityVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("dilettante2", 100, 100) {MaxOccupants = 1 } };
+
+
+        
+
         List<Agency.VehicleInformation> ParkRangerVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("pranger", 100, 100) };
         List<Agency.VehicleInformation> FIBVehicles = new List<Agency.VehicleInformation>() {
@@ -166,101 +166,101 @@ public static class Agencies
         List<Agency.IssuedWeapon> AllWeapons = new List<Agency.IssuedWeapon>()
         {
             // Pistols
-            new Agency.IssuedWeapon("weapon_pistol", true, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_pistol", true, new Agency.WeaponVariation(0, new List<string> { "Flashlight" })),
-            new Agency.IssuedWeapon("weapon_pistol", true, new Agency.WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_pistol", true, new Agency.WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_pistol", true, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_pistol", true, new GTAWeapon.WeaponVariation(0, new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_pistol", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_pistol", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
 
-            new Agency.IssuedWeapon("weapon_pistol_mk2", true ,new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new Agency.WeaponVariation(0,new List<string> { "Flashlight" })),
-            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new Agency.WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new Agency.WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true ,new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
 
-            new Agency.IssuedWeapon("weapon_combatpistol", true, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_combatpistol", true, new Agency.WeaponVariation(0, new List<string> { "Flashlight" })),
-            new Agency.IssuedWeapon("weapon_combatpistol", true, new Agency.WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_combatpistol", true, new Agency.WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_combatpistol", true, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_combatpistol", true, new GTAWeapon.WeaponVariation(0, new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_combatpistol", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_combatpistol", true, new GTAWeapon.WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
 
-            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation(0,new List<string> { "Etched Wood Grip Finish" })),
-            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_heavypistol", true, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_heavypistol", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Etched Wood Grip Finish" })),
+            new Agency.IssuedWeapon("weapon_heavypistol", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_heavypistol", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Extended Clip" })),
 
             // Shotguns
-            new Agency.IssuedWeapon("weapon_pumpshotgun", false, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_pumpshotgun", false, new Agency.WeaponVariation(0,new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_pumpshotgun", false, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_pumpshotgun", false, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
 
-            new Agency.IssuedWeapon("weapon_pumpshotgun_mk2", false, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_pumpshotgun_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Flashlight" })),
-            new Agency.IssuedWeapon("weapon_pumpshotgun_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Holographic Sight" })),
-            new Agency.IssuedWeapon("weapon_pumpshotgun_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Flashlight","Holographic Sight" })),
+            new Agency.IssuedWeapon("weapon_pumpshotgun_mk2", false, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_pumpshotgun_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_pumpshotgun_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Holographic Sight" })),
+            new Agency.IssuedWeapon("weapon_pumpshotgun_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Flashlight","Holographic Sight" })),
 
             // ARs
-            new Agency.IssuedWeapon("weapon_carbinerifle", false, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_carbinerifle", false, new Agency.WeaponVariation(0,new List<string> { "Grip","Flashlight" })),
-            new Agency.IssuedWeapon("weapon_carbinerifle", false, new Agency.WeaponVariation(0, new List<string> { "Scope", "Grip","Flashlight" })),
-            new Agency.IssuedWeapon("weapon_carbinerifle", false, new Agency.WeaponVariation(0,new List<string> { "Scope", "Grip","Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle", false, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_carbinerifle", false, new GTAWeapon.WeaponVariation(0,new List<string> { "Grip","Flashlight" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Scope", "Grip","Flashlight" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle", false, new GTAWeapon.WeaponVariation(0,new List<string> { "Scope", "Grip","Flashlight","Extended Clip" })),
 
-            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
-            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
 
         List<Agency.IssuedWeapon> BestWeapons = new List<Agency.IssuedWeapon>()
         {
-            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new Agency.WeaponVariation(0,new List<string> { "Flashlight" })),
-            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new Agency.WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new Agency.WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
-            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
-            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new Agency.WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
 
         List<Agency.IssuedWeapon> LimitedWeapons = new List<Agency.IssuedWeapon>()
         {
-            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_revolver", true, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_heavypistol", true, new Agency.WeaponVariation(0,new List<string> { "Flashlight" })),
-            new Agency.IssuedWeapon("weapon_pumpshotgun", false, new Agency.WeaponVariation()),
-            new Agency.IssuedWeapon("weapon_pumpshotgun", false, new Agency.WeaponVariation(0,new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_heavypistol", true, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_revolver", true, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_heavypistol", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_pumpshotgun", false, new GTAWeapon.WeaponVariation()),
+            new Agency.IssuedWeapon("weapon_pumpshotgun", false, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
 
         };
 
         AgenciesList = new List<Agency>
         {
-            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, true, true, StandardCops, LSPDVehicles, "LS ",AllWeapons),
-            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, false, true, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons),
-            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, false, true, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons),
-            new Agency("~b~", "LSPD-CH", "Los Santos Police - Chumash Division", "Blue", Agency.Classification.Police, false, true, StandardCops, ChumashLSPDVehicles, "LSC ",AllWeapons),
-            new Agency("~b~", "VPPD", "Vespucci Police Department", "DarkBlue", Agency.Classification.Police, false, true, StandardCops, VPPDVehicles, "VP ",AllWeapons),
-            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "LightBlue", Agency.Classification.Police, false, true, StandardCops, RHPDVehicles, "RH ",AllWeapons),
-            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, true, true, StandardCops, LSPDVehicles, "LSA ",AllWeapons),
+            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons),
+            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons),
+            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons),
+            new Agency("~b~", "LSPD-CH", "Los Santos Police - Chumash Division", "Blue", Agency.Classification.Police, StandardCops, ChumashLSPDVehicles, "LSC ",AllWeapons),
+            new Agency("~b~", "VPPD", "Vespucci Police Department", "DarkBlue", Agency.Classification.Police, StandardCops, VPPDVehicles, "VP ",AllWeapons),
+            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "LightBlue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons),
+            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { SpawnLimit = 3 },
 
-            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "White", Agency.Classification.Police, true, false, PoliceAndSwat, PoliceHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "White", Agency.Classification.Sheriff, true, false, SheriffAndSwat, SheriffHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "White", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "White", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
 
-            new Agency("~r~", "BCSO", "Blaine County Sheriffs Office", "Red", Agency.Classification.Sheriff, false, true, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
+            new Agency("~r~", "BCSO", "Blaine County Sheriffs Office", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
 
-            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, true, true, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons),
-            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, false, true, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons),
-            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, false, true, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons),
 
-            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkRed", Agency.Classification.Federal, true, false, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 3,CanSpawnAnywhere = true },
-            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, true, true, FIBPeds, FIBVehicles, "FIB ",BestWeapons),
-            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, true, true, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons),
-            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Agency.Classification.Other, true, true, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons),
-            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.Police, true, true, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) {SpawnsOnHighway = true,CanSpawnAnywhere = true },
-            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Agency.Classification.Federal, true, true, ParkRangers, ParkRangerVehicles, "",AllWeapons) {MaxWantedLevelSpawn = 3 },      
-            new Agency("~p~", "IAA", "International Affairs Agency", "Purple", Agency.Classification.Federal, true, false, IAAPeds, UnmarkedVehicles, "IAA ",AllWeapons),
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkRed", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 3,CanSpawnAnywhere = true },
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons),
+            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons) {SpawnLimit = 4 },
+            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Agency.Classification.Other, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons),
+            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.Police, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) {SpawnsOnHighway = true,CanSpawnAnywhere = true },
+            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Agency.Classification.Federal, ParkRangers, ParkRangerVehicles, "",AllWeapons) {MaxWantedLevelSpawn = 3,SpawnLimit = 3 },      
+            new Agency("~p~", "IAA", "International Affairs Agency", "Purple", Agency.Classification.Federal, IAAPeds, UnmarkedVehicles, "IAA ",AllWeapons),
                  
-            new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, true, true, SecurityPeds, UnmarkedVehicles, "",LimitedWeapons) {CanSpawnAnywhere = true },
-            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Security, true, true, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3 },
-            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.Other, true, false, CoastGuardPeds, UnmarkedVehicles, "SACG ",LimitedWeapons){MaxWantedLevelSpawn = 3 },
+            new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {CanSpawnAnywhere = true,MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
+            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Security, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
+            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.Other, CoastGuardPeds, UnmarkedVehicles, "SACG ",LimitedWeapons){MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
 
-            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Federal, true, false, MilitaryPeds, ArmyVehicles, "",BestWeapons) {IsArmy = true,CanSpawnAnywhere = true },
+            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Federal, MilitaryPeds, ArmyVehicles, "",BestWeapons) {IsArmy = true,CanSpawnAnywhere = true },
 
-            new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, true, false, null, null, "",null),
+            new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null),
         };
       
     }
@@ -368,29 +368,32 @@ public static class Agencies
 [Serializable()]
 public class Agency
 {
-    public string ColorPrefix = "~s~";
-    public string Initials;
-    public string FullName;
-    public List<ModelInformation> CopModels;
-    public List<VehicleInformation> Vehicles;
-    public string AgencyColorString = "White";
-    public bool IsVanilla = false;
-    public Classification AgencyClassification;
-    public bool CanSpawnAmbient = false;
-    public string LicensePlatePrefix;
-    public bool SpawnsOnHighway = false;
-    public bool CanSpawnAnywhere = false;
-    public bool IsArmy = false;
-    public uint MinWantedLevelSpawn = 0;
-    public uint MaxWantedLevelSpawn = 5;
-    public List<IssuedWeapon> IssuedWeapons = new List<IssuedWeapon>();
-    public bool IsDefault = false;
+    public string ColorPrefix { get; set; } = "~s~";
+    public string Initials { get; set; }
+    public string FullName { get; set; }
+    public List<ModelInformation> CopModels { get; set; }
+    public List<VehicleInformation> Vehicles { get; set; }
+    public string AgencyColorString { get; set; } = "White";
+    public Classification AgencyClassification { get; set; }
+    public string LicensePlatePrefix { get; set; }
+    public bool SpawnsOnHighway { get; set; } = false;
+    public bool CanSpawnAnywhere { get; set; } = false;
+    public bool IsArmy { get; set; } = false;
+    public uint MinWantedLevelSpawn { get; set; } = 0;
+    public uint MaxWantedLevelSpawn { get; set; } = 5;
+    public List<IssuedWeapon> IssuedWeapons { get; set; } = new List<IssuedWeapon>();
+    public int SpawnLimit { get; set; } = 99;
     public bool CanSpawn
     {
         get
         {
             if (LosSantosRED.PlayerWantedLevel >= MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= MaxWantedLevelSpawn)
-                return true;
+            {
+                if (PedList.CopPeds.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                    return true;
+                else
+                    return false;
+            }
             else
                 return false;
         }
@@ -496,17 +499,15 @@ public class Agency
     {
 
     }
-    public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, bool _IsVanilla,bool _CanSpawnAmbient, List<ModelInformation> _CopModels, List<VehicleInformation> _Vehicles,string _LicensePlatePrefix, List<IssuedWeapon> _IssuedWeapons)
+    public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<ModelInformation> _CopModels, List<VehicleInformation> _Vehicles,string _LicensePlatePrefix, List<IssuedWeapon> _IssuedWeapons)
     {
         ColorPrefix = _ColorPrefix;
         Initials = _Initials;
         FullName = _FullName;
         CopModels = _CopModels;
         AgencyColorString = _AgencyColorString;
-        IsVanilla = _IsVanilla;
         Vehicles = _Vehicles;
         AgencyClassification = _AgencyClassification;
-        CanSpawnAmbient = _CanSpawnAmbient;
         LicensePlatePrefix = _LicensePlatePrefix;
         IssuedWeapons = _IssuedWeapons;
     }
@@ -620,44 +621,18 @@ public class Agency
     {
         public string ModelName;
         public bool IsPistol = false;
-        public WeaponVariation MyVariation = new WeaponVariation();
+        public GTAWeapon.WeaponVariation MyVariation = new GTAWeapon.WeaponVariation();
         public IssuedWeapon()
         {
 
         }
-        public IssuedWeapon(string _ModelName, bool _IsPistol, WeaponVariation _MyVariation)
+        public IssuedWeapon(string _ModelName, bool _IsPistol, GTAWeapon.WeaponVariation _MyVariation)
         {
             ModelName = _ModelName;
             IsPistol = _IsPistol;
             MyVariation = _MyVariation;
         }
 
-    }
-    public class WeaponVariation
-    {
-        public string Name;
-        public int Tint;
-        public List<string> Components = new List<string>();
-        public WeaponVariation()
-        {
-
-        }
-        public WeaponVariation(string _name, int _Tint, List<string> _Components)
-        {
-            Name = _name;
-            Tint = _Tint;
-            Components = _Components;
-        }
-        public WeaponVariation(string _name, int _Tint)
-        {
-            Name = _name;
-            Tint = _Tint;
-        }
-        public WeaponVariation(int _Tint, List<string> _Components)
-        {
-            Tint = _Tint;
-            Components = _Components;
-        }
     }
 }
 

@@ -116,16 +116,16 @@ public static class Debugging
         Tasking.UntaskAll(true);
 
 
-        foreach (GTACop Cop in GTAPeds.K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedList.K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
             Cop.Pedestrian.Delete();
         }
-        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
         {
             Cop.Pedestrian.Delete();
         }
 
-        foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
+        foreach (GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
         {
             Cop.Pedestrian.CurrentVehicle.Delete();
 
@@ -166,7 +166,7 @@ public static class Debugging
     }
     private static void DebugNumpad3()
     {
-        GTAPeds.ClearPoliceCompletely();
+        PedList.ClearPoliceCompletely();
         Police.SetWantedLevel(0, "Debug", true);
     }
 
@@ -202,11 +202,8 @@ public static class Debugging
         
     private static void DebugNumpad7()
     {
-        WriteToLog("DebugNumpad7", "--------Agencies-----------");
-        foreach (Agency MyAgency in Agencies.AgenciesList)
-        {
-            WriteToLog("DebugNumpad7", string.Format("Agency: {0} CanSpawn: {1} Min: {2} Max: {3}", MyAgency.Initials, MyAgency.CanSpawn, MyAgency.MinWantedLevelSpawn, MyAgency.MaxWantedLevelSpawn));
-        }
+        PoliceSpawning.DebugSetPoliceSpawn(Game.LocalPlayer.Character.GetOffsetPositionFront(10F));
+        PoliceSpawning.SpawnCop();
     }
     public static void DebugNumpad8()
     {
@@ -215,7 +212,7 @@ public static class Debugging
             WriteToLog("DebugNumpad7", "--------------------------------");
             WriteToLog("DebugNumpad7", "--------Police Status-----------");
 
-            foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null))
+            foreach (GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null))
             {
                 if (Cop.Pedestrian.IsInAnyVehicle(false))
                 {
@@ -234,7 +231,7 @@ public static class Debugging
             WriteToLog("DebugNumpad7", string.Format("InvestigationPosition: {0}", Police.InvestigationPosition));
             WriteToLog("DebugNumpad7", string.Format("InvestigationDistance: {0}", Police.InvestigationDistance));
             WriteToLog("DebugNumpad7", string.Format("ActiveDistance: {0}", Police.ActiveDistance));
-            WriteToLog("DebugNumpad7", string.Format("AnyNear Investigation Position: {0}", GTAPeds.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance)));
+            WriteToLog("DebugNumpad7", string.Format("AnyNear Investigation Position: {0}", PedList.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance)));
 
             WriteToLog("DebugNumpad7", "--------------------------------");
             WriteToLog("DebugNumpad7", "");
@@ -248,7 +245,7 @@ public static class Debugging
                 WriteToLog("DebugNumpad6", string.Format("Cross Street: {0}", PlayerLocation.PlayerCurrentCrossStreet.Name));
             WriteToLog("DebugNumpad6", string.Format("PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
             WriteToLog("DebugNumpad6", string.Format("PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
-            foreach (GTAPed DeadPerson in GTAPeds.PlayerKilledCivilians)
+            foreach (GTAPed DeadPerson in PedList.PlayerKilledCivilians)
             {
                 WriteToLog("DebugNumpad7", string.Format("Player Killed: Handle: {0}, Distance: {1}", DeadPerson.Pedestrian.Handle, Game.LocalPlayer.Character.DistanceTo2D(DeadPerson.Pedestrian)));
             }
@@ -275,13 +272,13 @@ public static class Debugging
             WriteToLog("DebugNumpad8", string.Format("IsConsideredArmed: {0}", Game.LocalPlayer.Character.IsConsideredArmed()));
 
             WriteToLog("DebugNumpad7", "--------Vehicles-----------");
-            foreach (Vehicle MyCar in GTAPeds.PoliceVehicles.Where(x => x.Exists()))
+            foreach (Vehicle MyCar in PedList.PoliceVehicles.Where(x => x.Exists()))
             {
                 WriteToLog("DebugNumpad7", string.Format("Vehicle: {0,-20} {1,-20}", MyCar.Model.Name, MyCar.Health));
             }
 
             WriteToLog("DebugNumpad7", "--------Unassigned Cops-----------");
-            foreach (GTACop Cop in GTAPeds.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency == null))
+            foreach (GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency == null))
             {
                 WriteToLog("DebugNumpad7", string.Format("Cop {0} {1}", Cop.Pedestrian.Handle,Cop.Pedestrian.Model.Name));
             }

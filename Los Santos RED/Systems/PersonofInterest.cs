@@ -2,17 +2,16 @@
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 public static class PersonOfInterest
 {
-    //private static WantedLevelStats LastWantedStats;
     private static bool PrevPlayerIsWanted;
-    //private static List<WantedLevelStats> PreviousWantedStats;
-    // public static List<RapSheet> CriminalHistory;
-    public static bool SizeOfPOIArea { get; set; }
+    private static Blip LastWantedCenterBlip;
+    public static float LastWantedSearchRadius { get; set; }
     public static bool PlayerIsPersonOfInterest { get; set; }
     public static bool IsRunning { get; set; } = true;
     public static List<RapSheet> CriminalHistory { get; set; }
@@ -21,21 +20,15 @@ public static class PersonOfInterest
     {
         IsRunning = true;
         PrevPlayerIsWanted = false;
-
-        //PreviousWantedStats = new List<WantedLevelStats>();
         CriminalHistory = new List<RapSheet>();
+        LastWantedSearchRadius = LosSantosRED.MySettings.Police.LastWantedCenterSize;
+        LastWantedCenterBlip = default;
         PlayerIsPersonOfInterest = false;
-        MainLoop();
     }
     public static void Dispose()
     {
         IsRunning = false;
-    }
-    public static void MainLoop()
-    {
-
-    }
-    
+    }    
     public static void PersonOfInterestTick()
     {
         if (PrevPlayerIsWanted != LosSantosRED.PlayerIsWanted)
@@ -103,7 +96,7 @@ public static class PersonOfInterest
     {
         if (PlayerIsPersonOfInterest && Police.AnyPoliceCanSeePlayer)//(Police.PlayerHasBeenNotWantedFor >= 5000 || InstantAction.PlayerIsWanted))//Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
         {
-            if (Police.PlayerHasBeenNotWantedFor >= 5000 && Police.NearLastWanted())
+            if (Police.PlayerHasBeenNotWantedFor >= 5000 && Police.NearLastWanted(LastWantedSearchRadius))
             {
                 if(!ApplyLastWantedStats())
                     Police.SetWantedLevel(2, "Cops Reacquired after losing them in the same area, actual wanted not found",true);
@@ -117,7 +110,7 @@ public static class PersonOfInterest
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
                 }
             }
-            else if (Police.PoliceInInvestigationMode && LosSantosRED.PlayerIsNotWanted && Police.NearInvestigationPosition())
+            else if (Police.PoliceInInvestigationMode && LosSantosRED.PlayerIsNotWanted && Police.NearInvestigationPosition)
             {
                 ApplyReportedCrimes();
                 Police.SetWantedLevel(2, "you are a suspect!",true);
@@ -139,14 +132,14 @@ public static class PersonOfInterest
     {
         if(LosSantosRED.PlayerIsWanted)
         {
-            Police.AddUpdateLastWantedBlip(Vector3.Zero);
+            AddUpdateLastWantedBlip(Vector3.Zero);
         }
         else
         {
             if (PlayerIsPersonOfInterest)
-                Police.AddUpdateLastWantedBlip(Police.LastWantedCenterPosition);
+                AddUpdateLastWantedBlip(Police.LastWantedCenterPosition);
             else
-                Police.AddUpdateLastWantedBlip(Vector3.Zero);
+                AddUpdateLastWantedBlip(Vector3.Zero);
         }
         PrevPlayerIsWanted = LosSantosRED.PlayerIsWanted;
     }
@@ -157,10 +150,44 @@ public static class PersonOfInterest
         CriminalHistory.Clear();
         Debugging.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are cleared");
         Police.LastWantedCenterPosition = Vector3.Zero;
-        Police.AddUpdateLastWantedBlip(Vector3.Zero);
-
+        AddUpdateLastWantedBlip(Vector3.Zero);
+        RemoveLastWantedBlips();
         if (PlayAudio && !Police.PoliceInInvestigationMode)
             DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
+    }
+    private static void AddUpdateLastWantedBlip(Vector3 Position)
+    {
+        if (Position == Vector3.Zero)
+        {
+            if (LastWantedCenterBlip.Exists())
+                LastWantedCenterBlip.Delete();
+            return;
+        }
+        if (!LastWantedCenterBlip.Exists())
+        {
+            int MaxWanted = PersonOfInterest.LastWantedLevel();
+            if (MaxWanted != 0)
+                LastWantedSearchRadius = MaxWanted * LosSantosRED.MySettings.Police.LastWantedCenterSize;
+            else
+                LastWantedSearchRadius = LosSantosRED.MySettings.Police.LastWantedCenterSize;
+
+            LastWantedCenterBlip = new Blip(Police.LastWantedCenterPosition, LastWantedSearchRadius)
+            {
+                Name = "Last Wanted Center Position",
+                Color = Color.Yellow,
+                Alpha = 0.25f
+            };
+
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastWantedCenterBlip.Handle, true);
+            Police.CreatedBlips.Add(LastWantedCenterBlip);
+        }
+        if (LastWantedCenterBlip.Exists())
+            LastWantedCenterBlip.Position = Position;
+    }
+    private static void RemoveLastWantedBlips()
+    {
+        if (LastWantedCenterBlip.Exists())
+            LastWantedCenterBlip.Delete();
     }
     public static bool ApplyWantedStatsForPlate(string PlateNumber)
     {
@@ -205,7 +232,6 @@ public static class PersonOfInterest
         DispatchAudio.ClearDispatchQueue();
         Debugging.WriteToLog("WantedLevelStats Replace", Police.CurrentCrimes.DebugPrintCrimes());
     }
-
     public static RapSheet GetLastWantedStats()
     {
         if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
@@ -220,8 +246,7 @@ public static class PersonOfInterest
 
         return CriminalHistory.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
     }
-
-    internal static void StoreCriminalHistory(RapSheet rapSheet)
+    public static void StoreCriminalHistory(RapSheet rapSheet)
     {
         //rapSheet.IsExpired = true;
         CriminalHistory.Add(rapSheet);

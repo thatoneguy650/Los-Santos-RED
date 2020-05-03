@@ -50,7 +50,6 @@ public static class UI
         }
     });
     }
-
     private static void UITick()
     {
         if (LosSantosRED.MySettings.General.AlwaysShowHUD)
@@ -71,7 +70,50 @@ public static class UI
         {
             ShowUI();
         }
+
+        ScreenEffectsTick();
     }
+
+    private static void ScreenEffectsTick()
+    {
+        if(LosSantosRED.IsDead)
+        {
+            if (!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DeathFailOut"))
+            {
+                //NativeFunction.Natives.xB4EDDC19532BFB85();
+                //NativeFunction.Natives.x80C8B1846639BB19(0);
+                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailOut", 0, 0);//_START_SCREEN_EFFECT
+                NativeFunction.Natives.x80C8B1846639BB19(1);
+            }
+        }
+        else if (LosSantosRED.IsBusted)
+        {
+            if (!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DeathFailOut"))
+            {
+                //NativeFunction.Natives.xB4EDDC19532BFB85();
+                //NativeFunction.Natives.x80C8B1846639BB19(0);
+                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);//_START_SCREEN_EFFECT
+                NativeFunction.Natives.x80C8B1846639BB19(1);
+            }
+        }
+        else if (PlayerHealth.IsBleeding)
+        {
+            if (!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DrugsDrivingIn"))
+            {
+                //NativeFunction.Natives.xB4EDDC19532BFB85();
+                //NativeFunction.Natives.x80C8B1846639BB19(0);
+                NativeFunction.Natives.x80C8B1846639BB19(1);
+                NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);//_START_SCREEN_EFFECT  
+            }
+        }
+        else
+        {
+            NativeFunction.Natives.xB4EDDC19532BFB85();
+            NativeFunction.Natives.x80C8B1846639BB19(0);
+        }
+
+    }
+
     private static void ShowUI()
     {
         string PlayerStatusLine = "";
@@ -100,7 +142,7 @@ public static class UI
         }
         else
         {
-            string AgenciesChasingPlayer = GTAPeds.AgenciesChasingPlayer;
+            string AgenciesChasingPlayer = PedList.AgenciesChasingPlayer;
             if (AgenciesChasingPlayer != "")
                 PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
         }
@@ -195,7 +237,6 @@ public static class UI
 
         return Abbreviation;
     }
-
     private static string GetStreetDisplay()
     {
         string StreetDisplay = "";

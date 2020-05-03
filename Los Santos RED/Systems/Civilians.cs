@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 public static class Civilians
 {
-    public static uint GameTimeLastHurtCivilian { get; set; }
-    public static uint GameTimeLastKilledCivilian { get; set; }
+    private static uint GameTimeLastHurtCivilian;
+    private static uint GameTimeLastKilledCivilian;
     public static bool IsRunning { get; set; }
     public static bool AnyCiviliansCanSeePlayer { get; set; }
     public static bool AnyCiviliansCanRecognizePlayer { get; set; }
@@ -32,7 +32,7 @@ public static class Civilians
     }
     public static bool NearMurderVictim(float Distance)
     {
-        if (GTAPeds.PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
+        if (PedList.PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
             return true;
         else
             return false;
@@ -49,13 +49,13 @@ public static class Civilians
     }
     public static void CivilianTick()
     {
-        if (LosSantosRED.PlayerIsWanted)//for now dont do any work when we are wanted, the base game can do that for us
-        {
-            AnyCiviliansCanSeePlayer = false;
-            AnyCiviliansCanRecognizePlayer = false;
-            //UI.DebugLine = "";
-            return;
-        }
+        //if (LosSantosRED.PlayerIsWanted)//for now dont do any work when we are wanted, the base game can do that for us
+        //{
+        //    AnyCiviliansCanSeePlayer = false;
+        //    AnyCiviliansCanRecognizePlayer = false;
+        //    //UI.DebugLine = "";
+        //    return;
+        //}
             
         UpdateCivilians();
         CheckRecognition();
@@ -66,7 +66,7 @@ public static class Civilians
        List<Crime> CrimesToCallIn = Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians;
        if (CrimesToCallIn.Any())
         {
-            foreach(GTAPed Snitch in GTAPeds.Civilians)
+            foreach(GTAPed Snitch in PedList.Civilians)
             {
                 if (1==1)//LosSantosRED.PlayerIsNotWanted)
                 {
@@ -109,45 +109,27 @@ public static class Civilians
     }
     public static void UpdateCivilians()
     {
-        GTAPeds.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
-        foreach (GTAPed MyPed in GTAPeds.Civilians)
+        PedList.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
+        foreach (GTAPed MyPed in PedList.Civilians)
         {
-            if (MyPed.Pedestrian.IsDead)
+            bool PrevHurt = MyPed.HurtByPlayer;
+            MyPed.Update();
+            if(MyPed.CheckPlayerKilledPed)
             {
-                CheckCivilianKilled(MyPed);
-                if(MyPed.KilledByPlayer)
-                    GTAPeds.PlayerKilledCivilians.Add(MyPed);
-                //continue;
+                PedList.PlayerKilledCivilians.Add(MyPed);
+                GameTimeLastKilledCivilian = Game.GameTime;
             }
-            int NewHealth = MyPed.Pedestrian.Health;
-            if (NewHealth != MyPed.Health)
+            else if (!PrevHurt && MyPed.CheckPlayerHurtPed)
             {
-                if (LosSantosRED.PlayerHurtPed(MyPed))
-                    MyPed.HurtByPlayer = true;
-                MyPed.Health = NewHealth;
+                GameTimeLastHurtCivilian = Game.GameTime;
             }
-            MyPed.UpdateDistance();
         }
-        GTAPeds.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
-        GTAPeds.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
+        PedList.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
+        PedList.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
     }
     private static void CheckRecognition()
     {
-        AnyCiviliansCanSeePlayer = GTAPeds.Civilians.Any(x => x.CanSeePlayer);
-        AnyCiviliansCanRecognizePlayer = GTAPeds.Civilians.Any(x => x.CanRecognizePlayer);
-    }
-    public static void CheckCivilianKilled(GTAPed MyPed)
-    {
-        if (!MyPed.HurtByPlayer && LosSantosRED.PlayerHurtPed(MyPed))
-        {
-            MyPed.HurtByPlayer = true;
-            GameTimeLastHurtCivilian = Game.GameTime;
-        }
-        if (!MyPed.KilledByPlayer && LosSantosRED.PlayerKilledPed(MyPed))
-        {
-            MyPed.KilledByPlayer = true;
-            GameTimeLastKilledCivilian = Game.GameTime;
-            Debugging.WriteToLog("CheckKilled", string.Format("PlayerKilled: {0}", MyPed.Pedestrian.Handle));
-        }
+        AnyCiviliansCanSeePlayer = PedList.Civilians.Any(x => x.CanSeePlayer);
+        AnyCiviliansCanRecognizePlayer = PedList.Civilians.Any(x => x.CanRecognizePlayer);
     }
 }
