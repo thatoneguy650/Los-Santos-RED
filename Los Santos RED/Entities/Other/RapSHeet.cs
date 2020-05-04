@@ -51,7 +51,7 @@ public class RapSheet
     {
         get
         {
-            if (GetListOfCrimes().Any(x => x.RecentlyReportedCrime(60000)))
+            if (CrimeList.Any(x => x.RecentlyReportedCrime(60000)))
                 return true;
             else
                 return false;
@@ -61,34 +61,38 @@ public class RapSheet
     {
         get
         {
-            return Police.CurrentCrimes.GetListOfCrimes().Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians);// && x.Severity != CrimeLevel.Traffic);
+            return Police.CurrentCrimes.CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians);// && x.Severity != CrimeLevel.Traffic);
         }
     }
     public List<Crime> CurrentlyViolatingCanBeReportedByCivilians
     {
         get
         {
-            return Police.CurrentCrimes.GetListOfCrimes().Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();// && x.Severity != CrimeLevel.Traffic);
+            return Police.CurrentCrimes.CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();// && x.Severity != CrimeLevel.Traffic);
         }
     }
     public bool LethalForceAuthorized
     {
         get
         {
-            return GetListOfCrimes().Any(x => x.ResultsInLethalForce && x.HasBeenWitnessedByPolice);
+            return CrimeList.Any(x => x.ResultsInLethalForce && x.HasBeenWitnessedByPolice);
         }
     }
     public bool CommittedAnyCrimes
     {
         get
         {
-            return GetListOfCrimes().Any(x => x.HasBeenWitnessedByPolice);
+            return CrimeList.Any(x => x.HasBeenWitnessedByPolice);
         }
     }
-    public List<Crime> GetListOfCrimes()
+    public List<Crime> CrimeList
     {
-        List<Crime> CrimeList = new List<Crime>() { FiringWeapon,Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon, ChangingPlates, GrandTheftAuto, HurtingCivilians, DrivingAgainstTraffic, DrivingOnPavement, HitPedWithCar, HitCarWithCar, NonRoadworthyVehicle, FelonySpeeding, RunningARedLight };
-        return CrimeList;
+        get
+        {
+            List<Crime> CrimeList = new List<Crime>() { FiringWeapon, Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon, ChangingPlates, GrandTheftAuto, HurtingCivilians, DrivingAgainstTraffic, DrivingOnPavement, HitPedWithCar, HitCarWithCar, NonRoadworthyVehicle, FelonySpeeding, RunningARedLight };
+            return CrimeList;
+        }
+        
     }
     public RapSheet()
     {
@@ -98,7 +102,7 @@ public class RapSheet
     {
         if (LosSantosRED.MyRand.Next(1, 10) <= 1)
         {
-            foreach (Crime myCrime in GetListOfCrimes().Where(x => !x.HasBeenWitnessedByPolice).PickRandom(LosSantosRED.MyRand.Next(1,3)))
+            foreach (Crime myCrime in CrimeList.Where(x => !x.HasBeenWitnessedByPolice).PickRandom(LosSantosRED.MyRand.Next(1,3)))
             {
                 myCrime.HasBeenWitnessedByPolice = true;
                 myCrime.InstancesObserved++;
@@ -112,7 +116,7 @@ public class RapSheet
     private void GiveWeaponsForHistory()
     {
 
-        if(GetListOfCrimes().Any(x => x.HasBeenWitnessedByPolice && x.Severity == CrimeLevel.Felony))
+        if(CrimeList.Any(x => x.HasBeenWitnessedByPolice && x.Severity == CrimeLevel.Felony))
         {
             if (LosSantosRED.MyRand.Next(1, 11) <= 2)
             {
@@ -123,7 +127,7 @@ public class RapSheet
                 LosSantosRED.GivePlayerRandomWeapon(new List<GTAWeapon.WeaponCategory>() { GTAWeapon.WeaponCategory.Pistol, GTAWeapon.WeaponCategory.SMG, GTAWeapon.WeaponCategory.Shotgun, GTAWeapon.WeaponCategory.AR }.PickRandom());
             }
         }
-        else if (GetListOfCrimes().Any(x => x.HasBeenWitnessedByPolice && x.Severity == CrimeLevel.Misdemeanor))
+        else if (CrimeList.Any(x => x.HasBeenWitnessedByPolice && x.Severity == CrimeLevel.Misdemeanor))
         {
             if (LosSantosRED.MyRand.Next(1, 11) <= 7)
             {
@@ -144,7 +148,7 @@ public class RapSheet
     public string PrintCrimes()
     {
         string CrimeString = "";
-        foreach (Crime MyCrime in GetListOfCrimes().Where(x => x.HasBeenWitnessedByPolice).OrderByDescending(x => x.Severity).Take(3))
+        foreach (Crime MyCrime in CrimeList.Where(x => x.HasBeenWitnessedByPolice).OrderByDescending(x => x.Severity).Take(3))
         {
             CrimeString += string.Format("~n~{0}{1} ({2})~s~", GetColorSeverity(MyCrime.Severity),MyCrime.Name,MyCrime.InstancesObserved);
         }
@@ -165,7 +169,7 @@ public class RapSheet
     public string DebugPrintCrimes()
     {
         string CrimeString = "";
-        foreach(Crime MyCrime in GetListOfCrimes().Where(x => x.HasBeenWitnessedByPolice))
+        foreach(Crime MyCrime in CrimeList.Where(x => x.HasBeenWitnessedByPolice))
         {
             CrimeString += Environment.NewLine + MyCrime.CrimeStats();
         }
@@ -258,6 +262,8 @@ public class RapSheet
             GTAWeapon MatchedWeapon = GTAWeapons.GetWeaponFromHash((ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
             if (MatchedWeapon != null && MatchedWeapon.WeaponLevel >= 2)
                 BrandishingWeapon.ResultingWantedLevel = MatchedWeapon.WeaponLevel;
+            else
+                BrandishingWeapon.ResultingWantedLevel = 1;
 
             BrandishingWeapon.DispatchToPlay.WeaponToReport = MatchedWeapon;
 

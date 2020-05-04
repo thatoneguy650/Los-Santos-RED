@@ -180,6 +180,45 @@ internal static class Police
     {
         return LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= DistanceTo;
     }
+    public static ResponsePriority CurrentResponse
+    {
+        get
+        {
+            if(LosSantosRED.PlayerIsNotWanted)
+            {
+                if (PoliceInInvestigationMode)
+                {
+                    if (CurrentCrimes.CrimeList.Any(x => x.RecentlyCalledInByCivilians(180000) && x.DispatchToPlay.Priority <= 8))
+                    {
+                        return ResponsePriority.Medium;
+                    }
+                    else
+                    {
+                        return ResponsePriority.Low;
+                    }
+                }
+                else
+                {
+                    return ResponsePriority.None;
+                }
+            }
+            else
+            {
+                if(LosSantosRED.PlayerWantedLevel > 4)
+                {
+                    return ResponsePriority.Full;
+                }
+                else if (LosSantosRED.PlayerWantedLevel >= 2)
+                {
+                    return ResponsePriority.High;
+                }
+                else
+                {
+                    return ResponsePriority.Medium;
+                }
+            }
+        }
+    }
     public enum PoliceState
     {
         Normal = 0,
@@ -206,6 +245,14 @@ internal static class Police
         ArmyVehicle = 14,
         BikerBackup = 15
     };
+    public enum ResponsePriority
+    {
+        None = 0,
+        Low = 1,
+        Medium = 2,
+        High = 3,
+        Full = 4,
+    }
     public static void Initialize()
     {
         CurrentCrimes = new RapSheet();

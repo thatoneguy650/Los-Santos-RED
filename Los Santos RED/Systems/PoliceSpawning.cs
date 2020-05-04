@@ -20,7 +20,7 @@ public static class PoliceSpawning
             else if (Police.PoliceInInvestigationMode)
                 return Police.InvestigationDistance / 2;
             else
-                return 450f;//750f
+                return 350f;//450f;//750f
         }
     }
     public static float MaxDistanceToSpawn
@@ -32,7 +32,7 @@ public static class PoliceSpawning
             else if (Police.PoliceInInvestigationMode)
                 return Police.InvestigationDistance;
             else
-                return 1250f;//1500f
+                return 900f;//1250f//1500f
         }
     }
     public static float DistanceToDelete

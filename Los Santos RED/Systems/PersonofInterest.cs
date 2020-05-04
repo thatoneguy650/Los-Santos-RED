@@ -120,7 +120,7 @@ public static class PersonOfInterest
     }
     private static void ApplyReportedCrimes()
     {
-        foreach(Crime MyCrimes in Police.CurrentCrimes.GetListOfCrimes())
+        foreach(Crime MyCrimes in Police.CurrentCrimes.CrimeList)
         {
             if(MyCrimes.RecentlyCalledInByCivilians(180000) && !MyCrimes.HasBeenWitnessedByPolice)
             {

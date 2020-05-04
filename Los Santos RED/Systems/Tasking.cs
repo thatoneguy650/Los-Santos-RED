@@ -1262,28 +1262,54 @@ public static class Tasking
                     Police.InvestigationPosition = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             }
 
+
+            float DrivingSpeed = 20f;
+            bool NeedSirenOn = true;
+            if (Police.CurrentResponse == Police.ResponsePriority.Medium)
+            {
+                DrivingSpeed = 25f;
+            }
+            else if(Police.CurrentResponse == Police.ResponsePriority.Low)
+            {
+                DrivingSpeed = 15f;
+                NeedSirenOn = false;
+            }
+
+
             Vector3 OriginalTaskedPosition = Police.InvestigationPosition;
             if (Cop.Pedestrian.IsInAnyVehicle(false))
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Police.InvestigationPosition.X, Police.InvestigationPosition.Y, Police.InvestigationPosition.Z, 20f, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Police.InvestigationPosition.X, Police.InvestigationPosition.Y, Police.InvestigationPosition.Z, DrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
             else
                 NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.Pedestrian, Police.InvestigationPosition.X, Police.InvestigationPosition.Y, Police.InvestigationPosition.Z, 500f, -1, 0f, 2f);
 
 
-            Debugging.WriteToLog("TaskInvestigateCrime", string.Format("Started GoToWantedCenter: {0}", Cop.Pedestrian.Handle));
+            Debugging.WriteToLog("TaskInvestigateCrime", string.Format("Started Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", Cop.Pedestrian.Handle, Police.CurrentResponse, DrivingSpeed, NeedSirenOn));
 
             uint GameTimestartedInvestigation = Game.GameTime;
             while (Cop.Pedestrian.Exists() && Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition) >= 15f && Police.PoliceInInvestigationMode && Game.GameTime - GameTimestartedInvestigation <= 180000)//less than 3 minutes
             {
                 if (Police.InvestigationPosition != Vector3.Zero && Police.InvestigationPosition != OriginalTaskedPosition) //retask them if it changes
                 {
+                    if (Police.CurrentResponse == Police.ResponsePriority.Medium)
+                    {
+                        DrivingSpeed = 25f;
+                    }
+                    else if (Police.CurrentResponse == Police.ResponsePriority.Low)
+                    {
+                        DrivingSpeed = 15f;
+                        NeedSirenOn = false;
+                    }
                     OriginalTaskedPosition = Police.InvestigationPosition;
                     if (Cop.Pedestrian.IsInAnyVehicle(false))
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Police.InvestigationPosition.X, Police.InvestigationPosition.Y, Police.InvestigationPosition.Z, 20f, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Police.InvestigationPosition.X, Police.InvestigationPosition.Y, Police.InvestigationPosition.Z, DrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                     else
                         NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.Pedestrian, Police.InvestigationPosition.X, Police.InvestigationPosition.Y, Police.InvestigationPosition.Z, 500f, -1, 0f, 2f);
+
+                    Debugging.WriteToLog("TaskInvestigateCrime", string.Format("Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", Cop.Pedestrian.Handle, Police.CurrentResponse, DrivingSpeed, NeedSirenOn));
+
                 }
 
-                if (Cop.Pedestrian.IsDriver() && Cop.Pedestrian.CurrentVehicle.HasSiren)
+                if (Cop.Pedestrian.IsDriver() && Cop.Pedestrian.CurrentVehicle.HasSiren && NeedSirenOn)
                 {
                     if (!Cop.Pedestrian.CurrentVehicle.IsSirenOn)
                     {

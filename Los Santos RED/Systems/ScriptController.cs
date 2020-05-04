@@ -64,7 +64,7 @@ public static class ScriptController
 
         PoliceScanningTick = new TickTask(1000, "PoliceScanningTick", PedList.ScanForPeds, TickTask.Type.Police);//was 5000
         //LineOfSightTick = new TickTask(500, "LineOfSightTick",Police.CheckPoliceSight, TickTask.Type.Police);
-        ProcessTaskQueueTick = new TickTask(50, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);
+        ProcessTaskQueueTick = new TickTask(150, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);//was 50
         PoliceStateTick = new TickTask(50, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);
         SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);//was 50
         PoliceVehicleScanningTick = new TickTask(1000, "PoliceVehicleScanningTick", PedList.ScanforPoliceVehicles, TickTask.Type.Police);//was 5000//was 1500
@@ -161,8 +161,8 @@ public static class ScriptController
                         else if (PersonOfInterest.IsRunning && PersonOfInterestTick.ShouldRun)
                             PersonOfInterestTick.RunTask();
 
-                        if (GameStopWatch.ElapsedMilliseconds <= 2 || !MyTickTasks.Any(x => x.RanThisTick))
-                        {
+                        //if (GameStopWatch.ElapsedMilliseconds <= 2 || !MyTickTasks.Any(x => x.RanThisTick))
+                        //{
                             //Least Important
                             if (DispatchAudio.IsRunning && DispatchAudioTick.ShouldRun)
                                 DispatchAudioTick.RunTask();
@@ -174,7 +174,7 @@ public static class ScriptController
                                 RandomCopSpawningTick.RunTask();
                             else if (Police.IsRunning && CleanupCopTick.ShouldRun)
                                 CleanupCopTick.RunTask();
-                        }
+                      //  }
                     }
 
                     GameStopWatch.Stop();

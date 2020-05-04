@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 public static class UI
 {
+    private static bool StartedBandagingEffect = false;
     public static string DebugLine { get; set; }
     public enum EFont
     {
@@ -98,16 +99,18 @@ public static class UI
         }
         else if (PlayerHealth.IsBleeding)
         {
-            if (!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DrugsDrivingIn"))
+            if (!StartedBandagingEffect)//NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DrugsDrivingIn"))
             {
                 //NativeFunction.Natives.xB4EDDC19532BFB85();
                 //NativeFunction.Natives.x80C8B1846639BB19(0);
                 NativeFunction.Natives.x80C8B1846639BB19(1);
                 NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);//_START_SCREEN_EFFECT  
+                StartedBandagingEffect = true;
             }
         }
         else
         {
+            StartedBandagingEffect = false;
             NativeFunction.Natives.xB4EDDC19532BFB85();
             NativeFunction.Natives.x80C8B1846639BB19(0);
         }

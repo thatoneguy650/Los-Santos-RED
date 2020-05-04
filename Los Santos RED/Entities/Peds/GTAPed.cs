@@ -46,9 +46,12 @@ public class GTAPed
     {
         get
         {
+            int DistanceUpdate = 25;
+            if (!IsCop)
+                DistanceUpdate = 150;
             if (GameTimeLastDistanceCheck == 0)
                 return true;
-            else if (Game.GameTime > GameTimeLastDistanceCheck + 25)
+            else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate)
                 return true;
             else
                 return false;
@@ -58,9 +61,12 @@ public class GTAPed
     {
         get
         {
+            int DistanceUpdate = 500;
+            if (!IsCop)
+                DistanceUpdate = 750;
             if (GameTimeLastLOSCheck == 0)
                 return true;
-            else if (Game.GameTime > GameTimeLastLOSCheck + 500)
+            else if (Game.GameTime > GameTimeLastLOSCheck + DistanceUpdate)
                 return true;
             else
                 return false;
