@@ -42,6 +42,17 @@ public class GTAPed
     public bool TaskIsQueued { get; set; } = false;
     public Tasking.AssignableTasks TaskType { get; set; } = Tasking.AssignableTasks.NoTask;
     public GameFiber TaskFiber { get; set; }
+    public bool NeedsUpdate
+    {
+        get
+        {
+            if (NeedsDistanceCheck || NeedsLOSCheck)
+                return true;
+            else
+                return false;
+        }
+            
+    }
     public bool NeedsDistanceCheck
     {
         get
@@ -127,35 +138,38 @@ public class GTAPed
     }
     public void Update()
     {
-        int NewHealth = Pedestrian.Health;
-        if (NewHealth != Health)
+        if (NeedsUpdate)
         {
-            if (!HurtByPlayer && CheckPlayerHurtPed)
+            int NewHealth = Pedestrian.Health;
+            if (NewHealth != Health)
             {
-                HurtByPlayer = true;
+                if (!HurtByPlayer && CheckPlayerHurtPed)
+                {
+                    HurtByPlayer = true;
+                }
+                Health = NewHealth;
             }
-            Health = NewHealth;
+            if (Pedestrian.IsDead)
+            {
+                if (CheckPlayerKilledPed)
+                    KilledByPlayer = true;
+                return;
+            }
+            IsInVehicle = Pedestrian.IsInAnyVehicle(false);
+            if (IsInVehicle)
+            {
+                IsInHelicopter = Pedestrian.IsInHelicopter;
+                if (!IsInHelicopter)
+                    IsOnBike = Pedestrian.IsOnBike;
+            }
+            else
+            {
+                IsInHelicopter = false;
+                IsOnBike = false;
+            }
+            UpdateDistance();
+            UpdateLineOfSight();
         }
-        if (Pedestrian.IsDead)
-        {
-            if (CheckPlayerKilledPed)
-                KilledByPlayer = true;
-            return;
-        }
-        IsInVehicle = Pedestrian.IsInAnyVehicle(false);
-        if (IsInVehicle)
-        {
-            IsInHelicopter = Pedestrian.IsInHelicopter;
-            if (!IsInHelicopter)
-                IsOnBike = Pedestrian.IsOnBike;
-        }
-        else
-        {
-            IsInHelicopter = false;
-            IsOnBike = false;
-        }
-        UpdateDistance();
-        UpdateLineOfSight();
     }
     private void UpdateDistance()
     {
@@ -180,7 +194,8 @@ public class GTAPed
     {
         if (NeedsLOSCheck)
         {
-            Entity ToCheck = Game.LocalPlayer.Character.IsInAnyVehicle(false) ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
+            bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+            Entity ToCheck = PlayerInVehicle ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
             if (IsCop && !Pedestrian.IsInHelicopter)
             {  
                 if (DistanceToPlayer <= 55f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))
@@ -221,7 +236,7 @@ public class GTAPed
                 }
             }
 
-            if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            if (PlayerInVehicle)
             {
                 if (CanSeePlayer || DistanceToPlayer <= 7f)
                     CanRecognizePlayer = true;

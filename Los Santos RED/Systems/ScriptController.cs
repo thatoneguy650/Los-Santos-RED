@@ -161,8 +161,8 @@ public static class ScriptController
                         else if (PersonOfInterest.IsRunning && PersonOfInterestTick.ShouldRun)
                             PersonOfInterestTick.RunTask();
 
-                        //if (GameStopWatch.ElapsedMilliseconds <= 2 || !MyTickTasks.Any(x => x.RanThisTick))
-                        //{
+                        if (GameStopWatch.ElapsedMilliseconds <= 2 || !MyTickTasks.Any(x => x.RanThisTick))
+                        {
                             //Least Important
                             if (DispatchAudio.IsRunning && DispatchAudioTick.ShouldRun)
                                 DispatchAudioTick.RunTask();
@@ -174,7 +174,7 @@ public static class ScriptController
                                 RandomCopSpawningTick.RunTask();
                             else if (Police.IsRunning && CleanupCopTick.ShouldRun)
                                 CleanupCopTick.RunTask();
-                      //  }
+                        }
                     }
 
                     GameStopWatch.Stop();

@@ -202,8 +202,21 @@ public static class Debugging
         
     private static void DebugNumpad7()
     {
-        PoliceSpawning.DebugSetPoliceSpawn(Game.LocalPlayer.Character.GetOffsetPositionFront(10F));
-        PoliceSpawning.SpawnCop();
+        //PoliceSpawning.SpawnRoadblock(Game.LocalPlayer.Character.GetOffsetPositionFront(10F));
+
+
+        PoliceSpawning.DebugRoadblock(Game.LocalPlayer.Character.GetOffsetPositionFront(10F));
+
+
+
+
+
+
+
+
+
+
+
     }
     public static void DebugNumpad8()
     {

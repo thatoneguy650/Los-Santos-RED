@@ -114,12 +114,12 @@ public static class Civilians
         {
             bool PrevHurt = MyPed.HurtByPlayer;
             MyPed.Update();
-            if(MyPed.CheckPlayerKilledPed)
+            if(MyPed.KilledByPlayer)
             {
                 PedList.PlayerKilledCivilians.Add(MyPed);
                 GameTimeLastKilledCivilian = Game.GameTime;
             }
-            else if (!PrevHurt && MyPed.CheckPlayerHurtPed)
+            else if (!PrevHurt && MyPed.HurtByPlayer)
             {
                 GameTimeLastHurtCivilian = Game.GameTime;
             }

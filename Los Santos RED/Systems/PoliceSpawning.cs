@@ -132,7 +132,7 @@ public static class PoliceSpawning
         string StreetName = PlayerLocation.GetCurrentStreet(PositionToSet);
         Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
 
-        NextPoliceSpawn = new RandomPoliceSpawn(PositionToSet, ZoneName, MyGTAStreet != null && MyGTAStreet.isFreeway);
+        NextPoliceSpawn = new RandomPoliceSpawn(PositionToSet,0f, ZoneName, MyGTAStreet);
     }
     public static void SpawnCop()
     {
@@ -202,7 +202,7 @@ public static class PoliceSpawning
         string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
         Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
 
-        return new RandomPoliceSpawn(SpawnLocation, ZoneName, MyGTAStreet != null && MyGTAStreet.isFreeway);
+        return new RandomPoliceSpawn(SpawnLocation,Heading, ZoneName, MyGTAStreet);
     }
     public static void RemoveCops()
     {
@@ -332,7 +332,7 @@ public static class PoliceSpawning
         else if(IsHelicopter)
             CopCar = SpawnCopHelicopter(_Agency, new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 250f));//spawn it in the air
         else
-            CopCar = SpawnCopCruiser(_Agency, SpawnLocation);
+            CopCar = SpawnCopCruiser(_Agency, SpawnLocation,0f);
 
         if (CopCar == null)
         {
@@ -446,7 +446,7 @@ public static class PoliceSpawning
 
         return Cop;
     }
-    public static GTAVehicle SpawnCopCruiser(Agency _Agency, Vector3 SpawnLocation)
+    public static GTAVehicle SpawnCopCruiser(Agency _Agency, Vector3 SpawnLocation,float Heading)
     {
         Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle(false,false);
         if (MyCarInfo == null)
@@ -456,7 +456,7 @@ public static class PoliceSpawning
         }
 
         string ModelName = MyCarInfo.ModelName;
-        Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
+        Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);
         Agencies.ChangeLivery(CopCar, _Agency);
         GameFiber.Yield();
 
@@ -533,17 +533,100 @@ public static class PoliceSpawning
 
         // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
     }
+
+    public static void SpawnRoadblock(Vector3 InitialPosition)
+    {
+        Vector3 SpawnLocation;
+        float Heading;
+        LosSantosRED.GetStreetPositionandHeading(InitialPosition, out SpawnLocation, out Heading, false);
+        Heading -= 90f;
+
+
+        Zone MyZone = Zones.GetZoneAtLocation(SpawnLocation);
+        Agency AgencyToSpawn = MyZone.GetRandomAgency();
+        GTAVehicle Cool = null;
+        if (AgencyToSpawn != null)
+            Cool = SpawnCopCruiser(AgencyToSpawn, SpawnLocation,Heading);
+
+        uint GameTimeStartedSleeping = Game.GameTime;
+        while(Game.GameTime - GameTimeStartedSleeping <= 5000)
+        {
+
+            
+            GameFiber.Yield();
+        }
+
+
+        if (Cool != null && Cool.VehicleEnt.Exists())
+        {
+            Cool.VehicleEnt.Delete();
+        }
+
+    }
+
+
+    public static void DebugRoadblock(Vector3 PositionNear)
+    {
+        List<RandomPoliceSpawn> Nodes = new List<RandomPoliceSpawn>();
+        Vector3 pos = PositionNear;
+        Vector3 outPos;
+        float heading;
+        float val;
+        for (int i = 1; i < 40; i++)
+        {
+            unsafe
+            {
+                NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, i, &outPos, &heading, &val, 1, 0x40400000, 0);
+            }
+            bool LocalIsObscured = false;
+            //if (NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
+            //{
+            //    LocalIsObscured = true;
+                
+            //}
+            if (NativeFunction.CallByName<bool>("IS_POSITION_OCCUPIED", outPos.X, outPos.Y, outPos.Z, 4f, 0, 1, 0, 0, 0, 0, 0))
+            {
+                LocalIsObscured = true;
+
+            }
+
+            
+
+
+            Nodes.Add(new RandomPoliceSpawn(outPos, heading, null, null) { IsObscured = LocalIsObscured });
+        }
+
+        uint GameTimeStartedSleeping = Game.GameTime;
+        while (Game.GameTime - GameTimeStartedSleeping <= 10000)
+        {
+            foreach(RandomPoliceSpawn MyNode in Nodes)
+            {
+                System.Drawing.Color ColorToPick = System.Drawing.Color.Yellow;
+                if(MyNode.IsObscured)
+                    ColorToPick = System.Drawing.Color.Red;
+                Rage.Debug.DrawArrowDebug(new Vector3(MyNode.SpawnLocation.X, MyNode.SpawnLocation.Y, MyNode.SpawnLocation.Z), new Vector3(0.5f), Rotator.Zero, 1f, ColorToPick);
+            }
+            
+            GameFiber.Yield();
+        }
+
+
+
+    }
 }
+
 public class RandomPoliceSpawn
 {
     public Vector3 SpawnLocation;
+    public float Heading;
     public Zone ZoneAtLocation;
-    public bool IsFreeway;
-    public RandomPoliceSpawn(Vector3 _SpawnLocation,Zone _ZoneAtLocation,bool _IsFreeway)
+    public Street StreetAtSpawn;
+    public bool IsObscured;
+    public RandomPoliceSpawn(Vector3 _SpawnLocation,float Heading, Zone _ZoneAtLocation, Street _StreetAtSpawn)
     {
         SpawnLocation = _SpawnLocation;
         ZoneAtLocation = _ZoneAtLocation;
-        IsFreeway = _IsFreeway;
+        StreetAtSpawn = _StreetAtSpawn;
     }
 }
 

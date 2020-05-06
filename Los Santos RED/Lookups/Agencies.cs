@@ -95,9 +95,6 @@ public static class Agencies
         List<Agency.VehicleInformation> SecurityVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("dilettante2", 100, 100) {MaxOccupants = 1 } };
 
-
-        
-
         List<Agency.VehicleInformation> ParkRangerVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("pranger", 100, 100) };
         List<Agency.VehicleInformation> FIBVehicles = new List<Agency.VehicleInformation>() {
@@ -137,7 +134,7 @@ public static class Agencies
             new Agency.VehicleInformation("police2", 100, 50) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
             new Agency.VehicleInformation("fbi", 0,25),
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
-        List<Agency.VehicleInformation> VPPDVehicles = new List<Agency.VehicleInformation>() {
+        List<Agency.VehicleInformation> DPPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police3", 100, 75) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<Agency.VehicleInformation> ChumashLSPDVehicles = new List<Agency.VehicleInformation>() {
@@ -233,18 +230,20 @@ public static class Agencies
             new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons),
             new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons),
             new Agency("~b~", "LSPD-CH", "Los Santos Police - Chumash Division", "Blue", Agency.Classification.Police, StandardCops, ChumashLSPDVehicles, "LSC ",AllWeapons),
-            new Agency("~b~", "VPPD", "Vespucci Police Department", "DarkBlue", Agency.Classification.Police, StandardCops, VPPDVehicles, "VP ",AllWeapons),
-            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "LightBlue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons),
+            new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "DarkBlue", Agency.Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons),
+            new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "LightBlue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons),
+
             new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { SpawnLimit = 3 },
 
             new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "White", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
             new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "White", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
 
-            new Agency("~r~", "BCSO", "Blaine County Sheriffs Office", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
+            
 
             new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
 
             new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkRed", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 3,CanSpawnAnywhere = true },
             new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons),

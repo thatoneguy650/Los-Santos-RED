@@ -33,7 +33,7 @@ public static class Zones
 
         //Blaine
         List<ZoneAgency> StandardBlaineAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("BCSO", 0, 85, 75),
+            new ZoneAgency("LSSD-BC", 0, 85, 75),
             new ZoneAgency("DOA", 1, 15, 5),
             new ZoneAgency("LSSD", 2, 0, 5),
             new ZoneAgency("NOOSE", 3, 0, 10),
@@ -41,13 +41,13 @@ public static class Zones
 
         List< ZoneAgency > BlaineParkRangerAgencies = new List<ZoneAgency>() {
             new ZoneAgency("SAPR", 0, 85, 75),
-            new ZoneAgency("BCSO", 1, 15, 10),
+            new ZoneAgency("LSSD-BC", 1, 15, 10),
             new ZoneAgency("NOOSE", 2, 0, 10),
             new ZoneAgency("LSSD-ASD", 3, 0, 5) };
 
         List<ZoneAgency> BlainePrisonAgencies = new List<ZoneAgency>() {
             new ZoneAgency("SASPA",0, 100, 70),
-            new ZoneAgency("BCSO", 1, 0, 10),
+            new ZoneAgency("LSSD-BC", 1, 0, 10),
             new ZoneAgency("NOOSE", 2, 0, 15),
             new ZoneAgency("LSSD-ASD", 3, 0, 5) };
 
@@ -64,7 +64,7 @@ public static class Zones
 
         List<string> VespucciAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VespucciAreaUnits.FileName, ScannerAudio.attention_all_area_units.VespucciAreaUnits2.FileName };
         List<ZoneAgency> VespucciAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("VPPD", 0, 85, 70),
+            new ZoneAgency("LSPD-DP", 0, 85, 70),
             new ZoneAgency("LSPD", 1, 10, 10),
             new ZoneAgency("FIB", 2, 5, 5),
             new ZoneAgency("NOOSE", 3, 0, 10),
@@ -96,7 +96,7 @@ public static class Zones
         List<string> PortAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.PortOfLosSantosUnits.FileName, ScannerAudio.attention_all_area_units.PortOfLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.PortOfLosSantosUnits2.FileName };
 
         List<ZoneAgency> RockfordHillsAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("RHPD", 0, 85, 70),
+            new ZoneAgency("LSPD-RH", 0, 85, 70),
             new ZoneAgency("FIB", 1, 10, 10),
             new ZoneAgency("LSPD", 2, 5, 5),
             new ZoneAgency("NOOSE", 3, 0, 10),
