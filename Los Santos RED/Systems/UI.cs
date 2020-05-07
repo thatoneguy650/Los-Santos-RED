@@ -254,7 +254,7 @@ public static class UI
         string ZoneDisplay = "";
         string CopZoneName = "";
         ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone);
-        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.isFreeway)
+        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
             CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;// +  "~s~ / " + Agencies.SAHP.ColoredInitials;
         else if (PlayerLocation.PlayerCurrentZone != null && PlayerLocation.PlayerCurrentZone.MainZoneAgency != null)
             CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;

@@ -75,7 +75,6 @@ public static class PoliceSpawning
             }
         }
     }
-
     public static int ExtraCopSpawnLimit
     {
         get
@@ -103,8 +102,15 @@ public static class PoliceSpawning
     }
     public static void PoliceSpawningTick()
     {
-        if (CanSpawnCop)
+        if (NextPoliceSpawn == null)
+        {
+            NextPoliceSpawn = GetPoliceSpawn();
+            return;
+        }
+        else if (CanSpawnCop)
+        {
             SpawnCop();
+        }
     }
     public static void Dispose()
     {
@@ -138,20 +144,23 @@ public static class PoliceSpawning
     {
         try
         {
-            if (NextPoliceSpawn == null)
+            Agency AgencyToSpawn;
+            if(LosSantosRED.PlayerWantedLevel == 5 && LosSantosRED.RandomPercent(30))
             {
-                NextPoliceSpawn = GetPoliceSpawn();
-                return;
+                AgencyToSpawn = Agencies.GetRandomArmyAgency();
             }
-            if(NextPoliceSpawn.ZoneAtLocation.ZoneAgencies == null || !NextPoliceSpawn.ZoneAtLocation.ZoneAgencies.Any())
+            else if (NextPoliceSpawn.StreetAtSpawn != null && NextPoliceSpawn.StreetAtSpawn.IsHighway && LosSantosRED.RandomPercent(10))
             {
-                Debugging.WriteToLog("SpawnActiveChaseCop", string.Format("No Agencies At: {0}", NextPoliceSpawn.ZoneAtLocation.TextName));
-                NextPoliceSpawn = null;
-                return;
+                AgencyToSpawn = Agencies.GetRandomHighwayAgency();
             }
-            Agency AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.GetRandomAgency();
+            else
+            {
+                AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.GetRandomAgency();
+
+            }
             if (AgencyToSpawn != null)
-                SpawnGTACop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation);
+                SpawnGTACop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation, NextPoliceSpawn.Heading);
+
 
             NextPoliceSpawn = null;
         }
@@ -301,7 +310,7 @@ public static class PoliceSpawning
         if (MyBlip.Exists())
             MyBlip.Delete();
     }
-    public static GTACop SpawnGTACop(Agency _Agency, Vector3 SpawnLocation)
+    public static GTACop SpawnGTACop(Agency _Agency, Vector3 SpawnLocation,float Heading)
     {
         if (SpawnLocation == null)
             return null;
@@ -317,7 +326,7 @@ public static class PoliceSpawning
         if (_Agency.HasMotorcycles)
             IsBike = LosSantosRED.RandomPercent(50); //50% bike cop for SAHP
 
-        if (_Agency.HasSpawnableHelicopters && CreatedPoliceVehicles.Count(x => x.IsHelicopter) <= 1)
+        if (_Agency.HasSpawnableHelicopters && !CreatedPoliceVehicles.Any(x => x.IsHelicopter))
         {
             if (_Agency.Vehicles.Any(x => !x.IsHelicopter && x.CanCurrentlySpawn))
                 IsHelicopter = LosSantosRED.RandomPercent(70); //50% bike cop for SAHP
@@ -328,11 +337,11 @@ public static class PoliceSpawning
         //Debugging.WriteToLog("SpawnCop", string.Format("Agency: {0}, HasHelicopter: {1}, ISHelicopter: {2}", _Agency.Initials,_Agency.HasSpawnableHelicopters,IsHelicopter));
 
         if (IsBike)
-            CopCar = SpawnCopMotorcycle(_Agency, SpawnLocation);
+            CopCar = SpawnCopMotorcycle(_Agency, SpawnLocation, Heading);
         else if(IsHelicopter)
             CopCar = SpawnCopHelicopter(_Agency, new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 250f));//spawn it in the air
         else
-            CopCar = SpawnCopCruiser(_Agency, SpawnLocation,0f);
+            CopCar = SpawnCopCruiser(_Agency, SpawnLocation, Heading);
 
         if (CopCar == null)
         {
@@ -471,7 +480,7 @@ public static class PoliceSpawning
             return null;
         }    
     }
-    public static GTAVehicle SpawnCopMotorcycle(Agency _Agency, Vector3 SpawnLocation)
+    public static GTAVehicle SpawnCopMotorcycle(Agency _Agency, Vector3 SpawnLocation, float Heading)
     {  
         Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle(true,false);
         if (MyCarInfo == null)
@@ -480,7 +489,7 @@ public static class PoliceSpawning
             return null;
         }
         string ModelName = MyCarInfo.ModelName;
-        Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
+        Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);
         GameFiber.Yield();
 
         GTAVehicle ToReturn = new GTAVehicle(CopCar, 0, false, false, null, false, null) { ExtendedAgencyVehicleInformation = MyCarInfo };

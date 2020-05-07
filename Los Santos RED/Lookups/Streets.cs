@@ -266,7 +266,7 @@ public class Street
     public string Name = "";
     public float SpeedLimit = 50f;
     public string DispatchFile = "";
-    public bool isFreeway = false;
+    public bool IsHighway = false;
     public Street()
     {
 
@@ -287,7 +287,7 @@ public class Street
         Name = _Name;
         SpeedLimit = _SpeedLimit;
         DispatchFile = _DispatchFile;
-        isFreeway = _isFreeway;
+        IsHighway = _isFreeway;
     }
 }
 

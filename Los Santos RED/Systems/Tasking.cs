@@ -1456,6 +1456,7 @@ public static class Tasking
                             break;
                         NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);
                         SubTask = "DriveTo";
+                        Debugging.WriteToLog("TaskHeliChase", string.Format("Lost you following closest cop: {0}", Cop.Pedestrian.Handle));
                     }   
                 }
                 else
@@ -1464,6 +1465,7 @@ public static class Tasking
                     {
                         NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character, -50f, 50f, 60f);
                         SubTask = "Chase";
+                        Debugging.WriteToLog("TaskHeliChase", string.Format("Found you: {0}", Cop.Pedestrian.Handle));
                     }
                 }
                 GameFiber.Sleep(1000);

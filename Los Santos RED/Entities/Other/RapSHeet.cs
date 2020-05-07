@@ -14,15 +14,15 @@ public class RapSheet
     public int TimeAimedAtPolice;
     public int MaxWantedLevel = 0;
 
-    public Crime KillingPolice = new Crime("Police Fatality", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.OfficerDown, 1,true));
-    public Crime FiringWeaponNearPolice = new Crime("Shots Fired at Police", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.ShootingAtPolice, 2, true));
-    public Crime AimingWeaponAtPolice = new Crime("Aiming Weapons At Police", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.ThreateningOfficerWithFirearm, 3, true));
-    public Crime HurtingPolice = new Crime("Assaulting Police", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.AssaultingOfficer, 4, true));
-    public Crime TrespessingOnGovtProperty = new Crime("Trespassing on Government Property", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.TrespassingOnGovernmentProperty, 5, true));
-    public Crime GotInAirVehicleDuringChase = new Crime("Stealing an Air Vehicle", CrimeLevel.Felony, 4, true, new DispatchQueueItem(AvailableDispatch.StealingAirVehicle, 6, true));
-    public Crime FiringWeapon = new Crime("Firing Weapon", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.ShotsFired, 6)) { CanBeCalledInBySound = true };
-    public Crime KillingCivilians = new Crime("Civilian Fatality", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.CivlianFatality, 7)) { CiviliansCanFightIfObserved = true };
-    public Crime GrandTheftAuto = new Crime("Grand Theft Auto", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.GrandTheftAuto, 8)) { CiviliansCanFightIfObserved = true };
+    public Crime KillingPolice = new Crime("Police Fatality", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.OfficerDown, 1, true)) { CanBeReportedMultipleTimes = true };
+    public Crime FiringWeaponNearPolice = new Crime("Shots Fired at Police", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.ShootingAtPolice, 2, true)) { CanBeReportedMultipleTimes = true };
+    public Crime AimingWeaponAtPolice = new Crime("Aiming Weapons At Police", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.ThreateningOfficerWithFirearm, 3, true)) { CanBeReportedMultipleTimes = true };
+    public Crime HurtingPolice = new Crime("Assaulting Police", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.AssaultingOfficer, 4, true)) { CanBeReportedMultipleTimes = true };
+    public Crime TrespessingOnGovtProperty = new Crime("Trespassing on Government Property", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.TrespassingOnGovernmentProperty, 5, true)) { CanBeReportedMultipleTimes = true };
+    public Crime GotInAirVehicleDuringChase = new Crime("Stealing an Air Vehicle", CrimeLevel.Felony, 4, true, new DispatchQueueItem(AvailableDispatch.StealingAirVehicle, 6, true)) { CanBeReportedMultipleTimes = true };
+    public Crime FiringWeapon = new Crime("Firing Weapon", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.ShotsFired, 6)) { CanBeCalledInBySound = true,CanBeReportedMultipleTimes = true };
+    public Crime KillingCivilians = new Crime("Civilian Fatality", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.CivlianFatality, 7)) { CiviliansCanFightIfObserved = true,CanBeReportedMultipleTimes = true };
+    public Crime GrandTheftAuto = new Crime("Grand Theft Auto", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.GrandTheftAuto, 8)) { CiviliansCanFightIfObserved = true,CanBeReportedMultipleTimes = true };
     public Crime Mugging = new Crime("Mugging", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.CivilianMugged, 9)) { CiviliansCanFightIfObserved = true };
     public Crime AttemptingSuicide = new Crime("Attempting Suicide", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.AttemptingSuicide, 10));
     public Crime BrandishingWeapon = new Crime("Brandishing Weapon", CrimeLevel.Misdemeanor, 2, false, new DispatchQueueItem(AvailableDispatch.CarryingWeapon, 11)) { CiviliansCanFightIfObserved = true };
@@ -314,7 +314,7 @@ public class RapSheet
             TrespessingOnGovtProperty.CrimeObserved();
         }
         CheckAimingAtPolice();
-        if (!AimingWeaponAtPolice.CanObserveCrime && TimeAimedAtPolice >= 100)
+        if (!AimingWeaponAtPolice.CanObserveCrime && TimeAimedAtPolice >= 10)
         {
             AimingWeaponAtPolice.CrimeObserved();
         }
@@ -366,7 +366,7 @@ public class Crime
     public bool CanBeReportedByCivilians = true;
     public bool CanBeCalledInBySound = false;
     public bool CiviliansCanFightIfObserved = false;
-    public bool CanBeReportedMultipleTimes = true;
+    public bool CanBeReportedMultipleTimes = false;
     public bool WillScareCivilians = true;
     public bool CanObserveCrime
     {

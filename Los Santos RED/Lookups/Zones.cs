@@ -40,8 +40,8 @@ public static class Zones
             new ZoneAgency("LSSD-ASD", 4, 0, 5) };
 
         List< ZoneAgency > BlaineParkRangerAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("SAPR", 0, 85, 75),
-            new ZoneAgency("LSSD-BC", 1, 15, 10),
+            new ZoneAgency("SAPR", 0, 51, 20),
+            new ZoneAgency("LSSD-BC", 1, 49, 65),
             new ZoneAgency("NOOSE", 2, 0, 10),
             new ZoneAgency("LSSD-ASD", 3, 0, 5) };
 
@@ -52,15 +52,15 @@ public static class Zones
             new ZoneAgency("LSSD-ASD", 3, 0, 5) };
 
         List<ZoneAgency> StandardCityAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("LSPD", 0, 85, 70),
-            new ZoneAgency("FIB", 1, 10, 10),
-            new ZoneAgency("DOA", 2, 5, 5),
+            new ZoneAgency("LSPD", 0, 95, 80),
+            new ZoneAgency("FIB", 1, 4, 4),
+            new ZoneAgency("DOA", 2, 1, 1),
             new ZoneAgency("NOOSE", 3, 0, 10),
             new ZoneAgency("LSPD-ASD", 4, 0, 5) };
 
         List<ZoneAgency> SecurityAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("PRISEC", 0, 100, 0),
-            new ZoneAgency("NOOSE", 1, 0, 100) };
+            new ZoneAgency("PRISEC", 0, 100, 50),
+            new ZoneAgency("NOOSE", 1, 0, 50) };
 
         List<string> VespucciAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VespucciAreaUnits.FileName, ScannerAudio.attention_all_area_units.VespucciAreaUnits2.FileName };
         List<ZoneAgency> VespucciAgencies = new List<ZoneAgency>() {
@@ -149,9 +149,9 @@ public static class Zones
             new Zone("ARMYB", "Fort Zancudo", ScannerAudio.areas.FtZancudo.FileName, County.BlaineCounty) { IsRestrictedDuringWanted = true, ZoneAgencies = ArmyAgencies },
             new Zone("BRADP", "Braddock Pass", ScannerAudio.areas.BraddockPass.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("BRADT", "Braddock Tunnel", ScannerAudio.areas.TheBraddockTunnel.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("CALAFB", "Calafia Bridge", "", County.BlaineCounty) { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("CALAFB", "Calafia Bridge", "", County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("CANNY", "Raton Canyon", ScannerAudio.areas.RatonCanyon.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("CCREAK", "Cassidy Creek", "", County.BlaineCounty) { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("CCREAK", "Cassidy Creek", "", County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("CMSW", "Chiliad Mountain State Wilderness", ScannerAudio.areas.ChilliadMountainStWilderness.FileName, County.BlaineCounty) { ZoneAgencies = BlaineParkRangerAgencies },
             new Zone("DESRT", "Grand Senora Desert", ScannerAudio.areas.GrandeSonoranDesert.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("ELGORL", "El Gordo Lighthouse", ScannerAudio.areas.MountGordo.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
@@ -165,7 +165,7 @@ public static class Zones
             new Zone("NCHU", "North Chumash", ScannerAudio.areas.NorthChumash.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("PALCOV", "Paleto Cove", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("PALETO", "Paleto Bay", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty, new List<string>() { ScannerAudio.attention_all_area_units.PaletoaBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits3.FileName }, "Paleto Bay Units") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("PALFOR", "Paleto Forest", ScannerAudio.areas.PaletoForest.FileName, County.BlaineCounty) { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("PALFOR", "Paleto Forest", ScannerAudio.areas.PaletoForest.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("PROCOB", "Procopio Beach", ScannerAudio.areas.ProcopioBeach.FileName, County.BlaineCounty) { ZoneAgencies = StandardBlaineAgencies },
             new Zone("SANCHIA", "San Chianski Mountain Range", "", County.BlaineCounty) { ZoneAgencies = BlaineParkRangerAgencies },
             new Zone("SANDY", "Sandy Shores", ScannerAudio.areas.SandyShores.FileName, County.BlaineCounty, new List<string>() { ScannerAudio.attention_all_area_units.SandyShoreUnits.FileName, ScannerAudio.attention_all_area_units.SandyShoresUnits2.FileName, ScannerAudio.attention_all_area_units.SanyShoreUnits3.FileName }, "Sandy Shores Units") { ZoneAgencies = StandardBlaineAgencies },
@@ -389,34 +389,11 @@ public class Zone
                 return null;
         }
     }
-    public List<ZoneAgency> SecondaryAgencies
-    {
-        get
-        {
-            if (HasAgencies)
-                return ZoneAgencies.Where(x => x.AssociatedAgency != MainZoneAgency).ToList();
-            else
-                return null;
-        }
-    }
     public bool HasAgencies
     {
         get
         {
             if (ZoneAgencies != null && ZoneAgencies.Any())
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool HasSecondaryAgencies
-    {
-        get
-        {
-            if (ZoneAgencies == null)
-                return false;
-
-            if (ZoneAgencies.Any(x => x.AssociatedAgency != MainZoneAgency))
                 return true;
             else
                 return false;

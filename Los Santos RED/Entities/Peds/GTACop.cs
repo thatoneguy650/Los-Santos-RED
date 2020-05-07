@@ -48,20 +48,13 @@ public class GTACop : GTAPed
     public void IssuePistol()
     {
         GTAWeapon Pistol;
-
-        if (AssignedAgency == null)
-        {
-            Debugging.WriteToLog("IssueCopPistol", "No Agency");
-            Debugging.WriteToLog("IssueCopPistol", Pedestrian.Model.Name);
-            Debugging.DebugNumpad8();
-        }
-
         Agency.IssuedWeapon PistolToPick = new Agency.IssuedWeapon("weapon_pistol", true, null);
-
         if (AssignedAgency != null)
             PistolToPick = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
         Pistol = GTAWeapons.WeaponsList.Where(x => x.Name.ToLower() == PistolToPick.ModelName.ToLower() && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
         IssuedPistol = Pistol;
+        if (IssuedPistol == null)
+            return;
         Pedestrian.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
         if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
         {
@@ -74,15 +67,20 @@ public class GTACop : GTAPed
     {
         GTAWeapon IssuedHeavy;
 
+        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceHeavyAccuracy;
+
         Agency.IssuedWeapon HeavyToPick = new Agency.IssuedWeapon("weapon_shotgun", true, null);
         if (AssignedAgency != null)
             HeavyToPick = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
 
         IssuedHeavy = GTAWeapons.WeaponsList.Where(x => x.Name.ToLower() == HeavyToPick.ModelName.ToLower() && x.Category != GTAWeapon.WeaponCategory.Pistol).PickRandom();
         IssuedHeavyWeapon = IssuedHeavy;
+
+        if (IssuedHeavyWeapon == null)
+            return;
+
         Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
-        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
-            Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceHeavyAccuracy;
         if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
         {
             GTAWeapon.WeaponVariation MyVariation = HeavyToPick.MyVariation;

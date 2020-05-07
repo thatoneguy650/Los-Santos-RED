@@ -161,7 +161,7 @@ public static class ScriptController
                         else if (PersonOfInterest.IsRunning && PersonOfInterestTick.ShouldRun)
                             PersonOfInterestTick.RunTask();
 
-                        if (GameStopWatch.ElapsedMilliseconds <= 2 || !MyTickTasks.Any(x => x.RanThisTick))
+                        if (GameStopWatch.ElapsedMilliseconds <= 1 || !MyTickTasks.Any(x => x.RanThisTick))
                         {
                             //Least Important
                             if (DispatchAudio.IsRunning && DispatchAudioTick.ShouldRun)
@@ -170,9 +170,9 @@ public static class ScriptController
                             //    WeatherCheckingTick.RunTask();
                             else if (PoliceSpeech.IsRunning && PoliceSpeechTick.ShouldRun)//used to be IF
                                 PoliceSpeechTick.RunTask();
-                            else if (Police.IsRunning && LosSantosRED.MySettings.Police.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF
+                            else if (PoliceSpawning.IsRunning && LosSantosRED.MySettings.Police.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF
                                 RandomCopSpawningTick.RunTask();
-                            else if (Police.IsRunning && CleanupCopTick.ShouldRun)
+                            else if (PoliceSpawning.IsRunning && CleanupCopTick.ShouldRun)
                                 CleanupCopTick.RunTask();
                         }
                     }
