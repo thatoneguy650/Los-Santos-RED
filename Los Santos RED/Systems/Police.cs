@@ -14,7 +14,7 @@ internal static class Police
     private static uint WantedLevelStartTime;
     private static bool CanReportLastSeen;
     private static uint GameTimeLastGreyedOut;
-    private static Vector3 PlaceWantedStarted;
+    public static Vector3 PlaceWantedStarted;//temp public
     private static Blip CurrentWantedCenterBlip;
     private static Blip InvestigationBlip;
 
@@ -355,7 +355,7 @@ internal static class Police
     }
     private static void CheckRecognition()
     {
-        AnyPoliceCanSeePlayer = PedList.CopPeds.Any(x => x.CanSeePlayer) && !PlayerStarsGreyedOut;
+        AnyPoliceCanSeePlayer = PedList.CopPeds.Any(x => x.CanSeePlayer);// && !PlayerStarsGreyedOut;
 
         if (AnyPoliceCanSeePlayer)
             AnyPoliceRecentlySeenPlayer = true;
@@ -364,27 +364,36 @@ internal static class Police
 
         AnyPoliceCanRecognizePlayer = PedList.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecognize || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
 
+        if (!AnyPoliceSeenPlayerThisWanted && AnyPoliceRecentlySeenPlayer)
+            AnyPoliceSeenPlayerThisWanted = true;
+
         if (!AnyPoliceSeenPlayerThisWanted)
+        {
+           // Debugging.WriteToLog("CheckRecognition", "PlacePlayerLastSeen1");
             PlacePlayerLastSeen = PlaceWantedStarted;
+        }
         else if (!PlayerStarsGreyedOut)//(AnyPoliceRecentlySeenPlayer || !PlayerStarsGreyedOut)
+        {
+           // Debugging.WriteToLog("CheckRecognition", "PlacePlayerLastSeen1");
             PlacePlayerLastSeen = Game.LocalPlayer.Character.Position;
+        }
         else if (PlayerStarsGreyedOut && Game.LocalPlayer.Character.DistanceTo2D(PlacePlayerLastSeen) <= 15f && !Game.LocalPlayer.Character.Position.Z.IsWithin(PlacePlayerLastSeen.Z - 2f, PlacePlayerLastSeen.Z + 2f))//within the search zone but above or below it, need to help out my cops
             SearchModeStopping.StopSearchModeSingle();
 
         NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlacePlayerLastSeen.X, PlacePlayerLastSeen.Y, PlacePlayerLastSeen.Z);
 
-        if (!AnyPoliceSeenPlayerThisWanted && AnyPoliceRecentlySeenPlayer)
-            AnyPoliceSeenPlayerThisWanted = true;
+
 
     }
     private static void GetPoliceState()
     {
+        if (LosSantosRED.PlayerWantedLevel == 0)
+            CurrentPoliceState = PoliceState.Normal;//Default state
+
         if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
             return;
 
-        if (LosSantosRED.PlayerWantedLevel == 0)
-            CurrentPoliceState = PoliceState.Normal;//Default state
-        else if (LosSantosRED.PlayerWantedLevel >= 1 && LosSantosRED.PlayerWantedLevel <= 3 && AnyPoliceCanSeePlayer)//AnyCanSeePlayer)
+        if (LosSantosRED.PlayerWantedLevel >= 1 && LosSantosRED.PlayerWantedLevel <= 3 && AnyPoliceCanSeePlayer)//AnyCanSeePlayer)
         {
             bool IsDeadly = CurrentCrimes.LethalForceAuthorized;
             if (!IsDeadly && !LosSantosRED.PlayerIsConsideredArmed) // Unarmed and you havent killed anyone
@@ -693,7 +702,7 @@ internal static class Police
         //    LocalWriteToLog("SetWantedLevel", string.Format("Wanted NOT Set Current Wanted: {0}, Desired Wanted: {1}", Game.LocalPlayer.WantedLevel, WantedLevel));
         //}
     }
-    private static void AddUpdateCurrentWantedBlip(Vector3 Position)
+    public static void AddUpdateCurrentWantedBlip(Vector3 Position)
     {
         if (Position == Vector3.Zero)
         {

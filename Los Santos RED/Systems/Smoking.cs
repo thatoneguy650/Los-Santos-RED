@@ -214,10 +214,15 @@ public static class Smoking
         GameFiber CreateSmoke = GameFiber.StartNew(delegate
         {
             NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_SMOKING", 0, true);
-            ClockSystem.OverrideToFastest = true;
+            
             PlayerHealth.IsHealing = true;
+            uint GameTimeStartedSmoking = Game.GameTime;
             while (!Extensions.IsMoveControlPressed())
             {
+                if(Game.GameTime - GameTimeStartedSmoking >= 5000)
+                {
+                    ClockSystem.OverrideToFastest = true;//make this transition nicely!
+                }
                 GameFiber.Sleep(100);
             }
             Game.LocalPlayer.Character.Tasks.Clear();

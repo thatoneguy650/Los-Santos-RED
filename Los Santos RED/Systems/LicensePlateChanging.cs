@@ -48,7 +48,7 @@ public static class LicensePlateChanging
 
             if (ClosestVehicle.HasDriver)
             {
-                PedReactToThreatening(ClosestVehicle.Driver);
+                //PedReactToThreatening(ClosestVehicle.Driver);
             }
             ChangeLicensePlateAnimation(VehicleToChange, false);
         }
@@ -279,29 +279,29 @@ public static class LicensePlateChanging
 
         return LicensePlate;
     }
-    public static void PedReactToThreatening(Ped Attacker)
-    {
-        int RandomNum = rnd.Next(1, 20);
-        if (RandomNum <= 4 && LosSantosRED.PlayerIsNotWanted) //Murder
-        {
-            GTAWeapon GunToGive = GTAWeapons.GetRandomWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
-            Attacker.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
-            Attacker.Tasks.FightAgainst(Game.LocalPlayer.Character);
-            Attacker.BlockPermanentEvents = true;
-            Attacker.KeepTasks = true;
-        }
-        //else if (RandomNum == 2) //Run Away
-        //{
-        //    Attacker.Tasks.Cower(30000);
-        //    Attacker.BlockPermanentEvents = true;
-        //    Attacker.KeepTasks = true;
-        //}
-        else //Flee
-        {
-            Attacker.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
-            Attacker.BlockPermanentEvents = true;
-            Attacker.KeepTasks = true;
-        }
-    }
+    //public static void PedReactToThreatening(Ped Attacker)
+    //{
+    //    int RandomNum = rnd.Next(1, 20);
+    //    if (RandomNum <= 4 && LosSantosRED.PlayerIsNotWanted) //Murder
+    //    {
+    //        GTAWeapon GunToGive = GTAWeapons.GetRandomRegularWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
+    //        Attacker.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
+    //        Attacker.Tasks.FightAgainst(Game.LocalPlayer.Character);
+    //        Attacker.BlockPermanentEvents = true;
+    //        Attacker.KeepTasks = true;
+    //    }
+    //    //else if (RandomNum == 2) //Run Away
+    //    //{
+    //    //    Attacker.Tasks.Cower(30000);
+    //    //    Attacker.BlockPermanentEvents = true;
+    //    //    Attacker.KeepTasks = true;
+    //    //}
+    //    else //Flee
+    //    {
+    //        Attacker.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
+    //        Attacker.BlockPermanentEvents = true;
+    //        Attacker.KeepTasks = true;
+    //    }
+    //}
 }
 

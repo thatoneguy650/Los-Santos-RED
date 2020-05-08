@@ -195,7 +195,11 @@ public static class Debugging
     }
     private static void DebugNumpad6()
     {
+        float.TryParse(Menus.GetKeyboardInput(), out float PosX);
+        LosSantosRED.MySettings.UI.PositionX = PosX;
 
+        float.TryParse(Menus.GetKeyboardInput(), out float PosY);
+        LosSantosRED.MySettings.UI.PositionY = PosY;
         WriteToLog("DebugNumpad6", string.Format("                      PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
         WriteToLog("DebugNumpad6", string.Format("                      PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
     }
@@ -258,6 +262,7 @@ public static class Debugging
                 WriteToLog("DebugNumpad6", string.Format("Cross Street: {0}", PlayerLocation.PlayerCurrentCrossStreet.Name));
             WriteToLog("DebugNumpad6", string.Format("PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
             WriteToLog("DebugNumpad6", string.Format("PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
+            WriteToLog("DebugNumpad6", string.Format("PlayerWantedCenter: {0}", NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer)));
             foreach (GTAPed DeadPerson in PedList.PlayerKilledCivilians)
             {
                 WriteToLog("DebugNumpad7", string.Format("Player Killed: Handle: {0}, Distance: {1}", DeadPerson.Pedestrian.Handle, Game.LocalPlayer.Character.DistanceTo2D(DeadPerson.Pedestrian)));

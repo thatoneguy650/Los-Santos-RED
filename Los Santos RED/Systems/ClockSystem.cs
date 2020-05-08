@@ -15,12 +15,14 @@ public static class ClockSystem
     private static int ClockMinutes;
     private static int ClockHours;
     private static uint GameTimeLastSetClock;
-    private static int ClockMultiplier;
 
 
     private static int StoredClockSeconds;
     private static int StoredClockMinutes;
     private static int StoredClockHours;
+
+    private static int Interval = 1000;
+    private static int ClockMultiplier = 1;
 
     public static bool IsRunning { get; set; }
     public static string ClockSpeed { get; set; }
@@ -44,7 +46,6 @@ public static class ClockSystem
     public static void ClockTick()
     {
         float Speed = Game.LocalPlayer.Character.Speed;
-        int Interval = 1000;
         if (Speed <= 4.0f)
         {
             Interval = 1000;
@@ -85,8 +86,8 @@ public static class ClockSystem
         if(OverrideToFastest)
         {
             Interval = 1;
-            ClockMultiplier = 50;
-            ClockSpeed = "50000x";
+            ClockMultiplier = 30;
+            ClockSpeed = "30000x";
         }
 
         if (Game.GameTime - GameTimeLastSetClock >= Interval)
@@ -99,9 +100,6 @@ public static class ClockSystem
         //ClockMonth = NativeFunction.CallByName<int>("GET_CLOCK_MONTH");
         //ClockDayOfMonth = NativeFunction.CallByName<int>("GET_CLOCK_DAY_OF_MONTH");
         ClockDayOfWeek = NativeFunction.CallByName<int>("GET_CLOCK_DAY_OF_WEEK");
-
-        
-
         ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
         ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
         ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");

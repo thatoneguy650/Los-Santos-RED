@@ -85,7 +85,7 @@ internal static class VehicleFuelSystem
                     }
                 }
             }
-            FuelUIText = string.Format(" Fuel {0} {1} Near Pumps {2}", (Game.LocalPlayer.Character.CurrentVehicle.FuelLevel / 100f).ToString("P2"), VehicleEngine.LimitThrottle ? "Limit: On" : "", NearGasPumps);
+            FuelUIText = string.Format(" Fuel {0}", (Game.LocalPlayer.Character.CurrentVehicle.FuelLevel / 100f).ToString("P2"));
         }
     }
    

@@ -98,7 +98,7 @@ public static class Tasking
                    
             }
         }
-        else if (_ToTaskCiv > 0)
+        else if (_ToTask ==  0 && _ToTaskCiv > 0)//only run this with no cops having already been tasked this tick
         {
             CivilianTask CivTaskToAssign = CiviliansToTask[0];
             CivTaskToAssign.CivilianToAssign.IsTasked = true;
@@ -130,7 +130,7 @@ public static class Tasking
         Snitch.TaskType = AssignableTasks.ReactToCrime;
         Debugging.WriteToLog("ReactToCrime", string.Format("Handle: {0}, Crimes: {1}",Snitch.Pedestrian.Handle, string.Join(",", Snitch.CrimesWitnessed.Where(x => x.CanBeReportedByCivilians).Select(x => x.Name))));
         bool ShouldCallIn = Snitch.CrimesWitnessed.Any(x => x.CanBeReportedByCivilians);
-        if(ShouldCallIn && Snitch.WillCallPolice && CiviliansReportingCrimes <= 5 && LosSantosRED.PlayerIsNotWanted)
+        if(ShouldCallIn && Snitch.WillCallPolice && CiviliansReportingCrimes <= 5)
         {
             CivilianReportCrime(Snitch);
         }
@@ -171,7 +171,7 @@ public static class Tasking
                     AbortReport = true;
                     break;
                 }
-                if (PedSwapping.JustTakenOver(2000) || LosSantosRED.PlayerIsWanted)
+                if (PedSwapping.JustTakenOver(2000))
                 {
                     AbortReport = true;
                     break;
@@ -207,7 +207,7 @@ public static class Tasking
             //Call It In
             NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", CivilianToReport.Pedestrian, 10000);
             CivilianToReport.Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
-            if (LosSantosRED.PlayerIsWanted || PedSwapping.JustTakenOver(2000))
+            if (PedSwapping.JustTakenOver(2000))
             {
                 CivilianToReport.Pedestrian.IsPersistent = false;
                 CiviliansReportingCrimes--;
@@ -223,23 +223,49 @@ public static class Tasking
             }
             GameFiber.Sleep(LosSantosRED.MyRand.Next(3000, 7000));
             Debugging.WriteToLog("Crime Pre Reported", WorstCrime.Name);
-            if (CivilianToReport.Pedestrian.Exists() && CivilianToReport.Pedestrian.IsAlive && !WorstCrime.RecentlyCalledInByCivilians(60000) && !CivilianToReport.Pedestrian.IsRagdoll && LosSantosRED.PlayerIsNotWanted)
+            if (CivilianToReport.Pedestrian.Exists() && CivilianToReport.Pedestrian.IsAlive && !WorstCrime.RecentlyCalledInByCivilians(60000) && !CivilianToReport.Pedestrian.IsRagdoll)
             {
-                WorstCrime.DispatchToPlay.ReportedBy = DispatchAudio.ReportType.Civilians;
-                WorstCrime.GameTimeLastCalledInByCivilians = Game.GameTime;
-                if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
-                    WorstCrime.DispatchToPlay.VehicleToReport = VehToReport;
+                if (LosSantosRED.PlayerIsNotWanted)
+                {
+                    WorstCrime.DispatchToPlay.ReportedBy = DispatchAudio.ReportType.Civilians;
+                    WorstCrime.GameTimeLastCalledInByCivilians = Game.GameTime;
+                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                        WorstCrime.DispatchToPlay.VehicleToReport = VehToReport;
 
-                DispatchAudio.AddDispatchToQueue(WorstCrime.DispatchToPlay);
-                Police.PoliceInInvestigationMode = true;
-                PersonOfInterest.PlayerIsPersonOfInterest = true;
+                    DispatchAudio.AddDispatchToQueue(WorstCrime.DispatchToPlay);
+                    Police.PoliceInInvestigationMode = true;
+                    PersonOfInterest.PlayerIsPersonOfInterest = true;
 
-                if(CivilianToReport.EverSeenPlayer)
-                    Police.InvestigationPosition = CivilianToReport.PositionLastSeenPlayer;
-                else if(CivilianToReport.PositionLastSeenCrime != Vector3.Zero)
-                    Police.InvestigationPosition = CivilianToReport.PositionLastSeenCrime;
+                    if (CivilianToReport.EverSeenPlayer)
+                        Police.InvestigationPosition = CivilianToReport.PositionLastSeenPlayer;
+                    else if (CivilianToReport.PositionLastSeenCrime != Vector3.Zero)
+                        Police.InvestigationPosition = CivilianToReport.PositionLastSeenCrime;
+                    else
+                        Police.InvestigationPosition = CivilianToReport.Pedestrian.Position;
+                }
                 else
-                    Police.InvestigationPosition = CivilianToReport.Pedestrian.Position;
+                {
+                    Debugging.WriteToLog("Civilian Reported Crime", "Civilian Reported crime while wanted, update the wanted center place");
+                    Vector3 UpdatedPosition;
+                    if (CivilianToReport.EverSeenPlayer)
+                        UpdatedPosition = CivilianToReport.PositionLastSeenPlayer;
+                    else if (CivilianToReport.PositionLastSeenCrime != Vector3.Zero && CivilianToReport.PositionLastSeenCrime != Vector3.Zero)
+                        UpdatedPosition = CivilianToReport.PositionLastSeenCrime;
+                    else
+                        UpdatedPosition = CivilianToReport.Pedestrian.Position;
+
+                    Police.PlacePlayerLastSeen = UpdatedPosition;
+                   // NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Police.PlacePlayerLastSeen.X, Police.PlacePlayerLastSeen.Y, Police.PlacePlayerLastSeen.Z);
+                   // Vector3 CurrentWantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+
+                    //Police.AddUpdateCurrentWantedBlip(CurrentWantedCenter);
+
+
+
+                    //Debugging.WriteToLog("Civilian Reported Crime",string.Format("PlacePlayerLastSeen: {0}, UpdatedPosition: {1},CurrentWantedCenter: {2},PlaceWantedStarted: {3}", Police.PlacePlayerLastSeen, UpdatedPosition, CurrentWantedCenter, Police.PlaceWantedStarted));
+                }
+
+
             }
             if (CivilianToReport.Pedestrian.Exists())
                 CivilianToReport.Pedestrian.IsPersistent = false;
@@ -281,7 +307,7 @@ public static class Tasking
                                                                                                                  // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Snitch.Pedestrian, 46, true);//BF_AlwaysFight = 46,
                         if (LosSantosRED.MyRand.Next(1, 2) <= 1)
                         {
-                            GTAWeapon GunToGive = GTAWeapons.GetRandomWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
+                            GTAWeapon GunToGive = GTAWeapons.GetRandomRegularWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
                             Snitch.Pedestrian.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
                         }
                         Snitch.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character);
@@ -322,7 +348,7 @@ public static class Tasking
             CopsToTask.Add(MyTask);
             MyTask.CopToAssign.TaskIsQueued = true;
             MyTask.CopToAssign.GameTimeLastTask = Game.GameTime;
-            //Debugging.WriteToLog("InstantActionTick", string.Format("Queued: {0}, For: {1}", MyTask.TaskToAssign, MyTask.CopToAssign.Pedestrian.Handle));
+            Debugging.WriteToLog("InstantActionTick", string.Format("Queued: {0}, For: {1}", MyTask.TaskToAssign, MyTask.CopToAssign.Pedestrian.Handle));
         }
     }
     public static void AddCivilianTaskToQueue(CivilianTask MyTask)
@@ -577,14 +603,9 @@ public static class Tasking
     private static void PoliceTickArrestedWait()
     {
         CurrentPoliceTickRunning = "Arrested Wait";
-
-
         RemoveAllIdleTasks();
-
-
         foreach (GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists()))
         {
-
             if (Cop.IsInVehicle)
             {
                 SetUnarmed(Cop);
@@ -677,8 +698,6 @@ public static class Tasking
             }
             
         }
-
-
 
         if (PedList.CopPeds.Any(x => x.DistanceToPlayer <= 8f && !x.IsInVehicle) && Game.LocalPlayer.Character.Speed <= 4.0f && !Game.LocalPlayer.Character.IsInAnyVehicle(false) && !LosSantosRED.IsBusted && !Police.PlayerWasJustJacking)
             ForceSurrenderTime++;
@@ -891,6 +910,7 @@ public static class Tasking
         {
             if (!Cop.Pedestrian.Exists() || !Cop.Pedestrian.IsDriver())
                 return;
+
             Cop.IsTasked = true;
             Cop.TaskType = AssignableTasks.DriveToAndChase;
             Cop.Pedestrian.BlockPermanentEvents = false;
@@ -1271,7 +1291,7 @@ public static class Tasking
             }
             else if(Police.CurrentResponse == Police.ResponsePriority.Low)
             {
-                DrivingSpeed = 15f;
+                DrivingSpeed = 20f;
                 NeedSirenOn = false;
             }
 
@@ -1296,7 +1316,7 @@ public static class Tasking
                     }
                     else if (Police.CurrentResponse == Police.ResponsePriority.Low)
                     {
-                        DrivingSpeed = 15f;
+                        DrivingSpeed = 20f;
                         NeedSirenOn = false;
                     }
                     OriginalTaskedPosition = Police.InvestigationPosition;
@@ -1364,10 +1384,25 @@ public static class Tasking
     }
     public static void RemoveAllIdleTasks()
     {
-        foreach (GTACop Cop in PedList.CopPeds.Where(x => x.IsTasked && (x.TaskType == AssignableTasks.RandomSpawnIdle || x.TaskType == AssignableTasks.TaskInvestigateCrime) && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 350f))
+        foreach (GTACop Cop in PedList.CopPeds.Where(x => x.IsTasked))
         {
-            Cop.TaskType = AssignableTasks.NoTask;
-            Cop.IsTasked = false;
+            if((Cop.TaskType == AssignableTasks.RandomSpawnIdle || Cop.TaskType == AssignableTasks.TaskInvestigateCrime) && Cop.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 350f)
+            {
+                //Cop.TaskType = AssignableTasks.NoTask;
+                //Cop.IsTasked = false;
+                if (!Cop.TaskIsQueued)
+                {
+                    AddItemToQueue(new CopTask(Cop, AssignableTasks.Untask));
+                }
+
+
+
+            }
+            //if(Cop.TaskType == AssignableTasks.DriveToAndChase && Cop.Pedestrian.IsInAnyVehicle(false))
+            //{
+            //    Cop.TaskType = AssignableTasks.NoTask;
+            //    Cop.IsTasked = false;
+            //}
             //if (!Cop.TaskIsQueued)
             //{
             //    Cop.TaskIsQueued = true;

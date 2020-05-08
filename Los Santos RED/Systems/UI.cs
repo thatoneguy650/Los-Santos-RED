@@ -133,15 +133,15 @@ public static class UI
         
         if (LosSantosRED.PlayerIsNotWanted)
         {
-            if (PlayerStatusLine != "" && (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any() || Civilians.AnyCiviliansCanRecognizePlayer))
-                PlayerStatusLine += " ";
+            //if (PlayerStatusLine != "" && (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any() || Civilians.AnyCiviliansCanRecognizePlayer))
+            //    PlayerStatusLine += " ";
 
-            if (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any() && Civilians.AnyCiviliansCanRecognizePlayer)
-                PlayerStatusLine += "~r~(Seen Violating)";
-            else if (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any())
-                PlayerStatusLine += "~o~(Violating)";
-            else if (Civilians.AnyCiviliansCanRecognizePlayer)
-                PlayerStatusLine += "~s~(Seen)";
+            //if (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any() && Civilians.AnyCiviliansCanRecognizePlayer)
+            //    PlayerStatusLine += "~r~(Seen Violating)";
+            //else if (Police.CurrentCrimes.CurrentlyViolatingCanBeReportedByCivilians.Any())
+            //    PlayerStatusLine += "~o~(Violating)";
+            //else if (Civilians.AnyCiviliansCanRecognizePlayer)
+            //    PlayerStatusLine += "~s~(Seen)";
         }
         else
         {
@@ -191,9 +191,9 @@ public static class UI
             PlayerCLockLine = string.Format("{0} ({1})", ClockSystem.ClockTime, ClockSystem.ClockSpeed);
 
         if (DebugLine != "")
-            Text(DebugLine, LosSantosRED.MySettings.UI.PositionX - 3 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
+            Text(DebugLine, 0.92f, 0.16f, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
 
-        Text(PlayerCLockLine, LosSantosRED.MySettings.UI.PositionX - 2 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
+        //Text(PlayerCLockLine, LosSantosRED.MySettings.UI.PositionX - 2 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
         Text(PlayerStatusLine, LosSantosRED.MySettings.UI.PositionX - LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
         Text(StreetLine, LosSantosRED.MySettings.UI.PositionX, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
         Text(PlayerZoneLine, LosSantosRED.MySettings.UI.PositionX + LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);

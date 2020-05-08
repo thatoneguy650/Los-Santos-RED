@@ -195,12 +195,12 @@ public static class PoliceSpawning
 
         if (AllowClosePoliceSpawns)
         {
-            if (PedList.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 150f))
+            if (PedList.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(SpawnLocation) <= 150f))
                 return null;
         }
         else
         {
-            if (PedList.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
+            if (PedList.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
                 return null;
         }
 

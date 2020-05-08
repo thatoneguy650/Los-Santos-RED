@@ -170,40 +170,40 @@ internal static class VehicleEngine
             EngineRunningEvent();
         }
 
-        LimiterTick();
+        //LimiterTick();
 
     }
-    private static void LimiterTick()
-    {
-        if (Game.IsKeyDownRightNow(LosSantosRED.MySettings.KeyBinding.VehicleKey) && Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsDriver() && Game.GameTime - GameTimeLastSetLimitThrottle >= 500)// && Game.IsControlPressed(0,GameControl.VehicleAccelerate))
-        {
-            LimitThrottle = !LimitThrottle;
-            GameTimeLastSetLimitThrottle = Game.GameTime;
-        }
+    //private static void LimiterTick()
+    //{
+    //    if (Game.IsKeyDownRightNow(LosSantosRED.MySettings.KeyBinding.VehicleKey) && Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsDriver() && Game.GameTime - GameTimeLastSetLimitThrottle >= 500)// && Game.IsControlPressed(0,GameControl.VehicleAccelerate))
+    //    {
+    //        LimitThrottle = !LimitThrottle;
+    //        GameTimeLastSetLimitThrottle = Game.GameTime;
+    //    }
 
-        if (Game.IsKeyDownRightNow(Keys.W) && Game.LocalPlayer.Character.IsDriver())//Game.IsControlPressed(0,GameControl.VehicleAccelerate))
-        {
-            if (LimitThrottle && LosSantosRED.PlayerIsNotWanted)
-            {
-                float Limit = 0.5f;
-                float CurrentSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+    //    if (Game.IsKeyDownRightNow(Keys.W) && Game.LocalPlayer.Character.IsDriver())//Game.IsControlPressed(0,GameControl.VehicleAccelerate))
+    //    {
+    //        if (LimitThrottle && LosSantosRED.PlayerIsNotWanted)
+    //        {
+    //            float Limit = 0.5f;
+    //            float CurrentSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
 
-                if (CurrentSpeedMPH <= 15f)
-                    Limit = 0.75f;
-                else if (CurrentSpeedMPH >= 75f)
-                    Limit = 0.3f;
+    //            if (CurrentSpeedMPH <= 15f)
+    //                Limit = 0.75f;
+    //            else if (CurrentSpeedMPH >= 75f)
+    //                Limit = 0.3f;
 
-                if (TrafficViolations.PlayerIsSpeeding)
-                    Limit = 0.15f;
+    //            if (TrafficViolations.PlayerIsSpeeding)
+    //                Limit = 0.15f;
 
-                NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 27, 71, Limit);
-            }
-            else
-            {
-                NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 27, 71, 1.0f);
-            }
-        }
-    }
+    //            NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 27, 71, Limit);
+    //        }
+    //        else
+    //        {
+    //            NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 27, 71, 1.0f);
+    //        }
+    //    }
+    //}
     private static void IndicatorsTick()
     {
         Vehicle MyCar = Game.LocalPlayer.Character.CurrentVehicle;

@@ -117,7 +117,7 @@ public static class SearchModeStopping
     }
     private static void MoveGhostCopToPosition()
     {
-        if (GhostCop != null)
+        if (GhostCop.Exists())
         {
             Vector3 DesiredPosition;
             if (Police.PlayerStarsGreyedOut)

@@ -43,33 +43,22 @@ public static class ScriptController
         IsRunning = true;
 
 
-        LosSantosREDTick = new TickTask(25, "InstantActionTick", LosSantosRED.LosSantosREDTick, TickTask.Type.RequiredGeneral);
-        PoliceTick = new TickTask(25, "PoliceTick", Police.PoliceGeneralTick, TickTask.Type.RequiredGeneral);
-
-
-        VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);
-
-
+        LosSantosREDTick = new TickTask(25, "InstantActionTick", LosSantosRED.LosSantosREDTick, TickTask.Type.RequiredGeneral);//25
+        PoliceTick = new TickTask(25, "PoliceTick", Police.PoliceGeneralTick, TickTask.Type.RequiredGeneral);//25
+        VehicleEngineTick = new TickTask(0, "VehicleEngineTick", VehicleEngine.VehicleEngineTick, TickTask.Type.RequiredGeneral);//0
         VehicleFuelTick = new TickTask(200, "VehicleFuelTick", VehicleFuelSystem.FuelTick, TickTask.Type.RequiredGeneral);
-
-
-        PlayerHealthTick = new TickTask(50, "PlayerHealthTick", PlayerHealth.Tick, TickTask.Type.RequiredGeneral);
-
-
+        PlayerHealthTick = new TickTask(200, "PlayerHealthTick", PlayerHealth.Tick, TickTask.Type.RequiredGeneral);//50
         PedWoundSystemTick = new TickTask(200, "PedHealthTick", PedWoundSystem.Tick, TickTask.Type.RequiredGeneral);
-
-        MuggingTick = new TickTask(50, "MuggingTick", MuggingSystem.Tick, TickTask.Type.RequiredGeneral);
+        MuggingTick = new TickTask(250, "MuggingTick", MuggingSystem.Tick, TickTask.Type.RequiredGeneral);//50
         ClockTick = new TickTask(0, "ClockTick", ClockSystem.ClockTick, TickTask.Type.RequiredGeneral);
 
+        PoliceScanningTick = new TickTask(1000, "PoliceScanningTick", PedList.ScanForPeds, TickTask.Type.Police);
+        ProcessTaskQueueTick = new TickTask(250, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);//150
+        PoliceStateTick = new TickTask(150, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);//50
+        SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);
+        PoliceVehicleScanningTick = new TickTask(1000, "PoliceVehicleScanningTick", PedList.ScanforPoliceVehicles, TickTask.Type.Police);
 
-        PoliceScanningTick = new TickTask(1000, "PoliceScanningTick", PedList.ScanForPeds, TickTask.Type.Police);//was 5000
-        //LineOfSightTick = new TickTask(500, "LineOfSightTick",Police.CheckPoliceSight, TickTask.Type.Police);
-        ProcessTaskQueueTick = new TickTask(150, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);//was 50
-        PoliceStateTick = new TickTask(50, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);
-        SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);//was 50
-        PoliceVehicleScanningTick = new TickTask(1000, "PoliceVehicleScanningTick", PedList.ScanforPoliceVehicles, TickTask.Type.Police);//was 5000//was 1500
-
-        WeaponDroppingTick = new TickTask(100, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);
+        WeaponDroppingTick = new TickTask(250, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);//100
         CivilianTick = new TickTask(150, "Civilian", Civilians.CivilianTick, TickTask.Type.RequiredGeneral);
 
         TrafficViolationsTick = new TickTask(500, "TrafficViolationsTick", TrafficViolations.CheckViolations, TickTask.Type.Normal);
@@ -77,9 +66,8 @@ public static class ScriptController
         PersonOfInterestTick = new TickTask(500, "PersonOfInterestTick", PersonOfInterest.PersonOfInterestTick, TickTask.Type.Normal);
 
         DispatchAudioTick = new TickTask(500, "DispatchAudioTick", DispatchAudio.PlayDispatchQueue, TickTask.Type.Optional);
-        //WeatherCheckingTick = new TickTask(5000, "WeatherCheckingTick", WeatherReporting.CheckWeather, TickTask.Type.Optional);
         PoliceSpeechTick = new TickTask(500, "PoliceSpeechTick", PoliceSpeech.CheckSpeech, TickTask.Type.Optional);
-        RandomCopSpawningTick = new TickTask(500, "RandomCopSpawningTick", PoliceSpawning.PoliceSpawningTick, TickTask.Type.Optional);//was 500//was 3000
+        RandomCopSpawningTick = new TickTask(500, "RandomCopSpawningTick", PoliceSpawning.PoliceSpawningTick, TickTask.Type.Optional);
         CleanupCopTick = new TickTask(500, "CleanupCopTick", PoliceSpawning.RemoveCops, TickTask.Type.Optional);
 
         GameStopWatch = new Stopwatch();
@@ -110,29 +98,23 @@ public static class ScriptController
                     else if (Police.IsRunning && PoliceTick.ShouldRun)
                         PoliceTick.RunTask();
 
-                    if (PlayerHealth.IsRunning && PlayerHealthTick.ShouldRun)//needs to be separate?
-                        PlayerHealthTick.RunTask();
-
-                    if (PedWoundSystem.IsRunning && PedWoundSystemTick.ShouldRun)//needs to be separate?
-                        PedWoundSystemTick.RunTask();
-
-                    if (VehicleEngine.IsRunning && VehicleEngineTick.ShouldRun)//needs to be separate?
+                    if (VehicleEngine.IsRunning && VehicleEngineTick.ShouldRun)
                         VehicleEngineTick.RunTask();
 
-                    if (VehicleFuelSystem.IsRunning && VehicleFuelTick.ShouldRun)//needs to be separate?
-                        VehicleFuelTick.RunTask();
-
-                    if (MuggingSystem.IsRunning && MuggingTick.ShouldRun)//needs to be separate?
+                    if (PlayerHealth.IsRunning && PlayerHealthTick.ShouldRun)
+                        PlayerHealthTick.RunTask();
+                    else if (PedWoundSystem.IsRunning && PedWoundSystemTick.ShouldRun)
+                        PedWoundSystemTick.RunTask();
+                    else if (MuggingSystem.IsRunning && MuggingTick.ShouldRun)
                         MuggingTick.RunTask();
-
-                    if (ClockSystem.IsRunning && ClockTick.ShouldRun)//needs to be separate?
+                    else if (ClockSystem.IsRunning && ClockTick.ShouldRun)
                         ClockTick.RunTask();
+                    else if (VehicleFuelSystem.IsRunning && VehicleFuelTick.ShouldRun)
+                        VehicleFuelTick.RunTask();
 
                     //Police Stuff
                     if (Police.IsRunning && PoliceScanningTick.ShouldRun)
                         PoliceScanningTick.RunTask();
-                    //else if (Police.IsRunning && LineOfSightTick.ShouldRun)
-                    //    LineOfSightTick.RunTask();
                     else if (Tasking.IsRunning && ProcessTaskQueueTick.ShouldRun)//used to be IF
                         ProcessTaskQueueTick.RunTask();
                     else if (Tasking.IsRunning && PoliceStateTick.ShouldRun)
@@ -166,8 +148,6 @@ public static class ScriptController
                             //Least Important
                             if (DispatchAudio.IsRunning && DispatchAudioTick.ShouldRun)
                                 DispatchAudioTick.RunTask();
-                            //else if (WeatherReporting.IsRunning && WeatherCheckingTick.ShouldRun)
-                            //    WeatherCheckingTick.RunTask();
                             else if (PoliceSpeech.IsRunning && PoliceSpeechTick.ShouldRun)//used to be IF
                                 PoliceSpeechTick.RunTask();
                             else if (PoliceSpawning.IsRunning && LosSantosRED.MySettings.Police.SpawnRandomPolice && RandomCopSpawningTick.ShouldRun)// used to be IF
@@ -179,7 +159,7 @@ public static class ScriptController
 
                     GameStopWatch.Stop();
 
-                    if (GameStopWatch.ElapsedMilliseconds >= 20)
+                    if (GameStopWatch.ElapsedMilliseconds >= 15)
                         Debugging.WriteToLog("InstantActionTick", string.Format("Tick took {0} ms: {1}", GameStopWatch.ElapsedMilliseconds, GetStatus()));
 
                     ResetRanItems();
@@ -206,7 +186,7 @@ public static class ScriptController
     }
     public static string GetStatus()
     {
-        return "Name:RanThisTick:GameTimeLastRan:MissedInterval" + Environment.NewLine + string.Join(",",MyTickTasks.Where(x => x.RanThisTick || x.MissedInterval).Select(x => x.DebugName + ":" + x.RanThisTick + ":" + x.GameTimeLastRan + ":" + x.MissedInterval + Environment.NewLine));
+        return "Name:RanThisTick:GameTimeLastRan:MissedInterval:"  + string.Join("|",MyTickTasks.Where(x => x.RanThisTick || x.MissedInterval).Select(x => x.DebugName + ":" + x.RanThisTick + ":" + x.GameTimeLastRan + ":" + x.MissedInterval));
     }
 }
 public class TickTask
