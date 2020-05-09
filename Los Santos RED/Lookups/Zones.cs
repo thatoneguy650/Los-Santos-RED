@@ -58,6 +58,12 @@ public static class Zones
             new ZoneAgency("NOOSE", 3, 0, 10),
             new ZoneAgency("LSPD-ASD", 4, 0, 5) };
 
+        List<ZoneAgency> DavisAgencies = new List<ZoneAgency>() {
+            new ZoneAgency("LSSD-DV", 0, 50, 40),
+            new ZoneAgency("LSPD", 1, 50, 40),
+            new ZoneAgency("NOOSE", 2, 0, 15),
+            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
+
         List<ZoneAgency> SecurityAgencies = new List<ZoneAgency>() {
             new ZoneAgency("PRISEC", 0, 100, 50),
             new ZoneAgency("NOOSE", 1, 0, 50) };
@@ -184,15 +190,15 @@ public static class Zones
             new Zone("DELSOL", "Puerto Del Sol", ScannerAudio.areas.PuertoDelSoul.FileName, County.CityOfLosSantos, VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
 
             //Central
-            new Zone("BANNING", "Banning", ScannerAudio.areas.Banning.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
-            new Zone("CHAMH", "Chamberlain Hills", ScannerAudio.areas.ChamberlainHills.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
-            new Zone("DAVIS", "Davis", ScannerAudio.areas.Davis.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
+            new Zone("BANNING", "Banning", ScannerAudio.areas.Banning.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
+            new Zone("CHAMH", "Chamberlain Hills", ScannerAudio.areas.ChamberlainHills.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
+            new Zone("DAVIS", "Davis", ScannerAudio.areas.Davis.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
             new Zone("DOWNT", "Downtown", ScannerAudio.areas.Downtown.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
             new Zone("PBOX", "Pillbox Hill", ScannerAudio.areas.PillboxHill.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
-            new Zone("RANCHO", "Rancho", ScannerAudio.areas.Rancho.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
+            new Zone("RANCHO", "Rancho", ScannerAudio.areas.Rancho.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
             new Zone("SKID", "Mission Row", ScannerAudio.areas.MissionRow.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
             new Zone("STAD", "Maze Bank Arena", ScannerAudio.areas.MazeBankArena.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = SecurityAgencies },
-            new Zone("STRAW", "Strawberry", ScannerAudio.areas.Strawberry.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
+            new Zone("STRAW", "Strawberry", ScannerAudio.areas.Strawberry.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
             new Zone("TEXTI", "Textile City", ScannerAudio.areas.TextileCity.FileName, County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
             new Zone("LEGSQU", "Legion Square", "", County.CityOfLosSantos, CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
 

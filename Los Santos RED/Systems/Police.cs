@@ -33,6 +33,7 @@ internal static class Police
     private static uint GameTimeStartedInvestigation;
     private static Vector3 PrevInvestigationPosition;
 
+    public static uint GameTimeWantedStarted { get; set; }
     public static List<Blip> CreatedBlips { get; set; } = new List<Blip>();
     public static RapSheet CurrentCrimes { get; set; }
     public static bool AnyPoliceCanSeePlayer { get; set; }
@@ -120,7 +121,7 @@ internal static class Police
                 return false;
             else if (GameTimeLastReportedSpotted == 0)
                 return true;
-            else if (Game.GameTime - GameTimeLastReportedSpotted >= 15000)//25000
+            else if (Game.GameTime - GameTimeLastReportedSpotted >= 20000)//15000
                 return true;
             else
                 return false;
@@ -487,7 +488,7 @@ internal static class Police
             if (!DispatchAudio.RecentAnnouncedDispatch && AnyPoliceSeenPlayerThisWanted && CanPlaySuspectSpotted && AnyPoliceCanSeePlayer && LosSantosRED.PlayerInVehicle && !DispatchAudio.IsPlayingAudio && LosSantosRED.PlayerInAutomobile && LosSantosRED.PlayersCurrentTrackedVehicle != null)
             {
                 Debugging.WriteToLog("Spotted", "Playing Spotted");
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 25) { IsAmbient = true });
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 25) { IsAmbient = true,ReportedBy = DispatchAudio.ReportType.Officers });
                 GameTimeLastReportedSpotted = Game.GameTime;
             }
         }
@@ -633,6 +634,7 @@ internal static class Police
         CurrentCrimes.GameTimeWantedStarted = Game.GameTime;
         CurrentCrimes.MaxWantedLevel = LosSantosRED.PlayerWantedLevel;
         PlaceWantedStarted = Game.LocalPlayer.Character.Position;
+        GameTimeWantedStarted = Game.GameTime;
         Tasking.UntaskAllRandomSpawns(false);
     }
     private static void PlayerStarsGreyedOutChanged()
@@ -652,7 +654,7 @@ internal static class Police
             CanReportLastSeen = false;
             if (LosSantosRED.PlayerIsWanted && AnyPoliceSeenPlayerThisWanted && CanPlaySuspectSpotted && LosSantosRED.PlayerInVehicle && !DispatchAudio.IsPlayingAudio && LosSantosRED.PlayerInAutomobile && LosSantosRED.PlayersCurrentTrackedVehicle != null)
             {
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 25) { IsAmbient = true });
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 25) { IsAmbient = true,ReportedBy = DispatchAudio.ReportType.Officers });
                 GameTimeLastReportedSpotted = Game.GameTime;  
             }
         }

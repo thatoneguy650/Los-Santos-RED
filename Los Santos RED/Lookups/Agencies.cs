@@ -130,6 +130,8 @@ public static class Agencies
             new Agency.VehicleInformation("sheriff2", 100, 100) { Liveries = new List<int> { 0, 1, 2, 3 } } };
         List<Agency.VehicleInformation> ChumashLSSDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff2", 100, 100) { Liveries = new List<int> { 0, 1, 2, 3 } } };
+        List<Agency.VehicleInformation> LSSDDavisVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("sheriff", 100, 100){ Liveries = new List<int> { 0, 1, 2, 3 } } };
         List<Agency.VehicleInformation> RHPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police2", 100, 50) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
             new Agency.VehicleInformation("fbi", 0,25),
@@ -239,6 +241,8 @@ public static class Agencies
             new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD-DV", "Los Santos Sheriff - Davis Division", "Red", Agency.Classification.Sheriff, SheriffPeds, LSSDDavisVehicles, "LSCS ",LimitedWeapons),
+
 
             new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "White", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
 
@@ -299,15 +303,15 @@ public static class Agencies
             }
         }
 
-        //if (ZoneAgency == null)
-        //{ 
-        //    ZoneAgency = AgenciesList.Where(x => x.CopModels.Any(y => y.ModelName.ToLower() == Cop.Model.Name.ToLower()) && x.CanSpawnAnywhereWhenWanted).FirstOrDefault();
-        //    if (ZoneAgency == null)
-        //    {
-        //        Debugging.WriteToLog("GetPedAgencyFromZone", string.Format("Couldnt get agency from zone {0} ped {1}", ZoneFound.TextName, Cop.Model.Name));
-        //        Cop.Delete();
-        //    }
-        //}
+        if (ZoneAgency == null)
+        {
+            ZoneAgency = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(y => y.ModelName.ToLower() == Cop.Model.Name.ToLower()) && x.SpawnsOnHighway).PickRandom();
+            if (ZoneAgency == null)
+            {
+                Debugging.WriteToLog("GetPedAgencyFromZone", string.Format("Couldnt get agency from zone {0} ped {1}", ZoneFound.TextName, Cop.Model.Name));
+                Cop.Delete();
+            }
+        }
         return ZoneAgency;
     }
     public static void ChangeLivery(Vehicle CopCar, Agency AssignedAgency)

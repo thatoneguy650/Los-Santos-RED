@@ -1020,7 +1020,7 @@ public static class DispatchAudio
                 Subtitles += "Target last reported driving a";
             }
             ScannerList.Add(new List<string>() { conjunctives.Drivinga.FileName }.PickRandom());
-            AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, ItemToPlay.ReportedBy == ReportType.Civilians, ref Subtitles, ref Notification, false, true,false, ItemToPlay.ReportedBy == ReportType.Officers);
+            AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, ItemToPlay.ReportedBy == ReportType.Civilians, ref Subtitles, ref Notification, false, true,false, false);
         }
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, ItemToPlay.CanBeInterrupted, false));
@@ -1453,8 +1453,9 @@ public static class DispatchAudio
             AudioBeeps.AudioStart()
         };
         string Subtitles = "";
+
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Spotted");
-        if (!ReportHeadingAndStreet(ref ScannerList, ref Subtitles, ref Notification))
+        if (!ReportHeadingAndStreet(ref ScannerList, ref Subtitles, ref Notification) && ItemToPlay.ReportedBy == ReportType.Officers)
         {
             List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };
             ScannerList.Add(Possibilites.PickRandom());

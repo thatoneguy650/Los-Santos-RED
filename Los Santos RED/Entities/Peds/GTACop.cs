@@ -135,7 +135,7 @@ public class GTACop : GTAPed
     {
         get
         {
-            if (WasModSpawned && HasBeenSpawnedFor >= 20000)
+            if (WasModSpawned && HasBeenSpawnedFor >= 15000)// && GameTimeSpawned > Police.GameTimeWantedStarted)
                 return true;
             else
                 return false;

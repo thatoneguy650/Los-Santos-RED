@@ -245,18 +245,29 @@ public static class Tasking
                 }
                 else
                 {
-                    Debugging.WriteToLog("Civilian Reported Crime", "Civilian Reported crime while wanted, update the wanted center place");
-                    Vector3 UpdatedPosition;
-                    if (CivilianToReport.EverSeenPlayer)
-                        UpdatedPosition = CivilianToReport.PositionLastSeenPlayer;
-                    else if (CivilianToReport.PositionLastSeenCrime != Vector3.Zero && CivilianToReport.PositionLastSeenCrime != Vector3.Zero)
-                        UpdatedPosition = CivilianToReport.PositionLastSeenCrime;
-                    else
-                        UpdatedPosition = CivilianToReport.Pedestrian.Position;
+                    if (Police.PlayerStarsGreyedOut)
+                    {
+                        Debugging.WriteToLog("Civilian Reported Crime", "Civilian Reported crime while wanted, update the wanted center place");
+                        Vector3 UpdatedPosition;
+                        if (CivilianToReport.EverSeenPlayer)
+                            UpdatedPosition = CivilianToReport.PositionLastSeenPlayer;
+                        else if (CivilianToReport.PositionLastSeenCrime != Vector3.Zero && CivilianToReport.PositionLastSeenCrime != Vector3.Zero)
+                            UpdatedPosition = CivilianToReport.PositionLastSeenCrime;
+                        else
+                            UpdatedPosition = CivilianToReport.Pedestrian.Position;
 
-                    Police.PlacePlayerLastSeen = UpdatedPosition;
-                   // NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Police.PlacePlayerLastSeen.X, Police.PlacePlayerLastSeen.Y, Police.PlacePlayerLastSeen.Z);
-                   // Vector3 CurrentWantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                        Police.PlacePlayerLastSeen = UpdatedPosition;
+
+
+                        Debugging.WriteToLog("Spotted", "Playing Spotted");
+                        if (Police.CanPlaySuspectSpotted)
+                        {
+                            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 25) { IsAmbient = true, ReportedBy = DispatchAudio.ReportType.Civilians });
+                        }
+                    }
+
+                    // NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Police.PlacePlayerLastSeen.X, Police.PlacePlayerLastSeen.Y, Police.PlacePlayerLastSeen.Z);
+                    // Vector3 CurrentWantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
 
                     //Police.AddUpdateCurrentWantedBlip(CurrentWantedCenter);
 
@@ -916,16 +927,19 @@ public static class Tasking
             Cop.Pedestrian.BlockPermanentEvents = false;
 
             Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 TaskedLocation;
             string SubTask;
             if (Police.PoliceInSearchMode)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
                 SubTask = "DriveTo";
+                TaskedLocation = WantedCenter;
             }
             else
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
                 SubTask = "Chase";
+                TaskedLocation = WantedCenter;
             }
 
             Debugging.WriteToLog("TaskDriveToAndChase", string.Format("Started DriveTo/Chase: {0}", Cop.Pedestrian.Handle));
@@ -940,13 +954,16 @@ public static class Tasking
                         Cop.AtWantedCenterDuringSearchMode = true;
                         Cop.Pedestrian.Tasks.CruiseWithVehicle(30f, VehicleDrivingFlags.Emergency);
                         SubTask = "Cruise";
+                        TaskedLocation = Vector3.Zero;
                     }
                     else
                     {
-                        if (!Cop.AtWantedCenterDuringSearchMode && SubTask != "DriveTo")
+                        if ((!Cop.AtWantedCenterDuringSearchMode && SubTask != "DriveTo") || (TaskedLocation != WantedCenter))
                         {
                             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
                             SubTask = "DriveTo";
+                            TaskedLocation = WantedCenter;
+                            Debugging.WriteToLog("TaskDriveToAndChase", string.Format("DriveTo/Chase Location Updated: {0}", Cop.Pedestrian.Handle));
                         }
                     }
                 }
@@ -956,6 +973,8 @@ public static class Tasking
                     {
                         NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
                         SubTask = "Chase";
+
+                        TaskedLocation = Vector3.Zero;
                     }
                 }
 

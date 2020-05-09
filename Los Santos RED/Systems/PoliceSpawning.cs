@@ -10,6 +10,7 @@ public static class PoliceSpawning
     private static List<Vehicle> CreatedPoliceVehicles;
     private static List<Entity> CreatedEntities;
     private static RandomPoliceSpawn NextPoliceSpawn;
+    private static uint GameTimeLastSpawnedCop;
     public static bool IsRunning { get; set; }
     public static float MinDistanceToSpawn
     {
@@ -40,7 +41,7 @@ public static class PoliceSpawning
         get
         {
             if (LosSantosRED.PlayerIsWanted)
-                return 550f;
+                return 700f;//550f
             else
                 return 1500f;
         }
@@ -69,7 +70,12 @@ public static class PoliceSpawning
             else
             {
                 if (PedList.TotalSpawnedCops < LosSantosRED.MySettings.Police.SpawnAmbientPoliceLimit + ExtraCopSpawnLimit)
-                    return true;
+                {
+                    if (Game.GameTime - GameTimeLastSpawnedCop >= 6000 - (LosSantosRED.PlayerWantedLevel * -1000))
+                        return true;
+                    else
+                        return false;
+                }
                 else
                     return false;
             }
@@ -161,7 +167,7 @@ public static class PoliceSpawning
             if (AgencyToSpawn != null)
                 SpawnGTACop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation, NextPoliceSpawn.Heading);
 
-
+            GameTimeLastSpawnedCop = Game.GameTime;
             NextPoliceSpawn = null;
         }
         catch (Exception e)
@@ -222,12 +228,12 @@ public static class PoliceSpawning
             {
                 DeleteCop(Cop);
             }
-            else if (Cop.DistanceToPlayer >= 200f && LosSantosRED.PlayerIsWanted && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f))
+            else if (Cop.DistanceToPlayer >= 175f && LosSantosRED.PlayerIsWanted && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f))
             {
                 DeleteCop(Cop);
             }
 
-            if (Cop.DistanceToPlayer >= 125f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
+            if (Cop.DistanceToPlayer >= 175f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
             {
                 if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
                 {
