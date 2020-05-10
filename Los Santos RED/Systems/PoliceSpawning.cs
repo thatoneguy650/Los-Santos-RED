@@ -164,10 +164,18 @@ public static class PoliceSpawning
                 AgencyToSpawn = NextPoliceSpawn.ZoneAtLocation.GetRandomAgency();
 
             }
-            if (AgencyToSpawn != null)
-                SpawnGTACop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation, NextPoliceSpawn.Heading);
 
-            GameTimeLastSpawnedCop = Game.GameTime;
+            if(SpawnGTACop(AgencyToSpawn, NextPoliceSpawn.SpawnLocation, NextPoliceSpawn.Heading))
+            {
+                GameTimeLastSpawnedCop = Game.GameTime;
+
+                if(LosSantosRED.PlayerWantedLevel == 5 && !DispatchAudio.ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.IsArmy))
+                {             
+                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.MilitaryDeployed, 1));            
+                }
+
+            }
+       
             NextPoliceSpawn = null;
         }
         catch (Exception e)
@@ -228,10 +236,10 @@ public static class PoliceSpawning
             {
                 DeleteCop(Cop);
             }
-            else if (Cop.DistanceToPlayer >= 175f && LosSantosRED.PlayerIsWanted && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f))
-            {
-                DeleteCop(Cop);
-            }
+            //else if (Cop.DistanceToPlayer >= 200f && LosSantosRED.PlayerIsWanted && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f))
+            //{
+            //    DeleteCop(Cop);
+            //}
 
             if (Cop.DistanceToPlayer >= 175f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
             {
@@ -316,44 +324,34 @@ public static class PoliceSpawning
         if (MyBlip.Exists())
             MyBlip.Delete();
     }
-    public static GTACop SpawnGTACop(Agency _Agency, Vector3 SpawnLocation,float Heading)
+    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation,float Heading)
     {
         if (SpawnLocation == null)
-            return null;
+            return false;
         if (_Agency == null)
-            return null;
+            return false;
 
         if (!_Agency.CanSpawn)
-            return null;
+            return false;
 
         GTAVehicle CopCar;
-        bool IsBike = false;
-        bool IsHelicopter = false;
-        if (_Agency.HasMotorcycles)
-            IsBike = LosSantosRED.RandomPercent(50); //50% bike cop for SAHP
-
-        if (_Agency.HasSpawnableHelicopters && !CreatedPoliceVehicles.Any(x => x.IsHelicopter))
+        Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle(false, false);
+        if (MyCarInfo == null)
         {
-            if (_Agency.Vehicles.Any(x => !x.IsHelicopter && x.CanCurrentlySpawn))
-                IsHelicopter = LosSantosRED.RandomPercent(70); //50% bike cop for SAHP
-            else
-                IsHelicopter = true;
+            Debugging.WriteToLog("SpawnGTACop", string.Format("Could not find Auto Info for {0}", _Agency.Initials));
+            return false;
         }
 
         //Debugging.WriteToLog("SpawnCop", string.Format("Agency: {0}, HasHelicopter: {1}, ISHelicopter: {2}", _Agency.Initials,_Agency.HasSpawnableHelicopters,IsHelicopter));
 
-        if (IsBike)
-            CopCar = SpawnCopMotorcycle(_Agency, SpawnLocation, Heading);
-        else if(IsHelicopter)
-            CopCar = SpawnCopHelicopter(_Agency, new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 250f));//spawn it in the air
-        else
-            CopCar = SpawnCopCruiser(_Agency, SpawnLocation, Heading);
-
-        if (CopCar == null)
+        if(MyCarInfo.IsHelicopter)
         {
-
+            SpawnLocation = new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 250f);
         }
-        else
+
+        CopCar = SpawnCopVehicle(_Agency, MyCarInfo, SpawnLocation, Heading);
+        GameFiber.Yield();
+        if (CopCar != null && CopCar.VehicleEnt.Exists())
         {
             PedList.PoliceVehicles.Add(CopCar.VehicleEnt);
             List<string> RequiredPedModels = new List<string>();
@@ -362,9 +360,10 @@ public static class PoliceSpawning
                 RequiredPedModels = CopCar.ExtendedAgencyVehicleInformation.AllowedPedModels;
             }
 
-            Ped Cop = SpawnCopPed(_Agency, SpawnLocation, IsBike, RequiredPedModels);
-            if (Cop == null)
-                return null;
+            Ped Cop = SpawnCopPed(_Agency, SpawnLocation, MyCarInfo.IsMotorcycle, RequiredPedModels);
+            GameFiber.Yield();
+            if (Cop == null || !Cop.Exists())
+                return false;
             CreatedEntities.Add(Cop);
             CreatedPoliceVehicles.Add(CopCar.VehicleEnt);
             CreatedEntities.Add(CopCar.VehicleEnt);
@@ -377,7 +376,7 @@ public static class PoliceSpawning
             MyNewCop.WasModSpawned = true;
             MyNewCop.WasMarkedNonPersistent = true;
             MyNewCop.WasRandomSpawnDriver = true;
-            MyNewCop.IsBikeCop = IsBike;
+            MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
             MyNewCop.GameTimeSpawned = Game.GameTime;
             //Debugging.WriteToLog("SpawnCop", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.VehicleEnt.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
 
@@ -396,6 +395,7 @@ public static class PoliceSpawning
                 for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                 {
                     Ped PartnerCop = SpawnCopPed(_Agency, SpawnLocation, false, null);
+                    GameFiber.Yield();
                     if (PartnerCop != null)
                     {
                         CreatedEntities.Add(PartnerCop);
@@ -419,9 +419,9 @@ public static class PoliceSpawning
                     }
                 }
             }
-            return MyNewCop;
+            return true;
         }
-        return null;
+        return false;
     }
     public static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
     {
@@ -461,15 +461,8 @@ public static class PoliceSpawning
 
         return Cop;
     }
-    public static GTAVehicle SpawnCopCruiser(Agency _Agency, Vector3 SpawnLocation,float Heading)
+    public static GTAVehicle SpawnCopVehicle(Agency _Agency, Agency.VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
     {
-        Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle(false,false);
-        if (MyCarInfo == null)
-        {
-            Debugging.WriteToLog("SpawnCopCruiser", string.Format("Could not find Auto Info for {0}", _Agency.Initials));
-            return null;
-        }
-
         string ModelName = MyCarInfo.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);
         Agencies.ChangeLivery(CopCar, _Agency);
@@ -486,67 +479,25 @@ public static class PoliceSpawning
             return null;
         }    
     }
-    public static GTAVehicle SpawnCopMotorcycle(Agency _Agency, Vector3 SpawnLocation, float Heading)
-    {  
-        Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle(true,false);
-        if (MyCarInfo == null)
-        {
-            Debugging.WriteToLog("SpawnCopMotorcycle", string.Format("Could not find Bike Info for {0}", _Agency.Initials));
-            return null;
-        }
-        string ModelName = MyCarInfo.ModelName;
-        Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);
-        GameFiber.Yield();
-
-        GTAVehicle ToReturn = new GTAVehicle(CopCar, 0, false, false, null, false, null) { ExtendedAgencyVehicleInformation = MyCarInfo };
-
-        if (CopCar.Exists())
-        {
-            return ToReturn;
-        }
-        else
-        {
-            return null;
-        }
-    }
-    public static GTAVehicle SpawnCopHelicopter(Agency _Agency, Vector3 SpawnLocation)
-    {
-        Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle(false,true);
-        if (MyCarInfo == null)
-        {
-            Debugging.WriteToLog("SpawnCopHelicopter", string.Format("Could not find Heli Info for {0}", _Agency.Initials));
-            return null;
-        }
-        string ModelName = MyCarInfo.ModelName;
-        Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, 0f);
-        Agencies.ChangeLivery(CopCar, _Agency);
-        GameFiber.Yield();
-        GTAVehicle ToReturn = new GTAVehicle(CopCar, 0, false, false, null, false, null) { ExtendedAgencyVehicleInformation = MyCarInfo };
-        if (CopCar.Exists())
-        {
-            return ToReturn;
-        }
-        else
-        {
-            return null;
-        }
-    }
     public static void UpgradeCruiser(Vehicle CopCruiser)
     {
         if (!CopCruiser.Exists())
             return;
-        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT", CopCruiser, 0);//Required to work
-        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 11) - 1, true);//Engine
-        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 12) - 1, true);//Brakes
-        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 13) - 1, true);//Tranny
-        NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 15) - 1, true);//Suspension
+        if (!CopCruiser.IsHelicopter)
+        {
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT", CopCruiser, 0);//Required to work
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 11) - 1, true);//Engine
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 12) - 1, true);//Brakes
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 13) - 1, true);//Tranny
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 15) - 1, true);//Suspension
 
-        //if (NativeFunction.CallByName<bool>("DOES_EXTRA_EXIST", CopCruiser, 1) && LosSantosRED.MyRand.Next(1,11) <= 9)//rarely do we want slicktop
-        //{
-        //    NativeFunction.CallByName<bool>("SET_VEHICLE_EXTRA", CopCruiser, 1, false);//make sure the siren is there
-        //}
+            //if (NativeFunction.CallByName<bool>("DOES_EXTRA_EXIST", CopCruiser, 1) && LosSantosRED.MyRand.Next(1,11) <= 9)//rarely do we want slicktop
+            //{
+            //    NativeFunction.CallByName<bool>("SET_VEHICLE_EXTRA", CopCruiser, 1, false);//make sure the siren is there
+            //}
 
-        // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
+            // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
+        }
     }
 
     public static void SpawnRoadblock(Vector3 InitialPosition)
@@ -561,7 +512,7 @@ public static class PoliceSpawning
         Agency AgencyToSpawn = MyZone.GetRandomAgency();
         GTAVehicle Cool = null;
         if (AgencyToSpawn != null)
-            Cool = SpawnCopCruiser(AgencyToSpawn, SpawnLocation,Heading);
+            Cool = SpawnCopVehicle(AgencyToSpawn, AgencyToSpawn.GetRandomVehicle(false, false), SpawnLocation,Heading);
 
         uint GameTimeStartedSleeping = Game.GameTime;
         while(Game.GameTime - GameTimeStartedSleeping <= 5000)

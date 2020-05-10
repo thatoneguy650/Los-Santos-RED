@@ -7,56 +7,20 @@ using System.Threading.Tasks;
 
 public static class Civilians
 {
-    private static uint GameTimeLastHurtCivilian;
-    private static uint GameTimeLastKilledCivilian;
     public static bool IsRunning { get; set; }
     public static bool AnyCiviliansCanSeePlayer { get; set; }
     public static bool AnyCiviliansCanRecognizePlayer { get; set; }
-    public static bool RecentlyHurtCivilian(uint TimeSince)
-    {
-        if (GameTimeLastHurtCivilian == 0)
-            return false;
-        else if (Game.GameTime - GameTimeLastHurtCivilian <= TimeSince)
-            return true;
-        else
-            return false;
-    }
-    public static bool RecentlyKilledCivilian(uint TimeSince)
-    {
-        if (GameTimeLastKilledCivilian == 0)
-            return false;
-        else if (Game.GameTime - GameTimeLastKilledCivilian <= TimeSince)
-            return true;
-        else
-            return false;
-    }
-    public static bool NearMurderVictim(float Distance)
-    {
-        if (PedList.PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
-            return true;
-        else
-            return false;
-    }
+
     public static void Initialize()
     {
         IsRunning = true;
-        GameTimeLastHurtCivilian = 0;
-        GameTimeLastKilledCivilian = 0;
     }
     public static void Dispose()
     {
         IsRunning = false;
     }
     public static void CivilianTick()
-    {
-        //if (LosSantosRED.PlayerIsWanted)//for now dont do any work when we are wanted, the base game can do that for us
-        //{
-        //    AnyCiviliansCanSeePlayer = false;
-        //    AnyCiviliansCanRecognizePlayer = false;
-        //    //UI.DebugLine = "";
-        //    return;
-        //}
-            
+    {            
         UpdateCivilians();
         CheckRecognition();
         CheckSnitchCivilians();
@@ -68,41 +32,31 @@ public static class Civilians
         {
             foreach(GTAPed Snitch in PedList.Civilians)
             {
-                if (1==1)//LosSantosRED.PlayerIsNotWanted)
+                if (Snitch.CanRecognizePlayer)
                 {
-                    if (Snitch.CanRecognizePlayer)
+                    foreach (Crime Bad in CrimesToCallIn)
                     {
-                        foreach (Crime Bad in CrimesToCallIn)
-                        {
-                            Snitch.AddCrime(Bad, Snitch.Pedestrian.Position);
-                        }
-                        if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
-                        {
-                            Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
-                        }
+                        Snitch.AddCrime(Bad, Snitch.Pedestrian.Position);
                     }
-                    else if (Snitch.CanHearPlayer && CrimesToCallIn.Any(x => x.CanBeCalledInBySound))
+                    if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
                     {
-                        foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanBeCalledInBySound))
-                        {
-                            Snitch.AddCrime(Bad, Snitch.Pedestrian.Position);
-                        }
-                        if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
-                        {
-                            Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
-                        }
-                    }
-                    else if (Snitch.IsTasked && !Snitch.CanSeePlayer && !Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 100f)
-                    {
-                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
+                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
                     }
                 }
-                else
+                else if (Snitch.CanHearPlayer && CrimesToCallIn.Any(x => x.CanBeCalledInBySound))
                 {
-                    if (Snitch.IsTasked && !Snitch.TaskIsQueued)
+                    foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanBeCalledInBySound))
                     {
-                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
+                        Snitch.AddCrime(Bad, Snitch.Pedestrian.Position);
                     }
+                    if (!Snitch.IsTasked && !Snitch.TaskIsQueued && Snitch.CanFlee)
+                    {
+                        Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.ReactToCrime));
+                    }
+                }
+                else if (Snitch.IsTasked && !Snitch.CanSeePlayer && !Snitch.TaskIsQueued && Snitch.DistanceToPlayer >= 100f)
+                {
+                    Tasking.AddCivilianTaskToQueue(new CivilianTask(Snitch, Tasking.AssignableTasks.UntaskCivilian));
                 }
             }
         }
@@ -112,19 +66,8 @@ public static class Civilians
         PedList.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
         foreach (GTAPed MyPed in PedList.Civilians)
         {
-            bool PrevHurt = MyPed.HurtByPlayer;
             MyPed.Update();
-            if(MyPed.KilledByPlayer)
-            {
-                PedList.PlayerKilledCivilians.Add(MyPed);
-                GameTimeLastKilledCivilian = Game.GameTime;
-            }
-            else if (!PrevHurt && MyPed.HurtByPlayer)
-            {
-                GameTimeLastHurtCivilian = Game.GameTime;
-            }
         }
-        PedList.PlayerKilledCivilians.RemoveAll(x => !x.Pedestrian.Exists());
         PedList.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
     }
     private static void CheckRecognition()

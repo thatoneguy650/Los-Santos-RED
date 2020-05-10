@@ -53,13 +53,15 @@ public static class ScriptController
         ClockTick = new TickTask(0, "ClockTick", ClockSystem.ClockTick, TickTask.Type.RequiredGeneral);
 
         PoliceScanningTick = new TickTask(1000, "PoliceScanningTick", PedList.ScanForPeds, TickTask.Type.Police);
-        ProcessTaskQueueTick = new TickTask(250, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);//150
-        PoliceStateTick = new TickTask(150, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);//50
+        
+        PoliceStateTick = new TickTask(150, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);//50  //does the tasking checking
+        ProcessTaskQueueTick = new TickTask(250, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);//250 //goes thru the actual assigning out
+
         SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);
         PoliceVehicleScanningTick = new TickTask(1000, "PoliceVehicleScanningTick", PedList.ScanforPoliceVehicles, TickTask.Type.Police);
 
         WeaponDroppingTick = new TickTask(250, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);//100
-        CivilianTick = new TickTask(150, "Civilian", Civilians.CivilianTick, TickTask.Type.RequiredGeneral);
+        CivilianTick = new TickTask(150, "Civilian", Civilians.CivilianTick, TickTask.Type.RequiredGeneral);//150
 
         TrafficViolationsTick = new TickTask(500, "TrafficViolationsTick", TrafficViolations.CheckViolations, TickTask.Type.Normal);
         PlayerLocationTick = new TickTask(2000, "PlayerLocationTick", PlayerLocation.UpdateLocation, TickTask.Type.Normal);

@@ -77,23 +77,23 @@ public static class UI
 
     private static void ScreenEffectsTick()
     {
-        if(LosSantosRED.IsDead)
+        if (LosSantosRED.IsDead)
         {
-            if (!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DeathFailOut"))
+            if (!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DeathFailMPIn"))
             {
                 //NativeFunction.Natives.xB4EDDC19532BFB85();
                 //NativeFunction.Natives.x80C8B1846639BB19(0);
-                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailOut", 0, 0);//_START_SCREEN_EFFECT
+                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);//_START_SCREEN_EFFECT
                 NativeFunction.Natives.x80C8B1846639BB19(1);
             }
         }
         else if (LosSantosRED.IsBusted)
         {
-            if (!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DeathFailOut"))
+            if (!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DeathFailMPDark"))
             {
                 //NativeFunction.Natives.xB4EDDC19532BFB85();
                 //NativeFunction.Natives.x80C8B1846639BB19(0);
-                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);//_START_SCREEN_EFFECT
+                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);//_START_SCREEN_EFFECT
                 NativeFunction.Natives.x80C8B1846639BB19(1);
             }
         }

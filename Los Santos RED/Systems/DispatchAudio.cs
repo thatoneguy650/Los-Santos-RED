@@ -33,6 +33,7 @@ public static class DispatchAudio
     private static uint GameTimeLastCivilianReported;
     public static bool CancelAudio { get; set; }
     public static bool IsPlayingAudio { get; set; }
+    public static bool ReportedMilitaryDeployed { get; set; } = false;
     public static bool ReportedLethalForceAuthorized { get; set; } = false;
     public static bool ReportedWeaponsFree { get; set; } = false;
     public static bool ReportedOfficerDown { get; set; } = false;
@@ -98,6 +99,7 @@ public static class DispatchAudio
         CivilianMugged = 38,
         NoFurtherUnitsNeeded = 39,
         AttemptingSuicide = 40,
+        MilitaryDeployed = 41,
     }
     public enum NearType
     {
@@ -134,6 +136,7 @@ public static class DispatchAudio
         audioFile = default;
         ExecutingQueue = false;
         DispatchQueue = new List<DispatchQueueItem>();
+        ReportedMilitaryDeployed = false;
         ReportedLethalForceAuthorized = false;
         ReportedWeaponsFree = false;
         ReportedOfficerDown = false;
@@ -531,6 +534,8 @@ public static class DispatchAudio
                             NoFurtherUnitsNeeded(Item);
                         else if (Item.Type == AvailableDispatch.AttemptingSuicide)
                             AttemptingSuicide(Item);
+                        else if (Item.Type == AvailableDispatch.MilitaryDeployed)
+                            MilitaryDeployed(Item);
 
                         if (Item.ResultingWantedLevel > 0)
                             Police.SetWantedLevel(Item.ResultingWantedLevel, string.Format("Set Wanted After Dispatch: {0}", Item.Type), true);
@@ -635,13 +640,13 @@ public static class DispatchAudio
             {
                 ScannerList.Add(crime_suspect_armed_and_dangerous.Asuspectarmedanddangerous.FileName);
                 Subtitles += " a suspect ~r~armed and dangerous~s~";
-                Notification.Text += " Unknown";
+                Notification.Text += " Weapon: Melee";
             }
             else
             {
                 ScannerList.Add(crime_firearms_possession.Afirearmspossession.FileName);
                 Subtitles += " a ~r~firearms possession~s~";
-                Notification.Text += " Unknown";
+                Notification.Text += " Weapon: Firearm";
             }
         }
         else
@@ -1185,7 +1190,24 @@ public static class DispatchAudio
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, ItemToPlay.CanBeInterrupted, false));
     }
+    public static void MilitaryDeployed(DispatchQueueItem ItemToPlay)
+    {
+        if (ReportedMilitaryDeployed)
+            return;
+        ReportedMilitaryDeployed = true;
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        string NotificationTitle = GetNotificationSubtitle(ItemToPlay.ReportedBy);
+        Vector3 PositionToReport = Police.LastWantedCenterPosition;
 
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Military Units Requested");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, PositionToReport);
+        ScannerList.Add(new List<string>() { custom_wanted_level_line.Code13militaryunitsrequested.FileName }.PickRandom());
+        Subtitles += "Code-13 military units requested";
+
+        ReportGenericEnd(ref ScannerList, NearType.Zone, ref Subtitles, ref Notification, PositionToReport);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, false, true));
+    }
     public static void CivilianShot(DispatchQueueItem ItemToPlay)
     {
         List<string> ScannerList = new List<string>();
@@ -2258,6 +2280,7 @@ public static class DispatchAudio
         ReportedWeaponsFree = false;
         ReportedLethalForceAuthorized = false;
         ReportedOfficerDown = false;
+        ReportedMilitaryDeployed = false;
     }
     private static void RemoveAllNotifications()
     {

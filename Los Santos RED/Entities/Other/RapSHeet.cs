@@ -179,8 +179,32 @@ public class RapSheet
     {
         if (LosSantosRED.IsBusted || LosSantosRED.IsDead)
             return;
- 
-        if (Civilians.RecentlyKilledCivilian(5000) || Civilians.NearMurderVictim(9f))
+
+
+        if (PedWoundSystem.RecentlyKilledCop(5000))
+        {
+            KillingPolice.IsCurrentlyViolating = true;
+            if (KillingPolice.CanObserveCrime)
+                KillingPolice.CrimeObserved();
+        }
+        else
+        {
+            KillingPolice.IsCurrentlyViolating = false;
+        }
+
+        if (PedWoundSystem.RecentlyHurtCop(5000))
+        {
+            HurtingPolice.IsCurrentlyViolating = true;
+            if (HurtingPolice.CanObserveCrime)
+                HurtingPolice.CrimeObserved();
+        }
+        else
+        {
+            HurtingPolice.IsCurrentlyViolating = false;
+        }
+
+
+        if (PedWoundSystem.RecentlyKilledCivilian(5000) || PedWoundSystem.NearCivilianMurderVictim(9f))
         {
             KillingCivilians.IsCurrentlyViolating = true;
             if (KillingCivilians.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
@@ -191,7 +215,7 @@ public class RapSheet
             KillingCivilians.IsCurrentlyViolating = false;
         }
 
-        if (Civilians.RecentlyHurtCivilian(5000))
+        if (PedWoundSystem.RecentlyHurtCivilian(5000))
         {
             HurtingCivilians.IsCurrentlyViolating = true;
             if (HurtingCivilians.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
@@ -359,7 +383,7 @@ public class Crime
     public int TotalInstances = 0;
     public DispatchQueueItem DispatchToPlay;
     private uint GameTimeLastReported;
-    private uint InstanceDuration = 20000;
+    public uint InstanceDuration = 20000;
     public bool IsMurder = false;
     public uint GameTimeLastCalledInByCivilians;
     public bool IsCurrentlyViolating = false;

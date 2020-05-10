@@ -107,17 +107,17 @@ public static class Agencies
            // new Agency.VehicleInformation("riot2", 0, 45) { MinWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" } },
             new Agency.VehicleInformation("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },IsHelicopter = true,MinOccupants = 3,MaxOccupants = 4 }};
         List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("policeb", 70, 70) { IsMotorcycle = true, MaxOccupants = 1 },
-            new Agency.VehicleInformation("police4", 30, 30) };
+            new Agency.VehicleInformation("policeb", 95, 95) { IsMotorcycle = true, MaxOccupants = 1 },
+            new Agency.VehicleInformation("police4", 5, 5) };
         List<Agency.VehicleInformation> PrisonVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("policet", 70, 70),
             new Agency.VehicleInformation("police4", 30, 30) };
         List<Agency.VehicleInformation> LSPDVehiclesVanilla = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police", 25,20) { Liveries = new List<int>() { 0,1,2,3,4,5 } },
+            new Agency.VehicleInformation("police", 48,35) { Liveries = new List<int>() { 0,1,2,3,4,5 } },
             new Agency.VehicleInformation("police2", 25, 20) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
             new Agency.VehicleInformation("police3", 25, 20) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
-            new Agency.VehicleInformation("police4", 10,5),
-            new Agency.VehicleInformation("fbi2", 15,10),
+            new Agency.VehicleInformation("police4", 1,1),
+            new Agency.VehicleInformation("fbi2", 1,1),
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<Agency.VehicleInformation> LSSDVehiclesVanilla = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", 50, 50){ Liveries = new List<int> { 0, 1, 2, 3 } },
@@ -133,8 +133,7 @@ public static class Agencies
         List<Agency.VehicleInformation> LSSDDavisVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", 100, 100){ Liveries = new List<int> { 0, 1, 2, 3 } } };
         List<Agency.VehicleInformation> RHPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police2", 100, 50) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
-            new Agency.VehicleInformation("fbi", 0,25),
+            new Agency.VehicleInformation("police2", 100, 75) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<Agency.VehicleInformation> DPPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police3", 100, 75) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
@@ -154,8 +153,8 @@ public static class Agencies
             new Agency.VehicleInformation("buzzard2", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> ArmyVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("crusader", 75,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
-            new Agency.VehicleInformation("barracks", 25,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 5,MaxWantedLevelSpawn = 4 },
-            new Agency.VehicleInformation("rhino", 0,100) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
+            new Agency.VehicleInformation("barracks", 25,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
+            new Agency.VehicleInformation("rhino", 0,10) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
             new Agency.VehicleInformation("valkyrie", 0,50) { Liveries = new List<int>() { 0 }, IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
             new Agency.VehicleInformation("valkyrie2", 0,50) { Liveries = new List<int>() { 0 }, IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
         };

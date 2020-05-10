@@ -19,7 +19,6 @@ public static class PedList
     public static List<GTACop> K9Peds { get; set; }
     public static List<Vehicle> PoliceVehicles { get; set; }
     public static List<GTAPed> Civilians { get; private set; }
-    public static List<GTAPed> PlayerKilledCivilians { get; private set; }
     public static int TotalSpawnedCops
     {
         get
@@ -39,7 +38,6 @@ public static class PedList
         CopPeds = new List<GTACop>();
         K9Peds = new List<GTACop>();
         Civilians = new List<GTAPed>();
-        PlayerKilledCivilians = new List<GTAPed>();
         PoliceVehicles = new List<Vehicle>();
     }
     public static void Dispose()

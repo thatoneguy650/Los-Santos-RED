@@ -10,8 +10,64 @@ using System.Threading.Tasks;
 
 public static class PedWoundSystem
 {
-    private static List<PedBone> PedBones;
-    private static List<PedHealthState> PedHealthStates;
+    private static uint GameTimeLastHurtCivilian;
+    private static uint GameTimeLastKilledCivilian;
+    private static uint GameTimeLastHurtCop;
+    private static uint GameTimeLastKilledCop;
+    private static List<PedBone> PedBones = new List<PedBone>();
+    private static List<PedHealthState> PedHealthStates = new List<PedHealthState>();
+    public static List<GTAPed> PlayerKilledCops { get; set; } = new List<GTAPed>();
+    public static List<GTAPed> PlayerKilledCivilians { get; set; } = new List<GTAPed>();
+    public static bool RecentlyHurtCivilian(uint TimeSince)
+    {
+        if (GameTimeLastHurtCivilian == 0)
+            return false;
+        else if (Game.GameTime - GameTimeLastHurtCivilian <= TimeSince)
+            return true;
+        else
+            return false;
+    }
+    public static bool RecentlyKilledCivilian(uint TimeSince)
+    {
+        if (GameTimeLastKilledCivilian == 0)
+            return false;
+        else if (Game.GameTime - GameTimeLastKilledCivilian <= TimeSince)
+            return true;
+        else
+            return false;
+    }
+    public static bool RecentlyHurtCop(uint TimeSince)
+    {
+        if (GameTimeLastHurtCop == 0)
+            return false;
+        else if (Game.GameTime - GameTimeLastHurtCop <= TimeSince)
+            return true;
+        else
+            return false;
+    }
+    public static bool RecentlyKilledCop(uint TimeSince)
+    {
+        if (GameTimeLastKilledCop == 0)
+            return false;
+        else if (Game.GameTime - GameTimeLastKilledCop <= TimeSince)
+            return true;
+        else
+            return false;
+    }
+    public static bool NearCivilianMurderVictim(float Distance)
+    {
+        if (PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
+            return true;
+        else
+            return false;
+    }
+    public static bool NearCopMurderVictim(float Distance)
+    {
+        if (PlayerKilledCops.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= Distance))
+            return true;
+        else
+            return false;
+    }
     public enum BodyLocation
     {
         Head = 0,
@@ -37,9 +93,12 @@ public static class PedWoundSystem
     {
         IsRunning = true;
         SetupLists();
+
     }
     private static void SetupLists()
     {
+        PlayerKilledCivilians = new List<GTAPed>();
+        PlayerKilledCops = new List<GTAPed>();
         PedBones = new List<PedBone>();
         PedBones.Add(new PedBone("SKEL_ROOT", 4215, 0, BodyLocation.LowerTorso));
         PedBones.Add(new PedBone("SKEL_Pelvis", 4103, 11816, BodyLocation.LowerTorso));
@@ -149,7 +208,7 @@ public static class PedWoundSystem
     }
     public static void Tick()
     {
-        PedHealthStates.RemoveAll(x => !x.Pedestrian.Exists());
+        PedHealthStates.RemoveAll(x => !x.MyPed.Pedestrian.Exists());
 
         AddPedsToTrack();
         foreach (PedHealthState MyHealthState in PedHealthStates)
@@ -161,16 +220,16 @@ public static class PedWoundSystem
     {
         foreach (GTACop Cop in PedList.CopPeds)
         {
-            if (Cop.Pedestrian.Exists() && !PedHealthStates.Any(x => x.Pedestrian.Handle == Cop.Pedestrian.Handle))
+            if (Cop.Pedestrian.Exists() && !PedHealthStates.Any(x => x.MyPed.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
-                PedHealthStates.Add(new PedHealthState(Cop.Pedestrian));
+                PedHealthStates.Add(new PedHealthState(Cop));
             }
         }
         foreach (GTAPed Civilian in PedList.Civilians)
         {
-            if (Civilian.Pedestrian.Exists() && !PedHealthStates.Any(x => x.Pedestrian.Handle == Civilian.Pedestrian.Handle))
+            if (Civilian.Pedestrian.Exists() && !PedHealthStates.Any(x => x.MyPed.Pedestrian.Handle == Civilian.Pedestrian.Handle))
             {
-                PedHealthStates.Add(new PedHealthState(Civilian.Pedestrian));
+                PedHealthStates.Add(new PedHealthState(Civilian));
             }
         }
     }
@@ -262,37 +321,86 @@ public static class PedWoundSystem
         private uint GameTimeLastDamaged;
         private int CurrentHealth;
         private int CurrentArmor;
-        public Ped Pedestrian { get; set; }
+        private uint GameTimeLastCheckedDamage;
+        public bool NeedDamageCheck
+        {
+            get
+            {
+                if (Game.GameTime - GameTimeLastCheckedDamage >= 300)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public GTAPed MyPed { get; set; }
         public int Health { get; set; }
         public int Armor { get; set; }
         public void CheckDamage()
         {
-            CurrentHealth = Pedestrian.Health;
-            CurrentArmor = Pedestrian.Armor;
-            if (CurrentHealth < Health || CurrentArmor < Armor)
+            if (NeedDamageCheck)
             {
-                
-                ApplyDamage();
-                Health = CurrentHealth;
-                Armor = CurrentArmor;
+                GameTimeLastCheckedDamage = Game.GameTime;
+                CurrentHealth = MyPed.Pedestrian.Health;
+                CurrentArmor = MyPed.Pedestrian.Armor;
+                if (MyPed.Pedestrian.IsDead && !MyPed.KilledByPlayer)
+                {
+                    MyPed.CheckPlayerKilledPed();
+                    if (MyPed.KilledByPlayer)
+                    {
+                        Debugging.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+                        if (MyPed.IsCop)
+                        {
+                            Police.CurrentCrimes.KillingPolice.CrimeObserved();
+                            PlayerKilledCops.Add(MyPed);
+                            GameTimeLastKilledCop = Game.GameTime;
+                        }
+                        else
+                        {
+                            PlayerKilledCivilians.Add(MyPed);
+                            GameTimeLastKilledCivilian = Game.GameTime;
+                        }
+                    }
+                }
+                else if (MyPed.Pedestrian.IsAlive && (CurrentHealth < Health || CurrentArmor < Armor))
+                {
+                    if (!MyPed.HurtByPlayer)
+                    {
+                        MyPed.CheckPlayerHurtPed();
+                        if (MyPed.HurtByPlayer)
+                        {
+                            Debugging.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+                            if (MyPed.IsCop)
+                            {
+                                Police.CurrentCrimes.HurtingPolice.CrimeObserved();
+                                GameTimeLastHurtCop = Game.GameTime;
+                            }
+                            else
+                            {
+                                GameTimeLastHurtCivilian = Game.GameTime;
+                            }
+                        }
+                    }
+                    ApplyDamage();
+                    Health = CurrentHealth;
+                    Armor = CurrentArmor;
+                }
             }
         }
         private void ApplyDamage()
         {
-            bool HurtByPed = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED", Pedestrian);
-            bool HurtByVehicle = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian);
+            bool HurtByPed = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED", MyPed.Pedestrian);
+            bool HurtByVehicle = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", MyPed.Pedestrian);
             if (!HurtByPed && !HurtByVehicle)
             {
                 return;
             }
 
-
             int TotalDamage = Health - CurrentHealth + Armor - CurrentArmor;
             int HealthDamage = Health - CurrentHealth;
             int ArmorDamage = Armor - CurrentArmor;
-            BodyLocation DamagedLocation = GetDamageLocation(Pedestrian);
+            BodyLocation DamagedLocation = GetDamageLocation(MyPed.Pedestrian);
 
-            GTAWeapon DamagingWeapon = GetWeaponLastDamagedBy(Pedestrian);
+            GTAWeapon DamagingWeapon = GetWeaponLastDamagedBy(MyPed.Pedestrian);
 
             bool CanBeFatal = false;
             if (DamagedLocation == BodyLocation.Head || DamagedLocation == BodyLocation.Neck || DamagedLocation == BodyLocation.UpperTorso)
@@ -326,7 +434,7 @@ public static class PedWoundSystem
                 HealthDamageModifier = 1.0f;// 6.0f;//2.0f;
 
 
-            if (Pedestrian.Health == 0)//already dead, we are intercepting
+            if (MyPed.Pedestrian.Health == 0)//already dead, we are intercepting
                 HealthInjury = InjuryType.Fatal;
 
             float ArmorDamageModifier = 1.0f;
@@ -351,17 +459,17 @@ public static class PedWoundSystem
 
 
             if (Health - NewHealthDamage > 0)
-                Pedestrian.Health = Health - NewHealthDamage;
+                MyPed.Pedestrian.Health = Health - NewHealthDamage;
             else
-                Pedestrian.Health = 0;
+                MyPed.Pedestrian.Health = 0;
 
             if (Armor - NewArmorDamage > 0)
-                Pedestrian.Armor = Armor - NewArmorDamage;
+                MyPed.Pedestrian.Armor = Armor - NewArmorDamage;
             else
-                Pedestrian.Armor = 0;
+                MyPed.Pedestrian.Armor = 0;
 
             Debugging.WriteToLog("Damage Detected", string.Format("Ped: {0}, Location: {1}, Weapon: {2}, Injury: {3}, PrevHealth/Armor: {4}/{5}, Health/Armor: {6}/{7}, Armor {8}, VanillaDamageHealthArmor {9}/{10}, New DamageHealthArmor {11}/{12}",
-                                                                        Pedestrian.Handle,DamagedLocation, DamagingWeapon.Name, HealthInjury, Health, Armor, Pedestrian.Health, Pedestrian.Armor, ArmorWillProtect, HealthDamage, ArmorDamage, NewHealthDamage, NewArmorDamage));
+                                                                        MyPed.Pedestrian.Handle,DamagedLocation, DamagingWeapon.Name, HealthInjury, Health, Armor, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor, ArmorWillProtect, HealthDamage, ArmorDamage, NewHealthDamage, NewArmorDamage));
 
             GameTimeLastDamaged = Game.GameTime;
         }
@@ -373,11 +481,11 @@ public static class PedWoundSystem
         {
 
         }
-        public PedHealthState(Ped _pedestrian)
+        public PedHealthState(GTAPed _MyPed)
         {
-            Pedestrian = _pedestrian;
-            Health = _pedestrian.Health;
-            Armor = _pedestrian.Armor;
+            MyPed = _MyPed;
+            Health = _MyPed.Pedestrian.Health;
+            Armor = _MyPed.Pedestrian.Armor;
             CurrentArmor = Armor;
             CurrentHealth = Health;
         }

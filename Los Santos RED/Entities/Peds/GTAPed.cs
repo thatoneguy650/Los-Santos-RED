@@ -57,9 +57,9 @@ public class GTAPed
     {
         get
         {
-            int DistanceUpdate = 25;
+            int DistanceUpdate = 150;//25
             if (!IsCop)
-                DistanceUpdate = 150;
+                DistanceUpdate = 500;//150
             if (GameTimeLastDistanceCheck == 0)
                 return true;
             else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate)
@@ -140,21 +140,25 @@ public class GTAPed
     {
         if (NeedsUpdate)
         {
-            int NewHealth = Pedestrian.Health;
-            if (NewHealth != Health)
-            {
-                if (!HurtByPlayer && CheckPlayerHurtPed)
-                {
-                    HurtByPlayer = true;
-                }
-                Health = NewHealth;
-            }
-            if (Pedestrian.IsDead)
-            {
-                if (CheckPlayerKilledPed)
-                    KilledByPlayer = true;
-                return;
-            }
+            //int NewHealth = Pedestrian.Health;
+            //if (NewHealth != Health)
+            //{
+            //    if (!HurtByPlayer && CheckPlayerHurtPed)
+            //    {
+            //        HurtByPlayer = true;
+            //        Debugging.WriteToLog("GTAPed", string.Format("Player Hurt {0}, IsCop: {1}", Pedestrian.Handle, IsCop));
+            //    }
+            //    Health = NewHealth;
+            //}
+            //if (Pedestrian.IsDead)
+            //{
+            //    if (CheckPlayerKilledPed)
+            //    {
+            //        KilledByPlayer = true;
+            //        Debugging.WriteToLog("GTAPed", string.Format("Player Killed {0}, IsCop: {1}", Pedestrian.Handle, IsCop));
+            //    }
+            //    return;
+            //}
             IsInVehicle = Pedestrian.IsInAnyVehicle(false);
             if (IsInVehicle)
             {
@@ -178,6 +182,9 @@ public class GTAPed
             DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
             DistanceToLastSeen = Pedestrian.DistanceTo2D(Police.PlacePlayerLastSeen);
 
+            if (DistanceToPlayer <= 0.1f)
+                DistanceToPlayer = 0f;
+
 
             if (DistanceToPlayer <= ClosestDistanceToPlayer)
                 ClosestDistanceToPlayer = DistanceToPlayer;
@@ -198,7 +205,7 @@ public class GTAPed
             Entity ToCheck = PlayerInVehicle ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
             if (IsCop && !Pedestrian.IsInHelicopter)
             {  
-                if (DistanceToPlayer <= 55f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))
+                if (DistanceToPlayer <= 90f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
                 {
                     SetPlayerSeen();
                     Police.PlayerSeen();
@@ -224,7 +231,7 @@ public class GTAPed
             }
             else
             {
-                if (DistanceToPlayer <= 40f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))
+                if (DistanceToPlayer <= 90f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
                 {
                     SetPlayerSeen();
                     Police.PlayerSeen();
@@ -271,47 +278,34 @@ public class GTAPed
         GameTimeLastSeenPlayer = Game.GameTime;
         PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
     }
-    public bool CheckPlayerHurtPed
+    public void CheckPlayerHurtPed()
     {
-        get
+        if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, Game.LocalPlayer.Character, true))
         {
-            if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, Game.LocalPlayer.Character, true))
-            {
-                return true;
+            HurtByPlayer = true;
 
-            }
-            else if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, true))
-            {
-                return true;
-            }
-            return false;
         }
-    }
-    public bool CheckPlayerKilledPed
-    {
-        get
+        else if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, true))
         {
-            try
+            HurtByPlayer = true;
+        }  
+    }
+    public void CheckPlayerKilledPed()
+    {
+        try
+        {
+            if (Pedestrian.IsDead)
             {
-                if (Pedestrian.IsDead)
-                {
-                    Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
-                    if (killer.Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == killer.Handle))
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-            catch
-            {
-                if (HurtByPlayer)
-                    return true;
-                else
-                    return false;
+                Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
+                if (killer.Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == killer.Handle))
+                    KilledByPlayer = true;
             }
         }
+        catch
+        {
+            if (HurtByPlayer)
+                KilledByPlayer = true;
+        }     
     }
 }
 

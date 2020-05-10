@@ -336,16 +336,7 @@ internal static class Police
         PedList.K9Peds.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
         foreach (GTACop Cop in PedList.CopPeds)
         {
-            bool PrevHurt = Cop.HurtByPlayer;
             Cop.Update();
-            if (Cop.KilledByPlayer)
-            {
-                CurrentCrimes.KillingPolice.CrimeObserved();
-            }
-            else if (!PrevHurt && Cop.HurtByPlayer)
-            {
-                CurrentCrimes.HurtingPolice.CrimeObserved();
-            }
         }
         foreach (GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.IsDead))
         {
@@ -491,6 +482,18 @@ internal static class Police
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 25) { IsAmbient = true,ReportedBy = DispatchAudio.ReportType.Officers });
                 GameTimeLastReportedSpotted = Game.GameTime;
             }
+
+            if (CurrentCrimes.KillingPolice.InstancesObserved >= LosSantosRED.MySettings.Police.PoliceKilledSurrenderLimit && LosSantosRED.PlayerWantedLevel < 4 && !LosSantosRED.IsDead && !LosSantosRED.IsBusted)
+            {
+                SetWantedLevel(4, "You killed too many cops 4 Stars", true);
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.WeaponsFree, 1));
+            }
+
+            if (CurrentCrimes.KillingPolice.InstancesObserved >= 10 && LosSantosRED.PlayerWantedLevel < 5 && !LosSantosRED.IsDead && !LosSantosRED.IsBusted)
+            {
+                SetWantedLevel(5, "You killed too many cops 5 Stars", true);
+                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.RequestBackup, 1));
+            }
         }
         else
         {
@@ -523,6 +526,7 @@ internal static class Police
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRoadBlock, ValueToSet);
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitCruising, ValueToSet);
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitPulledOver, ValueToSet);
+
     }
     private static void InvestigationPositionChanged()
     {
