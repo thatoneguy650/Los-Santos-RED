@@ -241,10 +241,10 @@ public static class PlayerHealth
 
             Debugging.WriteToLog("Player Damage Detected", string.Format("Location: {0},Weapon: {1},{2}, Type: {3}, Total Damage: {4}, HealthDamage: {5}, ArmorDamage: {6},NewHealthDamage: {7}, NewArmorDamage: {8}, DamageModifier: {9},ArmorWillProtect: {10}", 
                                                                         DamagedLocation, DamagingWeapon.Name, DamagingWeapon.Category, HealthInjury, TotalDamage, HealthDamage, ArmorDamage, NewHealthDamage, NewArmorDamage, HealthDamageModifier, ArmorWillProtect));
-            if(ArmorWillProtect)
-                UI.DebugLine = string.Format("{0} ap hit at {1}", HealthInjury, DamagedLocation);
-            else
-                UI.DebugLine = string.Format("{0} hit at {1}", HealthInjury, DamagedLocation);
+            //if(ArmorWillProtect)
+            //    UI.DebugLine = string.Format("{0} ap hit at {1}", HealthInjury, DamagedLocation);
+            //else
+            //    UI.DebugLine = string.Format("{0} hit at {1}", HealthInjury, DamagedLocation);
 
             GameTimeLastDamaged = Game.GameTime;
         }
@@ -274,10 +274,10 @@ public static class PlayerHealth
             }
         }
 
-        if(Game.GameTime - GameTimeLastDamaged >= 15000)
-        {
-            UI.DebugLine = "";
-        }
+        //if(Game.GameTime - GameTimeLastDamaged >= 15000)
+        //{
+        //    UI.DebugLine = "";
+        //}
     }
     private static void CheckBleeding()
     {

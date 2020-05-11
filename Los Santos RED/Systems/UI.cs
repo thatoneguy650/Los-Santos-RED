@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 public static class UI
 {
+
     private static bool StartedBandagingEffect = false;
     public static string DebugLine { get; set; }
     public enum EFont
@@ -22,6 +23,33 @@ public static class UI
         FontChaletComprimeCologne = 4,
         FontPricedown = 7
     };
+    private enum HudComponent
+    {
+        HUD = 0,
+        HUD_WANTED_STARS = 1,
+        HUD_WEAPON_ICON = 2,
+        HUD_CASH = 3,
+        HUD_MP_CASH = 4,
+        HUD_MP_MESSAGE = 5,
+        HUD_VEHICLE_NAME = 6,
+        HUD_AREA_NAME = 7,
+        HUD_VEHICLE_CLASS = 8,
+        HUD_STREET_NAME = 9,
+        HUD_HELP_TEXT = 10,
+        HUD_FLOATING_HELP_TEXT_1 = 11,
+        HUD_FLOATING_HELP_TEXT_2 = 12,
+        HUD_CASH_CHANGE = 13,
+        HUD_RETICLE = 14,
+        HUD_SUBTITLE_TEXT = 15,
+        HUD_RADIO_STATIONS = 16,
+        HUD_SAVING_GAME = 17,
+        HUD_GAME_STREAM = 18,
+        HUD_WEAPON_WHEEL = 19,
+        HUD_WEAPON_WHEEL_STATS = 20,
+        MAX_HUD_COMPONENTS = 21,
+        MAX_HUD_WEAPONS = 22,
+        MAX_SCRIPTED_HUD_COMPONENTS = 141,
+    }
     public static bool IsRunning { get; set; }
     public static void Initialize()
     {
@@ -66,6 +94,9 @@ public static class UI
 
         if (LosSantosRED.MySettings.General.AlwaysShowCash)
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
+
+
+
 
         if (LosSantosRED.MySettings.UI.Enabled && !LosSantosRED.IsBusted && !LosSantosRED.IsDead)
         {
@@ -119,6 +150,13 @@ public static class UI
 
     private static void ShowUI()
     {
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_VEHICLE_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_AREA_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_VEHICLE_CLASS);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_STREET_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_VEHICLE_CLASS);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_VEHICLE_CLASS);
+
         string PlayerStatusLine = "";
         if (PersonOfInterest.PlayerIsPersonOfInterest)
         {
@@ -191,7 +229,7 @@ public static class UI
             PlayerCLockLine = string.Format("{0} ({1})", ClockSystem.ClockTime, ClockSystem.ClockSpeed);
 
         if (DebugLine != "")
-            Text(DebugLine, 0.92f, 0.16f, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
+            Text(DebugLine, .9f, .3f, 0.45f, false, Color.White, EFont.FontChaletComprimeCologne);
 
         //Text(PlayerCLockLine, LosSantosRED.MySettings.UI.PositionX - 2 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
         Text(PlayerStatusLine, LosSantosRED.MySettings.UI.PositionX - LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);

@@ -52,11 +52,12 @@ public static class Zones
             new ZoneAgency("LSSD-ASD", 3, 0, 5) };
 
         List<ZoneAgency> StandardCityAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("LSPD", 0, 95, 80),
+            new ZoneAgency("LSPD", 0, 94, 80),
             new ZoneAgency("FIB", 1, 4, 4),
             new ZoneAgency("DOA", 2, 1, 1),
             new ZoneAgency("NOOSE", 3, 0, 10),
-            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
+            new ZoneAgency("LSPD-ASD", 4, 0, 5),
+            new ZoneAgency("PRISEC", 5, 1, 0)};
 
         List<ZoneAgency> DavisAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSSD-DV", 0, 50, 40),
@@ -70,11 +71,12 @@ public static class Zones
 
         List<string> VespucciAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VespucciAreaUnits.FileName, ScannerAudio.attention_all_area_units.VespucciAreaUnits2.FileName };
         List<ZoneAgency> VespucciAgencies = new List<ZoneAgency>() {
-            new ZoneAgency("LSPD-DP", 0, 85, 70),
+            new ZoneAgency("LSPD-DP", 0, 84, 70),
             new ZoneAgency("LSPD", 1, 10, 10),
             new ZoneAgency("FIB", 2, 5, 5),
             new ZoneAgency("NOOSE", 3, 0, 10),
-            new ZoneAgency("LSPD-ASD", 4, 0, 5) };
+            new ZoneAgency("LSPD-ASD", 4, 0, 5),
+            new ZoneAgency("PRISEC", 5, 1, 0)};
 
         List<string> CentralAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.CentralUnits.FileName, ScannerAudio.attention_all_area_units.CentralUnits1.FileName, ScannerAudio.attention_all_area_units.CentralAreaUnits.FileName };
         List<string> EastLosSantosAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.EastLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.EastLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.EastLosSantos2.FileName };

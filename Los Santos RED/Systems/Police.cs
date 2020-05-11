@@ -317,6 +317,8 @@ internal static class Police
         UpdateCops();
         CheckRecognition();
         CurrentCrimes.CheckCrimes();
+
+        //UI.DebugLine = string.Format("See: {0} Stars: {1} RecSeen: {2} Recog: {3}", AnyPoliceCanSeePlayer, PlayerStarsGreyedOut, AnyPoliceRecentlySeenPlayer,AnyPoliceCanRecognizePlayer);
     }
     private static void CheckEvents()
     {
@@ -369,12 +371,10 @@ internal static class Police
            // Debugging.WriteToLog("CheckRecognition", "PlacePlayerLastSeen1");
             PlacePlayerLastSeen = Game.LocalPlayer.Character.Position;
         }
-        else if (PlayerStarsGreyedOut && Game.LocalPlayer.Character.DistanceTo2D(PlacePlayerLastSeen) <= 15f && !Game.LocalPlayer.Character.Position.Z.IsWithin(PlacePlayerLastSeen.Z - 2f, PlacePlayerLastSeen.Z + 2f))//within the search zone but above or below it, need to help out my cops
-            SearchModeStopping.StopSearchModeSingle();
+        //else if (PlayerStarsGreyedOut && Game.LocalPlayer.Character.DistanceTo2D(PlacePlayerLastSeen) <= 15f && !Game.LocalPlayer.Character.Position.Z.IsWithin(PlacePlayerLastSeen.Z - 2f, PlacePlayerLastSeen.Z + 2f))//within the search zone but above or below it, need to help out my cops
+        //    SearchModeStopping.StopSearchModeSingle();
 
         NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlacePlayerLastSeen.X, PlacePlayerLastSeen.Y, PlacePlayerLastSeen.Z);
-
-
 
     }
     private static void GetPoliceState()

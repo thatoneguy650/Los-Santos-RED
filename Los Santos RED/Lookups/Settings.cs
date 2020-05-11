@@ -108,7 +108,7 @@ public class GeneralSettings
 public class UISettings
 {
     public bool Enabled = true;
-    public float PositionX = 0.85f;//0.92f
+    public float PositionX = 0.825f;//0.92f
     public float PositionY = 0.85f;//0.16f
     public float Spacing = 0.02f;
     public float Scale = 0.35f;

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using ExtensionsMethods;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,10 @@ using System.Threading.Tasks;
 
 public static class SearchModeStopping
 {
+    private static Vector3 CurrentOffset = new Vector3(0f, 6f, 1f);
     private static bool PrevStopSearchMode;
-    private static Vector3 GhostCopLastPosition;
+    private static Vector3 PositionSet;
     private static Model CopModel;
-    private static bool SingleStopActive = false;
     private static Ped GhostCop;
     private static uint GameTimeLastGhostCopCreated;
     public static bool StopSearchMode { get; set; }
@@ -39,7 +40,6 @@ public static class SearchModeStopping
     public static void Initialize()
     {
         CopModel = new Model("s_m_y_cop_01");
-        SingleStopActive = false;
         GhostCop = null;
         StopSearchMode = false;
         IsRunning = true;
@@ -53,38 +53,6 @@ public static class SearchModeStopping
         if (GhostCop.Exists())
             GhostCop.Delete();
     }
-    public static void StopSearchModeSingle()
-    {
-        if (SingleStopActive)
-            return;
-
-        SingleStopActive = true;
-        Debugging.WriteToLog("StopSearchModeSingle", "Started Stop Search Mod Single");
-        GameFiber StopSearchSingle = GameFiber.StartNew(delegate
-        {
-            try
-            {
-
-                if (!GhostCop.Exists())
-                {
-                    CreateGhostCop();
-                }
-                while (Police.PlayerStarsGreyedOut)
-                {
-                    MoveGhostCopToPosition();
-                    GameFiber.Sleep(50);
-                }
-                MoveGhostCopToOrigin();
-                SingleStopActive = false;
-            }
-            catch (Exception e)
-            {
-                Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        }, "StopSearchSingle");
-
-        Debugging.GameFibers.Add(StopSearchSingle);
-    }
     public static void StopPoliceSearchMode()
     {
         if(PrevStopSearchMode != StopSearchMode)
@@ -93,20 +61,14 @@ public static class SearchModeStopping
             Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Police.AnyPoliceRecentlySeenPlayer));
         }
 
-
         if (!StopSearchMode)
             return;
-
-
-        //if (LosSantosRED.PlayerInVehicle)
-        //    return;
-
 
         if (!GhostCop.Exists())
         {
             CreateGhostCop();
         }
-        if (Police.AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+        if (LosSantosRED.PlayerIsWanted && Police.AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
         {
             MoveGhostCopToPosition();
         }
@@ -119,23 +81,14 @@ public static class SearchModeStopping
     {
         if (GhostCop.Exists())
         {
-            Vector3 DesiredPosition;
             if (Police.PlayerStarsGreyedOut)
-                DesiredPosition = Game.LocalPlayer.Character.Position.Around2D(1,5);//Must not be working, move them around
-            else
-                DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 1f));// the standard spot to move them to
-
-            Vector3 PlacedPosition = Vector3.Zero;
-            bool FoundPlace;
-            unsafe
             {
-                FoundPlace = NativeFunction.CallByName<bool>("GET_SAFE_COORD_FOR_PED", DesiredPosition.X, DesiredPosition.Y, DesiredPosition.Z, false, &PlacedPosition, 16);
+                CurrentOffset = new List<Vector3>() { new Vector3(0f, 6f, 1f), new Vector3(6f, 0f, 1f), new Vector3(-6f, 0f, 1f), new Vector3(0f, -6f, 1f) }.PickRandom();
+                Debugging.WriteToLog("MoveGhostCopToPosition", string.Format("CurrentOffset {0}", CurrentOffset));
             }
-
-            if (FoundPlace)
-                GhostCop.Position = PlacedPosition;
-            else
-                GhostCop.Position = DesiredPosition;
+            Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
+            PositionSet = DesiredPosition;
+            GhostCop.Position = PositionSet;
 
             Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
             GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
@@ -148,7 +101,7 @@ public static class SearchModeStopping
     }
     private static void CreateGhostCop()
     {    
-        GhostCop = new Ped(CopModel, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 4f, 0f)), Game.LocalPlayer.Character.Heading);
+        GhostCop = new Ped(CopModel, new Vector3(0f, 0f, 0f), 0f);
         GameTimeLastGhostCopCreated = Game.GameTime;
         if (GhostCop.Exists())
         {

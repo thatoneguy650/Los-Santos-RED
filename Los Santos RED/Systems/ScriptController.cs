@@ -57,7 +57,7 @@ public static class ScriptController
         PoliceStateTick = new TickTask(150, "PoliceStateTick", Tasking.PoliceStateTick, TickTask.Type.Police);//50  //does the tasking checking
         ProcessTaskQueueTick = new TickTask(250, "ProcessTaskQueueTick", Tasking.ProcessQueue, TickTask.Type.Police);//250 //goes thru the actual assigning out
 
-        SearchModeStopperTick = new TickTask(500, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);
+        SearchModeStopperTick = new TickTask(50, "SearchModeStopperTick", SearchModeStopping.StopPoliceSearchMode, TickTask.Type.Police);//500
         PoliceVehicleScanningTick = new TickTask(1000, "PoliceVehicleScanningTick", PedList.ScanforPoliceVehicles, TickTask.Type.Police);
 
         WeaponDroppingTick = new TickTask(250, "WeaponDroppingTick", WeaponDropping.WeaponDroppingTick, TickTask.Type.RequiredGeneral);//100
