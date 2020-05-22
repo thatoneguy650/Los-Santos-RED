@@ -118,12 +118,12 @@ public static class Vehicles
     {
         if (File.Exists(ConfigFileName))
         {
-            VehiclesList = LosSantosRED.DeserializeParams<VehicleInfo>(ConfigFileName);
+            VehiclesList = General.DeserializeParams<VehicleInfo>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            LosSantosRED.SerializeParams(VehiclesList, ConfigFileName);
+            General.SerializeParams(VehiclesList, ConfigFileName);
         }
     }
     public static VehicleInfo GetVehicleInfo(GTAVehicle Vehicle)

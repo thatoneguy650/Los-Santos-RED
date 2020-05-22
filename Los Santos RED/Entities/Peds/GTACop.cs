@@ -32,6 +32,13 @@ public class GTACop : GTAPed
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public bool AtWantedCenterDuringChase { get; set; } = false;
     public ChaseStatus CurrentChaseStatus { get; set; } = ChaseStatus.Idle;
+    public Zone CurrentZone
+    {
+        get
+        {
+            return Zones.GetZoneAtLocation(Pedestrian.Position);
+        }
+    }
     public enum ChaseStatus
     {
         Idle = 0,
@@ -42,8 +49,8 @@ public class GTACop : GTAPed
     {
         Pedestrian.VisionRange = 55f;
         Pedestrian.HearingRange = 25;
-        if(LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
-            Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceGeneralAccuracy;
+        if(General.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = General.MySettings.Police.PoliceGeneralAccuracy;
     }
     public void IssuePistol()
     {
@@ -56,19 +63,19 @@ public class GTACop : GTAPed
         if (IssuedPistol == null)
             return;
         Pedestrian.Inventory.GiveNewWeapon(Pistol.Name, Pistol.AmmoAmount, false);
-        if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
+        if (General.MySettings.Police.AllowPoliceWeaponVariations)
         {
             GTAWeapon.WeaponVariation MyVariation = PistolToPick.MyVariation;
             PistolVariation = MyVariation;
-            LosSantosRED.ApplyWeaponVariation(Pedestrian, (uint)Pistol.Hash, MyVariation);
+            General.ApplyWeaponVariation(Pedestrian, (uint)Pistol.Hash, MyVariation);
         }
     }
     public void IssueHeavyWeapon()
     {
         GTAWeapon IssuedHeavy;
 
-        if (LosSantosRED.MySettings.Police.OverridePoliceAccuracy)
-            Pedestrian.Accuracy = LosSantosRED.MySettings.Police.PoliceHeavyAccuracy;
+        if (General.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = General.MySettings.Police.PoliceHeavyAccuracy;
 
         Agency.IssuedWeapon HeavyToPick = new Agency.IssuedWeapon("weapon_shotgun", true, null);
         if (AssignedAgency != null)
@@ -81,11 +88,11 @@ public class GTACop : GTAPed
             return;
 
         Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.Name, IssuedHeavy.AmmoAmount, true);
-        if (LosSantosRED.MySettings.Police.AllowPoliceWeaponVariations)
+        if (General.MySettings.Police.AllowPoliceWeaponVariations)
         {
             GTAWeapon.WeaponVariation MyVariation = HeavyToPick.MyVariation;
             HeavyVariation = MyVariation;
-            LosSantosRED.ApplyWeaponVariation(Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
+            General.ApplyWeaponVariation(Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
         }
     }
     public bool NeedsWeaponCheck

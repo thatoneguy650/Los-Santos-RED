@@ -218,7 +218,10 @@ public class GTAPed
             }
             else if (Pedestrian.IsInHelicopter)
             {
-                if(DistanceToPlayer <= 350f && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Pedestrian, ToCheck, 17))
+                float DistanceToSee = 150f;
+                if (General.PlayerIsWanted)
+                    DistanceToSee = 350f;
+                if (DistanceToPlayer <= DistanceToSee && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Pedestrian, ToCheck, 17))
                 {
                     SetPlayerSeen();
                     Police.PlayerSeen();

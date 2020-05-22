@@ -23,12 +23,12 @@ public static class GTAWeapons
     {
         if (File.Exists(ConfigFileName))
         {
-            WeaponsList = LosSantosRED.DeserializeParams<GTAWeapon>(ConfigFileName);
+            WeaponsList = General.DeserializeParams<GTAWeapon>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            LosSantosRED.SerializeParams(WeaponsList, ConfigFileName);
+            General.SerializeParams(WeaponsList, ConfigFileName);
         }
     }
 

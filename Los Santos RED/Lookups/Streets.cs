@@ -22,12 +22,12 @@ public static class Streets
     {
         if (File.Exists(ConfigFileName))
         {
-            StreetsList = LosSantosRED.DeserializeParams<Street>(ConfigFileName);
+            StreetsList = General.DeserializeParams<Street>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            LosSantosRED.SerializeParams(StreetsList, ConfigFileName);
+            General.SerializeParams(StreetsList, ConfigFileName);
         }
     }
     public static void DefaultConfig()

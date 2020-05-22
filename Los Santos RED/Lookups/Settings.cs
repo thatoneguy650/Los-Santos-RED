@@ -69,7 +69,7 @@ public class PoliceSettings
     public int PoliceBailWantedLevelScale = 750;
     public int HospitalFee = 5000;
     public float LastWantedCenterSize = 400f;
-    public int PoliceRecentlySeenTime = 25000;//15000//10000
+    public int PoliceRecentlySeenTime = 17000;//15000//10000
     public bool AllowPoliceWeaponVariations = true;
     public bool DispatchAudio = true;
     public bool DispatchAudioOnlyHighPriority = false;
@@ -108,10 +108,22 @@ public class GeneralSettings
 public class UISettings
 {
     public bool Enabled = true;
-    public float PositionX = 0.825f;//0.92f
-    public float PositionY = 0.85f;//0.16f
-    public float Spacing = 0.02f;
-    public float Scale = 0.35f;
+
+    public float PlayerStatusPositionX = 0.12f;
+    public float PlayerStatusPositionY = 0.85f;
+    public float PlayerStatusScale = 0.5f;
+
+    public float VehicleStatusPositionX = 0.7f;
+    public float VehicleStatusPositionY = 0.92f;
+    public float VehicleStatusScale = 0.4f;
+
+    public float StreetPositionX = 0.93f;
+    public float StreetPositionY = 0.75f;
+    public float StreetScale = 0.5f;
+
+    public float ZonePositionX = 0.96f;
+    public float ZonePositionY = 0.75f;
+    public float ZoneScale = 0.5f;
 
     public UISettings()
     {

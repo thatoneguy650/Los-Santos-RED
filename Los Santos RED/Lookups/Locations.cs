@@ -27,12 +27,12 @@ public static class Locations
     {
         if (File.Exists(ConfigFileName))
         {
-            LocationsList = LosSantosRED.DeserializeParams<Location>(ConfigFileName);
+            LocationsList = General.DeserializeParams<Location>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            LosSantosRED.SerializeParams(LocationsList, ConfigFileName);
+            General.SerializeParams(LocationsList, ConfigFileName);
         }
     }
     private static void DefaultConfig()

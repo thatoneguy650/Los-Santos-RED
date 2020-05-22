@@ -20,12 +20,12 @@ public static class Zones
     {
         if (File.Exists(ConfigFileName))
         {
-            ZoneList = LosSantosRED.DeserializeParams<Zone>(ConfigFileName);
+            ZoneList = General.DeserializeParams<Zone>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            LosSantosRED.SerializeParams(ZoneList, ConfigFileName);
+            General.SerializeParams(ZoneList, ConfigFileName);
         }
     }
     private static void DefaultConfig()
@@ -141,7 +141,9 @@ public static class Zones
             new ZoneAgency("LSIAPD", 0, 95, 80),
             new ZoneAgency("LSPD", 1, 5, 5),
             new ZoneAgency("NOOSE", 2, 0, 10),
-            new ZoneAgency("LSPD-ASD", 3, 0, 5) };
+            new ZoneAgency("LSPD-ASD", 3, 0, 5),
+            new ZoneAgency("PRISEC", 4, 1, 0),
+            new ZoneAgency("SACG", 5, 1, 0)};
 
         List<ZoneAgency> ArmyAgencies = new List<ZoneAgency>() {
             new ZoneAgency("ARMY", 0, 100, 100) };
@@ -275,7 +277,7 @@ public static class Zones
         Zone ListResult = ZoneList.Where(x => x.GameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
         if(ListResult == null)
         {
-            if (Game.LocalPlayer.Character.IsInLosSantosCity())
+            if (ZonePosition.IsInLosSantosCity())
                 return new Zone("UNK_LSCITY", "Los Santos", "", County.CityOfLosSantos);
             else
                 return new Zone("UNK_LSCOUNTY", "Los Santos County", "", County.LosSantosCounty);
@@ -296,17 +298,25 @@ public static class Zones
         }
         return zoneName;
     }
-    public static string GetFormattedZoneName(Zone MyZone)
+    public static string GetFormattedZoneName(Zone MyZone,bool WithCounty)
     {
-        string CountyName = "San Andreas";
-        if (MyZone.ZoneCounty == County.BlaineCounty)
-            CountyName = "Blaine County";
-        else if (MyZone.ZoneCounty == County.CityOfLosSantos)
-            CountyName = "City of Los Santos";
-        else if (MyZone.ZoneCounty == County.LosSantosCounty)
-            CountyName = "Los Santos County";
+        if (WithCounty)
+        {
+            string CountyName = "San Andreas";
+            if (MyZone.ZoneCounty == County.BlaineCounty)
+                CountyName = "Blaine County";
+            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
+                CountyName = "City of Los Santos";
+            else if (MyZone.ZoneCounty == County.LosSantosCounty)
+                CountyName = "Los Santos County";
 
-        return MyZone.TextName + ", " + CountyName;
+            return MyZone.TextName + ", " + CountyName;
+        }
+        else
+        {
+            return MyZone.TextName;
+        }
+
     }
     //public ZoneAgency GetRandomVehicle(bool IsMotorcycle)
     //{
@@ -374,7 +384,7 @@ public class Zone
 
         List<ZoneAgency> ToPickFrom = ZoneAgencies.Where(x => x.CanCurrentlySpawn).ToList();
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-        int RandomPick = LosSantosRED.MyRand.Next(0, Total);
+        int RandomPick = General.MyRand.Next(0, Total);
         foreach (ZoneAgency ZA in ToPickFrom)
         {
             int SpawnChance = ZA.CurrentSpawnChance;
@@ -429,7 +439,7 @@ public class ZoneAgency
     {
         get
         {
-            if (LosSantosRED.PlayerIsWanted)
+            if (General.PlayerIsWanted)
             {
                 if (AssociatedAgency.CanSpawn)
                 {
@@ -446,7 +456,7 @@ public class ZoneAgency
     {
         get
         {
-            if (LosSantosRED.PlayerIsWanted)
+            if (General.PlayerIsWanted)
                 return WantedSpawnChance;
             else
                 return AmbientSpawnChance;

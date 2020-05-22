@@ -23,12 +23,12 @@ public static class PedNames
     {
         if (File.Exists(ConfigFileName))
         {
-            NameList = LosSantosRED.DeserializeParams<PedName>(ConfigFileName);
+            NameList = General.DeserializeParams<PedName>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            LosSantosRED.SerializeParams(NameList, ConfigFileName);
+            General.SerializeParams(NameList, ConfigFileName);
         }
     }
 

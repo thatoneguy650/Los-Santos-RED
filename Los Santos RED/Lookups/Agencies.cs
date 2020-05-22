@@ -24,12 +24,12 @@ public static class Agencies
     {
         if (File.Exists(ConfigFileName))
         {
-            AgenciesList = LosSantosRED.DeserializeParams<Agency>(ConfigFileName);
+            AgenciesList = General.DeserializeParams<Agency>(ConfigFileName);
         }
         else
         {
             DefaultConfig();
-            LosSantosRED.SerializeParams(AgenciesList, ConfigFileName);
+            General.SerializeParams(AgenciesList, ConfigFileName);
         }
     }
     private static void DefaultConfig()
@@ -92,6 +92,13 @@ public static class Agencies
         //Vehicles
         List<Agency.VehicleInformation> UnmarkedVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police4", 100, 100) };
+
+        List<Agency.VehicleInformation> CoastGuardVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("police4", 100, 100),
+            new Agency.VehicleInformation("predator", 100, 100) { IsBoat = true } };
+
+
+        
         List<Agency.VehicleInformation> SecurityVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("dilettante2", 100, 100) {MaxOccupants = 1 } };
 
@@ -258,7 +265,7 @@ public static class Agencies
             new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { SpawnLimit = 3 },
             new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1,SpawnLimit = 2 },
             new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Security, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
-            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.Other, CoastGuardPeds, UnmarkedVehicles, "SACG ",LimitedWeapons){MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
+            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.Other, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
 
             new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Federal, MilitaryPeds, ArmyVehicles, "",BestWeapons) {IsArmy = true },
 
@@ -334,7 +341,7 @@ public static class Agencies
             int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
             NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
         }
-        CopCar.LicensePlate = AssignedAgency.LicensePlatePrefix + LosSantosRED.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
+        CopCar.LicensePlate = AssignedAgency.LicensePlatePrefix + General.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
     }
     public static void ChangeLiveryAtZone(Vehicle CopCar,Zone ZoneFound)
     {
@@ -371,7 +378,7 @@ public static class Agencies
         }
         if(ZoneAgency != null)
         {
-            CopCar.LicensePlate = ZoneAgency.LicensePlatePrefix + LosSantosRED.RandomString(8 - ZoneAgency.LicensePlatePrefix.Length);
+            CopCar.LicensePlate = ZoneAgency.LicensePlatePrefix + General.RandomString(8 - ZoneAgency.LicensePlatePrefix.Length);
         }     
     }
  }
@@ -397,7 +404,7 @@ public class Agency
     {
         get
         {
-            if (LosSantosRED.PlayerWantedLevel >= MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= MaxWantedLevelSpawn)
+            if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
             {
                 if (PedList.CopPeds.Count(x => x.AssignedAgency == this) < SpawnLimit)
                     return true;
@@ -458,15 +465,15 @@ public class Agency
     {
         return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
     }
-    public VehicleInformation GetRandomVehicle(bool IsMotorcycle,bool IsHelicopter)
+    public VehicleInformation GetRandomVehicle(bool IsMotorcycle,bool IsHelicopter, bool IsBoat)
     {
         if (Vehicles == null || !Vehicles.Any())
             return null;
 
-        List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle && x.IsHelicopter == IsHelicopter && x.CanCurrentlySpawn).ToList();     
+        List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn).ToList(); //List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle && x.IsHelicopter == IsHelicopter && x.IsBoat == IsBoat && x.CanCurrentlySpawn).ToList();     
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
        // Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
-        int RandomPick = LosSantosRED.MyRand.Next(0, Total);
+        int RandomPick = General.MyRand.Next(0, Total);
         foreach (VehicleInformation Vehicle in ToPickFrom)
         {
             int SpawnChance = Vehicle.CurrentSpawnChance;
@@ -484,7 +491,7 @@ public class Agency
         if (CopModels == null || !CopModels.Any())
             return null;
 
-        List<ModelInformation> ToPickFrom = CopModels.Where(x => LosSantosRED.PlayerWantedLevel >= x.MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= x.MaxWantedLevelSpawn).ToList();
+        List<ModelInformation> ToPickFrom = CopModels.Where(x => General.PlayerWantedLevel >= x.MinWantedLevelSpawn && General.PlayerWantedLevel <= x.MaxWantedLevelSpawn).ToList();
         if(RequiredModels != null && RequiredModels.Any())
         {
             ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
@@ -492,7 +499,7 @@ public class Agency
 
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
         //Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
-        int RandomPick = LosSantosRED.MyRand.Next(0, Total);
+        int RandomPick = General.MyRand.Next(0, Total);
         foreach (ModelInformation Cop in ToPickFrom)
         {
             int SpawnChance = Cop.CurrentSpawnChance;
@@ -534,9 +541,9 @@ public class Agency
         {
             get
             {
-                if (LosSantosRED.PlayerIsWanted)
+                if (General.PlayerIsWanted)
                 {
-                    if (LosSantosRED.PlayerWantedLevel >= MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance > 0;
                     else
                         return false;
@@ -549,9 +556,9 @@ public class Agency
         {
             get
             {
-                if (LosSantosRED.PlayerIsWanted)
+                if (General.PlayerIsWanted)
                 {
-                    if (LosSantosRED.PlayerWantedLevel >= MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance;
                     else
                         return 0;
@@ -580,6 +587,7 @@ public class Agency
         public int WantedSpawnChance = 0;
         public bool IsMotorcycle = false;
         public bool IsHelicopter = false;
+        public bool IsBoat = false;
         public int MinOccupants = 1;
         public int MaxOccupants = 2;
         public int MinWantedLevelSpawn = 0;
@@ -590,9 +598,9 @@ public class Agency
         {
             get
             {
-                if (LosSantosRED.PlayerIsWanted)
+                if (General.PlayerIsWanted)
                 {
-                    if (LosSantosRED.PlayerWantedLevel >= MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance > 0;
                     else
                         return false;
@@ -605,9 +613,9 @@ public class Agency
         {
             get
             {
-                if (LosSantosRED.PlayerIsWanted)
+                if (General.PlayerIsWanted)
                 {
-                    if (LosSantosRED.PlayerWantedLevel >= MinWantedLevelSpawn && LosSantosRED.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance;
                     else
                         return 0;

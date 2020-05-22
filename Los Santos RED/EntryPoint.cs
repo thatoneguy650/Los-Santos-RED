@@ -21,19 +21,6 @@ public static class EntryPoint
         }
 
         ScriptController.Initialize();
-        while (true)
-        {
-            if(!LosSantosRED.IsRunning)
-            {
-                if(Game.IsAltKeyDownRightNow && Game.IsKeyDown(LosSantosRED.MySettings.KeyBinding.MenuKey))
-                {
-                    ScriptController.Initialize();
-                    
-                }
-            }
-            GameFiber.Yield();
-        }
-
 
     }
        
