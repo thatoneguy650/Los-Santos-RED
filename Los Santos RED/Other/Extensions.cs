@@ -14,6 +14,12 @@ namespace ExtensionsMethods
     public static class Extensions
     {
         public static List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01","s_m_m_ammucountry","u_m_y_tattoo_01","s_f_y_shop_low","s_f_y_shop_mid","s_f_m_shop_high","s_m_m_autoshop_01","s_m_m_autoshop_02" };
+
+        public static float NextFloat(this Random MyRand, float min,float max)
+        {
+            return (float)(MyRand.NextDouble() * (max - min) + min);
+        }
+
         //Controls
         public static bool IsMoveControlPressed()
             {

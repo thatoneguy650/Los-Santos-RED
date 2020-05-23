@@ -26,15 +26,18 @@ public static class WeaponDropping
     {
         IsRunning = false;
     }
-    public static void TIck()
+    public static void Tick()
     {
-        int WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
-        if (PrevCountWeapons != WeaponCount)
-            WeaponInventoryChanged(WeaponCount);
-
-        if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.DropWeaponKey) && !DroppingWeapon && !General.PlayerInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
+        if (IsRunning)
         {
-            DropWeapon();
+            int WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
+            if (PrevCountWeapons != WeaponCount)
+                WeaponInventoryChanged(WeaponCount);
+
+            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.DropWeaponKey) && !DroppingWeapon && !General.PlayerInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
+            {
+                DropWeapon();
+            }
         }
     }
     private static void DropWeapon()

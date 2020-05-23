@@ -1395,31 +1395,7 @@ public class crooks_killed
 }
 public class crook_arrested
 {
-        public static String CrookArrestedRandom()
-        {
-            int rnd = random.Next(1, 10);
-            if (rnd == 1)
-                return Asuspectincustody.FileName;
-            else if (rnd == 2)
-                return Suspectis1015.FileName;
-            else if (rnd == 3)
-                return Officershaveapprehendedsuspect.FileName;
-            else if (rnd == 4)
-                return Suspectplaceunderarrest.FileName;
-            else if (rnd == 5)
-                return Asuspectarrested.FileName;
-            else if (rnd == 6)
-                return Suspectincustody.FileName;
-            else if (rnd == 7)
-                return suspectincustody1015.FileName;
-            else if (rnd == 8)
-                return Asuspectapprehended.FileName;
-            else if (rnd == 9)
-                return Unitshavesuspectincustody.FileName;
-            else
-                return suspectapprehended1015.FileName;
-        }
-        public static ScannerFile Asuspectincustody { get { return new ScannerFile("01_crook_arrested\\0x02B3621C.wav", "A suspect in custody.", "crook_arrested"); } }
+    public static ScannerFile Asuspectincustody { get { return new ScannerFile("01_crook_arrested\\0x02B3621C.wav", "A suspect in custody.", "crook_arrested"); } }
     public static ScannerFile Suspectis1015 { get { return new ScannerFile("01_crook_arrested\\0x04D9A179.wav", "Suspect is 10-15.", "crook_arrested"); } }
     public static ScannerFile Officershaveapprehendedsuspect { get { return new ScannerFile("01_crook_arrested\\0x0829E81B.wav", "Officers have apprehended suspect.", "crook_arrested"); } }
     public static ScannerFile Suspectplaceunderarrest { get { return new ScannerFile("01_crook_arrested\\0x0A696B9D.wav", "Suspect place under arrest.", "crook_arrested"); } }
@@ -4399,23 +4375,6 @@ public class s_m_y_sheriff_white_full_02
     }
     public class AudioBeeps
     {
-
-        public static String AudioStart()
-        {
-            int rnd = random.Next(1, 2);
-            if (rnd == 1)
-                return Radio_Start_1.FileName;
-            else
-                return Radio_Start_2.FileName;
-        }
-        public static String AudioEnd()
-        {
-            int rnd = random.Next(1, 2);
-            if (rnd == 1)
-                return Radio_End_1.FileName;
-            else
-                return Radio_End_2.FileName;
-        }
         public static ScannerFile Radio_Start_1 { get { return new ScannerFile("01_radio_beep\\Radio_Start_1.wav", "Radio_Start_1", "Radio_Start_1"); } }
         public static ScannerFile Radio_Start_2 { get { return new ScannerFile("01_radio_beep\\Radio_Start_2.wav", "Radio_Start_2", "Radio_Start_2"); } }
         public static ScannerFile Radio_End_1 { get { return new ScannerFile("01_radio_beep\\Radio_End_1.wav", "Radio_End_1", "Radio_End_1"); } }

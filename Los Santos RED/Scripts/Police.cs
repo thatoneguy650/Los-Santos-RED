@@ -296,6 +296,7 @@ internal static class Police
         PrevInvestigationPosition = Vector3.Zero;
         NearInvestigationDistance = 250f;
         IsRunning = true;
+        SetWantedLevel(0, "Initial", true);
     }
     public static void Dispose()
     {
@@ -304,12 +305,15 @@ internal static class Police
     }
     public static void Tick()
     {
-        UpdatePolice();
-        GetPoliceState();
-        TrackedVehiclesTick();
-        WantedLevelTick();
-        InvestigationTick();
-        DispatchTick();
+        if (IsRunning)
+        {
+            UpdatePolice();
+            GetPoliceState();
+            TrackedVehiclesTick();
+            WantedLevelTick();
+            InvestigationTick();
+            DispatchTick();
+        }
     }
     private static void UpdatePolice()
     {

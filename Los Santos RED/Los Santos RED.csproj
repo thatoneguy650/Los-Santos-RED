@@ -120,7 +120,7 @@
     <Compile Include="Entities\Ped Variation\PropComponent.cs" />
     <Compile Include="Entities\Other\PoliceTask.cs" />
     <Compile Include="Lookups\Locations.cs" />
-    <Compile Include="Old\CameraSystem.cs" />
+    <Compile Include="Scripts\CameraScript.cs" />
     <Compile Include="Scripts\Civilians.cs" />
     <Compile Include="Scripts\Clock.cs" />
     <Compile Include="Scripts\Mugging.cs" />

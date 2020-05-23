@@ -148,6 +148,13 @@ public class GTACop : GTAPed
                 return false;
         }
     }
+    public int CountNearbyCops
+    {
+        get
+        {
+            return PedList.CopPeds.Count(x => x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
+        }
+    }
     public GTACop(Ped _Pedestrian, bool _canSeePlayer, int _Health, Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
     {
         IsCop = true;

@@ -208,12 +208,15 @@ public static class PedWounds
     }
     public static void Tick()
     {
-        PedHealthStates.RemoveAll(x => !x.MyPed.Pedestrian.Exists());
-
-        AddPedsToTrack();
-        foreach (PedHealthState MyHealthState in PedHealthStates)
+        if (IsRunning)
         {
-            MyHealthState.CheckDamage();
+            PedHealthStates.RemoveAll(x => !x.MyPed.Pedestrian.Exists());
+
+            AddPedsToTrack();
+            foreach (PedHealthState MyHealthState in PedHealthStates)
+            {
+                MyHealthState.CheckDamage();
+            }
         }
     }
     private static void AddPedsToTrack()

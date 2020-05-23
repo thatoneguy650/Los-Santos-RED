@@ -157,7 +157,11 @@ public static class Agencies
         List<Agency.VehicleInformation> PoliceHeliVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("polmav", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> SheriffHeliVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("buzzard2", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
+            //new Agency.VehicleInformation("buzzard2", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
+            new Agency.VehicleInformation("polmav", 0,100) { Liveries = new List<int>() { 2 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
+
+
+
         List<Agency.VehicleInformation> ArmyVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("crusader", 75,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
             new Agency.VehicleInformation("barracks", 25,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
@@ -594,25 +598,56 @@ public class Agency
         public int MaxWantedLevelSpawn = 5;
         public List<string> AllowedPedModels = new List<string>();//only ped models can spawn in this, if emptyt any ambient spawn can
         public List<int> Liveries = new List<int>();
+        public bool CanSpawnWanted
+        {
+            get
+            {
+                if (WantedSpawnChance > 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool CanSpawnAmbient
+        {
+            get
+            {
+                if (AmbientSpawnChance > 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
         public bool CanCurrentlySpawn
         {
             get
             {
+                if(IsHelicopter && PedList.PoliceVehicles.Count(x => x.IsHelicopter) >= General.MySettings.Police.HelicopterLimit)
+                {
+                    return false;
+                }
+                else if (IsBoat && PedList.PoliceVehicles.Count(x => x.IsBoat) >= General.MySettings.Police.BoatLimit)
+                {
+                    return false;
+                }
+
                 if (General.PlayerIsWanted)
                 {
                     if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
-                        return WantedSpawnChance > 0;
+                        return CanSpawnWanted;
                     else
                         return false;
                 }
                 else
-                    return AmbientSpawnChance > 0;
+                    return CanSpawnAmbient;
             }
         }
         public int CurrentSpawnChance
         {
             get
             {
+                if (!CanCurrentlySpawn)
+                    return 0;
                 if (General.PlayerIsWanted)
                 {
                     if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)

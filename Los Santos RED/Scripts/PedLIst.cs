@@ -19,6 +19,7 @@ public static class PedList
     public static List<GTACop> K9Peds { get; set; }
     public static List<Vehicle> PoliceVehicles { get; set; }
     public static List<GTAPed> Civilians { get; private set; }
+    public static bool IsRunning { get; set; } = true;
     public static int TotalSpawnedCops
     {
         get
@@ -35,6 +36,7 @@ public static class PedList
     }
     public static void Initialize()
     {
+        IsRunning = true;
         CopPeds = new List<GTACop>();
         K9Peds = new List<GTACop>();
         Civilians = new List<GTAPed>();
@@ -42,31 +44,35 @@ public static class PedList
     }
     public static void Dispose()
     {
+        IsRunning = false;
         ClearPolice();
     }
     public static void ScanForPeds()
     {
-        Ped[] Pedestrians = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250
-        foreach (Ped Pedestrian in Pedestrians.Where(s => s.Exists() && !s.IsDead && s.IsVisible && s.IsHuman))
+        if (IsRunning)
         {
-            if(Pedestrian.IsPoliceArmy())
+            Ped[] Pedestrians = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250
+            foreach (Ped Pedestrian in Pedestrians.Where(s => s.Exists() && !s.IsDead && s.IsVisible && s.IsHuman))
             {
-                if (SearchModeStopping.SpotterCop != null && SearchModeStopping.SpotterCop.Handle == Pedestrian.Handle)
-                    continue;
+                if (Pedestrian.IsPoliceArmy())
+                {
+                    if (SearchModeStopping.SpotterCop != null && SearchModeStopping.SpotterCop.Handle == Pedestrian.Handle)
+                        continue;
 
-                if (!CopPeds.Any(x => x.Pedestrian == Pedestrian))
+                    if (!CopPeds.Any(x => x.Pedestrian == Pedestrian))
+                    {
+                        AddCop(Pedestrian);
+                    }
+                }
+                else
                 {
-                    AddCop(Pedestrian);
+                    if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
+                    {
+                        AddCivilian(Pedestrian);
+                    }
                 }
             }
-            else
-            {
-                if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
-                {
-                    AddCivilian(Pedestrian);
-                }
-            }
-        }  
+        }
     }
     private static void AddCop(Ped Pedestrian)
     {
@@ -137,16 +143,19 @@ public static class PedList
     }
     public static void ScanforPoliceVehicles()
     {
-        Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
-        foreach (Vehicle Veh in Vehicles.Where(s => s.Exists()))
+        if (IsRunning)
         {
-            if (Veh.IsPoliceVehicle)
+            Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle).ToArray(), (x => (Vehicle)x));//250
+            foreach (Vehicle Veh in Vehicles.Where(s => s.Exists()))
             {
-                if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
+                if (Veh.IsPoliceVehicle)
                 {
-                    Agencies.ChangeLiveryAtZone(Veh, Zones.GetZoneAtLocation(Veh.Position));
-                    PoliceSpawning.UpgradeCruiser(Veh);
-                    PoliceVehicles.Add(Veh);
+                    if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
+                    {
+                        Agencies.ChangeLiveryAtZone(Veh, Zones.GetZoneAtLocation(Veh.Position));
+                        PoliceSpawning.UpgradeCruiser(Veh);
+                        PoliceVehicles.Add(Veh);
+                    }
                 }
             }
         }

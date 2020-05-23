@@ -242,10 +242,13 @@ public static class General
     }
     public static void Tick()
     {
-        UpdatePlayer();
-        StateTick();
-        ControlTick();
-        AudioTick();
+        if (IsRunning)
+        {
+            UpdatePlayer();
+            StateTick();
+            ControlTick();
+            AudioTick();
+        }
     }
     private static void UpdatePlayer()
     {

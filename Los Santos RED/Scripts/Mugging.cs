@@ -21,59 +21,62 @@ public static class Mugging
     }
     public static void Tick()
     {
-        if (!IsMugging && Game.LocalPlayer.Character.IsAiming && Game.LocalPlayer.IsFreeAimingAtAnyEntity && Game.LocalPlayer.Character.IsConsideredArmed())
+        if (IsRunning)
         {
-            Entity Target = Game.LocalPlayer.GetFreeAimingTarget();
-
-            if (!(Target is Ped))
-                return;
-
-            if (PedList.CopPeds.Any(x => x.Pedestrian.Handle == Target.Handle))
-                return;//aiming at cop
-
-            GTAPed GTAPedTarget = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Target.Handle);
-
-            if (GTAPedTarget == null)
-                GTAPedTarget = new GTAPed((Ped)Target, false, Target.Health);
-
-            bool CanSee = GTAPedTarget.Pedestrian.CanSeePlayer();
-            bool CanMugFromBehind = GTAPedTarget.DistanceToPlayer <= 7f;
-
-            if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && (CanSee || CanMugFromBehind))
+            if (!IsMugging && Game.LocalPlayer.Character.IsAiming && Game.LocalPlayer.IsFreeAimingAtAnyEntity && Game.LocalPlayer.Character.IsConsideredArmed())
             {
-                MugTarget(GTAPedTarget,false);
-            }
-        }
-        else if (!IsMugging && !Game.LocalPlayer.Character.IsAiming && NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING",Game.LocalPlayer) && Game.LocalPlayer.Character.IsConsideredArmed())
-        {
-            GTAWeapon MyWeapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
-            if (MyWeapon == null || MyWeapon.Category != GTAWeapon.WeaponCategory.Melee)
-                return;
+                Entity Target = Game.LocalPlayer.GetFreeAimingTarget();
 
-            int TargetEntity;
-            bool Found;
-            unsafe
+                if (!(Target is Ped))
+                    return;
+
+                if (PedList.CopPeds.Any(x => x.Pedestrian.Handle == Target.Handle))
+                    return;//aiming at cop
+
+                GTAPed GTAPedTarget = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Target.Handle);
+
+                if (GTAPedTarget == null)
+                    GTAPedTarget = new GTAPed((Ped)Target, false, Target.Health);
+
+                bool CanSee = GTAPedTarget.Pedestrian.CanSeePlayer();
+                bool CanMugFromBehind = GTAPedTarget.DistanceToPlayer <= 7f;
+
+                if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && (CanSee || CanMugFromBehind))
+                {
+                    MugTarget(GTAPedTarget, false);
+                }
+            }
+            else if (!IsMugging && !Game.LocalPlayer.Character.IsAiming && NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING", Game.LocalPlayer) && Game.LocalPlayer.Character.IsConsideredArmed())
             {
-                Found = NativeFunction.CallByName<bool>("GET_PLAYER_TARGET_ENTITY", Game.LocalPlayer, &TargetEntity);
+                GTAWeapon MyWeapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
+                if (MyWeapon == null || MyWeapon.Category != GTAWeapon.WeaponCategory.Melee)
+                    return;
+
+                int TargetEntity;
+                bool Found;
+                unsafe
+                {
+                    Found = NativeFunction.CallByName<bool>("GET_PLAYER_TARGET_ENTITY", Game.LocalPlayer, &TargetEntity);
+                }
+                if (!Found)
+                    return;
+
+                int Handle = TargetEntity;
+                Debugging.WriteToLog("Muggin Melee", string.Format("Middle Handle: {0}", Handle));
+
+                if (PedList.CopPeds.Any(x => x.Pedestrian.Handle == Handle))
+                    return;//aiming at cop
+
+                GTAPed GTAPedTarget = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+
+                if (GTAPedTarget == null)
+                    return;
+
+                if (!GTAPedTarget.HasBeenMugged)
+                    MugTarget(GTAPedTarget, true);
+
+                Debugging.WriteToLog("Muggin Melee", string.Format("Made it to the End Ped Handle: {0}", Handle));
             }
-            if (!Found)
-                return;
-     
-            int Handle = TargetEntity;
-            Debugging.WriteToLog("Muggin Melee", string.Format("Middle Handle: {0}", Handle));
-
-            if (PedList.CopPeds.Any(x => x.Pedestrian.Handle == Handle))
-                return;//aiming at cop
-
-            GTAPed GTAPedTarget = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
-
-            if (GTAPedTarget == null)
-                return;
-
-            if(!GTAPedTarget.HasBeenMugged)
-                MugTarget(GTAPedTarget,true);
-
-            Debugging.WriteToLog("Muggin Melee", string.Format("Made it to the End Ped Handle: {0}", Handle));
         }
 
     }

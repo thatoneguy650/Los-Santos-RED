@@ -111,10 +111,13 @@ public static class PoliceSpawning
     }
     public static void Tick()
     {
-        if (CanSpawnCop)
+        if (IsRunning)
         {
-            GetPoliceSpawn();
-            SpawnCop();
+            if (CanSpawnCop)
+            {
+                GetPoliceSpawn();
+                SpawnCop();
+            }
         }
     }
     public static void Dispose()
@@ -261,41 +264,48 @@ public static class PoliceSpawning
 
     public static void RemoveCops()
     {
-        foreach (GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.CanBeDeleted))
+        if (IsRunning)
         {
-            Vector3 CurrentLocation = Cop.Pedestrian.Position;
-            if (Cop.DistanceToPlayer >= DistanceToDelete)//2000f
+            foreach (GTACop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.CanBeDeleted))
             {
-                DeleteCop(Cop);
-            }
-            else if (Cop.DistanceToPlayer >= 200f && General.PlayerIsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f) && PedList.CopPeds.Count(x=> x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Cop.Pedestrian) >= 2f && x.Pedestrian.DistanceTo2D(Cop.Pedestrian) <= 50f) > 3)
-            {
-                DeleteCop(Cop);
-            }
-
-            if (Cop.DistanceToPlayer >= 175f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
-            {
-                if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
-                {
-                    Cop.Pedestrian.CurrentVehicle.Repair();
-                }
-                else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
+                Vector3 CurrentLocation = Cop.Pedestrian.Position;
+                if (Cop.DistanceToPlayer >= DistanceToDelete)//2000f
                 {
                     DeleteCop(Cop);
                 }
-            }
-        }
-        foreach(Vehicle PoliceCar in CreatedPoliceVehicles.Where(x => x.Exists()))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
-        {
-            if(PoliceCar.IsEmpty)
-            {
-                if (PoliceCar.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                else if (Cop.DistanceToPlayer >= 175f && General.PlayerIsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f) && Cop.CountNearbyCops >= 3)
                 {
-                    PoliceCar.Delete();
+                    DeleteCop(Cop);
+                }
+                else if (Cop.DistanceToPlayer >= 250f && General.PlayerIsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && Cop.CountNearbyCops >= 3)
+                {
+                    DeleteCop(Cop);
+                }
+
+                if (Cop.DistanceToPlayer >= 175f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
+                {
+                    if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
+                    {
+                        Cop.Pedestrian.CurrentVehicle.Repair();
+                    }
+                    else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
+                    {
+                        DeleteCop(Cop);
+                    }
                 }
             }
+            foreach (Vehicle PoliceCar in CreatedPoliceVehicles.Where(x => x.Exists()))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
+            {
+                if (PoliceCar.IsEmpty)
+                {
+                    if (PoliceCar.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                    {
+                        PoliceCar.Delete();
+                    }
+                }
+            }
+            CreatedPoliceVehicles.RemoveAll(x => !x.Exists());
         }
-        CreatedPoliceVehicles.RemoveAll(x => !x.Exists());
     }
     public static void DeleteCop(GTACop Cop)
     {

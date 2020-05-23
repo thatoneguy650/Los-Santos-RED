@@ -164,120 +164,123 @@ public static class PlayerHealth
     }
     public static void Tick()
     {
-        ResetDamageStats();
-
-
-        int CurrentHealth = Game.LocalPlayer.Character.Health;
-        int CurrentArmor = Game.LocalPlayer.Character.Armor;
-
-        bool HasBeenDamaged = false;
-
-        if (CurrentHealth < Health || CurrentArmor < Armor)
+        if (IsRunning)
         {
-            HasBeenDamaged = true;
-        }
-
-        if(HasBeenDamaged)
-        {
-            int TotalDamage = Health - CurrentHealth + Armor - CurrentArmor;
-            int HealthDamage = Health - CurrentHealth;
-            int ArmorDamage = Armor - CurrentArmor;
-            BodyLocation DamagedLocation = GetDamageLocation(Game.LocalPlayer.Character);
-            GTAWeapon DamagingWeapon = GetWeaponLastDamagedBy(Game.LocalPlayer.Character);
-
-            bool CanBeFatal = false;
-            if (DamagedLocation == BodyLocation.Head || DamagedLocation == BodyLocation.Neck || DamagedLocation == BodyLocation.UpperTorso)
-                CanBeFatal = true;
-
-            bool ArmorWillProtect = false;
-            if (DamagedLocation == BodyLocation.UpperTorso)
-                ArmorWillProtect = true;
-
-            InjuryType HealthInjury = RandomType(CanBeFatal);
-            InjuryType ArmorInjury = RandomType(false);
-
-            float HealthDamageModifier = 1.0f;
-
-            if (HealthInjury == InjuryType.Fatal)
-                HealthDamageModifier = 10.0f;
-            else if(HealthInjury == InjuryType.Normal)
-                HealthDamageModifier = 1.0f;
-            else if (HealthInjury == InjuryType.Graze)
-                HealthDamageModifier = 0.25f;
-            else if (HealthInjury == InjuryType.Critical)
-                HealthDamageModifier = 2.0f;
-
-            float ArmorDamageModifier = 1.0f;
-
-            if (ArmorInjury == InjuryType.Normal)
-                ArmorDamageModifier = 1.0f;
-            else if (ArmorInjury == InjuryType.Graze)
-                ArmorDamageModifier = 0.25f;
-            else if (ArmorInjury == InjuryType.Critical)
-                ArmorDamageModifier = 2.0f;
-
-            int NewHealthDamage = Convert.ToInt32(HealthDamage * HealthDamageModifier);
-
-            if(!ArmorWillProtect)
-                NewHealthDamage = Convert.ToInt32((HealthDamage + ArmorDamage) * HealthDamageModifier);
-
-            int NewArmorDamage = 0;
-            if (ArmorWillProtect)
-                NewArmorDamage = Convert.ToInt32(ArmorDamage * ArmorDamageModifier);
+            ResetDamageStats();
 
 
-            if (Health - NewHealthDamage > 0)
-                Game.LocalPlayer.Character.Health = Health - NewHealthDamage;
-            else
-                Game.LocalPlayer.Character.Health = 0;
+            int CurrentHealth = Game.LocalPlayer.Character.Health;
+            int CurrentArmor = Game.LocalPlayer.Character.Armor;
 
-            if (Armor - NewArmorDamage > 0)
-                Game.LocalPlayer.Character.Armor = Armor - NewArmorDamage;
-            else
-                Game.LocalPlayer.Character.Armor = 0;
+            bool HasBeenDamaged = false;
 
-            CurrentHealth = Game.LocalPlayer.Character.Health;
-            CurrentArmor = Game.LocalPlayer.Character.Armor;
-
-            Debugging.WriteToLog("Player Damage Detected", string.Format("Location: {0},Weapon: {1},{2}, Type: {3}, Total Damage: {4}, HealthDamage: {5}, ArmorDamage: {6},NewHealthDamage: {7}, NewArmorDamage: {8}, DamageModifier: {9},ArmorWillProtect: {10}", 
-                                                                        DamagedLocation, DamagingWeapon.Name, DamagingWeapon.Category, HealthInjury, TotalDamage, HealthDamage, ArmorDamage, NewHealthDamage, NewArmorDamage, HealthDamageModifier, ArmorWillProtect));
-            //if(ArmorWillProtect)
-            //    UI.DebugLine = string.Format("{0} ap hit at {1}", HealthInjury, DamagedLocation);
-            //else
-            //    UI.DebugLine = string.Format("{0} hit at {1}", HealthInjury, DamagedLocation);
-
-            GameTimeLastDamaged = Game.GameTime;
-        }
-
-        if (Health != CurrentHealth)
-        {
-            PlayerHealthChanged(CurrentHealth);
-        }
-
-        if (Armor != CurrentArmor)
-        {
-            PlayerArmorChanged(CurrentArmor);
-        }
-
-        CheckBleeding();
-
-        if(IsHealing)
-        {
-            if (Game.GameTime - GameTimeLastHealed >= 5000)
+            if (CurrentHealth < Health || CurrentArmor < Armor)
             {
-                int RandomNumber = General.MyRand.Next(1, 5);
-                if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth)
-
-                    Game.LocalPlayer.Character.Health += RandomNumber;
-
-                GameTimeLastHealed = Game.GameTime;
+                HasBeenDamaged = true;
             }
-        }
 
-        //if(Game.GameTime - GameTimeLastDamaged >= 15000)
-        //{
-        //    UI.DebugLine = "";
-        //}
+            if (HasBeenDamaged)
+            {
+                int TotalDamage = Health - CurrentHealth + Armor - CurrentArmor;
+                int HealthDamage = Health - CurrentHealth;
+                int ArmorDamage = Armor - CurrentArmor;
+                BodyLocation DamagedLocation = GetDamageLocation(Game.LocalPlayer.Character);
+                GTAWeapon DamagingWeapon = GetWeaponLastDamagedBy(Game.LocalPlayer.Character);
+
+                bool CanBeFatal = false;
+                if (DamagedLocation == BodyLocation.Head || DamagedLocation == BodyLocation.Neck || DamagedLocation == BodyLocation.UpperTorso)
+                    CanBeFatal = true;
+
+                bool ArmorWillProtect = false;
+                if (DamagedLocation == BodyLocation.UpperTorso)
+                    ArmorWillProtect = true;
+
+                InjuryType HealthInjury = RandomType(CanBeFatal);
+                InjuryType ArmorInjury = RandomType(false);
+
+                float HealthDamageModifier = 1.0f;
+
+                if (HealthInjury == InjuryType.Fatal)
+                    HealthDamageModifier = 10.0f;
+                else if (HealthInjury == InjuryType.Normal)
+                    HealthDamageModifier = 1.0f;
+                else if (HealthInjury == InjuryType.Graze)
+                    HealthDamageModifier = 0.25f;
+                else if (HealthInjury == InjuryType.Critical)
+                    HealthDamageModifier = 2.0f;
+
+                float ArmorDamageModifier = 1.0f;
+
+                if (ArmorInjury == InjuryType.Normal)
+                    ArmorDamageModifier = 1.0f;
+                else if (ArmorInjury == InjuryType.Graze)
+                    ArmorDamageModifier = 0.25f;
+                else if (ArmorInjury == InjuryType.Critical)
+                    ArmorDamageModifier = 2.0f;
+
+                int NewHealthDamage = Convert.ToInt32(HealthDamage * HealthDamageModifier);
+
+                if (!ArmorWillProtect)
+                    NewHealthDamage = Convert.ToInt32((HealthDamage + ArmorDamage) * HealthDamageModifier);
+
+                int NewArmorDamage = 0;
+                if (ArmorWillProtect)
+                    NewArmorDamage = Convert.ToInt32(ArmorDamage * ArmorDamageModifier);
+
+
+                if (Health - NewHealthDamage > 0)
+                    Game.LocalPlayer.Character.Health = Health - NewHealthDamage;
+                else
+                    Game.LocalPlayer.Character.Health = 0;
+
+                if (Armor - NewArmorDamage > 0)
+                    Game.LocalPlayer.Character.Armor = Armor - NewArmorDamage;
+                else
+                    Game.LocalPlayer.Character.Armor = 0;
+
+                CurrentHealth = Game.LocalPlayer.Character.Health;
+                CurrentArmor = Game.LocalPlayer.Character.Armor;
+
+                Debugging.WriteToLog("Player Damage Detected", string.Format("Location: {0},Weapon: {1},{2}, Type: {3}, Total Damage: {4}, HealthDamage: {5}, ArmorDamage: {6},NewHealthDamage: {7}, NewArmorDamage: {8}, DamageModifier: {9},ArmorWillProtect: {10}",
+                                                                            DamagedLocation, DamagingWeapon.Name, DamagingWeapon.Category, HealthInjury, TotalDamage, HealthDamage, ArmorDamage, NewHealthDamage, NewArmorDamage, HealthDamageModifier, ArmorWillProtect));
+                //if(ArmorWillProtect)
+                //    UI.DebugLine = string.Format("{0} ap hit at {1}", HealthInjury, DamagedLocation);
+                //else
+                //    UI.DebugLine = string.Format("{0} hit at {1}", HealthInjury, DamagedLocation);
+
+                GameTimeLastDamaged = Game.GameTime;
+            }
+
+            if (Health != CurrentHealth)
+            {
+                PlayerHealthChanged(CurrentHealth);
+            }
+
+            if (Armor != CurrentArmor)
+            {
+                PlayerArmorChanged(CurrentArmor);
+            }
+
+            CheckBleeding();
+
+            if (IsHealing)
+            {
+                if (Game.GameTime - GameTimeLastHealed >= 5000)
+                {
+                    int RandomNumber = General.MyRand.Next(1, 5);
+                    if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth)
+
+                        Game.LocalPlayer.Character.Health += RandomNumber;
+
+                    GameTimeLastHealed = Game.GameTime;
+                }
+            }
+
+            //if(Game.GameTime - GameTimeLastDamaged >= 15000)
+            //{
+            //    UI.DebugLine = "";
+            //}
+        }
     }
     private static void CheckBleeding()
     {

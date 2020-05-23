@@ -83,64 +83,67 @@ public static class Tasking
     }
     public static void ProcessQueue()
     {
-        int _ToTask = CopsToTask.Count;
-        int _ToTaskCiv = CiviliansToTask.Count;
-
-        if (_ToTask > 0)
+        if (IsRunning)
         {
-            //LocalWriteToLog("TaskQueue", string.Format("Cops To Task: {0}", _ToTask));
-            CopTask _policeTask = CopsToTask[0];
-            _policeTask.CopToAssign.IsTasked = true;
+            int _ToTask = CopsToTask.Count;
+            int _ToTaskCiv = CiviliansToTask.Count;
 
-            if (_policeTask.TaskToAssign == AssignableTasks.Untask && CopsToTask.Any(x => x.CopToAssign == _policeTask.CopToAssign && x.TaskToAssign != AssignableTasks.Untask && x.GameTimeAssigned >= _policeTask.GameTimeAssigned))
+            if (_ToTask > 0)
             {
-                _policeTask.CopToAssign.TaskIsQueued = false;
-                CopsToTask.RemoveAt(0);
+                //LocalWriteToLog("TaskQueue", string.Format("Cops To Task: {0}", _ToTask));
+                CopTask _policeTask = CopsToTask[0];
+                _policeTask.CopToAssign.IsTasked = true;
+
+                if (_policeTask.TaskToAssign == AssignableTasks.Untask && CopsToTask.Any(x => x.CopToAssign == _policeTask.CopToAssign && x.TaskToAssign != AssignableTasks.Untask && x.GameTimeAssigned >= _policeTask.GameTimeAssigned))
+                {
+                    _policeTask.CopToAssign.TaskIsQueued = false;
+                    CopsToTask.RemoveAt(0);
+                }
+                else
+                {
+                    if (_policeTask.TaskToAssign == AssignableTasks.Chase)
+                        TaskChasing(_policeTask.CopToAssign);
+                    else if (_policeTask.TaskToAssign == AssignableTasks.Untask)
+                        Untask(_policeTask.CopToAssign);
+                    else if (_policeTask.TaskToAssign == AssignableTasks.SimpleArrest)
+                        TaskSimpleArrest(_policeTask.CopToAssign);
+                    else if (_policeTask.TaskToAssign == AssignableTasks.VehicleChase)
+                        TaskVehicleChase(_policeTask.CopToAssign);
+                    else if (_policeTask.TaskToAssign == AssignableTasks.RandomSpawnIdle)
+                        RandomSpawnIdle(_policeTask.CopToAssign);
+                    else if (_policeTask.TaskToAssign == AssignableTasks.HeliChase)
+                        TaskHeliChase(_policeTask.CopToAssign);
+                    else if (_policeTask.TaskToAssign == AssignableTasks.TaskInvestigateCrime)
+                        TaskInvestigateCrime(_policeTask.CopToAssign);
+                    else if (_policeTask.TaskToAssign == AssignableTasks.DriveToAndChase)
+                        TaskDriveToAndChase(_policeTask.CopToAssign);
+
+                    _policeTask.CopToAssign.TaskIsQueued = false;
+                    CopsToTask.RemoveAt(0);
+
+                }
             }
-            else
+            else if (_ToTask == 0 && _ToTaskCiv > 0)//only run this with no cops having already been tasked this tick
             {
-                if (_policeTask.TaskToAssign == AssignableTasks.Chase)
-                    TaskChasing(_policeTask.CopToAssign);
-                else if (_policeTask.TaskToAssign == AssignableTasks.Untask)
-                    Untask(_policeTask.CopToAssign);
-                else if (_policeTask.TaskToAssign == AssignableTasks.SimpleArrest)
-                    TaskSimpleArrest(_policeTask.CopToAssign);
-                else if (_policeTask.TaskToAssign == AssignableTasks.VehicleChase)
-                    TaskVehicleChase(_policeTask.CopToAssign);
-                else if (_policeTask.TaskToAssign == AssignableTasks.RandomSpawnIdle)
-                    RandomSpawnIdle(_policeTask.CopToAssign);
-                else if (_policeTask.TaskToAssign == AssignableTasks.HeliChase)
-                    TaskHeliChase(_policeTask.CopToAssign);
-                else if (_policeTask.TaskToAssign == AssignableTasks.TaskInvestigateCrime)
-                    TaskInvestigateCrime(_policeTask.CopToAssign);
-                else if (_policeTask.TaskToAssign == AssignableTasks.DriveToAndChase)
-                    TaskDriveToAndChase(_policeTask.CopToAssign);
+                CivilianTask CivTaskToAssign = CiviliansToTask[0];
+                CivTaskToAssign.CivilianToAssign.IsTasked = true;
 
-                _policeTask.CopToAssign.TaskIsQueued = false;
-                CopsToTask.RemoveAt(0);
-                   
-            }
-        }
-        else if (_ToTask ==  0 && _ToTaskCiv > 0)//only run this with no cops having already been tasked this tick
-        {
-            CivilianTask CivTaskToAssign = CiviliansToTask[0];
-            CivTaskToAssign.CivilianToAssign.IsTasked = true;
+                if (CivTaskToAssign.TaskToAssign == AssignableTasks.Untask && CiviliansToTask.Any(x => x.CivilianToAssign == CivTaskToAssign.CivilianToAssign && x.TaskToAssign != AssignableTasks.Untask && x.GameTimeAssigned >= CivTaskToAssign.GameTimeAssigned))
+                {
+                    CivTaskToAssign.CivilianToAssign.TaskIsQueued = false;
+                    CiviliansToTask.RemoveAt(0);
+                }
+                else
+                {
+                    if (CivTaskToAssign.TaskToAssign == AssignableTasks.ReactToCrime)
+                        ReactToCrime(CivTaskToAssign.CivilianToAssign);
+                    else if (CivTaskToAssign.TaskToAssign == AssignableTasks.UntaskCivilian)
+                        UntaskCivilian(CivTaskToAssign.CivilianToAssign);
 
-            if (CivTaskToAssign.TaskToAssign == AssignableTasks.Untask && CiviliansToTask.Any(x => x.CivilianToAssign == CivTaskToAssign.CivilianToAssign && x.TaskToAssign != AssignableTasks.Untask && x.GameTimeAssigned >= CivTaskToAssign.GameTimeAssigned))
-            {
-                CivTaskToAssign.CivilianToAssign.TaskIsQueued = false;
-                CiviliansToTask.RemoveAt(0);
-            }
-            else
-            {
-                if (CivTaskToAssign.TaskToAssign == AssignableTasks.ReactToCrime)
-                    ReactToCrime(CivTaskToAssign.CivilianToAssign);
-                else if (CivTaskToAssign.TaskToAssign == AssignableTasks.UntaskCivilian)
-                    UntaskCivilian(CivTaskToAssign.CivilianToAssign);
+                    CivTaskToAssign.CivilianToAssign.TaskIsQueued = false;
+                    CiviliansToTask.RemoveAt(0);
 
-                CivTaskToAssign.CivilianToAssign.TaskIsQueued = false;
-                CiviliansToTask.RemoveAt(0);
-
+                }
             }
         }
     }
@@ -229,15 +232,18 @@ public static class Tasking
     }
     public static void PoliceStateTick()
     {
-        PedList.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
-        SetPoliceChaseStatus();
-        if(General.PlayerIsWanted)
+        if (IsRunning)
         {
-            PoliceTickWanted();   
-        }
-        else
-        {
-            PoliceTickNormal();
+            PedList.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
+            SetPoliceChaseStatus();
+            if (General.PlayerIsWanted)
+            {
+                PoliceTickWanted();
+            }
+            else
+            {
+                PoliceTickNormal();
+            }
         }
     }
 
@@ -364,7 +370,7 @@ public static class Tasking
             }
         }
 
-        if ((General.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !General.IsBusted && Cop.DistanceToPlayer <= 4f && Cop.DistanceToPlayer >= 0.5f && !Police.PlayerWasJustJacking)
+        if ((General.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !General.IsBusted && Cop.DistanceToPlayer <= 4f)// && !Police.PlayerWasJustJacking)
             SetSurrenderBust(true, string.Format("TaskPoliceOnFoot 1: {0}",Cop.Pedestrian.Handle));
 
     }

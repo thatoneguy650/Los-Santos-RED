@@ -12,22 +12,45 @@ public static class CarStealing
 {
 
     private static uint GameTimeLastTriedCarJacking;
-    private static Random rnd;
 
     public static bool PlayerBreakingIntoCar { get; set; } = false;
-
-    static CarStealing()
+    public static void UpdateStolenStatus()
     {
-        rnd = new Random();
-    }
-    public static void UnlockCarDoor(Vehicle TargetVehicle, int SeatTryingToEnter)
-    {
-        //if (!Game.IsControlPressed(2, GameControl.Enter))//holding enter go thru normal
-        //    return;
-        if (!General.PlayerHoldingEnter)
-        {
+        GTAVehicle MyVehicle = General.GetPlayersCurrentTrackedVehicle();
+        if (MyVehicle == null || MyVehicle.IsStolen)
             return;
+
+        if (PedSwapping.OwnedCar == null)
+            MyVehicle.IsStolen = true;
+        else if (MyVehicle.VehicleEnt.Handle != PedSwapping.OwnedCar.Handle && !MyVehicle.IsStolen)
+            MyVehicle.IsStolen = true;
+    }
+    public static void EnterVehicleEvent()
+    {
+        Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
+        int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
+
+        AttemptToLockDoor(TargetVeh, (VehicleLockStatus)7);//Attempt to lock most car doors
+        if ((int)TargetVeh.LockStatus == 7)
+        {
+            PickLock(TargetVeh, SeatTryingToEnter);
         }
+
+        if (TargetVeh != null && SeatTryingToEnter == -1)
+        {
+            Ped Driver = TargetVeh.Driver;
+            if (Driver != null && Driver.IsAlive)
+            {
+                CarJack(TargetVeh, Driver, SeatTryingToEnter);
+            }
+        }
+    }
+
+    private static void PickLock(Vehicle TargetVehicle, int SeatTryingToEnter)
+    {
+
+        if (!General.PlayerHoldingEnter)
+            return;
 
         if (TargetVehicle.Exists() && (TargetVehicle.IsBike || TargetVehicle.IsBoat || TargetVehicle.IsHelicopter || TargetVehicle.IsPlane || TargetVehicle.IsBicycle))
             return;
@@ -40,13 +63,8 @@ public static class CarStealing
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
 
-
                 VehicleLockStatus LockStatusBefore = TargetVehicle.LockStatus;
-
-
-                LockCarDoor(TargetVehicle, (VehicleLockStatus)3);//Attempt to lock most car doors
-
-
+                AttemptToLockDoor(TargetVehicle, (VehicleLockStatus)3);//Attempt to lock most car doors
                 General.SetPedUnarmed(Game.LocalPlayer.Character, false);
                 bool Continue = true;
                 TargetVehicle.MustBeHotwired = true;
@@ -54,13 +72,9 @@ public static class CarStealing
                 int DoorIndex = 0;
                 int WaitTime = 1750;
                 float DesiredHeading = TargetVehicle.Heading - 90f;
-
-
-
-                Debugging.WriteToLog("UnlockCarDoor", "Pre Sleep");
-
                 uint GameTimeStartedStealing = Game.GameTime;
                 bool StartAnimation = true;
+
                 while(Game.LocalPlayer.Character.IsGettingIntoVehicle && Game.GameTime - GameTimeStartedStealing <= 3500)
                 {
                     if (Extensions.IsMoveControlPressed())
@@ -77,13 +91,10 @@ public static class CarStealing
                     return;
                 }
 
-
                 if(TargetVehicle.LockStatus == (VehicleLockStatus)1)
                 {
-                    Debugging.WriteToLog("UnlockCarDoor", "Vehicle was unlocked?");
                     return;
                 }
-                Debugging.WriteToLog("UnlockCarDoor", "Post Sleep");
 
                 if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
                 {
@@ -102,12 +113,6 @@ public static class CarStealing
                     }
                 }
 
-
-                //LosSantosRED.MovePedToCarPosition(TargetVehicle, Game.LocalPlayer.Character, DesiredHeading, Game.LocalPlayer.Character.Position, false);
-                //Vector3 CameraPosition = GetCameraPosition(TargetVehicle, DoorIndex == 0);
-                //CameraSystem.TransitionToAltCam(TargetVehicle, CameraPosition);              
-
-                Debugging.WriteToLog("UnlockCarDoor", string.Format("DoorIndex: {0},AnimationName: {1}", DoorIndex, AnimationName));
                 Rage.Object Screwdriver = General.AttachScrewdriverToPed(Game.LocalPlayer.Character);
                 General.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@break_in@0h@p_m_one@", AnimationName, 2.0f, -2.0f, -1, 0, 0, false, false, false);
@@ -121,8 +126,6 @@ public static class CarStealing
                     if (Extensions.IsMoveControlPressed())
                     {
                         Continue = false;
-                        //if (CameraSystem.UsingOtherCamera)
-                            //CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
                         break;
 
                     }
@@ -141,9 +144,6 @@ public static class CarStealing
                 TargetVehicle.LockStatus = VehicleLockStatus.Unlocked;
                 TargetVehicle.Doors[DoorIndex].Open(true, false);
 
-                //GameFiber.Sleep(500);
-
-                Debugging.WriteToLog("UnlockCarDoor", string.Format("Open Door: {0}", DoorIndex));
                 GameTimeStarted = Game.GameTime;
                 Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                 while (!Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 10000)
@@ -152,26 +152,19 @@ public static class CarStealing
                     if (Extensions.IsMoveControlPressed())
                     {
                         Continue = false;
-                        //if (CameraSystem.UsingOtherCamera)
-                            //CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
                         break;
                     }
                 }
-                //if (CameraSystem.UsingOtherCamera)
-                    //CameraSystem.UnHighLightCarjacking(ToEnter, DoorIndex == 0);
 
                 if (TargetVehicle.Doors[DoorIndex].IsValid())
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, DoorIndex, 4, 0f);
                 if(DoorIndex == 0)//Driver side
                     GameFiber.Sleep(5000);
                 else
-                    GameFiber.Sleep(8000);//Passengfer takes longer
+                    GameFiber.Sleep(8000);//Passenger takes longer
                 if (Screwdriver != null && Screwdriver.Exists())
                     Screwdriver.Delete();
                 PlayerBreakingIntoCar = false;
-                Debugging.WriteToLog("UnlockCarDoor", string.Format("Made it to the end: {0}", SeatTryingToEnter));
-
-                
             }, "UnlockCarDoor");
             Debugging.GameFibers.Add(UnlockCarDoor);
         }
@@ -181,149 +174,19 @@ public static class CarStealing
             Debugging.WriteToLog("UnlockCarDoor", e.Message);
         }
     }
-    private static Vector3 GetCameraPosition(Vehicle VehicleToLookAt, bool IsDriverSide)
+    private static void CarJack(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
     {
-        Vector3 CameraPosition;
-        if (IsDriverSide)
-            CameraPosition = VehicleToLookAt.GetOffsetPositionRight(-6f);
-        else
-            CameraPosition = VehicleToLookAt.GetOffsetPositionRight(6f);
-        CameraPosition += new Vector3(0f, 0f, 1.8f);
-        return CameraPosition;
-    }
-    public static void LockCarDoor(Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
-    {
-        Debugging.WriteToLog("LockCarDoor", string.Format("Start, Lock Status {0}", ToLock.LockStatus));
-        if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)//if (ToLock.LockStatus != (VehicleLockStatus)1) //unlocked
-            return;
-        //Debugging.WriteToLog("LockCarDoor", "1");
-        if (ToLock.HasDriver)//If they have a driver 
-            return;
-        //Debugging.WriteToLog("LockCarDoor", "2");
-        foreach (VehicleDoor myDoor in ToLock.GetDoors())
-        {
-            if (!myDoor.IsValid() || myDoor.IsOpen)
-                return;//invalid doors make the car not locked
-        }
-        //Debugging.WriteToLog("LockCarDoor", "3");
-        if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
-            return;//broken windows == not locked
-        //Debugging.WriteToLog("LockCarDoor", "4");
-        if (General.TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
-            return; //previously entered vehicle arent locked
-        if (ToLock.IsConvertible && ToLock.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
-            return;
-        if (ToLock.IsBike || ToLock.IsPlane || ToLock.IsHelicopter)
-            return;
-
-        Debugging.WriteToLog("LockCarDoor", "Locked");
-        ToLock.LockStatus = DesiredLockStatus;//Locked for player
-        //ToLock.LockStatus = (VehicleLockStatus)7;//CanBeBrokenInto
-    }
-    public static bool CanLockPick(Vehicle ToEnter)
-    {
-        int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", ToEnter);
-        Vehicles.VehicleClass VehicleClass = (Vehicles.VehicleClass)intVehicleClass;
-        if (VehicleClass == Vehicles.VehicleClass.Boats || VehicleClass == Vehicles.VehicleClass.Cycles || VehicleClass == Vehicles.VehicleClass.Industrial || VehicleClass == Vehicles.VehicleClass.Motorcycles 
-            || VehicleClass == Vehicles.VehicleClass.Planes || VehicleClass == Vehicles.VehicleClass.Service || VehicleClass == Vehicles.VehicleClass.Trailer || VehicleClass == Vehicles.VehicleClass.Trains 
-            || VehicleClass == Vehicles.VehicleClass.Helicopters)
-            return false;//maybe add utility?
-        else if(!ToEnter.Doors[0].IsValid() || !ToEnter.Doors[1].IsValid())
-            return false;
-        else
-            return true;
-    }
-    public static void EnterVehicleEvent()
-    {
-        Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
-        int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-        LockCarDoor(TargetVeh,(VehicleLockStatus)7);//Attempt to lock most car doors
-        int LockStatus = (int)TargetVeh.LockStatus;//Get the result of the function
-
-
-        Debugging.WriteToLog("EnterVehicleEvent", string.Format("Lockstatus: {0}", LockStatus));
-        //if (LockStatus == 7)//Locked but can be broken into
-        //{
-        //    UnlockCarDoor(TargetVeh, SeatTryingToEnter);
-        //}
-        if (LockStatus == 7)//Locked For Player
-        {
-            UnlockCarDoor(TargetVeh, SeatTryingToEnter);
-        }
-
-        if (TargetVeh != null && SeatTryingToEnter == -1)
-        {
-            Ped Driver = TargetVeh.Driver;
-            if (Driver != null && Driver.IsAlive)
-            {
-                CarJackPed(TargetVeh, Driver, SeatTryingToEnter);
-                Debugging.WriteToLog("EnterVehicle", "CarJacking");
-            }
-            else
-            {
-                Debugging.WriteToLog("EnterVehicle", "Regular Enter No Driver");
-            }
-        }
-        else
-        {
-            Debugging.WriteToLog("EnterVehicle", "Regular Enter");
-        }
-    }
-    public static void UpdateStolenStatus()
-    {
-        GTAVehicle MyVehicle = General.GetPlayersCurrentTrackedVehicle();
-        if (MyVehicle == null || MyVehicle.IsStolen)
-            return;
-
-        if (PedSwapping.OwnedCar == null)
-            MyVehicle.IsStolen = true;
-        else if (MyVehicle.VehicleEnt.Handle != PedSwapping.OwnedCar.Handle && !MyVehicle.IsStolen)
-            MyVehicle.IsStolen = true;
-    }
-    public static Vector3 GetHandlePosition(Vehicle TargetVehicle,string Bone)
-    {
-        Vector3 GameEntryPosition = Vector3.Zero;
-        if (TargetVehicle.HasBone(Bone))
-        {
-            GameEntryPosition = TargetVehicle.GetBonePosition(Bone);
-        }
-        return GameEntryPosition;
-    }
-    public static Vector3 GetEntryPosition(Vehicle TargetVehicle)
-    {
-        return NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
-    }
-    public static void CarJackPed(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
-    { 
         GTAWeapon myGun = General.GetCurrentWeapon(Game.LocalPlayer.Character);
-        if (CarArmedCarjack(TargetVehicle, Driver, SeatTryingToEnter) && General.PlayerHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && myGun != null && myGun.Category != GTAWeapon.WeaponCategory.Melee)
+        if (CanArmedCarJack(TargetVehicle, Driver, SeatTryingToEnter) && General.PlayerHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && myGun != null && myGun.Category != GTAWeapon.WeaponCategory.Melee)
         {
-            Debugging.WriteToLog("CarJackPed", "CarJackPedWithWeapon");
-            CarJackPedWithWeapon(TargetVehicle, Driver, SeatTryingToEnter, myGun);
+            ArmedCarJack(TargetVehicle, Driver, SeatTryingToEnter, myGun);
         }
         else
         {
-            Debugging.WriteToLog("CarJackPed", "CarJackPedRegular");
-            CarJackPedRegular(TargetVehicle, Driver);
+            UnarmedCarJack(TargetVehicle, Driver);
         }
-
-
     }
-    private static bool CarArmedCarjack(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
-    {
-        if (SeatTryingToEnter != -1)
-            return false;
-
-        if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
-        {
-            if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
-            {
-                return false;//Closer to passenger side, animations dont work
-            }
-        }
-        return true;
-    }
-    public static void CarJackPedWithWeapon(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter,GTAWeapon myGun)
+    private static void ArmedCarJack(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter, GTAWeapon myGun)
     {
         try
         {
@@ -331,7 +194,7 @@ public static class CarStealing
             {
                 General.SetPlayerToLastWeapon();
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
-                Driver.BlockPermanentEvents = true;
+                Driver.BlockPermanentEvents = true;      
 
                 Vector3 GameEntryPosition = GetEntryPosition(TargetVehicle);
                 float DesiredHeading = TargetVehicle.Heading - 90f;
@@ -346,7 +209,6 @@ public static class CarStealing
 
                 if (!GetCarjackingAnimations(TargetVehicle, DriverSeatCoordinates, myGun, ref dict, ref PerpAnim, ref VictimAnim))//couldnt find animations
                 {
-
                     Game.LocalPlayer.Character.Tasks.ClearImmediately();
                     GameFiber.Sleep(200);
                     Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
@@ -360,7 +222,7 @@ public static class CarStealing
                 General.RequestAnimationDictionay(dict);
                 General.SetPlayerToLastWeapon();
 
-                //CameraSystem.HighLightCarjacking(TargetVehicle, true);
+                //CameraScript.TransitionToAltCam(TargetVehicle, GetCameraPosition(TargetVehicle, true));
 
                 float DriverHeading = Driver.Heading;
                 int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
@@ -376,6 +238,7 @@ public static class CarStealing
                 PlayerBreakingIntoCar = true;
                 bool locOpenDoor = false;
                 bool Cancel = false;
+                bool locStartedCamera = false;
                 Vector3 OriginalCarPosition = TargetVehicle.Position;
 
                 while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 0.75f)
@@ -388,7 +251,7 @@ public static class CarStealing
                         Cancel = true;
                         break;
                     }
-                    if(Game.LocalPlayer.Character.IsDead)
+                    if (Game.LocalPlayer.Character.IsDead)
                     {
                         Cancel = true;
                         break;
@@ -429,15 +292,19 @@ public static class CarStealing
                             break;
                         }
                     }
-                    if(ScenePhase >= 0.5f)
+                    if(ScenePhase >= 0.4f && !locStartedCamera)
                     {
-                        //if (CameraSystem.UsingOtherCamera)
-                            //CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
+                        locStartedCamera = true;
+                        CameraScript.TransitionToGameplayCam();
+                    }
+                    if (ScenePhase >= 0.5f)
+                    {
+                        CameraScript.RestoreGameplayerCamera();
                     }
                 }
 
-               // if (CameraSystem.UsingOtherCamera)
-                   // CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
+
+                CameraScript.RestoreGameplayerCamera();
 
                 if (Game.LocalPlayer.Character.IsDead)
                 {
@@ -491,7 +358,7 @@ public static class CarStealing
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
 
                 //if (CameraSystem.UsingOtherCamera)
-                    //CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
+                //CameraSystem.UnHighLightCarjacking(TargetVehicle, true);
 
                 if (Driver.IsInAnyVehicle(false))
                 {
@@ -506,14 +373,6 @@ public static class CarStealing
                         Driver.IsRagdoll = false;
                         Driver.BlockPermanentEvents = false;
                     }
-                    if (rnd.Next(1, 11) >= 10)
-                    {
-                        GiveGunAndAttackPlayer(Driver);
-                    }
-                    else
-                    {
-                        Driver.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
-                    }
                 }
                 GameFiber.Sleep(5000);
                 PlayerBreakingIntoCar = false;
@@ -526,7 +385,7 @@ public static class CarStealing
             Debugging.WriteToLog("UnlockCarDoor", e.Message);
         }
     }
-    public static void CarJackPedRegular(Vehicle TargetVehicle, Ped Driver)
+    private static void UnarmedCarJack(Vehicle TargetVehicle, Ped Driver)
     {
         GameFiber CarJackPed = GameFiber.StartNew(delegate
         {
@@ -544,6 +403,57 @@ public static class CarStealing
             PlayerBreakingIntoCar = false;
         }, "CarJackPed");
         Debugging.GameFibers.Add(CarJackPed);
+    }
+    private static void AttemptToLockDoor(Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
+    {
+        Debugging.WriteToLog("LockCarDoor", string.Format("Start, Lock Status {0}", ToLock.LockStatus));
+        if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)//if (ToLock.LockStatus != (VehicleLockStatus)1) //unlocked
+            return;
+        if (ToLock.HasDriver)//If they have a driver 
+            return;
+        foreach (VehicleDoor myDoor in ToLock.GetDoors())
+        {
+            if (!myDoor.IsValid() || myDoor.IsOpen)
+                return;//invalid doors make the car not locked
+        }
+        if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
+            return;//broken windows == not locked
+        if (General.TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
+            return; //previously entered vehicle arent locked
+        if (ToLock.IsConvertible && ToLock.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
+            return;
+        if (ToLock.IsBike || ToLock.IsPlane || ToLock.IsHelicopter)
+            return;
+
+        Debugging.WriteToLog("LockCarDoor", "Locked");
+        ToLock.LockStatus = DesiredLockStatus;//Locked for player
+    }
+    private static bool CanArmedCarJack(Vehicle TargetVehicle, Ped Driver, int SeatTryingToEnter)
+    {
+        if (SeatTryingToEnter != -1)
+            return false;
+
+        if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
+        {
+            if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
+            {
+                return false;//Closer to passenger side, animations dont work
+            }
+        }
+        return true;
+    }
+    private static bool CanLockPick(Vehicle ToEnter)
+    {
+        int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", ToEnter);
+        Vehicles.VehicleClass VehicleClass = (Vehicles.VehicleClass)intVehicleClass;
+        if (VehicleClass == Vehicles.VehicleClass.Boats || VehicleClass == Vehicles.VehicleClass.Cycles || VehicleClass == Vehicles.VehicleClass.Industrial || VehicleClass == Vehicles.VehicleClass.Motorcycles
+            || VehicleClass == Vehicles.VehicleClass.Planes || VehicleClass == Vehicles.VehicleClass.Service || VehicleClass == Vehicles.VehicleClass.Trailer || VehicleClass == Vehicles.VehicleClass.Trains
+            || VehicleClass == Vehicles.VehicleClass.Helicopters)
+            return false;//maybe add utility?
+        else if (!ToEnter.Doors[0].IsValid() || !ToEnter.Doors[1].IsValid())
+            return false;
+        else
+            return true;
     }
     private static bool GetCarjackingAnimations(Vehicle TargetVehicle, Vector3 DriverSeatCoordinates, GTAWeapon MyGun, ref string Dictionary, ref string PerpAnimation, ref string VictimAnimation)
     {
@@ -655,14 +565,26 @@ public static class CarStealing
         }
         return true;
     }
-    public static void GiveGunAndAttackPlayer(Ped Attacker)
+    private static Vector3 GetEntryPosition(Vehicle TargetVehicle)
     {
-        GTAWeapon GunToGive = GTAWeapons.WeaponsList.Where(x => x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
-        Attacker.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
-        Attacker.Tasks.FightAgainst(Game.LocalPlayer.Character);
-        Attacker.BlockPermanentEvents = true;
-        Attacker.KeepTasks = true;
+        return NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
     }
+    private static Vector3 GetCameraPosition(Vehicle VehicleToLookAt, bool IsDriverSide)
+    {
+        Vector3 CameraPosition;
+        float Distance = General.MyRand.NextFloat(5f, 8f);
+        float XVariance = General.MyRand.NextFloat(0.5f, 3f);
+        float ZVariance = General.MyRand.NextFloat(1.8f, 3f);
 
+        if (IsDriverSide)
+        {
+            Distance *= -1f;
+            XVariance *= -1f;
+        }
+
+        CameraPosition = VehicleToLookAt.GetOffsetPositionRight(Distance);
+        CameraPosition += new Vector3(XVariance, 0f, ZVariance);
+        return CameraPosition;
+    }
 }
 

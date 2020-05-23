@@ -393,164 +393,166 @@ public static class DispatchAudio
     }
     public static void Tick()
     {
-
-        if (!General.MySettings.Police.DispatchAudio)
+        if (IsRunning)
         {
-            DispatchQueue.Clear();
-            return;
-        }
-
-        if (DispatchQueue.Count > 0 && !ExecutingQueue)
-        {
-            //Debugging.WriteToLog("PlayDispatchQueue", "Delegate Started");
-            ExecutingQueue = true;
-            GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
+            if (!General.MySettings.Police.DispatchAudio)
             {
-                GameFiber.Sleep(rnd.Next(1500,2500));
+                DispatchQueue.Clear();
+                return;
+            }
+
+            if (DispatchQueue.Count > 0 && !ExecutingQueue)
+            {
+                //Debugging.WriteToLog("PlayDispatchQueue", "Delegate Started");
+                ExecutingQueue = true;
+                GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
+                {
+                    GameFiber.Sleep(rnd.Next(1500, 2500));
 
                 //foreach(DispatchQueueItem Stuff in DispatchQueue.OrderBy(x => x.Priority))
                 //{
                 //    Debugging.WriteToLog("ToPlay", string.Format("Type: {0} {1}", Stuff.Type,Stuff.Priority));
                 //}
                 DispatchQueue.OrderBy(x => x.Priority);
-                if (DispatchQueue.Any(x => !x.IsAmbient))
-                {
-                    DispatchQueue.RemoveAll(x => x.IsAmbient);
-                }
-                if (DispatchQueue.Any(x => x.ReportedBy == ReportType.Officers))
-                {
-                    DispatchQueue.RemoveAll(x => x.ReportedBy != ReportType.Officers);
-                }
-                if (DispatchQueue.Count() > 1)
-                {
-                    DispatchQueueItem HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
-                    DispatchQueue.Clear();
-                    if (HighestItem != null)
+                    if (DispatchQueue.Any(x => !x.IsAmbient))
                     {
-                        DispatchQueue.Add(HighestItem);
+                        DispatchQueue.RemoveAll(x => x.IsAmbient);
                     }
-                }
-
-                if(DispatchQueue.Any(x => x.ReportedBy == ReportType.Civilians) && Game.GameTime - GameTimeLastCivilianReported <= 45000)
-                {
-                    foreach(DispatchQueueItem ItemToPlay in DispatchQueue)
+                    if (DispatchQueue.Any(x => x.ReportedBy == ReportType.Officers))
                     {
-                        if(ItemToPlay.Priority <= LastCivilianReportedPriority)
+                        DispatchQueue.RemoveAll(x => x.ReportedBy != ReportType.Officers);
+                    }
+                    if (DispatchQueue.Count() > 1)
+                    {
+                        DispatchQueueItem HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
+                        DispatchQueue.Clear();
+                        if (HighestItem != null)
                         {
-                            Debugging.WriteToLog("Ignoring Low Priority", ItemToPlay.Type.ToString());
+                            DispatchQueue.Add(HighestItem);
                         }
                     }
-                    DispatchQueue.RemoveAll(x => x.Priority <= LastCivilianReportedPriority);
-                }
 
-                while (DispatchQueue.Count > 0)
-                {
-                    DispatchQueueItem Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
-
-                    if (Item.ReportedBy == ReportType.Civilians && General.PlayerIsWanted)
+                    if (DispatchQueue.Any(x => x.ReportedBy == ReportType.Civilians) && Game.GameTime - GameTimeLastCivilianReported <= 45000)
                     {
-                        Debugging.WriteToLog("Ignoring Civilian Repoted", Item.Type.ToString());
-                    }
-                    else
-                    {
-                        if (Item.ReportedBy == ReportType.Civilians)
+                        foreach (DispatchQueueItem ItemToPlay in DispatchQueue)
                         {
-                            GameTimeLastCivilianReported = Game.GameTime;
-                            LastCivilianReportedPriority = Item.Priority;
+                            if (ItemToPlay.Priority <= LastCivilianReportedPriority)
+                            {
+                                Debugging.WriteToLog("Ignoring Low Priority", ItemToPlay.Type.ToString());
+                            }
                         }
-                        Debugging.WriteToLog("Playing", Item.Type.ToString());
-                        if (Item.Type == AvailableDispatch.AssaultingOfficer)
-                            AssaultingOfficer(Item);
-                        else if (Item.Type == AvailableDispatch.CarryingWeapon)
-                            CarryingWeapon(Item);
-                        else if (Item.Type == AvailableDispatch.FelonySpeeding)
-                            FelonySpeeding(Item);
-                        else if (Item.Type == AvailableDispatch.LethalForceAuthorized)
-                            LethalForceAuthorized(Item);
-                        else if (Item.Type == AvailableDispatch.OfficerDown)
-                            OfficerDown(Item);
-                        else if (Item.Type == AvailableDispatch.PedestrianHitAndRun)
-                            PedestrianHitAndRun(Item);
-                        else if (Item.Type == AvailableDispatch.RecklessDriving)
-                            RecklessDriving(Item);
-                        else if (Item.Type == AvailableDispatch.ShootingAtPolice)
-                            ShootingAtPolice(Item);
-                        else if (Item.Type == AvailableDispatch.SpottedStolenCar)
-                            SpottedStolenCar(Item);
-                        else if (Item.Type == AvailableDispatch.ReportStolenVehicle)
-                            ReportStolenVehicle(Item);
-                        else if (Item.Type == AvailableDispatch.SuspectArrested)
-                            SuspectArrested(Item);
-                        else if (Item.Type == AvailableDispatch.SuspectEvadedOfficers)
-                            SuspectEvadedOfficers(Item);
-                        else if (Item.Type == AvailableDispatch.SuspectLost)
-                            SuspectLost(Item);
-                        else if (Item.Type == AvailableDispatch.SuspectWasted)
-                            SuspectWasted(Item);
-                        else if (Item.Type == AvailableDispatch.ThreateningOfficerWithFirearm)
-                            ThreateningOfficerWithFirearm(Item);
-                        else if (Item.Type == AvailableDispatch.VehicleHitAndRun)
-                            VehicleHitAndRun(Item);
-                        else if (Item.Type == AvailableDispatch.WeaponsFree)
-                            WeaponsFree(Item);
-                        else if (Item.Type == AvailableDispatch.SuspiciousActivity)
-                            SuspiciousActivity(Item);
-                        else if (Item.Type == AvailableDispatch.SuspiciousVehicle)
-                            SuspiciousVehicle(Item);
-                        else if (Item.Type == AvailableDispatch.GrandTheftAuto)
-                            GrandTheftAuto(Item);
-                        else if (Item.Type == AvailableDispatch.SuspectReacquired)
-                            SuspectReacquired(Item);
-                        else if (Item.Type == AvailableDispatch.RequestBackup)
-                            RequestBackup(Item);
-                        else if (Item.Type == AvailableDispatch.RunningARedLight)
-                            RunningARedLight(Item);
-                        else if (Item.Type == AvailableDispatch.SuspectSpotted)
-                            SuspectSpotted(Item);
-                        else if (Item.Type == AvailableDispatch.CriminalActivity)
-                            CriminalActivity(Item);
-                        else if (Item.Type == AvailableDispatch.ShotsFired)
-                            ShotsFired(Item);
-                        else if (Item.Type == AvailableDispatch.ResumePatrol)
-                            ResumePatrol(Item);
-                        else if (Item.Type == AvailableDispatch.LostVisualOnSuspect)
-                            LostVisualOnSuspect(Item);
-                        else if (Item.Type == AvailableDispatch.TerroistActivity)
-                            TerroristActivity(Item);
-                        else if (Item.Type == AvailableDispatch.TrespassingOnGovernmentProperty)
-                            TrespassingOnGovernmentProperty(Item);
-                        else if (Item.Type == AvailableDispatch.SuspectChangedVehicle)
-                            SuspectChangedVehicle(Item);
-                        else if (Item.Type == AvailableDispatch.CivlianFatality)
-                            CivlianFatality(Item);
-                        else if (Item.Type == AvailableDispatch.CivilianInjury)
-                            CivilianInjury(Item);
-                        else if (Item.Type == AvailableDispatch.CivilianShot)
-                            CivilianShot(Item);
-                        else if (Item.Type == AvailableDispatch.StealingAirVehicle)
-                            StealingAirVehicle(Item);
-                        else if (Item.Type == AvailableDispatch.SuspectResisitingArrest)
-                            SuspectResisitingArrest(Item);
-                        else if (Item.Type == AvailableDispatch.CivilianMugged)
-                            CivilianMugged(Item);
-                        else if (Item.Type == AvailableDispatch.NoFurtherUnitsNeeded)
-                            NoFurtherUnitsNeeded(Item);
-                        else if (Item.Type == AvailableDispatch.AttemptingSuicide)
-                            AttemptingSuicide(Item);
-                        else if (Item.Type == AvailableDispatch.MilitaryDeployed)
-                            MilitaryDeployed(Item);
-                        else if (Item.Type == AvailableDispatch.AirSupportRequested)
-                            AirSupportRequested(Item);
-
-                        if (Item.ResultingWantedLevel > 0)
-                            Police.SetWantedLevel(Item.ResultingWantedLevel, string.Format("Set Wanted After Dispatch: {0}", Item.Type), true);
+                        DispatchQueue.RemoveAll(x => x.Priority <= LastCivilianReportedPriority);
                     }
-                    if (DispatchQueue.Contains(Item))
-                        DispatchQueue.Remove(Item);
-                }
-                ExecutingQueue = false;
-            }, "PlayDispatchQueue");
-            Debugging.GameFibers.Add(PlayDispatchQueue);
+
+                    while (DispatchQueue.Count > 0)
+                    {
+                        DispatchQueueItem Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
+
+                        if (Item.ReportedBy == ReportType.Civilians && General.PlayerIsWanted)
+                        {
+                            Debugging.WriteToLog("Ignoring Civilian Repoted", Item.Type.ToString());
+                        }
+                        else
+                        {
+                            if (Item.ReportedBy == ReportType.Civilians)
+                            {
+                                GameTimeLastCivilianReported = Game.GameTime;
+                                LastCivilianReportedPriority = Item.Priority;
+                            }
+                            Debugging.WriteToLog("Playing", Item.Type.ToString());
+                            if (Item.Type == AvailableDispatch.AssaultingOfficer)
+                                AssaultingOfficer(Item);
+                            else if (Item.Type == AvailableDispatch.CarryingWeapon)
+                                CarryingWeapon(Item);
+                            else if (Item.Type == AvailableDispatch.FelonySpeeding)
+                                FelonySpeeding(Item);
+                            else if (Item.Type == AvailableDispatch.LethalForceAuthorized)
+                                LethalForceAuthorized(Item);
+                            else if (Item.Type == AvailableDispatch.OfficerDown)
+                                OfficerDown(Item);
+                            else if (Item.Type == AvailableDispatch.PedestrianHitAndRun)
+                                PedestrianHitAndRun(Item);
+                            else if (Item.Type == AvailableDispatch.RecklessDriving)
+                                RecklessDriving(Item);
+                            else if (Item.Type == AvailableDispatch.ShootingAtPolice)
+                                ShootingAtPolice(Item);
+                            else if (Item.Type == AvailableDispatch.SpottedStolenCar)
+                                SpottedStolenCar(Item);
+                            else if (Item.Type == AvailableDispatch.ReportStolenVehicle)
+                                ReportStolenVehicle(Item);
+                            else if (Item.Type == AvailableDispatch.SuspectArrested)
+                                SuspectArrested(Item);
+                            else if (Item.Type == AvailableDispatch.SuspectEvadedOfficers)
+                                SuspectEvadedOfficers(Item);
+                            else if (Item.Type == AvailableDispatch.SuspectLost)
+                                SuspectLost(Item);
+                            else if (Item.Type == AvailableDispatch.SuspectWasted)
+                                SuspectWasted(Item);
+                            else if (Item.Type == AvailableDispatch.ThreateningOfficerWithFirearm)
+                                ThreateningOfficerWithFirearm(Item);
+                            else if (Item.Type == AvailableDispatch.VehicleHitAndRun)
+                                VehicleHitAndRun(Item);
+                            else if (Item.Type == AvailableDispatch.WeaponsFree)
+                                WeaponsFree(Item);
+                            else if (Item.Type == AvailableDispatch.SuspiciousActivity)
+                                SuspiciousActivity(Item);
+                            else if (Item.Type == AvailableDispatch.SuspiciousVehicle)
+                                SuspiciousVehicle(Item);
+                            else if (Item.Type == AvailableDispatch.GrandTheftAuto)
+                                GrandTheftAuto(Item);
+                            else if (Item.Type == AvailableDispatch.SuspectReacquired)
+                                SuspectReacquired(Item);
+                            else if (Item.Type == AvailableDispatch.RequestBackup)
+                                RequestBackup(Item);
+                            else if (Item.Type == AvailableDispatch.RunningARedLight)
+                                RunningARedLight(Item);
+                            else if (Item.Type == AvailableDispatch.SuspectSpotted)
+                                SuspectSpotted(Item);
+                            else if (Item.Type == AvailableDispatch.CriminalActivity)
+                                CriminalActivity(Item);
+                            else if (Item.Type == AvailableDispatch.ShotsFired)
+                                ShotsFired(Item);
+                            else if (Item.Type == AvailableDispatch.ResumePatrol)
+                                ResumePatrol(Item);
+                            else if (Item.Type == AvailableDispatch.LostVisualOnSuspect)
+                                LostVisualOnSuspect(Item);
+                            else if (Item.Type == AvailableDispatch.TerroistActivity)
+                                TerroristActivity(Item);
+                            else if (Item.Type == AvailableDispatch.TrespassingOnGovernmentProperty)
+                                TrespassingOnGovernmentProperty(Item);
+                            else if (Item.Type == AvailableDispatch.SuspectChangedVehicle)
+                                SuspectChangedVehicle(Item);
+                            else if (Item.Type == AvailableDispatch.CivlianFatality)
+                                CivlianFatality(Item);
+                            else if (Item.Type == AvailableDispatch.CivilianInjury)
+                                CivilianInjury(Item);
+                            else if (Item.Type == AvailableDispatch.CivilianShot)
+                                CivilianShot(Item);
+                            else if (Item.Type == AvailableDispatch.StealingAirVehicle)
+                                StealingAirVehicle(Item);
+                            else if (Item.Type == AvailableDispatch.SuspectResisitingArrest)
+                                SuspectResisitingArrest(Item);
+                            else if (Item.Type == AvailableDispatch.CivilianMugged)
+                                CivilianMugged(Item);
+                            else if (Item.Type == AvailableDispatch.NoFurtherUnitsNeeded)
+                                NoFurtherUnitsNeeded(Item);
+                            else if (Item.Type == AvailableDispatch.AttemptingSuicide)
+                                AttemptingSuicide(Item);
+                            else if (Item.Type == AvailableDispatch.MilitaryDeployed)
+                                MilitaryDeployed(Item);
+                            else if (Item.Type == AvailableDispatch.AirSupportRequested)
+                                AirSupportRequested(Item);
+
+                            if (Item.ResultingWantedLevel > 0)
+                                Police.SetWantedLevel(Item.ResultingWantedLevel, string.Format("Set Wanted After Dispatch: {0}", Item.Type), true);
+                        }
+                        if (DispatchQueue.Contains(Item))
+                            DispatchQueue.Remove(Item);
+                    }
+                    ExecutingQueue = false;
+                }, "PlayDispatchQueue");
+                Debugging.GameFibers.Add(PlayDispatchQueue);
+            }
         }
     }
     public static void ClearDispatchQueue()
@@ -903,7 +905,7 @@ public static class DispatchAudio
         ScannerList.Add(new List<string>() { crime_person_in_a_stolen_car.Apersoninastolencar.FileName, crime_person_in_a_stolen_vehicle.Apersoninastolenvehicle.FileName, crime_person_in_a_stolen_car.Apersoninastolencar.FileName }.PickRandom());
         Subtitles += " a person in a ~r~Stolen Vehicle~s~";
         AddSpeed(ref ScannerList, ItemToPlay.Speed, ref Subtitles, ref Notification);
-        AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, false, ref Subtitles, ref Notification, true, false, true, false);
+        AddVehicleDescription(ItemToPlay.VehicleToReport, ref ScannerList, false, ref Subtitles, ref Notification, false, false, false, false);
         ReportGenericEnd(ref ScannerList, NearType.HeadingAndStreet, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, ItemToPlay.CanBeInterrupted, false));
     }
@@ -1280,7 +1282,9 @@ public static class DispatchAudio
         if (PedList.CopPeds.Any(x => x.DistanceToPlayer <= 100f))
             return;
 
-        List<string> ScannerList = new List<string>() { AudioBeeps.AudioStart() };
+        List<string> ScannerList = new List<string>();
+        ScannerList.Add(new List<string>{ AudioBeeps.Radio_Start_1.FileName,AudioBeeps.Radio_Start_2.FileName }.PickRandom());
+
         ScannerList.Add(new List<string>() { suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName, suspect_eluded_pt_1.OfficiersHaveLostVisualOnSuspect.FileName }.PickRandom());
         string Subtitles = "Suspect evaded pursuing officers,~s~";
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Evaded");
@@ -1326,16 +1330,10 @@ public static class DispatchAudio
     }
     public static void RequestBackup(DispatchQueueItem ItemToPlay)
     {
+        RequestBackupPreamble();
         List<string> ScannerList = new List<string>();
         string Subtitles = "";
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Backup Required");
-        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
-        List<string> OfficerVariations = new List<string>() { s_m_y_cop_white_full_01.RequestingBackup.FileName, s_m_y_cop_white_full_01.RequestingBackupWeNeedBackup.FileName, s_m_y_cop_white_full_01.WeNeedBackupNow.FileName, s_m_y_cop_white_full_02.MikeOscarSamInHotNeedOfBackup.FileName, s_m_y_cop_white_full_02.MikeOScarSamRequestingBackup.FileName
-                            ,s_m_y_cop_white_mini_02.INeedSomeSeriousBackupHere.FileName,s_m_y_cop_white_mini_03.OfficerInNeedofSomeBackupHere.FileName};
-        ScannerList.Add(OfficerVariations.PickRandom());
-        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
-
-
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.AllUnits, ReportType.Nobody, Game.LocalPlayer.Character.Position);
         List<string> PossibleVariations = new List<string>() { assistance_required.Assistanceneeded.FileName, assistance_required.Assistancerequired.FileName, assistance_required.Backupneeded.FileName, assistance_required.Backuprequired.FileName, assistance_required.Officersneeded.FileName, assistance_required.Officersrequired.FileName,
                                                                 officer_requests_backup.Officersrequestingbackup.FileName,officer_requests_backup.Unitsrequirebackup.FileName,officer_requests_backup.Unitsrequireimmediateassistance.FileName,officer_requests_backup.Unitsrequestingbackup.FileName,officer_requests_backup.Officerneedsimmediateassistance.FileName };
@@ -1354,6 +1352,17 @@ public static class DispatchAudio
         Notification.Text += "~n~Units Repond ~o~Code-3~s~";
         ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
         PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, false, true));
+    }
+    private static void RequestBackupPreamble()
+    {
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Backup Required");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Game.LocalPlayer.Character.Position);
+        List<string> OfficerVariations = new List<string>() { s_m_y_cop_white_full_01.RequestingBackup.FileName, s_m_y_cop_white_full_01.RequestingBackupWeNeedBackup.FileName, s_m_y_cop_white_full_01.WeNeedBackupNow.FileName, s_m_y_cop_white_full_02.MikeOscarSamInHotNeedOfBackup.FileName, s_m_y_cop_white_full_02.MikeOScarSamRequestingBackup.FileName
+                            ,s_m_y_cop_white_mini_02.INeedSomeSeriousBackupHere.FileName,s_m_y_cop_white_mini_03.OfficerInNeedofSomeBackupHere.FileName};
+        ScannerList.Add(OfficerVariations.PickRandom());
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
     }
     public static void WeaponsFree(DispatchQueueItem ItemToPlay)
     {
@@ -1501,14 +1510,27 @@ public static class DispatchAudio
     }
     public static void SuspectSpotted(DispatchQueueItem ItemToPlay)
     {
-        List<string> ScannerList = new List<string>
-        {
-            AudioBeeps.AudioStart()
-        };
-        string Subtitles = "";
-
+        SuspectSpottedPreamble();
+        List<string> ScannerList = new List<string>();   
+        string Subtitles = "";  
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Spotted");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Vector3.Zero);
+        if (!ReportHeadingAndStreet(ref ScannerList, ref Subtitles, ref Notification) && ItemToPlay.ReportedBy == ReportType.Officers)
+        {
+            List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };
+            ScannerList.Add(Possibilites.PickRandom());
+            Subtitles += "Dispatch, we have ~r~eyes on~r~ the suspect";
+        }
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Vector3.Zero);
 
+        PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification,true,false));
+    }
+    private static void SuspectSpottedPreamble()
+    {
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Spotted");
+        ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Vector3.Zero);
         if (General.PlayerInVehicle)
         {
             if (PlayerLocation.PlayerRecentlyGotOnFreeway)
@@ -1523,6 +1545,10 @@ public static class DispatchAudio
                 ScannerList.Add(Possibilites.PickRandom());
                 Subtitles += "Dispatch, suspect has left the freeway";
             }
+            else
+            {
+                return;
+            }
         }
         else
         {
@@ -1530,17 +1556,8 @@ public static class DispatchAudio
             ScannerList.Add(Possibilites.PickRandom());
             Subtitles += "Dispatch, suspect on foot";
         }
-
-        if (!ReportHeadingAndStreet(ref ScannerList, ref Subtitles, ref Notification) && ItemToPlay.ReportedBy == ReportType.Officers)
-        {
-            List<string> Possibilites = new List<string>() { spot_suspect_cop_01.HASH0601EE8E.FileName, spot_suspect_cop_01.HASH06A36FCF.FileName, spot_suspect_cop_01.HASH08E3F451.FileName, spot_suspect_cop_01.HASH0C703B6A.FileName, spot_suspect_cop_01.HASH13478918.FileName, spot_suspect_cop_01.HASH17551134.FileName, spot_suspect_cop_01.HASH1A3056EA.FileName, spot_suspect_cop_01.HASH1B3A58FF.FileName };
-            ScannerList.Add(Possibilites.PickRandom());
-            Subtitles += "Dispatch, we have ~r~eyes on~r~ the suspect";
-        }
-
-
-        ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
-        PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification,true,false));
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Vector3.Zero);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, true, false));
     }
 
     public static void PopQuizHotShot(DispatchQueueItem ItemToPlay)
@@ -1555,7 +1572,7 @@ public static class DispatchAudio
     //Starting
     private static void ReportGenericStart(ref List<string> ScannerList,ref string Subtitles, AttentionType WhoToNotify, ReportType ReportedBy, Vector3 PlaceToReport)
     {
-        ScannerList.Add(AudioBeeps.AudioStart());
+        ScannerList.Add(new List<string> { AudioBeeps.Radio_Start_1.FileName, AudioBeeps.Radio_Start_2.FileName }.PickRandom());
         Subtitles = "";
         if (WhoToNotify == AttentionType.AllUnits)
         {
@@ -1644,7 +1661,7 @@ public static class DispatchAudio
             AddStreet(ref ScannerList, ref Subtitles, ref Notification);
             AddZone(ref ScannerList, ref Subtitles, LocationToReport, ref Notification);
         }
-        ScannerList.Add(AudioBeeps.Radio_End_1.FileName);
+        ScannerList.Add(new List<string> { AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_End_2.FileName }.PickRandom());
     }
     public static bool AddHeading(ref List<string> ScannerList, ref string Subtitles)
     {
@@ -2405,7 +2422,7 @@ public static class DispatchAudio
         public string Subtitles = "";
         public DispatchNotification NotificationToDisplay;
         public bool CanBeInterrupted = true;
-        public bool CanInterrupt = false;
+        public bool CanInterrupt = true;
         public DispatchAudioEvent(List<string> _SoundsToPlay)
         {
             SoundsToPlay = _SoundsToPlay;

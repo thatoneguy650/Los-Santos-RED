@@ -1,6 +1,7 @@
 ﻿using Rage;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ using System.Threading.Tasks;
 
 public static class ScriptController
 {
+    private static DataTable TickTable = new DataTable();
+    private static int TickID = 0;
+
+
     private static Stopwatch GameStopWatch;
     private static List<TickTask> MyTickTasks;
  
@@ -17,6 +22,10 @@ public static class ScriptController
     {    
         IsRunning = true;
         GameStopWatch = new Stopwatch();
+
+        TickTable.Columns.Add("TickID");
+        TickTable.Columns.Add("GameTime");
+        TickTable.Columns.Add("DebugName");
 
         MyTickTasks = new List<TickTask>()
         {
@@ -37,7 +46,7 @@ public static class ScriptController
             new TickTask(50, "SearchModeStopping", SearchModeStopping.Tick, 3,3),
             new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 3,4),
 
-            new TickTask(250, "WeaponDropping", WeaponDropping.TIck, 4,0),
+            new TickTask(250, "WeaponDropping", WeaponDropping.Tick, 4,0),
 
             new TickTask(150, "Civilians", Civilians.Tick, 5,0),
 

@@ -172,14 +172,7 @@ public static class Debugging
 
     private static void DebugNumpad4()
     {
-        float.TryParse(Menus.GetKeyboardInput(), out float PosX);
-        General.MySettings.UI.ZonePositionX = PosX;
-
-        float.TryParse(Menus.GetKeyboardInput(), out float PosY);
-        General.MySettings.UI.ZonePositionY = PosY;
-
-        float.TryParse(Menus.GetKeyboardInput(), out float Scale);
-        General.MySettings.UI.ZoneScale = Scale;
+        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 1));
 
         //PedVariation MyVariation = LosSantosRED.GetPedVariation(Game.LocalPlayer.Character);
         //WriteToLog("MyVariation", "------------------------------");
@@ -196,14 +189,7 @@ public static class Debugging
     private static void DebugNumpad5()
     {
 
-        float.TryParse(Menus.GetKeyboardInput(), out float PosX);
-        General.MySettings.UI.StreetPositionX = PosX;
 
-        float.TryParse(Menus.GetKeyboardInput(), out float PosY);
-        General.MySettings.UI.StreetPositionY = PosY;
-
-        float.TryParse(Menus.GetKeyboardInput(), out float Scale);
-        General.MySettings.UI.StreetScale = Scale;
 
 
         //Agency ToChoose = Agencies.AgenciesList.Where(x => x.Initials == "ARMY").FirstOrDefault();
@@ -215,14 +201,7 @@ public static class Debugging
     }
     private static void DebugNumpad6()
     {
-        float.TryParse(Menus.GetKeyboardInput(), out float PosX);
-        General.MySettings.UI.VehicleStatusPositionX = PosX;
 
-        float.TryParse(Menus.GetKeyboardInput(), out float PosY);
-        General.MySettings.UI.VehicleStatusPositionY = PosY;
-
-        float.TryParse(Menus.GetKeyboardInput(), out float Scale);
-        General.MySettings.UI.VehicleStatusScale = Scale;
 
 
         WriteToLog("DebugNumpad6", string.Format("                      PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
@@ -232,14 +211,7 @@ public static class Debugging
     private static void DebugNumpad7()
     {
 
-        float.TryParse(Menus.GetKeyboardInput(), out float PosX);
-        General.MySettings.UI.PlayerStatusPositionX = PosX;
 
-        float.TryParse(Menus.GetKeyboardInput(), out float PosY);
-        General.MySettings.UI.PlayerStatusPositionY = PosY;
-
-        float.TryParse(Menus.GetKeyboardInput(), out float Scale);
-        General.MySettings.UI.PlayerStatusScale = Scale;
 
         //PoliceSpawning.SpawnRoadblock(Game.LocalPlayer.Character.GetOffsetPositionFront(10F));
 
@@ -262,6 +234,8 @@ public static class Debugging
 
         try
         {
+            CameraScript.DebugAbort();
+
             WriteToLog("DebugNumpad7", "--------------------------------");
             WriteToLog("DebugNumpad7", "--------Police Status-----------");
 

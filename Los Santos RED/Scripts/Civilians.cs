@@ -20,10 +20,13 @@ public static class Civilians
         IsRunning = false;
     }
     public static void Tick()
-    {            
-        UpdateCivilians();
-        CheckRecognition();
-        CheckSnitchCivilians();
+    {
+        if (IsRunning)
+        {
+            UpdateCivilians();
+            CheckRecognition();
+            CheckSnitchCivilians();
+        }
     }
     private static void CheckSnitchCivilians()
     {

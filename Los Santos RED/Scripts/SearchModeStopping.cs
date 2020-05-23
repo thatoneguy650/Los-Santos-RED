@@ -55,26 +55,29 @@ public static class SearchModeStopping
     }
     public static void Tick()
     {
-        if(PrevStopSearchMode != StopSearchMode)
+        if (IsRunning)
         {
-            PrevStopSearchMode = StopSearchMode;
-            Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Police.AnyPoliceRecentlySeenPlayer));
-        }
+            if (PrevStopSearchMode != StopSearchMode)
+            {
+                PrevStopSearchMode = StopSearchMode;
+                Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Police.AnyPoliceRecentlySeenPlayer));
+            }
 
-        if (!StopSearchMode)
-            return;
+            if (!StopSearchMode)
+                return;
 
-        if (!GhostCop.Exists())
-        {
-            CreateGhostCop();
-        }
-        if (General.PlayerIsWanted && Police.AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
-        {
-            MoveGhostCopToPosition();
-        }
-        else
-        {
-            MoveGhostCopToOrigin();
+            if (!GhostCop.Exists())
+            {
+                CreateGhostCop();
+            }
+            if (General.PlayerIsWanted && Police.AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+            {
+                MoveGhostCopToPosition();
+            }
+            else
+            {
+                MoveGhostCopToOrigin();
+            }
         }
     }
     private static void MoveGhostCopToPosition()
@@ -83,7 +86,7 @@ public static class SearchModeStopping
         {
             if (Police.PlayerStarsGreyedOut)
             {
-                CurrentOffset = new List<Vector3>() { new Vector3(0f, 6f, 1f), new Vector3(6f, 0f, 1f), new Vector3(-6f, 0f, 1f), new Vector3(0f, -6f, 1f) }.PickRandom();
+                CurrentOffset = new List<Vector3>() { new Vector3(0f, 6f, 1f), new Vector3(6f, 0f, 1f), new Vector3(0f, -6f, 1f) }.PickRandom();
                 Debugging.WriteToLog("MoveGhostCopToPosition", string.Format("CurrentOffset {0}", CurrentOffset));
             }
             Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);

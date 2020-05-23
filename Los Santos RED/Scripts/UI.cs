@@ -106,8 +106,6 @@ public static class UI
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
 
 
-
-
         if (General.MySettings.UI.Enabled && !General.IsBusted && !General.IsDead)
         {
             ShowUI();
@@ -115,7 +113,16 @@ public static class UI
 
         ScreenEffectsTick();
     }
+    private static void ShowUI()
+    {
+        HideVanillaUI();
 
+        ShowPlayerStatus();
+        //ShowClock();
+        ShowPlayerArea();
+        ShowVehicleStatus();
+        //ShowDebugLine();
+    }
     private static void ScreenEffectsTick()
     {
         if (General.IsDead)
@@ -161,24 +168,6 @@ public static class UI
         }
 
     }
-
-    private static void ShowUI()
-    {
-        HideVanillaUI();
-
-        ShowPlayerStatus();
-        //ShowClock();
-        ShowPlayerArea();
-        ShowVehicleStatus();
-        //ShowDebugLine();
-    }
-
-    private static void ShowDebugLine()
-    {
-        if (DebugLine != "")
-            Text(DebugLine, .9f, .3f, 0.45f, false, Color.White, EFont.FontChaletComprimeCologne,TextJustification.Left);
-    }
-
     private static void HideVanillaUI()
     {
         NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_VEHICLE_NAME);
@@ -212,26 +201,26 @@ public static class UI
 
             PlayerSpeedLine += "~n~" + VehicleFuelSystem.FuelUIText;
         }
-        Text(PlayerSpeedLine, General.MySettings.UI.VehicleStatusPositionX, General.MySettings.UI.VehicleStatusPositionY, General.MySettings.UI.VehicleStatusScale, false, Color.White, EFont.FontChaletComprimeCologne,TextJustification.Right);
+        DisplayTextOnScreen(PlayerSpeedLine, General.MySettings.UI.VehicleStatusPositionX, General.MySettings.UI.VehicleStatusPositionY, General.MySettings.UI.VehicleStatusScale, Color.White, EFont.FontChaletComprimeCologne, (TextJustification)General.MySettings.UI.VehicleStatusJustificationID);
 
     }
     private static void ShowPlayerArea()
     {
-        Text(GetStreetDisplay(), General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY, General.MySettings.UI.StreetScale, false, Color.White, EFont.FontHouseScript,TextJustification.Right);
-        Text(GetZoneDisplay(), General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY, General.MySettings.UI.ZoneScale, false, Color.White, EFont.FontHouseScript,TextJustification.Right);
+        DisplayTextOnScreen(GetStreetDisplay(), General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY, General.MySettings.UI.StreetScale, Color.White, EFont.FontHouseScript,(TextJustification)General.MySettings.UI.StreetJustificationID);
+        DisplayTextOnScreen(GetZoneDisplay(), General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY, General.MySettings.UI.ZoneScale, Color.White, EFont.FontHouseScript, (TextJustification)General.MySettings.UI.ZoneJustificationID);
     }
     private static void ShowPlayerStatus()
     {
         string PlayerStatusLine = "";
-        //if (PersonOfInterest.PlayerIsPersonOfInterest)
-        //{
-        //    if (LosSantosRED.PlayerIsWanted)
-        //        PlayerStatusLine = "~r~Suspect~s~";
-        //    else if (Police.PlayerHasBeenNotWantedFor <= 45000)
-        //        PlayerStatusLine = "~o~Suspect~s~";
-        //    else
-        //        PlayerStatusLine = "~y~Suspect~s~";
-        //}
+        if (PersonOfInterest.PlayerIsPersonOfInterest)
+        {
+            if (General.PlayerIsWanted)
+                PlayerStatusLine = "~r~Wanted~s~";
+            else if (Police.PlayerHasBeenNotWantedFor <= 45000)
+                PlayerStatusLine = "~o~Wanted~s~";
+            else
+                PlayerStatusLine = "~y~Wanted~s~";
+        }
         if (General.PlayerIsWanted)
         {
             string AgenciesChasingPlayer = PedList.AgenciesChasingPlayer;
@@ -239,8 +228,97 @@ public static class UI
                 PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
         }
 
-        Text(PlayerStatusLine, General.MySettings.UI.PlayerStatusPositionX, General.MySettings.UI.PlayerStatusPositionY, General.MySettings.UI.PlayerStatusScale, false, Color.White, EFont.FontChaletComprimeCologne,TextJustification.Right);
+        DisplayTextOnScreen(PlayerStatusLine, General.MySettings.UI.PlayerStatusPositionX, General.MySettings.UI.PlayerStatusPositionY, General.MySettings.UI.PlayerStatusScale, Color.White, EFont.FontChaletComprimeCologne, (TextJustification)General.MySettings.UI.PlayerStatusJustificationID);
     }
+    private static string GetStreetDisplay()
+    {
+        string StreetDisplay = "";
+        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentCrossStreet != null)
+            StreetDisplay = string.Format(" {0} at {1} ", PlayerLocation.PlayerCurrentStreet.Name, PlayerLocation.PlayerCurrentCrossStreet.Name);
+        else if (PlayerLocation.PlayerCurrentStreet != null)
+            StreetDisplay = string.Format(" {0} ", PlayerLocation.PlayerCurrentStreet.Name);
+        return StreetDisplay;
+    }
+    private static string GetZoneDisplay()
+    {
+        if (PlayerLocation.PlayerCurrentZone == null)
+            return "";
+        string ZoneDisplay = "";
+        string CopZoneName = "";
+        ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone,true);
+        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
+            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;// +  "~s~ / " + Agencies.SAHP.ColoredInitials;
+        else if (PlayerLocation.PlayerCurrentZone != null && PlayerLocation.PlayerCurrentZone.MainZoneAgency != null)
+            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
+        ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
+        return ZoneDisplay;
+    }
+    public static void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, EFont Font, TextJustification Justification)
+    {
+        NativeFunction.CallByName<bool>("SET_TEXT_FONT",(int)Font);
+        NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
+        NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255);
+
+        NativeFunction.Natives.SetTextJustification((int)Justification);
+        NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+
+        if (Justification == TextJustification.Right)
+            NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
+        else
+            NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
+
+        NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING");
+        NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, TextToShow);
+        NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
+        NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
+        return;
+    }
+    //public static void DisplayTextOnScreen(string text, float x, float y, float scale, bool center, Color TextColor, EFont Font, TextJustification Justification)
+    //{
+    //    //Game.Console.Print("Invoke font");
+    //    NativeFunction.Natives.SetTextFont((int)Font);
+    //    //Game.Console.Print("Set scale");
+    //    NativeFunction.Natives.SetTextScale(scale, scale);
+    //    //Game.Console.Print("Calling color ref");
+    //    NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", new NativeArgument[]
+    //    {
+    //           (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255
+    //    });
+
+    //    NativeFunction.Natives.SetTextJustification((int)Justification);
+    //    NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+    //    //Game.Console.Print("Set wrap");
+    //    // NativeFunction.Natives.SetTextWrap((float)0.0, (float)1.0);
+
+
+    //    if(Justification == TextJustification.Right)
+    //        NativeFunction.CallByName<bool>("SET_TEXT_WRAP",0f, y);
+    //    else
+    //        NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
+    //    //Game.Console.Print("Set centre");
+    //    //NativeFunction.Natives.SetTextCentre(center);
+    //    //Game.Console.Print("Set dropshadow");
+
+    //    //Game.Console.Print("Set edge");
+    //    //NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 255);//NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 205);
+    //    //Game.Console.Print("Set leading");
+    //    // NativeFunction.Natives.SetTextLeading(1);
+
+
+
+    //    //Game.Console.Print("Set entry type");
+    //    NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING"); // Remplacant fonction SET_TEXT_ENTRY, le nouveau nom est BEGIN_TEXT_COMMAND_DISPLAY_TEXT
+    //                                                                   //Game.Console.Print("Create text component");
+    //                                                                   //NativeFunction.CallByName<uint>("ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL", text); //Pour RPH 0.52
+    //    NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, text); //BEGIN TEXT COMMAND DISPLAY TEXT
+    //                                                               //Game.Console.Print("Add substring");
+    //    NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, text); //Hash pour le nom ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME.
+    //                                                               //Game.Console.Print("Draw text !");
+    //    NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, y, x);
+    //    //NativeFunction.CallByName<uint>("_DRAW_TEXT", y, x);
+    //    //Game.Console.Print("Text displayed.");
+    //    return;
+    //}
     private static void ShowClock()
     {
         string PlayerCLockLine = string.Format("{0}", Clock.ClockTime);
@@ -248,9 +326,14 @@ public static class UI
             PlayerCLockLine = string.Format("{0} ({1})", Clock.ClockTime, Clock.ClockSpeed);
 
         if (DebugLine != "")
-            Text(DebugLine, .9f, .3f, 0.45f, false, Color.White, EFont.FontChaletComprimeCologne,TextJustification.Left);
+            DisplayTextOnScreen(DebugLine, .9f, .3f, 0.45f, Color.White, EFont.FontChaletComprimeCologne, TextJustification.Left);
 
         //Text(PlayerCLockLine, LosSantosRED.MySettings.UI.PositionX - 2 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
+    }
+    private static void ShowDebugLine()
+    {
+        if (DebugLine != "")
+            DisplayTextOnScreen(DebugLine, .9f, .3f, 0.45f, Color.White, EFont.FontChaletComprimeCologne, TextJustification.Left);
     }
     private static string GetCompassHeading()
     {
@@ -292,73 +375,6 @@ public static class UI
         else { Abbreviation = ""; }
 
         return Abbreviation;
-    }
-    private static string GetStreetDisplay()
-    {
-        string StreetDisplay = "";
-        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentCrossStreet != null)
-            StreetDisplay = string.Format(" {0} at {1} ", PlayerLocation.PlayerCurrentStreet.Name, PlayerLocation.PlayerCurrentCrossStreet.Name);
-        else if (PlayerLocation.PlayerCurrentStreet != null)
-            StreetDisplay = string.Format(" {0} ", PlayerLocation.PlayerCurrentStreet.Name);
-        return StreetDisplay;
-    }
-    private static string GetZoneDisplay()
-    {
-        if (PlayerLocation.PlayerCurrentZone == null)
-            return "";
-        string ZoneDisplay = "";
-        string CopZoneName = "";
-        ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone,true);
-        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
-            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;// +  "~s~ / " + Agencies.SAHP.ColoredInitials;
-        else if (PlayerLocation.PlayerCurrentZone != null && PlayerLocation.PlayerCurrentZone.MainZoneAgency != null)
-            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
-        ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
-        return ZoneDisplay;
-    }
-    public static void Text(string text, float x, float y, float scale, bool center, Color TextColor, EFont Font, TextJustification Justification)
-    {
-        //Game.Console.Print("Invoke font");
-        NativeFunction.Natives.SetTextFont((int)Font);
-        //Game.Console.Print("Set scale");
-        NativeFunction.Natives.SetTextScale(scale, scale);
-        //Game.Console.Print("Calling color ref");
-        NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", new NativeArgument[]
-        {
-               (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255
-        });
-
-        NativeFunction.Natives.SetTextJustification((int)Justification);
-        NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-        //Game.Console.Print("Set wrap");
-        // NativeFunction.Natives.SetTextWrap((float)0.0, (float)1.0);
-
-
-
-        NativeFunction.CallByName<bool>("SET_TEXT_WRAP",0f,1f);
-        //Game.Console.Print("Set centre");
-        //NativeFunction.Natives.SetTextCentre(center);
-        //Game.Console.Print("Set dropshadow");
-        
-        //Game.Console.Print("Set edge");
-        //NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 255);//NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 205);
-        //Game.Console.Print("Set leading");
-       // NativeFunction.Natives.SetTextLeading(1);
-
-        
-
-        //Game.Console.Print("Set entry type");
-        NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING"); // Remplacant fonction SET_TEXT_ENTRY, le nouveau nom est BEGIN_TEXT_COMMAND_DISPLAY_TEXT
-                                                                       //Game.Console.Print("Create text component");
-                                                                       //NativeFunction.CallByName<uint>("ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL", text); //Pour RPH 0.52
-        NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, text); //BEGIN TEXT COMMAND DISPLAY TEXT
-                                                                   //Game.Console.Print("Add substring");
-        NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, text); //Hash pour le nom ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME.
-                                                                   //Game.Console.Print("Draw text !");
-        NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, y, x);
-        //NativeFunction.CallByName<uint>("_DRAW_TEXT", y, x);
-        //Game.Console.Print("Text displayed.");
-        return;
     }
 }
 

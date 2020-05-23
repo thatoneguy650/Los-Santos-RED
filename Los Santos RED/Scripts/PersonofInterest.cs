@@ -31,27 +31,30 @@ public static class PersonOfInterest
     }    
     public static void Tick()
     {
-        if (PrevPlayerIsWanted != General.PlayerIsWanted)
-            WantedLevelAddedOrRemoved();
-
-        if (General.IsDead || General.IsBusted)
-            return;
-
-        CheckCurrentVehicle();
-        CheckSight();
-        if (General.PlayerIsNotWanted)
-        {       
-            if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 120000)
-            {
-                ResetPersonOfInterest(true);
-            }
-        }
-        else
+        if (IsRunning)
         {
-            if (!PlayerIsPersonOfInterest && Police.AnyPoliceCanSeePlayer)
+            if (PrevPlayerIsWanted != General.PlayerIsWanted)
+                WantedLevelAddedOrRemoved();
+
+            if (General.IsDead || General.IsBusted)
+                return;
+
+            CheckCurrentVehicle();
+            CheckSight();
+            if (General.PlayerIsNotWanted)
             {
-                Police.CurrentCrimes.PlayerSeenDuringWanted = true;
-                PlayerBecamePersonOfInterest();
+                if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 120000)
+                {
+                    ResetPersonOfInterest(true);
+                }
+            }
+            else
+            {
+                if (!PlayerIsPersonOfInterest && Police.AnyPoliceCanSeePlayer)
+                {
+                    Police.CurrentCrimes.PlayerSeenDuringWanted = true;
+                    PlayerBecamePersonOfInterest();
+                }
             }
         }
     }

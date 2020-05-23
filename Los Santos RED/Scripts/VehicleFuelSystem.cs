@@ -29,63 +29,66 @@ internal static class VehicleFuelSystem
     } 
     public static void Tick()
     {
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsCar)
+        if (IsRunning)
         {
-            float CurrentFuelLevel = Game.LocalPlayer.Character.CurrentVehicle.FuelLevel;
-            if (VehicleEngine.IsEngineRunning)
+            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsCar)
             {
-                if (Game.GameTime - GameTimeLastCheckedFuel >= 200)
+                float CurrentFuelLevel = Game.LocalPlayer.Character.CurrentVehicle.FuelLevel;
+                if (VehicleEngine.IsEngineRunning)
                 {
-                    if (CurrentFuelLevel <= 0)
+                    if (Game.GameTime - GameTimeLastCheckedFuel >= 200)
                     {
-                        VehicleEngine.TurnOffEngine();
+                        if (CurrentFuelLevel <= 0)
+                        {
+                            VehicleEngine.TurnOffEngine();
+                        }
+                        else
+                        {
+                            float AmountToSubtract = 0.001f + Game.LocalPlayer.Character.CurrentVehicle.Speed * 0.0001f;
+                            Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentFuelLevel - AmountToSubtract;
+                        }
+                        GameTimeLastCheckedFuel = Game.GameTime;
                     }
-                    else
-                    {
-                        float AmountToSubtract = 0.001f + Game.LocalPlayer.Character.CurrentVehicle.Speed * 0.0001f;
-                        Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentFuelLevel - AmountToSubtract;
-                    }
-                    GameTimeLastCheckedFuel = Game.GameTime;
-                }
-                NearGasPumps = false;
-            }
-            else
-            {
-                Location ClosestGasStation = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.GasStation);
-                NearGasPumps = false;
-                if (ClosestGasStation != null && Game.LocalPlayer.Character.Position.DistanceTo2D(ClosestGasStation.LocationPosition) <= 50f)
-                {
-                    if(ClosestGasStation.GasPumps.Any(x => Game.LocalPlayer.Character.Position.DistanceTo2D(new Vector3(x.X,x.Y,x.Z)) <= 4f))
-                    {
-                        NearGasPumps = true;
-                    }
-                }
-                if(NearGasPumps && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel <= 100f)
-                {
-                    if(!CanPumpFuel)
-                    {
-                        Game.DisplayHelp("Press E to Refuel");
-                    }
-                    CanPumpFuel = true;
+                    NearGasPumps = false;
                 }
                 else
                 {
-                    CanPumpFuel = false;
-                }
-
-                if (CanPumpFuel && Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey))
-                {
-                    if (Game.LocalPlayer.Character.GetCash() >= 1 && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel < 100f)
+                    Location ClosestGasStation = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.GasStation);
+                    NearGasPumps = false;
+                    if (ClosestGasStation != null && Game.LocalPlayer.Character.Position.DistanceTo2D(ClosestGasStation.LocationPosition) <= 50f)
                     {
-                        Game.LocalPlayer.Character.GiveCash(-1);
-                        if (CurrentFuelLevel + 1f <= 100f)
-                            Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentFuelLevel + 1f;
-                        else
-                            Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = 100f;
+                        if (ClosestGasStation.GasPumps.Any(x => Game.LocalPlayer.Character.Position.DistanceTo2D(new Vector3(x.X, x.Y, x.Z)) <= 4f))
+                        {
+                            NearGasPumps = true;
+                        }
+                    }
+                    if (NearGasPumps && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel <= 100f)
+                    {
+                        if (!CanPumpFuel)
+                        {
+                            Game.DisplayHelp("Press E to Refuel");
+                        }
+                        CanPumpFuel = true;
+                    }
+                    else
+                    {
+                        CanPumpFuel = false;
+                    }
+
+                    if (CanPumpFuel && Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey))
+                    {
+                        if (Game.LocalPlayer.Character.GetCash() >= 1 && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel < 100f)
+                        {
+                            Game.LocalPlayer.Character.GiveCash(-1);
+                            if (CurrentFuelLevel + 1f <= 100f)
+                                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentFuelLevel + 1f;
+                            else
+                                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = 100f;
+                        }
                     }
                 }
+                FuelUIText = string.Format(" Fuel {0}", (Game.LocalPlayer.Character.CurrentVehicle.FuelLevel / 100f).ToString("P2"));
             }
-            FuelUIText = string.Format(" Fuel {0}", (Game.LocalPlayer.Character.CurrentVehicle.FuelLevel / 100f).ToString("P2"));
         }
     }
    
