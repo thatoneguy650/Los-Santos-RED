@@ -226,6 +226,15 @@ public static class Agencies
             new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
 
+        List<Agency.IssuedWeapon> HeliWeapons = new List<Agency.IssuedWeapon>()
+        {
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new Agency.IssuedWeapon("weapon_marksmanrifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope", "Suppressor", "Tracer Rounds" })),
+            new Agency.IssuedWeapon("weapon_marksmanrifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope","Tracer Rounds" })),
+        };
+
         List<Agency.IssuedWeapon> LimitedWeapons = new List<Agency.IssuedWeapon>()
         {
             new Agency.IssuedWeapon("weapon_heavypistol", true, new GTAWeapon.WeaponVariation()),
@@ -247,7 +256,7 @@ public static class Agencies
 
 
 
-            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "LightSkyBlue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "LightSkyBlue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
          
             new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "MediumVioletRed", Agency.Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons),
@@ -256,7 +265,7 @@ public static class Agencies
             new Agency("~r~", "LSSD-DV", "Los Santos Sheriff - Davis Division", "OrangeRed", Agency.Classification.Sheriff, SheriffPeds, LSSDDavisVehicles, "LSCS ",LimitedWeapons),
 
 
-            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "DeepPink", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",BestWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "DeepPink", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
 
             new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 3 },
             new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons),
@@ -408,7 +417,7 @@ public class Agency
     {
         get
         {
-            if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
+            if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
             {
                 if (PedList.CopPeds.Count(x => x.AssignedAgency == this) < SpawnLimit)
                     return true;
@@ -495,7 +504,7 @@ public class Agency
         if (CopModels == null || !CopModels.Any())
             return null;
 
-        List<ModelInformation> ToPickFrom = CopModels.Where(x => General.PlayerWantedLevel >= x.MinWantedLevelSpawn && General.PlayerWantedLevel <= x.MaxWantedLevelSpawn).ToList();
+        List<ModelInformation> ToPickFrom = CopModels.Where(x => PlayerState.PlayerWantedLevel >= x.MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= x.MaxWantedLevelSpawn).ToList();
         if(RequiredModels != null && RequiredModels.Any())
         {
             ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
@@ -545,9 +554,9 @@ public class Agency
         {
             get
             {
-                if (General.PlayerIsWanted)
+                if (PlayerState.PlayerIsWanted)
                 {
-                    if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance > 0;
                     else
                         return false;
@@ -560,9 +569,9 @@ public class Agency
         {
             get
             {
-                if (General.PlayerIsWanted)
+                if (PlayerState.PlayerIsWanted)
                 {
-                    if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance;
                     else
                         return 0;
@@ -631,9 +640,9 @@ public class Agency
                     return false;
                 }
 
-                if (General.PlayerIsWanted)
+                if (PlayerState.PlayerIsWanted)
                 {
-                    if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
                         return CanSpawnWanted;
                     else
                         return false;
@@ -648,9 +657,9 @@ public class Agency
             {
                 if (!CanCurrentlySpawn)
                     return 0;
-                if (General.PlayerIsWanted)
+                if (PlayerState.PlayerIsWanted)
                 {
-                    if (General.PlayerWantedLevel >= MinWantedLevelSpawn && General.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance;
                     else
                         return 0;

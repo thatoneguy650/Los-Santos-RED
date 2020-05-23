@@ -76,7 +76,7 @@ public static class Smoking
             {
                 while (IsRunning)
                 {
-                    if (General.IsDead || Game.LocalPlayer.Character.IsRagdoll)
+                    if (PlayerState.IsDead || Game.LocalPlayer.Character.IsRagdoll)
                     {
                         RemoveCigarette();
                         return;

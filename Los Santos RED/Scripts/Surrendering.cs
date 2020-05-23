@@ -19,7 +19,7 @@ public static class Surrendering
         if (Game.LocalPlayer.WantedLevel > 0 && Police.CurrentCrimes.KillingPolice.InstancesObserved < 5)
             Police.CurrentPoliceState = Police.PoliceState.ArrestedWait;
 
-        if (General.HandsAreUp)
+        if (PlayerState.HandsAreUp)
             return;
 
         if (VehicleFuelSystem.CanPumpFuel)
@@ -27,7 +27,7 @@ public static class Surrendering
 
         VehicleEngine.TurnOffEngine();
 
-        General.HandsAreUp = true;
+        PlayerState.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
         General.RequestAnimationDictionay(sDict);
@@ -119,10 +119,10 @@ public static class Surrendering
                 }
             }
 
-            if (PedToArrest == Game.LocalPlayer.Character && !General.IsBusted)
+            if (PedToArrest == Game.LocalPlayer.Character && !PlayerState.IsBusted)
                 return;
 
-            if (General.PlayerWantedLevel <= 2)
+            if (PlayerState.PlayerWantedLevel <= 2)
             {
                 NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
             }
@@ -131,7 +131,7 @@ public static class Surrendering
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                 GameFiber.Wait(6000);
 
-                if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !General.IsBusted))
+                if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !PlayerState.IsBusted))
                     return;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
             }

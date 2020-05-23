@@ -24,13 +24,14 @@ public static class ScriptController
         GameStopWatch = new Stopwatch();
 
         TickTable.Columns.Add("TickID");
-        TickTable.Columns.Add("GameTime");
         TickTable.Columns.Add("DebugName");
+        TickTable.Columns.Add("ElapsedMilliseconds");     
 
         MyTickTasks = new List<TickTask>()
         {
-            new TickTask(25, "LosSantosRED", General.Tick, 0,0),
-            new TickTask(25, "Police", Police.Tick, 0,1),
+            new TickTask(25, "PlayerState", PlayerState.Tick, 0,0),
+            new TickTask(25, "ControlScript", ControlScript.Tick, 0,1),
+            new TickTask(25, "Police", Police.Tick, 0,2),
 
             new TickTask(0, "VehicleEngine", VehicleEngine.Tick, 1,0),
 
@@ -71,6 +72,7 @@ public static class ScriptController
             {
                 while (IsRunning)
                 {
+                    TickID = 0;
                     GameStopWatch.Start();
                     foreach(int RunGroup in MyTickTasks.Select(x => x.RunGroup))
                     {
@@ -78,6 +80,7 @@ public static class ScriptController
                         if (ToRun != null)
                         {
                             ToRun.RunTask();
+                            TickTable.Rows.Add(TickID,ToRun.DebugName, GameStopWatch.ElapsedMilliseconds);
                         }
                         
                     }
@@ -90,6 +93,7 @@ public static class ScriptController
                     ResetRanItems();
 
                     GameStopWatch.Reset();
+                    TickID++;
                     GameFiber.Yield();
                 }
             }

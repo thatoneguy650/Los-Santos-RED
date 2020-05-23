@@ -247,14 +247,14 @@ internal static class Menus
                 {
                     if (Game.IsKeyDown(General.MySettings.KeyBinding.MenuKey)) // Our menu on/off switch.
                     {
-                        if (General.IsDead)
+                        if (PlayerState.IsDead)
                         {
                             if (!deathMenu.Visible)
                                 ShowDeathMenu();
                             else
                                 deathMenu.Visible = false;
                         }
-                        else if (General.IsBusted)
+                        else if (PlayerState.IsBusted)
                         {
                             if (!bustedMenu.Visible)
                                 ShowBustedMenu();
@@ -303,7 +303,7 @@ internal static class Menus
         {
             menuDeathUndie.Enabled = true;
         }
-        else if (General.TimesDied < General.MySettings.General.UndieLimit)
+        else if (PlayerState.TimesDied < General.MySettings.General.UndieLimit)
         {
             menuDeathUndie.Enabled = true;
         }
@@ -322,7 +322,7 @@ internal static class Menus
     }
     public static void ShowBustedMenu()
     {
-        if (General.IsDead)
+        if (PlayerState.IsDead)
             return;
         CreateBustedMenu();
 
@@ -364,7 +364,7 @@ internal static class Menus
         bustedMenu.AddItem(menuBustedResistArrest);
         bustedMenu.AddItem(menuBustedBribe);
         bustedMenu.AddItem(menuBustedSurrender);
-        if (General.PlayerWantedLevel <= 1 || !Police.CurrentCrimes.CommittedAnyCrimes)
+        if (PlayerState.PlayerWantedLevel <= 1 || !Police.CurrentCrimes.CommittedAnyCrimes)
         {
             menuBustedTalk = new UIMenuItem("Talk", "Try to talk your way out of an arrest.");
             bustedMenu.AddItem(menuBustedTalk);
@@ -415,7 +415,7 @@ internal static class Menus
         actionsMenu.AddItem(menuMainSuicide);
         actionsMenu.AddItem(menuActionSmoking);
 
-        if (!General.PlayerInVehicle)
+        if (!PlayerState.PlayerInVehicle)
         {
             actionsMenu.AddItem(menuMainChangeLicensePlate);
             actionsMenu.AddItem(menuMainRemoveLicensePlate);
@@ -506,7 +506,7 @@ internal static class Menus
     {
         if (selectedItem == menuMainTakeoverRandomPed)
         {
-            if(General.PlayerWantedLevel > 0)
+            if(PlayerState.PlayerWantedLevel > 0)
             {
                 Game.DisplayNotification("Lose your wanted level first");
                 return;
@@ -534,7 +534,7 @@ internal static class Menus
         //}
         else if(selectedItem == menuMainShowPlayerStatus)
         {
-            General.DisplayPlayerNotification();
+            PlayerState.DisplayPlayerNotification();
         }
         mainMenu.Visible = false;
     }

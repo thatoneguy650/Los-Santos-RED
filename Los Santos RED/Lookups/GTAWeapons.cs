@@ -31,7 +31,6 @@ public static class GTAWeapons
             General.SerializeParams(WeaponsList, ConfigFileName);
         }
     }
-
     public static void Dispose()
     {
 

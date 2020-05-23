@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 public static class UI
 {
-    private static BigMessageThread bigMessage;
+    private static BigMessageThread BigMessage;
     private static bool StartedBandagingEffect = false;
     private static bool StartedBustedEffect = false;
     private static bool StartedDeathEffect = false;
     public static string DebugLine { get; set; }
-    public enum EFont
+    private enum GTAFont
     {
         FontChaletLondon = 0,
         FontHouseScript = 1,
@@ -26,13 +26,13 @@ public static class UI
         FontChaletComprimeCologne = 4,
         FontPricedown = 7
     };
-    public enum TextJustification
+    private enum GTATextJustification
     {
         Center = 0,
         Left = 1,
         Right = 2,
     };
-    private enum HudComponent
+    private enum GTAHudComponent
     {
         HUD = 0,
         HUD_WANTED_STARS = 1,
@@ -63,7 +63,7 @@ public static class UI
     public static void Initialize()
     {
         IsRunning= true;
-        bigMessage = new BigMessageThread(true);
+        BigMessage = new BigMessageThread(true);
         MainLoop();
     }
     public static void Dispose()
@@ -106,7 +106,7 @@ public static class UI
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
 
 
-        if (General.MySettings.UI.Enabled && !General.IsBusted && !General.IsDead)
+        if (General.MySettings.UI.Enabled && !PlayerState.IsBusted && !PlayerState.IsDead)
         {
             ShowUI();
         }
@@ -116,50 +116,52 @@ public static class UI
     private static void ShowUI()
     {
         HideVanillaUI();
-
-        ShowPlayerStatus();
-        //ShowClock();
-        ShowPlayerArea();
-        ShowVehicleStatus();
-        //ShowDebugLine();
+        DisplayTextOnScreen(GetPlayerStatusDisplay(), General.MySettings.UI.PlayerStatusPositionX, General.MySettings.UI.PlayerStatusPositionY, General.MySettings.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)General.MySettings.UI.PlayerStatusJustificationID);
+        DisplayTextOnScreen(GetVehicleStatusDisplay(), General.MySettings.UI.VehicleStatusPositionX, General.MySettings.UI.VehicleStatusPositionY, General.MySettings.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)General.MySettings.UI.VehicleStatusJustificationID);
+        DisplayTextOnScreen(GetZoneDisplay(), General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY, General.MySettings.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)General.MySettings.UI.ZoneJustificationID);
+        DisplayTextOnScreen(GetStreetDisplay(), General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY, General.MySettings.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)General.MySettings.UI.StreetJustificationID);      
     }
     private static void ScreenEffectsTick()
     {
-        if (General.IsDead)
+        if (PlayerState.IsDead)
         {
-            if (!StartedDeathEffect)//!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DeathFailMPIn"))
+            if (!StartedDeathEffect)
             {
                 NativeFunction.Natives.x80C8B1846639BB19(1);
-                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);//_START_SCREEN_EFFECT
+                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);
                 NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND",-1,"Bed", "WastedSounds", true);
-                bigMessage.MessageInstance.ShowColoredShard("WASTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 3000);
+                BigMessage.MessageInstance.ShowColoredShard("WASTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 3000);
                 StartedDeathEffect = true;
                 
             }
         }
-        else if (General.IsBusted)
+        else if (PlayerState.IsBusted)
         {
-            if (!StartedBustedEffect)//!NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DeathFailMPDark"))
+            if (!StartedBustedEffect)
             {
                 NativeFunction.Natives.x80C8B1846639BB19(1);
-                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);//_START_SCREEN_EFFECT
+                NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);
                 NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "TextHit", "WastedSounds", true);
-                bigMessage.MessageInstance.ShowColoredShard("BUSTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_BLUE, 3000);
+                BigMessage.MessageInstance.ShowColoredShard("BUSTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_BLUE, 3000);
                 StartedBustedEffect = true;
             }
         }
         else if (PlayerHealth.IsBleeding)
         {
-            if (!StartedBandagingEffect)//NativeFunction.CallByHash<bool>(0x2206BF9A37B7F724, "DrugsDrivingIn"))
+            if (!StartedBandagingEffect)
             {
                 NativeFunction.Natives.x80C8B1846639BB19(1);
-                NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);//_START_SCREEN_EFFECT  
-                bigMessage.MessageInstance.ShowColoredShard("BLEEDING", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 1000);
+                NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);
+                BigMessage.MessageInstance.ShowColoredShard("BLEEDING", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 1000);
                 StartedBandagingEffect = true;
             }
         }
         else
         {
+            if(StartedBandagingEffect)
+            {
+                NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingOut", 0, false);
+            }
             StartedBustedEffect = false;
             StartedBandagingEffect = false;
             StartedDeathEffect = false;
@@ -170,14 +172,33 @@ public static class UI
     }
     private static void HideVanillaUI()
     {
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_VEHICLE_NAME);
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_AREA_NAME);
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_VEHICLE_CLASS);
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_STREET_NAME);
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)HudComponent.HUD_VEHICLE_CLASS);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_AREA_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_STREET_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
     }
-
-    private static void ShowVehicleStatus()
+    private static string GetPlayerStatusDisplay()
+    {
+        string PlayerStatusLine = "";
+        if (PersonOfInterest.PlayerIsPersonOfInterest)
+        {
+            if (PlayerState.PlayerIsWanted)
+                PlayerStatusLine = "~r~Wanted~s~";
+            else if (Police.PlayerHasBeenNotWantedFor <= 45000)
+                PlayerStatusLine = "~o~Wanted~s~";
+            else
+                PlayerStatusLine = "~y~Wanted~s~";
+        }
+        if (PlayerState.PlayerIsWanted)
+        {
+            string AgenciesChasingPlayer = PedList.AgenciesChasingPlayer;
+            if (AgenciesChasingPlayer != "")
+                PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
+        }
+        return PlayerStatusLine;
+    }
+    private static string GetVehicleStatusDisplay()
     {
         string PlayerSpeedLine = "";
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -201,34 +222,7 @@ public static class UI
 
             PlayerSpeedLine += "~n~" + VehicleFuelSystem.FuelUIText;
         }
-        DisplayTextOnScreen(PlayerSpeedLine, General.MySettings.UI.VehicleStatusPositionX, General.MySettings.UI.VehicleStatusPositionY, General.MySettings.UI.VehicleStatusScale, Color.White, EFont.FontChaletComprimeCologne, (TextJustification)General.MySettings.UI.VehicleStatusJustificationID);
-
-    }
-    private static void ShowPlayerArea()
-    {
-        DisplayTextOnScreen(GetStreetDisplay(), General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY, General.MySettings.UI.StreetScale, Color.White, EFont.FontHouseScript,(TextJustification)General.MySettings.UI.StreetJustificationID);
-        DisplayTextOnScreen(GetZoneDisplay(), General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY, General.MySettings.UI.ZoneScale, Color.White, EFont.FontHouseScript, (TextJustification)General.MySettings.UI.ZoneJustificationID);
-    }
-    private static void ShowPlayerStatus()
-    {
-        string PlayerStatusLine = "";
-        if (PersonOfInterest.PlayerIsPersonOfInterest)
-        {
-            if (General.PlayerIsWanted)
-                PlayerStatusLine = "~r~Wanted~s~";
-            else if (Police.PlayerHasBeenNotWantedFor <= 45000)
-                PlayerStatusLine = "~o~Wanted~s~";
-            else
-                PlayerStatusLine = "~y~Wanted~s~";
-        }
-        if (General.PlayerIsWanted)
-        {
-            string AgenciesChasingPlayer = PedList.AgenciesChasingPlayer;
-            if (AgenciesChasingPlayer != "")
-                PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
-        }
-
-        DisplayTextOnScreen(PlayerStatusLine, General.MySettings.UI.PlayerStatusPositionX, General.MySettings.UI.PlayerStatusPositionY, General.MySettings.UI.PlayerStatusScale, Color.White, EFont.FontChaletComprimeCologne, (TextJustification)General.MySettings.UI.PlayerStatusJustificationID);
+        return PlayerSpeedLine;
     }
     private static string GetStreetDisplay()
     {
@@ -253,7 +247,7 @@ public static class UI
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
     }
-    public static void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, EFont Font, TextJustification Justification)
+    private static void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
     {
         NativeFunction.CallByName<bool>("SET_TEXT_FONT",(int)Font);
         NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
@@ -262,7 +256,7 @@ public static class UI
         NativeFunction.Natives.SetTextJustification((int)Justification);
         NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
 
-        if (Justification == TextJustification.Right)
+        if (Justification == GTATextJustification.Right)
             NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
         else
             NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
@@ -272,109 +266,6 @@ public static class UI
         NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
         NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
         return;
-    }
-    //public static void DisplayTextOnScreen(string text, float x, float y, float scale, bool center, Color TextColor, EFont Font, TextJustification Justification)
-    //{
-    //    //Game.Console.Print("Invoke font");
-    //    NativeFunction.Natives.SetTextFont((int)Font);
-    //    //Game.Console.Print("Set scale");
-    //    NativeFunction.Natives.SetTextScale(scale, scale);
-    //    //Game.Console.Print("Calling color ref");
-    //    NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", new NativeArgument[]
-    //    {
-    //           (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255
-    //    });
-
-    //    NativeFunction.Natives.SetTextJustification((int)Justification);
-    //    NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-    //    //Game.Console.Print("Set wrap");
-    //    // NativeFunction.Natives.SetTextWrap((float)0.0, (float)1.0);
-
-
-    //    if(Justification == TextJustification.Right)
-    //        NativeFunction.CallByName<bool>("SET_TEXT_WRAP",0f, y);
-    //    else
-    //        NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
-    //    //Game.Console.Print("Set centre");
-    //    //NativeFunction.Natives.SetTextCentre(center);
-    //    //Game.Console.Print("Set dropshadow");
-
-    //    //Game.Console.Print("Set edge");
-    //    //NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 255);//NativeFunction.Natives.SetTextEdge(1, 0, 0, 0, 205);
-    //    //Game.Console.Print("Set leading");
-    //    // NativeFunction.Natives.SetTextLeading(1);
-
-
-
-    //    //Game.Console.Print("Set entry type");
-    //    NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING"); // Remplacant fonction SET_TEXT_ENTRY, le nouveau nom est BEGIN_TEXT_COMMAND_DISPLAY_TEXT
-    //                                                                   //Game.Console.Print("Create text component");
-    //                                                                   //NativeFunction.CallByName<uint>("ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL", text); //Pour RPH 0.52
-    //    NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, text); //BEGIN TEXT COMMAND DISPLAY TEXT
-    //                                                               //Game.Console.Print("Add substring");
-    //    NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, text); //Hash pour le nom ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME.
-    //                                                               //Game.Console.Print("Draw text !");
-    //    NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, y, x);
-    //    //NativeFunction.CallByName<uint>("_DRAW_TEXT", y, x);
-    //    //Game.Console.Print("Text displayed.");
-    //    return;
-    //}
-    private static void ShowClock()
-    {
-        string PlayerCLockLine = string.Format("{0}", Clock.ClockTime);
-        if (Clock.ClockSpeed != "1x")
-            PlayerCLockLine = string.Format("{0} ({1})", Clock.ClockTime, Clock.ClockSpeed);
-
-        if (DebugLine != "")
-            DisplayTextOnScreen(DebugLine, .9f, .3f, 0.45f, Color.White, EFont.FontChaletComprimeCologne, TextJustification.Left);
-
-        //Text(PlayerCLockLine, LosSantosRED.MySettings.UI.PositionX - 2 * LosSantosRED.MySettings.UI.Spacing, LosSantosRED.MySettings.UI.PositionY, LosSantosRED.MySettings.UI.Scale, false, Color.White, EFont.FontChaletComprimeCologne);
-    }
-    private static void ShowDebugLine()
-    {
-        if (DebugLine != "")
-            DisplayTextOnScreen(DebugLine, .9f, .3f, 0.45f, Color.White, EFont.FontChaletComprimeCologne, TextJustification.Left);
-    }
-    private static string GetCompassHeading()
-    {
-        float Heading = Game.LocalPlayer.Character.Heading;
-        string Abbreviation;
-        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "NbE"; }
-        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "NNE"; }
-        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "NEbN"; }
-        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "NE"; }
-        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "NEbE"; }
-        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "ENE"; }
-        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "EbN"; }
-        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
-        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "EbS"; }
-        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "ESE"; }
-        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "SEbE"; }
-        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "SE"; }
-        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "SEbS"; }
-        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "SSE"; }
-        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "SbE"; }
-        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
-        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "SbW"; }
-        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "SSW"; }
-        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "SWbS"; }
-        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "SW"; }
-        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "SWbW"; }
-        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "WSW"; }
-        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "WbS"; }
-        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
-        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "WbN"; }
-        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "WNW"; }
-        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "NWbW"; }
-        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "NW"; }
-        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "NWbN"; }
-        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "NNW"; }
-        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "NbW"; }
-        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-        else { Abbreviation = ""; }
-
-        return Abbreviation;
     }
 }
 

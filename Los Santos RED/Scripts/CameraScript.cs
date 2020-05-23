@@ -35,41 +35,6 @@ public static class CameraScript
             IsTransitioning = false;
         });
     }
-    public static void TransitionToGameplayCam()
-    {
-        if (IsTransitioning)
-            return;
-
-        GameFiber.StartNew(delegate
-        {
-
-            IsTransitioning = true;
-            Cam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-            Cam.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
-
-            Vector3 rot = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-            Cam.Rotation = new Rotator(rot.X, rot.Y, rot.Z);
-
-            InterpolationTempCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-            InterpolationTempCam.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
-
-            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-            InterpolationTempCam.Rotation = new Rotator(r.X, r.Y, r.Z);
-
-            InterpolationTempCam.Active = true;
-            InterpolationTempCam.Interpolate(Cam, 0, true, true, true);//1500 to wait is okay
-            Cam.Active = true;
-            IsTransitioning = false;
-        });
-    }
-    //public static void TransitionToGameplayGamera()
-    //{
-    //    InterpolationTempCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-    //    InterpolationTempCam.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
-    //    Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-    //    InterpolationTempCam.Rotation = new Rotator(r.X, r.Y, r.Z);
-    //    InterpolationTempCam.Active = true;
-    //}
     private static void Interpolate(this Camera from, Camera to, int time, bool easeLocation, bool easeRotation, bool waitForCompletion)
     {
         uint GameTimeStartedInterpolating = Game.GameTime;

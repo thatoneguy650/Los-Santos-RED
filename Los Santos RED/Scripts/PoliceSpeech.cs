@@ -51,7 +51,7 @@ internal static class PoliceSpeech
                     {
                         if (Cop.IsTasked)
                         {
-                            if (General.IsBusted && Cop.DistanceToPlayer <= 20f)
+                            if (PlayerState.IsBusted && Cop.DistanceToPlayer <= 20f)
                             {
                                 Cop.Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
                                 //Debugging.WriteToLog("CheckSpeech", "ARREST_PLAYER");
@@ -97,7 +97,7 @@ internal static class PoliceSpeech
                         }
                         else
                         {
-                            if (General.IsDead && Cop.DistanceToPlayer <= 20f)
+                            if (PlayerState.IsDead && Cop.DistanceToPlayer <= 20f)
                             {
                                 string Speech = PlayerDeadSpeech.PickRandom();
                                 Cop.Pedestrian.PlayAmbientSpeech(Speech);

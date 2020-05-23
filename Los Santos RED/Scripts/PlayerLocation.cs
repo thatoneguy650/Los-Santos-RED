@@ -13,14 +13,14 @@ public static class PlayerLocation
     public static bool IsRunning { get; set; } = true;
     public static Street PlayerCurrentStreet { get; set; }
     public static Street PlayerCurrentCrossStreet { get; set; }
-    public static Zone PlayerCurrentZone { get; set; } = new Zone("UNK_LSCOUNTY", "Los Santos County", "", County.LosSantosCounty);
+    public static Zone PlayerCurrentZone { get; set; } = new Zone("UNK_LSCOUNTY", "Los Santos County", "", County.LosSantosCounty, "San Andreas");
     public static bool PlayerIsOffroad { get; set; } = false;
     public static bool PlayerIsOnFreeway { get; set; } = false;
     public static bool PlayerRecentlyGotOnFreeway
     {
         get
         {
-            if (PlayerIsOnFreeway && Game.GameTime - GameTimePlayerGotOnFreeway <= 6000)
+            if (PlayerIsOnFreeway && Game.GameTime - GameTimePlayerGotOnFreeway <= 10000)
                 return true;
             else
                 return false;
@@ -30,7 +30,7 @@ public static class PlayerLocation
     {
         get
         {
-            if (!PlayerIsOnFreeway && Game.GameTime - GameTimePlayerGotOnFreeway <= 6000)
+            if (!PlayerIsOnFreeway && Game.GameTime - GameTimePlayerGotOffFreeway <= 10000)
                 return true;
             else
                 return false;
@@ -38,14 +38,14 @@ public static class PlayerLocation
     }
 
     private static uint GameTimePlayerGotOnFreeway;
-    
+    private static uint GameTimePlayerGotOffFreeway;
 
     public static void Initialize()
     {
         IsRunning = true;
         PlayerCurrentStreet = null;
         PlayerCurrentCrossStreet = null;
-        PlayerCurrentZone = new Zone("UNK_LSCOUNTY", "Los Santos County", "", County.LosSantosCounty);
+        PlayerCurrentZone = new Zone("UNK_LSCOUNTY", "Los Santos County", "", County.LosSantosCounty, "San Andreas");
         PlayerIsOffroad  = false;
     }
     public static void Dispose()
@@ -118,11 +118,16 @@ public static class PlayerLocation
                 PlayerCurrentStreet = new Street(GetCurrentStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
                 if (PlayerCurrentStreet.IsHighway)
                 {
+                    if(!PlayerIsOnFreeway)
+                        GameTimePlayerGotOnFreeway = Game.GameTime;
+
                     PlayerIsOnFreeway = true;
-                    GameTimePlayerGotOnFreeway = Game.GameTime;
                 }
                 else
                 {
+                    if (PlayerIsOnFreeway)
+                        GameTimePlayerGotOffFreeway = Game.GameTime;
+
                     PlayerIsOnFreeway = false;
                 }
             }

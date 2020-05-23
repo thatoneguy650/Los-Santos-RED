@@ -140,8 +140,8 @@ public static class Debugging
         }
 
         Game.TimeScale = 1f;
-        General.IsBusted = false;
-        General.BeingArrested = false;
+        PlayerState.IsBusted = false;
+        PlayerState.BeingArrested = false;
         NativeFunction.Natives.xB4EDDC19532BFB85();
 
 
@@ -157,7 +157,7 @@ public static class Debugging
     }
     private static void DebugNumpad2()
     {
-        int Toassign = General.PlayerWantedLevel;
+        int Toassign = PlayerState.PlayerWantedLevel;
         if (Toassign == 5)
             return;
         Toassign++;
@@ -188,8 +188,8 @@ public static class Debugging
     }
     private static void DebugNumpad5()
     {
-
-
+        //GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION
+        //GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS
 
 
         //Agency ToChoose = Agencies.AgenciesList.Where(x => x.Initials == "ARMY").FirstOrDefault();

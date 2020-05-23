@@ -88,14 +88,14 @@ public static class TrafficViolations
                 return;
             }
 
-            if (General.IsBusted || General.IsDead)
+            if (PlayerState.IsBusted || PlayerState.IsDead)
                 return;
 
-            if (General.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (General.PlayerInAutomobile || General.PlayerOnMotorcycle) && !PedSwapping.JustTakenOver(10000))
+            if (PlayerState.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (PlayerState.PlayerInAutomobile || PlayerState.PlayerOnMotorcycle) && !PedSwapping.JustTakenOver(10000))
             {
                 float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
                 Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-                GTAVehicle MyCar = General.GetPlayersCurrentTrackedVehicle();
+                GTAVehicle MyCar = PlayerState.GetPlayersCurrentTrackedVehicle();
                 PlayersVehicleIsSuspicious = false;
                 if (!CurrVehicle.IsRoadWorthy() || CurrVehicle.IsDamaged())
                     PlayersVehicleIsSuspicious = true;
@@ -298,7 +298,7 @@ public static class TrafficViolations
             return;
 
         bool DriverWindowIntact = NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0);
-        GTAVehicle MyVehicle = General.GetPlayersCurrentTrackedVehicle();
+        GTAVehicle MyVehicle = PlayerState.GetPlayersCurrentTrackedVehicle();
         if (DriverWindowIntact)
         {
             if (RollDown)

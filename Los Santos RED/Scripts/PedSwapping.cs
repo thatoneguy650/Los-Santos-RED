@@ -256,12 +256,12 @@ public static class PedSwapping
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
 
-        General.IsDead = false;
-        General.IsBusted = false;
-        General.BeingArrested = false;
-        General.TimesDied = 0;
-        General.MaxWantedLastLife = 0;
-        General.LastWeapon = 0;
+        PlayerState.IsDead = false;
+        PlayerState.IsBusted = false;
+        PlayerState.BeingArrested = false;
+        PlayerState.TimesDied = 0;
+        PlayerState.MaxWantedLastLife = 0;
+        PlayerState.LastWeapon = 0;
 
         Game.TimeScale = 1f;
         Police.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
@@ -288,7 +288,7 @@ public static class PedSwapping
         PlayerHealth.Armor = Game.LocalPlayer.Character.Armor;
 
         GameFiber.Wait(50);
-        General.DisplayPlayerNotification();
+        PlayerState.DisplayPlayerNotification();
 
     }
     private static void GivePedHistory()

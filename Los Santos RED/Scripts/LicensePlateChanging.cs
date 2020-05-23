@@ -39,11 +39,11 @@ public static class LicensePlateChanging
 
         if (ClosestVehicle != null)
         {
-            GTAVehicle VehicleToChange = General.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
+            GTAVehicle VehicleToChange = PlayerState.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
                 VehicleToChange = new GTAVehicle(ClosestVehicle,0, false, false,null, true, new GTALicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle),false));
-                General.TrackedVehicles.Add(VehicleToChange);
+                PlayerState.TrackedVehicles.Add(VehicleToChange);
             }
 
             if (ClosestVehicle.HasDriver)
@@ -62,11 +62,11 @@ public static class LicensePlateChanging
 
         if (ClosestVehicle != null)
         {
-            GTAVehicle VehicleToChange = General.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
+            GTAVehicle VehicleToChange = PlayerState.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
                 VehicleToChange = new GTAVehicle(ClosestVehicle,0, false, false,null,true, new GTALicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
-                General.TrackedVehicles.Add(VehicleToChange);
+                PlayerState.TrackedVehicles.Add(VehicleToChange);
             }
 
             ChangeLicensePlateAnimation(VehicleToChange, true);

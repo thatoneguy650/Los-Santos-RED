@@ -123,11 +123,14 @@
     <Compile Include="Scripts\CameraScript.cs" />
     <Compile Include="Scripts\Civilians.cs" />
     <Compile Include="Scripts\Clock.cs" />
+    <Compile Include="Scripts\ControlScript.cs" />
+    <Compile Include="Scripts\LockPicking.cs" />
     <Compile Include="Scripts\Mugging.cs" />
     <Compile Include="Scripts\PedWounds.cs" />
     <Compile Include="Scripts\PersonofInterest.cs" />
     <Compile Include="Scripts\PlayerHealth.cs" />
     <Compile Include="ScriptController.cs" />
+    <Compile Include="Scripts\PlayerState.cs" />
     <Compile Include="Scripts\VehicleFuelSystem.cs" />
     <Compile Include="Old\WeatherReporting.cs" />
     <Compile Include="EntryPoint.cs" />
@@ -136,7 +139,7 @@
     <Compile Include="Other\Memory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lookups\ScannerAudio.cs" />
-    <Compile Include="Scripts\CarStealing.cs" />
+    <Compile Include="Scripts\CarJacking.cs" />
     <Compile Include="Scripts\Debugging.cs" />
     <Compile Include="Scripts\DispatchAudio.cs" />
     <Compile Include="Scripts\LicensePlateChanging.cs" />
