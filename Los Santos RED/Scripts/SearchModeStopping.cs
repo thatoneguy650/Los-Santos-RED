@@ -70,7 +70,7 @@ public static class SearchModeStopping
             {
                 CreateGhostCop();
             }
-            if (PlayerState.PlayerIsWanted && Police.AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+            if (PlayerState.IsWanted && Police.AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
             {
                 MoveGhostCopToPosition();
             }

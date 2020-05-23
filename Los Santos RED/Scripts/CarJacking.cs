@@ -47,7 +47,7 @@ public static class CarJacking
         SeatTryingToEnter = EntrySeat;
         Weapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
 
-        if (CanArmedCarJack && PlayerState.PlayerHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != GTAWeapon.WeaponCategory.Melee)
+        if (CanArmedCarJack && PlayerState.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != GTAWeapon.WeaponCategory.Melee)
         {
             ArmedCarJack();
         }
@@ -153,7 +153,7 @@ public static class CarJacking
                 Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                 NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
                 Police.PlayerArtificiallyShooting = true;
-                PlayerState.GameTimePlayerLastShot = Game.GameTime;
+                PlayerState.PlayerShotArtificially();
 
                 if (ScenePhase <= 0.35f)
                 {

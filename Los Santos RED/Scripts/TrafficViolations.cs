@@ -91,7 +91,7 @@ public static class TrafficViolations
             if (PlayerState.IsBusted || PlayerState.IsDead)
                 return;
 
-            if (PlayerState.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (PlayerState.PlayerInAutomobile || PlayerState.PlayerOnMotorcycle) && !PedSwapping.JustTakenOver(10000))
+            if (PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (PlayerState.IsInAutomobile || PlayerState.IsOnMotorcycle) && !PedSwapping.JustTakenOver(10000))
             {
                 float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
                 Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;

@@ -157,7 +157,7 @@ public static class Debugging
     }
     private static void DebugNumpad2()
     {
-        int Toassign = PlayerState.PlayerWantedLevel;
+        int Toassign = PlayerState.WantedLevel;
         if (Toassign == 5)
             return;
         Toassign++;
@@ -191,6 +191,36 @@ public static class Debugging
         //GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION
         //GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS
 
+        
+
+
+        Vector3 ClosestRoad;
+        float Heading;
+        General.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out ClosestRoad, out Heading, true);
+
+        Vector3 OffsetPos = Game.LocalPlayer.Character.GetOffsetPositionFront(50f);
+
+        Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
+        Vector3 OutPos = Vector3.Zero;
+        float OutHeading = 0f;
+        unsafe
+        {
+            NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION", ClosestRoad.X, ClosestRoad.Y, ClosestRoad.Z, OffsetPos.X, OffsetPos.Y, OffsetPos.Z, 50, &OutPos, &OutHeading, 1, 0x40400000, 0);
+        }
+        Blip MyBlip = new Blip(OutPos, 10f)
+        {
+            Name = "Cool",
+            Color = Color.Blue,
+            Alpha = 0.5f
+        };
+
+        GameFiber.Sleep(5000);
+
+        if (MyBlip.Exists())
+            MyBlip.Delete();
+
+
+
 
         //Agency ToChoose = Agencies.AgenciesList.Where(x => x.Initials == "ARMY").FirstOrDefault();
         //WriteToLog("DebugNumpad5", ToChoose.FullName);
@@ -201,7 +231,7 @@ public static class Debugging
     }
     private static void DebugNumpad6()
     {
-
+        ScriptController.OutputTable();
 
 
         WriteToLog("DebugNumpad6", string.Format("                      PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));

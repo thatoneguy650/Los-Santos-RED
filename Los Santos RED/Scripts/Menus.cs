@@ -364,7 +364,7 @@ internal static class Menus
         bustedMenu.AddItem(menuBustedResistArrest);
         bustedMenu.AddItem(menuBustedBribe);
         bustedMenu.AddItem(menuBustedSurrender);
-        if (PlayerState.PlayerWantedLevel <= 1 || !Police.CurrentCrimes.CommittedAnyCrimes)
+        if (PlayerState.WantedLevel <= 1 || !Police.CurrentCrimes.CommittedAnyCrimes)
         {
             menuBustedTalk = new UIMenuItem("Talk", "Try to talk your way out of an arrest.");
             bustedMenu.AddItem(menuBustedTalk);
@@ -415,7 +415,7 @@ internal static class Menus
         actionsMenu.AddItem(menuMainSuicide);
         actionsMenu.AddItem(menuActionSmoking);
 
-        if (!PlayerState.PlayerInVehicle)
+        if (!PlayerState.IsInVehicle)
         {
             actionsMenu.AddItem(menuMainChangeLicensePlate);
             actionsMenu.AddItem(menuMainRemoveLicensePlate);
@@ -506,7 +506,7 @@ internal static class Menus
     {
         if (selectedItem == menuMainTakeoverRandomPed)
         {
-            if(PlayerState.PlayerWantedLevel > 0)
+            if(PlayerState.WantedLevel > 0)
             {
                 Game.DisplayNotification("Lose your wanted level first");
                 return;

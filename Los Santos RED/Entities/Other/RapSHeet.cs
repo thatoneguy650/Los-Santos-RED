@@ -226,7 +226,7 @@ public class RapSheet
             HurtingCivilians.IsCurrentlyViolating = false;
         }
 
-        if(PlayerState.PlayerRecentlyShot(5000) || Police.PlayerArtificiallyShooting || Game.LocalPlayer.Character.IsShooting)
+        if(PlayerState.RecentlyShot(5000) || Police.PlayerArtificiallyShooting || Game.LocalPlayer.Character.IsShooting)
         {
             FiringWeapon.IsCurrentlyViolating = true;
             if (Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
@@ -267,7 +267,7 @@ public class RapSheet
         }
 
         bool IsBrandishing = false;
-        if (PlayerState.PlayerIsConsideredArmed)
+        if (PlayerState.IsConsideredArmed)
         {
             if (GameTimeStartedBrandishing == 0)
                 GameTimeStartedBrandishing = Game.GameTime;
@@ -280,7 +280,7 @@ public class RapSheet
         if(GameTimeStartedBrandishing > 0 && Game.GameTime - GameTimeStartedBrandishing >= 1500)
             IsBrandishing = true;
 
-        if (IsBrandishing && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !PlayerState.PlayerInVehicle)
+        if (IsBrandishing && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !PlayerState.IsInVehicle)
         {
             BrandishingWeapon.IsCurrentlyViolating = true;
             GTAWeapon MatchedWeapon = GTAWeapons.GetWeaponFromHash((ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
@@ -299,7 +299,7 @@ public class RapSheet
             BrandishingWeapon.IsCurrentlyViolating = false;
         }
 
-        if (PlayerState.PlayerBreakingIntoCar)
+        if (PlayerState.IsBreakingIntoCar)
         {
             GrandTheftAuto.IsCurrentlyViolating = true;
             if (GrandTheftAuto.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
@@ -333,7 +333,7 @@ public class RapSheet
         }
 
         //Police Only
-        if (TrespessingOnGovtProperty.CanObserveCrime && PlayerState.PlayerIsWanted && PlayerLocation.PlayerCurrentZone.IsRestrictedDuringWanted && Police.AnyPoliceCanSeePlayer)
+        if (TrespessingOnGovtProperty.CanObserveCrime && PlayerState.IsWanted && PlayerLocation.PlayerCurrentZone.IsRestrictedDuringWanted && Police.AnyPoliceCanSeePlayer)
         {
             TrespessingOnGovtProperty.CrimeObserved();
         }
@@ -342,7 +342,7 @@ public class RapSheet
         {
             AimingWeaponAtPolice.CrimeObserved();
         }
-        if(ResistingArrest.CanObserveCrime && !ResistingArrest.HasBeenWitnessedByPolice && PlayerState.PlayerIsWanted && Police.AnyPoliceCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !PlayerState.HandsAreUp && Police.PlayerHasBeenWantedFor >= 15000)
+        if(ResistingArrest.CanObserveCrime && !ResistingArrest.HasBeenWitnessedByPolice && PlayerState.IsWanted && Police.AnyPoliceCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !PlayerState.HandsAreUp && Police.PlayerHasBeenWantedFor >= 15000)
         {
             bool InVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             ResistingArrest.DispatchToPlay.SuspectStatusOnFoot = true;
@@ -357,14 +357,14 @@ public class RapSheet
         {
             GrandTheftAuto.CrimeObserved();
         }
-        if (GotInAirVehicleDuringChase.CanObserveCrime && PlayerState.PlayerIsWanted && PlayerState.PlayerInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
+        if (GotInAirVehicleDuringChase.CanObserveCrime && PlayerState.IsWanted && PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
         {
             GotInAirVehicleDuringChase.CrimeObserved();
         }
     }
     private void CheckAimingAtPolice()
     {
-        if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && PlayerState.PlayerIsConsideredArmed && Game.LocalPlayer.IsFreeAiming && Police.AnyPoliceCanSeePlayer && PedList.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.Pedestrian)))
+        if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && PlayerState.IsConsideredArmed && Game.LocalPlayer.IsFreeAiming && Police.AnyPoliceCanSeePlayer && PedList.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.Pedestrian)))
             TimeAimedAtPolice++;
         else
             TimeAimedAtPolice = 0;
@@ -408,7 +408,7 @@ public class Crime
     {
         get
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
                 return false;
             else if (GameTimeLastCalledInByCivilians == 0)
                 return true;
@@ -459,7 +459,7 @@ public class Crime
     }
     public void CrimeObserved()
     {
-        if ((!HasBeenReportedByDispatch || Severity == CrimeLevel.Felony) && !RecentlyReportedCrime(25000) && PlayerState.PlayerWantedLevel <= ResultingWantedLevel)//if (!HasBeenWitnessedByPolice && !HasBeenReportedByDispatch && InstantAction.PlayerWantedLevel <= ResultingWantedLevel)
+        if ((!HasBeenReportedByDispatch || Severity == CrimeLevel.Felony) && !RecentlyReportedCrime(25000) && PlayerState.WantedLevel <= ResultingWantedLevel)//if (!HasBeenWitnessedByPolice && !HasBeenReportedByDispatch && InstantAction.PlayerWantedLevel <= ResultingWantedLevel)
         {
             GameTimeLastReported = Game.GameTime;
             DispatchToPlay.ResultsInLethalForce = ResultsInLethalForce;

@@ -41,7 +41,7 @@ public static class LockPicking
     {
         TargetVehicle = VehicleToEnter;
         SeatTryingToEnter = EntrySeat;
-        if (!PlayerState.PlayerHoldingEnter || !CanLockPick)
+        if (!PlayerState.IsHoldingEnter || !CanLockPick)
             return;
 
         try

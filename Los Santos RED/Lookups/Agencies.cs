@@ -417,7 +417,7 @@ public class Agency
     {
         get
         {
-            if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
+            if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
             {
                 if (PedList.CopPeds.Count(x => x.AssignedAgency == this) < SpawnLimit)
                     return true;
@@ -504,7 +504,7 @@ public class Agency
         if (CopModels == null || !CopModels.Any())
             return null;
 
-        List<ModelInformation> ToPickFrom = CopModels.Where(x => PlayerState.PlayerWantedLevel >= x.MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= x.MaxWantedLevelSpawn).ToList();
+        List<ModelInformation> ToPickFrom = CopModels.Where(x => PlayerState.WantedLevel >= x.MinWantedLevelSpawn && PlayerState.WantedLevel <= x.MaxWantedLevelSpawn).ToList();
         if(RequiredModels != null && RequiredModels.Any())
         {
             ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
@@ -554,9 +554,9 @@ public class Agency
         {
             get
             {
-                if (PlayerState.PlayerIsWanted)
+                if (PlayerState.IsWanted)
                 {
-                    if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance > 0;
                     else
                         return false;
@@ -569,9 +569,9 @@ public class Agency
         {
             get
             {
-                if (PlayerState.PlayerIsWanted)
+                if (PlayerState.IsWanted)
                 {
-                    if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance;
                     else
                         return 0;
@@ -640,9 +640,9 @@ public class Agency
                     return false;
                 }
 
-                if (PlayerState.PlayerIsWanted)
+                if (PlayerState.IsWanted)
                 {
-                    if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
                         return CanSpawnWanted;
                     else
                         return false;
@@ -657,9 +657,9 @@ public class Agency
             {
                 if (!CanCurrentlySpawn)
                     return 0;
-                if (PlayerState.PlayerIsWanted)
+                if (PlayerState.IsWanted)
                 {
-                    if (PlayerState.PlayerWantedLevel >= MinWantedLevelSpawn && PlayerState.PlayerWantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
                         return WantedSpawnChance;
                     else
                         return 0;

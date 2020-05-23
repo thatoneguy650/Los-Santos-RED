@@ -448,7 +448,7 @@ public static class DispatchAudio
                     {
                         DispatchQueueItem Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
 
-                        if (Item.ReportedBy == ReportType.Civilians && PlayerState.PlayerIsWanted)
+                        if (Item.ReportedBy == ReportType.Civilians && PlayerState.IsWanted)
                         {
                             Debugging.WriteToLog("Ignoring Civilian Repoted", Item.Type.ToString());
                         }
@@ -1019,7 +1019,7 @@ public static class DispatchAudio
         }
         if (ItemToPlay.VehicleToReport != null && !ItemToPlay.VehicleToReport.HasBeenDescribedByDispatch)
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
             {
                 ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
                 Subtitles += "Suspect spotted driving a";
@@ -1531,7 +1531,7 @@ public static class DispatchAudio
         string Subtitles = "";
         DispatchNotification Notification = new DispatchNotification("Police Scanner", "~g~Status~s~", "Suspect Spotted");
         ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Nobody, Vector3.Zero);
-        if (PlayerState.PlayerInVehicle)
+        if (PlayerState.IsInVehicle)
         {
             if (PlayerLocation.PlayerRecentlyGotOnFreeway)
             {
@@ -1741,7 +1741,7 @@ public static class DispatchAudio
         }
         if (VehicleToReport != null && !VehicleToReport.HasBeenDescribedByDispatch)
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
             {
                 ScannerList.Add(suspect_last_seen.SuspectSpotted.FileName);
                 Subtitles += "Suspect spotted driving a";

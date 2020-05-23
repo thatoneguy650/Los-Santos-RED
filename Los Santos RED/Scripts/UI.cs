@@ -130,7 +130,7 @@ public static class UI
                 NativeFunction.Natives.x80C8B1846639BB19(1);
                 NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);
                 NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND",-1,"Bed", "WastedSounds", true);
-                BigMessage.MessageInstance.ShowColoredShard("WASTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 3000);
+                BigMessage.MessageInstance.ShowColoredShard("WASTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 2000);
                 StartedDeathEffect = true;
                 
             }
@@ -142,7 +142,7 @@ public static class UI
                 NativeFunction.Natives.x80C8B1846639BB19(1);
                 NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);
                 NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "TextHit", "WastedSounds", true);
-                BigMessage.MessageInstance.ShowColoredShard("BUSTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_BLUE, 3000);
+                BigMessage.MessageInstance.ShowColoredShard("BUSTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_BLUE, 2000);
                 StartedBustedEffect = true;
             }
         }
@@ -152,7 +152,7 @@ public static class UI
             {
                 NativeFunction.Natives.x80C8B1846639BB19(1);
                 NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);
-                BigMessage.MessageInstance.ShowColoredShard("BLEEDING", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 1000);
+                BigMessage.MessageInstance.ShowColoredShard("BLEEDING", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 1500);
                 StartedBandagingEffect = true;
             }
         }
@@ -183,14 +183,14 @@ public static class UI
         string PlayerStatusLine = "";
         if (PersonOfInterest.PlayerIsPersonOfInterest)
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
                 PlayerStatusLine = "~r~Wanted~s~";
             else if (Police.PlayerHasBeenNotWantedFor <= 45000)
                 PlayerStatusLine = "~o~Wanted~s~";
             else
                 PlayerStatusLine = "~y~Wanted~s~";
         }
-        if (PlayerState.PlayerIsWanted)
+        if (PlayerState.IsWanted)
         {
             string AgenciesChasingPlayer = PedList.AgenciesChasingPlayer;
             if (AgenciesChasingPlayer != "")

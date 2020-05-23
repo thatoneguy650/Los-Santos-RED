@@ -186,7 +186,7 @@ public static class WeatherReporting
     }
     private static void NextWeatherChanged()
     {
-        if(NextWeather != CurrentWeather && PlayerState.PlayerWantedLevel == 0 && !DispatchAudio.IsPlayingAudio)
+        if(NextWeather != CurrentWeather && PlayerState.WantedLevel == 0 && !DispatchAudio.IsPlayingAudio)
             ReportWeather(NextWeather);
 
         Debugging.WriteToLog("CheckWeather", string.Format("Next Weather Changed from {0} to {1}", PrevNextWeather, NextWeather));
@@ -194,7 +194,7 @@ public static class WeatherReporting
     }
     public static void ReportWeather(WeatherTypeHash WeatherToReport)
     {
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && PlayerState.PlayerWantedLevel == 0 && Police.PlayerHasBeenNotWantedFor > 15000)//Aren;t wanted and haven't been wanted for 15 seconds
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && PlayerState.WantedLevel == 0 && Police.PlayerHasBeenNotWantedFor > 15000)//Aren;t wanted and haven't been wanted for 15 seconds
         {
             string WeatherFile = GetAudioFromWeatherType(WeatherToReport);
             if (WeatherFile == "")
@@ -230,7 +230,7 @@ public static class WeatherReporting
     }
     private static void ReportWindy()
     {
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && PlayerState.PlayerWantedLevel == 0 && Police.PlayerHasBeenNotWantedFor > 15000)//Aren;t wanted and haven't been wanted for 15 seconds
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && PlayerState.WantedLevel == 0 && Police.PlayerHasBeenNotWantedFor > 15000)//Aren;t wanted and haven't been wanted for 15 seconds
         {
             StoredAndTurnOffRadio();
             GameTimeLastReportedWeather = Game.GameTime;

@@ -19,8 +19,8 @@ public static class PoliceSpawning
     {
         get
         {
-            if (PlayerState.PlayerIsWanted)
-                return 400f - (PlayerState.PlayerWantedLevel * -40);
+            if (PlayerState.IsWanted)
+                return 400f - (PlayerState.WantedLevel * -40);
             else if (Police.PoliceInInvestigationMode)
                 return Police.InvestigationDistance / 2;
             else
@@ -31,7 +31,7 @@ public static class PoliceSpawning
     {
         get
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
                 return 550f;
             else if (Police.PoliceInInvestigationMode)
                 return Police.InvestigationDistance;
@@ -43,7 +43,7 @@ public static class PoliceSpawning
     {
         get
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
                 return 700f;//550f
             else
                 return 1500f;
@@ -53,7 +53,7 @@ public static class PoliceSpawning
     {
         get
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
                 return true;
             else
                 return false;
@@ -63,7 +63,7 @@ public static class PoliceSpawning
     {
         get
         {
-            if (PlayerState.PlayerIsNotWanted)
+            if (PlayerState.IsNotWanted)
             {
                 if (PedList.TotalSpawnedCops < General.MySettings.Police.SpawnAmbientPoliceLimit)
                     return true;
@@ -74,7 +74,7 @@ public static class PoliceSpawning
             {
                 if (PedList.TotalSpawnedCops < General.MySettings.Police.SpawnAmbientPoliceLimit + ExtraCopSpawnLimit)
                 {
-                    if (Game.GameTime - GameTimeLastSpawnedCop >= 6000 - (PlayerState.PlayerWantedLevel * -1000))
+                    if (Game.GameTime - GameTimeLastSpawnedCop >= 6000 - (PlayerState.WantedLevel * -1000))
                         return true;
                     else
                         return false;
@@ -88,7 +88,7 @@ public static class PoliceSpawning
     {
         get
         {
-            int CurrentWantedLevel = PlayerState.PlayerWantedLevel;
+            int CurrentWantedLevel = PlayerState.WantedLevel;
             if (CurrentWantedLevel == 1)//set as parameters
                 return 0;
             else if (CurrentWantedLevel == 2)
@@ -155,7 +155,7 @@ public static class PoliceSpawning
         Vector3 SpawnLocation = Vector3.Zero;
         float Heading = 0f;
         Vector3 InitialPosition = Vector3.Zero;
-        if (PlayerState.PlayerIsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        if (PlayerState.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
         {
             InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(350f).Around2D(DistanceFrom, DistanceTo);//put it out front to aid the cops
         }
@@ -214,7 +214,7 @@ public static class PoliceSpawning
         try
         {
             Agency AgencyToSpawn;
-            if(PlayerState.PlayerWantedLevel == 5 && General.RandomPercent(30))
+            if(PlayerState.WantedLevel == 5 && General.RandomPercent(30))
             {
                 AgencyToSpawn = Agencies.GetRandomArmyAgency();
             }
@@ -241,11 +241,11 @@ public static class PoliceSpawning
             {
                 GameTimeLastSpawnedCop = Game.GameTime;
 
-                if(PlayerState.PlayerWantedLevel == 5 && !DispatchAudio.ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.IsArmy))
+                if(PlayerState.WantedLevel == 5 && !DispatchAudio.ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.IsArmy))
                 {             
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.MilitaryDeployed, 1));            
                 }
-                if (PlayerState.PlayerWantedLevel >= 2 && !DispatchAudio.ReportedAirSupportRequested && PedList.CopPeds.Any(x => x.IsInHelicopter))
+                if (PlayerState.WantedLevel >= 2 && !DispatchAudio.ReportedAirSupportRequested && PedList.CopPeds.Any(x => x.IsInHelicopter))
                 {
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.AirSupportRequested, 1));
                 }
@@ -273,11 +273,11 @@ public static class PoliceSpawning
                 {
                     DeleteCop(Cop);
                 }
-                else if (Cop.DistanceToPlayer >= 175f && PlayerState.PlayerIsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f) && Cop.CountNearbyCops >= 3)
+                else if (Cop.DistanceToPlayer >= 175f && PlayerState.IsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f) && Cop.CountNearbyCops >= 3)
                 {
                     DeleteCop(Cop);
                 }
-                else if (Cop.DistanceToPlayer >= 250f && PlayerState.PlayerIsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && Cop.CountNearbyCops >= 3)
+                else if (Cop.DistanceToPlayer >= 250f && PlayerState.IsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && Cop.CountNearbyCops >= 3)
                 {
                     DeleteCop(Cop);
                 }
@@ -402,7 +402,7 @@ public static class PoliceSpawning
         }
 
         CopCar = SpawnCopVehicle(_Agency, MyCarInfo, SpawnLocation, Heading);
-        GameFiber.Yield();
+        //GameFiber.Yield();
         if (CopCar != null && CopCar.VehicleEnt.Exists())
         {
             PedList.PoliceVehicles.Add(CopCar.VehicleEnt);
@@ -413,7 +413,7 @@ public static class PoliceSpawning
             }
 
             Ped Cop = SpawnCopPed(_Agency, SpawnLocation, MyCarInfo.IsMotorcycle, RequiredPedModels);
-            GameFiber.Yield();
+            //GameFiber.Yield();
             if (Cop == null || !Cop.Exists())
                 return false;
             CreatedEntities.Add(Cop);
@@ -447,7 +447,7 @@ public static class PoliceSpawning
                 for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                 {
                     Ped PartnerCop = SpawnCopPed(_Agency, SpawnLocation, false, null);
-                    GameFiber.Yield();
+                    //GameFiber.Yield();
                     if (PartnerCop != null)
                     {
                         CreatedEntities.Add(PartnerCop);

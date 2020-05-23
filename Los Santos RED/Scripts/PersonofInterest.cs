@@ -33,7 +33,7 @@ public static class PersonOfInterest
     {
         if (IsRunning)
         {
-            if (PrevPlayerIsWanted != PlayerState.PlayerIsWanted)
+            if (PrevPlayerIsWanted != PlayerState.IsWanted)
                 WantedLevelAddedOrRemoved();
 
             if (PlayerState.IsDead || PlayerState.IsBusted)
@@ -41,7 +41,7 @@ public static class PersonOfInterest
 
             CheckCurrentVehicle();
             CheckSight();
-            if (PlayerState.PlayerIsNotWanted)
+            if (PlayerState.IsNotWanted)
             {
                 if (PlayerIsPersonOfInterest && Police.PlayerHasBeenNotWantedFor >= 120000)
                 {
@@ -65,7 +65,7 @@ public static class PersonOfInterest
     }
     public static void CheckCurrentVehicle()
     {
-        if ((PlayerState.PlayerIsNotWanted || PlayerState.PlayerWantedLevel == 1) && Police.AnyPoliceCanRecognizePlayer && PlayerState.PlayerInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+        if ((PlayerState.IsNotWanted || PlayerState.WantedLevel == 1) && Police.AnyPoliceCanRecognizePlayer && PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
             GTAVehicle VehicleToCheck = PlayerState.GetPlayersCurrentTrackedVehicle();
 
@@ -105,7 +105,7 @@ public static class PersonOfInterest
                     Police.SetWantedLevel(2, "Cops Reacquired after losing them in the same area, actual wanted not found",true);
                 DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
             }
-            else if(PlayerState.PlayerIsWanted)
+            else if(PlayerState.IsWanted)
             {
                 if (ApplyLastWantedStats())
                 {
@@ -113,7 +113,7 @@ public static class PersonOfInterest
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
                 }
             }
-            else if (Police.PoliceInInvestigationMode && PlayerState.PlayerIsNotWanted && Police.NearInvestigationPosition)
+            else if (Police.PoliceInInvestigationMode && PlayerState.IsNotWanted && Police.NearInvestigationPosition)
             {
                 ApplyReportedCrimes();
                 Police.SetWantedLevel(2, "you are a suspect!",true);
@@ -133,7 +133,7 @@ public static class PersonOfInterest
     }
     private static void WantedLevelAddedOrRemoved()
     {
-        if(PlayerState.PlayerIsWanted)
+        if(PlayerState.IsWanted)
         {
             AddUpdateLastWantedBlip(Vector3.Zero);
         }
@@ -144,7 +144,7 @@ public static class PersonOfInterest
             else
                 AddUpdateLastWantedBlip(Vector3.Zero);
         }
-        PrevPlayerIsWanted = PlayerState.PlayerIsWanted;
+        PrevPlayerIsWanted = PlayerState.IsWanted;
     }
 
     public static void ResetPersonOfInterest(bool PlayAudio)

@@ -22,7 +22,6 @@ using Extensions = ExtensionsMethods.Extensions;
 public static class ControlScript
 {
     private static Police.PoliceState HandsUpPreviousPoliceState;
-    public static Settings MySettings { get; set; }
     public static bool IsRunning { get; set; }
     public static void Initialize()
     {
@@ -36,7 +35,7 @@ public static class ControlScript
     {
         if (IsRunning)
         {
-            if (Game.IsKeyDownRightNow(MySettings.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
             {
                 if (!PlayerState.HandsAreUp && !PlayerState.IsBusted)
                 {
@@ -59,12 +58,12 @@ public static class ControlScript
                 }
             }
 
-            if (Game.IsKeyDownRightNow(MySettings.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
             {
                 Surrendering.CommitSuicide(Game.LocalPlayer.Character);
             }
 
-            if (Game.IsKeyDownRightNow(MySettings.KeyBinding.SurrenderKey) && Game.IsControlKeyDownRightNow)
+            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && Game.IsControlKeyDownRightNow)
             {
                 PlayerHealth.BandagePed(Game.LocalPlayer.Character);
             }

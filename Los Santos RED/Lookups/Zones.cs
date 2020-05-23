@@ -166,36 +166,38 @@ public static class Zones
             new Zone("OCEANA", "Pacific Ocean", ScannerAudio.areas.TheOcean.FileName, County.PacificOcean,"Pacific Coast") { ZoneAgencies = OceanAgencies },   
 
             //North Blaine
-            new Zone("PROCOB", "Procopio Beach", ScannerAudio.areas.ProcopioBeach.FileName, County.BlaineCounty,"North Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("MTCHIL", "Mount Chiliad", ScannerAudio.areas.MountChiliad.FileName, County.BlaineCounty,"North Blaine County") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("MTGORDO", "Mount Gordo", ScannerAudio.areas.MountGordo.FileName, County.BlaineCounty,"North Blaine County") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("PALETO", "Paleto Bay", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty,"North Blaine County", new List<string>() { ScannerAudio.attention_all_area_units.PaletoaBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits3.FileName }, "Paleto Bay Units") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("PALCOV", "Paleto Cove", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty,"North Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("PALFOR", "Paleto Forest", ScannerAudio.areas.PaletoForest.FileName, County.BlaineCounty,"North Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("CMSW", "Chiliad Mountain State Wilderness", ScannerAudio.areas.ChilliadMountainStWilderness.FileName, County.BlaineCounty,"North Blaine County") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("CALAFB", "Calafia Bridge", "", County.BlaineCounty,"North Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("GALFISH", "Galilee", "", County.BlaineCounty,"North Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("ELGORL", "El Gordo Lighthouse", ScannerAudio.areas.MountGordo.FileName, County.BlaineCounty,"North Blaine County") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("PROCOB", "Procopio Beach", ScannerAudio.areas.ProcopioBeach.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("MTCHIL", "Mount Chiliad", ScannerAudio.areas.MountChiliad.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("MTGORDO", "Mount Gordo", ScannerAudio.areas.MountGordo.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("PALETO", "Paleto Bay", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty,"Chiliad", new List<string>() { ScannerAudio.attention_all_area_units.PaletoaBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits3.FileName }, "Paleto Bay Units") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("PALCOV", "Paleto Cove", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("PALFOR", "Paleto Forest", ScannerAudio.areas.PaletoForest.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("CMSW", "Chiliad Mountain State Wilderness", ScannerAudio.areas.ChilliadMountainStWilderness.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("CALAFB", "Calafia Bridge", "", County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("GALFISH", "Galilee", "", County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("ELGORL", "El Gordo Lighthouse", ScannerAudio.areas.MountGordo.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("GRAPES", "Grapeseed", ScannerAudio.areas.Grapeseed.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("BRADP", "Braddock Pass", ScannerAudio.areas.BraddockPass.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("BRADT", "Braddock Tunnel", ScannerAudio.areas.TheBraddockTunnel.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("CCREAK", "Cassidy Creek", "", County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
 
             //Blaine
-            new Zone("ALAMO", "Alamo Sea", ScannerAudio.areas.TheAlamaSea.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("ARMYB", "Fort Zancudo", ScannerAudio.areas.FtZancudo.FileName, County.BlaineCounty,"Blaine County") { IsRestrictedDuringWanted = true, ZoneAgencies = ArmyAgencies },
-            new Zone("BRADP", "Braddock Pass", ScannerAudio.areas.BraddockPass.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("BRADT", "Braddock Tunnel", ScannerAudio.areas.TheBraddockTunnel.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("CANNY", "Raton Canyon", ScannerAudio.areas.RatonCanyon.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("CCREAK", "Cassidy Creek", "", County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("DESRT", "Grand Senora Desert", ScannerAudio.areas.GrandeSonoranDesert.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("GRAPES", "Grapeseed", ScannerAudio.areas.Grapeseed.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("HUMLAB", "Humane Labs and Research", "", County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("JAIL", "Bolingbroke Penitentiary", ScannerAudio.areas.BoilingBrookPenitentiary.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = BlainePrisonAgencies,IsRestrictedDuringWanted = true },
-            new Zone("LAGO", "Lago Zancudo", ScannerAudio.areas.LagoZancudo.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("MTJOSE", "Mount Josiah", ScannerAudio.areas.MtJosiah.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("NCHU", "North Chumash", ScannerAudio.areas.NorthChumash.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },   
-            new Zone("SANCHIA", "San Chianski Mountain Range", "", County.BlaineCounty,"Blaine County") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("SANDY", "Sandy Shores", ScannerAudio.areas.SandyShores.FileName, County.BlaineCounty,"Blaine County", new List<string>() { ScannerAudio.attention_all_area_units.SandyShoreUnits.FileName, ScannerAudio.attention_all_area_units.SandyShoresUnits2.FileName, ScannerAudio.attention_all_area_units.SanyShoreUnits3.FileName }, "Sandy Shores Units") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("SLAB", "Slab City", ScannerAudio.areas.SlabCity.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("ZANCUDO", "Zancudo River", ScannerAudio.areas.ZancudoRiver.FileName, County.BlaineCounty,"Blaine County", new List<string>() { ScannerAudio.attention_all_area_units.ZancudoRiverUnits.FileName }, "Zancudo River Units") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("ZQ_UAR", "Davis Quartz", ScannerAudio.areas.DavisCourts.FileName, County.BlaineCounty,"Blaine County") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("ALAMO", "Alamo Sea", ScannerAudio.areas.TheAlamaSea.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("ARMYB", "Fort Zancudo", ScannerAudio.areas.FtZancudo.FileName, County.BlaineCounty,"Midlands") { IsRestrictedDuringWanted = true, ZoneAgencies = ArmyAgencies },
+            new Zone("CANNY", "Raton Canyon", ScannerAudio.areas.RatonCanyon.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            
+            new Zone("DESRT", "Grand Senora Desert", ScannerAudio.areas.GrandeSonoranDesert.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+      
+            new Zone("HUMLAB", "Humane Labs and Research", "", County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("JAIL", "Bolingbroke Penitentiary", ScannerAudio.areas.BoilingBrookPenitentiary.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = BlainePrisonAgencies,IsRestrictedDuringWanted = true },
+            new Zone("LAGO", "Lago Zancudo", ScannerAudio.areas.LagoZancudo.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("MTJOSE", "Mount Josiah", ScannerAudio.areas.MtJosiah.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("NCHU", "North Chumash", ScannerAudio.areas.NorthChumash.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },   
+            new Zone("SANCHIA", "San Chianski Mountain Range", "", County.BlaineCounty,"Midlands") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("SANDY", "Sandy Shores", ScannerAudio.areas.SandyShores.FileName, County.BlaineCounty,"Midlands", new List<string>() { ScannerAudio.attention_all_area_units.SandyShoreUnits.FileName, ScannerAudio.attention_all_area_units.SandyShoresUnits2.FileName, ScannerAudio.attention_all_area_units.SanyShoreUnits3.FileName }, "Sandy Shores Units") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("SLAB", "Slab City", ScannerAudio.areas.SlabCity.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("ZANCUDO", "Zancudo River", ScannerAudio.areas.ZancudoRiver.FileName, County.BlaineCounty,"Midlands", new List<string>() { ScannerAudio.attention_all_area_units.ZancudoRiverUnits.FileName }, "Zancudo River Units") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("ZQ_UAR", "Davis Quartz", ScannerAudio.areas.DavisCourts.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
 
             //Vespucci
             new Zone("BEACH", "Vespucci Beach", ScannerAudio.areas.VespucciBeach.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
@@ -258,9 +260,8 @@ public static class Zones
             new Zone("BAYTRE", "Baytree Canyon", ScannerAudio.areas.BayTreeCanyon.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
             new Zone("RGLEN", "Richman Glen", ScannerAudio.areas.RichmanGlenn.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
             new Zone("TONGVAV", "Tongva Valley", ScannerAudio.areas.TongvaValley.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
-
-            new Zone("HARMO", "Harmony", ScannerAudio.areas.Harmony.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("RTRAK", "Redwood Lights Track", ScannerAudio.areas.TheRedwoodLightsTrack.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("HARMO", "Harmony", ScannerAudio.areas.Harmony.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
+            new Zone("RTRAK", "Redwood Lights Track", ScannerAudio.areas.TheRedwoodLightsTrack.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
            
             //Chumash
             new Zone("BANHAMC", "Banham Canyon Dr", "", County.LosSantosCounty,"Chumash", ChumashsAreaUnits, "Chumash Units") { ZoneAgencies = ChumashAgencies },
@@ -269,14 +270,14 @@ public static class Zones
             new Zone("TONGVAH", "Tongva Hills", ScannerAudio.areas.TongaHills.FileName, County.LosSantosCounty,"Chumash", ChumashsAreaUnits, "Chumash Units") { ZoneAgencies = ChumashAgencies },
            
             //Tataviam 
-            new Zone("LACT", "Land Act Reservoir", "", County.LosSantosCounty,"Tataviam Area") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("LDAM", "Land Act Dam", "", County.LosSantosCounty,"Tataviam Area") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("NOOSE", "N.O.O.S.E", "", County.LosSantosCounty,"Tataviam Area") { IsRestrictedDuringWanted = true, ZoneAgencies = StandardSheriffAgencies },
-            new Zone("PALHIGH", "Palomino Highlands", ScannerAudio.areas.PalominoHighlands.FileName, County.LosSantosCounty,"Tataviam Area") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("PALMPOW", "Palmer - Taylor Power Station", ScannerAudio.areas.PalmerTaylorPowerStation.FileName, County.LosSantosCounty,"Tataviam Area") { ZoneAgencies = StandardSheriffAgencies },    
+            new Zone("LACT", "Land Act Reservoir", "", County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("LDAM", "Land Act Dam", "", County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("NOOSE", "N.O.O.S.E", "", County.LosSantosCounty,"Tataviam") { IsRestrictedDuringWanted = true, ZoneAgencies = StandardSheriffAgencies },
+            new Zone("PALHIGH", "Palomino Highlands", ScannerAudio.areas.PalominoHighlands.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("PALMPOW", "Palmer - Taylor Power Station", ScannerAudio.areas.PalmerTaylorPowerStation.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },    
             new Zone("SANAND", "San Andreas", ScannerAudio.areas.SanAndreas.FileName, County.LosSantosCounty,"San Andreas") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("TATAMO", "Tataviam Mountains", ScannerAudio.areas.TatathiaMountains.FileName, County.LosSantosCounty,"Tataviam Area") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("WINDF", "Ron Alternates Wind Farm", ScannerAudio.areas.RonAlternatesWindFarm.FileName, County.LosSantosCounty,"Tataviam Area") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("TATAMO", "Tataviam Mountains", ScannerAudio.areas.TatathiaMountains.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("WINDF", "Ron Alternates Wind Farm", ScannerAudio.areas.RonAlternatesWindFarm.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
     };
         
     }
@@ -318,16 +319,14 @@ public static class Zones
         if (WithCounty)
         {
             string CountyName = "San Andreas";
-            //if (MyZone.ZoneCounty == County.BlaineCounty)
-            //    CountyName = "Blaine County";
-            //else if (MyZone.ZoneCounty == County.CityOfLosSantos)
-            //    CountyName = "City of Los Santos";
-            //else if (MyZone.ZoneCounty == County.LosSantosCounty)
-            //    CountyName = "Los Santos County";
+            if (MyZone.ZoneCounty == County.BlaineCounty)
+                CountyName = "Blaine County";
+            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
+                CountyName = "City of Los Santos";
+            else if (MyZone.ZoneCounty == County.LosSantosCounty)
+                CountyName = "Los Santos County";
 
-            CountyName = MyZone.AreaName;
-
-            return MyZone.TextName + ", " + CountyName;
+            return MyZone.TextName + ", " + MyZone.AreaName + ", " + CountyName;
         }
         else
         {
@@ -451,7 +450,7 @@ public class ZoneAgency
     {
         get
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
             {
                 if (AssociatedAgency.CanSpawn)
                 {
@@ -468,7 +467,7 @@ public class ZoneAgency
     {
         get
         {
-            if (PlayerState.PlayerIsWanted)
+            if (PlayerState.IsWanted)
                 return WantedSpawnChance;
             else
                 return AmbientSpawnChance;

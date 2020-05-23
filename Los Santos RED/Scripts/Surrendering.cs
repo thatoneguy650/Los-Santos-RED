@@ -122,7 +122,7 @@ public static class Surrendering
             if (PedToArrest == Game.LocalPlayer.Character && !PlayerState.IsBusted)
                 return;
 
-            if (PlayerState.PlayerWantedLevel <= 2)
+            if (PlayerState.WantedLevel <= 2)
             {
                 NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
             }

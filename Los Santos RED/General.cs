@@ -21,7 +21,7 @@ using Extensions = ExtensionsMethods.Extensions;
 
 public static class General
 {
-    public static readonly Random MyRand;
+    public static readonly Random MyRand = new Random();
     private static string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
     public static List<Rage.Object> CreatedObjects { get; set; }
     public static Settings MySettings { get; set; }
@@ -29,7 +29,6 @@ public static class General
     public static void Initialize()
     {
         IsRunning = true;
-
         CreatedObjects = new List<Rage.Object>();
 
         Game.LocalPlayer.Character.CanBePulledOutOfVehicles = true;
@@ -167,23 +166,6 @@ public static class General
         //}, "TransitionIn");
         //Debugging.GameFibers.Add(Transition);
     }
-    public static void TransitionToRegularSpeed()
-    {
-        Game.TimeScale = 1f;//Stuff below works, could add it back, it just doesnt really do much
-        //GameFiber Transition = GameFiber.StartNew(delegate
-        //{
-        //    int WaitTime = 100;
-        //    while (Game.TimeScale < 1f)
-        //    {
-        //        Game.TimeScale += 0.05f;
-        //        GameFiber.Wait(WaitTime);
-        //        if (WaitTime >= 12)
-        //            WaitTime -= 1;
-        //    }
-
-        //}, "TransitionOut");
-        //Debugging.GameFibers.Add(Transition);
-    }
     public static bool AttemptLockStatus(Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
     {
         Debugging.WriteToLog("LockCarDoor", string.Format("Start, Lock Status {0}", ToLock.LockStatus));
@@ -309,7 +291,7 @@ public static class General
             }
         }
     }
-    public static void RequestAnimationDictionay(String sDict)
+    public static void RequestAnimationDictionay(string sDict)
     {
         NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
         while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
@@ -410,82 +392,5 @@ public static class General
             return true;
         else
             return false;
-    }
-    private static void LoadInteriors()
-    {
-        //Pillbox hill hospital?
-        NativeFunction.CallByName<bool>("REMOVE_IPL", "RC12B_Destroyed");
-        NativeFunction.CallByName<bool>("REMOVE_IPL", "RC12B_HospitalInterior");
-        NativeFunction.CallByName<bool>("REMOVE_IPL", "RC12B_Default");
-        NativeFunction.CallByName<bool>("REMOVE_IPL", "RC12B_Fixed");
-        NativeFunction.CallByName<bool>("REQUEST_IPL", "RC12B_Default");//state 1 normal
-
-        //Lifeinvader
-        NativeFunction.CallByName<bool>("REQUEST_IPL", "facelobby");  // lifeinvader
-        NativeFunction.CallByName<bool>("REMOVE_IPL", "facelobbyfake");
-        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, -340230128, -1042.518f, -240.6915f, 38.11796f, true, 0.0f, 0.0f, -1.0f);//_DOOR_CONTROL
-
-        //    FIB Lobby      
-        NativeFunction.CallByName<bool>("REQUEST_IPL", "FIBlobby");
-        NativeFunction.CallByName<bool>("REMOVE_IPL", "FIBlobbyfake");
-        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, -1517873911, 106.3793f, -742.6982f, 46.51962f, false, 0.0f, 0.0f, 0.0f);
-        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, -90456267, 105.7607f, -746.646f, 46.18266f, false, 0.0f, 0.0f, 0.0f);
-
-        //Paleto Sheriff Office
-        NativeFunction.CallByName<bool>("DISABLE_INTERIOR", NativeFunction.CallByName<int>("GET_INTERIOR_AT_COORDS", -444.89068603515625f, 6013.5869140625f, 30.7164f), false);
-        NativeFunction.CallByName<bool>("CAP_INTERIOR", NativeFunction.CallByName<int>("GET_INTERIOR_AT_COORDS", -444.89068603515625f, 6013.5869140625f, 30.7164f), false);
-        NativeFunction.CallByName<bool>("REQUEST_IPL", "v_sheriff2");
-        NativeFunction.CallByName<bool>("REMOVE_IPL", "cs1_16_sheriff_cap");
-        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, -1501157055, -444.4985f, 6017.06f, 31.86633f, false, 0.0f, 0.0f, 0.0f);
-        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, -1501157055, -442.66f, 6015.222f, 31.86633f, false, 0.0f, 0.0f, 0.0f);
-
-        //Sheriffs Office Sandy Shores
-        NativeFunction.CallByName<bool>("DISABLE_INTERIOR", NativeFunction.CallByName<int>("GET_INTERIOR_AT_COORDS", 1854.2537841796875f, 3686.738525390625f, 33.2671012878418f), false);
-        NativeFunction.CallByName<bool>("CAP_INTERIOR", NativeFunction.CallByName<bool>("GET_INTERIOR_AT_COORDS", 1854.2537841796875f, 3686.738525390625f, 33.2671012878418f), false);
-        NativeFunction.CallByName<bool>("REQUEST_IPL", "v_sheriff");
-        NativeFunction.CallByName<bool>("REMOVE_IPL", "sheriff_cap");
-        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, -1765048490, 1855.685f, 3683.93f, 34.59282f, false, 0.0f, 0.0f, 0.0f);
-
-        //    Tequila la       
-        NativeFunction.CallByName<bool>("DISABLE_INTERIOR", NativeFunction.CallByName<bool>("GET_INTERIOR_AT_COORDS", -556.5089111328125f, 286.318115234375f, 81.1763f), false);
-        NativeFunction.CallByName<bool>("CAP_INTERIOR", NativeFunction.CallByName<bool>("GET_INTERIOR_AT_COORDS", -556.5089111328125f, 286.318115234375f, 81.1763f), false);
-        NativeFunction.CallByName<bool>("REQUEST_IPL", "v_rockclub");
-        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, 993120320, -565.1712f, 276.6259f, 83.28626f, false, 0.0f, 0.0f, 0.0f);// front door
-        NativeFunction.CallByHash<bool>(0x9B12F9A24FABEDB0, 993120320, -561.2866f, 293.5044f, 87.77851f, false, 0.0f, 0.0f, 0.0f);// back door
-
-    }
-    private static bool IsPointInPolygon(Point p, Point[] polygon)
-    {
-        double minX = polygon[0].X;
-        double maxX = polygon[0].X;
-        double minY = polygon[0].Y;
-        double maxY = polygon[0].Y;
-        //
-        for (int i = 1; i < polygon.Length; i++)
-        {
-            Point q = polygon[i];
-            minX = Math.Min(q.X, minX);
-            maxX = Math.Max(q.X, maxX);
-            minY = Math.Min(q.Y, minY);
-            maxY = Math.Max(q.Y, maxY);
-        }
-
-        if (p.X < minX || p.X > maxX || p.Y < minY || p.Y > maxY)
-        {
-            return false;
-        }
-
-        // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-        bool inside = false;
-        for (int i = 0, j = polygon.Length - 1; i < polygon.Length; j = i++)
-        {
-            if ((polygon[i].Y > p.Y) != (polygon[j].Y > p.Y) &&
-                 p.X < (polygon[j].X - polygon[i].X) * (p.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) + polygon[i].X)
-            {
-                inside = !inside;
-            }
-        }
-
-        return inside;
     }
 }

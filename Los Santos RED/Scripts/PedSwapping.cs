@@ -261,7 +261,7 @@ public static class PedSwapping
         PlayerState.BeingArrested = false;
         PlayerState.TimesDied = 0;
         PlayerState.MaxWantedLastLife = 0;
-        PlayerState.LastWeapon = 0;
+        PlayerState.LastWeaponHash = 0;
 
         Game.TimeScale = 1f;
         Police.SetWantedLevel(0, "Reset After Takeover as a precaution",false);

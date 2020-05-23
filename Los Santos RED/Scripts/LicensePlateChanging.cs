@@ -10,15 +10,9 @@ using ExtensionsMethods;
 
 public static class LicensePlateChanging
 {
-    private static readonly Random rnd;
     private static Rage.Object Screwdriver;
     private static Rage.Object LicensePlate;
     public static bool PlayerChangingPlate { get; set; }
-
-    static LicensePlateChanging()
-    {
-        rnd = new Random();
-    }
     public static void Initialize()
     {
         Screwdriver = null;
@@ -44,11 +38,6 @@ public static class LicensePlateChanging
             {
                 VehicleToChange = new GTAVehicle(ClosestVehicle,0, false, false,null, true, new GTALicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle),false));
                 PlayerState.TrackedVehicles.Add(VehicleToChange);
-            }
-
-            if (ClosestVehicle.HasDriver)
-            {
-                //PedReactToThreatening(ClosestVehicle.Driver);
             }
             ChangeLicensePlateAnimation(VehicleToChange, false);
         }
@@ -187,7 +176,6 @@ public static class LicensePlateChanging
         if (PedToMove == Game.LocalPlayer.Character)
             isPlayer = true;
         Ped Driver = TargetVehicle.Driver;
-        //Vector3 CarPosition = TargetVehicle.Position;
         NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
 
         while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.Heading.IsWithin(DesiredHeading - 5f, DesiredHeading + 5f)))
@@ -208,34 +196,6 @@ public static class LicensePlateChanging
         }
         return true;
     }
-    //public static bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
-    //{
-    //    bool Continue = true;
-    //    bool isPlayer = false;
-    //    if (PedToMove == Game.LocalPlayer.Character)
-    //        isPlayer = true;
-    //    Ped Driver = TargetVehicle.Driver;
-    //    Vector3 CarPosition = TargetVehicle.Position;
-    //    NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
-
-    //    while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.Heading.IsWithin(DesiredHeading - 5f, DesiredHeading + 5f)))
-    //    {
-    //        GameFiber.Yield();
-    //        if (isPlayer && Extensions.IsMoveControlPressed())
-    //        {
-    //            Continue = false;
-    //            break;
-    //        }
-    //        if (StopDriver && TargetVehicle.Driver != null)
-    //            NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
-    //    }
-    //    if (!Continue)
-    //    {
-    //        PedToMove.Tasks.Clear();
-    //        return false;
-    //    }
-    //    return true;
-    //}
     public static Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
     {
         Vector3 Position;
@@ -279,29 +239,5 @@ public static class LicensePlateChanging
 
         return LicensePlate;
     }
-    //public static void PedReactToThreatening(Ped Attacker)
-    //{
-    //    int RandomNum = rnd.Next(1, 20);
-    //    if (RandomNum <= 4 && LosSantosRED.PlayerIsNotWanted) //Murder
-    //    {
-    //        GTAWeapon GunToGive = GTAWeapons.GetRandomRegularWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
-    //        Attacker.Inventory.GiveNewWeapon(GunToGive.Name, GunToGive.AmmoAmount, true);
-    //        Attacker.Tasks.FightAgainst(Game.LocalPlayer.Character);
-    //        Attacker.BlockPermanentEvents = true;
-    //        Attacker.KeepTasks = true;
-    //    }
-    //    //else if (RandomNum == 2) //Run Away
-    //    //{
-    //    //    Attacker.Tasks.Cower(30000);
-    //    //    Attacker.BlockPermanentEvents = true;
-    //    //    Attacker.KeepTasks = true;
-    //    //}
-    //    else //Flee
-    //    {
-    //        Attacker.Tasks.Flee(Game.LocalPlayer.Character, 100f, 30000);
-    //        Attacker.BlockPermanentEvents = true;
-    //        Attacker.KeepTasks = true;
-    //    }
-    //}
 }
 

@@ -199,7 +199,7 @@ public static class Respawning
         PlayerState.BeingArrested = false;
         PlayerState.HandsAreUp = false;
         Police.CurrentPoliceState = Police.LastPoliceState;
-        Police.SetWantedLevel(PlayerState.PlayerWantedLevel, "Resisting Arrest",true);
+        Police.SetWantedLevel(PlayerState.WantedLevel, "Resisting Arrest",true);
         Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
@@ -341,7 +341,7 @@ public static class Respawning
             {
                 ResetPlayer(true, true);
                 Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-                PlayerState.LastWeapon = 0;
+                PlayerState.LastWeaponHash = 0;
                 Police.PreviousWantedLevel = 0;
                 PlayerState.TimesDied = 0;
                 PlayerState.MaxWantedLastLife = 0;
