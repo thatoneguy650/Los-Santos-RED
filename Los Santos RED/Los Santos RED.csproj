@@ -99,7 +99,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Other\CivilianTask.cs" />
     <Compile Include="Entities\Other\ColorMapper.cs" />
     <Compile Include="Entities\Other\RapSheet.cs" />
     <Compile Include="Entities\Peds\GTAPed.cs" />
@@ -118,12 +117,12 @@
     <Compile Include="Entities\Ped Variation\PedComponent.cs" />
     <Compile Include="Entities\Ped Variation\PedVariation.cs" />
     <Compile Include="Entities\Ped Variation\PropComponent.cs" />
-    <Compile Include="Entities\Other\PoliceTask.cs" />
     <Compile Include="Lookups\Locations.cs" />
     <Compile Include="Scripts\CameraScript.cs" />
     <Compile Include="Scripts\Civilians.cs" />
     <Compile Include="Scripts\Clock.cs" />
     <Compile Include="Scripts\ControlScript.cs" />
+    <Compile Include="Scripts\InvestigationScript.cs" />
     <Compile Include="Scripts\LockPicking.cs" />
     <Compile Include="Scripts\Mugging.cs" />
     <Compile Include="Scripts\PedWounds.cs" />
@@ -131,6 +130,7 @@
     <Compile Include="Scripts\PlayerHealth.cs" />
     <Compile Include="ScriptController.cs" />
     <Compile Include="Scripts\PlayerState.cs" />
+    <Compile Include="Scripts\ScannerScript.cs" />
     <Compile Include="Scripts\VehicleFuelSystem.cs" />
     <Compile Include="Old\WeatherReporting.cs" />
     <Compile Include="EntryPoint.cs" />
@@ -164,6 +164,7 @@
     <Compile Include="Lookups\Settings.cs" />
     <Compile Include="Lookups\Vehicles.cs" />
     <Compile Include="Lookups\Zones.cs" />
+    <Compile Include="Scripts\WantedLevel.cs" />
     <Compile Include="Scripts\WeaponDropping.cs" />
   </ItemGroup>
   <ItemGroup>

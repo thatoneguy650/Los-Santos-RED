@@ -256,22 +256,25 @@ public static class PedSwapping
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
 
-        PlayerState.IsDead = false;
-        PlayerState.IsBusted = false;
-        PlayerState.BeingArrested = false;
-        PlayerState.TimesDied = 0;
-        PlayerState.MaxWantedLastLife = 0;
-        PlayerState.LastWeaponHash = 0;
+
+        PlayerState.ResetState();
+
+        //PlayerState.IsDead = false;
+        //PlayerState.IsBusted = false;
+        //PlayerState.BeingArrested = false;
+        //PlayerState.TimesDied = 0;
+        //PlayerState.MaxWantedLastLife = 0;
+        //PlayerState.LastWeaponHash = 0;
 
         Game.TimeScale = 1f;
-        Police.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
+        WantedLevelScript.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
 
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
 
-        Police.ResetPoliceStats();
+        WantedLevelScript.ResetPoliceStats();
         PersonOfInterest.ResetPersonOfInterest(false);
         GameTimeLastTakenOver = Game.GameTime;
         Menus.TakeoverRadius = -1f;//reset this on the menu
@@ -293,7 +296,7 @@ public static class PedSwapping
     }
     private static void GivePedHistory()
     {
-        Police.CurrentCrimes.GiveCriminalHistory();
+        WantedLevelScript.CurrentCrimes.GiveCriminalHistory();
     }
     private static void ActivateScenariosAfterTakeover()
     {

@@ -95,6 +95,37 @@ public class GTACop : GTAPed
             General.ApplyWeaponVariation(Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
         }
     }
+    public void SetChaseStatus()
+    {
+        if (PlayerState.IsWanted)
+        {
+            if (DistanceToPlayer <= Police.ActiveDistance)
+            {
+                CurrentChaseStatus = ChaseStatus.Active;
+            }
+            else
+            {
+                CurrentChaseStatus = ChaseStatus.Idle;
+            }
+        }
+        else if (InvestigationScript.InInvestigationMode)
+        {
+            float DistToInvest = Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition);
+            if (DistToInvest <= InvestigationScript.InvestigationDistance)
+            {
+                CurrentChaseStatus = ChaseStatus.Investigation;
+            }
+            else
+            {
+                CurrentChaseStatus = ChaseStatus.Idle;
+            }
+        }
+        else
+        {
+            CurrentChaseStatus = ChaseStatus.Idle;
+        }
+        
+    }
     public bool NeedsWeaponCheck
     {
         get

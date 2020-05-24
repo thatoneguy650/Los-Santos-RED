@@ -71,7 +71,7 @@ public static class TrafficViolations
     {
         if (IsRunning)
         {
-            if (!General.MySettings.TrafficViolations.Enabled)//if (Police.CurrentPoliceState != Police.PoliceState.Normal || !LosSantosRED.MySettings.TrafficViolations)
+            if (!General.MySettings.TrafficViolations.Enabled)//if (WantedLevel.CurrentPoliceState != WantedLevel.PoliceState.Normal || !LosSantosRED.MySettings.TrafficViolations)
             {
                 GameTimeStartedDrivingOnPavement = 0;
                 GameTimeStartedDrivingAgainstTraffic = 0;
@@ -79,12 +79,12 @@ public static class TrafficViolations
                 PlayerIsRunningRedLight = false;
                 PlayersVehicleIsSuspicious = false;
 
-                Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
                 return;
             }
 
@@ -95,7 +95,7 @@ public static class TrafficViolations
             {
                 float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
                 Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-                GTAVehicle MyCar = PlayerState.GetPlayersCurrentTrackedVehicle();
+                GTAVehicle MyCar = PlayerState.GetCurrentVehicle();
                 PlayersVehicleIsSuspicious = false;
                 if (!CurrVehicle.IsRoadWorthy() || CurrVehicle.IsDamaged())
                     PlayersVehicleIsSuspicious = true;
@@ -104,7 +104,7 @@ public static class TrafficViolations
 
                 if (General.MySettings.TrafficViolations.ExemptCode3 && CurrVehicle != null && CurrVehicle.IsPoliceVehicle && MyCar != null && !MyCar.WasReportedStolen)
                 {
-                    if (CurrVehicle.IsSirenOn && !Police.AnyPoliceCanRecognizePlayer) //see thru ur disguise if ur too close
+                    if (CurrVehicle.IsSirenOn && !Police.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
                     {
                         TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
                     }
@@ -129,76 +129,76 @@ public static class TrafficViolations
 
                 if (General.MySettings.TrafficViolations.DrivingAgainstTraffic && !TreatAsCop && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
                 {
-                    Police.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = true;
-                    if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.DrivingAgainstTraffic.CanObserveCrime)
+                    WantedLevelScript.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = true;
+                    if (TrafficAnyPoliceCanSeePlayer && WantedLevelScript.CurrentCrimes.DrivingAgainstTraffic.CanObserveCrime)
                     {
-                        Police.CurrentCrimes.DrivingAgainstTraffic.DispatchToPlay.VehicleToReport = MyCar;
-                        Police.CurrentCrimes.DrivingAgainstTraffic.CrimeObserved();
+                        WantedLevelScript.CurrentCrimes.DrivingAgainstTraffic.DispatchToPlay.VehicleToReport = MyCar;
+                        WantedLevelScript.CurrentCrimes.DrivingAgainstTraffic.CrimeObserved();
                     }
                 }
                 else
                 {
-                    Police.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = false;
+                    WantedLevelScript.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = false;
                 }
 
 
                 if (General.MySettings.TrafficViolations.DrivingOnPavement && !TreatAsCop && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
                 {
-                    Police.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = true;
-                    if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.DrivingOnPavement.CanObserveCrime)
+                    WantedLevelScript.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = true;
+                    if (TrafficAnyPoliceCanSeePlayer && WantedLevelScript.CurrentCrimes.DrivingOnPavement.CanObserveCrime)
                     {
-                        Police.CurrentCrimes.DrivingOnPavement.DispatchToPlay.VehicleToReport = MyCar;
-                        Police.CurrentCrimes.DrivingOnPavement.CrimeObserved();
+                        WantedLevelScript.CurrentCrimes.DrivingOnPavement.DispatchToPlay.VehicleToReport = MyCar;
+                        WantedLevelScript.CurrentCrimes.DrivingOnPavement.CrimeObserved();
                     }
                 }
                 else
                 {
-                    Police.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = false;
+                    WantedLevelScript.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = false;
                 }
 
 
                 int TimeSincePlayerLastHitAnyPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
                 if (General.MySettings.TrafficViolations.HitPed && TimeSincePlayerLastHitAnyPed > -1 && TimeSincePlayerLastHitAnyPed <= 1000 && (PedList.Civilians.Any(x => x.DistanceToPlayer <= 10f) || PedList.CopPeds.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
                 {
-                    Police.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = true;
-                    if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.HitPedWithCar.CanObserveCrime)
+                    WantedLevelScript.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = true;
+                    if (TrafficAnyPoliceCanSeePlayer && WantedLevelScript.CurrentCrimes.HitPedWithCar.CanObserveCrime)
                     {
-                        Police.CurrentCrimes.HitPedWithCar.DispatchToPlay.VehicleToReport = MyCar;
-                        Police.CurrentCrimes.HitPedWithCar.CrimeObserved();
+                        WantedLevelScript.CurrentCrimes.HitPedWithCar.DispatchToPlay.VehicleToReport = MyCar;
+                        WantedLevelScript.CurrentCrimes.HitPedWithCar.CrimeObserved();
                     }
                 }
                 else
                 {
-                    Police.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = false;
+                    WantedLevelScript.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = false;
                 }
 
                 int TimeSincePlayerLastHitAnyVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
                 if (General.MySettings.TrafficViolations.HitVehicle && TimeSincePlayerLastHitAnyVehicle > -1 && TimeSincePlayerLastHitAnyVehicle <= 1000)
                 {
-                    Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = true;
-                    if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.HitCarWithCar.CanObserveCrime)
+                    WantedLevelScript.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = true;
+                    if (TrafficAnyPoliceCanSeePlayer && WantedLevelScript.CurrentCrimes.HitCarWithCar.CanObserveCrime)
                     {
-                        Police.CurrentCrimes.HitCarWithCar.DispatchToPlay.VehicleToReport = MyCar;
-                        Police.CurrentCrimes.HitCarWithCar.CrimeObserved();
+                        WantedLevelScript.CurrentCrimes.HitCarWithCar.DispatchToPlay.VehicleToReport = MyCar;
+                        WantedLevelScript.CurrentCrimes.HitCarWithCar.CrimeObserved();
                     }
                 }
                 else
                 {
-                    Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
+                    WantedLevelScript.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
                 }
 
                 if (General.MySettings.TrafficViolations.NotRoadworthy && !TreatAsCop && PlayersVehicleIsSuspicious)
                 {
-                    Police.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = true;
-                    if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.NonRoadworthyVehicle.CanObserveCrime)
+                    WantedLevelScript.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = true;
+                    if (TrafficAnyPoliceCanSeePlayer && WantedLevelScript.CurrentCrimes.NonRoadworthyVehicle.CanObserveCrime)
                     {
-                        Police.CurrentCrimes.NonRoadworthyVehicle.DispatchToPlay.VehicleToReport = MyCar;
-                        Police.CurrentCrimes.NonRoadworthyVehicle.CrimeObserved();
+                        WantedLevelScript.CurrentCrimes.NonRoadworthyVehicle.DispatchToPlay.VehicleToReport = MyCar;
+                        WantedLevelScript.CurrentCrimes.NonRoadworthyVehicle.CrimeObserved();
                     }
                 }
                 else
                 {
-                    Police.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = false;
+                    WantedLevelScript.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = false;
                 }
 
 
@@ -211,32 +211,32 @@ public static class TrafficViolations
 
                     if (PlayerIsSpeeding && !TreatAsCop)
                     {
-                        Police.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = true;
-                        if (TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.FelonySpeeding.CanObserveCrime)
+                        WantedLevelScript.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = true;
+                        if (TrafficAnyPoliceCanSeePlayer && WantedLevelScript.CurrentCrimes.FelonySpeeding.CanObserveCrime)
                         {
-                            Police.CurrentCrimes.FelonySpeeding.DispatchToPlay.VehicleToReport = MyCar;
-                            Police.CurrentCrimes.FelonySpeeding.DispatchToPlay.Speed = VehicleSpeedMPH;
-                            Police.CurrentCrimes.FelonySpeeding.CrimeObserved();
+                            WantedLevelScript.CurrentCrimes.FelonySpeeding.DispatchToPlay.VehicleToReport = MyCar;
+                            WantedLevelScript.CurrentCrimes.FelonySpeeding.DispatchToPlay.Speed = VehicleSpeedMPH;
+                            WantedLevelScript.CurrentCrimes.FelonySpeeding.CrimeObserved();
                         }
                     }
                     else
                     {
-                        Police.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
+                        WantedLevelScript.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
                     }
                 }
                 else
                 {
-                    Police.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
+                    WantedLevelScript.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
                     PlayerIsSpeeding = false;
                 }
                 //not implemented yet
                 //if (LosSantosRED.MySettings.TrafficViolationsRunningRedLight)
                 //{
                 //    PlayerIsRunningRedLight = false;//CheckRedLight();
-                //    if (PlayerIsRunningRedLight && TrafficAnyPoliceCanSeePlayer && Police.CurrentCrimes.RunningARedLight.CanObserveCrime && !TreatAsCop)
+                //    if (PlayerIsRunningRedLight && TrafficAnyPoliceCanSeePlayer && WantedLevelScript.CurrentCrimes.RunningARedLight.CanObserveCrime && !TreatAsCop)
                 //    {
-                //        Police.CurrentCrimes.RunningARedLight.DispatchToPlay.Speed = VehicleSpeedMPH;
-                //        Police.CurrentCrimes.RunningARedLight.CrimeObserved();
+                //        WantedLevelScript.CurrentCrimes.RunningARedLight.DispatchToPlay.Speed = VehicleSpeedMPH;
+                //        WantedLevelScript.CurrentCrimes.RunningARedLight.CrimeObserved();
                 //    }
                 //}
                 //else
@@ -244,12 +244,12 @@ public static class TrafficViolations
             }
             else
             {
-                Police.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = false;
-                Police.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.HitCarWithCar.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.HitPedWithCar.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.DrivingOnPavement.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.DrivingAgainstTraffic.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.NonRoadworthyVehicle.IsCurrentlyViolating = false;
+                WantedLevelScript.CurrentCrimes.FelonySpeeding.IsCurrentlyViolating = false;
             }
         }
     }
@@ -298,7 +298,7 @@ public static class TrafficViolations
             return;
 
         bool DriverWindowIntact = NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0);
-        GTAVehicle MyVehicle = PlayerState.GetPlayersCurrentTrackedVehicle();
+        GTAVehicle MyVehicle = PlayerState.GetCurrentVehicle();
         if (DriverWindowIntact)
         {
             if (RollDown)

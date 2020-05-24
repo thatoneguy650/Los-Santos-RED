@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 public static class PlayerLocation
 {
+    private static uint GameTimePlayerGotOnFreeway;
+    private static uint GameTimePlayerGotOffFreeway;
     public static bool IsRunning { get; set; } = true;
     public static Street PlayerCurrentStreet { get; set; }
     public static Street PlayerCurrentCrossStreet { get; set; }
@@ -36,10 +38,6 @@ public static class PlayerLocation
                 return false;
         }
     }
-
-    private static uint GameTimePlayerGotOnFreeway;
-    private static uint GameTimePlayerGotOffFreeway;
-
     public static void Initialize()
     {
         IsRunning = true;
@@ -115,7 +113,7 @@ public static class PlayerLocation
 
             if (PlayerCurrentStreet == null)
             {
-                PlayerCurrentStreet = new Street(GetCurrentStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
+                PlayerCurrentStreet = new Street(Streets.GetCurrentStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
                 if (PlayerCurrentStreet.IsHighway)
                 {
                     if(!PlayerIsOnFreeway)
@@ -133,27 +131,6 @@ public static class PlayerLocation
             }
         }
 
-    }
-    public static string GetCurrentStreet(Vector3 Position)
-    {
-        int StreetHash = 0;
-        int CrossingHash = 0;
-        unsafe
-        {
-            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", Position.X, Position.Y, Position.Z, &StreetHash, &CrossingHash);
-        }
-        string StreetName = string.Empty;
-        string CrossStreetName = string.Empty;
-        if (StreetHash != 0)
-        {
-            unsafe
-            {
-                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
-
-                StreetName = Marshal.PtrToStringAnsi(ptr);
-            }
-        }
-        return StreetName;
     }
 }
 

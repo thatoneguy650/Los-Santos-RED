@@ -81,7 +81,7 @@ public static class Respawning
         {
             NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
             Game.TimeScale = 1.0f;
-            Tasking.SetUnarmed(CopToBribe);
+            CopToBribe.SetUnarmed = true;
 
             Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 
@@ -157,8 +157,7 @@ public static class Respawning
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
 
-        PlayerState.IsDead = false;
-        PlayerState.IsBusted = false;
+        PlayerState.ResetState();
 
         RespawnInPlace(false);
 
@@ -195,30 +194,23 @@ public static class Respawning
     }
     public static void ResistArrest()
     {
-        PlayerState.IsBusted = false;
-        PlayerState.BeingArrested = false;
-        PlayerState.HandsAreUp = false;
-        Police.CurrentPoliceState = Police.LastPoliceState;
-        Police.SetWantedLevel(PlayerState.WantedLevel, "Resisting Arrest",true);
+        PlayerState.ResetState();//maxwanted last life maybe wont work?
+        WantedLevelScript.CurrentPoliceState = WantedLevelScript.LastPoliceState;
+        WantedLevelScript.SetWantedLevel(PlayerState.WantedLevel, "Resisting Arrest",true);
         Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
-        Tasking.UntaskAll(true);
-
-        Police.CurrentCrimes.ResistingArrest.CrimeObserved();
-
-        //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.ReportDispatch.ReportResistingArrest, 2));
+        WantedLevelScript.CurrentCrimes.ResistingArrest.CrimeObserved();
     }
     public static void Surrender(Location PoliceStation)
     {
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
 
-        bool prePlayerKilledPolice = Police.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice;
+        bool prePlayerKilledPolice = WantedLevelScript.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice;
         int BailFee = PlayerState.MaxWantedLastLife * General.MySettings.Police.PoliceBailWantedLevelScale;
 
-        PlayerState.BeingArrested = false;
-        PlayerState.IsBusted = false;
+        PlayerState.ResetState();
 
         Surrendering.RaiseHands();
         ResetPlayer(true, true);
@@ -280,9 +272,7 @@ public static class Respawning
     }
     public static void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {
-        PlayerState.IsDead = false;
-        PlayerState.IsBusted = false;
-        PlayerState.BeingArrested = false;
+        PlayerState.ResetState();
 
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
@@ -290,8 +280,8 @@ public static class Respawning
         if (ClearWanted)
         {
             PersonOfInterest.ResetPersonOfInterest(false);
-            Police.ResetPoliceStats();
-            Police.SetWantedLevel(0,"Reset player with Clear Wanted",false);
+            WantedLevelScript.ResetPoliceStats();
+            WantedLevelScript.SetWantedLevel(0,"Reset player with Clear Wanted",false);
             PlayerState.MaxWantedLastLife = 0;  
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         }
@@ -312,9 +302,7 @@ public static class Respawning
     {
         try
         {
-            PlayerState.IsDead = false;
-            PlayerState.IsBusted = false;
-            PlayerState.BeingArrested = false;
+            PlayerState.ResetState();
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
             NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
             if (PlayerState.DiedInVehicle)
@@ -324,7 +312,6 @@ public static class Respawning
                 {
                     Game.LocalPlayer.Character.WarpIntoVehicle(Game.LocalPlayer.Character.LastVehicle, -1);
                 }
-                PlayerState.DiedInVehicle = false;
             }
             else
             {
@@ -334,7 +321,7 @@ public static class Respawning
             if (AsOldCharacter)
             {
                 ResetPlayer(false, false);
-                Police.SetWantedLevel(PlayerState.MaxWantedLastLife,"Resetting to max wanted last life after respawn in place",true);
+                WantedLevelScript.SetWantedLevel(PlayerState.MaxWantedLastLife,"Resetting to max wanted last life after respawn in place",true);
                 ++PlayerState.TimesDied;
             }
             else

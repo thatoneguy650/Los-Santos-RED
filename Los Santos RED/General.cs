@@ -22,16 +22,19 @@ using Extensions = ExtensionsMethods.Extensions;
 public static class General
 {
     public static readonly Random MyRand = new Random();
-    private static string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
+    private static string ConfigFileName { get; set; } = "Plugins\\LosSantosRED\\Settings.xml";
     public static List<Rage.Object> CreatedObjects { get; set; }
+    public static List<Blip> CreatedBlips { get; set; }
     public static Settings MySettings { get; set; }
     public static bool IsRunning { get; set; }
     public static void Initialize()
     {
         IsRunning = true;
         CreatedObjects = new List<Rage.Object>();
+        CreatedBlips = new List<Blip>();
 
         Game.LocalPlayer.Character.CanBePulledOutOfVehicles = true;
+
         while (Game.IsLoading)
             GameFiber.Yield();
 
@@ -46,84 +49,15 @@ public static class General
             ToSerialize.Add(MySettings);
             SerializeParams(ToSerialize, ConfigFileName);
         }
-        PlayerState.Initialize();
-        ControlScript.Initialize();
-        Debugging.Initialize();
-        RespawnStopper.Initialize(); 
-        Agencies.Initialize();
-        Zones.Initialize();
-        WeatherReporting.Initialize();
-        Locations.Initialize();
-        Police.Initialize();
-        PoliceSpawning.Initialize();
-        LicensePlateChanging.Initialize();
-        Menus.Intitialize();
-        RespawnStopper.Initialize();
-        PedList.Initialize();
-        DispatchAudio.Initialize();
-        PoliceSpeech.Initialize();
-        Vehicles.Initialize();
-        VehicleEngine.Initialize();
-        VehicleFuelSystem.Initialize();
-        Tasking.Initialize();
-        GTAWeapons.Initialize();
-        WeaponDropping.Initialize();
-        Streets.Initialize();
-        
-        PlayerLocation.Initialize();
-        TrafficViolations.Initialize();
-        SearchModeStopping.Initialize();
-        UI.Initialize();
-        PedSwapping.Initialize();
-        PersonOfInterest.Initialize();
-        Civilians.Initialize();
-        Clock.Initialize();
-        Mugging.Initialize();
-        PlayerHealth.Initialize();
-        PedWounds.Initialize();
     }
     public static void Dispose()
     {
         IsRunning = false;
-        foreach (Blip myBlip in Police.CreatedBlips)
+        foreach (Blip myBlip in General.CreatedBlips)
         {
             if (myBlip.Exists())
                 myBlip.Delete();
         }
-        PlayerState.Dispose();
-        ControlScript.Dispose();
-        LicensePlateChanging.Dispose();
-        Menus.Dispose();
-        RespawnStopper.Dispose(); //maye some slowness
-        PedList.Dispose();
-        DispatchAudio.Dispose();
-        PoliceSpeech.Dispose();
-        Vehicles.Dispose();
-        VehicleEngine.Dispose();
-        VehicleFuelSystem.Dispose();
-        Smoking.Dispose();
-        Tasking.Dispose();
-        Agencies.Dispose();
-        Locations.Dispose();
-        GTAWeapons.Dispose();
-        Speed.Dispose();
-        WeaponDropping.Dispose();
-        Streets.Dispose();
-        UI.Dispose();
-        Debugging.Dispose();
-        PlayerLocation.Dispose();
-        Police.Dispose();
-        PoliceSpawning.Dispose();
-        TrafficViolations.Dispose();
-        SearchModeStopping.Dispose();
-        WeatherReporting.Dispose();
-        PedSwapping.Dispose();
-        PersonOfInterest.Dispose();
-        Civilians.Dispose();
-        PlayerHealth.Dispose();
-        Clock.Dispose();
-        Mugging.Dispose();
-        PedWounds.Dispose();
     }
     public static void ReadAllConfigs()
     {

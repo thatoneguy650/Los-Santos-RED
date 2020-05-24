@@ -107,7 +107,7 @@ public static class PedList
         }
         CopPeds.Add(myCop);
 
-        if (General.MySettings.Police.IssuePoliceHeavyWeapons && Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
+        if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase)
             myCop.IssueHeavyWeapon();
     }
     private static void AddCivilian(Ped Pedestrian)

@@ -10,8 +10,6 @@ using static DispatchAudio;
 
 public class RapSheet
 {
-    private uint GameTimeStartedBrandishing;
-    public int TimeAimedAtPolice;
     public int MaxWantedLevel = 0;
 
     public Crime KillingPolice = new Crime("Police Fatality", CrimeLevel.Felony, 3, true, new DispatchQueueItem(AvailableDispatch.OfficerDown, 1, true)) { CanBeReportedMultipleTimes = true };
@@ -61,14 +59,14 @@ public class RapSheet
     {
         get
         {
-            return Police.CurrentCrimes.CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians);// && x.Severity != CrimeLevel.Traffic);
+            return WantedLevelScript.CurrentCrimes.CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians);// && x.Severity != CrimeLevel.Traffic);
         }
     }
     public List<Crime> CurrentlyViolatingCanBeReportedByCivilians
     {
         get
         {
-            return Police.CurrentCrimes.CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();// && x.Severity != CrimeLevel.Traffic);
+            return WantedLevelScript.CurrentCrimes.CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();// && x.Severity != CrimeLevel.Traffic);
         }
     }
     public bool LethalForceAuthorized
@@ -175,200 +173,6 @@ public class RapSheet
         }
         return CrimeString;
     }
-    public void CheckCrimes()
-    {
-        if (PlayerState.IsBusted || PlayerState.IsDead)
-            return;
-
-
-        if (PedWounds.RecentlyKilledCop(5000))
-        {
-            KillingPolice.IsCurrentlyViolating = true;
-            if (KillingPolice.CanObserveCrime)
-                KillingPolice.CrimeObserved();
-        }
-        else
-        {
-            KillingPolice.IsCurrentlyViolating = false;
-        }
-
-        if (PedWounds.RecentlyHurtCop(5000))
-        {
-            HurtingPolice.IsCurrentlyViolating = true;
-            if (HurtingPolice.CanObserveCrime)
-                HurtingPolice.CrimeObserved();
-        }
-        else
-        {
-            HurtingPolice.IsCurrentlyViolating = false;
-        }
-
-
-        if (PedWounds.RecentlyKilledCivilian(5000) || PedWounds.NearCivilianMurderVictim(9f))
-        {
-            KillingCivilians.IsCurrentlyViolating = true;
-            if (KillingCivilians.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
-                KillingCivilians.CrimeObserved();
-        }
-        else
-        {
-            KillingCivilians.IsCurrentlyViolating = false;
-        }
-
-        if (PedWounds.RecentlyHurtCivilian(5000))
-        {
-            HurtingCivilians.IsCurrentlyViolating = true;
-            if (HurtingCivilians.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
-                HurtingCivilians.CrimeObserved();
-        }
-        else
-        {
-            HurtingCivilians.IsCurrentlyViolating = false;
-        }
-
-        if(PlayerState.RecentlyShot(5000) || Police.PlayerArtificiallyShooting || Game.LocalPlayer.Character.IsShooting)
-        {
-            FiringWeapon.IsCurrentlyViolating = true;
-            if (Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
-            {
-                if (PedList.CopPeds.Any(x => x.RecentlySeenPlayer()))
-                {
-                    FiringWeaponNearPolice.IsCurrentlyViolating = true;
-                    if (FiringWeaponNearPolice.CanObserveCrime)
-                        FiringWeaponNearPolice.CrimeObserved();
-                }
-            }
-            else
-            {
-                if (PedList.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
-                {
-                    FiringWeaponNearPolice.IsCurrentlyViolating = true;
-                    if (FiringWeaponNearPolice.CanObserveCrime)
-                        FiringWeaponNearPolice.CrimeObserved();
-                }
-            }
-        }
-        else
-        {
-            FiringWeapon.IsCurrentlyViolating = false;
-            FiringWeaponNearPolice.IsCurrentlyViolating = false;
-        }
-
-
-        if (Surrendering.IsCommitingSuicide)
-        {
-            AttemptingSuicide.IsCurrentlyViolating = true;
-            if (AttemptingSuicide.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
-                AttemptingSuicide.CrimeObserved();
-        }
-        else
-        {
-            AttemptingSuicide.IsCurrentlyViolating = false;
-        }
-
-        bool IsBrandishing = false;
-        if (PlayerState.IsConsideredArmed)
-        {
-            if (GameTimeStartedBrandishing == 0)
-                GameTimeStartedBrandishing = Game.GameTime;
-        }
-        else
-        {
-            GameTimeStartedBrandishing = 0;
-        }
-
-        if(GameTimeStartedBrandishing > 0 && Game.GameTime - GameTimeStartedBrandishing >= 1500)
-            IsBrandishing = true;
-
-        if (IsBrandishing && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !PlayerState.IsInVehicle)
-        {
-            BrandishingWeapon.IsCurrentlyViolating = true;
-            GTAWeapon MatchedWeapon = GTAWeapons.GetWeaponFromHash((ulong)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-            if (MatchedWeapon != null && MatchedWeapon.WeaponLevel >= 2)
-                BrandishingWeapon.ResultingWantedLevel = MatchedWeapon.WeaponLevel;
-            else
-                BrandishingWeapon.ResultingWantedLevel = 1;
-
-            BrandishingWeapon.DispatchToPlay.WeaponToReport = MatchedWeapon;
-
-            if (BrandishingWeapon.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
-                BrandishingWeapon.CrimeObserved();
-        }
-        else
-        {
-            BrandishingWeapon.IsCurrentlyViolating = false;
-        }
-
-        if (PlayerState.IsBreakingIntoCar)
-        {
-            GrandTheftAuto.IsCurrentlyViolating = true;
-            if (GrandTheftAuto.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
-                GrandTheftAuto.CrimeObserved();
-        }
-        else
-        {
-            GrandTheftAuto.IsCurrentlyViolating = false;
-        }
-        if (LicensePlateChanging.PlayerChangingPlate)
-        {
-            ChangingPlates.IsCurrentlyViolating = true;
-            if (ChangingPlates.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
-                ChangingPlates.CrimeObserved();
-        }
-        else
-        {
-            ChangingPlates.IsCurrentlyViolating = false;
-        }
-
-
-        if (global::Mugging.IsMugging)
-        {
-            Mugging.IsCurrentlyViolating = true;
-            if (Mugging.CanObserveCrime && Police.AnyPoliceCanSeePlayer)
-                Mugging.CrimeObserved();
-        }
-        else
-        {
-            Mugging.IsCurrentlyViolating = false;
-        }
-
-        //Police Only
-        if (TrespessingOnGovtProperty.CanObserveCrime && PlayerState.IsWanted && PlayerLocation.PlayerCurrentZone.IsRestrictedDuringWanted && Police.AnyPoliceCanSeePlayer)
-        {
-            TrespessingOnGovtProperty.CrimeObserved();
-        }
-        CheckAimingAtPolice();
-        if (!AimingWeaponAtPolice.CanObserveCrime && TimeAimedAtPolice >= 10)
-        {
-            AimingWeaponAtPolice.CrimeObserved();
-        }
-        if(ResistingArrest.CanObserveCrime && !ResistingArrest.HasBeenWitnessedByPolice && PlayerState.IsWanted && Police.AnyPoliceCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !PlayerState.HandsAreUp && Police.PlayerHasBeenWantedFor >= 15000)
-        {
-            bool InVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-            ResistingArrest.DispatchToPlay.SuspectStatusOnFoot = true;
-            if (InVehicle)
-            {
-                ResistingArrest.DispatchToPlay.SuspectStatusOnFoot = false;
-                ResistingArrest.DispatchToPlay.VehicleToReport = PlayerState.GetPlayersCurrentTrackedVehicle();
-            }
-            ResistingArrest.CrimeObserved();
-        }
-        if (GrandTheftAuto.CanObserveCrime && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.IsInAnyPoliceVehicle && Police.AnyPoliceCanSeePlayer && PlayerState.GetPlayersCurrentTrackedVehicle() != null && !PlayerState.GetPlayersCurrentTrackedVehicle().WasReportedStolen && PedList.CopPeds.Any(x => x.DistanceToPlayer <= 17f))
-        {
-            GrandTheftAuto.CrimeObserved();
-        }
-        if (GotInAirVehicleDuringChase.CanObserveCrime && PlayerState.IsWanted && PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
-        {
-            GotInAirVehicleDuringChase.CrimeObserved();
-        }
-    }
-    private void CheckAimingAtPolice()
-    {
-        if (!AimingWeaponAtPolice.HasBeenWitnessedByPolice && PlayerState.IsConsideredArmed && Game.LocalPlayer.IsFreeAiming && Police.AnyPoliceCanSeePlayer && PedList.CopPeds.Any(x => Game.LocalPlayer.IsFreeAimingAtEntity(x.Pedestrian)))
-            TimeAimedAtPolice++;
-        else
-            TimeAimedAtPolice = 0;
-    }
 }
 public class Crime
 {
@@ -466,7 +270,7 @@ public class Crime
             DispatchToPlay.ReportedBy = ReportType.Officers;
             AddDispatchToQueue(DispatchToPlay);
         }
-        else if (!Police.CurrentCrimes.RecentlyReportedAnyCrime && CanBeReportedMultipleTimes && !RecentlyReportedCrime(25000))//if (!HasBeenWitnessedByPolice && !HasBeenReportedByDispatch && InstantAction.PlayerWantedLevel <= ResultingWantedLevel)
+        else if (!WantedLevelScript.CurrentCrimes.RecentlyReportedAnyCrime && CanBeReportedMultipleTimes && !RecentlyReportedCrime(25000))//if (!HasBeenWitnessedByPolice && !HasBeenReportedByDispatch && InstantAction.PlayerWantedLevel <= ResultingWantedLevel)
         {
             Debugging.WriteToLog("Crime Logged No Dispatch Activity", Name);
             GameTimeLastReported = Game.GameTime;
@@ -491,7 +295,7 @@ public class Crime
         HasBeenWitnessedByPolice = true;
         InstancesObserved++;
         GameTimeLastWitnessed = Game.GameTime;
-        Police.SetWantedLevel(ResultingWantedLevel, Name,true);
+        WantedLevelScript.SetWantedLevel(ResultingWantedLevel, Name,true);
         HasBeenReportedByDispatch = true;
         Debugging.WriteToLog("Crime Logged", Name);        
     }
@@ -503,12 +307,12 @@ public class Crime
     }
     //public void CrimeCalledInByCivilians(bool HaveDescription,bool ResultsInWanted)
     //{
-    //    if (LosSantosRED.PlayerIsWanted || Police.PoliceInInvestigationMode)
+    //    if (LosSantosRED.PlayerIsWanted || InvestigationScript.InInvestigationMode)
     //        return;
 
     //    if (!RecentlyReportedCrime(25000))
     //    {
-    //        Police.InvestigationPosition = Game.LocalPlayer.Character.Position;
+    //        InvestigationScript.InvestigationPosition = Game.LocalPlayer.Character.Position;
     //        GameTimeLastReported = Game.GameTime;
     //        DispatchToPlay.ResultsInLethalForce = ResultsInLethalForce;
     //        DispatchToPlay.ReportedBy = DispatchAudio.ReportType.Civilians;
@@ -543,7 +347,7 @@ public class Crime
     //                PersonOfInterest.PlayerBecamePersonOfInterest();
 
     //            if (!ResultsInWanted)
-    //                Police.PoliceInInvestigationMode = true;
+    //                InvestigationScript.InInvestigationMode = true;
 
     //        }, "CrimeCalledInByCivilians");
     //        Debugging.GameFibers.Add(CrimeReportedFiber);
@@ -555,7 +359,7 @@ public class Crime
     //            PersonOfInterest.PlayerBecamePersonOfInterest();
 
     //        if (!ResultsInWanted)
-    //            Police.PoliceInInvestigationMode = true;
+    //            InvestigationScript.InInvestigationMode = true;
     //    }
 
 

@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Rage;
+using Rage.Native;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -259,6 +262,27 @@ public static class Streets
     public static Street GetStreetFromName(string StreetName)
     {
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+    }
+    public static string GetCurrentStreet(Vector3 Position)
+    {
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        unsafe
+        {
+            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", Position.X, Position.Y, Position.Z, &StreetHash, &CrossingHash);
+        }
+        string StreetName = string.Empty;
+        string CrossStreetName = string.Empty;
+        if (StreetHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+
+                StreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+        }
+        return StreetName;
     }
 }
 public class Street

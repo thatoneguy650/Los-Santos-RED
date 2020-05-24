@@ -353,7 +353,7 @@ public static class PedWounds
                         Debugging.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
                         if (MyPed.IsCop)
                         {
-                            Police.CurrentCrimes.KillingPolice.CrimeObserved();
+                            WantedLevelScript.CurrentCrimes.KillingPolice.CrimeObserved();
                             PlayerKilledCops.Add(MyPed);
                             GameTimeLastKilledCop = Game.GameTime;
                         }
@@ -374,7 +374,7 @@ public static class PedWounds
                             Debugging.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
                             if (MyPed.IsCop)
                             {
-                                Police.CurrentCrimes.HurtingPolice.CrimeObserved();
+                                WantedLevelScript.CurrentCrimes.HurtingPolice.CrimeObserved();
                                 GameTimeLastHurtCop = Game.GameTime;
                             }
                             else

@@ -12,8 +12,6 @@ public static class ScriptController
 {
     private static DataTable TickTable = new DataTable();
     private static int TickID = 0;
-
-
     private static Stopwatch GameStopWatch;
     private static Stopwatch TickStopWatch;
     private static List<TickTask> MyTickTasks;
@@ -40,18 +38,16 @@ public static class ScriptController
             new TickTask(25, "ControlScript", ControlScript.Tick, 1,0),
 
             new TickTask(0, "VehicleEngine", VehicleEngine.Tick, 2,0),
-
-           
+  
             new TickTask(200, "PlayerHealth.Tick", PlayerHealth.Tick, 3,0),
             new TickTask(200, "PedWoundSystem", PedWounds.Tick, 3,1),
-            new TickTask(250, "MuggingSystem", Mugging.Tick, 3,2),
+            new TickTask(250, "MuggingSystem", MuggingScript.Tick, 3,2),
 
             new TickTask(0, "ClockSystem", Clock.Tick, 3,3),
             
-
             new TickTask(1000, "ScanForPeds", PedList.ScanForPeds, 4,0),
             new TickTask(250, "ProcessQueue", Tasking.ProcessQueue, 4,1),
-            new TickTask(150, "PoliceStateTick", Tasking.PoliceStateTick, 4,2),
+            new TickTask(150, "TaskPeds", Tasking.TaskPeds, 4,2),
             new TickTask(50, "SearchModeStopping", SearchModeStopping.Tick, 4,3),
             new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 4,4),
 
@@ -60,7 +56,7 @@ public static class ScriptController
             new TickTask(150, "Civilians", Civilians.Tick, 6,0),
 
             new TickTask(500, "TrafficViolations", TrafficViolations.Tick, 7,0),
-            new TickTask(500, "PlayerLocation", PlayerLocation.Tick, 7,1),//2000
+            new TickTask(500, "PlayerLocation", PlayerLocation.Tick, 7,1),
             new TickTask(500, "PersonOfInterest", PersonOfInterest.Tick, 7,2),
 
             new TickTask(500, "DispatchAudio", DispatchAudio.Tick, 8,0),
@@ -68,11 +64,51 @@ public static class ScriptController
             new TickTask(500, "PoliceSpawning", PoliceSpawning.Tick, 8,3),
             new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.RemoveCops, 8,4),
 
-            new TickTask(0, "VehicleFuelSystem", VehicleFuelSystem.Tick, 9,0)
+            new TickTask(0, "VehicleFuelSystem", VehicleFuelSystem.Tick, 9,0),
+
+            new TickTask(25, "WantedLevel", WantedLevelScript.Tick, 10,0),
+
+            new TickTask(25, "Investigation", InvestigationScript.Tick, 11,0),
         };
 
         MainLoop();
         General.Initialize();
+        PlayerState.Initialize();
+        ControlScript.Initialize();
+        Debugging.Initialize();
+        RespawnStopper.Initialize();
+        Agencies.Initialize();
+        Zones.Initialize();
+        WeatherReporting.Initialize();
+        Locations.Initialize();
+        Police.Initialize();
+        InvestigationScript.Initialize();
+        WantedLevelScript.Initialize();
+        PoliceSpawning.Initialize();
+        LicensePlateChanging.Initialize();
+        Menus.Intitialize();
+        RespawnStopper.Initialize();
+        PedList.Initialize();
+        DispatchAudio.Initialize();
+        PoliceSpeech.Initialize();
+        Vehicles.Initialize();
+        VehicleEngine.Initialize();
+        VehicleFuelSystem.Initialize();
+        Tasking.Initialize();
+        GTAWeapons.Initialize();
+        WeaponDropping.Initialize();
+        Streets.Initialize();
+        PlayerLocation.Initialize();
+        TrafficViolations.Initialize();
+        SearchModeStopping.Initialize();
+        UI.Initialize();
+        PedSwapping.Initialize();
+        PersonOfInterest.Initialize();
+        Civilians.Initialize();
+        Clock.Initialize();
+        MuggingScript.Initialize();
+        PlayerHealth.Initialize();
+        PedWounds.Initialize();
     }
     public static void MainLoop()
     {     
@@ -122,6 +158,42 @@ public static class ScriptController
     {
         IsRunning = false;
         General.Dispose();
+        PlayerState.Dispose();
+        ControlScript.Dispose();
+        LicensePlateChanging.Dispose();
+        Menus.Dispose();
+        RespawnStopper.Dispose();
+        PedList.Dispose();
+        DispatchAudio.Dispose();
+        PoliceSpeech.Dispose();
+        Vehicles.Dispose();
+        VehicleEngine.Dispose();
+        VehicleFuelSystem.Dispose();
+        Smoking.Dispose();
+        Tasking.Dispose();
+        Agencies.Dispose();
+        Locations.Dispose();
+        GTAWeapons.Dispose();
+        Speed.Dispose();
+        WeaponDropping.Dispose();
+        Streets.Dispose();
+        UI.Dispose();
+        Debugging.Dispose();
+        PlayerLocation.Dispose();
+        Police.Dispose();
+        InvestigationScript.Dispose();
+        WantedLevelScript.Dispose();
+        PoliceSpawning.Dispose();
+        TrafficViolations.Dispose();
+        SearchModeStopping.Dispose();
+        WeatherReporting.Dispose();
+        PedSwapping.Dispose();
+        PersonOfInterest.Dispose();
+        Civilians.Dispose();
+        PlayerHealth.Dispose();
+        Clock.Dispose();
+        MuggingScript.Dispose();
+        PedWounds.Dispose();
     }
     private static void ResetRanItems()
     {

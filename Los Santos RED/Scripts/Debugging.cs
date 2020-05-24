@@ -111,11 +111,8 @@ public static class Debugging
     }
     private static void DebugCopReset()
     {
-        Police.CurrentPoliceState = Police.PoliceState.Normal;
+        WantedLevelScript.CurrentPoliceState = WantedLevelScript.PoliceState.Normal;
         Game.LocalPlayer.WantedLevel = 0;
-        Tasking.UntaskAll(true);
-
-
         foreach (GTACop Cop in PedList.K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
         {
             Cop.Pedestrian.Delete();
@@ -140,8 +137,7 @@ public static class Debugging
         }
 
         Game.TimeScale = 1f;
-        PlayerState.IsBusted = false;
-        PlayerState.BeingArrested = false;
+        PlayerState.ResetState();
         NativeFunction.Natives.xB4EDDC19532BFB85();
 
 
@@ -161,13 +157,13 @@ public static class Debugging
         if (Toassign == 5)
             return;
         Toassign++;
-        Police.SetWantedLevel(Toassign, "Debug", true);
+        WantedLevelScript.SetWantedLevel(Toassign, "Debug", true);
 
     }
     private static void DebugNumpad3()
     {
         PedList.ClearPoliceCompletely();
-        Police.SetWantedLevel(0, "Debug", true);
+        WantedLevelScript.SetWantedLevel(0, "Debug", true);
     }
 
     private static void DebugNumpad4()
@@ -241,7 +237,18 @@ public static class Debugging
     private static void DebugNumpad7()
     {
 
+        Tasking.OutputTasks();
 
+        WriteToLog("CurrentCrimes", "--------------------------------");
+        foreach (Crime MyCrime in WantedLevelScript.CurrentCrimes.CrimeList)
+        {
+            if(MyCrime.IsCurrentlyViolating)
+            {
+                
+                WriteToLog("IsCurrentlyViolating", MyCrime.Name);
+            }
+        }
+        WriteToLog("CurrentCrimes", "--------------------------------");
 
         //PoliceSpawning.SpawnRoadblock(Game.LocalPlayer.Character.GetOffsetPositionFront(10F));
 
@@ -274,21 +281,21 @@ public static class Debugging
                 if (Cop.Pedestrian.IsInAnyVehicle(false))
                 {
                     WriteToLog("DebugNumpad7", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TaskType {4,-20}, TaskQueued {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},Vehicle {11,-20},ChaseStatus {12,-20},HurtByPlayer {13,-20}",
-                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.TextName, Cop.TaskType, Cop.TaskIsQueued, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition),Cop.Pedestrian.CurrentVehicle.Model.Name,Cop.CurrentChaseStatus,Cop.HurtByPlayer));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
+                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.TextName, "NA", "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition),Cop.Pedestrian.CurrentVehicle.Model.Name,Cop.CurrentChaseStatus,Cop.HurtByPlayer));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
 
                 }
                 else
                 {
                     WriteToLog("DebugNumpad7", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TaskType {4,-20}, TaskQueued {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},ChaseStatus {11,-20}",
-                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.TextName, Cop.TaskType, Cop.TaskIsQueued, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition),Cop.CurrentChaseStatus));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(Police.InvestigationPosition)));
+                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.TextName, "NA", "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition),Cop.CurrentChaseStatus));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
                 }
             }
             WriteToLog("DebugNumpad7", string.Format("CurrentPoliceTickRunning: {0}", Tasking.CurrentPoliceTickRunning));
-            WriteToLog("DebugNumpad7", string.Format("PoliceInInvestigationMode: {0}", Police.PoliceInInvestigationMode));
-            WriteToLog("DebugNumpad7", string.Format("InvestigationPosition: {0}", Police.InvestigationPosition));
-            WriteToLog("DebugNumpad7", string.Format("InvestigationDistance: {0}", Police.InvestigationDistance));
+            WriteToLog("DebugNumpad7", string.Format("PoliceInInvestigationMode: {0}", InvestigationScript.InInvestigationMode));
+            WriteToLog("DebugNumpad7", string.Format("InvestigationPosition: {0}", InvestigationScript.InvestigationPosition));
+            WriteToLog("DebugNumpad7", string.Format("InvestigationDistance: {0}", InvestigationScript.InvestigationDistance));
             WriteToLog("DebugNumpad7", string.Format("ActiveDistance: {0}", Police.ActiveDistance));
-            WriteToLog("DebugNumpad7", string.Format("AnyNear Investigation Position: {0}", PedList.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Police.InvestigationPosition) <= Police.InvestigationDistance)));
+            WriteToLog("DebugNumpad7", string.Format("AnyNear Investigation Position: {0}", PedList.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition) <= InvestigationScript.InvestigationDistance)));
 
             WriteToLog("DebugNumpad7", "--------------------------------");
             WriteToLog("DebugNumpad7", "");
@@ -318,7 +325,7 @@ public static class Debugging
             }
             WriteToLog("DebugNumpad7", "--------------------------------");
             WriteToLog("DebugNumpad7", "-------Current Crimes-----------");
-            WriteToLog("DebugNumpad7", Police.CurrentCrimes.DebugPrintCrimes());
+            WriteToLog("DebugNumpad7", WantedLevelScript.CurrentCrimes.DebugPrintCrimes());
             WriteToLog("DebugNumpad7", "--------------------------------");
             WriteToLog("DebugNumpad7", "-------Game Fibers-----------");
             WriteToLog("DebugNumpad7", string.Join(";", GameFibers.Where(x => x.IsAlive).GroupBy(g => g.Name).Select(group => group.Key + ":" + group.Count())));

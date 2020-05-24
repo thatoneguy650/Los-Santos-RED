@@ -60,7 +60,7 @@ public static class SearchModeStopping
             if (PrevStopSearchMode != StopSearchMode)
             {
                 PrevStopSearchMode = StopSearchMode;
-                Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Police.AnyPoliceRecentlySeenPlayer));
+                Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Police.AnyRecentlySeenPlayer));
             }
 
             if (!StopSearchMode)
@@ -70,7 +70,7 @@ public static class SearchModeStopping
             {
                 CreateGhostCop();
             }
-            if (PlayerState.IsWanted && Police.AnyPoliceRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+            if (PlayerState.IsWanted && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
             {
                 MoveGhostCopToPosition();
             }
@@ -84,7 +84,7 @@ public static class SearchModeStopping
     {
         if (GhostCop.Exists())
         {
-            if (Police.PlayerStarsGreyedOut)
+            if (PlayerState.AreStarsGreyedOut)
             {
                 CurrentOffset = new List<Vector3>() { new Vector3(0f, 6f, 1f), new Vector3(6f, 0f, 1f), new Vector3(0f, -6f, 1f) }.PickRandom();
                 Debugging.WriteToLog("MoveGhostCopToPosition", string.Format("CurrentOffset {0}", CurrentOffset));

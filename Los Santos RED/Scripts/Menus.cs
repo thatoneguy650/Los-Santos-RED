@@ -364,7 +364,7 @@ internal static class Menus
         bustedMenu.AddItem(menuBustedResistArrest);
         bustedMenu.AddItem(menuBustedBribe);
         bustedMenu.AddItem(menuBustedSurrender);
-        if (PlayerState.WantedLevel <= 1 || !Police.CurrentCrimes.CommittedAnyCrimes)
+        if (PlayerState.WantedLevel <= 1 || !WantedLevelScript.CurrentCrimes.CommittedAnyCrimes)
         {
             menuBustedTalk = new UIMenuItem("Talk", "Try to talk your way out of an arrest.");
             bustedMenu.AddItem(menuBustedTalk);

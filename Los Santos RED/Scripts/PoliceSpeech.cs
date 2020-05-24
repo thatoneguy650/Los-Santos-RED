@@ -49,61 +49,49 @@ internal static class PoliceSpeech
                 {
                     if (Cop.CanSpeak && Cop.DistanceToPlayer <= 45f)
                     {
-                        if (Cop.IsTasked)
+                        if (PlayerState.IsBusted && Cop.DistanceToPlayer <= 20f)
                         {
-                            if (PlayerState.IsBusted && Cop.DistanceToPlayer <= 20f)
-                            {
-                                Cop.Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
-                                //Debugging.WriteToLog("CheckSpeech", "ARREST_PLAYER");
-                            }
-                            else if (Police.CurrentPoliceState == Police.PoliceState.UnarmedChase)
-                            {
-                                string Speech = UnarmedChaseSpeech.PickRandom();
-                                Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                                //Debugging.WriteToLog("CheckSpeech", Speech);
-                            }
-                            else if (Police.CurrentPoliceState == Police.PoliceState.CautiousChase)
-                            {
-                                string Speech = CautiousChaseSpeech.PickRandom();
-                                Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                                //Debugging.WriteToLog("CheckSpeech", Speech);
-                            }
-                            else if (Police.CurrentPoliceState == Police.PoliceState.ArrestedWait)
-                            {
-                                //string Speech = ArrestedWaitSpeech.PickRandom();
-                                //Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                                //LocalWriteToLog("CheckSpeech", Speech);
-                            }
-                            else if (Police.CurrentPoliceState == Police.PoliceState.Normal && Respawning.RecentlyBribedPolice)
-                            {
-                                string Speech = AmbientSpeech.PickRandom();
-                                Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                                //Debugging.WriteToLog("CheckSpeech", Speech);
-                            }
-                            else if (Police.CurrentPoliceState == Police.PoliceState.DeadlyChase)
-                            {
-                                string Speech = DeadlyChaseSpeech.PickRandom();
-                                Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                                //Debugging.WriteToLog("CheckSpeech", Speech);
-                            }
-                            else //Normal State
-                            {
-                                if (Cop.DistanceToPlayer <= 4f)
-                                {
-                                    Cop.Pedestrian.PlayAmbientSpeech("CRIMINAL_WARNING");
-                                    //Debugging.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
-                                }
-                            }
+                            Cop.Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
+                            //Debugging.WriteToLog("CheckSpeech", "ARREST_PLAYER");
                         }
-                        else
+                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase)
                         {
-                            if (PlayerState.IsDead && Cop.DistanceToPlayer <= 20f)
-                            {
-                                string Speech = PlayerDeadSpeech.PickRandom();
-                                Cop.Pedestrian.PlayAmbientSpeech(Speech);
-                                //Debugging.WriteToLog("CheckSpeech", Speech);
-                            }
+                            string Speech = UnarmedChaseSpeech.PickRandom();
+                            Cop.Pedestrian.PlayAmbientSpeech(Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
                         }
+                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.CautiousChase)
+                        {
+                            string Speech = CautiousChaseSpeech.PickRandom();
+                            Cop.Pedestrian.PlayAmbientSpeech(Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
+                        }
+                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait)
+                        {
+                            //string Speech = ArrestedWaitSpeech.PickRandom();
+                            //Cop.Pedestrian.PlayAmbientSpeech(Speech);
+                            //LocalWriteToLog("CheckSpeech", Speech);
+                        }
+                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.Normal && Respawning.RecentlyBribedPolice)
+                        {
+                            string Speech = AmbientSpeech.PickRandom();
+                            Cop.Pedestrian.PlayAmbientSpeech(Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
+                        }
+                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase)
+                        {
+                            string Speech = DeadlyChaseSpeech.PickRandom();
+                            Cop.Pedestrian.PlayAmbientSpeech(Speech);
+                            //Debugging.WriteToLog("CheckSpeech", Speech);
+                        }
+                        else //Normal State
+                        {
+                            if (Cop.DistanceToPlayer <= 4f)
+                            {
+                                Cop.Pedestrian.PlayAmbientSpeech("CRIMINAL_WARNING");
+                                //Debugging.WriteToLog("CheckSpeech", "CRIMINAL_WARNING");
+                            }
+                        } 
                         Cop.GameTimeLastSpoke = Game.GameTime;
                     }
                     if (Cop.HasItemsToRadioIn)

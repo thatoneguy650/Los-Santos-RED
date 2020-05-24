@@ -173,7 +173,7 @@ public class Location
         }
 
         NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
-        Police.CreatedBlips.Add(MyLocationBlip);
+        General.CreatedBlips.Add(MyLocationBlip);
     }
     public override string ToString()
     {

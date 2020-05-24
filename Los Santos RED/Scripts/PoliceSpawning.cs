@@ -12,6 +12,24 @@ public static class PoliceSpawning
     private static RandomPoliceSpawn StreetSpawn;
     private static RandomPoliceSpawn WaterSpawn;
     private static RandomPoliceSpawn AirSpawn;
+    private enum DispatchType
+    {
+        PoliceAutomobile = 1,
+        PoliceHelicopter = 2,
+        FireDepartment = 3,
+        SwatAutomobile = 4,
+        AmbulanceDepartment = 5,
+        PoliceRiders = 6,
+        PoliceVehicleRequest = 7,
+        PoliceRoadBlock = 8,
+        PoliceAutomobileWaitPulledOver = 9,
+        PoliceAutomobileWaitCruising = 10,
+        Gangs = 11,
+        SwatHelicopter = 12,
+        PoliceBoat = 13,
+        ArmyVehicle = 14,
+        BikerBackup = 15
+    };
 
     private static uint GameTimeLastSpawnedCop;
     public static bool IsRunning { get; set; }
@@ -21,8 +39,8 @@ public static class PoliceSpawning
         {
             if (PlayerState.IsWanted)
                 return 400f - (PlayerState.WantedLevel * -40);
-            else if (Police.PoliceInInvestigationMode)
-                return Police.InvestigationDistance / 2;
+            else if (InvestigationScript.InInvestigationMode)
+                return InvestigationScript.InvestigationDistance / 2;
             else
                 return 350f;//450f;//750f
         }
@@ -33,8 +51,8 @@ public static class PoliceSpawning
         {
             if (PlayerState.IsWanted)
                 return 550f;
-            else if (Police.PoliceInInvestigationMode)
-                return Police.InvestigationDistance;
+            else if (InvestigationScript.InInvestigationMode)
+                return InvestigationScript.InvestigationDistance;
             else
                 return 900f;//1250f//1500f
         }
@@ -118,6 +136,7 @@ public static class PoliceSpawning
                 GetPoliceSpawn();
                 SpawnCop();
             }
+            SetDispatchService(false);
         }
     }
     public static void Dispose()
@@ -136,6 +155,8 @@ public static class PoliceSpawning
             }   
         }
         CreatedEntities.Clear();
+
+        SetDispatchService(true);
     }
     public static void DebugSetPoliceSpawn(Vector3 PositionToSet)
     {
@@ -143,7 +164,7 @@ public static class PoliceSpawning
         if (ZoneName == null || ZoneName.GameName == "OCEANA")
             return;
 
-        string StreetName = PlayerLocation.GetCurrentStreet(PositionToSet);
+        string StreetName = Streets.GetCurrentStreet(PositionToSet);
         Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
 
         StreetSpawn = new RandomPoliceSpawn(PositionToSet,0f, ZoneName, MyGTAStreet);
@@ -204,7 +225,7 @@ public static class PoliceSpawning
         if (ZoneName == null)
             StreetSpawn = null;
 
-        string StreetName = PlayerLocation.GetCurrentStreet(SpawnLocation);
+        string StreetName = Streets.GetCurrentStreet(SpawnLocation);
         Street MyGTAStreet = Streets.GetStreetFromName(StreetName);
 
         StreetSpawn = new RandomPoliceSpawn(SpawnLocation, Heading, ZoneName, MyGTAStreet);
@@ -261,7 +282,6 @@ public static class PoliceSpawning
             Debugging.WriteToLog("SpawnActiveChaseCopError", e.Message + " : " + e.StackTrace);
         }
     }
-
     public static void RemoveCops()
     {
         if (IsRunning)
@@ -437,7 +457,7 @@ public static class PoliceSpawning
                 Blip myBlip = Cop.AttachBlip();
                 myBlip.Color = _Agency.AgencyColor;
                 myBlip.Scale = 0.6f;
-                Police.CreatedBlips.Add(myBlip);
+                General.CreatedBlips.Add(myBlip);
             }
             PedList.CopPeds.Add(MyNewCop);
 
@@ -551,6 +571,18 @@ public static class PoliceSpawning
             // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
         }
     }
+    private static void SetDispatchService(bool ValueToSet)
+    {
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceHelicopter, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceVehicleRequest, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatAutomobile, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatHelicopter, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRiders, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRoadBlock, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitCruising, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitPulledOver, ValueToSet);
+    }
 
     //public static void SpawnRoadblock(Vector3 InitialPosition)
     //{
@@ -570,7 +602,7 @@ public static class PoliceSpawning
     //    while(Game.GameTime - GameTimeStartedSleeping <= 5000)
     //    {
 
-            
+
     //        GameFiber.Yield();
     //    }
 
@@ -600,7 +632,7 @@ public static class PoliceSpawning
     //        //if (NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
     //        //{
     //        //    LocalIsObscured = true;
-                
+
     //        //}
     //        if (NativeFunction.CallByName<bool>("IS_POSITION_OCCUPIED", outPos.X, outPos.Y, outPos.Z, 4f, 0, 1, 0, 0, 0, 0, 0))
     //        {
@@ -608,7 +640,7 @@ public static class PoliceSpawning
 
     //        }
 
-            
+
 
 
     //        Nodes.Add(new RandomPoliceSpawn(outPos, heading, null, null) { IsObscured = LocalIsObscured });
@@ -624,7 +656,7 @@ public static class PoliceSpawning
     //                ColorToPick = System.Drawing.Color.Red;
     //            Rage.Debug.DrawArrowDebug(new Vector3(MyNode.SpawnLocation.X, MyNode.SpawnLocation.Y, MyNode.SpawnLocation.Z), new Vector3(0.5f), Rotator.Zero, 1f, ColorToPick);
     //        }
-            
+
     //        GameFiber.Yield();
     //    }
 

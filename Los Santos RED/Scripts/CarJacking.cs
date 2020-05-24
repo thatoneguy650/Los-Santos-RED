@@ -152,7 +152,6 @@ public static class CarJacking
             {
                 Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                 NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
-                Police.PlayerArtificiallyShooting = true;
                 PlayerState.PlayerShotArtificially();
 
                 if (ScenePhase <= 0.35f)
@@ -194,7 +193,6 @@ public static class CarJacking
                 Victim.CanFlee = true;
             return false;
         }
-        Police.PlayerArtificiallyShooting = false;
         return true;
     }
     private static bool FinishCarJack()

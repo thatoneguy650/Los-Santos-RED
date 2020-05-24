@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class Mugging
+public static class MuggingScript
 {
     public static bool IsRunning { get; set; }
     public static bool IsMugging { get; set; }
@@ -140,7 +140,7 @@ public static class Mugging
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, General.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
-                MuggingTarget.AddCrime(Police.CurrentCrimes.Mugging,MuggingTarget.Pedestrian.Position);
+                MuggingTarget.AddCrime(WantedLevelScript.CurrentCrimes.Mugging,MuggingTarget.Pedestrian.Position);
             }
             MuggingTarget.CanFlee = true;
             IsMugging = false;      

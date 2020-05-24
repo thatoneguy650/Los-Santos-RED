@@ -185,7 +185,7 @@ public static class UI
         {
             if (PlayerState.IsWanted)
                 PlayerStatusLine = "~r~Wanted~s~";
-            else if (Police.PlayerHasBeenNotWantedFor <= 45000)
+            else if (WantedLevelScript.HasBeenNotWantedFor <= 45000)
                 PlayerStatusLine = "~o~Wanted~s~";
             else
                 PlayerStatusLine = "~y~Wanted~s~";

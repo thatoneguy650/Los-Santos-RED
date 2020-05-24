@@ -38,10 +38,7 @@ public class GTAPed
     public bool CanFlee { get; set; } = true;
     public bool WillCallPolice { get; set; } = true;
     public List<Crime> CrimesWitnessed { get; set; } = new List<Crime>();
-    public bool IsTasked { get; set; } = false;
-    public bool TaskIsQueued { get; set; } = false;
-    public Tasking.AssignableTasks TaskType { get; set; } = Tasking.AssignableTasks.NoTask;
-    public GameFiber TaskFiber { get; set; }
+
     public bool NeedsUpdate
     {
         get
@@ -140,25 +137,6 @@ public class GTAPed
     {
         if (NeedsUpdate)
         {
-            //int NewHealth = Pedestrian.Health;
-            //if (NewHealth != Health)
-            //{
-            //    if (!HurtByPlayer && CheckPlayerHurtPed)
-            //    {
-            //        HurtByPlayer = true;
-            //        Debugging.WriteToLog("GTAPed", string.Format("Player Hurt {0}, IsCop: {1}", Pedestrian.Handle, IsCop));
-            //    }
-            //    Health = NewHealth;
-            //}
-            //if (Pedestrian.IsDead)
-            //{
-            //    if (CheckPlayerKilledPed)
-            //    {
-            //        KilledByPlayer = true;
-            //        Debugging.WriteToLog("GTAPed", string.Format("Player Killed {0}, IsCop: {1}", Pedestrian.Handle, IsCop));
-            //    }
-            //    return;
-            //}
             IsInVehicle = Pedestrian.IsInAnyVehicle(false);
             if (IsInVehicle)
             {
@@ -180,7 +158,7 @@ public class GTAPed
         if (NeedsDistanceCheck)
         {
             DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
-            DistanceToLastSeen = Pedestrian.DistanceTo2D(Police.PlacePlayerLastSeen);
+            DistanceToLastSeen = Pedestrian.DistanceTo2D(Police.PlaceLastSeenPlayer);
 
             if (DistanceToPlayer <= 0.1f)
                 DistanceToPlayer = 0f;
@@ -195,6 +173,12 @@ public class GTAPed
                 CanHearPlayer = false;
 
             GameTimeLastDistanceCheck = Game.GameTime;
+
+
+
+            
+
+
         }
     }
     private void UpdateLineOfSight()
@@ -208,7 +192,6 @@ public class GTAPed
                 if (DistanceToPlayer <= 90f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
                 {
                     SetPlayerSeen();
-                    Police.PlayerSeen();
                 }
                 else
                 {
@@ -224,7 +207,6 @@ public class GTAPed
                 if (DistanceToPlayer <= DistanceToSee && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Pedestrian, ToCheck, 17))
                 {
                     SetPlayerSeen();
-                    Police.PlayerSeen();
                 }
                 else
                 {
@@ -237,7 +219,6 @@ public class GTAPed
                 if (DistanceToPlayer <= 90f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
                 {
                     SetPlayerSeen();
-                    Police.PlayerSeen();
                 }
                 else
                 {
@@ -280,6 +261,12 @@ public class GTAPed
         CanSeePlayer = true;
         GameTimeLastSeenPlayer = Game.GameTime;
         PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
+        if(IsCop)
+        {
+            Police.WasPlayerLastSeenInVehicle = PlayerState.IsInVehicle;
+            Police.PlayerLastSeenHeading = Game.LocalPlayer.Character.Heading;
+            Police.PlayerLastSeenForwardVector = Game.LocalPlayer.Character.ForwardVector;
+        }
     }
     public void CheckPlayerHurtPed()
     {
