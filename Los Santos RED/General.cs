@@ -64,7 +64,7 @@ public static class General
         ReadConfig();
         Agencies.ReadConfig();
         Zones.ReadConfig();
-        GTAWeapons.ReadConfig();
+        Weapons.ReadConfig();
         Locations.ReadConfig();
         Vehicles.ReadConfig();
         Streets.ReadConfig();
@@ -130,7 +130,7 @@ public static class General
         if (Pedestrian.Inventory.EquippedWeapon == null)
             return null;
         ulong myHash = (ulong)Pedestrian.Inventory.EquippedWeapon.Hash;
-        GTAWeapon CurrentGun = GTAWeapons.GetWeaponFromHash(myHash);
+        GTAWeapon CurrentGun = Weapons.GetWeaponFromHash(myHash);
         if (CurrentGun != null)
             return CurrentGun;
         else
@@ -148,7 +148,7 @@ public static class General
     public static GTAWeapon.WeaponVariation GetWeaponVariation(Ped WeaponOwner, uint WeaponHash)
     {
         int Tint = NativeFunction.CallByName<int>("GET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash);
-        GTAWeapon MyGun = GTAWeapons.GetWeaponFromHash(WeaponHash);
+        GTAWeapon MyGun = Weapons.GetWeaponFromHash(WeaponHash);
         if (MyGun == null)
             return new GTAWeapon.WeaponVariation("Variation1", Tint);
 
@@ -174,7 +174,7 @@ public static class General
         if (_WeaponVariation == null)
             return;
         NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, _WeaponVariation.Tint);
-        GTAWeapon LookupGun = GTAWeapons.GetWeaponFromHash(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
+        GTAWeapon LookupGun = Weapons.GetWeaponFromHash(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
         if (LookupGun == null)
             return;
         foreach (GTAWeapon.WeaponComponent ToRemove in LookupGun.PossibleComponents)
@@ -258,7 +258,7 @@ public static class General
             PedVariation myPedVariation = new PedVariation
             {
                 MyPedComponents = new List<PedComponent>(),
-                MyPedProps = new List<PropComponent>()
+                MyPedProps = new List<PedPropComponent>()
             };
             for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
@@ -266,7 +266,7 @@ public static class General
             }
             for (int PropNumber = 0; PropNumber < 8; PropNumber++)
             {
-                myPedVariation.MyPedProps.Add(new PropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
+                myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
             }
             return myPedVariation;
         }
@@ -284,7 +284,7 @@ public static class General
             {
                 NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", myPed, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
             }
-            foreach (PropComponent Prop in myPedVariation.MyPedProps)
+            foreach (PedPropComponent Prop in myPedVariation.MyPedProps)
             {
                 NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", myPed, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
             }

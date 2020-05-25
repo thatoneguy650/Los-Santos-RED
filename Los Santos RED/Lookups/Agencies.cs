@@ -50,15 +50,15 @@ public static class Agencies
             new Agency.ModelInformation("s_m_y_sheriff_01", true,75,75),
             new Agency.ModelInformation("s_f_y_sheriff_01", false,25,25) };
         List<Agency.ModelInformation> SWAT = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_swat_01", true, 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_swat_01", true, 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> PoliceAndSwat = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_y_cop_01", true,70,0),
             new Agency.ModelInformation("s_f_y_cop_01", false,30,0),
-            new Agency.ModelInformation("s_m_y_swat_01", true, 0,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_swat_01", true, 0,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> SheriffAndSwat = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_y_sheriff_01", true, 75, 0),
             new Agency.ModelInformation("s_f_y_sheriff_01", false, 25, 0),
-            new Agency.ModelInformation("s_m_y_swat_01", true, 0, 100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_swat_01", true, 0, 100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> DOAPeds = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("u_m_m_doa_01", true,100,100) };
         List<Agency.ModelInformation> IAAPeds = new List<Agency.ModelInformation>() {
@@ -71,7 +71,7 @@ public static class Agencies
             new Agency.ModelInformation("s_m_m_marine_02", true,0,0),
             new Agency.ModelInformation("s_m_y_marine_01", true,25,0),
             new Agency.ModelInformation("s_m_y_marine_02", true,0,0),
-            new Agency.ModelInformation("s_m_y_marine_03", true,100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PropComponent>() { new PropComponent(3, 1, 0) }) },
+            new Agency.ModelInformation("s_m_y_marine_03", true,100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0) }) },
             new Agency.ModelInformation("s_m_m_pilot_02", true,0,0),
             new Agency.ModelInformation("s_m_y_pilot_01", true,0,0) };
         List<Agency.ModelInformation> FIBPeds = new List<Agency.ModelInformation>() {
@@ -79,7 +79,7 @@ public static class Agencies
             new Agency.ModelInformation("s_m_m_fiboffice_01", true,15,0),
             new Agency.ModelInformation("s_m_m_fiboffice_02", true,15,0),
             new Agency.ModelInformation("u_m_m_fibarchitect", true,10,0),
-            new Agency.ModelInformation("s_m_y_swat_01", true, 5,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_swat_01", true, 5,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> PrisonPeds = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_m_prisguard_01", true,100,100) };
         List<Agency.ModelInformation> SecurityPeds = new List<Agency.ModelInformation>() {
@@ -87,7 +87,7 @@ public static class Agencies
         List<Agency.ModelInformation> CoastGuardPeds = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_y_uscg_01", true,100,100) };
         List<Agency.ModelInformation> NOOSEPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_swat_01", true, 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PropComponent>() { new PropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_swat_01", true, 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
 
         //Vehicles
         List<Agency.VehicleInformation> UnmarkedVehicles = new List<Agency.VehicleInformation>() {
@@ -478,7 +478,7 @@ public class Agency
     {
         return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
     }
-    public VehicleInformation GetRandomVehicle(bool IsMotorcycle,bool IsHelicopter, bool IsBoat)
+    public VehicleInformation GetRandomVehicle()
     {
         if (Vehicles == null || !Vehicles.Any())
             return null;

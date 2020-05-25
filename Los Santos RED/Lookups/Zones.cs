@@ -72,7 +72,7 @@ public static class Zones
             new ZoneAgency("PRISEC", 0, 100, 50),
             new ZoneAgency("NOOSE", 1, 0, 50) };
 
-        List<string> VespucciAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VespucciAreaUnits.FileName, ScannerAudio.attention_all_area_units.VespucciAreaUnits2.FileName };
+        List<string> VespucciAreaUnits = new List<string>() { DispatchScannerFiles.attention_all_area_units.VespucciAreaUnits.FileName, DispatchScannerFiles.attention_all_area_units.VespucciAreaUnits2.FileName };
         List<ZoneAgency> VespucciAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSPD-DP", 0, 84, 70),
             new ZoneAgency("LSPD", 1, 10, 10),
@@ -81,8 +81,8 @@ public static class Zones
             new ZoneAgency("LSPD-ASD", 4, 0, 5),
             new ZoneAgency("PRISEC", 5, 0, 0)};
 
-        List<string> CentralAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.CentralUnits.FileName, ScannerAudio.attention_all_area_units.CentralUnits1.FileName, ScannerAudio.attention_all_area_units.CentralAreaUnits.FileName };
-        List<string> EastLosSantosAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.EastLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.EastLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.EastLosSantos2.FileName };
+        List<string> CentralAreaUnits = new List<string>() { DispatchScannerFiles.attention_all_area_units.CentralUnits.FileName, DispatchScannerFiles.attention_all_area_units.CentralUnits1.FileName, DispatchScannerFiles.attention_all_area_units.CentralAreaUnits.FileName };
+        List<string> EastLosSantosAreaUnits = new List<string>() { DispatchScannerFiles.attention_all_area_units.EastLosSantosUnits1.FileName, DispatchScannerFiles.attention_all_area_units.EastLosSantosUnits1.FileName, DispatchScannerFiles.attention_all_area_units.EastLosSantos2.FileName };
         List<ZoneAgency> EastLosSantosAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSPD-ELS", 0, 85, 70),
             new ZoneAgency("LSPD", 1, 10, 10),
@@ -91,7 +91,7 @@ public static class Zones
             new ZoneAgency("LSPD-ASD", 4, 0, 5),
             new ZoneAgency("PRISEC", 5, 0, 0)};
 
-        List<string> VinewoodAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VinewoodAreaUnits.FileName, ScannerAudio.attention_all_area_units.VinewoodUnits2.FileName };
+        List<string> VinewoodAreaUnits = new List<string>() { DispatchScannerFiles.attention_all_area_units.VinewoodAreaUnits.FileName, DispatchScannerFiles.attention_all_area_units.VinewoodUnits2.FileName };
         List<ZoneAgency> VinewoodAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSPD-VW", 0, 75, 70),
             new ZoneAgency("LSSD-VW", 1, 10, 10),
@@ -107,7 +107,7 @@ public static class Zones
             new ZoneAgency("LSPD-ASD", 3, 0, 5),
             new ZoneAgency("PRISEC", 4, 0, 0)};
 
-        List<string> PortAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.PortOfLosSantosUnits.FileName, ScannerAudio.attention_all_area_units.PortOfLosSantosUnits1.FileName, ScannerAudio.attention_all_area_units.PortOfLosSantosUnits2.FileName };
+        List<string> PortAreaUnits = new List<string>() { DispatchScannerFiles.attention_all_area_units.PortOfLosSantosUnits.FileName, DispatchScannerFiles.attention_all_area_units.PortOfLosSantosUnits1.FileName, DispatchScannerFiles.attention_all_area_units.PortOfLosSantosUnits2.FileName };
 
         List<ZoneAgency> RockfordHillsAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSPD-RH", 0, 85, 70),
@@ -117,7 +117,7 @@ public static class Zones
             new ZoneAgency("LSPD-ASD", 4, 0, 5),
             new ZoneAgency("PRISEC", 5, 0, 0)};
 
-        List<string> VinewoodHillsAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.VinewoodAreaUnits.FileName, ScannerAudio.attention_all_area_units.VinewoodUnits2.FileName };
+        List<string> VinewoodHillsAreaUnits = new List<string>() { DispatchScannerFiles.attention_all_area_units.VinewoodAreaUnits.FileName, DispatchScannerFiles.attention_all_area_units.VinewoodUnits2.FileName };
 
         List<ZoneAgency> VinewoodHillsAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSSD-VW", 0, 85, 70),
@@ -126,7 +126,7 @@ public static class Zones
             new ZoneAgency("LSPD-ASD", 3, 0, 5),
             new ZoneAgency("PRISEC", 4, 0, 0)};
 
-        List<string> ChumashsAreaUnits = new List<string>() { ScannerAudio.attention_all_area_units.ChumashUnits.FileName, ScannerAudio.attention_all_area_units.ChumashUnits1.FileName, ScannerAudio.attention_all_area_units.ChumashUnits2.FileName };
+        List<string> ChumashsAreaUnits = new List<string>() { DispatchScannerFiles.attention_all_area_units.ChumashUnits.FileName, DispatchScannerFiles.attention_all_area_units.ChumashUnits1.FileName, DispatchScannerFiles.attention_all_area_units.ChumashUnits2.FileName };
         List<ZoneAgency> ChumashAgencies = new List<ZoneAgency>() {
             new ZoneAgency("LSSD-CH", 0, 85, 70),
             new ZoneAgency("LSPD-CH", 1, 10, 5),
@@ -163,121 +163,121 @@ public static class Zones
         ZoneList = new List<Zone>
         {
             //One Off
-            new Zone("OCEANA", "Pacific Ocean", ScannerAudio.areas.TheOcean.FileName, County.PacificOcean,"Pacific Coast") { ZoneAgencies = OceanAgencies },   
+            new Zone("OCEANA", "Pacific Ocean", DispatchScannerFiles.areas.TheOcean.FileName, County.PacificOcean,"Pacific Coast") { ZoneAgencies = OceanAgencies },   
 
             //North Blaine
-            new Zone("PROCOB", "Procopio Beach", ScannerAudio.areas.ProcopioBeach.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("MTCHIL", "Mount Chiliad", ScannerAudio.areas.MountChiliad.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("MTGORDO", "Mount Gordo", ScannerAudio.areas.MountGordo.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("PALETO", "Paleto Bay", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty,"Chiliad", new List<string>() { ScannerAudio.attention_all_area_units.PaletoaBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits.FileName, ScannerAudio.attention_all_area_units.PaletoBayUnits3.FileName }, "Paleto Bay Units") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("PALCOV", "Paleto Cove", ScannerAudio.areas.PaletoBay.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("PALFOR", "Paleto Forest", ScannerAudio.areas.PaletoForest.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("CMSW", "Chiliad Mountain State Wilderness", ScannerAudio.areas.ChilliadMountainStWilderness.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("PROCOB", "Procopio Beach", DispatchScannerFiles.areas.ProcopioBeach.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("MTCHIL", "Mount Chiliad", DispatchScannerFiles.areas.MountChiliad.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("MTGORDO", "Mount Gordo", DispatchScannerFiles.areas.MountGordo.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("PALETO", "Paleto Bay", DispatchScannerFiles.areas.PaletoBay.FileName, County.BlaineCounty,"Chiliad", new List<string>() { DispatchScannerFiles.attention_all_area_units.PaletoaBayUnits.FileName, DispatchScannerFiles.attention_all_area_units.PaletoBayUnits.FileName, DispatchScannerFiles.attention_all_area_units.PaletoBayUnits3.FileName }, "Paleto Bay Units") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("PALCOV", "Paleto Cove", DispatchScannerFiles.areas.PaletoBay.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("PALFOR", "Paleto Forest", DispatchScannerFiles.areas.PaletoForest.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("CMSW", "Chiliad Mountain State Wilderness", DispatchScannerFiles.areas.ChilliadMountainStWilderness.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = BlaineParkRangerAgencies },
             new Zone("CALAFB", "Calafia Bridge", "", County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
             new Zone("GALFISH", "Galilee", "", County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("ELGORL", "El Gordo Lighthouse", ScannerAudio.areas.MountGordo.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("GRAPES", "Grapeseed", ScannerAudio.areas.Grapeseed.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("BRADP", "Braddock Pass", ScannerAudio.areas.BraddockPass.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("BRADT", "Braddock Tunnel", ScannerAudio.areas.TheBraddockTunnel.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("ELGORL", "El Gordo Lighthouse", DispatchScannerFiles.areas.MountGordo.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("GRAPES", "Grapeseed", DispatchScannerFiles.areas.Grapeseed.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("BRADP", "Braddock Pass", DispatchScannerFiles.areas.BraddockPass.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("BRADT", "Braddock Tunnel", DispatchScannerFiles.areas.TheBraddockTunnel.FileName, County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
             new Zone("CCREAK", "Cassidy Creek", "", County.BlaineCounty,"Chiliad") { ZoneAgencies = StandardBlaineAgencies },
 
             //Blaine
-            new Zone("ALAMO", "Alamo Sea", ScannerAudio.areas.TheAlamaSea.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("ARMYB", "Fort Zancudo", ScannerAudio.areas.FtZancudo.FileName, County.BlaineCounty,"Midlands") { IsRestrictedDuringWanted = true, ZoneAgencies = ArmyAgencies },
-            new Zone("CANNY", "Raton Canyon", ScannerAudio.areas.RatonCanyon.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("ALAMO", "Alamo Sea", DispatchScannerFiles.areas.TheAlamaSea.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("ARMYB", "Fort Zancudo", DispatchScannerFiles.areas.FtZancudo.FileName, County.BlaineCounty,"Midlands") { IsRestrictedDuringWanted = true, ZoneAgencies = ArmyAgencies },
+            new Zone("CANNY", "Raton Canyon", DispatchScannerFiles.areas.RatonCanyon.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
             
-            new Zone("DESRT", "Grand Senora Desert", ScannerAudio.areas.GrandeSonoranDesert.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("DESRT", "Grand Senora Desert", DispatchScannerFiles.areas.GrandeSonoranDesert.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
       
             new Zone("HUMLAB", "Humane Labs and Research", "", County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("JAIL", "Bolingbroke Penitentiary", ScannerAudio.areas.BoilingBrookPenitentiary.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = BlainePrisonAgencies,IsRestrictedDuringWanted = true },
-            new Zone("LAGO", "Lago Zancudo", ScannerAudio.areas.LagoZancudo.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("MTJOSE", "Mount Josiah", ScannerAudio.areas.MtJosiah.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("NCHU", "North Chumash", ScannerAudio.areas.NorthChumash.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },   
+            new Zone("JAIL", "Bolingbroke Penitentiary", DispatchScannerFiles.areas.BoilingBrookPenitentiary.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = BlainePrisonAgencies,IsRestrictedDuringWanted = true },
+            new Zone("LAGO", "Lago Zancudo", DispatchScannerFiles.areas.LagoZancudo.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("MTJOSE", "Mount Josiah", DispatchScannerFiles.areas.MtJosiah.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("NCHU", "North Chumash", DispatchScannerFiles.areas.NorthChumash.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },   
             new Zone("SANCHIA", "San Chianski Mountain Range", "", County.BlaineCounty,"Midlands") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("SANDY", "Sandy Shores", ScannerAudio.areas.SandyShores.FileName, County.BlaineCounty,"Midlands", new List<string>() { ScannerAudio.attention_all_area_units.SandyShoreUnits.FileName, ScannerAudio.attention_all_area_units.SandyShoresUnits2.FileName, ScannerAudio.attention_all_area_units.SanyShoreUnits3.FileName }, "Sandy Shores Units") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("SLAB", "Slab City", ScannerAudio.areas.SlabCity.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
-            new Zone("ZANCUDO", "Zancudo River", ScannerAudio.areas.ZancudoRiver.FileName, County.BlaineCounty,"Midlands", new List<string>() { ScannerAudio.attention_all_area_units.ZancudoRiverUnits.FileName }, "Zancudo River Units") { ZoneAgencies = BlaineParkRangerAgencies },
-            new Zone("ZQ_UAR", "Davis Quartz", ScannerAudio.areas.DavisCourts.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("SANDY", "Sandy Shores", DispatchScannerFiles.areas.SandyShores.FileName, County.BlaineCounty,"Midlands", new List<string>() { DispatchScannerFiles.attention_all_area_units.SandyShoreUnits.FileName, DispatchScannerFiles.attention_all_area_units.SandyShoresUnits2.FileName, DispatchScannerFiles.attention_all_area_units.SanyShoreUnits3.FileName }, "Sandy Shores Units") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("SLAB", "Slab City", DispatchScannerFiles.areas.SlabCity.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
+            new Zone("ZANCUDO", "Zancudo River", DispatchScannerFiles.areas.ZancudoRiver.FileName, County.BlaineCounty,"Midlands", new List<string>() { DispatchScannerFiles.attention_all_area_units.ZancudoRiverUnits.FileName }, "Zancudo River Units") { ZoneAgencies = BlaineParkRangerAgencies },
+            new Zone("ZQ_UAR", "Davis Quartz", DispatchScannerFiles.areas.DavisCourts.FileName, County.BlaineCounty,"Midlands") { ZoneAgencies = StandardBlaineAgencies },
 
             //Vespucci
-            new Zone("BEACH", "Vespucci Beach", ScannerAudio.areas.VespucciBeach.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
-            new Zone("DELBE", "Del Perro Beach", ScannerAudio.areas.DelPierroBeach.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
-            new Zone("DELPE", "Del Perro", ScannerAudio.areas.DelPierro.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
-            new Zone("VCANA", "Vespucci Canals", ScannerAudio.areas.VespucciCanal.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
-            new Zone("VESP", "Vespucci Metro", ScannerAudio.areas.Vespucci.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
-            new Zone("LOSPUER", "La Puerta", ScannerAudio.areas.LaPuertes.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
-            new Zone("PBLUFF", "Pacific Bluffs", ScannerAudio.areas.PacificBluffs.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
-            new Zone("DELSOL", "Puerto Del Sol", ScannerAudio.areas.PuertoDelSoul.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
+            new Zone("BEACH", "Vespucci Beach", DispatchScannerFiles.areas.VespucciBeach.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
+            new Zone("DELBE", "Del Perro Beach", DispatchScannerFiles.areas.DelPierroBeach.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
+            new Zone("DELPE", "Del Perro", DispatchScannerFiles.areas.DelPierro.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
+            new Zone("VCANA", "Vespucci Canals", DispatchScannerFiles.areas.VespucciCanal.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
+            new Zone("VESP", "Vespucci Metro", DispatchScannerFiles.areas.Vespucci.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
+            new Zone("LOSPUER", "La Puerta", DispatchScannerFiles.areas.LaPuertes.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
+            new Zone("PBLUFF", "Pacific Bluffs", DispatchScannerFiles.areas.PacificBluffs.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
+            new Zone("DELSOL", "Puerto Del Sol", DispatchScannerFiles.areas.PuertoDelSoul.FileName, County.CityOfLosSantos,"Vespucci", VespucciAreaUnits, "Vespucci Area Units") { ZoneAgencies = VespucciAgencies },
 
             //Central
-            new Zone("BANNING", "Banning", ScannerAudio.areas.Banning.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
-            new Zone("CHAMH", "Chamberlain Hills", ScannerAudio.areas.ChamberlainHills.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
-            new Zone("DAVIS", "Davis", ScannerAudio.areas.Davis.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
-            new Zone("DOWNT", "Downtown", ScannerAudio.areas.Downtown.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
-            new Zone("PBOX", "Pillbox Hill", ScannerAudio.areas.PillboxHill.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
-            new Zone("RANCHO", "Rancho", ScannerAudio.areas.Rancho.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
-            new Zone("SKID", "Mission Row", ScannerAudio.areas.MissionRow.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
-            new Zone("STAD", "Maze Bank Arena", ScannerAudio.areas.MazeBankArena.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = SecurityAgencies },
-            new Zone("STRAW", "Strawberry", ScannerAudio.areas.Strawberry.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
-            new Zone("TEXTI", "Textile City", ScannerAudio.areas.TextileCity.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
+            new Zone("BANNING", "Banning", DispatchScannerFiles.areas.Banning.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
+            new Zone("CHAMH", "Chamberlain Hills", DispatchScannerFiles.areas.ChamberlainHills.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
+            new Zone("DAVIS", "Davis", DispatchScannerFiles.areas.Davis.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
+            new Zone("DOWNT", "Downtown", DispatchScannerFiles.areas.Downtown.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
+            new Zone("PBOX", "Pillbox Hill", DispatchScannerFiles.areas.PillboxHill.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
+            new Zone("RANCHO", "Rancho", DispatchScannerFiles.areas.Rancho.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
+            new Zone("SKID", "Mission Row", DispatchScannerFiles.areas.MissionRow.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
+            new Zone("STAD", "Maze Bank Arena", DispatchScannerFiles.areas.MazeBankArena.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = SecurityAgencies },
+            new Zone("STRAW", "Strawberry", DispatchScannerFiles.areas.Strawberry.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = DavisAgencies },
+            new Zone("TEXTI", "Textile City", DispatchScannerFiles.areas.TextileCity.FileName, County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
             new Zone("LEGSQU", "Legion Square", "", County.CityOfLosSantos,"Central", CentralAreaUnits, "Central Area Units") { ZoneAgencies = StandardCityAgencies },
 
             //East LS
-            new Zone("CYPRE", "Cypress Flats", ScannerAudio.areas.CypressFlats.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },
-            new Zone("LMESA", "La Mesa", ScannerAudio.areas.LaMesa.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },
-            new Zone("MIRR", "Mirror Park", ScannerAudio.areas.MirrorPark.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },
-            new Zone("MURRI", "Murrieta Heights", ScannerAudio.areas.MuriettaHeights.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },
-            new Zone("EBURO", "El Burro Heights", ScannerAudio.areas.ElBerroHights.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },//was county
+            new Zone("CYPRE", "Cypress Flats", DispatchScannerFiles.areas.CypressFlats.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },
+            new Zone("LMESA", "La Mesa", DispatchScannerFiles.areas.LaMesa.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },
+            new Zone("MIRR", "Mirror Park", DispatchScannerFiles.areas.MirrorPark.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },
+            new Zone("MURRI", "Murrieta Heights", DispatchScannerFiles.areas.MuriettaHeights.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },
+            new Zone("EBURO", "El Burro Heights", DispatchScannerFiles.areas.ElBerroHights.FileName, County.CityOfLosSantos,"East Los Santos", EastLosSantosAreaUnits, "East Los Santos Units") { ZoneAgencies = EastLosSantosAgencies },//was county
 
             //Vinewood
-            new Zone("ALTA", "Alta", ScannerAudio.areas.Alta.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
-            new Zone("DTVINE", "Downtown Vinewood", ScannerAudio.areas.DowntownVinewood.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
-            new Zone("EAST_V", "East Vinewood", ScannerAudio.areas.EastVinewood.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
+            new Zone("ALTA", "Alta", DispatchScannerFiles.areas.Alta.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
+            new Zone("DTVINE", "Downtown Vinewood", DispatchScannerFiles.areas.DowntownVinewood.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
+            new Zone("EAST_V", "East Vinewood", DispatchScannerFiles.areas.EastVinewood.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
             new Zone("HAWICK", "Hawick", "", County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
-            new Zone("HORS", "Vinewood Racetrack", ScannerAudio.areas.TheRaceCourse.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
-            new Zone("VINE", "Vinewood", ScannerAudio.areas.Vinewood.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
-            new Zone("WVINE", "West Vinewood", ScannerAudio.areas.WestVinewood.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
+            new Zone("HORS", "Vinewood Racetrack", DispatchScannerFiles.areas.TheRaceCourse.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
+            new Zone("VINE", "Vinewood", DispatchScannerFiles.areas.Vinewood.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
+            new Zone("WVINE", "West Vinewood", DispatchScannerFiles.areas.WestVinewood.FileName, County.CityOfLosSantos,"Vinewood", VinewoodAreaUnits, "Vinewood Units") { ZoneAgencies = VinewoodAgencies },
 
             //PortOfLosSantos
-            new Zone("ELYSIAN", "Elysian Island", ScannerAudio.areas.ElysianIsland.FileName, County.CityOfLosSantos,"Port Area", PortAreaUnits, "Port of Los Santos Units") { ZoneAgencies = PortAgencies },
-            new Zone("ZP_ORT", "Port of South Los Santos", ScannerAudio.areas.PortOfSouthLosSantos.FileName, County.CityOfLosSantos,"Port Area", PortAreaUnits, "Port of Los Santos Units") { ZoneAgencies = PortAgencies },
-            new Zone("TERMINA", "Terminal", ScannerAudio.areas.Terminal.FileName, County.CityOfLosSantos,"Port Area", PortAreaUnits, "Port of Los Santos Units") { ZoneAgencies = PortAgencies },
-            new Zone("ZP_ORT", "Port of South Los Santos", ScannerAudio.areas.PortOfSouthLosSantos.FileName, County.CityOfLosSantos,"Port Area", PortAreaUnits, "Port of Los Santos Units") { ZoneAgencies = PortAgencies },
-            new Zone("AIRP", "Los Santos International Airport", ScannerAudio.areas.LosSantosInternationalAirport.FileName, County.CityOfLosSantos,"Port Area") { IsRestrictedDuringWanted = true, ZoneAgencies = AirportAgencies },
+            new Zone("ELYSIAN", "Elysian Island", DispatchScannerFiles.areas.ElysianIsland.FileName, County.CityOfLosSantos,"Port Area", PortAreaUnits, "Port of Los Santos Units") { ZoneAgencies = PortAgencies },
+            new Zone("ZP_ORT", "Port of South Los Santos", DispatchScannerFiles.areas.PortOfSouthLosSantos.FileName, County.CityOfLosSantos,"Port Area", PortAreaUnits, "Port of Los Santos Units") { ZoneAgencies = PortAgencies },
+            new Zone("TERMINA", "Terminal", DispatchScannerFiles.areas.Terminal.FileName, County.CityOfLosSantos,"Port Area", PortAreaUnits, "Port of Los Santos Units") { ZoneAgencies = PortAgencies },
+            new Zone("ZP_ORT", "Port of South Los Santos", DispatchScannerFiles.areas.PortOfSouthLosSantos.FileName, County.CityOfLosSantos,"Port Area", PortAreaUnits, "Port of Los Santos Units") { ZoneAgencies = PortAgencies },
+            new Zone("AIRP", "Los Santos International Airport", DispatchScannerFiles.areas.LosSantosInternationalAirport.FileName, County.CityOfLosSantos,"Port Area") { IsRestrictedDuringWanted = true, ZoneAgencies = AirportAgencies },
 
             //Rockford Hills
-            new Zone("BURTON", "Burton", ScannerAudio.areas.Burton.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },
-            new Zone("GOLF", "GWC and Golfing Society", ScannerAudio.areas.TheGWCGolfingSociety.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = SecurityAgencies },
-            new Zone("KOREAT", "Little Seoul", ScannerAudio.areas.LittleSeoul.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },
-            new Zone("MORN", "Morningwood", ScannerAudio.areas.MorningWood.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },
-            new Zone("MOVIE", "Richards Majestic", ScannerAudio.areas.RichardsMajesticStudio.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = SecurityAgencies },
-            new Zone("RICHM", "Richman", ScannerAudio.areas.Richman.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },
-            new Zone("ROCKF", "Rockford Hills", ScannerAudio.areas.RockfordHills.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },         
+            new Zone("BURTON", "Burton", DispatchScannerFiles.areas.Burton.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },
+            new Zone("GOLF", "GWC and Golfing Society", DispatchScannerFiles.areas.TheGWCGolfingSociety.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = SecurityAgencies },
+            new Zone("KOREAT", "Little Seoul", DispatchScannerFiles.areas.LittleSeoul.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },
+            new Zone("MORN", "Morningwood", DispatchScannerFiles.areas.MorningWood.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },
+            new Zone("MOVIE", "Richards Majestic", DispatchScannerFiles.areas.RichardsMajesticStudio.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = SecurityAgencies },
+            new Zone("RICHM", "Richman", DispatchScannerFiles.areas.Richman.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },
+            new Zone("ROCKF", "Rockford Hills", DispatchScannerFiles.areas.RockfordHills.FileName, County.CityOfLosSantos,"Rockford Hills") { ZoneAgencies = RockfordHillsAgencies },         
 
             //Vinewood Hills
-            new Zone("CHIL", "Vinewood Hills", ScannerAudio.areas.VinewoodHills.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
-            new Zone("GREATC", "Great Chaparral", ScannerAudio.areas.GreatChapparalle.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
-            new Zone("BAYTRE", "Baytree Canyon", ScannerAudio.areas.BayTreeCanyon.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
-            new Zone("RGLEN", "Richman Glen", ScannerAudio.areas.RichmanGlenn.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
-            new Zone("TONGVAV", "Tongva Valley", ScannerAudio.areas.TongvaValley.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
-            new Zone("HARMO", "Harmony", ScannerAudio.areas.Harmony.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
-            new Zone("RTRAK", "Redwood Lights Track", ScannerAudio.areas.TheRedwoodLightsTrack.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
+            new Zone("CHIL", "Vinewood Hills", DispatchScannerFiles.areas.VinewoodHills.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
+            new Zone("GREATC", "Great Chaparral", DispatchScannerFiles.areas.GreatChapparalle.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
+            new Zone("BAYTRE", "Baytree Canyon", DispatchScannerFiles.areas.BayTreeCanyon.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
+            new Zone("RGLEN", "Richman Glen", DispatchScannerFiles.areas.RichmanGlenn.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
+            new Zone("TONGVAV", "Tongva Valley", DispatchScannerFiles.areas.TongvaValley.FileName, County.LosSantosCounty,"Vinewood Hills", VinewoodHillsAreaUnits, "Vinewood Hills Units") { ZoneAgencies = VinewoodHillsAgencies },
+            new Zone("HARMO", "Harmony", DispatchScannerFiles.areas.Harmony.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
+            new Zone("RTRAK", "Redwood Lights Track", DispatchScannerFiles.areas.TheRedwoodLightsTrack.FileName, County.LosSantosCounty,"Vinewood Hills") { ZoneAgencies = VinewoodHillsAgencies },
            
             //Chumash
             new Zone("BANHAMC", "Banham Canyon Dr", "", County.LosSantosCounty,"Chumash", ChumashsAreaUnits, "Chumash Units") { ZoneAgencies = ChumashAgencies },
             new Zone("BHAMCA", "Banham Canyon", "", County.LosSantosCounty,"Chumash", ChumashsAreaUnits, "Chumash Units") { ZoneAgencies = ChumashAgencies },
-            new Zone("CHU", "Chumash", ScannerAudio.areas.Chumash.FileName, County.LosSantosCounty,"Chumash", ChumashsAreaUnits, "Chumash Units") { ZoneAgencies = ChumashAgencies },
-            new Zone("TONGVAH", "Tongva Hills", ScannerAudio.areas.TongaHills.FileName, County.LosSantosCounty,"Chumash", ChumashsAreaUnits, "Chumash Units") { ZoneAgencies = ChumashAgencies },
+            new Zone("CHU", "Chumash", DispatchScannerFiles.areas.Chumash.FileName, County.LosSantosCounty,"Chumash", ChumashsAreaUnits, "Chumash Units") { ZoneAgencies = ChumashAgencies },
+            new Zone("TONGVAH", "Tongva Hills", DispatchScannerFiles.areas.TongaHills.FileName, County.LosSantosCounty,"Chumash", ChumashsAreaUnits, "Chumash Units") { ZoneAgencies = ChumashAgencies },
            
             //Tataviam 
             new Zone("LACT", "Land Act Reservoir", "", County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
             new Zone("LDAM", "Land Act Dam", "", County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
             new Zone("NOOSE", "N.O.O.S.E", "", County.LosSantosCounty,"Tataviam") { IsRestrictedDuringWanted = true, ZoneAgencies = StandardSheriffAgencies },
-            new Zone("PALHIGH", "Palomino Highlands", ScannerAudio.areas.PalominoHighlands.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("PALMPOW", "Palmer - Taylor Power Station", ScannerAudio.areas.PalmerTaylorPowerStation.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },    
-            new Zone("SANAND", "San Andreas", ScannerAudio.areas.SanAndreas.FileName, County.LosSantosCounty,"San Andreas") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("TATAMO", "Tataviam Mountains", ScannerAudio.areas.TatathiaMountains.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
-            new Zone("WINDF", "Ron Alternates Wind Farm", ScannerAudio.areas.RonAlternatesWindFarm.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("PALHIGH", "Palomino Highlands", DispatchScannerFiles.areas.PalominoHighlands.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("PALMPOW", "Palmer - Taylor Power Station", DispatchScannerFiles.areas.PalmerTaylorPowerStation.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },    
+            new Zone("SANAND", "San Andreas", DispatchScannerFiles.areas.SanAndreas.FileName, County.LosSantosCounty,"San Andreas") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("TATAMO", "Tataviam Mountains", DispatchScannerFiles.areas.TatathiaMountains.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
+            new Zone("WINDF", "Ron Alternates Wind Farm", DispatchScannerFiles.areas.RonAlternatesWindFarm.FileName, County.LosSantosCounty,"Tataviam") { ZoneAgencies = StandardSheriffAgencies },
     };
         
     }
