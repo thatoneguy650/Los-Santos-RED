@@ -76,24 +76,11 @@ public static class PedList
     }
     private static void AddCop(Ped Pedestrian)
     {
-        bool canSee = false;
-        if (Pedestrian.PlayerIsInFront() && Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 55f) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, Game.LocalPlayer.Character))
-            canSee = true;
-
-        SetPedestrianStats(Pedestrian, true);
-
-        Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian);
-
+        Agencies.Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian);
         if (AssignedAgency == null && !Pedestrian.Exists())
             return;
 
-        Cop myCop = new Cop(Pedestrian, canSee, canSee ? Game.GameTime : 0, canSee ? Game.LocalPlayer.Character.Position : new Vector3(0f, 0f, 0f), Pedestrian.Health, AssignedAgency);
-        Pedestrian.IsPersistent = false;
-        if (General.MySettings.Police.OverridePoliceAccuracy)
-            Pedestrian.Accuracy = General.MySettings.Police.PoliceGeneralAccuracy;
-        Pedestrian.Inventory.Weapons.Clear();
-        myCop.IssuePistol();
-        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
+        Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency);
 
         if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
         {
@@ -105,15 +92,21 @@ public static class PedList
                 PoliceVehicles.Add(PoliceCar);
             }
         }
-        CopPeds.Add(myCop);
+
+        SetPedestrianStats(Pedestrian, true);
+
+        Pedestrian.Inventory.Weapons.Clear();
+        myCop.IssuePistol();
 
         if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase)
             myCop.IssueHeavyWeapon();
+
+        CopPeds.Add(myCop);
     }
     private static void AddCivilian(Ped Pedestrian)
     {
         SetPedestrianStats(Pedestrian,false);
-        Civilians.Add(new PedExt(Pedestrian, false, Pedestrian.Health) { WillCallPolice = General.MyRand.Next(1, 11) <= 4, WillFight = General.MyRand.Next(1, 21) <= 1 });
+        Civilians.Add(new PedExt(Pedestrian, Pedestrian.Health) { WillCallPolice = General.MyRand.Next(1, 11) <= 4, WillFight = General.MyRand.Next(1, 21) <= 1 });
     }
     private static void SetPedestrianStats(Ped Pedestrian,bool IsCop)
     {
@@ -126,6 +119,11 @@ public static class PedList
             else
                 DesiredArmor = 0;
             DesiredHealth = General.MyRand.Next(MinCopHealth, MaxCopHealth);
+
+            if (General.MySettings.Police.OverridePoliceAccuracy)
+                Pedestrian.Accuracy = General.MySettings.Police.PoliceGeneralAccuracy;
+
+            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
         }
         else
         {

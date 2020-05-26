@@ -388,7 +388,7 @@ public class Zone
     public string ScannerValue { get; set; }
     public List<ZoneAgency> ZoneAgencies { get; set; }
     public bool IsRestrictedDuringWanted { get; set; } = false;
-    public Agency GetRandomAgency()
+    public Agencies.Agency GetRandomAgency()
     {
         if (ZoneAgencies == null || !ZoneAgencies.Any())
             return null;
@@ -408,7 +408,7 @@ public class Zone
         return null;
     }
 
-    public Agency MainZoneAgency
+    public Agencies.Agency MainZoneAgency
     {
         get
         {
@@ -473,7 +473,7 @@ public class ZoneAgency
                 return AmbientSpawnChance;
         }
     }
-    public Agency AssociatedAgency
+    public Agencies.Agency AssociatedAgency
     {
         get
         {

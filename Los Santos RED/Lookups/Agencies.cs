@@ -37,71 +37,68 @@ public static class Agencies
 
         //Peds
         List<Agency.ModelInformation> StandardCops = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_cop_01", true,85,85),
-            new Agency.ModelInformation("s_f_y_cop_01", false,15,15) };
+            new Agency.ModelInformation("s_m_y_cop_01",85,85),
+            new Agency.ModelInformation("s_f_y_cop_01",15,15) };
         List<Agency.ModelInformation> ExtendedStandardCops = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_cop_01", true,85,85),
-            new Agency.ModelInformation("s_f_y_cop_01", false,10,10),
-            new Agency.ModelInformation("ig_trafficwarden", true,5,5) };
+            new Agency.ModelInformation("s_m_y_cop_01",85,85),
+            new Agency.ModelInformation("s_f_y_cop_01",10,10),
+            new Agency.ModelInformation("ig_trafficwarden",5,5) };
         List<Agency.ModelInformation> ParkRangers = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_ranger_01", true,75,75),
-            new Agency.ModelInformation("s_f_y_ranger_01", false,25,25) };
+            new Agency.ModelInformation("s_m_y_ranger_01",75,75),
+            new Agency.ModelInformation("s_f_y_ranger_01",25,25) };
         List<Agency.ModelInformation> SheriffPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_sheriff_01", true,75,75),
-            new Agency.ModelInformation("s_f_y_sheriff_01", false,25,25) };
+            new Agency.ModelInformation("s_m_y_sheriff_01",75,75),
+            new Agency.ModelInformation("s_f_y_sheriff_01",25,25) };
         List<Agency.ModelInformation> SWAT = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_swat_01", true, 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_swat_01", 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> PoliceAndSwat = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_cop_01", true,70,0),
-            new Agency.ModelInformation("s_f_y_cop_01", false,30,0),
-            new Agency.ModelInformation("s_m_y_swat_01", true, 0,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_cop_01",70,0),
+            new Agency.ModelInformation("s_f_y_cop_01",30,0),
+            new Agency.ModelInformation("s_m_y_swat_01", 0,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> SheriffAndSwat = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_sheriff_01", true, 75, 0),
-            new Agency.ModelInformation("s_f_y_sheriff_01", false, 25, 0),
-            new Agency.ModelInformation("s_m_y_swat_01", true, 0, 100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_sheriff_01", 75, 0),
+            new Agency.ModelInformation("s_f_y_sheriff_01", 25, 0),
+            new Agency.ModelInformation("s_m_y_swat_01", 0, 100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> DOAPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("u_m_m_doa_01", true,100,100) };
+            new Agency.ModelInformation("u_m_m_doa_01",100,100) };
         List<Agency.ModelInformation> IAAPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_m_fibsec_01", true,100,100) };
+            new Agency.ModelInformation("s_m_m_fibsec_01",100,100) };
         List<Agency.ModelInformation> SAHPPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_hwaycop_01", true,100,100) };
+            new Agency.ModelInformation("s_m_y_hwaycop_01",100,100) };
         List<Agency.ModelInformation> MilitaryPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_armymech_01", true,25,0),
-            new Agency.ModelInformation("s_m_m_marine_01", true,50,0),
-            new Agency.ModelInformation("s_m_m_marine_02", true,0,0),
-            new Agency.ModelInformation("s_m_y_marine_01", true,25,0),
-            new Agency.ModelInformation("s_m_y_marine_02", true,0,0),
-            new Agency.ModelInformation("s_m_y_marine_03", true,100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0) }) },
-            new Agency.ModelInformation("s_m_m_pilot_02", true,0,0),
-            new Agency.ModelInformation("s_m_y_pilot_01", true,0,0) };
+            new Agency.ModelInformation("s_m_y_armymech_01",25,0),
+            new Agency.ModelInformation("s_m_m_marine_01",50,0),
+            new Agency.ModelInformation("s_m_m_marine_02",0,0),
+            new Agency.ModelInformation("s_m_y_marine_01",25,0),
+            new Agency.ModelInformation("s_m_y_marine_02",0,0),
+            new Agency.ModelInformation("s_m_y_marine_03",100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(3, 1, 0) }) },
+            new Agency.ModelInformation("s_m_m_pilot_02",0,0),
+            new Agency.ModelInformation("s_m_y_pilot_01",0,0) };
         List<Agency.ModelInformation> FIBPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_m_fibsec_01", true,55,70),
-            new Agency.ModelInformation("s_m_m_fiboffice_01", true,15,0),
-            new Agency.ModelInformation("s_m_m_fiboffice_02", true,15,0),
-            new Agency.ModelInformation("u_m_m_fibarchitect", true,10,0),
-            new Agency.ModelInformation("s_m_y_swat_01", true, 5,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_m_fibsec_01",55,70),
+            new Agency.ModelInformation("s_m_m_fiboffice_01",15,0),
+            new Agency.ModelInformation("s_m_m_fiboffice_02",15,0),
+            new Agency.ModelInformation("u_m_m_fibarchitect",10,0),
+            new Agency.ModelInformation("s_m_y_swat_01", 5,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> PrisonPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_m_prisguard_01", true,100,100) };
+            new Agency.ModelInformation("s_m_m_prisguard_01",100,100) };
         List<Agency.ModelInformation> SecurityPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_m_security_01", true,100,100) };
+            new Agency.ModelInformation("s_m_m_security_01",100,100) };
         List<Agency.ModelInformation> CoastGuardPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_uscg_01", true,100,100) };
+            new Agency.ModelInformation("s_m_y_uscg_01",100,100) };
         List<Agency.ModelInformation> NOOSEPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_y_swat_01", true, 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_y_swat_01", 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
 
         //Vehicles
         List<Agency.VehicleInformation> UnmarkedVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("police4", 100, 100) };
 
         List<Agency.VehicleInformation> CoastGuardVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police4", 100, 100),
-            new Agency.VehicleInformation("predator", 100, 100) { IsBoat = true } };
-
-
-        
+            new Agency.VehicleInformation("predator", 75, 50),
+            new Agency.VehicleInformation("dinghy", 0, 25),
+            new Agency.VehicleInformation("seashark2", 25, 25) { MaxOccupants = 1 },};      
         List<Agency.VehicleInformation> SecurityVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("dilettante2", 100, 100) {MaxOccupants = 1 } };
-
         List<Agency.VehicleInformation> ParkRangerVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("pranger", 100, 100) };
         List<Agency.VehicleInformation> FIBVehicles = new List<Agency.VehicleInformation>() {
@@ -111,10 +108,9 @@ public static class Agencies
             new Agency.VehicleInformation("fbi", 70, 70) {MaxWantedLevelSpawn = 3 },
             new Agency.VehicleInformation("fbi2", 30, 30) {MaxWantedLevelSpawn = 3 },
             new Agency.VehicleInformation("riot", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 2, MaxOccupants = 3 },
-           // new Agency.VehicleInformation("riot2", 0, 45) { MinWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" } },
-            new Agency.VehicleInformation("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },IsHelicopter = true,MinOccupants = 3,MaxOccupants = 4 }};
+            new Agency.VehicleInformation("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3,MaxOccupants = 4 }};
         List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("policeb", 95, 95) { IsMotorcycle = true, MaxOccupants = 1 },
+            new Agency.VehicleInformation("policeb", 95, 95) { MaxOccupants = 1 },
             new Agency.VehicleInformation("police4", 5, 5) };
         List<Agency.VehicleInformation> PrisonVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("policet", 70, 70),
@@ -155,23 +151,19 @@ public static class Agencies
             new Agency.VehicleInformation("police", 100,75) { Liveries = new List<int>() { 0,1,2,3,4,5 } },
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<Agency.VehicleInformation> PoliceHeliVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("polmav", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
+            new Agency.VehicleInformation("polmav", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> SheriffHeliVehicles = new List<Agency.VehicleInformation>() {
-            //new Agency.VehicleInformation("buzzard2", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
-            new Agency.VehicleInformation("polmav", 0,100) { Liveries = new List<int>() { 2 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3 } };
-
-
-
+            new Agency.VehicleInformation("buzzard2", 0,25) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 },
+            new Agency.VehicleInformation("polmav", 0,75) { Liveries = new List<int>() { 2 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> ArmyVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("crusader", 75,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
-            new Agency.VehicleInformation("barracks", 25,50) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
-            new Agency.VehicleInformation("rhino", 0,10) { Liveries = new List<int>() { 0 }, IsHelicopter = false,MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
-            new Agency.VehicleInformation("valkyrie", 0,50) { Liveries = new List<int>() { 0 }, IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
-            new Agency.VehicleInformation("valkyrie2", 0,50) { Liveries = new List<int>() { 0 }, IsHelicopter = true,MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
+            new Agency.VehicleInformation("crusader", 75,50) { Liveries = new List<int>() { 0 },MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
+            new Agency.VehicleInformation("barracks", 25,50) { Liveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
+            new Agency.VehicleInformation("rhino", 0,10) { Liveries = new List<int>() { 0 },MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
+            new Agency.VehicleInformation("valkyrie", 0,50) { Liveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
+            new Agency.VehicleInformation("valkyrie2", 0,50) { Liveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
         };
 
-
-        //Weapons
+        //Weapon
         List<Agency.IssuedWeapon> AllWeapons = new List<Agency.IssuedWeapon>()
         {
             // Pistols
@@ -245,16 +237,57 @@ public static class Agencies
 
         };
 
+
+        List<Agency.Jurisdication> LSPDJurisdication = new List<Agency.Jurisdication>()
+        {
+            new Agency.Jurisdication("DOWNT", 0, 94, 80),
+            new Agency.Jurisdication("PBOX", 0, 94, 80),
+            new Agency.Jurisdication("SKID", 0, 94, 80),
+            new Agency.Jurisdication("TEXTI", 0, 94, 80),
+            new Agency.Jurisdication("LEGSQU", 0, 94, 80),
+
+            new Agency.Jurisdication("BANNING", 1, 50, 40),
+            new Agency.Jurisdication("CHAMH", 1, 50, 40),
+            new Agency.Jurisdication("DAVIS", 1, 50, 40),
+            new Agency.Jurisdication("RANCHO", 1, 50, 40),
+            new Agency.Jurisdication("STRAW", 1, 50, 40),
+
+            new Agency.Jurisdication("BEACH", 1, 10, 10),
+            new Agency.Jurisdication("DELBE", 1, 10, 10),
+            new Agency.Jurisdication("DELPE", 1, 10, 10),
+            new Agency.Jurisdication("VCANA", 1, 10, 10),
+            new Agency.Jurisdication("VESP", 1, 10, 10),
+            new Agency.Jurisdication("LOSPUER", 1, 10, 10),
+            new Agency.Jurisdication("PBLUFF", 1, 10, 10),
+            new Agency.Jurisdication("DELSOL", 1, 10, 10),
+
+            //EastLS
+            new Agency.Jurisdication("CYPRE", 1, 10, 10),
+            new Agency.Jurisdication("LMESA", 1, 10, 10),
+            new Agency.Jurisdication("MIRR", 1, 10, 10),
+            new Agency.Jurisdication("MURRI", 1, 10, 10),
+            new Agency.Jurisdication("EBURO", 1, 10, 10),
+
+            //Port
+            new Agency.Jurisdication("ELYSIAN", 1, 5, 5),
+            new Agency.Jurisdication("ZP_ORT", 1, 5, 5),
+            new Agency.Jurisdication("TERMINA", 1, 5, 5),
+            new Agency.Jurisdication("ZP_ORT", 1, 5, 5),
+            new Agency.Jurisdication("AIRP", 1, 5, 5),
+
+            //OCean
+            new Agency.Jurisdication("OCEANA", 1, 5, 5),
+        };
+
+
         AgenciesList = new List<Agency>
         {
-            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons),
+            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons) { Jurisdications = LSPDJurisdication },
             new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "AliceBlue", Agency.Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons),
             new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "CadetBlue", Agency.Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons),
             new Agency("~b~", "LSPD-CH", "Los Santos Police - Chumash Division", "MignightBlue", Agency.Classification.Police, StandardCops, ChumashLSPDVehicles, "LSC ",AllWeapons),
             new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "DarkBlue", Agency.Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons),
             new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "LightBlue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons),        
-
-
 
             new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "LightSkyBlue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
          
@@ -263,7 +296,6 @@ public static class Agencies
             new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "IndianRed", Agency.Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "DarkRed", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
             new Agency("~r~", "LSSD-DV", "Los Santos Sheriff - Davis Division", "OrangeRed", Agency.Classification.Sheriff, SheriffPeds, LSSDDavisVehicles, "LSCS ",LimitedWeapons),
-
 
             new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "DeepPink", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
 
@@ -280,7 +312,7 @@ public static class Agencies
             new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Security, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
             new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.Other, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
 
-            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Federal, MilitaryPeds, ArmyVehicles, "",BestWeapons) {IsArmy = true },
+            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons),
 
             new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null),
         };
@@ -291,7 +323,7 @@ public static class Agencies
         if (!Cop.IsPoliceArmy())
             return null;
         if (Cop.IsArmy())
-            return AgenciesList.Where(x => x.IsArmy).FirstOrDefault();
+            return AgenciesList.Where(x => x.AgencyClassification == Agency.Classification.Military).FirstOrDefault();
         else if (Cop.IsPolice())
             return GetPedAgencyFromZone(Cop);
         else
@@ -303,7 +335,7 @@ public static class Agencies
     }
     public static Agency GetRandomArmyAgency()
     {
-        return AgenciesList.Where(x => x.CanSpawn && x.IsArmy).PickRandom();
+        return AgenciesList.Where(x => x.CanSpawn && x.AgencyClassification == Agency.Classification.Military).PickRandom();
     }
     private static Agency GetPedAgencyFromZone(Ped Cop)
     {
@@ -381,7 +413,7 @@ public static class Agencies
         if (MyVehicle == null || ZoneAgency == null)
         {
             Debugging.WriteToLog("CheckandChangeLivery", string.Format("No Match for Vehicle {0} at {1}", CopCar.Model.Name, ZoneFound.TextName));
-            CopCar.Delete();
+            //CopCar.Delete();
             return;
         }
         if (MyVehicle.Liveries != null && MyVehicle.Liveries.Any())
@@ -394,307 +426,366 @@ public static class Agencies
             CopCar.LicensePlate = ZoneAgency.LicensePlatePrefix + General.RandomString(8 - ZoneAgency.LicensePlatePrefix.Length);
         }     
     }
- }
-[Serializable()]
-public class Agency
-{
-    public string ColorPrefix { get; set; } = "~s~";
-    public string Initials { get; set; }
-    public string FullName { get; set; }
-    public List<ModelInformation> CopModels { get; set; }
-    public List<VehicleInformation> Vehicles { get; set; }
-    public string AgencyColorString { get; set; } = "White";
-    public Classification AgencyClassification { get; set; }
-    public string LicensePlatePrefix { get; set; }
-    public bool SpawnsOnHighway { get; set; } = false;
-    public bool IsArmy { get; set; } = false;
-    public uint MinWantedLevelSpawn { get; set; } = 0;
-    public uint MaxWantedLevelSpawn { get; set; } = 5;
-    public int SpawnLimit { get; set; } = 99;
-    public List<IssuedWeapon> IssuedWeapons { get; set; } = new List<IssuedWeapon>();
-
-    public bool CanSpawn
+    [Serializable()]
+    public class Agency
     {
-        get
+        public string ColorPrefix { get; set; } = "~s~";
+        public string Initials { get; set; }
+        public string FullName { get; set; }
+        public List<ModelInformation> CopModels { get; set; }
+        public List<VehicleInformation> Vehicles { get; set; }
+        public string AgencyColorString { get; set; } = "White";
+        public Classification AgencyClassification { get; set; }
+        public string LicensePlatePrefix { get; set; }
+        public bool SpawnsOnHighway { get; set; } = false;
+        public uint MinWantedLevelSpawn { get; set; } = 0;
+        public uint MaxWantedLevelSpawn { get; set; } = 5;
+        public int SpawnLimit { get; set; } = 99;
+        public List<IssuedWeapon> IssuedWeapons { get; set; } = new List<IssuedWeapon>();
+        public List<Jurisdication> Jurisdications { get; set; } = new List<Jurisdication>();
+        public bool CanSpawn
         {
-            if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+            get
             {
-                if (PedList.CopPeds.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                {
+                    if (PedList.CopPeds.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+        }
+        public bool HasMotorcycles
+        {
+            get
+            {
+                return Vehicles.Any(x => x.IsMotorcycle);
+            }
+        }
+        public bool HasSpawnableHelicopters
+        {
+            get
+            {
+                return Vehicles.Any(x => x.IsHelicopter && x.CanCurrentlySpawn);
+            }
+        }
+        public Color AgencyColor
+        {
+            get
+            {
+                return Color.FromName(AgencyColorString);
+            }
+        }
+        public string ColoredInitials
+        {
+            get
+            {
+                return ColorPrefix + Initials;
+            }
+        }
+        public bool CanCheckTrafficViolations
+        {
+            get
+            {
+                if (AgencyClassification == Classification.Police || AgencyClassification == Classification.Federal || AgencyClassification == Classification.Sheriff)
                     return true;
                 else
                     return false;
             }
-            else
-                return false;
         }
-    }
-    public bool HasMotorcycles
-    {
-        get
+        public enum Classification
         {
-            return Vehicles.Any(x => x.IsMotorcycle);
+            Police = 0,
+            Sheriff = 1,
+            Federal = 2,
+            Security = 3,
+            Military = 4,
+            Other = 5,
         }
-    }
-    public bool HasSpawnableHelicopters
-    {
-        get
+        public VehicleInformation GetVehicleInfo(Vehicle CopCar)
         {
-            return Vehicles.Any(x => x.IsHelicopter && x.CanCurrentlySpawn);
+            return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
         }
-    }
-    public Color AgencyColor
-    {
-        get
+        public VehicleInformation GetRandomVehicle()
         {
-            return Color.FromName(AgencyColorString);
-        }
-    }
-    public string ColoredInitials
-    {
-        get
-        {
-            return ColorPrefix + Initials;
-        }
-    }
-    public bool CanCheckTrafficViolations
-    {
-        get
-        {
-            if (AgencyClassification == Classification.Police || AgencyClassification == Classification.Federal || AgencyClassification == Classification.Sheriff)
-                return true;
-            else
-                return false;
-        }
-    }
-    public enum Classification
-    {
-        Police = 0,
-        Sheriff = 1,
-        Federal = 2,
-        Security = 3,
-        Other = 4,
-    }
-    public VehicleInformation GetVehicleInfo(Vehicle CopCar)
-    {
-        return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
-    }
-    public VehicleInformation GetRandomVehicle()
-    {
-        if (Vehicles == null || !Vehicles.Any())
-            return null;
+            if (Vehicles == null || !Vehicles.Any())
+                return null;
 
-        List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn).ToList(); //List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.IsMotorcycle == IsMotorcycle && x.IsHelicopter == IsHelicopter && x.IsBoat == IsBoat && x.CanCurrentlySpawn).ToList();     
-        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-       // Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
-        int RandomPick = General.MyRand.Next(0, Total);
-        foreach (VehicleInformation Vehicle in ToPickFrom)
-        {
-            int SpawnChance = Vehicle.CurrentSpawnChance;
-            if (RandomPick < SpawnChance)
+            List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn).ToList();
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+            // Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
+            int RandomPick = General.MyRand.Next(0, Total);
+            foreach (VehicleInformation Vehicle in ToPickFrom)
             {
-                return Vehicle;
-            }
-            RandomPick -= SpawnChance;
-        }
-        return null;
-    }
-
-    public ModelInformation GetRandomPed(List<string> RequiredModels)
-    {
-        if (CopModels == null || !CopModels.Any())
-            return null;
-
-        List<ModelInformation> ToPickFrom = CopModels.Where(x => PlayerState.WantedLevel >= x.MinWantedLevelSpawn && PlayerState.WantedLevel <= x.MaxWantedLevelSpawn).ToList();
-        if(RequiredModels != null && RequiredModels.Any())
-        {
-            ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
-        }
-
-        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-        //Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
-        int RandomPick = General.MyRand.Next(0, Total);
-        foreach (ModelInformation Cop in ToPickFrom)
-        {
-            int SpawnChance = Cop.CurrentSpawnChance;
-            if (RandomPick < SpawnChance)
-            {
-                return Cop;
-            }
-            RandomPick -= SpawnChance;
-        }
-        return null;
-    }
-
-    public Agency()
-    {
-
-    }
-    public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<ModelInformation> _CopModels, List<VehicleInformation> _Vehicles,string _LicensePlatePrefix, List<IssuedWeapon> _IssuedWeapons)
-    {
-        ColorPrefix = _ColorPrefix;
-        Initials = _Initials;
-        FullName = _FullName;
-        CopModels = _CopModels;
-        AgencyColorString = _AgencyColorString;
-        Vehicles = _Vehicles;
-        AgencyClassification = _AgencyClassification;
-        LicensePlatePrefix = _LicensePlatePrefix;
-        IssuedWeapons = _IssuedWeapons;
-    }
-    public class ModelInformation
-    {
-        public string ModelName;
-        public int AmbientSpawnChance = 0;
-        public int WantedSpawnChance = 0;
-        public bool IsMale = true;
-        public int MinWantedLevelSpawn = 0;
-        public int MaxWantedLevelSpawn = 5;
-        public PedVariation RequiredVariation;
-        public bool CanCurrentlySpawn
-        {
-            get
-            {
-                if (PlayerState.IsWanted)
+                int SpawnChance = Vehicle.CurrentSpawnChance;
+                if (RandomPick < SpawnChance)
                 {
-                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                    return Vehicle;
+                }
+                RandomPick -= SpawnChance;
+            }
+            return null;
+        }
+        public ModelInformation GetRandomPed(List<string> RequiredModels)
+        {
+            if (CopModels == null || !CopModels.Any())
+                return null;
+
+            List<ModelInformation> ToPickFrom = CopModels.Where(x => PlayerState.WantedLevel >= x.MinWantedLevelSpawn && PlayerState.WantedLevel <= x.MaxWantedLevelSpawn).ToList();
+            if (RequiredModels != null && RequiredModels.Any())
+            {
+                ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
+            }
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+            //Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
+            int RandomPick = General.MyRand.Next(0, Total);
+            foreach (ModelInformation Cop in ToPickFrom)
+            {
+                int SpawnChance = Cop.CurrentSpawnChance;
+                if (RandomPick < SpawnChance)
+                {
+                    return Cop;
+                }
+                RandomPick -= SpawnChance;
+            }
+            return null;
+        }
+        public Agency()
+        {
+
+        }
+        public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<ModelInformation> _CopModels, List<VehicleInformation> _Vehicles, string _LicensePlatePrefix, List<IssuedWeapon> _IssuedWeapons)
+        {
+            ColorPrefix = _ColorPrefix;
+            Initials = _Initials;
+            FullName = _FullName;
+            CopModels = _CopModels;
+            AgencyColorString = _AgencyColorString;
+            Vehicles = _Vehicles;
+            AgencyClassification = _AgencyClassification;
+            LicensePlatePrefix = _LicensePlatePrefix;
+            IssuedWeapons = _IssuedWeapons;
+        }
+        public class ModelInformation
+        {
+            public string ModelName;
+            public int AmbientSpawnChance = 0;
+            public int WantedSpawnChance = 0;
+            public int MinWantedLevelSpawn = 0;
+            public int MaxWantedLevelSpawn = 5;
+            public PedVariation RequiredVariation;
+            public bool CanCurrentlySpawn
+            {
+                get
+                {
+                    if (PlayerState.IsWanted)
+                    {
+                        if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                            return WantedSpawnChance > 0;
+                        else
+                            return false;
+                    }
+                    else
+                        return AmbientSpawnChance > 0;
+                }
+            }
+            public int CurrentSpawnChance
+            {
+                get
+                {
+                    if (PlayerState.IsWanted)
+                    {
+                        if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                            return WantedSpawnChance;
+                        else
+                            return 0;
+                    }
+                    else
+                        return AmbientSpawnChance;
+                }
+            }
+
+            public ModelInformation()
+            {
+
+            }
+            public ModelInformation(string _ModelName, int ambientSpawnChance, int wantedSpawnChance)
+            {
+                ModelName = _ModelName;
+                AmbientSpawnChance = ambientSpawnChance;
+                WantedSpawnChance = wantedSpawnChance;
+            }
+        }
+        public class VehicleInformation
+        {
+            public string ModelName;
+            public int AmbientSpawnChance = 0;
+            public int WantedSpawnChance = 0;
+            public bool IsCar
+            {
+                get
+                {
+                    return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Game.GetHashKey(ModelName));
+                }
+            }
+            public bool IsMotorcycle
+            {
+                get
+                {
+                    return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BIKE", Game.GetHashKey(ModelName));
+                }
+            }
+            public bool IsHelicopter
+            {
+                get
+                {
+                    return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", Game.GetHashKey(ModelName));
+                }
+            }
+            public bool IsBoat
+            {
+                get
+                {
+                    return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", Game.GetHashKey(ModelName));
+                }
+            }
+            public int MinOccupants = 1;
+            public int MaxOccupants = 2;
+            public int MinWantedLevelSpawn = 0;
+            public int MaxWantedLevelSpawn = 5;
+            public List<string> AllowedPedModels = new List<string>();//only ped models can spawn in this, if emptyt any ambient spawn can
+            public List<int> Liveries = new List<int>();
+            public bool CanSpawnWanted
+            {
+                get
+                {
+                    if (WantedSpawnChance > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            public bool CanSpawnAmbient
+            {
+                get
+                {
+                    if (AmbientSpawnChance > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            public bool CanCurrentlySpawn
+            {
+                get
+                {
+                    if (IsHelicopter && PedList.PoliceVehicles.Count(x => x.IsHelicopter) >= General.MySettings.Police.HelicopterLimit)
+                    {
+                        return false;
+                    }
+                    else if (IsBoat && PedList.PoliceVehicles.Count(x => x.IsBoat) >= General.MySettings.Police.BoatLimit)
+                    {
+                        return false;
+                    }
+
+                    if (PlayerState.IsWanted)
+                    {
+                        if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                            return CanSpawnWanted;
+                        else
+                            return false;
+                    }
+                    else
+                        return CanSpawnAmbient;
+                }
+            }
+            public int CurrentSpawnChance
+            {
+                get
+                {
+                    if (!CanCurrentlySpawn)
+                        return 0;
+                    if (PlayerState.IsWanted)
+                    {
+                        if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                            return WantedSpawnChance;
+                        else
+                            return 0;
+                    }
+                    else
+                        return AmbientSpawnChance;
+                }
+            }
+            public VehicleInformation()
+            {
+
+            }
+            public VehicleInformation(string modelName, int ambientSpawnChance, int wantedSpawnChance)
+            {
+                ModelName = modelName;
+                AmbientSpawnChance = ambientSpawnChance;
+                WantedSpawnChance = wantedSpawnChance;
+            }
+        }
+        public class IssuedWeapon
+        {
+            public string ModelName;
+            public bool IsPistol = false;
+            public GTAWeapon.WeaponVariation MyVariation = new GTAWeapon.WeaponVariation();
+            public IssuedWeapon()
+            {
+
+            }
+            public IssuedWeapon(string _ModelName, bool _IsPistol, GTAWeapon.WeaponVariation _MyVariation)
+            {
+                ModelName = _ModelName;
+                IsPistol = _IsPistol;
+                MyVariation = _MyVariation;
+            }
+
+        }
+        public class Jurisdication
+        {
+            public string AssociatedAgencyName;
+            public int Priority;
+            public int AmbientSpawnChance = 0;
+            public int WantedSpawnChance = 0;
+            public Jurisdication()
+            {
+
+            }
+            public Jurisdication(string associatedAgencyName, int priority, int ambientSpawnChance, int wantedSpawnChance)
+            {
+                AssociatedAgencyName = associatedAgencyName;
+                Priority = priority;
+                AmbientSpawnChance = ambientSpawnChance;
+                WantedSpawnChance = wantedSpawnChance;
+            }
+            public bool CanCurrentlySpawn
+            {
+                get
+                {
+                    if (PlayerState.IsWanted)
                         return WantedSpawnChance > 0;
                     else
-                        return false;
+                        return AmbientSpawnChance > 0;
                 }
-                else
-                    return AmbientSpawnChance > 0;
             }
-        }
-        public int CurrentSpawnChance
-        {
-            get
+            public int CurrentSpawnChance
             {
-                if (PlayerState.IsWanted)
+                get
                 {
-                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                    if (PlayerState.IsWanted)
                         return WantedSpawnChance;
                     else
-                        return 0;
+                        return AmbientSpawnChance;
                 }
-                else
-                    return AmbientSpawnChance;
             }
         }
-
-        public ModelInformation()
-        {
-
-        }
-        public ModelInformation(string _ModelName, bool _isMale, int ambientSpawnChance, int wantedSpawnChance)
-        {
-            ModelName = _ModelName;
-            IsMale = _isMale;
-            AmbientSpawnChance = ambientSpawnChance;
-            WantedSpawnChance = wantedSpawnChance;
-        }
-    }
-    public class VehicleInformation
-    {
-        public string ModelName;
-        public int AmbientSpawnChance = 0;
-        public int WantedSpawnChance = 0;
-        public bool IsMotorcycle = false;
-        public bool IsHelicopter = false;
-        public bool IsBoat = false;
-        public int MinOccupants = 1;
-        public int MaxOccupants = 2;
-        public int MinWantedLevelSpawn = 0;
-        public int MaxWantedLevelSpawn = 5;
-        public List<string> AllowedPedModels = new List<string>();//only ped models can spawn in this, if emptyt any ambient spawn can
-        public List<int> Liveries = new List<int>();
-        public bool CanSpawnWanted
-        {
-            get
-            {
-                if (WantedSpawnChance > 0)
-                    return true;
-                else
-                    return false;
-            }
-        }
-        public bool CanSpawnAmbient
-        {
-            get
-            {
-                if (AmbientSpawnChance > 0)
-                    return true;
-                else
-                    return false;
-            }
-        }
-        public bool CanCurrentlySpawn
-        {
-            get
-            {
-                if(IsHelicopter && PedList.PoliceVehicles.Count(x => x.IsHelicopter) >= General.MySettings.Police.HelicopterLimit)
-                {
-                    return false;
-                }
-                else if (IsBoat && PedList.PoliceVehicles.Count(x => x.IsBoat) >= General.MySettings.Police.BoatLimit)
-                {
-                    return false;
-                }
-
-                if (PlayerState.IsWanted)
-                {
-                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
-                        return CanSpawnWanted;
-                    else
-                        return false;
-                }
-                else
-                    return CanSpawnAmbient;
-            }
-        }
-        public int CurrentSpawnChance
-        {
-            get
-            {
-                if (!CanCurrentlySpawn)
-                    return 0;
-                if (PlayerState.IsWanted)
-                {
-                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
-                        return WantedSpawnChance;
-                    else
-                        return 0;
-                }
-                else
-                    return AmbientSpawnChance;
-            }
-        }
-        public VehicleInformation()
-        {
-
-        }
-        public VehicleInformation(string modelName, int ambientSpawnChance, int wantedSpawnChance)
-        {
-            ModelName = modelName;
-            AmbientSpawnChance = ambientSpawnChance;
-            WantedSpawnChance = wantedSpawnChance;
-        }
-    }
-    public class IssuedWeapon
-    {
-        public string ModelName;
-        public bool IsPistol = false;
-        public GTAWeapon.WeaponVariation MyVariation = new GTAWeapon.WeaponVariation();
-        public IssuedWeapon()
-        {
-
-        }
-        public IssuedWeapon(string _ModelName, bool _IsPistol, GTAWeapon.WeaponVariation _MyVariation)
-        {
-            ModelName = _ModelName;
-            IsPistol = _IsPistol;
-            MyVariation = _MyVariation;
-        }
-
     }
 }
+
 

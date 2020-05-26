@@ -49,12 +49,13 @@ internal static class Menus
     private static UIMenu bustedMenu;
     private static UIMenu optionsMenu;
     private static UIMenu actionsMenu;
+    private static UIMenu scenariosMenu;
 
     private static int RandomWeaponCategory;
 
     private static Location CurrentSelectedSurrenderLocation;
     private static Location CurrentSelectedHospitalLocation;
-
+    private static UIMenuItem scenariosMainPrisonEscape;
     private static readonly List<string> strRadioStations = new List<string> { "NONE", "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
     private static readonly new List<string> ScreenEffects = new List<string>  { "SwitchHUDIn",
         "SwitchHUDOut",
@@ -164,6 +165,7 @@ internal static class Menus
         menuPool.Add(bustedMenu);
         actionsMenu = menuPool.AddSubMenu(mainMenu, "Actions");
         optionsMenu = menuPool.AddSubMenu(mainMenu, "Options");
+        scenariosMenu = menuPool.AddSubMenu(mainMenu, "Scenarios");
 
         mainMenu.OnItemSelect += MainMenuSelect;
         mainMenu.OnListChange += OnListChange;
@@ -207,6 +209,10 @@ internal static class Menus
                 {
                     actionsMenu.Visible = !actionsMenu.Visible;
                 }
+                else if (scenariosMenu.Visible)
+                {
+                    scenariosMenu.Visible = !scenariosMenu.Visible;
+                }
                 else
                 {
                     if (!mainMenu.Visible)
@@ -249,6 +255,7 @@ internal static class Menus
         bustedMenu.Visible = false;
         optionsMenu.Visible = false;
         actionsMenu.Visible = false;
+        scenariosMenu.Visible = false;
 
         deathMenu.Visible = true;
     }
@@ -264,6 +271,7 @@ internal static class Menus
         debugMenu.Visible = false;
         optionsMenu.Visible = false;
         actionsMenu.Visible = false;
+        scenariosMenu.Visible = false;
 
         bustedMenu.Visible = true;
     }
@@ -275,6 +283,7 @@ internal static class Menus
         deathMenu.Visible = false;
         optionsMenu.Visible = false;
         actionsMenu.Visible = false;
+        scenariosMenu.Visible = false;
 
         debugMenu.Visible = true;
     }
@@ -287,9 +296,11 @@ internal static class Menus
         mainMenu.AddItem(menuMainShowPlayerStatus);
         actionsMenu = menuPool.AddSubMenu(mainMenu, "Actions");
         optionsMenu = menuPool.AddSubMenu(mainMenu, "Options");
+        scenariosMenu = menuPool.AddSubMenu(mainMenu, "Scenarios");
 
         CreateActionsMenu();
-        CreateOptionsMenu();     
+        CreateOptionsMenu();
+        CreateScenariosMenu();
     }
     private static void CreateDeathMenu()
     {
@@ -351,7 +362,6 @@ internal static class Menus
         optionsMenu.OnItemSelect += OptionsMenuSelect;
         optionsMenu.OnListChange += OnListChange;
         optionsMenu.OnCheckboxChange += OnCheckboxChange;
-        optionsMenu.RefreshIndex();
     }
     private static void CreateActionsMenu()
     {
@@ -373,7 +383,17 @@ internal static class Menus
         actionsMenu.OnItemSelect += ActionsMenuSelect;
         actionsMenu.OnListChange += OnListChange;
         actionsMenu.OnCheckboxChange += OnCheckboxChange;
-        actionsMenu.RefreshIndex();
+    }
+    private static void CreateScenariosMenu()
+    {
+        scenariosMainPrisonEscape = new UIMenuItem("Prison Escape", "Escape the prison");
+
+        scenariosMenu.AddItem(scenariosMainPrisonEscape);
+
+
+        scenariosMenu.OnItemSelect += ScenarioMenuSelect;
+        scenariosMenu.OnListChange += OnListChange;
+        scenariosMenu.OnCheckboxChange += OnCheckboxChange;
     }
     private static void CreateDebugMenu()
     {
@@ -525,6 +545,13 @@ internal static class Menus
         else if (selectedItem == menuMainRemoveLicensePlate)
         {
             LicensePlateTheft.RemoveNearestLicensePlate();
+        }
+    }
+    private static void ScenarioMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        if (selectedItem == scenariosMainPrisonEscape)
+        {
+            PedSwap.BecomeScenarioPed();
         }
     }
     private static void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)

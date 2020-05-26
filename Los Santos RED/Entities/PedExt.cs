@@ -11,14 +11,17 @@ using System.Threading.Tasks;
 
 public class PedExt
 {
+    private bool playerIsInFront;
+
+    private uint GameTimeBehindPlayer;
+    private uint GameTimeLastSeenPlayer;
+    private uint GameTimeContinuoslySeenPlayerSince;
     public int Health { get; set; }
     public Ped Pedestrian { get; set; }
     public bool CanSeePlayer { get; set; } = false;
     public bool CanRecognizePlayer { get; set; } = false;
     public bool CanHearPlayer { get; set; } = false;
-    public uint GameTimeLastSeenPlayer { get; set; }
-    public uint GameTimeContinuoslySeenPlayerSince { get; set; }
-    public Vector3 PositionLastSeenPlayer { get; set; }
+    public Vector3 PositionLastSeenPlayer { get; private set; }
     public bool HurtByPlayer { get; set; } = false;
     public bool KilledByPlayer { get; set; } = false;
     public uint GameTimeLastDistanceCheck { get; set; }
@@ -38,7 +41,6 @@ public class PedExt
     public bool CanBeTasked { get; set; } = true;
     public bool WillCallPolice { get; set; } = true;
     public List<WantedLevelScript.Crime> CrimesWitnessed { get; set; } = new List<WantedLevelScript.Crime>();
-
     public bool NeedsUpdate
     {
         get
@@ -80,7 +82,7 @@ public class PedExt
                 return false;
         }
     }
-    public uint HasSeenPlayerFor
+    public uint TimeContinuoslySeenPlayer
     {
         get
         {
@@ -88,6 +90,16 @@ public class PedExt
                 return 0;
             else
                 return (Game.GameTime - GameTimeContinuoslySeenPlayerSince);
+        }
+    }
+    public uint TimeBehindPlayer
+    {
+        get
+        {
+            if (GameTimeBehindPlayer == 0)
+                return 0;
+            else
+                return (Game.GameTime - GameTimeBehindPlayer);
         }
     }
     public bool RecentlySeenPlayer()
@@ -120,10 +132,9 @@ public class PedExt
         else
             return false;
     }
-    public PedExt(Ped _Pedestrian, bool _canSeePlayer, int _Health)
+    public PedExt(Ped _Pedestrian, int _Health)
     {
         Pedestrian = _Pedestrian;
-        CanSeePlayer = _canSeePlayer;
         Health = _Health;
     }
     public void UpdateContinuouslySeen()
@@ -149,6 +160,13 @@ public class PedExt
                 IsInHelicopter = false;
                 IsOnBike = false;
             }
+            if (!Game.LocalPlayer.Character.IsInFront(Pedestrian))
+            {
+                if (GameTimeBehindPlayer == 0)
+                    GameTimeBehindPlayer = Game.GameTime;
+            }
+            else
+                GameTimeBehindPlayer = 0;
             UpdateDistance();
             UpdateLineOfSight();
         }
@@ -173,12 +191,6 @@ public class PedExt
                 CanHearPlayer = false;
 
             GameTimeLastDistanceCheck = Game.GameTime;
-
-
-
-            
-
-
         }
     }
     private void UpdateLineOfSight()
@@ -236,7 +248,7 @@ public class PedExt
             }
             else
             {
-                if (HasSeenPlayerFor >= 1250)
+                if (TimeContinuoslySeenPlayer >= 1250)
                     CanRecognizePlayer = true;
                 else if (DistanceToPlayer <= 2f && DistanceToPlayer > 0f)
                     CanRecognizePlayer = true;

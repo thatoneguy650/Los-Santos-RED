@@ -149,7 +149,7 @@ public static class PedSwap
             else
                 AITakeoverPlayer(CurrentPed);
 
-            PostTakeover();
+            PostTakeover(LastModelHash);
 
             //if (AdvanceTime)
             //    World.DateTime.AddHours(18);
@@ -159,6 +159,28 @@ public static class PedSwap
         {
             Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
+    }
+    public static void BecomeScenarioPed()
+    {
+        string ModelName = "s_m_y_prisoner_01";
+        Vector3 Position = new Vector3(1858.988f, 2627.205f, 45.67201f);
+        float Heading = 350.5708f;
+
+        TargetPedInVehicle = false;
+
+        PostTakeover(ModelName);
+        Game.LocalPlayer.Character.RandomizeVariation();
+
+        Game.LocalPlayer.Character.Position = Position;
+        Game.LocalPlayer.Character.Heading = Heading;
+        WantedLevelScript.SetWantedLevel(3, "Scenario", true);
+        WantedLevelScript.CurrentCrimes.TrespessingOnGovtProperty.HasBeenWitnessedByPolice = true;
+
+        if(General.RandomPercent(70))
+            Weapons.GetRandomRegularWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
+        else
+            Weapons.GetRandomRegularWeaponByCategory(GTAWeapon.WeaponCategory.Melee);
+
     }
     private static void StoreTargetPedData(Ped TargetPed)
     {
@@ -222,7 +244,7 @@ public static class PedSwap
             AllyPedsToPlayer(Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 5f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x)));
         }
     }
-    private static void PostTakeover()
+    private static void PostTakeover(string ModelToChange)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
 
@@ -230,7 +252,7 @@ public static class PedSwap
         {
             SetPlayerOffset();
             ChangeModel(General.MySettings.MainCharacterToAliasModelName);
-            ChangeModel(LastModelHash);
+            ChangeModel(ModelToChange);
         }
 
         if (!Game.LocalPlayer.Character.IsMainCharacter())
@@ -257,7 +279,9 @@ public static class PedSwap
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
 
 
-        PlayerState.ResetState();
+        PlayerState.ResetState(true);
+
+
 
         //PlayerState.IsDead = false;
         //PlayerState.IsBusted = false;

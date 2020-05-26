@@ -1572,7 +1572,7 @@ public static class DispatchAudio
     //Starting
     private static void ReportGenericStart(ref List<string> ScannerList,ref string Subtitles, AttentionType WhoToNotify, ReportType ReportedBy, Vector3 PlaceToReport)
     {
-        ScannerList.Add(new List<string> { AudioBeeps.Radio_Start_1.FileName, AudioBeeps.Radio_Start_2.FileName }.PickRandom());
+        ScannerList.Add(new List<string> { AudioBeeps.Radio_Start_1.FileName/*, AudioBeeps.Radio_Start_2.FileName*/ }.PickRandom());
         Subtitles = "";
         if (WhoToNotify == AttentionType.AllUnits)
         {
@@ -1661,7 +1661,7 @@ public static class DispatchAudio
             AddStreet(ref ScannerList, ref Subtitles, ref Notification);
             AddZone(ref ScannerList, ref Subtitles, LocationToReport, ref Notification);
         }
-        ScannerList.Add(new List<string> { AudioBeeps.Radio_End_1.FileName, AudioBeeps.Radio_End_2.FileName }.PickRandom());
+        ScannerList.Add(new List<string> { AudioBeeps.Radio_End_1.FileName/*, AudioBeeps.Radio_End_2.FileName*/ }.PickRandom());
     }
     public static bool AddHeading(ref List<string> ScannerList, ref string Subtitles)
     {

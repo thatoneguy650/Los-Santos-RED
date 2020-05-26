@@ -84,7 +84,6 @@ public static class Police
         foreach (Cop Cop in PedList.CopPeds)
         {
             Cop.Update();
-            Cop.SetChaseStatus();
         }
         foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.IsDead))
         {
@@ -102,7 +101,7 @@ public static class Police
         else
             AnyRecentlySeenPlayer = PedList.CopPeds.Any(x => x.SeenPlayerSince(General.MySettings.Police.PoliceRecentlySeenTime));
 
-        AnyCanRecognizePlayer = PedList.CopPeds.Any(x => x.HasSeenPlayerFor >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
+        AnyCanRecognizePlayer = PedList.CopPeds.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
 
         if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer)
             AnySeenPlayerCurrentWanted = true;

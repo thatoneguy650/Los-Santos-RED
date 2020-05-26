@@ -234,7 +234,7 @@ public static class PoliceSpawning
     {
         try
         {
-            Agency AgencyToSpawn;
+            Agencies.Agency AgencyToSpawn;
             if(PlayerState.WantedLevel == 5 && General.RandomPercent(30))
             {
                 AgencyToSpawn = Agencies.GetRandomArmyAgency();
@@ -262,7 +262,7 @@ public static class PoliceSpawning
             {
                 GameTimeLastSpawnedCop = Game.GameTime;
 
-                if(PlayerState.WantedLevel == 5 && !DispatchAudio.ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.IsArmy))
+                if(PlayerState.WantedLevel == 5 && !DispatchAudio.ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.AgencyClassification == Agencies.Agency.Classification.Military))
                 {             
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.MilitaryDeployed, 1));            
                 }
@@ -292,14 +292,25 @@ public static class PoliceSpawning
                 if (Cop.DistanceToPlayer >= DistanceToDelete)//2000f
                 {
                     DeleteCop(Cop);
+                    Debugging.WriteToLog("SpawnCop", string.Format("Cop Distance Delete: {0}", Cop.Pedestrian.Handle));
                 }
-                else if (Cop.DistanceToPlayer >= 175f && PlayerState.IsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f) && Cop.CountNearbyCops >= 3)
+                else if (PlayerState.IsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter)
                 {
-                    DeleteCop(Cop);
-                }
-                else if (Cop.DistanceToPlayer >= 250f && PlayerState.IsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter && Cop.CountNearbyCops >= 3)
-                {
-                    DeleteCop(Cop);
+                    if (Cop.DistanceToPlayer >= 175f && Cop.TimeBehindPlayer >= 20000)
+                    {
+                        DeleteCop(Cop);
+                        Debugging.WriteToLog("SpawnCop", string.Format("Cop Behind Delete: {0}", Cop.Pedestrian.Handle));
+                    }
+                    else if (Cop.DistanceToPlayer >= 175f && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f) && Cop.CountNearbyCops >= 3)
+                    {
+                        DeleteCop(Cop);
+                        Debugging.WriteToLog("SpawnCop", string.Format("Cop Nearby 1 Delete: {0}", Cop.Pedestrian.Handle));
+                    }
+                    else if (Cop.DistanceToPlayer >= 250f && Cop.CountNearbyCops >= 2)
+                    {
+                        DeleteCop(Cop);
+                        Debugging.WriteToLog("SpawnCop", string.Format("Cop Nearby 2 Delete: {0}", Cop.Pedestrian.Handle));
+                    }
                 }
 
                 if (Cop.DistanceToPlayer >= 175f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
@@ -311,6 +322,7 @@ public static class PoliceSpawning
                     else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
                     {
                         DeleteCop(Cop);
+                        Debugging.WriteToLog("SpawnCop", string.Format("Cop GaveUp Delete: {0}", Cop.Pedestrian.Handle));
                     }
                 }
             }
@@ -351,7 +363,6 @@ public static class PoliceSpawning
             Cop.Pedestrian.Delete();
         }
         Cop.WasMarkedNonPersistent = false;
-        //LocalWriteToLog("SpawnCop", string.Format("Cop Deleted: Handled {0}", Cop.CopPed.Handle));
     }
     public static void MarkNonPersistent(Cop Cop)
     {
@@ -386,7 +397,7 @@ public static class PoliceSpawning
         if (MyBlip.Exists())
             MyBlip.Delete();
     }
-    public static bool SpawnGTACop(Agency _Agency, float Heading)
+    public static bool SpawnGTACop(Agencies.Agency _Agency, float Heading)
     {
         if (_Agency == null)
             return false;
@@ -396,7 +407,7 @@ public static class PoliceSpawning
 
         Vector3 SpawnLocation;
         VehicleExt CopCar;
-        Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle();
+        Agencies.Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle();
         if (MyCarInfo == null)
         {
             Debugging.WriteToLog("SpawnGTACop", string.Format("Could not find Auto Info for {0}", _Agency.Initials));
@@ -412,7 +423,7 @@ public static class PoliceSpawning
         {
             SpawnLocation = WaterSpawn.SpawnLocation;
         }
-        else if(StreetSpawn != null)
+        else if((MyCarInfo.IsCar || MyCarInfo.IsMotorcycle) && StreetSpawn != null)
         {
             SpawnLocation = StreetSpawn.SpawnLocation;
         }
@@ -443,7 +454,7 @@ public static class PoliceSpawning
             Cop.IsPersistent = true;
             CopCar.VehicleEnt.IsPersistent = true;
             Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
-            Cop MyNewCop = new Cop(Cop, false, Cop.Health, _Agency);
+            Cop MyNewCop = new Cop(Cop, Cop.Health, _Agency);
             MyNewCop.IssuePistol();
             MyNewCop.WasModSpawned = true;
             MyNewCop.WasMarkedNonPersistent = true;
@@ -480,7 +491,7 @@ public static class PoliceSpawning
                         {
                             PartnerCop.WarpIntoVehicle(CopCar.VehicleEnt, OccupantIndex-1);
                             PartnerCop.IsPersistent = true;
-                            Cop MyNewPartnerCop = new Cop(PartnerCop, false, PartnerCop.Health, _Agency);
+                            Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, _Agency);
                             MyNewPartnerCop.IssuePistol();
                             MyNewPartnerCop.WasModSpawned = true;
                             MyNewPartnerCop.WasMarkedNonPersistent = true;
@@ -495,12 +506,12 @@ public static class PoliceSpawning
         }
         return false;
     }
-    public static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
+    public static Ped SpawnCopPed(Agencies.Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
     {
         if (_Agency == null)
             return null;
 
-        Agency.ModelInformation MyInfo = _Agency.GetRandomPed(RequiredModels);
+        Agencies.Agency.ModelInformation MyInfo = _Agency.GetRandomPed(RequiredModels);
 
         if(MyInfo == null)
             return null;
@@ -522,7 +533,7 @@ public static class PoliceSpawning
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 4, 1, 0, 0);
         }
 
-        if (MyInfo.IsMale && General.MyRand.Next(1, 11) <= 4) //40% Chance of Vest
+        if (Cop.IsMale && General.MyRand.Next(1, 11) <= 4) //40% Chance of Vest
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 9, 2, 0, 2);//Vest male only
         if (!Police.IsNightTime)
             NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", Cop, 1, 0, 0, 2);//Sunglasses
@@ -533,7 +544,7 @@ public static class PoliceSpawning
 
         return Cop;
     }
-    public static VehicleExt SpawnCopVehicle(Agency _Agency, Agency.VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
+    public static VehicleExt SpawnCopVehicle(Agencies.Agency _Agency, Agencies.Agency.VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
     {
         string ModelName = MyCarInfo.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);

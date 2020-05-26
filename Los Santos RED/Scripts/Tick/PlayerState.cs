@@ -589,14 +589,15 @@ public static class PlayerState
     {
         GameTimeLastShot = Game.GameTime;
     }
-    public static void ResetState()
+    public static void ResetState(bool IncludeMaxWanted)
     {
         IsDead = false;
         IsBusted = false;
         BeingArrested = false;
         TimesDied = 0;
-        MaxWantedLastLife = 0;//this might be a problem in here and might need to be removed
         LastWeaponHash = 0;
+        if(IncludeMaxWanted)
+            MaxWantedLastLife = 0;//this might be a problem in here and might need to be removed
     }
     public static void StartArrestManual()
     {

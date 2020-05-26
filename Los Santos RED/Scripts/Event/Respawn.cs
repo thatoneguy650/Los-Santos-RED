@@ -157,7 +157,7 @@ public static class Respawn
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
 
-        PlayerState.ResetState();
+        PlayerState.ResetState(true);
 
         RespawnInPlace(false);
 
@@ -194,7 +194,7 @@ public static class Respawn
     }
     public static void ResistArrest()
     {
-        PlayerState.ResetState();//maxwanted last life maybe wont work?
+        PlayerState.ResetState(false);//maxwanted last life maybe wont work?
         WantedLevelScript.CurrentPoliceState = WantedLevelScript.LastPoliceState;
         WantedLevelScript.SetWantedLevel(PlayerState.WantedLevel, "Resisting Arrest",true);
         global::Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
@@ -210,7 +210,7 @@ public static class Respawn
         bool prePlayerKilledPolice = WantedLevelScript.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice;
         int BailFee = PlayerState.MaxWantedLastLife * General.MySettings.Police.PoliceBailWantedLevelScale;
 
-        PlayerState.ResetState();
+        PlayerState.ResetState(true);
 
         global::Surrender.RaiseHands();
         ResetPlayer(true, true);
@@ -272,7 +272,7 @@ public static class Respawn
     }
     public static void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {
-        PlayerState.ResetState();
+        PlayerState.ResetState(false);
 
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
@@ -302,7 +302,7 @@ public static class Respawn
     {
         try
         {
-            PlayerState.ResetState();
+            PlayerState.ResetState(false);
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
             NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
             if (PlayerState.DiedInVehicle)

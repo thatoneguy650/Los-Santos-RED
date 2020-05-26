@@ -28,10 +28,9 @@ public class Cop : PedExt
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public GTAWeapon.WeaponVariation PistolVariation { get; set; }
     public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
-    public Agency AssignedAgency { get; set; } = new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null);
+    public Agencies.Agency AssignedAgency { get; set; } = new Agencies.Agency("~s~", "UNK", "Unknown Agency", "White", Agencies.Agency.Classification.Other, null, null, "",null);
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public bool AtWantedCenterDuringChase { get; set; } = false;
-    public ChaseStatus CurrentChaseStatus { get; set; } = ChaseStatus.Idle;
     public Zone CurrentZone
     {
         get
@@ -39,12 +38,7 @@ public class Cop : PedExt
             return Zones.GetZoneAtLocation(Pedestrian.Position);
         }
     }
-    public enum ChaseStatus
-    {
-        Idle = 0,
-        Investigation = 1,
-        Active = 2,
-    }
+
     public void SetAccuracyAndSightRange()
     {
         Pedestrian.VisionRange = 55f;
@@ -55,7 +49,7 @@ public class Cop : PedExt
     public void IssuePistol()
     {
         GTAWeapon Pistol;
-        Agency.IssuedWeapon PistolToPick = new Agency.IssuedWeapon("weapon_pistol", true, null);
+        Agencies.Agency.IssuedWeapon PistolToPick = new Agencies.Agency.IssuedWeapon("weapon_pistol", true, null);
         if (AssignedAgency != null)
             PistolToPick = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
         Pistol = Weapons.WeaponsList.Where(x => x.Name.ToLower() == PistolToPick.ModelName.ToLower() && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
@@ -77,7 +71,7 @@ public class Cop : PedExt
         if (General.MySettings.Police.OverridePoliceAccuracy)
             Pedestrian.Accuracy = General.MySettings.Police.PoliceHeavyAccuracy;
 
-        Agency.IssuedWeapon HeavyToPick = new Agency.IssuedWeapon("weapon_shotgun", true, null);
+        Agencies.Agency.IssuedWeapon HeavyToPick = new Agencies.Agency.IssuedWeapon("weapon_shotgun", true, null);
         if (AssignedAgency != null)
             HeavyToPick = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
 
@@ -94,37 +88,6 @@ public class Cop : PedExt
             HeavyVariation = MyVariation;
             General.ApplyWeaponVariation(Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
         }
-    }
-    public void SetChaseStatus()
-    {
-        if (PlayerState.IsWanted)
-        {
-            if (DistanceToPlayer <= Police.ActiveDistance)
-            {
-                CurrentChaseStatus = ChaseStatus.Active;
-            }
-            else
-            {
-                CurrentChaseStatus = ChaseStatus.Idle;
-            }
-        }
-        else if (Investigation.InInvestigationMode)
-        {
-            float DistToInvest = Pedestrian.DistanceTo2D(Investigation.InvestigationPosition);
-            if (DistToInvest <= Investigation.InvestigationDistance)
-            {
-                CurrentChaseStatus = ChaseStatus.Investigation;
-            }
-            else
-            {
-                CurrentChaseStatus = ChaseStatus.Idle;
-            }
-        }
-        else
-        {
-            CurrentChaseStatus = ChaseStatus.Idle;
-        }
-        
     }
     public bool NeedsWeaponCheck
     {
@@ -186,19 +149,9 @@ public class Cop : PedExt
             return PedList.CopPeds.Count(x => x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
-    public Cop(Ped _Pedestrian, bool _canSeePlayer, int _Health, Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
+    public Cop(Ped _Pedestrian, int _Health, Agencies.Agency _Agency) : base(_Pedestrian, _Health)
     {
         IsCop = true;
-        AssignedAgency = _Agency;
-        SetAccuracyAndSightRange();
-    }
-    public Cop(Ped _Pedestrian, bool _canSeePlayer, uint _gameTimeLastSeenPlayer, Vector3 _positionLastSeenPlayer, int _Health, Agency _Agency) : base(_Pedestrian, _canSeePlayer, _Health)
-    {
-        IsCop = true;
-        Pedestrian = _Pedestrian;
-        CanSeePlayer = _canSeePlayer;
-        GameTimeLastSeenPlayer = _gameTimeLastSeenPlayer;
-        PositionLastSeenPlayer = _positionLastSeenPlayer;
         Health = _Health;
         AssignedAgency = _Agency;
         SetAccuracyAndSightRange();

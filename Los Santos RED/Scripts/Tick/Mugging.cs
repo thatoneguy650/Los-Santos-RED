@@ -36,12 +36,11 @@ public static class MuggingScript
                 PedExt GTAPedTarget = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Target.Handle);
 
                 if (GTAPedTarget == null)
-                    GTAPedTarget = new PedExt((Ped)Target, false, Target.Health);
+                    GTAPedTarget = new PedExt((Ped)Target, Target.Health);
 
-                bool CanSee = GTAPedTarget.Pedestrian.CanSeePlayer();
                 bool CanMugFromBehind = GTAPedTarget.DistanceToPlayer <= 7f;
 
-                if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && (CanSee || CanMugFromBehind))
+                if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.DistanceToPlayer <= 15f && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && (GTAPedTarget.CanSeePlayer || CanMugFromBehind))
                 {
                     MugTarget(GTAPedTarget, false);
                 }
