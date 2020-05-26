@@ -185,7 +185,7 @@ public class PedExt
             if (DistanceToPlayer <= ClosestDistanceToPlayer)
                 ClosestDistanceToPlayer = DistanceToPlayer;
 
-            if (DistanceToPlayer <= 35f)
+            if (DistanceToPlayer <= 45f)
                 CanHearPlayer = true;
             else
                 CanHearPlayer = false;

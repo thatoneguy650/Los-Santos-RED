@@ -1579,14 +1579,6 @@ public static class DispatchAudio
             ScannerList.Add(new List<string>() { attention_all_units_gen.Attentionallunits.FileName, attention_all_units_gen.Attentionallunits1.FileName, attention_all_units_gen.Attentionallunits3.FileName, attention_all_units_gen.Attentionallunits3.FileName }.PickRandom());
             Subtitles += "Attention all units,";
         }
-        else if (WhoToNotify == AttentionType.LocalUnits)
-        {
-            GetLocalUnitsStart(ref ScannerList, ref Subtitles, PlaceToReport);
-        }
-        else if (WhoToNotify == AttentionType.SpecificUnits)
-        {
-            GetLocalUnitsStart(ref ScannerList,ref Subtitles, PlaceToReport);
-        }
         bool SubsBlank = Subtitles == "";
         if (ReportedBy == ReportType.Officers)
         {
@@ -1613,20 +1605,6 @@ public static class DispatchAudio
                 Subtitles += " we have";
         }
         Subtitles.Trim();
-    }
-    private static bool GetLocalUnitsStart(ref List<string> ScannerList,ref string Subtitles,Vector3 PlaceToReport)
-    {
-        Zone MyZone = GetZoneAtLocation(PlaceToReport);
-        if (MyZone != null && MyZone.DispatchUnitAudio.Any())
-        {
-            ScannerList.Add(MyZone.DispatchUnitAudio.PickRandom());
-            Subtitles += "Attention any ~g~" + MyZone.DispatchUnitName + "~s~,";
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
     private static void ReportGenericEnd(ref List<string> ScannerList,NearType Near, ref string Subtitles, ref DispatchNotification Notification, Vector3 LocationToReport)
     {
@@ -1727,8 +1705,8 @@ public static class DispatchAudio
         {
             ScannerList.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
             ScannerList.Add(MyZone.ScannerValue);
-            Subtitles += " ~s~near ~p~" + MyZone.TextName + "~s~";
-            Notification.Text += "~n~Location: ~p~" + MyZone.TextName + "~s~";
+            Subtitles += " ~s~near ~p~" + MyZone.DisplayName + "~s~";
+            Notification.Text += "~n~Location: ~p~" + MyZone.DisplayName + "~s~";
             return true;
         }
         return false;

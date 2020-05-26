@@ -28,7 +28,7 @@ public class Cop : PedExt
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public GTAWeapon.WeaponVariation PistolVariation { get; set; }
     public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
-    public Agencies.Agency AssignedAgency { get; set; } = new Agencies.Agency("~s~", "UNK", "Unknown Agency", "White", Agencies.Agency.Classification.Other, null, null, "",null);
+    public Agencies.Agency AssignedAgency { get; set; } = new Agencies.Agency();
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public bool AtWantedCenterDuringChase { get; set; } = false;
     public Zone CurrentZone

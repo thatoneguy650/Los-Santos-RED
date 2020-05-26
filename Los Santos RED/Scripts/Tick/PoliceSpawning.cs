@@ -161,7 +161,7 @@ public static class PoliceSpawning
     public static void DebugSetPoliceSpawn(Vector3 PositionToSet)
     {
         Zone ZoneName = Zones.GetZoneAtLocation(PositionToSet);
-        if (ZoneName == null || ZoneName.GameName == "OCEANA")
+        if (ZoneName == null || ZoneName.InternalGameName == "OCEANA")
             return;
 
         string StreetName = Streets.GetCurrentStreet(PositionToSet);
@@ -237,19 +237,19 @@ public static class PoliceSpawning
             Agencies.Agency AgencyToSpawn;
             if(PlayerState.WantedLevel == 5 && General.RandomPercent(30))
             {
-                AgencyToSpawn = Agencies.GetRandomArmyAgency();
+                AgencyToSpawn = Agencies.RandomArmyAgency;
             }
             else if (StreetSpawn.StreetAtSpawn != null && StreetSpawn.StreetAtSpawn.IsHighway && General.RandomPercent(10))
             {
-                AgencyToSpawn = Agencies.GetRandomHighwayAgency();
+                AgencyToSpawn = Agencies.RandomHighwayAgency;
             }
             else if (WaterSpawn != null)
             {
-                AgencyToSpawn = WaterSpawn.ZoneAtLocation.GetRandomAgency();
+                AgencyToSpawn = Agencies.RandomAgencyAtZone(WaterSpawn.ZoneAtLocation.InternalGameName);
             }
             else if(StreetSpawn != null)
             {
-                AgencyToSpawn = StreetSpawn.ZoneAtLocation.GetRandomAgency();
+                AgencyToSpawn = Agencies.RandomAgencyAtZone(StreetSpawn.ZoneAtLocation.InternalGameName);
             }   
             else
             {

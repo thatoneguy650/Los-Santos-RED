@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="Entities\PedExt.cs" />
     <Compile Include="Lookups\Agencies.cs" />
+    <Compile Include="Entities\Agency.cs" />
     <Compile Include="Lookups\Weapons.cs" />
     <Compile Include="Lookups\Names.cs" />
     <Compile Include="Lookups\Streets.cs" />

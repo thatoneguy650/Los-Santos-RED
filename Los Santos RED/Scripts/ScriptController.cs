@@ -71,7 +71,7 @@ public static class ScriptController
 
         };
 
-        RunTasks();
+        
         General.Initialize();
         PlayerState.Initialize();
         ControlScript.Initialize();
@@ -106,6 +106,8 @@ public static class ScriptController
         MuggingScript.Initialize();
         PlayerHealth.Initialize();
         PedWounds.Initialize();
+
+        RunTasks();
     }
     public static void RunTasks()
     {     
@@ -164,7 +166,7 @@ public static class ScriptController
             }
             catch (Exception e)
             {
-                Dispose();
+                //Dispose();
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });

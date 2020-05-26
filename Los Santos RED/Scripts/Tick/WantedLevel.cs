@@ -292,7 +292,7 @@ public static class WantedLevelScript
             CurrentCrimes.FiringWeapon.IsCurrentlyViolating = true;
             if (Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
             {
-                if (PedList.CopPeds.Any(x => x.RecentlySeenPlayer()))
+                if (PedList.CopPeds.Any(x => x.CanSeePlayer))
                 {
                     CurrentCrimes.FiringWeaponNearPolice.IsCurrentlyViolating = true;
                     if (CurrentCrimes.FiringWeaponNearPolice.CanObserveCrime)
@@ -301,11 +301,17 @@ public static class WantedLevelScript
             }
             else
             {
-                if (PedList.CopPeds.Any(x => x.RecentlySeenPlayer() || x.DistanceToPlayer <= 45f))
+                if (PedList.CopPeds.Any(x => x.CanSeePlayer))
                 {
                     CurrentCrimes.FiringWeaponNearPolice.IsCurrentlyViolating = true;
                     if (CurrentCrimes.FiringWeaponNearPolice.CanObserveCrime)
                         CurrentCrimes.FiringWeaponNearPolice.CrimeObserved();
+                }
+                else if (PedList.CopPeds.Any(x => x.CanHearPlayer))
+                {
+                    CurrentCrimes.FiringWeapon.IsCurrentlyViolating = true;
+                    if (CurrentCrimes.FiringWeapon.CanObserveCrime)
+                        CurrentCrimes.FiringWeapon.CrimeObserved();
                 }
             }
         }

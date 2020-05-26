@@ -58,6 +58,7 @@ public static class General
             if (myBlip.Exists())
                 myBlip.Delete();
         }
+        ScriptController.Dispose();
     }
     public static void ReadAllConfigs()
     {

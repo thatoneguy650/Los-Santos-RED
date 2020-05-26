@@ -232,7 +232,7 @@ internal static class Menus
         }
         catch (Exception e)
         {
-            General.Dispose();
+            ScriptController.Dispose();
             Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
         }
     }

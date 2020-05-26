@@ -76,7 +76,7 @@ public static class PedList
     }
     private static void AddCop(Ped Pedestrian)
     {
-        Agencies.Agency AssignedAgency = Agencies.GetAgencyFromPed(Pedestrian);
+        Agencies.Agency AssignedAgency = Agencies.DetermineAgency(Pedestrian);
         if (AssignedAgency == null && !Pedestrian.Exists())
             return;
 
@@ -150,7 +150,7 @@ public static class PedList
                 {
                     if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
                     {
-                        Agencies.ChangeLiveryAtZone(Veh, Zones.GetZoneAtLocation(Veh.Position));
+                        Agencies.ChangeLivery(Veh, Agencies.GetAgencyFromVehicle(Veh));
                         PoliceSpawning.UpgradeCruiser(Veh);
                         PoliceVehicles.Add(Veh);
                     }

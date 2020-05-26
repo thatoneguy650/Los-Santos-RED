@@ -117,7 +117,7 @@ public static class UI
         }
         catch (Exception e)
         {
-            General.Dispose();
+            ScriptController.Dispose();
             Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
         }
     }
@@ -248,10 +248,12 @@ public static class UI
         string ZoneDisplay = "";
         string CopZoneName = "";
         ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone,true);
-        if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
-            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;// +  "~s~ / " + Agencies.SAHP.ColoredInitials;
-        else if (PlayerLocation.PlayerCurrentZone != null && PlayerLocation.PlayerCurrentZone.MainZoneAgency != null)
-            CopZoneName = PlayerLocation.PlayerCurrentZone.MainZoneAgency.ColoredInitials;
+        if (PlayerLocation.PlayerCurrentZone != null)
+        {
+            //Agencies.Agency MainZoneAgency = Agencies.MainAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName);
+            //if(MainZoneAgency != null)
+            //    CopZoneName = MainZoneAgency.ColoredInitials;
+        }
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
     }
