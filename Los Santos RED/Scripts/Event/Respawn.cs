@@ -129,13 +129,13 @@ public static class Respawn
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
 
-            Rage.Object MoneyPile = General.AttachMoneyToPed(PedToMove);
+            Rage.Object MoneyPile = AttachMoneyToPed(PedToMove);
 
             GameFiber.Wait(1500);
             if (MoneyPile.Exists())
                 MoneyPile.Delete();
 
-            MoneyPile = General.AttachMoneyToPed(PedToMoveTo);
+            MoneyPile = AttachMoneyToPed(PedToMoveTo);
             GameFiber.Wait(1500);
             if (MoneyPile.Exists())
                 MoneyPile.Delete();
@@ -341,7 +341,17 @@ public static class Respawn
             Debugging.WriteToLog("RespawnInPlace",e.Message);
         }
     }
-    public static void RemoveIllegalWeapons()
+    private static Rage.Object AttachMoneyToPed(Ped Pedestrian)
+    {
+        Rage.Object Money = new Rage.Object("xs_prop_arena_cash_pile_m", Pedestrian.GetOffsetPositionUp(50f));
+        if (!Money.Exists())
+            return null;
+        General.CreatedObjects.Add(Money);
+        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
+        Money.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.12f, 0.03f, -0.01f), new Rotator(0f, -45f, 90f));
+        return Money;
+    }
+    private static void RemoveIllegalWeapons()
     {
         //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
         //Make a list of my old guns

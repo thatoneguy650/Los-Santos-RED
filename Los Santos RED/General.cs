@@ -58,13 +58,13 @@ public static class General
             if (myBlip.Exists())
                 myBlip.Delete();
         }
-        ScriptController.Dispose();
     }
     public static void ReadAllConfigs()
     {
         ReadConfig();
         Agencies.ReadConfig();
         Zones.ReadConfig();
+        Jurisdiction.ReadConfig();
         Weapons.ReadConfig();
         Locations.ReadConfig();
         Vehicles.ReadConfig();
@@ -241,16 +241,6 @@ public static class General
         int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
         Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
         return Screwdriver;
-    }
-    public static Rage.Object AttachMoneyToPed(Ped Pedestrian)
-    {
-        Rage.Object Money = new Rage.Object("xs_prop_arena_cash_pile_m", Pedestrian.GetOffsetPositionUp(50f));
-        if (!Money.Exists())
-            return null;
-        CreatedObjects.Add(Money);
-        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
-        Money.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.12f, 0.03f, -0.01f), new Rotator(0f, -45f, 90f));
-        return Money;
     }
     public static PedVariation GetPedVariation(Ped myPed)
     {

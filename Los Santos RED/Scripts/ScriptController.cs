@@ -78,6 +78,7 @@ public static class ScriptController
         Debugging.Initialize();
         Agencies.Initialize();
         Zones.Initialize();
+        Jurisdiction.Initialize();
         Locations.Initialize();
         Police.Initialize();
         Investigation.Initialize();
@@ -153,6 +154,9 @@ public static class ScriptController
             }
         });
 
+
+        GameFiber.Sleep(1000);
+
         GameFiber.StartNew(delegate
         {
             try
@@ -166,7 +170,7 @@ public static class ScriptController
             }
             catch (Exception e)
             {
-                //Dispose();
+                Dispose();
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });

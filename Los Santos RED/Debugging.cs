@@ -168,7 +168,20 @@ public static class Debugging
 
     private static void DebugNumpad4()
     {
-        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 1));
+        WriteToLog("MyVariation", "------------------------------");
+        if(PlayerLocation.PlayerCurrentZone != null)
+        {
+            WriteToLog("MyVariation", string.Format("Main Agency: {0},{1},{2}", PlayerLocation.PlayerCurrentZone.InternalGameName,PlayerLocation.PlayerCurrentZone.DisplayName,Jurisdiction.MainAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName).FullName));
+            WriteToLog("MyVariation", string.Format("Random Agency: {0},{1},{2}", PlayerLocation.PlayerCurrentZone.InternalGameName, PlayerLocation.PlayerCurrentZone.DisplayName, Jurisdiction.RandomAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName).FullName));
+
+            foreach (Agency MyAgency in Jurisdiction.GetAgenciesAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName))
+            {
+                WriteToLog("MyVariation", string.Format("   Agency List: {0}", MyAgency.FullName));
+            }
+        }
+
+
+        //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 1));
 
         //PedVariation MyVariation = LosSantosRED.GetPedVariation(Game.LocalPlayer.Character);
         //WriteToLog("MyVariation", "------------------------------");
@@ -367,8 +380,8 @@ public static class Debugging
     }
     private static void DebugNumpad9()
     {
-        DebugCopReset();
-        GameFiber.Sleep(1000);
+        ScriptController.IsRunning = false;
+        GameFiber.Sleep(500);
         DebugCopReset();
         Game.DisplayNotification("Instant Action Deactivated");
         ScriptController.Dispose();

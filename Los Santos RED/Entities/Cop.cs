@@ -28,7 +28,7 @@ public class Cop : PedExt
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public GTAWeapon.WeaponVariation PistolVariation { get; set; }
     public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
-    public Agencies.Agency AssignedAgency { get; set; } = new Agencies.Agency();
+    public Agency AssignedAgency { get; set; } = new Agency();
     public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public bool AtWantedCenterDuringChase { get; set; } = false;
     public Zone CurrentZone
@@ -49,7 +49,7 @@ public class Cop : PedExt
     public void IssuePistol()
     {
         GTAWeapon Pistol;
-        Agencies.Agency.IssuedWeapon PistolToPick = new Agencies.Agency.IssuedWeapon("weapon_pistol", true, null);
+        Agency.IssuedWeapon PistolToPick = new Agency.IssuedWeapon("weapon_pistol", true, null);
         if (AssignedAgency != null)
             PistolToPick = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
         Pistol = Weapons.WeaponsList.Where(x => x.Name.ToLower() == PistolToPick.ModelName.ToLower() && x.Category == GTAWeapon.WeaponCategory.Pistol).PickRandom();
@@ -71,7 +71,7 @@ public class Cop : PedExt
         if (General.MySettings.Police.OverridePoliceAccuracy)
             Pedestrian.Accuracy = General.MySettings.Police.PoliceHeavyAccuracy;
 
-        Agencies.Agency.IssuedWeapon HeavyToPick = new Agencies.Agency.IssuedWeapon("weapon_shotgun", true, null);
+        Agency.IssuedWeapon HeavyToPick = new Agency.IssuedWeapon("weapon_shotgun", true, null);
         if (AssignedAgency != null)
             HeavyToPick = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
 
@@ -149,7 +149,7 @@ public class Cop : PedExt
             return PedList.CopPeds.Count(x => x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
-    public Cop(Ped _Pedestrian, int _Health, Agencies.Agency _Agency) : base(_Pedestrian, _Health)
+    public Cop(Ped _Pedestrian, int _Health, Agency _Agency) : base(_Pedestrian, _Health)
     {
         IsCop = true;
         Health = _Health;

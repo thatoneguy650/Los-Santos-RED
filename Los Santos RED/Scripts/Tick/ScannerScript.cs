@@ -84,6 +84,7 @@ public static class ScannerScript
         AllUnits = 0,
         LocalUnits = 1,
         SpecificUnits = 2,//unused, maybe some weekend ill listen to all that crap
+
     }
     public static void Initialize()
     {
@@ -225,30 +226,130 @@ public static class ScannerScript
         ColorLookups.Add(new ColorLookup(colour.COLORWHITE01.FileName, System.Drawing.Color.White));
         ColorLookups.Add(new ColorLookup(colour.COLORYELLOW01.FileName, System.Drawing.Color.Yellow));
 
-
-
-        //DamagedScannerAliases.Add(extra_prefix.Battered.FileName);
-        // DamagedScannerAliases.Add(extra_prefix.Beatup.FileName);
         DamagedScannerAliases.Add(extra_prefix.Damaged.FileName);
-        // DamagedScannerAliases.Add(extra_prefix.Dented.FileName);
-        // DamagedScannerAliases.Add(extra_prefix.Distressed.FileName);
-        // DamagedScannerAliases.Add(extra_prefix.Rundown.FileName);
-        // DamagedScannerAliases.Add(extra_prefix.Rundown1.FileName);
 
 
         Dispatch AttemptingSuicide = new Dispatch()
         {
-            NotificationText = "Suicide Attempt",
-            SubtitleText = " an ~r~Attempted Suicide~s~",
-            WhoToNotify = AttentionType.Nobody,
-            PossibleAudioToPlay = new List<Dispatch.DispatchAudioList>() {
-                new Dispatch.DispatchAudioList(){ AudioList = new List<string>() { crime_9_14a_attempted_suicide.Anattemptedsuicide.FileName } },
-                new Dispatch.DispatchAudioList(){ AudioList = new List<string>() { crime_9_14a_attempted_suicide.Apossibleattemptedsuicide.FileName } }
+            MainAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() { crime_9_14a_attempted_suicide.Apossibleattemptedsuicide.FileName }," an ~r~Attempted Suicide~s~"),
+                new Dispatch.AudioSet(new List<string>() { crime_9_14a_attempted_suicide.Anattemptedsuicide.FileName }," an ~r~Attempted Suicide~s~")
             }
         };
 
 
+        Dispatch OfficerDown = new Dispatch()
+        {
+            IncludeAttention = true,
+            ResultsInLethalForce = true,
+            NotificationTitle = "Officer Down",
+            MainAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.AcriticalsituationOfficerdown.FileName }," we have a critical situation, ~r~Officer Down~s~"),
+                new Dispatch.AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.AnofferdownpossiblyKIA.FileName }," we have an ~r~Officer Down~s~, possibly KIA"),
+                new Dispatch.AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officer_down.Anofficerdown.FileName }," we have an ~r~Officer Down~s~"),
+                new Dispatch.AudioSet(new List<string>() { we_have.We_Have_2.FileName, crime_officer_down.Anofficerdownconditionunknown.FileName }," we have an ~r~Officer Down~s~, condition unknown"),
+            },
+            SecondaryAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.AllunitsrespondCode99.FileName }," ~s~all units repond ~o~Code-99~s~"),
+                new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.AllunitsrespondCode99emergency.FileName }," ~s~all units repond ~o~Code-99 Emergency~s~"),
+                new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.Code99allunitsrespond.FileName }," ~o~Code-99 ~s~all units repond~s~~"),
+                new Dispatch.AudioSet(new List<string>() { custom_wanted_level_line.Code99allavailableunitsconvergeonsuspect.FileName }," ~o~Code-99 ~s~all available units converge on suspect~s~"),
+                new Dispatch.AudioSet(new List<string>() { custom_wanted_level_line.Wehavea1099allavailableunitsrespond.FileName }," we have a ~o~10-99 ~s~ all available units repond~s~"),
+                new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.Code99allunitsrespond.FileName }," ~o~Code-99 ~s~all units respond~s~"),
+                new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.EmergencyallunitsrespondCode99.FileName }," Emergency all units respond ~o~Code-99 ~s~"),             
+            }
+        };
+
+        Dispatch AssaultingOfficer = new Dispatch()
+        {
+            IncludeAttention = true,
+            ResultsInLethalForce = true,
+            NotificationTitle = "Assault on an Officer",
+            MainAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() {  crime_assault_on_an_officer.Anassaultonanofficer.FileName }," an ~r~Assault on an Officer~s~"),
+                new Dispatch.AudioSet(new List<string>() { crime_assault_on_an_officer.Anofficerassault.FileName }," an ~r~Officer Assault~s~"),
+            },
+        };
+
+
+
+
     }
+
+    private static void AssaultingOfficer(DispatchQueueItem ItemToPlay)
+    {
+        if (ReportedLethalForceAuthorized || ReportedOfficerDown)
+            return;
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+        string NotificationTitle = GetNotificationSubtitle(ItemToPlay.ReportedBy);
+       // AttentionType WhoToNotifiy = GetWhoToNotify(ItemToPlay.ReportedBy);
+       // ReportGenericStart(ref ScannerList, ref Subtitles, WhoToNotifiy, ItemToPlay.ReportedBy, Game.LocalPlayer.Character.Position);
+        Subtitles += " we have an ~r~Assault on an Officer~s~";
+        DispatchNotification Notification = new DispatchNotification("Police Scanner", NotificationTitle, "Assault on an Officer");
+        ScannerList.Add(new List<string>() { crime_assault_on_an_officer.Anassaultonanofficer.FileName, crime_assault_on_an_officer.Anofficerassault.FileName }.PickRandom());
+        AddLethalForceAuthorized(ref ScannerList, ref Subtitles, ref Notification);
+        ReportGenericEnd(ref ScannerList, NearType.Nothing, ref Subtitles, ref Notification, Game.LocalPlayer.Character.Position);
+        PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, ItemToPlay.CanBeInterrupted, true));
+    }
+    private static void PlayDispatch(Dispatch DispatchToPlay)
+    {
+        List<string> ScannerList = new List<string>();
+        string Subtitles = "";
+
+
+
+
+
+        Vector3 PositionToReport = Game.LocalPlayer.Character.Position;
+        if (DispatchToPlay.ReportedBy == ReportType.Civilians)
+            PositionToReport = Investigation.InvestigationPosition;
+
+        
+        // ReportGenericStart(ref ScannerList, ref Subtitles, ItemToPlay.WhoToNotify, ItemToPlay.ReportedBy, PositionToReport);
+
+
+        //ScannerList.Concat(ItemToPlay.PossibleAudioToPlay.PickRandom().AudioList.ToList());
+
+
+       // Subtitles += ItemToPlay.SubtitleText;
+
+
+        //if (DispatchToPlay.IncludeDrivingVehicle)
+        //{
+        //    AddDrivingVehicle(ref ScannerList, ref Subtitles, ref Notification, DispatchToPlay.VehicleToReport, DispatchToPlay.ReportedBy);
+        //}
+
+
+
+
+
+
+
+        if (DispatchToPlay.NotificationSubtitle == "")
+        {
+            if (DispatchToPlay.ReportedBy == ReportType.Officers)
+                DispatchToPlay.NotificationSubtitle = "~o~Crime Observed~s~";
+            else
+                DispatchToPlay.NotificationSubtitle = "~y~Crime Reported~s~";
+        }
+        DispatchNotification Notification = new DispatchNotification(DispatchToPlay.NotificationTitle, DispatchToPlay.NotificationSubtitle, DispatchToPlay.NotificationText);
+
+
+        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, PositionToReport);
+        bool CanBeInterrupted = DispatchToPlay.ReportedBy == ReportType.Civilians ? true : false;
+        //PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, CanBeInterrupted, !CanBeInterrupted));
+
+        if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.VehicleToReport != null)
+        {
+            MarkVehicleAsStolen(DispatchToPlay.VehicleToReport);
+        }
+    }
+
     public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
         /////////Maybe?
@@ -272,27 +373,27 @@ public static class ScannerScript
             }
             CurrentlyPlayingCanBeInterrupted = MyAudioEvent.CanBeInterrupted;
 
-            foreach (string audioname in MyAudioEvent.SoundsToPlay)
-            {
-                PlayAudio(audioname);
+            //foreach (string audioname in MyAudioEvent.MainAudio)
+            //{
+            //    PlayAudio(audioname);
 
-                while (IsPlayingAudio)
-                {
-                    if (MyAudioEvent.Subtitles != "" && General.MySettings.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
-                    {
-                        Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
-                        GameTimeLastDisplayedSubtitle = Game.GameTime;
-                    }
-                    GameFiber.Yield();
-                }
-                if (CancelAudio)
-                {
-                    CancelAudio = false;
-                    Debugging.WriteToLog("PlayAudioList", "CancelAudio Set to False");
-                    break;
-                }
-                GameTimeLastAnnouncedDispatch = Game.GameTime;
-            }
+            //    while (IsPlayingAudio)
+            //    {
+            //        if (MyAudioEvent.Subtitles != "" && General.MySettings.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+            //        {
+            //            Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
+            //            GameTimeLastDisplayedSubtitle = Game.GameTime;
+            //        }
+            //        GameFiber.Yield();
+            //    }
+            //    if (CancelAudio)
+            //    {
+            //        CancelAudio = false;
+            //        Debugging.WriteToLog("PlayAudioList", "CancelAudio Set to False");
+            //        break;
+            //    }
+            //    GameTimeLastAnnouncedDispatch = Game.GameTime;
+            //}
         }, "PlayAudioList");
         Debugging.GameFibers.Add(PlayAudioList);
     }
@@ -513,41 +614,7 @@ public static class ScannerScript
     {
         DispatchQueue.Clear();
     }
-    private static void Generic(Dispatch ItemToPlay)
-    {
-        List<string> ScannerList = new List<string>();
-        string Subtitles = "";
 
-        if (ItemToPlay.NotificationSubtitle == "")
-            ItemToPlay.NotificationSubtitle = GetNotificationSubtitle(ItemToPlay.ReportedBy);
-
-        Vector3 PositionToReport = Game.LocalPlayer.Character.Position;
-        if (ItemToPlay.ReportedBy == ReportType.Civilians)
-            PositionToReport = Investigation.InvestigationPosition;
-
-        DispatchNotification Notification = new DispatchNotification(ItemToPlay.NotificationTitle, ItemToPlay.NotificationSubtitle, ItemToPlay.NotificationText);
-        ReportGenericStart(ref ScannerList, ref Subtitles, ItemToPlay.WhoToNotify, ItemToPlay.ReportedBy, PositionToReport);
-        ScannerList.Concat(ItemToPlay.PossibleAudioToPlay.PickRandom().AudioList.ToList());
-        Subtitles += ItemToPlay.SubtitleText;
-
-
-        if (ItemToPlay.IncludeDrivingVehicle)
-        {
-            AddDrivingVehicle(ref ScannerList, ref Subtitles, ref Notification, ItemToPlay.VehicleToReport, ItemToPlay.ReportedBy);
-        }
-
-
-
-
-        ReportGenericEnd(ref ScannerList, NearType.Street, ref Subtitles, ref Notification, PositionToReport);
-        bool CanBeInterrupted = ItemToPlay.ReportedBy == ReportType.Civilians ? true : false;
-        PlayAudioList(new DispatchAudioEvent(ScannerList, Subtitles, Notification, CanBeInterrupted, !CanBeInterrupted));
-
-        if (ItemToPlay.MarkVehicleAsStolen && ItemToPlay.VehicleToReport != null)
-        {
-            MarkVehicleAsStolen(ItemToPlay.VehicleToReport);
-        }
-    }
     //private static bool CanRun(DispatchQueueItem ItemToPlay)
     //{
     //    if (ItemToPlay.Type == AvailableDispatch.AssaultingOfficer && (ReportedLethalForceAuthorized || ReportedOfficerDown))
@@ -856,16 +923,6 @@ public static class ScannerScript
             NotificationTitle = "~y~Crime Reported~s~";
 
         return NotificationTitle;
-    }
-    private static AttentionType GetWhoToNotify(ReportType ReportedBy)
-    {
-        AttentionType WhoToNotifiy;
-        if (ReportedBy == ReportType.Officers)
-            WhoToNotifiy = AttentionType.Nobody;
-        else
-            WhoToNotifiy = AttentionType.LocalUnits;
-
-        return WhoToNotifiy;
     }
     public static System.Drawing.Color GetBaseColor(System.Drawing.Color PrimaryColor)
     {
@@ -1333,31 +1390,33 @@ public static class ScannerScript
     public class Dispatch
     {
 
-        //public AvailableDispatch Type { get; set; }
-        public int Priority { get; set; } = 0;
-        public bool ResultsInLethalForce { get; set; } = false;
-        public bool ResultsInStolenCarSpotted { get; set; } = false;
-        public bool IsTrafficViolation { get; set; } = false;
-        public bool IsAmbient { get; set; } = false;
+
         public float Speed { get; set; }
-        public int ResultingWantedLevel { get; set; }
         public GTAWeapon WeaponToReport { get; set; }
         public VehicleExt VehicleToReport { get; set; }
         public bool SuspectStatusOnFoot { get; set; } = true;
         public ReportType ReportedBy { get; set; } = ReportType.Officers;
 
 
-
-
-        public bool ReportCharctersPosition { get; set; } = true;
-        public AttentionType WhoToNotify { get; set; } = AttentionType.Nobody;
+        
+        public bool IncludeAttention { get; set; } = false;
         public string NotificationTitle { get; set; } = "Police Scanner";
         public string NotificationSubtitle { get; set; }
         public string NotificationText { get; set; }
-        public string SubtitleText { get; set; }
-        public List<DispatchAudioList> PossibleAudioToPlay { get; set; } = new List<DispatchAudioList>();
+        public List<AudioSet> MainAudioSet { get; set; } = new List<AudioSet>();
+        public List<AudioSet> SecondaryAudioSet { get; set; } = new List<AudioSet>();
         public bool MarkVehicleAsStolen { get; set; } = false;
         public bool IncludeDrivingVehicle { get; set; } = false;
+        public bool ReportCharctersPosition { get; set; } = true;
+
+
+        public int Priority { get; set; } = 0;
+        public bool ResultsInLethalForce { get; set; } = false;
+        public bool ResultsInStolenCarSpotted { get; set; } = false;
+        public bool IsTrafficViolation { get; set; } = false;
+        public bool IsAmbient { get; set; } = false;
+        public int ResultingWantedLevel { get; set; }
+
 
         public Dispatch()
         {
@@ -1371,6 +1430,31 @@ public static class ScannerScript
 
             }
         }
+        public class AudioSet
+        {
+            public AudioSet(List<string> sounds, string subtitles)
+            {
+                Sounds = sounds;
+                Subtitles = subtitles;
+            }
+            public List<string> Sounds { get; set; }
+            public string Subtitles { get; set; }
+
+        }
+        //public class DispatchNotification
+        //{
+
+        //    public string NotificationSubtitleAuto
+        //    {
+        //        get
+        //        {
+        //            if (ReportedBy == ReportType.Officers)
+        //                return "~o~Crime Observed~s~";
+        //            else
+        //                return "~y~Crime Reported~s~";
+        //        }
+        //    }
+        //}
     }
 
 
@@ -1407,14 +1491,14 @@ public static class ScannerScript
             CanInterrupt = _CanInterrupt;
         }
     }
+
     public class DispatchNotification
     {
-        public string Title;
-        public string Subtitle;
-        public string Text;
-        public string TextureDict = "CHAR_CALL911";
-        public string TextureName = "CHAR_CALL911";
-
+        public string Title { get; set; }
+        public string Subtitle { get; set; }
+        public string Text { get; set; }
+        public string TextureDict { get; set; } = "CHAR_CALL911";
+        public string TextureName { get; set; } = "CHAR_CALL911";
         public DispatchNotification(string _Title, string _Subtitle, string _Text)
         {
             Title = _Title;
@@ -1478,7 +1562,6 @@ public static class ScannerScript
         //    ResultsInLethalForce = _ResultsInLethalForce;
         //}
     }
-
     public class VehicleModelNameLookup
     {
         public string ModelName { get; set; }

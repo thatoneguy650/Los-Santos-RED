@@ -234,7 +234,7 @@ public static class PoliceSpawning
     {
         try
         {
-            Agencies.Agency AgencyToSpawn;
+            Agency AgencyToSpawn;
             if(PlayerState.WantedLevel == 5 && General.RandomPercent(30))
             {
                 AgencyToSpawn = Agencies.RandomArmyAgency;
@@ -245,11 +245,11 @@ public static class PoliceSpawning
             }
             else if (WaterSpawn != null)
             {
-                AgencyToSpawn = Agencies.RandomAgencyAtZone(WaterSpawn.ZoneAtLocation.InternalGameName);
+                AgencyToSpawn = Jurisdiction.RandomAgencyAtZone(WaterSpawn.ZoneAtLocation.InternalGameName);
             }
             else if(StreetSpawn != null)
             {
-                AgencyToSpawn = Agencies.RandomAgencyAtZone(StreetSpawn.ZoneAtLocation.InternalGameName);
+                AgencyToSpawn = Jurisdiction.RandomAgencyAtZone(StreetSpawn.ZoneAtLocation.InternalGameName);
             }   
             else
             {
@@ -262,7 +262,7 @@ public static class PoliceSpawning
             {
                 GameTimeLastSpawnedCop = Game.GameTime;
 
-                if(PlayerState.WantedLevel == 5 && !DispatchAudio.ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.AgencyClassification == Agencies.Agency.Classification.Military))
+                if(PlayerState.WantedLevel == 5 && !DispatchAudio.ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.AgencyClassification == Agency.Classification.Military))
                 {             
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.MilitaryDeployed, 1));            
                 }
@@ -397,7 +397,7 @@ public static class PoliceSpawning
         if (MyBlip.Exists())
             MyBlip.Delete();
     }
-    public static bool SpawnGTACop(Agencies.Agency _Agency, float Heading)
+    public static bool SpawnGTACop(Agency _Agency, float Heading)
     {
         if (_Agency == null)
             return false;
@@ -407,7 +407,7 @@ public static class PoliceSpawning
 
         Vector3 SpawnLocation;
         VehicleExt CopCar;
-        Agencies.Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle();
+        Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle();
         if (MyCarInfo == null)
         {
             Debugging.WriteToLog("SpawnGTACop", string.Format("Could not find Auto Info for {0}", _Agency.Initials));
@@ -506,12 +506,12 @@ public static class PoliceSpawning
         }
         return false;
     }
-    public static Ped SpawnCopPed(Agencies.Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
+    public static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
     {
         if (_Agency == null)
             return null;
 
-        Agencies.Agency.ModelInformation MyInfo = _Agency.GetRandomPed(RequiredModels);
+        Agency.ModelInformation MyInfo = _Agency.GetRandomPed(RequiredModels);
 
         if(MyInfo == null)
             return null;
@@ -544,7 +544,7 @@ public static class PoliceSpawning
 
         return Cop;
     }
-    public static VehicleExt SpawnCopVehicle(Agencies.Agency _Agency, Agencies.Agency.VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
+    public static VehicleExt SpawnCopVehicle(Agency _Agency, Agency.VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
     {
         string ModelName = MyCarInfo.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);

@@ -88,7 +88,7 @@ public static class Smoking
             }
             catch (Exception e)
             {
-                ScriptController.Dispose();
+                //ScriptController.Dispose();
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });
@@ -116,7 +116,7 @@ public static class Smoking
             }
             catch (Exception e)
             {
-                ScriptController.Dispose();
+                //ScriptController.Dispose();
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
         });

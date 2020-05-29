@@ -3,6 +3,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -247,330 +248,45 @@ public static partial class Agencies
 
         };
 
-        List<Agency.ZoneJurisdiction> LSPDJurisdication = new List<Agency.ZoneJurisdiction>()
-        {
-            //Central
-            new Agency.ZoneJurisdiction("DOWNT", 0, 94, 80),
-            new Agency.ZoneJurisdiction("PBOX", 0, 94, 80),
-            new Agency.ZoneJurisdiction("SKID", 0, 94, 80),
-            new Agency.ZoneJurisdiction("TEXTI", 0, 94, 80),
-            new Agency.ZoneJurisdiction("LEGSQU", 0, 94, 80),
-            new Agency.ZoneJurisdiction("BANNING", 1, 50, 40),
-            new Agency.ZoneJurisdiction("CHAMH", 1, 50, 40),
-            new Agency.ZoneJurisdiction("DAVIS", 1, 50, 40),
-            new Agency.ZoneJurisdiction("RANCHO", 1, 50, 40),
-            new Agency.ZoneJurisdiction("STRAW", 1, 50, 40),
 
-            //Vespucci
-            new Agency.ZoneJurisdiction("BEACH", 1, 10, 10),
-            new Agency.ZoneJurisdiction("DELBE", 1, 10, 10),
-            new Agency.ZoneJurisdiction("DELPE", 1, 10, 10),
-            new Agency.ZoneJurisdiction("VCANA", 1, 10, 10),
-            new Agency.ZoneJurisdiction("VESP", 1, 10, 10),
-            new Agency.ZoneJurisdiction("LOSPUER", 1, 10, 10),
-            new Agency.ZoneJurisdiction("PBLUFF", 1, 10, 10),
-            new Agency.ZoneJurisdiction("DELSOL", 1, 10, 10),
-
-            //EastLS
-            new Agency.ZoneJurisdiction("CYPRE", 1, 10, 10),
-            new Agency.ZoneJurisdiction("LMESA", 1, 10, 10),
-            new Agency.ZoneJurisdiction("MIRR", 1, 10, 10),
-            new Agency.ZoneJurisdiction("MURRI", 1, 10, 10),
-            new Agency.ZoneJurisdiction("EBURO", 1, 10, 10),
-
-            //Port
-            new Agency.ZoneJurisdiction("ELYSIAN", 1, 5, 5),
-            new Agency.ZoneJurisdiction("ZP_ORT", 1, 5, 5),
-            new Agency.ZoneJurisdiction("TERMINA", 1, 5, 5),
-            new Agency.ZoneJurisdiction("ZP_ORT", 1, 5, 5),
-            new Agency.ZoneJurisdiction("AIRP", 1, 5, 5),
-
-            //Ocean
-            new Agency.ZoneJurisdiction("OCEANA", 1, 5, 5),
-
-            //Rockford Hills
-            new Agency.ZoneJurisdiction("BURTON", 2, 5, 5),
-            new Agency.ZoneJurisdiction("GOLF", 2, 5, 5),
-            new Agency.ZoneJurisdiction("KOREAT", 2, 5, 5),
-            new Agency.ZoneJurisdiction("MORN", 2, 5, 5),
-            new Agency.ZoneJurisdiction("MOVIE", 2, 5, 5),
-            new Agency.ZoneJurisdiction("RICHM", 2, 5, 5),
-            new Agency.ZoneJurisdiction("ROCKF", 2, 5, 5),
-
-        };
-
-        List<Agency.ZoneJurisdiction> LSSDJurisdication = new List<Agency.ZoneJurisdiction>()
-        {
-            //Tatiavian
-            new Agency.ZoneJurisdiction("LACT", 0, 85, 70),
-            new Agency.ZoneJurisdiction("LDAM", 0, 85, 70),
-            new Agency.ZoneJurisdiction("NOOSE", 0, 85, 70),
-            new Agency.ZoneJurisdiction("PALHIGH", 0, 85, 70),
-            new Agency.ZoneJurisdiction("PALMPOW", 0, 85, 70),
-            new Agency.ZoneJurisdiction("SANAND", 0, 85, 70),
-            new Agency.ZoneJurisdiction("TATAMO", 0, 85, 70),
-            new Agency.ZoneJurisdiction("WINDF", 0, 85, 70),
-
-            //North Blaine
-            new Agency.ZoneJurisdiction("PROCOB", 2, 0, 5),
-            new Agency.ZoneJurisdiction("PALETO", 2, 0, 5),
-            new Agency.ZoneJurisdiction("PALCOV", 2, 0, 5),
-            new Agency.ZoneJurisdiction("PALFOR", 2, 0, 5),
-            new Agency.ZoneJurisdiction("CALAFB", 2, 0, 5),
-            new Agency.ZoneJurisdiction("GALFISH", 2, 0, 5),
-            new Agency.ZoneJurisdiction("ELGORL", 2, 0, 5),
-            new Agency.ZoneJurisdiction("GRAPES", 2, 0, 5),
-            new Agency.ZoneJurisdiction("BRADP", 2, 0, 5),
-            new Agency.ZoneJurisdiction("BRADT", 2, 0, 5),
-            new Agency.ZoneJurisdiction("CCREAK", 2, 0, 5),
-
-            //Blaine
-            new Agency.ZoneJurisdiction("ALAMO", 2, 0, 5),
-            new Agency.ZoneJurisdiction("CANNY", 2, 0, 5),
-            new Agency.ZoneJurisdiction("DESRT", 2, 0, 5),
-            new Agency.ZoneJurisdiction("HUMLAB", 2, 0, 5),
-            new Agency.ZoneJurisdiction("MTJOSE", 2, 0, 5),
-            new Agency.ZoneJurisdiction("NCHU", 2, 0, 5),
-            new Agency.ZoneJurisdiction("SANDY", 2, 0, 5),
-            new Agency.ZoneJurisdiction("SLAB", 2, 0, 5),
-            new Agency.ZoneJurisdiction("ZQ_UAR", 2, 0, 5),
-
-        };
-
-        List<Agency.ZoneJurisdiction> LSPDVWJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            //Vinewood
-            new Agency.ZoneJurisdiction("ALTA", 0, 85, 70),
-            new Agency.ZoneJurisdiction("DTVINE", 0, 85, 70),
-            new Agency.ZoneJurisdiction("EAST_V", 0, 85, 70),
-            new Agency.ZoneJurisdiction("HAWICK", 0, 85, 70),
-            new Agency.ZoneJurisdiction("HORS", 0, 85, 70),
-            new Agency.ZoneJurisdiction("VINE", 0, 85, 70),
-            new Agency.ZoneJurisdiction("WVINE", 0, 85, 70),
-            new Agency.ZoneJurisdiction("LSSD-VW", 0, 85, 70),
-            new Agency.ZoneJurisdiction("LSSD-VW", 0, 85, 70),
-
-        };
-
-        List<Agency.ZoneJurisdiction> LSPDELSJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            //East LS
-            new Agency.ZoneJurisdiction("CYPRE", 0, 85, 70),
-            new Agency.ZoneJurisdiction("LMESA", 0, 85, 70),
-            new Agency.ZoneJurisdiction("MIRR", 0, 85, 70),
-            new Agency.ZoneJurisdiction("MURRI", 0, 85, 70),
-            new Agency.ZoneJurisdiction("EBURO", 0, 85, 70),
-
-        };
-
-        List<Agency.ZoneJurisdiction> LSPDDPJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            //Vespucci
-            new Agency.ZoneJurisdiction("BEACH", 0, 84, 70),
-            new Agency.ZoneJurisdiction("DELBE", 0, 84, 70),
-            new Agency.ZoneJurisdiction("DELPE", 0, 84, 70),
-            new Agency.ZoneJurisdiction("VCANA", 0, 84, 70),
-            new Agency.ZoneJurisdiction("VESP", 0, 84, 70),
-            new Agency.ZoneJurisdiction("LOSPUER", 0, 84, 70),
-            new Agency.ZoneJurisdiction("PBLUFF", 0, 84, 70),
-            new Agency.ZoneJurisdiction("DELSOL", 0, 84, 70),
-        };
-
-        List<Agency.ZoneJurisdiction> LSPDRHJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            //Rockford Hills
-            new Agency.ZoneJurisdiction("BURTON", 0, 85, 70),
-            new Agency.ZoneJurisdiction("GOLF", 0, 85, 70),
-            new Agency.ZoneJurisdiction("KOREAT", 0, 85, 70),
-            new Agency.ZoneJurisdiction("MORN", 0, 85, 70),
-            new Agency.ZoneJurisdiction("MOVIE", 0, 85, 70),
-            new Agency.ZoneJurisdiction("RICHM", 0, 85, 70),
-            new Agency.ZoneJurisdiction("ROCKF", 0, 85, 70),
-        };
-
-
-        List<Agency.ZoneJurisdiction> LSSDVWJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            //Vinewood Hills
-            new Agency.ZoneJurisdiction("CHIL", 0, 85, 70),
-            new Agency.ZoneJurisdiction("GREATC", 0, 85, 70),
-            new Agency.ZoneJurisdiction("BAYTRE", 0, 85, 70),
-            new Agency.ZoneJurisdiction("RGLEN", 0, 85, 70),
-            new Agency.ZoneJurisdiction("TONGVAV", 0, 85, 70),
-            new Agency.ZoneJurisdiction("HARMO", 0, 85, 70),
-            new Agency.ZoneJurisdiction("RTRAK", 0, 85, 70),
-
-            //Vinewood
-            new Agency.ZoneJurisdiction("ALTA", 1, 10, 10),
-            new Agency.ZoneJurisdiction("DTVINE", 1, 10, 10),
-            new Agency.ZoneJurisdiction("EAST_V", 1, 10, 10),
-            new Agency.ZoneJurisdiction("HAWICK", 1, 10, 10),
-            new Agency.ZoneJurisdiction("HORS", 1, 10, 10),
-            new Agency.ZoneJurisdiction("VINE", 1, 10, 10),
-            new Agency.ZoneJurisdiction("WVINE", 1, 10, 10),
-        };
-
-        List<Agency.ZoneJurisdiction> LSSDCHJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            //Chumash
-            new Agency.ZoneJurisdiction("BANHAMC", 0, 85, 70),
-            new Agency.ZoneJurisdiction("BHAMCA", 0, 85, 70),
-            new Agency.ZoneJurisdiction("CHU", 0, 85, 70),
-            new Agency.ZoneJurisdiction("TONGVAH", 0, 85, 70),
-        };
-
-        List<Agency.ZoneJurisdiction> LSSDBCJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            //North Blaine
-            new Agency.ZoneJurisdiction("PROCOB", 0, 85, 75),
-            new Agency.ZoneJurisdiction("PALETO", 0, 85, 75),
-            new Agency.ZoneJurisdiction("PALCOV", 0, 85, 75),
-            new Agency.ZoneJurisdiction("PALFOR", 0, 85, 75),
-            new Agency.ZoneJurisdiction("CALAFB", 0, 85, 75),
-            new Agency.ZoneJurisdiction("GALFISH", 0, 85, 75),
-            new Agency.ZoneJurisdiction("ELGORL", 0, 85, 75),
-            new Agency.ZoneJurisdiction("GRAPES", 0, 85, 75),
-            new Agency.ZoneJurisdiction("BRADP", 0, 85, 75),
-            new Agency.ZoneJurisdiction("BRADT", 0, 85, 75),
-            new Agency.ZoneJurisdiction("CCREAK", 0, 85, 75),
-
-            new Agency.ZoneJurisdiction("MTCHIL", 1, 49, 65),
-            new Agency.ZoneJurisdiction("MTGORDO", 1, 49, 65),
-            new Agency.ZoneJurisdiction("CMSW", 1, 49, 65),
-
-            //Blaine
-            new Agency.ZoneJurisdiction("ALAMO", 0, 85, 75),
-            new Agency.ZoneJurisdiction("CANNY", 0, 85, 75),
-            new Agency.ZoneJurisdiction("DESRT", 0, 85, 75),
-            new Agency.ZoneJurisdiction("HUMLAB", 0, 85, 75),
-            new Agency.ZoneJurisdiction("LAGO", 0, 85, 75),
-            new Agency.ZoneJurisdiction("MTJOSE", 0, 85, 75),
-            new Agency.ZoneJurisdiction("NCHU", 0, 85, 75),
-            new Agency.ZoneJurisdiction("SANDY", 0, 85, 75),
-            new Agency.ZoneJurisdiction("SLAB", 0, 85, 75),
-            new Agency.ZoneJurisdiction("ZQ_UAR", 0, 85, 75),
-
-            new Agency.ZoneJurisdiction("JAIL", 1, 49, 65),
-            new Agency.ZoneJurisdiction("SANCHIA", 1, 49, 65),
-            new Agency.ZoneJurisdiction("ZANCUDO", 1, 49, 65),
-        };
-
-        List<Agency.ZoneJurisdiction> SASPAJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            new Agency.ZoneJurisdiction("JAIL", 0, 100, 70),
-        };
-
-        List<Agency.ZoneJurisdiction> SAPRJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            new Agency.ZoneJurisdiction("MTCHIL", 0, 51, 20),
-            new Agency.ZoneJurisdiction("MTGORDO", 0, 51, 20),
-            new Agency.ZoneJurisdiction("CMSW", 0, 51, 20),
-            new Agency.ZoneJurisdiction("SANCHIA", 0, 51, 20),
-            new Agency.ZoneJurisdiction("ZANCUDO", 0, 51, 20),
-        };
-
-        List<Agency.ZoneJurisdiction> SACGJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            new Agency.ZoneJurisdiction("OCEANA", 0, 95, 80),
-        };
-
-        List<Agency.ZoneJurisdiction> LSPAJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            //Port
-            new Agency.ZoneJurisdiction("ELYSIAN", 0, 95, 80),
-            new Agency.ZoneJurisdiction("ZP_ORT", 0, 95, 80),
-            new Agency.ZoneJurisdiction("TERMINA", 0, 95, 80),
-            new Agency.ZoneJurisdiction("ZP_ORT", 0, 95, 80),
-        };
-
-        List<Agency.ZoneJurisdiction> LSIAPDJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            new Agency.ZoneJurisdiction("AIRP", 0, 100, 100),
-        };
-
-        List<Agency.ZoneJurisdiction> PRISECJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            new Agency.ZoneJurisdiction("STAD", 0, 100, 50),
-        };
-
-        List<Agency.ZoneJurisdiction> ARMYJurisdiction = new List<Agency.ZoneJurisdiction>()
-        {
-            new Agency.ZoneJurisdiction("ARMYB", 0, 100, 100),
-        };
 
         AgenciesList = new List<Agency>
         {
-            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, LSPDJurisdication, StandardCops, LSPDVehicles, "LS ",AllWeapons),
-            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, LSPDVWJurisdiction, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons),
-            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, LSPDELSJurisdiction, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons),
-            new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "Blue", Agency.Classification.Police, LSPDDPJurisdiction, StandardCops, DPPDVehicles, "VP ",AllWeapons),
-            new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "Blue", Agency.Classification.Police, LSPDRHJurisdiction, StandardCops, RHPDVehicles, "RH ",AllWeapons),        
+            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons),
+            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons),
+            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons),
+            new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "Blue", Agency.Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons),
+            new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "Blue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons),        
       
-            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, LSSDJurisdication, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons),
-            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, LSSDVWJurisdiction, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons),
-            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, LSSDCHJurisdiction, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons),
-            new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Agency.Classification.Sheriff, LSSDBCJurisdiction, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons),
+            new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons),
 
-            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Agency.Classification.Police, null, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
-            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Agency.Classification.Sheriff, null, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
+            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4 },
 
-            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, null, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 3 },
-            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, null, FIBPeds, FIBVehicles, "FIB ",BestWeapons),
-            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, null, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons) {SpawnLimit = 4 },
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 3 },
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons),
+            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons) {SpawnLimit = 4 },
 
-            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.State, null, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) {SpawnsOnHighway = true },
-            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Agency.Classification.State, SASPAJurisdiction, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons), 
-            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Agency.Classification.State, SAPRJurisdiction, ParkRangers, ParkRangerVehicles, "",AllWeapons) {MaxWantedLevelSpawn = 3,SpawnLimit = 3 },            
-            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.State, SACGJurisdiction, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
+            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) {SpawnsOnHighway = true },
+            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Agency.Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons), 
+            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Agency.Classification.State, ParkRangers, ParkRangerVehicles, "",AllWeapons) {MaxWantedLevelSpawn = 3,SpawnLimit = 3 },            
+            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
 
-            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Police, LSPAJurisdiction, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
-            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, LSIAPDJurisdiction, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { SpawnLimit = 3 },
+            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
+            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { SpawnLimit = 3 },
 
-            new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, PRISECJurisdiction, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1,SpawnLimit = 2 },
+            new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1,SpawnLimit = 2 },
 
-            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Military, ARMYJurisdiction, MilitaryPeds, ArmyVehicles, "",BestWeapons),
+            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons),
 
 
-            new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, null, "",null),
+            new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null),
 
         };
       
-    }
-    public static Agency MainAgencyAtZone(string ZoneName)
-    {
-        return AgenciesList.Where(z => z.Jurisdiction.Any(y => y.ZoneInternalGameName.ToLower() == ZoneName.ToLower())).OrderBy(z => z.Jurisdiction.Where(y => y.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).Min(h => h.Priority)).FirstOrDefault();
-
-        //return AgenciesList.Where(x => x.Jurisdiction != null).OrderBy(z => z.Jurisdiction.Where(y => y.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).Min(h => h.Priority)).FirstOrDefault();
-    }
-    public static Agency RandomAgencyAtZone(string ZoneName)
-    {
-        List<Tuple<Agency, Agency.ZoneJurisdiction>> ToPickFrom = new List<Tuple<Agency, Agency.ZoneJurisdiction>>();
-        foreach (Agency agency in AgenciesList)
-        {
-            foreach(Agency.ZoneJurisdiction zoneJurisdiction in agency.Jurisdiction)
-            {
-                if(zoneJurisdiction.ZoneInternalGameName.ToLower() == ZoneName.ToLower())
-                {
-                    ToPickFrom.Add(new Tuple<Agency, Agency.ZoneJurisdiction>(agency,zoneJurisdiction));
-                }
-            }
-        }
-        List<Agency> ZoneAgencies = AgenciesList.Where(z => z.Jurisdiction.Any(y => y.ZoneInternalGameName.ToLower() == ZoneName.ToLower())).ToList();
-        if (ZoneAgencies == null || !ZoneAgencies.Any())
-            return null;
-
-        int Total = ToPickFrom.Sum(x => x.Item2.CurrentSpawnChance);
-        int RandomPick = General.MyRand.Next(0, Total);
-        foreach (Tuple<Agency, Agency.ZoneJurisdiction> ZA in ToPickFrom)
-        {
-            int SpawnChance = ZA.Item2.CurrentSpawnChance;
-            if (RandomPick < SpawnChance)
-            {
-                return ZA.Item1;
-            }
-            RandomPick -= SpawnChance;
-        }
-        return null;     
     }
     public static Agency DetermineAgency(Ped Cop)
     {
@@ -586,42 +302,48 @@ public static partial class Agencies
     public static Agency GetAgencyFromPed(Ped Cop)
     {
         Zone ZoneFound = Zones.GetZoneAtLocation(Cop.Position);
-        Agency AgencyToReturn = null;
         if (ZoneFound != null)
         {
-            AgencyToReturn = AgenciesList.Where(x => x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower()) && x.Jurisdiction.Any(y => y.ZoneInternalGameName == ZoneFound.InternalGameName)).OrderByDescending(z => z.Jurisdiction.Sum(f => f.CurrentSpawnChance)).FirstOrDefault();
-        }
-
-        if (AgencyToReturn == null)
-        {
-            AgencyToReturn = AgenciesList.Where(x => x.CopModels.Any(y => y.ModelName.ToLower() == Cop.Model.Name.ToLower())).PickRandom();
-            if (AgencyToReturn == null)
+            List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
+            if(ModelMatchAgencies.Count > 1)
             {
-                Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from zone {0} ped {1}, deleting", ZoneFound.DisplayName, Cop.Model.Name));
-                Cop.Delete();
+                foreach(Agency ZoneAgency in Jurisdiction.GetAgenciesAtZone(ZoneFound.InternalGameName))
+                {
+                    if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                        return ZoneAgency;
+                }
+            }
+            else
+            {
+                return ModelMatchAgencies.FirstOrDefault();
             }
         }
-        return AgencyToReturn;
+        Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from zone {0} ped {1}, deleting", ZoneFound.DisplayName, Cop.Model.Name));
+        Cop.Delete();
+        return null;
     }
     public static Agency GetAgencyFromVehicle(Vehicle CopCar)
     {
         Zone ZoneFound = Zones.GetZoneAtLocation(CopCar.Position);
-        Agency AgencyToReturn = null;
         if (ZoneFound != null)
         {
-            AgencyToReturn = AgenciesList.Where(x => x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower()) && x.Jurisdiction.Any(y => y.ZoneInternalGameName == ZoneFound.InternalGameName)).OrderByDescending(z => z.Jurisdiction.Sum(f => f.CurrentSpawnChance)).FirstOrDefault();
-        }
-
-        if (AgencyToReturn == null)
-        {
-            AgencyToReturn = AgenciesList.Where(x => x.Vehicles.Any(y => y.ModelName.ToLower() == CopCar.Model.Name.ToLower())).PickRandom();
-            if (AgencyToReturn == null)
+            List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
+            if (ModelMatchAgencies.Count > 1)
             {
-                Debugging.WriteToLog("GetAgencyFromVehicle", string.Format("Couldnt get agency from zone {0} car {1}, deleting", ZoneFound.DisplayName, CopCar.Model.Name));
-                CopCar.Delete();
+                foreach (Agency ZoneAgency in Jurisdiction.GetAgenciesAtZone(ZoneFound.InternalGameName))
+                {
+                    if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                        return ZoneAgency;
+                }
+            }
+            else
+            {
+                return ModelMatchAgencies.FirstOrDefault();
             }
         }
-        return AgencyToReturn;
+        Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from zone {0} CopCar {1}, deleting", ZoneFound.DisplayName, CopCar.Model.Name));
+        CopCar.Delete();
+        return null;
     }
     public static void ChangeLivery(Vehicle CopCar, Agency AssignedAgency)
     {
@@ -644,6 +366,337 @@ public static partial class Agencies
         }
         CopCar.LicensePlate = AssignedAgency.LicensePlatePrefix + General.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
     }
+    public static Agency GetAgencyFromInitials(string AgencyInitials)
+    {
+        return AgenciesList.Where(x => x.Initials.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
+    }
 }
+
+[Serializable()]
+public class Agency
+{
+    public string ColorPrefix { get; set; } = "~s~";
+    public string Initials { get; set; } = "UNK";
+    public string FullName { get; set; } = "Unknown";
+    public List<ModelInformation> CopModels { get; set; } = new List<ModelInformation>();
+    public List<VehicleInformation> Vehicles { get; set; } = new List<VehicleInformation>();
+    public string AgencyColorString { get; set; } = "White";
+    public Classification AgencyClassification { get; set; } = Classification.Other;
+    public string LicensePlatePrefix { get; set; } = "";
+    public bool SpawnsOnHighway { get; set; } = false;
+    public bool CanSpawnAnywhere { get; set; } = false;
+    public uint MinWantedLevelSpawn { get; set; } = 0;
+    public uint MaxWantedLevelSpawn { get; set; } = 5;
+    public int SpawnLimit { get; set; } = 99;
+    public List<IssuedWeapon> IssuedWeapons { get; set; } = new List<IssuedWeapon>();
+    public bool CanSpawn
+    {
+        get
+        {
+            if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+            {
+                if (PedList.CopPeds.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+    }
+    public bool HasMotorcycles
+    {
+        get
+        {
+            return Vehicles.Any(x => x.IsMotorcycle);
+        }
+    }
+    public bool HasSpawnableHelicopters
+    {
+        get
+        {
+            return Vehicles.Any(x => x.IsHelicopter && x.CanCurrentlySpawn);
+        }
+    }
+    public Color AgencyColor
+    {
+        get
+        {
+            return Color.FromName(AgencyColorString);
+        }
+    }
+    public string ColoredInitials
+    {
+        get
+        {
+            return ColorPrefix + Initials;
+        }
+    }
+    public bool CanCheckTrafficViolations
+    {
+        get
+        {
+            if (AgencyClassification == Classification.Police || AgencyClassification == Classification.Federal || AgencyClassification == Classification.Sheriff)
+                return true;
+            else
+                return false;
+        }
+    }
+    public enum Classification
+    {
+        Police = 0,
+        Sheriff = 1,
+        Federal = 2,
+        State = 3,
+        Security = 4,
+        Military = 5,
+        Other = 6,
+    }
+    public VehicleInformation GetVehicleInfo(Vehicle CopCar)
+    {
+        return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+    }
+    public VehicleInformation GetRandomVehicle()
+    {
+        if (Vehicles == null || !Vehicles.Any())
+            return null;
+
+        List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn).ToList();
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+        // Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
+        int RandomPick = General.MyRand.Next(0, Total);
+        foreach (VehicleInformation Vehicle in ToPickFrom)
+        {
+            int SpawnChance = Vehicle.CurrentSpawnChance;
+            if (RandomPick < SpawnChance)
+            {
+                return Vehicle;
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
+    }
+    public ModelInformation GetRandomPed(List<string> RequiredModels)
+    {
+        if (CopModels == null || !CopModels.Any())
+            return null;
+
+        List<ModelInformation> ToPickFrom = CopModels.Where(x => PlayerState.WantedLevel >= x.MinWantedLevelSpawn && PlayerState.WantedLevel <= x.MaxWantedLevelSpawn).ToList();
+        if (RequiredModels != null && RequiredModels.Any())
+        {
+            ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
+        }
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+        //Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
+        int RandomPick = General.MyRand.Next(0, Total);
+        foreach (ModelInformation Cop in ToPickFrom)
+        {
+            int SpawnChance = Cop.CurrentSpawnChance;
+            if (RandomPick < SpawnChance)
+            {
+                return Cop;
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
+    }
+    public Agency()
+    {
+
+    }
+    public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<ModelInformation> _CopModels, List<VehicleInformation> _Vehicles, string _LicensePlatePrefix, List<IssuedWeapon> _IssuedWeapons)
+    {
+        ColorPrefix = _ColorPrefix;
+        Initials = _Initials;
+        FullName = _FullName;
+        CopModels = _CopModels;
+        AgencyColorString = _AgencyColorString;
+        Vehicles = _Vehicles;
+        AgencyClassification = _AgencyClassification;
+        LicensePlatePrefix = _LicensePlatePrefix;
+        IssuedWeapons = _IssuedWeapons;
+    }
+    public class ModelInformation
+    {
+        public string ModelName;
+        public int AmbientSpawnChance = 0;
+        public int WantedSpawnChance = 0;
+        public int MinWantedLevelSpawn = 0;
+        public int MaxWantedLevelSpawn = 5;
+        public PedVariation RequiredVariation;
+        public bool CanCurrentlySpawn
+        {
+            get
+            {
+                if (PlayerState.IsWanted)
+                {
+                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                        return WantedSpawnChance > 0;
+                    else
+                        return false;
+                }
+                else
+                    return AmbientSpawnChance > 0;
+            }
+        }
+        public int CurrentSpawnChance
+        {
+            get
+            {
+                if (PlayerState.IsWanted)
+                {
+                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                        return WantedSpawnChance;
+                    else
+                        return 0;
+                }
+                else
+                    return AmbientSpawnChance;
+            }
+        }
+        public ModelInformation()
+        {
+
+        }
+        public ModelInformation(string _ModelName, int ambientSpawnChance, int wantedSpawnChance)
+        {
+            ModelName = _ModelName;
+            AmbientSpawnChance = ambientSpawnChance;
+            WantedSpawnChance = wantedSpawnChance;
+        }
+    }
+    public class VehicleInformation
+    {
+        public string ModelName;
+        public int AmbientSpawnChance = 0;
+        public int WantedSpawnChance = 0;
+        public bool IsCar
+        {
+            get
+            {
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Game.GetHashKey(ModelName));
+            }
+        }
+        public bool IsMotorcycle
+        {
+            get
+            {
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BIKE", Game.GetHashKey(ModelName));
+            }
+        }
+        public bool IsHelicopter
+        {
+            get
+            {
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", Game.GetHashKey(ModelName));
+            }
+        }
+        public bool IsBoat
+        {
+            get
+            {
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", Game.GetHashKey(ModelName));
+            }
+        }
+        public int MinOccupants = 1;
+        public int MaxOccupants = 2;
+        public int MinWantedLevelSpawn = 0;
+        public int MaxWantedLevelSpawn = 5;
+        public List<string> AllowedPedModels = new List<string>();//only ped models can spawn in this, if emptyt any ambient spawn can
+        public List<int> Liveries = new List<int>();
+        public bool CanSpawnWanted
+        {
+            get
+            {
+                if (WantedSpawnChance > 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool CanSpawnAmbient
+        {
+            get
+            {
+                if (AmbientSpawnChance > 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool CanCurrentlySpawn
+        {
+            get
+            {
+                if (IsHelicopter && PedList.PoliceVehicles.Count(x => x.IsHelicopter) >= General.MySettings.Police.HelicopterLimit)
+                {
+                    return false;
+                }
+                else if (IsBoat && PedList.PoliceVehicles.Count(x => x.IsBoat) >= General.MySettings.Police.BoatLimit)
+                {
+                    return false;
+                }
+
+                if (PlayerState.IsWanted)
+                {
+                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                        return CanSpawnWanted;
+                    else
+                        return false;
+                }
+                else
+                    return CanSpawnAmbient;
+            }
+        }
+        public int CurrentSpawnChance
+        {
+            get
+            {
+                if (!CanCurrentlySpawn)
+                    return 0;
+                if (PlayerState.IsWanted)
+                {
+                    if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
+                        return WantedSpawnChance;
+                    else
+                        return 0;
+                }
+                else
+                    return AmbientSpawnChance;
+            }
+        }
+        public VehicleInformation()
+        {
+
+        }
+        public VehicleInformation(string modelName, int ambientSpawnChance, int wantedSpawnChance)
+        {
+            ModelName = modelName;
+            AmbientSpawnChance = ambientSpawnChance;
+            WantedSpawnChance = wantedSpawnChance;
+        }
+    }
+    public class IssuedWeapon
+    {
+        public string ModelName;
+        public bool IsPistol = false;
+        public GTAWeapon.WeaponVariation MyVariation = new GTAWeapon.WeaponVariation();
+        public IssuedWeapon()
+        {
+
+        }
+        public IssuedWeapon(string _ModelName, bool _IsPistol, GTAWeapon.WeaponVariation _MyVariation)
+        {
+            ModelName = _ModelName;
+            IsPistol = _IsPistol;
+            MyVariation = _MyVariation;
+        }
+
+    }
+}
+
+
+
+
 
 

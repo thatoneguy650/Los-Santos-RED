@@ -91,8 +91,8 @@ public static class UI
     //}
     public static void Tick()
     {
-        try
-        {
+        //try
+        //{
             if (General.MySettings.General.AlwaysShowHUD)
                 NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
 
@@ -114,12 +114,12 @@ public static class UI
             }
 
             ScreenEffectsTick();
-        }
-        catch (Exception e)
-        {
-            ScriptController.Dispose();
-            Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        }
+        //}
+        //catch (Exception e)
+        //{
+        //    //ScriptController.Dispose();
+        //    Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //}
     }
     private static void ShowUI()
     {
@@ -250,9 +250,15 @@ public static class UI
         ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone,true);
         if (PlayerLocation.PlayerCurrentZone != null)
         {
-            //Agencies.Agency MainZoneAgency = Agencies.MainAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName);
-            //if(MainZoneAgency != null)
-            //    CopZoneName = MainZoneAgency.ColoredInitials;
+            Agency MainZoneAgency = Jurisdiction.MainAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName);
+            if (MainZoneAgency != null)
+                CopZoneName = MainZoneAgency.ColoredInitials;
+        }
+        if(PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
+        {
+            Agency HighwayPatrol = Agencies.RandomHighwayAgency;
+            if(HighwayPatrol != null)
+            CopZoneName += "~s~ / " + HighwayPatrol.ColoredInitials;
         }
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;

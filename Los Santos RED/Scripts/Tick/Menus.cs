@@ -183,8 +183,8 @@ internal static class Menus
     }
     public static void Tick()
     {
-        try
-        {
+        //try
+        //{
             if (Game.IsKeyDown(General.MySettings.KeyBinding.MenuKey)) // Our menu on/off switch.
             {
                 if (PlayerState.IsDead)
@@ -229,12 +229,12 @@ internal static class Menus
                     debugMenu.Visible = false;
             }
             menuPool.ProcessMenus();       // Process all our menus: draw the menu and process the key strokes and the mouse.      
-        }
-        catch (Exception e)
-        {
-            ScriptController.Dispose();
-            Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        }
+        //}
+        //catch (Exception e)
+        //{
+        //    ScriptController.Dispose();
+        //    Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+        //}
     }
     public static void Dispose()
     {
@@ -571,8 +571,8 @@ internal static class Menus
         }
         if (selectedItem == menuDebugResetMod)
         {
-            ScriptController.Dispose();
-            ScriptController.Initialize();
+            //ScriptController.Dispose();
+            //ScriptController.Initialize();
         }
         if (selectedItem == menuDebugHealthAndArmor)
         {

@@ -196,6 +196,10 @@ public static class Zones
         }
 
     }
+    public static Zone GetZoneByName(string InternalGameName)
+    {
+        return ZoneList.Where(x => x.InternalGameName.ToLower() == InternalGameName.ToLower()).FirstOrDefault();
+    }
 }
 [Serializable()]
 public class Zone

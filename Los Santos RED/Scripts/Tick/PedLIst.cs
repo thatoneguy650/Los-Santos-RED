@@ -76,7 +76,7 @@ public static class PedList
     }
     private static void AddCop(Ped Pedestrian)
     {
-        Agencies.Agency AssignedAgency = Agencies.DetermineAgency(Pedestrian);
+        Agency AssignedAgency = Agencies.DetermineAgency(Pedestrian);
         if (AssignedAgency == null && !Pedestrian.Exists())
             return;
 

@@ -28,7 +28,7 @@ public class VehicleExt
     public bool ManuallyRolledDriverWindowDown = false;
     public Vector3 PositionOriginallyEntered = Vector3.Zero;
     public bool HasBeenDescribedByDispatch = false;
-    public Agencies.Agency.VehicleInformation ExtendedAgencyVehicleInformation;
+    public Agency.VehicleInformation ExtendedAgencyVehicleInformation;
 
     public bool NeedsToBeReportedStolen
     {
