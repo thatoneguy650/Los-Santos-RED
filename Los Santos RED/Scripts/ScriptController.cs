@@ -57,8 +57,8 @@ public static class ScriptController
 
             new TickTask(500, "DispatchAudio", DispatchAudio.Tick, 8,0),
             new TickTask(500, "PoliceSpeech", PoliceSpeech.Tick, 8,2),
-            new TickTask(500, "PoliceSpawning", PoliceSpawning.Tick, 8,3),
-            new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.RemoveCops, 8,4),
+            new TickTask(500, "PoliceSpawning", PoliceSpawning.CheckSpawn, 8,3),
+            new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 8,4),
             new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 8,5),
 
             new TickTask(0, "VehicleFuelSystem", VehicleFuelSystem.Tick, 9,0),

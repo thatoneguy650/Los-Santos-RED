@@ -9,6 +9,7 @@ public static partial class Jurisdiction
 {
     private static string ConfigFileName = "Plugins\\LosSantosRED\\Jurisdiction.xml";
     private static List<ZoneJurisdiction> ZoneJurisdictions = new List<ZoneJurisdiction>();
+    private static List<CountyJurisdiction> CountyJurisdictions = new List<CountyJurisdiction>();
 
     public static void Initialize()
     {
@@ -32,6 +33,13 @@ public static partial class Jurisdiction
     }
     private static void DefaultConfig()
     {
+        CountyJurisdictions = new List<CountyJurisdiction>()
+        {
+            new CountyJurisdiction("LSPD-ASD",Zone.County.CityOfLosSantos, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",Zone.County.BlaineCounty, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",Zone.County.LosSantosCounty, 0, 100, 100),
+        };
+
         ZoneJurisdictions = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSIAPD","AIRP", 0, 95, 95),
@@ -304,6 +312,31 @@ public static partial class Jurisdiction
             return null;
         }
     }
+    public static Agency AirAgencyAtZone(string ZoneName)
+    {
+        Zone MyZone = Zones.GetZoneByName(ZoneName);
+        if (MyZone != null)
+        {
+            List<CountyJurisdiction> ToPickFrom = CountyJurisdictions.Where(x => x.County == MyZone.ZoneCounty).ToList();
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+            int RandomPick = General.MyRand.Next(0, Total);
+            foreach (CountyJurisdiction MyJurisdiction in ToPickFrom)
+            {
+                int SpawnChance = MyJurisdiction.CurrentSpawnChance;
+                if (RandomPick < SpawnChance)
+                {
+                    return MyJurisdiction.GameAgency;
+                }
+                RandomPick -= SpawnChance;
+            }
+            return null;
+            
+        }
+        else
+        {
+            return null;
+        }
+    }
     public static List<Agency> GetAgenciesAtZone(string ZoneName)
     {
         if (ZoneJurisdictions.Any())
@@ -340,6 +373,53 @@ public static partial class Jurisdiction
         {
             AgencyInitials = agencyInitials;
             ZoneInternalGameName = zoneInternalName;
+            Priority = priority;
+            AmbientSpawnChance = ambientSpawnChance;
+            WantedSpawnChance = wantedSpawnChance;
+        }
+        public bool CanCurrentlySpawn
+        {
+            get
+            {
+                if (PlayerState.IsWanted)
+                    return WantedSpawnChance > 0;
+                else
+                    return AmbientSpawnChance > 0;
+            }
+        }
+        public int CurrentSpawnChance
+        {
+            get
+            {
+                if (PlayerState.IsWanted)
+                    return WantedSpawnChance;
+                else
+                    return AmbientSpawnChance;
+            }
+        }
+    }
+    public class CountyJurisdiction
+    {
+        public string AgencyInitials { get; set; } = "";
+        public Zone.County County { get; set; }
+        public int Priority { get; set; } = 99;
+        public int AmbientSpawnChance { get; set; } = 0;
+        public int WantedSpawnChance { get; set; } = 0;
+        public Agency GameAgency
+        {
+            get
+            {
+                return Agencies.GetAgencyFromInitials(AgencyInitials);
+            }
+        }
+        public CountyJurisdiction()
+        {
+
+        }
+        public CountyJurisdiction(string agencyInitials, Zone.County county, int priority, int ambientSpawnChance, int wantedSpawnChance)
+        {
+            AgencyInitials = agencyInitials;
+            County = county;
             Priority = priority;
             AmbientSpawnChance = ambientSpawnChance;
             WantedSpawnChance = wantedSpawnChance;

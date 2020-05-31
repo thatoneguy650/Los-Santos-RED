@@ -207,4 +207,11 @@ public static class PedList
             Veh.Delete();
         }
     }
+    public static PedExt GetCivilian(uint Handle)
+    {
+        if (CopPeds.Any(x => x.Pedestrian.Handle == Handle))
+            return null;
+        else
+        return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+    }
 }

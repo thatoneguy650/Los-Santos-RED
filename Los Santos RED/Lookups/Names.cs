@@ -53,12 +53,12 @@ public static class Names
     public static void DefaultConfig()
     {
         NameList = new List<PedName>();
-            List<string> MaleNames;
-       List<string> FemaleNames;
-     List<string> LastNames;
+        List<string> MaleNames;
+        List<string> FemaleNames;
+        List<string> LastNames;
         List<string> UniSexNames;
 
-    MaleNames = new List<string>()
+        MaleNames = new List<string>()
         {
                 "Noah",
     "Liam",
@@ -1061,8 +1061,7 @@ public static class Names
     "Jaydon",
     "Antoine"
         };
-
-         FemaleNames = new List<string>()
+        FemaleNames = new List<string>()
                 {
             "Emma",
             "Olivia",
@@ -2065,7 +2064,6 @@ public static class Names
             "Sidney",
             "Alianna"
                 };
-
         LastNames = new List<string>() {
                 "Smith",
             "Johnson",
@@ -3068,7 +3066,6 @@ public static class Names
             "Key",
             "Cookie"
             };
-
         UniSexNames = new List<string> { "Casey",
 "Riley",
 "Jessie",

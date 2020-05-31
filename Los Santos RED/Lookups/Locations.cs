@@ -162,14 +162,6 @@ public class Location
         {
             MyLocationBlip.Sprite = BlipSprite.JerryCan;
             MyLocationBlip.Color = Color.White;
-
-            //foreach(Vector3 MyGasStuff in GasPumps)
-            //{
-            //    Blip MyPumpBlip = new Blip(MyGasStuff);
-            //    MyPumpBlip.Color = Color.White;
-            //    NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyPumpBlip.Handle, true);
-            //    Police.CreatedBlips.Add(MyPumpBlip);
-            //}
         }
 
         NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);

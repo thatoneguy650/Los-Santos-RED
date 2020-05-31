@@ -47,11 +47,7 @@ public static class CarJacking
         SeatTryingToEnter = EntrySeat;
 
         Victim = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
-        if (Victim != null)
-            Victim.CanBeTasked = false;
-
         Debugging.WriteToLog("CarJack", string.Format("Driver: {0}", Driver.Handle));
-
         Weapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (CanArmedCarJack && PlayerState.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != GTAWeapon.WeaponCategory.Melee)
@@ -62,22 +58,31 @@ public static class CarJacking
         {
             UnarmedCarJack();
         }
-
-        if (Victim != null)
-            Victim.CanBeTasked = true;
     }
     private static void ArmedCarJack()
     {
+        if (Victim != null)
+            Victim.CanBeTasked = false;
         try
         {
             GameFiber CarJackPedWithWeapon = GameFiber.StartNew(delegate
             {
                 if (!SetupCarJack())
+                {
+                    if (Victim != null)
+                        Victim.CanBeTasked = true;
                     return;
+                }
                 if (!CarJackAnimation())
+                {
+                    if (Victim != null)
+                        Victim.CanBeTasked = true;
                     return;
+                }
 
                 FinishCarJack();
+                if (Victim != null)
+                    Victim.CanBeTasked = true;
 
             }, "CarJackPedWithWeapon");
             Debugging.GameFibers.Add(CarJackPedWithWeapon);
@@ -268,13 +273,12 @@ public static class CarJacking
         {
             PlayerCarJacking = true;
 
-            PedExt CarjackingVictim = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
-            if (CarjackingVictim != null)
-                CarjackingVictim.CanBeTasked = false;
+            if (Victim != null)
+                Victim.CanBeTasked = false;
 
             GameFiber.Sleep(4000);
-            if (CarjackingVictim != null)
-                CarjackingVictim.CanBeTasked = true;
+            if (Victim != null)
+                Victim.CanBeTasked = true;
 
             GameFiber.Sleep(4000);
             PlayerCarJacking = false;

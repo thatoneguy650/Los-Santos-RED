@@ -36,10 +36,6 @@ public static class ScannerScript2
         new Dispatch.AudioSet(new List<string>() { lethal_force.Useoflethalforceisauthorized.FileName }," use of ~r~Lethal Force~s~ is authorized"),
         new Dispatch.AudioSet(new List<string>() { lethal_force.Useofdeadlyforcepermitted1.FileName }," use of ~r~Deadly Force~s~ permitted"),
     };
-
-
-
-
     private enum LocationSpecificity
     {
         Nothing = 0,
@@ -150,16 +146,14 @@ public static class ScannerScript2
 
     private static void BuildDispatch(Dispatch DispatchToPlay, DispatchCallIn ReportInformation)
     {
-        string SubtitlesToPlay = "";
-        List<string> ScannerAudioList = new List<string>();
-
-        ScannerAudioList.Add(RadioStart.PickRandom());
+        DispatchEvent EventToPlay = new DispatchEvent();
+        EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
 
         if (DispatchToPlay.IncludeAttention)
         {
             Dispatch.AudioSet Attention = AttentionAllUnits.PickRandom();
-            ScannerAudioList.Concat(Attention.Sounds);
-            SubtitlesToPlay += Attention.Subtitles;
+            EventToPlay.SoundsToPlay.Concat(Attention.Sounds);
+            EventToPlay.Subtitles += Attention.Subtitles;
         }
 
         if (DispatchToPlay.IncludeReportedBy)
@@ -167,40 +161,39 @@ public static class ScannerScript2
             if (ReportInformation.SeenByOfficers)
             {
                 Dispatch.AudioSet OfficerReportSet = AttentionAllUnits.PickRandom();
-                ScannerAudioList.Concat(OfficerReportSet.Sounds);
-                SubtitlesToPlay += OfficerReportSet.Subtitles;
+                EventToPlay.SoundsToPlay.Concat(OfficerReportSet.Sounds);
+                EventToPlay.Subtitles += OfficerReportSet.Subtitles;
             }
             else
             {
                 Dispatch.AudioSet CivilianReportSet = CiviliansReport.PickRandom();
-                ScannerAudioList.Concat(CivilianReportSet.Sounds);
-                SubtitlesToPlay += CivilianReportSet.Subtitles;
+                EventToPlay.SoundsToPlay.Concat(CivilianReportSet.Sounds);
+                EventToPlay.Subtitles += CivilianReportSet.Subtitles;
             }
         }
 
 
         Dispatch.AudioSet Main = DispatchToPlay.MainAudioSet.PickRandom();
-        ScannerAudioList.Concat(Main.Sounds);
-        SubtitlesToPlay += Main.Subtitles;
+        EventToPlay.SoundsToPlay.Concat(Main.Sounds);
+        EventToPlay.Subtitles += Main.Subtitles;
 
         Dispatch.AudioSet Secondary = DispatchToPlay.SecondaryAudioSet.PickRandom();
-        if(Secondary != null)
+        if(Secondary != null)//change this to a bool in the audioset
         {
-            ScannerAudioList.Concat(Secondary.Sounds);
-            SubtitlesToPlay += Secondary.Subtitles;
+            EventToPlay.SoundsToPlay.Concat(Secondary.Sounds);
+            EventToPlay.Subtitles += Secondary.Subtitles;
         }
 
         if(DispatchToPlay.ResultsInLethalForce)
         {
             Dispatch.AudioSet LethalForceSet = LethalForce.PickRandom();
-            ScannerAudioList.Concat(LethalForceSet.Sounds);
-            SubtitlesToPlay += LethalForceSet.Subtitles;
+            EventToPlay.SoundsToPlay.Concat(LethalForceSet.Sounds);
+            EventToPlay.Subtitles += LethalForceSet.Subtitles;
         }
 
 
 
-        DispatchEvent EventToPlay = new DispatchEvent(ScannerAudioList, SubtitlesToPlay, true, true, DispatchToPlay.NotificationText, DispatchToPlay.NotificationSubtitle, DispatchToPlay.NotificationSubtitle);
-
+        
 
 
     }
@@ -255,15 +248,9 @@ public static class ScannerScript2
     }
     private class DispatchEvent
     {
-        public DispatchEvent(List<string> soundsToPlay, string subtitles, bool canBeInterrupted, bool canInterrupt, string notificationTitle, string notificationSubtitle, string notificationText)
+        public DispatchEvent()
         {
-            SoundsToPlay = soundsToPlay;
-            Subtitles = subtitles;
-            CanBeInterrupted = canBeInterrupted;
-            CanInterrupt = canInterrupt;
-            NotificationTitle = notificationTitle;
-            NotificationSubtitle = notificationSubtitle;
-            NotificationText = notificationText;
+
         }
         public List<string> SoundsToPlay { get; set; }
         public string Subtitles { get; set; }

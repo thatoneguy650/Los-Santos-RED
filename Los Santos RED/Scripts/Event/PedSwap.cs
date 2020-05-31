@@ -27,6 +27,7 @@ public static class PedSwap
     private static PedVariation CurrentPedVariation;
     private static bool PedOriginallyHadHelmet;
     private static uint GameTimeLastTakenOver;
+    private static bool CurrentPlayerIsMale = false;
 
     public static string CurrentPlayerModel;//temp public
 
@@ -43,6 +44,7 @@ public static class PedSwap
         Names.Initialize();
         CurrentPlayerModel = Game.LocalPlayer.Character.Model.Name;
         CurrentPedVariation = General.GetPedVariation(Game.LocalPlayer.Character);
+        CurrentPlayerIsMale = Game.LocalPlayer.Character.IsMale;
         NamePed();
     }
     public static void NamePed()
@@ -57,21 +59,9 @@ public static class PedSwap
         else if (CurrentPlayerModel.ToLower() == "player_two")
             SuspectName = "Trevor Philips";
         else
-            GenerateNameForPed();
-
+            SuspectName = Names.GetRandomName(CurrentPlayerIsMale);
 
         Debugging.WriteToLog("Named Ped", string.Format("CurrentPlayerModel: {0}, CurrentName: {1}", CurrentPlayerModel.ToLower(), SuspectName));
-    }
-    private static void GenerateNameForPed()
-    {
-        Ped Doppleganger = new Ped(CurrentPlayerModel, new Vector3(0f, 0f, 0f), 0f);
-        if (Doppleganger.Exists())
-            SuspectName = Names.GetRandomName(Doppleganger.IsMale);
-        else
-            SuspectName = Names.GetRandomName();
-
-        if (Doppleganger.Exists())
-            Doppleganger.Delete();
     }
     public static void Dispose()
     {
@@ -186,12 +176,8 @@ public static class PedSwap
     {
         CurrentPedVariation = General.GetPedVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
+        CurrentPlayerIsMale = TargetPed.IsMale;
         Clock.StoreTime();
-
-
-
-
-            
 
         Debugging.WriteToLog("StoreTargetPedData", string.Format("CurrentPlayerModel: {0}",CurrentPlayerModel));
 

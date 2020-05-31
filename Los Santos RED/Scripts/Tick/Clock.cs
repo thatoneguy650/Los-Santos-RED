@@ -26,7 +26,7 @@ public static class Clock
 
     public static bool IsRunning { get; set; }
     public static string ClockSpeed { get; set; }
-    public static string ClockTime { get; set; }
+    //public static string ClockTime { get; set; }
     public static bool OverrideToFastest { get; set; } = false;
     public static void Initialize()
     {
@@ -101,30 +101,30 @@ public static class Clock
             //ClockYear = NativeFunction.CallByName<int>("GET_CLOCK_YEAR");
             //ClockMonth = NativeFunction.CallByName<int>("GET_CLOCK_MONTH");
             //ClockDayOfMonth = NativeFunction.CallByName<int>("GET_CLOCK_DAY_OF_MONTH");
-            ClockDayOfWeek = NativeFunction.CallByName<int>("GET_CLOCK_DAY_OF_WEEK");
-            ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
-            ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
-            ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+            //ClockDayOfWeek = NativeFunction.CallByName<int>("GET_CLOCK_DAY_OF_WEEK");
+            //ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
+            //ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
+            //ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
 
-            DateTime MyTime = new DateTime(2020, 1, 1, ClockHours, ClockMinutes, ClockSeconds);
+            //DateTime MyTime = new DateTime(2020, 1, 1, ClockHours, ClockMinutes, ClockSeconds);
 
-            string DOW = "Sunday";
-            if (ClockDayOfWeek == 0)
-                DOW = "Sunday";
-            else if (ClockDayOfWeek == 1)
-                DOW = "Monday";
-            else if (ClockDayOfWeek == 2)
-                DOW = "Tuesday";
-            else if (ClockDayOfWeek == 3)
-                DOW = "Wednesday";
-            else if (ClockDayOfWeek == 4)
-                DOW = "Thrusday";
-            else if (ClockDayOfWeek == 5)
-                DOW = "Friday";
-            else if (ClockDayOfWeek == 6)
-                DOW = "Saturday";
+            //string DOW = "Sunday";
+            //if (ClockDayOfWeek == 0)
+            //    DOW = "Sunday";
+            //else if (ClockDayOfWeek == 1)
+            //    DOW = "Monday";
+            //else if (ClockDayOfWeek == 2)
+            //    DOW = "Tuesday";
+            //else if (ClockDayOfWeek == 3)
+            //    DOW = "Wednesday";
+            //else if (ClockDayOfWeek == 4)
+            //    DOW = "Thrusday";
+            //else if (ClockDayOfWeek == 5)
+            //    DOW = "Friday";
+            //else if (ClockDayOfWeek == 6)
+            //    DOW = "Saturday";
 
-            ClockTime = string.Format("{0} {1}", DOW, MyTime.ToString("hh:mm tt"));
+            //ClockTime = string.Format("{0} {1}", DOW, MyTime.ToString("hh:mm tt"));
         }
     }
     public static void StoreTime()
@@ -132,9 +132,11 @@ public static class Clock
         StoredClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
         StoredClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
         StoredClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+        Debugging.WriteToLog("StoreTime", string.Format("Time: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
     }
     public static void ResetTime()
     {
+        Debugging.WriteToLog("StoreTime", string.Format("Time: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
         NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds); 
     }
 
