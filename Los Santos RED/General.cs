@@ -291,6 +291,49 @@ public static class General
         return new string(Enumerable.Repeat(chars, length)
           .Select(s => s[MyRand.Next(s.Length)]).ToArray());
     }
+    public static string GetSimpleCompassHeading()
+    {
+        float Heading = Game.LocalPlayer.Character.Heading;
+        string Abbreviation;
+
+        //yeah could be simpler, whatever idk computers are fast
+        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
+        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
+        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
+        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
+        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
+        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
+        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
+        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
+        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
+        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
+        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
+        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
+        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
+        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
+        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
+        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
+        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
+        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
+        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
+        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
+        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
+        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
+        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
+        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
+        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
+        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
+        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
+        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
+        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
+        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
+        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
+        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else { Abbreviation = ""; }
+
+        return Abbreviation;
+    }
     public static void SerializeParams<T>(List<T> paramList, string FileName)
     {
         XDocument doc = new XDocument();

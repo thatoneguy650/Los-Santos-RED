@@ -55,11 +55,15 @@ public static class ScriptController
             new TickTask(500, "PlayerLocation", PlayerLocation.Tick, 7,1),
             new TickTask(500, "PersonOfInterest", PersonOfInterest.Tick, 7,2),
 
-            new TickTask(500, "DispatchAudio", DispatchAudio.Tick, 8,0),
+            //new TickTask(500, "DispatchAudio", DispatchAudio.Tick, 8,0),
+            new TickTask(500, "ScannerScript", ScannerScript.Tick, 8,0),
             new TickTask(500, "PoliceSpeech", PoliceSpeech.Tick, 8,2),
-            new TickTask(500, "PoliceSpawning", PoliceSpawning.CheckSpawn, 8,3),
-            new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 8,4),
-            new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 8,5),
+
+
+            new TickTask(500, "PoliceSpawning", PoliceSpawning.CheckSpawn, 13,0),
+            new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 13,1),
+
+            new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 14,0),
 
             new TickTask(0, "VehicleFuelSystem", VehicleFuelSystem.Tick, 9,0),
 
@@ -68,6 +72,8 @@ public static class ScriptController
             new TickTask(25, "Investigation", Investigation.Tick, 11,0),
 
             new TickTask(50, "SearchModeStopping", SearchModeStopping.Tick, 12,0),
+
+            new TickTask(25, "Crimes", Crimes.Tick, 13,0),
 
         };
 
@@ -83,11 +89,13 @@ public static class ScriptController
         Police.Initialize();
         Investigation.Initialize();
         WantedLevelScript.Initialize();
+        Crimes.Initialize();
         PoliceSpawning.Initialize();
         LicensePlateTheft.Initialize();
         Menus.Intitialize();
         PedList.Initialize();
-        DispatchAudio.Initialize();
+        //DispatchAudio.Initialize();
+        ScannerScript.Initialize();
         PoliceSpeech.Initialize();
         Vehicles.Initialize();
         VehicleEngine.Initialize();
@@ -184,7 +192,8 @@ public static class ScriptController
         LicensePlateTheft.Dispose();
         Menus.Dispose();
         PedList.Dispose();
-        DispatchAudio.Dispose();
+        //DispatchAudio.Dispose();
+        ScannerScript.Dispose();
         PoliceSpeech.Dispose();
         Vehicles.Dispose();
         VehicleEngine.Dispose();
@@ -202,6 +211,7 @@ public static class ScriptController
         Police.Dispose();
         Investigation.Dispose();
         WantedLevelScript.Dispose();
+        Crimes.Dispose();
         PoliceSpawning.Dispose();
         TrafficViolations.Dispose();
         SearchModeStopping.Dispose();
@@ -219,7 +229,7 @@ public static class ScriptController
     }
     public static string GetStatus()
     {
-        return "Name:RanThisTick:GameTimeLastRan:MissedInterval:"  + string.Join("|",MyTickTasks.Where(x => x.RanThisTick || x.MissedInterval).Select(x => x.DebugName + ":" + x.RanThisTick + ":" + x.GameTimeLastRan + ":" + x.MissedInterval));
+        return string.Join("|",MyTickTasks.Where(x => x.RanThisTick).Select(x => x.DebugName));
     }
     public static void OutputTable()
     {

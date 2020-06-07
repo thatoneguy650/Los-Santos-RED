@@ -164,7 +164,7 @@ public static class PedSwap
         Game.LocalPlayer.Character.Position = Position;
         Game.LocalPlayer.Character.Heading = Heading;
         WantedLevelScript.SetWantedLevel(3, "Scenario", true);
-        WantedLevelScript.CurrentCrimes.TrespessingOnGovtProperty.HasBeenWitnessedByPolice = true;
+        //WantedLevelScript.CurrentCrimes.TrespessingOnGovtProperty.HasBeenWitnessedByPolice = true;
 
         if(General.RandomPercent(70))
             Weapons.GetRandomRegularWeaponByCategory(GTAWeapon.WeaponCategory.Pistol);
@@ -284,8 +284,8 @@ public static class PedSwap
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
 
-        WantedLevelScript.ResetPoliceStats();
-        PersonOfInterest.ResetPersonOfInterest(false);
+        WantedLevelScript.Reset();
+        PersonOfInterest.ResetPersonOfInterest();
         GameTimeLastTakenOver = Game.GameTime;
         Menus.SelectedTakeoverRadius = -1f;//reset this on the menu
         if(CurrentPed.Exists())
@@ -306,7 +306,7 @@ public static class PedSwap
     }
     private static void GivePedHistory()
     {
-        WantedLevelScript.CurrentCrimes.GiveCriminalHistory();
+        //WantedLevelScript.CurrentCrimes.GiveCriminalHistory();
     }
     private static void ActivateScenariosAfterTakeover()
     {
@@ -338,6 +338,7 @@ public static class PedSwap
     }
     private static void SetPlayerOffset()
     {
+        //i have no idea how this works
         const int WORLD_OFFSET = 8;
         const int SECOND_OFFSET = 0x20;
         const int THIRD_OFFSET = 0x18;

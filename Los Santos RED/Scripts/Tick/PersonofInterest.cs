@@ -9,20 +9,14 @@ using System.Threading.Tasks;
 
 public static class PersonOfInterest
 {
-    private static bool PrevPlayerIsWanted;
-    private static Blip LastWantedCenterBlip;
-    public static float LastWantedSearchRadius { get; set; }
     public static bool PlayerIsPersonOfInterest { get; set; }
     public static bool IsRunning { get; set; } = true;
-    public static List<WantedLevelScript.RapSheet> CriminalHistory { get; set; }
+    public static List<CriminalHistory> CriminalHistory { get; set; }
 
     public static void Initialize()
     {
         IsRunning = true;
-        PrevPlayerIsWanted = false;
-        CriminalHistory = new List<WantedLevelScript.RapSheet>();
-        LastWantedSearchRadius = General.MySettings.Police.LastWantedCenterSize;
-        LastWantedCenterBlip = default;
+        CriminalHistory = new List<CriminalHistory>();
         PlayerIsPersonOfInterest = false;
     }
     public static void Dispose()
@@ -31,37 +25,26 @@ public static class PersonOfInterest
     }    
     public static void Tick()
     {
-        if (IsRunning)
+        if (IsRunning && !PlayerState.IsDead && !PlayerState.IsBusted)
         {
-            if (PrevPlayerIsWanted != PlayerState.IsWanted)
-                WantedLevelAddedOrRemoved();
-
-            if (PlayerState.IsDead || PlayerState.IsBusted)
-                return;
-
             CheckCurrentVehicle();
             CheckSight();
+
             if (PlayerState.IsNotWanted)
             {
                 if (PlayerIsPersonOfInterest && WantedLevelScript.HasBeenNotWantedFor >= 120000)
                 {
-                    ResetPersonOfInterest(true);
+                    ResetPersonOfInterest();
                 }
             }
             else
             {
                 if (!PlayerIsPersonOfInterest && Police.AnyCanSeePlayer)
                 {
-                    WantedLevelScript.CurrentCrimes.PlayerSeenDuringWanted = true;
-                    PlayerBecamePersonOfInterest();
+                    PlayerIsPersonOfInterest = true;
                 }
             }
         }
-    }
-    public static void PlayerBecamePersonOfInterest()
-    {
-        PlayerIsPersonOfInterest = true;
-        Debugging.WriteToLog("PlayerBecamePersonOfInterest", "Happened");
     }
     public static void CheckCurrentVehicle()
     {
@@ -74,153 +57,50 @@ public static class PersonOfInterest
 
             if (VehicleToCheck.WasReportedStolen && VehicleToCheck.IsStolen && VehicleToCheck.MatchesOriginalDescription)
             {
-                if (!ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber))
-                    WantedLevelScript.SetWantedLevel(2, "Car was reported stolen and it matches the original description (formerly First)",true);
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SpottedStolenCar, 10)
-                {
-                    ResultsInStolenCarSpotted = true,
-                    VehicleToReport = VehicleToCheck,
-                    Speed = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f
-                });
+                ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber);
             }
             else if (VehicleToCheck.CarPlate.IsWanted && !VehicleToCheck.IsStolen && VehicleToCheck.ColorMatchesDescription)
             {
-                if (!ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber))
-                    WantedLevelScript.SetWantedLevel(2, "Car plate is wanted and color matches original (formerly Second)",true);
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspiciousVehicle, 10)
-                {
-                    ResultsInStolenCarSpotted = true,
-                    VehicleToReport = VehicleToCheck
-                });
+                ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber);
             }
         }
     }
     public static void CheckSight()
     {
-        if (PlayerIsPersonOfInterest && Police.AnyCanSeePlayer)//(Police.PlayerHasBeenNotWantedFor >= 5000 || InstantAction.PlayerIsWanted))//Police.PlayerHasBeenNotWantedFor >= 5000 && Police.PlayerHasBeenNotWantedFor <= 120000)
+        if (PlayerIsPersonOfInterest && Police.AnyCanSeePlayer && WantedLevelScript.HasBeenNotWantedFor >= 5000)
         {
-            if (WantedLevelScript.HasBeenNotWantedFor >= 5000 && WantedLevelScript.NearLastWanted(LastWantedSearchRadius))
+            if (PlayerState.IsWanted)
             {
-                if(!ApplyLastWantedStats())
-                    WantedLevelScript.SetWantedLevel(2, "Cops Reacquired after losing them in the same area, actual wanted not found",true);
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
+                ApplyLastWantedStats();
             }
-            else if(PlayerState.IsWanted)
+            else
             {
-                if (ApplyLastWantedStats())
+                if (WantedLevelScript.NearLastWanted(General.MySettings.Police.LastWantedCenterSize))
                 {
-                    Debugging.WriteToLog("PlayerBecamePersonOfInterest", "There was previous wanted stats that were applied");
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
+                    ApplyLastWantedStats();
                 }
             }
-            else if (Investigation.InInvestigationMode && PlayerState.IsNotWanted && Investigation.NearInvestigationPosition)
-            {
-                ApplyReportedCrimes();
-                WantedLevelScript.SetWantedLevel(2, "you are a suspect!",true);
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectReacquired, 1));
-            }
         }
     }
-    private static void ApplyReportedCrimes()
-    {
-        foreach(WantedLevelScript.Crime MyCrimes in WantedLevelScript.CurrentCrimes.CrimeList)
-        {
-            if(MyCrimes.RecentlyCalledInByCivilians(180000) && !MyCrimes.HasBeenWitnessedByPolice)
-            {
-                MyCrimes.CrimeObserved();
-            }
-        }
-    }
-    private static void WantedLevelAddedOrRemoved()
-    {
-        if(PlayerState.IsWanted)
-        {
-            AddUpdateLastWantedBlip(Vector3.Zero);
-        }
-        else
-        {
-            if (PlayerIsPersonOfInterest)
-                AddUpdateLastWantedBlip(WantedLevelScript.LastWantedCenterPosition);
-            else
-                AddUpdateLastWantedBlip(Vector3.Zero);
-        }
-        PrevPlayerIsWanted = PlayerState.IsWanted;
-    }
-
-    public static void ResetPersonOfInterest(bool PlayAudio)
+    public static void ResetPersonOfInterest()
     {
         PlayerIsPersonOfInterest = false;
         CriminalHistory.Clear();
         Debugging.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are cleared");
-        WantedLevelScript.LastWantedCenterPosition = Vector3.Zero;
-        AddUpdateLastWantedBlip(Vector3.Zero);
-        RemoveLastWantedBlips();
-        if (PlayAudio && !Investigation.InInvestigationMode)
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
     }
-    private static void AddUpdateLastWantedBlip(Vector3 Position)
+    public static void ApplyWantedStatsForPlate(string PlateNumber)
     {
-        if (Position == Vector3.Zero)
-        {
-            if (LastWantedCenterBlip.Exists())
-                LastWantedCenterBlip.Delete();
-            return;
-        }
-        if (!LastWantedCenterBlip.Exists())
-        {
-            int MaxWanted = LastWantedLevel();
-            if (MaxWanted != 0)
-                LastWantedSearchRadius = MaxWanted * General.MySettings.Police.LastWantedCenterSize;
-            else
-                LastWantedSearchRadius = General.MySettings.Police.LastWantedCenterSize;
-
-            LastWantedCenterBlip = new Blip(WantedLevelScript.LastWantedCenterPosition, LastWantedSearchRadius)
-            {
-                Name = "Last Wanted Center Position",
-                Color = Color.Yellow,
-                Alpha = 0.25f
-            };
-
-            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastWantedCenterBlip.Handle, true);
-            General.CreatedBlips.Add(LastWantedCenterBlip);
-        }
-        if (LastWantedCenterBlip.Exists())
-            LastWantedCenterBlip.Position = Position;
-    }
-    private static void RemoveLastWantedBlips()
-    {
-        if (LastWantedCenterBlip.Exists())
-            LastWantedCenterBlip.Delete();
-    }
-    public static bool ApplyWantedStatsForPlate(string PlateNumber)
-    {
-        WantedLevelScript.RapSheet StatsForPlate = GetWantedLevelStatsForPlate(PlateNumber);
+        CriminalHistory StatsForPlate = GetWantedLevelStatsForPlate(PlateNumber);
         if (StatsForPlate != null)
-        {
             ApplyWantedStats(StatsForPlate);
-            return true;
-        }
-        return false;
     }
-    public static bool ApplyLastWantedStats()
+    public static void ApplyLastWantedStats()
     {
-        WantedLevelScript.RapSheet CriminalHistory = GetLastWantedStats();
-        if (CriminalHistory == null)
-            return false;
-        else
+        CriminalHistory CriminalHistory = GetLastWantedStats();
+        if (CriminalHistory != null)
             ApplyWantedStats(CriminalHistory);
-
-        return true;
     }
-    public static int LastWantedLevel()
-    {
-        WantedLevelScript.RapSheet MyRapSheet = GetLastWantedStats();
-        if (MyRapSheet == null)
-            return 0;
-        else
-            return MyRapSheet.MaxWantedLevel;
-    }
-    public static void ApplyWantedStats(WantedLevelScript.RapSheet CriminalHistory)
+    public static void ApplyWantedStats(CriminalHistory CriminalHistory)
     {
         if (CriminalHistory == null)
             return;
@@ -235,23 +115,22 @@ public static class PersonOfInterest
         DispatchAudio.ClearDispatchQueue();
         Debugging.WriteToLog("WantedLevelStats Replace", WantedLevelScript.CurrentCrimes.DebugPrintCrimes());
     }
-    public static WantedLevelScript.RapSheet GetLastWantedStats()
+    public static CriminalHistory GetLastWantedStats()
     {
         if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
             return null;
 
         return CriminalHistory.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
     }
-    public static WantedLevelScript.RapSheet GetWantedLevelStatsForPlate(string PlateNumber)
+    public static CriminalHistory GetWantedLevelStatsForPlate(string PlateNumber)
     {
         if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
             return null;
 
         return CriminalHistory.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
     }
-    public static void StoreCriminalHistory(WantedLevelScript.RapSheet rapSheet)
+    public static void StoreCriminalHistory(CriminalHistory rapSheet)
     {
-        //rapSheet.IsExpired = true;
         CriminalHistory.Add(rapSheet);
         Debugging.WriteToLog("StoreCriminalHistory", "Stored this Rap Sheet");
     }

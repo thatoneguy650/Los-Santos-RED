@@ -123,12 +123,27 @@ public static class UI
     }
     private static void ShowUI()
     {
+        ShowDebugUI();
+
+
         HideVanillaUI();
         DisplayTextOnScreen(GetPlayerStatusDisplay(), General.MySettings.UI.PlayerStatusPositionX, General.MySettings.UI.PlayerStatusPositionY, General.MySettings.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)General.MySettings.UI.PlayerStatusJustificationID);
         DisplayTextOnScreen(GetVehicleStatusDisplay(), General.MySettings.UI.VehicleStatusPositionX, General.MySettings.UI.VehicleStatusPositionY, General.MySettings.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)General.MySettings.UI.VehicleStatusJustificationID);
         DisplayTextOnScreen(GetZoneDisplay(), General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY, General.MySettings.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)General.MySettings.UI.ZoneJustificationID);
         DisplayTextOnScreen(GetStreetDisplay(), General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY, General.MySettings.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)General.MySettings.UI.StreetJustificationID);      
     }
+
+    private static void ShowDebugUI()
+    {
+        int Lines = 0;
+        foreach(string LogMessage in Debugging.LogMessages)
+        {
+            DisplayTextOnScreen(LogMessage, Lines * 0.02f, 0.3f, 0.25f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+            Lines++;
+        }
+        
+    }
+
     private static void ScreenEffectsTick()
     {
         if (PlayerState.IsDead)

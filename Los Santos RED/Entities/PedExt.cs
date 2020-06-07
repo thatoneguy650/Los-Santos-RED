@@ -40,7 +40,7 @@ public class PedExt
     public Vector3 PositionLastSeenCrime { get; set; } = Vector3.Zero;
     public bool CanBeTasked { get; set; } = true;
     public bool WillCallPolice { get; set; } = true;
-    public List<WantedLevelScript.Crime> CrimesWitnessed { get; set; } = new List<WantedLevelScript.Crime>();
+    public List<Crime> CrimesWitnessed { get; set; } = new List<Crime>();
     public bool NeedsUpdate
     {
         get
@@ -179,7 +179,7 @@ public class PedExt
             DistanceToLastSeen = Pedestrian.DistanceTo2D(Police.PlaceLastSeenPlayer);
 
             if (DistanceToPlayer <= 0.1f)
-                DistanceToPlayer = 0f;
+                DistanceToPlayer = 999f;
 
 
             if (DistanceToPlayer <= ClosestDistanceToPlayer)
@@ -259,9 +259,9 @@ public class PedExt
             GameTimeLastLOSCheck = Game.GameTime;
         }
     }
-    public void AddCrime(WantedLevelScript.Crime CrimeToAdd,Vector3 PositionToReport)
+    public void AddCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {
-        if(!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
+        if (!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
         {
             CrimesWitnessed.Add(CrimeToAdd);
             PositionLastSeenCrime = PositionToReport;

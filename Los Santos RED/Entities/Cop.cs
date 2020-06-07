@@ -136,7 +136,7 @@ public class Cop : PedExt
     {
         get
         {
-            if (WasModSpawned && HasBeenSpawnedFor >= 15000)// && GameTimeSpawned > Police.GameTimeWantedStarted)
+            if (WasModSpawned && HasBeenSpawnedFor >= 5000)//15000// && GameTimeSpawned > Police.GameTimeWantedStarted)
                 return true;
             else
                 return false;
@@ -146,7 +146,7 @@ public class Cop : PedExt
     {
         get
         {
-            return PedList.CopPeds.Count(x => x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
+            return PedList.CopPeds.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
     public Cop(Ped _Pedestrian, int _Health, Agency _Agency) : base(_Pedestrian, _Health)

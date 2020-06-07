@@ -63,7 +63,7 @@ public static class PoliceSpawning
         get
         {
             if (PlayerState.IsWanted)
-                return 700f;//550f
+                return 550f;//700f//550f
             else
                 return 1500f;
         }
@@ -204,9 +204,22 @@ public static class PoliceSpawning
     {
         DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= DistanceToDelete && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
       
-        if(PlayerState.IsWanted && Game.GameTime - GameTimeLastRemovedCop >= 20000)
+        if(PlayerState.IsWanted)// && Game.GameTime - GameTimeLastRemovedCop >= (PlayerState.WantedLevel * -2000) + 15000)
         {
-            DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= 200f).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
+            //bool First = false;
+            //foreach(Cop MyCop in PedList.CopPeds.Where(x => x.DistanceToPlayer >= 175f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer))
+            //{
+            //    if (!First)
+            //    {
+            //        DeleteCop(MyCop);
+            //        First = true;
+            //    }
+            //    if(MyCop.CountNearbyCops >= 4)
+            //    {
+            //        DeleteCop(MyCop);
+            //    }
+            //}
+            DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= 175f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
         }
     }
     private static Agency GetAgencyToSpawn()
@@ -230,7 +243,7 @@ public static class PoliceSpawning
         }
         else if (StreetSpawn != null)
         {
-            if ((PlayerState.IsNotWanted && General.RandomPercent(3)) || General.RandomPercent(5 * PlayerState.WantedLevel))
+            if ((PlayerState.IsNotWanted && General.RandomPercent(3)) || (PlayerState.WantedLevel >= 3 || General.RandomPercent(2 * PlayerState.WantedLevel)))
             {
                 DebugName = "FEDERAL";
                 ToSpawn = Agencies.RandomFederalAgency;
@@ -249,7 +262,7 @@ public static class PoliceSpawning
                 }
             }
         }
-        Debugging.WriteToLog("SpawnCop", string.Format("Attempting to spawn {0}, {1}", ToSpawn.Initials, DebugName));
+        //Debugging.WriteToLog("SpawnCop", string.Format("Attempting to spawn {0}, {1}", ToSpawn.Initials, DebugName));
         return ToSpawn;
     }
     private static void RemoveAbandonedVehicles()
@@ -402,6 +415,7 @@ public static class PoliceSpawning
 
         if (Cop.Pedestrian.Exists())
         {
+            Debugging.WriteToLog("Delete Cop", string.Format("Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle,Cop.DistanceToPlayer,Cop.AssignedAgency.Initials));
             Cop.Pedestrian.Delete();
         }
         Cop.WasMarkedNonPersistent = false;
@@ -476,7 +490,7 @@ public static class PoliceSpawning
         }
 
         CopCar = SpawnCopVehicle(_Agency, MyCarInfo, SpawnLocation, Heading);
-        //GameFiber.Yield();
+        GameFiber.Yield();
         if (CopCar != null && CopCar.VehicleEnt.Exists())
         {
             PedList.PoliceVehicles.Add(CopCar.VehicleEnt);
@@ -487,7 +501,7 @@ public static class PoliceSpawning
             }
 
             Ped Cop = SpawnCopPed(_Agency, SpawnLocation, MyCarInfo.IsMotorcycle, RequiredPedModels);
-            //GameFiber.Yield();
+            GameFiber.Yield();
             if (Cop == null || !Cop.Exists())
                 return false;
             CreatedEntities.Add(Cop);
@@ -521,7 +535,7 @@ public static class PoliceSpawning
                 for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                 {
                     Ped PartnerCop = SpawnCopPed(_Agency, SpawnLocation, false, null);
-                    //GameFiber.Yield();
+                    GameFiber.Yield();
                     if (PartnerCop != null)
                     {
                         CreatedEntities.Add(PartnerCop);
@@ -538,6 +552,13 @@ public static class PoliceSpawning
                             MyNewPartnerCop.IssuePistol();
                             MyNewPartnerCop.WasModSpawned = true;
                             MyNewPartnerCop.WasMarkedNonPersistent = true;
+                            if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
+                            {
+                                Blip myBlip = PartnerCop.AttachBlip();
+                                myBlip.Color = _Agency.AgencyColor;
+                                myBlip.Scale = 0.6f;
+                                General.CreatedBlips.Add(myBlip);
+                            }
                             PedList.CopPeds.Add(MyNewPartnerCop);
                             MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
                             //Debugging.WriteToLog("SpawnCop", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.VehicleEnt.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
@@ -676,7 +697,7 @@ public static class PoliceSpawning
 
         //Street
         General.GetStreetPositionandHeading(InitialPosition, out SpawnLocation, out Heading, true);
-        if (SpawnLocation == Vector3.Zero || SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) > 150f)
+        if (SpawnLocation == Vector3.Zero || SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) < 150f)//was >?
         {
             StreetSpawn = null;
         }

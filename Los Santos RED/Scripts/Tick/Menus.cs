@@ -461,7 +461,7 @@ internal static class Menus
         }
         if (selectedItem == menuBustedSurrender)
         {
-            Respawn.Surrender(CurrentSelectedSurrenderLocation);
+            Respawn.SurrenderToPolice(CurrentSelectedSurrenderLocation);
         }
         else if (selectedItem == menuBustedTalk)
         {

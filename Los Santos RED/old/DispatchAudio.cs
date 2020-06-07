@@ -295,15 +295,15 @@ public static class DispatchAudio
 
 
     }
-    public static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
+    private static void PlayAudioList(DispatchAudioEvent MyAudioEvent)
     {
         /////////Maybe?
         if (MyAudioEvent.CanInterrupt && CurrentlyPlayingCanBeInterrupted)
         {
-            Debugging.WriteToLog("PlayAudioList", "Aborting Audio In the Middle");
+            //Debugging.WriteToLog("PlayAudioList", "Aborting Audio In the Middle");
             AbortAllAudio();
         }
-        Debugging.WriteToLog("PlayAudioList", string.Format("CanBeInterrupted:{0}CanInterrupt:{1}Name:{2}", MyAudioEvent.CanBeInterrupted,MyAudioEvent.CanInterrupt,MyAudioEvent.Subtitles));
+        //Debugging.WriteToLog("PlayAudioList", string.Format("CanBeInterrupted:{0}CanInterrupt:{1}Name:{2}", MyAudioEvent.CanBeInterrupted,MyAudioEvent.CanInterrupt,MyAudioEvent.Subtitles));
         GameFiber PlayAudioList = GameFiber.StartNew(delegate
         {
             while (IsPlayingAudio)
@@ -334,7 +334,7 @@ public static class DispatchAudio
                 if (CancelAudio)
                 {
                     CancelAudio = false;
-                    Debugging.WriteToLog("PlayAudioList", "CancelAudio Set to False");
+                    //Debugging.WriteToLog("PlayAudioList", "CancelAudio Set to False");
                     break;
                 }
                 GameTimeLastAnnouncedDispatch = Game.GameTime;
@@ -386,6 +386,7 @@ public static class DispatchAudio
     }
     public static void AddDispatchToQueue(DispatchQueueItem _ItemToAdd)
     {
+        return;
         if (!DispatchQueue.Any(x => x.Type == _ItemToAdd.Type))
         {
             DispatchQueue.Add(_ItemToAdd);
@@ -444,7 +445,7 @@ public static class DispatchAudio
                         {
                             if (ItemToPlay.Priority <= LastCivilianReportedPriority)
                             {
-                                Debugging.WriteToLog("Ignoring Low Priority", ItemToPlay.Type.ToString());
+                                //Debugging.WriteToLog("Ignoring Low Priority", ItemToPlay.Type.ToString());
                             }
                         }
                         DispatchQueue.RemoveAll(x => x.Priority <= LastCivilianReportedPriority);
@@ -456,7 +457,7 @@ public static class DispatchAudio
 
                         if (Item.ReportedBy == ReportType.Civilians && PlayerState.IsWanted)
                         {
-                            Debugging.WriteToLog("Ignoring Civilian Repoted", Item.Type.ToString());
+                            //Debugging.WriteToLog("Ignoring Civilian Repoted", Item.Type.ToString());
                         }
                         else
                         {
@@ -465,7 +466,7 @@ public static class DispatchAudio
                                 GameTimeLastCivilianReported = Game.GameTime;
                                 LastCivilianReportedPriority = Item.Priority;
                             }
-                            Debugging.WriteToLog("Playing", Item.Type.ToString());
+                            //Debugging.WriteToLog("Playing", Item.Type.ToString());
                             if (Item.Type == AvailableDispatch.AssaultingOfficer)
                                 AssaultingOfficer(Item);
                             else if (Item.Type == AvailableDispatch.CarryingWeapon)
@@ -1504,7 +1505,7 @@ public static class DispatchAudio
         string Subtitles = "";
         DispatchNotification Notification = new DispatchNotification("Police Scanner", string.Format("Suspect {0}", PedSwap.SuspectName), "");
 
-        if (WantedLevelScript.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || WantedLevelScript.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
+        if (1==0)//WantedLevelScript.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice || WantedLevelScript.CurrentCrimes.KillingCivilians.HasBeenWitnessedByPolice)
         {
             ReportGenericStart(ref ScannerList, ref Subtitles, AttentionType.Nobody, ReportType.Officers, Game.LocalPlayer.Character.Position);
             ScannerList.Add(crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName);
@@ -1664,7 +1665,7 @@ public static class DispatchAudio
         {
             ScannerList.Add((new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             Subtitles += " ~s~suspect heading~s~";
-            string heading = GetSimpleCompassHeading();
+            string heading = General.GetSimpleCompassHeading();
             if (heading == "N")
             {
                 ScannerList.Add(direction_heading.North.FileName);
@@ -1750,49 +1751,7 @@ public static class DispatchAudio
             AddVehicleDescription(VehicleToReport, ref ScannerList, ReportedBy == ReportType.Civilians, ref Subtitles, ref Notification, false, true, false, ReportedBy == ReportType.Officers);
         }
     }
-    private static string GetSimpleCompassHeading()
-    {
-        float Heading = Game.LocalPlayer.Character.Heading;
-        string Abbreviation;
 
-        //yeah could be simpler, whatever idk computers are fast
-        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
-        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
-        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
-        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
-        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
-        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
-        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
-        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
-        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
-        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
-        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
-        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
-        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
-        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
-        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
-        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
-        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
-        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
-        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
-        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
-        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
-        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
-        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
-        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
-        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
-        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
-        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
-        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
-        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
-        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
-        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
-        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-        else { Abbreviation = ""; }
-
-        return Abbreviation;
-    }
     public static bool ReportHeadingAndStreet(ref List<string> ScannerList, ref string Subtitles,ref DispatchNotification Notification)
     {
         if (PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.DispatchFile != "")
@@ -1800,7 +1759,7 @@ public static class DispatchAudio
             ScannerList.Add((new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             Subtitles += "~r~Target spotted~s~ heading~s~";
             Notification.Text += "~n~Heading";
-            string heading = GetSimpleCompassHeading();
+            string heading = General.GetSimpleCompassHeading();
             if (heading == "N")
             {
                 ScannerList.Add(direction_heading.North.FileName);
@@ -1873,7 +1832,7 @@ public static class DispatchAudio
                     Plate.IsWanted = true;
                 }
             }
-            Debugging.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", StolenCar.VehicleEnt.Handle));
+            //Debugging.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", StolenCar.VehicleEnt.Handle));
 
         }, "PlayDispatchQueue");
         Debugging.GameFibers.Add(ReportStolenVehicle);
@@ -2165,7 +2124,7 @@ public static class DispatchAudio
             string VehicleClassScannerFile;
             if (VehicleInformation != null)
             {
-                Debugging.WriteToLog("Description", string.Format("VehicleInformation.ModelScannerFile {0}", VehicleInformation.ModelScannerFile.ToString()));
+               // Debugging.WriteToLog("Description", string.Format("VehicleInformation.ModelScannerFile {0}", VehicleInformation.ModelScannerFile.ToString()));
                 ManufacturerScannerFile = GetManufacturerScannerFile(VehicleInformation.Manufacturer);
                 VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
                 if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != "" || VehicleClassScannerFile != ""))

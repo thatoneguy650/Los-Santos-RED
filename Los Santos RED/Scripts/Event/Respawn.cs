@@ -60,7 +60,7 @@ public static class Respawn
             {
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
                 Game.LocalPlayer.Character.GiveCash(-1 * Amount);
-                global::Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+                Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
                 ResetPlayer(true, false);
             }
             else
@@ -83,7 +83,7 @@ public static class Respawn
             Game.TimeScale = 1.0f;
             CopToBribe.SetUnarmed = true;
 
-            global::Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+            Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 
             while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Game.LocalPlayer.Character, "random@arrests", "kneeling_arrest_escape", 1))
                 GameFiber.Wait(250);
@@ -147,7 +147,7 @@ public static class Respawn
 
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
             CopToBribe.Pedestrian.PlayAmbientSpeech("GENERIC_THANKS");
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
+            //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
 
             ResetPlayer(true, false);
         });
@@ -197,22 +197,23 @@ public static class Respawn
         PlayerState.ResetState(false);//maxwanted last life maybe wont work?
         WantedLevelScript.CurrentPoliceState = WantedLevelScript.LastPoliceState;
         WantedLevelScript.SetWantedLevel(PlayerState.WantedLevel, "Resisting Arrest",true);
-        global::Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+        Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
-        WantedLevelScript.CurrentCrimes.ResistingArrest.CrimeObserved();
+
+        //Crimes.ResistingArrest.CrimeObserved();
     }
-    public static void Surrender(Location PoliceStation)
+    public static void SurrenderToPolice(Location PoliceStation)
     {
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
 
-        bool prePlayerKilledPolice = WantedLevelScript.CurrentCrimes.KillingPolice.HasBeenWitnessedByPolice;
+        bool prePlayerKilledPolice = false;// Crimes.KillingPolice.HasBeenWitnessedByPolice;
         int BailFee = PlayerState.MaxWantedLastLife * General.MySettings.Police.PoliceBailWantedLevelScale;
 
         PlayerState.ResetState(true);
 
-        global::Surrender.RaiseHands();
+        Surrender.RaiseHands();
         ResetPlayer(true, true);
 
         if (PoliceStation == null)
@@ -268,7 +269,15 @@ public static class Respawn
     {
         GameTimeLastUndied = Game.GameTime;
         RespawnInPlace(true);
-        DispatchAudio.AbortAllAudio();
+        //DispatchAudio.AbortAllAudio();
+        ScannerScript.AbortAllAudio();
+        Game.LocalPlayer.Character.IsInvincible = true;
+        GameFiber.StartNew(delegate
+        {
+            GameFiber.Sleep(5000);
+            Game.LocalPlayer.Character.IsInvincible = false;
+        });
+
     }
     public static void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {
@@ -279,11 +288,12 @@ public static class Respawn
         Game.TimeScale = 1f;
         if (ClearWanted)
         {
-            PersonOfInterest.ResetPersonOfInterest(false);
-            WantedLevelScript.ResetPoliceStats();
+            PersonOfInterest.ResetPersonOfInterest();
+            WantedLevelScript.Reset();
             WantedLevelScript.SetWantedLevel(0,"Reset player with Clear Wanted",false);
             PlayerState.MaxWantedLastLife = 0;  
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
+            PedWounds.Reset();
         }
 
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
@@ -334,7 +344,8 @@ public static class Respawn
                 PlayerState.MaxWantedLastLife = 0;
             }
             Game.HandleRespawn();
-            DispatchAudio.AbortAllAudio();
+            ScannerScript.AbortAllAudio();
+            //DispatchAudio.AbortAllAudio();
         }
         catch (Exception e)
         {

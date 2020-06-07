@@ -2,6 +2,7 @@
 using Rage;
 using Rage.Native;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -13,7 +14,7 @@ using System.Windows.Forms;
 
 public static class Debugging
 {
-
+    public static SlidingBuffer<string> LogMessages = new SlidingBuffer<string>(10);
     public static bool ShowCopTaskStatus;
     public static List<GameFiber> GameFibers;
 
@@ -23,6 +24,7 @@ public static class Debugging
         ShowCopTaskStatus = false;
         GameFibers = new List<GameFiber>();
         IsRunning = true;
+        LogMessages = new SlidingBuffer<string>(10);
         MainLoop();
     }
     public static void MainLoop()
@@ -154,7 +156,7 @@ public static class Debugging
     private static void DebugNumpad2()
     {
         int Toassign = PlayerState.WantedLevel;
-        if (Toassign == 5)
+        if (Toassign == 7)
             return;
         Toassign++;
         WantedLevelScript.SetWantedLevel(Toassign, "Debug", true);
@@ -168,6 +170,8 @@ public static class Debugging
 
     private static void DebugNumpad4()
     {
+        ScannerScript.PlayTestAudio();
+
         WriteToLog("MyVariation", "------------------------------");
         if(PlayerLocation.PlayerCurrentZone != null)
         {
@@ -248,20 +252,20 @@ public static class Debugging
     private static void DebugNumpad7()
     {
 
-       Tasking.OutputTasks();
+       //Tasking.OutputTasks();
 
 
 
    
 
         WriteToLog("CurrentCrimes", "--------------------------------");
-        foreach (WantedLevelScript.Crime MyCrime in WantedLevelScript.CurrentCrimes.CrimeList)
+        foreach (CrimeEvent MyCrime in WantedLevelScript.CurrentCrimes.CrimesObserved)
         {
-            if (MyCrime.IsCurrentlyViolating)
-            {
-
-                WriteToLog("IsCurrentlyViolating", MyCrime.Name);
-            }
+            WriteToLog("CrimesCommitted", string.Format("Crime: {0}, Violating {1}, Instance {2}",MyCrime.AssociatedCrime.Name,MyCrime.AssociatedCrime.IsCurrentlyViolating,MyCrime.Instances));
+        }
+        foreach (CrimeEvent MyCrime in WantedLevelScript.CurrentCrimes.CrimesReported)
+        {
+            WriteToLog("CrimesReported", string.Format("Crime: {0}, Violating {1}, Instance {2}", MyCrime.AssociatedCrime.Name, MyCrime.AssociatedCrime.IsCurrentlyViolating, MyCrime.Instances));
         }
         WriteToLog("CurrentCrimes", "--------------------------------");
 
@@ -334,7 +338,7 @@ public static class Debugging
             WriteToLog("DebugNumpad7", string.Format("Near Any CopMurderVictim: {0}", PedWounds.NearCopMurderVictim(15f)));
             WriteToLog("DebugNumpad7", "--------------------------------");
             WriteToLog("DebugNumpad7", "-------Criminal History---------");
-            foreach (WantedLevelScript.RapSheet MyRapSheet in PersonOfInterest.CriminalHistory)
+            foreach (CriminalHistory MyRapSheet in PersonOfInterest.CriminalHistory)
             {
                 WriteToLog("DebugNumpad7", MyRapSheet.DebugPrintCrimes());
             }
@@ -392,10 +396,41 @@ public static class Debugging
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
         }
-
+        string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
         if (General.MySettings != null && General.MySettings.General.Logging)
-            Game.Console.Print(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog);
+        {
+            LogMessages.Add(Message);
+            Game.Console.Print(Message);
+        }
     }
 
+    public class SlidingBuffer<T> : IEnumerable<T>
+    {
+        private readonly Queue<T> _queue;
+        private readonly int _maxCount;
+
+        public SlidingBuffer(int maxCount)
+        {
+            _maxCount = maxCount;
+            _queue = new Queue<T>(maxCount);
+        }
+
+        public void Add(T item)
+        {
+            if (_queue.Count == _maxCount)
+                _queue.Dequeue();
+            _queue.Enqueue(item);
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _queue.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
 }
 

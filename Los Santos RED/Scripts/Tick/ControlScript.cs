@@ -21,8 +21,23 @@ using Extensions = ExtensionsMethods.Extensions;
 
 public static class ControlScript
 {
+    private static bool IsBigMapping = false;
+    private static bool BigMapOn = false;
+
+    private static uint GameTimeLastChangedMap;
+
     private static WantedLevelScript.PoliceState HandsUpPreviousPoliceState;
     public static bool IsRunning { get; set; }
+    public static bool RecentlyChangedMap
+    {
+        get
+        {
+            if (Game.GameTime - GameTimeLastChangedMap <= 2000)
+                return true;
+            else
+                return false;
+        }
+    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -67,6 +82,21 @@ public static class ControlScript
             {
                 PlayerHealth.BandagePed(Game.LocalPlayer.Character);
             }
+
+            //if(Game.IsKeyDownRightNow(Keys.X) && !RecentlyChangedMap)
+            //{
+            //    if (BigMapOn)
+            //    {
+            //        NativeFunction.CallByName<bool>("SET_BIGMAP_ACTIVE", 0, 0);                   
+            //    }
+            //    else
+            //    {
+            //        NativeFunction.CallByName<bool>("SET_BIGMAP_ACTIVE", 1, 0);
+            //        NativeFunction.CallByName<bool>("SET_RADAR_ZOOM_TO_DISTANCE", 500f);
+            //    }
+            //    BigMapOn = !BigMapOn;
+            //    GameTimeLastChangedMap = Game.GameTime;
+            //}
         }
     }
 }

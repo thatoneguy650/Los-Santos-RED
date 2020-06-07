@@ -13,6 +13,7 @@ public static class Police
 {
     public static bool IsRunning { get; set; } = true;
     public static bool AnyCanSeePlayer { get; set; }
+    public static bool AnyCanHearPlayer { get; set; }
     public static bool AnyCanRecognizePlayer { get; set; }
     public static bool AnyRecentlySeenPlayer { get; set; }
     public static bool AnySeenPlayerCurrentWanted { get; set; }
@@ -54,6 +55,7 @@ public static class Police
     public static void Initialize()
     {
         AnyCanSeePlayer = false;
+        AnyCanHearPlayer = false;
         AnyCanRecognizePlayer  = false;
         AnyRecentlySeenPlayer = false;
         AnySeenPlayerCurrentWanted = false;
@@ -95,11 +97,14 @@ public static class Police
     private static void UpdateRecognition()
     {
         AnyCanSeePlayer = PedList.CopPeds.Any(x => x.CanSeePlayer);
+        AnyCanHearPlayer = PedList.CopPeds.Any(x => x.CanHearPlayer);
 
         if (AnyCanSeePlayer)
             AnyRecentlySeenPlayer = true;
         else
             AnyRecentlySeenPlayer = PedList.CopPeds.Any(x => x.SeenPlayerSince(General.MySettings.Police.PoliceRecentlySeenTime));
+
+
 
         AnyCanRecognizePlayer = PedList.CopPeds.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
 

@@ -299,6 +299,13 @@ public static class PedWounds
             return BodyLocation.Unknown;
         }
     }
+    public static void Reset()
+    {
+        GameTimeLastHurtCivilian = 0;
+        GameTimeLastKilledCivilian = 0;
+        GameTimeLastHurtCop = 0;
+        GameTimeLastKilledCop = 0;
+    }
     public class PedBone
     {
         public string Name { get; set; }
@@ -353,7 +360,7 @@ public static class PedWounds
                         Debugging.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
                         if (MyPed.IsCop)
                         {
-                            WantedLevelScript.CurrentCrimes.KillingPolice.CrimeObserved();
+                            //Crimes.KillingPolice.CrimeObserved();
                             PlayerKilledCops.Add(MyPed);
                             GameTimeLastKilledCop = Game.GameTime;
                         }
@@ -374,7 +381,7 @@ public static class PedWounds
                             Debugging.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
                             if (MyPed.IsCop)
                             {
-                                WantedLevelScript.CurrentCrimes.HurtingPolice.CrimeObserved();
+                                //Crimes.HurtingPolice.CrimeObserved();
                                 GameTimeLastHurtCop = Game.GameTime;
                             }
                             else
@@ -416,7 +423,7 @@ public static class PedWounds
             InjuryType HealthInjury = InjuryType.Vanilla; //RandomType(CanBeFatal);
             InjuryType ArmorInjury = InjuryType.Vanilla; //RandomType(false);
 
-            if (DamagingWeapon.Category != GTAWeapon.WeaponCategory.Vehicle)
+            if (DamagingWeapon.Category != GTAWeapon.WeaponCategory.Vehicle && DamagingWeapon.Category != GTAWeapon.WeaponCategory.Melee && DamagingWeapon.Category != GTAWeapon.WeaponCategory.Unknown)
             {
                 HealthInjury = RandomType(CanBeFatal);
                 ArmorInjury = RandomType(false);

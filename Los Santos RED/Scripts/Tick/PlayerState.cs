@@ -505,8 +505,7 @@ public static class PlayerState
             PedExt MyPrevOwner = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
             if (MyPrevOwner != null)
             {
-                WantedLevelScript.CurrentCrimes.GrandTheftAuto.DispatchToPlay.VehicleToReport = MyNewCar;
-                MyPrevOwner.AddCrime(WantedLevelScript.CurrentCrimes.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
+                MyPrevOwner.AddCrime(Crimes.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
             }
         }
         TrackedVehicles.Add(MyNewCar);

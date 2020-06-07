@@ -308,34 +308,12 @@ public static partial class Agencies
     }
     public static Agency GetAgencyFromPed(Ped Cop)
     {
-        Zone ZoneFound = Zones.GetZoneAtLocation(Cop.Position);
-        if (ZoneFound != null)
+        Agency ToReturn;
+        List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
+        if (ModelMatchAgencies.Count > 1)
         {
-            List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
-            if(ModelMatchAgencies.Count > 1)
-            {
-                foreach(Agency ZoneAgency in Jurisdiction.GetAgenciesAtZone(ZoneFound.InternalGameName))
-                {
-                    if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
-                        return ZoneAgency;
-                }
-            }
-            else
-            {
-                return ModelMatchAgencies.FirstOrDefault();
-            }
-        }
-        Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from zone {0} ped {1}, deleting", ZoneFound.DisplayName, Cop.Model.Name));
-        Cop.Delete();
-        return null;
-    }
-    public static Agency GetAgencyFromVehicle(Vehicle CopCar)
-    {
-        Zone ZoneFound = Zones.GetZoneAtLocation(CopCar.Position);
-        if (ZoneFound != null)
-        {
-            List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
-            if (ModelMatchAgencies.Count > 1)
+            Zone ZoneFound = Zones.GetZoneAtLocation(Cop.Position);
+            if (ZoneFound != null)
             {
                 foreach (Agency ZoneAgency in Jurisdiction.GetAgenciesAtZone(ZoneFound.InternalGameName))
                 {
@@ -343,14 +321,38 @@ public static partial class Agencies
                         return ZoneAgency;
                 }
             }
-            else
+        }
+        ToReturn = ModelMatchAgencies.FirstOrDefault();
+        if (ToReturn == null)
+        {
+            Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} ped deleting", Cop.Model.Name));
+            Cop.Delete();
+        }
+        return ToReturn;
+    }
+    public static Agency GetAgencyFromVehicle(Vehicle CopCar)
+    {
+        Agency ToReturn;
+        List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
+        if (ModelMatchAgencies.Count > 1)
+        {
+            Zone ZoneFound = Zones.GetZoneAtLocation(CopCar.Position);
+            if (ZoneFound != null)
             {
-                return ModelMatchAgencies.FirstOrDefault();
+                foreach (Agency ZoneAgency in Jurisdiction.GetAgenciesAtZone(ZoneFound.InternalGameName))
+                {
+                    if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                        return ZoneAgency;
+                }
             }
         }
-        Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from zone {0} CopCar {1}, deleting", ZoneFound.DisplayName, CopCar.Model.Name));
-        CopCar.Delete();
-        return null;
+        ToReturn = ModelMatchAgencies.FirstOrDefault();
+        if (ToReturn == null)
+        {
+            Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} car deleting", CopCar.Model.Name));
+            CopCar.Delete();
+        }
+        return ToReturn;
     }
     public static void ChangeLivery(Vehicle CopCar, Agency AssignedAgency)
     {
@@ -446,7 +448,7 @@ public class Agency
     {
         get
         {
-            if (AgencyClassification == Classification.Police || AgencyClassification == Classification.Federal || AgencyClassification == Classification.Sheriff)
+            if (AgencyClassification == Classification.Police || AgencyClassification == Classification.Federal || AgencyClassification == Classification.Sheriff || AgencyClassification == Classification.State)
                 return true;
             else
                 return false;

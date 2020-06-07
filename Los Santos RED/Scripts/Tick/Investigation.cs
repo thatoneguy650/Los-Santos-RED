@@ -70,6 +70,12 @@ public static class Investigation
 
         if (PrevIsInInvestigationMode != InInvestigationMode)
             PoliceInInvestigationModeChanged();
+
+
+        if (PlayerState.IsNotWanted && InInvestigationMode && NearInvestigationPosition && PersonOfInterest.PlayerIsPersonOfInterest && Police.AnyCanSeePlayer && WantedLevelScript.HasBeenNotWantedFor >= 5000)
+        {
+             WantedLevelScript.ApplyReportedCrimes();
+        }
     }
     private static void InvestigationPositionChanged()
     {
@@ -92,7 +98,7 @@ public static class Investigation
             if (PlayerState.IsNotWanted)
             {
                 if (PersonOfInterest.PlayerIsPersonOfInterest)
-                    PersonOfInterest.ResetPersonOfInterest(false);
+                    PersonOfInterest.ResetPersonOfInterest();
                 if (PlayDispatch)
                     DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.NoFurtherUnitsNeeded, 30) { IsAmbient = true });
             }

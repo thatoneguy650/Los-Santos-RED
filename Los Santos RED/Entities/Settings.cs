@@ -63,8 +63,8 @@ public class PoliceSettings
     public int PoliceTazerAccuracy = 30;
     public int PoliceHeavyAccuracy = 10;
     public bool WantedLevelIncreasesOverTime = true;
-    public uint WantedLevelIncreaseTime = 180000;
-    public uint WantedLevelInceaseOverTimeLimit = 4;
+    public uint WantedLevelIncreaseTime = 240000;
+    public uint WantedLevelInceaseOverTimeLimit = 3;
     public int PoliceBribeWantedLevelScale = 500;
     public int PoliceBailWantedLevelScale = 750;
     public int HospitalFee = 5000;

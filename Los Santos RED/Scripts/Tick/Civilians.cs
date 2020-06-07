@@ -9,6 +9,7 @@ public static class Civilians
 {
     public static bool IsRunning { get; set; }
     public static bool AnyCanSeePlayer { get; set; }
+    public static bool AnyCanHearPlayer { get; set; }
     public static bool AnyCanRecognizePlayer { get; set; }
     public static void Initialize()
     {
@@ -38,6 +39,7 @@ public static class Civilians
     private static void UpdateRecognition()
     {
         AnyCanSeePlayer = PedList.Civilians.Any(x => x.CanSeePlayer);
+        AnyCanHearPlayer = PedList.Civilians.Any(x => x.CanHearPlayer);
         AnyCanRecognizePlayer = PedList.Civilians.Any(x => x.CanRecognizePlayer);
     }
 }

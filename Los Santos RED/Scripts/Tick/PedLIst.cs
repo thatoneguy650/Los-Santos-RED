@@ -24,9 +24,17 @@ public static class PedList
     {
         get
         {
-            return CopPeds.Where(x => x.WasModSpawned).Count();
+            return CopPeds.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
         }
     }
+    public static bool AnyCopsNearPlayer
+    {
+        get
+        {
+            return CopPeds.Any(x => x.DistanceToPlayer <= 150f);
+        }
+    }
+    
     public static string AgenciesChasingPlayer
     {
         get
@@ -91,6 +99,14 @@ public static class PedList
                 PoliceSpawning.UpgradeCruiser(PoliceCar);
                 PoliceVehicles.Add(PoliceCar);
             }
+        }
+
+        if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+        {
+            Blip myBlip = Pedestrian.AttachBlip();
+            myBlip.Color = AssignedAgency.AgencyColor;
+            myBlip.Scale = 0.6f;
+            General.CreatedBlips.Add(myBlip);
         }
 
         SetPedestrianStats(Pedestrian, true);
