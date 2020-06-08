@@ -18,6 +18,7 @@ public static class WantedLevelScript
     private static uint GameTimeWantedLevelStarted;
     private static uint GameTimeLastWantedEnded;
     private static uint GameTimeLastRequestedBackup;
+    private static uint GameTimeLostWanted;
     private static Blip CurrentWantedCenterBlip;
     private static Blip LastWantedCenterBlip;
     private static int PreviousWantedLevel;
@@ -100,6 +101,18 @@ public static class WantedLevelScript
             if (GameTimeLastRequestedBackup == 0)
                 return false;
             else if (Game.GameTime - GameTimeLastRequestedBackup <= 5000)
+                return true;
+            else
+                return false;
+        }
+    }
+    public static bool RecentlyLostWanted
+    {
+        get
+        {
+            if (GameTimeLastWantedEnded == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastWantedEnded <= 5000)
                 return true;
             else
                 return false;
@@ -346,7 +359,6 @@ public static class WantedLevelScript
     }
     private static void RemoveBlip()
     {
-        LastWantedCenterPosition = Vector3.Zero;
         if (CurrentWantedCenterBlip.Exists())
             CurrentWantedCenterBlip.Delete();
     }
@@ -383,11 +395,7 @@ public static class WantedLevelScript
         }
         if (!LastWantedCenterBlip.Exists())
         {
-            int MaxWanted = 0;
-            CriminalHistory Test = PersonOfInterest.GetLastWantedStats();
-            if(Test != null)
-                MaxWanted = Test.MaxWantedLevel;
-
+            int MaxWanted = PersonOfInterest.MaxWantedLevel;
             if (MaxWanted != 0)
                 LastWantedSearchRadius = MaxWanted * General.MySettings.Police.LastWantedCenterSize;
             else

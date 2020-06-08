@@ -91,6 +91,8 @@ public static class ScannerScript
     {
         get
         {
+            if (GameTimeLastAnnouncedDispatch == 0)
+                return false;
             if (Game.GameTime - GameTimeLastAnnouncedDispatch <= 25000)
                 return true;
             else
@@ -173,7 +175,7 @@ public static class ScannerScript
     }
     private static void CheckDispatch()
     {
-        if (IsRunning && !PlayerState.IsDead && !PlayerState.IsBusted)
+        if (IsRunning)
         {
             if (PlayerState.IsWanted && Police.AnySeenPlayerCurrentWanted)
             {
@@ -197,7 +199,6 @@ public static class ScannerScript
                 {
                     AddToQueue(LethalForceAuthorized);
                 }
-
                 if (!RecentlyAnnouncedDispatch)
                 {
                     if (!LostVisual.HasRecentlyBeenPlayed && PlayerState.StarsRecentlyGreyedOut && WantedLevelScript.HasBeenWantedFor > 45000 && !PedList.AnyCopsNearPlayer)
@@ -213,9 +214,39 @@ public static class ScannerScript
             }
             else
             {
-                if (!ResumePatrol.HasRecentlyBeenPlayed && Respawn.RecentlyBribedPolice && !ResumePatrol.HasRecentlyBeenPlayed)
+                if (!ResumePatrol.HasRecentlyBeenPlayed && Respawn.RecentlyBribedPolice)
                 {
                     AddToQueue(ResumePatrol);
+                }
+
+                if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelScript.RecentlyLostWanted && !Respawn.RecentlyRespawned && !Respawn.RecentlyBribedPolice)
+                {
+                    AddToQueue(SuspectLost, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                }
+
+
+                if (!SuspectWasted.HasRecentlyBeenPlayed && PlayerState.RecentlyDied && Police.AnyRecentlySeenPlayer && Police.PreviousWantedLevel > 0)
+                {
+                    AddToQueue(SuspectWasted);
+                }
+                if (!SuspectArrested.HasRecentlyBeenPlayed && PlayerState.RecentlyBusted && Police.AnyCanSeePlayer)
+                {
+                    AddToQueue(SuspectArrested);
+                }
+
+                if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Investigation.LastInvestigationRecentlyExpired && Investigation.DistanceToInvestigationPosition <= 1000f)
+                {
+                    AddToQueue(NoFurtherUnitsNeeded);
+                }
+
+                if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerState.PoliceRecentlyNoticedVehicleChange)
+                {
+                    AddToQueue(ChangedVehicles, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                }
+
+                foreach (VehicleExt StolenCar in PlayerState.ReportedStolenVehicles)
+                {
+                    AddToQueue(AnnounceStolenVehicle, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
                 }
             }
         }
@@ -296,10 +327,17 @@ public static class ScannerScript
         AddAudioSet(EventToPlay, DispatchToPlay.SecondaryAudioSet.PickRandom());
 
         if (DispatchToPlay.IncludeDrivingVehicle)
-            AddVehicleDescription(EventToPlay);
+            AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen);
+
+        if(DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null)
+        {
+            DispatchToPlay.LatestInformation.VehicleSeen.WasReportedStolen = true;
+            
+            Debugging.WriteToLog("BuildDispatch", "MarkedAsStolen");
+        }
 
         if (DispatchToPlay.IncludeCarryingWeapon)
-            AddWeaponDescription(EventToPlay);
+            AddWeaponDescription(EventToPlay,DispatchToPlay.LatestInformation.WeaponSeen);
 
         if (DispatchToPlay.ResultsInLethalForce)
             AddLethalForce(EventToPlay);
@@ -352,10 +390,6 @@ public static class ScannerScript
 
             Debugging.WriteToLog("PlayAudioList", string.Format("Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
             CurrentlyPlaying = MyAudioEvent;
-
-
-            //if (CurrentlyPlaying.Priority < HighestPlayedPriority)
-            //    HighestPlayedPriority = CurrentlyPlaying.Priority;
        
             foreach (string audioname in MyAudioEvent.SoundsToPlay)
             {
@@ -368,6 +402,7 @@ public static class ScannerScript
                         Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
                         GameTimeLastDisplayedSubtitle = Game.GameTime;
                     }
+                    GameTimeLastAnnouncedDispatch = Game.GameTime;
                     GameFiber.Yield();
                 }
                 if (CancelAudio)
@@ -376,7 +411,6 @@ public static class ScannerScript
                     Debugging.WriteToLog("PlayAudioList", "CancelAudio Set to False");
                     break;
                 }
-                GameTimeLastAnnouncedDispatch = Game.GameTime;
             }
             CurrentlyPlaying = null;
         }, "PlayAudioList");
@@ -502,13 +536,137 @@ public static class ScannerScript
             dispatchEvent.NotificationText += "~n~~p~" + MyZone.DisplayName + "~s~";
         }
     }
-    private static void AddVehicleDescription(DispatchEvent dispatchEvent)
+    private static void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe)
     {
-
+        Debugging.WriteToLog("AddVehicleDescription", "TBD");
     }
-    private static void AddWeaponDescription(DispatchEvent dispatchEvent)
+    private static void AddWeaponDescription(DispatchEvent dispatchEvent, GTAWeapon WeaponToDescribe)
     {
 
+        dispatchEvent.NotificationText += "~n~Weapon:~s~";
+        dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
+        if (WeaponToDescribe == null)
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Carryingaweapon.FileName);
+            dispatchEvent.Subtitles += " suspect is carrying a ~r~weapon~s~";
+            dispatchEvent.NotificationText += " Unknown";
+        }
+        else if (WeaponToDescribe.Name == "weapon_rpg")
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.ArmedwithanRPG.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with an ~r~RPG~s~";
+            dispatchEvent.NotificationText += " RPG";
+        }
+        else if (WeaponToDescribe.Name == "weapon_bat")
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithabat.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~bat~s~";
+            dispatchEvent.NotificationText += " Bat";
+        }
+        else if (WeaponToDescribe.Name == "weapon_grenadelauncher" || WeaponToDescribe.Name == "weapon_grenadelauncher_smoke" || WeaponToDescribe.Name == "weapon_compactlauncher")
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithagrenadelauncher.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~grenade launcher~s~";
+            dispatchEvent.NotificationText += " Grenade Launcher";
+        }
+        else if (WeaponToDescribe.Category ==  GTAWeapon.WeaponCategory.Throwable || WeaponToDescribe.Name == "weapon_grenadelauncher_smoke" || WeaponToDescribe.Name == "weapon_compactlauncher")
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithexplosives.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~explosives~s~";
+            dispatchEvent.NotificationText += " Explosives";
+        }
+        else if (WeaponToDescribe.Name == "weapon_dagger" || WeaponToDescribe.Name == "weapon_knife" || WeaponToDescribe.Name == "weapon_switchblade")
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithaknife.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~knife~s~";
+            dispatchEvent.NotificationText += " Knife";
+        }
+        else if (WeaponToDescribe.Name == "weapon_minigun")
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithaminigun.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~minigun~s~";
+            dispatchEvent.NotificationText += " Minigun";
+        }
+        else if (WeaponToDescribe.Name == "weapon_sawnoffshotgun")
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithasawedoffshotgun.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~sawed off shotgun~s~";
+            dispatchEvent.NotificationText += " Sawed Off Shotgun";
+        }
+        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.LMG)
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithamachinegun.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~machine gun~s~";
+            dispatchEvent.NotificationText += " Machine Gun";
+        }
+        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Pistol)
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithafirearm.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~pistol~s~";
+            dispatchEvent.NotificationText += " Pistol";
+        }
+        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Shotgun)
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithashotgun.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~shotgun~s~";
+            dispatchEvent.NotificationText += " Shotgun";
+        }
+        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.SMG)
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithasubmachinegun.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~submachine gun~s~";
+            dispatchEvent.NotificationText += " Submachine Gun";
+        }
+        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.AR)
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Carryinganassaultrifle.FileName);
+            dispatchEvent.Subtitles += " suspect is carrying an ~r~assault rifle~s~";
+            dispatchEvent.NotificationText += " Assault Rifle";
+        }
+        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Sniper)
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithasniperrifle.FileName);
+            dispatchEvent.Subtitles += " suspect is armed with a ~r~sniper rifle~s~";
+            dispatchEvent.NotificationText += " Sniper Rifle";
+        }
+        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Heavy)
+        {
+            dispatchEvent.SoundsToPlay.Add(status_message.HeavilyArmed.FileName);
+            dispatchEvent.Subtitles += " suspect is ~r~heaviy armed~s~";
+            dispatchEvent.NotificationText += " Heavy Weapon";
+        }
+        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Melee)
+        {
+            dispatchEvent.SoundsToPlay.Add(carrying_weapon.Carryingaweapon.FileName);
+            dispatchEvent.Subtitles += " suspect is carrying a ~r~weapon~s~";
+            dispatchEvent.NotificationText += " melee weapon";
+        }
+        else
+        {
+            int Num = General.MyRand.Next(1, 5);
+            if (Num == 1)
+            {
+                dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithafirearm.FileName);
+                dispatchEvent.Subtitles += " suspect is armed with a ~r~firearm~s~";
+            }
+            else if (Num == 2)
+            {
+                dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithagat.FileName);
+                dispatchEvent.Subtitles += " suspect is armed with a ~r~gat~s~";
+            }
+            else if (Num == 3)
+            {
+                dispatchEvent.SoundsToPlay.Add(carrying_weapon.Carryingafirearm.FileName);
+                dispatchEvent.Subtitles += " suspect is carrying a ~r~firearm~s~";
+            }
+            else
+            {
+                dispatchEvent.SoundsToPlay.Add(carrying_weapon.Carryingagat.FileName);
+                dispatchEvent.Subtitles += " suspect is carrying a ~r~gat~s~";
+            }
+            dispatchEvent.NotificationText += " Gat";
+        }
+        
     }
     private static void AddLethalForce(DispatchEvent dispatchEvent)
     {
@@ -564,7 +722,11 @@ public static class ScannerScript
             new CrimeDispatch(Crimes.Mugging,Mugging),
             new CrimeDispatch(Crimes.NonRoadworthyVehicle,SuspiciousVehicle),
             new CrimeDispatch(Crimes.ResistingArrest,ResistingArrest),
-            new CrimeDispatch(Crimes.TrespessingOnGovtProperty,TrespassingOnGovernmentProperty)
+            new CrimeDispatch(Crimes.TrespessingOnGovtProperty,TrespassingOnGovernmentProperty),
+            new CrimeDispatch(Crimes.DrivingStolenVehicle,DrivingAtStolenVehicle),
+            new CrimeDispatch(Crimes.TerroristActivity,TerroristActivity),
+            new CrimeDispatch(Crimes.BrandishingCloseCombatWeapon,CarryingWeapon),
+            
         };
 
         DispatchList = new List<Dispatch>
@@ -685,9 +847,7 @@ public static class ScannerScript
         AssaultingOfficer = new Dispatch()
         {
             Name = "Assault on an Officer",
-            IncludeAttentionAllUnits = true,
-            ResultsInLethalForce = true,
-            LocationDescription = LocationSpecificity.StreetAndZone,
+            LocationDescription = LocationSpecificity.Street,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crime_assault_on_an_officer.Anassaultonanofficer.FileName },"an assault on an officer"),
@@ -697,8 +857,6 @@ public static class ScannerScript
         ThreateningOfficerWithFirearm = new Dispatch()
         {
             Name = "Threatening an Officer with a Firearm",
-            IncludeAttentionAllUnits = true,
-            ResultsInLethalForce = true,
             LocationDescription = LocationSpecificity.StreetAndZone,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
@@ -747,9 +905,17 @@ public static class ScannerScript
             Name = "Carrying Weapon",
             LocationDescription = LocationSpecificity.StreetAndZone,
             IncludeCarryingWeapon = true,
+        };
+        TerroristActivity = new Dispatch()
+        {
+            Name = "Terrorist Activity",
+            LocationDescription = LocationSpecificity.StreetAndZone,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
-                new Dispatch.AudioSet(new List<string>() { crime_firearms_possession.Afirearmspossession.FileName },"a firearms possession"),
+                new Dispatch.AudioSet(new List<string>() {  crime_terrorist_activity.Possibleterroristactivity.FileName },"possible terrorist activity"),
+                new Dispatch.AudioSet(new List<string>() {  crime_terrorist_activity.Possibleterroristactivity1.FileName},"possible terrorist activity"),
+                new Dispatch.AudioSet(new List<string>() {  crime_terrorist_activity.Possibleterroristactivity2.FileName },"possible terrorist activity"),
+                new Dispatch.AudioSet(new List<string>() {  crime_terrorist_activity.Terroristactivity.FileName },"terrorist activity"),
             },
         };
         CivilianDown = new Dispatch()
@@ -949,6 +1115,7 @@ public static class ScannerScript
             IsStatus = true,
             IncludeDrivingVehicle = true,
             CanAlwaysBeInterrupted = true,
+            MarkVehicleAsStolen = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() {crime_stolen_vehicle.Apossiblestolenvehicle.FileName},"a possible stolen vehicle"),
@@ -1083,6 +1250,7 @@ public static class ScannerScript
             Name = "Suspect Arrested",
             IsStatus = true,
             IncludeReportedBy = false,
+            CanAlwaysInterrupt = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crook_arrested.Officershaveapprehendedsuspect.FileName },"officers have apprehended suspect"),
@@ -1094,6 +1262,7 @@ public static class ScannerScript
             Name = "Suspect Wasted",
             IsStatus = true,
             IncludeReportedBy = false,
+            CanAlwaysInterrupt = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crook_killed.Criminaldown.FileName },"criminal down"),
@@ -1121,6 +1290,7 @@ public static class ScannerScript
             Name = "Backup Required",
             IsStatus = true,
             IncludeReportedBy = false,
+            CanAlwaysInterrupt = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { assistance_required.Assistanceneeded.FileName },"assistance needed"),

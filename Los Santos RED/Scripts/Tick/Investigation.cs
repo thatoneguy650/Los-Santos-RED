@@ -14,12 +14,14 @@ public static class Investigation
     private static bool PrevIsInInvestigationMode;
     private static Vector3 PrevInvestigationPosition;
     private static uint GameTimeStartedInvestigation;
+    private static uint GameTimeLastInvestigationExpired;
     private static Blip InvestigationBlip;
 
     public static float InvestigationDistance { get; set; }
     public static Vector3 InvestigationPosition { get; set; }
     public static float NearInvestigationDistance { get; set; }
     public static bool InInvestigationMode { get; set; }
+    public static bool HavePlayerDescription { get; set; }
     public static bool IsRunning { get; set; } = true;
     public static bool InvestigationModeExpired
     {
@@ -33,12 +35,34 @@ public static class Investigation
                 return false;
         }
     }
+    public static bool LastInvestigationRecentlyExpired
+    {
+        get
+        {
+            if (GameTimeLastInvestigationExpired == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastInvestigationExpired <= 5000)
+                return true;
+            else
+                return false;
+        }
+    }
 
     public static bool NearInvestigationPosition
     {
         get
         {
             return InvestigationPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition) <= NearInvestigationDistance;
+        }
+    }
+    public static float DistanceToInvestigationPosition
+    {
+        get
+        {
+            if (!InInvestigationMode || InvestigationPosition == Vector3.Zero)
+                return 9999f;
+            else
+                return Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition);
         }
     }
     public static void Initialize()
@@ -62,6 +86,9 @@ public static class Investigation
     }
     private static void InvestigationTick()
     {
+        if (PlayerState.IsWanted)
+            InInvestigationMode = false;
+
         if (InvestigationModeExpired) //remove after 3 minutes
             InInvestigationMode = false;
 
@@ -72,7 +99,7 @@ public static class Investigation
             PoliceInInvestigationModeChanged();
 
 
-        if (PlayerState.IsNotWanted && InInvestigationMode && NearInvestigationPosition && PersonOfInterest.PlayerIsPersonOfInterest && Police.AnyCanSeePlayer && WantedLevelScript.HasBeenNotWantedFor >= 5000)
+        if (PlayerState.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Police.AnyCanRecognizePlayer && WantedLevelScript.HasBeenNotWantedFor >= 5000)
         {
              WantedLevelScript.ApplyReportedCrimes();
         }
@@ -92,17 +119,14 @@ public static class Investigation
         }
         else //removed
         {
-            bool PlayDispatch = Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition) <= 550f;
             if (InvestigationBlip.Exists())
                 InvestigationBlip.Delete();
             if (PlayerState.IsNotWanted)
             {
-                if (PersonOfInterest.PlayerIsPersonOfInterest)
-                    PersonOfInterest.ResetPersonOfInterest();
-                if (PlayDispatch)
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.NoFurtherUnitsNeeded, 30) { IsAmbient = true });
+                HavePlayerDescription = false;
             }
             GameTimeStartedInvestigation = 0;
+            GameTimeLastInvestigationExpired = Game.GameTime;
         }
         Debugging.WriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", InInvestigationMode));
         PrevIsInInvestigationMode = InInvestigationMode;

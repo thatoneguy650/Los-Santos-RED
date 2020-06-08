@@ -12,6 +12,7 @@ public static class Respawn
 {
     private static uint GameTimeLastBribedPolice;
     private static uint GameTimeLastUndied;
+    private static uint GameTimeLastRespawned;
     private static int HospitalBillPastDue;
     private static int BailFeePastDue;
     public static bool RecentlyUndied
@@ -21,6 +22,18 @@ public static class Respawn
             if (GameTimeLastUndied == 0)
                 return false;
             else if (Game.GameTime - GameTimeLastUndied <= 5000)
+                return true;
+            else
+                return false;
+        }
+    }
+    public static bool RecentlyRespawned
+    {
+        get
+        {
+            if (GameTimeLastRespawned == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastRespawned <= 5000)
                 return true;
             else
                 return false;
@@ -288,7 +301,7 @@ public static class Respawn
         Game.TimeScale = 1f;
         if (ClearWanted)
         {
-            PersonOfInterest.ResetPersonOfInterest();
+            PersonOfInterest.Reset();
             WantedLevelScript.Reset();
             WantedLevelScript.SetWantedLevel(0,"Reset player with Clear Wanted",false);
             PlayerState.MaxWantedLastLife = 0;  
@@ -312,6 +325,7 @@ public static class Respawn
     {
         try
         {
+
             PlayerState.ResetState(false);
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
             NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
@@ -342,7 +356,10 @@ public static class Respawn
                 Police.PreviousWantedLevel = 0;
                 PlayerState.TimesDied = 0;
                 PlayerState.MaxWantedLastLife = 0;
+
+
             }
+            GameTimeLastRespawned = Game.GameTime; 
             Game.HandleRespawn();
             ScannerScript.AbortAllAudio();
             //DispatchAudio.AbortAllAudio();

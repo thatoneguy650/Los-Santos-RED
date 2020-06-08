@@ -568,14 +568,14 @@ public static class DispatchAudio
     }
     private static void CheckEvents()
     {
-        if (PlayerState.WantedLevel == 5 && !ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.AgencyClassification == Agency.Classification.Military))
-        {
-            AddDispatchToQueue(new DispatchQueueItem(AvailableDispatch.MilitaryDeployed, 1));
-        }
-        if (PlayerState.WantedLevel >= 2 && !ReportedAirSupportRequested && PedList.CopPeds.Any(x => x.IsInHelicopter))
-        {
-            AddDispatchToQueue(new DispatchQueueItem(AvailableDispatch.AirSupportRequested, 1));
-        }
+        //if (PlayerState.WantedLevel == 5 && !ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.AgencyClassification == Agency.Classification.Military))
+        //{
+        //    AddDispatchToQueue(new DispatchQueueItem(AvailableDispatch.MilitaryDeployed, 1));
+        //}
+        //if (PlayerState.WantedLevel >= 2 && !ReportedAirSupportRequested && PedList.CopPeds.Any(x => x.IsInHelicopter))
+        //{
+        //    AddDispatchToQueue(new DispatchQueueItem(AvailableDispatch.AirSupportRequested, 1));
+        //}
     }
     private static void Generic(Dispatch ItemToPlay)
     {

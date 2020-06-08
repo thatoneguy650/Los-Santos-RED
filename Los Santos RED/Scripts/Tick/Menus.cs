@@ -400,7 +400,7 @@ internal static class Menus
         debugMenu.Clear();
         menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
         menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
-        menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", new List<dynamic> { "Melee", "Pistol", "Shotgun", "SMG", "AR", "LMG", "Sniper", "Heavy" });
+        menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(GTAWeapon.WeaponCategory)).ToList());
         menuDebugRandomVariation = new UIMenuItem("Apply Random Variation", "Add some cool stuff to your gun");
         menuDebugScreenEffect = new UIMenuListItem("Play Screen Effect", "Choose Screen Effect To Play", ScreenEffects);
         menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
@@ -563,7 +563,8 @@ internal static class Menus
         if (selectedItem == menuDebugRandomWeapon)
         {
             GTAWeapon myGun = Weapons.GetRandomRegularWeaponByCategory((GTAWeapon.WeaponCategory)RandomWeaponCategory);
-            Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+            if(myGun != null)
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
         }
         if (selectedItem == menuDebugGiveMoney)
         {

@@ -285,7 +285,7 @@ public static class PedSwap
         NativeFunction.Natives.xC0AA53F866B3134D();
 
         WantedLevelScript.Reset();
-        PersonOfInterest.ResetPersonOfInterest();
+        PersonOfInterest.Reset();
         GameTimeLastTakenOver = Game.GameTime;
         Menus.SelectedTakeoverRadius = -1f;//reset this on the menu
         if(CurrentPed.Exists())

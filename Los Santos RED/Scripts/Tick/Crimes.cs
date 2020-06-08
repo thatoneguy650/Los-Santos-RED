@@ -12,6 +12,8 @@ public static class Crimes
     public static List<Crime> CrimeList = new List<Crime>();
     public static Crime KillingPolice { get; set; }
     public static Crime FiringWeaponNearPolice { get; set; }
+    public static Crime TerroristActivity { get; set; }
+    public static Crime BrandishingHeavyWeapon { get; set; }
     public static Crime AimingWeaponAtPolice { get; set; }
     public static Crime HurtingPolice { get; set; }
     public static Crime TrespessingOnGovtProperty { get; set; }
@@ -19,9 +21,11 @@ public static class Crimes
     public static Crime FiringWeapon { get; set; }
     public static Crime KillingCivilians { get; set; }
     public static Crime GrandTheftAuto { get; set; }
+    public static Crime DrivingStolenVehicle { get; set; }
     public static Crime Mugging { get; set; }
     public static Crime AttemptingSuicide { get; set; }
     public static Crime BrandishingWeapon { get; set; }
+    public static Crime BrandishingCloseCombatWeapon { get; set; }   
     public static Crime HitPedWithCar { get; set; }
     public static Crime HurtingCivilians { get; set; }
     public static Crime HitCarWithCar { get; set; }
@@ -50,37 +54,58 @@ public static class Crimes
     }
     private static void DefaultConfig()
     {
-         KillingPolice = new Crime("Police Fatality", 3, true, 1) { IsAlwaysFlagged = true };
-         FiringWeaponNearPolice = new Crime("Shots Fired at Police",  3, true,2);
-         AimingWeaponAtPolice = new Crime("Aiming Weapons At Police",  3, true,3);
-         HurtingPolice = new Crime("Assaulting Police",  3, true,4);
-         TrespessingOnGovtProperty = new Crime("Trespassing on Government Property",  3, true,5);
-         GotInAirVehicleDuringChase = new Crime("Stealing an Air Vehicle",  4, true,6);
+
+        
+
+
+
+         KillingPolice = new Crime("Police Fatality", 3, true, 1) { CanBeReportedByCivilians = false, IsAlwaysFlagged = true };
+         TerroristActivity = new Crime("Terrorist Activity", 4, true, 2);
+         FiringWeaponNearPolice = new Crime("Shots Fired at Police",  3, true,3) { CanBeReportedByCivilians = false };
+
+         AimingWeaponAtPolice = new Crime("Aiming Weapons At Police",  3, false,4) { CanBeReportedByCivilians = false };
+         HurtingPolice = new Crime("Assaulting Police",  3, false,5);
+         BrandishingHeavyWeapon = new Crime("Brandishing Heavy Weapon", 3, false, 6) { WillAngerCivilians = true };
+
+         TrespessingOnGovtProperty = new Crime("Trespassing on Government Property",  3, false,7) { CanBeReportedByCivilians = false };
+         GotInAirVehicleDuringChase = new Crime("Stealing an Air Vehicle",  3, false, 8);
          
-         FiringWeapon = new Crime("Firing Weapon",  2, false,8);
-         KillingCivilians = new Crime("Civilian Fatality", 2, false,9);
-         GrandTheftAuto = new Crime("Grand Theft Auto", 2, false,10);
+         FiringWeapon = new Crime("Firing Weapon",  2, false,9) { WillAngerCivilians = true };
+         KillingCivilians = new Crime("Civilian Fatality", 2, false,10) { WillAngerCivilians = true };
+         
          Mugging = new Crime("Mugging", 2, false,11) { WillAngerCivilians = true };
          AttemptingSuicide = new Crime("Attempting Suicide", 2, false,12);
-         BrandishingWeapon = new Crime("Brandishing Weapon", 2, false,13) { WillAngerCivilians = true };
-         HitPedWithCar = new Crime("Pedestrian Hit and Run", 2, false,14) { WillAngerCivilians = true };
-         HurtingCivilians = new Crime("Assaulting Civilians", 2, false,15) { WillAngerCivilians = true };
-
-         ResistingArrest = new Crime("Resisting Arrest", 2, false, 16);
 
 
-         HitCarWithCar = new Crime("Hit and Run", 1, false,17) { WillAngerCivilians = true, WillScareCivilians = false };
-         ChangingPlates = new Crime("Stealing License Plates", 1, false,18) { WillAngerCivilians = true, WillScareCivilians = false };  
-         DrivingAgainstTraffic = new Crime("Driving Against Traffic", 1, false,19) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
-         DrivingOnPavement = new Crime("Driving On Pavement", 1, false,20) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
-         NonRoadworthyVehicle = new Crime("Non-Roadworthy Vehicle", 1, false,21) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
-         FelonySpeeding = new Crime("Speeding", 1, false,22) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
-         RunningARedLight = new Crime("Running a Red Light", 1, false,23) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
+
+
+
+
+        HurtingCivilians = new Crime("Assaulting Civilians", 2, false, 14) { WillAngerCivilians = true };
+        HitPedWithCar = new Crime("Pedestrian Hit and Run", 2, false,15) { WillAngerCivilians = true };
+         
+
+         GrandTheftAuto = new Crime("Grand Theft Auto", 2, false, 16) { WillAngerCivilians = true };
+         DrivingStolenVehicle = new Crime("Driving a Stolen Vehicle", 2, false, 17) { CanBeReportedByCivilians = false };
+
+        BrandishingWeapon = new Crime("Brandishing Weapon", 2, false, 18) { WillAngerCivilians = true };
+
+        ResistingArrest = new Crime("Resisting Arrest", 2, false, 19) { CanBeReportedByCivilians = false };
+
+         BrandishingCloseCombatWeapon = new Crime("Brandishing Close Combat Weapon", 1, false, 20) { WillAngerCivilians = true };
+
+         HitCarWithCar = new Crime("Hit and Run", 1, false,30) { WillAngerCivilians = true, WillScareCivilians = false };
+         ChangingPlates = new Crime("Stealing License Plates", 1, false,31) { WillAngerCivilians = true, WillScareCivilians = false };  
+         DrivingAgainstTraffic = new Crime("Driving Against Traffic", 1, false,32) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
+         DrivingOnPavement = new Crime("Driving On Pavement", 1, false,33) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
+         NonRoadworthyVehicle = new Crime("Non-Roadworthy Vehicle", 1, false,34) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
+         FelonySpeeding = new Crime("Speeding", 1, false,35) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
+         RunningARedLight = new Crime("Running a Red Light", 1, false,36) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
 
         CrimeList = new List<Crime>
         {
-            FiringWeapon, Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon,
-            ChangingPlates, GrandTheftAuto, HurtingCivilians, DrivingAgainstTraffic, DrivingOnPavement, HitPedWithCar, HitCarWithCar, NonRoadworthyVehicle, FelonySpeeding, RunningARedLight
+            BrandishingCloseCombatWeapon,TerroristActivity,BrandishingHeavyWeapon, FiringWeapon, Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon,
+            ChangingPlates, GrandTheftAuto, DrivingStolenVehicle, HurtingCivilians, DrivingAgainstTraffic, DrivingOnPavement, HitPedWithCar, HitCarWithCar, NonRoadworthyVehicle, FelonySpeeding, RunningARedLight
         };
 
     }
@@ -132,7 +157,7 @@ public static class Crimes
 
         if (PlayerState.RecentlyShot(5000) || Game.LocalPlayer.Character.IsShooting)
         {
-            if (!Game.LocalPlayer.Character.IsCurrentWeaponSilenced)
+            if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || PlayerState.CurrentWeaponCategory == GTAWeapon.WeaponCategory.Melee))
             {
                 FiringWeapon.IsCurrentlyViolating = true;
                 if (Police.AnyCanSeePlayer)
@@ -157,11 +182,39 @@ public static class Crimes
         if (CheckBrandishing() && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !PlayerState.IsInVehicle)
         {
             BrandishingWeapon.IsCurrentlyViolating = true;
+            if(PlayerState.CurrentWeapon != null && PlayerState.CurrentWeapon.WeaponLevel >= 4)
+            {
+                TerroristActivity.IsCurrentlyViolating = true;
+            }
+            else
+            {
+                TerroristActivity.IsCurrentlyViolating = false;
+            }
+            if (PlayerState.CurrentWeapon != null && PlayerState.CurrentWeapon.WeaponLevel >= 3)
+            {
+                BrandishingHeavyWeapon.IsCurrentlyViolating = true;
+            }
+            else
+            {
+                BrandishingHeavyWeapon.IsCurrentlyViolating = false;
+            }
+            if (PlayerState.CurrentWeapon != null && PlayerState.CurrentWeapon.Category == GTAWeapon.WeaponCategory.Melee)
+            {
+                BrandishingCloseCombatWeapon.IsCurrentlyViolating = true;
+            }
+            else
+            {
+                BrandishingCloseCombatWeapon.IsCurrentlyViolating = false;
+            }
         }
         else
         {
+            BrandishingCloseCombatWeapon.IsCurrentlyViolating = false;
             BrandishingWeapon.IsCurrentlyViolating = false;
+            TerroristActivity.IsCurrentlyViolating = false;
+            BrandishingHeavyWeapon.IsCurrentlyViolating = false;
         }
+
 
         if (PlayerState.IsBreakingIntoCar)
         {
@@ -200,6 +253,15 @@ public static class Crimes
             TrespessingOnGovtProperty.IsCurrentlyViolating = false;
         }
 
+        if(PlayerState.CurrentVehicle != null && PlayerState.CurrentVehicle.WasReportedStolen)
+        {
+            DrivingStolenVehicle.IsCurrentlyViolating = true;
+        }
+        else
+        {
+            DrivingStolenVehicle.IsCurrentlyViolating = false;
+        }
+
 
         //if (Game.LocalPlayer.Character.IsAiming && Police.AnyCanSeePlayer)
         //{
@@ -235,10 +297,31 @@ public static class Crimes
         {
             if (Police.AnyCanSeePlayer || (Violating.CanReportBySound && Police.AnyCanHearPlayer) || Violating.IsAlwaysFlagged)
             {
-                WantedLevelScript.CurrentCrimes.AddCrime(Violating, true,Game.LocalPlayer.Character.Position);
+                WantedLevelScript.CurrentCrimes.AddCrime(Violating, true,PlayerState.CurrentPosition,PlayerState.CurrentVehicle,PlayerState.CurrentWeapon);
             }
         }
     }
+    //private static void MarkVehicleAsStolen(VehicleExt StolenCar)
+    //{
+    //    GameFiber ReportStolenVehicle = GameFiber.StartNew(delegate
+    //    {
+    //        GameFiber.Sleep(10000);
+    //        StolenCar.WasReportedStolen = true;
+    //        if (StolenCar.CarPlate != null && StolenCar.CarPlate.PlateNumber == StolenCar.OriginalLicensePlate.PlateNumber) //if you changed it between when it was reported, dont count it
+    //            StolenCar.CarPlate.IsWanted = true;
+
+    //        foreach (LicensePlate Plate in LicensePlateTheft.SpareLicensePlates)
+    //        {
+    //            if (Plate.PlateNumber == StolenCar.OriginalLicensePlate.PlateNumber)
+    //            {
+    //                Plate.IsWanted = true;
+    //            }
+    //        }
+    //        //Debugging.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", StolenCar.VehicleEnt.Handle));
+
+    //    }, "PlayDispatchQueue");
+    //    Debugging.GameFibers.Add(ReportStolenVehicle);
+    //}
     private static bool CheckBrandishing()
     {
         if (PlayerState.IsConsideredArmed)
@@ -375,7 +458,7 @@ public class CriminalHistory
         else
             return MyStuff.Instances;
     }
-    public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location)
+    public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, GTAWeapon WeaponObserved)
     {
         CrimeEvent PreviousViolation;
         if (ByPolice)
@@ -398,7 +481,7 @@ public class CriminalHistory
         {
             WantedLevelScript.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
         }
-        ScannerScript.AnnounceCrime(CrimeInstance, new DispatchCallIn(!PlayerState.IsInVehicle, ByPolice, Location));
+        ScannerScript.AnnounceCrime(CrimeInstance, new DispatchCallIn(!PlayerState.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved,WeaponSeen = WeaponObserved });
     }
 
 }

@@ -30,6 +30,9 @@ public static class PlayerState
     private static uint GameTimeLastShot;
     private static uint GameTimeLastStartedJacking;
     private static uint GameTimeLastStarsGreyedOut;
+    private static uint GameTimeLastDied;
+    private static uint GameTimeLastBusted;
+    private static uint GameTimePoliceNoticedVehicleChange;
     private static uint PoliceLastSeenVehicleHandle;
     public static bool IsRunning { get;  set; }
     public static int TimesDied { get; set; }
@@ -44,6 +47,24 @@ public static class PlayerState
     public static bool IsConsideredArmed { get; private set; }
     public static List<VehicleExt> TrackedVehicles { get; private set; }
     public static VehicleExt CurrentVehicle { get; private set; }
+    public static GTAWeapon CurrentWeapon { get; private set; }
+    public static GTAWeapon.WeaponCategory CurrentWeaponCategory
+    {
+        get
+        {
+            if (CurrentWeapon != null)
+                return CurrentWeapon.Category;
+            else
+                return GTAWeapon.WeaponCategory.Unknown;
+        }
+    }
+    public static Vector3 CurrentPosition
+    {
+        get
+        {
+            return Game.LocalPlayer.Character.Position;
+        }
+    }
     public static bool IsJacking
     {
         get
@@ -173,6 +194,43 @@ public static class PlayerState
                 return Game.GameTime - GameTimeLastStarsGreyedOut <= 1500;
         }
     }
+    public static bool RecentlyDied
+    {
+        get
+        {
+            if (GameTimeLastDied == 0)
+                return false;
+            else
+                return Game.GameTime - GameTimeLastDied <= 5000;
+        }
+    }
+    public static bool RecentlyBusted
+    {
+        get
+        {
+            if (GameTimeLastBusted == 0)
+                return false;
+            else
+                return Game.GameTime - GameTimeLastBusted <= 5000;
+        }
+    }
+    public static bool PoliceRecentlyNoticedVehicleChange
+    {
+        get
+        {
+            if (GameTimePoliceNoticedVehicleChange == 0)
+                return false;
+            else
+                return Game.GameTime - GameTimePoliceNoticedVehicleChange <= 5000;
+        }
+    }
+    public static List<VehicleExt> ReportedStolenVehicles
+    {
+        get
+        {
+            return TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
+        }
+    }
     public static bool IsHoldingEnter
     {
         get
@@ -278,6 +336,7 @@ public static class PlayerState
         IsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
         IsAimingInVehicle = IsInVehicle && Game.LocalPlayer.IsFreeAiming;
         WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
+        CurrentWeapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (PlayerCurrentWeapon != null)
             CurrentWeaponHash = PlayerCurrentWeapon.Hash;
@@ -344,18 +403,18 @@ public static class PlayerState
     private static void TrackedVehiclesTick()
     {
         TrackedVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
-        if (IsNotWanted)
-        {
-            foreach (VehicleExt StolenCar in TrackedVehicles.Where(x => x.NeedsToBeReportedStolen))
-            {
-                StolenCar.WasReportedStolen = true;
-                DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ReportStolenVehicle, 10)
-                {
-                    ResultsInStolenCarSpotted = true,
-                    VehicleToReport = StolenCar
-                });
-            }
-        }
+        //if (IsNotWanted)
+        //{
+        //    //foreach (VehicleExt StolenCar in TrackedVehicles.Where(x => x.NeedsToBeReportedStolen))
+        //    //{
+        //    //    StolenCar.WasReportedStolen = true;
+        //    //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ReportStolenVehicle, 10)
+        //    //    {
+        //    //        ResultsInStolenCarSpotted = true,
+        //    //        VehicleToReport = StolenCar
+        //    //    });
+        //    //}
+        //}
         if (IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
             if (CurrentVehicle == null)
@@ -365,8 +424,10 @@ public static class PlayerState
             {
                 if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentVehicle.VehicleEnt.Handle && !CurrentVehicle.HasBeenDescribedByDispatch)
                 {
+                    GameTimePoliceNoticedVehicleChange = Game.GameTime;
+
                     //GameTimeLastReportedSpotted = Game.GameTime;
-                    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectChangedVehicle, 21) { IsAmbient = true, VehicleToReport = CurrentVehicle });
+                    //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectChangedVehicle, 21) { IsAmbient = true, VehicleToReport = CurrentVehicle });
                 }
 
 
@@ -384,11 +445,11 @@ public static class PlayerState
         DiedInVehicle = IsInVehicle;
         IsBusted = true;
         BeingArrested = true;
+        GameTimeLastBusted = Game.GameTime;
         Game.LocalPlayer.Character.Tasks.Clear();
         General.TransitionToSlowMo();
         HandsAreUp = false;
         Surrender.SetArrestedAnimation(Game.LocalPlayer.Character, false);
-        DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectArrested, 5));
         GameFiber HandleBusted = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
@@ -400,12 +461,11 @@ public static class PlayerState
     {
         DiedInVehicle = IsInVehicle;
         IsDead = true;
+        GameTimeLastDied = Game.GameTime;
         Game.LocalPlayer.Character.Kill();
         Game.LocalPlayer.Character.Health = 0;
         Game.LocalPlayer.Character.IsInvincible = true;
         General.TransitionToSlowMo();
-        if (Police.PreviousWantedLevel > 0 || PedList.CopPeds.Any(x => x.RecentlySeenPlayer()))
-            DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectWasted, 5));
         GameFiber HandleDeath = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
@@ -595,7 +655,7 @@ public static class PlayerState
         BeingArrested = false;
         TimesDied = 0;
         LastWeaponHash = 0;
-        if(IncludeMaxWanted)
+        if (IncludeMaxWanted)
             MaxWantedLastLife = 0;//this might be a problem in here and might need to be removed
     }
     public static void StartArrestManual()

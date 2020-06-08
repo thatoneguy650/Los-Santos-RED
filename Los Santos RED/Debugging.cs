@@ -242,7 +242,10 @@ public static class Debugging
     }
     private static void DebugNumpad6()
     {
-        ScriptController.OutputTable();
+        //ScriptController.OutputTable();
+
+
+        Tasking.OutputTasks();
 
 
         WriteToLog("DebugNumpad6", string.Format("                      PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
@@ -340,6 +343,7 @@ public static class Debugging
             WriteToLog("DebugNumpad7", "-------Criminal History---------");
             foreach (CriminalHistory MyRapSheet in PersonOfInterest.CriminalHistory)
             {
+                WriteToLog("DebugNumpad7", string.Format("MaxWanted: {0}",MyRapSheet.MaxWantedLevel));
                 WriteToLog("DebugNumpad7", MyRapSheet.DebugPrintCrimes());
             }
             WriteToLog("DebugNumpad7", "--------------------------------");
@@ -374,6 +378,8 @@ public static class Debugging
             
             WriteToLog("DebugNumpad7", string.Format("StreetPosition {0} {1}", General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY));
             WriteToLog("DebugNumpad7", string.Format("ZonePosition {0} {1}", General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY));
+            if(PlayerState.CurrentVehicle != null)
+                WriteToLog("DebugNumpad7", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", PlayerState.CurrentVehicle.IsStolen, PlayerState.CurrentVehicle.WasReportedStolen, PlayerState.CurrentVehicle.NeedsToBeReportedStolen));
 
 
         }

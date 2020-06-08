@@ -126,7 +126,7 @@ public static class PoliceSpawning
             }
             else
             {
-                if (PedList.TotalSpawnedCops >= General.MySettings.Police.SpawnAmbientPoliceLimit + ExtraCopSpawnLimit)
+                if (PedList.TotalSpawnedCops >= General.MySettings.Police.SpawnAmbientPoliceLimit)// + ExtraCopSpawnLimit)
                 {
                     if (Game.GameTime - GameTimeLastRemovedCop >= GameTimeBetweenSpawning - (PlayerState.WantedLevel * -1000))
                         return true;
@@ -202,24 +202,19 @@ public static class PoliceSpawning
     }
     private static void RemoveCop()
     {
-        DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= DistanceToDelete && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
+        Cop ToDelete = PedList.CopPeds.Where(x => x.DistanceToPlayer >= DistanceToDelete && x.CanBeDeleted && x.CountNearbyCops >= 3).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault();
+        if(ToDelete == null)
+            ToDelete = PedList.CopPeds.Where(x => x.DistanceToPlayer >= DistanceToDelete && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault();
+        DeleteCop(ToDelete);
       
         if(PlayerState.IsWanted)// && Game.GameTime - GameTimeLastRemovedCop >= (PlayerState.WantedLevel * -2000) + 15000)
         {
             //bool First = false;
-            //foreach(Cop MyCop in PedList.CopPeds.Where(x => x.DistanceToPlayer >= 175f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer))
-            //{
-            //    if (!First)
-            //    {
-            //        DeleteCop(MyCop);
-            //        First = true;
-            //    }
-            //    if(MyCop.CountNearbyCops >= 4)
-            //    {
-            //        DeleteCop(MyCop);
-            //    }
-            //}
-            DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= 175f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
+            foreach (Cop MyCop in PedList.CopPeds.Where(x => x.DistanceToPlayer >= 800f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer))
+            {
+                DeleteCop(MyCop);
+            }
+            //DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= 175f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
         }
     }
     private static Agency GetAgencyToSpawn()

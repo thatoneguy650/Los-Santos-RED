@@ -60,10 +60,7 @@ public static class ScriptController
             new TickTask(500, "PoliceSpeech", PoliceSpeech.Tick, 8,2),
 
 
-            new TickTask(500, "PoliceSpawning", PoliceSpawning.CheckSpawn, 13,0),
-            new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 13,1),
-
-            new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 14,0),
+            
 
             new TickTask(0, "VehicleFuelSystem", VehicleFuelSystem.Tick, 9,0),
 
@@ -73,7 +70,16 @@ public static class ScriptController
 
             new TickTask(50, "SearchModeStopping", SearchModeStopping.Tick, 12,0),
 
-            new TickTask(25, "Crimes", Crimes.Tick, 13,0),
+            new TickTask(500, "PoliceSpawning", PoliceSpawning.CheckSpawn, 13,0),
+            new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 13,1),
+
+            new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 14,0),
+
+            new TickTask(25, "Crimes", Crimes.Tick, 15,0),
+
+
+
+            
 
         };
 
@@ -137,7 +143,7 @@ public static class ScriptController
                             TickStopWatch.Stop();
                             ToRun.RunTask();
                             TickStopWatch.Stop();
-                            TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
+                            //TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
                             TickStopWatch.Reset();
                         }
                         
