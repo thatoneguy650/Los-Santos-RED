@@ -20,7 +20,7 @@ public static class Tasking
     {
         get
         {
-            if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase && (WantedLevelScript.CurrentCrimes.InstancesOfCrime(Crimes.KillingPolice) >= 1 || WantedLevelScript.CurrentCrimes.InstancesOfCrime(Crimes.KillingCivilians) >= 1 || PlayerState.WantedLevel >= 4))
+            if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase && (WantedLevelScript.CurrentCrimes.InstancesOfCrime(Crimes.KillingPolice) >= 1 || WantedLevelScript.CurrentCrimes.InstancesOfCrime(Crimes.KillingCivilians) >= 2 || PlayerState.WantedLevel >= 4))
                 return true;
             else
                 return false;
@@ -173,7 +173,6 @@ public static class Tasking
     }
     private static void PoliceTickNotWanted()
     {
-        CurrentPoliceTickRunning = "Normal";
         foreach (TaskableCop Cop in TaskableCops.Where(x => x.TaskGTACop.Pedestrian.Exists()))
         {
             SetChaseStatus(Cop);
@@ -212,7 +211,6 @@ public static class Tasking
             SurrenderBustEvent();
 
         SearchModeStopping.StopSearchMode = true;
-
     }
     private static void CivilianTick()
     {
@@ -228,7 +226,7 @@ public static class Tasking
                         Snitch.TaskGTAPed.AddCrime(Bad, Snitch.TaskGTAPed.Pedestrian.Position);
                     }
                 }
-                else if (Snitch.TaskGTAPed.CanHearPlayer)
+                else if (Snitch.TaskGTAPed.CanHearPlayerShooting)
                 {
                     foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanReportBySound))
                     {
@@ -255,7 +253,7 @@ public static class Tasking
             MyTask.TaskedCopToAssign.TaskIsQueued = true;
             MyTask.TaskedCopToAssign.GameTimeLastTasked = Game.GameTime;
 
-            //Debugging.WriteToLog("AddItemToCopQueue", string.Format("Cop: {0} {1}", MyTask.TaskedCopToAssign.TaskGTACop.Pedestrian.Handle, MyTask.TaskToRun.Method.Name));
+            Debugging.WriteToLog("AddItemToCopQueue", string.Format("Cop: {0} {1}", MyTask.TaskedCopToAssign.TaskGTACop.Pedestrian.Handle, MyTask.TaskToRun.Method.Name));
         }
     }
     private static void AddItemCivilianToQueue(CivilianTaskQueueItem MyTask)
@@ -496,7 +494,7 @@ public static class Tasking
                             }
                             LocalTaskName = "Arrest";
                         }
-                        else if (LocalTaskName != "GotoShooting" && WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase && Cop.TaskGTACop.DistanceToPlayer <= 7f)
+                        else if (LocalTaskName != "GotoShooting" && (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.CautiousChase) && Cop.TaskGTACop.DistanceToPlayer <= 7f)
                         {
                             Cop.TaskGTACop.Pedestrian.CanRagdoll = true;
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character, Game.LocalPlayer.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);

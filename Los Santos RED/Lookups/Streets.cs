@@ -263,7 +263,7 @@ public static class Streets
     {
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
     }
-    public static string GetCurrentStreet(Vector3 Position)
+    public static string GetCurrentStreetName(Vector3 Position)
     {
         int StreetHash = 0;
         int CrossingHash = 0;
@@ -284,6 +284,31 @@ public static class Streets
         }
         return StreetName;
     }
+    public static Street GetCurrentStreet(Vector3 Position)
+    {
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        unsafe
+        {
+            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", Position.X, Position.Y, Position.Z, &StreetHash, &CrossingHash);
+        }
+        string StreetName = string.Empty;
+        string CrossStreetName = string.Empty;
+        if (StreetHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+
+                StreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+        }
+        return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+    }
+    public static void ResetStreets()
+    {
+        StreetsList.ForEach(x => x.DirectionsStopped.Clear());
+    }
 }
 public class Street
 {
@@ -291,6 +316,7 @@ public class Street
     public float SpeedLimit = 50f;
     public string DispatchFile = "";
     public bool IsHighway = false;
+    public List<string> DirectionsStopped = new List<string>();
     public Street()
     {
 

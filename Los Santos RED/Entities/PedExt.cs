@@ -20,7 +20,7 @@ public class PedExt
     public Ped Pedestrian { get; set; }
     public bool CanSeePlayer { get; set; } = false;
     public bool CanRecognizePlayer { get; set; } = false;
-    public bool CanHearPlayer { get; set; } = false;
+    public bool CanHearPlayerShooting { get; set; } = false;
     public Vector3 PositionLastSeenPlayer { get; private set; }
     public bool HurtByPlayer { get; set; } = false;
     public bool KilledByPlayer { get; set; } = false;
@@ -36,6 +36,15 @@ public class PedExt
     public bool WasMarkedNonPersistent { get; set; } = false;
     public bool HasBeenMugged { get; set; } = false;
     public bool WillFight { get; set; } = false;
+
+
+    //Temp Crapola
+    public bool IsWaitingAtTrafficLight { get; set; } = false;
+    public bool IsFirstWaitingAtTrafficLight { get; set; } = false;
+    public Vector3 PlaceCheckingInfront { get; set; } = Vector3.Zero;
+
+
+
     public float ClosestDistanceToPlayer { get; set; } = 2000f;
     public Vector3 PositionLastSeenCrime { get; set; } = Vector3.Zero;
     public bool CanBeTasked { get; set; } = true;
@@ -45,7 +54,7 @@ public class PedExt
     {
         get
         {
-            if (NeedsDistanceCheck || NeedsLOSCheck)
+            if ((NeedsDistanceCheck || NeedsLOSCheck) && Pedestrian.IsAlive)
                 return true;
             else
                 return false;
@@ -146,7 +155,7 @@ public class PedExt
     }
     public void Update()
     {
-        if (NeedsUpdate)
+        if (NeedsUpdate && Pedestrian.IsAlive)
         {
             IsInVehicle = Pedestrian.IsInAnyVehicle(false);
             if (IsInVehicle)
@@ -154,6 +163,9 @@ public class PedExt
                 IsInHelicopter = Pedestrian.IsInHelicopter;
                 if (!IsInHelicopter)
                     IsOnBike = Pedestrian.IsOnBike;
+
+                
+                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 1|2|128|256);//use blinkers?
             }
             else
             {
@@ -186,9 +198,9 @@ public class PedExt
                 ClosestDistanceToPlayer = DistanceToPlayer;
 
             if (DistanceToPlayer <= 45f)
-                CanHearPlayer = true;
+                CanHearPlayerShooting = true;
             else
-                CanHearPlayer = false;
+                CanHearPlayerShooting = false;
 
             GameTimeLastDistanceCheck = Game.GameTime;
         }

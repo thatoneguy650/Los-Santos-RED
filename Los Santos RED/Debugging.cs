@@ -19,6 +19,8 @@ public static class Debugging
     public static List<GameFiber> GameFibers;
 
     public static bool IsRunning { get; set; }
+    public static bool IsTesting { get; private set; }
+
     public static void Initialize()
     {
         ShowCopTaskStatus = false;
@@ -98,6 +100,36 @@ public static class Debugging
         {
             DebugNumpad9();
         }
+
+
+
+
+
+
+        foreach (PedExt MyCiv in PedList.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.IsWaitingAtTrafficLight))
+        {
+            if (MyCiv.IsFirstWaitingAtTrafficLight)
+            {
+                Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.Pedestrian.Position.X, MyCiv.Pedestrian.Position.Y, MyCiv.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+            }
+            else
+            {
+                Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.Pedestrian.Position.X, MyCiv.Pedestrian.Position.Y, MyCiv.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+            }
+
+            if(MyCiv.PlaceCheckingInfront != Vector3.Zero)
+                Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.PlaceCheckingInfront.X, MyCiv.PlaceCheckingInfront.Y, MyCiv.PlaceCheckingInfront.Z), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
+
+            
+        }
+
+
+
+
+
+
+
+
     }
     private static void DebugNonInvincible()
     {
@@ -170,19 +202,65 @@ public static class Debugging
 
     private static void DebugNumpad4()
     {
-        ScannerScript.PlayTestAudio();
+        if (IsTesting)
+            return;
 
-        WriteToLog("MyVariation", "------------------------------");
-        if(PlayerLocation.PlayerCurrentZone != null)
+        
+        
+
+        GameFiber.StartNew(delegate
         {
-            WriteToLog("MyVariation", string.Format("Main Agency: {0},{1},{2}", PlayerLocation.PlayerCurrentZone.InternalGameName,PlayerLocation.PlayerCurrentZone.DisplayName,Jurisdiction.MainAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName).FullName));
-            WriteToLog("MyVariation", string.Format("Random Agency: {0},{1},{2}", PlayerLocation.PlayerCurrentZone.InternalGameName, PlayerLocation.PlayerCurrentZone.DisplayName, Jurisdiction.RandomAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName).FullName));
-
-            foreach (Agency MyAgency in Jurisdiction.GetAgenciesAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName))
+            IsTesting = true;
+            Ped MyPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(3f));
+            MyPed.IsPersistent = false;
+            MyPed.BlockPermanentEvents = true;
+            MyPed.Tasks.StandStill(25000);
+            
+            uint GameTimeStarted = Game.GameTime;
+            while(Game.GameTime - GameTimeStarted <= 25000 && MyPed.Exists())
             {
-                WriteToLog("MyVariation", string.Format("   Agency List: {0}", MyAgency.FullName));
+
+
+                UI.DebugLine = string.Format("Infront: {0} SameOpDir {1} Angle {2}", MyPed.IsInFront(Game.LocalPlayer.Character), Extensions.FacingSameOrOppositeDirection(MyPed, Game.LocalPlayer.Character) ,Extensions.Angle(MyPed.ForwardVector, Game.LocalPlayer.Character.ForwardVector));
+                GameFiber.Yield();
             }
-        }
+            if (MyPed.Exists())
+                MyPed.Delete();
+            IsTesting = false;
+
+        });
+
+
+
+        
+
+
+       // WriteToLog("Running Red", string.Format("Result {1}", Result));
+
+
+
+
+
+
+
+
+
+
+
+
+        //ScannerScript.PlayTestAudio();
+
+        //WriteToLog("MyVariation", "------------------------------");
+        //if(PlayerLocation.PlayerCurrentZone != null)
+        //{
+        //    WriteToLog("MyVariation", string.Format("Main Agency: {0},{1},{2}", PlayerLocation.PlayerCurrentZone.InternalGameName,PlayerLocation.PlayerCurrentZone.DisplayName,Jurisdiction.MainAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName).FullName));
+        //    WriteToLog("MyVariation", string.Format("Random Agency: {0},{1},{2}", PlayerLocation.PlayerCurrentZone.InternalGameName, PlayerLocation.PlayerCurrentZone.DisplayName, Jurisdiction.RandomAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName).FullName));
+
+        //    foreach (Agency MyAgency in Jurisdiction.GetAgenciesAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName))
+        //    {
+        //        WriteToLog("MyVariation", string.Format("   Agency List: {0}", MyAgency.FullName));
+        //    }
+        //}
 
 
         //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectSpotted, 1));
@@ -255,12 +333,16 @@ public static class Debugging
     private static void DebugNumpad7()
     {
 
-       //Tasking.OutputTasks();
+        //Tasking.OutputTasks();
 
 
+        if (SearchModeStopping.SpotterCop.Exists())
+        {
+            bool isVis = SearchModeStopping.SpotterCop.IsVisible;
 
-   
 
+            SearchModeStopping.SpotterCop.IsVisible = !isVis;
+        }
         WriteToLog("CurrentCrimes", "--------------------------------");
         foreach (CrimeEvent MyCrime in WantedLevelScript.CurrentCrimes.CrimesObserved)
         {
@@ -337,8 +419,8 @@ public static class Debugging
             //    WriteToLog("DebugNumpad7", string.Format("Player Killed: Handle: {0}, Distance: {1}", DeadPerson.Pedestrian.Handle, Game.LocalPlayer.Character.DistanceTo2D(DeadPerson.Pedestrian)));
             //}
 
-            WriteToLog("DebugNumpad7", string.Format("Near Any CivMurderVictim: {0}", PedWounds.NearCivilianMurderVictim(15f)));
-            WriteToLog("DebugNumpad7", string.Format("Near Any CopMurderVictim: {0}", PedWounds.NearCopMurderVictim(15f)));
+            WriteToLog("DebugNumpad7", string.Format("Near Any CivMurderVictim: {0}", PedWounds.NearCivilianMurderVictim));
+            WriteToLog("DebugNumpad7", string.Format("Near Any CopMurderVictim: {0}", PedWounds.NearCopMurderVictim));
             WriteToLog("DebugNumpad7", "--------------------------------");
             WriteToLog("DebugNumpad7", "-------Criminal History---------");
             foreach (CriminalHistory MyRapSheet in PersonOfInterest.CriminalHistory)
@@ -402,6 +484,10 @@ public static class Debugging
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
         }
+        //if (ProcedureString != "Running Red")
+        //{
+        //    return;
+        //}
         string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
         if (General.MySettings != null && General.MySettings.General.Logging)
         {

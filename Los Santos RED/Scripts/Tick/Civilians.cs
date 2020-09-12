@@ -34,12 +34,12 @@ public static class Civilians
         {
             MyPed.Update();
         }
-        PedList.Civilians.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);   
+        PedList.Civilians.RemoveAll(x => !x.Pedestrian.Exists()  || x.Pedestrian.IsDead);   
     }
     private static void UpdateRecognition()
     {
         AnyCanSeePlayer = PedList.Civilians.Any(x => x.CanSeePlayer);
-        AnyCanHearPlayer = PedList.Civilians.Any(x => x.CanHearPlayer);
+        AnyCanHearPlayer = PedList.Civilians.Any(x => x.CanHearPlayerShooting);
         AnyCanRecognizePlayer = PedList.Civilians.Any(x => x.CanRecognizePlayer);
     }
 }

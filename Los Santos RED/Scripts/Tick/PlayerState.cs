@@ -507,11 +507,11 @@ public static class PlayerState
     {
         if (IsAimingInVehicle)
         {
-            TrafficViolations.SetDriverWindow(true);
+            SetDriverWindow(true);
         }
         else
         {
-            TrafficViolations.SetDriverWindow(false);
+            SetDriverWindow(false);
         }
         Debugging.WriteToLog("ValueChecker", String.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
     }
@@ -586,6 +586,38 @@ public static class PlayerState
             else
             {
                 return ToReturn;
+            }
+        }
+    }
+    private static void SetDriverWindow(bool RollDown)
+    {
+        if (Game.LocalPlayer.Character.CurrentVehicle == null)
+            return;
+
+        bool DriverWindowIntact = NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0);
+        VehicleExt MyVehicle = PlayerState.CurrentVehicle;
+        if (DriverWindowIntact)
+        {
+            if (RollDown)
+            {
+                NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+                MyVehicle.ManuallyRolledDriverWindowDown = true;
+            }
+            else
+            {
+                MyVehicle.ManuallyRolledDriverWindowDown = false;
+                NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+            }
+        }
+        else
+        {
+            if (!RollDown)
+            {
+                if (MyVehicle != null && MyVehicle.ManuallyRolledDriverWindowDown)
+                {
+                    MyVehicle.ManuallyRolledDriverWindowDown = false;
+                    NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+                }
             }
         }
     }

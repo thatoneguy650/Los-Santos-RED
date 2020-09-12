@@ -138,10 +138,14 @@ public static class UI
         int Lines = 0;
         foreach(string LogMessage in Debugging.LogMessages)
         {
-            DisplayTextOnScreen(LogMessage, Lines * 0.02f, 0.3f, 0.25f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+            DisplayTextOnScreen(LogMessage, Lines * 0.02f, 0.0f, 0.23f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
             Lines++;
         }
-        
+
+        Lines++;
+
+
+        DisplayTextOnScreen(DebugLine, 0.5f, 0.5f, 0.4f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
 
     private static void ScreenEffectsTick()

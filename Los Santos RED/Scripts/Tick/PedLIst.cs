@@ -34,7 +34,27 @@ public static class PedList
             return CopPeds.Any(x => x.DistanceToPlayer <= 150f);
         }
     }
-    
+    public static bool AnyCopsNearPosition(Vector3 Position,float Distance)
+    {
+        if (Position != Vector3.Zero && CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
+            return true;
+        else
+            return false;
+    }
+    public static bool CanSpawnHelicopter
+    {
+        get
+        {
+            return PoliceVehicles.Count(x => x.IsHelicopter) < General.MySettings.Police.HelicopterLimit;
+        }
+    }
+    public static bool CanSpawnBoat
+    {
+        get
+        {
+            return PedList.PoliceVehicles.Count(x => x.IsBoat) < General.MySettings.Police.BoatLimit;
+        }
+    } 
     public static string AgenciesChasingPlayer
     {
         get
@@ -228,6 +248,14 @@ public static class PedList
         if (CopPeds.Any(x => x.Pedestrian.Handle == Handle))
             return null;
         else
-        return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+            return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+    }
+    public static PedExt GetPedExt(uint Handle)
+    {
+        PedExt ToReturn = CopPeds.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        if (ToReturn != null)
+            return ToReturn;
+        else
+            return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
     }
 }

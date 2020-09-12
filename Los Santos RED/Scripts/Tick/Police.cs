@@ -13,7 +13,7 @@ public static class Police
 {
     public static bool IsRunning { get; set; } = true;
     public static bool AnyCanSeePlayer { get; set; }
-    public static bool AnyCanHearPlayer { get; set; }
+    public static bool AnyCanHearPlayerShooting { get; set; }
     public static bool AnyCanRecognizePlayer { get; set; }
     public static bool AnyRecentlySeenPlayer { get; set; }
     public static bool AnySeenPlayerCurrentWanted { get; set; }
@@ -62,7 +62,7 @@ public static class Police
     public static void Initialize()
     {
         AnyCanSeePlayer = false;
-        AnyCanHearPlayer = false;
+        AnyCanHearPlayerShooting = false;
         AnyCanRecognizePlayer  = false;
         AnyRecentlySeenPlayer = false;
         AnySeenPlayerCurrentWanted = false;
@@ -89,7 +89,7 @@ public static class Police
     private static void UpdateCops()
     {
         PedList.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
-        PedList.K9Peds.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
+        PedList.K9Peds.RemoveAll(x => !x.Pedestrian.Exists());
         foreach (Cop Cop in PedList.CopPeds)
         {
             Cop.Update();
@@ -104,7 +104,7 @@ public static class Police
     private static void UpdateRecognition()
     {
         AnyCanSeePlayer = PedList.CopPeds.Any(x => x.CanSeePlayer);
-        AnyCanHearPlayer = PedList.CopPeds.Any(x => x.CanHearPlayer);
+        AnyCanHearPlayerShooting = PedList.CopPeds.Any(x => x.CanHearPlayerShooting);
 
         if (AnyCanSeePlayer)
             AnyRecentlySeenPlayer = true;

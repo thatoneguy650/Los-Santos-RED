@@ -65,6 +65,7 @@ public static class ScannerScript
     private static Dispatch RequestBackup;
     private static Dispatch WeaponsFree;
     private static Dispatch LethalForceAuthorized;
+    private static Dispatch RunningARedLight;
 
     private static List<Dispatch> DispatchList = new List<Dispatch>();
     private static List<Dispatch> DispatchQueue = new List<Dispatch>();
@@ -210,7 +211,15 @@ public static class ScannerScript
                         AddToQueue(SuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
                 }
-                
+                if (!SuspectArrested.HasRecentlyBeenPlayed && PlayerState.RecentlyBusted && Police.AnyCanSeePlayer)
+                {
+                    AddToQueue(SuspectArrested);
+                }
+                if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerState.PoliceRecentlyNoticedVehicleChange)
+                {
+                    AddToQueue(ChangedVehicles, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                }
+
             }
             else
             {
@@ -218,32 +227,18 @@ public static class ScannerScript
                 {
                     AddToQueue(ResumePatrol);
                 }
-
                 if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelScript.RecentlyLostWanted && !Respawn.RecentlyRespawned && !Respawn.RecentlyBribedPolice)
                 {
                     AddToQueue(SuspectLost, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                 }
-
-
                 if (!SuspectWasted.HasRecentlyBeenPlayed && PlayerState.RecentlyDied && Police.AnyRecentlySeenPlayer && Police.PreviousWantedLevel > 0)
                 {
                     AddToQueue(SuspectWasted);
                 }
-                if (!SuspectArrested.HasRecentlyBeenPlayed && PlayerState.RecentlyBusted && Police.AnyCanSeePlayer)
-                {
-                    AddToQueue(SuspectArrested);
-                }
-
                 if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Investigation.LastInvestigationRecentlyExpired && Investigation.DistanceToInvestigationPosition <= 1000f)
                 {
                     AddToQueue(NoFurtherUnitsNeeded);
                 }
-
-                if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerState.PoliceRecentlyNoticedVehicleChange)
-                {
-                    AddToQueue(ChangedVehicles, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
-                }
-
                 foreach (VehicleExt StolenCar in PlayerState.ReportedStolenVehicles)
                 {
                     AddToQueue(AnnounceStolenVehicle, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
@@ -480,7 +475,7 @@ public static class ScannerScript
     {
             dispatchEvent.SoundsToPlay.Add((new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             dispatchEvent.Subtitles += " ~s~suspect heading~s~";
-            string heading = General.GetSimpleCompassHeading();
+            string heading = General.GetSimpleCompassHeading(Game.LocalPlayer.Character.Heading);
             if (heading == "N")
             {
                 dispatchEvent.SoundsToPlay.Add(direction_heading.North.FileName);
@@ -665,8 +660,7 @@ public static class ScannerScript
                 dispatchEvent.Subtitles += " suspect is carrying a ~r~gat~s~";
             }
             dispatchEvent.NotificationText += " Gat";
-        }
-        
+        }      
     }
     private static void AddLethalForce(DispatchEvent dispatchEvent)
     {
@@ -715,6 +709,7 @@ public static class ScannerScript
             new CrimeDispatch(Crimes.GrandTheftAuto,GrandTheftAuto),
             new CrimeDispatch(Crimes.HitCarWithCar,VehicleHitAndRun),
             new CrimeDispatch(Crimes.HitPedWithCar,PedHitAndRun),
+            new CrimeDispatch(Crimes.RunningARedLight,RunningARedLight),
             new CrimeDispatch(Crimes.HurtingCivilians,CivilianInjury),
             new CrimeDispatch(Crimes.HurtingPolice,AssaultingOfficer),
             new CrimeDispatch(Crimes.KillingCivilians,CivilianDown),
@@ -770,6 +765,7 @@ public static class ScannerScript
             ,RequestBackup
             ,WeaponsFree
             ,LethalForceAuthorized
+            ,RunningARedLight
         };
 }
     private static void SetupDispatches()
@@ -1070,6 +1066,7 @@ public static class ScannerScript
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crime_speeding_felony.Aspeedingfelony.FileName },"a speeding felony"),
+                new Dispatch.AudioSet(new List<string>() { crime_5_10.A510.FileName,crime_5_10.Speedingvehicle.FileName },"a 5-10, speeding vehicle"),
             },
         };
         PedHitAndRun = new Dispatch()
@@ -1095,6 +1092,16 @@ public static class ScannerScript
                 new Dispatch.AudioSet(new List<string>() { crime_motor_vehicle_accident.Amotorvehicleaccident.FileName},"a motor vehicle accident"),
                 new Dispatch.AudioSet(new List<string>() { crime_motor_vehicle_accident.AnAEincident.FileName },"an A&E incident"),
                 new Dispatch.AudioSet(new List<string>() { crime_motor_vehicle_accident.AseriousMVA.FileName },"a serious MVA"),
+            },
+        };
+        RunningARedLight = new Dispatch()
+        {
+            Name = "Running a Red Light",
+            LocationDescription = LocationSpecificity.Street,
+            CanAlwaysBeInterrupted = true,
+            MainAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() { crime_person_running_a_red_light.Apersonrunningaredlight.FileName},"a person running a red light"),
             },
         };
         RecklessDriving = new Dispatch()

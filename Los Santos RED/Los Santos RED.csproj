@@ -118,6 +118,7 @@
     <Compile Include="Scripts\Tick\Civilians.cs" />
     <Compile Include="Scripts\Tick\Clock.cs" />
     <Compile Include="Scripts\Tick\ControlScript.cs" />
+    <Compile Include="Scripts\Tick\Dispatch.cs" />
     <Compile Include="Scripts\Tick\Investigation.cs" />
     <Compile Include="Scripts\Event\CarLockPicking.cs" />
     <Compile Include="Scripts\Tick\Mugging.cs" />
@@ -150,7 +151,6 @@
     <Compile Include="Scripts\Event\PedSwap.cs" />
     <Compile Include="Scripts\Event\Surrender.cs" />
     <Compile Include="Scripts\Tick\Tasking.cs" />
-    <Compile Include="Scripts\Tick\TrafficViolations.cs" />
     <Compile Include="Scripts\Tick\UI.cs" />
     <Compile Include="Scripts\Tick\VehicleEngine.cs" />
     <Compile Include="Entities\Settings.cs" />

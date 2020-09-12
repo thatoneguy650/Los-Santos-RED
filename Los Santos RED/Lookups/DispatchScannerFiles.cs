@@ -834,7 +834,7 @@ public class crime_5_10
 {
     public static ScannerFile A510 { get { return new ScannerFile("01_crime_5_10\\0x00FCB2AB.wav", "A 510.", "crime_5_10"); } }
     public static ScannerFile Vehiclesracing { get { return new ScannerFile("01_crime_5_10\\0x12CE564E.wav", "Vehicles racing.", "crime_5_10"); } }
-    public static ScannerFile Speedingvehicles { get { return new ScannerFile("01_crime_5_10\\0x17561F60.wav", "Speeding vehicles.", "crime_5_10"); } }
+    public static ScannerFile Speedingvehicle { get { return new ScannerFile("01_crime_5_10\\0x17561F60.wav", "Speeding vehicles.", "crime_5_10"); } }
 }
 public class crime_5_86
 {

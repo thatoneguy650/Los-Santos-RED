@@ -345,6 +345,20 @@ namespace ExtensionsMethods
                 return false;
 
         }
+
+
+        public static bool InFront(this Entity Target, Entity Source)
+        {
+            float Result = GetDotVectorResult(Source, Target);
+            if (Result > 0)
+                return true;
+            else
+                return false;
+
+        }
+
+
+
         public static bool PlayerVehicleIsBehind(this Vehicle myVehicle)
         {
             float Result = GetDotVectorResult(Game.LocalPlayer.Character.CurrentVehicle, myVehicle);
@@ -394,6 +408,26 @@ namespace ExtensionsMethods
                 return false;
             }
         }
+
+
+        public static bool FacingSameOrOppositeDirection(this Entity Entity1, Entity Entity2)
+        {
+            float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
+            if (MyAngle >= 140)//if (MyAngle >= 140f && MyAngle <= 220f)
+            {
+                return true;
+            }
+            else if(MyAngle <= 40f)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 
         //Enumerable Functions
         public static T PickRandom<T>(this IEnumerable<T> source)

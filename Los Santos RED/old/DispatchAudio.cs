@@ -1665,7 +1665,7 @@ public static class DispatchAudio
         {
             ScannerList.Add((new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             Subtitles += " ~s~suspect heading~s~";
-            string heading = General.GetSimpleCompassHeading();
+            string heading = General.GetSimpleCompassHeading(Game.LocalPlayer.Character.Heading);
             if (heading == "N")
             {
                 ScannerList.Add(direction_heading.North.FileName);
@@ -1759,7 +1759,7 @@ public static class DispatchAudio
             ScannerList.Add((new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             Subtitles += "~r~Target spotted~s~ heading~s~";
             Notification.Text += "~n~Heading";
-            string heading = General.GetSimpleCompassHeading();
+            string heading = General.GetSimpleCompassHeading(Game.LocalPlayer.Character.Heading);
             if (heading == "N")
             {
                 ScannerList.Add(direction_heading.North.FileName);

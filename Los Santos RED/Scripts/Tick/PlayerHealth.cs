@@ -12,9 +12,7 @@ public static class PlayerHealth
 {
     private static uint GameTimeLastBled;
     private static List<PedBone> PedBones;
-    private static bool PrevIsBleeding;
     private static uint GameTimeLastHealed;
-    private static uint GameTimeLastDamaged;
 
     public enum BodyLocation
     {
@@ -243,12 +241,6 @@ public static class PlayerHealth
 
                 Debugging.WriteToLog("Player Damage Detected", string.Format("Location: {0},Weapon: {1},{2}, Type: {3}, Total Damage: {4}, HealthDamage: {5}, ArmorDamage: {6},NewHealthDamage: {7}, NewArmorDamage: {8}, DamageModifier: {9},ArmorWillProtect: {10}",
                                                                             DamagedLocation, DamagingWeapon.Name, DamagingWeapon.Category, HealthInjury, TotalDamage, HealthDamage, ArmorDamage, NewHealthDamage, NewArmorDamage, HealthDamageModifier, ArmorWillProtect));
-                //if(ArmorWillProtect)
-                //    UI.DebugLine = string.Format("{0} ap hit at {1}", HealthInjury, DamagedLocation);
-                //else
-                //    UI.DebugLine = string.Format("{0} hit at {1}", HealthInjury, DamagedLocation);
-
-                GameTimeLastDamaged = Game.GameTime;
             }
 
             if (Health != CurrentHealth)
@@ -275,11 +267,6 @@ public static class PlayerHealth
                     GameTimeLastHealed = Game.GameTime;
                 }
             }
-
-            //if(Game.GameTime - GameTimeLastDamaged >= 15000)
-            //{
-            //    UI.DebugLine = "";
-            //}
         }
     }
     private static void CheckBleeding()
@@ -297,11 +284,6 @@ public static class PlayerHealth
             GameTimeLastBled = Game.GameTime;
 
             Debugging.WriteToLog("IsBleeding", string.Format("Was {0},Now {1}", Health + 2, Health));
-        }
-
-        if (PrevIsBleeding != IsBleeding)
-        {
-            BleedingChanged();
         }
     }
     private static InjuryType RandomType(bool CanBeFatal)
@@ -329,24 +311,6 @@ public static class PlayerHealth
             }
         }
         return new GTAWeapon("Unknown",0,GTAWeapon.WeaponCategory.Unknown,0,0,false,false,false,false);
-    }
-    private static void BleedingChanged()
-    {
-        if(IsBleeding) //started bleeding
-        {
-            //NativeFunction.Natives.x80C8B1846639BB19(1);
-            //NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);//_START_SCREEN_EFFECT
-        }
-        else
-        {
-            //NativeFunction.Natives.xB4EDDC19532BFB85();//ANIMPOSTFX_STOP_ALL
-            //NativeFunction.Natives.x80C8B1846639BB19(0);
-
-            //if(Health > 0)
-            //    NativeFunction.Natives.x2206BF9A37B7F724("MP_corona_switch", 0, false);//_START_SCREEN_EFFECT
-        }
-        PrevIsBleeding = IsBleeding;
-        Debugging.WriteToLog("BleedingChanged", string.Format("Bleeding: {0}", IsBleeding));
     }
     private static BodyLocation GetDamageLocation(Ped Pedestrian)
     {

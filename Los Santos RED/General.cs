@@ -291,9 +291,9 @@ public static class General
         return new string(Enumerable.Repeat(chars, length)
           .Select(s => s[MyRand.Next(s.Length)]).ToArray());
     }
-    public static string GetSimpleCompassHeading()
+    public static string GetSimpleCompassHeading(float Heading)
     {
-        float Heading = Game.LocalPlayer.Character.Heading;
+        //float Heading = Game.LocalPlayer.Character.Heading;
         string Abbreviation;
 
         //yeah could be simpler, whatever idk computers are fast
@@ -333,6 +333,11 @@ public static class General
         else { Abbreviation = ""; }
 
         return Abbreviation;
+    }
+    public static string GetCompassHeading(float Heading)
+    {
+        List<string> Abbreviations = new List<string>() { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N" };
+        return Abbreviations[Convert.ToInt32(Math.Round(Heading % 360 / 22.5))];
     }
     public static void SerializeParams<T>(List<T> paramList, string FileName)
     {

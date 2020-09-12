@@ -273,7 +273,7 @@ public static partial class Agencies
             new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
             new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
 
-            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5 },
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4 },
             new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
             new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
 
@@ -290,7 +290,7 @@ public static partial class Agencies
             new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5 },
 
 
-            new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null),
+            new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
 
         };
       
