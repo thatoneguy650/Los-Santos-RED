@@ -9,14 +9,47 @@ using System.Threading.Tasks;
 public static class Dispatch
 {
     private static PoliceSpawn CurrentSpawn = new PoliceSpawn();
-    private static uint GameTimeLastDispatched;
-    private static bool NeedToDispatch
+    private static uint GameTimeCheckedSpawn;
+    private static uint GameTimeCheckedDeleted;
+    public static int SpawnedCopLimit
     {
         get
         {
-            if (GameTimeLastDispatched == 0)
+            return 10 + 2 * PlayerState.WantedLevel;
+        }
+    }
+    public static int HelicopterLimit
+    {
+        get
+        {
+            int WantedLevelLimit = 4;
+            if (PlayerState.WantedLevel <= WantedLevelLimit)
+                return 0;
+            else
+                return PlayerState.WantedLevel - WantedLevelLimit + 1;
+        }
+    }
+    private static bool CanSpawn
+    {
+        get
+        {
+            if (GameTimeCheckedSpawn == 0)
                 return true;
-            else if (Game.GameTime - GameTimeLastDispatched >= 5000)
+            else if (Game.GameTime - GameTimeCheckedSpawn >= 5000)
+                return true;
+            else
+                return false;
+        }
+    }
+    private static bool CanDelete
+    {
+        get
+        {
+            if (GameTimeCheckedDeleted == 0)
+                return true;
+            else if (PlayerState.IsWanted && Game.GameTime - GameTimeCheckedDeleted >= 2000)
+                return true;
+            else if (Game.GameTime - GameTimeCheckedDeleted >= 5000)
                 return true;
             else
                 return false;
@@ -67,6 +100,37 @@ public static class Dispatch
                 return 900f;//1250f//1500f
         }
     }
+    public static float DistanceToDelete
+    {
+        get
+        {
+            if (PlayerState.IsWanted)
+                return 600f;
+            else
+                return 1000f;
+        }
+    }
+
+    public static bool NeedToSpawn
+    {
+        get
+        {
+            if (PedList.TotalSpawnedCops < SpawnedCopLimit)
+                return true;
+            else
+                return false;
+        }
+    }
+    public static bool NeedToDelete
+    {
+        get
+        {
+            if (PedList.TotalSpawnedCops > SpawnedCopLimit)
+                return true;
+            else
+                return false;
+        }
+    }
 
     public static void Initialize()
     {
@@ -80,46 +144,39 @@ public static class Dispatch
     {
         if (IsRunning)
         {
-            if (NeedToDispatch)
-            {
-                CurrentSpawn.UpdateSpawnPosition();
-            }
+            SpawnChecking();
+            DeleteChecking();
         }
     }
-    private static Agency GetAgencyToSpawn()
+    public static void SpawnChecking()
     {
-        Agency ToSpawn = null;
-        Zone AirWaterZone = null;
-        Zone StreetZone = null;
-        if (CurrentSpawn.Position != Vector3.Zero)
+        if (IsRunning && CanSpawn)
         {
-            AirWaterZone = Zones.GetZoneAtLocation(CurrentSpawn.Position);
-
+            CurrentSpawn.UpdateSpawnPosition();
+            if (NeedToSpawn)
+            {
+                PoliceSpawning.SpawnGTACop(CurrentSpawn.StreetAgency, CurrentSpawn.StreetPosition, CurrentSpawn.Heading);
+            }
+            GameTimeCheckedSpawn = Game.GameTime;
         }
-
-        if (CurrentSpawn.StreetPosition != Vector3.Zero)
+    }
+    public static void DeleteChecking()
+    {
+        if (IsRunning && CanDelete)
         {
-            StreetZone = Zones.GetZoneAtLocation(CurrentSpawn.StreetPosition);
-
-
+           // if (NeedToDelete)
+           // {
+                PoliceSpawning.DeleteCop(PedList.CopPeds.Where(x=>x.DistanceToPlayer >= DistanceToDelete).OrderByDescending(x =>x.DistanceToPlayer).FirstOrDefault());
+           // }
+            GameTimeCheckedDeleted = Game.GameTime;
         }
-
-
-
-
-        ToSpawn = Jurisdiction.RandomAgencyAtZone(StreetZone.InternalGameName);
-
-
-
-
-        return ToSpawn;
     }
     private class PoliceSpawn
     {
         public Vector3 Position = Vector3.Zero;
         public float Heading;
         public Vector3 StreetPosition = Vector3.Zero;
-       
+               
         public bool IsWater
         {
             get
@@ -130,6 +187,34 @@ public static class Dispatch
                         return true;
                 }
                 return false;
+            }
+        }
+        public Agency StreetAgency
+        {
+            get
+            {
+                if (CurrentSpawn.StreetPosition != Vector3.Zero)
+                {
+                    return Jurisdiction.AgencyAtZone(Zones.GetZoneAtLocation(CurrentSpawn.StreetPosition).InternalGameName);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        public Agency PositionAgency
+        {
+            get
+            {
+                if (CurrentSpawn.Position != Vector3.Zero)
+                {
+                    return Jurisdiction.AgencyAtZone(Zones.GetZoneAtLocation(CurrentSpawn.Position).InternalGameName);
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

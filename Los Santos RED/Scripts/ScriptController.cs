@@ -78,8 +78,12 @@ public static class ScriptController
             new TickTask(25, "Crimes", Crimes.Tick, 15,0),
 
 
+            new TickTask(500, "PoliceSpawning", Dispatch.SpawnChecking, 16,0),
+            new TickTask(500, "PoliceSpawning.RemoveCops", Dispatch.DeleteChecking, 16,1),
 
-            
+
+
+
 
         };
 
@@ -121,7 +125,7 @@ public static class ScriptController
         MuggingScript.Initialize();
         PlayerHealth.Initialize();
         PedWounds.Initialize();
-
+        Dispatch.Initialize();
         RunTasks();
     }
     public static void RunTasks()
@@ -228,6 +232,7 @@ public static class ScriptController
         Clock.Dispose();
         MuggingScript.Dispose();
         PedWounds.Dispose();
+        Dispatch.Dispose();
     }
     private static void ResetRanItems()
     {

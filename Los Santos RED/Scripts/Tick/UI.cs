@@ -123,7 +123,7 @@ public static class UI
     }
     private static void ShowUI()
     {
-        ShowDebugUI();
+        //ShowDebugUI();
 
 
         HideVanillaUI();

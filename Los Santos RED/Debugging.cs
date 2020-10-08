@@ -106,22 +106,22 @@ public static class Debugging
 
 
 
-        foreach (PedExt MyCiv in PedList.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.IsWaitingAtTrafficLight))
-        {
-            if (MyCiv.IsFirstWaitingAtTrafficLight)
-            {
-                Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.Pedestrian.Position.X, MyCiv.Pedestrian.Position.Y, MyCiv.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-            }
-            else
-            {
-                Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.Pedestrian.Position.X, MyCiv.Pedestrian.Position.Y, MyCiv.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-            }
+        //foreach (PedExt MyCiv in PedList.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.IsWaitingAtTrafficLight))
+        //{
+        //    if (MyCiv.IsFirstWaitingAtTrafficLight)
+        //    {
+        //        Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.Pedestrian.Position.X, MyCiv.Pedestrian.Position.Y, MyCiv.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+        //    }
+        //    else
+        //    {
+        //        Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.Pedestrian.Position.X, MyCiv.Pedestrian.Position.Y, MyCiv.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+        //    }
 
-            if(MyCiv.PlaceCheckingInfront != Vector3.Zero)
-                Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.PlaceCheckingInfront.X, MyCiv.PlaceCheckingInfront.Y, MyCiv.PlaceCheckingInfront.Z), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
+        //    if(MyCiv.PlaceCheckingInfront != Vector3.Zero)
+        //        Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.PlaceCheckingInfront.X, MyCiv.PlaceCheckingInfront.Y, MyCiv.PlaceCheckingInfront.Z), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
 
             
-        }
+        //}
 
 
 

@@ -11,10 +11,10 @@ public static class PoliceSpawning
     private static uint GameTimeLastSpawnedCop;
     private static List<Vehicle> CreatedPoliceVehicles;
     private static List<Entity> CreatedEntities;
-    private static RandomPoliceSpawn StreetSpawn;
-    private static RandomPoliceSpawn WaterSpawn;
-    private static RandomPoliceSpawn AirSpawn;
-    private static uint GameTimeBetweenSpawning = 6000;
+    //private static RandomPoliceSpawn StreetSpawn;
+    //private static RandomPoliceSpawn WaterSpawn;
+    //private static RandomPoliceSpawn AirSpawn;
+    //private static uint GameTimeBetweenSpawning = 6000;
     private enum DispatchType
     {
         PoliceAutomobile = 1,
@@ -34,129 +34,129 @@ public static class PoliceSpawning
         BikerBackup = 15
     };
     public static bool IsRunning { get; set; }
-    public static float MinDistanceToSpawn
-    {
-        get
-        {
-            if (PlayerState.IsWanted)
-                return 400f - (PlayerState.WantedLevel * -40);
-            else if (Investigation.InInvestigationMode)
-                return Investigation.InvestigationDistance / 2;
-            else
-                return 350f;//450f;//750f
-        }
-    }
-    public static float MaxDistanceToSpawn
-    {
-        get
-        {
-            if (PlayerState.IsWanted)
-                return 550f;
-            else if (Investigation.InInvestigationMode)
-                return Investigation.InvestigationDistance;
-            else
-                return 900f;//1250f//1500f
-        }
-    }
-    public static float DistanceToDelete
-    {
-        get
-        {
-            if (PlayerState.IsWanted)
-                return 550f;//700f//550f
-            else
-                return 1500f;
-        }
-    }
-    public static bool AllowClosePoliceSpawns
-    {
-        get
-        {
-            if (PlayerState.IsWanted)
-                return true;
-            else
-                return false;
-        }
-    }
-    public static bool CanSpawnCop
-    {
-        get
-        {
-            if (PlayerState.IsNotWanted)
-            {
-                if (PedList.TotalSpawnedCops < General.MySettings.Police.SpawnAmbientPoliceLimit)
-                {
-                    if (Game.GameTime - GameTimeLastSpawnedCop >= GameTimeBetweenSpawning)
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-            else
-            {
-                if (PedList.TotalSpawnedCops < General.MySettings.Police.SpawnAmbientPoliceLimit + ExtraCopSpawnLimit)
-                {
-                    if (Game.GameTime - GameTimeLastSpawnedCop >= GameTimeBetweenSpawning - (PlayerState.WantedLevel * -1000))
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-        }
-    }
-    public static bool CanRemoveCop
-    {
-        get
-        {
-            if (PlayerState.IsNotWanted)
-            {
-                if (PedList.TotalSpawnedCops >= General.MySettings.Police.SpawnAmbientPoliceLimit)
-                {
-                    if (Game.GameTime - GameTimeLastRemovedCop >= GameTimeBetweenSpawning)
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-            else
-            {
-                if (PedList.TotalSpawnedCops >= General.MySettings.Police.SpawnAmbientPoliceLimit + ExtraCopSpawnLimit)
-                {
-                    if (Game.GameTime - GameTimeLastRemovedCop >= GameTimeBetweenSpawning - (PlayerState.WantedLevel * -1000))
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-        }
-    }
-    public static int ExtraCopSpawnLimit
-    {
-        get
-        {
-            int CurrentWantedLevel = PlayerState.WantedLevel;
-            if (CurrentWantedLevel == 1)//set as parameters
-                return 0;
-            else if (CurrentWantedLevel == 2)
-                return 2;
-            else if (CurrentWantedLevel == 3)
-                return 6;
-            else if (CurrentWantedLevel == 4)
-                return 10;
-            else if (CurrentWantedLevel == 5)
-                return 12;
-            else
-                return 0;
-        }
-    }
+    //public static float MinDistanceToSpawn
+    //{
+    //    get
+    //    {
+    //        if (PlayerState.IsWanted)
+    //            return 400f - (PlayerState.WantedLevel * -40);
+    //        else if (Investigation.InInvestigationMode)
+    //            return Investigation.InvestigationDistance / 2;
+    //        else
+    //            return 350f;//450f;//750f
+    //    }
+    //}
+    //public static float MaxDistanceToSpawn
+    //{
+    //    get
+    //    {
+    //        if (PlayerState.IsWanted)
+    //            return 550f;
+    //        else if (Investigation.InInvestigationMode)
+    //            return Investigation.InvestigationDistance;
+    //        else
+    //            return 900f;//1250f//1500f
+    //    }
+    //}
+    //public static float DistanceToDelete
+    //{
+    //    get
+    //    {
+    //        if (PlayerState.IsWanted)
+    //            return 550f;//700f//550f
+    //        else
+    //            return 1500f;
+    //    }
+    //}
+    //public static bool AllowClosePoliceSpawns
+    //{
+    //    get
+    //    {
+    //        if (PlayerState.IsWanted)
+    //            return true;
+    //        else
+    //            return false;
+    //    }
+    //}
+    //public static bool CanSpawnCop
+    //{
+    //    get
+    //    {
+    //        if (PlayerState.IsNotWanted)
+    //        {
+    //            if (PedList.TotalSpawnedCops < General.MySettings.Police.SpawnAmbientPoliceLimit)
+    //            {
+    //                if (Game.GameTime - GameTimeLastSpawnedCop >= GameTimeBetweenSpawning)
+    //                    return true;
+    //                else
+    //                    return false;
+    //            }
+    //            else
+    //                return false;
+    //        }
+    //        else
+    //        {
+    //            if (PedList.TotalSpawnedCops < General.MySettings.Police.SpawnAmbientPoliceLimit + ExtraCopSpawnLimit)
+    //            {
+    //                if (Game.GameTime - GameTimeLastSpawnedCop >= GameTimeBetweenSpawning - (PlayerState.WantedLevel * -1000))
+    //                    return true;
+    //                else
+    //                    return false;
+    //            }
+    //            else
+    //                return false;
+    //        }
+    //    }
+    //}
+    //public static bool CanRemoveCop
+    //{
+    //    get
+    //    {
+    //        if (PlayerState.IsNotWanted)
+    //        {
+    //            if (PedList.TotalSpawnedCops >= General.MySettings.Police.SpawnAmbientPoliceLimit)
+    //            {
+    //                if (Game.GameTime - GameTimeLastRemovedCop >= GameTimeBetweenSpawning)
+    //                    return true;
+    //                else
+    //                    return false;
+    //            }
+    //            else
+    //                return false;
+    //        }
+    //        else
+    //        {
+    //            if (PedList.TotalSpawnedCops >= General.MySettings.Police.SpawnAmbientPoliceLimit + ExtraCopSpawnLimit)
+    //            {
+    //                if (Game.GameTime - GameTimeLastRemovedCop >= GameTimeBetweenSpawning - (PlayerState.WantedLevel * -1000))
+    //                    return true;
+    //                else
+    //                    return false;
+    //            }
+    //            else
+    //                return false;
+    //        }
+    //    }
+    //}
+    //public static int ExtraCopSpawnLimit
+    //{
+    //    get
+    //    {
+    //        int CurrentWantedLevel = PlayerState.WantedLevel;
+    //        if (CurrentWantedLevel == 1)//set as parameters
+    //            return 0;
+    //        else if (CurrentWantedLevel == 2)
+    //            return 2;
+    //        else if (CurrentWantedLevel == 3)
+    //            return 6;
+    //        else if (CurrentWantedLevel == 4)
+    //            return 10;
+    //        else if (CurrentWantedLevel == 5)
+    //            return 12;
+    //        else
+    //            return 0;
+    //    }
+    //}
     public static void Initialize()
     {
         CreatedPoliceVehicles = new List<Vehicle>();
@@ -167,11 +167,6 @@ public static class PoliceSpawning
     {
         if (IsRunning)
         {
-            //if (CanSpawnCop)
-            //{
-            //    SpawnCop();
-            //}
-
             SetDispatchService(false);
         }
     }
@@ -179,96 +174,32 @@ public static class PoliceSpawning
     {
         if (IsRunning)
         {
-            //if (CanRemoveCop)
-            //{
-            //    RemoveCop();
-            //}
             RepairOrRemoveDamagedVehicles();
             RemoveAbandonedVehicles();
         }
     }
-    //public static void SpawnCop()
-    //{
-    //    try
-    //    {
-    //        GetPoliceSpawn();
-    //        Agency AgencyToSpawn = GetAgencyToSpawn();
-    //        SpawnGTACop(AgencyToSpawn, StreetSpawn.Heading);
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Debugging.WriteToLog("SpawnActiveChaseCopError", e.Message + " : " + e.StackTrace);
-    //    }
-    //}
-    private static void RemoveCop()
+    public static void UpgradeCruiser(Vehicle CopCruiser)
     {
-        //Cop ToDelete = PedList.CopPeds.Where(x => x.DistanceToPlayer >= 200f && x.CanBeDeleted && x.CountNearbyCops >= 3).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault();
-        DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= DistanceToDelete && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
-      
-        if(PlayerState.IsWanted)// && Game.GameTime - GameTimeLastRemovedCop >= (PlayerState.WantedLevel * -2000) + 15000)
+        if (!CopCruiser.Exists())
+            return;
+        if (!CopCruiser.IsHelicopter)
         {
-            //bool First = false;
-            foreach (Cop MyCop in PedList.CopPeds.Where(x => x.DistanceToPlayer >= 250f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer))
-            {
-                if (MyCop.DistanceToPlayer >= 800f)
-                    DeleteCop(MyCop);
-                else if (MyCop.CountNearbyCops >= 3)
-                    DeleteCop(MyCop);
-            }
-            //DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= 175f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT", CopCruiser, 0);//Required to work
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 11) - 1, true);//Engine
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 12) - 1, true);//Brakes
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 13) - 1, true);//Tranny
+            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 15) - 1, true);//Suspension
+
+            //if (NativeFunction.CallByName<bool>("DOES_EXTRA_EXIST", CopCruiser, 1) && LosSantosRED.MyRand.Next(1,11) <= 9)//rarely do we want slicktop
+            //{
+            //    NativeFunction.CallByName<bool>("SET_VEHICLE_EXTRA", CopCruiser, 1, false);//make sure the siren is there
+            //}
+
+            // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
         }
     }
-    private static Agency GetAgencyToSpawn()
-    {
 
-
-
-
-
-
-
-
-        Agency ToSpawn = null;
-        string DebugName = "";
-        if (PlayerState.WantedLevel == 5)
-        {
-            DebugName = "ARMY";
-            ToSpawn = Agencies.RandomArmyAgency;
-        }
-        else if (WaterSpawn != null && General.RandomPercent(10) && PedList.PoliceVehicles.Count(x => x.IsBoat) < General.MySettings.Police.BoatLimit)
-        {
-            DebugName = "WATER";
-            ToSpawn = Jurisdiction.RandomAgencyAtZone(WaterSpawn.ZoneAtLocation.InternalGameName);
-        }
-        else if (AirSpawn != null && General.RandomPercent(10) && PedList.PoliceVehicles.Count(x => x.IsHelicopter) < General.MySettings.Police.HelicopterLimit)
-        {
-            DebugName = "HELI";
-            ToSpawn = Jurisdiction.AirAgencyAtZone(AirSpawn.ZoneAtLocation.InternalGameName);
-        }
-        else if (StreetSpawn != null)
-        {
-            if ((PlayerState.IsNotWanted && General.RandomPercent(3)) || (PlayerState.WantedLevel >= 3 || General.RandomPercent(2 * PlayerState.WantedLevel)))
-            {
-                DebugName = "FEDERAL";
-                ToSpawn = Agencies.RandomFederalAgency;
-            }
-            else
-            {
-                if (StreetSpawn.StreetAtSpawn != null && StreetSpawn.StreetAtSpawn.IsHighway && General.RandomPercent(10))
-                {
-                    DebugName = "HIGHWAY";
-                    ToSpawn = Agencies.RandomHighwayAgency;
-                }
-                else
-                {
-                    DebugName = "REGULAR";
-                    ToSpawn = Jurisdiction.RandomAgencyAtZone(StreetSpawn.ZoneAtLocation.InternalGameName);
-                }
-            }
-        }
-        //Debugging.WriteToLog("SpawnCop", string.Format("Attempting to spawn {0}, {1}", ToSpawn.Initials, DebugName));
-        return ToSpawn;
-    }
+   
     private static void RemoveAbandonedVehicles()
     {
         foreach (Vehicle PoliceCar in CreatedPoliceVehicles.Where(x => x.Exists()))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
@@ -298,71 +229,6 @@ public static class PoliceSpawning
             }
         }
     }
-
-    //public static void CheckRemove()
-    //{
-    //    if (IsRunning)
-    //    {
-    //        if (CanRemoveCop)
-    //        {
-
-    //        }
-
-
-
-    //        foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.CanBeDeleted))
-    //        {
-    //            Vector3 CurrentLocation = Cop.Pedestrian.Position;
-    //            if (Cop.DistanceToPlayer >= DistanceToDelete)//2000f
-    //            {
-    //                DeleteCop(Cop);
-    //                Debugging.WriteToLog("SpawnCop", string.Format("Cop Distance Delete: {0}", Cop.Pedestrian.Handle));
-    //            }
-    //            //else if (PlayerState.IsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter)
-    //            //{
-    //            //    if (Cop.DistanceToPlayer >= 175f && Cop.TimeBehindPlayer >= 20000)
-    //            //    {
-    //            //        DeleteCop(Cop);
-    //            //        Debugging.WriteToLog("SpawnCop", string.Format("Cop Behind Delete: {0}", Cop.Pedestrian.Handle));
-    //            //    }
-    //            //    else if (Cop.DistanceToPlayer >= 175f && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f) && Cop.CountNearbyCops >= 3)
-    //            //    {
-    //            //        DeleteCop(Cop);
-    //            //        Debugging.WriteToLog("SpawnCop", string.Format("Cop Nearby 1 Delete: {0}", Cop.Pedestrian.Handle));
-    //            //    }
-    //            //    else if (Cop.DistanceToPlayer >= 250f && Cop.CountNearbyCops >= 2)
-    //            //    {
-    //            //        DeleteCop(Cop);
-    //            //        Debugging.WriteToLog("SpawnCop", string.Format("Cop Nearby 2 Delete: {0}", Cop.Pedestrian.Handle));
-    //            //    }
-    //            //}
-
-    //            if (Cop.DistanceToPlayer >= 175f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
-    //            {
-    //                if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
-    //                {
-    //                    Cop.Pedestrian.CurrentVehicle.Repair();
-    //                }
-    //                else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
-    //                {
-    //                    DeleteCop(Cop);
-    //                    Debugging.WriteToLog("SpawnCop", string.Format("Cop GaveUp Delete: {0}", Cop.Pedestrian.Handle));
-    //                }
-    //            }
-    //        }
-    //        foreach (Vehicle PoliceCar in CreatedPoliceVehicles.Where(x => x.Exists()))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
-    //        {
-    //            if (PoliceCar.IsEmpty)
-    //            {
-    //                if (PoliceCar.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
-    //                {
-    //                    PoliceCar.Delete();
-    //                }
-    //            }
-    //        }
-    //        CreatedPoliceVehicles.RemoveAll(x => !x.Exists());
-    //    }
-    //}
     public static void Dispose()
     {
         IsRunning = false;
@@ -382,19 +248,16 @@ public static class PoliceSpawning
 
         SetDispatchService(true);
     }
-    public static void DebugSetPoliceSpawn(Vector3 PositionToSet)
-    {
-        Zone ZoneName = Zones.GetZoneAtLocation(PositionToSet);
-        if (ZoneName == null || ZoneName.InternalGameName == "OCEANA")
-            return;
+    //public static void DebugSetPoliceSpawn(Vector3 PositionToSet)
+    //{
+    //    Zone ZoneName = Zones.GetZoneAtLocation(PositionToSet);
+    //    if (ZoneName == null || ZoneName.InternalGameName == "OCEANA")
+    //        return;
 
-        Street MyGTAStreet = Streets.GetCurrentStreet(PositionToSet);
+    //    Street MyGTAStreet = Streets.GetCurrentStreet(PositionToSet);
 
-        StreetSpawn = new RandomPoliceSpawn(PositionToSet,0f, ZoneName, MyGTAStreet);
-    }
-    
-    
-
+    //    StreetSpawn = new RandomPoliceSpawn(PositionToSet,0f, ZoneName, MyGTAStreet);
+    //}
     public static void DeleteCop(Cop Cop)
     {
         if (Cop == null)
@@ -457,7 +320,7 @@ public static class PoliceSpawning
         if (MyBlip.Exists())
             MyBlip.Delete();
     }
-    public static bool SpawnGTACop(Agency _Agency, float Heading)
+    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading)
     {
         if (_Agency == null)
             return false;
@@ -465,7 +328,7 @@ public static class PoliceSpawning
         if (!_Agency.CanSpawn)
             return false;
 
-        Vector3 SpawnLocation;
+        //Vector3 SpawnLocation;
         VehicleExt CopCar;
         Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle();
         if (MyCarInfo == null)
@@ -475,22 +338,22 @@ public static class PoliceSpawning
         }
 
 
-        if(MyCarInfo.IsHelicopter && AirSpawn != null)
-        {
-            SpawnLocation = AirSpawn.SpawnLocation;
-        }
-        else if (MyCarInfo.IsBoat && WaterSpawn != null)
-        {
-            SpawnLocation = WaterSpawn.SpawnLocation;
-        }
-        else if((MyCarInfo.IsCar || MyCarInfo.IsMotorcycle) && StreetSpawn != null)
-        {
-            SpawnLocation = StreetSpawn.SpawnLocation;
-        }
-        else
-        {
-            return false;
-        }
+        //if(MyCarInfo.IsHelicopter && AirSpawn != null)
+        //{
+        //    SpawnLocation = AirSpawn.SpawnLocation;
+        //}
+        //else if (MyCarInfo.IsBoat && WaterSpawn != null)
+        //{
+        //    SpawnLocation = WaterSpawn.SpawnLocation;
+        //}
+        //else if((MyCarInfo.IsCar || MyCarInfo.IsMotorcycle) && StreetSpawn != null)
+        //{
+        //    SpawnLocation = StreetSpawn.SpawnLocation;
+        //}
+        //else
+        //{
+        //    return false;
+        //}
 
         CopCar = SpawnCopVehicle(_Agency, MyCarInfo, SpawnLocation, Heading);
         GameFiber.Yield();
@@ -574,7 +437,7 @@ public static class PoliceSpawning
         }
         return false;
     }
-    public static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
+    private static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
     {
         if (_Agency == null)
             return null;
@@ -612,7 +475,7 @@ public static class PoliceSpawning
 
         return Cop;
     }
-    public static VehicleExt SpawnCopVehicle(Agency _Agency, Agency.VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
+    private static VehicleExt SpawnCopVehicle(Agency _Agency, Agency.VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
     {
         string ModelName = MyCarInfo.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);
@@ -630,26 +493,6 @@ public static class PoliceSpawning
             return null;
         }    
     }
-    public static void UpgradeCruiser(Vehicle CopCruiser)
-    {
-        if (!CopCruiser.Exists())
-            return;
-        if (!CopCruiser.IsHelicopter)
-        {
-            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT", CopCruiser, 0);//Required to work
-            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 11) - 1, true);//Engine
-            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 12) - 1, true);//Brakes
-            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 13) - 1, true);//Tranny
-            NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", CopCruiser, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", CopCruiser, 15) - 1, true);//Suspension
-
-            //if (NativeFunction.CallByName<bool>("DOES_EXTRA_EXIST", CopCruiser, 1) && LosSantosRED.MyRand.Next(1,11) <= 9)//rarely do we want slicktop
-            //{
-            //    NativeFunction.CallByName<bool>("SET_VEHICLE_EXTRA", CopCruiser, 1, false);//make sure the siren is there
-            //}
-
-            // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
-        }
-    }
     private static void SetDispatchService(bool ValueToSet)
     {
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, ValueToSet);
@@ -662,71 +505,232 @@ public static class PoliceSpawning
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitCruising, ValueToSet);
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitPulledOver, ValueToSet);
     }
-    private static void GetPoliceSpawn()
-    {
-        StreetSpawn = null;
-        WaterSpawn = null;
-        AirSpawn = null;
+    //private static void RemoveCop()
+    //{
+    //    //Cop ToDelete = PedList.CopPeds.Where(x => x.DistanceToPlayer >= 200f && x.CanBeDeleted && x.CountNearbyCops >= 3).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault();
 
-        float DistanceFrom = MinDistanceToSpawn;
-        float DistanceTo = MaxDistanceToSpawn;
-        Vector3 SpawnLocation = Vector3.Zero;
-        float Heading = 0f;
-        Vector3 InitialPosition = Vector3.Zero;
-        if (PlayerState.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
-        {
-            InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(350f).Around2D(DistanceFrom, DistanceTo);//put it out front to aid the cops
-        }
-        else
-        {
-            InitialPosition = Game.LocalPlayer.Character.Position.Around2D(DistanceFrom, DistanceTo);
-        }
-        Zone InitialZoneName = Zones.GetZoneAtLocation(InitialPosition);
+    //    float DistanceToDelete = 1500f;
 
-        //Water
-        if (NativeFunction.Natives.GET_WATER_HEIGHT<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
-        {
-            WaterSpawn = new RandomPoliceSpawn(new Vector3(InitialPosition.X, InitialPosition.Y, InitialPosition.Z + height), Heading, InitialZoneName, null);
-            Debugging.WriteToLog("GetPoliceSpawn", string.Format("Water Spawn at {0}", InitialPosition));
-        }
-        else
-        {
-            WaterSpawn = null;
-        }
-
-        //Air
-        AirSpawn = new RandomPoliceSpawn(new Vector3(InitialPosition.X, InitialPosition.Y, InitialPosition.Z + 250f), Heading, InitialZoneName, null);
+    //    if (PlayerState.IsWanted)
+    //        DistanceToDelete = 550f;
 
 
-        //Street
-        General.GetStreetPositionandHeading(InitialPosition, out SpawnLocation, out Heading, true);
-        if (SpawnLocation == Vector3.Zero || SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) < 150f)//was >?
-        {
-            StreetSpawn = null;
-        }
-        else
-        {
-            if (AllowClosePoliceSpawns)
-            {
-                if (PedList.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(SpawnLocation) <= 200f))//150f
-                    StreetSpawn = null;
-            }
-            else
-            {
-                if (PedList.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
-                    StreetSpawn = null;
-            }
-        }
+    //    DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= DistanceToDelete && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
 
-        Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
-        if (ZoneName == null)
-            StreetSpawn = null;
+    //    if(PlayerState.IsWanted)// && Game.GameTime - GameTimeLastRemovedCop >= (PlayerState.WantedLevel * -2000) + 15000)
+    //    {
+    //        //bool First = false;
+    //        foreach (Cop MyCop in PedList.CopPeds.Where(x => x.DistanceToPlayer >= 250f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer))
+    //        {
+    //            if (MyCop.DistanceToPlayer >= 800f)
+    //                DeleteCop(MyCop);
+    //            else if (MyCop.CountNearbyCops >= 3)
+    //                DeleteCop(MyCop);
+    //        }
+    //        //DeleteCop(PedList.CopPeds.Where(x => x.DistanceToPlayer >= 175f && x.CanBeDeleted).OrderByDescending(y => y.DistanceToPlayer).FirstOrDefault());
+    //    }
+    //}
+    //public static void CheckRemove()
+    //{
+    //    if (IsRunning)
+    //    {
+    //        if (CanRemoveCop)
+    //        {
 
-       // string StreetName = Streets.GetCurrentStreetName(SpawnLocation);
-        Street MyGTAStreet = Streets.GetCurrentStreet(SpawnLocation);
+    //        }
 
-        StreetSpawn = new RandomPoliceSpawn(SpawnLocation, Heading, ZoneName, MyGTAStreet);
-    }
+
+
+    //        foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.CanBeDeleted))
+    //        {
+    //            Vector3 CurrentLocation = Cop.Pedestrian.Position;
+    //            if (Cop.DistanceToPlayer >= DistanceToDelete)//2000f
+    //            {
+    //                DeleteCop(Cop);
+    //                Debugging.WriteToLog("SpawnCop", string.Format("Cop Distance Delete: {0}", Cop.Pedestrian.Handle));
+    //            }
+    //            //else if (PlayerState.IsWanted && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsDriver() && !Cop.Pedestrian.IsInHelicopter)
+    //            //{
+    //            //    if (Cop.DistanceToPlayer >= 175f && Cop.TimeBehindPlayer >= 20000)
+    //            //    {
+    //            //        DeleteCop(Cop);
+    //            //        Debugging.WriteToLog("SpawnCop", string.Format("Cop Behind Delete: {0}", Cop.Pedestrian.Handle));
+    //            //    }
+    //            //    else if (Cop.DistanceToPlayer >= 175f && (Cop.EverSeenPlayer || Cop.ClosestDistanceToPlayer <= 50f) && Cop.CountNearbyCops >= 3)
+    //            //    {
+    //            //        DeleteCop(Cop);
+    //            //        Debugging.WriteToLog("SpawnCop", string.Format("Cop Nearby 1 Delete: {0}", Cop.Pedestrian.Handle));
+    //            //    }
+    //            //    else if (Cop.DistanceToPlayer >= 250f && Cop.CountNearbyCops >= 2)
+    //            //    {
+    //            //        DeleteCop(Cop);
+    //            //        Debugging.WriteToLog("SpawnCop", string.Format("Cop Nearby 2 Delete: {0}", Cop.Pedestrian.Handle));
+    //            //    }
+    //            //}
+
+    //            if (Cop.DistanceToPlayer >= 175f && Cop.Pedestrian.IsInAnyVehicle(false))//250f
+    //            {
+    //                if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
+    //                {
+    //                    Cop.Pedestrian.CurrentVehicle.Repair();
+    //                }
+    //                else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
+    //                {
+    //                    DeleteCop(Cop);
+    //                    Debugging.WriteToLog("SpawnCop", string.Format("Cop GaveUp Delete: {0}", Cop.Pedestrian.Handle));
+    //                }
+    //            }
+    //        }
+    //        foreach (Vehicle PoliceCar in CreatedPoliceVehicles.Where(x => x.Exists()))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
+    //        {
+    //            if (PoliceCar.IsEmpty)
+    //            {
+    //                if (PoliceCar.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+    //                {
+    //                    PoliceCar.Delete();
+    //                }
+    //            }
+    //        }
+    //        CreatedPoliceVehicles.RemoveAll(x => !x.Exists());
+    //    }
+    //}
+    //private static void GetPoliceSpawn()
+    //{
+    //    StreetSpawn = null;
+    //    WaterSpawn = null;
+    //    AirSpawn = null;
+
+    //    float DistanceFrom = MinDistanceToSpawn;
+    //    float DistanceTo = MaxDistanceToSpawn;
+    //    Vector3 SpawnLocation = Vector3.Zero;
+    //    float Heading = 0f;
+    //    Vector3 InitialPosition = Vector3.Zero;
+    //    if (PlayerState.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+    //    {
+    //        InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(350f).Around2D(DistanceFrom, DistanceTo);//put it out front to aid the cops
+    //    }
+    //    else
+    //    {
+    //        InitialPosition = Game.LocalPlayer.Character.Position.Around2D(DistanceFrom, DistanceTo);
+    //    }
+    //    Zone InitialZoneName = Zones.GetZoneAtLocation(InitialPosition);
+
+    //    //Water
+    //    if (NativeFunction.Natives.GET_WATER_HEIGHT<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
+    //    {
+    //        WaterSpawn = new RandomPoliceSpawn(new Vector3(InitialPosition.X, InitialPosition.Y, InitialPosition.Z + height), Heading, InitialZoneName, null);
+    //        Debugging.WriteToLog("GetPoliceSpawn", string.Format("Water Spawn at {0}", InitialPosition));
+    //    }
+    //    else
+    //    {
+    //        WaterSpawn = null;
+    //    }
+
+    //    //Air
+    //    AirSpawn = new RandomPoliceSpawn(new Vector3(InitialPosition.X, InitialPosition.Y, InitialPosition.Z + 250f), Heading, InitialZoneName, null);
+
+
+    //    //Street
+    //    General.GetStreetPositionandHeading(InitialPosition, out SpawnLocation, out Heading, true);
+    //    if (SpawnLocation == Vector3.Zero || SpawnLocation.DistanceTo2D(Game.LocalPlayer.Character) < 150f)//was >?
+    //    {
+    //        StreetSpawn = null;
+    //    }
+    //    else
+    //    {
+    //        if (AllowClosePoliceSpawns)
+    //        {
+    //            if (PedList.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(SpawnLocation) <= 200f))//150f
+    //                StreetSpawn = null;
+    //        }
+    //        else
+    //        {
+    //            if (PedList.CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(SpawnLocation) <= 500f))//500f
+    //                StreetSpawn = null;
+    //        }
+    //    }
+
+    //    Zone ZoneName = Zones.GetZoneAtLocation(SpawnLocation);
+    //    if (ZoneName == null)
+    //        StreetSpawn = null;
+
+    //   // string StreetName = Streets.GetCurrentStreetName(SpawnLocation);
+    //    Street MyGTAStreet = Streets.GetCurrentStreet(SpawnLocation);
+
+    //    StreetSpawn = new RandomPoliceSpawn(SpawnLocation, Heading, ZoneName, MyGTAStreet);
+    //}
+
+
+    //private static Agency GetAgencyToSpawn()
+    //{
+
+
+
+
+
+
+
+
+    //    Agency ToSpawn = null;
+    //    string DebugName = "";
+    //    if (PlayerState.WantedLevel == 5)
+    //    {
+    //        DebugName = "ARMY";
+    //        ToSpawn = Agencies.RandomArmyAgency;
+    //    }
+    //    else if (WaterSpawn != null && General.RandomPercent(10) && PedList.PoliceVehicles.Count(x => x.IsBoat) < General.MySettings.Police.BoatLimit)
+    //    {
+    //        DebugName = "WATER";
+    //        ToSpawn = Jurisdiction.RandomAgencyAtZone(WaterSpawn.ZoneAtLocation.InternalGameName);
+    //    }
+    //    else if (AirSpawn != null && General.RandomPercent(10) && PedList.PoliceVehicles.Count(x => x.IsHelicopter) < General.MySettings.Police.HelicopterLimit)
+    //    {
+    //        DebugName = "HELI";
+    //        ToSpawn = Jurisdiction.AirAgencyAtZone(AirSpawn.ZoneAtLocation.InternalGameName);
+    //    }
+    //    else if (StreetSpawn != null)
+    //    {
+    //        if ((PlayerState.IsNotWanted && General.RandomPercent(3)) || (PlayerState.WantedLevel >= 3 || General.RandomPercent(2 * PlayerState.WantedLevel)))
+    //        {
+    //            DebugName = "FEDERAL";
+    //            ToSpawn = Agencies.RandomFederalAgency;
+    //        }
+    //        else
+    //        {
+    //            if (StreetSpawn.StreetAtSpawn != null && StreetSpawn.StreetAtSpawn.IsHighway && General.RandomPercent(10))
+    //            {
+    //                DebugName = "HIGHWAY";
+    //                ToSpawn = Agencies.RandomHighwayAgency;
+    //            }
+    //            else
+    //            {
+    //                DebugName = "REGULAR";
+    //                ToSpawn = Jurisdiction.RandomAgencyAtZone(StreetSpawn.ZoneAtLocation.InternalGameName);
+    //            }
+    //        }
+    //    }
+    //    //Debugging.WriteToLog("SpawnCop", string.Format("Attempting to spawn {0}, {1}", ToSpawn.Initials, DebugName));
+    //    return ToSpawn;
+    //}
+
+
+    //public static void SpawnCop()
+    //{
+    //    try
+    //    {
+    //        GetPoliceSpawn();
+    //        Agency AgencyToSpawn = GetAgencyToSpawn();
+    //        SpawnGTACop(AgencyToSpawn, StreetSpawn.Heading);
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Debugging.WriteToLog("SpawnActiveChaseCopError", e.Message + " : " + e.StackTrace);
+    //    }
+    //}
+
+
+
+
 
     //public static void SpawnRoadblock(Vector3 InitialPosition)
     //{

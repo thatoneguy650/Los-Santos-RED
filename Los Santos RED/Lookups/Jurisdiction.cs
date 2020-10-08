@@ -289,7 +289,7 @@ public static partial class Jurisdiction
         else
             return null;
     }
-    public static Agency RandomAgencyAtZone(string ZoneName)
+    public static Agency AgencyAtZone(string ZoneName)
     {
         if (ZoneJurisdictions.Any())
         {
@@ -312,7 +312,7 @@ public static partial class Jurisdiction
             return null;
         }
     }
-    public static Agency AirAgencyAtZone(string ZoneName)
+    public static Agency AgencyAtCounty(string ZoneName)
     {
         Zone MyZone = Zones.GetZoneByName(ZoneName);
         if (MyZone != null)
