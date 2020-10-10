@@ -70,7 +70,7 @@ public static class ScriptController
 
             new TickTask(50, "SearchModeStopping", SearchModeStopping.Tick, 12,0),
 
-            new TickTask(500, "PoliceSpawning", PoliceSpawning.CheckSpawn, 13,0),
+            new TickTask(500, "PoliceSpawning", PoliceSpawning.StopVanillaDispatch, 13,0),
             new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 13,1),
 
             new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 14,0),
@@ -150,7 +150,15 @@ public static class ScriptController
                             //TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
                             TickStopWatch.Reset();
                         }
-                        
+                        foreach(TickTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
+                        {
+                            uint GameTimeStarted = Game.GameTime;
+                            TickStopWatch.Stop();
+                            RunningBehind.RunTask();
+                            TickStopWatch.Stop();
+                            //TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
+                            TickStopWatch.Reset();
+                        }
                     }
 
                     GameStopWatch.Stop();
@@ -299,6 +307,20 @@ public static class ScriptController
                 if (GameTimeLastRan == 0)
                     return true;
                 else if (Game.GameTime - GameTimeLastRan >= IntervalMissLength)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool RunningBehind
+        {
+            get
+            {
+                if (Interval == 0)
+                    return false;
+                if (GameTimeLastRan == 0)
+                    return true;
+                else if (Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2))
                     return true;
                 else
                     return false;

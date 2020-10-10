@@ -11,27 +11,7 @@ public static partial class Agencies
 {
     private static string ConfigFileName = "Plugins\\LosSantosRED\\Agencies.xml";
     public static List<Agency> AgenciesList { get; set; }
-    public static Agency RandomHighwayAgency
-    {
-        get
-        {
-            return AgenciesList.Where(x => x.CanSpawn && x.SpawnsOnHighway).PickRandom();
-        }
-    }
-    public static Agency RandomArmyAgency
-    {
-        get
-        {
-            return AgenciesList.Where(x => x.CanSpawn && x.AgencyClassification == Agency.Classification.Military).PickRandom();
-        }
-    }
-    public static Agency RandomFederalAgency
-    {
-        get
-        {
-            return AgenciesList.Where(x => x.CanSpawn && x.AgencyClassification == Agency.Classification.Federal).PickRandom();
-        }
-    }
+    private static int LikelyHoodOfAnySpawn { get; set; } = 10;
     public static void Initialize()
     {
         ReadConfig();
@@ -39,6 +19,23 @@ public static partial class Agencies
     public static void Dispose()
     {
 
+    }
+    public static List<Agency> AgenciesAtPosition(Vector3 Position)
+    {
+        List<Agency> ToReturn = new List<Agency>();
+        Street StreetAtPosition = Streets.GetCurrentStreet(Position);
+        if(StreetAtPosition != null && Streets.GetCurrentStreet(Position).IsHighway) //Highway Patrol Jurisdiction
+        {
+            ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn && x.SpawnsOnHighway));
+        }
+        Zone CurrentZone = Zones.GetZoneAtLocation(Position);
+        ToReturn.Add(Jurisdiction.AgencyAtZone(CurrentZone.InternalGameName)); //Zone Jurisdiciton Random
+        ToReturn.Add(Jurisdiction.AgencyAtCounty(CurrentZone.InternalGameName));
+        if (!ToReturn.Any() || General.RandomPercent(LikelyHoodOfAnySpawn))
+        {
+            ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn && x.CanSpawnAnywhere));
+        }
+        return ToReturn;
     }
     public static void ReadConfig()
     {
@@ -273,9 +270,9 @@ public static partial class Agencies
             new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
             new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
 
-            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4 },
-            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
-            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,CanSpawnAnywhere = true },
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 3,CanSpawnAnywhere = true },
+            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 4, SpawnLimit = 3,CanSpawnAnywhere = true },
 
             new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 4, SpawnsOnHighway = true },
             new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Agency.Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 2 },
@@ -287,7 +284,7 @@ public static partial class Agencies
 
             new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1, SpawnLimit = 1 },
 
-            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5 },
+            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
 
 
             new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },

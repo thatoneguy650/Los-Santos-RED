@@ -279,7 +279,7 @@ public static class Crimes
         //    AimingWeaponAtPolice.IsCurrentlyViolating = false;
         //}
 
-        if (PlayerState.IsWanted && Police.AnyCanSeePlayer && Game.LocalPlayer.Character.Speed >= 2.0f && !PlayerState.HandsAreUp && WantedLevelScript.HasBeenWantedFor >= 10000)
+        if (PlayerState.IsWanted && Police.AnySeenPlayerCurrentWanted && !PlayerState.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !PlayerState.HandsAreUp && WantedLevelScript.HasBeenWantedFor >= 10000)
         {
             ResistingArrest.IsCurrentlyViolating = true;
         }

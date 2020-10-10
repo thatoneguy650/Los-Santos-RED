@@ -163,7 +163,7 @@ public static class PoliceSpawning
         CreatedEntities = new List<Entity>();
         IsRunning = true;
     }
-    public static void CheckSpawn()
+    public static void StopVanillaDispatch()
     {
         if (IsRunning)
         {
@@ -225,7 +225,7 @@ public static class PoliceSpawning
             else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
             {
                 DeleteCop(Cop);
-                Debugging.WriteToLog("SpawnCop", string.Format("Cop GaveUp Delete: {0}", Cop.Pedestrian.Handle));
+                Debugging.WriteToLog("PoliceSpawning", string.Format("Cop GaveUp Delete: {0}", Cop.Pedestrian.Handle));
             }
         }
     }
@@ -248,16 +248,6 @@ public static class PoliceSpawning
 
         SetDispatchService(true);
     }
-    //public static void DebugSetPoliceSpawn(Vector3 PositionToSet)
-    //{
-    //    Zone ZoneName = Zones.GetZoneAtLocation(PositionToSet);
-    //    if (ZoneName == null || ZoneName.InternalGameName == "OCEANA")
-    //        return;
-
-    //    Street MyGTAStreet = Streets.GetCurrentStreet(PositionToSet);
-
-    //    StreetSpawn = new RandomPoliceSpawn(PositionToSet,0f, ZoneName, MyGTAStreet);
-    //}
     public static void DeleteCop(Cop Cop)
     {
         if (Cop == null)
@@ -281,7 +271,7 @@ public static class PoliceSpawning
 
         if (Cop.Pedestrian.Exists())
         {
-            Debugging.WriteToLog("Delete Cop", string.Format("Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle,Cop.DistanceToPlayer,Cop.AssignedAgency.Initials));
+            Debugging.WriteToLog("PoliceSpawning", string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle,Cop.DistanceToPlayer,Cop.AssignedAgency.Initials));
             Cop.Pedestrian.Delete();
         }
         Cop.WasMarkedNonPersistent = false;
@@ -320,7 +310,7 @@ public static class PoliceSpawning
         if (MyBlip.Exists())
             MyBlip.Delete();
     }
-    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading)
+    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading,Agency.VehicleInformation MyCarInfo)
     {
         if (_Agency == null)
             return false;
@@ -328,32 +318,7 @@ public static class PoliceSpawning
         if (!_Agency.CanSpawn)
             return false;
 
-        //Vector3 SpawnLocation;
         VehicleExt CopCar;
-        Agency.VehicleInformation MyCarInfo = _Agency.GetRandomVehicle();
-        if (MyCarInfo == null)
-        {
-            Debugging.WriteToLog("SpawnGTACop", string.Format("Could not find Auto Info for {0}", _Agency.Initials));
-            return false;
-        }
-
-
-        //if(MyCarInfo.IsHelicopter && AirSpawn != null)
-        //{
-        //    SpawnLocation = AirSpawn.SpawnLocation;
-        //}
-        //else if (MyCarInfo.IsBoat && WaterSpawn != null)
-        //{
-        //    SpawnLocation = WaterSpawn.SpawnLocation;
-        //}
-        //else if((MyCarInfo.IsCar || MyCarInfo.IsMotorcycle) && StreetSpawn != null)
-        //{
-        //    SpawnLocation = StreetSpawn.SpawnLocation;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
 
         CopCar = SpawnCopVehicle(_Agency, MyCarInfo, SpawnLocation, Heading);
         GameFiber.Yield();
@@ -384,7 +349,7 @@ public static class PoliceSpawning
             MyNewCop.WasRandomSpawnDriver = true;
             MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
             MyNewCop.GameTimeSpawned = Game.GameTime;
-            //Debugging.WriteToLog("SpawnCop", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.VehicleEnt.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
+            Debugging.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.VehicleEnt.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
 
             if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && Cop.Exists())
             {
@@ -427,7 +392,7 @@ public static class PoliceSpawning
                             }
                             PedList.CopPeds.Add(MyNewPartnerCop);
                             MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
-                            //Debugging.WriteToLog("SpawnCop", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.VehicleEnt.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
+                            Debugging.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.VehicleEnt.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
                         }
                     }
                 }
@@ -481,17 +446,23 @@ public static class PoliceSpawning
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);
         Agencies.ChangeLivery(CopCar, _Agency);
         GameFiber.Yield();
-
-        VehicleExt ToReturn = new VehicleExt(CopCar, 0, false, false, null, false, null) { ExtendedAgencyVehicleInformation = MyCarInfo };
-        if(CopCar.Exists())
+        if (CopCar.Exists())
         {
-            UpgradeCruiser(CopCar);
-            return ToReturn;
+            VehicleExt ToReturn = new VehicleExt(CopCar, 0, false, false, null, false, null) { ExtendedAgencyVehicleInformation = MyCarInfo };
+            if (CopCar.Exists())
+            {
+                UpgradeCruiser(CopCar);
+                return ToReturn;
+            }
+            else
+            {
+                return null;
+            }
         }
         else
         {
             return null;
-        }    
+        }
     }
     private static void SetDispatchService(bool ValueToSet)
     {

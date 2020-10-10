@@ -474,6 +474,40 @@ namespace ExtensionsMethods
             var diffMin = diffs.Min(x => x);
             return diffs.ToList().FindIndex(n => n == diffMin);
         }
+        public static Color GetBaseColor(Color PrimaryColor)
+        {
+            List<Color> BaseColorList = new List<Color>
+        {
+            Color.Red,
+            Color.Aqua,
+            Color.Beige,
+            Color.Black,
+            Color.Blue,
+            Color.Brown,
+            Color.DarkBlue,
+            Color.DarkGreen,
+            Color.DarkGray,
+            Color.DarkOrange,
+            Color.DarkRed,
+            Color.Gold,
+            Color.Green,
+            Color.Gray,
+            Color.LightBlue,
+            Color.Maroon,
+            Color.Orange,
+            Color.Pink,
+            Color.Purple,
+            Color.Silver,
+            Color.White,
+            Color.Yellow
+        };
+
+            Color MyColor = PrimaryColor;
+
+            int Index = ClosestColor2(BaseColorList, MyColor);
+
+            return BaseColorList[Index];
+        }
 
         // color brightness as perceived:
         public static float getBrightness(Color c)

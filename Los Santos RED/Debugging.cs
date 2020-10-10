@@ -484,15 +484,18 @@ public static class Debugging
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
         }
-        //if (ProcedureString != "Running Red")
-        //{
-        //    return;
-        //}
-        string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
-        if (General.MySettings != null && General.MySettings.General.Logging)
+        if (ProcedureString == "Dispatch" || ProcedureString == "PoliceSpawning" || ProcedureString == "ScannerScript")
         {
-            LogMessages.Add(Message);
-            Game.Console.Print(Message);
+            string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
+            if (General.MySettings != null && General.MySettings.General.Logging)
+            {
+                LogMessages.Add(Message);
+                Game.Console.Print(Message);
+            }
+        }
+        else
+        {
+            return;
         }
     }
 

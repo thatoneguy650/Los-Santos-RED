@@ -61,6 +61,19 @@ public class PedExt
         }
             
     }
+    public bool RecentlyUpdated
+    {
+        get
+        {
+            if (GameTimeLastDistanceCheck == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastDistanceCheck >= 2000)
+                return false;
+            else
+                return true;
+        }
+
+    }
     public bool NeedsDistanceCheck
     {
         get

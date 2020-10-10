@@ -23,6 +23,17 @@ public static class PersonOfInterest
                 return 0;
         }
     }
+    public static bool LethalForceAuthorized
+    {
+        get
+        {
+            CriminalHistory LastWanted = GetLastWantedStats();
+            if (LastWanted != null)
+                return LastWanted.LethalForceAuthorized;
+            else
+                return false;
+        }
+    }
     public static float SearchRadius
     {
         get

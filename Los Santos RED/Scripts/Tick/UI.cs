@@ -273,12 +273,12 @@ public static class UI
             if (MainZoneAgency != null)
                 CopZoneName = MainZoneAgency.ColoredInitials;
         }
-        if(PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
-        {
-            Agency HighwayPatrol = Agencies.RandomHighwayAgency;
-            if(HighwayPatrol != null)
-            CopZoneName += "~s~ / " + HighwayPatrol.ColoredInitials;
-        }
+        //if(PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
+        //{
+        //    Agency HighwayPatrol = Agencies.RandomHighwayAgency;
+        //    if(HighwayPatrol != null)
+        //    CopZoneName += "~s~ / " + HighwayPatrol.ColoredInitials;
+        //}
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
     }

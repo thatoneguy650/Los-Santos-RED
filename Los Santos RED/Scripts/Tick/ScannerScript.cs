@@ -6,7 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using static DispatchScannerFiles;
+using Rage.Native;
+using System.Runtime.InteropServices;
 
 public static class ScannerScript
 {
@@ -18,7 +21,8 @@ public static class ScannerScript
     private static DispatchEvent CurrentlyPlaying;
     private static int HighestCivilianReportedPriority = 99;
     private static int HighestOfficerReportedPriority = 99;
-
+    private static List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
+    private static List<ColorLookup> ColorLookups = new List<ColorLookup>();
 
     private static uint GameTimeLastDisplayedSubtitle;
     private static uint GameTimeLastAnnouncedDispatch;
@@ -512,7 +516,7 @@ public static class ScannerScript
                 Street MyCrossStreet = PlayerLocation.PlayerCurrentCrossStreet;
                 if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
                 {
-                    dispatchEvent.SoundsToPlay.Add((new List<string>() { conjunctives.AT01.FileName,conjunctives.AT02.FileName,conjunctives.Closetoum.FileName,conjunctives.Closetouhh.FileName }).PickRandom());
+                    dispatchEvent.SoundsToPlay.Add((new List<string>() { conjunctives.AT01.FileName,conjunctives.AT02.FileName }).PickRandom());
                     dispatchEvent.SoundsToPlay.Add(MyCrossStreet.DispatchFile);
                     dispatchEvent.NotificationText += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
                     dispatchEvent.Subtitles += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
@@ -525,7 +529,7 @@ public static class ScannerScript
         Zone MyZone = Zones.GetZoneAtLocation(dispatchEvent.PositionToReport);
         if (MyZone != null && MyZone.ScannerValue != "")
         {
-            dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
+            dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
             dispatchEvent.SoundsToPlay.Add(MyZone.ScannerValue);
             dispatchEvent.Subtitles += " ~s~near ~p~" + MyZone.DisplayName + "~s~";
             dispatchEvent.NotificationText += "~n~~p~" + MyZone.DisplayName + "~s~";
@@ -533,8 +537,85 @@ public static class ScannerScript
     }
     private static void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe)
     {
-        Debugging.WriteToLog("AddVehicleDescription", "TBD");
+        if (VehicleToDescribe.HasBeenDescribedByDispatch)
+            return;
+        else
+            VehicleToDescribe.HasBeenDescribedByDispatch = true;
+
+        if (VehicleToDescribe != null)
+        {
+            dispatchEvent.NotificationText += "~n~Vehicle:~s~";
+            dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
+            dispatchEvent.SoundsToPlay.Add(conjunctives.Drivinga.FileName);
+            dispatchEvent.Subtitles += " suspect is driving a ~s~";
+
+
+            Color CarColor = Vehicles.GetVehicleColor(VehicleToDescribe);
+            string MakeName = Vehicles.GetMakeName(VehicleToDescribe);
+            string ClassName = Vehicles.GetClassName(VehicleToDescribe);
+            string ModelName = Vehicles.GetModelName(VehicleToDescribe);
+
+
+
+            Debugging.WriteToLog("ScannerScript", string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name,MakeName,ClassName,ModelName, VehicleToDescribe.VehicleEnt.Model.Name));
+        }
+
     }
+
+    public static string VehicleClassScannerFile(Vehicles.VehicleClass myVehicleClass)
+    {
+        if (myVehicleClass == Vehicles.VehicleClass.Boats)
+            return vehicle_category.Boat01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Commercial)
+            return "";
+        else if (myVehicleClass == Vehicles.VehicleClass.Compacts)
+            return vehicle_category.Sedan.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Coupes)
+            return vehicle_category.Coupe01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Cycles)
+            return vehicle_category.Bicycle01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Emergency)
+            return "";
+        else if (myVehicleClass == Vehicles.VehicleClass.Helicopters)
+            return vehicle_category.Helicopter01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Industrial)
+            return vehicle_category.IndustrialVehicle01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Military)
+            return "";
+        else if (myVehicleClass == Vehicles.VehicleClass.Motorcycles)
+            return vehicle_category.Motorcycle01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Muscle)
+            return vehicle_category.MuscleCar01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.OffRoad)
+            return vehicle_category.OffRoad01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Planes)
+            return "";
+        else if (myVehicleClass == Vehicles.VehicleClass.Sedans)
+            return vehicle_category.Sedan.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Service)
+            return vehicle_category.Service01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Sports)
+            return vehicle_category.SportsCar01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.SportsClassics)
+            return vehicle_category.Classic01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Super)
+            return vehicle_category.PerformanceCar01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.SUVs)
+            return vehicle_category.SUV01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Trailer)
+            return "";
+        else if (myVehicleClass == Vehicles.VehicleClass.Trains)
+            return vehicle_category.Train01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Unknown)
+            return "";
+        else if (myVehicleClass == Vehicles.VehicleClass.Utility)
+            return vehicle_category.UtilityVehicle01.FileName;
+        else if (myVehicleClass == Vehicles.VehicleClass.Vans)
+            return vehicle_category.Van01.FileName;
+        else
+            return "";
+    }
+
     private static void AddWeaponDescription(DispatchEvent dispatchEvent, GTAWeapon WeaponToDescribe)
     {
 
@@ -670,6 +751,7 @@ public static class ScannerScript
             ReportedLethalForceAuthorized = true;
         }
     }
+
     private static void RemoveAllNotifications()
     {
         foreach (uint handles in NotificationHandles)
@@ -767,7 +849,120 @@ public static class ScannerScript
             ,LethalForceAuthorized
             ,RunningARedLight
         };
-}
+
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('A', lp_letters_high.Adam.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('B', lp_letters_high.Boy.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('C', lp_letters_high.Charles.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('D', lp_letters_high.David.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('E', lp_letters_high.Edward.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('F', lp_letters_high.Frank.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('G', lp_letters_high.George.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('H', lp_letters_high.Henry.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('I', lp_letters_high.Ita.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('J', lp_letters_high.John.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('K', lp_letters_high.King.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('L', lp_letters_high.Lincoln.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('M', lp_letters_high.Mary.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('N', lp_letters_high.Nora.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('O', lp_letters_high.Ocean.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('P', lp_letters_high.Paul.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Q', lp_letters_high.Queen.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('R', lp_letters_high.Robert.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('S', lp_letters_high.Sam.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('T', lp_letters_high.Tom.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('U', lp_letters_high.Union.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('V', lp_letters_high.Victor.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('W', lp_letters_high.William.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('X', lp_letters_high.XRay.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Y', lp_letters_high.Young.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Z', lp_letters_high.Zebra.FileName));
+
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('A', lp_letters_high.Adam1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('B', lp_letters_high.Boy1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('C', lp_letters_high.Charles1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('E', lp_letters_high.Edward1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('F', lp_letters_high.Frank1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('G', lp_letters_high.George1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('H', lp_letters_high.Henry1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('I', lp_letters_high.Ita1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('J', lp_letters_high.John1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('K', lp_letters_high.King1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('L', lp_letters_high.Lincoln1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('M', lp_letters_high.Mary1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('N', lp_letters_high.Nora1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('O', lp_letters_high.Ocean1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('P', lp_letters_high.Paul1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Q', lp_letters_high.Queen1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('R', lp_letters_high.Robert1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('S', lp_letters_high.Sam1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('T', lp_letters_high.Tom1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('U', lp_letters_high.Union1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('V', lp_letters_high.Victor1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('W', lp_letters_high.William1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('X', lp_letters_high.XRay1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Y', lp_letters_high.Young1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Z', lp_letters_high.Zebra1.FileName));
+
+
+
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('1', lp_numbers.One.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('2', lp_numbers.Two.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('3', lp_numbers.Three.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('4', lp_numbers.Four.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('5', lp_numbers.Five.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('6', lp_numbers.Six.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('7', lp_numbers.Seven.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('8', lp_numbers.Eight.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('9', lp_numbers.Nine.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('0', lp_numbers.Zero.FileName));
+
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('1', lp_numbers.One1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('2', lp_numbers.Two1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('3', lp_numbers.Three1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('4', lp_numbers.Four1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('5', lp_numbers.Five1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('6', lp_numbers.Six1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('7', lp_numbers.Seven1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('8', lp_numbers.Eight1.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('9', lp_numbers.Niner.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('0', lp_numbers.Zero1.FileName));
+
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('1', lp_numbers.One2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('2', lp_numbers.Two2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('3', lp_numbers.Three2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('4', lp_numbers.Four2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('5', lp_numbers.Five2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('6', lp_numbers.Six2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('7', lp_numbers.Seven2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('8', lp_numbers.Eight2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('9', lp_numbers.Niner2.FileName));
+        LettersAndNumbersLookup.Add(new DispatchLettersNumber('0', lp_numbers.Zero2.FileName));
+
+        ColorLookups.Add(new ColorLookup(colour.COLORRED01.FileName, Color.Red));
+        ColorLookups.Add(new ColorLookup(colour.COLORAQUA01.FileName, Color.Aqua));
+        ColorLookups.Add(new ColorLookup(colour.COLORBEIGE01.FileName, Color.Beige));
+        ColorLookups.Add(new ColorLookup(colour.COLORBLACK01.FileName, Color.Black));
+        ColorLookups.Add(new ColorLookup(colour.COLORBLUE01.FileName, Color.Blue));
+        ColorLookups.Add(new ColorLookup(colour.COLORBROWN01.FileName, Color.Brown));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKBLUE01.FileName, Color.DarkBlue));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKGREEN01.FileName, Color.DarkGreen));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKGREY01.FileName, Color.DarkGray));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKORANGE01.FileName, Color.DarkOrange));
+        ColorLookups.Add(new ColorLookup(colour.COLORDARKRED01.FileName, Color.DarkRed));
+        ColorLookups.Add(new ColorLookup(colour.COLORGOLD01.FileName, Color.Gold));
+        ColorLookups.Add(new ColorLookup(colour.COLORGREEN01.FileName, Color.Green));
+        ColorLookups.Add(new ColorLookup(colour.COLORGREY01.FileName, Color.Gray));
+        ColorLookups.Add(new ColorLookup(colour.COLORGREY02.FileName, Color.Gray));
+        ColorLookups.Add(new ColorLookup(colour.COLORLIGHTBLUE01.FileName, Color.LightBlue));
+        ColorLookups.Add(new ColorLookup(colour.COLORMAROON01.FileName, Color.Maroon));
+        ColorLookups.Add(new ColorLookup(colour.COLORORANGE01.FileName, Color.Orange));
+        ColorLookups.Add(new ColorLookup(colour.COLORPINK01.FileName, Color.Pink));
+        ColorLookups.Add(new ColorLookup(colour.COLORPURPLE01.FileName, Color.Purple));
+        ColorLookups.Add(new ColorLookup(colour.COLORRED01.FileName, Color.Red));
+        ColorLookups.Add(new ColorLookup(colour.COLORSILVER01.FileName, Color.Silver));
+        ColorLookups.Add(new ColorLookup(colour.COLORWHITE01.FileName, Color.White));
+        ColorLookups.Add(new ColorLookup(colour.COLORYELLOW01.FileName, Color.Yellow));
+    }    
     private static void SetupDispatches()
     {
 
@@ -874,6 +1069,7 @@ public static class ScannerScript
             Name = "Stolen Air Vehicle",
             ResultsInLethalForce = true,
             IncludeDrivingVehicle = true,
+            MarkVehicleAsStolen = true,
             LocationDescription = LocationSpecificity.Zone,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
@@ -1453,6 +1649,30 @@ public static class ScannerScript
         }
         public Crime CrimeIdentified { get; set; }
         public Dispatch DispatchToPlay { get; set; }
+    }
+    private class ColorLookup
+    {
+        public Color BaseColor { get; set; }
+        public string ScannerFile { get; set; }
+
+        public ColorLookup(string _ScannerFile, Color _BaseColor)
+        {
+            BaseColor = _BaseColor;
+            ScannerFile = _ScannerFile;
+        }
+
+    }
+    private class DispatchLettersNumber
+    {
+        public char AlphaNumeric { get; set; }
+        public string ScannerFile { get; set; }
+
+        public DispatchLettersNumber(char _AlphaNumeric, string _ScannerFile)
+        {
+            AlphaNumeric = _AlphaNumeric;
+            ScannerFile = _ScannerFile;
+        }
+
     }
 
 }
