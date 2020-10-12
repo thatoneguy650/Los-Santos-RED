@@ -11,24 +11,17 @@ using static DispatchScannerFiles;
 using Rage.Native;
 using System.Runtime.InteropServices;
 
-public static class ScannerScript
+public static class PoliceScanner
 {
     private static WaveOutEvent outputDevice;
     private static AudioFileReader audioFile;
     private static List<uint> NotificationHandles = new List<uint>();
-    //private static bool CurrentlyPlayingCanInterrupt;
-    //private static int CurrentlyPlayingPriority = 99;
     private static DispatchEvent CurrentlyPlaying;
     private static int HighestCivilianReportedPriority = 99;
     private static int HighestOfficerReportedPriority = 99;
-    private static List<DispatchLettersNumber> LettersAndNumbersLookup = new List<DispatchLettersNumber>();
-    private static List<ColorLookup> ColorLookups = new List<ColorLookup>();
-
     private static uint GameTimeLastDisplayedSubtitle;
     private static uint GameTimeLastAnnouncedDispatch;
-
     private static bool ReportedLethalForceAuthorized = false;
-    private static int HighestPlayedPriority = 99;
 
     private static Dispatch OfficerDown;
     private static Dispatch ShotsFiredAtAnOfficer;
@@ -58,6 +51,7 @@ public static class ScannerScript
     private static Dispatch RequestAirSupport;
     private static Dispatch RequestMilitaryUnits;
     private static Dispatch SuspectSpotted;
+    private static Dispatch WantedSuspectSpotted;
     private static Dispatch SuspectEvaded;
     private static Dispatch LostVisual;
     private static Dispatch ResumePatrol;
@@ -79,10 +73,9 @@ public static class ScannerScript
     private static List<Dispatch.AudioSet> OfficersReport;
     private static List<Dispatch.AudioSet> CiviliansReport;
     private static List<Dispatch.AudioSet> LethalForce;
+    private static List<Dispatch.AudioSet> LicensePlateSet;
     private static List<CrimeDispatch> DispatchLookup;
     private static bool ExecutingQueue;
-
-
     public static bool CancelAudio { get; set; }
     public static bool IsRunning { get; set; } = true;
     public static bool IsAudioPlaying
@@ -204,6 +197,18 @@ public static class ScannerScript
                 {
                     AddToQueue(LethalForceAuthorized);
                 }
+                if (!SuspectArrested.HasRecentlyBeenPlayed && PlayerState.RecentlyBusted && Police.AnyCanSeePlayer)
+                {
+                    AddToQueue(SuspectArrested);
+                }
+                if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerState.PoliceRecentlyNoticedVehicleChange && !PlayerState.CurrentVehicle.HasBeenDescribedByDispatch)
+                {
+                    AddToQueue(ChangedVehicles, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = PlayerState.CurrentVehicle });
+                }
+                if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && PersonOfInterest.RecentlyAppliedWantedStats)
+                {
+                    AddToQueue(WantedSuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = PlayerState.CurrentVehicle });
+                }
                 if (!RecentlyAnnouncedDispatch)
                 {
                     if (!LostVisual.HasRecentlyBeenPlayed && PlayerState.StarsRecentlyGreyedOut && WantedLevelScript.HasBeenWantedFor > 45000 && !PedList.AnyCopsNearPlayer)
@@ -214,14 +219,6 @@ public static class ScannerScript
                     {
                         AddToQueue(SuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                }
-                if (!SuspectArrested.HasRecentlyBeenPlayed && PlayerState.RecentlyBusted && Police.AnyCanSeePlayer)
-                {
-                    AddToQueue(SuspectArrested);
-                }
-                if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerState.PoliceRecentlyNoticedVehicleChange)
-                {
-                    AddToQueue(ChangedVehicles, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                 }
 
             }
@@ -260,7 +257,7 @@ public static class ScannerScript
         else
         {
             ToAdd.LatestInformation = ToCallIn;
-            Debugging.WriteToLog("AddToQueue", ToAdd.Name);
+            Debugging.WriteToLog("ScannerScript", ToAdd.Name);
             DispatchQueue.Add(ToAdd);
         }
     }
@@ -270,7 +267,7 @@ public static class ScannerScript
         if (Existing == null)
         {
             DispatchQueue.Add(ToAdd);
-            Debugging.WriteToLog("AddToQueue", ToAdd.Name);
+            Debugging.WriteToLog("ScannerScript", ToAdd.Name);
         }
     }
     private static Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
@@ -286,7 +283,6 @@ public static class ScannerScript
     public static void ResetReportedItems()
     {
         ReportedLethalForceAuthorized = false;
-        HighestPlayedPriority = 99;
         HighestCivilianReportedPriority = 99;
         HighestOfficerReportedPriority = 99;
         foreach (Dispatch ToReset in DispatchList)
@@ -325,14 +321,22 @@ public static class ScannerScript
         AddAudioSet(EventToPlay, DispatchToPlay.MainAudioSet.PickRandom());
         AddAudioSet(EventToPlay, DispatchToPlay.SecondaryAudioSet.PickRandom());
 
+        bool AddLicense = false;
+
+        if (!DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.IncludeLicensePlate)
+            AddLicense = true;
+
         if (DispatchToPlay.IncludeDrivingVehicle)
-            AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen);
+            AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen, AddLicense);
+
+        if (DispatchToPlay.IncludeRapSheet)
+            AddRapSheet(EventToPlay);
 
         if(DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null)
         {
             DispatchToPlay.LatestInformation.VehicleSeen.WasReportedStolen = true;
             
-            Debugging.WriteToLog("BuildDispatch", "MarkedAsStolen");
+            Debugging.WriteToLog("ScannerScript", "MarkedAsStolen");
         }
 
         if (DispatchToPlay.IncludeCarryingWeapon)
@@ -340,6 +344,14 @@ public static class ScannerScript
 
         if (DispatchToPlay.ResultsInLethalForce)
             AddLethalForce(EventToPlay);
+
+        if (DispatchToPlay.IncludeDrivingSpeed)
+        {
+            if (PlayerState.CurrentVehicle != null && PlayerState.CurrentVehicle.VehicleEnt.Exists())
+            {
+                AddSpeed(EventToPlay,PlayerState.CurrentVehicle.VehicleEnt.Speed);
+            }
+        }
 
         AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
 
@@ -356,15 +368,15 @@ public static class ScannerScript
         else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus && DispatchToPlay.Priority < HighestCivilianReportedPriority)
             HighestCivilianReportedPriority = DispatchToPlay.Priority;
 
-        PlayDispatch(EventToPlay);
+        PlayDispatch(EventToPlay,DispatchToPlay.LatestInformation);
     }
-    private static void PlayDispatch(DispatchEvent MyAudioEvent)
+    private static void PlayDispatch(DispatchEvent MyAudioEvent,DispatchCallIn MyDispatch)
     {
         /////////Maybe?
         bool AbortedAudio = false;
         if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
         {
-            Debugging.WriteToLog("PlayAudioList", string.Format("Incoming: {0}, Playing: {1}",MyAudioEvent.NotificationText,CurrentlyPlaying.NotificationText));
+            Debugging.WriteToLog("ScannerScript", string.Format("Incoming: {0}, Playing: {1}",MyAudioEvent.NotificationText,CurrentlyPlaying.NotificationText));
             AbortAllAudio();
             AbortedAudio = true;
         }
@@ -387,9 +399,11 @@ public static class ScannerScript
                 NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
             }
 
-            Debugging.WriteToLog("PlayAudioList", string.Format("Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
+            Debugging.WriteToLog("ScannerScript", string.Format("Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
             CurrentlyPlaying = MyAudioEvent;
-       
+            if (MyDispatch.VehicleSeen != null)
+                MyDispatch.VehicleSeen.HasBeenDescribedByDispatch = true;
+
             foreach (string audioname in MyAudioEvent.SoundsToPlay)
             {
                 PlayAudioFile(audioname);
@@ -407,7 +421,7 @@ public static class ScannerScript
                 if (CancelAudio)
                 {
                     CancelAudio = false;
-                    Debugging.WriteToLog("PlayAudioList", "CancelAudio Set to False");
+                    Debugging.WriteToLog("ScannerScript", "CancelAudio Set to False");
                     break;
                 }
             }
@@ -442,14 +456,14 @@ public static class ScannerScript
         }
         catch (Exception e)
         {
-            Debugging.WriteToLog("PlayAudio", e.Message);
+            Debugging.WriteToLog("ScannerScript", e.Message);
         }
     }
     private static void AddAudioSet(DispatchEvent dispatchEvent, Dispatch.AudioSet audioSet)
     {
         if (audioSet != null)
         {
-            Debugging.WriteToLog("AddAudioSet", string.Format("{0}", string.Join(",", audioSet.Sounds)));
+            Debugging.WriteToLog("ScannerScript", string.Format("{0}", string.Join(",", audioSet.Sounds)));
             dispatchEvent.SoundsToPlay.AddRange(audioSet.Sounds);
             dispatchEvent.Subtitles += " " + audioSet.Subtitles;
         }
@@ -535,14 +549,16 @@ public static class ScannerScript
             dispatchEvent.NotificationText += "~n~~p~" + MyZone.DisplayName + "~s~";
         }
     }
-    private static void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe)
+    private static void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate)
     {
+        if (VehicleToDescribe == null)
+            return;
         if (VehicleToDescribe.HasBeenDescribedByDispatch)
             return;
-        else
-            VehicleToDescribe.HasBeenDescribedByDispatch = true;
+        //else
+        //    VehicleToDescribe.HasBeenDescribedByDispatch = true;
 
-        if (VehicleToDescribe != null)
+        if (VehicleToDescribe != null && VehicleToDescribe.VehicleEnt.Exists())
         {
             dispatchEvent.NotificationText += "~n~Vehicle:~s~";
             dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
@@ -550,72 +566,56 @@ public static class ScannerScript
             dispatchEvent.Subtitles += " suspect is driving a ~s~";
 
 
-            Color CarColor = Vehicles.GetVehicleColor(VehicleToDescribe);
-            string MakeName = Vehicles.GetMakeName(VehicleToDescribe);
-            string ClassName = Vehicles.GetClassName(VehicleToDescribe);
-            string ModelName = Vehicles.GetModelName(VehicleToDescribe);
+            Color CarColor = Vehicles.VehicleColor(VehicleToDescribe);
+            string MakeName = Vehicles.MakeName(VehicleToDescribe);
+            int ClassInt = Vehicles.ClassInt(VehicleToDescribe);
+            string ClassName = VehicleScanner.ClassName(ClassInt);
+            string ModelName = Vehicles.ModelName(VehicleToDescribe);
 
+            string ColorAudio = VehicleScanner.ColorAudio(CarColor);
+            string MakeAudio = VehicleScanner.MakeAudio(MakeName);
+            string ClassAudio = VehicleScanner.ClassAudio(ClassInt);
+            string ModelAudio = VehicleScanner.ModelAudio(VehicleToDescribe.VehicleEnt.Model.Hash);
 
+            if(ColorAudio != "")
+            {
+                dispatchEvent.SoundsToPlay.Add(ColorAudio);
+                dispatchEvent.Subtitles += " ~s~" + CarColor.Name + "~s~";
+                dispatchEvent.NotificationText += " ~s~" + CarColor.Name + "~s~";
+            }
+            if (MakeAudio != "")
+            {
+                dispatchEvent.SoundsToPlay.Add(MakeAudio);
+                dispatchEvent.Subtitles += " ~s~" + MakeName + "~s~";
+                dispatchEvent.NotificationText += " ~s~" + MakeName + "~s~";
+            }
 
+            if (ModelAudio != "")
+            {
+                dispatchEvent.SoundsToPlay.Add(ModelAudio);
+                dispatchEvent.Subtitles += " ~s~" + ModelName + "~s~";
+                dispatchEvent.NotificationText += " ~s~" + ModelName + "~s~";
+            }
+            else if (ClassAudio != "")
+            {
+                dispatchEvent.SoundsToPlay.Add(ClassAudio);
+                dispatchEvent.Subtitles += " ~s~" + ClassName + "~s~";
+                dispatchEvent.NotificationText += " ~s~" + ClassName + "~s~";
+            }
+
+            if(IncludeLicensePlate)
+            {
+                AddAudioSet(dispatchEvent, LicensePlateSet.PickRandom());
+                string LicensePlateText = VehicleToDescribe.VehicleEnt.LicensePlate;
+                dispatchEvent.SoundsToPlay.AddRange(VehicleScanner.LicensePlateAudio(LicensePlateText));
+                dispatchEvent.Subtitles += " ~s~" + LicensePlateText + "~s~";
+                dispatchEvent.NotificationText += " ~s~Plate: " + LicensePlateText + "~s~";
+            }
+            
             Debugging.WriteToLog("ScannerScript", string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name,MakeName,ClassName,ModelName, VehicleToDescribe.VehicleEnt.Model.Name));
         }
 
     }
-
-    public static string VehicleClassScannerFile(Vehicles.VehicleClass myVehicleClass)
-    {
-        if (myVehicleClass == Vehicles.VehicleClass.Boats)
-            return vehicle_category.Boat01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Commercial)
-            return "";
-        else if (myVehicleClass == Vehicles.VehicleClass.Compacts)
-            return vehicle_category.Sedan.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Coupes)
-            return vehicle_category.Coupe01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Cycles)
-            return vehicle_category.Bicycle01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Emergency)
-            return "";
-        else if (myVehicleClass == Vehicles.VehicleClass.Helicopters)
-            return vehicle_category.Helicopter01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Industrial)
-            return vehicle_category.IndustrialVehicle01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Military)
-            return "";
-        else if (myVehicleClass == Vehicles.VehicleClass.Motorcycles)
-            return vehicle_category.Motorcycle01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Muscle)
-            return vehicle_category.MuscleCar01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.OffRoad)
-            return vehicle_category.OffRoad01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Planes)
-            return "";
-        else if (myVehicleClass == Vehicles.VehicleClass.Sedans)
-            return vehicle_category.Sedan.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Service)
-            return vehicle_category.Service01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Sports)
-            return vehicle_category.SportsCar01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.SportsClassics)
-            return vehicle_category.Classic01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Super)
-            return vehicle_category.PerformanceCar01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.SUVs)
-            return vehicle_category.SUV01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Trailer)
-            return "";
-        else if (myVehicleClass == Vehicles.VehicleClass.Trains)
-            return vehicle_category.Train01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Unknown)
-            return "";
-        else if (myVehicleClass == Vehicles.VehicleClass.Utility)
-            return vehicle_category.UtilityVehicle01.FileName;
-        else if (myVehicleClass == Vehicles.VehicleClass.Vans)
-            return vehicle_category.Van01.FileName;
-        else
-            return "";
-    }
-
     private static void AddWeaponDescription(DispatchEvent dispatchEvent, GTAWeapon WeaponToDescribe)
     {
 
@@ -743,6 +743,66 @@ public static class ScannerScript
             dispatchEvent.NotificationText += " Gat";
         }      
     }
+    private static void AddRapSheet(DispatchEvent dispatchEvent)
+    {
+        dispatchEvent.NotificationText = "Wanted For:" + WantedLevelScript.CurrentCrimes.PrintCrimes();
+    }
+    private static void AddSpeed(DispatchEvent dispatchEvent,float Speed)
+    {
+        if (Speed >= 40f)
+        {
+            dispatchEvent.SoundsToPlay.Add(suspect_last_seen.TargetLastReported.FileName);
+            dispatchEvent.Subtitles += " ~s~target last reported~s~";
+            if (Speed >= 40f && Speed < 50f)
+            {
+                dispatchEvent.SoundsToPlay.Add(doing_speed.Doing40mph.FileName);
+                dispatchEvent.Subtitles += " ~s~doing ~o~40 mph~s~";
+                dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~40 mph~s~";
+            }
+            else if (Speed >= 50f && Speed < 60f)
+            {
+                dispatchEvent.SoundsToPlay.Add(doing_speed.Doing50mph.FileName);
+                dispatchEvent.Subtitles += " ~s~doing ~o~50 mph~s~";
+                dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~50 mph~s~";
+            }
+            else if (Speed >= 60f && Speed < 70f)
+            {
+                dispatchEvent.SoundsToPlay.Add(doing_speed.Doing60mph.FileName);
+                dispatchEvent.Subtitles += " ~s~doing ~o~60 mph~s~";
+                dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~60 mph~s~";
+            }
+            else if (Speed >= 70f && Speed < 80f)
+            {
+                dispatchEvent.SoundsToPlay.Add(doing_speed.Doing70mph.FileName);
+                dispatchEvent.Subtitles += " ~s~doing ~o~70 mph~s~";
+                dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~70 mph~s~";
+            }
+            else if (Speed >= 80f && Speed < 90f)
+            {
+                dispatchEvent.SoundsToPlay.Add(doing_speed.Doing80mph.FileName);
+                dispatchEvent.Subtitles += " ~s~doing ~o~80 mph~s~";
+                dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~80 mph~s~";
+            }
+            else if (Speed >= 90f && Speed < 100f)
+            {
+                dispatchEvent.SoundsToPlay.Add(doing_speed.Doing90mph.FileName);
+                dispatchEvent.Subtitles += " ~s~doing ~o~90 mph~s~";
+                dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~90 mph~s~";
+            }
+            else if (Speed >= 100f && Speed < 104f)
+            {
+                dispatchEvent.SoundsToPlay.Add(doing_speed.Doing100mph.FileName);
+                dispatchEvent.Subtitles += " ~s~doing ~o~100 mph~s~";
+                dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~100 mph~s~";
+            }
+            else if (Speed >= 105f)
+            {
+                dispatchEvent.SoundsToPlay.Add(doing_speed.Doingover100mph.FileName);
+                dispatchEvent.Subtitles += " ~s~doing ~o~over 100 mph~s~";
+                dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~105 mph~s~";
+            }
+        }
+    }
     private static void AddLethalForce(DispatchEvent dispatchEvent)
     {
         if(!ReportedLethalForceAuthorized)
@@ -751,7 +811,6 @@ public static class ScannerScript
             ReportedLethalForceAuthorized = true;
         }
     }
-
     private static void RemoveAllNotifications()
     {
         foreach (uint handles in NotificationHandles)
@@ -805,7 +864,6 @@ public static class ScannerScript
             new CrimeDispatch(Crimes.BrandishingCloseCombatWeapon,CarryingWeapon),
             
         };
-
         DispatchList = new List<Dispatch>
         {
             OfficerDown
@@ -850,118 +908,6 @@ public static class ScannerScript
             ,RunningARedLight
         };
 
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('A', lp_letters_high.Adam.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('B', lp_letters_high.Boy.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('C', lp_letters_high.Charles.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('D', lp_letters_high.David.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('E', lp_letters_high.Edward.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('F', lp_letters_high.Frank.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('G', lp_letters_high.George.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('H', lp_letters_high.Henry.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('I', lp_letters_high.Ita.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('J', lp_letters_high.John.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('K', lp_letters_high.King.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('L', lp_letters_high.Lincoln.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('M', lp_letters_high.Mary.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('N', lp_letters_high.Nora.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('O', lp_letters_high.Ocean.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('P', lp_letters_high.Paul.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Q', lp_letters_high.Queen.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('R', lp_letters_high.Robert.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('S', lp_letters_high.Sam.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('T', lp_letters_high.Tom.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('U', lp_letters_high.Union.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('V', lp_letters_high.Victor.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('W', lp_letters_high.William.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('X', lp_letters_high.XRay.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Y', lp_letters_high.Young.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Z', lp_letters_high.Zebra.FileName));
-
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('A', lp_letters_high.Adam1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('B', lp_letters_high.Boy1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('C', lp_letters_high.Charles1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('E', lp_letters_high.Edward1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('F', lp_letters_high.Frank1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('G', lp_letters_high.George1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('H', lp_letters_high.Henry1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('I', lp_letters_high.Ita1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('J', lp_letters_high.John1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('K', lp_letters_high.King1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('L', lp_letters_high.Lincoln1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('M', lp_letters_high.Mary1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('N', lp_letters_high.Nora1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('O', lp_letters_high.Ocean1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('P', lp_letters_high.Paul1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Q', lp_letters_high.Queen1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('R', lp_letters_high.Robert1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('S', lp_letters_high.Sam1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('T', lp_letters_high.Tom1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('U', lp_letters_high.Union1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('V', lp_letters_high.Victor1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('W', lp_letters_high.William1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('X', lp_letters_high.XRay1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Y', lp_letters_high.Young1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('Z', lp_letters_high.Zebra1.FileName));
-
-
-
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('1', lp_numbers.One.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('2', lp_numbers.Two.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('3', lp_numbers.Three.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('4', lp_numbers.Four.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('5', lp_numbers.Five.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('6', lp_numbers.Six.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('7', lp_numbers.Seven.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('8', lp_numbers.Eight.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('9', lp_numbers.Nine.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('0', lp_numbers.Zero.FileName));
-
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('1', lp_numbers.One1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('2', lp_numbers.Two1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('3', lp_numbers.Three1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('4', lp_numbers.Four1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('5', lp_numbers.Five1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('6', lp_numbers.Six1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('7', lp_numbers.Seven1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('8', lp_numbers.Eight1.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('9', lp_numbers.Niner.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('0', lp_numbers.Zero1.FileName));
-
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('1', lp_numbers.One2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('2', lp_numbers.Two2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('3', lp_numbers.Three2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('4', lp_numbers.Four2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('5', lp_numbers.Five2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('6', lp_numbers.Six2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('7', lp_numbers.Seven2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('8', lp_numbers.Eight2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('9', lp_numbers.Niner2.FileName));
-        LettersAndNumbersLookup.Add(new DispatchLettersNumber('0', lp_numbers.Zero2.FileName));
-
-        ColorLookups.Add(new ColorLookup(colour.COLORRED01.FileName, Color.Red));
-        ColorLookups.Add(new ColorLookup(colour.COLORAQUA01.FileName, Color.Aqua));
-        ColorLookups.Add(new ColorLookup(colour.COLORBEIGE01.FileName, Color.Beige));
-        ColorLookups.Add(new ColorLookup(colour.COLORBLACK01.FileName, Color.Black));
-        ColorLookups.Add(new ColorLookup(colour.COLORBLUE01.FileName, Color.Blue));
-        ColorLookups.Add(new ColorLookup(colour.COLORBROWN01.FileName, Color.Brown));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKBLUE01.FileName, Color.DarkBlue));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKGREEN01.FileName, Color.DarkGreen));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKGREY01.FileName, Color.DarkGray));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKORANGE01.FileName, Color.DarkOrange));
-        ColorLookups.Add(new ColorLookup(colour.COLORDARKRED01.FileName, Color.DarkRed));
-        ColorLookups.Add(new ColorLookup(colour.COLORGOLD01.FileName, Color.Gold));
-        ColorLookups.Add(new ColorLookup(colour.COLORGREEN01.FileName, Color.Green));
-        ColorLookups.Add(new ColorLookup(colour.COLORGREY01.FileName, Color.Gray));
-        ColorLookups.Add(new ColorLookup(colour.COLORGREY02.FileName, Color.Gray));
-        ColorLookups.Add(new ColorLookup(colour.COLORLIGHTBLUE01.FileName, Color.LightBlue));
-        ColorLookups.Add(new ColorLookup(colour.COLORMAROON01.FileName, Color.Maroon));
-        ColorLookups.Add(new ColorLookup(colour.COLORORANGE01.FileName, Color.Orange));
-        ColorLookups.Add(new ColorLookup(colour.COLORPINK01.FileName, Color.Pink));
-        ColorLookups.Add(new ColorLookup(colour.COLORPURPLE01.FileName, Color.Purple));
-        ColorLookups.Add(new ColorLookup(colour.COLORRED01.FileName, Color.Red));
-        ColorLookups.Add(new ColorLookup(colour.COLORSILVER01.FileName, Color.Silver));
-        ColorLookups.Add(new ColorLookup(colour.COLORWHITE01.FileName, Color.White));
-        ColorLookups.Add(new ColorLookup(colour.COLORYELLOW01.FileName, Color.Yellow));
     }    
     private static void SetupDispatches()
     {
@@ -995,6 +941,16 @@ public static class ScannerScript
             new Dispatch.AudioSet(new List<string>() { lethal_force.Useofdeadlyforcepermitted1.FileName },"use of deadly force permitted"),
         };
 
+        LicensePlateSet = new List<Dispatch.AudioSet>()
+        {
+            new Dispatch.AudioSet(new List<string>() { suspect_license_plate.SuspectLicensePlate.FileName},"suspect license plate"),
+            new Dispatch.AudioSet(new List<string>() { suspect_license_plate.SuspectsLicensePlate01.FileName },"suspects license plate"),
+            new Dispatch.AudioSet(new List<string>() { suspect_license_plate.SuspectsLicensePlate02.FileName },"suspects license plate"),
+            new Dispatch.AudioSet(new List<string>() { suspect_license_plate.TargetLicensePlate.FileName },"target license plate"),
+            new Dispatch.AudioSet(new List<string>() { suspect_license_plate.TargetsLicensePlate.FileName },"targets license plate"),
+            new Dispatch.AudioSet(new List<string>() { suspect_license_plate.TargetVehicleLicensePlate.FileName },"target vehicle license plate"),
+        };
+
 
         OfficerDown = new Dispatch()
         {
@@ -1018,6 +974,10 @@ public static class ScannerScript
                 new Dispatch.AudioSet(new List<string>() { custom_wanted_level_line.Wehavea1099allavailableunitsrespond.FileName },"we have a 10-99  all available units repond"),
                 new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.Code99allunitsrespond.FileName },"code-99 all units respond"),
                 new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.EmergencyallunitsrespondCode99.FileName },"emergency all units respond code-99"),
+                new Dispatch.AudioSet(new List<string>() { escort_boss.Immediateassistancerequired.FileName },"immediate assistance required"),
+
+                
+
             }
         };
         ShotsFiredAtAnOfficer = new Dispatch()
@@ -1152,6 +1112,7 @@ public static class ScannerScript
             Name = "Grand Theft Auto",
             IncludeDrivingVehicle = true,
             MarkVehicleAsStolen = true,
+            IncludeLicensePlate = true,
             LocationDescription = LocationSpecificity.HeadingAndStreet,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
@@ -1218,7 +1179,6 @@ public static class ScannerScript
         {
             Name = "Driving a Stolen Vehicle",
             IncludeDrivingVehicle = true,
-            IncludeDrivignSpeed = true,
             LocationDescription = LocationSpecificity.HeadingAndStreet,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
@@ -1256,7 +1216,7 @@ public static class ScannerScript
             Name = "Felony Speeding",
             IncludeDrivingVehicle = true,
             VehicleIncludesIn = true,
-            IncludeDrivignSpeed = true,
+            IncludeDrivingSpeed = true,
             LocationDescription = LocationSpecificity.Street,
             CanAlwaysBeInterrupted = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
@@ -1319,6 +1279,7 @@ public static class ScannerScript
             IncludeDrivingVehicle = true,
             CanAlwaysBeInterrupted = true,
             MarkVehicleAsStolen = true,
+            IncludeLicensePlate = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() {crime_stolen_vehicle.Apossiblestolenvehicle.FileName},"a possible stolen vehicle"),
@@ -1360,14 +1321,17 @@ public static class ScannerScript
             IsStatus = true,
             IncludeReportedBy = false,
             LocationDescription = LocationSpecificity.HeadingAndStreet,
-            //MainAudioSet = new List<Dispatch.AudioSet>()
-            //{
-            //    new Dispatch.AudioSet(new List<string>() { suspect_last_seen.SuspectSpotted.FileName },"suspect spotted"),
-            //    new Dispatch.AudioSet(new List<string>() { suspect_last_seen.TargetIs.FileName },"target is"),
-            //    new Dispatch.AudioSet(new List<string>() { suspect_last_seen.TargetLastReported.FileName },"target last reported"),
-            //    new Dispatch.AudioSet(new List<string>() { suspect_last_seen.TargetLastSeen.FileName },"target last scene"),
-            //    new Dispatch.AudioSet(new List<string>() { suspect_last_seen.TargetSpotted.FileName },"target spotted"),
-            //},
+            IncludeDrivingVehicle = true,
+        };
+        WantedSuspectSpotted = new Dispatch()
+        {
+            Name = "Wanted Suspect Spotted",
+            IsStatus = true,
+            IncludeReportedBy = false,
+            IncludeRapSheet = true,
+            Priority = 50,
+            LocationDescription = LocationSpecificity.HeadingAndStreet,
+            IncludeDrivingVehicle = true,
         };
         SuspectEvaded = new Dispatch()
         {
@@ -1481,10 +1445,9 @@ public static class ScannerScript
             Name = "Suspect Changed Vehicle",
             IsStatus = true,
             IncludeDrivingVehicle = true,
-            VehicleIncludesIn = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
-                new Dispatch.AudioSet(new List<string>() { suspect_last_seen.SuspectSpotted.FileName },"suspect spotted"),
+                new Dispatch.AudioSet(new List<string>() { "" },""),
              },
         };
         RequestBackup = new Dispatch()
@@ -1575,7 +1538,9 @@ public static class ScannerScript
         public bool IncludeDrivingVehicle { get; set; } = false;
         public bool VehicleIncludesIn { get; set; } = false;
         public bool IncludeCarryingWeapon { get; set; } = false;
-        public bool IncludeDrivignSpeed { get; set; } = false;
+        public bool IncludeDrivingSpeed { get; set; } = false;
+        public bool IncludeLicensePlate { get; set; } = false;
+        public bool IncludeRapSheet { get; set; } = false;
         public bool ReportCharctersPosition { get; set; } = true;
         public int Priority { get; set; } = 99;
         public bool ResultsInLethalForce { get; set; } = false;
@@ -1650,31 +1615,7 @@ public static class ScannerScript
         public Crime CrimeIdentified { get; set; }
         public Dispatch DispatchToPlay { get; set; }
     }
-    private class ColorLookup
-    {
-        public Color BaseColor { get; set; }
-        public string ScannerFile { get; set; }
-
-        public ColorLookup(string _ScannerFile, Color _BaseColor)
-        {
-            BaseColor = _BaseColor;
-            ScannerFile = _ScannerFile;
-        }
-
-    }
-    private class DispatchLettersNumber
-    {
-        public char AlphaNumeric { get; set; }
-        public string ScannerFile { get; set; }
-
-        public DispatchLettersNumber(char _AlphaNumeric, string _ScannerFile)
-        {
-            AlphaNumeric = _AlphaNumeric;
-            ScannerFile = _ScannerFile;
-        }
-
-    }
-
+  
 }
 public class DispatchCallIn
 {

@@ -67,7 +67,6 @@ public static class General
         Jurisdiction.ReadConfig();
         Weapons.ReadConfig();
         Locations.ReadConfig();
-        Vehicles.ReadConfig();
         Streets.ReadConfig();
     }
     private static void ReadConfig()

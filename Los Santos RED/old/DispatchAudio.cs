@@ -2085,131 +2085,131 @@ public static class DispatchAudio
     }
     public static void AddVehicleDescription(VehicleExt VehicleDescription, ref List<string> ScannerList, bool IncludeLicensePlate,ref string Subtitles,ref DispatchNotification Notification, bool IncludeAAudio, bool IncludePoliceDescription,bool IncludeIn, bool AddPossiblyStolenStolen)
     {
-        if (VehicleDescription == null)
-            return;
-        if (VehicleDescription.HasBeenDescribedByDispatch)
-            return;
-        else
-            VehicleDescription.HasBeenDescribedByDispatch = true;
+        //if (VehicleDescription == null)
+        //    return;
+        //if (VehicleDescription.HasBeenDescribedByDispatch)
+        //    return;
+        //else
+        //    VehicleDescription.HasBeenDescribedByDispatch = true;
 
-        Notification.Text += "~n~Vehicle:~s~";
+        //Notification.Text += "~n~Vehicle:~s~";
 
-        if (VehicleDescription.VehicleEnt.IsPoliceVehicle)
-        {
-            if (IncludePoliceDescription)
-            {
-                Subtitles += " ~r~Stolen Police Car~s~";
-                Notification.Text += " ~r~Stolen Police Car~s~";
-                ScannerList.Add(vehicle_category.PoliceSedan01.FileName);
-            }
-        }
-        else
-        {
-            if (IncludeIn)
-            {
-                ScannerList.Add(new List<string>() { conjunctives.Inuhh2.FileName, conjunctives.Inuhh3.FileName }.PickRandom());
-                if (VehicleDescription.IsStolen & AddPossiblyStolenStolen)
-                {
+        //if (VehicleDescription.VehicleEnt.IsPoliceVehicle)
+        //{
+        //    if (IncludePoliceDescription)
+        //    {
+        //        Subtitles += " ~r~Stolen Police Car~s~";
+        //        Notification.Text += " ~r~Stolen Police Car~s~";
+        //        ScannerList.Add(vehicle_category.PoliceSedan01.FileName);
+        //    }
+        //}
+        //else
+        //{
+        //    if (IncludeIn)
+        //    {
+        //        ScannerList.Add(new List<string>() { conjunctives.Inuhh2.FileName, conjunctives.Inuhh3.FileName }.PickRandom());
+        //        if (VehicleDescription.IsStolen & AddPossiblyStolenStolen)
+        //        {
 
-                    ScannerList.Add(crime_stolen_vehicle.Apossiblestolenvehicle.FileName);
-                    Subtitles += " ~s~in a possible stolen vehicle~s~";
-                    Notification.Text += " ~r~Stolen~s~";
-                }
-            }
+        //            ScannerList.Add(crime_stolen_vehicle.Apossiblestolenvehicle.FileName);
+        //            Subtitles += " ~s~in a possible stolen vehicle~s~";
+        //            Notification.Text += " ~r~Stolen~s~";
+        //        }
+        //    }
 
-            Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(VehicleDescription);
-            System.Drawing.Color BaseColor = GetBaseColor(VehicleDescription.DescriptionColor);
-            ColorLookup LookupColor = ColorLookups.Where(x => x.BaseColor == BaseColor).PickRandom();
-            string ManufacturerScannerFile;
-            string VehicleClassScannerFile;
-            if (VehicleInformation != null)
-            {
-               // Debugging.WriteToLog("Description", string.Format("VehicleInformation.ModelScannerFile {0}", VehicleInformation.ModelScannerFile.ToString()));
-                ManufacturerScannerFile = GetManufacturerScannerFile(VehicleInformation.Manufacturer);
-                VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
-                if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != "" || VehicleClassScannerFile != ""))
-                {
-                    if (IncludeAAudio)
-                    {
-                        Subtitles += " ~s~a~s~";
-                        ScannerList.Add(new List<string>() { conjunctives.A01.FileName, conjunctives.A02.FileName }.PickRandom());
-                    }
-                    if (VehicleInformation.VehicleClass != Vehicles.VehicleClass.Emergency)
-                    {
-                        Subtitles += " ~s~" + LookupColor.BaseColor.Name + "~s~";
-                        Notification.Text += " ~s~" + LookupColor.BaseColor.Name + "~s~";
-                        ScannerList.Add(LookupColor.ScannerFile);
-                    }
-                    if (ManufacturerScannerFile != "")
-                    {
-                        Subtitles += " ~p~" + VehicleInformation.Manufacturer + "~s~";
-                        Notification.Text += " ~p~" + VehicleInformation.Manufacturer + "~s~";
-                        ScannerList.Add(ManufacturerScannerFile);
-                    }
-                    if (VehicleInformation.ModelScannerFile != "")
-                    {
-                        string ModelName = VehicleInformation.Name.ToLower();
-                        unsafe
-                        {
-                            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", VehicleDescription.VehicleEnt.Model.Hash);
-                            ModelName = Marshal.PtrToStringAnsi(ptr);
-                        }
-                        unsafe
-                        {
-                            IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, ModelName);
-                            ModelName = Marshal.PtrToStringAnsi(ptr2);
-                        }
-                        if (ModelName == "CARNOTFOUND" || ModelName == "NULL")
-                            ModelName = VehicleInformation.Name.ToLower();
+        //   // Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(VehicleDescription);
+        //    System.Drawing.Color BaseColor = GetBaseColor(VehicleDescription.DescriptionColor);
+        //    ColorLookup LookupColor = ColorLookups.Where(x => x.BaseColor == BaseColor).PickRandom();
+        //    string ManufacturerScannerFile;
+        //    string VehicleClassScannerFile;
+        //    if (VehicleInformation != null)
+        //    {
+        //       // Debugging.WriteToLog("Description", string.Format("VehicleInformation.ModelScannerFile {0}", VehicleInformation.ModelScannerFile.ToString()));
+        //        ManufacturerScannerFile = GetManufacturerScannerFile(VehicleInformation.Manufacturer);
+        //        VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
+        //        if (LookupColor != null && (VehicleInformation.ModelScannerFile != "" || VehicleInformation.ModelScannerFile != "" || VehicleClassScannerFile != ""))
+        //        {
+        //            if (IncludeAAudio)
+        //            {
+        //                Subtitles += " ~s~a~s~";
+        //                ScannerList.Add(new List<string>() { conjunctives.A01.FileName, conjunctives.A02.FileName }.PickRandom());
+        //            }
+        //            if (VehicleInformation.VehicleClass != Vehicles.VehicleClass.Emergency)
+        //            {
+        //                Subtitles += " ~s~" + LookupColor.BaseColor.Name + "~s~";
+        //                Notification.Text += " ~s~" + LookupColor.BaseColor.Name + "~s~";
+        //                ScannerList.Add(LookupColor.ScannerFile);
+        //            }
+        //            if (ManufacturerScannerFile != "")
+        //            {
+        //                Subtitles += " ~p~" + VehicleInformation.Manufacturer + "~s~";
+        //                Notification.Text += " ~p~" + VehicleInformation.Manufacturer + "~s~";
+        //                ScannerList.Add(ManufacturerScannerFile);
+        //            }
+        //            if (VehicleInformation.ModelScannerFile != "")
+        //            {
+        //                string ModelName = VehicleInformation.Name.ToLower();
+        //                unsafe
+        //                {
+        //                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", VehicleDescription.VehicleEnt.Model.Hash);
+        //                    ModelName = Marshal.PtrToStringAnsi(ptr);
+        //                }
+        //                unsafe
+        //                {
+        //                    IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, ModelName);
+        //                    ModelName = Marshal.PtrToStringAnsi(ptr2);
+        //                }
+        //                if (ModelName == "CARNOTFOUND" || ModelName == "NULL")
+        //                    ModelName = VehicleInformation.Name.ToLower();
 
-                        Subtitles += " ~g~" + ModelName + "~s~";
-                        Notification.Text += " ~g~" + ModelName + "~s~";
-                        ScannerList.Add(VehicleInformation.ModelScannerFile);
-                    }
-                    else if (VehicleClassScannerFile != "")
-                    {
-                        string subText = Vehicles.GetVehicleTypeSubtitle(VehicleInformation.VehicleClass);
-                        Subtitles += " ~b~" + subText + "~s~";
-                        Notification.Text += " ~b~" + subText + "~s~";
-                        ScannerList.Add(VehicleClassScannerFile);
-                    }
-                }
-            }        
-        }
-        if (IncludeLicensePlate)
-        {
-            ScannerList.Add(suspect_license_plate.SuspectsLicensePlate.FileName);
-            Subtitles += "~s~. Suspects License Plate: ~y~" + VehicleDescription.OriginalLicensePlate.PlateNumber.ToUpper() + "~s~";//VehicleDescription.VehicleEnt.LicensePlate.ToUpper() + "~s~";
-            Notification.Text += "~n~License Plate: ~y~" + VehicleDescription.OriginalLicensePlate.PlateNumber.ToUpper() + "~s~";
-            foreach (char c in VehicleDescription.OriginalLicensePlate.PlateNumber)
-            {
-                string DispatchFileName = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).PickRandom().ScannerFile;
-                ScannerList.Add(DispatchFileName);
-            }
-        }
+        //                Subtitles += " ~g~" + ModelName + "~s~";
+        //                Notification.Text += " ~g~" + ModelName + "~s~";
+        //                ScannerList.Add(VehicleInformation.ModelScannerFile);
+        //            }
+        //            else if (VehicleClassScannerFile != "")
+        //            {
+        //                string subText = Vehicles.GetVehicleTypeSubtitle(VehicleInformation.VehicleClass);
+        //                Subtitles += " ~b~" + subText + "~s~";
+        //                Notification.Text += " ~b~" + subText + "~s~";
+        //                ScannerList.Add(VehicleClassScannerFile);
+        //            }
+        //        }
+        //    }        
+        //}
+        //if (IncludeLicensePlate)
+        //{
+        //    ScannerList.Add(suspect_license_plate.SuspectsLicensePlate.FileName);
+        //    Subtitles += "~s~. Suspects License Plate: ~y~" + VehicleDescription.OriginalLicensePlate.PlateNumber.ToUpper() + "~s~";//VehicleDescription.VehicleEnt.LicensePlate.ToUpper() + "~s~";
+        //    Notification.Text += "~n~License Plate: ~y~" + VehicleDescription.OriginalLicensePlate.PlateNumber.ToUpper() + "~s~";
+        //    foreach (char c in VehicleDescription.OriginalLicensePlate.PlateNumber)
+        //    {
+        //        string DispatchFileName = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).PickRandom().ScannerFile;
+        //        ScannerList.Add(DispatchFileName);
+        //    }
+        //}
     }
     public static void AddVehicleClass(VehicleExt VehicleDescription, ref List<string> ScannerList, ref string Subtitles, ref DispatchNotification Notification)
     {
-        if(VehicleDescription != null)
-        {
-            Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(VehicleDescription);
-            if (VehicleInformation != null)
-            {
-                string VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
-                if (VehicleClassScannerFile != "")
-                {
-                    string subText = Vehicles.GetVehicleTypeSubtitle(VehicleInformation.VehicleClass);
-                    Subtitles += " driving a ~b~" + subText + "~s~";
-                    Notification.Text += "~n~Vehicle: ~b~" + subText + "~s~";
-                    ScannerList.Add(conjunctives.Drivinga.FileName);
-                    ScannerList.Add(VehicleClassScannerFile);
-                    return;
-                }
-            }
-        }
-        Notification.Text += "~n~Vehicle: Unknown";
-        Subtitles += " driving a um";
-        ScannerList.Add(conjunctives.DrivingAUmmm.FileName);
+        //if(VehicleDescription != null)
+        //{
+        //    Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(VehicleDescription);
+        //    if (VehicleInformation != null)
+        //    {
+        //        string VehicleClassScannerFile = GetVehicleClassScannerFile(VehicleInformation.VehicleClass);
+        //        if (VehicleClassScannerFile != "")
+        //        {
+        //            string subText = Vehicles.GetVehicleTypeSubtitle(VehicleInformation.VehicleClass);
+        //            Subtitles += " driving a ~b~" + subText + "~s~";
+        //            Notification.Text += "~n~Vehicle: ~b~" + subText + "~s~";
+        //            ScannerList.Add(conjunctives.Drivinga.FileName);
+        //            ScannerList.Add(VehicleClassScannerFile);
+        //            return;
+        //        }
+        //    }
+        //}
+        //Notification.Text += "~n~Vehicle: Unknown";
+        //Subtitles += " driving a um";
+        //ScannerList.Add(conjunctives.DrivingAUmmm.FileName);
     }
     public static string GetVehicleDisplayName(Vehicle VehicleDescription)
     {

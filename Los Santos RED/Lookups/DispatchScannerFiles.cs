@@ -1415,31 +1415,7 @@ public class crook_arrested
 }
 public class crook_killed
 {
-        public static String CrookKilledRandom()
-        {
-            int rnd = random.Next(1, 10);
-            if (rnd == 1)
-                return Suspectdown.FileName;
-            else if (rnd == 2)
-                return Asuspectdown.FileName;
-            else if (rnd == 3)
-                return Suspectdowncoronerenroute.FileName;
-            else if (rnd == 4)
-                return Asuspectdown1.FileName;
-            else if (rnd == 5)
-                return Criminaldown.FileName;
-            else if (rnd == 6)
-                return Asuspectdown2.FileName;
-            else if (rnd == 7)
-                return Suspectneutralized.FileName;
-            else if (rnd == 8)
-                return Suspectdownmedicalexaminerenroute.FileName;
-            else if (rnd == 9)
-                return Acriminaldown.FileName;
-            else
-                return Officershavepacifiedsuspect.FileName;
-        }
-        public static ScannerFile Suspectdown { get { return new ScannerFile("01_crook_killed\\0x0269B41C.wav", "Suspect down.", "crook_killed"); } }
+    public static ScannerFile Suspectdown { get { return new ScannerFile("01_crook_killed\\0x0269B41C.wav", "Suspect down.", "crook_killed"); } }
     public static ScannerFile Asuspectdown { get { return new ScannerFile("01_crook_killed\\0x03FCE3D3.wav", "A suspect down.", "crook_killed"); } }
     public static ScannerFile Suspectdowncoronerenroute { get { return new ScannerFile("01_crook_killed\\0x064FBBE9.wav", "Suspect down; coroner en route.", "crook_killed"); } }
     public static ScannerFile Asuspectdown1 { get { return new ScannerFile("01_crook_killed\\0x0A22B024.wav", "A suspect down.", "crook_killed"); } }
@@ -3465,12 +3441,12 @@ public class suspect_last_seen
 }
 public class suspect_license_plate
 {
-    public static ScannerFile HASH02F918C0 { get { return new ScannerFile("01_suspect_license_plate\\0x02F918C0.wav", "0x02F918C0", "suspect_license_plate"); } }
-    public static ScannerFile HASH0C436B59 { get { return new ScannerFile("01_suspect_license_plate\\0x0C436B59.wav", "0x0C436B59", "suspect_license_plate"); } }
-    public static ScannerFile HASH123C7746 { get { return new ScannerFile("01_suspect_license_plate\\0x123C7746.wav", "0x123C7746", "suspect_license_plate"); } }
-    public static ScannerFile HASH15A1BE11 { get { return new ScannerFile("01_suspect_license_plate\\0x15A1BE11.wav", "0x15A1BE11", "suspect_license_plate"); } }
-    public static ScannerFile HASH17AB4229 { get { return new ScannerFile("01_suspect_license_plate\\0x17AB4229.wav", "0x17AB4229", "suspect_license_plate"); } }
-    public static ScannerFile SuspectsLicensePlate { get { return new ScannerFile("01_suspect_license_plate\\0x1E8D8FEE.wav", "Suspects Licens ePlate", "suspect_license_plate"); } }
+    public static ScannerFile TargetLicensePlate { get { return new ScannerFile("01_suspect_license_plate\\0x02F918C0.wav", "0x02F918C0", "target license plate"); } }
+    public static ScannerFile SuspectsLicensePlate01 { get { return new ScannerFile("01_suspect_license_plate\\0x0C436B59.wav", "0x0C436B59", "suspects license plate"); } }
+    public static ScannerFile SuspectLicensePlate { get { return new ScannerFile("01_suspect_license_plate\\0x123C7746.wav", "0x123C7746", "suspects license plate"); } }
+    public static ScannerFile TargetsLicensePlate { get { return new ScannerFile("01_suspect_license_plate\\0x15A1BE11.wav", "0x15A1BE11", "targets license plate"); } }
+    public static ScannerFile TargetVehicleLicensePlate { get { return new ScannerFile("01_suspect_license_plate\\0x17AB4229.wav", "0x17AB4229", "target vehicle license plate"); } }
+    public static ScannerFile SuspectsLicensePlate02 { get { return new ScannerFile("01_suspect_license_plate\\0x1E8D8FEE.wav", "Suspects Licens ePlate", "suspects license plate"); } }
 }
 public class suspect_wasted
 {
@@ -3504,103 +3480,102 @@ public class unit_responding_code
 }
 public class vehicle_category
 {
-    public static ScannerFile HASH005D43A0 { get { return new ScannerFile("01_vehicle_category\\0x005D43A0.wav", "0x005D43A0", "vehicle_category"); } }
-    public static ScannerFile HASH0110CF57 { get { return new ScannerFile("01_vehicle_category\\0x0110CF57.wav", "0x0110CF57", "vehicle_category"); } }
+    public static ScannerFile ATV { get { return new ScannerFile("01_vehicle_category\\0x005D43A0.wav", "0x005D43A0", "vehicle_category"); } }
+    public static ScannerFile APC01 { get { return new ScannerFile("01_vehicle_category\\0x0110CF57.wav", "0x0110CF57", "vehicle_category"); } }
     public static ScannerFile Train01 { get { return new ScannerFile("01_vehicle_category\\0x01426427.wav", "Train", "vehicle_category"); } }
-    public static ScannerFile HASH014D3B35 { get { return new ScannerFile("01_vehicle_category\\0x014D3B35.wav", "0x014D3B35", "vehicle_category"); } }
+    public static ScannerFile SpinVehicle { get { return new ScannerFile("01_vehicle_category\\0x014D3B35.wav", "0x014D3B35", "vehicle_category"); } }
     public static ScannerFile Bicycle01 { get { return new ScannerFile("01_vehicle_category\\0x01C22EAC.wav", "Bicycle", "vehicle_category"); } }
     public static ScannerFile Boat01 { get { return new ScannerFile("01_vehicle_category\\0x01D004AB.wav", "Boat", "vehicle_category"); } }
-    public static ScannerFile HASH0216A584 { get { return new ScannerFile("01_vehicle_category\\0x0216A584.wav", "0x0216A584", "vehicle_category"); } }
-    public static ScannerFile HASH0251C064 { get { return new ScannerFile("01_vehicle_category\\0x0251C064.wav", "0x0251C064", "vehicle_category"); } }
-    public static ScannerFile HASH02917E7A { get { return new ScannerFile("01_vehicle_category\\0x02917E7A.wav", "0x02917E7A", "vehicle_category"); } }
+    public static ScannerFile StationWagon { get { return new ScannerFile("01_vehicle_category\\0x0216A584.wav", "0x0216A584", "vehicle_category"); } }
+    public static ScannerFile APC02 { get { return new ScannerFile("01_vehicle_category\\0x0251C064.wav", "0x0251C064", "vehicle_category"); } }
+    public static ScannerFile SemiTruck { get { return new ScannerFile("01_vehicle_category\\0x02917E7A.wav", "0x02917E7A", "vehicle_category"); } }
     public static ScannerFile Motorcycle01 { get { return new ScannerFile("01_vehicle_category\\0x02B37E94.wav", "Motorcycle", "vehicle_category"); } }
     public static ScannerFile HASH031106D2 { get { return new ScannerFile("01_vehicle_category\\0x031106D2.wav", "0x031106D2", "vehicle_category"); } }
-    public static ScannerFile HASH0384A11A { get { return new ScannerFile("01_vehicle_category\\0x0384A11A.wav", "0x0384A11A", "vehicle_category"); } }
-    public static ScannerFile HASH03A60E85 { get { return new ScannerFile("01_vehicle_category\\0x03A60E85.wav", "0x03A60E85", "vehicle_category"); } }
-    public static ScannerFile HASH043502FD { get { return new ScannerFile("01_vehicle_category\\0x043502FD.wav", "0x043502FD", "vehicle_category"); } }
-    public static ScannerFile HASH0474F4A1 { get { return new ScannerFile("01_vehicle_category\\0x0474F4A1.wav", "0x0474F4A1", "vehicle_category"); } }
+    public static ScannerFile Hearse { get { return new ScannerFile("01_vehicle_category\\0x0384A11A.wav", "0x0384A11A", "vehicle_category"); } }
+    public static ScannerFile ConstructionVehicle { get { return new ScannerFile("01_vehicle_category\\0x03A60E85.wav", "0x03A60E85", "vehicle_category"); } }
+    public static ScannerFile DumpTruck { get { return new ScannerFile("01_vehicle_category\\0x043502FD.wav", "0x043502FD", "vehicle_category"); } }
+    public static ScannerFile SailBoat { get { return new ScannerFile("01_vehicle_category\\0x0474F4A1.wav", "0x0474F4A1", "vehicle_category"); } }
     public static ScannerFile MotorizedSkateboard01 { get { return new ScannerFile("01_vehicle_category\\0x0483453B.wav", "Motorized skateboard", "vehicle_category"); } }
-    public static ScannerFile HASH04B923FA { get { return new ScannerFile("01_vehicle_category\\0x04B923FA.wav", "0x04B923FA", "vehicle_category"); } }
+    public static ScannerFile HotRod { get { return new ScannerFile("01_vehicle_category\\0x04B923FA.wav", "0x04B923FA", "vehicle_category"); } }
     public static ScannerFile Service01 { get { return new ScannerFile("01_vehicle_category\\0x04DBBC64.wav", "Service Vehicle", "vehicle_category"); } }
-    public static ScannerFile HASH04EE616F { get { return new ScannerFile("01_vehicle_category\\0x04EE616F.wav", "0x04EE616F", "vehicle_category"); } }
+    public static ScannerFile GolfCart { get { return new ScannerFile("01_vehicle_category\\0x04EE616F.wav", "0x04EE616F", "vehicle_category"); } }
     public static ScannerFile Convertable01 { get { return new ScannerFile("01_vehicle_category\\0x05163779.wav", "Convertable", "vehicle_category"); } }
-    public static ScannerFile HASH05D788EF { get { return new ScannerFile("01_vehicle_category\\0x05D788EF.wav", "0x05D788EF", "vehicle_category"); } }
-    public static ScannerFile HASH0656C643 { get { return new ScannerFile("01_vehicle_category\\0x0656C643.wav", "0x0656C643", "vehicle_category"); } }
-    public static ScannerFile HASH06675D11 { get { return new ScannerFile("01_vehicle_category\\0x06675D11.wav", "0x06675D11", "vehicle_category"); } }
-    public static ScannerFile HASH06D6D733 { get { return new ScannerFile("01_vehicle_category\\0x06D6D733.wav", "0x06D6D733", "vehicle_category"); } }
+    public static ScannerFile PickupTruck { get { return new ScannerFile("01_vehicle_category\\0x05D788EF.wav", "0x05D788EF", "vehicle_category"); } }
+    public static ScannerFile Combine { get { return new ScannerFile("01_vehicle_category\\0x0656C643.wav", "0x0656C643", "vehicle_category"); } }
+    public static ScannerFile RV { get { return new ScannerFile("01_vehicle_category\\0x06675D11.wav", "0x06675D11", "vehicle_category"); } }
+    public static ScannerFile SUV03 { get { return new ScannerFile("01_vehicle_category\\0x06D6D733.wav", "0x06D6D733", "vehicle_category"); } }
     public static ScannerFile OffRoad01 { get { return new ScannerFile("01_vehicle_category\\0x06F2D611.wav", "0x06F2D611", "vehicle_category"); } }
     public static ScannerFile Coupe01 { get { return new ScannerFile("01_vehicle_category\\0x0709DF95.wav", "Coupe", "vehicle_category"); } }
-    public static ScannerFile HASH075FBBD8 { get { return new ScannerFile("01_vehicle_category\\0x075FBBD8.wav", "0x075FBBD8", "vehicle_category"); } }
-    public static ScannerFile HASH07713DE4 { get { return new ScannerFile("01_vehicle_category\\0x07713DE4.wav", "0x07713DE4", "vehicle_category"); } }
-    public static ScannerFile HASH0797FA49 { get { return new ScannerFile("01_vehicle_category\\0x0797FA49.wav", "0x0797FA49", "vehicle_category"); } }
+    public static ScannerFile PoliceCar { get { return new ScannerFile("01_vehicle_category\\0x075FBBD8.wav", "0x075FBBD8", "vehicle_category"); } }
+    public static ScannerFile RollerSkates { get { return new ScannerFile("01_vehicle_category\\0x07713DE4.wav", "0x07713DE4", "vehicle_category"); } }
+    public static ScannerFile Trashmaster { get { return new ScannerFile("01_vehicle_category\\0x0797FA49.wav", "0x0797FA49", "vehicle_category"); } }
     public static ScannerFile ATV01 { get { return new ScannerFile("01_vehicle_category\\0x0808530B.wav", "ATV", "vehicle_category"); } }
-    public static ScannerFile HASH08EE512E { get { return new ScannerFile("01_vehicle_category\\0x08EE512E.wav", "0x08EE512E", "vehicle_category"); } }
-    public static ScannerFile HASH099011AD { get { return new ScannerFile("01_vehicle_category\\0x099011AD.wav", "0x099011AD", "vehicle_category"); } }
+    public static ScannerFile DuneBuggy { get { return new ScannerFile("01_vehicle_category\\0x08EE512E.wav", "0x08EE512E", "vehicle_category"); } }
+    public static ScannerFile Digger { get { return new ScannerFile("01_vehicle_category\\0x099011AD.wav", "0x099011AD", "vehicle_category"); } }
     public static ScannerFile UtilityVehicle01 { get { return new ScannerFile("01_vehicle_category\\0x0ABDCE8E.wav", "Utility vehicle", "vehicle_category"); } }
     public static ScannerFile MuscleCar01 { get { return new ScannerFile("01_vehicle_category\\0x0B6A5D7E.wav", "Muscle Car", "vehicle_category"); } }
-    public static ScannerFile HASH0BEDDFB5 { get { return new ScannerFile("01_vehicle_category\\0x0BEDDFB5.wav", "0x0BEDDFB5", "vehicle_category"); } }
-    public static ScannerFile HASH0C26D3BD { get { return new ScannerFile("01_vehicle_category\\0x0C26D3BD.wav", "0x0C26D3BD", "vehicle_category"); } }
-    public static ScannerFile HASH0CD9BE8E { get { return new ScannerFile("01_vehicle_category\\0x0CD9BE8E.wav", "0x0CD9BE8E", "vehicle_category"); } }
-    public static ScannerFile HASH0CDB4A21 { get { return new ScannerFile("01_vehicle_category\\0x0CDB4A21.wav", "0x0CDB4A21", "vehicle_category"); } }
-    public static ScannerFile HASH0D2D3165 { get { return new ScannerFile("01_vehicle_category\\0x0D2D3165.wav", "0x0D2D3165", "vehicle_category"); } }
+    public static ScannerFile MilitaryHelicopter { get { return new ScannerFile("01_vehicle_category\\0x0BEDDFB5.wav", "0x0BEDDFB5", "vehicle_category"); } }
+    public static ScannerFile Limo { get { return new ScannerFile("01_vehicle_category\\0x0C26D3BD.wav", "0x0C26D3BD", "vehicle_category"); } }
+    public static ScannerFile Scooter { get { return new ScannerFile("01_vehicle_category\\0x0CD9BE8E.wav", "0x0CD9BE8E", "vehicle_category"); } }
+    public static ScannerFile Tank { get { return new ScannerFile("01_vehicle_category\\0x0CDB4A21.wav", "0x0CDB4A21", "vehicle_category"); } }
+    public static ScannerFile Craine { get { return new ScannerFile("01_vehicle_category\\0x0D2D3165.wav", "0x0D2D3165", "vehicle_category"); } }
     public static ScannerFile Classic01 { get { return new ScannerFile("01_vehicle_category\\0x0DB9439E.wav", "Classic", "vehicle_category"); } }
-    public static ScannerFile HASH0DB9C91E { get { return new ScannerFile("01_vehicle_category\\0x0DB9C91E.wav", "0x0DB9C91E", "vehicle_category"); } }
-    public static ScannerFile HASH0E4D13AD { get { return new ScannerFile("01_vehicle_category\\0x0E4D13AD.wav", "0x0E4D13AD", "vehicle_category"); } }
+    public static ScannerFile Tuner { get { return new ScannerFile("01_vehicle_category\\0x0DB9C91E.wav", "0x0DB9C91E", "vehicle_category"); } }
+    public static ScannerFile Troller { get { return new ScannerFile("01_vehicle_category\\0x0E4D13AD.wav", "0x0E4D13AD", "vehicle_category"); } }
     public static ScannerFile Sedan { get { return new ScannerFile("01_vehicle_category\\0x0E63C9AE.wav", "Sedan", "vehicle_category"); } }
-    public static ScannerFile HASH0E826F9B { get { return new ScannerFile("01_vehicle_category\\0x0E826F9B.wav", "0x0E826F9B", "vehicle_category"); } }
-    public static ScannerFile HASH0E82768B { get { return new ScannerFile("01_vehicle_category\\0x0E82768B.wav", "0x0E82768B", "vehicle_category"); } }
+    public static ScannerFile Forklift { get { return new ScannerFile("01_vehicle_category\\0x0E826F9B.wav", "0x0E826F9B", "vehicle_category"); } }
+    public static ScannerFile TroopTransport { get { return new ScannerFile("01_vehicle_category\\0x0E82768B.wav", "0x0E82768B", "vehicle_category"); } }
     public static ScannerFile IndustrialVehicle01 { get { return new ScannerFile("01_vehicle_category\\0x0E970FAF.wav", "industrail vehicle", "vehicle_category"); } }
-    public static ScannerFile HASH0EBF5417 { get { return new ScannerFile("01_vehicle_category\\0x0EBF5417.wav", "0x0EBF5417", "vehicle_category"); } }
-    public static ScannerFile HASH103174F6 { get { return new ScannerFile("01_vehicle_category\\0x103174F6.wav", "0x103174F6", "vehicle_category"); } }
+    public static ScannerFile CivilianHelicopter { get { return new ScannerFile("01_vehicle_category\\0x0EBF5417.wav", "0x0EBF5417", "vehicle_category"); } }
+    public static ScannerFile Moped { get { return new ScannerFile("01_vehicle_category\\0x103174F6.wav", "0x103174F6", "vehicle_category"); } }
     public static ScannerFile FourDoor01 { get { return new ScannerFile("01_vehicle_category\\0x1094F93E.wav", "Four Door", "vehicle_category"); } }
-    public static ScannerFile HASH10A9671C { get { return new ScannerFile("01_vehicle_category\\0x10A9671C.wav", "0x10A9671C", "vehicle_category"); } }
-    public static ScannerFile HASH10E8D195 { get { return new ScannerFile("01_vehicle_category\\0x10E8D195.wav", "0x10E8D195", "vehicle_category"); } }
-    public static ScannerFile HASH10FB6CA3 { get { return new ScannerFile("01_vehicle_category\\0x10FB6CA3.wav", "0x10FB6CA3", "vehicle_category"); } }
-    public static ScannerFile HASH1156A6A8 { get { return new ScannerFile("01_vehicle_category\\0x1156A6A8.wav", "0x1156A6A8", "vehicle_category"); } }
-    public static ScannerFile HASH11DB655E { get { return new ScannerFile("01_vehicle_category\\0x11DB655E.wav", "0x11DB655E", "vehicle_category"); } }
-    public static ScannerFile HASH12A0A60B { get { return new ScannerFile("01_vehicle_category\\0x12A0A60B.wav", "0x12A0A60B", "vehicle_category"); } }
-    public static ScannerFile HASH12BF64D1 { get { return new ScannerFile("01_vehicle_category\\0x12BF64D1.wav", "0x12BF64D1", "vehicle_category"); } }
+    public static ScannerFile HydroFoil { get { return new ScannerFile("01_vehicle_category\\0x10A9671C.wav", "0x10A9671C", "vehicle_category"); } }
+    public static ScannerFile AgriculturalVehicle { get { return new ScannerFile("01_vehicle_category\\0x10E8D195.wav", "0x10E8D195", "vehicle_category"); } }
+    public static ScannerFile GoKart { get { return new ScannerFile("01_vehicle_category\\0x10FB6CA3.wav", "0x10FB6CA3", "vehicle_category"); } }
+    public static ScannerFile PontoonBoat { get { return new ScannerFile("01_vehicle_category\\0x1156A6A8.wav", "0x1156A6A8", "vehicle_category"); } }
+    public static ScannerFile PeopleCarrier { get { return new ScannerFile("01_vehicle_category\\0x11DB655E.wav", "0x11DB655E", "vehicle_category"); } }
+    public static ScannerFile MotorBike { get { return new ScannerFile("01_vehicle_category\\0x12A0A60B.wav", "0x12A0A60B", "vehicle_category"); } }
+    public static ScannerFile DuneBuggy02 { get { return new ScannerFile("01_vehicle_category\\0x12BF64D1.wav", "0x12BF64D1", "vehicle_category"); } }
     public static ScannerFile TwoDoor01 { get { return new ScannerFile("01_vehicle_category\\0x1310A327.wav", "Two Door", "vehicle_category"); } }
-    public static ScannerFile HASH131B49C2 { get { return new ScannerFile("01_vehicle_category\\0x131B49C2.wav", "0x131B49C2", "vehicle_category"); } }
-    public static ScannerFile HASH13AFF107 { get { return new ScannerFile("01_vehicle_category\\0x13AFF107.wav", "0x13AFF107", "vehicle_category"); } }
-    public static ScannerFile HASH141522F8 { get { return new ScannerFile("01_vehicle_category\\0x141522F8.wav", "0x141522F8", "vehicle_category"); } }
-    public static ScannerFile HASH14BBA15E { get { return new ScannerFile("01_vehicle_category\\0x14BBA15E.wav", "0x14BBA15E", "vehicle_category"); } }
-    public static ScannerFile HASH14D0951B { get { return new ScannerFile("01_vehicle_category\\0x14D0951B.wav", "0x14D0951B", "vehicle_category"); } }
+    public static ScannerFile FanBoat { get { return new ScannerFile("01_vehicle_category\\0x131B49C2.wav", "0x131B49C2", "vehicle_category"); } }
+    public static ScannerFile SubwayTrain { get { return new ScannerFile("01_vehicle_category\\0x13AFF107.wav", "0x13AFF107", "vehicle_category"); } }
+    public static ScannerFile Rollerblades { get { return new ScannerFile("01_vehicle_category\\0x141522F8.wav", "0x141522F8", "vehicle_category"); } }
+    public static ScannerFile Skateboard { get { return new ScannerFile("01_vehicle_category\\0x14BBA15E.wav", "0x14BBA15E", "vehicle_category"); } }
+    public static ScannerFile FourByFour { get { return new ScannerFile("01_vehicle_category\\0x14D0951B.wav", "0x14D0951B", "vehicle_category"); } }
     public static ScannerFile Coupe02 { get { return new ScannerFile("01_vehicle_category\\0x14DE7B3E.wav", "Coupe", "vehicle_category"); } }
-    public static ScannerFile HASH14EC0C45 { get { return new ScannerFile("01_vehicle_category\\0x14EC0C45.wav", "0x14EC0C45", "vehicle_category"); } }
-    public static ScannerFile HASH151A5E56 { get { return new ScannerFile("01_vehicle_category\\0x151A5E56.wav", "0x151A5E56", "vehicle_category"); } }
+    public static ScannerFile SpeedBoat { get { return new ScannerFile("01_vehicle_category\\0x14EC0C45.wav", "0x14EC0C45", "vehicle_category"); } }
+    public static ScannerFile MonsterTruck { get { return new ScannerFile("01_vehicle_category\\0x151A5E56.wav", "0x151A5E56", "vehicle_category"); } }
     public static ScannerFile MiniVan01 { get { return new ScannerFile("01_vehicle_category\\0x15349899.wav", "Minivan", "vehicle_category"); } }
-    public static ScannerFile HASH1576E873 { get { return new ScannerFile("01_vehicle_category\\0x1576E873.wav", "0x1576E873", "vehicle_category"); } }
+    public static ScannerFile BackHoe { get { return new ScannerFile("01_vehicle_category\\0x1576E873.wav", "0x1576E873", "vehicle_category"); } }
     public static ScannerFile Van01 { get { return new ScannerFile("01_vehicle_category\\0x158B8FA5.wav", "Van", "vehicle_category"); } }
-    public static ScannerFile HASH1599B926 { get { return new ScannerFile("01_vehicle_category\\0x1599B926.wav", "0x1599B926", "vehicle_category"); } }
-    public static ScannerFile HASH160B9ADB { get { return new ScannerFile("01_vehicle_category\\0x160B9ADB.wav", "0x160B9ADB", "vehicle_category"); } }
-    public static ScannerFile HASH1620A2BC { get { return new ScannerFile("01_vehicle_category\\0x1620A2BC.wav", "0x1620A2BC", "vehicle_category"); } }
+    public static ScannerFile JetSki { get { return new ScannerFile("01_vehicle_category\\0x1599B926.wav", "0x1599B926", "vehicle_category"); } }
+    public static ScannerFile Hatchback { get { return new ScannerFile("01_vehicle_category\\0x160B9ADB.wav", "0x160B9ADB", "vehicle_category"); } }
+    public static ScannerFile ArmoredTruck { get { return new ScannerFile("01_vehicle_category\\0x1620A2BC.wav", "0x1620A2BC", "vehicle_category"); } }
     public static ScannerFile Helicopter01 { get { return new ScannerFile("01_vehicle_category\\0x177E286D.wav", "Helicopter", "vehicle_category"); } }
-    public static ScannerFile HASH18092D52 { get { return new ScannerFile("01_vehicle_category\\0x18092D52.wav", "0x18092D52", "vehicle_category"); } }
+    public static ScannerFile Pickup { get { return new ScannerFile("01_vehicle_category\\0x18092D52.wav", "0x18092D52", "vehicle_category"); } }
     public static ScannerFile SUV01 { get { return new ScannerFile("01_vehicle_category\\0x18101511.wav", "Sports Utility Vehicle", "vehicle_category"); } }
-    public static ScannerFile HASH1831F800 { get { return new ScannerFile("01_vehicle_category\\0x1831F800.wav", "0x1831F800", "vehicle_category"); } }
+    public static ScannerFile Jallopy { get { return new ScannerFile("01_vehicle_category\\0x1831F800.wav", "0x1831F800", "vehicle_category"); } }
     public static ScannerFile Rig01 { get { return new ScannerFile("01_vehicle_category\\0x188168A9.wav", "Rig", "vehicle_category"); } }
-    public static ScannerFile HASH18BFD1A3 { get { return new ScannerFile("01_vehicle_category\\0x18BFD1A3.wav", "0x18BFD1A3", "vehicle_category"); } }
+    public static ScannerFile Yacht { get { return new ScannerFile("01_vehicle_category\\0x18BFD1A3.wav", "0x18BFD1A3", "vehicle_category"); } }
     public static ScannerFile PoliceSedan01 { get { return new ScannerFile("01_vehicle_category\\0x1919DF4D.wav", "Police Sedan", "vehicle_category"); } }
-    public static ScannerFile HASH19F7C1E2 { get { return new ScannerFile("01_vehicle_category\\0x19F7C1E2.wav", "0x19F7C1E2", "vehicle_category"); } }
-    public static ScannerFile HASH1A159577 { get { return new ScannerFile("01_vehicle_category\\0x1A159577.wav", "0x1A159577", "vehicle_category"); } }
-    public static ScannerFile HASH1A8BB088 { get { return new ScannerFile("01_vehicle_category\\0x1A8BB088.wav", "0x1A8BB088", "vehicle_category"); } }
-    public static ScannerFile HASH1A991863 { get { return new ScannerFile("01_vehicle_category\\0x1A991863.wav", "0x1A991863", "vehicle_category"); } }
+    public static ScannerFile QuadBike { get { return new ScannerFile("01_vehicle_category\\0x19F7C1E2.wav", "0x19F7C1E2", "vehicle_category"); } }
+    public static ScannerFile Junker { get { return new ScannerFile("01_vehicle_category\\0x1A159577.wav", "0x1A159577", "vehicle_category"); } }
+    public static ScannerFile Limo02 { get { return new ScannerFile("01_vehicle_category\\0x1A8BB088.wav", "0x1A8BB088", "vehicle_category"); } }
+    public static ScannerFile Trackter { get { return new ScannerFile("01_vehicle_category\\0x1A991863.wav", "0x1A991863", "vehicle_category"); } }
     public static ScannerFile SportsCar01 { get { return new ScannerFile("01_vehicle_category\\0x1AEBB6E8.wav", "Sports car", "vehicle_category"); } }
-    public static ScannerFile HASH1B1A8683 { get { return new ScannerFile("01_vehicle_category\\0x1B1A8683.wav", "0x1B1A8683", "vehicle_category"); } }
-    public static ScannerFile HASH1C381231 { get { return new ScannerFile("01_vehicle_category\\0x1C381231.wav", "0x1C381231", "vehicle_category"); } }
-    public static ScannerFile HASH1C9760CF { get { return new ScannerFile("01_vehicle_category\\0x1C9760CF.wav", "0x1C9760CF", "vehicle_category"); } }
-    public static ScannerFile HASH1CA6D8EC { get { return new ScannerFile("01_vehicle_category\\0x1CA6D8EC.wav", "0x1CA6D8EC", "vehicle_category"); } }
+    public static ScannerFile RV02 { get { return new ScannerFile("01_vehicle_category\\0x1B1A8683.wav", "0x1B1A8683", "vehicle_category"); } }
+    public static ScannerFile BeachBuggy { get { return new ScannerFile("01_vehicle_category\\0x1C381231.wav", "0x1C381231", "vehicle_category"); } }
+    public static ScannerFile FarmVehicle { get { return new ScannerFile("01_vehicle_category\\0x1C9760CF.wav", "0x1C9760CF", "vehicle_category"); } }
+    public static ScannerFile Bus { get { return new ScannerFile("01_vehicle_category\\0x1CA6D8EC.wav", "0x1CA6D8EC", "vehicle_category"); } }
     public static ScannerFile PerformanceCar01 { get { return new ScannerFile("01_vehicle_category\\0x1D525CE1.wav", "Performance car", "vehicle_category"); } }
     public static ScannerFile Bulldozer { get { return new ScannerFile("01_vehicle_category\\0x1D8877D8.wav", "Bulldozer", "vehicle_category"); } }
-    public static ScannerFile HASH1DBED504 { get { return new ScannerFile("01_vehicle_category\\0x1DBED504.wav", "0x1DBED504", "vehicle_category"); } }
-    public static ScannerFile HASH1DBFB566 { get { return new ScannerFile("01_vehicle_category\\0x1DBFB566.wav", "0x1DBFB566", "vehicle_category"); } }
-    public static ScannerFile HASH1DCAAC3C { get { return new ScannerFile("01_vehicle_category\\0x1DCAAC3C.wav", "0x1DCAAC3C", "vehicle_category"); } }
-    public static ScannerFile HASH1E24FC04 { get { return new ScannerFile("01_vehicle_category\\0x1E24FC04.wav", "0x1E24FC04", "vehicle_category"); } }
-    public static ScannerFile HASH1E8CEE5F { get { return new ScannerFile("01_vehicle_category\\0x1E8CEE5F.wav", "0x1E8CEE5F", "vehicle_category"); } }
+    public static ScannerFile TroopTransport02 { get { return new ScannerFile("01_vehicle_category\\0x1DBED504.wav", "0x1DBED504", "vehicle_category"); } }
+    public static ScannerFile MxBike { get { return new ScannerFile("01_vehicle_category\\0x1DBFB566.wav", "0x1DBFB566", "vehicle_category"); } }
+    public static ScannerFile MetroTrain { get { return new ScannerFile("01_vehicle_category\\0x1DCAAC3C.wav", "0x1DCAAC3C", "vehicle_category"); } }
+    public static ScannerFile FreightTrain { get { return new ScannerFile("01_vehicle_category\\0x1E24FC04.wav", "0x1E24FC04", "vehicle_category"); } }
+    public static ScannerFile PoliceMotorcycle { get { return new ScannerFile("01_vehicle_category\\0x1E8CEE5F.wav", "0x1E8CEE5F", "vehicle_category"); } }
     public static ScannerFile Bike01 { get { return new ScannerFile("01_vehicle_category\\0x1FCD9DA9.wav", "Bike", "vehicle_category"); } }
-    public static ScannerFile HASH1FD2B13F { get { return new ScannerFile("01_vehicle_category\\0x1FD2B13F.wav", "0x1FD2B13F", "vehicle_category"); } }
-    public static ScannerFile Stolen01 { get { return new ScannerFile("01_vehicle_category\\Stolen.wav", "Stolen (custom)", "vehicle_category"); } }
+    public static ScannerFile Truck { get { return new ScannerFile("01_vehicle_category\\0x1FD2B13F.wav", "0x1FD2B13F", "vehicle_category"); } }
     }
 public class we_have
 {

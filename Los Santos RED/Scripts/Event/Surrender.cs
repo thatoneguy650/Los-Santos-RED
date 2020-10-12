@@ -169,6 +169,9 @@ public static class Surrender
         if (IsCommitingSuicide)
             return;
 
+        if (PlayerState.HandsAreUp)
+            return;
+
         if (PedToSuicide.IsInAnyVehicle(false) || PedToSuicide.IsRagdoll || PedToSuicide.IsSwimming || PedToSuicide.IsInCover)
         {
             return;

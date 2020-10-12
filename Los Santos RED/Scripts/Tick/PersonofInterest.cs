@@ -9,9 +9,20 @@ using System.Threading.Tasks;
 
 public static class PersonOfInterest
 {
+    private static uint GameTimeLastAppliedWantedStats;
     public static bool PlayerIsPersonOfInterest { get; set; }
     public static bool IsRunning { get; set; } = true;
     public static List<CriminalHistory> CriminalHistory { get; set; }
+    public static bool RecentlyAppliedWantedStats
+    {
+        get
+        {
+            if (GameTimeLastAppliedWantedStats == 0)
+                return false;
+            else
+                return Game.GameTime - GameTimeLastAppliedWantedStats <= 15000;
+        }
+    }
     public static int MaxWantedLevel
     {
         get
@@ -150,7 +161,7 @@ public static class PersonOfInterest
         PersonOfInterest.CriminalHistory.Remove(CriminalHistory);
         WantedLevelScript.CurrentCrimes = CriminalHistory;
 
-        DispatchAudio.ClearDispatchQueue();
+        GameTimeLastAppliedWantedStats = Game.GameTime;
         Debugging.WriteToLog("WantedLevelStats Replace", WantedLevelScript.CurrentCrimes.DebugPrintCrimes());
     }
     private static CriminalHistory GetLastWantedStats()

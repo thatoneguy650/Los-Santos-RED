@@ -221,7 +221,7 @@ public static class PlayerState
             if (GameTimePoliceNoticedVehicleChange == 0)
                 return false;
             else
-                return Game.GameTime - GameTimePoliceNoticedVehicleChange <= 5000;
+                return Game.GameTime - GameTimePoliceNoticedVehicleChange <= 15000;
         }
     }
     public static List<VehicleExt> ReportedStolenVehicles
@@ -301,6 +301,7 @@ public static class PlayerState
             StateTick();
             TurnOffRespawnScripts();
             AudioTick();
+            TrackedVehiclesTick();
         }
     }
     private static void UpdatePlayer()
@@ -403,18 +404,6 @@ public static class PlayerState
     private static void TrackedVehiclesTick()
     {
         TrackedVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
-        //if (IsNotWanted)
-        //{
-        //    //foreach (VehicleExt StolenCar in TrackedVehicles.Where(x => x.NeedsToBeReportedStolen))
-        //    //{
-        //    //    StolenCar.WasReportedStolen = true;
-        //    //    DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ReportStolenVehicle, 10)
-        //    //    {
-        //    //        ResultsInStolenCarSpotted = true,
-        //    //        VehicleToReport = StolenCar
-        //    //    });
-        //    //}
-        //}
         if (IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
             if (CurrentVehicle == null)
@@ -425,12 +414,10 @@ public static class PlayerState
                 if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentVehicle.VehicleEnt.Handle && !CurrentVehicle.HasBeenDescribedByDispatch)
                 {
                     GameTimePoliceNoticedVehicleChange = Game.GameTime;
-
+                    Debugging.WriteToLog("PlayerState", string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));
                     //GameTimeLastReportedSpotted = Game.GameTime;
                     //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectChangedVehicle, 21) { IsAmbient = true, VehicleToReport = CurrentVehicle });
                 }
-
-
                 PoliceLastSeenVehicleHandle = CurrentVehicle.VehicleEnt.Handle;
             }
             if (Police.AnyCanRecognizePlayer)
@@ -649,13 +636,13 @@ public static class PlayerState
         VehicleExt MyCar = UpdateCurrentVehicle();
         if (MyCar != null && !MyCar.IsStolen)
         {
-            Vehicles.VehicleInfo VehicleInformation = Vehicles.GetVehicleInfo(MyCar);
-            string VehicleName = "";
-            if (VehicleInformation != null)
-                VehicleName = VehicleInformation.Manufacturer.ToString();
-            string DisplayName = DispatchAudio.GetVehicleDisplayName(MyCar.VehicleEnt);
-            if (DisplayName != "")
-                VehicleName += " " + DisplayName;
+            string Make = Vehicles.MakeName(MyCar);
+            string Model = Vehicles.MakeName(MyCar);
+            string VehicleName= "";
+            if (Make != "")
+                VehicleName = Make;
+            if (Model != "")
+                VehicleName += " " + Model;
 
             NotifcationText += string.Format("~n~Vehicle: ~p~{0}~s~", VehicleName);
             NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", MyCar.CarPlate.PlateNumber);

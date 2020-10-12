@@ -47,7 +47,7 @@ public static class CarJacking
         SeatTryingToEnter = EntrySeat;
 
         Victim = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
-        Debugging.WriteToLog("CarJack", string.Format("Driver: {0}", Driver.Handle));
+        Debugging.WriteToLog("CarJacking", string.Format("Driver: {0}", Driver.Handle));
         Weapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (CanArmedCarJack && PlayerState.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != GTAWeapon.WeaponCategory.Melee)
@@ -117,6 +117,9 @@ public static class CarJacking
         General.RequestAnimationDictionay(Dictionary);
         PlayerState.SetPlayerToLastWeapon();
 
+        if (!Driver.IsInAnyVehicle(false))
+            Driver.WarpIntoVehicle(TargetVehicle, -1);
+
         float DriverHeading = Driver.Heading;
         PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
         NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
@@ -128,10 +131,13 @@ public static class CarJacking
         NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver, VictimScene, Dictionary, VictimAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
         NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", VictimScene, 0.0f);
 
+
+
         return true;
     }
     private static bool CarJackAnimation()
     {
+
         PlayerCarJacking = true;
         bool locOpenDoor = false;
         bool locStartedCamera = false;

@@ -307,27 +307,6 @@ public static class Crimes
             }
         }
     }
-    //private static void MarkVehicleAsStolen(VehicleExt StolenCar)
-    //{
-    //    GameFiber ReportStolenVehicle = GameFiber.StartNew(delegate
-    //    {
-    //        GameFiber.Sleep(10000);
-    //        StolenCar.WasReportedStolen = true;
-    //        if (StolenCar.CarPlate != null && StolenCar.CarPlate.PlateNumber == StolenCar.OriginalLicensePlate.PlateNumber) //if you changed it between when it was reported, dont count it
-    //            StolenCar.CarPlate.IsWanted = true;
-
-    //        foreach (LicensePlate Plate in LicensePlateTheft.SpareLicensePlates)
-    //        {
-    //            if (Plate.PlateNumber == StolenCar.OriginalLicensePlate.PlateNumber)
-    //            {
-    //                Plate.IsWanted = true;
-    //            }
-    //        }
-    //        //Debugging.WriteToLog("StolenVehicles", String.Format("Vehicle {0} was just reported stolen", StolenCar.VehicleEnt.Handle));
-
-    //    }, "PlayDispatchQueue");
-    //    Debugging.GameFibers.Add(ReportStolenVehicle);
-    //}
     private static bool CheckBrandishing()
     {
         if (PlayerState.IsConsideredArmed)
@@ -774,7 +753,7 @@ public class CriminalHistory
         {
             WantedLevelScript.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
         }
-        ScannerScript.AnnounceCrime(CrimeInstance, new DispatchCallIn(!PlayerState.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved });
+        PoliceScanner.AnnounceCrime(CrimeInstance, new DispatchCallIn(!PlayerState.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved });
     }
 
 }

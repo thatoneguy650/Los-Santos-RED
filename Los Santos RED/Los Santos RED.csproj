@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="Entities\PedExt.cs" />
     <Compile Include="Lookups\Agencies.cs" />
+    <Compile Include="Lookups\VehicleScanner.cs" />
     <Compile Include="Scripts\Tick\Crimes.cs" />
     <Compile Include="Lookups\Jurisdiction.cs" />
     <Compile Include="Lookups\Weapons.cs" />
@@ -127,7 +128,7 @@
     <Compile Include="Scripts\Tick\PlayerHealth.cs" />
     <Compile Include="Scripts\ScriptController.cs" />
     <Compile Include="Scripts\Tick\PlayerState.cs" />
-    <Compile Include="Scripts\Tick\ScannerScript.cs" />
+    <Compile Include="Scripts\Tick\PoliceScanner.cs" />
     <Compile Include="Scripts\Tick\VehicleFuelSystem.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Extensions.cs" />

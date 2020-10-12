@@ -56,7 +56,7 @@ public static class ScriptController
             new TickTask(500, "PersonOfInterest", PersonOfInterest.Tick, 7,2),
 
             //new TickTask(500, "DispatchAudio", DispatchAudio.Tick, 8,0),
-            new TickTask(500, "ScannerScript", ScannerScript.Tick, 8,0),
+            new TickTask(500, "ScannerScript", PoliceScanner.Tick, 8,0),
             new TickTask(500, "PoliceSpeech", PoliceSpeech.Tick, 8,2),
 
 
@@ -105,7 +105,7 @@ public static class ScriptController
         Menus.Intitialize();
         PedList.Initialize();
         //DispatchAudio.Initialize();
-        ScannerScript.Initialize();
+        PoliceScanner.Initialize();
         PoliceSpeech.Initialize();
         Vehicles.Initialize();
         VehicleEngine.Initialize();
@@ -126,6 +126,7 @@ public static class ScriptController
         PlayerHealth.Initialize();
         PedWounds.Initialize();
         Dispatch.Initialize();
+        VehicleScanner.Initialize();
         RunTasks();
     }
     public static void RunTasks()
@@ -211,7 +212,7 @@ public static class ScriptController
         Menus.Dispose();
         PedList.Dispose();
         //DispatchAudio.Dispose();
-        ScannerScript.Dispose();
+        PoliceScanner.Dispose();
         PoliceSpeech.Dispose();
         Vehicles.Dispose();
         VehicleEngine.Dispose();
@@ -241,6 +242,7 @@ public static class ScriptController
         MuggingScript.Dispose();
         PedWounds.Dispose();
         Dispatch.Dispose();
+        VehicleScanner.Dispose();
     }
     private static void ResetRanItems()
     {

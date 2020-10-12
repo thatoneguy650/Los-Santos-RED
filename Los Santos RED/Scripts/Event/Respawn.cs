@@ -283,7 +283,7 @@ public static class Respawn
         GameTimeLastUndied = Game.GameTime;
         RespawnInPlace(true);
         //DispatchAudio.AbortAllAudio();
-        ScannerScript.AbortAllAudio();
+        PoliceScanner.AbortAllAudio();
         Game.LocalPlayer.Character.IsInvincible = true;
         GameFiber.StartNew(delegate
         {
@@ -361,7 +361,7 @@ public static class Respawn
             }
             GameTimeLastRespawned = Game.GameTime; 
             Game.HandleRespawn();
-            ScannerScript.AbortAllAudio();
+            PoliceScanner.AbortAllAudio();
             //DispatchAudio.AbortAllAudio();
         }
         catch (Exception e)

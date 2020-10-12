@@ -433,7 +433,7 @@ public static class WantedLevelScript
         Police.AnySeenPlayerCurrentWanted = false;
         GameTimeWantedLevelStarted = 0;
         Investigation.InInvestigationMode = false;
-        ScannerScript.ResetReportedItems();
+        PoliceScanner.ResetReportedItems();
     }
     public static void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
     {
@@ -472,7 +472,7 @@ public static class WantedLevelScript
             if (WorstObserved != null)
             {
                 SetWantedLevel(WorstObserved.AssociatedCrime.ResultingWantedLevel, "you are a suspect!", true);
-                ScannerScript.AnnounceCrime(WorstObserved.AssociatedCrime, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                PoliceScanner.AnnounceCrime(WorstObserved.AssociatedCrime, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
             }
         }
     }
