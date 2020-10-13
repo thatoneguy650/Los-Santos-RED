@@ -142,7 +142,7 @@ public static class PedList
     private static void AddCivilian(Ped Pedestrian)
     {
         SetPedestrianStats(Pedestrian,false);
-        Civilians.Add(new PedExt(Pedestrian, Pedestrian.Health) { WillCallPolice = General.MyRand.Next(1, 11) <= 4, WillFight = General.MyRand.Next(1, 21) <= 1 });
+        Civilians.Add(new PedExt(Pedestrian, Pedestrian.Health) { WillCallPolice = General.RandomPercent(20), WillFight = General.RandomPercent(5) });
     }
     private static void SetPedestrianStats(Ped Pedestrian,bool IsCop)
     {

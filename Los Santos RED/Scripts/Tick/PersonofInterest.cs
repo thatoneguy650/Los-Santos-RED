@@ -20,7 +20,7 @@ public static class PersonOfInterest
             if (GameTimeLastAppliedWantedStats == 0)
                 return false;
             else
-                return Game.GameTime - GameTimeLastAppliedWantedStats <= 15000;
+                return Game.GameTime - GameTimeLastAppliedWantedStats <= 5000;
         }
     }
     public static int MaxWantedLevel

@@ -260,7 +260,7 @@ public static class Crimes
             TrespessingOnGovtProperty.IsCurrentlyViolating = false;
         }
 
-        if(PlayerState.CurrentVehicle != null && PlayerState.CurrentVehicle.WasReportedStolen)
+        if(PlayerState.CurrentVehicle != null && PlayerState.CurrentVehicle.WasReportedStolen && (PlayerState.CurrentVehicle.CarPlate != null && PlayerState.CurrentVehicle.CarPlate.IsWanted))
         {
             DrivingStolenVehicle.IsCurrentlyViolating = true;
         }
@@ -585,7 +585,7 @@ public static class TrafficViolations
             }
             if (General.MySettings.TrafficViolations.RunningRedLight && RecentlyRanRed)
             {
-                Crimes.RunningARedLight.IsCurrentlyViolating = true;
+               // Crimes.RunningARedLight.IsCurrentlyViolating = true;//turned off for now until i fix it
             }
             else
             {

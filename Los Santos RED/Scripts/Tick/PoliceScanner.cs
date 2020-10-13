@@ -1329,9 +1329,13 @@ public static class PoliceScanner
             IsStatus = true,
             IncludeReportedBy = false,
             IncludeRapSheet = true,
-            Priority = 50,
+            Priority = 10,
             LocationDescription = LocationSpecificity.HeadingAndStreet,
             IncludeDrivingVehicle = true,
+            MainAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() { crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName },"a wanted felon on the loose"),
+            },
         };
         SuspectEvaded = new Dispatch()
         {

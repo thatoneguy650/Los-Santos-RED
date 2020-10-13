@@ -1250,11 +1250,11 @@ public static class Tasking
         {
             SetCopTazer(Cop);
         }
-        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait && WantedLevelScript.LastPoliceState == WantedLevelScript.PoliceState.UnarmedChase)
-        {
-            SetCopTazer(Cop);
-        }
-        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait && WantedLevelScript.LastPoliceState != WantedLevelScript.PoliceState.UnarmedChase)
+        //else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait && WantedLevelScript.LastPoliceState == WantedLevelScript.PoliceState.UnarmedChase)
+        //{
+        //    SetCopTazer(Cop);
+        //}
+        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase)
         {
             SetCopDeadly(Cop);
         }
