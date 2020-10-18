@@ -170,12 +170,19 @@ public static class PlayerHealth
             int CurrentHealth = Game.LocalPlayer.Character.Health;
             int CurrentArmor = Game.LocalPlayer.Character.Armor;
 
+            if(PedSwap.RecentlyTakenOver)
+            {
+                Health = CurrentHealth;
+                Armor = CurrentArmor;
+            }
+
             bool HasBeenDamaged = false;
 
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
                 HasBeenDamaged = true;
             }
+
 
             if (HasBeenDamaged)
             {

@@ -32,6 +32,16 @@ public static class PedSwap
     public static string CurrentPlayerModel;//temp public
 
     //public static PedHeadshot CurrentHeadshot;
+    public static bool RecentlyTakenOver
+    {
+        get
+        {
+            if (Game.GameTime - GameTimeLastTakenOver <= 1000)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
+                return true;
+            else
+                return false;
+        }
+    }
     public static Vehicle OwnedCar { get; set; }
     public static string SuspectName { get; set; }
     public static void Initialize()

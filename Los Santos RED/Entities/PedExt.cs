@@ -178,7 +178,7 @@ public class PedExt
                     IsOnBike = Pedestrian.IsOnBike;
 
                 
-                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 1|2|128|256);//use blinkers?
+                //NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 1|2|128|256);//use blinkers?
             }
             else
             {

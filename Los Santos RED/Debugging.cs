@@ -336,23 +336,23 @@ public static class Debugging
         //Tasking.OutputTasks();
 
 
-        if (SearchModeStopping.SpotterCop.Exists())
-        {
-            bool isVis = SearchModeStopping.SpotterCop.IsVisible;
+        //if (SearchModeStopping.SpotterCop.Exists())
+        //{
+        //    bool isVis = SearchModeStopping.SpotterCop.IsVisible;
 
 
-            SearchModeStopping.SpotterCop.IsVisible = !isVis;
-        }
-        WriteToLog("CurrentCrimes", "--------------------------------");
-        foreach (CrimeEvent MyCrime in WantedLevelScript.CurrentCrimes.CrimesObserved)
-        {
-            WriteToLog("CrimesCommitted", string.Format("Crime: {0}, Violating {1}, Instance {2}",MyCrime.AssociatedCrime.Name,MyCrime.AssociatedCrime.IsCurrentlyViolating,MyCrime.Instances));
-        }
-        foreach (CrimeEvent MyCrime in WantedLevelScript.CurrentCrimes.CrimesReported)
-        {
-            WriteToLog("CrimesReported", string.Format("Crime: {0}, Violating {1}, Instance {2}", MyCrime.AssociatedCrime.Name, MyCrime.AssociatedCrime.IsCurrentlyViolating, MyCrime.Instances));
-        }
-        WriteToLog("CurrentCrimes", "--------------------------------");
+        //    SearchModeStopping.SpotterCop.IsVisible = !isVis;
+        //}
+        //WriteToLog("CurrentCrimes", "--------------------------------");
+        //foreach (CrimeEvent MyCrime in WantedLevelScript.CurrentCrimes.CrimesObserved)
+        //{
+        //    WriteToLog("CrimesCommitted", string.Format("Crime: {0}, Violating {1}, Instance {2}",MyCrime.AssociatedCrime.Name,MyCrime.AssociatedCrime.IsCurrentlyViolating,MyCrime.Instances));
+        //}
+        //foreach (CrimeEvent MyCrime in WantedLevelScript.CurrentCrimes.CrimesReported)
+        //{
+        //    WriteToLog("CrimesReported", string.Format("Crime: {0}, Violating {1}, Instance {2}", MyCrime.AssociatedCrime.Name, MyCrime.AssociatedCrime.IsCurrentlyViolating, MyCrime.Instances));
+        //}
+        //WriteToLog("CurrentCrimes", "--------------------------------");
 
         //PoliceSpawning.SpawnRoadblock(Game.LocalPlayer.Character.GetOffsetPositionFront(10F));
 
@@ -361,8 +361,14 @@ public static class Debugging
 
 
 
+        bool PredBoatHash = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", Game.GetHashKey("predator"));
+        bool PredBoat = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", "predator");
 
 
+        bool POLMAVHash = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", Game.GetHashKey("polmav"));
+        bool POLMAV = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", "polmav");
+
+        WriteToLog("Debugging", string.Format("PRED: WithGetHash {0}, Without {1}, POLMAV With {2} without {3} ", PredBoatHash, PredBoat, POLMAVHash, POLMAV));
 
 
 
@@ -485,7 +491,7 @@ public static class Debugging
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
         }
-        if (ProcedureString == "Dispatch" || ProcedureString == "PoliceSpawning" || ProcedureString == "ScannerScript" || ProcedureString == "Tasking" || ProcedureString == "PlayerState" || ProcedureString == "Debugging" || ProcedureString == "CarJacking")
+        if (ProcedureString == "Dispatch" || ProcedureString == "PoliceSpawning" || ProcedureString == "ScannerScript" || ProcedureString == "Tasking" || ProcedureString == "PlayerState" || ProcedureString == "Debugging" || ProcedureString == "CarJacking" || ProcedureString == "Error")
         {
             string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
             if (General.MySettings != null && General.MySettings.General.Logging)

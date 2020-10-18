@@ -198,6 +198,10 @@ public static class CarJacking
             {
                 CameraControl.RestoreGameplayerCamera();
             }
+            if(PlayerState.IsBusted || PlayerState.IsDead)
+            {
+                break;
+            }
         }
 
 
@@ -420,8 +424,8 @@ public static class CarJacking
             XVariance *= -1f;
         }
 
-        CameraPosition = TargetVehicle.GetOffsetPositionRight(Distance);
-        CameraPosition += new Vector3(XVariance, YVariance, ZVariance);
+        CameraPosition = Game.LocalPlayer.Character.GetOffsetPositionRight(Distance);
+       // CameraPosition += new Vector3(XVariance, YVariance, ZVariance);
         return CameraPosition;
     }
 }

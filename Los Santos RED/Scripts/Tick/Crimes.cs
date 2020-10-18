@@ -88,7 +88,7 @@ public static class Crimes
          
 
          GrandTheftAuto = new Crime("Grand Theft Auto", 2, false, 16) { WillAngerCivilians = true };
-         DrivingStolenVehicle = new Crime("Driving a Stolen Vehicle", 2, false, 17) { CanBeReportedByCivilians = false };
+         //DrivingStolenVehicle = new Crime("Driving a Stolen Vehicle", 2, false, 17) { CanBeReportedByCivilians = false };
 
         BrandishingWeapon = new Crime("Brandishing Weapon", 2, false, 18) { WillAngerCivilians = true };
 
@@ -107,7 +107,7 @@ public static class Crimes
          
          RunningARedLight = new Crime("Running a Red Light", 1, false,36) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
         FelonySpeeding = new Crime("Speeding", 1, false, 37) { CanBeReportedByCivilians = false, WillAngerCivilians = false, WillScareCivilians = false };
-
+        DrivingStolenVehicle = new Crime("Driving a Stolen Vehicle", 2, false, 38) { CanBeReportedByCivilians = false };
 
         CrimeList = new List<Crime>
         {
@@ -472,7 +472,7 @@ public static class TrafficViolations
         }
 
 
-        Streets.ResetStreets();
+        //Streets.ResetStreets();
         PlayerIsRunningRedLight = false;
 
         foreach (PedExt Civilian in PedList.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy( x=> x.DistanceToPlayer))
@@ -489,7 +489,7 @@ public static class TrafficViolations
                     {
                         Civilian.IsWaitingAtTrafficLight = true;
 
-                        if(Extensions.FacingSameOrOppositeDirection(Civilian.Pedestrian,Game.LocalPlayer.Character) && Game.LocalPlayer.Character.InFront(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 25f && Game.LocalPlayer.Character.Speed >= 3f)
+                        if(Extensions.FacingSameOrOppositeDirection(Civilian.Pedestrian,Game.LocalPlayer.Character) && Game.LocalPlayer.Character.InFront(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 10f && Game.LocalPlayer.Character.Speed >= 3f)
                         {
                             GameTimeLastRanRed = Game.GameTime;
                             PlayerIsRunningRedLight = true;

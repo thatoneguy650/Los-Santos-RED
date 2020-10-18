@@ -126,7 +126,6 @@ public static class ScriptController
         PlayerHealth.Initialize();
         PedWounds.Initialize();
         Dispatch.Initialize();
-        VehicleScanner.Initialize();
         RunTasks();
     }
     public static void RunTasks()
@@ -179,7 +178,7 @@ public static class ScriptController
                 Dispose();
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
-        });
+        },"Run Tasks");
 
 
         GameFiber.Sleep(1000);
@@ -200,7 +199,7 @@ public static class ScriptController
                 Dispose();
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
-        });
+        },"Run Menu/UI");
     }
     public static void Dispose()
     {
@@ -242,7 +241,6 @@ public static class ScriptController
         MuggingScript.Dispose();
         PedWounds.Dispose();
         Dispatch.Dispose();
-        VehicleScanner.Dispose();
     }
     private static void ResetRanItems()
     {
