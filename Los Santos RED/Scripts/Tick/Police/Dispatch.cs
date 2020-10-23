@@ -212,6 +212,11 @@ public static class Dispatch
         {
             foreach(Cop OutOfRangeCop in PedList.CopPeds.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
             {
+                if(!OutOfRangeCop.AssignedAgency.CanSpawn)
+                {
+                    Debugging.WriteToLog("Dispatch", string.Format("  Agency Delete {0}", OutOfRangeCop.Pedestrian.Handle));
+                    PoliceSpawning.DeleteCop(OutOfRangeCop);
+                }
 
                 //Need to log which one of these i did
                 //seems to be deletying too many people

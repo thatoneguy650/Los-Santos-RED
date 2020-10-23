@@ -3,13 +3,9 @@ using NAudio.Wave;
 using Rage;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
+using System.Linq;
 using static DispatchScannerFiles;
-using Rage.Native;
-using System.Runtime.InteropServices;
 
 public static class PoliceScanner
 {
@@ -50,6 +46,7 @@ public static class PoliceScanner
     private static Dispatch AnnounceStolenVehicle;
     private static Dispatch RequestAirSupport;
     private static Dispatch RequestMilitaryUnits;
+    private static Dispatch RequestNOOSEUnits;
     private static Dispatch SuspectSpotted;
     private static Dispatch WantedSuspectSpotted;
     private static Dispatch SuspectEvaded;
@@ -109,6 +106,8 @@ public static class PoliceScanner
     {
         SetupLists();
         VehicleScanner.Initialize();
+        ZoneScanner.Intitialize();
+        StreetScanner.Intitialize();
         IsRunning = true;
     }
     public static void Dispose()
@@ -183,9 +182,13 @@ public static class PoliceScanner
                 {
                     AddToQueue(RequestBackup, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                 }
-                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && WantedLevelScript.IsMilitaryDeployed)
+                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && PedList.AnyArmyUnitsSpawned)
                 {
                     AddToQueue(RequestMilitaryUnits);
+                }
+                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && PedList.AnyNooseUnitsSpawned)
+                {
+                    AddToQueue(RequestNOOSEUnits);
                 }
                 if (!WeaponsFree.HasBeenPlayedThisWanted && WantedLevelScript.IsWeaponsFree)
                 {
@@ -203,7 +206,7 @@ public static class PoliceScanner
                 {
                     AddToQueue(SuspectArrested);
                 }
-                if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerState.PoliceRecentlyNoticedVehicleChange && !PlayerState.CurrentVehicle.HasBeenDescribedByDispatch)
+                if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerState.PoliceRecentlyNoticedVehicleChange && PlayerState.CurrentVehicle != null && !PlayerState.CurrentVehicle.HasBeenDescribedByDispatch)
                 {
                     AddToQueue(ChangedVehicles, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = PlayerState.CurrentVehicle });
                 }
@@ -359,6 +362,11 @@ public static class PoliceScanner
         }
 
         AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
+
+        if(Investigation.HavePlayerDescription && !DispatchToPlay.LatestInformation.SeenByOfficers)
+        {
+            AddHaveDescription(EventToPlay);
+        }
 
         EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
 
@@ -523,22 +531,30 @@ public static class PoliceScanner
     private static void AddStreet(DispatchEvent dispatchEvent)
     {
         Street MyStreet = PlayerLocation.PlayerCurrentStreet;
-        if (MyStreet != null && MyStreet.DispatchFile != "")
+        if (MyStreet != null)
         {
-            dispatchEvent.SoundsToPlay.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
-            dispatchEvent.SoundsToPlay.Add(MyStreet.DispatchFile);
-            dispatchEvent.Subtitles += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
-            dispatchEvent.NotificationText += "~n~~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
-
-            if (PlayerLocation.PlayerCurrentCrossStreet != null)
+            string StreetAudio = StreetScanner.AudioAtStreet(MyStreet.Name);
+            if (StreetAudio != "")
             {
-                Street MyCrossStreet = PlayerLocation.PlayerCurrentCrossStreet;
-                if (MyCrossStreet != null && MyCrossStreet.DispatchFile != "")
+                dispatchEvent.SoundsToPlay.Add((new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }).PickRandom());
+                dispatchEvent.SoundsToPlay.Add(StreetAudio);
+                dispatchEvent.Subtitles += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
+                dispatchEvent.NotificationText += "~n~~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
+
+                if (PlayerLocation.PlayerCurrentCrossStreet != null)
                 {
-                    dispatchEvent.SoundsToPlay.Add((new List<string>() { conjunctives.AT01.FileName,conjunctives.AT02.FileName }).PickRandom());
-                    dispatchEvent.SoundsToPlay.Add(MyCrossStreet.DispatchFile);
-                    dispatchEvent.NotificationText += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
-                    dispatchEvent.Subtitles += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
+                    Street MyCrossStreet = PlayerLocation.PlayerCurrentCrossStreet;
+                    if (MyCrossStreet != null)
+                    {
+                        string CrossStreetAudio = StreetScanner.AudioAtStreet(MyCrossStreet.Name);
+                        if (CrossStreetAudio != "")
+                        {
+                            dispatchEvent.SoundsToPlay.Add((new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }).PickRandom());
+                            dispatchEvent.SoundsToPlay.Add(CrossStreetAudio);
+                            dispatchEvent.NotificationText += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
+                            dispatchEvent.Subtitles += " ~s~at ~HUD_COLOUR_YELLOWLIGHT~" + MyCrossStreet.Name + "~s~";
+                        }
+                    }
                 }
             }
         }
@@ -546,12 +562,16 @@ public static class PoliceScanner
     private static void AddZone(DispatchEvent dispatchEvent)
     {
         Zone MyZone = Zones.GetZoneAtLocation(dispatchEvent.PositionToReport);
-        if (MyZone != null && MyZone.ScannerValue != "")
+        if (MyZone != null)
         {
-            dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
-            dispatchEvent.SoundsToPlay.Add(MyZone.ScannerValue);
-            dispatchEvent.Subtitles += " ~s~near ~p~" + MyZone.DisplayName + "~s~";
-            dispatchEvent.NotificationText += "~n~~p~" + MyZone.DisplayName + "~s~";
+            string ScannerAudio = ZoneScanner.AudioAtZone(MyZone.InternalGameName);
+            if (ScannerAudio != "")
+            {
+                dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
+                dispatchEvent.SoundsToPlay.Add(ScannerAudio);
+                dispatchEvent.Subtitles += " ~s~near ~p~" + MyZone.DisplayName + "~s~";
+                dispatchEvent.NotificationText += "~n~~p~" + MyZone.DisplayName + "~s~";
+            }
         }
     }
     private static void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate)
@@ -754,6 +774,7 @@ public static class PoliceScanner
     }
     private static void AddSpeed(DispatchEvent dispatchEvent,float Speed)
     {
+        Speed = Speed * 2.23694f;//convert to mph
         if (Speed >= 40f)
         {
             dispatchEvent.SoundsToPlay.Add(suspect_last_seen.TargetLastReported.FileName);
@@ -807,6 +828,11 @@ public static class PoliceScanner
                 dispatchEvent.NotificationText += "~n~Speed Exceeding: ~o~105 mph~s~";
             }
         }
+    }
+    private static void AddHaveDescription(DispatchEvent dispatchEvent)
+    {
+                dispatchEvent.NotificationText += "~n~~r~Have Description~s~";
+          
     }
     private static void AddLethalForce(DispatchEvent dispatchEvent)
     {
@@ -898,6 +924,7 @@ public static class PoliceScanner
             ,AnnounceStolenVehicle
             ,RequestAirSupport
             ,RequestMilitaryUnits
+            ,RequestNOOSEUnits
             ,SuspectSpotted
             ,SuspectEvaded
             ,LostVisual
@@ -1126,6 +1153,7 @@ public static class PoliceScanner
             IncludeDrivingVehicle = true,
             MarkVehicleAsStolen = true,
             IncludeLicensePlate = true,
+            IncludeCarryingWeapon = true,
             LocationDescription = LocationSpecificity.HeadingAndStreet,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
@@ -1139,6 +1167,7 @@ public static class PoliceScanner
         {
             Name = "Suspicious Activity",
             LocationDescription = LocationSpecificity.StreetAndZone,
+            IncludeCarryingWeapon = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crime_suspicious_activity.Suspiciousactivity.FileName },"suspicious activity"),
@@ -1149,6 +1178,7 @@ public static class PoliceScanner
         {
             Name = "Criminal Activity",
             LocationDescription = LocationSpecificity.Street,
+            IncludeCarryingWeapon = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crime_criminal_activity.Criminalactivity.FileName },"criminal activity"),
@@ -1160,6 +1190,7 @@ public static class PoliceScanner
         {
             Name = "Mugging",
             LocationDescription = LocationSpecificity.Street,
+            IncludeCarryingWeapon = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crime_mugging.Apossiblemugging.FileName },"a possible mugging"),
@@ -1204,6 +1235,7 @@ public static class PoliceScanner
         {
             Name = "Resisting Arrest",
             LocationDescription = LocationSpecificity.Zone,
+            IncludeCarryingWeapon = true,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crime_person_resisting_arrest.Apersonresistingarrest.FileName },"a person resisting arrest"),
@@ -1329,6 +1361,23 @@ public static class PoliceScanner
                 new Dispatch.AudioSet(new List<string>() { custom_wanted_level_line.Code13militaryunitsrequested.FileName },"code-13 military units requested"),
             },
         };
+
+
+
+        RequestNOOSEUnits = new Dispatch()
+        {
+            IncludeAttentionAllUnits = true,
+            Name = "NOOSE Units Requested",
+            IsStatus = true,
+            IncludeReportedBy = false,
+            LocationDescription = LocationSpecificity.Zone,
+            MainAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() { dispatch_units_full.DispatchingSWATunitsfrompoliceheadquarters.FileName },"dispatching swat units from police headquarters"),
+                new Dispatch.AudioSet(new List<string>() { dispatch_units_full.DispatchingSWATunitsfrompoliceheadquarters1.FileName },"dispatching swat units from police headquarters"),
+            },
+        };
+
         SuspectSpotted = new Dispatch()
         {
             Name = "Suspect Spotted",
@@ -2193,6 +2242,417 @@ public static class PoliceScanner
             }
         }
 
+    }
+    private static class ZoneScanner
+    {
+        private static List<ZoneLookup> ZoneList = new List<ZoneLookup>();
+        public class ZoneLookup
+        {
+            public ZoneLookup()
+            {
+
+            }
+            public ZoneLookup(string _GameName, string _ScannerValue)
+            {
+                InternalGameName = _GameName;
+                ScannerValue = _ScannerValue;
+            }
+            public string InternalGameName { get; set; }
+            public string ScannerValue { get; set; }
+
+        }
+        public static void Intitialize()
+        {
+            SetupLists();
+        }
+        public static string AudioAtZone(string ZoneName)
+        {
+            ZoneLookup Returned = ZoneList.Where(x => x.InternalGameName == ZoneName).FirstOrDefault();
+            if (Returned == null)
+                return "";
+            return Returned.ScannerValue;
+        }
+        private static void SetupLists()
+        {
+
+            ZoneList = new List<ZoneLookup>
+            {
+            //One Off
+            new ZoneLookup("OCEANA", areas.TheOcean.FileName),
+
+            //North Blaine
+            new ZoneLookup("PROCOB", areas.ProcopioBeach.FileName),
+            new ZoneLookup("MTCHIL", areas.MountChiliad.FileName),
+            new ZoneLookup("MTGORDO", areas.MountGordo.FileName),
+            new ZoneLookup("PALETO", areas.PaletoBay.FileName),
+            new ZoneLookup("PALCOV", areas.PaletoBay.FileName),
+            new ZoneLookup("PALFOR", areas.PaletoForest.FileName),
+            new ZoneLookup("CMSW", areas.ChilliadMountainStWilderness.FileName),
+            new ZoneLookup("CALAFB", ""),
+            new ZoneLookup("GALFISH", ""),
+            new ZoneLookup("ELGORL", areas.MountGordo.FileName),
+            new ZoneLookup("GRAPES", areas.Grapeseed.FileName),
+            new ZoneLookup("BRADP", areas.BraddockPass.FileName),
+            new ZoneLookup("BRADT", areas.TheBraddockTunnel.FileName),
+            new ZoneLookup("CCREAK", ""),
+
+            //Blaine
+            new ZoneLookup("ALAMO", areas.TheAlamaSea.FileName),
+            new ZoneLookup("ARMYB", areas.FtZancudo.FileName),
+            new ZoneLookup("CANNY", areas.RatonCanyon.FileName),
+            new ZoneLookup("DESRT", areas.GrandeSonoranDesert.FileName),
+            new ZoneLookup("HUMLAB", ""),
+            new ZoneLookup("JAIL", areas.BoilingBrookPenitentiary.FileName),
+            new ZoneLookup("LAGO", areas.LagoZancudo.FileName),
+            new ZoneLookup("MTJOSE", areas.MtJosiah.FileName),
+            new ZoneLookup("NCHU", areas.NorthChumash.FileName),
+            new ZoneLookup("SANCHIA", ""),
+            new ZoneLookup("SANDY", areas.SandyShores.FileName),
+            new ZoneLookup("SLAB", areas.SlabCity.FileName),
+            new ZoneLookup("ZANCUDO", areas.ZancudoRiver.FileName),
+            new ZoneLookup("ZQ_UAR", areas.DavisCourts.FileName),
+
+            //Vespucci
+            new ZoneLookup("BEACH", areas.VespucciBeach.FileName),
+            new ZoneLookup("DELBE", areas.DelPierroBeach.FileName),
+            new ZoneLookup("DELPE", areas.DelPierro.FileName),
+            new ZoneLookup("VCANA", areas.VespucciCanal.FileName),
+            new ZoneLookup("VESP", areas.Vespucci.FileName),
+            new ZoneLookup("LOSPUER", areas.LaPuertes.FileName),
+            new ZoneLookup("PBLUFF", areas.PacificBluffs.FileName),
+            new ZoneLookup("DELSOL", areas.PuertoDelSoul.FileName),
+
+            //Central
+            new ZoneLookup("BANNING", areas.Banning.FileName),
+            new ZoneLookup("CHAMH", areas.ChamberlainHills.FileName),
+            new ZoneLookup("DAVIS", areas.Davis.FileName),
+            new ZoneLookup("DOWNT", areas.Downtown.FileName),
+            new ZoneLookup("PBOX", areas.PillboxHill.FileName),
+            new ZoneLookup("RANCHO", areas.Rancho.FileName),
+            new ZoneLookup("SKID", areas.MissionRow.FileName),
+            new ZoneLookup("STAD", areas.MazeBankArena.FileName),
+            new ZoneLookup("STRAW", areas.Strawberry.FileName),
+            new ZoneLookup("TEXTI", areas.TextileCity.FileName),
+            new ZoneLookup("LEGSQU", ""),
+
+            //East LS
+            new ZoneLookup("CYPRE", areas.CypressFlats.FileName),
+            new ZoneLookup("LMESA", areas.LaMesa.FileName),
+            new ZoneLookup("MIRR", areas.MirrorPark.FileName),
+            new ZoneLookup("MURRI", areas.MuriettaHeights.FileName),
+            new ZoneLookup("EBURO", areas.ElBerroHights.FileName),
+
+            //Vinewood
+            new ZoneLookup("ALTA", areas.Alta.FileName),
+            new ZoneLookup("DTVINE", areas.DowntownVinewood.FileName),
+            new ZoneLookup("EAST_V", areas.EastVinewood.FileName),
+            new ZoneLookup("HAWICK", ""),
+            new ZoneLookup("HORS", areas.TheRaceCourse.FileName),
+            new ZoneLookup("VINE", areas.Vinewood.FileName),
+            new ZoneLookup("WVINE", areas.WestVinewood.FileName),
+
+            //PortOfLosSantos
+            new ZoneLookup("ELYSIAN", areas.ElysianIsland.FileName),
+            new ZoneLookup("ZP_ORT", areas.PortOfSouthLosSantos.FileName),
+            new ZoneLookup("TERMINA", areas.Terminal.FileName),
+            new ZoneLookup("ZP_ORT", areas.PortOfSouthLosSantos.FileName),
+            new ZoneLookup("AIRP", areas.LosSantosInternationalAirport.FileName),
+
+            //Rockford Hills
+            new ZoneLookup("BURTON", areas.Burton.FileName),
+            new ZoneLookup("GOLF", areas.TheGWCGolfingSociety.FileName),
+            new ZoneLookup("KOREAT", areas.LittleSeoul.FileName),
+            new ZoneLookup("MORN", areas.MorningWood.FileName),
+            new ZoneLookup("MOVIE", areas.RichardsMajesticStudio.FileName),
+            new ZoneLookup("RICHM", areas.Richman.FileName),
+            new ZoneLookup("ROCKF", areas.RockfordHills.FileName),     
+
+            //Vinewood Hills
+            new ZoneLookup("CHIL", areas.VinewoodHills.FileName),
+            new ZoneLookup("GREATC", areas.GreatChapparalle.FileName),
+            new ZoneLookup("BAYTRE", areas.BayTreeCanyon.FileName),
+            new ZoneLookup("RGLEN", areas.RichmanGlenn.FileName),
+            new ZoneLookup("TONGVAV", areas.TongvaValley.FileName),
+            new ZoneLookup("HARMO", areas.Harmony.FileName),
+            new ZoneLookup("RTRAK", areas.TheRedwoodLightsTrack.FileName),
+           
+            //Chumash
+            new ZoneLookup("BANHAMC", ""),
+            new ZoneLookup("BHAMCA", ""),
+            new ZoneLookup("CHU", areas.Chumash.FileName),
+            new ZoneLookup("TONGVAH", areas.TongaHills.FileName),
+           
+            //Tataviam 
+            new ZoneLookup("LACT", ""),
+            new ZoneLookup("LDAM", ""),
+            new ZoneLookup("NOOSE", ""),
+            new ZoneLookup("PALHIGH", areas.PalominoHighlands.FileName),
+            new ZoneLookup("PALMPOW", areas.PalmerTaylorPowerStation.FileName),
+            new ZoneLookup("SANAND", areas.SanAndreas.FileName),
+            new ZoneLookup("TATAMO", areas.TatathiaMountains.FileName),
+            new ZoneLookup("WINDF", areas.RonAlternatesWindFarm.FileName),
+    };
+
+        }
+    }
+    private static class StreetScanner
+    {
+        private static List<StreetLookup> StreetsList = new List<StreetLookup>();
+        public static void Intitialize()
+        {
+            SetupLists();
+        }
+        public static string AudioAtStreet(string StreetName)
+        {
+            StreetLookup Returned = StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+            if (Returned == null)
+                return "";
+            return Returned.DispatchFile;
+        }
+        public static void SetupLists()
+        {
+            StreetsList = new List<StreetLookup>
+        {
+            new StreetLookup("Joshua Rd", streets.JoshuaRoad.FileName),
+            new StreetLookup("East Joshua Road", streets.EastJoshuaRoad.FileName),
+            new StreetLookup("Marina Dr", streets.MarinaDrive.FileName),
+            new StreetLookup("Alhambra Dr", streets.ElHamberDrive.FileName),
+            new StreetLookup("Niland Ave", streets.NeelanAve.FileName),
+            new StreetLookup("Zancudo Ave", streets.ZancudoAve.FileName),
+            new StreetLookup("Armadillo Ave", streets.ArmadilloAve.FileName),
+            new StreetLookup("Algonquin Blvd", streets.AlgonquinBlvd.FileName),
+            new StreetLookup("Mountain View Dr", streets.MountainViewDrive.FileName),
+            new StreetLookup("Cholla Springs Ave", streets.ChollaSpringsAve.FileName),
+            new StreetLookup("Panorama Dr", streets.PanoramaDrive.FileName),
+            new StreetLookup("Lesbos Ln", streets.LesbosLane.FileName),
+            new StreetLookup("Calafia Rd", streets.CalapiaRoad.FileName),
+            new StreetLookup("North Calafia Way", streets.NorthKalafiaWay.FileName),
+            new StreetLookup("Cassidy Trail", streets.CassidyTrail.FileName),
+            new StreetLookup("Seaview Rd", streets.SeaviewRd.FileName),
+            new StreetLookup("Grapeseed Main St", streets.GrapseedMainStreet.FileName),
+            new StreetLookup("Grapeseed Ave", streets.GrapeseedAve.FileName),
+            new StreetLookup("Joad Ln", streets.JilledLane.FileName),
+            new StreetLookup("Union Rd", streets.UnionRoad.FileName),
+            new StreetLookup("O'Neil Way", streets.OneilWay.FileName),
+            new StreetLookup("Senora Fwy", streets.SonoraFreeway.FileName),
+            new StreetLookup("Catfish View", streets.CatfishView.FileName),
+            new StreetLookup("Great Ocean Hwy", streets.GreatOceanHighway.FileName),
+            new StreetLookup("Paleto Blvd", streets.PaletoBlvd.FileName),
+            new StreetLookup("Duluoz Ave", streets.DelouasAve.FileName),
+            new StreetLookup("Procopio Dr", streets.ProcopioDrive.FileName),
+            new StreetLookup("Cascabel Ave"),
+            new StreetLookup("Peaceful St", streets.PeacefulStreet.FileName),
+            new StreetLookup("Procopio Promenade", streets.ProcopioPromenade.FileName),
+            new StreetLookup("Pyrite Ave", streets.PyriteAve.FileName),
+            new StreetLookup("Fort Zancudo Approach Rd", streets.FortZancudoApproachRoad.FileName),
+            new StreetLookup("Barbareno Rd", streets.BarbarinoRoad.FileName),
+            new StreetLookup("Ineseno Road", streets.EnecinoRoad.FileName),
+            new StreetLookup("West Eclipse Blvd", streets.WestEclipseBlvd.FileName),
+            new StreetLookup("Playa Vista", streets.PlayaVista.FileName),
+            new StreetLookup("Bay City Ave", streets.BaseCityAve.FileName),
+            new StreetLookup("Del Perro Fwy", streets.DelPierroFreeway.FileName),
+            new StreetLookup("Equality Way", streets.EqualityWay.FileName),
+            new StreetLookup("Red Desert Ave", streets.RedDesertAve.FileName),
+            new StreetLookup("Magellan Ave", streets.MagellanAve.FileName),
+            new StreetLookup("Sandcastle Way", streets.SandcastleWay.FileName),
+            new StreetLookup("Vespucci Blvd", streets.VespucciBlvd.FileName),
+            new StreetLookup("Prosperity St", streets.ProsperityStreet.FileName),
+            new StreetLookup("San Andreas Ave", streets.SanAndreasAve.FileName),
+            new StreetLookup("North Rockford Dr", streets.NorthRockfordDrive.FileName),
+            new StreetLookup("South Rockford Dr", streets.SouthRockfordDrive.FileName),
+            new StreetLookup("Marathon Ave", streets.MarathonAve.FileName),
+            new StreetLookup("Boulevard Del Perro", streets.BlvdDelPierro.FileName),
+            new StreetLookup("Cougar Ave", streets.CougarAve.FileName),
+            new StreetLookup("Liberty St", streets.LibertyStreet.FileName),
+            new StreetLookup("Bay City Incline", streets.BaseCityIncline.FileName),
+            new StreetLookup("Conquistador St", streets.ConquistadorStreet.FileName),
+            new StreetLookup("Cortes St", streets.CortezStreet.FileName),
+            new StreetLookup("Vitus St", streets.VitasStreet.FileName),
+            new StreetLookup("Aguja St", streets.ElGouhaStreet.FileName),/////maytbe????!?!?!
+            new StreetLookup("Goma St", streets.GomezStreet.FileName),
+            new StreetLookup("Melanoma St", streets.MelanomaStreet.FileName),
+            new StreetLookup("Palomino Ave", streets.PalaminoAve.FileName),
+            new StreetLookup("Invention Ct", streets.InventionCourt.FileName),
+            new StreetLookup("Imagination Ct", streets.ImaginationCourt.FileName),
+            new StreetLookup("Rub St", streets.RubStreet.FileName),
+            new StreetLookup("Tug St", streets.TugStreet.FileName),
+            new StreetLookup("Ginger St", streets.GingerStreet.FileName),
+            new StreetLookup("Lindsay Circus", streets.LindsayCircus.FileName),
+            new StreetLookup("Calais Ave", streets.CaliasAve.FileName),
+            new StreetLookup("Adam's Apple Blvd", streets.AdamsAppleBlvd.FileName),
+            new StreetLookup("Alta St", streets.AlterStreet.FileName),
+            new StreetLookup("Integrity Way", streets.IntergrityWy.FileName),
+            new StreetLookup("Swiss St", streets.SwissStreet.FileName),
+            new StreetLookup("Strawberry Ave", streets.StrawberryAve.FileName),
+            new StreetLookup("Capital Blvd", streets.CapitalBlvd.FileName),
+            new StreetLookup("Crusade Rd", streets.CrusadeRoad.FileName),
+            new StreetLookup("Innocence Blvd", streets.InnocenceBlvd.FileName),
+            new StreetLookup("Davis Ave", streets.DavisAve.FileName),
+            new StreetLookup("Little Bighorn Ave", streets.LittleBighornAve.FileName),
+            new StreetLookup("Roy Lowenstein Blvd", streets.RoyLowensteinBlvd.FileName),
+            new StreetLookup("Jamestown St", streets.JamestownStreet.FileName),
+            new StreetLookup("Carson Ave", streets.CarsonAve.FileName),
+            new StreetLookup("Grove St", streets.GroveStreet.FileName),
+            new StreetLookup("Brouge Ave"),
+            new StreetLookup("Covenant Ave", streets.CovenantAve.FileName),
+            new StreetLookup("Dutch London St", streets.DutchLondonStreet.FileName),
+            new StreetLookup("Signal St", streets.SignalStreet.FileName),
+            new StreetLookup("Elysian Fields Fwy", streets.ElysianFieldsFreeway.FileName),
+            new StreetLookup("Plaice Pl"),
+            new StreetLookup("Chum St", streets.ChumStreet.FileName),
+            new StreetLookup("Chupacabra St"),
+            new StreetLookup("Miriam Turner Overpass", streets.MiriamTurnerOverpass.FileName),
+            new StreetLookup("Autopia Pkwy", streets.AltopiaParkway.FileName),
+            new StreetLookup("Exceptionalists Way", streets.ExceptionalistWay.FileName),
+            new StreetLookup("La Puerta Fwy", ""),
+            new StreetLookup("New Empire Way", streets.NewEmpireWay.FileName),
+            new StreetLookup("Runway1", streets.RunwayOne.FileName),
+            new StreetLookup("Greenwich Pkwy", streets.GrenwichParkway.FileName),
+            new StreetLookup("Kortz Dr", streets.KortzDrive.FileName),
+            new StreetLookup("Banham Canyon Dr", streets.BanhamCanyonDrive.FileName),
+            new StreetLookup("Buen Vino Rd"),
+            new StreetLookup("Route 68", streets.Route68.FileName),
+            new StreetLookup("Zancudo Grande Valley", streets.ZancudoGrandeValley.FileName),
+            new StreetLookup("Zancudo Barranca", streets.ZancudoBaranca.FileName),
+            new StreetLookup("Galileo Rd", streets.GallileoRoad.FileName),
+            new StreetLookup("Mt Vinewood Dr", streets.MountVinewoodDrive.FileName),
+            new StreetLookup("Marlowe Dr"),
+            new StreetLookup("Milton Rd", streets.MiltonRoad.FileName),
+            new StreetLookup("Kimble Hill Dr", streets.KimbalHillDrive.FileName),
+            new StreetLookup("Normandy Dr", streets.NormandyDrive.FileName),
+            new StreetLookup("Hillcrest Ave", streets.HillcrestAve.FileName),
+            new StreetLookup("Hillcrest Ridge Access Rd", streets.HillcrestRidgeAccessRoad.FileName),
+            new StreetLookup("North Sheldon Ave", streets.NorthSheldonAve.FileName),
+            new StreetLookup("Lake Vinewood Dr", streets.LakeVineWoodDrive.FileName),
+            new StreetLookup("Lake Vinewood Est", streets.LakeVinewoodEstate.FileName),
+            new StreetLookup("Baytree Canyon Rd", streets.BaytreeCanyonRoad.FileName),
+            new StreetLookup("North Conker Ave", streets.NorthConkerAve.FileName),
+            new StreetLookup("Wild Oats Dr", streets.WildOatsDrive.FileName),
+            new StreetLookup("Whispymound Dr", streets.WispyMoundDrive.FileName),
+            new StreetLookup("Didion Dr", streets.DiedianDrive.FileName),
+            new StreetLookup("Cox Way", streets.CoxWay.FileName),
+            new StreetLookup("Picture Perfect Drive", streets.PicturePerfectDrive.FileName),
+            new StreetLookup("South Mo Milton Dr", streets.SouthMoMiltonDrive.FileName),
+            new StreetLookup("Cockingend Dr", streets.CockandGinDrive.FileName),
+            new StreetLookup("Mad Wayne Thunder Dr", streets.MagwavevendorDrive.FileName),
+            new StreetLookup("Hangman Ave", streets.HangmanAve.FileName),
+            new StreetLookup("Dunstable Ln", streets.DunstableLane.FileName),
+            new StreetLookup("Dunstable Dr", streets.DunstableDrive.FileName),
+            new StreetLookup("Greenwich Way", streets.GrenwichWay.FileName),
+            new StreetLookup("Greenwich Pl", streets.GrunnichPlace.FileName),
+            new StreetLookup("Hardy Way"),
+            new StreetLookup("Richman St", streets.RichmondStreet.FileName),
+            new StreetLookup("Ace Jones Dr", streets.AceJonesDrive.FileName),
+            new StreetLookup("Los Santos Freeway", ""),
+            new StreetLookup("Senora Rd", streets.SonoraRoad.FileName),
+            new StreetLookup("Nowhere Rd", streets.NowhereRoad.FileName),
+            new StreetLookup("Smoke Tree Rd", streets.SmokeTreeRoad.FileName),
+            new StreetLookup("Cholla Rd", streets.ChollaRoad.FileName),
+            new StreetLookup("Cat-Claw Ave", streets.CatClawAve.FileName),
+            new StreetLookup("Senora Way", streets.SonoraWay.FileName),
+            new StreetLookup("Palomino Fwy", streets.PaliminoFreeway.FileName),
+            new StreetLookup("Shank St", streets.ShankStreet.FileName),
+            new StreetLookup("Macdonald St", streets.McDonaldStreet.FileName),
+            new StreetLookup("Route 68 Approach", streets.Route68.FileName),
+            new StreetLookup("Vinewood Park Dr", streets.VinewoodParkDrive.FileName),
+            new StreetLookup("Vinewood Blvd", streets.VinewoodBlvd.FileName),
+            new StreetLookup("Mirror Park Blvd", streets.MirrorParkBlvd.FileName),
+            new StreetLookup("Glory Way", streets.GloryWay.FileName),
+            new StreetLookup("Bridge St", streets.BridgeStreet.FileName),
+            new StreetLookup("West Mirror Drive", streets.WestMirrorDrive.FileName),
+            new StreetLookup("Nikola Ave", streets.NicolaAve.FileName),
+            new StreetLookup("East Mirror Dr", streets.EastMirrorDrive.FileName),
+            new StreetLookup("Nikola Pl", streets.NikolaPlace.FileName),
+            new StreetLookup("Mirror Pl", streets.MirrorPlace.FileName),
+            new StreetLookup("El Rancho Blvd", streets.ElRanchoBlvd.FileName),
+            new StreetLookup("Olympic Fwy", streets.OlympicFreeway.FileName),
+            new StreetLookup("Fudge Ln", streets.FudgeLane.FileName),
+            new StreetLookup("Amarillo Vista", streets.AmarilloVista.FileName),
+            new StreetLookup("Labor Pl", streets.ForceLaborPlace.FileName),
+            new StreetLookup("El Burro Blvd", streets.ElBurroBlvd.FileName),
+            new StreetLookup("Sustancia Rd", streets.SustanciaRoad.FileName),
+            new StreetLookup("South Shambles St", streets.SouthShambleStreet.FileName),
+            new StreetLookup("Hanger Way", streets.HangarWay.FileName),
+            new StreetLookup("Orchardville Ave", streets.OrchidvilleAve.FileName),
+            new StreetLookup("Popular St", streets.PopularStreet.FileName),
+            new StreetLookup("Buccaneer Way", streets.BuccanierWay.FileName),
+            new StreetLookup("Abattoir Ave", streets.AvatorAve.FileName),
+            new StreetLookup("Voodoo Place"),
+            new StreetLookup("Mutiny Rd", streets.MutineeRoad.FileName),
+            new StreetLookup("South Arsenal St", streets.SouthArsenalStreet.FileName),
+            new StreetLookup("Forum Dr", streets.ForumDrive.FileName),
+            new StreetLookup("Morningwood Blvd", streets.MorningwoodBlvd.FileName),
+            new StreetLookup("Dorset Dr", streets.DorsetDrive.FileName),
+            new StreetLookup("Caesars Place", streets.CaesarPlace.FileName),
+            new StreetLookup("Spanish Ave", streets.SpanishAve.FileName),
+            new StreetLookup("Portola Dr", streets.PortolaDrive.FileName),
+            new StreetLookup("Edwood Way", streets.EdwardWay.FileName),
+            new StreetLookup("San Vitus Blvd", streets.SanVitusBlvd.FileName),
+            new StreetLookup("Eclipse Blvd", streets.EclipseBlvd.FileName),
+            new StreetLookup("Gentry Lane"),
+            new StreetLookup("Las Lagunas Blvd", streets.LasLegunasBlvd.FileName),
+            new StreetLookup("Power St", streets.PowerStreet.FileName),
+            new StreetLookup("Mt Haan Rd", streets.MtHaanRoad.FileName),
+            new StreetLookup("Elgin Ave", streets.ElginAve.FileName),
+            new StreetLookup("Hawick Ave", streets.HawickAve.FileName),
+            new StreetLookup("Meteor St", streets.MeteorStreet.FileName),
+            new StreetLookup("Alta Pl", streets.AltaPlace.FileName),
+            new StreetLookup("Occupation Ave", streets.OccupationAve.FileName),
+            new StreetLookup("Carcer Way", streets.CarcerWay.FileName),
+            new StreetLookup("Eastbourne Way", streets.EastbourneWay.FileName),
+            new StreetLookup("Rockford Dr", streets.RockfordDrive.FileName),
+            new StreetLookup("Abe Milton Pkwy", streets.EightMiltonParkway.FileName),
+            new StreetLookup("Laguna Pl", streets.LagunaPlace.FileName),
+            new StreetLookup("Sinners Passage", streets.SinnersPassage.FileName),
+            new StreetLookup("Atlee St", streets.AtleyStreet.FileName),
+            new StreetLookup("Sinner St", streets.SinnerStreet.FileName),
+            new StreetLookup("Supply St", streets.SupplyStreet.FileName),
+            new StreetLookup("Amarillo Way", streets.AmarilloWay.FileName),
+            new StreetLookup("Tower Way", streets.TowerWay.FileName),
+            new StreetLookup("Decker St", streets.DeckerStreet.FileName),
+            new StreetLookup("Tackle St", streets.TackleStreet.FileName),
+            new StreetLookup("Low Power St", streets.LowPowerStreet.FileName),
+            new StreetLookup("Clinton Ave", streets.ClintonAve.FileName),
+            new StreetLookup("Fenwell Pl", streets.FenwellPlace.FileName),
+            new StreetLookup("Utopia Gardens", streets.UtopiaGardens.FileName),
+            new StreetLookup("Cavalry Blvd"),
+            new StreetLookup("South Boulevard Del Perro", streets.SouthBlvdDelPierro.FileName),
+            new StreetLookup("Americano Way", streets.AmericanoWay.FileName),
+            new StreetLookup("Sam Austin Dr", streets.SamAustinDrive.FileName),
+            new StreetLookup("East Galileo Ave", streets.EastGalileoAve.FileName),
+            new StreetLookup("Galileo Park"),
+            new StreetLookup("West Galileo Ave", streets.WestGalileoAve.FileName),
+            new StreetLookup("Tongva Dr", streets.TongvaDrive.FileName),
+            new StreetLookup("Zancudo Rd", streets.ZancudoRoad.FileName),
+            new StreetLookup("Movie Star Way", streets.MovieStarWay.FileName),
+            new StreetLookup("Heritage Way", streets.HeritageWay.FileName),
+            new StreetLookup("Perth St", streets.PerfStreet.FileName),
+            new StreetLookup("Chianski Passage"),
+            new StreetLookup("Lolita Ave", streets.LolitaAve.FileName),
+            new StreetLookup("Meringue Ln", streets.MirangeLane.FileName),
+            new StreetLookup("Strangeways Dr", streets.StrangeWaysDrive.FileName),
+
+            new StreetLookup("Mt Haan Dr", streets.MtHaanDrive.FileName)
+        };
+        }
+        public class StreetLookup
+        {
+            public string Name = "";
+            public string DispatchFile = "";
+            public StreetLookup()
+            {
+
+            }
+            public StreetLookup(string _Name)
+            {
+                Name = _Name;
+            }
+            public StreetLookup(string _Name, string _DispatchFile)
+            {
+                Name = _Name;
+                DispatchFile = _DispatchFile;
+            }
+        }
     }
 
 }

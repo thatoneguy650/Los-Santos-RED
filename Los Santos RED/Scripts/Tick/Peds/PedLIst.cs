@@ -34,6 +34,20 @@ public static class PedList
             return CopPeds.Any(x => x.DistanceToPlayer <= 150f);
         }
     }
+    public static bool AnyNooseUnitsSpawned
+    {
+        get
+        {
+            return CopPeds.Any(x => x.AssignedAgency.Initials == "NOOSE");
+        }
+    }
+    public static bool AnyArmyUnitsSpawned
+    {
+        get
+        {
+            return CopPeds.Any(x => x.AssignedAgency.Initials == "ARMY");
+        }
+    }
     public static bool AnyCopsNearPosition(Vector3 Position,float Distance)
     {
         if (Position != Vector3.Zero && CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))

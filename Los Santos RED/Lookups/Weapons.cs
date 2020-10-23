@@ -100,7 +100,7 @@ public static class Weapons
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
             
         };
-        WeaponsList.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true, true, false, true) { PossibleComponents = PistolComponents,Variations = PistolVariations });
+        WeaponsList.Add(new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true, true, false, true) { PossibleComponents = PistolComponents,Variations = PistolVariations, CanPistolSuicide = true });
 
         List<GTAWeapon.WeaponComponent> PistolMK2Components = new List<GTAWeapon.WeaponComponent>
         {
@@ -146,7 +146,7 @@ public static class Weapons
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
         };
-        WeaponsList.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true, true, false, true) { PossibleComponents = PistolMK2Components,Variations = PistolMK2Variations });
+        WeaponsList.Add(new GTAWeapon("weapon_pistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xBFE256D4, true, true, false, true) { PossibleComponents = PistolMK2Components,Variations = PistolMK2Variations, CanPistolSuicide = true });
 
         List<GTAWeapon.WeaponComponent> CombatPistolComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -165,7 +165,7 @@ public static class Weapons
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
         };
-        WeaponsList.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true, true, false, true) { PossibleComponents = CombatPistolComponents,Variations = CombatPistolVariations });
+        WeaponsList.Add(new GTAWeapon("weapon_combatpistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1593441988, true, true, false, true) { PossibleComponents = CombatPistolComponents,Variations = CombatPistolVariations, CanPistolSuicide = true });
 
 
         List<GTAWeapon.WeaponComponent> APPistolComponents = new List<GTAWeapon.WeaponComponent>
@@ -176,7 +176,7 @@ public static class Weapons
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_appistol"),
             new GTAWeapon.WeaponComponent("Gilded Gun Metal Finish", "COMPONENT_APPISTOL_VARMOD_LUXE", 0x9B76C72C, false, "weapon_appistol")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_appistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 584646201, false, true, false, false) { PossibleComponents = APPistolComponents });
+        WeaponsList.Add(new GTAWeapon("weapon_appistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 584646201, false, true, false, false) { PossibleComponents = APPistolComponents, CanPistolSuicide = true });
 
         WeaponsList.Add(new GTAWeapon("weapon_stungun", 0, GTAWeapon.WeaponCategory.Melee, 0, 911657153, false, true, false, true) { CanPistolSuicide = false });
 
@@ -188,7 +188,7 @@ public static class Weapons
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_AR_SUPP_02", 0xA73D4664, false, "weapon_pistol50"),
             new GTAWeapon.WeaponComponent("Platinum Pearl Deluxe Finish", "COMPONENT_PISTOL50_VARMOD_LUXE", 0x77B8AB2F, false, "weapon_pistol50")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_pistol50", 60, GTAWeapon.WeaponCategory.Pistol, 1, 2578377531, false, true, false, true) { PossibleComponents = Pistol50Components });
+        WeaponsList.Add(new GTAWeapon("weapon_pistol50", 60, GTAWeapon.WeaponCategory.Pistol, 1, 2578377531, false, true, false, true) { PossibleComponents = Pistol50Components, CanPistolSuicide = true });
 
         List<GTAWeapon.WeaponComponent> SNSPistolComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -196,7 +196,7 @@ public static class Weapons
             new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_SNSPISTOL_CLIP_02", 0x7B0033B3, false, "weapon_snspistol"),
             new GTAWeapon.WeaponComponent("Etched Wood Grip Finish", "COMPONENT_SNSPISTOL_VARMOD_LOWRIDER", 0x8033ECAF, false, "weapon_snspistol")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_snspistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3218215474, false, true, false, true) { PossibleComponents = SNSPistolComponents });
+        WeaponsList.Add(new GTAWeapon("weapon_snspistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3218215474, false, true, false, true) { PossibleComponents = SNSPistolComponents, CanPistolSuicide = true });
 
         List<GTAWeapon.WeaponComponent> SNSPistolMK2Components = new List<GTAWeapon.WeaponComponent>
         {
@@ -233,7 +233,7 @@ public static class Weapons
             new GTAWeapon.WeaponComponent("Boom!", "COMPONENT_SNSPISTOL_MK2_CAMO_10_SLIDE", 0x8D0D5ECD, false, "weapon_snspistol_mk2"),
             new GTAWeapon.WeaponComponent("Patriotic", "COMPONENT_SNSPISTOL_MK2_CAMO_IND_01_SLIDE", 0x1F07150A, false, "weapon_snspistol_mk2")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054, false, true, false, true) { PossibleComponents = SNSPistolMK2Components });
+        WeaponsList.Add(new GTAWeapon("weapon_snspistol_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x88374054, false, true, false, true) { PossibleComponents = SNSPistolMK2Components, CanPistolSuicide = true });
 
         List<GTAWeapon.WeaponComponent> HeavyPistolComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -251,7 +251,7 @@ public static class Weapons
             new GTAWeapon.WeaponVariation("Player0", 0),
             new GTAWeapon.WeaponVariation("Player1", 0, new List<string> { "Flashlight","Etched Wood Grip Finish" }),       
         };
-        WeaponsList.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true, true, false, true) { PossibleComponents = HeavyPistolComponents,Variations = HeavyPistolVariations });
+        WeaponsList.Add(new GTAWeapon("weapon_heavypistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3523564046, true, true, false, true) { PossibleComponents = HeavyPistolComponents,Variations = HeavyPistolVariations, CanPistolSuicide = true });
 
         List<GTAWeapon.WeaponComponent> VintagePistolComponents = new List<GTAWeapon.WeaponComponent>
         {
@@ -259,7 +259,7 @@ public static class Weapons
             new GTAWeapon.WeaponComponent("Extended Clip", "COMPONENT_VINTAGEPISTOL_CLIP_02", 0x33BA12E8, false, "weapon_vintagepistol"),
             new GTAWeapon.WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_vintagepistol")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_vintagepistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 137902532, false, true, false, true) { PossibleComponents = VintagePistolComponents });
+        WeaponsList.Add(new GTAWeapon("weapon_vintagepistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 137902532, false, true, false, true) { PossibleComponents = VintagePistolComponents, CanPistolSuicide = true });
         
 
         WeaponsList.Add(new GTAWeapon("weapon_flaregun", 60, GTAWeapon.WeaponCategory.Pistol, 1, 1198879012, false, true, false, true) { IsRegular = false,CanPistolSuicide = false });
@@ -271,7 +271,7 @@ public static class Weapons
             new GTAWeapon.WeaponComponent("Bodyguard Variant", "COMPONENT_REVOLVER_VARMOD_GOON", 0x9493B80D, false, "weapon_revolver"),
             new GTAWeapon.WeaponComponent("Default Clip", "COMPONENT_REVOLVER_CLIP_01", 0xE9867CE3, false, "weapon_revolver")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_revolver", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3249783761, false, true, false, true) { PossibleComponents = RevolverComponents });
+        WeaponsList.Add(new GTAWeapon("weapon_revolver", 60, GTAWeapon.WeaponCategory.Pistol, 1, 3249783761, false, true, false, true) { PossibleComponents = RevolverComponents, CanPistolSuicide = true });
 
         List<GTAWeapon.WeaponComponent> RevolverMK2Components = new List<GTAWeapon.WeaponComponent>
         {
@@ -296,9 +296,9 @@ public static class Weapons
             new GTAWeapon.WeaponComponent("Boom!", "COMPONENT_REVOLVER_MK2_CAMO_10", 0x20ED9B5B, false, "weapon_revolver_mk2"),
             new GTAWeapon.WeaponComponent("Patriotic", "COMPONENT_REVOLVER_MK2_CAMO_IND_01", 0xD951E867, false, "weapon_revolver_mk2")
         };
-        WeaponsList.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F, false, true, false, true) { PossibleComponents = RevolverMK2Components });
+        WeaponsList.Add(new GTAWeapon("weapon_revolver_mk2", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0xCB96392F, false, true, false, true) { PossibleComponents = RevolverMK2Components, CanPistolSuicide = true });
         
-        WeaponsList.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8, false, true, false, true));
+        WeaponsList.Add(new GTAWeapon("weapon_doubleaction", 60, GTAWeapon.WeaponCategory.Pistol, 1, 0x97EA20B8, false, true, false, true) { CanPistolSuicide = true });
         List<GTAWeapon.WeaponComponent> RayGunComponents = new List<GTAWeapon.WeaponComponent>
         {
             new GTAWeapon.WeaponComponent("Festive tint", "COMPONENT_RAYPISTOL_VARMOD_XMAS18", 0xD7DBF707, false, "weapon_raypistol")

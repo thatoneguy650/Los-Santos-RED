@@ -361,17 +361,17 @@ public static class Debugging
 
 
 
-        bool PredBoatHash = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", Game.GetHashKey("predator"));
-        bool PredBoat = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", "predator");
+        //bool PredBoatHash = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", Game.GetHashKey("predator"));
+        //bool PredBoat = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", "predator");
 
 
-        bool POLMAVHash = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", Game.GetHashKey("polmav"));
-        bool POLMAV = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", "polmav");
+        //bool POLMAVHash = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", Game.GetHashKey("polmav"));
+        //bool POLMAV = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", "polmav");
 
-        WriteToLog("Debugging", string.Format("PRED: WithGetHash {0}, Without {1}, POLMAV With {2} without {3} ", PredBoatHash, PredBoat, POLMAVHash, POLMAV));
+        //WriteToLog("Debugging", string.Format("PRED: WithGetHash {0}, Without {1}, POLMAV With {2} without {3} ", PredBoatHash, PredBoat, POLMAVHash, POLMAV));
 
 
-
+        PoliceSpawning.SpawnTempHeliCopter();
 
 
 

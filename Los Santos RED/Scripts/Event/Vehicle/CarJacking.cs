@@ -84,6 +84,8 @@ public static class CarJacking
                 if (Victim != null)
                     Victim.CanBeTasked = true;
 
+                CameraControl.RestoreGameplayerCamera();
+
             }, "CarJackPedWithWeapon");
             Debugging.GameFibers.Add(CarJackPedWithWeapon);
         }
@@ -417,14 +419,23 @@ public static class CarJacking
         float YVariance = 3f;// General.MyRand.NextFloat(0.5f, 3f);
         float ZVariance = 1.8f;//General.MyRand.NextFloat(1.8f, 3f);
 
-        bool IsDriverSide = true;//for now..
-        if (IsDriverSide)
+        if (TargetVehicle != null && TargetVehicle.Exists())
         {
-            Distance *= -1f;
-            XVariance *= -1f;
+
+            bool IsDriverSide = true;//for now..
+            if (IsDriverSide)
+            {
+                Distance *= -1f;
+                XVariance *= -1f;
+            }
+            CameraPosition = TargetVehicle.GetOffsetPositionRight(Distance);
+        }
+        else
+        {
+            CameraPosition = Game.LocalPlayer.Character.GetOffsetPositionRight(Distance);
         }
 
-        CameraPosition = Game.LocalPlayer.Character.GetOffsetPositionRight(Distance);
+        
        // CameraPosition += new Vector3(XVariance, YVariance, ZVariance);
         return CameraPosition;
     }

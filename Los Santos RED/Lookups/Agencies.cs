@@ -104,11 +104,11 @@ public static partial class Agencies
             new Agency.ModelInformation("s_m_m_pilot_02",0,0),
             new Agency.ModelInformation("s_m_y_pilot_01",0,0) };
         List<Agency.ModelInformation> FIBPeds = new List<Agency.ModelInformation>() {
-            new Agency.ModelInformation("s_m_m_fibsec_01",55,70),
-            new Agency.ModelInformation("s_m_m_fiboffice_01",15,0),
-            new Agency.ModelInformation("s_m_m_fiboffice_02",15,0),
-            new Agency.ModelInformation("u_m_m_fibarchitect",10,0),
-            new Agency.ModelInformation("s_m_y_swat_01", 5,30) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
+            new Agency.ModelInformation("s_m_m_fibsec_01",55,70){MaxWantedLevelSpawn = 3 },
+            new Agency.ModelInformation("s_m_m_fiboffice_01",15,0){MaxWantedLevelSpawn = 3 },
+            new Agency.ModelInformation("s_m_m_fiboffice_02",15,0){MaxWantedLevelSpawn = 3 },
+            new Agency.ModelInformation("u_m_m_fibarchitect",10,0) {MaxWantedLevelSpawn = 3 },
+            new Agency.ModelInformation("s_m_y_swat_01", 5,30) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4, RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 1,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
         List<Agency.ModelInformation> PrisonPeds = new List<Agency.ModelInformation>() {
             new Agency.ModelInformation("s_m_m_prisguard_01",100,100) };
         List<Agency.ModelInformation> SecurityPeds = new List<Agency.ModelInformation>() {
@@ -130,8 +130,10 @@ public static partial class Agencies
         List<Agency.VehicleInformation> ParkRangerVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("pranger", 100, 100) };
         List<Agency.VehicleInformation> FIBVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("fbi", 70, 70),
-            new Agency.VehicleInformation("fbi2", 30, 30) };
+            new Agency.VehicleInformation("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
+            new Agency.VehicleInformation("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
+            new Agency.VehicleInformation("fbi2", 0, 30) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 4, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 4, MaxOccupants = 6 },
+        };
         List<Agency.VehicleInformation> NOOSEVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
             new Agency.VehicleInformation("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
@@ -236,7 +238,6 @@ public static partial class Agencies
             new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
             new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
-
         List<Agency.IssuedWeapon> BestWeapons = new List<Agency.IssuedWeapon>()
         {
             new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
@@ -246,7 +247,6 @@ public static partial class Agencies
             new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
             new Agency.IssuedWeapon("weapon_carbinerifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
-
         List<Agency.IssuedWeapon> HeliWeapons = new List<Agency.IssuedWeapon>()
         {
             new Agency.IssuedWeapon("weapon_pistol_mk2", true, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
@@ -255,7 +255,6 @@ public static partial class Agencies
             new Agency.IssuedWeapon("weapon_marksmanrifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope", "Suppressor", "Tracer Rounds" })),
             new Agency.IssuedWeapon("weapon_marksmanrifle_mk2", false, new GTAWeapon.WeaponVariation(0, new List<string> { "Large Scope","Tracer Rounds" })),
         };
-
         List<Agency.IssuedWeapon> LimitedWeapons = new List<Agency.IssuedWeapon>()
         {
             new Agency.IssuedWeapon("weapon_heavypistol", true, new GTAWeapon.WeaponVariation()),
@@ -265,8 +264,6 @@ public static partial class Agencies
             new Agency.IssuedWeapon("weapon_pumpshotgun", false, new GTAWeapon.WeaponVariation(0,new List<string> { "Flashlight" })),
 
         };
-
-
 
         AgenciesList = new List<Agency>
         {
@@ -285,7 +282,7 @@ public static partial class Agencies
             new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
 
             new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,CanSpawnAnywhere = true},
-            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true },
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 6,CanSpawnAnywhere = true },
             new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true },
 
             new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true },

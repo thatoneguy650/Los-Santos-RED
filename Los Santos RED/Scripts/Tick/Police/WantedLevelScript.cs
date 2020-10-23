@@ -25,7 +25,6 @@ public static class WantedLevelScript
 
     public static float LastWantedSearchRadius { get; set; }
     public static bool PlayerSeenDuringCurrentWanted { get; set; } = false;
-    public static bool IsMilitaryDeployed { get; set; } = false;
     public static bool IsWeaponsFree { get; set; } = false;
     public static bool IsRunning { get; set; } = true;
     public static CriminalHistory CurrentCrimes { get; set; } 
@@ -282,7 +281,6 @@ public static class WantedLevelScript
                     if (KillingPolice.Instances >= 2 * General.MySettings.Police.PoliceKilledSurrenderLimit && PlayerState.WantedLevel < 5)
                     {
                         SetWantedLevel(5, "You killed too many cops 5 Stars", true);
-                        IsMilitaryDeployed = true;
                         IsWeaponsFree = true;
                     }
                     else if (KillingPolice.Instances >= General.MySettings.Police.PoliceKilledSurrenderLimit && PlayerState.WantedLevel < 4)
@@ -427,7 +425,6 @@ public static class WantedLevelScript
         }
         CurrentCrimes = new CriminalHistory();
         Debugging.WriteToLog("ResetPoliceStats", "Ran (Made New Rap Sheet)");
-        IsMilitaryDeployed = false;
         IsWeaponsFree = false;
         CurrentPoliceState = PoliceState.Normal;
         Police.AnySeenPlayerCurrentWanted = false;

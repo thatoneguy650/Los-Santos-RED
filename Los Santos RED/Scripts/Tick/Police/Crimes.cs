@@ -753,7 +753,7 @@ public class CriminalHistory
         {
             WantedLevelScript.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
         }
-        PoliceScanner.AnnounceCrime(CrimeInstance, new DispatchCallIn(!PlayerState.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved });
+        PoliceScanner.AnnounceCrime(CrimeInstance, new DispatchCallIn(!PlayerState.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved ,Speed = Game.LocalPlayer.Character.Speed});
     }
 
 }

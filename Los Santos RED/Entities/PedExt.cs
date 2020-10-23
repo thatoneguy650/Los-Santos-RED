@@ -175,9 +175,10 @@ public class PedExt
             {
                 IsInHelicopter = Pedestrian.IsInHelicopter;
                 if (!IsInHelicopter)
+                {
                     IsOnBike = Pedestrian.IsOnBike;
-
-                
+                    SetDrivingFlags();
+                }
                 //NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 1|2|128|256);//use blinkers?
             }
             else
@@ -194,6 +195,43 @@ public class PedExt
                 GameTimeBehindPlayer = 0;
             UpdateDistance();
             UpdateLineOfSight();
+            
+        }
+    }
+    private void SetDrivingFlags()
+    {
+        NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
+        NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
+        if (!IsInHelicopter)
+        {
+            if (Tasking.PoliceChasingRecklessly)
+            {
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4, true);
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 8, true);
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 16, true);
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 512, true);
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 262144, true);
+            }
+            else if (!Tasking.PoliceChasingRecklessly && DistanceToPlayer <= 9f)
+            {
+                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);//only originally this one for reckless pursuit
+            }
+
+
+
+            if (PlayerLocation.PlayerIsOffroad && DistanceToPlayer <= 200f)
+            {
+
+                
+
+                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 4194304);
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, true);
+            }
+            else
+            {
+                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 1074528293);
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, false);
+            }
         }
     }
     private void UpdateDistance()

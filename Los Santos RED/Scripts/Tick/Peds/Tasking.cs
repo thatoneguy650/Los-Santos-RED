@@ -198,7 +198,7 @@ public static class Tasking
             SetChaseStatus(Cop);
             if (Cop.TaskGTACop.IsInVehicle)
             {
-                SetDrivingFlags(Cop.TaskGTACop);
+                //SetDrivingFlags(Cop.TaskGTACop);
                 TaskPoliceDriver(Cop);
             }
             else
@@ -322,6 +322,13 @@ public static class Tasking
                     //}           
                 }
             }
+            if(!Cop.TaskIsQueued && Cop.TaskGTACop.IsInHelicopter && !Cop.TaskGTACop.Pedestrian.IsDriver())
+            {
+                if(Cop.TaskGTACop.RecentlySeenPlayer() && Cop.RunningTask != AttackWithVehicleWeapon)
+                {
+                    AddItemToCopQueue(new CopTaskQueueItem(Cop, AttackWithVehicleWeapon, "AttackWithVehicleWeapon"));   
+                }
+            }
 
             if(WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase)
             {
@@ -351,7 +358,7 @@ public static class Tasking
         {
             if (!PlayerState.IsInVehicle && Cop.CurrentChaseStatus == ChaseStatus.Active && !Cop.TaskIsQueued)
             {
-                if ((Cop.TaskGTACop.RecentlySeenPlayer() || Cop.TaskGTACop.DistanceToPlayer <= 50f))
+                if ((Cop.TaskGTACop.RecentlySeenPlayer() || Cop.TaskGTACop.DistanceToPlayer <= 20f))//50f;
                 {
                     if (Cop.RunningTask != FootChaseOnFoot)
                     {
@@ -373,38 +380,38 @@ public static class Tasking
             }
         }
 
-        if ((PlayerState.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && !PlayerState.IsBusted && Cop.TaskGTACop.DistanceToPlayer <= 4f && !IsBustTimeOut)// && !Police.PlayerWasJustJacking)
+        if ((PlayerState.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 2f) && !PlayerState.IsBusted && Cop.TaskGTACop.DistanceToPlayer <= 5f && !IsBustTimeOut)// && !Police.PlayerWasJustJacking)
             SetSurrenderBust(true, string.Format("TaskPoliceOnFoot 1: {0}",Cop.TaskGTACop.Pedestrian.Handle));
 
     }
     private static void SetDrivingFlags(PedExt Cop)
     {
-        NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.Pedestrian, 100f);
-        NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.Pedestrian, 8f);
-        if (!Cop.IsInHelicopter)
-        {
-            if (PoliceChasingRecklessly)
-            {
-                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4, true);
-                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 8, true);
-                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 16, true);
-                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 512, true);
-                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 262144, true);
-            }
-            else if(!PoliceChasingRecklessly && Cop.DistanceToPlayer <= 9f)
-            {
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 32, true);//only originally this one for reckless pursuit
-            }
+        //NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.Pedestrian, 100f);
+        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.Pedestrian, 8f);
+        //if (!Cop.IsInHelicopter)
+        //{
+        //    if (PoliceChasingRecklessly)
+        //    {
+        //        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4, true);
+        //        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 8, true);
+        //        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 16, true);
+        //        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 512, true);
+        //        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 262144, true);
+        //    }
+        //    else if(!PoliceChasingRecklessly && Cop.DistanceToPlayer <= 9f)
+        //    {
+        //        NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 32, true);//only originally this one for reckless pursuit
+        //    }
 
-            if (PlayerLocation.PlayerIsOffroad && Cop.DistanceToPlayer <= 200f)
-            {
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4194304, true);
-            }
-            else
-            {
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4194304, false);
-            }
-        }
+        //    if (PlayerLocation.PlayerIsOffroad && Cop.DistanceToPlayer <= 200f)
+        //    {
+        //        NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4194304, true);
+        //    }
+        //    else
+        //    {
+        //        NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4194304, false);
+        //    }
+        //}
     }
     private static void FootChaseOnFoot(TaskableCop Cop)
     {
@@ -750,6 +757,65 @@ public static class Tasking
             Debugging.WriteToLog("Tasking", string.Format("Finished HeliChase: {0}", Cop.TaskGTACop.Pedestrian.Handle));
 
         }, "HeliCHase");
+        Debugging.GameFibers.Add(Cop.TaskFiber);
+
+    }
+    private static void AttackWithVehicleWeapon(TaskableCop Cop)
+    {
+        if (!Cop.TaskGTACop.Pedestrian.Exists() || Cop.TaskGTACop.Pedestrian.IsDriver())
+            return;
+
+        Cop.TaskFiber =
+        GameFiber.StartNew(delegate
+        {
+            Cop.IsTasked = true;
+            Cop.RunningTask = AttackWithVehicleWeapon;
+            Cop.TaskGTACop.Pedestrian.BlockPermanentEvents = false;
+
+            Debugging.WriteToLog("Tasking", string.Format("Started HeliAttack: {0}", Cop.TaskGTACop.Pedestrian.Handle));
+
+            while (Cop.TaskGTACop.Pedestrian.Exists() && !Cop.TaskGTACop.Pedestrian.IsDriver())
+            {
+                if (Cop.TaskGTACop.CanSeePlayer)
+                {
+
+                    //none of this works, they still wont shoot the miniguns
+                    //NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.TaskGTACop.Pedestrian,2,true);
+
+                    //NativeFunction.CallByName<bool>("SET_PED_COMBAT_RANGE", Cop.TaskGTACop.Pedestrian, 2);
+                    
+                    //bool ConControl = NativeFunction.CallByName<bool>("CONTROL_MOUNTED_WEAPON", Cop.TaskGTACop.Pedestrian);
+                    //// NativeFunction.CallByName<bool>("CONTROL_MOUNTED_WEAPON", Cop.TaskGTACop.Pedestrian);
+                    //Debugging.WriteToLog("Tasking", string.Format("HeliAttack: {0} CanControl: {1}", Cop.TaskGTACop.Pedestrian.Handle, ConControl));
+
+
+                    //Debugging.WriteToLog("Tasking", string.Format("DOES_VEHICLE_HAVE_WEAPONS: {0}", NativeFunction.CallByName<bool>("DOES_VEHICLE_HAVE_WEAPONS", Cop.TaskGTACop.Pedestrian.CurrentVehicle)));
+
+
+                    
+                    //NativeFunction.CallByHash<bool>(0x44CD1F493DB2A0A6, Cop.TaskGTACop.Pedestrian.CurrentVehicle, 0,20);
+                    //Debugging.WriteToLog("Tasking", string.Format("0x44CD1F493DB2A0A6: {0}", 0));
+                    //NativeFunction.CallByHash<bool>(0x44CD1F493DB2A0A6, Cop.TaskGTACop.Pedestrian.CurrentVehicle, 1, 20);
+                    //Debugging.WriteToLog("Tasking", string.Format("0x44CD1F493DB2A0A6: {0}", 1));
+
+                    //if (ConControl)
+                    //{
+                    //    //NativeFunction.CallByName<bool>("SET_MOUNTED_WEAPON_TARGET", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character, 0, 25f, 25f, 25f, 0, 0);
+                    //}
+                    //NativeFunction.CallByName<bool>("SET_MOUNTED_WEAPON_TARGET", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character, 0, 5f, 5f, 5f, 0, 0);
+
+
+                }
+                GameFiber.Sleep(1000);
+            }
+
+            if (!Cop.TaskGTACop.Pedestrian.Exists())
+                return;
+
+            AddItemToCopQueue(new CopTaskQueueItem(Cop, Untask, "Untask"));
+            Debugging.WriteToLog("Tasking", string.Format("Finished HeliAttack: {0}", Cop.TaskGTACop.Pedestrian.Handle));
+
+        }, "HeliAttack");
         Debugging.GameFibers.Add(Cop.TaskFiber);
 
     }

@@ -199,7 +199,26 @@ public static class PoliceSpawning
         }
     }
 
-   
+   public static void SpawnTempHeliCopter()
+    {
+        Agency NOOSE = Agencies.AgenciesList.Where(x => x.Initials == "NOOSE").FirstOrDefault();
+        Agency.VehicleInformation Heli = NOOSE.Vehicles.Where(x => x.ModelName == "annihilator").FirstOrDefault();
+
+        SpawnGTACop(NOOSE, Game.LocalPlayer.Character.GetOffsetPositionFront(10f) + new Vector3(0f, 0f, 100f), 0f, Heli);
+
+
+
+        foreach(Cop MyCop in PedList.CopPeds.Where(x => x.IsInHelicopter))
+        {
+            if(!MyCop.Pedestrian.IsDriver())
+            {
+                NativeFunction.CallByName<bool>("CONTROL_MOUNTED_WEAPON", MyCop.Pedestrian);
+            }
+        }
+        
+        
+
+    }
     private static void RemoveAbandonedVehicles()
     {
         foreach (Vehicle PoliceCar in CreatedPoliceVehicles.Where(x => x.Exists()))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
