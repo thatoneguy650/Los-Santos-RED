@@ -42,13 +42,13 @@ public static partial class Jurisdiction
 
         ZoneJurisdictions = new List<ZoneJurisdiction>()
         {
-            new ZoneJurisdiction("LSIAPD","AIRP", 0, 95, 95),
-            new ZoneJurisdiction("LSPD","AIRP", 1, 5, 5),
+            new ZoneJurisdiction("LSIAPD","AIRP", 0, 95, 95) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","AIRP", 1, 5, 5) {CanSpawnPedestrianOfficers = true },
 
             new ZoneJurisdiction("LSSD-BC","ALAMO", 0, 85, 75),
             new ZoneJurisdiction("LSSD","ALAMO", 1, 15, 5),
 
-            new ZoneJurisdiction("LSPD-VW","ALTA", 0, 100, 70),
+            new ZoneJurisdiction("LSPD-VW","ALTA", 0, 100, 70) {CanSpawnPedestrianOfficers = true },
 
             new ZoneJurisdiction("ARMY","ARMYB", 0, 100, 100),
 
@@ -68,8 +68,8 @@ public static partial class Jurisdiction
             new ZoneJurisdiction("LSSD-BC","BRADT", 0, 85, 75),
             new ZoneJurisdiction("LSSD","BRADT", 1, 15, 5),
 
-            new ZoneJurisdiction("LSPD-RH","BURTON", 0, 85, 70),
-            new ZoneJurisdiction("LSPD","BURTON", 1, 15, 5),
+            new ZoneJurisdiction("LSPD-RH","BURTON", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","BURTON", 1, 15, 5) {CanSpawnPedestrianOfficers = true },
 
             new ZoneJurisdiction("LSSD-BC","CALAFB", 0, 85, 75),
             new ZoneJurisdiction("LSSD","CALAFB", 1, 15, 5),
@@ -97,8 +97,8 @@ public static partial class Jurisdiction
             new ZoneJurisdiction("LSPD-DP","DELBE", 0, 85, 70),
             new ZoneJurisdiction("LSPD","DELBE", 1, 15, 10),
 
-            new ZoneJurisdiction("LSPD-DP","DELPE", 0, 85, 70),
-            new ZoneJurisdiction("LSPD","DELPE", 1, 15, 10),
+            new ZoneJurisdiction("LSPD-DP","DELPE", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","DELPE", 1, 15, 10) {CanSpawnPedestrianOfficers = true },
 
             new ZoneJurisdiction("LSPD-DP","DELSOL", 0, 85, 70),
             new ZoneJurisdiction("LSPD","DELSOL", 1, 15, 10),
@@ -136,8 +136,8 @@ public static partial class Jurisdiction
 
             new ZoneJurisdiction("LSSD-VW","HARMO", 0, 100, 70),
 
-            new ZoneJurisdiction("LSPD-VW","HAWICK", 0, 85, 70),
-            new ZoneJurisdiction("LSSD-VW","HAWICK", 1, 15, 10),
+            new ZoneJurisdiction("LSPD-VW","HAWICK", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSSD-VW","HAWICK", 1, 15, 10) {CanSpawnPedestrianOfficers = true },
 
             new ZoneJurisdiction("LSPD-VW","HORS", 0, 85, 70),
             new ZoneJurisdiction("LSSD-VW","HORS", 1, 15, 10),
@@ -194,8 +194,8 @@ public static partial class Jurisdiction
             new ZoneJurisdiction("LSSD-BC","PALCOV", 0, 85, 75),
             new ZoneJurisdiction("LSSD","PALCOV", 1, 15, 5),
 
-            new ZoneJurisdiction("LSSD-BC","PALETO", 0, 85, 75),
-            new ZoneJurisdiction("LSSD","PALETO", 1, 15, 5),
+            new ZoneJurisdiction("LSSD-BC","PALETO", 0, 85, 75) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSSD","PALETO", 1, 15, 5) {CanSpawnPedestrianOfficers = true },
 
             new ZoneJurisdiction("LSSD-BC","PALFOR", 0, 85, 75),
             new ZoneJurisdiction("LSSD","PALFOR", 1, 15, 5),
@@ -217,8 +217,8 @@ public static partial class Jurisdiction
             new ZoneJurisdiction("LSPD-RH","RICHM", 0, 85, 70),
             new ZoneJurisdiction("LSPD","RICHM", 1, 15, 5),
 
-            new ZoneJurisdiction("LSPD-RH","ROCKF", 0, 85, 70),
-            new ZoneJurisdiction("LSPD","ROCKF", 1, 15, 5),
+            new ZoneJurisdiction("LSPD-RH","ROCKF", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","ROCKF", 1, 15, 5) {CanSpawnPedestrianOfficers = true },
 
             new ZoneJurisdiction("LSSD-VW","RTRAK", 0, 100, 70),
             new ZoneJurisdiction("LSSD","SANAND", 0, 100, 70),
@@ -250,11 +250,11 @@ public static partial class Jurisdiction
 
             new ZoneJurisdiction("LSSD-VW","TONGVAV", 0, 100, 70),
 
-            new ZoneJurisdiction("LSPD-DP","VCANA", 0, 85, 70),
-            new ZoneJurisdiction("LSPD","VCANA", 1, 10, 10),
+            new ZoneJurisdiction("LSPD-DP","VCANA", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","VCANA", 1, 10, 10) {CanSpawnPedestrianOfficers = true },
 
-            new ZoneJurisdiction("LSPD-DP","VESP", 0, 85, 70),
-            new ZoneJurisdiction("LSPD","VESP", 1, 10, 10),
+            new ZoneJurisdiction("LSPD-DP","VESP", 0, 85, 70) {CanSpawnPedestrianOfficers = true },
+            new ZoneJurisdiction("LSPD","VESP", 1, 10, 10) {CanSpawnPedestrianOfficers = true },
 
             new ZoneJurisdiction("LSPD-VW","VINE", 0, 85, 70),
             new ZoneJurisdiction("LSSD-VW","VINE", 1, 10, 10),
@@ -312,6 +312,14 @@ public static partial class Jurisdiction
             return null;
         }
     }
+    public static bool CanSpawnPedestrainOfficersAtZone(string zoneInternalName,string agencyInitials)
+    {
+        ZoneJurisdiction ToFind = ZoneJurisdictions.FirstOrDefault(x => x.GameAgency.Initials == agencyInitials && x.GameZone.InternalGameName == zoneInternalName);
+        if (ToFind == null)
+            return false;
+        else
+            return ToFind.CanSpawnPedestrianOfficers;
+    }
     public static Agency AgencyAtCounty(string ZoneName)
     {
         Zone MyZone = Zones.GetZoneByName(ZoneName);
@@ -351,6 +359,7 @@ public static partial class Jurisdiction
         public int Priority { get; set; } = 99;
         public int AmbientSpawnChance { get; set; } = 0;
         public int WantedSpawnChance { get; set; } = 0;
+        public bool CanSpawnPedestrianOfficers { get; set; } = false;
         public Zone GameZone
         {
             get
@@ -405,6 +414,7 @@ public static partial class Jurisdiction
         public int Priority { get; set; } = 99;
         public int AmbientSpawnChance { get; set; } = 0;
         public int WantedSpawnChance { get; set; } = 0;
+        public bool CanSpawnPedestrianOfficers { get; set; } = false;
         public Agency GameAgency
         {
             get

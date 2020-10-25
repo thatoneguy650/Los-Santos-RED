@@ -55,7 +55,7 @@ public static class Tasking
         else if (!Cop.RecentlySeenPlayer())
             return false;
         else if (PlayerLocation.PlayerIsOffroad)
-            return false;
+            return true;
         else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.Normal || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait || PlayerState.IsBusted || PlayerState.IsDead)
             return false;
         else
@@ -293,7 +293,7 @@ public static class Tasking
                     {
                         AddItemToCopQueue(new CopTaskQueueItem(Cop, VehicleChaseWithVehicle, "VehicleChaseWithVehicle"));
                     }
-                    else if (Cop.TaskGTACop.RecentlySeenPlayer() && CanVehicleChase(Cop.TaskGTACop) && Cop.RunningTask != FootChaseWithVehicle)
+                    else if (Cop.TaskGTACop.RecentlySeenPlayer() && CanVehicleChase(Cop.TaskGTACop) && Cop.RunningTask != FootChaseWithVehicle && TaskableCops.Count(x => x.RunningTask == FootChaseWithVehicle) <= 2)
                     {
                         AddItemToCopQueue(new CopTaskQueueItem(Cop, FootChaseWithVehicle, "FootChaseWithVehicle"));
                     }
@@ -322,13 +322,13 @@ public static class Tasking
                     //}           
                 }
             }
-            if(!Cop.TaskIsQueued && Cop.TaskGTACop.IsInHelicopter && !Cop.TaskGTACop.Pedestrian.IsDriver())
-            {
-                if(Cop.TaskGTACop.RecentlySeenPlayer() && Cop.RunningTask != AttackWithVehicleWeapon)
-                {
-                    AddItemToCopQueue(new CopTaskQueueItem(Cop, AttackWithVehicleWeapon, "AttackWithVehicleWeapon"));   
-                }
-            }
+            //if(!Cop.TaskIsQueued && Cop.TaskGTACop.IsInHelicopter && !Cop.TaskGTACop.Pedestrian.IsDriver())
+            //{
+            //    if(Cop.TaskGTACop.RecentlySeenPlayer() && Cop.RunningTask != AttackWithVehicleWeapon)
+            //    {
+            //        AddItemToCopQueue(new CopTaskQueueItem(Cop, AttackWithVehicleWeapon, "AttackWithVehicleWeapon"));   
+            //    }
+            //}
 
             if(WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase)
             {
@@ -356,7 +356,7 @@ public static class Tasking
         }  
         else
         {
-            if (!PlayerState.IsInVehicle && Cop.CurrentChaseStatus == ChaseStatus.Active && !Cop.TaskIsQueued)
+            if ((!PlayerState.IsInVehicle || Game.LocalPlayer.Character.Speed <= 2f) && Cop.CurrentChaseStatus == ChaseStatus.Active && !Cop.TaskIsQueued)
             {
                 if ((Cop.TaskGTACop.RecentlySeenPlayer() || Cop.TaskGTACop.DistanceToPlayer <= 20f))//50f;
                 {
@@ -380,7 +380,7 @@ public static class Tasking
             }
         }
 
-        if ((PlayerState.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.Speed <= 2f) && !PlayerState.IsBusted && Cop.TaskGTACop.DistanceToPlayer <= 5f && !IsBustTimeOut)// && !Police.PlayerWasJustJacking)
+        if ((PlayerState.HandsAreUp || Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll || PlayerState.IsStationary) && !PlayerState.IsBusted && Cop.TaskGTACop.DistanceToPlayer >= 0.1f && Cop.TaskGTACop.DistanceToPlayer <= 5f && !IsBustTimeOut)// && !Police.PlayerWasJustJacking)
             SetSurrenderBust(true, string.Format("TaskPoliceOnFoot 1: {0}",Cop.TaskGTACop.Pedestrian.Handle));
 
     }
@@ -437,7 +437,7 @@ public static class Tasking
                 return;
 
             string LocalTaskName = "GoTo";
-            double cool = General.MyRand.NextDouble() * (1.17 - 1.075) + 1.075;//(1.175 - 1.1) + 1.1;
+            double cool = General.MyRand.NextDouble() * (1.175 - 1.1) + 1.1;//(1.17 - 1.075) + 1.075;//(1.175 - 1.1) + 1.1;
             float MoveRate = (float)cool;
             Cop.IsTasked = true;
             Cop.RunningTask = FootChaseOnFoot;
@@ -461,17 +461,18 @@ public static class Tasking
 
                 if (PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 2.5f)
                 {
-                    if (Cop.TaskGTACop.IsPursuitPrimary && Cop.TaskGTACop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
+                    //if (Cop.TaskGTACop.IsPursuitPrimary && Cop.TaskGTACop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
+                    if (Cop.TaskGTACop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
                     {
-                        Cop.TaskGTACop.Pedestrian.CanRagdoll = false;
+                            Cop.TaskGTACop.Pedestrian.CanRagdoll = false;
                         NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 10f);
                         LocalTaskName = "CarJack";
                     }
-                    else if (!Cop.TaskGTACop.IsPursuitPrimary && Cop.TaskGTACop.DistanceToPlayer <= 25f && LocalTaskName != "Arrest")
-                    {
-                        NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character, 2f, 20f);
-                        LocalTaskName = "Arrest";
-                    }
+                    //else if (!Cop.TaskGTACop.IsPursuitPrimary && Cop.TaskGTACop.DistanceToPlayer <= 25f && LocalTaskName != "Arrest")
+                    //{
+                    //    NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character, 2f, 20f);
+                    //    LocalTaskName = "Arrest";
+                    //}
                 }
                 else
                 {
@@ -526,7 +527,7 @@ public static class Tasking
                     GameFiber.Sleep(General.MyRand.Next(500, 2000));
                     break;
                 }
-                GameFiber.Sleep(500);//250
+                GameFiber.Sleep(250);//500//250
             }
             if (Cop.TaskGTACop.Pedestrian.Exists() && !Cop.TaskGTACop.Pedestrian.IsDead)
             {

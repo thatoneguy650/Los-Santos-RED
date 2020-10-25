@@ -208,27 +208,27 @@ public static class Debugging
         
         
 
-        GameFiber.StartNew(delegate
-        {
-            IsTesting = true;
-            Ped MyPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(3f));
-            MyPed.IsPersistent = false;
-            MyPed.BlockPermanentEvents = true;
-            MyPed.Tasks.StandStill(25000);
+        //GameFiber.StartNew(delegate
+        //{
+        //    IsTesting = true;
+        //    Ped MyPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(3f));
+        //    MyPed.IsPersistent = false;
+        //    MyPed.BlockPermanentEvents = true;
+        //    MyPed.Tasks.StandStill(25000);
             
-            uint GameTimeStarted = Game.GameTime;
-            while(Game.GameTime - GameTimeStarted <= 25000 && MyPed.Exists())
-            {
+        //    uint GameTimeStarted = Game.GameTime;
+        //    while(Game.GameTime - GameTimeStarted <= 25000 && MyPed.Exists())
+        //    {
 
 
-                UI.DebugLine = string.Format("Infront: {0} SameOpDir {1} Angle {2}", MyPed.IsInFront(Game.LocalPlayer.Character), Extensions.FacingSameOrOppositeDirection(MyPed, Game.LocalPlayer.Character) ,Extensions.Angle(MyPed.ForwardVector, Game.LocalPlayer.Character.ForwardVector));
-                GameFiber.Yield();
-            }
-            if (MyPed.Exists())
-                MyPed.Delete();
-            IsTesting = false;
+        //        UI.DebugLine = string.Format("Infront: {0} SameOpDir {1} Angle {2}", MyPed.IsInFront(Game.LocalPlayer.Character), Extensions.FacingSameOrOppositeDirection(MyPed, Game.LocalPlayer.Character) ,Extensions.Angle(MyPed.ForwardVector, Game.LocalPlayer.Character.ForwardVector));
+        //        GameFiber.Yield();
+        //    }
+        //    if (MyPed.Exists())
+        //        MyPed.Delete();
+        //    IsTesting = false;
 
-        });
+        //});
 
 
 

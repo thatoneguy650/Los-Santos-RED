@@ -30,9 +30,11 @@ public static class PlayerState
     private static uint GameTimeLastShot;
     private static uint GameTimeLastStartedJacking;
     private static uint GameTimeLastStarsGreyedOut;
+    private static uint GameTimeLastStarsNotGreyedOut;
     private static uint GameTimeLastDied;
     private static uint GameTimeLastBusted;
     private static uint GameTimePoliceNoticedVehicleChange;
+    private static uint GameTimeLastMoved;
     private static uint PoliceLastSeenVehicleHandle;
     public static bool IsRunning { get;  set; }
     public static int TimesDied { get; set; }
@@ -184,6 +186,16 @@ public static class PlayerState
                 return Game.GameTime - GameTimeLastStartedJacking >= 5000;
         }
     }
+    public static bool IsStationary
+    {
+        get
+        {
+            if (GameTimeLastMoved == 0)
+                return true;
+            else
+                return Game.GameTime - GameTimeLastMoved >= 2000;
+        }
+    }
     public static bool StarsRecentlyGreyedOut
     {
         get
@@ -192,6 +204,16 @@ public static class PlayerState
                 return false;
             else
                 return Game.GameTime - GameTimeLastStarsGreyedOut <= 1500;
+        }
+    }
+    public static bool StarsRecentlyActive
+    {
+        get
+        {
+            if (GameTimeLastStarsNotGreyedOut == 0)
+                return false;
+            else
+                return Game.GameTime - GameTimeLastStarsNotGreyedOut <= 1500;
         }
     }
     public static bool RecentlyDied
@@ -322,12 +344,17 @@ public static class PlayerState
             CurrentVehicle = UpdateCurrentVehicle();
             if (CurrentVehicle != null && CurrentVehicle.GameTimeEntered == 0)
                 CurrentVehicle.GameTimeEntered = Game.GameTime;
+
+            if (Extensions.IsMoveControlPressed())
+                GameTimeLastMoved = Game.GameTime;
         }
         else
         {
             IsOnMotorcycle = false;
             IsInAutomobile = false;
             CurrentVehicle = null;
+            if (Game.LocalPlayer.Character.Speed >= 0.2f)
+                GameTimeLastMoved = Game.GameTime;
         }
 
         if (Game.LocalPlayer.Character.IsShooting)
@@ -359,6 +386,9 @@ public static class PlayerState
         {
             GameTimeStartedHoldingEnter = 0;
         }
+
+
+
 
         IsNightTime = false;
         int HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
@@ -518,6 +548,7 @@ public static class PlayerState
         }
         else
         {
+            GameTimeLastStarsNotGreyedOut = Game.GameTime;
             foreach (Cop Cop in PedList.CopPeds)
             {
                 Cop.AtWantedCenterDuringSearchMode = false;
@@ -615,9 +646,14 @@ public static class PlayerState
             return;
 
         if (PedSwap.OwnedCar == null)
+        {
             MyVehicle.IsStolen = true;
+        }
         else if (MyVehicle.VehicleEnt.Handle != PedSwap.OwnedCar.Handle && !MyVehicle.IsStolen)
+        {
             MyVehicle.IsStolen = true;
+        }
+
     }
     public static void SetPlayerToLastWeapon()
     {

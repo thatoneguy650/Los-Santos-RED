@@ -36,7 +36,7 @@ public static class PedSwap
     {
         get
         {
-            if (Game.GameTime - GameTimeLastTakenOver <= 1000)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
+            if (Game.GameTime - GameTimeLastTakenOver <= 5000)//Right when you takeover a ped they might become wanted for some weird reason, this stops that
                 return true;
             else
                 return false;

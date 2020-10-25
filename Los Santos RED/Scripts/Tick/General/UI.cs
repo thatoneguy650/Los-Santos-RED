@@ -16,6 +16,8 @@ public static class UI
     private static bool StartedBandagingEffect = false;
     private static bool StartedBustedEffect = false;
     private static bool StartedDeathEffect = false;
+    private static uint GameTimeLastDisplayedBleedingHelp;
+
     public static string DebugLine { get; set; }
     private enum GTAFont
     {
@@ -60,6 +62,19 @@ public static class UI
         MAX_SCRIPTED_HUD_COMPONENTS = 141,
     }
     public static bool IsRunning { get; set; }
+    public static bool RecentlyDisplayedBleedingHelp
+    {
+        get
+        {
+            if (GameTimeLastDisplayedBleedingHelp == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastDisplayedBleedingHelp <= 25000)
+                return true;
+            else
+                return false;
+        }
+    }
+
     public static void Initialize()
     {
         IsRunning= true;
@@ -123,29 +138,42 @@ public static class UI
     }
     private static void ShowUI()
     {
-        //ShowDebugUI();
+        ShowDebugUI();
 
 
         HideVanillaUI();
         DisplayTextOnScreen(GetPlayerStatusDisplay(), General.MySettings.UI.PlayerStatusPositionX, General.MySettings.UI.PlayerStatusPositionY, General.MySettings.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)General.MySettings.UI.PlayerStatusJustificationID);
         DisplayTextOnScreen(GetVehicleStatusDisplay(), General.MySettings.UI.VehicleStatusPositionX, General.MySettings.UI.VehicleStatusPositionY, General.MySettings.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)General.MySettings.UI.VehicleStatusJustificationID);
         DisplayTextOnScreen(GetZoneDisplay(), General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY, General.MySettings.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)General.MySettings.UI.ZoneJustificationID);
-        DisplayTextOnScreen(GetStreetDisplay(), General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY, General.MySettings.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)General.MySettings.UI.StreetJustificationID);      
+        DisplayTextOnScreen(GetStreetDisplay(), General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY, General.MySettings.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)General.MySettings.UI.StreetJustificationID);
+
+
+        DisplayHelpText();
+
+    }
+
+    private static void DisplayHelpText()
+    {
+        if (!RecentlyDisplayedBleedingHelp && PlayerHealth.IsBleeding)
+        {
+            Game.DisplayHelp("Hit ~INPUT_DUCK~ + ~INPUT_CONTEXT~ to bandage!", 5000);
+            GameTimeLastDisplayedBleedingHelp = Game.GameTime;
+        }
     }
 
     private static void ShowDebugUI()
     {
-        int Lines = 0;
-        foreach(string LogMessage in Debugging.LogMessages)
-        {
-            DisplayTextOnScreen(LogMessage, Lines * 0.02f, 0.0f, 0.23f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-            Lines++;
-        }
+        //int Lines = 0;
+        //foreach(string LogMessage in Debugging.LogMessages)
+        //{
+        //    DisplayTextOnScreen(LogMessage, Lines * 0.02f, 0.0f, 0.23f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        //    Lines++;
+        //}
 
-        Lines++;
+        // Lines++;
 
-
-        DisplayTextOnScreen(DebugLine, 0.5f, 0.5f, 0.4f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}", Investigation.InInvestigationMode, Investigation.HavePlayerDescription,PlayerState.IsStationary);
+        DisplayTextOnScreen(DebugLine, 0.1f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
 
     private static void ScreenEffectsTick()

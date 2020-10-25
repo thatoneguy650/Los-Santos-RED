@@ -38,14 +38,21 @@ public static class PedList
     {
         get
         {
-            return CopPeds.Any(x => x.AssignedAgency.Initials == "NOOSE");
+            return CopPeds.Any(x => x.AssignedAgency.Initials == "NOOSE" && x.WasModSpawned);
         }
     }
     public static bool AnyArmyUnitsSpawned
     {
         get
         {
-            return CopPeds.Any(x => x.AssignedAgency.Initials == "ARMY");
+            return CopPeds.Any(x => x.AssignedAgency.Initials == "ARMY" && x.WasModSpawned);
+        }
+    }
+    public static bool AnyHelicopterUnitsSpawned
+    {
+        get
+        {
+            return CopPeds.Any(x => x.IsInHelicopter && x.WasModSpawned);
         }
     }
     public static bool AnyCopsNearPosition(Vector3 Position,float Distance)

@@ -204,7 +204,7 @@ public static class PoliceSpawning
         Agency NOOSE = Agencies.AgenciesList.Where(x => x.Initials == "NOOSE").FirstOrDefault();
         Agency.VehicleInformation Heli = NOOSE.Vehicles.Where(x => x.ModelName == "annihilator").FirstOrDefault();
 
-        SpawnGTACop(NOOSE, Game.LocalPlayer.Character.GetOffsetPositionFront(10f) + new Vector3(0f, 0f, 100f), 0f, Heli);
+        SpawnGTACop(NOOSE, Game.LocalPlayer.Character.GetOffsetPositionFront(10f) + new Vector3(0f, 0f, 100f), 0f, Heli,false);
 
 
 
@@ -329,7 +329,7 @@ public static class PoliceSpawning
         if (MyBlip.Exists())
             MyBlip.Delete();
     }
-    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading,Agency.VehicleInformation MyCarInfo)
+    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading,Agency.VehicleInformation MyCarInfo,bool CanSpawnOnFoot)
     {
         if (_Agency == null)
             return false;
@@ -337,89 +337,100 @@ public static class PoliceSpawning
         if (!_Agency.CanSpawn)
             return false;
 
-        VehicleExt CopCar;
-
-        CopCar = SpawnCopVehicle(_Agency, MyCarInfo, SpawnLocation, Heading);
-        GameFiber.Yield();
-        if (CopCar != null && CopCar.VehicleEnt.Exists())
+        if (CanSpawnOnFoot)
         {
-            PedList.PoliceVehicles.Add(CopCar.VehicleEnt);
-            List<string> RequiredPedModels = new List<string>();
-            if (CopCar.ExtendedAgencyVehicleInformation != null && CopCar.ExtendedAgencyVehicleInformation.AllowedPedModels.Any())
-            {
-                RequiredPedModels = CopCar.ExtendedAgencyVehicleInformation.AllowedPedModels;
-            }
-
-            Ped Cop = SpawnCopPed(_Agency, SpawnLocation, MyCarInfo.IsMotorcycle, RequiredPedModels);
-            GameFiber.Yield();
+            Ped Cop = SpawnCopPed(_Agency, SpawnLocation, false, null);
             if (Cop == null || !Cop.Exists())
                 return false;
-            CreatedEntities.Add(Cop);
-            CreatedPoliceVehicles.Add(CopCar.VehicleEnt);
-            CreatedEntities.Add(CopCar.VehicleEnt);
-            Cop.WarpIntoVehicle(CopCar.VehicleEnt, -1);
-            Cop.IsPersistent = true;
-            CopCar.VehicleEnt.IsPersistent = true;
-            Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
-            Cop MyNewCop = new Cop(Cop, Cop.Health, _Agency);
-            MyNewCop.IssuePistol();
-            MyNewCop.WasModSpawned = true;
-            MyNewCop.WasMarkedNonPersistent = true;
-            MyNewCop.WasRandomSpawnDriver = true;
-            MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
-            MyNewCop.GameTimeSpawned = Game.GameTime;
-            Debugging.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.VehicleEnt.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
+            else
+                return true;
+        }
+        else
+        {
+            VehicleExt CopCar;
+            CopCar = SpawnCopVehicle(_Agency, MyCarInfo, SpawnLocation, Heading);
+            GameFiber.Yield();
 
-            if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && Cop.Exists())
+            if (CopCar != null && CopCar.VehicleEnt.Exists())
             {
-                Blip myBlip = Cop.AttachBlip();
-                myBlip.Color = _Agency.AgencyColor;
-                myBlip.Scale = 0.6f;
-                General.CreatedBlips.Add(myBlip);
-            }
-            PedList.CopPeds.Add(MyNewCop);
-
-            if (CopCar.ExtendedAgencyVehicleInformation != null)
-            {
-                int OccupantsToAdd = General.MyRand.Next(CopCar.ExtendedAgencyVehicleInformation.MinOccupants, CopCar.ExtendedAgencyVehicleInformation.MaxOccupants + 1) - 1;
-                for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+                PedList.PoliceVehicles.Add(CopCar.VehicleEnt);
+                List<string> RequiredPedModels = new List<string>();
+                if (CopCar.ExtendedAgencyVehicleInformation != null && CopCar.ExtendedAgencyVehicleInformation.AllowedPedModels.Any())
                 {
-                    Ped PartnerCop = SpawnCopPed(_Agency, SpawnLocation, false, null);
-                    GameFiber.Yield();
-                    if (PartnerCop != null)
+                    RequiredPedModels = CopCar.ExtendedAgencyVehicleInformation.AllowedPedModels;
+                }
+
+                Ped Cop = SpawnCopPed(_Agency, SpawnLocation, MyCarInfo.IsMotorcycle, RequiredPedModels);
+                GameFiber.Yield();
+                if (Cop == null || !Cop.Exists())
+                    return false;
+                CreatedEntities.Add(Cop);
+                CreatedPoliceVehicles.Add(CopCar.VehicleEnt);
+                CreatedEntities.Add(CopCar.VehicleEnt);
+                Cop.WarpIntoVehicle(CopCar.VehicleEnt, -1);
+                Cop.IsPersistent = true;
+                CopCar.VehicleEnt.IsPersistent = true;
+                Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
+                Cop MyNewCop = new Cop(Cop, Cop.Health, _Agency);
+                MyNewCop.IssuePistol();
+                MyNewCop.WasModSpawned = true;
+                MyNewCop.WasMarkedNonPersistent = true;
+                MyNewCop.WasRandomSpawnDriver = true;
+                MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
+                MyNewCop.GameTimeSpawned = Game.GameTime;
+                Debugging.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.VehicleEnt.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
+
+                if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && Cop.Exists())
+                {
+                    Blip myBlip = Cop.AttachBlip();
+                    myBlip.Color = _Agency.AgencyColor;
+                    myBlip.Scale = 0.6f;
+                    General.CreatedBlips.Add(myBlip);
+                }
+                PedList.CopPeds.Add(MyNewCop);
+
+                if (CopCar.ExtendedAgencyVehicleInformation != null)
+                {
+                    int OccupantsToAdd = General.MyRand.Next(CopCar.ExtendedAgencyVehicleInformation.MinOccupants, CopCar.ExtendedAgencyVehicleInformation.MaxOccupants + 1) - 1;
+                    for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                     {
-                        CreatedEntities.Add(PartnerCop);
-                        if (!CopCar.VehicleEnt.Exists())
+                        Ped PartnerCop = SpawnCopPed(_Agency, SpawnLocation, false, null);
+                        GameFiber.Yield();
+                        if (PartnerCop != null)
                         {
-                            if (PartnerCop.Exists())
-                                PartnerCop.Delete();
-                        }
-                        else
-                        {
-                            PartnerCop.WarpIntoVehicle(CopCar.VehicleEnt, OccupantIndex-1);
-                            PartnerCop.IsPersistent = true;
-                            Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, _Agency);
-                            MyNewPartnerCop.IssuePistol();
-                            MyNewPartnerCop.WasModSpawned = true;
-                            MyNewPartnerCop.WasMarkedNonPersistent = true;
-                            if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
+                            CreatedEntities.Add(PartnerCop);
+                            if (!CopCar.VehicleEnt.Exists())
                             {
-                                Blip myBlip = PartnerCop.AttachBlip();
-                                myBlip.Color = _Agency.AgencyColor;
-                                myBlip.Scale = 0.6f;
-                                General.CreatedBlips.Add(myBlip);
+                                if (PartnerCop.Exists())
+                                    PartnerCop.Delete();
                             }
-                            PedList.CopPeds.Add(MyNewPartnerCop);
-                            MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
-                            Debugging.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.VehicleEnt.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
+                            else
+                            {
+                                PartnerCop.WarpIntoVehicle(CopCar.VehicleEnt, OccupantIndex - 1);
+                                PartnerCop.IsPersistent = true;
+                                Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, _Agency);
+                                MyNewPartnerCop.IssuePistol();
+                                MyNewPartnerCop.WasModSpawned = true;
+                                MyNewPartnerCop.WasMarkedNonPersistent = true;
+                                if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
+                                {
+                                    Blip myBlip = PartnerCop.AttachBlip();
+                                    myBlip.Color = _Agency.AgencyColor;
+                                    myBlip.Scale = 0.6f;
+                                    General.CreatedBlips.Add(myBlip);
+                                }
+                                PedList.CopPeds.Add(MyNewPartnerCop);
+                                MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
+                                Debugging.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.VehicleEnt.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
+                            }
                         }
                     }
                 }
+                GameTimeLastSpawnedCop = Game.GameTime;
+                return true;
             }
-            GameTimeLastSpawnedCop = Game.GameTime;
-            return true;
+            return false;
         }
-        return false;
     }
     private static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
     {

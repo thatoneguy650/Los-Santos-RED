@@ -44,10 +44,11 @@ public static class General
         }
         else
         {
-            MySettings = new Settings();
-            List<Settings> ToSerialize = new List<Settings>();
-            ToSerialize.Add(MySettings);
-            SerializeParams(ToSerialize, ConfigFileName);
+            //MySettings = new Settings();
+            //List<Settings> ToSerialize = new List<Settings>();
+            //ToSerialize.Add(MySettings);
+            //SerializeParams(ToSerialize, ConfigFileName);
+            SerializeSettings();
         }
     }
     public static void Dispose()
@@ -68,6 +69,13 @@ public static class General
         Weapons.ReadConfig();
         Locations.ReadConfig();
         Streets.ReadConfig();
+    }
+    public static void SerializeSettings()
+    {
+        //MySettings = new Settings();
+        List<Settings> ToSerialize = new List<Settings>();
+        ToSerialize.Add(MySettings);
+        SerializeParams(ToSerialize, ConfigFileName);
     }
     private static void ReadConfig()
     {
@@ -224,6 +232,22 @@ public static class General
                 }
             }
         }
+    }
+    public static void GetSidewalkPositionAndHeading(Vector3 PositionNear, out Vector3 SpawnPosition)
+    {
+        Vector3 pos = PositionNear;
+        SpawnPosition = Vector3.Zero;
+
+        Vector3 outPos;
+
+        unsafe
+        {
+            NativeFunction.CallByName<bool>("GET_SAFE_COORD_FOR_PED", pos.X, pos.Y, pos.Z,true, &outPos, 16);
+        }
+
+        SpawnPosition = outPos;
+        
+        //
     }
     public static void RequestAnimationDictionay(string sDict)
     {

@@ -51,11 +51,20 @@ internal static class Menus
     private static UIMenu actionsMenu;
     private static UIMenu scenariosMenu;
 
+
+    private static UIMenu settingsMenuGeneral;
+    private static UIMenu settingsMenuPolice;
+    private static UIMenu settingsMenuUISettings;
+    private static UIMenu settingsMenuKeySettings;
+    private static UIMenu settingsMenuTrafficViolations;
     private static int RandomWeaponCategory;
 
     private static Location CurrentSelectedSurrenderLocation;
     private static Location CurrentSelectedHospitalLocation;
     private static UIMenuItem scenariosMainPrisonEscape;
+
+
+    
     private static readonly List<string> strRadioStations = new List<string> { "NONE", "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01", "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE", "RADIO_13_JAZZ", "RADIO_14_DANCE_02", "RADIO_15_MOTOWN", "RADIO_20_THELAB", "RADIO_16_SILVERLAKE", "RADIO_17_FUNK", "RADIO_18_90S_ROCK", "RADIO_19_USER", "RADIO_11_TALK_02", "HIDDEN_RADIO_AMBIENT_TV_BRIGHT", "OFF" };
     private static readonly new List<string> ScreenEffects = new List<string>  { "SwitchHUDIn",
         "SwitchHUDOut",
@@ -346,22 +355,44 @@ internal static class Menus
     {
         ReloadSettings = new UIMenuItem("Reload Settings", "Reload All settings from XML");
         optionsMenu.AddItem(ReloadSettings);
-        foreach (FieldInfo fi in Type.GetType("Settings", false).GetFields())
-        {
-            if (fi.FieldType == typeof(bool))
-            {
-                UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(null));
-                optionsMenu.AddItem(MySetting);
-            }
-            if (fi.FieldType == typeof(int) || fi.FieldType == typeof(string) || fi.FieldType == typeof(float))
-            {
-                UIMenuItem MySetting = new UIMenuItem(string.Format("{0}: {1}", fi.Name, fi.GetValue(null)));
-                optionsMenu.AddItem(MySetting);
-            }
-        }
+        settingsMenuGeneral = menuPool.AddSubMenu(optionsMenu, "General Settings");
+        settingsMenuPolice = menuPool.AddSubMenu(optionsMenu, "Police Settings");
+        settingsMenuUISettings = menuPool.AddSubMenu(optionsMenu, "UI Settings");
+        settingsMenuKeySettings = menuPool.AddSubMenu(optionsMenu, "Key Settings");
+        settingsMenuTrafficViolations = menuPool.AddSubMenu(optionsMenu, "Traffic Violations Settings");
+
+        CreateSettingSubMenu(typeof(GeneralSettings).GetFields(), General.MySettings.General, settingsMenuGeneral);
+        CreateSettingSubMenu(typeof(PoliceSettings).GetFields(), General.MySettings.Police, settingsMenuPolice);
+        CreateSettingSubMenu(typeof(UISettings).GetFields(), General.MySettings.UI, settingsMenuUISettings);
+        CreateSettingSubMenu(typeof(KeySettings).GetFields(), General.MySettings.KeyBinding, settingsMenuKeySettings);
+        CreateSettingSubMenu(typeof(TrafficSettings).GetFields(), General.MySettings.TrafficViolations, settingsMenuTrafficViolations);
+
         optionsMenu.OnItemSelect += OptionsMenuSelect;
         optionsMenu.OnListChange += OnListChange;
         optionsMenu.OnCheckboxChange += OnCheckboxChange;
+
+
+        settingsMenuGeneral.OnItemSelect += SettingsMenuSelect;
+        settingsMenuPolice.OnItemSelect += SettingsMenuSelect;
+        settingsMenuUISettings.OnItemSelect += SettingsMenuSelect;
+        settingsMenuKeySettings.OnItemSelect += SettingsMenuSelect;
+        settingsMenuTrafficViolations.OnItemSelect += SettingsMenuSelect;
+    }
+    private static void CreateSettingSubMenu(FieldInfo[] Fields,object SettingsSubType, UIMenu MenuToSet)
+    {
+        foreach (FieldInfo fi in Fields)
+        {
+            if (fi.FieldType == typeof(bool))
+            {
+                UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(SettingsSubType));
+                MenuToSet.AddItem(MySetting);
+            }
+            if (fi.FieldType == typeof(int) || fi.FieldType == typeof(string) || fi.FieldType == typeof(float))
+            {
+                UIMenuItem MySetting = new UIMenuItem(string.Format("{0}: {1}", fi.Name, fi.GetValue(SettingsSubType)));
+                MenuToSet.AddItem(MySetting);
+            }
+        }
     }
     private static void CreateActionsMenu()
     {
@@ -497,12 +528,42 @@ internal static class Menus
     }
     private static void OptionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if(selectedItem == ReloadSettings)
+        if (selectedItem == ReloadSettings)
         {
             General.ReadAllConfigs();
         }
+    }
+    private static void SettingsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
         string mySettingName = selectedItem.Text.Split(':')[0];
-        FieldInfo[] MyFields = Type.GetType("Settings", false).GetFields();
+        FieldInfo[] MyFields = typeof(GeneralSettings).GetFields();
+        object ToSet = General.MySettings.General;
+
+        if (sender == settingsMenuGeneral)
+        {
+            MyFields = typeof(GeneralSettings).GetFields();
+        }
+        else if (sender == settingsMenuPolice)
+        {
+            ToSet = General.MySettings.Police;
+            MyFields = typeof(PoliceSettings).GetFields();
+        }
+        else if (sender == settingsMenuKeySettings)
+        {
+            ToSet = General.MySettings.KeyBinding;
+            MyFields = typeof(KeySettings).GetFields();
+        }
+        else if (sender == settingsMenuUISettings)
+        {
+            ToSet = General.MySettings.UI;
+            MyFields = typeof(UISettings).GetFields();
+        }
+        else if (sender == settingsMenuTrafficViolations)
+        {
+            ToSet = General.MySettings.TrafficViolations;
+            MyFields = typeof(TrafficSettings).GetFields();
+        }
+
         FieldInfo MySetting = MyFields.Where(x => x.Name == mySettingName).FirstOrDefault();
 
         string Value = GetKeyboardInput();
@@ -510,7 +571,7 @@ internal static class Menus
         {
             if (float.TryParse(Value, out float myFloat))
             {
-                MySetting.SetValue(null, myFloat);
+                MySetting.SetValue(ToSet, myFloat);
                 selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
             }
         }
@@ -518,15 +579,16 @@ internal static class Menus
         {
             if (int.TryParse(Value, out int myInt))
             {
-                MySetting.SetValue(null, myInt);
+                MySetting.SetValue(ToSet, myInt);
                 selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
             }
         }
         else if (MySetting.FieldType == typeof(string))
         {
-            MySetting.SetValue(null, Value);
+            MySetting.SetValue(ToSet, Value);
             selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
         }
+        General.SerializeSettings();
     }
     private static void ActionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

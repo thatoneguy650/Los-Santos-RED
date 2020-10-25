@@ -303,7 +303,10 @@ public static class Crimes
         {
             if (Police.AnyCanSeePlayer || (Violating.CanReportBySound && Police.AnyCanHearPlayerShooting) || Violating.IsAlwaysFlagged)
             {
-                WantedLevelScript.CurrentCrimes.AddCrime(Violating, true,PlayerState.CurrentPosition,PlayerState.CurrentVehicle,PlayerState.CurrentWeapon);
+                GTAWeapon ToSee = null;
+                if (!PlayerState.IsInVehicle)
+                    ToSee = PlayerState.CurrentWeapon;
+                WantedLevelScript.CurrentCrimes.AddCrime(Violating, true,PlayerState.CurrentPosition,PlayerState.CurrentVehicle, ToSee);
             }
         }
     }
@@ -500,7 +503,7 @@ public static class TrafficViolations
         }
 
 
-        UI.DebugLine = string.Format("PlayerIsRunningRedLight {0}", PlayerIsRunningRedLight);
+       // UI.DebugLine = string.Format("PlayerIsRunningRedLight {0}", PlayerIsRunningRedLight);
 
 
 

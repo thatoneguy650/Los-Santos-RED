@@ -425,14 +425,14 @@ public static class PlayerHealth
         {
             IsBandaging = true;
             bool PlayingAnimation = false;
-            if (!PedToBandage.IsInAnyVehicle(false))
-            {  
-                General.RequestAnimationDictionay("move_p_m_two_idles@generic");
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", PedToBandage, (uint)2725352035, true);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToBandage, "move_p_m_two_idles@generic", "fidget_pick_at_face", 8.0f, -8.0f, 2000, 1, 0, false, false, false);
-                PlayingAnimation = true;
-                Debugging.WriteToLog("BandagePed", string.Format("Started Bandaging Animation"));
-            }
+            //if (!PedToBandage.IsInAnyVehicle(false))
+            //{
+            //    General.RequestAnimationDictionay("move_p_m_two_idles@generic");
+            //    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", PedToBandage, (uint)2725352035, true);
+            //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToBandage, "move_p_m_two_idles@generic", "fidget_pick_at_face", 8.0f, -8.0f, 2000, 1, 0, false, false, false);
+            //    PlayingAnimation = true;
+            //    Debugging.WriteToLog("BandagePed", string.Format("Started Bandaging Animation"));
+            //}
             uint GameTimeStartedBandaging = Game.GameTime;
             bool IsFinished = true;
             while (Game.GameTime - GameTimeStartedBandaging <= 2000)

@@ -194,7 +194,7 @@ public static class PoliceScanner
                 {
                     AddToQueue(WeaponsFree);
                 }
-                if (!RequestAirSupport.HasBeenPlayedThisWanted && PedList.CopPeds.Any(x => x.IsInHelicopter && x.WasModSpawned))
+                if (!RequestAirSupport.HasBeenPlayedThisWanted && PedList.AnyHelicopterUnitsSpawned)
                 {
                     AddToQueue(RequestAirSupport);
                 }
@@ -214,13 +214,14 @@ public static class PoliceScanner
                 {
                     AddToQueue(WantedSuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = PlayerState.CurrentVehicle });
                 }
-                if (!RecentlyAnnouncedDispatch && !PlayerState.IsBusted && !PlayerState.IsDead)
+
+                if (!PlayerState.IsBusted && !PlayerState.IsDead)
                 {
                     if (!LostVisual.HasRecentlyBeenPlayed && PlayerState.StarsRecentlyGreyedOut && WantedLevelScript.HasBeenWantedFor > 45000 && !PedList.AnyCopsNearPlayer)
                     {
                         AddToQueue(LostVisual, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && Police.AnyCanSeePlayer && WantedLevelScript.HasBeenWantedFor > 25000)
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && PlayerState.StarsRecentlyActive && WantedLevelScript.HasBeenWantedFor > 25000 && Police.AnyCanSeePlayer)
                     {
                         AddToQueue(SuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -237,7 +238,6 @@ public static class PoliceScanner
                 {
                     AddToQueue(SuspectLost, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                 }
-
                 if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Investigation.LastInvestigationRecentlyExpired && Investigation.DistanceToInvestigationPosition <= 1000f)
                 {
                     AddToQueue(NoFurtherUnitsNeeded);
@@ -363,7 +363,7 @@ public static class PoliceScanner
 
         AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
 
-        if(Investigation.HavePlayerDescription && !DispatchToPlay.LatestInformation.SeenByOfficers)
+        if (Investigation.HavePlayerDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
         {
             AddHaveDescription(EventToPlay);
         }
@@ -561,7 +561,7 @@ public static class PoliceScanner
     }
     private static void AddZone(DispatchEvent dispatchEvent)
     {
-        Zone MyZone = Zones.GetZoneAtLocation(dispatchEvent.PositionToReport);
+        Zone MyZone = Zones.GetZoneAtLocation(PlayerState.CurrentPosition);
         if (MyZone != null)
         {
             string ScannerAudio = ZoneScanner.AudioAtZone(MyZone.InternalGameName);
