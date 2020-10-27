@@ -113,7 +113,7 @@ public static class Police
 
 
 
-        AnyCanRecognizePlayer = PedList.CopPeds.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0f));
+        AnyCanRecognizePlayer = PedList.CopPeds.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
 
         if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer)
             AnySeenPlayerCurrentWanted = true;

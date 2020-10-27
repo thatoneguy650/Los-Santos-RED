@@ -135,7 +135,7 @@ public static class Streets
             new Street("Kortz Dr", 30f),
             new Street("Banham Canyon Dr", 40f),
             new Street("Buen Vino Rd", 40f),
-            new Street("Route 68", 55f),
+            new Street("Route 68", 55f,true),
             new Street("Zancudo Grande Valley", 40f),
             new Street("Zancudo Barranca", 40f),
             new Street("Galileo Rd", 40f),

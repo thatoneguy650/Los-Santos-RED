@@ -72,7 +72,8 @@ public static class General
     }
     public static void SerializeSettings()
     {
-        //MySettings = new Settings();
+        if(MySettings == null)
+             MySettings = new Settings();
         List<Settings> ToSerialize = new List<Settings>();
         ToSerialize.Add(MySettings);
         SerializeParams(ToSerialize, ConfigFileName);

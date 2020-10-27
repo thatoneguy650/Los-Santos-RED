@@ -485,7 +485,7 @@ internal static class Menus
         }
         else if (selectedItem == menuBustedBribe)
         {
-            if (int.TryParse(GetKeyboardInput(), out int BribeAmount))
+            if (int.TryParse(GetKeyboardInput(""), out int BribeAmount))
             {
                 Respawn.BribePolice(BribeAmount);
             }
@@ -566,7 +566,7 @@ internal static class Menus
 
         FieldInfo MySetting = MyFields.Where(x => x.Name == mySettingName).FirstOrDefault();
 
-        string Value = GetKeyboardInput();
+        string Value = GetKeyboardInput(MySetting.GetValue(null).ToString());
         if (MySetting.FieldType == typeof(float))
         {
             if (float.TryParse(Value, out float myFloat))
@@ -584,6 +584,11 @@ internal static class Menus
             }
         }
         else if (MySetting.FieldType == typeof(string))
+        {
+            MySetting.SetValue(ToSet, Value);
+            selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
+        }
+        else if (MySetting.FieldType == typeof(Keys))
         {
             MySetting.SetValue(ToSet, Value);
             selectedItem.Text = string.Format("{0}: {1}", mySettingName, Value);
@@ -708,9 +713,9 @@ internal static class Menus
                 CurrentScreenEffect = ScreenEffects[index];
         }
     }
-    private static string GetKeyboardInput()
+    private static string GetKeyboardInput(string DefaultText)
     {
-        NativeFunction.CallByName<bool>("DISPLAY_ONSCREEN_KEYBOARD", true, "FMMC_KEY_TIP8", "", "", "", "", "", 255 + 1);
+        NativeFunction.CallByName<bool>("DISPLAY_ONSCREEN_KEYBOARD", true, "FMMC_KEY_TIP8", "", DefaultText, "", "", "", 255 + 1);
 
         while (NativeFunction.CallByName<int>("UPDATE_ONSCREEN_KEYBOARD") == 0)
         {

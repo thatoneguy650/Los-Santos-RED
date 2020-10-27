@@ -247,7 +247,7 @@ public static class PedSwap
         if (!TargetPedAlreadyTakenOver)
         {
             SetPlayerOffset();
-            ChangeModel(General.MySettings.MainCharacterToAliasModelName);
+            ChangeModel(General.MySettings.General.MainCharacterToAliasModelName);
             ChangeModel(ModelToChange);
         }
 
@@ -406,7 +406,7 @@ public static class PedSwap
             vehicleWasIn = Game.LocalPlayer.Character.CurrentVehicle;
         }
 
-        Model characterModel = new Model(General.MySettings.MainCharacterToAliasModelName);//should not need to load player models?
+        Model characterModel = new Model(General.MySettings.General.MainCharacterToAliasModelName);//should not need to load player models?
         Game.LocalPlayer.Model = characterModel;
         Game.LocalPlayer.Character.IsCollisionEnabled = true;
         if(WasInVehicle)

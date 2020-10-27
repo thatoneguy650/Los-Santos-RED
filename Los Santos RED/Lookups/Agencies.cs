@@ -193,7 +193,7 @@ public static partial class Agencies
             new Agency.VehicleInformation("polmav", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> SheriffHeliVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("buzzard2", 0,25) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 },
-            new Agency.VehicleInformation("polmav", 0,75) { Liveries = new List<int>() { 2 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
+            new Agency.VehicleInformation("polmav", 0,75) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> ArmyVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("crusader", 75,50) { Liveries = new List<int>() { 0 },MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
             new Agency.VehicleInformation("barracks", 25,50) { Liveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
@@ -648,20 +648,15 @@ public static partial class Agencies
     {
         //Custom Vehicles
 
-
-
         //Bravado Buffao S
         //https://www.gta5-mods.com/vehicles/lspd-14-bravado-buffalo-s-add-on
         //police2b - No Liveries
-
-        //Vapid Scout
-        //https://www.gta5-mods.com/vehicles/lspd-vapid-police-cruiser-utility-scout-add-on-custom-soundbank
-        //pscout - No Liveries
 
         //Del Pierro Pack
         //https://www.gta5-mods.com/vehicles/del-perro-police-dept-vehicle-pack-add-on
         //• Del Perro Declasse Yosemite (dppolice),
         //• Del Perro Police Cruiser(dppolice2),
+        // My Liveries 0,1 DP -- 2,3 LSPD VW -- 4,5 LSPDCH -- 6,7 LSPDELS 8,9 BCSO 10 LSSDVW 11 LSSD CH - 12 SAHP 13
         //• Del Perro Police Cruiser Utility(dppolice3),
         //• Del Perro Declasse Alamo(dppolice4).
 
@@ -671,20 +666,10 @@ public static partial class Agencies
         //• Declasse Alamo(rhpolice2),
         //• Cheval Fugitive(rhpolice3).
 
-        //BCSO Packl
-        //https://www.gta5-mods.com/vehicles/blaine-county-sheriff-pack-bozza-et-al
-        //bcsostanier - Vapid Stanier (Edge Lightbar)
-        //bcsostanier2 - Vapid Stanier(Fortitude Lightbar)
-        //bcsogranger - Declasse Granger 1500LX(Edge Lightbar)
-        //bcsogranger2 - Declasse Granger 1500LX(Fortitude Lightbar)
-        //bcsogranger3 - Declasse Granger 1500LX(Slicktop)
-        //bcsogranger4 - Declasse Granger 3500LX
-        //bcsocara - Vapid Caracara
-        //bcsofugitive - Cheval Fugitive
-        //bcsoscout - Vapid Scout
-        //bcsosandking - Vapid Sandking
-        //bcsobison - Bravado Bison
-
+        //Vapid Scout
+        //https://www.gta5-mods.com/vehicles/lspd-vapid-police-cruiser-utility-scout-add-on-custom-soundbank
+        //pscout - No Liveries
+        //0,1 LSPD -- LSPD-VW 2,3 -- LSPD-CH 4,5 -- LSPD-ELS 6,7 -- RHPH 8,9 BCSO 10,11 --SAHP 12,13
 
         //Peds
         List<Agency.ModelInformation> StandardCops = new List<Agency.ModelInformation>() {
@@ -763,8 +748,9 @@ public static partial class Agencies
             new Agency.VehicleInformation("riot", 0, 70) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 4, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 2, MaxOccupants = 3 },
             new Agency.VehicleInformation("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 4, AllowedPedModels = new List<string>() { "s_m_y_swat_01" },MinOccupants = 3,MaxOccupants = 4 }};
         List<Agency.VehicleInformation> HighwayPatrolVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("policeb", 70, 70) { MaxOccupants = 1 },
-            new Agency.VehicleInformation("police4", 30, 30) };
+            new Agency.VehicleInformation("policeb", 30, 30) { MaxOccupants = 1 },
+            new Agency.VehicleInformation("pscout", 50,50) { Liveries = new List<int>() { 12, 13 } },
+            new Agency.VehicleInformation("dppolice2", 50, 50){ Liveries = new List<int>() { 13 } } };
         List<Agency.VehicleInformation> PrisonVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("policet", 70, 70),
             new Agency.VehicleInformation("police4", 30, 30) };
@@ -773,60 +759,55 @@ public static partial class Agencies
             new Agency.VehicleInformation("police3", 25, 20) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
             new Agency.VehicleInformation("police4", 1,1),
             new Agency.VehicleInformation("police2b", 35,35),
-            new Agency.VehicleInformation("pscout", 45,45),
+            new Agency.VehicleInformation("pscout", 50,50) { Liveries = new List<int>() { 0, 1 } },
             new Agency.VehicleInformation("fbi2", 1,1),
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<Agency.VehicleInformation> LSSDVehiclesVanilla = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", 50, 50){ Liveries = new List<int> { 0, 1, 2, 3 } },
-            new Agency.VehicleInformation("sheriff2", 50, 50) { Liveries = new List<int> { 0, 1, 2, 3 } } };
+            new Agency.VehicleInformation("sheriff2", 50, 50) { Liveries = new List<int> { 0, 1, 2, 3 } },
+            new Agency.VehicleInformation("dppolice2", 100,100) { Liveries = new List<int>() { 10 } },};
         List<Agency.VehicleInformation> LSPDVehicles = LSPDVehiclesVanilla;
         List<Agency.VehicleInformation> SAHPVehicles = HighwayPatrolVehicles;
-
         List<Agency.VehicleInformation> LSSDVehicles = LSSDVehiclesVanilla;
-
-
-
-        List<Agency.VehicleInformation> BCSOVehicles = LSSDVehiclesVanilla;
-
-
-
+        List<Agency.VehicleInformation> BCSOVehicles = new List<Agency.VehicleInformation>() {
+            new Agency.VehicleInformation("dppolice2", 50,50) { Liveries = new List<int>() { 8,9 } },
+            new Agency.VehicleInformation("pscout", 100, 100){ Liveries = new List<int> { 10,11 } },
+        };
         List<Agency.VehicleInformation> VWHillsLSSDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("sheriff2", 100, 100) { Liveries = new List<int> { 0, 1, 2, 3 } } };
+            new Agency.VehicleInformation("dppolice2", 100,100) { Liveries = new List<int>() { 12 } }, };
         List<Agency.VehicleInformation> ChumashLSSDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("sheriff2", 100, 100) { Liveries = new List<int> { 0, 1, 2, 3 } } };
+            new Agency.VehicleInformation("dppolice2", 100,100) { Liveries = new List<int>() { 11 } }, };
         List<Agency.VehicleInformation> LSSDDavisVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("sheriff", 100, 100){ Liveries = new List<int> { 0, 1, 2, 3 } } };
         List<Agency.VehicleInformation> RHPDVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("rhpolice", 33, 33),
             new Agency.VehicleInformation("rhpolice2", 33, 33),
-            new Agency.VehicleInformation("rhpolice3", 33, 33),
-
-
-            
-            new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
+            new Agency.VehicleInformation("rhpolice3", 33, 33) };
         List<Agency.VehicleInformation> DPPDVehicles = new List<Agency.VehicleInformation>() {
-            
+
+           // My Liveries 0,1 DP -- 2,3 LSPD VW -- (4,5 LSPDCH) -- (6,7 LSPDELS) (8,9 BCSO) (10  LSSD)(11 LSSDVW) (12 LSSD CH)
             new Agency.VehicleInformation("dppolice", 25, 25),
-            new Agency.VehicleInformation("dppolice2", 25, 25),
+            new Agency.VehicleInformation("dppolice2", 25, 25) { Liveries = new List<int>() { 0,1 } },
             new Agency.VehicleInformation("dppolice3", 25, 25),
-            new Agency.VehicleInformation("dppolice4", 25, 25),
-            new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
+            new Agency.VehicleInformation("dppolice4", 25, 25) };
         List<Agency.VehicleInformation> ChumashLSPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("pscout", 100, 75) { Liveries = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 } },
+            new Agency.VehicleInformation("dppolice2", 50,50) { Liveries = new List<int>() { 4, 5 } },
+          
+            new Agency.VehicleInformation("pscout", 50,50) { Liveries = new List<int>() { 4, 5 } },
             new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<Agency.VehicleInformation> EastLSPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police", 100,75) { Liveries = new List<int>() { 0,1,2,3,4,5 } },
-            new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
+            new Agency.VehicleInformation("dppolice2", 50,50) { Liveries = new List<int>() { 6,7 } },
+            new Agency.VehicleInformation("pscout", 50,50) { Liveries = new List<int>() { 6, 7 } } };
         List<Agency.VehicleInformation> VWPDVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("police2b", 100,75),
-            new Agency.VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
+            new Agency.VehicleInformation("dppolice2", 100,75){ Liveries = new List<int>() { 2,3 } },
+            new Agency.VehicleInformation("pscout", 50,50) { Liveries = new List<int>() { 2, 3 } } };
         List<Agency.VehicleInformation> PoliceHeliVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("polmav", 0,100) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> SheriffHeliVehicles = new List<Agency.VehicleInformation>() {
             new Agency.VehicleInformation("buzzard2", 0,25) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 },
-            new Agency.VehicleInformation("polmav", 0,75) { Liveries = new List<int>() { 2 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
+            new Agency.VehicleInformation("polmav", 0,75) { Liveries = new List<int>() { 0 }, MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 3,MaxOccupants = 3 } };
         List<Agency.VehicleInformation> ArmyVehicles = new List<Agency.VehicleInformation>() {
-            new Agency.VehicleInformation("crusader", 75,50) { Liveries = new List<int>() { 0 },MinOccupants = 1,MaxOccupants = 2,MaxWantedLevelSpawn = 4 },
+            new Agency.VehicleInformation("crusader", 75,50) { Liveries = new List<int>() { 0 },MinOccupants = 1,MaxOccupants = 2},
             new Agency.VehicleInformation("barracks", 25,50) { Liveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 4 },
             new Agency.VehicleInformation("rhino", 0,10) { Liveries = new List<int>() { 0 },MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 5 },
             new Agency.VehicleInformation("valkyrie", 0,50) { Liveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
@@ -909,13 +890,13 @@ public static partial class Agencies
             new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons) { MaxWantedLevelSpawn = 3 },
             new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
             new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "Blue", Agency.Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "Blue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "DPPD", "Del Pierro Police Department", "Blue", Agency.Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "Blue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons) { MaxWantedLevelSpawn = 3 },
 
             new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
             new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
             new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "BCSO", "Blaine County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
 
             new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
             new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },

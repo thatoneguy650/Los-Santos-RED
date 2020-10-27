@@ -101,7 +101,49 @@ public static class Debugging
             DebugNumpad9();
         }
 
+        if (General.MySettings.Police.ShowPoliceTask)
+        {
+            foreach (Cop MyCop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+            {
+                string TaskName = Tasking.GetCopTask(MyCop.Pedestrian.Handle);
+                Color ToShow = Color.Black;
 
+                if(TaskName == "FootChaseOnFoot")
+                {
+                    ToShow = Color.Red;
+                }
+                else if (TaskName == "FootArrestOnFoot")
+                {
+                    ToShow = Color.Brown;
+                }
+                else if (TaskName == "VehicleInvestigation")
+                {
+                    ToShow = Color.Blue;
+                }
+                else if (TaskName == "Idle")
+                {
+                    ToShow = Color.White;
+                }
+                else if (TaskName == "VehicleChaseWithVehicle")
+                {
+                    ToShow = Color.Pink;
+                }
+                else if (TaskName == "VehicleChaseWithHelicopter")
+                {
+                    ToShow = Color.Purple;
+                }
+                else if (TaskName == "FootChaseWithVehicle")
+                {
+                    ToShow = Color.Yellow;
+                }
+                
+
+                if (ToShow != Color.Black)
+                    Rage.Debug.DrawArrowDebug(new Vector3(MyCop.Pedestrian.Position.X, MyCop.Pedestrian.Position.Y, MyCop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, ToShow);
+
+
+            }
+        }
 
 
 
@@ -120,7 +162,7 @@ public static class Debugging
         //    if(MyCiv.PlaceCheckingInfront != Vector3.Zero)
         //        Rage.Debug.DrawArrowDebug(new Vector3(MyCiv.PlaceCheckingInfront.X, MyCiv.PlaceCheckingInfront.Y, MyCiv.PlaceCheckingInfront.Z), Vector3.Zero, Rotator.Zero, 1f, Color.Black);
 
-            
+
         //}
 
 

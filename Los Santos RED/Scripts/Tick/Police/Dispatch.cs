@@ -60,6 +60,8 @@ public static class Dispatch
         {
             if (GameTimeCheckedSpawn == 0)
                 return true;
+            else if (Investigation.InInvestigationMode && !Tasking.HasCopsInvestigating)
+                return true;
             else if (Game.GameTime - GameTimeCheckedSpawn >= TimeBetweenSpawn)
                 return true;
             else

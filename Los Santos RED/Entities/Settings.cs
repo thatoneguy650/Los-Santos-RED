@@ -16,36 +16,6 @@ public class Settings
     public KeySettings KeyBinding = new KeySettings();
     public TrafficSettings TrafficViolations = new TrafficSettings();
     public PoliceSettings Police = new PoliceSettings();
-    public string MainCharacterToAliasModelName
-    {
-        get
-        {
-            if (General.MainCharacterToAlias == "Michael")
-                return "player_zero";
-            else if (General.MainCharacterToAlias == "Franklin")
-                return "player_one";
-            else if (General.MainCharacterToAlias == "Trevor")
-                return "player_two";
-            else
-                return "player_zero";
-        }
-    }
-    public int IntReplacePlayerWithPedCharacter
-    {
-        get
-        {
-            switch (General.MainCharacterToAlias)
-            {
-                case "Michael":
-                    return 0;
-                case "Franklin":
-                    return 1;
-                case "Trevor":
-                    return 2;
-            }
-            return 1;
-        }
-    }    
 }
 
 public class PoliceSettings
@@ -78,6 +48,8 @@ public class PoliceSettings
     public bool DispatchNotifications = true;
     public bool DisableAmbientScanner = true;
 
+    public bool ShowPoliceTask = true;
+
     public int HelicopterLimit = 2;
     public int BoatLimit = 2;
 
@@ -102,6 +74,20 @@ public class GeneralSettings
     public bool AllowDeathMenus = true;
     public bool AlwaysShowRadar = true;
     public bool AlwaysShowHUD = true;
+    public string MainCharacterToAliasModelName
+    {
+        get
+        {
+            if (MainCharacterToAlias == "Michael")
+                return "player_zero";
+            else if (MainCharacterToAlias == "Franklin")
+                return "player_one";
+            else if (MainCharacterToAlias == "Trevor")
+                return "player_two";
+            else
+                return "player_zero";
+        }
+    }
     public GeneralSettings()
     {
 
