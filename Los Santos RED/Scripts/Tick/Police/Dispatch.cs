@@ -18,19 +18,19 @@ public static class Dispatch
         {
             if(PlayerState.WantedLevel == 0)
             {
-                return 10;//5
+                return 5;//10//5
             }
             else if (PlayerState.WantedLevel == 1)
             {
-                return 10;//8
+                return 7;//10//8
             }
             else if (PlayerState.WantedLevel == 2)
             {
-                return 12;
+                return 10;//12
             }
             else if (PlayerState.WantedLevel == 3)
             {
-                return 20;
+                return 18;//20
             }
             else if (PlayerState.WantedLevel == 4)
             {

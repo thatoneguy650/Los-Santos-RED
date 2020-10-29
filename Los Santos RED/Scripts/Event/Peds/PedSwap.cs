@@ -187,7 +187,7 @@ public static class PedSwap
         CurrentPedVariation = General.GetPedVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
         CurrentPlayerIsMale = TargetPed.IsMale;
-        Clock.StoreTime();
+        Clock.PauseTime();
 
         Debugging.WriteToLog("StoreTargetPedData", string.Format("CurrentPlayerModel: {0}",CurrentPlayerModel));
 
@@ -305,7 +305,9 @@ public static class PedSwap
         GivePedHistory();
         General.SetPedUnarmed(Game.LocalPlayer.Character, false);
         NamePed();
-        Clock.ResetTime();
+        Clock.UnpauseTime();
+
+        WeaponDropping.ResetWeaponCount();
 
         PlayerHealth.Health = Game.LocalPlayer.Character.Health;
         PlayerHealth.Armor = Game.LocalPlayer.Character.Armor;

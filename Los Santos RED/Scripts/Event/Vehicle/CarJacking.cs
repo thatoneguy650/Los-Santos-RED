@@ -157,6 +157,10 @@ public static class CarJacking
             {
                 break;
             }
+            if(!NativeFunction.CallByName<bool>("IS_SYNCHRONIZED_SCENE_RUNNING", VictimScene))
+            {
+                break;
+            }
 
             if (!locOpenDoor && ScenePhase > 0.05f && TargetVehicle.Doors[0].IsValid() && !TargetVehicle.Doors[0].IsFullyOpen)
             {
@@ -191,11 +195,6 @@ public static class CarJacking
                     break;
                 }
             }
-            //if (ScenePhase >= 0.1f && !locStartedCamera)
-            //{
-            //    locStartedCamera = true;
-                
-            //}
             if (ScenePhase >= 0.5f)
             {
                 CameraControl.RestoreGameplayerCamera();
@@ -271,6 +270,7 @@ public static class CarJacking
             if (Driver.IsAlive)
             {
                 Driver.Tasks.ClearImmediately();
+                Driver.Tasks.Flee(Game.LocalPlayer.Character,500f,0);
                 Driver.IsRagdoll = false;
                 Driver.BlockPermanentEvents = false;
             }
@@ -416,7 +416,7 @@ public static class CarJacking
         Vector3 CameraPosition;
         float Distance = 6f;//General.MyRand.NextFloat(5f, 8f);
         float XVariance = 3f;// General.MyRand.NextFloat(0.5f, 3f);
-        float YVariance = 3f;// General.MyRand.NextFloat(0.5f, 3f);
+        float YVariance = 0f;// 3f;// General.MyRand.NextFloat(0.5f, 3f);
         float ZVariance = 1.8f;//General.MyRand.NextFloat(1.8f, 3f);
 
         if (TargetVehicle != null && TargetVehicle.Exists())
@@ -436,7 +436,7 @@ public static class CarJacking
         }
 
         
-       // CameraPosition += new Vector3(XVariance, YVariance, ZVariance);
+        CameraPosition += new Vector3(XVariance, YVariance, ZVariance);
         return CameraPosition;
     }
 }

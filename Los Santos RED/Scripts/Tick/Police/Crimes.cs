@@ -260,7 +260,7 @@ public static class Crimes
             TrespessingOnGovtProperty.IsCurrentlyViolating = false;
         }
 
-        if(PlayerState.CurrentVehicle != null && PlayerState.CurrentVehicle.WasReportedStolen && (PlayerState.CurrentVehicle.CarPlate != null && PlayerState.CurrentVehicle.CarPlate.IsWanted))
+        if(PlayerState.CurrentVehicle != null && PlayerState.CurrentVehicle.CopsRecognizeAsStolen)
         {
             DrivingStolenVehicle.IsCurrentlyViolating = true;
         }

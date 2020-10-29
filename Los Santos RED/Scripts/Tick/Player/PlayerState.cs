@@ -193,7 +193,7 @@ public static class PlayerState
             if (GameTimeLastMoved == 0)
                 return true;
             else
-                return Game.GameTime - GameTimeLastMoved >= 2000;
+                return Game.GameTime - GameTimeLastMoved >= 1500;
         }
     }
     public static bool StarsRecentlyGreyedOut
@@ -342,10 +342,9 @@ public static class PlayerState
                 IsOnMotorcycle = false;
 
             CurrentVehicle = UpdateCurrentVehicle();
-            if (CurrentVehicle != null && CurrentVehicle.GameTimeEntered == 0)
-                CurrentVehicle.GameTimeEntered = Game.GameTime;
 
-            if (Extensions.IsMoveControlPressed())
+
+            if (Extensions.IsMoveControlPressed() || Game.LocalPlayer.Character.Speed >= 0.1f)
                 GameTimeLastMoved = Game.GameTime;
         }
         else
@@ -476,6 +475,7 @@ public static class PlayerState
     }
     private static void DeathEvent()
     {
+        Clock.PauseTime();
         DiedInVehicle = IsInVehicle;
         IsDead = true;
         GameTimeLastDied = Game.GameTime;
@@ -603,6 +603,7 @@ public static class PlayerState
             }
             else
             {
+                ToReturn.SetAsEntered();
                 return ToReturn;
             }
         }
@@ -645,15 +646,10 @@ public static class PlayerState
         if (MyVehicle == null || MyVehicle.IsStolen)
             return;
 
-        if (PedSwap.OwnedCar == null)
+        if (PedSwap.OwnedCar == null || MyVehicle.VehicleEnt.Handle != PedSwap.OwnedCar.Handle)
         {
             MyVehicle.IsStolen = true;
         }
-        else if (MyVehicle.VehicleEnt.Handle != PedSwap.OwnedCar.Handle && !MyVehicle.IsStolen)
-        {
-            MyVehicle.IsStolen = true;
-        }
-
     }
     public static void SetPlayerToLastWeapon()
     {

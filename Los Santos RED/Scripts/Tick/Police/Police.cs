@@ -37,16 +37,16 @@ public static class Police
     {
         get
         {
-            return PlayerState.WantedLevel * 400f;//500f
+            return 400f + (PlayerState.WantedLevel * 200f);//500f
         }
     }
-    public static float ActiveOnFootDistance
-    {
-        get
-        {
-            return 150f;
-        }
-    }
+    //public static float ActiveOnFootDistance
+    //{
+    //    get
+    //    {
+    //        return 100f;
+    //    }
+    //}
     private static float TimeToRecognizePlayer
     {
         get

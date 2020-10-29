@@ -176,6 +176,12 @@ public static class PoliceSpawning
         {
             RepairOrRemoveDamagedVehicles();
             RemoveAbandonedVehicles();
+
+
+            if(PedSwap.RecentlyTakenOver || Respawn.RecentlySurrendered)
+            {
+                RemoveDisallowedPeds();
+            }
         }
     }
     public static void UpgradeCruiser(Vehicle CopCruiser)
@@ -328,6 +334,13 @@ public static class PoliceSpawning
         Blip MyBlip = MyPed.GetAttachedBlip();
         if (MyBlip.Exists())
             MyBlip.Delete();
+    }
+    public static void RemoveDisallowedPeds()
+    {
+        foreach(Cop myCop in PedList.CopPeds.Where(x => !x.AssignedAgency.CanSpawn))
+        {
+            DeleteCop(myCop);
+        }
     }
     public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading,Agency.VehicleInformation MyCarInfo,bool CanSpawnOnFoot)
     {

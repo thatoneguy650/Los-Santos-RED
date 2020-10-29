@@ -48,7 +48,7 @@ public class PoliceSettings
     public bool DispatchNotifications = true;
     public bool DisableAmbientScanner = true;
 
-    public bool ShowPoliceTask = true;
+    public bool DebugShowPoliceTask = false;
 
     public int HelicopterLimit = 2;
     public int BoatLimit = 2;

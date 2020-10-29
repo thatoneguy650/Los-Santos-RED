@@ -13,6 +13,7 @@ public static class WeaponDropping
     private static List<WeaponExt> DroppedWeapons;
     private static bool DroppingWeapon;
     private static int PrevCountWeapons;
+    private static int WeaponCount;
     public static bool IsRunning { get; set; }
    
     public static void Initialize()
@@ -30,7 +31,7 @@ public static class WeaponDropping
     {
         if (IsRunning)
         {
-            int WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
+            WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
             if (PrevCountWeapons != WeaponCount)
                 WeaponInventoryChanged(WeaponCount);
 
@@ -39,6 +40,11 @@ public static class WeaponDropping
                 DropWeapon();
             }
         }
+    }
+    public static void ResetWeaponCount()
+    {
+        WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
+        PrevCountWeapons = WeaponCount;
     }
     private static void DropWeapon()
     {

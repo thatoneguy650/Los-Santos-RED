@@ -50,6 +50,20 @@ public static class Tasking
                 return false;
         }
     }
+    public static int CopsFootChasingFootSuspect
+    {
+        get
+        {
+            return TaskableCops.Count(x => x.TaskGTACop.Pedestrian.Exists() && (x.RunningTask == FootChaseOnFoot || x.RunningTask == FootArrestOnFoot));
+        }
+    }
+    public static int CopsVehicleChasingFootSuspect
+    {
+        get
+        {
+            return TaskableCops.Count(x => x.TaskGTACop.Pedestrian.Exists() && x.RunningTask == FootChaseWithVehicle);
+        }
+    }
     private enum ChaseStatus
     {
         Idle = 0,
@@ -63,11 +77,13 @@ public static class Tasking
         else if (PlayerState.IsInVehicle)
             return false;
         else if (!Cop.RecentlySeenPlayer())
+            return false;  
+        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.Normal || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait || PlayerState.IsBusted || PlayerState.IsDead)
             return false;
         else if (PlayerLocation.PlayerIsOffroad)
             return true;
-        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.Normal || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait || PlayerState.IsBusted || PlayerState.IsDead)
-            return false;
+        else if (CopsFootChasingFootSuspect > 1)
+            return true;
         else
             return true;
         
@@ -102,7 +118,14 @@ public static class Tasking
         }
         else
         {
-            return RT.Method.Name.ToString();
+            if (MyCop.SubTaskName != "")
+            {
+                return RT.Method.Name.ToString() + " - " + MyCop.SubTaskName;
+            }
+            else
+            {
+                return RT.Method.Name.ToString();
+            }
         }
     }
     public static void TaskPeds()
@@ -441,6 +464,7 @@ public static class Tasking
         //    }
         //}
     }
+
     private static void FootChaseOnFoot(TaskableCop Cop)
     {
         if (!Cop.TaskGTACop.Pedestrian.Exists())
@@ -464,11 +488,11 @@ public static class Tasking
             if (!Cop.TaskGTACop.Pedestrian.Exists())
                 return;
 
-            string LocalTaskName = "GoTo";
             double cool = General.MyRand.NextDouble() * (1.175 - 1.1) + 1.1;//(1.17 - 1.075) + 1.075;//(1.175 - 1.1) + 1.1;
             float MoveRate = (float)cool;
             Cop.IsTasked = true;
             Cop.RunningTask = FootChaseOnFoot;
+            Cop.SubTaskName = "Goto";
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_CLIMBOVERS", Cop.TaskGTACop.Pedestrian, true);
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_LADDERS", Cop.TaskGTACop.Pedestrian, true);
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_DROP_FROM_HEIGHT", Cop.TaskGTACop.Pedestrian, true);
@@ -487,34 +511,28 @@ public static class Tasking
                 if (Cop.TaskGTACop.DistanceToPlayer > 100f || !Cop.TaskGTACop.RecentlySeenPlayer())
                     break;
 
-                //if (PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 2.5f)
-                //{
-                //    if (Cop.TaskGTACop.IsPursuitPrimary && Cop.TaskGTACop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
-                //    if (Cop.TaskGTACop.DistanceToPlayer <= 25f && LocalTaskName != "CarJack")
-                //    {
-                //            Cop.TaskGTACop.Pedestrian.CanRagdoll = false;
-                //        NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 10f);
-                //        LocalTaskName = "CarJack";
-                //    }
-                //    else if (!Cop.TaskGTACop.IsPursuitPrimary && Cop.TaskGTACop.DistanceToPlayer <= 25f && LocalTaskName != "Arrest")
-                //    {
-                //        NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character, 2f, 20f);
-                //        LocalTaskName = "Arrest";
-                //    }
-                //}
-                //else
-                //{
+                if (PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && PlayerState.IsStationary)
+                {
+                    if (Cop.TaskGTACop.DistanceToPlayer <= 25f && Cop.SubTaskName != "CarJack")
+                    {
+                        Cop.TaskGTACop.Pedestrian.CanRagdoll = false;
+                        NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 10f);
+                        Cop.SubTaskName = "CarJack";
+                    }
+                }
+                else
+                {
                     if (PlayerState.WantedLevel <= 1)
                     {
-                        if (LocalTaskName != "Approach" && WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase && Cop.TaskGTACop.DistanceToPlayer >= 7f)
+                        if (Cop.SubTaskName != "Approach" && WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase && Cop.TaskGTACop.DistanceToPlayer >= 7f)
                         {
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Game.LocalPlayer.Character, -1, 4f, 0.25f, 1073741824, 1); //Original and works ok
-                            LocalTaskName = "Approach";
+                            Cop.SubTaskName = "Approach";
                         }
                     }
                     else
                     {
-                        if (LocalTaskName != "Arrest" && (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait))// || (WantedLevel.CurrentPoliceState == WantedLevel.PoliceState.CautiousChase && Cop.DistanceToPlayer <= 15f)))
+                        if (Cop.SubTaskName != "Arrest" && (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait))// || (WantedLevel.CurrentPoliceState == WantedLevel.PoliceState.CautiousChase && Cop.DistanceToPlayer <= 15f)))
                         {
                             unsafe
                             {
@@ -528,22 +546,22 @@ public static class Tasking
                                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.TaskGTACop.Pedestrian, lol);
                                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                             }
-                            LocalTaskName = "Arrest";
+                            Cop.SubTaskName = "Arrest";
                         }
-                        else if (LocalTaskName != "GotoShooting" && (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.CautiousChase) && Cop.TaskGTACop.DistanceToPlayer <= 7f)
+                        else if (Cop.SubTaskName != "GotoShooting" && (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.CautiousChase) && Cop.TaskGTACop.DistanceToPlayer <= 7f)
                         {
                             Cop.TaskGTACop.Pedestrian.CanRagdoll = true;
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character, Game.LocalPlayer.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
-                            LocalTaskName = "GotoShooting";
+                            Cop.SubTaskName = "GotoShooting";
                         }
-                        else if (LocalTaskName != "Goto" && (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.CautiousChase) && Cop.TaskGTACop.DistanceToPlayer >= 15f) //was 15f
+                        else if (Cop.SubTaskName != "Goto" && (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.CautiousChase) && Cop.TaskGTACop.DistanceToPlayer >= 15f) //was 15f
                         {
                             Cop.TaskGTACop.Pedestrian.CanRagdoll = true;
                             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", Cop.TaskGTACop.Pedestrian, Game.LocalPlayer.Character, -1, 5.0f, 500f, 1073741824, 1); //Original and works ok
-                            LocalTaskName = "Goto";
+                            Cop.SubTaskName = "Goto";
                         }
                     }
-                //}
+                }
 
                 if (PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && (Cop.TaskGTACop.DistanceToPlayer >= 45f || Game.LocalPlayer.Character.CurrentVehicle.Speed >= 1f))
                 {
@@ -567,6 +585,7 @@ public static class Tasking
             Cop.TaskFiber = null;
             Cop.IsTasked = false;
             Cop.RunningTask = null;
+            Cop.SubTaskName = "";
             if (Cop.TaskGTACop.Pedestrian.Exists() && !Cop.TaskGTACop.Pedestrian.IsDead)
                 Cop.TaskGTACop.Pedestrian.CanRagdoll = true;
 
@@ -1030,6 +1049,7 @@ public static class Tasking
         }
 
     }
+
     private static void ReactToCrime(TaskableCivilian Snitch)
     {
 
@@ -1560,6 +1580,7 @@ public static class Tasking
         public bool IsTasked { get; set; } = false;
         public bool TaskIsQueued { get; set; } = false;
         public Action<TaskableCop> RunningTask { get; set; }
+        public string SubTaskName { get; set; } = "";
         public GameFiber TaskFiber { get; set; }
         public uint GameTimeLastTasked { get; set; }
         public TaskableCop(Cop _GTAPedToTask)

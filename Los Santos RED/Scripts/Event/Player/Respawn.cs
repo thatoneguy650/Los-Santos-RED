@@ -13,6 +13,7 @@ public static class Respawn
     private static uint GameTimeLastBribedPolice;
     private static uint GameTimeLastUndied;
     private static uint GameTimeLastRespawned;
+    private static uint GameTimeLastSurrendered;
     private static int HospitalBillPastDue;
     private static int BailFeePastDue;
     public static bool RecentlyUndied
@@ -34,6 +35,18 @@ public static class Respawn
             if (GameTimeLastRespawned == 0)
                 return false;
             else if (Game.GameTime - GameTimeLastRespawned <= 5000)
+                return true;
+            else
+                return false;
+        }
+    }
+    public static bool RecentlySurrendered
+    {
+        get
+        {
+            if (GameTimeLastSurrendered == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastSurrendered <= 5000)
                 return true;
             else
                 return false;
@@ -277,6 +290,7 @@ public static class Respawn
         {
             Game.DisplayNotification("CHAR_LESTER", "CHAR_LESTER", PoliceStation.Name, "Bail Fees", string.Format("~g~${0} ~s~", 0));
         }
+        GameTimeLastSurrendered = Game.GameTime;
     }
     public static void UnDie()
     {
@@ -362,6 +376,7 @@ public static class Respawn
             GameTimeLastRespawned = Game.GameTime; 
             Game.HandleRespawn();
             PoliceScanner.AbortAllAudio();
+            Clock.UnpauseTime();
             //DispatchAudio.AbortAllAudio();
         }
         catch (Exception e)

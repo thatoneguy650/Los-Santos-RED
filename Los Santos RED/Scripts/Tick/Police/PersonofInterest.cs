@@ -110,11 +110,7 @@ public static class PersonOfInterest
             if (VehicleToCheck == null)
                 return;
 
-            if (VehicleToCheck.WasReportedStolen && VehicleToCheck.IsStolen && VehicleToCheck.MatchesOriginalDescription)
-            {
-                ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber);
-            }
-            else if (VehicleToCheck.CarPlate.IsWanted && !VehicleToCheck.IsStolen && VehicleToCheck.ColorMatchesDescription)
+            if(VehicleToCheck.CopsRecognizeAsStolen)
             {
                 ApplyWantedStatsForPlate(VehicleToCheck.CarPlate.PlateNumber);
             }

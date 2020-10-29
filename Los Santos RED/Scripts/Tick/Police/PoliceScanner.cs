@@ -157,16 +157,16 @@ public static class PoliceScanner
         Dispatch ToAnnounce = DetermineDispatchFromCrime(crimeAssociated);
         if(ToAnnounce != null)
         {
-            if (!ToAnnounce.HasRecentlyBeenPlayed)
+            if (!ToAnnounce.HasRecentlyBeenPlayed && (ToAnnounce.CanBeReportedMultipleTimes || ToAnnounce.TimesPlayed == 0))
             {
                 if (reportInformation.SeenByOfficers)
                 {
-                    if (ToAnnounce.Priority < HighestOfficerReportedPriority)
+                    if (ToAnnounce.Priority <= HighestOfficerReportedPriority)
                         AddToQueue(ToAnnounce, reportInformation);
                 }
                 else
                 {
-                   if (ToAnnounce.Priority < HighestCivilianReportedPriority)
+                   if (ToAnnounce.Priority <= HighestCivilianReportedPriority)
                         AddToQueue(ToAnnounce, reportInformation);
                 }
             }
@@ -221,7 +221,11 @@ public static class PoliceScanner
                     {
                         AddToQueue(LostVisual, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && PlayerState.StarsRecentlyActive && WantedLevelScript.HasBeenWantedFor > 25000 && Police.AnyCanSeePlayer)
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && PlayerState.StarsRecentlyActive && WantedLevelScript.HasBeenWantedFor > 25000 && Police.AnyRecentlySeenPlayer)
+                    {
+                        AddToQueue(SuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                    }
+                    else if (!RecentlyAnnouncedDispatch && Police.AnyCanSeePlayer && WantedLevelScript.HasBeenWantedFor > 25000)
                     {
                         AddToQueue(SuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -234,7 +238,7 @@ public static class PoliceScanner
                 {
                     AddToQueue(ResumePatrol);
                 }
-                if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelScript.RecentlyLostWanted && !Respawn.RecentlyRespawned && !Respawn.RecentlyBribedPolice)
+                if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelScript.RecentlyLostWanted && !Respawn.RecentlyRespawned && !Respawn.RecentlyBribedPolice && !Respawn.RecentlySurrendered)
                 {
                     AddToQueue(SuspectLost, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                 }
@@ -297,6 +301,7 @@ public static class PoliceScanner
         {
             ToReset.HasBeenPlayedThisWanted = false;
             ToReset.LatestInformation = new DispatchCallIn();
+            ToReset.TimesPlayed = 0;
         }
     }   
     private static void BuildDispatch(Dispatch DispatchToPlay)
@@ -340,14 +345,23 @@ public static class PoliceScanner
         if (DispatchToPlay.IncludeRapSheet)
             AddRapSheet(EventToPlay);
 
-        if(DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null && DispatchToPlay.LatestInformation.VehicleSeen.NeedsToBeReportedStolen)
+        if(DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null)
         {
             DispatchToPlay.LatestInformation.VehicleSeen.WasReportedStolen = true;
-            
-            Debugging.WriteToLog("ScannerScript", "MarkedAsStolen");
+            DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.IsWanted = true;
+            if(DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.PlateNumber == DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.PlateNumber)
+            {
+                DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.IsWanted = true;
+                Debugging.WriteToLog("ScannerScript", "MarkedAsStolen Current Plate");
+            }
+            else
+            {
+                Debugging.WriteToLog("ScannerScript", "MarkedAsStolen");
+            }
+           
         }
 
-        if (DispatchToPlay.IncludeCarryingWeapon)
+        if (DispatchToPlay.IncludeCarryingWeapon && (DispatchToPlay.LatestInformation.WeaponSeen != null || DispatchToPlay.Name  == "Carrying Weapon"))
             AddWeaponDescription(EventToPlay,DispatchToPlay.LatestInformation.WeaponSeen);
 
         if (DispatchToPlay.ResultsInLethalForce)
@@ -631,7 +645,7 @@ public static class PoliceScanner
             if(IncludeLicensePlate)
             {
                 AddAudioSet(dispatchEvent, LicensePlateSet.PickRandom());
-                string LicensePlateText = VehicleToDescribe.VehicleEnt.LicensePlate;
+                string LicensePlateText = VehicleToDescribe.OriginalLicensePlate.PlateNumber;
                 dispatchEvent.SoundsToPlay.AddRange(VehicleScanner.LicensePlateAudio(LicensePlateText));
                 dispatchEvent.Subtitles += " ~s~" + LicensePlateText + "~s~";
                 dispatchEvent.NotificationText += " ~s~Plate: " + LicensePlateText + "~s~";
@@ -956,13 +970,14 @@ public static class PoliceScanner
         {
             new Dispatch.AudioSet(new List<string>() { we_have.OfficersReport_1.FileName},"officers report"),
             new Dispatch.AudioSet(new List<string>() { we_have.OfficersReport_2.FileName },"officers report"),
+            new Dispatch.AudioSet(new List<string>() { we_have.UnitsReport_1.FileName },"units report"),
         };
         CiviliansReport = new List<Dispatch.AudioSet>()
         {
-            new Dispatch.AudioSet(new List<string>() { we_have.CitizensReport_1.FileName },"attention all units"),
-            new Dispatch.AudioSet(new List<string>() { we_have.CitizensReport_2.FileName },"attention all units"),
-            new Dispatch.AudioSet(new List<string>() { we_have.CitizensReport_3.FileName },"attention all units"),
-            new Dispatch.AudioSet(new List<string>() { we_have.CitizensReport_4.FileName },"attention all units"),
+            new Dispatch.AudioSet(new List<string>() { we_have.CitizensReport_1.FileName },"citizens report"),
+            new Dispatch.AudioSet(new List<string>() { we_have.CitizensReport_2.FileName },"citizens report"),
+            new Dispatch.AudioSet(new List<string>() { we_have.CitizensReport_3.FileName },"citizens report"),
+            new Dispatch.AudioSet(new List<string>() { we_have.CitizensReport_4.FileName },"citizens report"),
         };
         LethalForce = new List<Dispatch.AudioSet>()
         {
@@ -1236,6 +1251,7 @@ public static class PoliceScanner
             Name = "Resisting Arrest",
             LocationDescription = LocationSpecificity.Zone,
             IncludeCarryingWeapon = true,
+            CanBeReportedMultipleTimes = false,
             MainAudioSet = new List<Dispatch.AudioSet>()
             {
                 new Dispatch.AudioSet(new List<string>() { crime_person_resisting_arrest.Apersonresistingarrest.FileName },"a person resisting arrest"),
@@ -1609,6 +1625,8 @@ public static class PoliceScanner
         public bool IncludeLicensePlate { get; set; } = false;
         public bool IncludeRapSheet { get; set; } = false;
         public bool ReportCharctersPosition { get; set; } = true;
+        public bool CanBeReportedMultipleTimes { get; set; } = true;
+        public int TimesPlayed { get; set; } = 0;
         public int Priority { get; set; } = 99;
         public bool ResultsInLethalForce { get; set; } = false;
         public bool ResultsInStolenCarSpotted { get; set; } = false;
@@ -1650,6 +1668,7 @@ public static class PoliceScanner
         {
             GameTimeLastPlayed = Game.GameTime;
             HasBeenPlayedThisWanted = true;
+            TimesPlayed++;
         }
     }
     private class DispatchEvent
@@ -2048,7 +2067,7 @@ public static class PoliceScanner
             new VehicleClassLookup("Helicopter",15,vehicle_category.Helicopter01.FileName),
             new VehicleClassLookup("Plane",16,vehicle_category.Sedan.FileName),
             new VehicleClassLookup("Service",17,vehicle_category.Service01.FileName),
-            new VehicleClassLookup("Emergency",18,vehicle_category.Service01.FileName),
+            new VehicleClassLookup("Emergency",18,vehicle_category.PoliceCar.FileName),
             new VehicleClassLookup("Military",19,vehicle_category.TroopTransport.FileName),
             new VehicleClassLookup("Commercial",20,vehicle_category.UtilityVehicle01.FileName),
             new VehicleClassLookup("Train",21,vehicle_category.Train01.FileName),

@@ -11,24 +11,21 @@ using System.Threading.Tasks;
 
 public class VehicleExt
 {
+    private uint GameTimeEntered = 0;
 
-    public Vehicle VehicleEnt = null;
-    public uint GameTimeEntered = 0;
-    public bool WasReportedStolen = false;
-    public bool WasAlarmed = false;
-    public bool WasJacked = false;
-    public uint ReportInterval = 30000;
-    public Ped PreviousOwner = null;
-    public bool IsStolen = false;
-    public bool WasSpottedAbandoned = false;
-    public bool CopsCanSee = false;
-    public Color DescriptionColor;
-    public LicensePlate CarPlate;
-    public LicensePlate OriginalLicensePlate;
-    public bool ManuallyRolledDriverWindowDown = false;
-    public Vector3 PositionOriginallyEntered = Vector3.Zero;
-    public bool HasBeenDescribedByDispatch = false;
-    public Agency.VehicleInformation ExtendedAgencyVehicleInformation;
+    public Vehicle VehicleEnt { get; set; } = null;
+    public Ped PreviousOwner { get; set; } = null;
+    public Color DescriptionColor { get; set; }
+    public LicensePlate CarPlate { get; set; }
+    public LicensePlate OriginalLicensePlate { get; set; }
+    public bool ManuallyRolledDriverWindowDown { get; set; }
+    public Vector3 PositionOriginallyEntered { get; set; } = Vector3.Zero;
+    public bool HasBeenDescribedByDispatch { get; set; }
+    public Agency.VehicleInformation ExtendedAgencyVehicleInformation { get; set; }//should change to cross ref model names insead of this horseshit
+    public bool WasAlarmed { get; set; }
+    public bool WasJacked { get; set; }
+    public bool IsStolen { get; set; }
+    public bool WasReportedStolen { get; set; }
 
     public bool NeedsToBeReportedStolen
     {
@@ -52,16 +49,6 @@ public class VehicleExt
                 return 0;
         }
     }
-    public bool MatchesOriginalDescription
-    {
-        get
-        {
-            if (VehicleEnt.PrimaryColor == DescriptionColor && CarPlate.IsWanted)
-                return true;
-            else
-                return false;
-        }
-    }
     public bool ColorMatchesDescription
     {
         get
@@ -72,7 +59,37 @@ public class VehicleExt
                 return false;
         }
     }
-
+    public bool HasOriginalPlate
+    {
+        get
+        {
+            if(CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool CopsRecognizeAsStolen
+    {
+        get
+        {
+            if(!IsStolen)
+                return false;
+            else
+            {
+                if (CarPlate.IsWanted)
+                    return true;
+                else if (WasReportedStolen && ColorMatchesDescription)
+                    return true;
+                else
+                    return false;
+            }
+        }
+    }
     public VehicleExt(Vehicle _Vehicle,uint _GameTimeEntered,bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsStolen, LicensePlate _CarPlate)
     {
         VehicleEnt = _Vehicle;
@@ -95,7 +112,11 @@ public class VehicleExt
 
         //Debugging.WriteToLog("GTAVehicle", string.Format("Vehicle Created: Handle {0},GTEntered,{1},GTReportStolen {2},WasJacked {3},WasAlarmed {4},IsStolen {5},WatchLastOwner {6}", VehicleEnt.Handle, GameTimeEntered, GameTimeToReportStolen, WasJacked,WasAlarmed, IsStolen, PreviousOwner != null));
     }
-  
+    public void SetAsEntered()
+    {
+        if (GameTimeEntered == 0)
+            GameTimeEntered = Game.GameTime;
+    }
 
 }
 

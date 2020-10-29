@@ -101,40 +101,59 @@ public static class Debugging
             DebugNumpad9();
         }
 
-        if (General.MySettings.Police.ShowPoliceTask)
+        if (General.MySettings.Police.DebugShowPoliceTask)
         {
             foreach (Cop MyCop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
             {
                 string TaskName = Tasking.GetCopTask(MyCop.Pedestrian.Handle);
                 Color ToShow = Color.Black;
 
-                if(TaskName == "FootChaseOnFoot")
+                if(TaskName == "FootChaseOnFoot - Goto")
                 {
                     ToShow = Color.Red;
                 }
+                else if (TaskName == "FootChaseOnFoot - CarJack")
+                {
+                    ToShow = Color.Black;
+                }
+                else if (TaskName == "FootChaseOnFoot - Approach")
+                {
+                    ToShow = Color.White;
+                }
+                else if (TaskName == "FootChaseOnFoot - Arrest")
+                {
+                    ToShow = Color.Orange;
+                }
+                else if (TaskName == "FootChaseOnFoot - GotoShooting")
+                {
+                    ToShow = Color.Yellow;
+                }
+
+
                 else if (TaskName == "FootArrestOnFoot")
                 {
                     ToShow = Color.Brown;
                 }
+
                 else if (TaskName == "VehicleInvestigation")
                 {
                     ToShow = Color.Blue;
                 }
                 else if (TaskName == "Idle")
                 {
-                    ToShow = Color.White;
+                    ToShow = Color.Green;
                 }
                 else if (TaskName == "VehicleChaseWithVehicle")
                 {
-                    ToShow = Color.Pink;
+                    ToShow = Color.Yellow;
                 }
                 else if (TaskName == "VehicleChaseWithHelicopter")
                 {
-                    ToShow = Color.Purple;
+                    ToShow = Color.Orange;
                 }
                 else if (TaskName == "FootChaseWithVehicle")
                 {
-                    ToShow = Color.Yellow;
+                    ToShow = Color.Red;
                 }
                 
 
@@ -374,6 +393,14 @@ public static class Debugging
         
     private static void DebugNumpad7()
     {
+        WriteToLog("Debugging", Clock.CurrentTime);
+
+
+        if (PlayerState.CurrentVehicle != null)
+        {
+            WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", PlayerState.CurrentVehicle.IsStolen, PlayerState.CurrentVehicle.WasReportedStolen, PlayerState.CurrentVehicle.NeedsToBeReportedStolen));
+            WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", PlayerState.CurrentVehicle.CarPlate.IsWanted, PlayerState.CurrentVehicle.OriginalLicensePlate.IsWanted, PlayerState.CurrentVehicle.ColorMatchesDescription,PlayerState.CurrentVehicle.CopsRecognizeAsStolen));
+        }
 
         //Tasking.OutputTasks();
 
@@ -413,7 +440,7 @@ public static class Debugging
         //WriteToLog("Debugging", string.Format("PRED: WithGetHash {0}, Without {1}, POLMAV With {2} without {3} ", PredBoatHash, PredBoat, POLMAVHash, POLMAV));
 
 
-        PoliceSpawning.SpawnTempHeliCopter();
+        //PoliceSpawning.SpawnTempHeliCopter();
 
 
 
@@ -432,14 +459,14 @@ public static class Debugging
             {
                 if (Cop.Pedestrian.IsInAnyVehicle(false))
                 {
-                    WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TimeBehindPlayer {4,-20}, NA {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},Vehicle {11,-20},ChaseStatus {12,-20},HurtByPlayer {13,-20}",
-                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition),Cop.Pedestrian.CurrentVehicle.Model.Name,"NA",Cop.HurtByPlayer));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
+                    WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TimeBehindPlayer {4,-20}, NA {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},Vehicle {11,-20},CopTask {12,-20},HurtByPlayer {13,-20}",
+                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition),Cop.Pedestrian.CurrentVehicle.Model.Name, Tasking.GetCopTask(Cop.Pedestrian.Handle), Cop.HurtByPlayer));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
 
                 }
                 else
                 {
-                    WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TimeBehindPlayer {4,-20}, NA {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},ChaseStatus {11,-20}",
-                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition),"NA"));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
+                    WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TimeBehindPlayer {4,-20}, NA {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},CopTask {11,-20}",
+                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition), Tasking.GetCopTask(Cop.Pedestrian.Handle)));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
                 }
             }
             WriteToLog("Debugging", string.Format("CurrentPoliceTickRunning: {0}", Tasking.CurrentPoliceTickRunning));
@@ -449,69 +476,69 @@ public static class Debugging
             WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Police.ActiveDistance));
             WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", PedList.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition) <= Investigation.InvestigationDistance)));
 
-            WriteToLog("Debugging", "--------------------------------");
-            WriteToLog("Debugging", "");
-            WriteToLog("Debugging", "--------Player Status-----------");
-            WriteToLog("Debugging", string.Format("PlayerIsPersonOfInterest: {0}", PersonOfInterest.PlayerIsPersonOfInterest));
-            WriteToLog("Debugging", string.Format("JustTakenOver: {0}", PedSwap.JustTakenOver(5000)));
-            WriteToLog("Debugging", string.Format("Current Zone: {0}", Zones.GetZoneStringAtLocation(Game.LocalPlayer.Character.Position)));
-            if (PlayerLocation.PlayerCurrentStreet != null)
-                WriteToLog("Debugging", string.Format("Street: {0}", PlayerLocation.PlayerCurrentStreet.Name));
-            if (PlayerLocation.PlayerCurrentCrossStreet != null)
-                WriteToLog("Debugging", string.Format("Cross Street: {0}", PlayerLocation.PlayerCurrentCrossStreet.Name));
-            WriteToLog("Debugging", string.Format("PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
-            WriteToLog("Debugging", string.Format("PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
-            WriteToLog("Debugging", string.Format("PlayerWantedCenter: {0}", NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer)));
-            //foreach (GTAPed DeadPerson in PedWoundSystem.PlayerKilledCivilians)
+            //WriteToLog("Debugging", "--------------------------------");
+            //WriteToLog("Debugging", "");
+            //WriteToLog("Debugging", "--------Player Status-----------");
+            //WriteToLog("Debugging", string.Format("PlayerIsPersonOfInterest: {0}", PersonOfInterest.PlayerIsPersonOfInterest));
+            //WriteToLog("Debugging", string.Format("JustTakenOver: {0}", PedSwap.JustTakenOver(5000)));
+            //WriteToLog("Debugging", string.Format("Current Zone: {0}", Zones.GetZoneStringAtLocation(Game.LocalPlayer.Character.Position)));
+            //if (PlayerLocation.PlayerCurrentStreet != null)
+            //    WriteToLog("Debugging", string.Format("Street: {0}", PlayerLocation.PlayerCurrentStreet.Name));
+            //if (PlayerLocation.PlayerCurrentCrossStreet != null)
+            //    WriteToLog("Debugging", string.Format("Cross Street: {0}", PlayerLocation.PlayerCurrentCrossStreet.Name));
+            //WriteToLog("Debugging", string.Format("PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
+            //WriteToLog("Debugging", string.Format("PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
+            //WriteToLog("Debugging", string.Format("PlayerWantedCenter: {0}", NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer)));
+            ////foreach (GTAPed DeadPerson in PedWoundSystem.PlayerKilledCivilians)
+            ////{
+            ////    WriteToLog("DebugNumpad7", string.Format("Player Killed: Handle: {0}, Distance: {1}", DeadPerson.Pedestrian.Handle, Game.LocalPlayer.Character.DistanceTo2D(DeadPerson.Pedestrian)));
+            ////}
+
+            //WriteToLog("Debugging", string.Format("Near Any CivMurderVictim: {0}", PedWounds.NearCivilianMurderVictim));
+            //WriteToLog("Debugging", string.Format("Near Any CopMurderVictim: {0}", PedWounds.NearCopMurderVictim));
+            //WriteToLog("Debugging", "--------------------------------");
+            //WriteToLog("Debugging", "-------Criminal History---------");
+            //foreach (CriminalHistory MyRapSheet in PersonOfInterest.CriminalHistory)
             //{
-            //    WriteToLog("DebugNumpad7", string.Format("Player Killed: Handle: {0}, Distance: {1}", DeadPerson.Pedestrian.Handle, Game.LocalPlayer.Character.DistanceTo2D(DeadPerson.Pedestrian)));
+            //    WriteToLog("Debugging", string.Format("MaxWanted: {0}",MyRapSheet.MaxWantedLevel));
+            //    WriteToLog("Debugging", MyRapSheet.DebugPrintCrimes());
+            //}
+            //WriteToLog("Debugging", "--------------------------------");
+            //WriteToLog("Debugging", "-------Current Crimes-----------");
+            //WriteToLog("Debugging", WantedLevelScript.CurrentCrimes.DebugPrintCrimes());
+            //WriteToLog("Debugging", "--------------------------------");
+            //WriteToLog("Debugging", "-------Game Fibers-----------");
+            //WriteToLog("Debugging", string.Join(";", GameFibers.Where(x => x.IsAlive).GroupBy(g => g.Name).Select(group => group.Key + ":" + group.Count())));
+            //WriteToLog("Debugging", "--------------------------------");
+            //WriteToLog("Debugging", "-------Player State-------------");
+            //WriteToLog("Debugging", string.Format("CAN_PLAYER_START_MISSION: {0}", NativeFunction.CallByName<bool>("CAN_PLAYER_START_MISSION", Game.LocalPlayer)));
+            //WriteToLog("Debugging", string.Format("IS_PLAYER_CONTROL_ON: {0}", NativeFunction.CallByName<bool>("IS_PLAYER_CONTROL_ON", Game.LocalPlayer)));
+            //WriteToLog("Debugging", string.Format("_IS_PLAYER_CAM_CONTROL_DISABLED: {0}", NativeFunction.CallByHash<bool>(0x7C814D2FB49F40C0, Game.LocalPlayer)));
+            //WriteToLog("Debugging", string.Format("IS_PLAYER_SCRIPT_CONTROL_ON: {0}", NativeFunction.CallByName<bool>("IS_PLAYER_SCRIPT_CONTROL_ON", Game.LocalPlayer)));
+            //WriteToLog("Debugging", string.Format("IsConsideredArmed: {0}", Game.LocalPlayer.Character.IsConsideredArmed()));
+
+            //WriteToLog("Debugging", "--------Vehicles-----------");
+            //foreach (Vehicle MyCar in PedList.PoliceVehicles.Where(x => x.Exists()))
+            //{
+            //    WriteToLog("Debugging", string.Format("Vehicle: {0,-20} {1,-20}", MyCar.Model.Name, MyCar.Health));
             //}
 
-            WriteToLog("Debugging", string.Format("Near Any CivMurderVictim: {0}", PedWounds.NearCivilianMurderVictim));
-            WriteToLog("Debugging", string.Format("Near Any CopMurderVictim: {0}", PedWounds.NearCopMurderVictim));
-            WriteToLog("Debugging", "--------------------------------");
-            WriteToLog("Debugging", "-------Criminal History---------");
-            foreach (CriminalHistory MyRapSheet in PersonOfInterest.CriminalHistory)
-            {
-                WriteToLog("Debugging", string.Format("MaxWanted: {0}",MyRapSheet.MaxWantedLevel));
-                WriteToLog("Debugging", MyRapSheet.DebugPrintCrimes());
-            }
-            WriteToLog("Debugging", "--------------------------------");
-            WriteToLog("Debugging", "-------Current Crimes-----------");
-            WriteToLog("Debugging", WantedLevelScript.CurrentCrimes.DebugPrintCrimes());
-            WriteToLog("Debugging", "--------------------------------");
-            WriteToLog("Debugging", "-------Game Fibers-----------");
-            WriteToLog("Debugging", string.Join(";", GameFibers.Where(x => x.IsAlive).GroupBy(g => g.Name).Select(group => group.Key + ":" + group.Count())));
-            WriteToLog("Debugging", "--------------------------------");
-            WriteToLog("Debugging", "-------Player State-------------");
-            WriteToLog("Debugging", string.Format("CAN_PLAYER_START_MISSION: {0}", NativeFunction.CallByName<bool>("CAN_PLAYER_START_MISSION", Game.LocalPlayer)));
-            WriteToLog("Debugging", string.Format("IS_PLAYER_CONTROL_ON: {0}", NativeFunction.CallByName<bool>("IS_PLAYER_CONTROL_ON", Game.LocalPlayer)));
-            WriteToLog("Debugging", string.Format("_IS_PLAYER_CAM_CONTROL_DISABLED: {0}", NativeFunction.CallByHash<bool>(0x7C814D2FB49F40C0, Game.LocalPlayer)));
-            WriteToLog("Debugging", string.Format("IS_PLAYER_SCRIPT_CONTROL_ON: {0}", NativeFunction.CallByName<bool>("IS_PLAYER_SCRIPT_CONTROL_ON", Game.LocalPlayer)));
-            WriteToLog("Debugging", string.Format("IsConsideredArmed: {0}", Game.LocalPlayer.Character.IsConsideredArmed()));
+            //WriteToLog("Debugging", "--------Unassigned Cops-----------");
+            //foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency == null))
+            //{
+            //    WriteToLog("Debugging", string.Format("Cop {0} {1}", Cop.Pedestrian.Handle,Cop.Pedestrian.Model.Name));
+            //}
 
-            WriteToLog("Debugging", "--------Vehicles-----------");
-            foreach (Vehicle MyCar in PedList.PoliceVehicles.Where(x => x.Exists()))
-            {
-                WriteToLog("Debugging", string.Format("Vehicle: {0,-20} {1,-20}", MyCar.Model.Name, MyCar.Health));
-            }
-
-            WriteToLog("Debugging", "--------Unassigned Cops-----------");
-            foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency == null))
-            {
-                WriteToLog("Debugging", string.Format("Cop {0} {1}", Cop.Pedestrian.Handle,Cop.Pedestrian.Model.Name));
-            }
-
-            WriteToLog("Debugging", string.Format("Scale {0} {1} {2} {3}", General.MySettings.UI.PlayerStatusScale, General.MySettings.UI.VehicleStatusScale, General.MySettings.UI.StreetScale, General.MySettings.UI.ZoneScale));
-            WriteToLog("Debugging", string.Format("PlayerStatusPosition {0} {1}", General.MySettings.UI.PlayerStatusPositionX, General.MySettings.UI.PlayerStatusPositionY));
-            WriteToLog("Debugging", string.Format("VehicleStatusPosition {0} {1}", General.MySettings.UI.VehicleStatusPositionX, General.MySettings.UI.VehicleStatusPositionY));
+            //WriteToLog("Debugging", string.Format("Scale {0} {1} {2} {3}", General.MySettings.UI.PlayerStatusScale, General.MySettings.UI.VehicleStatusScale, General.MySettings.UI.StreetScale, General.MySettings.UI.ZoneScale));
+            //WriteToLog("Debugging", string.Format("PlayerStatusPosition {0} {1}", General.MySettings.UI.PlayerStatusPositionX, General.MySettings.UI.PlayerStatusPositionY));
+            //WriteToLog("Debugging", string.Format("VehicleStatusPosition {0} {1}", General.MySettings.UI.VehicleStatusPositionX, General.MySettings.UI.VehicleStatusPositionY));
             
-            WriteToLog("Debugging", string.Format("StreetPosition {0} {1}", General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY));
-            WriteToLog("Debugging", string.Format("ZonePosition {0} {1}", General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY));
-            if(PlayerState.CurrentVehicle != null)
-                WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", PlayerState.CurrentVehicle.IsStolen, PlayerState.CurrentVehicle.WasReportedStolen, PlayerState.CurrentVehicle.NeedsToBeReportedStolen));
+            //WriteToLog("Debugging", string.Format("StreetPosition {0} {1}", General.MySettings.UI.StreetPositionX, General.MySettings.UI.StreetPositionY));
+            //WriteToLog("Debugging", string.Format("ZonePosition {0} {1}", General.MySettings.UI.ZonePositionX, General.MySettings.UI.ZonePositionY));
+            //if(PlayerState.CurrentVehicle != null)
+            //    WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", PlayerState.CurrentVehicle.IsStolen, PlayerState.CurrentVehicle.WasReportedStolen, PlayerState.CurrentVehicle.NeedsToBeReportedStolen));
 
-            WriteToLog("Debugging", string.Format("PoliceRecentlyNoticedVehicleChange {0}", PlayerState.PoliceRecentlyNoticedVehicleChange));
+            //WriteToLog("Debugging", string.Format("PoliceRecentlyNoticedVehicleChange {0}", PlayerState.PoliceRecentlyNoticedVehicleChange));
             
         }
         catch(Exception e)
@@ -533,19 +560,19 @@ public static class Debugging
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
         }
-        if (ProcedureString == "Dispatch" || ProcedureString == "PoliceSpawning" || ProcedureString == "ScannerScript" || ProcedureString == "Tasking" || ProcedureString == "PlayerState" || ProcedureString == "Debugging" || ProcedureString == "CarJacking" || ProcedureString == "Error")
-        {
+        //if (ProcedureString == "Dispatch" || ProcedureString == "PoliceSpawning" || ProcedureString == "ScannerScript" || ProcedureString == "Tasking" || ProcedureString == "PlayerState" || ProcedureString == "Debugging" || ProcedureString == "CarJacking" || ProcedureString == "Error" || ProcedureString == "Clock")
+        //{
             string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
             if (General.MySettings != null && General.MySettings.General.Logging)
             {
                 LogMessages.Add(Message);
                 Game.Console.Print(Message);
             }
-        }
-        else
-        {
-            return;
-        }
+        //}
+        //else
+        //{
+        //    return;
+        //}
     }
 
     public class SlidingBuffer<T> : IEnumerable<T>
