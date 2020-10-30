@@ -269,7 +269,7 @@ public static class PlayerState
     {
         if (GameTimeLastShot == 0)
             return false;
-        else if (PedSwap.JustTakenOver(Duration))
+        else if (PedSwap.RecentlyTakenOver)
             return false;
         else if (Game.GameTime - GameTimeLastShot <= Duration)//15000
             return true;

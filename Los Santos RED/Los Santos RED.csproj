@@ -102,7 +102,7 @@
     <Compile Include="Entities\PedExt.cs" />
     <Compile Include="Lookups\Agencies.cs" />
     <Compile Include="old\VehicleScanner.cs" />
-    <Compile Include="Scripts\Event\Vehicle\StolenVehicles.cs" />
+    <Compile Include="Scripts\Event\Player\Scenarios.cs" />
     <Compile Include="Scripts\Tick\Police\Crimes.cs" />
     <Compile Include="Lookups\Jurisdiction.cs" />
     <Compile Include="Lookups\Weapons.cs" />

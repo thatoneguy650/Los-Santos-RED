@@ -178,7 +178,7 @@ public static class PoliceSpawning
             RemoveAbandonedVehicles();
 
 
-            if(PedSwap.RecentlyTakenOver || Respawn.RecentlySurrendered)
+            if(PedSwap.RecentlyTakenOver || Respawn.RecentlySurrenderedToPolice)
             {
                 RemoveDisallowedPeds();
             }

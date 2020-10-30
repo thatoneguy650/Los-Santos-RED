@@ -14,8 +14,21 @@ public static class WeaponDropping
     private static bool DroppingWeapon;
     private static int PrevCountWeapons;
     private static int WeaponCount;
+    private static int CurrentWeaponAmmo;
     public static bool IsRunning { get; set; }
-   
+    public static int AmmoToDrop
+    {
+        get
+        {
+            CurrentWeaponAmmo = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Ammo;
+            if (CurrentWeaponAmmo > 60)
+                return 60;
+            else if (CurrentWeaponAmmo == 0)
+                return 0;
+            else
+                return CurrentWeaponAmmo;
+        }
+    }
     public static void Initialize()
     {
         DroppedWeapons = new List<WeaponExt>();
@@ -52,29 +65,15 @@ public static class WeaponDropping
         GameFiber DropWeapon = GameFiber.StartNew(delegate
         {
             DropWeaponAnimation();
-            if (Game.LocalPlayer.Character.IsRunning)
-                GameFiber.Sleep(500);
-            else
-                GameFiber.Sleep(250);
-
-            int CurrentWeaponAmmo = Game.LocalPlayer.Character.Inventory.EquippedWeapon.Ammo;
-            int AmmoToDrop = 0;
-            if (CurrentWeaponAmmo > 60)
-                AmmoToDrop = 60;
-            else if (CurrentWeaponAmmo == 0)
-                AmmoToDrop = 0;
-            else
-                AmmoToDrop = CurrentWeaponAmmo;
-
             NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
 
             GTAWeapon.WeaponVariation DroppedGunVariation = General.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
             DroppedWeapons.Add(new WeaponExt(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
 
             NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
+
             if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
-            Debugging.WriteToLog("DroppingWeapon", string.Format("Dropped your gun, Ammo {0}", AmmoToDrop));
 
             GameFiber.Sleep(1000);
             DroppingWeapon = false;
@@ -90,21 +89,12 @@ public static class WeaponDropping
             {
                 if (PlayerWeapons.Contains(MyOldGuns.Weapon.Hash) && Game.LocalPlayer.Character.Position.DistanceTo2D(MyOldGuns.CoordinatedDropped) <= 2f)
                 {
-                    Debugging.WriteToLog("WeaponInventoryChanged", string.Format("Just picked up an old weapon {0},OldAmmo: {1}", MyOldGuns.Weapon.Hash, MyOldGuns.Ammo));
                     General.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.Weapon.Hash, MyOldGuns.Variation);
-
-
-                    //NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Game.LocalPlayer.Character.Inventory.EquippedWeapon.Ammo + MyOldGuns.Ammo);
                     NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyOldGuns.Weapon.Hash, MyOldGuns.Ammo + 1);
                 }
             }
             DroppedWeapons.RemoveAll(x => PlayerWeapons.Contains(x.Weapon.Hash) && Game.LocalPlayer.Character.Position.DistanceTo2D(x.CoordinatedDropped) <= 2f);
         }
-        else //Lost Weapon
-        {
-
-        }
-        Debugging.WriteToLog("WeaponInventoryChanged", string.Format("Previous Weapon Count {0}, Current {1}, Total Dropped Weapons {2}", PrevCountWeapons, weaponCount, DroppedWeapons.Count()));
         PrevCountWeapons = weaponCount;
     }
     private static void DropWeaponAnimation()
@@ -115,6 +105,11 @@ public static class WeaponDropping
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "pickup_object", "pickup_low", 8.0f, -8.0f, -1, 56, 0, false, false, false);
         }, "DropWeaponAnimation");
         Debugging.GameFibers.Add(DropWeaponAnimation);
+
+        if (Game.LocalPlayer.Character.IsRunning)
+            GameFiber.Sleep(500);
+        else
+            GameFiber.Sleep(250);
     }
 }
 

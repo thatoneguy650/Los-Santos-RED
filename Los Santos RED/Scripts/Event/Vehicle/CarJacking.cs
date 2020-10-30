@@ -416,8 +416,8 @@ public static class CarJacking
         Vector3 CameraPosition;
         float Distance = 6f;//General.MyRand.NextFloat(5f, 8f);
         float XVariance = 3f;// General.MyRand.NextFloat(0.5f, 3f);
-        float YVariance = 0f;// 3f;// General.MyRand.NextFloat(0.5f, 3f);
-        float ZVariance = 1.8f;//General.MyRand.NextFloat(1.8f, 3f);
+        float YVariance = 3f;// 3f;// General.MyRand.NextFloat(0.5f, 3f);
+        float ZVariance = 2f;// 1.8f;//General.MyRand.NextFloat(1.8f, 3f);
 
         if (TargetVehicle != null && TargetVehicle.Exists())
         {

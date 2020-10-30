@@ -467,9 +467,9 @@ internal static class Menus
                 return;
             }
             if (SelectedTakeoverRadius == -1f)
-                PedSwap.TakeoverPed(PedSwap.GetPedestrian(500f, true), false, false,true,false);
+                PedSwap.TakeoverPed(500f, true, false, false,true);
             else
-                PedSwap.TakeoverPed(PedSwap.GetPedestrian(SelectedTakeoverRadius, false), false, false,true,false);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, false,true);
         }
         else if(selectedItem == menuMainShowPlayerStatus)
         {
@@ -501,9 +501,9 @@ internal static class Menus
         else if (selectedItem == menuBustedTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                PedSwap.TakeoverPed(PedSwap.GetPedestrian(500f, true), true, false,true,true);
+                PedSwap.TakeoverPed(500f, true, true, false,true);
             else
-                PedSwap.TakeoverPed(PedSwap.GetPedestrian(SelectedTakeoverRadius, false), true, false,true,true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, false,true);
         }
         bustedMenu.Visible = false;
     }
@@ -520,9 +520,9 @@ internal static class Menus
         else if (selectedItem == menuDeathTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                PedSwap.TakeoverPed(PedSwap.GetPedestrian(500f, true), true, false,true,true);
+                PedSwap.TakeoverPed(500f, true, true, false,true);
             else
-                PedSwap.TakeoverPed(PedSwap.GetPedestrian(SelectedTakeoverRadius, false), true, false,true,true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, false,true);
         }
         deathMenu.Visible = false;
     }
@@ -618,7 +618,7 @@ internal static class Menus
     {
         if (selectedItem == scenariosMainPrisonEscape)
         {
-            PedSwap.BecomeScenarioPed();
+            //PedSwap.BecomeScenarioPed();
         }
     }
     private static void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)

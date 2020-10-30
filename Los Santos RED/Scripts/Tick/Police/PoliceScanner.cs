@@ -238,7 +238,7 @@ public static class PoliceScanner
                 {
                     AddToQueue(ResumePatrol);
                 }
-                if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelScript.RecentlyLostWanted && !Respawn.RecentlyRespawned && !Respawn.RecentlyBribedPolice && !Respawn.RecentlySurrendered)
+                if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelScript.RecentlyLostWanted && !Respawn.RecentlyRespawned && !Respawn.RecentlyBribedPolice && !Respawn.RecentlySurrenderedToPolice)
                 {
                     AddToQueue(SuspectLost, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                 }
@@ -252,7 +252,7 @@ public static class PoliceScanner
                 }
             }
 
-            if (!SuspectWasted.HasRecentlyBeenPlayed && PlayerState.RecentlyDied && Police.AnyRecentlySeenPlayer && Police.PreviousWantedLevel > 0)
+            if (!SuspectWasted.HasRecentlyBeenPlayed && PlayerState.RecentlyDied && Police.AnyRecentlySeenPlayer && PlayerState.MaxWantedLastLife > 0)
             {
                 AddToQueue(SuspectWasted);
             }
@@ -288,6 +288,7 @@ public static class PoliceScanner
         if(ToLookup != null && ToLookup.DispatchToPlay != null)
         {
             ToLookup.DispatchToPlay.Priority = crimeAssociated.Priority;
+            ToLookup.DispatchToPlay.PriorityGroup = crimeAssociated.PriorityGroup;
             return ToLookup.DispatchToPlay;
         }
         return null;
@@ -907,7 +908,8 @@ public static class PoliceScanner
             new CrimeDispatch(Crimes.DrivingStolenVehicle,DrivingAtStolenVehicle),
             new CrimeDispatch(Crimes.TerroristActivity,TerroristActivity),
             new CrimeDispatch(Crimes.BrandishingCloseCombatWeapon,CarryingWeapon),
-            
+            new CrimeDispatch(Crimes.SuspiciousActivity,SuspiciousActivity),
+
         };
         DispatchList = new List<Dispatch>
         {
@@ -1628,6 +1630,7 @@ public static class PoliceScanner
         public bool CanBeReportedMultipleTimes { get; set; } = true;
         public int TimesPlayed { get; set; } = 0;
         public int Priority { get; set; } = 99;
+        public int PriorityGroup { get; set; } = 99;
         public bool ResultsInLethalForce { get; set; } = false;
         public bool ResultsInStolenCarSpotted { get; set; } = false;
         public bool IsTrafficViolation { get; set; } = false;
@@ -1642,7 +1645,11 @@ public static class PoliceScanner
         {
             get
             {
-                if (Game.GameTime - GameTimeLastPlayed <= 25000)
+                uint TimeBetween = 25000;
+                if (TimesPlayed > 0)
+                    TimeBetween = 60000;
+
+                if (Game.GameTime - GameTimeLastPlayed <= TimeBetween)
                     return true;
                 else
                     return false;

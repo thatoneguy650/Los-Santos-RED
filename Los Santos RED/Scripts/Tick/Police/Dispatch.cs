@@ -16,7 +16,9 @@ public static class Dispatch
     {
         get
         {
-            if(PlayerState.WantedLevel == 0)
+            if (Investigation.InInvestigationMode)
+                return 10;
+            else if(PlayerState.WantedLevel == 0)
             {
                 return 5;//10//5
             }
@@ -196,21 +198,13 @@ public static class Dispatch
         if (IsRunning && CanSpawn)
         {
             CurrentSpawn.UpdateSpawnPosition();
-            Debugging.WriteToLog("Dispatch", string.Format("Spawn Checking: Position {0},{1}", CurrentSpawn.Position, CurrentSpawn.StreetPosition));
-
 
             Zone CurrentSpawnZone = Zones.GetZoneAtLocation(CurrentSpawn.Position);
-            if(CurrentSpawnZone != null)
-                Debugging.WriteToLog("Dispatch", string.Format("Spawn Checking: Zone {0}", CurrentSpawnZone.DisplayName));
-
             Zone CurrentSpawnZoneStreet = Zones.GetZoneAtLocation(CurrentSpawn.StreetPosition);
-            if (CurrentSpawnZoneStreet != null)
-                Debugging.WriteToLog("Dispatch", string.Format("Spawn Checking: Zone (Street) {0}", CurrentSpawnZoneStreet.DisplayName));
 
             if (NeedToSpawn && CurrentSpawn.HasSpawns)
             {
                 //First Try Street
-
                 List<Agency> PossibleAgencies = Agencies.AgenciesAtPosition(CurrentSpawn.StreetPosition);
                 Agency HeliAgency = PossibleAgencies.Where(x => x.HasSpawnableHelicopters).PickRandom();
 
@@ -221,6 +215,7 @@ public static class Dispatch
 
                 AgencyToSpawn = PossibleAgencies.PickRandom();
                 bool SpawnOnFoot = false;
+
                 if(AgencyToSpawn != null && CurrentSpawnZoneStreet != null)
                 {
                     if (CanSpawnPedestrianOfficers && Jurisdiction.CanSpawnPedestrainOfficersAtZone(CurrentSpawnZoneStreet.InternalGameName, AgencyToSpawn.Initials) && General.RandomPercent(PercentagePedestrainOfficers))
@@ -238,8 +233,6 @@ public static class Dispatch
                     return;
                 }
 
-
-                Debugging.WriteToLog("Dispatch", string.Format("Spawn Checking: Agency {0}", AgencyToSpawn.Initials));
                 Vector3 PositionToSpawn = CurrentSpawn.StreetPosition;
                 if (SpawnOnFoot && CurrentSpawn.SidewalkPosition != Vector3.Zero)
                 {
@@ -255,8 +248,6 @@ public static class Dispatch
                         return;
                     }
                     
-                    Debugging.WriteToLog("Dispatch", string.Format("Spawn Checking: Vehcile {0}", MyCarInfo.ModelName));
-
                     if (MyCarInfo.IsHelicopter)
                     {
                         Debugging.WriteToLog("Dispatch", string.Format("Helicopter: {0}", MyCarInfo.ModelName));
@@ -284,7 +275,7 @@ public static class Dispatch
             {
                 if(!OutOfRangeCop.AssignedAgency.CanSpawn)
                 {
-                    Debugging.WriteToLog("Dispatch", string.Format("  Agency Delete {0}", OutOfRangeCop.Pedestrian.Handle));
+                   // Debugging.WriteToLog("Dispatch", string.Format("  Agency Delete {0}", OutOfRangeCop.Pedestrian.Handle));
                     PoliceSpawning.DeleteCop(OutOfRangeCop);
                 }
 
@@ -292,17 +283,17 @@ public static class Dispatch
                 //seems to be deletying too many people
                 if(OutOfRangeCop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
                 {
-                    Debugging.WriteToLog("Dispatch", string.Format("  Distance Delete {0}", OutOfRangeCop.Pedestrian.Handle));
+                   // Debugging.WriteToLog("Dispatch", string.Format("  Distance Delete {0}", OutOfRangeCop.Pedestrian.Handle));
                     PoliceSpawning.DeleteCop(OutOfRangeCop);
                 }
                 else if (OutOfRangeCop.ClosestDistanceToPlayer <= 15f) //Got Close and Then got away
                 {
-                    Debugging.WriteToLog("Dispatch", string.Format("  Close Then Far Delete {0}", OutOfRangeCop.Pedestrian.Handle));
+                   // Debugging.WriteToLog("Dispatch", string.Format("  Close Then Far Delete {0}", OutOfRangeCop.Pedestrian.Handle));
                     PoliceSpawning.DeleteCop(OutOfRangeCop);
                 }
                 else if (OutOfRangeCop.CountNearbyCops >= 3 && OutOfRangeCop.TimeBehindPlayer >= 15000) //Got Close and Then got away
                 {
-                    Debugging.WriteToLog("Dispatch", string.Format("  NearbyCops Delete {0}", OutOfRangeCop.Pedestrian.Handle));
+                    //Debugging.WriteToLog("Dispatch", string.Format("  NearbyCops Delete {0}", OutOfRangeCop.Pedestrian.Handle));
                     PoliceSpawning.DeleteCop(OutOfRangeCop);
                 }
             }
@@ -374,12 +365,14 @@ public static class Dispatch
         {
             if (PlayerState.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(350f);
+            else if (Investigation.InInvestigationMode)
+                Position = Investigation.InvestigationPosition;
             else
                 Position = Game.LocalPlayer.Character.Position;
 
             Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
 
-            if (PedList.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
+            if (!Investigation.InInvestigationMode && PedList.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
             {
                 Position = Vector3.Zero;
             }

@@ -976,9 +976,13 @@ public static class Tasking
                 }
                 GameFiber.Sleep(100);
             }
+            if(Cop.TaskGTACop.Pedestrian.Exists() && Cop.TaskGTACop.Pedestrian.CurrentVehicle.Exists())
+            {
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Cop.TaskGTACop.Pedestrian, Cop.TaskGTACop.Pedestrian.CurrentVehicle, DrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+            }
 
             uint GameTimeStartedInvestigating = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedInvestigating <= 3000)
+            while (Game.GameTime - GameTimeStartedInvestigating <= 25000)
             {
                 if(!Investigation.InInvestigationMode || PlayerState.IsWanted)
                 {
@@ -1195,7 +1199,7 @@ public static class Tasking
                     AbortReport = true;
                     break;
                 }
-                if (PedSwap.JustTakenOver(2000))
+                if (PedSwap.RecentlyTakenOver)
                 {
                     AbortReport = true;
                     break;
@@ -1231,7 +1235,7 @@ public static class Tasking
             //Call It In
             NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", CivilianToReport.Pedestrian, 10000);
             CivilianToReport.Pedestrian.PlayAmbientSpeech("JACKED_GENERIC");
-            if (PedSwap.JustTakenOver(2000))
+            if (PedSwap.RecentlyTakenOver)
             {
                 CivilianToReport.Pedestrian.IsPersistent = false;
                 CiviliansReportingCrimes--;

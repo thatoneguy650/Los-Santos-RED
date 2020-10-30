@@ -156,7 +156,7 @@ public static class UI
     {
         if (!RecentlyDisplayedBleedingHelp && PlayerHealth.IsBleeding)
         {
-            Game.DisplayHelp("Hit ~INPUT_DUCK~ + ~INPUT_CONTEXT~ to bandage!", 5000);
+            Game.DisplayHelp("Hold still to bandage!", 5000);
             GameTimeLastDisplayedBleedingHelp = Game.GameTime;
         }
     }
@@ -172,7 +172,7 @@ public static class UI
 
         // Lines++;
 
-        DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}", Investigation.InInvestigationMode, Investigation.HavePlayerDescription,PlayerState.IsStationary);
+        DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Investigation.InInvestigationMode, Investigation.HavePlayerDescription,PlayerState.IsStationary, Investigation.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.1f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
 

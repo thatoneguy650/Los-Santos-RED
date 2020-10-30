@@ -70,15 +70,15 @@ public static class ControlScript
                 }
             }
 
-            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
-            {
-                Surrender.CommitSuicide(Game.LocalPlayer.Character);
-            }
+            //if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            //{
+            //    Surrender.CommitSuicide(Game.LocalPlayer.Character);
+            //}
 
-            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && Game.IsControlKeyDownRightNow)
-            {
-                PlayerHealth.BandagePed(Game.LocalPlayer.Character);
-            }
+            //if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && Game.IsControlKeyDownRightNow)
+            //{
+            //    PlayerHealth.BandagePed(Game.LocalPlayer.Character);
+            //}
         }
     }
 }

@@ -292,6 +292,11 @@ public static class PlayerHealth
 
             Debugging.WriteToLog("IsBleeding", string.Format("Was {0},Now {1}", Health + 2, Health));
         }
+
+        if(IsBleeding && !IsBandaging && PlayerState.IsStationary)
+        {
+            BandagePed(Game.LocalPlayer.Character);
+        }
     }
     private static InjuryType RandomType(bool CanBeFatal)
     {

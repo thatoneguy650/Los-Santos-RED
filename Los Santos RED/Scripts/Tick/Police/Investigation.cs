@@ -35,6 +35,18 @@ public static class Investigation
                 return false;
         }
     }
+    public static bool IsSuspicious
+    {
+        get
+        {
+            if (!InInvestigationMode)
+                return false;
+            else if (InInvestigationMode && NearInvestigationPosition && HavePlayerDescription)
+                return true;
+            else
+                return false;
+        }
+    }
     public static bool LastInvestigationRecentlyExpired
     {
         get
