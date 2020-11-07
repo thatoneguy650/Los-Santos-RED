@@ -149,6 +149,16 @@ public class Cop : PedExt
             return PedList.CopPeds.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
+    public bool WithinChaseDistance
+    {
+        get
+        {
+            if (DistanceToPlayer <= Police.ActiveDistance && PlayerState.IsWanted)
+                return true;
+            else
+                return false;
+        }
+    }
     public Cop(Ped _Pedestrian, int _Health, Agency _Agency) : base(_Pedestrian, _Health)
     {
         IsCop = true;

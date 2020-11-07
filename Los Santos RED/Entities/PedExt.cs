@@ -28,11 +28,12 @@ public class PedExt
     public bool IsCop { get; set; } = false;
     public uint GameTimeLastLOSCheck { get; set; }
     public uint GameTimeSpawned { get; set; }
+    public bool IsDriver { get; set; } = false;
     public bool IsInVehicle { get; set; } = false;
     public bool IsInHelicopter { get; set; } = false;
     public bool IsOnBike { get; set; } = false;
     public float DistanceToPlayer { get; set; } = 999f;
-    public float DistanceToLastSeen { get; set; }
+    public float DistanceToLastSeen { get; set; } = 99f;
     public bool WasMarkedNonPersistent { get; set; } = false;
     public bool HasBeenMugged { get; set; } = false;
     public bool WillFight { get; set; } = false;
@@ -173,6 +174,7 @@ public class PedExt
             IsInVehicle = Pedestrian.IsInAnyVehicle(false);
             if (IsInVehicle)
             {
+                IsDriver = Pedestrian.IsDriver();
                 IsInHelicopter = Pedestrian.IsInHelicopter;
                 if (!IsInHelicopter)
                 {
@@ -185,6 +187,7 @@ public class PedExt
             {
                 IsInHelicopter = false;
                 IsOnBike = false;
+                IsDriver = false;
             }
             if (!Game.LocalPlayer.Character.IsInFront(Pedestrian))
             {
@@ -243,6 +246,7 @@ public class PedExt
         {
             DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
             DistanceToLastSeen = Pedestrian.DistanceTo2D(Police.PlaceLastSeenPlayer);
+
 
             if (DistanceToPlayer <= 0.1f)
                 DistanceToPlayer = 999f;

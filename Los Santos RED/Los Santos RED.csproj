@@ -103,6 +103,8 @@
     <Compile Include="Lookups\Agencies.cs" />
     <Compile Include="old\VehicleScanner.cs" />
     <Compile Include="Scripts\Event\Player\Scenarios.cs" />
+    <Compile Include="Scripts\Tick\Peds\PedTasking.cs" />
+    <Compile Include="Scripts\Tick\Peds\NewTasking.cs" />
     <Compile Include="Scripts\Tick\Police\Crimes.cs" />
     <Compile Include="Lookups\Jurisdiction.cs" />
     <Compile Include="Lookups\Weapons.cs" />
