@@ -402,6 +402,8 @@ public static class Debugging
             WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", PlayerState.CurrentVehicle.CarPlate.IsWanted, PlayerState.CurrentVehicle.OriginalLicensePlate.IsWanted, PlayerState.CurrentVehicle.ColorMatchesDescription,PlayerState.CurrentVehicle.CopsRecognizeAsStolen));
         }
 
+        NewTasking.PrintActivities();
+
         //Tasking.OutputTasks();
 
 
@@ -560,19 +562,19 @@ public static class Debugging
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
         }
-        //if (ProcedureString == "Dispatch" || ProcedureString == "PoliceSpawning" || ProcedureString == "ScannerScript" || ProcedureString == "Tasking" || ProcedureString == "PlayerState" || ProcedureString == "Debugging" || ProcedureString == "CarJacking" || ProcedureString == "Error" || ProcedureString == "Clock")
-        //{
+        if (ProcedureString == "Tasking")
+        {
             string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
             if (General.MySettings != null && General.MySettings.General.Logging)
             {
                 LogMessages.Add(Message);
                 Game.Console.Print(Message);
             }
-        //}
-        //else
-        //{
-        //    return;
-        //}
+        }
+        else
+        {
+            return;
+        }
     }
 
     public class SlidingBuffer<T> : IEnumerable<T>

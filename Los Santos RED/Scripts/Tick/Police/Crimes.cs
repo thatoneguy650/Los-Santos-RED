@@ -46,6 +46,20 @@ public static class Crimes
             return CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
         }
     }
+    public static bool CiviliansCanReport
+    {
+        get
+        {
+            return CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians);
+        }
+    }
+    public static bool CiviliansCanAudioReport
+    {
+        get
+        {
+            return CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians && x.CanReportBySound);
+        }
+    }
     public static void Initialize()
     {
         IsRunning = true;

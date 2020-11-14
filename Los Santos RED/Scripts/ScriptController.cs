@@ -44,8 +44,11 @@ public static class ScriptController
             new TickTask(0, "ClockSystem", Clock.Tick, 3,3),
             
             new TickTask(1000, "ScanForPeds", PedList.ScanForPeds, 4,0),
-            new TickTask(250, "ProcessQueue", Tasking.ProcessQueue, 4,1),
-            new TickTask(150, "TaskPeds", Tasking.TaskPeds, 4,2),
+            new TickTask(250, "ProcessQueue", NewTasking.UpdateTaskableCops, 4,1),
+            new TickTask(150, "TaskPeds", NewTasking.RunActivities, 4,2),
+
+            //new TickTask(250, "ProcessQueue", Tasking.ProcessQueue, 4,1),
+            //new TickTask(150, "TaskPeds", Tasking.TaskPeds, 4,2),
               
             new TickTask(250, "WeaponDropping", WeaponDropping.Tick, 5,0),
 
@@ -110,7 +113,10 @@ public static class ScriptController
         Vehicles.Initialize();
         VehicleEngine.Initialize();
         VehicleFuelSystem.Initialize();
-        Tasking.Initialize();
+        //Tasking.Initialize();
+        NewTasking.Initialize();
+
+
         Weapons.Initialize();
         WeaponDropping.Initialize();
         Streets.Initialize();
@@ -217,7 +223,8 @@ public static class ScriptController
         VehicleEngine.Dispose();
         VehicleFuelSystem.Dispose();
         Smoking.Dispose();
-        Tasking.Dispose();
+        //Tasking.Dispose();
+        NewTasking.Dispose();
         Agencies.Dispose();
         Locations.Dispose();
         Weapons.Dispose();

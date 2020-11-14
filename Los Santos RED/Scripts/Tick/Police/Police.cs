@@ -27,7 +27,7 @@ public static class Police
     {
         get
         {
-            if (PlayerState.AreStarsGreyedOut && PedList.CopPeds.All(x => !x.RecentlySeenPlayer()))
+            if (PlayerState.AreStarsGreyedOut && PedList.CopPeds.All(x => !x.RecentlySeenPlayer))
                 return true;
             else
                 return false;

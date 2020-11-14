@@ -76,7 +76,7 @@ public static class Tasking
             return false;
         else if (PlayerState.IsInVehicle)
             return false;
-        else if (!Cop.RecentlySeenPlayer())
+        else if (!Cop.RecentlySeenPlayer)
             return false;  
         else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.Normal || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase || WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait || PlayerState.IsBusted || PlayerState.IsDead)
             return false;
@@ -340,11 +340,11 @@ public static class Tasking
                 }
                 else
                 {
-                    if ((!Cop.TaskGTACop.RecentlySeenPlayer() || Cop.TaskGTACop.DistanceToPlayer >= 150f) && Cop.RunningTask != VehicleChaseWithVehicle)
+                    if ((!Cop.TaskGTACop.RecentlySeenPlayer || Cop.TaskGTACop.DistanceToPlayer >= 150f) && Cop.RunningTask != VehicleChaseWithVehicle)
                     {
                         AddItemToCopQueue(new CopTaskQueueItem(Cop, VehicleChaseWithVehicle, "VehicleChaseWithVehicle"));
                     }
-                    else if (Cop.TaskGTACop.RecentlySeenPlayer() && CanVehicleChase(Cop.TaskGTACop) && Cop.RunningTask != FootChaseWithVehicle && TaskableCops.Count(x => x.RunningTask == FootChaseWithVehicle) <= 2)
+                    else if (Cop.TaskGTACop.RecentlySeenPlayer && CanVehicleChase(Cop.TaskGTACop) && Cop.RunningTask != FootChaseWithVehicle && TaskableCops.Count(x => x.RunningTask == FootChaseWithVehicle) <= 2)
                     {
                         AddItemToCopQueue(new CopTaskQueueItem(Cop, FootChaseWithVehicle, "FootChaseWithVehicle"));
                     }
@@ -409,7 +409,7 @@ public static class Tasking
         {
             if ((!PlayerState.IsInVehicle || Game.LocalPlayer.Character.Speed <= 2f) && Cop.CurrentChaseStatus == ChaseStatus.Active && !Cop.TaskIsQueued)
             {
-                if ((Cop.TaskGTACop.RecentlySeenPlayer() || Cop.TaskGTACop.DistanceToPlayer <= 20f))//50f;
+                if ((Cop.TaskGTACop.RecentlySeenPlayer || Cop.TaskGTACop.DistanceToPlayer <= 20f))//50f;
                 {
                     if (Cop.RunningTask != FootChaseOnFoot)
                     {
@@ -469,7 +469,7 @@ public static class Tasking
     {
         if (!Cop.TaskGTACop.Pedestrian.Exists())
             return;
-        if (Cop.TaskGTACop.Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f) && Cop.TaskFiber != null && Cop.TaskFiber.Name == "Chase" && !Cop.TaskGTACop.RecentlySeenPlayer())
+        if (Cop.TaskGTACop.Pedestrian.IsInRangeOf(Game.LocalPlayer.Character.Position, 100f) && Cop.TaskFiber != null && Cop.TaskFiber.Name == "Chase" && !Cop.TaskGTACop.RecentlySeenPlayer)
         {
             return;
         }
@@ -508,7 +508,7 @@ public static class Tasking
                     NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.TaskGTACop.Pedestrian, MoveRate);
 
                 ArmCopAppropriately(Cop.TaskGTACop);
-                if (Cop.TaskGTACop.DistanceToPlayer > 100f || !Cop.TaskGTACop.RecentlySeenPlayer())
+                if (Cop.TaskGTACop.DistanceToPlayer > 100f || !Cop.TaskGTACop.RecentlySeenPlayer)
                     break;
 
                 if (PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && PlayerState.IsStationary)
@@ -1415,7 +1415,7 @@ public static class Tasking
     }
     private static void SetUnarmed(Cop Cop)
     {
-        if (!Cop.Pedestrian.Exists() || (Cop.SetUnarmed && !Cop.NeedsWeaponCheck))
+        if (!Cop.Pedestrian.Exists() || (Cop.IsSetUnarmed && !Cop.NeedsWeaponCheck))
             return;
         if (General.MySettings.Police.OverridePoliceAccuracy)
             Cop.Pedestrian.Accuracy = General.MySettings.Police.PoliceGeneralAccuracy;
@@ -1427,14 +1427,14 @@ public static class Tasking
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
         }
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
-        Cop.SetTazer = false;
-        Cop.SetUnarmed = true;
-        Cop.SetDeadly = false;
+        Cop.IsSetTazer = false;
+        Cop.IsSetUnarmed = true;
+        Cop.IsSetDeadly = false;
         Cop.GameTimeLastWeaponCheck = Game.GameTime;
     }
     private static void SetCopDeadly(Cop Cop)
     {
-        if (!Cop.Pedestrian.Exists() || (Cop.SetDeadly && !Cop.NeedsWeaponCheck))
+        if (!Cop.Pedestrian.Exists() || (Cop.IsSetDeadly && !Cop.NeedsWeaponCheck))
             return;
         if (General.MySettings.Police.OverridePoliceAccuracy)
             Cop.Pedestrian.Accuracy = General.MySettings.Police.PoliceGeneralAccuracy;
@@ -1455,14 +1455,14 @@ public static class Tasking
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys
 
-        Cop.SetTazer = false;
-        Cop.SetUnarmed = false;
-        Cop.SetDeadly = true;
+        Cop.IsSetTazer = false;
+        Cop.IsSetUnarmed = false;
+        Cop.IsSetDeadly = true;
         Cop.GameTimeLastWeaponCheck = Game.GameTime;
     }
     private static void SetCopTazer(Cop Cop)
     {
-        if (!Cop.Pedestrian.Exists() || (Cop.SetTazer && !Cop.NeedsWeaponCheck))
+        if (!Cop.Pedestrian.Exists() || (Cop.IsSetTazer && !Cop.NeedsWeaponCheck))
             return;
 
         if (General.MySettings.Police.OverridePoliceAccuracy)
@@ -1478,9 +1478,9 @@ public static class Tasking
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
-        Cop.SetTazer = true;
-        Cop.SetUnarmed = false;
-        Cop.SetDeadly = false;
+        Cop.IsSetTazer = true;
+        Cop.IsSetUnarmed = false;
+        Cop.IsSetDeadly = false;
         Cop.GameTimeLastWeaponCheck = Game.GameTime;
     }
     private static void SetChaseStatus(TaskableCop Cop)

@@ -57,6 +57,12 @@ public static class SearchModeStopping
     {
         if (IsRunning)
         {
+            if (PlayerState.IsWanted)
+                StopSearchMode = true;
+            else
+                StopSearchMode = false;
+
+
             if (PrevStopSearchMode != StopSearchMode)
             {
                 PrevStopSearchMode = StopSearchMode;

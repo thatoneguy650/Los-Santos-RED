@@ -246,7 +246,7 @@ public static class Respawn
         {
             NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
             Game.TimeScale = 1.0f;
-            CopToBribe.SetUnarmed = true;
+            CopToBribe.IsSetUnarmed = true;
 
             Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 

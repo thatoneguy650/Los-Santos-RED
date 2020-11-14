@@ -125,14 +125,17 @@ public class PedExt
                 return (Game.GameTime - GameTimeBehindPlayer);
         }
     }
-    public bool RecentlySeenPlayer()
+    public bool RecentlySeenPlayer
     {
-        if (CanSeePlayer)
-            return true;
-        else if (Game.GameTime - GameTimeLastSeenPlayer <= 10000)//Seen in last 10 seconds?
-            return true;
-        else
-            return false;
+        get
+        {
+            if (CanSeePlayer)
+                return true;
+            else if (Game.GameTime - GameTimeLastSeenPlayer <= 10000)//Seen in last 10 seconds?
+                return true;
+            else
+                return false;
+        }
     }
     public bool EverSeenPlayer
     {

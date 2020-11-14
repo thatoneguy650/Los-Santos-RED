@@ -1,6 +1,7 @@
 ﻿
 using ExtensionsMethods;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,9 +17,9 @@ public class Cop : PedExt
     public bool WasInvestigationSpawn { get; set; } = false;
     public bool IsBikeCop { get; set; } = false;
     public bool IsPursuitPrimary { get; set; } = false;
-    public bool SetTazer { get; set; } = false;
-    public bool SetUnarmed { get; set; } = false;
-    public bool SetDeadly { get; set; } = false;
+    public bool IsSetTazer { get; set; } = false;
+    public bool IsSetUnarmed { get; set; } = false;
+    public bool IsSetDeadly { get; set; } = false;
     public uint GameTimeLastWeaponCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
@@ -88,6 +89,76 @@ public class Cop : PedExt
             HeavyVariation = MyVariation;
             General.ApplyWeaponVariation(Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
         }
+    }
+    public void SetUnarmed()
+    {
+        if (!Pedestrian.Exists() || (IsSetUnarmed && !NeedsWeaponCheck))
+            return;
+        if (General.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = General.MySettings.Police.PoliceGeneralAccuracy;
+
+        NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 0);
+        if (!(Pedestrian.Inventory.EquippedWeapon == null))
+        {
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, (uint)2725352035, true); //Unequip weapon so you don't get shot
+            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
+        }
+        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
+        IsSetTazer = false;
+        IsSetUnarmed = true;
+        IsSetDeadly = false;
+        GameTimeLastWeaponCheck = Game.GameTime;
+    }
+    public void SetDeadly()
+    {
+        if (!Pedestrian.Exists() || (IsSetDeadly && !NeedsWeaponCheck))
+            return;
+        if (General.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = General.MySettings.Police.PoliceGeneralAccuracy;
+        NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 30);
+        if (!Pedestrian.Inventory.Weapons.Contains(IssuedPistol.Name))
+            Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.Name, -1, true);
+
+        if ((Pedestrian.Inventory.EquippedWeapon == null || Pedestrian.Inventory.EquippedWeapon.Hash == WeaponHash.StunGun) && Game.LocalPlayer.WantedLevel >= 0)
+            Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.Name, -1, true);
+
+        if (IssuedHeavyWeapon != null)
+        {
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, NativeFunction.CallByName<bool>("GET_BEST_PED_WEAPON", Pedestrian, 0), true);
+        }
+
+        if (General.MySettings.Police.AllowPoliceWeaponVariations)
+            General.ApplyWeaponVariation(Pedestrian, (uint)IssuedPistol.Hash, PistolVariation);
+        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);
+        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, true);//can do drivebys
+
+        IsSetTazer = false;
+        IsSetUnarmed = false;
+        IsSetDeadly = true;
+        GameTimeLastWeaponCheck = Game.GameTime;
+    }
+    public void SetTazer()
+    {
+        if (!Pedestrian.Exists() || (IsSetTazer && !NeedsWeaponCheck))
+            return;
+
+        if (General.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = General.MySettings.Police.PoliceTazerAccuracy;
+        NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 100);
+        if (!Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
+        {
+            Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, true);
+        }
+        else if (Pedestrian.Inventory.EquippedWeapon != WeaponHash.StunGun)
+        {
+            Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;
+        }
+        NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
+        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
+        IsSetTazer = true;
+        IsSetUnarmed = false;
+        IsSetDeadly = false;
+        GameTimeLastWeaponCheck = Game.GameTime;
     }
     public bool NeedsWeaponCheck
     {
