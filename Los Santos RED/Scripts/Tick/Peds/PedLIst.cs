@@ -271,12 +271,4 @@ public static class PedList
         else
             return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
     }
-    public static PedExt GetPedExt(uint Handle)
-    {
-        PedExt ToReturn = CopPeds.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
-        if (ToReturn != null)
-            return ToReturn;
-        else
-            return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
-    }
 }

@@ -472,6 +472,8 @@ public static class PlayerState
             Menus.ShowBustedMenu();
         }, "HandleBusted");
         Debugging.GameFibers.Add(HandleBusted);
+
+        Game.LocalPlayer.HasControl = false;
     }
     private static void DeathEvent()
     {
@@ -703,6 +705,7 @@ public static class PlayerState
     {
         IsDead = false;
         IsBusted = false;
+        Game.LocalPlayer.HasControl = true;
         BeingArrested = false;
         TimesDied = 0;
         LastWeaponHash = 0;

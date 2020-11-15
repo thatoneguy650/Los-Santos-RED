@@ -257,7 +257,7 @@ public static class Debugging
     }
     private static void DebugNumpad3()
     {
-        PedList.ClearPoliceCompletely();
+       // PedList.ClearPoliceCompletely();
         WantedLevelScript.SetWantedLevel(0, "Debug", true);
     }
 
@@ -384,8 +384,8 @@ public static class Debugging
         //ScriptController.OutputTable();
 
 
-        Tasking.OutputTasks();
-
+        //Tasking.OutputTasks();
+        NewTasking.UnTask();
 
         WriteToLog("DebugNumpad6", string.Format("                      PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
         WriteToLog("DebugNumpad6", string.Format("                      PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
@@ -459,17 +459,30 @@ public static class Debugging
 
             foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
             {
-                if (Cop.Pedestrian.IsInAnyVehicle(false))
-                {
-                    WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TimeBehindPlayer {4,-20}, NA {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},Vehicle {11,-20},CopTask {12,-20},HurtByPlayer {13,-20}",
-                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition),Cop.Pedestrian.CurrentVehicle.Model.Name, Tasking.GetCopTask(Cop.Pedestrian.Handle), Cop.HurtByPlayer));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
 
-                }
-                else
-                {
-                    WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TimeBehindPlayer {4,-20}, NA {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},CopTask {11,-20}",
-                            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition), Tasking.GetCopTask(Cop.Pedestrian.Handle)));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
-                }
+                WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}", 
+                    Cop.Pedestrian.Handle
+                    ,Cop.Pedestrian.Model.Name
+                    ,Cop.AssignedAgency.Initials
+                    ,Cop.DistanceToPlayer
+                    ,NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS",Cop.Pedestrian,Game.LocalPlayer.Character)
+                    ,NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Game.LocalPlayer.Character, Cop.Pedestrian)
+
+
+                    ));
+
+
+                //if (Cop.Pedestrian.IsInAnyVehicle(false))
+                //{
+                //    WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TimeBehindPlayer {4,-20}, NA {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},Vehicle {11,-20},CopTask {12,-20},HurtByPlayer {13,-20}",
+                //            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition),Cop.Pedestrian.CurrentVehicle.Model.Name, Tasking.GetCopTask(Cop.Pedestrian.Handle), Cop.HurtByPlayer));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
+
+                //}
+                //else
+                //{
+                //    WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20}, Zone {3,-20}, TimeBehindPlayer {4,-20}, NA {5,-20}, RTask {6,-20}, Spawned {7,-20}, CanSee {8,-20}, Distance {9,-20}, Distant IP {10,-20},CopTask {11,-20}",
+                //            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition), Tasking.GetCopTask(Cop.Pedestrian.Handle)));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
+                //}
             }
             WriteToLog("Debugging", string.Format("CurrentPoliceTickRunning: {0}", Tasking.CurrentPoliceTickRunning));
             WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Investigation.InInvestigationMode));
@@ -556,24 +569,31 @@ public static class Debugging
         Game.DisplayNotification("Instant Action Deactivated");
         ScriptController.Dispose();
     }
+
     public static void WriteToLog(String ProcedureString, String TextToLog)
     {
         if (ProcedureString == "Error")
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
         }
-        if (ProcedureString == "Tasking")
+        //if (ProcedureString == "Tasking")
+        //{
+        //    string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
+        //    if (General.MySettings != null && General.MySettings.General.Logging)
+        //    {
+        //        LogMessages.Add(Message);
+        //        Game.Console.Print(Message);
+        //    }
+        //}
+        //else
+        //{
+        //    return;
+        //}
+        string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
+        if (General.MySettings != null && General.MySettings.General.Logging)
         {
-            string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
-            if (General.MySettings != null && General.MySettings.General.Logging)
-            {
-                LogMessages.Add(Message);
-                Game.Console.Print(Message);
-            }
-        }
-        else
-        {
-            return;
+            LogMessages.Add(Message);
+            Game.Console.Print(Message);
         }
     }
 
