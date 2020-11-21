@@ -5,6 +5,220 @@ using System.Linq;
 
 public static class NewTasking
 {
+    enum eScriptTaskHash : uint
+    {
+        SCRIPT_TASK_ANY = 0x55966344,
+        SCRIPT_TASK_INVALID = 0x811E343C,
+        SCRIPT_TASK_PAUSE = 0x03C990EC,
+        SCRIPT_TASK_STAND_STILL = 0xC572E06A,
+        SCRIPT_TASK_0xA6296C9D = 0xA6296C9D,
+        SCRIPT_TASK_JUMP = 0x24415046,
+        SCRIPT_TASK_COWER = 0x1C43F4CF,
+        SCRIPT_TASK_HANDS_UP = 0xA573B67C,
+        SCRIPT_TASK_DUCK = 0x1D415F6C,
+        SCRIPT_TASK_0xD9162485 = 0xD9162485,
+        SCRIPT_TASK_0x255F21CC = 0x255F21CC,
+        SCRIPT_TASK_ENTER_VEHICLE = 0x950B6492,
+        SCRIPT_TASK_LEAVE_VEHICLE = 0x1AE73569,
+        SCRIPT_TASK_VEHICLE_DRIVE_TO_COORD = 0x93A5526E,
+        SCRIPT_TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE = 0x21D33957,
+        SCRIPT_TASK_VEHICLE_DRIVE_WANDER = 0xF09B15B3,
+        SCRIPT_TASK_GO_STRAIGHT_TO_COORD = 0x7D8F4411,
+        SCRIPT_TASK_GO_STRAIGHT_TO_COORD_RELATIVE_TO_ENTITY = 0x78EC0FF6,
+        SCRIPT_TASK_0x96066708 = 0x96066708,
+        SCRIPT_TASK_ACHIEVE_HEADING = 0x7276D3DF,
+        SCRIPT_TASK_FOLLOW_POINT_ROUTE = 0xB232526F,
+        SCRIPT_TASK_GO_TO_ENTITY = 0x4924437D,
+        SCRIPT_TASK_0xD7F626D1 = 0xD7F626D1,
+        SCRIPT_TASK_0xEEDD9B66 = 0xEEDD9B66,
+        SCRIPT_TASK_0x114F64E3 = 0x114F64E3,
+        SCRIPT_TASK_0xF10822AA = 0xF10822AA,
+        SCRIPT_TASK_SMART_FLEE_PED = 0x6BA30179,
+        SCRIPT_TASK_WANDER_STANDARD = 0xBBA3B7CA,
+        SCRIPT_TASK_FOLLOW_NAV_MESH_TO_COORD = 0x2A89B8A7,
+        SCRIPT_TASK_GO_TO_COORD_ANY_MEANS = 0x93399E79,
+        SCRIPT_TASK_PERFORM_SEQUENCE = 0x0E763797,
+        SCRIPT_TASK_LEAVE_ANY_VEHICLE = 0xCE98FBB3,
+        SCRIPT_TASK_AIM_GUN_SCRIPTED = 0x0C69931F,
+        SCRIPT_TASK_AIM_GUN_AT_ENTITY = 0x6134071B,
+        SCRIPT_TASK_GO_TO_COORD_WHILE_SHOOTING = 0x9387DEAB,
+        SCRIPT_TASK_TURN_PED_TO_FACE_ENTITY = 0xCBCE4595,
+        SCRIPT_TASK_0xE51B372C = 0xE51B372C,
+        SCRIPT_TASK_AIM_GUN_AT_COORD = 0x49BEF36E,
+        SCRIPT_TASK_SHOOT_AT_COORD = 0xD90EF188,
+        SCRIPT_TASK_0x0B45DACC = 0x0B45DACC,
+        SCRIPT_TASK_0x7BA620DD = 0x7BA620DD,
+        SCRIPT_TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT = 0x153011FC,
+        SCRIPT_TASK_EVERYONE_LEAVE_VEHICLE = 0xA569F146,
+        SCRIPT_TASK_0xC09E33A2 = 0xC09E33A2,
+        SCRIPT_TASK_GOTO_ENTITY_OFFSET = 0x87E3E0A8,
+        SCRIPT_TASK_0xBF57AF1C = 0xBF57AF1C,
+        SCRIPT_TASK_0x190DC01B = 0x190DC01B,
+        SCRIPT_TASK_TURN_PED_TO_FACE_COORD = 0x574BB8F5,
+        SCRIPT_TASK_DRIVE_POINT_ROUTE = 0xBAE13130,
+        SCRIPT_TASK_0x7DEC090B = 0x7DEC090B,
+        SCRIPT_TASK_VEHICLE_TEMP_ACTION = 0x81B4D53A,
+        SCRIPT_TASK_0x30A0DC39 = 0x30A0DC39,
+        SCRIPT_TASK_VEHICLE_MISSION = 0xB41F1A34,
+        SCRIPT_TASK_0xE4A207BD = 0xE4A207BD,
+        SCRIPT_TASK_0xB2A2BF11 = 0xB2A2BF11,
+        SCRIPT_TASK_0x2C1A612F = 0x2C1A612F,
+        SCRIPT_TASK_DRIVE_BY = 0x7D711E7D,
+        SCRIPT_TASK_USE_MOBILE_PHONE = 0x37D339A1,
+        SCRIPT_TASK_WARP_PED_INTO_VEHICLE = 0xBC555B9D,
+        SCRIPT_TASK_0x63694D9D = 0x63694D9D,
+        SCRIPT_TASK_SHOOT_AT_ENTITY = 0x0A01F8B8,
+        SCRIPT_TASK_0x15F49B5F = 0x15F49B5F,
+        SCRIPT_TASK_0x3A82EBC5 = 0x3A82EBC5,
+        SCRIPT_TASK_0xF793E251 = 0xF793E251,
+        SCRIPT_TASK_0x9A2943F2 = 0x9A2943F2,
+        SCRIPT_TASK_CLIMB = 0xB802FDCA,
+        SCRIPT_TASK_PERFORM_SEQUENCE_FROM_PROGRESS = 0x5485FD94,
+        SCRIPT_TASK_GOTO_ENTITY_AIMING = 0x967EA21C,
+        SCRIPT_TASK_0x1A230A59 = 0x1A230A59,
+        SCRIPT_TASK_0x6EA2E79A = 0x6EA2E79A,
+        SCRIPT_TASK_SET_PED_DECISION_MAKER = 0x4E5B453C,
+        SCRIPT_TASK_0x00A101C8 = 0x00A101C8,
+        SCRIPT_TASK_0xC8BCA367 = 0xC8BCA367,
+        SCRIPT_TASK_0xA9D6E737 = 0xA9D6E737,
+        SCRIPT_TASK_PED_SLIDE_TO_COORD = 0x3E5094A7,
+        SCRIPT_TASK_0xABFCB97C = 0xABFCB97C,
+        SCRIPT_TASK_DRIVE_POINT_ROUTE_ADVANCED = 0xEA6A323F,
+        SCRIPT_TASK_PED_SLIDE_TO_COORD_AND_PLAY_ANIM = 0x8A0970F4,
+        SCRIPT_TASK_0x22024D52 = 0x22024D52,
+        SCRIPT_TASK_0xAD4CD615 = 0xAD4CD615,
+        SCRIPT_TASK_0xD73264BC = 0xD73264BC,
+        SCRIPT_TASK_0xA0A7761F = 0xA0A7761F,
+        SCRIPT_TASK_0xA92F7B36 = 0xA92F7B36,
+        SCRIPT_TASK_0xD0D5F297 = 0xD0D5F297,
+        SCRIPT_TASK_0xADC7E889 = 0xADC7E889,
+        SCRIPT_TASK_0x1F53A7DA = 0x1F53A7DA,
+        SCRIPT_TASK_PLAY_ANIM = 0x87B9A382,
+        SCRIPT_TASK_0x8ECCBFB3 = 0x8ECCBFB3,
+        SCRIPT_TASK_0xAF35BD9C = 0xAF35BD9C,
+        SCRIPT_TASK_0xB99876B9 = 0xB99876B9,
+        SCRIPT_TASK_ARREST_PED = 0x52FF82C0,
+        SCRIPT_TASK_COMBAT = 0x2E85A751,
+        SCRIPT_TASK_COMBAT_TIMED = 0xF2E41A8A,
+        SCRIPT_TASK_SEEK_COVER_FROM_POS = 0xA77A06C5,
+        SCRIPT_TASK_SEEK_COVER_FROM_PED = 0x71E30BDC,
+        SCRIPT_TASK_SEEK_COVER_TO_COVER_POINT = 0x99AFA8A3,
+        SCRIPT_TASK_0x9B95A683 = 0x9B95A683,
+        SCRIPT_TASK_TOGGLE_DUCK = 0x0F3B8554,
+        SCRIPT_TASK_0x97AE64AB = 0x97AE64AB,
+        SCRIPT_TASK_0xDF5F4BA7 = 0xDF5F4BA7,
+        SCRIPT_TASK_PICKUP_AND_CARRY_OBJECT = 0x89025025,
+        SCRIPT_TASK_0x5A2825BB = 0x5A2825BB,
+        SCRIPT_TASK_SEEK_COVER_TO_COORDS = 0x6C01775C,
+        SCRIPT_TASK_0xBA284891 = 0xBA284891,
+        SCRIPT_TASK_GUARD_ANGLED_DEFENSIVE_AREA = 0x84AEE7A0,
+        SCRIPT_TASK_STAND_GUARD = 0xD88F2CDE,
+        SCRIPT_TASK_CLIMB_LADDER = 0x66403353,
+        SCRIPT_TASK_0xFD790A1B = 0xFD790A1B,
+        SCRIPT_TASK_GUARD_SPHERE_DEFENSIVE_AREA = 0x21E8D4E4,
+        SCRIPT_TASK_START_SCENARIO_IN_PLACE = 0x3B3A458F,
+        SCRIPT_TASK_START_SCENARIO_AT_POSITION = 0xBE86C566,
+        SCRIPT_TASK_0x86016E38 = 0x86016E38,
+        SCRIPT_TASK_PUT_PED_DIRECTLY_INTO_COVER = 0x8B2F140E,
+        SCRIPT_TASK_0x9DD414F5 = 0x9DD414F5,
+        SCRIPT_TASK_PUT_PED_DIRECTLY_INTO_MELEE = 0xFBBF6F4D,
+        SCRIPT_TASK_GUARD_CURRENT_POSITION = 0x8CE49D34,
+        SCRIPT_TASK_0x623A5EFE = 0x623A5EFE,
+        SCRIPT_TASK_0x9BD19AE7 = 0x9BD19AE7,
+        SCRIPT_TASK_0x9F5DBCE5 = 0x9F5DBCE5,
+        SCRIPT_TASK_PERFORM_SEQUENCE_LOCALLY = 0xE7FBAB4F,
+        SCRIPT_TASK_COMBAT_HATED_TARGETS_IN_AREA = 0x42CC4F21,
+        SCRIPT_TASK_COMBAT_HATED_TARGETS_AROUND_PED = 0xAA05B492,
+        SCRIPT_TASK_0x81FB0B11 = 0x81FB0B11,
+        SCRIPT_TASK_0x71F49E88 = 0x71F49E88,
+        SCRIPT_TASK_0xE3380A30 = 0xE3380A30,
+        SCRIPT_TASK_SWAP_WEAPON = 0x2AB81462,
+        SCRIPT_TASK_RELOAD_WEAPON = 0xC322ED6F,
+        SCRIPT_TASK_0xAB4B293A = 0xAB4B293A,
+        SCRIPT_TASK_COMBAT_HATED_TARGETS_AROUND_PED_TIMED = 0x2719C0D1,
+        SCRIPT_TASK_GET_OFF_BOAT = 0x9A27A999,
+        SCRIPT_TASK_0x9C4FBCAC = 0x9C4FBCAC,
+        SCRIPT_TASK_PATROL = 0xB550726C,
+        SCRIPT_TASK_STAY_IN_COVER = 0xE1C16E99,
+        SCRIPT_TASK_HANG_GLIDER = 0x00E1228C,
+        SCRIPT_TASK_FOLLOW_TO_OFFSET_OF_ENTITY = 0x3EF867F4,
+        SCRIPT_TASK_0x70AEF4E9 = 0x70AEF4E9,
+        SCRIPT_TASK_GO_TO_COORD_WHILE_AIMING_AT_COORD = 0x19CE5AFC,
+        SCRIPT_TASK_GO_TO_COORD_WHILE_AIMING_AT_ENTITY = 0x972C6757,
+        SCRIPT_TASK_0x0A81CE80 = 0x0A81CE80,
+        SCRIPT_TASK_0xE677F9FB = 0xE677F9FB,
+        SCRIPT_TASK_0x89E45204 = 0x89E45204,
+        SCRIPT_TASK_GO_TO_ENTITY_WHILE_AIMING_AT_COORD = 0xBAEB517C,
+        SCRIPT_TASK_0xA2B07D24 = 0xA2B07D24,
+        SCRIPT_TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY = 0xB80BFB24,
+        SCRIPT_TASK_0x6C095462 = 0x6C095462,
+        SCRIPT_TASK_0x7BF24249 = 0x7BF24249,
+        SCRIPT_TASK_0xC93D7834 = 0xC93D7834,
+        SCRIPT_TASK_USE_WALKIE_TALKIE = 0x29BABC64,
+        SCRIPT_TASK_CHAT_TO_PED = 0x0FC239CD,
+        SCRIPT_TASK_0xFCC0F996 = 0xFCC0F996,
+        SCRIPT_TASK_FIRE_FLARE = 0xDEB1C08F,
+        SCRIPT_TASK_BIND_POSE = 0x4929CE40,
+        SCRIPT_TASK_NM_ELECTROCUTE = 0x8944A9A0,
+        SCRIPT_TASK_NM_HIGH_FALL = 0x015D63E3,
+        SCRIPT_TASK_NM_DANGLE = 0x0B49EAEC,
+        SCRIPT_TASK_0xF0F9FFC0 = 0xF0F9FFC0,
+        SCRIPT_TASK_NM_STUMBLE = 0xBACF9837,
+        SCRIPT_TASK_SKY_DIVE = 0x4B65F15C,
+        SCRIPT_TASK_PARACHUTE = 0x76CA4A8E,
+        SCRIPT_TASK_PARACHUTE_TO_TARGET = 0x4921B47A,
+        SCRIPT_TASK_0x9B4FC7D8 = 0x9B4FC7D8,
+        SCRIPT_TASK_0x536E59F9 = 0x536E59F9,
+        SCRIPT_TASK_0x4847A94F = 0x4847A94F,
+        SCRIPT_TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS = 0x6F9C865C,
+        SCRIPT_TASK_MOVE_NETWORK = 0x0494661C,
+        SCRIPT_TASK_SYNCHRONIZED_SCENE = 0x6A67A5CC,
+        SCRIPT_TASK_VEHICLE_SHOOT_AT_COORD = 0xAF18B824,
+        SCRIPT_TASK_0x20123810 = 0x20123810,
+        SCRIPT_TASK_VEHICLE_PARK = 0xEFC8537E,
+        SCRIPT_TASK_MOUNT_ANIMAL = 0x6F5F73AE,
+        SCRIPT_TASK_DISMOUNT_ANIMAL = 0x1DE2A7BD,
+        SCRIPT_TASK_THROW_PROJECTILE = 0xAD37BF03,
+        SCRIPT_TASK_VEHICLE_AIM_AT_COORD = 0x00C59C52,
+        SCRIPT_TASK_0x6F30F4C1 = 0x6F30F4C1,
+        SCRIPT_TASK_0x3BDBC83C = 0x3BDBC83C,
+        SCRIPT_TASK_0xCC312EC4 = 0xCC312EC4,
+        SCRIPT_TASK_RAPPEL_FROM_HELI = 0xEF8D6B40,
+        SCRIPT_TASK_0x491A782D = 0x491A782D,
+        SCRIPT_TASK_0x87A3DFEA = 0x87A3DFEA,
+        SCRIPT_TASK_VEHICLE_FOLLOW_WAYPOINT_RECORDING = 0xF1F17AE7,
+        SCRIPT_TASK_0x8E29DEF2 = 0x8E29DEF2,
+        SCRIPT_TASK_GO_TO_COORD_AND_AIM_AT_HATED_ENTITIES_NEAR_COORD = 0x290A02BC,
+        SCRIPT_TASK_WANDER_IN_AREA = 0x370BCF53,
+        SCRIPT_TASK_VEHICLE_GOTO_NAVMESH = 0xFBB43C4A,
+        SCRIPT_TASK_FORCE_MOTION_STATE = 0x9E78AC1F,
+        SCRIPT_TASK_IN_CUSTODY = 0x6D4411C9,
+        SCRIPT_TASK_LOOK_AT_ENTITY = 0x08F5AF9D,
+        SCRIPT_TASK_LOOK_AT_COORD = 0xCB842EEC,
+        SCRIPT_TASK_VEHICLE_CHASE = 0x2288A57C,
+        SCRIPT_TASK_STEALTH_KILL = 0x5014CC1A,
+        SCRIPT_TASK_HELI_CHASE = 0x27369192,
+        SCRIPT_TASK_PLANE_CHASE = 0x02DBA9BF,
+        SCRIPT_TASK_PLANE_LAND = 0x043E4A56,
+        SCRIPT_TASK_0x7F9814E9 = 0x7F9814E9,
+        SCRIPT_TASK_0xEC685098 = 0xEC685098,
+        SCRIPT_TASK_SHOCKING_EVENT_REACT = 0x498BABE3,
+        SCRIPT_TASK_WRITHE = 0x8EC23E41,
+        SCRIPT_TASK_EXIT_COVER = 0x4E961D82,
+        SCRIPT_TASK_PLANT_BOMB = 0x8127FD1A,
+        SCRIPT_TASK_INVESTIGATE_COORDS = 0x9C250C19,
+        SCRIPT_TASK_WANDER_SPECIFIC = 0xD46F7254,
+        SCRIPT_TASK_0x48EED267 = 0x48EED267,
+        SCRIPT_TASK_0xFD0B5826 = 0xFD0B5826,
+        SCRIPT_TASK_0x29269FF1 = 0x29269FF1,
+        SCRIPT_TASK_REACT_AND_FLEE_PED = 0x7DEDF098,
+        SCRIPT_TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS = 0x45B5A146,
+        SCRIPT_TASK_0xA5806868 = 0xA5806868,
+        SCRIPT_TASK_JETPACK = 0x828EBA07,
+        SCRIPT_TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS_WITH_CRUISE_SPEED = 0x4DE5C290,
+        SCRIPT_TASK_AGITATED_ACTION = 0x548CB4B4
+    };
+
     private static List<TaskableCop> TaskableCops;
     private static List<TaskableCivilian> TaskableCivilians;
     public static bool IsRunning { get; set; }
@@ -93,7 +307,7 @@ public static class NewTasking
     }
     private class TaskableCop
     {
-        private float OnFootTaskDistance = 70f;
+        private readonly float OnFootTaskDistance = 70f;
         private Vector3 CurrentTaskedPosition = Vector3.Zero;
         private bool AtInvesstigationPositionThisInvestigation = false;
         private bool NearWantedCenterThisWanted = false;
@@ -319,18 +533,19 @@ public static class NewTasking
             if (CopToTask.Pedestrian.Exists())
             {
                 ClearTasks();
-               // CopToTask.Pedestrian.BlockPermanentEvents = true;
+                CopToTask.Pedestrian.BlockPermanentEvents = true;
                 CopToTask.Pedestrian.KeepTasks = true;
                 if (!CopToTask.Pedestrian.IsInAnyVehicle(false))
                 {
                     Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
-                    if (LastVehicle.Exists() && LastVehicle.IsDriveable && CopToTask.WasRandomSpawnDriver)
+                    if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
                     {
                         unsafe
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, -1, 2f, 9);
+                            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 2f, 9);
+                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, General.MyRand.Next(4000,8000));
                             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -363,19 +578,45 @@ public static class NewTasking
                 CopToTask.Pedestrian.CurrentVehicle.IsSirenOn = false;
                 CopToTask.Pedestrian.CurrentVehicle.IsSirenSilent = false;
             }
-
-            //if (Game.GameTime - GameTimeLastTasked >= 2000 && TimesExecuted <= 5)//weird bug that makes them attack me after not wanted and being idle, reset them ever second for now
+            if (CopToTask.Pedestrian.Tasks.CurrentTaskStatus == TaskStatus.NoTask)
+            {
+                if (!CopToTask.Pedestrian.IsInAnyVehicle(false))
+                {
+                    Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
+                    if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
+                    {
+                        unsafe
+                        {
+                            int lol = 0;
+                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 2f, 9);
+                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, General.MyRand.Next(4000, 8000));
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
+                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", CopToTask.Pedestrian, lol);
+                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        }
+                    }
+                    else
+                    {
+                        CopToTask.Pedestrian.Tasks.Wander();
+                    }
+                }
+                Debugging.WriteToLog("Tasking", string.Format("     ReSet Idle: {0} CurrentTaskLoop: {1}", CopToTask.Pedestrian.Handle, CurrentTaskLoop));
+            }
+            //if (CopToTask.Pedestrian.Tasks.CurrentTaskStatus == TaskStatus.Interrupted)
             //{
             //    if (!CopToTask.Pedestrian.IsInAnyVehicle(false))
             //    {
             //        Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
-            //        if (LastVehicle.Exists() && LastVehicle.IsDriveable && CopToTask.WasRandomSpawnDriver)
+            //        if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
             //        {
             //            unsafe
             //            {
             //                int lol = 0;
             //                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            //                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, -1, 2f, 9);
+            //                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 2f, 9);
             //                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
             //                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
             //                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -388,8 +629,10 @@ public static class NewTasking
             //            CopToTask.Pedestrian.Tasks.Wander();
             //        }
             //    }
-            //    TimesExecuted++;
+            //    Debugging.WriteToLog("Tasking", string.Format("     ReSet Idle: {0} CurrentTaskLoop: {1}", CopToTask.Pedestrian.Handle, CurrentTaskLoop));
             //}
+
+
         }
         private void Investigate()
         {
@@ -463,6 +706,24 @@ public static class NewTasking
                 }
             }
         }
+        private void Kill()
+        {
+            if (CurrentTaskLoop != "Kill")
+            {
+                Kill_Start();
+            }
+            else
+            {
+
+            }
+        }
+        private void Kill_Start()
+        {
+            ClearTasks();
+            CurrentTaskLoop = "Kill";
+            GameTimeLastTasked = Game.GameTime;
+            Debugging.WriteToLog("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", CopToTask.Pedestrian.Handle, CurrentTaskLoop));
+        }
         private void Chase()
         {
             if (CopToTask.WithinChaseDistance)
@@ -507,7 +768,10 @@ public static class NewTasking
                     {
                         if (CopToTask.DistanceToPlayer <= OnFootTaskDistance || CopToTask.RecentlySeenPlayer)
                         {
-                            FootChase();
+                            if (!WantedLevelScript.IsDeadlyChase)
+                                FootChase();
+                            else
+                                Kill();
                         }
                     }
                 }
@@ -535,6 +799,7 @@ public static class NewTasking
                 //    Debugging.WriteToLog("Tasking", string.Format("Surrender Bust Chase: {0}", CopToTask.Pedestrian.Handle));
                 //}
             }
+                        
         }
         private void VehicleChase()
         {
@@ -638,7 +903,7 @@ public static class NewTasking
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_LADDERS", CopToTask.Pedestrian, true);
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_DROP_FROM_HEIGHT", CopToTask.Pedestrian, true);
             CopToTask.Pedestrian.BlockPermanentEvents = true;
-           // CopToTask.Pedestrian.KeepTasks = true;
+            CopToTask.Pedestrian.KeepTasks = true;
             if (PlayerState.WantedLevel >= 2)
                 NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", CopToTask.Pedestrian, MoveRate);
             CurrentTaskLoop = "FootChase";
@@ -649,7 +914,16 @@ public static class NewTasking
         private void FootChase_Normal()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = true;
-            //CopToTask.Pedestrian.KeepTasks = true;
+            CopToTask.Pedestrian.KeepTasks = true;
+
+
+
+            //GET_SCRIPT_TASK_STATUS
+            //uses eScriptTaskHash
+            //maybe is just the status?
+            //Can be used to get the actual task assigned instead of using the subtask strings?
+
+
             if (CurrentSubTaskLoop != "Shoot" && (!PlayerState.IsBusted && !AttemptingToSurrender) && CopToTask.DistanceToPlayer <= 7f)
             {
                 Debugging.WriteToLog("Tasking", string.Format("     FootChase Shoot: {0}", CopToTask.Pedestrian.Handle));
@@ -868,7 +1142,6 @@ public static class NewTasking
             ReactToCrime,
         }
         private string CurrentTaskLoop;
-        private string CurrentSubTaskLoop;
         public PedExt CivilianToTask { get; set; }
         public uint GameTimeLastTasked { get; set; }
         public bool ShouldReportCrime
@@ -884,6 +1157,10 @@ public static class NewTasking
                     return false;
                 }
                 else if (!CivilianToTask.CrimesWitnessed.Any())
+                {
+                    return false;
+                }
+                else if (Respawn.RecentlyBribedPolice)
                 {
                     return false;
                 }
@@ -1010,7 +1287,8 @@ public static class NewTasking
                     //if (VehToReport != null)
                     //    VehToReport.WasReportedStolen = true;//even if it doesnt make it to us
 
-                    Investigation.InInvestigationMode = true;
+
+                   Investigation.InInvestigationMode = true;
 
                     if (CivilianToTask.EverSeenPlayer && CivilianToTask.ClosestDistanceToPlayer <= 20f)
                         Investigation.HavePlayerDescription = true;
@@ -1053,7 +1331,7 @@ public static class NewTasking
         {
             GTAWeapon myGun = Weapons.GetRandomRegularWeapon();
             if (myGun != null)
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+                CivilianToTask.Pedestrian.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
         }
     }  
 }

@@ -1,28 +1,21 @@
-﻿using ExtensionsMethods;
+﻿
 using Rage;
 using Rage.Native;
-using RAGENativeUI;
-using RAGENativeUI.Elements;
+
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
+
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using Extensions = ExtensionsMethods.Extensions;
 
 public static class General
 {
     public static readonly Random MyRand = new Random();
-    private static string ConfigFileName { get; set; } = "Plugins\\LosSantosRED\\Settings.xml";
+    private static string ConfigFileName { get; } = "Plugins\\LosSantosRED\\Settings.xml";
     public static List<Rage.Object> CreatedObjects { get; set; }
     public static List<Blip> CreatedBlips { get; set; }
     public static Settings MySettings { get; set; }
@@ -54,10 +47,10 @@ public static class General
     public static void Dispose()
     {
         IsRunning = false;
-        foreach (Blip myBlip in General.CreatedBlips)
+        foreach (Blip MyBlip in General.CreatedBlips)
         {
-            if (myBlip.Exists())
-                myBlip.Delete();
+            if (MyBlip.Exists())
+                MyBlip.Delete();
         }
     }
     public static void ReadAllConfigs()
@@ -74,8 +67,10 @@ public static class General
     {
         if(MySettings == null)
              MySettings = new Settings();
-        List<Settings> ToSerialize = new List<Settings>();
-        ToSerialize.Add(MySettings);
+        List<Settings> ToSerialize = new List<Settings>
+        {
+            MySettings
+        };
         SerializeParams(ToSerialize, ConfigFileName);
     }
     private static void ReadConfig()
@@ -87,8 +82,10 @@ public static class General
         else
         {
             MySettings = new Settings();
-            List<Settings> ToSerialize = new List<Settings>();
-            ToSerialize.Add(MySettings);
+            List<Settings> ToSerialize = new List<Settings>
+            {
+                MySettings
+            };
             SerializeParams(ToSerialize, ConfigFileName);
         }
     }

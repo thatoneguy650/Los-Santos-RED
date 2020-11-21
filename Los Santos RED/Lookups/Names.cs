@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 public static class Names
 {
-    private static string ConfigFileName = "Plugins\\LosSantosRED\\Names.xml";
+    private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Names.xml";
 
     public static List<PedName> NameList;
     public static void Initialize()
@@ -53,12 +53,8 @@ public static class Names
     public static void DefaultConfig()
     {
         NameList = new List<PedName>();
-        List<string> MaleNames;
-        List<string> FemaleNames;
-        List<string> LastNames;
-        List<string> UniSexNames;
 
-        MaleNames = new List<string>()
+        List<string> MaleNames = new List<string>()
         {
                 "Noah",
     "Liam",
@@ -1061,7 +1057,7 @@ public static class Names
     "Jaydon",
     "Antoine"
         };
-        FemaleNames = new List<string>()
+        List<string> FemaleNames = new List<string>()
                 {
             "Emma",
             "Olivia",
@@ -2064,7 +2060,7 @@ public static class Names
             "Sidney",
             "Alianna"
                 };
-        LastNames = new List<string>() {
+        List<string> LastNames = new List<string>() {
                 "Smith",
             "Johnson",
             "Williams",
@@ -3066,7 +3062,7 @@ public static class Names
             "Key",
             "Cookie"
             };
-        UniSexNames = new List<string> { "Casey",
+        List<string> UniSexNames = new List<string> { "Casey",
 "Riley",
 "Jessie",
 "Jackie",

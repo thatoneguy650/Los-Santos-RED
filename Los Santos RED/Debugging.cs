@@ -1,5 +1,4 @@
-﻿using ExtensionsMethods;
-using Rage;
+﻿using Rage;
 using Rage.Native;
 using System;
 using System.Collections;
@@ -7,9 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 public static class Debugging
@@ -19,7 +15,7 @@ public static class Debugging
     public static List<GameFiber> GameFibers;
 
     public static bool IsRunning { get; set; }
-    public static bool IsTesting { get; private set; }
+    public static bool IsTesting { get;  }
 
     public static void Initialize()
     {
@@ -31,19 +27,19 @@ public static class Debugging
     }
     public static void MainLoop()
     {
-        var stopwatch = new Stopwatch();
+        var Stopwatch = new Stopwatch();
         GameFiber.StartNew(delegate
         {
             try
             {
                 while (IsRunning)
                 {
-                    stopwatch.Start();
+                    Stopwatch.Start();
                     DebugLoop();
-                    stopwatch.Stop();
-                    if (stopwatch.ElapsedMilliseconds >= 16)
-                        WriteToLog("DebuggingTick", string.Format("Tick took {0} ms", stopwatch.ElapsedMilliseconds));
-                    stopwatch.Reset();
+                    Stopwatch.Stop();
+                    if (Stopwatch.ElapsedMilliseconds >= 16)
+                        WriteToLog("DebuggingTick", string.Format("Tick took {0} ms", Stopwatch.ElapsedMilliseconds));
+                    Stopwatch.Reset();
                     GameFiber.Yield();
                 }
             }
@@ -105,59 +101,76 @@ public static class Debugging
         {
             foreach (Cop MyCop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
             {
-                string TaskName = Tasking.GetCopTask(MyCop.Pedestrian.Handle);
+                //string TaskName = Tasking.GetCopTask(MyCop.Pedestrian.Handle);
+                //Color ToShow = Color.Black;
+
+                //if(TaskName == "FootChaseOnFoot - Goto")
+                //{
+                //    ToShow = Color.Red;
+                //}
+                //else if (TaskName == "FootChaseOnFoot - CarJack")
+                //{
+                //    ToShow = Color.Black;
+                //}
+                //else if (TaskName == "FootChaseOnFoot - Approach")
+                //{
+                //    ToShow = Color.White;
+                //}
+                //else if (TaskName == "FootChaseOnFoot - Arrest")
+                //{
+                //    ToShow = Color.Orange;
+                //}
+                //else if (TaskName == "FootChaseOnFoot - GotoShooting")
+                //{
+                //    ToShow = Color.Yellow;
+                //}
+
+
+                //else if (TaskName == "FootArrestOnFoot")
+                //{
+                //    ToShow = Color.Brown;
+                //}
+
+                //else if (TaskName == "VehicleInvestigation")
+                //{
+                //    ToShow = Color.Blue;
+                //}
+                //else if (TaskName == "Idle")
+                //{
+                //    ToShow = Color.Green;
+                //}
+                //else if (TaskName == "VehicleChaseWithVehicle")
+                //{
+                //    ToShow = Color.Yellow;
+                //}
+                //else if (TaskName == "VehicleChaseWithHelicopter")
+                //{
+                //    ToShow = Color.Orange;
+                //}
+                //else if (TaskName == "FootChaseWithVehicle")
+                //{
+                //    ToShow = Color.Red;
+                //}
+
+
+
                 Color ToShow = Color.Black;
-
-                if(TaskName == "FootChaseOnFoot - Goto")
-                {
-                    ToShow = Color.Red;
-                }
-                else if (TaskName == "FootChaseOnFoot - CarJack")
-                {
-                    ToShow = Color.Black;
-                }
-                else if (TaskName == "FootChaseOnFoot - Approach")
-                {
-                    ToShow = Color.White;
-                }
-                else if (TaskName == "FootChaseOnFoot - Arrest")
-                {
-                    ToShow = Color.Orange;
-                }
-                else if (TaskName == "FootChaseOnFoot - GotoShooting")
-                {
-                    ToShow = Color.Yellow;
-                }
-
-
-                else if (TaskName == "FootArrestOnFoot")
-                {
-                    ToShow = Color.Brown;
-                }
-
-                else if (TaskName == "VehicleInvestigation")
-                {
-                    ToShow = Color.Blue;
-                }
-                else if (TaskName == "Idle")
-                {
+                TaskStatus CurrentOne = MyCop.Pedestrian.Tasks.CurrentTaskStatus;
+                if (CurrentOne == TaskStatus.InProgress)
                     ToShow = Color.Green;
-                }
-                else if (TaskName == "VehicleChaseWithVehicle")
-                {
-                    ToShow = Color.Yellow;
-                }
-                else if (TaskName == "VehicleChaseWithHelicopter")
-                {
-                    ToShow = Color.Orange;
-                }
-                else if (TaskName == "FootChaseWithVehicle")
-                {
+                else if (CurrentOne == TaskStatus.Interrupted)
                     ToShow = Color.Red;
-                }
-                
+                else if (CurrentOne == TaskStatus.NoTask)
+                    ToShow = Color.White;
+                else if (CurrentOne == TaskStatus.None)
+                    ToShow = Color.Blue;
+                else if (CurrentOne == TaskStatus.NoTask)
+                    ToShow = Color.Purple;
+                else if (CurrentOne == TaskStatus.Preparing)
+                    ToShow = Color.Yellow;
 
-                if (ToShow != Color.Black)
+
+                //if (ToShow != Color.Black)
                     Rage.Debug.DrawArrowDebug(new Vector3(MyCop.Pedestrian.Position.X, MyCop.Pedestrian.Position.Y, MyCop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, ToShow);
 
 

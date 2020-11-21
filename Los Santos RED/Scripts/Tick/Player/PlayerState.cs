@@ -1,23 +1,9 @@
-﻿using ExtensionsMethods;
-using Rage;
-using Rage.Native;
-using RAGENativeUI;
-using RAGENativeUI.Elements;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using Extensions = ExtensionsMethods.Extensions;
+using ExtensionsMethods;
+using Rage;
+using Rage.Native;
 
 public static class PlayerState
 {
@@ -36,7 +22,7 @@ public static class PlayerState
     private static uint GameTimePoliceNoticedVehicleChange;
     private static uint GameTimeLastMoved;
     private static uint PoliceLastSeenVehicleHandle;
-    public static bool IsRunning { get;  set; }
+    public static bool IsRunning { get; set; }
     public static int TimesDied { get; set; }
     public static bool HandsAreUp { get; set; }
     public static int MaxWantedLastLife { get; set; }
@@ -50,29 +36,22 @@ public static class PlayerState
     public static List<VehicleExt> TrackedVehicles { get; private set; }
     public static VehicleExt CurrentVehicle { get; private set; }
     public static GTAWeapon CurrentWeapon { get; private set; }
+
     public static GTAWeapon.WeaponCategory CurrentWeaponCategory
     {
         get
         {
             if (CurrentWeapon != null)
                 return CurrentWeapon.Category;
-            else
-                return GTAWeapon.WeaponCategory.Unknown;
+            return GTAWeapon.WeaponCategory.Unknown;
         }
     }
-    public static Vector3 CurrentPosition
-    {
-        get
-        {
-            return Game.LocalPlayer.Character.Position;
-        }
-    }
+
+    public static Vector3 CurrentPosition => Game.LocalPlayer.Character.Position;
+
     public static bool IsJacking
     {
-        get
-        {
-            return isJacking;
-        }
+        get => isJacking;
         private set
         {
             if (isJacking != value)
@@ -82,12 +61,10 @@ public static class PlayerState
             }
         }
     }
+
     public static bool IsInVehicle
     {
-        get
-        {
-            return isInVehicle;
-        }
+        get => isInVehicle;
         private set
         {
             if (isInVehicle != value)
@@ -97,14 +74,13 @@ public static class PlayerState
             }
         }
     }
+
     public static bool IsInAutomobile { get; private set; }
     public static bool IsOnMotorcycle { get; private set; }
+
     public static bool IsAimingInVehicle
     {
-        get
-        {
-            return isAimingInVehicle;
-        }
+        get => isAimingInVehicle;
         private set
         {
             if (isAimingInVehicle != value)
@@ -114,12 +90,10 @@ public static class PlayerState
             }
         }
     }
+
     public static bool IsGettingIntoAVehicle
     {
-        get
-        {
-            return isGettingIntoVehicle;
-        }
+        get => isGettingIntoVehicle;
         private set
         {
             if (isGettingIntoVehicle != value)
@@ -129,12 +103,10 @@ public static class PlayerState
             }
         }
     }
+
     public static bool AreStarsGreyedOut
     {
-        get
-        {
-            return areStarsGreyedOut;
-        }
+        get => areStarsGreyedOut;
         private set
         {
             if (areStarsGreyedOut != value)
@@ -144,154 +116,139 @@ public static class PlayerState
             }
         }
     }
+
     public static bool IsNightTime { get; private set; }
+
     public static bool IsBreakingIntoCar
     {
         get
         {
             if (CarJacking.PlayerCarJacking || CarLockPicking.PlayerLockPicking)
                 return true;
-            else
-                return false;
+            return false;
         }
     }
-    public static bool IsNotWanted
-    {
-        get
-        {
-            return Game.LocalPlayer.WantedLevel == 0;
-        }
-    }
-    public static bool IsWanted
-    {
-        get
-        {
-            return Game.LocalPlayer.WantedLevel > 0;
-        }
-    }
-    public static int WantedLevel
-    {
-        get
-        {
-            return Game.LocalPlayer.WantedLevel;
-        }
-    }
+
+    public static bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
+
+    public static bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
+
+    public static int WantedLevel => Game.LocalPlayer.WantedLevel;
+
     public static bool WasJustJacking
     {
         get
         {
             if (GameTimeLastStartedJacking == 0)
                 return false;
-            else
-                return Game.GameTime - GameTimeLastStartedJacking >= 5000;
+            return Game.GameTime - GameTimeLastStartedJacking >= 5000;
         }
     }
+
     public static bool IsStationary
     {
         get
         {
             if (GameTimeLastMoved == 0)
                 return true;
-            else
-                return Game.GameTime - GameTimeLastMoved >= 1500;
+            return Game.GameTime - GameTimeLastMoved >= 1500;
         }
     }
+
     public static bool StarsRecentlyGreyedOut
     {
         get
         {
             if (GameTimeLastStarsGreyedOut == 0)
                 return false;
-            else
-                return Game.GameTime - GameTimeLastStarsGreyedOut <= 1500;
+            return Game.GameTime - GameTimeLastStarsGreyedOut <= 1500;
         }
     }
+
     public static bool StarsRecentlyActive
     {
         get
         {
             if (GameTimeLastStarsNotGreyedOut == 0)
                 return false;
-            else
-                return Game.GameTime - GameTimeLastStarsNotGreyedOut <= 1500;
+            return Game.GameTime - GameTimeLastStarsNotGreyedOut <= 1500;
         }
     }
+
     public static bool RecentlyDied
     {
         get
         {
             if (GameTimeLastDied == 0)
                 return false;
-            else
-                return Game.GameTime - GameTimeLastDied <= 5000;
+            return Game.GameTime - GameTimeLastDied <= 5000;
         }
     }
+
     public static bool RecentlyBusted
     {
         get
         {
             if (GameTimeLastBusted == 0)
                 return false;
-            else
-                return Game.GameTime - GameTimeLastBusted <= 5000;
+            return Game.GameTime - GameTimeLastBusted <= 5000;
         }
     }
+
     public static bool IsBustable
     {
         get
         {
             if (WantedLevelScript.HasBeenWantedFor <= 3000)
                 return true;
-            else if (Surrender.IsCommitingSuicide)
+            if (Surrender.IsCommitingSuicide)
                 return true;
-            else if (RecentlyBusted)
+            if (RecentlyBusted)
                 return true;
-            else
-                return true;
+            return true;
         }
     }
+
     public static bool PoliceRecentlyNoticedVehicleChange
     {
         get
         {
             if (GameTimePoliceNoticedVehicleChange == 0)
                 return false;
-            else
-                return Game.GameTime - GameTimePoliceNoticedVehicleChange <= 15000;
+            return Game.GameTime - GameTimePoliceNoticedVehicleChange <= 15000;
         }
     }
+
     public static List<VehicleExt> ReportedStolenVehicles
     {
-        get
-        {
-            return TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
-        }
+        get { return TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList(); }
     }
+
     public static bool IsHoldingEnter
     {
         get
         {
             if (GameTimeStartedHoldingEnter == 0)
                 return false;
-            else if (Game.GameTime - GameTimeStartedHoldingEnter >= 75)
+            if (Game.GameTime - GameTimeStartedHoldingEnter >= 75)
                 return true;
-            else
-                return false;
+            return false;
         }
     }
-    public static bool RecentlyShot(int Duration)
+
+    public static bool RecentlyShot(int duration)
     {
         if (GameTimeLastShot == 0)
             return false;
-        else if (PedSwap.RecentlyTakenOver)
+        if (PedSwap.RecentlyTakenOver)
             return false;
-        else if (Respawn.RecentlyRespawned)
+        if (Respawn.RecentlyRespawned)
             return false;
-        else if (Game.GameTime - GameTimeLastShot <= Duration)//15000
+        if (Game.GameTime - GameTimeLastShot <= duration) //15000
             return true;
-        else
-            return false;
+        return false;
     }
+
     public static void Initialize()
     {
         IsRunning = true;
@@ -318,19 +275,21 @@ public static class PlayerState
 
         Game.LocalPlayer.Character.CanBePulledOutOfVehicles = true;
 
-        IntPtr MyPtr = Game.GetScriptGlobalVariableAddress(4);//the script id for respawn_controller
-        Marshal.WriteInt32(MyPtr, 1);//setting it to 1 turns it off somehow?
+        var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
+        Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
         Game.TerminateAllScriptsWithName("respawn_controller");
     }
+
     public static void Dispose()
     {
         IsRunning = false;
 
-        IntPtr MyPtr = Game.GetScriptGlobalVariableAddress(4);//the script id for respawn_controller
-        Marshal.WriteInt32(MyPtr, 0);//setting it to 0 turns it on somehow?
+        var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
+        Marshal.WriteInt32(MyPtr, 0); //setting it to 0 turns it on somehow?
         Game.StartNewScript("respawn_controller");
         Game.StartNewScript("selector");
     }
+
     public static void Tick()
     {
         if (IsRunning)
@@ -342,12 +301,14 @@ public static class PlayerState
             TrackedVehiclesTick();
         }
     }
+
     private static void UpdatePlayer()
     {
         IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         if (IsInVehicle)
         {
-            if (Game.LocalPlayer.Character.IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter)
+            if (Game.LocalPlayer.Character.IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle ||
+                Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter)
                 IsInAutomobile = false;
             else
                 IsInAutomobile = true;
@@ -378,7 +339,7 @@ public static class PlayerState
         IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
         IsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
         IsAimingInVehicle = IsInVehicle && Game.LocalPlayer.IsFreeAiming;
-        WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
+        var PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
         CurrentWeapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (PlayerCurrentWeapon != null)
@@ -403,15 +364,13 @@ public static class PlayerState
         }
 
 
-
-
         IsNightTime = false;
-        int HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-        int MinuteOfDay = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
-        if (HourOfDay >= 20 || (HourOfDay >= 19 && MinuteOfDay >= 30) || HourOfDay <= 5)
+        var HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+        var MinuteOfDay = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
+        if (HourOfDay >= 20 || HourOfDay >= 19 && MinuteOfDay >= 30 || HourOfDay <= 5)
             IsNightTime = true;
-
     }
+
     private static void TurnOffRespawnScripts()
     {
         Game.DisableAutomaticRespawn = true;
@@ -420,6 +379,7 @@ public static class PlayerState
         NativeFunction.Natives.x1E0B4DC0D990A4E7(false);
         NativeFunction.Natives.x21FFB63D8C615361(true);
     }
+
     private static void StateTick()
     {
         if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -436,9 +396,11 @@ public static class PlayerState
         if (BeingArrested && !IsBusted)
             BustedEvent();
 
-        if (WantedLevel > MaxWantedLastLife) // The max wanted level i saw in the last life, not just right before being busted
+        if (WantedLevel > MaxWantedLastLife
+        ) // The max wanted level i saw in the last life, not just right before being busted
             MaxWantedLastLife = WantedLevel;
     }
+
     private static void AudioTick()
     {
         if (General.MySettings.Police.DisableAmbientScanner)
@@ -446,32 +408,38 @@ public static class PlayerState
         if (General.MySettings.Police.WantedMusicDisable)
             NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
     }
+
     private static void TrackedVehiclesTick()
     {
         TrackedVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
-        if (IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+        if (IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false)
+        ) //first check is cheaper, but second is required to verify
         {
             if (CurrentVehicle == null)
                 return;
 
             if (Police.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
             {
-                if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentVehicle.VehicleEnt.Handle && !CurrentVehicle.HasBeenDescribedByDispatch)
+                if (PoliceLastSeenVehicleHandle != 0 &&
+                    PoliceLastSeenVehicleHandle != CurrentVehicle.VehicleEnt.Handle &&
+                    !CurrentVehicle.HasBeenDescribedByDispatch)
                 {
                     GameTimePoliceNoticedVehicleChange = Game.GameTime;
-                    Debugging.WriteToLog("PlayerState", string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));
+                    Debugging.WriteToLog("PlayerState",
+                        string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));
                     //GameTimeLastReportedSpotted = Game.GameTime;
                     //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectChangedVehicle, 21) { IsAmbient = true, VehicleToReport = CurrentVehicle });
                 }
+
                 PoliceLastSeenVehicleHandle = CurrentVehicle.VehicleEnt.Handle;
             }
+
             if (Police.AnyCanRecognizePlayer)
-            {
                 if (WantedLevel > 0 && !AreStarsGreyedOut)
                     UpdateVehicleDescription(CurrentVehicle);
-            }
         }
     }
+
     private static void BustedEvent()
     {
         DiedInVehicle = IsInVehicle;
@@ -482,7 +450,7 @@ public static class PlayerState
         General.TransitionToSlowMo();
         HandsAreUp = false;
         Surrender.SetArrestedAnimation(Game.LocalPlayer.Character, false);
-        GameFiber HandleBusted = GameFiber.StartNew(delegate
+        var HandleBusted = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
             Menus.ShowBustedMenu();
@@ -491,6 +459,7 @@ public static class PlayerState
 
         Game.LocalPlayer.HasControl = false;
     }
+
     private static void DeathEvent()
     {
         Clock.PauseTime();
@@ -501,88 +470,75 @@ public static class PlayerState
         Game.LocalPlayer.Character.Health = 0;
         Game.LocalPlayer.Character.IsInvincible = true;
         General.TransitionToSlowMo();
-        GameFiber HandleDeath = GameFiber.StartNew(delegate
+        var HandleDeath = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
             Menus.ShowDeathMenu();
         }, "HandleDeath");
         Debugging.GameFibers.Add(HandleDeath);
     }
+
     private static void IsGettingIntoVehicleChanged()
     {
         if (IsGettingIntoAVehicle)
         {
-            Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
-            int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-            General.AttemptLockStatus(TargetVeh, (VehicleLockStatus)7);//Attempt to lock most car doors
-            if ((int)TargetVeh.LockStatus == 7)
-            {
-                CarLockPicking.PickLock(TargetVeh, SeatTryingToEnter);
-            }
+            var TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
+            var SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
+            General.AttemptLockStatus(TargetVeh, (VehicleLockStatus) 7); //Attempt to lock most car doors
+            if ((int) TargetVeh.LockStatus == 7) CarLockPicking.PickLock(TargetVeh, SeatTryingToEnter);
             if (TargetVeh != null && SeatTryingToEnter == -1)
             {
-                Ped Driver = TargetVeh.Driver;
-                if (Driver != null && Driver.IsAlive)
-                {
-                    CarJacking.CarJack(TargetVeh, Driver, SeatTryingToEnter);
-                }
+                var Driver = TargetVeh.Driver;
+                if (Driver != null && Driver.IsAlive) CarJacking.CarJack(TargetVeh, Driver, SeatTryingToEnter);
             }
         }
+
         isGettingIntoVehicle = IsGettingIntoAVehicle;
     }
+
     private static void IsInVehicleChanged()
     {
-        if (IsInVehicle)
-        {
-            UpdateStolenStatus();
-        }
-        Debugging.WriteToLog("ValueChecker", String.Format("IsInVehicle Changed to: {0}", IsInVehicle));
+        if (IsInVehicle) UpdateStolenStatus();
+        Debugging.WriteToLog("ValueChecker", string.Format("IsInVehicle Changed to: {0}", IsInVehicle));
     }
+
     private static void IsAimingInVehicleChanged()
     {
         if (IsAimingInVehicle)
-        {
             SetDriverWindow(true);
-        }
         else
-        {
             SetDriverWindow(false);
-        }
-        Debugging.WriteToLog("ValueChecker", String.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
+        Debugging.WriteToLog("ValueChecker", string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
     }
+
     private static void IsJackingChanged()
     {
-        if (IsJacking)
-        {
-            GameTimeLastStartedJacking = Game.GameTime;
-        }
-        Debugging.WriteToLog("ValueChecker", String.Format("IsJacking Changed to: {0}", IsJacking));
+        if (IsJacking) GameTimeLastStartedJacking = Game.GameTime;
+        Debugging.WriteToLog("ValueChecker", string.Format("IsJacking Changed to: {0}", IsJacking));
     }
+
     private static void AreStarsGreyedOutChanged()
     {
         if (AreStarsGreyedOut)
-        {
             GameTimeLastStarsGreyedOut = Game.GameTime;
-        }
         else
-        {
             GameTimeLastStarsNotGreyedOut = Game.GameTime;
-            //foreach (Cop Cop in PedList.CopPeds)
-            //{
-            //    Cop.AtWantedCenterDuringSearchMode = false;
-            //}
-        }
-        Debugging.WriteToLog("ValueChecker", String.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
+        //foreach (Cop Cop in PedList.CopPeds)
+        //{
+        //    Cop.AtWantedCenterDuringSearchMode = false;
+        //}
+        Debugging.WriteToLog("ValueChecker", string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
     }
+
     private static void TrackCurrentVehicle()
     {
-        Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-        bool IsStolen = true;
+        var CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
+        var IsStolen = true;
         if (PedSwap.OwnedCar != null && PedSwap.OwnedCar.Handle == CurrVehicle.Handle)
             IsStolen = false;
 
         CurrVehicle.IsStolen = IsStolen;
-        bool AmStealingCarFromPrerson = IsJacking;
+        var AmStealingCarFromPrerson = IsJacking;
         Ped PreviousOwner;
 
         if (CurrVehicle.HasDriver && CurrVehicle.Driver.Handle != Game.LocalPlayer.Character.Handle)
@@ -590,49 +546,45 @@ public static class PlayerState
         else
             PreviousOwner = CurrVehicle.GetPreviousPedOnSeat(-1);
 
-        if (PreviousOwner != null && PreviousOwner.DistanceTo2D(Game.LocalPlayer.Character) <= 20f && PreviousOwner.Handle != Game.LocalPlayer.Character.Handle)
-        {
-            AmStealingCarFromPrerson = true;
-        }
-        LicensePlate MyPlate = new LicensePlate(CurrVehicle.LicensePlate, (uint)CurrVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CurrVehicle), false);
-        VehicleExt MyNewCar = new VehicleExt(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding, PreviousOwner, IsStolen, MyPlate);
+        if (PreviousOwner != null && PreviousOwner.DistanceTo2D(Game.LocalPlayer.Character) <= 20f &&
+            PreviousOwner.Handle != Game.LocalPlayer.Character.Handle) AmStealingCarFromPrerson = true;
+        var MyPlate = new LicensePlate(CurrVehicle.LicensePlate, CurrVehicle.Handle,
+            NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CurrVehicle), false);
+        var MyNewCar = new VehicleExt(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding,
+            PreviousOwner, IsStolen, MyPlate);
         if (IsStolen && PreviousOwner.Exists())
         {
-            PedExt MyPrevOwner = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
-            if (MyPrevOwner != null)
-            {
-                MyPrevOwner.AddCrime(Crimes.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
-            }
+            var MyPrevOwner = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
+            if (MyPrevOwner != null) MyPrevOwner.AddCrime(Crimes.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
         }
+
         TrackedVehicles.Add(MyNewCar);
     }
+
     private static VehicleExt UpdateCurrentVehicle()
     {
-        if (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
-            return null;
-        else
+        if (!Game.LocalPlayer.Character.IsInAnyVehicle(false)) return null;
+
+        var CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
+        var ToReturn = TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
+        if (ToReturn == null)
         {
-            Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-            VehicleExt ToReturn = TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
-            if (ToReturn == null)
-            {
-                TrackCurrentVehicle();
-                return TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
-            }
-            else
-            {
-                ToReturn.SetAsEntered();
-                return ToReturn;
-            }
+            TrackCurrentVehicle();
+            return TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
         }
+
+        ToReturn.SetAsEntered();
+        return ToReturn;
     }
+
     private static void SetDriverWindow(bool RollDown)
     {
         if (Game.LocalPlayer.Character.CurrentVehicle == null)
             return;
 
-        bool DriverWindowIntact = NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0);
-        VehicleExt MyVehicle = PlayerState.CurrentVehicle;
+        var DriverWindowIntact =
+            NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0);
+        var MyVehicle = CurrentVehicle;
         if (DriverWindowIntact)
         {
             if (RollDown)
@@ -649,46 +601,46 @@ public static class PlayerState
         else
         {
             if (!RollDown)
-            {
                 if (MyVehicle != null && MyVehicle.ManuallyRolledDriverWindowDown)
                 {
                     MyVehicle.ManuallyRolledDriverWindowDown = false;
                     NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
                 }
-            }
         }
     }
+
     public static void UpdateStolenStatus()
     {
-        VehicleExt MyVehicle = UpdateCurrentVehicle();
+        var MyVehicle = UpdateCurrentVehicle();
         if (MyVehicle == null || MyVehicle.IsStolen)
             return;
 
         if (PedSwap.OwnedCar == null || MyVehicle.VehicleEnt.Handle != PedSwap.OwnedCar.Handle)
-        {
             MyVehicle.IsStolen = true;
-        }
     }
+
     public static void SetPlayerToLastWeapon()
     {
         if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeaponHash != 0)
         {
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash, true);
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint) LastWeaponHash,
+                true);
             Debugging.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
         }
     }
+
     public static void DisplayPlayerNotification()
     {
-        string NotifcationText = "Warrants: ~g~None~s~";
+        var NotifcationText = "Warrants: ~g~None~s~";
         if (WantedLevelScript.CurrentCrimes.CommittedAnyCrimes)
             NotifcationText = "Wanted For:" + WantedLevelScript.CurrentCrimes.PrintCrimes();
 
-        VehicleExt MyCar = UpdateCurrentVehicle();
+        var MyCar = UpdateCurrentVehicle();
         if (MyCar != null && !MyCar.IsStolen)
         {
-            string Make = Vehicles.MakeName(MyCar);
-            string Model = Vehicles.MakeName(MyCar);
-            string VehicleName= "";
+            var Make = Vehicles.MakeName(MyCar);
+            var Model = Vehicles.MakeName(MyCar);
+            var VehicleName = "";
             if (Make != "")
                 VehicleName = Make;
             if (Model != "")
@@ -697,13 +649,17 @@ public static class PlayerState
             NotifcationText += string.Format("~n~Vehicle: ~p~{0}~s~", VehicleName);
             NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", MyCar.CarPlate.PlateNumber);
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PedSwap.SuspectName), NotifcationText);
+
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",
+            string.Format("~y~{0}", PedSwap.SuspectName), NotifcationText);
     }
+
     public static void GivePlayerRandomWeapon(GTAWeapon.WeaponCategory RandomWeaponCategory)
     {
-        GTAWeapon myGun = Weapons.GetRandomRegularWeaponByCategory(RandomWeaponCategory);
+        var myGun = Weapons.GetRandomRegularWeaponByCategory(RandomWeaponCategory);
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
     }
+
     private static void UpdateVehicleDescription(VehicleExt MyVehicle)
     {
         if (MyVehicle.VehicleEnt.Exists())
@@ -713,10 +669,12 @@ public static class PlayerState
         if (MyVehicle.IsStolen && !MyVehicle.WasReportedStolen)
             MyVehicle.WasReportedStolen = true;
     }
+
     public static void PlayerShotArtificially()
     {
         GameTimeLastShot = Game.GameTime;
     }
+
     public static void ResetState(bool IncludeMaxWanted)
     {
         IsDead = false;
@@ -726,8 +684,9 @@ public static class PlayerState
         TimesDied = 0;
         LastWeaponHash = 0;
         if (IncludeMaxWanted)
-            MaxWantedLastLife = 0;//this might be a problem in here and might need to be removed
+            MaxWantedLastLife = 0; //this might be a problem in here and might need to be removed
     }
+
     public static void StartManualArrest()
     {
         BeingArrested = true;

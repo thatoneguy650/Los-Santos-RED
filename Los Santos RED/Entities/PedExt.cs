@@ -37,7 +37,7 @@ public class PedExt
     public bool WasMarkedNonPersistent { get; set; } = false;
     public bool HasBeenMugged { get; set; } = false;
     public bool WillFight { get; set; } = false;
-
+    public int LastSeatIndex { get; set; }
 
     //Temp Crapola
     public bool IsWaitingAtTrafficLight { get; set; } = false;
@@ -178,6 +178,7 @@ public class PedExt
             if (IsInVehicle)
             {
                 IsDriver = Pedestrian.IsDriver();
+                LastSeatIndex = Pedestrian.SeatIndex;
                 IsInHelicopter = Pedestrian.IsInHelicopter;
                 if (!IsInHelicopter)
                 {

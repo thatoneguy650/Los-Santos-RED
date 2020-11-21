@@ -180,7 +180,7 @@ public static class Dispatch
         get
         {
             if (PlayerState.IsWanted)
-                return 150f;
+                return 125f;
             else
                 return 1000f;
         }
@@ -196,7 +196,7 @@ public static class Dispatch
         }
     }
     private static uint MinimumExistingTime { get; set; } = 30000;
-    private static float MinimumDeleteDistance{ get; set; } = 150f;//350f
+    private static float MinimumDeleteDistance{ get; set; } = 125f;//350f
 
     private static int PercentagePedestrainOfficers { get; set; } = 5;
     public static bool IsRunning { get; set; }

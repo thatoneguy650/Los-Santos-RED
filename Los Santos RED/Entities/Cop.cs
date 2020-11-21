@@ -2,26 +2,18 @@
 using ExtensionsMethods;
 using Rage;
 using Rage.Native;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public class Cop : PedExt
 {
-    public bool WasModSpawned { get; set; } = false;
-    public bool WasRandomSpawnDriver { get; set; } = false;
-    public bool WasInvestigationSpawn { get; set; } = false;
-    public bool IsBikeCop { get; set; } = false;
-    public bool IsPursuitPrimary { get; set; } = false;
-    public bool IsSetLessLethal { get; set; } = false;
-    public bool IsSetUnarmed { get; set; } = false;
-    public bool IsSetDeadly { get; set; } = false;
+    public bool WasModSpawned { get; set; }
+    public bool WasRandomSpawnDriver { get; set; }
+    public bool IsBikeCop { get; set; }
+    public bool IsSetLessLethal { get; set; }
+    public bool IsSetUnarmed { get; set; }
+    public bool IsSetDeadly { get; set; }
     public uint GameTimeLastWeaponCheck { get; set; }
-    public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
     public uint GameTimeLastRadioed { get; set; }
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false,true);
@@ -29,8 +21,6 @@ public class Cop : PedExt
     public GTAWeapon.WeaponVariation PistolVariation { get; set; }
     public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
     public Agency AssignedAgency { get; set; } = new Agency();
-   // public bool AtWantedCenterDuringSearchMode { get; set; } = false;
-    public bool AtWantedCenterDuringChase { get; set; } = false;
     public Zone CurrentZone
     {
         get
@@ -99,7 +89,7 @@ public class Cop : PedExt
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 0);
         if (!(Pedestrian.Inventory.EquippedWeapon == null))
         {
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, (uint)2725352035, true); //Unequip weapon so you don't get shot
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, 2725352035, true); //Unequip weapon so you don't get shot
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
         }
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
@@ -229,11 +219,11 @@ public class Cop : PedExt
                 return false;
         }
     }
-    public Cop(Ped _Pedestrian, int _Health, Agency _Agency) : base(_Pedestrian, _Health)
+    public Cop(Ped pedestrian, int health, Agency agency) : base(pedestrian, health)
     {
         IsCop = true;
-        Health = _Health;
-        AssignedAgency = _Agency;
+        Health = health;
+        AssignedAgency = agency;
         SetAccuracyAndSightRange();
     }
 }

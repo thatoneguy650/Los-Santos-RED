@@ -21,20 +21,8 @@ using Extensions = ExtensionsMethods.Extensions;
 
 public static class ControlScript
 {
-    private static uint GameTimeLastChangedMap;
-
     private static WantedLevelScript.PoliceState HandsUpPreviousPoliceState;
     public static bool IsRunning { get; set; }
-    public static bool RecentlyChangedMap
-    {
-        get
-        {
-            if (Game.GameTime - GameTimeLastChangedMap <= 2000)
-                return true;
-            else
-                return false;
-        }
-    }
     public static void Initialize()
     {
         IsRunning = true;
