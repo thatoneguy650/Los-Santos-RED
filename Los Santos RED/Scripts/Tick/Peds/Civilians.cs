@@ -39,7 +39,7 @@ public static class Civilians
     private static void UpdateRecognition()
     {
         AnyCanSeePlayer = PedList.Civilians.Any(x => x.CanSeePlayer);
-        AnyCanHearPlayer = PedList.Civilians.Any(x => x.CanHearPlayerShooting);
+        AnyCanHearPlayer = PedList.Civilians.Any(x => x.WithinWeaponsAudioRange);
         AnyCanRecognizePlayer = PedList.Civilians.Any(x => x.CanRecognizePlayer);
     }
 }

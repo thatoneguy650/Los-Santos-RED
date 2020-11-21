@@ -236,6 +236,20 @@ public static class PlayerState
                 return Game.GameTime - GameTimeLastBusted <= 5000;
         }
     }
+    public static bool IsBustable
+    {
+        get
+        {
+            if (WantedLevelScript.HasBeenWantedFor <= 3000)
+                return true;
+            else if (Surrender.IsCommitingSuicide)
+                return true;
+            else if (RecentlyBusted)
+                return true;
+            else
+                return true;
+        }
+    }
     public static bool PoliceRecentlyNoticedVehicleChange
     {
         get
@@ -270,6 +284,8 @@ public static class PlayerState
         if (GameTimeLastShot == 0)
             return false;
         else if (PedSwap.RecentlyTakenOver)
+            return false;
+        else if (Respawn.RecentlyRespawned)
             return false;
         else if (Game.GameTime - GameTimeLastShot <= Duration)//15000
             return true;
@@ -551,10 +567,10 @@ public static class PlayerState
         else
         {
             GameTimeLastStarsNotGreyedOut = Game.GameTime;
-            foreach (Cop Cop in PedList.CopPeds)
-            {
-                Cop.AtWantedCenterDuringSearchMode = false;
-            }
+            //foreach (Cop Cop in PedList.CopPeds)
+            //{
+            //    Cop.AtWantedCenterDuringSearchMode = false;
+            //}
         }
         Debugging.WriteToLog("ValueChecker", String.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
     }
@@ -712,7 +728,7 @@ public static class PlayerState
         if (IncludeMaxWanted)
             MaxWantedLastLife = 0;//this might be a problem in here and might need to be removed
     }
-    public static void StartArrestManual()
+    public static void StartManualArrest()
     {
         BeingArrested = true;
         if (!IsBusted)

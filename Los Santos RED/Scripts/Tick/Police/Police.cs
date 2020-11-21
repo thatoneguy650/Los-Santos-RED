@@ -104,7 +104,7 @@ public static class Police
     private static void UpdateRecognition()
     {
         AnyCanSeePlayer = PedList.CopPeds.Any(x => x.CanSeePlayer);
-        AnyCanHearPlayerShooting = PedList.CopPeds.Any(x => x.CanHearPlayerShooting);
+        AnyCanHearPlayerShooting = PedList.CopPeds.Any(x => x.WithinWeaponsAudioRange);
 
         if (AnyCanSeePlayer)
             AnyRecentlySeenPlayer = true;

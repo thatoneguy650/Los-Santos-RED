@@ -96,6 +96,11 @@ public static class Investigation
             InvestigationTick();
         }
     }
+    public static void Reset()
+    {
+        InInvestigationMode = false;
+        HavePlayerDescription = false;
+    }
     private static void InvestigationTick()
     {
         if (PlayerState.IsWanted)

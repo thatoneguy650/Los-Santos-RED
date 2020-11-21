@@ -39,6 +39,13 @@ public static class Crimes
     public static Crime RunningARedLight { get; set; }
     public static Crime DrunkDriving { get; set; }
     public static Crime SuspiciousActivity { get; set; }
+    public static bool IsViolatingAnyCrimes
+    {
+        get
+        {
+            return CrimeList.Any(x => x.IsCurrentlyViolating);
+        }
+    }
     public static List<Crime> CurrentlyViolatingCanBeReportedByCivilians
     {
         get
@@ -46,14 +53,14 @@ public static class Crimes
             return CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
         }
     }
-    public static bool CiviliansCanReport
+    public static bool PlayerViolatingInFrontOfCivilians//whatever fuck name it something
     {
         get
         {
             return CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians);
         }
     }
-    public static bool CiviliansCanAudioReport
+    public static bool PlayerViolatingAudioCivilians//whatever idk name it something fuck
     {
         get
         {
@@ -752,15 +759,21 @@ public class CriminalHistory
         else
         {
             if (ByPolice)
+            {
                 CrimesObserved.Add(new CrimeEvent(CrimeInstance));
+            }
             else
+            {
+                Debugging.WriteToLog("Crimes", string.Format("Crime Reported: {0}", CrimeInstance.Name));
                 CrimesReported.Add(new CrimeEvent(CrimeInstance));
+            }
         }
         if (ByPolice && PlayerState.WantedLevel != CrimeInstance.ResultingWantedLevel)
         {
             WantedLevelScript.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
         }
         PoliceScanner.AnnounceCrime(CrimeInstance, new DispatchCallIn(!PlayerState.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved ,Speed = Game.LocalPlayer.Character.Speed});
+        
     }
 
 }

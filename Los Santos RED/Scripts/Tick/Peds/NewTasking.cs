@@ -5,24 +5,17 @@ using System.Linq;
 
 public static class NewTasking
 {
-    private static uint GameTimeLastBusted;
-    private static bool SurrenderBust;
-    private static uint TimesExecuted;
     private static List<TaskableCop> TaskableCops;
     private static List<TaskableCivilian> TaskableCivilians;
     public static bool IsRunning { get; set; }
-    private static bool IsBustTimeOut
+    public static bool HasCopsInvestigating
     {
         get
         {
-            if (WantedLevelScript.HasBeenWantedFor <= 3000)
+            if (TaskableCops.Any(x => x.CopToTask.Pedestrian.Exists() && x.IsInvestigating))
                 return true;
-            else if (Surrender.IsCommitingSuicide)
-                return true;
-            else if (Game.GameTime - GameTimeLastBusted >= 10000)
-                return false;
             else
-                return true;
+                return false;
         }
     }
     public static void Initialize()
@@ -67,6 +60,10 @@ public static class NewTasking
             foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()))
             {
                 Cop.RunCurrentActivity();
+                if(Cop.ShouldBustPlayer)
+                {
+                    PlayerState.StartManualArrest();
+                }
             }
 
             foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()))
@@ -74,11 +71,9 @@ public static class NewTasking
                 Civilian.RunCurrentActivity();
             }
 
-            if (SurrenderBust && !IsBustTimeOut)
-                SurrenderBustEvent();
         }
     }
-    public static void PrintActivities()
+    public static void PrintActivities()//Debugging Proc
     {
         Debugging.WriteToLog("Tasking", "================================================");
         foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()))
@@ -87,7 +82,7 @@ public static class NewTasking
         }
         Debugging.WriteToLog("Tasking", "================================================");
     }
-    public static void UnTask()
+    public static void UnTask()//Debugging Proc
     {
         Debugging.WriteToLog("Tasking", "================================================");
         foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()))
@@ -95,29 +90,6 @@ public static class NewTasking
             Cop.ClearTasks();
         }
         Debugging.WriteToLog("Tasking", "================================================");
-    }
-    private static void SurrenderBustEvent()
-    {
-        if (Game.LocalPlayer.WantedLevel == 0)
-        {
-            SetSurrenderBust(false, "Reset SurrenderBustEvent Wanted = 0");
-            SurrenderBust = false;
-        }
-        else
-        {
-            PlayerState.StartArrestManual();
-            WantedLevelScript.CurrentPoliceState = WantedLevelScript.PoliceState.ArrestedWait;
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
-            PlayerState.HandsAreUp = false;
-            SetSurrenderBust(false, "Reset SurrenderBustEvent");
-            GameTimeLastBusted = Game.GameTime;
-            Debugging.WriteToLog("Tasking", "SurrenderBust Executed");
-        }
-    }
-    private static void SetSurrenderBust(bool ValueToSet, string DebugReason)
-    {
-        SurrenderBust = ValueToSet;
-        Debugging.WriteToLog("Tasking", string.Format("Set Surrender Bust Reason: {0}", DebugReason));
     }
     private class TaskableCop
     {
@@ -138,6 +110,20 @@ public static class NewTasking
                 else
                 {
                     return true;
+                }
+            }
+        }
+        public bool IsInvestigating
+        {
+            get
+            {
+                if (CurrentTaskLoop == "Investigation")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
         }
@@ -169,7 +155,7 @@ public static class NewTasking
                     return false;
             }
         }
-        private bool ShouldBustPlayer
+        public bool ShouldBustPlayer
         {
             get
             {
@@ -177,7 +163,7 @@ public static class NewTasking
                 {
                     return false;
                 }
-                else if (IsBustTimeOut)
+                else if (!PlayerState.IsBustable)
                 {
                     return false;
                 }
@@ -367,7 +353,6 @@ public static class NewTasking
                 }
                 CurrentTaskLoop = "Idle";
                 GameTimeLastTasked = Game.GameTime;
-                TimesExecuted = 0;
                 Debugging.WriteToLog("Tasking", string.Format("     Started Idle: {0} Old CurrentTaskLoop: {1}", CopToTask.Pedestrian.Handle, CurrentTaskLoop));
             }
         }
@@ -544,8 +529,11 @@ public static class NewTasking
                         GoToLastSeen();
                     }
                 }
-                if (ShouldBustPlayer)
-                    SetSurrenderBust(true, string.Format("Chase: {0}", CopToTask.Pedestrian.Handle));
+                //if (ShouldBustPlayer)
+                //{
+                //    SurrenderBust = true;
+                //    Debugging.WriteToLog("Tasking", string.Format("Surrender Bust Chase: {0}", CopToTask.Pedestrian.Handle));
+                //}
             }
         }
         private void VehicleChase()
@@ -744,7 +732,7 @@ public static class NewTasking
             Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (!NearWantedCenterThisWanted)
             {
-                if (CurrentTaskedPosition != WantedCenter)
+                if (CurrentTaskedPosition.DistanceTo2D( WantedCenter) >= 5f)
                 {
                     if (CopToTask.IsInVehicle)
                     {
@@ -822,7 +810,7 @@ public static class NewTasking
                 }
                 else
                 {
-                    CopToTask.SetTazer();
+                    CopToTask.SetLessLethal();
                 }
             }
         }
@@ -871,15 +859,40 @@ public static class NewTasking
     }
     private class TaskableCivilian
     {
+        private uint GameTimeLastReportedCrime { get; set; }
+        private uint GameTimeLastReactedToCrime { get; set; }
+        private bool HasSeenPlayerCommitCrime { get; set; } = false;
         private enum Activities
         {
             Idle,
             ReactToCrime,
-            Fight,
         }
         private string CurrentTaskLoop;
+        private string CurrentSubTaskLoop;
         public PedExt CivilianToTask { get; set; }
         public uint GameTimeLastTasked { get; set; }
+        public bool ShouldReportCrime
+        {
+            get
+            {
+                if(GameTimeLastReactedToCrime == 0)
+                {
+                    return false;
+                }
+                else if (Game.GameTime - GameTimeLastReactedToCrime < 15000)
+                {
+                    return false;
+                }
+                else if (!CivilianToTask.CrimesWitnessed.Any())
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
         public string DebugTaskState
         {
             get
@@ -901,47 +914,146 @@ public static class NewTasking
                 }
                 else
                 {
-                    if (CivilianToTask.CanRecognizePlayer && Crimes.CiviliansCanReport)
+                    if(HasSeenPlayerCommitCrime)
                     {
                         return Activities.ReactToCrime;
                     }
-                    else if (CivilianToTask.CanHearPlayerShooting && Crimes.CiviliansCanAudioReport)
+                    else if(CivilianToTask.CanRecognizePlayer && Crimes.PlayerViolatingInFrontOfCivilians)
                     {
                         return Activities.ReactToCrime;
-                    }     
+                    }
+                    else if (CivilianToTask.WithinWeaponsAudioRange && Crimes.PlayerViolatingAudioCivilians)
+                    {
+                        return Activities.ReactToCrime;
+                    }
                 }
                 return Activities.Idle;
             }
         }
         public void RunCurrentActivity()
         {
-            if(CurrentActivity == Activities.ReactToCrime)
+            if  (CurrentActivity == Activities.ReactToCrime)
             {
                 ReactToCrime();
                 return;
             }
-            else if  (CurrentActivity == Activities.Idle)
+            else if (CurrentActivity == Activities.Idle)
             {
 
             }
             CurrentTaskLoop = "None";
+            CivilianToTask.Pedestrian.BlockPermanentEvents = false;
+            CivilianToTask.Pedestrian.KeepTasks = false;
         }
         private void ReactToCrime()
         {
-            if (CurrentTaskLoop != "Flee")
+            if (CurrentTaskLoop != "ReactToCrime")
             {
                 if (CivilianToTask.Pedestrian.Exists())
                 {
-                    CivilianToTask.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 100f, -1);
-                    Debugging.WriteToLog("Tasking", string.Format("     Started Flee: {0} Old CurrentTaskLoop: {1}", CivilianToTask.Pedestrian.Handle, CurrentTaskLoop));
+                    if (CivilianToTask.WillFight)
+                    {
+                        GiveWeapon();
+                        NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", CivilianToTask.Pedestrian, 5, true);//BF_CanFightArmedPedsWhenNotArmed = 5,
+                        CivilianToTask.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                        CivilianToTask.Pedestrian.KeepTasks = true;
+                    }
+                    else if (CivilianToTask.WillCallPolice)
+                    {
+                        AddCurrentCrimes();
+                        unsafe
+                        {
+                            int lol = 0;
+                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, 10000);
+                            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 10000);
+                            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, -1);
+                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", CivilianToTask.Pedestrian, lol);
+                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        }
+                        CivilianToTask.Pedestrian.IsPersistent = true;
+                    }
+                    else
+                    {
+                        CivilianToTask.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 100f, -1);
+                    }
+                    HasSeenPlayerCommitCrime = true;
+                    GameTimeLastReactedToCrime = Game.GameTime;
+                    Debugging.WriteToLog("Tasking", string.Format("     Started ReactToCrime: {0} Old CurrentTaskLoop: {1} Fight: {2} CallPolice: {3}", CivilianToTask.Pedestrian.Handle, CurrentTaskLoop, CivilianToTask.WillFight,CivilianToTask.WillCallPolice));
                 }
             }
             else
             {
+                if(CivilianToTask.WillFight)
+                {
 
+                }
+                else if (CivilianToTask.WillCallPolice && ShouldReportCrime)
+                {
+                    ReportCrime();
+                }
             }
-            CurrentTaskLoop = "Flee";
+            CurrentTaskLoop = "ReactToCrime";
             GameTimeLastTasked = Game.GameTime;
+        }
+        private void ReportCrime()
+        {
+            if (CivilianToTask.Pedestrian.Exists() && CivilianToTask.Pedestrian.IsAlive && !CivilianToTask.Pedestrian.IsRagdoll)
+            {
+                if (PlayerState.IsNotWanted)
+                {
+                    WantedLevelScript.CurrentCrimes.AddCrime(CivilianToTask.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, CivilianToTask.PositionLastSeenCrime, null, null);
+                    
+                    //WANT TO READD THIS IN TEH FUTURE, NEED TO PASS CAR
+                    //if (VehToReport != null)
+                    //    VehToReport.WasReportedStolen = true;//even if it doesnt make it to us
+
+                    Investigation.InInvestigationMode = true;
+
+                    if (CivilianToTask.EverSeenPlayer && CivilianToTask.ClosestDistanceToPlayer <= 20f)
+                        Investigation.HavePlayerDescription = true;
+
+                    if (CivilianToTask.EverSeenPlayer)
+                        Investigation.InvestigationPosition = CivilianToTask.PositionLastSeenPlayer;
+                    else if (CivilianToTask.PositionLastSeenCrime != Vector3.Zero)
+                        Investigation.InvestigationPosition = CivilianToTask.PositionLastSeenCrime;
+                    else
+                        Investigation.InvestigationPosition = CivilianToTask.Pedestrian.Position;
+                }
+                else
+                {
+                    if (PlayerState.AreStarsGreyedOut)
+                    {
+                        Vector3 UpdatedPosition;
+                        if (CivilianToTask.EverSeenPlayer)
+                            UpdatedPosition = CivilianToTask.PositionLastSeenPlayer;
+                        else if (CivilianToTask.PositionLastSeenCrime != Vector3.Zero && CivilianToTask.PositionLastSeenCrime != Vector3.Zero)
+                            UpdatedPosition = CivilianToTask.PositionLastSeenCrime;
+                        else
+                            UpdatedPosition = CivilianToTask.Pedestrian.Position;
+
+                        Police.PlaceLastSeenPlayer = UpdatedPosition;
+                    }
+                }
+                CivilianToTask.CrimesWitnessed.Clear();
+                CivilianToTask.Pedestrian.IsPersistent = false;
+                GameTimeLastReportedCrime = Game.GameTime;
+            }
+        }
+        private void AddCurrentCrimes()
+        {
+            foreach(Crime CurrentlyViolating in Crimes.CurrentlyViolatingCanBeReportedByCivilians)
+            {
+                CivilianToTask.AddCrime(CurrentlyViolating, Game.LocalPlayer.Character.Position);
+            }
+        }
+        private void GiveWeapon()
+        {
+            GTAWeapon myGun = Weapons.GetRandomRegularWeapon();
+            if (myGun != null)
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
         }
     }  
 }

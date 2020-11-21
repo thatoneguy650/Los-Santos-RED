@@ -368,6 +368,7 @@ public static class Respawn
             PlayerState.MaxWantedLastLife = 0;
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
             PedWounds.Reset();
+            Investigation.Reset();
         }
 
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;

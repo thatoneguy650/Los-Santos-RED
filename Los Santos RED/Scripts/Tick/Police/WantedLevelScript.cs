@@ -210,6 +210,9 @@ public static class WantedLevelScript
         if (PlayerState.WantedLevel == 0)
             CurrentPoliceState = PoliceState.Normal;//Default state
 
+        if (PlayerState.IsBusted)
+            CurrentPoliceState = PoliceState.ArrestedWait;
+
         if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
             return;
 

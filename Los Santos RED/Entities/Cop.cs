@@ -17,20 +17,19 @@ public class Cop : PedExt
     public bool WasInvestigationSpawn { get; set; } = false;
     public bool IsBikeCop { get; set; } = false;
     public bool IsPursuitPrimary { get; set; } = false;
-    public bool IsSetTazer { get; set; } = false;
+    public bool IsSetLessLethal { get; set; } = false;
     public bool IsSetUnarmed { get; set; } = false;
     public bool IsSetDeadly { get; set; } = false;
     public uint GameTimeLastWeaponCheck { get; set; }
     public uint GameTimeLastTask { get; set; }
     public uint GameTimeLastSpoke { get; set; }
     public uint GameTimeLastRadioed { get; set; }
-    public bool HasItemsToRadioIn { get; set; }
     public GTAWeapon IssuedPistol { get; set; } = new GTAWeapon("weapon_pistol", 60, GTAWeapon.WeaponCategory.Pistol, 1, 453432689, true,true,false,true);
     public GTAWeapon IssuedHeavyWeapon { get; set; }
     public GTAWeapon.WeaponVariation PistolVariation { get; set; }
     public GTAWeapon.WeaponVariation HeavyVariation { get; set; }
     public Agency AssignedAgency { get; set; } = new Agency();
-    public bool AtWantedCenterDuringSearchMode { get; set; } = false;
+   // public bool AtWantedCenterDuringSearchMode { get; set; } = false;
     public bool AtWantedCenterDuringChase { get; set; } = false;
     public Zone CurrentZone
     {
@@ -104,7 +103,7 @@ public class Cop : PedExt
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
         }
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
-        IsSetTazer = false;
+        IsSetLessLethal = false;
         IsSetUnarmed = true;
         IsSetDeadly = false;
         GameTimeLastWeaponCheck = Game.GameTime;
@@ -132,14 +131,14 @@ public class Cop : PedExt
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, true);//can do drivebys
 
-        IsSetTazer = false;
+        IsSetLessLethal = false;
         IsSetUnarmed = false;
         IsSetDeadly = true;
         GameTimeLastWeaponCheck = Game.GameTime;
     }
-    public void SetTazer()
+    public void SetLessLethal()
     {
-        if (!Pedestrian.Exists() || (IsSetTazer && !NeedsWeaponCheck))
+        if (!Pedestrian.Exists() || (IsSetLessLethal && !NeedsWeaponCheck))
             return;
 
         if (General.MySettings.Police.OverridePoliceAccuracy)
@@ -155,7 +154,7 @@ public class Cop : PedExt
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
-        IsSetTazer = true;
+        IsSetLessLethal = true;
         IsSetUnarmed = false;
         IsSetDeadly = false;
         GameTimeLastWeaponCheck = Game.GameTime;

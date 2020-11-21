@@ -62,7 +62,7 @@ public static class Dispatch
         {
             if (GameTimeCheckedSpawn == 0)
                 return true;
-            else if (Investigation.InInvestigationMode && !Tasking.HasCopsInvestigating)
+            else if (Investigation.InInvestigationMode && !NewTasking.HasCopsInvestigating)
                 return true;
             else if (Game.GameTime - GameTimeCheckedSpawn >= TimeBetweenSpawn)
                 return true;
@@ -175,6 +175,16 @@ public static class Dispatch
                 return 1000f;
         }
     }
+    private static float DistanceToDeleteOnFoot
+    {
+        get
+        {
+            if (PlayerState.IsWanted)
+                return 150f;
+            else
+                return 1000f;
+        }
+    }
     private static bool NeedToSpawn
     {
         get
@@ -186,7 +196,8 @@ public static class Dispatch
         }
     }
     private static uint MinimumExistingTime { get; set; } = 30000;
-    private static float MinimumDeleteDistance { get; set; } = 350f;
+    private static float MinimumDeleteDistance{ get; set; } = 150f;//350f
+
     private static int PercentagePedestrainOfficers { get; set; } = 5;
     public static bool IsRunning { get; set; }
     public static void Initialize()
@@ -273,27 +284,24 @@ public static class Dispatch
         {
             foreach(Cop OutOfRangeCop in PedList.CopPeds.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
             {
-                if(!OutOfRangeCop.AssignedAgency.CanSpawn)
+                if (!OutOfRangeCop.AssignedAgency.CanSpawn)
                 {
-                   // Debugging.WriteToLog("Dispatch", string.Format("  Agency Delete {0}", OutOfRangeCop.Pedestrian.Handle));
                     PoliceSpawning.DeleteCop(OutOfRangeCop);
                 }
-
-                //Need to log which one of these i did
-                //seems to be deletying too many people
-                if(OutOfRangeCop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
+                if (OutOfRangeCop.IsInVehicle && OutOfRangeCop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
                 {
-                   // Debugging.WriteToLog("Dispatch", string.Format("  Distance Delete {0}", OutOfRangeCop.Pedestrian.Handle));
+                    PoliceSpawning.DeleteCop(OutOfRangeCop);
+                }
+                else if (!OutOfRangeCop.IsInVehicle && OutOfRangeCop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
+                {
                     PoliceSpawning.DeleteCop(OutOfRangeCop);
                 }
                 else if (OutOfRangeCop.ClosestDistanceToPlayer <= 15f) //Got Close and Then got away
                 {
-                   // Debugging.WriteToLog("Dispatch", string.Format("  Close Then Far Delete {0}", OutOfRangeCop.Pedestrian.Handle));
                     PoliceSpawning.DeleteCop(OutOfRangeCop);
                 }
                 else if (OutOfRangeCop.CountNearbyCops >= 3 && OutOfRangeCop.TimeBehindPlayer >= 15000) //Got Close and Then got away
                 {
-                    //Debugging.WriteToLog("Dispatch", string.Format("  NearbyCops Delete {0}", OutOfRangeCop.Pedestrian.Handle));
                     PoliceSpawning.DeleteCop(OutOfRangeCop);
                 }
             }

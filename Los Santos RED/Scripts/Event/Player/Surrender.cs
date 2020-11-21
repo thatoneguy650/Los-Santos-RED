@@ -108,6 +108,8 @@ public static class Surrender
             if (!PedToArrest.Exists())
                 return;
 
+            General.SetPedUnarmed(PedToArrest, false);
+
             if (PedToArrest.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = PedToArrest.CurrentVehicle;

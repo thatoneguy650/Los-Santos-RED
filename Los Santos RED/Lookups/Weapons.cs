@@ -992,6 +992,10 @@ public static class Weapons
     {
         return WeaponsList.Where(x => x.Category == MyCategory && x.IsRegular).PickRandom();
     }
+    public static GTAWeapon GetRandomRegularWeapon()
+    {
+        return WeaponsList.Where(x => (x.Category == GTAWeapon.WeaponCategory.Pistol || x.Category == GTAWeapon.WeaponCategory.Melee || x.Category == GTAWeapon.WeaponCategory.SMG || x.Category == GTAWeapon.WeaponCategory.Shotgun) && x.IsRegular).PickRandom();
+    }
 }
 [Serializable()]
 public class GTAWeapon

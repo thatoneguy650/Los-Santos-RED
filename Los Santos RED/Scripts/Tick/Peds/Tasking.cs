@@ -277,7 +277,7 @@ public static class Tasking
                         Snitch.TaskGTAPed.AddCrime(Bad, Snitch.TaskGTAPed.Pedestrian.Position);
                     }
                 }
-                else if (Snitch.TaskGTAPed.CanHearPlayerShooting)
+                else if (Snitch.TaskGTAPed.WithinWeaponsAudioRange)
                 {
                     foreach (Crime Bad in CrimesToCallIn.Where(x => x.CanReportBySound))
                     {
@@ -685,24 +685,24 @@ public static class Tasking
                 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
                 if (Police.InSearchMode)
                 {
-                    if (Cop.TaskGTACop.Pedestrian.DistanceTo2D(WantedCenter) <= 25f && !Cop.TaskGTACop.AtWantedCenterDuringSearchMode && SubTask != "Cruise")
-                    {
-                        Cop.TaskGTACop.AtWantedCenterDuringSearchMode = true;
-                        Cop.TaskGTACop.Pedestrian.Tasks.CruiseWithVehicle(30f, VehicleDrivingFlags.Emergency);
-                        SubTask = "Cruise";
-                        TaskedLocation = Vector3.Zero;
-                        Debugging.WriteToLog("Tasking", string.Format("DriveTo/Chase Cruise: {0}", Cop.TaskGTACop.Pedestrian.Handle));
-                    }
-                    else
-                    {
-                        if ((!Cop.TaskGTACop.AtWantedCenterDuringSearchMode && SubTask != "DriveTo") && (TaskedLocation != WantedCenter))
-                        {
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.TaskGTACop.Pedestrian, Cop.TaskGTACop.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
-                            SubTask = "DriveTo";
-                            TaskedLocation = WantedCenter;
-                            Debugging.WriteToLog("Tasking", string.Format("DriveTo/Chase Location Updated: {0}", Cop.TaskGTACop.Pedestrian.Handle));
-                        }
-                    }
+                    ////if (Cop.TaskGTACop.Pedestrian.DistanceTo2D(WantedCenter) <= 25f && !Cop.TaskGTACop.AtWantedCenterDuringSearchMode && SubTask != "Cruise")
+                    ////{
+                    ////    //Cop.TaskGTACop.AtWantedCenterDuringSearchMode = true;
+                    ////    Cop.TaskGTACop.Pedestrian.Tasks.CruiseWithVehicle(30f, VehicleDrivingFlags.Emergency);
+                    ////    SubTask = "Cruise";
+                    ////    TaskedLocation = Vector3.Zero;
+                    ////    Debugging.WriteToLog("Tasking", string.Format("DriveTo/Chase Cruise: {0}", Cop.TaskGTACop.Pedestrian.Handle));
+                    ////}
+                    ////else
+                    ////{
+                    ////    if ((!Cop.TaskGTACop.AtWantedCenterDuringSearchMode && SubTask != "DriveTo") && (TaskedLocation != WantedCenter))
+                    ////    {
+                    ////        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.TaskGTACop.Pedestrian, Cop.TaskGTACop.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
+                    ////        SubTask = "DriveTo";
+                    ////        TaskedLocation = WantedCenter;
+                    ////        Debugging.WriteToLog("Tasking", string.Format("DriveTo/Chase Location Updated: {0}", Cop.TaskGTACop.Pedestrian.Handle));
+                    ////    }
+                    ////}
                 }
                 else if (PlayerState.IsWanted)
                 {
@@ -1404,7 +1404,7 @@ public static class Tasking
         }
         else
         {
-            PlayerState.StartArrestManual();
+            PlayerState.StartManualArrest();
             WantedLevelScript.CurrentPoliceState = WantedLevelScript.PoliceState.ArrestedWait;
             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
             PlayerState.HandsAreUp = false;
@@ -1427,7 +1427,7 @@ public static class Tasking
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
         }
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
-        Cop.IsSetTazer = false;
+        Cop.IsSetLessLethal = false;
         Cop.IsSetUnarmed = true;
         Cop.IsSetDeadly = false;
         Cop.GameTimeLastWeaponCheck = Game.GameTime;
@@ -1455,14 +1455,14 @@ public static class Tasking
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys
 
-        Cop.IsSetTazer = false;
+        Cop.IsSetLessLethal = false;
         Cop.IsSetUnarmed = false;
         Cop.IsSetDeadly = true;
         Cop.GameTimeLastWeaponCheck = Game.GameTime;
     }
     private static void SetCopTazer(Cop Cop)
     {
-        if (!Cop.Pedestrian.Exists() || (Cop.IsSetTazer && !Cop.NeedsWeaponCheck))
+        if (!Cop.Pedestrian.Exists() || (Cop.IsSetLessLethal && !Cop.NeedsWeaponCheck))
             return;
 
         if (General.MySettings.Police.OverridePoliceAccuracy)
@@ -1478,7 +1478,7 @@ public static class Tasking
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
-        Cop.IsSetTazer = true;
+        Cop.IsSetLessLethal = true;
         Cop.IsSetUnarmed = false;
         Cop.IsSetDeadly = false;
         Cop.GameTimeLastWeaponCheck = Game.GameTime;
