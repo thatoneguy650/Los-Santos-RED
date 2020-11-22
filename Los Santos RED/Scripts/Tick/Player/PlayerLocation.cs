@@ -12,12 +12,13 @@ public static class PlayerLocation
 {
     private static uint GameTimePlayerGotOnFreeway;
     private static uint GameTimePlayerGotOffFreeway;
+    private static Vector3 PlayerClosestNode;
     public static bool IsRunning { get; set; } = true;
-    public static Street PlayerCurrentStreet { get; set; }
-    public static Street PlayerCurrentCrossStreet { get; set; }
-    public static Zone PlayerCurrentZone { get; set; } = new Zone();
-    public static bool PlayerIsOffroad { get; set; } = false;
-    public static bool PlayerIsOnFreeway { get; set; } = false;
+    public static Street PlayerCurrentStreet { get; private set; }
+    public static Street PlayerCurrentCrossStreet { get; private set; }
+    public static Zone PlayerCurrentZone { get; private set; } = new Zone();
+    public static bool PlayerIsOffroad { get; private set; } = false;
+    public static bool PlayerIsOnFreeway { get; private set; } = false;
     public static bool PlayerRecentlyGotOnFreeway
     {
         get
@@ -54,83 +55,98 @@ public static class PlayerLocation
     {
         if (IsRunning)
         {
-            PlayerCurrentZone = Zones.GetZoneAtLocation(Game.LocalPlayer.Character.Position);
-            Vector3 PlayerClosestNode = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position);
-            if (PlayerClosestNode.DistanceTo2D(Game.LocalPlayer.Character) >= 15f)//was 25f
-            {
-                PlayerIsOffroad = true;
-            }
-            else
-            {
-                PlayerIsOffroad = false;
-            }
-            if (PlayerIsOffroad)
-            {
-                PlayerCurrentStreet = null;
-                PlayerCurrentCrossStreet = null;
-                PlayerIsOnFreeway = false;
-                return;
-            }
-
-            Vector3 PlayerPos = PlayerClosestNode;//Game.LocalPlayer.Character.Position;
-            int StreetHash = 0;
-            int CrossingHash = 0;
-            string PlayerCurrentStreetName;
-            string PlayerCurrentCrossStreetName;
-            unsafe
-            {
-                NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", PlayerPos.X, PlayerPos.Y, PlayerPos.Z, &StreetHash, &CrossingHash);
-            }
-            string StreetName = string.Empty;
-            if (StreetHash != 0)
-            {
-                unsafe
-                {
-                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
-                    StreetName = Marshal.PtrToStringAnsi(ptr);
-                }
-                PlayerCurrentStreetName = StreetName;
-            }
-            else
-                PlayerCurrentStreetName = "";
-
-            string CrossStreetName = string.Empty;
-            if (CrossingHash != 0)
-            {
-                unsafe
-                {
-                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", CrossingHash);
-                    CrossStreetName = Marshal.PtrToStringAnsi(ptr);
-                }
-                PlayerCurrentCrossStreetName = CrossStreetName;
-            }
-            else
-                PlayerCurrentCrossStreetName = "";
-
-
-            PlayerCurrentStreet = Streets.GetStreetFromName(PlayerCurrentStreetName);
-            PlayerCurrentCrossStreet = Streets.GetStreetFromName(PlayerCurrentCrossStreetName);
-
-            if (PlayerCurrentStreet == null)
-            {
-                PlayerCurrentStreet = new Street(Streets.GetCurrentStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
-                if (PlayerCurrentStreet.IsHighway)
-                {
-                    if(!PlayerIsOnFreeway)
-                        GameTimePlayerGotOnFreeway = Game.GameTime;
-
-                    PlayerIsOnFreeway = true;
-                }
-                else
-                {
-                    if (PlayerIsOnFreeway)
-                        GameTimePlayerGotOffFreeway = Game.GameTime;
-
-                    PlayerIsOnFreeway = false;
-                }
-            }
+            Update();
         }
 
+    }
+    private static void Update()
+    {
+        GetZone();
+        GetNode();
+        GetStreets();
+    }
+    private static void GetZone()
+    {
+        PlayerCurrentZone = Zones.GetZoneAtLocation(Game.LocalPlayer.Character.Position);
+    }
+    private static void GetNode()
+    {
+        PlayerClosestNode = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position);
+        if (PlayerClosestNode.DistanceTo2D(Game.LocalPlayer.Character) >= 15f)//was 25f
+        {
+            PlayerIsOffroad = true;
+        }
+        else
+        {
+            PlayerIsOffroad = false;
+        }
+    }
+    private static void GetStreets()
+    {
+        if (PlayerIsOffroad)
+        {
+            PlayerCurrentStreet = null;
+            PlayerCurrentCrossStreet = null;
+            PlayerIsOnFreeway = false;
+            return;
+        }
+
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        string PlayerCurrentStreetName;
+        string PlayerCurrentCrossStreetName;
+        unsafe
+        {
+            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", PlayerClosestNode.X, PlayerClosestNode.Y, PlayerClosestNode.Z, &StreetHash, &CrossingHash);
+        }
+        string StreetName = string.Empty;
+        if (StreetHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+                StreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+            PlayerCurrentStreetName = StreetName;
+        }
+        else
+            PlayerCurrentStreetName = "";
+
+        string CrossStreetName = string.Empty;
+        if (CrossingHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", CrossingHash);
+                CrossStreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+            PlayerCurrentCrossStreetName = CrossStreetName;
+        }
+        else
+            PlayerCurrentCrossStreetName = "";
+
+
+        PlayerCurrentStreet = Streets.GetStreetFromName(PlayerCurrentStreetName);
+        PlayerCurrentCrossStreet = Streets.GetStreetFromName(PlayerCurrentCrossStreetName);
+
+        if (PlayerCurrentStreet == null)
+        {
+            PlayerCurrentStreet = new Street(Streets.GetCurrentStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
+            if (PlayerCurrentStreet.IsHighway)
+            {
+                if (!PlayerIsOnFreeway)
+                    GameTimePlayerGotOnFreeway = Game.GameTime;
+
+                PlayerIsOnFreeway = true;
+            }
+            else
+            {
+                if (PlayerIsOnFreeway)
+                    GameTimePlayerGotOffFreeway = Game.GameTime;
+
+                PlayerIsOnFreeway = false;
+            }
+        }
     }
 }
 

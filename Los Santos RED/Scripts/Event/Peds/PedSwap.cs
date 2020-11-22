@@ -242,8 +242,8 @@ public static class PedSwap
 
         WeaponDropping.ResetWeaponCount();
 
-        PlayerHealth.Health = Game.LocalPlayer.Character.Health;
-        PlayerHealth.Armor = Game.LocalPlayer.Character.Armor;
+        //PlayerHealth.Health = Game.LocalPlayer.Character.Health;
+        //PlayerHealth.Armor = Game.LocalPlayer.Character.Armor;
 
         GameFiber.Wait(50);
         PlayerState.DisplayPlayerNotification();

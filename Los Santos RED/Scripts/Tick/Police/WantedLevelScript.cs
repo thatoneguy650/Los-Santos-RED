@@ -22,6 +22,7 @@ public static class WantedLevelScript
     private static Blip CurrentWantedCenterBlip;
     private static Blip LastWantedCenterBlip;
     private static int PreviousWantedLevel;
+    private static PoliceState CurrentPoliceState;
 
     public static float LastWantedSearchRadius { get; set; }
     public static bool PlayerSeenDuringCurrentWanted { get; set; } = false;
@@ -29,8 +30,6 @@ public static class WantedLevelScript
     public static bool IsRunning { get; set; } = true;
     public static CriminalHistory CurrentCrimes { get; set; } 
     public static Vector3 LastWantedCenterPosition { get; set; }
-    public static PoliceState CurrentPoliceState { get; set; }
-    public static PoliceState LastPoliceState { get; private set; }
     public static Vector3 PlaceWantedStarted { get; private set; }
     public static uint HasBeenNotWantedFor
     {
@@ -117,6 +116,48 @@ public static class WantedLevelScript
                 return false;
         }
     }
+    public static bool ShouldSirenBeOn
+    {
+        get
+        {
+            if (CurrentResponse == ResponsePriority.Low || CurrentResponse == ResponsePriority.None)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+    public static float ResponseDrivingSpeed
+    {
+        get
+        {
+            if (CurrentResponse == ResponsePriority.High)
+            {
+                return 25f; //55 mph
+            }
+            else if (CurrentResponse == ResponsePriority.Medium)
+            {
+                return 25f; //55 mph
+            }
+            else
+            {
+                return 20f; //40 mph
+            }
+        }
+    }
+    public static bool PoliceChasingRecklessly
+    {
+        get
+        {
+            if (CurrentPoliceState == PoliceState.DeadlyChase && (CurrentCrimes.InstancesOfCrime(Crimes.KillingPolice) >= 1 || CurrentCrimes.InstancesOfCrime(Crimes.KillingCivilians) >= 2 || PlayerState.WantedLevel >= 4))
+                return true;
+            else
+                return false;
+        }
+    }
     public static bool NearLastWanted(float DistanceTo)
     {
         return LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= DistanceTo;
@@ -188,14 +229,9 @@ public static class WantedLevelScript
         GameTimeLastSetWanted = 0;
         PrevPoliceState = PoliceState.Normal;
         CurrentPoliceState = PoliceState.Normal;
-        LastPoliceState = PoliceState.Normal;
         PreviousWantedLevel = 0;
         IsRunning = true;
         SetWantedLevel(0, "Initial", true);
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
     }
     public static void Tick()
     {
@@ -204,6 +240,51 @@ public static class WantedLevelScript
             GetPoliceState();
             WantedLevelTick();
         }
+    }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
+    public static void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
+    {
+        if (UpdateRecent)
+            GameTimeLastSetWanted = Game.GameTime;
+
+        if (Game.LocalPlayer.WantedLevel < WantedLevel || WantedLevel == 0)
+        {
+            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevel);
+            Debugging.WriteToLog("SetWantedLevel", string.Format("Current Wanted: {0}, Desired Wanted: {1}, {2}", Game.LocalPlayer.WantedLevel, WantedLevel, Reason));
+            Game.LocalPlayer.WantedLevel = WantedLevel;
+        }
+    }
+    public static void ApplyReportedCrimes()
+    {
+        if (CurrentCrimes.CrimesReported.Any())
+        {
+            foreach (CrimeEvent MyCrimes in CurrentCrimes.CrimesReported)
+            {
+                CrimeEvent PreviousViolation = CurrentCrimes.CrimesObserved.FirstOrDefault(x => x.AssociatedCrime == MyCrimes.AssociatedCrime);
+                if (PreviousViolation == null)
+                {
+                    CurrentCrimes.CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime));
+                }
+                else if (PreviousViolation.CanAddInstance)
+                {
+                    PreviousViolation.AddInstance();
+                }
+
+            }
+            CrimeEvent WorstObserved = CurrentCrimes.CrimesObserved.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
+            if (WorstObserved != null)
+            {
+                SetWantedLevel(WorstObserved.AssociatedCrime.ResultingWantedLevel, "you are a suspect!", true);
+                PoliceScanner.AnnounceCrime(WorstObserved.AssociatedCrime, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+            }
+        }
+    }
+    public static void Reset()
+    {
+        ResetStats();
     }
     private static void GetPoliceState()
     {
@@ -237,7 +318,6 @@ public static class WantedLevelScript
     private static void PoliceStateChanged()
     {
         Debugging.WriteToLog("ValueChecker", string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
-        LastPoliceState = PrevPoliceState;
         GameTimePoliceStateStart = Game.GameTime;
         PrevPoliceState = CurrentPoliceState;
     }
@@ -312,7 +392,7 @@ public static class WantedLevelScript
 
         CurrentCrimes.MaxWantedLevel = PlayerState.WantedLevel;
         GameTimeWantedLevelStarted = Game.GameTime;
-        Debugging.WriteToLog("ValueChecker", string.Format("WantedLevel Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel, RecentlySetWanted));
+        Debugging.WriteToLog("WantedLevel", string.Format("Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel, RecentlySetWanted));
         PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
     }
     private static void WantedLevelAdded()
@@ -427,7 +507,7 @@ public static class WantedLevelScript
             Cop.HurtByPlayer = false;
         }
         CurrentCrimes = new CriminalHistory();
-        Debugging.WriteToLog("ResetPoliceStats", "Ran (Made New Rap Sheet)");
+        Debugging.WriteToLog("WantedLevel", "ResetPoliceStats Ran (Made New Rap Sheet)");
         IsWeaponsFree = false;
         CurrentPoliceState = PoliceState.Normal;
         Police.AnySeenPlayerCurrentWanted = false;
@@ -435,46 +515,6 @@ public static class WantedLevelScript
         Investigation.InInvestigationMode = false;
         PoliceScanner.ResetReportedItems();
     }
-    public static void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
-    {
-        if (UpdateRecent)
-            GameTimeLastSetWanted = Game.GameTime;
 
-        if (Game.LocalPlayer.WantedLevel < WantedLevel || WantedLevel == 0)
-        {
-            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevel);
-            Debugging.WriteToLog("SetWantedLevel", string.Format("Current Wanted: {0}, Desired Wanted: {1}, {2}", Game.LocalPlayer.WantedLevel, WantedLevel, Reason));
-            Game.LocalPlayer.WantedLevel = WantedLevel;
-        }
-    }
-    public static void Reset()
-    {
-        ResetStats();
-    }
-    public static void ApplyReportedCrimes()
-    {
-        if (CurrentCrimes.CrimesReported.Any())
-        {
-            foreach (CrimeEvent MyCrimes in CurrentCrimes.CrimesReported)
-            {
-                CrimeEvent PreviousViolation = CurrentCrimes.CrimesObserved.FirstOrDefault(x => x.AssociatedCrime == MyCrimes.AssociatedCrime);
-                if (PreviousViolation == null)
-                {
-                    CurrentCrimes.CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime));
-                }
-                else if (PreviousViolation.CanAddInstance)
-                {
-                    PreviousViolation.AddInstance();
-                }
-
-            }       
-            CrimeEvent WorstObserved = CurrentCrimes.CrimesObserved.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
-            if (WorstObserved != null)
-            {
-                SetWantedLevel(WorstObserved.AssociatedCrime.ResultingWantedLevel, "you are a suspect!", true);
-                PoliceScanner.AnnounceCrime(WorstObserved.AssociatedCrime, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
-            }
-        }
-    }
 }
 

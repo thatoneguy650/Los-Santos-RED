@@ -155,7 +155,7 @@ public static class PedList
         Pedestrian.Inventory.Weapons.Clear();
         myCop.IssuePistol();
 
-        if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase)
+        if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.IsDeadlyChase)
             myCop.IssueHeavyWeapon();
 
         CopPeds.Add(myCop);

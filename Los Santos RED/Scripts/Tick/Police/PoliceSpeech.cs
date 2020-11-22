@@ -18,6 +18,7 @@ internal static class PoliceSpeech
     private static List<string> ArrestedWaitSpeech;
     private static List<string> PlayerDeadSpeech;
     private static List<string> AmbientSpeech;
+    private static List<string> RegularChaseSpeech;
     public static bool IsRunning { get; set; }
     static PoliceSpeech()
     {
@@ -27,8 +28,11 @@ internal static class PoliceSpeech
     {
         IsRunning = true;
         DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
+
         UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
         CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
+        RegularChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED", "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
+
         AmbientSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
 
         ArrestedWaitSpeech = new List<string> { "WON_DISPUTE" };
@@ -53,27 +57,19 @@ internal static class PoliceSpeech
                         {
                             Cop.Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
                         }
-                        else if (PedWounds.RecentlyKilledCop)
+                        else if (PedDamage.RecentlyKilledCop)
                         {
                             Cop.Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
                         }
-                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.UnarmedChase)
+                        else if (PlayerState.IsWanted && !WantedLevelScript.IsDeadlyChase)
                         {
-                            Cop.Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
+                            Cop.Pedestrian.PlayAmbientSpeech(RegularChaseSpeech.PickRandom());
                         }
-                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.CautiousChase)
-                        {
-                            Cop.Pedestrian.PlayAmbientSpeech(CautiousChaseSpeech.PickRandom());
-                        }
-                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.ArrestedWait)
-                        {
-                            Cop.Pedestrian.PlayAmbientSpeech(ArrestedWaitSpeech.PickRandom());
-                        }
-                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.Normal && Respawn.RecentlyBribedPolice)
+                        else if (PlayerState.IsNotWanted && Respawn.RecentlyBribedPolice)
                         {
                             Cop.Pedestrian.PlayAmbientSpeech(AmbientSpeech.PickRandom());
                         }
-                        else if (WantedLevelScript.CurrentPoliceState == WantedLevelScript.PoliceState.DeadlyChase)
+                        else if (WantedLevelScript.IsDeadlyChase)
                         {
                             Cop.Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom());
                         }

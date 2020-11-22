@@ -154,7 +154,7 @@ public static class UI
 
     private static void DisplayHelpText()
     {
-        if (!RecentlyDisplayedBleedingHelp && PlayerHealth.IsBleeding)
+        if (!RecentlyDisplayedBleedingHelp && PedDamage.IsPlayerBleeding)
         {
             Game.DisplayHelp("Hold still to bandage!", 5000);
             GameTimeLastDisplayedBleedingHelp = Game.GameTime;
@@ -201,7 +201,7 @@ public static class UI
                 StartedBustedEffect = true;
             }
         }
-        else if (PlayerHealth.IsBleeding)
+        else if (PedDamage.IsPlayerBleeding)
         {
             if (!StartedBandagingEffect)
             {

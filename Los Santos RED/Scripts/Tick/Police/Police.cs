@@ -40,13 +40,6 @@ public static class Police
             return 400f + (PlayerState.WantedLevel * 200f);//500f
         }
     }
-    //public static float ActiveOnFootDistance
-    //{
-    //    get
-    //    {
-    //        return 100f;
-    //    }
-    //}
     private static float TimeToRecognizePlayer
     {
         get
@@ -93,6 +86,10 @@ public static class Police
         foreach (Cop Cop in PedList.CopPeds)
         {
             Cop.Update();
+            if (Cop.ShouldBustPlayer)
+            {
+                PlayerState.StartManualArrest();
+            }
         }
         foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.IsDead))
         {
@@ -110,8 +107,6 @@ public static class Police
             AnyRecentlySeenPlayer = true;
         else
             AnyRecentlySeenPlayer = PedList.CopPeds.Any(x => x.SeenPlayerSince(General.MySettings.Police.PoliceRecentlySeenTime));
-
-
 
         AnyCanRecognizePlayer = PedList.CopPeds.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
 

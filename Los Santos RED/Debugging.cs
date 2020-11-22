@@ -219,37 +219,12 @@ public static class Debugging
     }
     private static void DebugCopReset()
     {
-        WantedLevelScript.CurrentPoliceState = WantedLevelScript.PoliceState.Normal;
+        WantedLevelScript.Reset();
         Game.LocalPlayer.WantedLevel = 0;
-        foreach (Cop Cop in PedList.K9Peds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInHelicopter))
-        {
-            Cop.Pedestrian.Delete();
-        }
-        foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && !x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
-        {
-            Cop.Pedestrian.Delete();
-        }
-
-        foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsDead && x.Pedestrian.IsInAnyVehicle(false) && !x.Pedestrian.IsInHelicopter))
-        {
-            Cop.Pedestrian.CurrentVehicle.Delete();
-
-            Cop.Pedestrian.Delete();
-        }
-
-
-        Ped[] closestPed = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 400f, GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAnimalPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
-        foreach (Ped dog in closestPed)
-        {
-            dog.Delete();
-        }
-
+        PedList.ClearPoliceCompletely();
         Game.TimeScale = 1f;
         PlayerState.ResetState(true);
         NativeFunction.Natives.xB4EDDC19532BFB85();
-
-
-        //PoliceSpawning.Dispose();
     }
     private static void DebugNumpad0()
     {
@@ -497,7 +472,7 @@ public static class Debugging
                 //            Cop.Pedestrian.Handle, Cop.Pedestrian.Model.Name, Cop.AssignedAgency.Initials, Cop.CurrentZone.DisplayName, Cop.TimeBehindPlayer, "NA", Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.WasModSpawned, Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition), Tasking.GetCopTask(Cop.Pedestrian.Handle)));// Cop.CanSeePlayer, Cop.DistanceToPlayer, Cop.HurtByPlayer, Cop.IssuedHeavyWeapon, Cop.TaskIsQueued, Cop.TaskType, Cop.WasRandomSpawn, Cop.TaskFiber, Cop.Pedestrian.Tasks.CurrentTaskStatus, Cop.AssignedAgency.Initials, Cop.Pedestrian.DistanceTo2D(InvestigationScript.InvestigationPosition)));
                 //}
             }
-            WriteToLog("Debugging", string.Format("CurrentPoliceTickRunning: {0}", Tasking.CurrentPoliceTickRunning));
+            //WriteToLog("Debugging", string.Format("CurrentPoliceTickRunning: {0}", Tasking.CurrentPoliceTickRunning));
             WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Investigation.InInvestigationMode));
             WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Investigation.InvestigationPosition));
             WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Investigation.InvestigationDistance));

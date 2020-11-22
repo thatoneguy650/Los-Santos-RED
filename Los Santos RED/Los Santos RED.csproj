@@ -125,7 +125,7 @@
     <Compile Include="Scripts\Tick\Police\Investigation.cs" />
     <Compile Include="Scripts\Event\Vehicle\CarLockPicking.cs" />
     <Compile Include="Scripts\Tick\Peds\Mugging.cs" />
-    <Compile Include="Scripts\Tick\Peds\PedWounds.cs" />
+    <Compile Include="Scripts\Tick\Peds\PedDamage.cs" />
     <Compile Include="Scripts\Tick\Police\PersonofInterest.cs" />
     <Compile Include="Scripts\Tick\Player\PlayerHealth.cs" />
     <Compile Include="Scripts\ScriptController.cs" />

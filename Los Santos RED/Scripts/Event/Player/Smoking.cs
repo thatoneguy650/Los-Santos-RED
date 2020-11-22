@@ -215,7 +215,6 @@ public static class Smoking
         {
             NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_SMOKING", 0, true);
             
-            PlayerHealth.IsHealing = true;
             uint GameTimeStartedSmoking = Game.GameTime;
             while (!Extensions.IsMoveControlPressed())
             {
@@ -227,7 +226,6 @@ public static class Smoking
             }
             Game.LocalPlayer.Character.Tasks.Clear();
             Clock.OverrideToFastest = false;
-            PlayerHealth.IsHealing = false;
         }, "SmokeParticles");
         Debugging.GameFibers.Add(CreateSmoke);
         

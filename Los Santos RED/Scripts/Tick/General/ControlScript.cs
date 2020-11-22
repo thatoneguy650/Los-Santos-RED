@@ -21,7 +21,6 @@ using Extensions = ExtensionsMethods.Extensions;
 
 public static class ControlScript
 {
-    private static WantedLevelScript.PoliceState HandsUpPreviousPoliceState;
     public static bool IsRunning { get; set; }
     public static void Initialize()
     {
@@ -40,7 +39,6 @@ public static class ControlScript
                 if (!PlayerState.HandsAreUp && !PlayerState.IsBusted)
                 {
                     General.SetPedUnarmed(Game.LocalPlayer.Character, false);
-                    HandsUpPreviousPoliceState = WantedLevelScript.CurrentPoliceState;
                     Surrender.RaiseHands();
                     if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 10f)
                         Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
@@ -51,7 +49,6 @@ public static class ControlScript
                 if (PlayerState.HandsAreUp && !PlayerState.IsBusted)
                 {
                     PlayerState.HandsAreUp = false; // You put your hands down
-                    WantedLevelScript.CurrentPoliceState = HandsUpPreviousPoliceState;
                     Surrender.LowerHands();
                     if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
                         Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;

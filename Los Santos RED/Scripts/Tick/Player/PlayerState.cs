@@ -90,6 +90,16 @@ public static class PlayerState
             }
         }
     }
+    public static bool IsAttemptingToSurrender
+    {
+        get
+        {
+            if (HandsAreUp && !WantedLevelScript.IsWeaponsFree)
+                return true;
+            else
+                return false;
+        }
+    }
 
     public static bool IsGettingIntoAVehicle
     {
@@ -367,7 +377,7 @@ public static class PlayerState
         IsNightTime = false;
         var HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
         var MinuteOfDay = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
-        if (HourOfDay >= 20 || HourOfDay >= 19 && MinuteOfDay >= 30 || HourOfDay <= 5)
+        if (HourOfDay >= 19 || HourOfDay <= 6)//7pm to 6 am lights need to be on
             IsNightTime = true;
     }
 
@@ -484,8 +494,8 @@ public static class PlayerState
         {
             var TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
             var SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-            General.AttemptLockStatus(TargetVeh, (VehicleLockStatus) 7); //Attempt to lock most car doors
-            if ((int) TargetVeh.LockStatus == 7) CarLockPicking.PickLock(TargetVeh, SeatTryingToEnter);
+            General.AttemptLockStatus(TargetVeh, (VehicleLockStatus)7); //Attempt to lock most car doors
+            if ((int)TargetVeh.LockStatus == 7) CarLockPicking.PickLock(TargetVeh, SeatTryingToEnter);
             if (TargetVeh != null && SeatTryingToEnter == -1)
             {
                 var Driver = TargetVeh.Driver;
@@ -623,7 +633,7 @@ public static class PlayerState
     {
         if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeaponHash != 0)
         {
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint) LastWeaponHash,
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash,
                 true);
             Debugging.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
         }

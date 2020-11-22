@@ -126,7 +126,7 @@ public static class Crimes
         if (PlayerState.IsBusted || PlayerState.IsDead)
             return;
 
-        if (PedWounds.RecentlyKilledCop)
+        if (PedDamage.RecentlyKilledCop)
         {
             KillingPolice.IsCurrentlyViolating = true;
         }
@@ -135,7 +135,7 @@ public static class Crimes
             KillingPolice.IsCurrentlyViolating = false;
         }
 
-        if (PedWounds.RecentlyHurtCop)
+        if (PedDamage.RecentlyHurtCop)
         {
             HurtingPolice.IsCurrentlyViolating = true;
         }
@@ -144,7 +144,7 @@ public static class Crimes
             HurtingPolice.IsCurrentlyViolating = false;
         }
 
-        if (PedWounds.RecentlyKilledCivilian || PedWounds.NearCivilianMurderVictim)
+        if (PedDamage.RecentlyKilledCivilian || PedDamage.NearCivilianMurderVictim)
         {
             KillingCivilians.IsCurrentlyViolating = true;
         }
@@ -153,7 +153,7 @@ public static class Crimes
             KillingCivilians.IsCurrentlyViolating = false;
         }
 
-        if (PedWounds.RecentlyHurtCivilian)
+        if (PedDamage.RecentlyHurtCivilian)
         {
             HurtingCivilians.IsCurrentlyViolating = true;
         }
@@ -544,7 +544,7 @@ public static class TrafficViolations
     }
     private static void CheckViolations()
     {
-        if (General.MySettings.TrafficViolations.HitPed && RecentlyHitPed && (PedWounds.RecentlyHurtCivilian || PedWounds.RecentlyHurtCop) && (PedList.Civilians.Any(x => x.DistanceToPlayer <= 10f) || PedList.CopPeds.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
+        if (General.MySettings.TrafficViolations.HitPed && RecentlyHitPed && (PedDamage.RecentlyHurtCivilian || PedDamage.RecentlyHurtCop) && (PedList.Civilians.Any(x => x.DistanceToPlayer <= 10f) || PedList.CopPeds.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
         {
             Crimes.HitPedWithCar.IsCurrentlyViolating = true;
         }

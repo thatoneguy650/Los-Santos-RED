@@ -37,8 +37,8 @@ public static class ScriptController
 
             new TickTask(0, "VehicleEngine", VehicleEngine.Tick, 2,0),
   
-            new TickTask(200, "PlayerHealth", PlayerHealth.Tick, 3,0),
-            new TickTask(200, "PedWoundSystem", PedWounds.Tick, 3,1),
+            //new TickTask(200, "PlayerHealth", PlayerHealth.Tick, 3,0),
+            new TickTask(200, "PedWoundSystem", PedDamage.Tick, 3,1),
             new TickTask(250, "MuggingSystem", MuggingScript.Tick, 3,2),
 
             new TickTask(0, "ClockSystem", Clock.Tick, 3,3),
@@ -129,8 +129,8 @@ public static class ScriptController
         Civilians.Initialize();
         Clock.Initialize();
         MuggingScript.Initialize();
-        PlayerHealth.Initialize();
-        PedWounds.Initialize();
+        //PlayerHealth.Initialize();
+        PedDamage.Initialize();
         Dispatch.Initialize();
         RunTasks();
     }
@@ -243,10 +243,10 @@ public static class ScriptController
         PedSwap.Dispose();
         PersonOfInterest.Dispose();
         Civilians.Dispose();
-        PlayerHealth.Dispose();
+       //PlayerHealth.Dispose();
         Clock.Dispose();
         MuggingScript.Dispose();
-        PedWounds.Dispose();
+        PedDamage.Dispose();
         Dispatch.Dispose();
     }
     private static void ResetRanItems()

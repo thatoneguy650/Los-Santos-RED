@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class PedWounds
+public static class PedDamage
 {
     private static uint GameTimeLastHurtCivilian;
     private static uint GameTimeLastKilledCivilian;
@@ -95,6 +95,13 @@ public static class PedWounds
                 return true;
             else
                 return false;
+        }
+    }
+    public static bool IsPlayerBleeding
+    {
+        get
+        {
+            return PedHealthStates.Any(x => x.IsBleeding && x.IsPlayerPed);
         }
     }
     public enum BodyLocation
@@ -246,6 +253,8 @@ public static class PedWounds
             {
                 MyHealthState.Update();
             }
+            ResetDamageStats();
+
         }
     }
     private static void AddPedsToTrack()
@@ -264,11 +273,20 @@ public static class PedWounds
                 PedHealthStates.Add(new PedHealthState(Civilian));
             }
         }
-
+        if (!PedHealthStates.Any(x => x.MyPed.Pedestrian.Handle == Game.LocalPlayer.Character.Handle))
+        {
+            PedHealthStates.Add(new PedHealthState(new PedExt(Game.LocalPlayer.Character,Game.LocalPlayer.Character.Health)));
+        }
         //if(PlayerHealthState.MyPed.Exists() && PlayerHealthState.MyPed.Handle != Game.LocalPlayer.Character.Handle)
         //{
         //    PlayerHealthState = new PedHealthState(Game.LocalPlayer.Character);
         //}
+    }
+    private static void ResetDamageStats()
+    {
+        // NativeFunction.CallByName<bool>("SET_PLAYER_WEAPON_DAMAGE_MODIFIER", Game.LocalPlayer, 2.0f);
+        //NativeFunction.CallByName<bool>("SET_AI_WEAPON_DAMAGE_MODIFIER", 1.0f);
+        NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
     }
     public static void Reset()
     {
@@ -321,6 +339,14 @@ public static class PedWounds
         public int Health { get; set; }
         public int Armor { get; set; }
         public bool IsBleeding { get; set; }
+        public bool IsBandaging { get; set; }
+        public bool IsPlayerPed
+        {
+            get
+            {
+                return MyPed.Pedestrian.Handle == Game.LocalPlayer.Character.Handle;
+            }
+        }
         private bool ShouldBleed
         {
             get
@@ -355,6 +381,13 @@ public static class PedWounds
                     GameTimeLastBled = Game.GameTime;
                     Debugging.WriteToLog("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
                 }
+
+                if (IsPlayerPed && IsBleeding && !IsBandaging && PlayerState.IsStationary)
+                {
+                    BandagePed(Game.LocalPlayer.Character);
+                }
+
+
             }
         }
         private void FlagDamage()
@@ -470,15 +503,52 @@ public static class PedWounds
 
 
 
-
-                Debugging.WriteToLog("PedWoundSystem", string.Format("Ped: {0}, {1} {2} {3} D {4}/{5} H {6}/{7}",
+                if (IsPlayerPed)
+                {
+                    Debugging.WriteToLog("PedWoundSystem", string.Format("      PLAYER: {0}, {1} {2} {3} D {4}/{5} H {6}/{7}",
                                                                             MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, DamagingWeapon.Name, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor));
+                }
+                else
+                {
+                    Debugging.WriteToLog("PedWoundSystem", string.Format("Ped: {0}, {1} {2} {3} D {4}/{5} H {6}/{7}",
+                                                                                MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, DamagingWeapon.Name, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor));
+                }
+                if(Health != CurrentHealth)
+                {
+                    SetRagdoll(CurrentHealth);
+                }
             }
         } 
+        private void SetRagdoll(int NewHealth)
+        {
+            if (Health - NewHealth >= 65)
+            {
+                NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 3000, 3000, 0, false, false, false);
+                IsBleeding = true;
+                Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
+            }
+            else if (Health - NewHealth >= 35 && General.RandomPercent(60))
+            {
+                NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
+                IsBleeding = true;
+                Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
+            }
+            else if (Health - NewHealth >= 15 && General.RandomPercent(30))
+            {
+                NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
+                IsBleeding = true;
+                Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
+            }
+            else if (Health - NewHealth >= 10)
+            {
+                IsBleeding = true;
+                Debugging.WriteToLog("PlayerHealthChanged", string.Format("Normal Hit, Bleeding"));
+            }
+        }
         private void FlagAsBleeding()
         {
-            if(MyPed.Pedestrian.Exists())
-                NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 0, false, false, false);
+            //if(MyPed.Pedestrian.Exists())
+            //    NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 0, false, false, false);
             IsBleeding = true;
 
             if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", "move_m@drunk@verydrunk"))
@@ -487,6 +557,62 @@ public static class PedWounds
             }
 
             NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", MyPed.Pedestrian, "move_m@drunk@verydrunk", 0x3E800000);
+        }
+        private void BandagePed(Ped PedToBandage)
+        {
+            if (IsBandaging || !IsBleeding)
+                return;
+
+            if (PedToBandage.IsRagdoll || PedToBandage.IsSwimming || PedToBandage.IsInCover)//tons more should probably be checked
+            {
+                return;
+            }
+
+            GameFiber Bandaging = GameFiber.StartNew(delegate
+            {
+                IsBandaging = true;
+                bool PlayingAnimation = false;
+                //if (!PedToBandage.IsInAnyVehicle(false))
+                //{
+                //    General.RequestAnimationDictionay("move_p_m_two_idles@generic");
+                //    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", PedToBandage, (uint)2725352035, true);
+                //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToBandage, "move_p_m_two_idles@generic", "fidget_pick_at_face", 8.0f, -8.0f, 2000, 1, 0, false, false, false);
+                //    PlayingAnimation = true;
+                //    Debugging.WriteToLog("BandagePed", string.Format("Started Bandaging Animation"));
+                //}
+                uint GameTimeStartedBandaging = Game.GameTime;
+                bool IsFinished = true;
+                while (Game.GameTime - GameTimeStartedBandaging <= 2000)
+                {
+                    if (ExtensionsMethods.Extensions.IsMoveControlPressed() || Game.LocalPlayer.Character.IsDead)
+                    {
+                        IsFinished = false;
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                if (IsFinished)
+                {
+                    NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", MyPed.Pedestrian, 0f);
+
+                    Debugging.WriteToLog("BandagePed", string.Format("Finished, Not Bleeding"));
+                    IsBleeding = false;
+
+                    //NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingOut", 3500, 0);//_START_SCREEN_EFFECT
+
+                }
+                else
+                {
+                    Debugging.WriteToLog("BandagePed", string.Format("Interrupted"));
+                }
+
+                if (PlayingAnimation)
+                    PedToBandage.Tasks.Clear();
+
+                IsBandaging = false;
+
+            }, "Bandaging");
+            Debugging.GameFibers.Add(Bandaging);
         }
         private float GetDamageModifier(InjuryType injury, bool IsArmor)
         {

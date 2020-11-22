@@ -16,8 +16,8 @@ public static class Surrender
         if (Game.LocalPlayer.Character.IsWearingHelmet)
             Game.LocalPlayer.Character.RemoveHelmet(true);
 
-        if (Game.LocalPlayer.WantedLevel > 0 && WantedLevelScript.CurrentCrimes.InstancesOfCrime(Crimes.KillingPolice) < 5)
-            WantedLevelScript.CurrentPoliceState = WantedLevelScript.PoliceState.ArrestedWait;
+        //if (Game.LocalPlayer.WantedLevel > 0 && WantedLevelScript.CurrentCrimes.InstancesOfCrime(Crimes.KillingPolice) < 5)
+        //    WantedLevelScript.CurrentPoliceState = WantedLevelScript.PoliceState.ArrestedWait;
 
         if (PlayerState.HandsAreUp)
             return;

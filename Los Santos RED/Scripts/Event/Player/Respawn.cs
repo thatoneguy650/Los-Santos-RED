@@ -226,7 +226,7 @@ public static class Respawn
     public static void ResistArrest()
     {
         PlayerState.ResetState(false);//maxwanted last life maybe wont work?
-        WantedLevelScript.CurrentPoliceState = WantedLevelScript.LastPoliceState;
+        //WantedLevelScript.CurrentPoliceState = WantedLevelScript.LastPoliceState;
         WantedLevelScript.SetWantedLevel(PlayerState.WantedLevel, "Resisting Arrest", true);
         Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
@@ -367,7 +367,7 @@ public static class Respawn
             WantedLevelScript.SetWantedLevel(0, "Reset player with Clear Wanted", false);
             PlayerState.MaxWantedLastLife = 0;
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-            PedWounds.Reset();
+            PedDamage.Reset();
             Investigation.Reset();
         }
 
@@ -382,11 +382,11 @@ public static class Respawn
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
 
-        PlayerHealth.ResetDamageStats();
+        NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
     }
     private static void CheckWeapons()
     {
-        if (!PedWounds.PlayerKilledCops.Any())
+        if (!PedDamage.PlayerKilledCops.Any())
         {
             RemoveIllegalWeapons();
         }
