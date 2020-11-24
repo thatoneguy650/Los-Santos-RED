@@ -22,6 +22,34 @@ using Extensions = ExtensionsMethods.Extensions;
 public static class ControlScript
 {
     public static bool IsRunning { get; set; }
+    private static bool IsPressingSurrender
+    {
+        get
+        {
+            if(Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    private static bool IsPressingDropWeapon
+    {
+        get
+        {
+            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -34,36 +62,25 @@ public static class ControlScript
     {
         if (IsRunning)
         {
-            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && !Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+            if (IsPressingSurrender && Surrender.CanSurrender)
             {
                 if (!PlayerState.HandsAreUp && !PlayerState.IsBusted)
                 {
-                    General.SetPedUnarmed(Game.LocalPlayer.Character, false);
                     Surrender.RaiseHands();
-                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 10f)
-                        Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
                 }
             }
             else
             {
                 if (PlayerState.HandsAreUp && !PlayerState.IsBusted)
                 {
-                    PlayerState.HandsAreUp = false; // You put your hands down
                     Surrender.LowerHands();
-                    if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
-                        Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
                 }
             }
 
-            //if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.LocalPlayer.Character.IsInAnyVehicle(false))
-            //{
-            //    Surrender.CommitSuicide(Game.LocalPlayer.Character);
-            //}
-
-            //if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.SurrenderKey) && Game.IsControlKeyDownRightNow)
-            //{
-            //    PlayerHealth.BandagePed(Game.LocalPlayer.Character);
-            //}
+            if (IsPressingDropWeapon && WeaponDropping.CanDropWeapon)
+            {
+                WeaponDropping.DropWeapon();
+            }
         }
     }
 }

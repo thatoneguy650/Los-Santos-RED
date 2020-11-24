@@ -85,25 +85,6 @@ public static class UI
     {
         IsRunning = false;
     }
-    //private static void MainLoop()
-    //{
-    //    GameFiber.StartNew(delegate
-    //    {
-    //        try
-    //        {
-    //            while (IsRunning)
-    //            {
-    //                UITick();
-    //                GameFiber.Yield();
-    //            }
-    //    }
-    //        catch (Exception e)
-    //    {
-    //        General.Dispose();
-    //        Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-    //    }
-    //});
-    //}
     public static void Tick()
     {
         //try
@@ -151,7 +132,6 @@ public static class UI
         DisplayHelpText();
 
     }
-
     private static void DisplayHelpText()
     {
         if (!RecentlyDisplayedBleedingHelp && PedDamage.IsPlayerBleeding)
@@ -160,7 +140,6 @@ public static class UI
             GameTimeLastDisplayedBleedingHelp = Game.GameTime;
         }
     }
-
     private static void ShowDebugUI()
     {
         //int Lines = 0;
@@ -174,8 +153,15 @@ public static class UI
 
         DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Investigation.InInvestigationMode, Investigation.HavePlayerDescription,PlayerState.IsStationary, Investigation.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.1f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        float Between = 0.01f;
+        float Start = 0.15f;
+        foreach (string Line in PedDamage.AllPedDamageList)
+        {
+            DisplayTextOnScreen(Line, Start, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+            Start = Start + Between;
+        }
+        
     }
-
     private static void ScreenEffectsTick()
     {
         if (PlayerState.IsDead)

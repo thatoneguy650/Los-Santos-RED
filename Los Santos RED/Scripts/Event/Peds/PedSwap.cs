@@ -4,8 +4,6 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public static class PedSwap
@@ -53,7 +51,7 @@ public static class PedSwap
     {
 
     }
-    public static void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ArrestOld, bool ClearNearPolice)
+    public static void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice)
     {
         try
         {
@@ -72,8 +70,6 @@ public static class PedSwap
 
             if (DeleteOld)
                 CurrentPed.Delete();
-            else if (ArrestOld)
-                Surrender.SetArrestedAnimation(CurrentPed, true);
             else
                 TaskFormerPed(CurrentPed);
 
@@ -240,7 +236,7 @@ public static class PedSwap
         GiveName();
         Clock.UnpauseTime();
 
-        WeaponDropping.ResetWeaponCount();
+        WeaponDropping.Reset();
 
         //PlayerHealth.Health = Game.LocalPlayer.Character.Health;
         //PlayerHealth.Armor = Game.LocalPlayer.Character.Armor;

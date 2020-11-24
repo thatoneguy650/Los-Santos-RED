@@ -160,7 +160,7 @@
     <Compile Include="Lookups\Vehicles.cs" />
     <Compile Include="Lookups\Zones.cs" />
     <Compile Include="Scripts\Tick\Police\WantedLevelScript.cs" />
-    <Compile Include="Scripts\Tick\Police\WeaponDropping.cs" />
+    <Compile Include="Scripts\Tick\Player\WeaponDropping.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

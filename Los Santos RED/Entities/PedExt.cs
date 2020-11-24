@@ -149,6 +149,18 @@ public class PedExt
                 return false;
         }
     }
+    public Vector3 PositionToReportToPolice
+    {
+        get
+        {
+            if (EverSeenPlayer)
+                return PositionLastSeenPlayer;
+            else if (PositionLastSeenCrime != Vector3.Zero)
+                return PositionLastSeenCrime;
+            else
+                return Pedestrian.Position;
+        }
+    }
     public bool SeenPlayerSince(int _Duration)
     {
         if (CanSeePlayer)

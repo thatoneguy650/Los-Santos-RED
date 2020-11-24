@@ -145,7 +145,10 @@ public static class PoliceSpawning
                 MyNewCop.WasModSpawned = true;
                 MyNewCop.WasMarkedNonPersistent = true;
                 MyNewCop.WasRandomSpawnDriver = true;
-                MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
+
+                if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.IsDeadlyChase)
+                    MyNewCop.IssueHeavyWeapon();
+                //MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
                 MyNewCop.GameTimeSpawned = Game.GameTime;
                 Debugging.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.VehicleEnt.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
 
@@ -181,6 +184,10 @@ public static class PoliceSpawning
                                 MyNewPartnerCop.IssuePistol();
                                 MyNewPartnerCop.WasModSpawned = true;
                                 MyNewPartnerCop.WasMarkedNonPersistent = true;
+
+                                if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.IsDeadlyChase)
+                                    MyNewPartnerCop.IssueHeavyWeapon();
+
                                 if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
                                 {
                                     Blip myBlip = PartnerCop.AttachBlip();
@@ -328,7 +335,7 @@ public static class PoliceSpawning
         if(MyInfo == null)
             return null;
 
-        Vector3 SafeSpawnLocation = new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 5f);
+        Vector3 SafeSpawnLocation = new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 1f);//+5f
         Ped Cop = new Ped(MyInfo.ModelName, SafeSpawnLocation, 0f);
         if (!Cop.Exists())
             return null;

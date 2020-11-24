@@ -16,6 +16,16 @@ public static class WeaponDropping
     private static int WeaponCount;
     private static int CurrentWeaponAmmo;
     public static bool IsRunning { get; set; }
+    public static bool CanDropWeapon
+    {
+        get
+        {
+            if (!DroppingWeapon && !PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
+                return true;
+            else
+                return false;
+        }
+    }
     public static int AmmoToDrop
     {
         get
@@ -34,11 +44,9 @@ public static class WeaponDropping
         DroppedWeapons = new List<WeaponExt>();
         DroppingWeapon = false;
         PrevCountWeapons = 1;
+        WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
+        PrevCountWeapons = WeaponCount;
         IsRunning = true;
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
     }
     public static void Tick()
     {
@@ -47,19 +55,18 @@ public static class WeaponDropping
             WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
             if (PrevCountWeapons != WeaponCount)
                 WeaponInventoryChanged(WeaponCount);
-
-            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.DropWeaponKey) && !DroppingWeapon && !PlayerState.IsInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
-            {
-                DropWeapon();
-            }
         }
     }
-    public static void ResetWeaponCount()
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
+    public static void Reset()
     {
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
         PrevCountWeapons = WeaponCount;
     }
-    private static void DropWeapon()
+    public static void DropWeapon()
     {
         DroppingWeapon = true;
         GameFiber DropWeapon = GameFiber.StartNew(delegate

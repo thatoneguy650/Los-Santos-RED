@@ -1,13 +1,6 @@
-﻿using ExtensionsMethods;
-using Rage;
+﻿using Rage;
 using Rage.Native;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public static class Investigation
 {
@@ -95,6 +88,12 @@ public static class Investigation
         {
             InvestigationTick();
         }
+    }
+    public static void StartInvestigation(Vector3 PositionToInvestigate,bool HaveDescription)
+    {
+        InInvestigationMode = true;
+        InvestigationPosition = PositionToInvestigate;
+        HavePlayerDescription = HaveDescription;
     }
     public static void Reset()
     {

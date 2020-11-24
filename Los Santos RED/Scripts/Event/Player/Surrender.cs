@@ -11,28 +11,38 @@ using ExtensionsMethods;
 public static class Surrender
 {
     public static bool IsCommitingSuicide { get; set; }
+    public static bool CanSurrender
+    {
+        get
+        {
+            if(!Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
     public static void RaiseHands()
     {
         if (Game.LocalPlayer.Character.IsWearingHelmet)
             Game.LocalPlayer.Character.RemoveHelmet(true);
 
-        //if (Game.LocalPlayer.WantedLevel > 0 && WantedLevelScript.CurrentCrimes.InstancesOfCrime(Crimes.KillingPolice) < 5)
-        //    WantedLevelScript.CurrentPoliceState = WantedLevelScript.PoliceState.ArrestedWait;
-
         if (PlayerState.HandsAreUp)
             return;
 
-        if (VehicleFuelSystem.CanPumpFuel)
+        if (VehicleFuelSystem.CanPumpFuel)//usees the same key, might need to change
             return;
 
+        General.SetPedUnarmed(Game.LocalPlayer.Character, false);
         VehicleEngine.TurnOffEngine();
-
         PlayerState.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
         General.RequestAnimationDictionay(sDict);
         General.RequestAnimationDictionay("busted");
-       // AreHandsRaised = true;
         if (inVehicle)
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, true, false, true);
@@ -80,18 +90,19 @@ public static class Surrender
             //}, "SetArrestedAnimation");
             //Debugging.GameFibers.Add(RaiseHandsAnimation);
         }
+
+
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 10f)
+            Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
     }
     public static void LowerHands()
     {
-        //if (!LosSantosRED.HandsAreUp)
-        //    return;
-
-        //if (AreHandsRaised)
-        //    return;
-        //else
-            Game.LocalPlayer.Character.Tasks.Clear();
+        PlayerState.HandsAreUp = false; // You put your hands down
+        Game.LocalPlayer.Character.Tasks.Clear();
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
     }
-    public static void SetArrestedAnimation(Ped PedToArrest, bool MarkAsNoLongerNeeded)
+    public static void SetArrestedAnimation(Ped PedToArrest, bool MarkAsNoLongerNeeded, bool StayStanding)
     {
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
@@ -121,21 +132,30 @@ public static class Surrender
                 }
             }
 
-            if (PedToArrest == Game.LocalPlayer.Character && !PlayerState.IsBusted)
-                return;
+            //if (PedToArrest == Game.LocalPlayer.Character && !PlayerState.IsBusted)
+            //    return;
 
-            if (PlayerState.WantedLevel <= 2)
+            if (StayStanding)
             {
-                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
+                {
+                    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                    Debugging.WriteToLog("SetArrestedAnimation", "Standing Animation");
+                }
             }
             else
             {
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-                GameFiber.Wait(6000);
+                if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
+                {
+                    Debugging.WriteToLog("SetArrestedAnimation", "Kneel Animation");
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+                    GameFiber.Wait(6000);
 
-                if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !PlayerState.IsBusted))
-                    return;
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !PlayerState.IsBusted))
+                        return;
+
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                }
             }
             PedToArrest.KeepTasks = true;
 
@@ -153,13 +173,13 @@ public static class Surrender
                 General.RequestAnimationDictionay("busted");
                 General.RequestAnimationDictionay("ped");
 
-                if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 1) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 1))
+                if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3))
                 {
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
                     GameFiber.Wait(1000);//1250
                     PedToArrest.Tasks.Clear();
                 }
-                else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 1))
+                else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
                 {
                     PedToArrest.Tasks.Clear();
                 }

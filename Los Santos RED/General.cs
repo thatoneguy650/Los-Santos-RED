@@ -106,6 +106,10 @@ public static class General
         //}, "TransitionIn");
         //Debugging.GameFibers.Add(Transition);
     }
+    public static void TransitionToMediumMo()
+    {
+        Game.TimeScale = 0.8f;
+    }
     public static bool AttemptLockStatus(Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
     {
         Debugging.WriteToLog("LockCarDoor", string.Format("Start, Lock Status {0}", ToLock.LockStatus));

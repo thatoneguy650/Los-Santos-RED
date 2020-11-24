@@ -80,6 +80,13 @@ public static class WantedLevelScript
                 return false;
         }
     }
+    public static string CurrentPoliceStateString
+    {
+        get
+        {
+            return CurrentPoliceState.ToString();
+        }
+    }
     public static bool RecentlySetWanted
     {
         get
@@ -286,6 +293,11 @@ public static class WantedLevelScript
     {
         ResetStats();
     }
+    public static void ResetPoliceState()
+    {
+        CurrentPoliceState = PoliceState.Normal;
+        GetPoliceState();
+    }
     private static void GetPoliceState()
     {
         if (PlayerState.WantedLevel == 0)
@@ -299,17 +311,25 @@ public static class WantedLevelScript
 
         if (PlayerState.WantedLevel >= 1 && PlayerState.WantedLevel <= 3 && Police.AnyCanSeePlayer)
         {
-            bool IsDeadly = CurrentCrimes.LethalForceAuthorized;
-            if (!IsDeadly && !PlayerState.IsConsideredArmed) // Unarmed and you havent killed anyone
-                CurrentPoliceState = PoliceState.UnarmedChase;
-            else if (!IsDeadly)
-                CurrentPoliceState = PoliceState.CautiousChase;
+            if (Police.AnyCanSeePlayer)
+            {   
+                if (CurrentCrimes.LethalForceAuthorized)
+                {
+                    CurrentPoliceState = PoliceState.DeadlyChase;
+                }
+                else if (PlayerState.IsConsideredArmed)
+                {
+                    CurrentPoliceState = PoliceState.CautiousChase;
+                }
+                else
+                {
+                    CurrentPoliceState = PoliceState.UnarmedChase;
+                }
+            }
             else
-                CurrentPoliceState = PoliceState.DeadlyChase;
-        }
-        else if (PlayerState.WantedLevel >= 1 && PlayerState.WantedLevel <= 3)
-        {
-            CurrentPoliceState = PoliceState.UnarmedChase;
+            {
+                CurrentPoliceState = PoliceState.UnarmedChase;
+            }
         }
         else if (PlayerState.WantedLevel >= 4)
             CurrentPoliceState = PoliceState.DeadlyChase;

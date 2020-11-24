@@ -513,9 +513,9 @@ internal static class Menus
             }
 
             if (SelectedTakeoverRadius == -1f)
-                PedSwap.TakeoverPed(500f, true, false, false, true);
+                PedSwap.TakeoverPed(500f, true, false, true);
             else
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, false, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true);
         }
         else if (selectedItem == menuMainShowPlayerStatus)
         {
@@ -543,9 +543,9 @@ internal static class Menus
         else if (selectedItem == menuBustedTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                PedSwap.TakeoverPed(500f, true, true, false, true);
+                PedSwap.TakeoverPed(500f, true, true, true);
             else
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, false, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
         }
 
         bustedMenu.Visible = false;
@@ -561,9 +561,9 @@ internal static class Menus
         else if (selectedItem == menuDeathTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                PedSwap.TakeoverPed(500f, true, true, false, true);
+                PedSwap.TakeoverPed(500f, true, true, true);
             else
-                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, false, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
         }
 
         deathMenu.Visible = false;
