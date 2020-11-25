@@ -165,7 +165,7 @@ public static class Debugging
     }
     private static void DebugNumpad4()
     {
-        PoliceSpawning.SpawnGTACop(Agencies.AgenciesAtPosition(Game.LocalPlayer.Character.GetOffsetPositionFront(5f)).PickRandom(), Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading, null, true);
+        PoliceSpawning.SpawnGTACop(Agencies.GetAllSpawnableAgencies(Game.LocalPlayer.Character.GetOffsetPositionFront(5f)).PickRandom(), Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading, null, true);
         BribePoliceAnimation(0);
     }
     private static void BribePoliceAnimation(int Amount)//temp public

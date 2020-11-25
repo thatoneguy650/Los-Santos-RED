@@ -125,7 +125,7 @@ public static class PedList
     }
     private static void AddCop(Ped Pedestrian)
     {
-        Agency AssignedAgency = Agencies.DetermineAgency(Pedestrian);
+        Agency AssignedAgency = Agencies.GetAgency(Pedestrian);
         if (AssignedAgency == null && !Pedestrian.Exists())
             return;
 
@@ -136,7 +136,7 @@ public static class PedList
             Vehicle PoliceCar = Pedestrian.CurrentVehicle;
             if (!PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
             {
-                Agencies.ChangeLivery(PoliceCar, AssignedAgency);
+                PoliceSpawning.UpdateLivery(PoliceCar, AssignedAgency);
                 PoliceSpawning.UpgradeCruiser(PoliceCar);
                 PoliceVehicles.Add(PoliceCar);
             }
@@ -153,10 +153,7 @@ public static class PedList
         SetPedestrianStats(Pedestrian, true);
 
         Pedestrian.Inventory.Weapons.Clear();
-        myCop.IssuePistol();
-
-        if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.IsDeadlyChase)
-            myCop.IssueHeavyWeapon();
+        PoliceEquipment.IssueWeapons(myCop);
 
         CopPeds.Add(myCop);
     }
@@ -207,7 +204,7 @@ public static class PedList
                 {
                     if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
                     {
-                        Agencies.ChangeLivery(Veh, Agencies.GetAgencyFromVehicle(Veh));
+                        PoliceSpawning.UpdateLivery(Veh);
                         PoliceSpawning.UpgradeCruiser(Veh);
                         PoliceVehicles.Add(Veh);
                     }

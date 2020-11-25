@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public static class WeaponDropping
 {
-    private static List<WeaponExt> DroppedWeapons;
+    private static List<DroppedWeapon> DroppedWeapons;
     private static bool DroppingWeapon;
     private static int PrevCountWeapons;
     private static int WeaponCount;
@@ -41,7 +41,7 @@ public static class WeaponDropping
     }
     public static void Initialize()
     {
-        DroppedWeapons = new List<WeaponExt>();
+        DroppedWeapons = new List<DroppedWeapon>();
         DroppingWeapon = false;
         PrevCountWeapons = 1;
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
@@ -74,8 +74,8 @@ public static class WeaponDropping
             DropWeaponAnimation();
             NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
 
-            GTAWeapon.WeaponVariation DroppedGunVariation = General.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-            DroppedWeapons.Add(new WeaponExt(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
+            WeaponVariation DroppedGunVariation = General.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            DroppedWeapons.Add(new DroppedWeapon(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
 
             NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
 
@@ -92,7 +92,7 @@ public static class WeaponDropping
         if (weaponCount > PrevCountWeapons) //Added Weapon
         {
             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
-            foreach (WeaponExt MyOldGuns in DroppedWeapons)
+            foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
             {
                 if (PlayerWeapons.Contains(MyOldGuns.Weapon.Hash) && Game.LocalPlayer.Character.Position.DistanceTo2D(MyOldGuns.CoordinatedDropped) <= 2f)
                 {

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 public static class Zones
 {
-    private static string ConfigFileName = "Plugins\\LosSantosRED\\Zones.xml";
+    private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Zones.xml";
 
     public static List<Zone> ZoneList = new List<Zone>();
     public static void Initialize()
@@ -149,9 +149,9 @@ public static class Zones
     };
         
     }
-    public static Zone GetZoneAtLocation(Vector3 ZonePosition)
+    public static Zone GetZone(Vector3 ZonePosition)
     {
-        string zoneName = GetZoneStringAtLocation(ZonePosition);
+        string zoneName = GetInternalZoneString(ZonePosition);
         Zone ListResult = ZoneList.Where(x => x.InternalGameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
         if(ListResult == null)
         {
@@ -165,18 +165,11 @@ public static class Zones
             return ListResult;
         }
     }
-    public static string GetZoneStringAtLocation(Vector3 ZonePosition)
+    public static Zone GetZone(string InternalGameName)
     {
-        string zoneName;
-        unsafe
-        {
-            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
-
-            zoneName = Marshal.PtrToStringAnsi(ptr);
-        }
-        return zoneName;
+        return ZoneList.Where(x => x.InternalGameName.ToLower() == InternalGameName.ToLower()).FirstOrDefault();
     }
-    public static string GetFormattedZoneName(Zone MyZone,bool WithCounty)
+    public static string GetName(Zone MyZone, bool WithCounty)
     {
         if (WithCounty)
         {
@@ -196,35 +189,17 @@ public static class Zones
         }
 
     }
-    public static Zone GetZoneByName(string InternalGameName)
+    private static string GetInternalZoneString(Vector3 ZonePosition)
     {
-        return ZoneList.Where(x => x.InternalGameName.ToLower() == InternalGameName.ToLower()).FirstOrDefault();
-    }
-}
-[Serializable()]
-public class Zone
-{
-    public enum County
-    {
-        CityOfLosSantos = 0,
-        LosSantosCounty = 1,
-        BlaineCounty = 2,
-        PacificOcean = 3,
-    }
-    public Zone()
-    {
+        string zoneName;
+        unsafe
+        {
+            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
 
+            zoneName = Marshal.PtrToStringAnsi(ptr);
+        }
+        return zoneName;
     }
-    public Zone(string _GameName, string _TextName, County _ZoneCounty)
-    {
-        InternalGameName = _GameName;
-        DisplayName = _TextName;
-        ZoneCounty = _ZoneCounty;
-    }
-    public string DispatchUnitName { get; set; }
-    public string InternalGameName { get; set; }
-    public string DisplayName { get; set; }
-    public County ZoneCounty { get; set; }
-    public bool IsRestrictedDuringWanted { get; set; } = false;
+
 
 }

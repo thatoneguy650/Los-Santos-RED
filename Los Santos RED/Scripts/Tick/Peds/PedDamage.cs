@@ -446,7 +446,7 @@ public static class PedDamage
                 int HealthDamage = Health - CurrentHealth;
                 int ArmorDamage = Armor - CurrentArmor;
                 BodyLocation DamagedLocation = GetDamageLocation(MyPed.Pedestrian);
-                GTAWeapon DamagingWeapon = GetWeaponLastDamagedBy(MyPed.Pedestrian);
+                WeaponInformation DamagingWeapon = GetWeaponLastDamagedBy(MyPed.Pedestrian);
 
                 bool CanBeFatal = false;
                 if (DamagedLocation == BodyLocation.Head || DamagedLocation == BodyLocation.Neck || DamagedLocation == BodyLocation.UpperTorso)
@@ -463,7 +463,7 @@ public static class PedDamage
                 {
                     HealthInjury = InjuryType.Fatal;
                 }
-                else if (DamagingWeapon.Category != GTAWeapon.WeaponCategory.Vehicle && DamagingWeapon.Category != GTAWeapon.WeaponCategory.Melee && DamagingWeapon.Category != GTAWeapon.WeaponCategory.Unknown)
+                else if (DamagingWeapon.Category != WeaponCategory.Vehicle && DamagingWeapon.Category != WeaponCategory.Melee && DamagingWeapon.Category != WeaponCategory.Unknown)
                 {
                     HealthInjury = RandomType(CanBeFatal);
                     ArmorInjury = RandomType(false);
@@ -505,19 +505,19 @@ public static class PedDamage
                 if (IsPlayerPed)
                 {
                     DisplayString = string.Format("      PLAYER: {0}-{1}-{2} Damage {3}/{4} Health {5}/{6}",
-                         HealthInjury, DamagedLocation, DamagingWeapon.Name, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
+                         HealthInjury, DamagedLocation, DamagingWeapon.ModelName, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
                 }
                 else
                 {
                     if (MyPed.IsCop)
                     {
                         DisplayString = string.Format("  Cop: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
-                         MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, DamagingWeapon.Name, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
+                         MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, DamagingWeapon.ModelName, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
                     }
                     else
                     {
                         DisplayString = string.Format("  Ped: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
-                          MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, DamagingWeapon.Name, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
+                          MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, DamagingWeapon.ModelName, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
                     }
                 }
                 if(Health != CurrentHealth)
@@ -698,9 +698,9 @@ public static class PedDamage
             else
                 return InjuryType.Normal;
         }
-        private GTAWeapon GetWeaponLastDamagedBy(Ped Pedestrian)
+        private WeaponInformation GetWeaponLastDamagedBy(Ped Pedestrian)
         {
-            foreach (GTAWeapon MyWeapon in Weapons.WeaponsList)
+            foreach (WeaponInformation MyWeapon in Weapons.WeaponsList)
             {
                 if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, MyWeapon.Hash, 0))
                 {
@@ -710,15 +710,15 @@ public static class PedDamage
             }
 
             if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 1))
-                return new GTAWeapon("Generic Melee", 0, GTAWeapon.WeaponCategory.Melee, 0, 0, false, false, false, false);
+                return new WeaponInformation("Generic Melee", 0, WeaponCategory.Melee, 0, 0, false, false, false);
 
             if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 2))
-                return new GTAWeapon("Generic Weapon", 0, GTAWeapon.WeaponCategory.Melee, 0, 0, false, false, false, false);
+                return new WeaponInformation("Generic Weapon", 0, WeaponCategory.Melee, 0, 0, false, false, false);
 
             if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian))
-                return new GTAWeapon("Vehicle Injury", 0, GTAWeapon.WeaponCategory.Vehicle, 0, 0, false, false, false, false);
+                return new WeaponInformation("Vehicle Injury", 0, WeaponCategory.Vehicle, 0, 0, false, false, false);
             else
-                return new GTAWeapon("Unknown", 0, GTAWeapon.WeaponCategory.Unknown, 0, 0, false, false, false, false);
+                return new WeaponInformation("Unknown", 0, WeaponCategory.Unknown, 0, 0, false, false, false);
         }
         public PedHealthState()
         {

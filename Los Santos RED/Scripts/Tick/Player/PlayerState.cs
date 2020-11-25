@@ -35,14 +35,14 @@ public static class PlayerState
     public static bool IsConsideredArmed { get; private set; }
     public static List<VehicleExt> TrackedVehicles { get; private set; }
     public static VehicleExt CurrentVehicle { get; private set; }
-    public static GTAWeapon CurrentWeapon { get; private set; }
-    public static GTAWeapon.WeaponCategory CurrentWeaponCategory
+    public static WeaponInformation CurrentWeapon { get; private set; }
+    public static WeaponCategory CurrentWeaponCategory
     {
         get
         {
             if (CurrentWeapon != null)
                 return CurrentWeapon.Category;
-            return GTAWeapon.WeaponCategory.Unknown;
+            return WeaponCategory.Unknown;
         }
     }
 
@@ -618,10 +618,10 @@ public static class PlayerState
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",
             string.Format("~y~{0}", PedSwap.SuspectName), NotifcationText);
     }
-    public static void GivePlayerRandomWeapon(GTAWeapon.WeaponCategory RandomWeaponCategory)
+    public static void GivePlayerRandomWeapon(WeaponCategory RandomWeaponCategory)
     {
-        var myGun = Weapons.GetRandomRegularWeaponByCategory(RandomWeaponCategory);
-        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+        var myGun = Weapons.GetRandomRegularWeapon(RandomWeaponCategory);
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
     }
     private static void UpdateVehicleDescription(VehicleExt MyVehicle)
     {

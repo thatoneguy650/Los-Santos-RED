@@ -37,18 +37,18 @@ public static class Names
         string Name = "";
         if(IsMale)
         {
-            Name += NameList.Where(x => x.Type == PedName.NameType.Male).PickRandom().Name;
+            Name += NameList.Where(x => x.Type == NameType.Male).PickRandom().Name;
         }
         else
         {
-            Name += NameList.Where(x => x.Type == PedName.NameType.Female).PickRandom().Name;
+            Name += NameList.Where(x => x.Type == NameType.Female).PickRandom().Name;
         }
-        Name += " " + NameList.Where(x => x.Type == PedName.NameType.Last).PickRandom().Name;
+        Name += " " + NameList.Where(x => x.Type == NameType.Last).PickRandom().Name;
         return Name;
     }
     public static string GetRandomName()
     {
-        return NameList.Where(x => x.Type == PedName.NameType.Unisex).PickRandom().Name + " " + NameList.Where(x => x.Type == PedName.NameType.Last).PickRandom().Name;
+        return NameList.Where(x => x.Type == NameType.Unisex).PickRandom().Name + " " + NameList.Where(x => x.Type == NameType.Last).PickRandom().Name;
     }
     public static void DefaultConfig()
     {
@@ -3984,44 +3984,23 @@ public static class Names
 
         foreach(string Name in MaleNames)
         {
-            NameList.Add(new PedName(Name, PedName.NameType.Male));
+            NameList.Add(new PedName(Name, NameType.Male));
         }
         foreach (string Name in FemaleNames)
         {
-            NameList.Add(new PedName(Name, PedName.NameType.Female));
+            NameList.Add(new PedName(Name, NameType.Female));
         }
         foreach (string Name in LastNames)
         {
-            NameList.Add(new PedName(Name, PedName.NameType.Last));
+            NameList.Add(new PedName(Name, NameType.Last));
         }
         foreach (string Name in UniSexNames)
         {
-            NameList.Add(new PedName(Name, PedName.NameType.Unisex));
+            NameList.Add(new PedName(Name, NameType.Unisex));
         }
     }
 
 }
-[Serializable()]
-public class PedName
-{
-    public string Name;
-    public NameType Type;
-    public enum NameType
-    {
-        Male = 0,
-        Female = 1,
-        Last = 2,
-        Unisex = 3,
-    }
-    public PedName()
-    {
 
-    }
-    public PedName(string name, NameType type)
-    {
-        Name = name;
-        Type = type;
-    }
-}
 
 

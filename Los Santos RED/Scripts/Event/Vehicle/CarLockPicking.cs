@@ -24,10 +24,10 @@ public static class CarLockPicking
             if (!TargetVehicle.Exists())
                 return false;
             int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
-            Vehicles.VehicleClass VehicleClass = (Vehicles.VehicleClass)intVehicleClass;
-            if (VehicleClass == Vehicles.VehicleClass.Boats || VehicleClass == Vehicles.VehicleClass.Cycles || VehicleClass == Vehicles.VehicleClass.Industrial || VehicleClass == Vehicles.VehicleClass.Motorcycles
-                || VehicleClass == Vehicles.VehicleClass.Planes || VehicleClass == Vehicles.VehicleClass.Service || VehicleClass == Vehicles.VehicleClass.Trailer || VehicleClass == Vehicles.VehicleClass.Trains
-                || VehicleClass == Vehicles.VehicleClass.Helicopters)
+            VehicleClass VehicleClass = (VehicleClass)intVehicleClass;
+            if (VehicleClass == VehicleClass.Boats || VehicleClass == VehicleClass.Cycles || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycles
+                || VehicleClass == VehicleClass.Planes || VehicleClass == VehicleClass.Service || VehicleClass == VehicleClass.Trailer || VehicleClass == VehicleClass.Trains
+                || VehicleClass == VehicleClass.Helicopters)
                 return false;//maybe add utility?
             else if (!TargetVehicle.Doors[0].IsValid() || !TargetVehicle.Doors[1].IsValid())
                 return false;

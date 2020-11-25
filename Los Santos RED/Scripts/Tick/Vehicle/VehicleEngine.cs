@@ -11,43 +11,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-internal static class VehicleEngine
+public static class VehicleEngine
 {
     private static bool PrevEngineRunning;
     private static bool WasinVehicle;
     private static bool TogglingEngine;
     private static uint GameTimeStartedHotwiring;
     private static bool PrevIsHotwiring;
+    private static bool IsPlayerInVehicle;
 
-    private static bool LeftBlinkerStartedTurn;
-    private static bool RightBlinkerStartedTurn;
-    private static int TimeWheelsTurnedRight;
-    private static int TimeWheelsTurnedLeft;
-    private static int TimeWheelsStraight;
-
-    public static bool AutoTune { get; private set; }
-    public static string AutoTuneStation { get; set; }
     public static Keys EngineToggleKey { get; private set; }
     public static bool IsRunning { get; set; }
-    public static bool WantedLevelTune { get; set; }
-
-    public static bool LeftBlinkerOn { get; set; }
-    public static bool RightBlinkerOn { get; set; }
-    public static bool HazardsOn { get; set; }
-    public static string VehicleIndicatorStatus
-    {
-        get
-        {
-            if (LeftBlinkerOn)
-                return " (LI)";
-            else if (RightBlinkerOn)
-                return " (RI)";
-            else if (HazardsOn)
-                return " (HAZ)";
-            else
-                return "";
-        }
-    }
     public static bool IsHotwiring
     {
         get
@@ -60,12 +34,21 @@ internal static class VehicleEngine
                 return false;
         }
     }
-
-    public static bool LimitThrottle { get; private set; }
-
-    private static uint GameTimeLastSetLimitThrottle;
     public static bool IsEngineRunning { get; private set; }
-
+    public static bool CanToggleEngine
+    {
+        get
+        {
+            if (IsPlayerInVehicle && TogglingEngine)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -75,11 +58,8 @@ internal static class VehicleEngine
         TogglingEngine = false;
         GameTimeStartedHotwiring = 0;
         PrevIsHotwiring = false; 
-        AutoTune = true;
-        AutoTuneStation = "RADIO_19_USER";
         EngineToggleKey = General.MySettings.KeyBinding.VehicleKey;
 
-        WantedLevelTune = false;
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
         {
             if(Game.LocalPlayer.Character.CurrentVehicle != null)
@@ -94,284 +74,42 @@ internal static class VehicleEngine
     {
         if (IsRunning)
         {
-            bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-
-            if (WasinVehicle != PlayerInVehicle)
+            IsPlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+            if (WasinVehicle != IsPlayerInVehicle)
             {
-                EnterExitVehicleEvent(PlayerInVehicle);
+                IsPlayerInVehicleChanged();
             }
 
             if (PrevIsHotwiring != IsHotwiring)
-                IsHotWiringChanged();
-
-            if (PlayerInVehicle)
             {
-                if (Game.LocalPlayer.Character.IsInAnyPoliceVehicle && IsEngineRunning)
-                {
-                    NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
-                }
-                else if (!IsEngineRunning)
-                {
-                    NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-                }
+                IsHotWiringChanged();
+            }
 
-                if (!TogglingEngine && Game.IsKeyDown(EngineToggleKey) && !Game.IsControlKeyDownRightNow)
-                {
-                    Debugging.WriteToLog("ToggleEngine", string.Format("Start {0}", IsEngineRunning));
-                    TogglingEngine = true;
-                    ToggleEngine(true, !IsEngineRunning);
-                    Debugging.WriteToLog("ToggleEngine", string.Format("End {0}", IsEngineRunning));
-                }
-
-                if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
-                {
-                    if (!IsEngineRunning)
-                    {
-                        Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
-                    }
-                    else
-                    {
-                        Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
-                        Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
-                    }
-                }
-
-                if (AutoTuneStation.ToUpper() != "NONE")
-                {
-                    string RadioStationLastTuned = "OFF";
-                    unsafe
-                    {
-                        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
-                        RadioStationLastTuned = Marshal.PtrToStringAnsi(ptr);
-                    }
-                    if (RadioStationLastTuned != AutoTuneStation)
-                    {
-                        NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, AutoTuneStation);
-                    }
-                }
-                IndicatorsTick();
+            if (IsPlayerInVehicle)
+            {
+                SetEngineToDesiredStatus();
             }
             else
             {
                 GameTimeStartedHotwiring = 0;
-                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
             }
+
             if (PrevEngineRunning != IsEngineRunning)
             {
-                EngineRunningEvent();
-            }
-
-            //LimiterTick();
-        }
-    }
-    private static void LimiterTick()
-    {
-        if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.VehicleKey) && Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsDriver() && Game.GameTime - GameTimeLastSetLimitThrottle >= 500)// && Game.IsControlPressed(0,GameControl.VehicleAccelerate))
-        {
-            LimitThrottle = !LimitThrottle;
-            GameTimeLastSetLimitThrottle = Game.GameTime;
-        }
-
-        if (Game.IsKeyDownRightNow(Keys.W) && Game.LocalPlayer.Character.IsDriver())//Game.IsControlPressed(0,GameControl.VehicleAccelerate))
-        {
-            if (LimitThrottle && PlayerState.IsNotWanted)
-            {
-                float Limit = 0.5f;
-                float CurrentSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
-
-                if (CurrentSpeedMPH <= 15f)
-                    Limit = 0.75f;
-                else if (CurrentSpeedMPH >= 75f)
-                    Limit = 0.3f;
-
-                if (TrafficViolations.PlayerIsSpeeding)
-                    Limit = 0.15f;
-
-                NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 27, 71, Limit);
-            }
-            else
-            {
-                NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 27, 71, 1.0f);
+                IsEngineRunningChanged();
             }
         }
     }
-    private static void IndicatorsTick()
+
+    public static void ToggleEngine(bool _animation, bool DesiredEngineStatus)
     {
-        Vehicle MyCar = Game.LocalPlayer.Character.CurrentVehicle;
-        if (MyCar == null || !MyCar.Exists())
+        if (TogglingEngine)
             return;
 
-        if (Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow)
-        {
-            if (HazardsOn)
-            {
-                MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
-                HazardsOn = false;
-            }
-            else
-            {
-                MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Both;
-                HazardsOn = true;
-                LeftBlinkerOn = false;
-                RightBlinkerOn = false;
-                return;
-            }
-        }
+        Debugging.WriteToLog("ToggleEngine", string.Format("Start {0}", IsEngineRunning));
 
-        
-        RightBlinkerTick(MyCar);
-        LeftBlinkerTick(MyCar);
+        TogglingEngine = true;
 
-
-       // UI.DebugLine = string.Format("LOn: {0},LTime: {1}, LStart {2},ROn: {3},RTime: {4},RStart: {5},STime: {6},Hazard: {7},Angle: {8}", LeftBlinkerOn, TimeWheelsTurnedRight, LeftBlinkerStartedTurn, RightBlinkerOn, TimeWheelsTurnedRight, RightBlinkerStartedTurn, TimeWheelsStraight,HazardsOn, MyCar.SteeringAngle);
-    }
-    private static void RightBlinkerTick(Vehicle MyCar)
-    {
-        if (Game.IsKeyDown(Keys.E) && Game.IsShiftKeyDownRightNow)
-        {
-            if (RightBlinkerOn)
-            {
-                MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
-                RightBlinkerOn = false;
-            }
-            else
-            {
-                MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.RightOnly;
-                RightBlinkerOn = true;
-                LeftBlinkerOn = false;
-                HazardsOn = false;
-            }
-        }
-        if (RightBlinkerOn)
-        {
-            if (MyCar.SteeringAngle <= -25f)
-                TimeWheelsTurnedRight++;
-            else
-                TimeWheelsTurnedRight = 0;
-
-            if (TimeWheelsTurnedRight >= 20)
-            {
-                RightBlinkerStartedTurn = true;
-            }
-
-        }
-        if (RightBlinkerOn && RightBlinkerStartedTurn)
-        {
-            if (MyCar.SteeringAngle > -10f)
-                TimeWheelsStraight++;
-            else
-                TimeWheelsStraight = 0;
-        }
-        if (RightBlinkerOn && TimeWheelsStraight >= 20)
-        {
-            TimeWheelsTurnedRight = 0;
-            TimeWheelsStraight = 0;
-            RightBlinkerStartedTurn = false;
-            MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
-            RightBlinkerOn = false;
-        }
-    }
-    private static void LeftBlinkerTick(Vehicle MyCar)
-    {
-        if (Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow)
-        {
-            if (LeftBlinkerOn)
-            {
-                MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
-                LeftBlinkerOn = false;
-            }
-            else
-            {
-                MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.LeftOnly;
-                LeftBlinkerOn = true;
-                RightBlinkerOn = false;
-                HazardsOn = false;
-            }
-        }
-        if (LeftBlinkerOn)
-        {
-            if (MyCar.SteeringAngle >= 25f)
-                TimeWheelsTurnedLeft++;
-            else
-                TimeWheelsTurnedLeft = 0;
-
-            if (TimeWheelsTurnedLeft >= 20)
-            {
-                LeftBlinkerStartedTurn = true;
-            }
-
-        }
-        if (LeftBlinkerOn && LeftBlinkerStartedTurn)
-        {
-            if (MyCar.SteeringAngle < 10f)
-                TimeWheelsStraight++;
-            else
-                TimeWheelsStraight = 0;
-        }
-        if (LeftBlinkerOn && TimeWheelsStraight >= 20)
-        {
-            TimeWheelsTurnedLeft = 0;
-            TimeWheelsStraight = 0;
-            LeftBlinkerStartedTurn = false;
-            MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
-            LeftBlinkerOn = false;
-        }
-    }
-    public static void TurnOffEngine()
-    {
-        ToggleEngine(false, false);
-    }
-    private static void IsHotWiringChanged()
-    {
-        if(IsHotwiring)
-        {
-
-        }
-        else
-        {
-            if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
-                IsEngineRunning = true;
-        }
-        PrevIsHotwiring = IsHotwiring;
-    }
-    private static void EngineRunningEvent()
-    {
-        Debugging.WriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",IsEngineRunning));
-        PrevEngineRunning = IsEngineRunning;
-    }
-    public static void EnterExitVehicleEvent(bool PlayerInVehicle)
-    {
-        if(PlayerInVehicle)
-        {
-            if (Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
-            {
-                IsEngineRunning = true;
-            }
-            else
-            {
-                IsEngineRunning = false;
-
-
-                if(Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
-                {
-                    if(Game.LocalPlayer.Character.SeatIndex == -1)
-                        GameTimeStartedHotwiring = Game.GameTime;
-                    else
-                        GameTimeStartedHotwiring = Game.GameTime + 2000;
-                }
-            }
-        }
-        else
-        {
-            HazardsOn = false;
-
-            if(Game.LocalPlayer.Character.LastVehicle.Exists())
-                Game.LocalPlayer.Character.LastVehicle.IsEngineOn = IsEngineRunning;
-        }
-        WasinVehicle = PlayerInVehicle;
-    }  
-    private static void ToggleEngine(bool _animation,bool DesiredEngineStatus)
-    {                 
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
         {
             if (Game.LocalPlayer.Character.CurrentVehicle.Speed > 4f)
@@ -397,9 +135,75 @@ internal static class VehicleEngine
                     IsEngineRunning = true;
             }
         }
-        //LocalWriteToLog("ToggleEngine", "toggled");
         TogglingEngine = false;
+        Debugging.WriteToLog("ToggleEngine", string.Format("End {0}", IsEngineRunning));
     }
+    public static void TurnOffEngine()
+    {
+        ToggleEngine(false, false);
+    }
+    private static void SetEngineToDesiredStatus()
+    {
+        if (!Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
+        {
+            if (!IsEngineRunning)
+            {
+                Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
+            }
+            else
+            {
+                Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
+                Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn = true;
+            }
+        }
+    }
+    private static void IsHotWiringChanged()
+    {
+        if(IsHotwiring)
+        {
+
+        }
+        else
+        {
+            if(Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                IsEngineRunning = true;
+        }
+        PrevIsHotwiring = IsHotwiring;
+    }
+    private static void IsEngineRunningChanged()
+    {
+        Debugging.WriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",IsEngineRunning));
+        PrevEngineRunning = IsEngineRunning;
+    }
+    private static void IsPlayerInVehicleChanged()
+    {
+        if(IsPlayerInVehicle)
+        {
+            if (Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+            {
+                IsEngineRunning = true;
+            }
+            else
+            {
+                IsEngineRunning = false;
+
+
+                if(Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
+                {
+                    if(Game.LocalPlayer.Character.SeatIndex == -1)
+                        GameTimeStartedHotwiring = Game.GameTime;
+                    else
+                        GameTimeStartedHotwiring = Game.GameTime + 2000;
+                }
+            }
+        }
+        else
+        {
+            if(Game.LocalPlayer.Character.LastVehicle.Exists())
+                Game.LocalPlayer.Character.LastVehicle.IsEngineOn = IsEngineRunning;
+        }
+        WasinVehicle = IsPlayerInVehicle;
+    }  
     private static void StartEngineAnimation()
     {
         GameFiber.StartNew(delegate
@@ -427,59 +231,6 @@ internal static class VehicleEngine
                 TogglingEngine = false;
             }
         });
-    }
-    public static void ChangeStation(string StationName)
-    {
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
-        {
-            if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
-                return;
-
-            if (IsHotwiring)
-                return;
-
-            if (!Game.LocalPlayer.Character.IsOnBike)
-            {
-                ChangeStationAnimation(StationName);
-            }
-            else
-            {
-                SetRadioStation(StationName);
-            }
-        }
-    }
-    private static void ChangeStationAnimation(string StationName)
-    {
-        GameFiber.StartNew(delegate
-        {
-            var sDict = "veh@van@ds@base";
-            NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
-            while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
-                GameFiber.Yield();
-            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
-
-            bool Cancel = false;
-            uint GameTimeStartedAnimation = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedAnimation <= 1000)
-            {
-                if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
-                {
-                    NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
-                    Cancel = true;
-                }
-                GameFiber.Sleep(200);
-            }
-            if (!Cancel)
-                SetRadioStation(StationName);
-
-        });
-    }
-    private static void SetRadioStation(string  StationName)
-    {
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
-        {
-            NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
-        }
     }
 }
 

@@ -164,7 +164,7 @@ public static class Crimes
 
         if (PlayerState.RecentlyShot(5000) || Game.LocalPlayer.Character.IsShooting)
         {
-            if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || PlayerState.CurrentWeaponCategory == GTAWeapon.WeaponCategory.Melee))
+            if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || PlayerState.CurrentWeaponCategory == WeaponCategory.Melee))
             {
                 FiringWeapon.IsCurrentlyViolating = true;
                 if (Police.AnyRecentlySeenPlayer)
@@ -205,7 +205,7 @@ public static class Crimes
             {
                 BrandishingHeavyWeapon.IsCurrentlyViolating = false;
             }
-            if (PlayerState.CurrentWeapon != null && PlayerState.CurrentWeapon.Category == GTAWeapon.WeaponCategory.Melee)
+            if (PlayerState.CurrentWeapon != null && PlayerState.CurrentWeapon.Category == WeaponCategory.Melee)
             {
                 BrandishingCloseCombatWeapon.IsCurrentlyViolating = true;
             }
@@ -312,7 +312,7 @@ public static class Crimes
         {
             if (Police.AnyCanSeePlayer || (Violating.CanReportBySound && Police.AnyCanHearPlayerShooting) || Violating.IsAlwaysFlagged)
             {
-                GTAWeapon ToSee = null;
+                WeaponInformation ToSee = null;
                 if (!PlayerState.IsInVehicle)
                     ToSee = PlayerState.CurrentWeapon;
                 WantedLevelScript.CurrentCrimes.AddCrime(Violating, true,PlayerState.CurrentPosition,PlayerState.CurrentVehicle, ToSee);
@@ -744,7 +744,7 @@ public class CriminalHistory
         else
             return MyStuff.Instances;
     }
-    public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, GTAWeapon WeaponObserved)
+    public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved)
     {
         CrimeEvent PreviousViolation;
         if (ByPolice)

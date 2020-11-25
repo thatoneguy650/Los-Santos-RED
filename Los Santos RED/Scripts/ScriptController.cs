@@ -36,7 +36,8 @@ public static class ScriptController
             new TickTask(25, "ControlScript", ControlScript.Tick, 1,0),
 
             new TickTask(0, "VehicleEngine", VehicleEngine.Tick, 2,0),
-  
+            
+
             //new TickTask(200, "PlayerHealth", PlayerHealth.Tick, 3,0),
             new TickTask(200, "PedWoundSystem", PedDamage.Tick, 3,1),
             new TickTask(250, "MuggingSystem", MuggingScript.Tick, 3,2),
@@ -85,7 +86,12 @@ public static class ScriptController
             new TickTask(500, "PoliceSpawning.RemoveCops", Dispatch.DeleteChecking, 16,1),
 
 
+            new TickTask(0, "VehicleIndicators", VehicleIndicators.Tick, 17,0),
+            new TickTask(0, "RadioTuning", RadioTuning.Tick, 18,0),
 
+
+            new TickTask(500, "PoliceEquipment.UpdateCops", PoliceEquipment.UpdateCops, 19,1),
+            new TickTask(250, "ArmCops", PoliceEquipment.ArmCops, 19,2),
 
 
         };
@@ -112,9 +118,12 @@ public static class ScriptController
         PoliceSpeech.Initialize();
         Vehicles.Initialize();
         VehicleEngine.Initialize();
+        VehicleIndicators.Initialize();
+        RadioTuning.Initialize();
         VehicleFuelSystem.Initialize();
         //Tasking.Initialize();
         NewTasking.Initialize();
+        PoliceEquipment.Initialize();
 
 
         Weapons.Initialize();
@@ -221,10 +230,13 @@ public static class ScriptController
         PoliceSpeech.Dispose();
         Vehicles.Dispose();
         VehicleEngine.Dispose();
+        VehicleIndicators.Dispose();
+        RadioTuning.Dispose();
         VehicleFuelSystem.Dispose();
         Smoking.Dispose();
         //Tasking.Dispose();
         NewTasking.Dispose();
+        PoliceEquipment.Dispose();
         Agencies.Dispose();
         Locations.Dispose();
         Weapons.Dispose();

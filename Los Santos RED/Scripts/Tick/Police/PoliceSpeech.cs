@@ -76,11 +76,11 @@ internal static class PoliceSpeech
     {
         foreach (SpeakingCop Cop in SpeakingCops.Where(x => x.AssignedCop.Pedestrian.Exists() && !x.AssignedCop.Pedestrian.IsDead))
         {
-            if (Cop.CanSpeak && Cop.AssignedCop.DistanceToPlayer <= 45f)
+            if (Cop.CanSpeak && Cop.AssignedCop.DistanceToPlayer <= 25f)
             {
                 Cop.Speak();
             }
-            if (Cop.CanRadioIn && Cop.AssignedCop.CanSeePlayer && Crimes.IsViolatingAnyCrimes)
+            if (Cop.CanRadioIn && Cop.AssignedCop.CanRecognizePlayer && Crimes.IsViolatingAnyCrimes)
             {
                 Cop.RadioIn();
             }
@@ -125,7 +125,7 @@ internal static class PoliceSpeech
             {
                 if (GameTimeLastRadioed == 0)
                     return false;
-                else if (Game.GameTime - GameTimeLastRadioed >= 15000)
+                else if (Game.GameTime - GameTimeLastRadioed >= 45000)
                     return false;
                 else
                     return true;
@@ -178,7 +178,7 @@ internal static class PoliceSpeech
         {
     
             string AnimationToPlay = "generic_radio_enter";
-            GTAWeapon CurrentGun = General.GetCurrentWeapon(AssignedCop.Pedestrian);
+            WeaponInformation CurrentGun = General.GetCurrentWeapon(AssignedCop.Pedestrian);
             if (CurrentGun != null && CurrentGun.IsOneHanded)
                 AnimationToPlay = "radio_enter";
 

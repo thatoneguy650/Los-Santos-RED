@@ -67,7 +67,7 @@ public static class PlayerLocation
     }
     private static void GetZone()
     {
-        PlayerCurrentZone = Zones.GetZoneAtLocation(Game.LocalPlayer.Character.Position);
+        PlayerCurrentZone = Zones.GetZone(Game.LocalPlayer.Character.Position);
     }
     private static void GetNode()
     {
@@ -126,12 +126,12 @@ public static class PlayerLocation
             PlayerCurrentCrossStreetName = "";
 
 
-        PlayerCurrentStreet = Streets.GetStreetFromName(PlayerCurrentStreetName);
-        PlayerCurrentCrossStreet = Streets.GetStreetFromName(PlayerCurrentCrossStreetName);
+        PlayerCurrentStreet = Streets.GetStreet(PlayerCurrentStreetName);
+        PlayerCurrentCrossStreet = Streets.GetStreet(PlayerCurrentCrossStreetName);
 
         if (PlayerCurrentStreet == null)
         {
-            PlayerCurrentStreet = new Street(Streets.GetCurrentStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
+            PlayerCurrentStreet = new Street(Streets.GetStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
             if (PlayerCurrentStreet.IsHighway)
             {
                 if (!PlayerIsOnFreeway)

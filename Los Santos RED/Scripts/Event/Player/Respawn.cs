@@ -161,7 +161,7 @@ public static class Respawn
             Debugging.WriteToLog("RespawnInPlace", e.Message);
         }
     }
-    public static void SurrenderToPolice(Location PoliceStation)
+    public static void SurrenderToPolice(GameLocation PoliceStation)
     {
         FadeOut();
         CheckWeapons();
@@ -170,7 +170,7 @@ public static class Respawn
         Surrender.RaiseHands();
         ResetPlayer(true, true);
         if (PoliceStation == null)
-            PoliceStation = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Police);
+            PoliceStation = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, LocationType.Police);
         SetPlayerAtLocation(PoliceStation);
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
         PedList.ClearPoliceCompletely();
@@ -206,13 +206,13 @@ public static class Respawn
             //Animation goes here if you want to add it somehow
         }
     }
-    public static void RespawnAtHospital(Location Hospital)
+    public static void RespawnAtHospital(GameLocation Hospital)
     {
         FadeOut();
         PlayerState.ResetState(true);
         RespawnInPlace(false);
         if (Hospital == null)
-            Hospital = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.Hospital);
+            Hospital = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, LocationType.Hospital);
         SetPlayerAtLocation(Hospital);
         GameTimeLastDischargedFromHospital = Game.GameTime;
         PedList.ClearPoliceCompletely();
@@ -331,20 +331,20 @@ public static class Respawn
     {
         //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
         //Make a list of my old guns
-        List<WeaponExt> MyOldGuns = new List<WeaponExt>();
+        List<DroppedWeapon> MyOldGuns = new List<DroppedWeapon>();
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
-            GTAWeapon.WeaponVariation DroppedGunVariation = General.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
-            WeaponExt MyGun = new WeaponExt(Weapon, Vector3.Zero, DroppedGunVariation,Weapon.Ammo);
+            WeaponVariation DroppedGunVariation = General.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
+            DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation,Weapon.Ammo);
             MyOldGuns.Add(MyGun);
         }
         //Totally clear our guns
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         //Add out guns back with variations
-        foreach (WeaponExt MyNewGun in MyOldGuns)
+        foreach (DroppedWeapon MyNewGun in MyOldGuns)
         {
-            GTAWeapon MyGTANewGun = Weapons.GetWeaponFromHash((ulong)MyNewGun.Weapon.Hash);
+            WeaponInformation MyGTANewGun = Weapons.GetWeapon((ulong)MyNewGun.Weapon.Hash);
             if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.Weapon.Hash, (short)MyNewGun.Ammo, false);
@@ -447,7 +447,7 @@ public static class Respawn
             Game.DisplayNotification("CHAR_LESTER", "CHAR_LESTER", PoliceStationName, "Bail Fees", string.Format("~g~${0} ~s~", 0));
         }
     }
-    private static void SetPlayerAtLocation(Location ToSet)
+    private static void SetPlayerAtLocation(GameLocation ToSet)
     {
         Game.LocalPlayer.Character.Position = ToSet.LocationPosition;
         Game.LocalPlayer.Character.Heading = ToSet.Heading;
@@ -477,7 +477,7 @@ public static class Respawn
                 return;
             }
             CopToBribe.ShouldAutoSetWeaponState = false;
-            CopToBribe.SetUnarmed();
+            //CopToBribe.SetUnarmed();//need to change this
 
             NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
             Game.TimeScale = 1.0f;
@@ -490,7 +490,7 @@ public static class Respawn
                 NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
                 Game.TimeScale = 1.0f;
                 CopToBribe.ShouldAutoSetWeaponState = false;
-                CopToBribe.SetUnarmed();
+               // CopToBribe.SetUnarmed();//need to change this
 
                 Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 

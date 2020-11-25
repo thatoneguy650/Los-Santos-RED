@@ -71,7 +71,7 @@ internal static class VehicleFuelSystem
     }
    private static void EngineOffTick()
     {
-        Location ClosestGasStation = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, Location.LocationType.GasStation);
+        GameLocation ClosestGasStation = Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position, LocationType.GasStation);
         NearGasPumps = false;
         if (ClosestGasStation != null && Game.LocalPlayer.Character.Position.DistanceTo2D(ClosestGasStation.LocationPosition) <= 50f)
         {

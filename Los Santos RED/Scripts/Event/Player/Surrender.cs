@@ -207,7 +207,7 @@ public static class Surrender
                 IsCommitingSuicide = true;
                 General.RequestAnimationDictionay("mp_suicide");
 
-                GTAWeapon CurrentGun = null;
+                WeaponInformation CurrentGun = null;
                 if (PedToSuicide.Inventory.EquippedWeapon != null)
                     CurrentGun = Weapons.WeaponsList.Where(x => (WeaponHash)x.Hash == PedToSuicide.Inventory.EquippedWeapon.Hash && x.CanPistolSuicide).FirstOrDefault();
 

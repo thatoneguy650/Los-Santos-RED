@@ -50,6 +50,20 @@ public static class ControlScript
             }
         }
     }
+    private static bool IsPressingEngineToggle
+    {
+        get
+        {
+            if (Game.IsKeyDownRightNow(General.MySettings.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -80,6 +94,11 @@ public static class ControlScript
             if (IsPressingDropWeapon && WeaponDropping.CanDropWeapon)
             {
                 WeaponDropping.DropWeapon();
+            }
+
+            if(IsPressingEngineToggle && VehicleEngine.CanToggleEngine)
+            {
+                VehicleEngine.ToggleEngine(true, !VehicleEngine.IsEngineRunning);
             }
         }
     }

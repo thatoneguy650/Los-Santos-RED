@@ -152,8 +152,8 @@ public static class MuggingScript
     }
     private static bool IsHoldingMelee()
     {
-        GTAWeapon MyWeapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
-        if (MyWeapon == null || MyWeapon.Category != GTAWeapon.WeaponCategory.Melee)
+        WeaponInformation MyWeapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
+        if (MyWeapon == null || MyWeapon.Category != WeaponCategory.Melee)
             return false;
         else
             return true;

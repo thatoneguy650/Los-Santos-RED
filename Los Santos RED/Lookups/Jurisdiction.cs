@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static partial class Jurisdiction
+public static class Jurisdiction
 {
-    private static string ConfigFileName = "Plugins\\LosSantosRED\\Jurisdiction.xml";
+    private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Jurisdiction.xml";
     private static List<ZoneJurisdiction> ZoneJurisdictions = new List<ZoneJurisdiction>();
     private static List<CountyJurisdiction> CountyJurisdictions = new List<CountyJurisdiction>();
 
@@ -284,7 +284,6 @@ public static partial class Jurisdiction
             new CountyJurisdiction("LSSD-ASD",Zone.County.BlaineCounty, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",Zone.County.LosSantosCounty, 0, 100, 100),
         };
-
         ZoneJurisdictions = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSIAPD","AIRP", 0, 95, 95) {CanSpawnPedestrianOfficers = true },
@@ -520,21 +519,19 @@ public static partial class Jurisdiction
 
         };
     }
-    public static Agency MainAgencyAtZone(string ZoneName)
+    public static Agency GetMainAgency(string ZoneName)
     {
         if (ZoneJurisdictions.Any())
         {
             ZoneJurisdiction cool = ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(y => y.Priority).FirstOrDefault();
-
             if (cool != null)
+            {
                 return cool.GameAgency;
-            else
-                return null;
+            }
         }
-        else
-            return null;
+        return null;
     }
-    public static Agency AgencyAtZone(string ZoneName)
+    public static Agency GetRandomAgency(string ZoneName)
     {
         if (ZoneJurisdictions.Any())
         {
@@ -550,24 +547,12 @@ public static partial class Jurisdiction
                 }
                 RandomPick -= SpawnChance;
             }
-            return null;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
-    public static bool CanSpawnPedestrainOfficersAtZone(string zoneInternalName,string agencyInitials)
+    public static Agency GetRandomCountyAgency(string ZoneName)
     {
-        ZoneJurisdiction ToFind = ZoneJurisdictions.FirstOrDefault(x => x.GameAgency != null && x.GameAgency.Initials == agencyInitials && x.GameZone.InternalGameName == zoneInternalName);
-        if (ToFind == null)
-            return false;
-        else
-            return ToFind.CanSpawnPedestrianOfficers;
-    }
-    public static Agency AgencyAtCounty(string ZoneName)
-    {
-        Zone MyZone = Zones.GetZoneByName(ZoneName);
+        Zone MyZone = Zones.GetZone(ZoneName);
         if (MyZone != null)
         {
             List<CountyJurisdiction> ToPickFrom = CountyJurisdictions.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn).ToList();
@@ -582,124 +567,33 @@ public static partial class Jurisdiction
                 }
                 RandomPick -= SpawnChance;
             }
-            return null;
-            
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
-    public static List<Agency> GetAgenciesAtZone(string ZoneName)
+    public static List<Agency> GetAllAgencies(string ZoneName)
     {
         if (ZoneJurisdictions.Any())
+        {
             return ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn).OrderBy(k => k.CurrentSpawnChance).Select(y => y.GameAgency).ToList();
+        }
         else
+        {
             return null;
+        }
     }
-    public class ZoneJurisdiction
+    public static bool CanSpawnPedOfficers(string zoneInternalName, string agencyInitials)
     {
-        public string AgencyInitials { get; set; } = "";
-        public string ZoneInternalGameName { get; set; } = "";
-        public int Priority { get; set; } = 99;
-        public int AmbientSpawnChance { get; set; } = 0;
-        public int WantedSpawnChance { get; set; } = 0;
-        public bool CanSpawnPedestrianOfficers { get; set; } = false;
-        public Zone GameZone
+        ZoneJurisdiction ToFind = ZoneJurisdictions.FirstOrDefault(x => x.GameAgency != null && x.GameAgency.Initials == agencyInitials && x.GameZone.InternalGameName == zoneInternalName);
+        if (ToFind == null)
         {
-            get
-            {
-                return Zones.GetZoneByName(ZoneInternalGameName);
-            }
+            return false;
         }
-        public Agency GameAgency
+        else
         {
-            get
-            {
-                return Agencies.GetAgencyFromInitials(AgencyInitials);
-            }
-        }
-        public ZoneJurisdiction()
-        {
-
-        }
-        public ZoneJurisdiction(string agencyInitials, string zoneInternalName, int priority, int ambientSpawnChance, int wantedSpawnChance)
-        {
-            AgencyInitials = agencyInitials;
-            ZoneInternalGameName = zoneInternalName;
-            Priority = priority;
-            AmbientSpawnChance = ambientSpawnChance;
-            WantedSpawnChance = wantedSpawnChance;
-        }
-        public bool CanCurrentlySpawn
-        {
-            get
-            {
-                if (PlayerState.IsWanted)
-                    return WantedSpawnChance > 0;
-                else
-                    return AmbientSpawnChance > 0;
-            }
-        }
-        public int CurrentSpawnChance
-        {
-            get
-            {
-                if (PlayerState.IsWanted)
-                    return WantedSpawnChance;
-                else
-                    return AmbientSpawnChance;
-            }
+            return ToFind.CanSpawnPedestrianOfficers;
         }
     }
-    public class CountyJurisdiction
-    {
-        public string AgencyInitials { get; set; } = "";
-        public Zone.County County { get; set; }
-        public int Priority { get; set; } = 99;
-        public int AmbientSpawnChance { get; set; } = 0;
-        public int WantedSpawnChance { get; set; } = 0;
-        public bool CanSpawnPedestrianOfficers { get; set; } = false;
-        public Agency GameAgency
-        {
-            get
-            {
-                return Agencies.GetAgencyFromInitials(AgencyInitials);
-            }
-        }
-        public CountyJurisdiction()
-        {
 
-        }
-        public CountyJurisdiction(string agencyInitials, Zone.County county, int priority, int ambientSpawnChance, int wantedSpawnChance)
-        {
-            AgencyInitials = agencyInitials;
-            County = county;
-            Priority = priority;
-            AmbientSpawnChance = ambientSpawnChance;
-            WantedSpawnChance = wantedSpawnChance;
-        }
-        public bool CanCurrentlySpawn
-        {
-            get
-            {
-                if (PlayerState.IsWanted)
-                    return WantedSpawnChance > 0;
-                else
-                    return AmbientSpawnChance > 0;
-            }
-        }
-        public int CurrentSpawnChance
-        {
-            get
-            {
-                if (PlayerState.IsWanted)
-                    return WantedSpawnChance;
-                else
-                    return AmbientSpawnChance;
-            }
-        }
-    }
 }
 
     

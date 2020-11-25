@@ -56,8 +56,8 @@ internal static class Menus
     private static UIMenu settingsMenuTrafficViolations;
     private static int RandomWeaponCategory;
 
-    private static Location CurrentSelectedSurrenderLocation;
-    private static Location CurrentSelectedHospitalLocation;
+    private static GameLocation CurrentSelectedSurrenderLocation;
+    private static GameLocation CurrentSelectedHospitalLocation;
     private static UIMenuItem scenariosMainPrisonEscape;
 
 
@@ -335,7 +335,7 @@ internal static class Menus
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
         menuDeathHospitalRespawn = new UIMenuListItem("Give Up",
             "Respawn at the nearest hospital. Lose a hospital fee and your guns.",
-            Locations.GetAllLocationsOfType(Location.LocationType.Hospital));
+            Locations.GetAllLocationsOfType(LocationType.Hospital));
         menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
             "Takes over a random pedestrian around the player.",
             new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M"});
@@ -359,7 +359,7 @@ internal static class Menus
         menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         menuBustedSurrender = new UIMenuListItem("Surrender",
             "Surrender and get out on bail. Lose bail money and your guns.",
-            Locations.GetAllLocationsOfType(Location.LocationType.Police));
+            Locations.GetAllLocationsOfType(LocationType.Police));
         menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
             "Takes over a random pedestrian around the player.",
             new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M"});
@@ -468,7 +468,7 @@ internal static class Menus
         menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
         menuDebugKillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
         menuDebugRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.",
-            Enum.GetNames(typeof(GTAWeapon.WeaponCategory)).ToList());
+            Enum.GetNames(typeof(WeaponCategory)).ToList());
         menuDebugRandomVariation = new UIMenuItem("Apply Random Variation", "Add some cool stuff to your gun");
         menuDebugScreenEffect = new UIMenuListItem("Play Screen Effect", "Choose Screen Effect To Play", ScreenEffects);
         menuDebugGiveMoney = new UIMenuItem("Get Money", "Give you some cash");
@@ -490,16 +490,16 @@ internal static class Menus
 
     private static void UpdateClosestHospitalIndex()
     {
-        menuDeathHospitalRespawn.Index = Locations.GetAllLocationsOfType(Location.LocationType.Hospital)
+        menuDeathHospitalRespawn.Index = Locations.GetAllLocationsOfType(LocationType.Hospital)
             .IndexOf(Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position,
-                Location.LocationType.Hospital));
+                LocationType.Hospital));
     }
 
     private static void UpdateClosestPoliceStationIndex()
     {
-        menuBustedSurrender.Index = Locations.GetAllLocationsOfType(Location.LocationType.Police)
+        menuBustedSurrender.Index = Locations.GetAllLocationsOfType(LocationType.Police)
             .IndexOf(Locations.GetClosestLocationByType(Game.LocalPlayer.Character.Position,
-                Location.LocationType.Police));
+                LocationType.Police));
     }
 
     private static void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -663,9 +663,9 @@ internal static class Menus
         if (selectedItem == menuDebugKillPlayer) Game.LocalPlayer.Character.Kill();
         if (selectedItem == menuDebugRandomWeapon)
         {
-            GTAWeapon myGun = Weapons.GetRandomRegularWeaponByCategory((GTAWeapon.WeaponCategory) RandomWeaponCategory);
+            WeaponInformation myGun = Weapons.GetRandomRegularWeapon((WeaponCategory) RandomWeaponCategory);
             if (myGun != null)
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
         }
 
         if (selectedItem == menuDebugGiveMoney) Game.LocalPlayer.Character.GiveCash(50000);
@@ -725,7 +725,7 @@ internal static class Menus
             if (list == menuDeathHospitalRespawn)
             {
                 CurrentSelectedHospitalLocation =
-                    Locations.GetAllLocationsOfType(Location.LocationType.Hospital)[index];
+                    Locations.GetAllLocationsOfType(LocationType.Hospital)[index];
                 Debugging.WriteToLog("menuDeathHospitalRespawn Changed",
                     string.Format("Location: {0}", CurrentSelectedHospitalLocation));
             }
@@ -734,7 +734,7 @@ internal static class Menus
         {
             if (list == menuBustedSurrender)
             {
-                CurrentSelectedSurrenderLocation = Locations.GetAllLocationsOfType(Location.LocationType.Police)[index];
+                CurrentSelectedSurrenderLocation = Locations.GetAllLocationsOfType(LocationType.Police)[index];
                 Debugging.WriteToLog("menuBustedSurrender Changed",
                     string.Format("Location: {0}", CurrentSelectedSurrenderLocation));
             }
@@ -744,7 +744,7 @@ internal static class Menus
             if (list == menuDebugRandomWeapon)
                 RandomWeaponCategory = list.Index;
             else if (list == menuAutoSetRadioStation)
-                VehicleEngine.AutoTuneStation = strRadioStations[index];
+                RadioTuning.AutoTuneStation = strRadioStations[index];
             if (list == menuDebugScreenEffect)
                 CurrentScreenEffect = ScreenEffects[index];
         }

@@ -11,6 +11,7 @@ public static class PoliceSpawning
     private static uint GameTimeLastSpawnedCop;
     private static List<Vehicle> CreatedPoliceVehicles;
     private static List<Entity> CreatedEntities;
+    private static VehicleInformation CurrentVehicleInfo;
     private enum DispatchType
     {
         PoliceAutomobile = 1,
@@ -98,7 +99,7 @@ public static class PoliceSpawning
             }
         }
     }
-    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading, Agency.VehicleInformation MyCarInfo, bool CanSpawnOnFoot)
+    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading, VehicleInformation MyCarInfo, bool CanSpawnOnFoot)
     {
         if (_Agency == null)
             return false;
@@ -124,9 +125,9 @@ public static class PoliceSpawning
             {
                 PedList.PoliceVehicles.Add(CopCar.VehicleEnt);
                 List<string> RequiredPedModels = new List<string>();
-                if (CopCar.ExtendedAgencyVehicleInformation != null && CopCar.ExtendedAgencyVehicleInformation.AllowedPedModels.Any())
+                if (CurrentVehicleInfo != null && CurrentVehicleInfo.AllowedPedModels.Any())
                 {
-                    RequiredPedModels = CopCar.ExtendedAgencyVehicleInformation.AllowedPedModels;
+                    RequiredPedModels = CurrentVehicleInfo.AllowedPedModels;
                 }
 
                 Ped Cop = SpawnCopPed(_Agency, SpawnLocation, MyCarInfo.IsMotorcycle, RequiredPedModels);
@@ -141,13 +142,11 @@ public static class PoliceSpawning
                 CopCar.VehicleEnt.IsPersistent = true;
                 Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
                 Cop MyNewCop = new Cop(Cop, Cop.Health, _Agency);
-                MyNewCop.IssuePistol();
+                PoliceEquipment.IssueWeapons(MyNewCop);
                 MyNewCop.WasModSpawned = true;
                 MyNewCop.WasMarkedNonPersistent = true;
-                MyNewCop.WasRandomSpawnDriver = true;
+                MyNewCop.WasSpawnedAsDriver = true;
 
-                if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.IsDeadlyChase)
-                    MyNewCop.IssueHeavyWeapon();
                 //MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
                 MyNewCop.GameTimeSpawned = Game.GameTime;
                 Debugging.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.VehicleEnt.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
@@ -161,9 +160,9 @@ public static class PoliceSpawning
                 }
                 PedList.CopPeds.Add(MyNewCop);
 
-                if (CopCar.ExtendedAgencyVehicleInformation != null)
+                if (CurrentVehicleInfo != null)
                 {
-                    int OccupantsToAdd = General.MyRand.Next(CopCar.ExtendedAgencyVehicleInformation.MinOccupants, CopCar.ExtendedAgencyVehicleInformation.MaxOccupants + 1) - 1;
+                    int OccupantsToAdd = General.MyRand.Next(CurrentVehicleInfo.MinOccupants, CurrentVehicleInfo.MaxOccupants + 1) - 1;
                     for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                     {
                         Ped PartnerCop = SpawnCopPed(_Agency, SpawnLocation, false, null);
@@ -181,12 +180,9 @@ public static class PoliceSpawning
                                 PartnerCop.WarpIntoVehicle(CopCar.VehicleEnt, OccupantIndex - 1);
                                 PartnerCop.IsPersistent = true;
                                 Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, _Agency);
-                                MyNewPartnerCop.IssuePistol();
+                                PoliceEquipment.IssueWeapons(MyNewPartnerCop);
                                 MyNewPartnerCop.WasModSpawned = true;
                                 MyNewPartnerCop.WasMarkedNonPersistent = true;
-
-                                if (General.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelScript.IsDeadlyChase)
-                                    MyNewPartnerCop.IssueHeavyWeapon();
 
                                 if (General.MySettings.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
                                 {
@@ -227,6 +223,35 @@ public static class PoliceSpawning
 
             // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
         }
+    }
+    public static void UpdateLivery(Vehicle CopCar, Agency AssignedAgency)
+    {
+        VehicleInformation MyVehicle = null;
+        if (AssignedAgency != null && AssignedAgency.Vehicles != null && CopCar.Exists())
+        {
+            MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+        }
+        if (MyVehicle == null)
+        {
+            if (CopCar.Exists())
+            {
+                Debugging.WriteToLog("ChangeLivery", string.Format("No Match for Vehicle {0} for {1}", CopCar.Model.Name, AssignedAgency.Initials));
+                CopCar.Delete();
+            }
+            return;
+        }
+        if (MyVehicle.Liveries != null && MyVehicle.Liveries.Any())
+        {
+            //Debugging.WriteToLog("ChangeLivery", string.Format("Agency {0}, {1}, {2}", AssignedAgency.Initials, CopCar.Model.Name,string.Join(",", MyVehicle.Liveries.Select(x => x.ToString()))));
+            int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+            NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
+        }
+        CopCar.LicensePlate = AssignedAgency.LicensePlatePrefix + General.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
+    }
+    public static void UpdateLivery(Vehicle CopCar)
+    {
+        Agency AssignedAgency = Agencies.GetAgency(CopCar);
+        UpdateLivery(CopCar, AssignedAgency);
     }
     public static void DeleteCop(Cop Cop)
     {
@@ -330,7 +355,7 @@ public static class PoliceSpawning
         if (_Agency == null)
             return null;
 
-        Agency.ModelInformation MyInfo = _Agency.GetRandomPed(RequiredModels);
+        PedestrianInformation MyInfo = _Agency.GetRandomPed(RequiredModels);
 
         if(MyInfo == null)
             return null;
@@ -363,18 +388,19 @@ public static class PoliceSpawning
 
         return Cop;
     }
-    private static VehicleExt SpawnCopVehicle(Agency _Agency, Agency.VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
+    private static VehicleExt SpawnCopVehicle(Agency _Agency, VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
     {
         string ModelName = MyCarInfo.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);
-        Agencies.ChangeLivery(CopCar, _Agency);
+        UpdateLivery(CopCar, _Agency);
         GameFiber.Yield();
         if (CopCar.Exists())
         {
-            VehicleExt ToReturn = new VehicleExt(CopCar, 0, false, false, null, false, null) { ExtendedAgencyVehicleInformation = MyCarInfo };
+            VehicleExt ToReturn = new VehicleExt(CopCar, 0, false, false, null, false, null);
             if (CopCar.Exists())
             {
                 UpgradeCruiser(CopCar);
+                CurrentVehicleInfo = MyCarInfo;
                 return ToReturn;
             }
             else
@@ -387,6 +413,9 @@ public static class PoliceSpawning
             return null;
         }
     }
+
+
+
     private static void SetDispatchService(bool ValueToSet)
     {
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, ValueToSet);

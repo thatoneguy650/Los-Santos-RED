@@ -77,7 +77,7 @@ public static class NewTasking
                 int TaskedCivilians = 0;
                 foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
                 {
-                    if (TaskedCivilians < 3)
+                    if (TaskedCivilians < 5)
                     {
                         Civilian.RunCurrentActivity();
                         TaskedCivilians++;
@@ -234,7 +234,6 @@ public static class NewTasking
             if (CopToTask.CanBeTasked)
             {
                 GameTimeLastRanActivity = Game.GameTime;
-                ArmCopAppropriately();
                 if (CurrentActivity == Activities.Idle)
                 {
                     Idle();
@@ -801,34 +800,6 @@ public static class NewTasking
         {
 
         }
-        private void ArmCopAppropriately()
-        {
-            if (CopToTask.ShouldAutoSetWeaponState)
-            {
-                if (WantedLevelScript.IsDeadlyChase)
-                {
-                    if (CopToTask.IsInVehicle && PlayerState.WantedLevel < 4)
-                    {
-                        CopToTask.SetUnarmed();
-                    }
-                    else
-                    {
-                        CopToTask.SetDeadly();
-                    }
-                }
-                else
-                {
-                    if (PlayerState.IsNotWanted)
-                    {
-                        CopToTask.SetUnarmed();
-                    }
-                    else
-                    {
-                        CopToTask.SetLessLethal();
-                    }
-                }
-            }
-        }
         public void ClearTasks()//temp public
         {
             if (CopToTask.Pedestrian.Exists())
@@ -856,13 +827,19 @@ public static class NewTasking
                     CopToTask.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
 
                 }
-                if (CopToTask.IsDriver && CopToTask.Pedestrian.CurrentVehicle.HasSiren)
+                if (CopToTask.IsDriver && CopToTask.Pedestrian.CurrentVehicle != null && CopToTask.Pedestrian.CurrentVehicle.HasSiren)
                 {
                     CopToTask.Pedestrian.CurrentVehicle.IsSirenOn = false;
                     CopToTask.Pedestrian.CurrentVehicle.IsSirenSilent = false;
                 }
                 if (PlayerState.IsWanted)
+                {
                     NativeFunction.CallByName<bool>("SET_PED_ALERTNESS", CopToTask.Pedestrian, 3);
+                    if(WantedLevelScript.IsDeadlyChase)
+                    {
+                        CopToTask.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
+                    }
+                }
 
                 CurrentTaskLoop = "None";
                 CurrentSubTaskLoop = "";
@@ -1158,9 +1135,9 @@ public static class NewTasking
         }
         private void GiveWeapon()
         {
-            GTAWeapon myGun = Weapons.GetRandomRegularWeapon();
+            WeaponInformation myGun = Weapons.GetRandomLowEndRegularWeapon();
             if (myGun != null)
-                CivilianToTask.Pedestrian.Inventory.GiveNewWeapon(myGun.Name, myGun.AmmoAmount, true);
+                CivilianToTask.Pedestrian.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
         }
     }  
     private enum eScriptTaskHash : uint

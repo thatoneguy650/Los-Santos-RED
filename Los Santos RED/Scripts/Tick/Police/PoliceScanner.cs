@@ -576,7 +576,7 @@ public static class PoliceScanner
     }
     private static void AddZone(DispatchEvent dispatchEvent)
     {
-        Zone MyZone = Zones.GetZoneAtLocation(PlayerState.CurrentPosition);
+        Zone MyZone = Zones.GetZone(PlayerState.CurrentPosition);
         if (MyZone != null)
         {
             string ScannerAudio = ZoneScanner.AudioAtZone(MyZone.InternalGameName);
@@ -656,7 +656,7 @@ public static class PoliceScanner
         }
 
     }
-    private static void AddWeaponDescription(DispatchEvent dispatchEvent, GTAWeapon WeaponToDescribe)
+    private static void AddWeaponDescription(DispatchEvent dispatchEvent, WeaponInformation WeaponToDescribe)
     {
 
         dispatchEvent.NotificationText += "~n~Weapon:~s~";
@@ -667,91 +667,91 @@ public static class PoliceScanner
             dispatchEvent.Subtitles += " suspect is carrying a ~r~weapon~s~";
             dispatchEvent.NotificationText += " Unknown";
         }
-        else if (WeaponToDescribe.Name == "weapon_rpg")
+        else if (WeaponToDescribe.ModelName == "weapon_rpg")
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.ArmedwithanRPG.FileName);
             dispatchEvent.Subtitles += " suspect is armed with an ~r~RPG~s~";
             dispatchEvent.NotificationText += " RPG";
         }
-        else if (WeaponToDescribe.Name == "weapon_bat")
+        else if (WeaponToDescribe.ModelName == "weapon_bat")
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithabat.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~bat~s~";
             dispatchEvent.NotificationText += " Bat";
         }
-        else if (WeaponToDescribe.Name == "weapon_grenadelauncher" || WeaponToDescribe.Name == "weapon_grenadelauncher_smoke" || WeaponToDescribe.Name == "weapon_compactlauncher")
+        else if (WeaponToDescribe.ModelName == "weapon_grenadelauncher" || WeaponToDescribe.ModelName == "weapon_grenadelauncher_smoke" || WeaponToDescribe.ModelName == "weapon_compactlauncher")
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithagrenadelauncher.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~grenade launcher~s~";
             dispatchEvent.NotificationText += " Grenade Launcher";
         }
-        else if (WeaponToDescribe.Category ==  GTAWeapon.WeaponCategory.Throwable || WeaponToDescribe.Name == "weapon_grenadelauncher_smoke" || WeaponToDescribe.Name == "weapon_compactlauncher")
+        else if (WeaponToDescribe.Category ==  WeaponCategory.Throwable || WeaponToDescribe.ModelName == "weapon_grenadelauncher_smoke" || WeaponToDescribe.ModelName == "weapon_compactlauncher")
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithexplosives.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~explosives~s~";
             dispatchEvent.NotificationText += " Explosives";
         }
-        else if (WeaponToDescribe.Name == "weapon_dagger" || WeaponToDescribe.Name == "weapon_knife" || WeaponToDescribe.Name == "weapon_switchblade")
+        else if (WeaponToDescribe.ModelName == "weapon_dagger" || WeaponToDescribe.ModelName == "weapon_knife" || WeaponToDescribe.ModelName == "weapon_switchblade")
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithaknife.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~knife~s~";
             dispatchEvent.NotificationText += " Knife";
         }
-        else if (WeaponToDescribe.Name == "weapon_minigun")
+        else if (WeaponToDescribe.ModelName == "weapon_minigun")
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithaminigun.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~minigun~s~";
             dispatchEvent.NotificationText += " Minigun";
         }
-        else if (WeaponToDescribe.Name == "weapon_sawnoffshotgun")
+        else if (WeaponToDescribe.ModelName == "weapon_sawnoffshotgun")
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithasawedoffshotgun.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~sawed off shotgun~s~";
             dispatchEvent.NotificationText += " Sawed Off Shotgun";
         }
-        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.LMG)
+        else if (WeaponToDescribe.Category == WeaponCategory.LMG)
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithamachinegun.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~machine gun~s~";
             dispatchEvent.NotificationText += " Machine Gun";
         }
-        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Pistol)
+        else if (WeaponToDescribe.Category == WeaponCategory.Pistol)
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithafirearm.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~pistol~s~";
             dispatchEvent.NotificationText += " Pistol";
         }
-        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Shotgun)
+        else if (WeaponToDescribe.Category == WeaponCategory.Shotgun)
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithashotgun.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~shotgun~s~";
             dispatchEvent.NotificationText += " Shotgun";
         }
-        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.SMG)
+        else if (WeaponToDescribe.Category == WeaponCategory.SMG)
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithasubmachinegun.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~submachine gun~s~";
             dispatchEvent.NotificationText += " Submachine Gun";
         }
-        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.AR)
+        else if (WeaponToDescribe.Category == WeaponCategory.AR)
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Carryinganassaultrifle.FileName);
             dispatchEvent.Subtitles += " suspect is carrying an ~r~assault rifle~s~";
             dispatchEvent.NotificationText += " Assault Rifle";
         }
-        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Sniper)
+        else if (WeaponToDescribe.Category == WeaponCategory.Sniper)
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithasniperrifle.FileName);
             dispatchEvent.Subtitles += " suspect is armed with a ~r~sniper rifle~s~";
             dispatchEvent.NotificationText += " Sniper Rifle";
         }
-        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Heavy)
+        else if (WeaponToDescribe.Category == WeaponCategory.Heavy)
         {
             dispatchEvent.SoundsToPlay.Add(status_message.HeavilyArmed.FileName);
             dispatchEvent.Subtitles += " suspect is ~r~heaviy armed~s~";
             dispatchEvent.NotificationText += " Heavy Weapon";
         }
-        else if (WeaponToDescribe.Category == GTAWeapon.WeaponCategory.Melee)
+        else if (WeaponToDescribe.Category == WeaponCategory.Melee)
         {
             dispatchEvent.SoundsToPlay.Add(carrying_weapon.Carryingaweapon.FileName);
             dispatchEvent.Subtitles += " suspect is carrying a ~r~weapon~s~";
@@ -2081,68 +2081,68 @@ public static class PoliceScanner
         };
             VehicleMakeLookups = new List<VehicleMakeLookup>()
         {
-            new VehicleMakeLookup("Albany",Vehicles.Manufacturer.Albany,manufacturer.ALBANY01.FileName),
-            new VehicleMakeLookup("Annis",Vehicles.Manufacturer.Annis,manufacturer.ANNIS01.FileName),
-            new VehicleMakeLookup("Benefactor",Vehicles.Manufacturer.Benefactor,manufacturer.BENEFACTOR01.FileName),
-            new VehicleMakeLookup("Bollokan",Vehicles.Manufacturer.Bollokan,manufacturer.BOLLOKAN01.FileName),
-            new VehicleMakeLookup("Bravado",Vehicles.Manufacturer.Bravado,manufacturer.BRAVADO01.FileName),
-            new VehicleMakeLookup("Brute",Vehicles.Manufacturer.Brute,manufacturer.BRUTE01.FileName),
-            new VehicleMakeLookup("Buckingham",Vehicles.Manufacturer.Buckingham,""),
-            new VehicleMakeLookup("Burgerfahrzeug",Vehicles.Manufacturer.Burgerfahrzeug,manufacturer.BF01.FileName),
-            new VehicleMakeLookup("Canis",Vehicles.Manufacturer.Canis,manufacturer.CANIS01.FileName),
-            new VehicleMakeLookup("Chariot",Vehicles.Manufacturer.Chariot,manufacturer.CHARIOT01.FileName),
-            new VehicleMakeLookup("Cheval",Vehicles.Manufacturer.Cheval,manufacturer.CHEVAL01.FileName),
-            new VehicleMakeLookup("Classique",Vehicles.Manufacturer.Classique,manufacturer.CLASSIQUE01.FileName),
-            new VehicleMakeLookup("Coil",Vehicles.Manufacturer.Coil,manufacturer.COIL01.FileName),
-            new VehicleMakeLookup("Declasse",Vehicles.Manufacturer.Declasse,manufacturer.DECLASSE01.FileName),
-            new VehicleMakeLookup("Dewbauchee",Vehicles.Manufacturer.Dewbauchee,manufacturer.DEWBAUCHEE01.FileName),
-            new VehicleMakeLookup("Dinka",Vehicles.Manufacturer.Dinka,manufacturer.DINKA01.FileName),
-            new VehicleMakeLookup("DUDE",Vehicles.Manufacturer.DUDE,""),
-            new VehicleMakeLookup("Dundreary",Vehicles.Manufacturer.Dundreary,manufacturer.DUNDREARY01.FileName),
-            new VehicleMakeLookup("Emperor",Vehicles.Manufacturer.Emperor,manufacturer.EMPEROR01.FileName),
-            new VehicleMakeLookup("Enus",Vehicles.Manufacturer.Enus,manufacturer.ENUS01.FileName),
-            new VehicleMakeLookup("Fathom",Vehicles.Manufacturer.Fathom,manufacturer.FATHOM01.FileName),
-            new VehicleMakeLookup("Gallivanter",Vehicles.Manufacturer.Gallivanter,manufacturer.GALLIVANTER01.FileName),
-            new VehicleMakeLookup("Grotti",Vehicles.Manufacturer.Grotti,manufacturer.GROTTI01.FileName),
-            new VehicleMakeLookup("Hijak",Vehicles.Manufacturer.Hijak,manufacturer.HIJAK01.FileName),
-            new VehicleMakeLookup("HVY",Vehicles.Manufacturer.HVY,manufacturer.HVY01.FileName),
-            new VehicleMakeLookup("Imponte",Vehicles.Manufacturer.Imponte,manufacturer.IMPONTE01.FileName),
-            new VehicleMakeLookup("Invetero",Vehicles.Manufacturer.Invetero,manufacturer.INVETERO01.FileName),
-            new VehicleMakeLookup("JackSheepe",Vehicles.Manufacturer.JackSheepe,manufacturer.JACKSHEEPE01.FileName),
-            new VehicleMakeLookup("Jobuilt",Vehicles.Manufacturer.Jobuilt,manufacturer.JOEBUILT01.FileName),
-            new VehicleMakeLookup("Karin",Vehicles.Manufacturer.Karin,manufacturer.KARIN01.FileName),
-            new VehicleMakeLookup("Kraken Submersibles",Vehicles.Manufacturer.KrakenSubmersibles,""),
-            new VehicleMakeLookup("Lampadati",Vehicles.Manufacturer.Lampadati,manufacturer.LAMPADATI01.FileName),
-            new VehicleMakeLookup("Liberty Chop Shop",Vehicles.Manufacturer.LibertyChopShop,""),
-            new VehicleMakeLookup("Liberty City Cycles",Vehicles.Manufacturer.LibertyCityCycles,""),
-            new VehicleMakeLookup("Maibatsu Corporation",Vehicles.Manufacturer.MaibatsuCorporation,manufacturer.MAIBATSU01.FileName),
-            new VehicleMakeLookup("Mammoth",Vehicles.Manufacturer.Mammoth,manufacturer.MAMMOTH01.FileName),
-            new VehicleMakeLookup("MTL",Vehicles.Manufacturer.MTL,manufacturer.MTL01.FileName),
-            new VehicleMakeLookup("Nagasaki",Vehicles.Manufacturer.Nagasaki,manufacturer.NAGASAKI01.FileName),
-            new VehicleMakeLookup("Obey",Vehicles.Manufacturer.Obey,manufacturer.OBEY01.FileName),
-            new VehicleMakeLookup("Ocelot",Vehicles.Manufacturer.Ocelot,manufacturer.OCELOT01.FileName),
-            new VehicleMakeLookup("Overflod",Vehicles.Manufacturer.Overflod,manufacturer.OVERFLOD01.FileName),
-            new VehicleMakeLookup("Pegassi",Vehicles.Manufacturer.Pegassi,manufacturer.PEGASI01.FileName),
-            new VehicleMakeLookup("Pfister",Vehicles.Manufacturer.Pfister,""),
-            new VehicleMakeLookup("Principe",Vehicles.Manufacturer.Principe,manufacturer.PRINCIPE01.FileName),
-            new VehicleMakeLookup("Progen",Vehicles.Manufacturer.Progen,manufacturer.PROGEN01.FileName),
-            new VehicleMakeLookup("ProLaps",Vehicles.Manufacturer.ProLaps,""),
-            new VehicleMakeLookup("RUNE",Vehicles.Manufacturer.RUNE,""),
-            new VehicleMakeLookup("Schyster",Vehicles.Manufacturer.Schyster,manufacturer.SCHYSTER01.FileName),
-            new VehicleMakeLookup("Shitzu",Vehicles.Manufacturer.Shitzu,manufacturer.SHITZU01.FileName),
-            new VehicleMakeLookup("Speedophile",Vehicles.Manufacturer.Speedophile,manufacturer.SPEEDOPHILE01.FileName),
-            new VehicleMakeLookup("Stanley",Vehicles.Manufacturer.Stanley,manufacturer.STANLEY01.FileName),
-            new VehicleMakeLookup("SteelHorse",Vehicles.Manufacturer.SteelHorse,manufacturer.STEELHORSE01.FileName),
-            new VehicleMakeLookup("Truffade",Vehicles.Manufacturer.Truffade,manufacturer.TRUFFADE01.FileName),
-            new VehicleMakeLookup("Ubermacht",Vehicles.Manufacturer.Ubermacht,manufacturer.UBERMACHT01.FileName),
-            new VehicleMakeLookup("Vapid",Vehicles.Manufacturer.Vapid,manufacturer.VAPID01.FileName),
-            new VehicleMakeLookup("Vulcar",Vehicles.Manufacturer.Vulcar,manufacturer.VULCAR01.FileName),
-            new VehicleMakeLookup("Vysser",Vehicles.Manufacturer.Vysser,""),
-            new VehicleMakeLookup("Weeny",Vehicles.Manufacturer.Weeny,manufacturer.WEENY01.FileName),
-            new VehicleMakeLookup("Western Company",Vehicles.Manufacturer.WesternCompany,manufacturer.WESTERNCOMPANY01.FileName),
-            new VehicleMakeLookup("Western Motorcycle Company",Vehicles.Manufacturer.WesternMotorcycleCompany,manufacturer.WESTERNMOTORCYCLECOMPANY01.FileName),
-            new VehicleMakeLookup("Willard",Vehicles.Manufacturer.Willard,""),
-            new VehicleMakeLookup("Zirconium",Vehicles.Manufacturer.Zirconium,manufacturer.ZIRCONIUM01.FileName),
+            new VehicleMakeLookup("Albany",Manufacturer.Albany,manufacturer.ALBANY01.FileName),
+            new VehicleMakeLookup("Annis",Manufacturer.Annis,manufacturer.ANNIS01.FileName),
+            new VehicleMakeLookup("Benefactor",Manufacturer.Benefactor,manufacturer.BENEFACTOR01.FileName),
+            new VehicleMakeLookup("Bollokan",Manufacturer.Bollokan,manufacturer.BOLLOKAN01.FileName),
+            new VehicleMakeLookup("Bravado",Manufacturer.Bravado,manufacturer.BRAVADO01.FileName),
+            new VehicleMakeLookup("Brute",Manufacturer.Brute,manufacturer.BRUTE01.FileName),
+            new VehicleMakeLookup("Buckingham",Manufacturer.Buckingham,""),
+            new VehicleMakeLookup("Burgerfahrzeug",Manufacturer.Burgerfahrzeug,manufacturer.BF01.FileName),
+            new VehicleMakeLookup("Canis",Manufacturer.Canis,manufacturer.CANIS01.FileName),
+            new VehicleMakeLookup("Chariot",Manufacturer.Chariot,manufacturer.CHARIOT01.FileName),
+            new VehicleMakeLookup("Cheval",Manufacturer.Cheval,manufacturer.CHEVAL01.FileName),
+            new VehicleMakeLookup("Classique",Manufacturer.Classique,manufacturer.CLASSIQUE01.FileName),
+            new VehicleMakeLookup("Coil",Manufacturer.Coil,manufacturer.COIL01.FileName),
+            new VehicleMakeLookup("Declasse",Manufacturer.Declasse,manufacturer.DECLASSE01.FileName),
+            new VehicleMakeLookup("Dewbauchee",Manufacturer.Dewbauchee,manufacturer.DEWBAUCHEE01.FileName),
+            new VehicleMakeLookup("Dinka",Manufacturer.Dinka,manufacturer.DINKA01.FileName),
+            new VehicleMakeLookup("DUDE",Manufacturer.DUDE,""),
+            new VehicleMakeLookup("Dundreary",Manufacturer.Dundreary,manufacturer.DUNDREARY01.FileName),
+            new VehicleMakeLookup("Emperor",Manufacturer.Emperor,manufacturer.EMPEROR01.FileName),
+            new VehicleMakeLookup("Enus",Manufacturer.Enus,manufacturer.ENUS01.FileName),
+            new VehicleMakeLookup("Fathom",Manufacturer.Fathom,manufacturer.FATHOM01.FileName),
+            new VehicleMakeLookup("Gallivanter",Manufacturer.Gallivanter,manufacturer.GALLIVANTER01.FileName),
+            new VehicleMakeLookup("Grotti",Manufacturer.Grotti,manufacturer.GROTTI01.FileName),
+            new VehicleMakeLookup("Hijak",Manufacturer.Hijak,manufacturer.HIJAK01.FileName),
+            new VehicleMakeLookup("HVY",Manufacturer.HVY,manufacturer.HVY01.FileName),
+            new VehicleMakeLookup("Imponte",Manufacturer.Imponte,manufacturer.IMPONTE01.FileName),
+            new VehicleMakeLookup("Invetero",Manufacturer.Invetero,manufacturer.INVETERO01.FileName),
+            new VehicleMakeLookup("JackSheepe",Manufacturer.JackSheepe,manufacturer.JACKSHEEPE01.FileName),
+            new VehicleMakeLookup("Jobuilt",Manufacturer.Jobuilt,manufacturer.JOEBUILT01.FileName),
+            new VehicleMakeLookup("Karin",Manufacturer.Karin,manufacturer.KARIN01.FileName),
+            new VehicleMakeLookup("Kraken Submersibles",Manufacturer.KrakenSubmersibles,""),
+            new VehicleMakeLookup("Lampadati",Manufacturer.Lampadati,manufacturer.LAMPADATI01.FileName),
+            new VehicleMakeLookup("Liberty Chop Shop",Manufacturer.LibertyChopShop,""),
+            new VehicleMakeLookup("Liberty City Cycles",Manufacturer.LibertyCityCycles,""),
+            new VehicleMakeLookup("Maibatsu Corporation",Manufacturer.MaibatsuCorporation,manufacturer.MAIBATSU01.FileName),
+            new VehicleMakeLookup("Mammoth",Manufacturer.Mammoth,manufacturer.MAMMOTH01.FileName),
+            new VehicleMakeLookup("MTL",Manufacturer.MTL,manufacturer.MTL01.FileName),
+            new VehicleMakeLookup("Nagasaki",Manufacturer.Nagasaki,manufacturer.NAGASAKI01.FileName),
+            new VehicleMakeLookup("Obey",Manufacturer.Obey,manufacturer.OBEY01.FileName),
+            new VehicleMakeLookup("Ocelot",Manufacturer.Ocelot,manufacturer.OCELOT01.FileName),
+            new VehicleMakeLookup("Overflod",Manufacturer.Overflod,manufacturer.OVERFLOD01.FileName),
+            new VehicleMakeLookup("Pegassi",Manufacturer.Pegassi,manufacturer.PEGASI01.FileName),
+            new VehicleMakeLookup("Pfister",Manufacturer.Pfister,""),
+            new VehicleMakeLookup("Principe",Manufacturer.Principe,manufacturer.PRINCIPE01.FileName),
+            new VehicleMakeLookup("Progen",Manufacturer.Progen,manufacturer.PROGEN01.FileName),
+            new VehicleMakeLookup("ProLaps",Manufacturer.ProLaps,""),
+            new VehicleMakeLookup("RUNE",Manufacturer.RUNE,""),
+            new VehicleMakeLookup("Schyster",Manufacturer.Schyster,manufacturer.SCHYSTER01.FileName),
+            new VehicleMakeLookup("Shitzu",Manufacturer.Shitzu,manufacturer.SHITZU01.FileName),
+            new VehicleMakeLookup("Speedophile",Manufacturer.Speedophile,manufacturer.SPEEDOPHILE01.FileName),
+            new VehicleMakeLookup("Stanley",Manufacturer.Stanley,manufacturer.STANLEY01.FileName),
+            new VehicleMakeLookup("SteelHorse",Manufacturer.SteelHorse,manufacturer.STEELHORSE01.FileName),
+            new VehicleMakeLookup("Truffade",Manufacturer.Truffade,manufacturer.TRUFFADE01.FileName),
+            new VehicleMakeLookup("Ubermacht",Manufacturer.Ubermacht,manufacturer.UBERMACHT01.FileName),
+            new VehicleMakeLookup("Vapid",Manufacturer.Vapid,manufacturer.VAPID01.FileName),
+            new VehicleMakeLookup("Vulcar",Manufacturer.Vulcar,manufacturer.VULCAR01.FileName),
+            new VehicleMakeLookup("Vysser",Manufacturer.Vysser,""),
+            new VehicleMakeLookup("Weeny",Manufacturer.Weeny,manufacturer.WEENY01.FileName),
+            new VehicleMakeLookup("Western Company",Manufacturer.WesternCompany,manufacturer.WESTERNCOMPANY01.FileName),
+            new VehicleMakeLookup("Western Motorcycle Company",Manufacturer.WesternMotorcycleCompany,manufacturer.WESTERNMOTORCYCLECOMPANY01.FileName),
+            new VehicleMakeLookup("Willard",Manufacturer.Willard,""),
+            new VehicleMakeLookup("Zirconium",Manufacturer.Zirconium,manufacturer.ZIRCONIUM01.FileName),
         };
         }
         public static string ColorAudio(Color ToLookup)
@@ -2238,13 +2238,13 @@ public static class PoliceScanner
         private class VehicleMakeLookup
         {
             public string MakeName { get; set; }
-            public Vehicles.Manufacturer MakeEnum { get; set; }
+            public Manufacturer MakeEnum { get; set; }
             public string ScannerFile { get; set; } = "";
             public VehicleMakeLookup()
             {
 
             }
-            public VehicleMakeLookup(string makeName, Vehicles.Manufacturer makeEnum, string scannerFile)
+            public VehicleMakeLookup(string makeName, Manufacturer makeEnum, string scannerFile)
             {
                 MakeName = makeName;
                 MakeEnum = makeEnum;
@@ -2696,7 +2696,7 @@ public class DispatchCallIn
         PlaceSeen = placeSeen;
     }
     public float Speed { get; set; }
-    public GTAWeapon WeaponSeen { get; set; }
+    public WeaponInformation WeaponSeen { get; set; }
     public VehicleExt VehicleSeen { get; set; }
     public bool SeenOnFoot { get; set; } = true;
     public bool SeenByOfficers { get; set; } = false;

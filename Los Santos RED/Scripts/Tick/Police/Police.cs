@@ -86,7 +86,6 @@ public static class Police
         foreach (Cop Cop in PedList.CopPeds)
         {
             Cop.Update();
-            Cop.CheckIssueHeavy();
             if (Cop.ShouldBustPlayer)
             {
                 PlayerState.StartManualArrest();

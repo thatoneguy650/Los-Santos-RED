@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 public static class Streets
 {
-    private static string ConfigFileName = "Plugins\\LosSantosRED\\Streets.xml";
+    private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Streets.xml";
     public static List<Street> StreetsList;
     public static void Initialize()
     {
@@ -259,11 +259,16 @@ public static class Streets
             new Street("Mt Haan Dr", 40f)
         };
     }
-    public static Street GetStreetFromName(string StreetName)
+    public static Street GetStreet(string StreetName)
     {
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
     }
-    public static string GetCurrentStreetName(Vector3 Position)
+    public static Street GetStreet(Vector3 Position)
+    {
+        string StreetName = GetStreetName(Position);
+        return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+    }
+    private static string GetStreetName(Vector3 Position)
     {
         int StreetHash = 0;
         int CrossingHash = 0;
@@ -284,52 +289,6 @@ public static class Streets
         }
         return StreetName;
     }
-    public static Street GetCurrentStreet(Vector3 Position)
-    {
-        int StreetHash = 0;
-        int CrossingHash = 0;
-        unsafe
-        {
-            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", Position.X, Position.Y, Position.Z, &StreetHash, &CrossingHash);
-        }
-        string StreetName = string.Empty;
-        string CrossStreetName = string.Empty;
-        if (StreetHash != 0)
-        {
-            unsafe
-            {
-                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
 
-                StreetName = Marshal.PtrToStringAnsi(ptr);
-            }
-        }
-        return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
-    }
-    public static void ResetStreets()
-    {
-        StreetsList.ForEach(x => x.DirectionsStopped.Clear());
-    }
-}
-public class Street
-{
-    public string Name = "";
-    public float SpeedLimit = 50f;
-    public bool IsHighway = false;
-    public List<string> DirectionsStopped = new List<string>();
-    public Street()
-    {
-
-    }
-    public Street(string _Name, float _SpeedLimit)
-    {
-        Name = _Name;
-        SpeedLimit = _SpeedLimit;
-    }
-    public Street(string _Name, float _SpeedLimit, bool _isFreeway)
-    {
-        Name = _Name;
-        SpeedLimit = _SpeedLimit;
-        IsHighway = _isFreeway;
-    }
 }
 

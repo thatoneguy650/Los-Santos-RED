@@ -49,13 +49,6 @@ public static class Dispatch
             //return 10 + 2 * PlayerState.WantedLevel;
         }
     }
-    //private static int SpawnedVehicleLimit
-    //{
-    //    get
-    //    {
-    //        return 10 + 2 * PlayerState.WantedLevel;
-    //    }
-    //}
     private static bool CanSpawn
     {
         get
@@ -68,16 +61,6 @@ public static class Dispatch
                 return true;
             else
                 return false;
-        }
-    }
-    private static bool CanSpawnPedestrianOfficers
-    {
-        get
-        {
-            if (PlayerState.IsWanted)
-                return false;
-            else
-                return true;
         }
     }
     private static bool CanDelete
@@ -195,10 +178,8 @@ public static class Dispatch
                 return false;
         }
     }
-    private static uint MinimumExistingTime { get; set; } = 30000;
-    private static float MinimumDeleteDistance{ get; set; } = 125f;//350f
-
-    private static int PercentagePedestrainOfficers { get; set; } = 5;
+    private static uint MinimumExistingTime { get; set; } = 20000;//30000
+    private static float MinimumDeleteDistance{ get; set; } = 200f;//350f
     public static bool IsRunning { get; set; }
     public static void Initialize()
     {
@@ -209,71 +190,37 @@ public static class Dispatch
         if (IsRunning && CanSpawn)
         {
             CurrentSpawn.UpdateSpawnPosition();
-
-            Zone CurrentSpawnZone = Zones.GetZoneAtLocation(CurrentSpawn.Position);
-            Zone CurrentSpawnZoneStreet = Zones.GetZoneAtLocation(CurrentSpawn.StreetPosition);
-
             if (NeedToSpawn && CurrentSpawn.HasSpawns)
             {
-                //First Try Street
-                List<Agency> PossibleAgencies = Agencies.AgenciesAtPosition(CurrentSpawn.StreetPosition);
-                Agency HeliAgency = PossibleAgencies.Where(x => x.HasSpawnableHelicopters).PickRandom();
-
-                Agency AgencyToSpawn = PossibleAgencies.PickRandom();
-
-                if (HeliAgency != null)
-                    AgencyToSpawn = HeliAgency;
-
-                AgencyToSpawn = PossibleAgencies.PickRandom();
-                bool SpawnOnFoot = false;
-
-                if(AgencyToSpawn != null && CurrentSpawnZoneStreet != null)
-                {
-                    if (CanSpawnPedestrianOfficers && Jurisdiction.CanSpawnPedestrainOfficersAtZone(CurrentSpawnZoneStreet.InternalGameName, AgencyToSpawn.Initials) && General.RandomPercent(PercentagePedestrainOfficers))
-                    {
-                        SpawnOnFoot = true;
-                    }
-                }
-                if(AgencyToSpawn == null)
-                {
-                    AgencyToSpawn = Agencies.AgenciesAtPosition(CurrentSpawn.Position).PickRandom();
-                }
-                if (AgencyToSpawn == null)
+                CurrentSpawn.GetAgencyToSpawn();
+                if (!CurrentSpawn.HasAgency)
                 {
                     Debugging.WriteToLog("Dispatch", string.Format("Could not find Agencies To Spawn {0}", 1));
                     return;
                 }
 
-                Vector3 PositionToSpawn = CurrentSpawn.StreetPosition;
-                if (SpawnOnFoot && CurrentSpawn.SidewalkPosition != Vector3.Zero)
+                VehicleInformation AgencyVehicle = CurrentSpawn.AgencyToSpawn.GetRandomVehicle();
+                if (AgencyVehicle == null)
                 {
-                    Debugging.WriteToLog("Dispatch", string.Format("Spawned On Foot {0}", 1));
-                    PoliceSpawning.SpawnGTACop(AgencyToSpawn, CurrentSpawn.SidewalkPosition, CurrentSpawn.Heading, null,true);
+                    Debugging.WriteToLog("Dispatch", string.Format("Could not find Auto for {0}", CurrentSpawn.AgencyToSpawn.Initials));
+                    return;
+                }
+
+                if (AgencyVehicle.IsHelicopter)
+                {
+                    CurrentSpawn.FinalSpawnPosition = CurrentSpawn.Position + new Vector3(0f, 0f, 250f);
+                    Debugging.WriteToLog("Dispatch", string.Format("Helicopter: {0}", AgencyVehicle.ModelName));
+                }
+                else if (AgencyVehicle.IsBoat)
+                {
+                    CurrentSpawn.FinalSpawnPosition = CurrentSpawn.Position;
+                    Debugging.WriteToLog("Dispatch", string.Format("Boat: {0} isWater {1} WaterHieght {2}", AgencyVehicle.ModelName, CurrentSpawn.IsWater, CurrentSpawn.WaterHeight));
                 }
                 else
                 {
-                    Agency.VehicleInformation MyCarInfo = AgencyToSpawn.GetRandomVehicle();
-                    if (MyCarInfo == null)
-                    {
-                        Debugging.WriteToLog("Dispatch", string.Format("Could not find Auto Info for {0}", AgencyToSpawn.Initials));
-                        return;
-                    }
-                    
-                    if (MyCarInfo.IsHelicopter)
-                    {
-                        Debugging.WriteToLog("Dispatch", string.Format("Helicopter: {0}", MyCarInfo.ModelName));
-                        PositionToSpawn = CurrentSpawn.Position + new Vector3(0f, 0f, 250f);
-                    }
-                    else if (MyCarInfo.IsBoat)
-                    {
-
-                        Debugging.WriteToLog("Dispatch", string.Format("Boat: {0} isWater {1} WaterHieght {2}", MyCarInfo.ModelName, CurrentSpawn.IsWater, CurrentSpawn.WaterHeight));
-                        PositionToSpawn = CurrentSpawn.Position;
-                    }
-                    PoliceSpawning.SpawnGTACop(AgencyToSpawn, PositionToSpawn, CurrentSpawn.Heading, MyCarInfo,false);
+                    CurrentSpawn.FinalSpawnPosition = CurrentSpawn.StreetPosition;
                 }
-
-                
+                PoliceSpawning.SpawnGTACop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle, false);
             }
             GameTimeCheckedSpawn = Game.GameTime;
         }
@@ -312,12 +259,15 @@ public static class Dispatch
     {
         IsRunning = false;
     }
+
     private class PoliceSpawn
     {
         public Vector3 Position = Vector3.Zero;
         public float Heading;
         public Vector3 StreetPosition = Vector3.Zero;
         public Vector3 SidewalkPosition = Vector3.Zero;
+        public Vector3 FinalSpawnPosition = Vector3.Zero;
+        public Agency AgencyToSpawn = null;
         public bool IsWater
         {
             get
@@ -352,6 +302,31 @@ public static class Dispatch
 
             }
         }
+        public bool HasSidewalkPosition
+        {
+            get
+            {
+                if (SidewalkPosition != Vector3.Zero)
+                    return true;
+                else
+                    return false;
+
+            }
+        }
+        public bool HasAgency
+        {
+            get
+            {
+                if (AgencyToSpawn == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
         public PoliceSpawn()
         {
 
@@ -367,6 +342,20 @@ public static class Dispatch
                 GetInitialPosition();
                 GetStreetPosition();
                 TimesTried++;
+            }
+        }
+        public void GetAgencyToSpawn()
+        {
+            AgencyToSpawn = null;
+            List<Agency> PossibleAgencies = Agencies.GetAllSpawnableAgencies(StreetPosition);
+            AgencyToSpawn = PossibleAgencies.Where(x => x.HasSpawnableHelicopters).PickRandom();//Favor Helicopter Spawns
+            if (AgencyToSpawn == null)
+            {
+                AgencyToSpawn = PossibleAgencies.PickRandom();
+            }
+            if (AgencyToSpawn == null)
+            {
+                AgencyToSpawn = Agencies.GetAllSpawnableAgencies(Position).PickRandom();
             }
         }
         private void GetInitialPosition()
@@ -400,6 +389,7 @@ public static class Dispatch
                 General.GetSidewalkPositionAndHeading(StreetPosition, out SidewalkPosition);
             }
         }
+
     }
 
 }

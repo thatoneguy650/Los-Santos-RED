@@ -21,12 +21,10 @@ public class VehicleExt
     public bool ManuallyRolledDriverWindowDown { get; set; }
     public Vector3 PositionOriginallyEntered { get; set; } = Vector3.Zero;
     public bool HasBeenDescribedByDispatch { get; set; }
-    public Agency.VehicleInformation ExtendedAgencyVehicleInformation { get; set; }//should change to cross ref model names insead of this horseshit
     public bool WasAlarmed { get; set; }
     public bool WasJacked { get; set; }
     public bool IsStolen { get; set; }
     public bool WasReportedStolen { get; set; }
-
     public bool NeedsToBeReportedStolen
     {
         get

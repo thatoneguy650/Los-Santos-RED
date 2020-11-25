@@ -280,10 +280,10 @@ public static class UI
             return "";
         string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = Zones.GetFormattedZoneName(PlayerLocation.PlayerCurrentZone,true);
+        ZoneDisplay = Zones.GetName(PlayerLocation.PlayerCurrentZone,true);
         if (PlayerLocation.PlayerCurrentZone != null)
         {
-            Agency MainZoneAgency = Jurisdiction.MainAgencyAtZone(PlayerLocation.PlayerCurrentZone.InternalGameName);
+            Agency MainZoneAgency = Jurisdiction.GetMainAgency(PlayerLocation.PlayerCurrentZone.InternalGameName);
             if (MainZoneAgency != null)
                 CopZoneName = MainZoneAgency.ColoredInitials;
         }
