@@ -18,7 +18,7 @@ public static class PoliceEquipment
     {
         IsRunning = false;
     }
-    public static void UpdateCops()
+    public static void ArmCops()
     {
         if (IsRunning)
         {
@@ -31,12 +31,7 @@ public static class PoliceEquipment
                     EquipedCops.Add(new EquipedCop(Cop));
                 }
             }
-        }
-    }
-    public static void ArmCops()
-    {
-        if (IsRunning)
-        {
+
             foreach (EquipedCop Cop in EquipedCops.Where(x => x.CopToArm.Pedestrian.Exists()))
             {
                 Cop.IssueWeapons();

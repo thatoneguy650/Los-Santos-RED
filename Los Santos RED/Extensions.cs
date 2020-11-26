@@ -465,7 +465,7 @@ namespace ExtensionsMethods
 
 
         // weighed distance using hue, saturation and brightness
-        public static int closestColor3(List<Color> colors, Color target)
+        public static int ClosestColor3(List<Color> colors, Color target)
         {
             float hue1 = target.GetHue();
             var num1 = ColorNum(target);
@@ -505,9 +505,113 @@ namespace ExtensionsMethods
             Color MyColor = PrimaryColor;
 
             int Index = ClosestColor2(BaseColorList, MyColor);
-
             return BaseColorList[Index];
         }
+
+
+
+        public static Color GetBaseColor1(Color PrimaryColor)
+        {
+            List<Color> BaseColorList = new List<Color>
+        {
+            Color.Red,
+            Color.Aqua,
+            Color.Beige,
+            Color.Black,
+            Color.Blue,
+            Color.Brown,
+            Color.DarkBlue,
+            Color.DarkGreen,
+            Color.DarkGray,
+            Color.DarkOrange,
+            Color.DarkRed,
+            Color.Gold,
+            Color.Green,
+            Color.Gray,
+            Color.LightBlue,
+            Color.Maroon,
+            Color.Orange,
+            Color.Pink,
+            Color.Purple,
+            Color.Silver,
+            Color.White,
+            Color.Yellow
+        };
+
+            Color MyColor = PrimaryColor;
+
+            int Index = ClosestColor1(BaseColorList, MyColor);
+            return BaseColorList[Index];
+        }
+
+        public static Color GetBaseColor2(Color PrimaryColor)
+        {
+            List<Color> BaseColorList = new List<Color>
+        {
+            Color.Red,
+            Color.Aqua,
+            Color.Beige,
+            Color.Black,
+            Color.Blue,
+            Color.Brown,
+            Color.DarkBlue,
+            Color.DarkGreen,
+            Color.DarkGray,
+            Color.DarkOrange,
+            Color.DarkRed,
+            Color.Gold,
+            Color.Green,
+            Color.Gray,
+            Color.LightBlue,
+            Color.Maroon,
+            Color.Orange,
+            Color.Pink,
+            Color.Purple,
+            Color.Silver,
+            Color.White,
+            Color.Yellow
+        };
+
+            Color MyColor = PrimaryColor;
+
+            int Index = ClosestColor2(BaseColorList, MyColor);
+            return BaseColorList[Index];
+        }
+
+        public static Color GetBaseColor3(Color PrimaryColor)
+        {
+            List<Color> BaseColorList = new List<Color>
+        {
+            Color.Red,
+            Color.Aqua,
+            Color.Beige,
+            Color.Black,
+            Color.Blue,
+            Color.Brown,
+            Color.DarkBlue,
+            Color.DarkGreen,
+            Color.DarkGray,
+            Color.DarkOrange,
+            Color.DarkRed,
+            Color.Gold,
+            Color.Green,
+            Color.Gray,
+            Color.LightBlue,
+            Color.Maroon,
+            Color.Orange,
+            Color.Pink,
+            Color.Purple,
+            Color.Silver,
+            Color.White,
+            Color.Yellow
+        };
+
+            Color MyColor = PrimaryColor;
+
+            int Index = ClosestColor3(BaseColorList, MyColor);
+            return BaseColorList[Index];
+        }
+
 
         // color brightness as perceived:
         public static float getBrightness(Color c)

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using ExtensionsMethods;
 using Rage;
 using Rage.Native;
+using Vehicles;
 
 public static class PlayerState
 {
@@ -603,8 +604,8 @@ public static class PlayerState
         var MyCar = UpdateCurrentVehicle();
         if (MyCar != null && !MyCar.IsStolen)
         {
-            var Make = Vehicles.MakeName(MyCar);
-            var Model = Vehicles.MakeName(MyCar);
+            var Make = MyCar.MakeName();
+            var Model = MyCar.ModelName();
             var VehicleName = "";
             if (Make != "")
                 VehicleName = Make;

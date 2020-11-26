@@ -4,6 +4,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vehicles;
 
 public static class PoliceSpawning
 {

@@ -141,7 +141,17 @@ public static class NewTasking
         {
             get
             {
-                if (CopToTask.DistanceToPlayer <= Police.ActiveDistance && PlayerState.IsWanted)
+                if (CopToTask.DistanceToPlayer <= Police.ActiveDistance)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        private bool WithinInvestigationDistance
+        {
+            get
+            {
+                if (CopToTask.DistanceToInvestigationPosition <= Investigation.InvestigationDistance)
                     return true;
                 else
                     return false;
@@ -175,7 +185,7 @@ public static class NewTasking
             {
                 if (PlayerState.IsNotWanted)
                 {
-                    if (Investigation.InInvestigationMode)
+                    if (Investigation.InInvestigationMode && WithinInvestigationDistance)
                     {
                         return Activities.Investigate;
                     }

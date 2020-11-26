@@ -39,7 +39,7 @@ public static class CarJacking
             return true;
         }
     }
-    public static bool PlayerCarJacking { get; set; } = false;
+    public static bool PlayerCarJacking { get; private set; } = false;
     public static void CarJack(Vehicle VehicleToEnter, Ped DriverPed, int EntrySeat)
     {
         TargetVehicle = VehicleToEnter;

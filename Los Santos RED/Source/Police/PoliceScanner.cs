@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Vehicles;
 using static DispatchScannerFiles;
 
 public static class PoliceScanner
@@ -606,11 +607,11 @@ public static class PoliceScanner
             dispatchEvent.Subtitles += " suspect is driving a ~s~";
 
 
-            Color CarColor = Vehicles.VehicleColor(VehicleToDescribe);
-            string MakeName = Vehicles.MakeName(VehicleToDescribe);
-            int ClassInt = Vehicles.ClassInt(VehicleToDescribe);
+            Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
+            string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
+            int ClassInt = VehicleToDescribe.ClassInt();// Vehicles.VehicleManager.ClassInt(VehicleToDescribe);
             string ClassName = VehicleScanner.ClassName(ClassInt);
-            string ModelName = Vehicles.ModelName(VehicleToDescribe);
+            string ModelName = VehicleToDescribe.ModelName();// Vehicles.VehicleManager.ModelName(VehicleToDescribe);
 
             string ColorAudio = VehicleScanner.ColorAudio(CarColor);
             string MakeAudio = VehicleScanner.MakeAudio(MakeName);

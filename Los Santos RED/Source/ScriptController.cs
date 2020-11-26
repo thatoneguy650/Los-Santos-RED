@@ -14,137 +14,17 @@ public static class ScriptController
     private static int TickID = 0;
     private static Stopwatch GameStopWatch;
     private static Stopwatch TickStopWatch;
-    private static List<TickTask> MyTickTasks; 
+    private static List<TickTask> MyTickTasks;
     public static bool IsRunning { get; set; }
     public static void Initialize()
-    {    
+    {
         IsRunning = true;
-        GameStopWatch = new Stopwatch();
-        TickStopWatch = new Stopwatch();
-
-        TickTable.Columns.Add("TickID");
-        TickTable.Columns.Add("GameTimeStarted");
-        TickTable.Columns.Add("GameTimeFinished");
-        TickTable.Columns.Add("DebugName");
-        TickTable.Columns.Add("ElapsedMilliseconds");     
-
-        MyTickTasks = new List<TickTask>()
-        {
-            new TickTask(25, "PlayerState", PlayerState.Tick, 0,0),
-            new TickTask(25, "Police", Police.Tick, 0,2),
-
-            new TickTask(25, "ControlScript", ControlScript.Tick, 1,0),
-
-            new TickTask(0, "VehicleEngine", VehicleEngine.Tick, 2,0),
-            
-
-            //new TickTask(200, "PlayerHealth", PlayerHealth.Tick, 3,0),
-            new TickTask(200, "PedWoundSystem", PedDamage.Tick, 3,1),
-            new TickTask(250, "MuggingSystem", MuggingScript.Tick, 3,2),
-
-            new TickTask(0, "ClockSystem", Clock.Tick, 3,3),
-            
-            new TickTask(1000, "ScanForPeds", PedList.ScanForPeds, 4,0),
-            new TickTask(250, "ProcessQueue", NewTasking.UpdateTaskableCops, 4,1),
-            new TickTask(150, "TaskPeds", NewTasking.RunActivities, 4,2),
-
-            //new TickTask(250, "ProcessQueue", Tasking.ProcessQueue, 4,1),
-            //new TickTask(150, "TaskPeds", Tasking.TaskPeds, 4,2),
-              
-            new TickTask(250, "WeaponDropping", WeaponDropping.Tick, 5,0),
-
-            new TickTask(150, "Civilians", Civilians.Tick, 6,0),
-
-            new TickTask(500, "TrafficViolations", TrafficViolations.Tick, 7,0),
-            new TickTask(500, "PlayerLocation", PlayerLocation.Tick, 7,1),
-            new TickTask(500, "PersonOfInterest", PersonOfInterest.Tick, 7,2),
-
-            //new TickTask(500, "DispatchAudio", DispatchAudio.Tick, 8,0),
-            new TickTask(500, "ScannerScript", PoliceScanner.Tick, 8,0),
-            new TickTask(500, "PoliceSpeech", PoliceSpeech.Tick, 8,2),
-
-
-            
-
-            new TickTask(0, "VehicleFuelSystem", VehicleFuelSystem.Tick, 9,0),
-
-            new TickTask(25, "WantedLevel", WantedLevelScript.Tick, 10,0),
-
-            new TickTask(25, "Investigation", Investigation.Tick, 11,0),
-
-            new TickTask(50, "SearchModeStopping", SearchModeStopping.Tick, 12,0),
-
-            new TickTask(500, "PoliceSpawning", PoliceSpawning.StopVanillaDispatch, 13,0),
-            new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 13,1),
-
-            new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 14,0),
-
-            new TickTask(25, "Crimes", Crimes.Tick, 15,0),
-
-
-            new TickTask(500, "PoliceSpawning", Dispatch.SpawnChecking, 16,0),
-            new TickTask(500, "PoliceSpawning.RemoveCops", Dispatch.DeleteChecking, 16,1),
-
-
-            new TickTask(0, "VehicleIndicators", VehicleIndicators.Tick, 17,0),
-            new TickTask(0, "RadioTuning", RadioTuning.Tick, 18,0),
-
-
-            new TickTask(500, "PoliceEquipment.UpdateCops", PoliceEquipment.UpdateCops, 19,1),
-            new TickTask(250, "ArmCops", PoliceEquipment.ArmCops, 19,2),
-
-
-        };
-
-        
-        General.Initialize();
-        PlayerState.Initialize();
-        ControlScript.Initialize();
-        Debugging.Initialize();
-        Agencies.Initialize();
-        Zones.Initialize();
-        Jurisdiction.Initialize();
-        Locations.Initialize();
-        Police.Initialize();
-        Investigation.Initialize();
-        WantedLevelScript.Initialize();
-        Crimes.Initialize();
-        PoliceSpawning.Initialize();
-        LicensePlateTheft.Initialize();
-        Menus.Intitialize();
-        PedList.Initialize();
-        //DispatchAudio.Initialize();
-        PoliceScanner.Initialize();
-        PoliceSpeech.Initialize();
-        Vehicles.Initialize();
-        VehicleEngine.Initialize();
-        VehicleIndicators.Initialize();
-        RadioTuning.Initialize();
-        VehicleFuelSystem.Initialize();
-        //Tasking.Initialize();
-        NewTasking.Initialize();
-        PoliceEquipment.Initialize();
-
-
-        Weapons.Initialize();
-        WeaponDropping.Initialize();
-        Streets.Initialize();
-        PlayerLocation.Initialize();
-        TrafficViolations.Initialize();
-        SearchModeStopping.Initialize();
-        UI.Initialize();
-        PedSwap.Initialize();
-        PersonOfInterest.Initialize();
-        Civilians.Initialize();
-        Clock.Initialize();
-        MuggingScript.Initialize();
-        //PlayerHealth.Initialize();
-        PedDamage.Initialize();
-        Dispatch.Initialize();
+        Setup();
+        InitializeSubProcesses();
         RunTasks();
     }
     public static void RunTasks()
-    {     
+    {
         GameFiber.StartNew(delegate
         {
             try
@@ -153,7 +33,7 @@ public static class ScriptController
                 while (IsRunning)
                 {
                     GameStopWatch.Start();
-                    foreach(int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
+                    foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                     {
                         TickTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or 
                         if (ToRun != null)
@@ -165,7 +45,7 @@ public static class ScriptController
                             //TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
                             TickStopWatch.Reset();
                         }
-                        foreach(TickTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
+                        foreach (TickTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                         {
                             uint GameTimeStarted = Game.GameTime;
                             TickStopWatch.Stop();
@@ -193,11 +73,12 @@ public static class ScriptController
                 Dispose();
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
-        },"Run Tasks");
+        }, "Run Tasks");
 
 
         GameFiber.Sleep(1000);
 
+        //UI & Menu is run on another main gamefiber (Needs to always be ready)
         GameFiber.StartNew(delegate
         {
             try
@@ -214,27 +95,114 @@ public static class ScriptController
                 Dispose();
                 Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
             }
-        },"Run Menu/UI");
+        }, "Run Menu/UI");
     }
     public static void Dispose()
     {
         IsRunning = false;
+        DisposeSubProcesses();
+    }
+    private static void Setup()
+    {
+        GameStopWatch = new Stopwatch();
+        TickStopWatch = new Stopwatch();
+
+        TickTable.Columns.Add("TickID");
+        TickTable.Columns.Add("GameTimeStarted");
+        TickTable.Columns.Add("GameTimeFinished");
+        TickTable.Columns.Add("DebugName");
+        TickTable.Columns.Add("ElapsedMilliseconds");
+
+        MyTickTasks = new List<TickTask>()
+        {
+            new TickTask(25, "PlayerState", PlayerState.Tick, 0,0),
+            new TickTask(25, "Police", Police.Tick, 0,2),
+            new TickTask(25, "ControlScript", ControlScript.Tick, 1,0),
+            new TickTask(0, "VehicleEngine", VehicleEngine.Tick, 2,0),
+            new TickTask(200, "PedWoundSystem", PedDamage.Tick, 3,1),
+            new TickTask(250, "MuggingSystem", MuggingScript.Tick, 3,2),
+            new TickTask(0, "ClockSystem", Clock.Tick, 3,3),
+            new TickTask(1000, "ScanForPeds", PedList.ScanForPeds, 4,0),
+            new TickTask(250, "ProcessQueue", NewTasking.UpdateTaskableCops, 4,1),
+            new TickTask(150, "TaskPeds", NewTasking.RunActivities, 4,2),         
+            new TickTask(250, "WeaponDropping", WeaponDropping.Tick, 5,0),
+            new TickTask(150, "Civilians", Civilians.Tick, 6,0),
+            new TickTask(500, "TrafficViolations", TrafficViolations.Tick, 7,0),
+            new TickTask(500, "PlayerLocation", PlayerLocation.Tick, 7,1),
+            new TickTask(500, "PersonOfInterest", PersonOfInterest.Tick, 7,2),
+            new TickTask(500, "ScannerScript", PoliceScanner.Tick, 8,0),
+            new TickTask(500, "PoliceSpeech", PoliceSpeech.Tick, 8,2),
+            new TickTask(0, "VehicleFuelSystem", VehicleFuelSystem.Tick, 9,0),
+            new TickTask(25, "WantedLevel", WantedLevelScript.Tick, 10,0),
+            new TickTask(25, "Investigation", Investigation.Tick, 11,0),
+            new TickTask(50, "SearchModeStopping", SearchModeStopping.Tick, 12,0),
+            new TickTask(500, "PoliceSpawning", PoliceSpawning.StopVanillaDispatch, 13,0),
+            new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 13,1),
+            new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 14,0),
+            new TickTask(25, "Crimes", Crimes.Tick, 15,0),
+            new TickTask(500, "PoliceSpawning", Dispatch.SpawnChecking, 16,0),
+            new TickTask(500, "PoliceSpawning.RemoveCops", Dispatch.DeleteChecking, 16,1),
+            new TickTask(0, "VehicleIndicators", VehicleIndicators.Tick, 17,0),
+            new TickTask(0, "RadioTuning", RadioTuning.Tick, 18,0),
+            new TickTask(250, "ArmCops", PoliceEquipment.ArmCops, 19,1),
+        };
+    }
+    private static void InitializeSubProcesses()
+    {
+        General.Initialize();
+        PlayerState.Initialize();
+        ControlScript.Initialize();
+        Debugging.Initialize();
+        Agencies.Initialize();
+        Zones.Initialize();
+        Jurisdiction.Initialize();
+        Locations.Initialize();
+        Police.Initialize();
+        Investigation.Initialize();
+        WantedLevelScript.Initialize();
+        Crimes.Initialize();
+        PoliceSpawning.Initialize();
+        LicensePlateTheft.Initialize();
+        Menus.Intitialize();
+        PedList.Initialize();
+        PoliceScanner.Initialize();
+        PoliceSpeech.Initialize();
+        VehicleEngine.Initialize();
+        VehicleIndicators.Initialize();
+        RadioTuning.Initialize();
+        VehicleFuelSystem.Initialize();
+        NewTasking.Initialize();
+        PoliceEquipment.Initialize();
+        Weapons.Initialize();
+        WeaponDropping.Initialize();
+        Streets.Initialize();
+        PlayerLocation.Initialize();
+        TrafficViolations.Initialize();
+        SearchModeStopping.Initialize();
+        UI.Initialize();
+        PedSwap.Initialize();
+        PersonOfInterest.Initialize();
+        Civilians.Initialize();
+        Clock.Initialize();
+        MuggingScript.Initialize();
+        PedDamage.Initialize();
+        Dispatch.Initialize();
+    }
+    private static void DisposeSubProcesses()
+    {
         General.Dispose();
         PlayerState.Dispose();
         ControlScript.Dispose();
         LicensePlateTheft.Dispose();
         Menus.Dispose();
         PedList.Dispose();
-        //DispatchAudio.Dispose();
         PoliceScanner.Dispose();
         PoliceSpeech.Dispose();
-        Vehicles.Dispose();
         VehicleEngine.Dispose();
         VehicleIndicators.Dispose();
         RadioTuning.Dispose();
         VehicleFuelSystem.Dispose();
         Smoking.Dispose();
-        //Tasking.Dispose();
         NewTasking.Dispose();
         PoliceEquipment.Dispose();
         Agencies.Dispose();
@@ -255,7 +223,6 @@ public static class ScriptController
         PedSwap.Dispose();
         PersonOfInterest.Dispose();
         Civilians.Dispose();
-       //PlayerHealth.Dispose();
         Clock.Dispose();
         MuggingScript.Dispose();
         PedDamage.Dispose();
@@ -267,7 +234,7 @@ public static class ScriptController
     }
     public static string GetStatus()
     {
-        return string.Join("|",MyTickTasks.Where(x => x.RanThisTick).Select(x => x.DebugName));
+        return string.Join("|", MyTickTasks.Where(x => x.RanThisTick).Select(x => x.DebugName));
     }
     public static void OutputTable()
     {
@@ -354,4 +321,3 @@ public static class ScriptController
 
     }
 }
-

@@ -80,6 +80,22 @@ public static class PedSwap
             Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
+
+    public static void BecomeMPCharacter(bool IsMale)
+    {
+        SetPlayerOffset();
+        ChangeModel(General.MySettings.General.MainCharacterToAliasModelName);
+        //if(IsMale)
+        //{
+        //    ChangeModel(ModelToChange);
+        //}
+        //else
+        //{
+        //    ChangeModel(ModelToChange);
+        //}
+        
+    }
+
     private static Ped FindPedToSwapWith(float Radius, bool Nearest)
     {
         Ped PedToReturn = null;

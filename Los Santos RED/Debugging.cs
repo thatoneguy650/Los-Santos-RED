@@ -303,8 +303,6 @@ public static class Debugging
             CopToBribe.Pedestrian.Delete();
         });
     }
-
-
     private static Vector3 GetPoint(Vector3 pos1,Vector3 pos2, float offset)
     {
         //get the direction between the two transforms -->
@@ -331,12 +329,73 @@ public static class Debugging
     }
     private static void DebugNumpad6()
     {
-        Surrender.UnSetArrestedAnimation(Game.LocalPlayer.Character);
-        //NewTasking.UnTask();
-        //WriteToLog("DebugNumpad6", string.Format("                      PlayerCoordinates: {0}f,{1}f,{2}f", Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z));
-        //WriteToLog("DebugNumpad6", string.Format("                      PlayerHeading: {0}", Game.LocalPlayer.Character.Heading));
+        if (PlayerState.CurrentVehicle != null && PlayerState.CurrentVehicle.VehicleEnt.Exists())
+        {
+            Colorbullshit();
+            Colorbullshit2();
+        }
+    }       
+    private static void Colorbullshit()
+    {
+        Color Color1 = Extensions.GetBaseColor1(PlayerState.CurrentVehicle.VehicleEnt.PrimaryColor);
+        Color Color2 = Extensions.GetBaseColor2(PlayerState.CurrentVehicle.VehicleEnt.PrimaryColor);
+        Color Color3 = Extensions.GetBaseColor3(PlayerState.CurrentVehicle.VehicleEnt.PrimaryColor);
+        WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", PlayerState.CurrentVehicle.VehicleEnt.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
     }
-        
+    private static void Colorbullshit2()
+    {
+        Color c = PlayerState.CurrentVehicle.VehicleEnt.PrimaryColor;
+        float targetHue = c.GetHue();
+        float targetSat = c.GetSaturation();
+        float targetBri = c.GetBrightness();
+
+        Color closestColor = Color.Red;
+        double smallestDiff = double.MaxValue;
+
+        List<Color> BaseColorList = new List<Color>
+        {
+            Color.Red,
+            Color.Aqua,
+            Color.Beige,
+            Color.Black,
+            Color.Blue,
+            Color.Brown,
+            Color.DarkBlue,
+            Color.DarkGreen,
+            Color.DarkGray,
+            Color.DarkOrange,
+            Color.DarkRed,
+            Color.Gold,
+            Color.Green,
+            Color.Gray,
+            Color.LightBlue,
+            Color.Maroon,
+            Color.Orange,
+            Color.Pink,
+            Color.Purple,
+            Color.Silver,
+            Color.White,
+            Color.Yellow
+        };
+
+
+        foreach (Color currentColor in BaseColorList)
+        {
+
+            float currentHue = currentColor.GetHue();
+            float currentSat = currentColor.GetSaturation();
+            float currentBri = currentColor.GetBrightness();
+
+            double currentDiff = Math.Pow(targetHue - currentHue, 2) + Math.Pow(targetSat - currentSat, 2) + Math.Pow(targetBri - currentBri, 2);
+
+            if (currentDiff < smallestDiff)
+            {
+                smallestDiff = currentDiff;
+                closestColor = currentColor;
+            }
+        }
+        WriteToLog("Debugging", string.Format("ColorBS2: {0} ", closestColor.ToString()));
+    }
     private static void DebugNumpad7()
     {
         WriteToLog("Debugging", Clock.CurrentTime);
