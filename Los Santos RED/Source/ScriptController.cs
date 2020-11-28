@@ -87,6 +87,7 @@ public static class ScriptController
                 {
                     Menus.Tick();
                     UI.Tick();
+                    WantedLevelScript.FreezeTick();//testing this here.....
                     GameFiber.Yield();
                 }
             }
@@ -123,6 +124,11 @@ public static class ScriptController
             new TickTask(250, "MuggingSystem", MuggingScript.Tick, 3,2),
             new TickTask(0, "ClockSystem", Clock.Tick, 3,3),
             new TickTask(1000, "ScanForPeds", PedList.ScanForPeds, 4,0),
+            new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanForVehicles, 4,1),//was 14,0
+            new TickTask(500, "Plates", AmbientPlateManager.Tick, 4,2),//NEW
+
+
+
             new TickTask(250, "ProcessQueue", NewTasking.UpdateTaskableCops, 4,1),
             new TickTask(150, "TaskPeds", NewTasking.RunActivities, 4,2),         
             new TickTask(250, "WeaponDropping", WeaponDropping.Tick, 5,0),
@@ -133,12 +139,19 @@ public static class ScriptController
             new TickTask(500, "ScannerScript", PoliceScanner.Tick, 8,0),
             new TickTask(500, "PoliceSpeech", PoliceSpeech.Tick, 8,2),
             new TickTask(0, "VehicleFuelSystem", VehicleFuelSystem.Tick, 9,0),
+
             new TickTask(25, "WantedLevel", WantedLevelScript.Tick, 10,0),
+            new TickTask(25, "SearchMode", SearchMode.Tick, 10,1),
+
             new TickTask(25, "Investigation", Investigation.Tick, 11,0),
             new TickTask(50, "SearchModeStopping", SearchModeStopping.Tick, 12,0),
             new TickTask(500, "PoliceSpawning", PoliceSpawning.StopVanillaDispatch, 13,0),
             new TickTask(500, "PoliceSpawning.RemoveCops", PoliceSpawning.CheckRemove, 13,1),
-            new TickTask(1000, "ScanforPoliceVehicles", PedList.ScanforPoliceVehicles, 14,0),
+
+
+            
+
+
             new TickTask(25, "Crimes", Crimes.Tick, 15,0),
             new TickTask(500, "PoliceSpawning", Dispatch.SpawnChecking, 16,0),
             new TickTask(500, "PoliceSpawning.RemoveCops", Dispatch.DeleteChecking, 16,1),
@@ -160,6 +173,7 @@ public static class ScriptController
         Police.Initialize();
         Investigation.Initialize();
         WantedLevelScript.Initialize();
+        SearchMode.Initialize();
         Crimes.Initialize();
         PoliceSpawning.Initialize();
         LicensePlateTheft.Initialize();
@@ -187,6 +201,7 @@ public static class ScriptController
         MuggingScript.Initialize();
         PedDamage.Initialize();
         Dispatch.Initialize();
+        AmbientPlateManager.Initialize();
     }
     private static void DisposeSubProcesses()
     {
@@ -216,6 +231,7 @@ public static class ScriptController
         Police.Dispose();
         Investigation.Dispose();
         WantedLevelScript.Dispose();
+        SearchMode.Dispose();
         Crimes.Dispose();
         PoliceSpawning.Dispose();
         TrafficViolations.Dispose();
@@ -227,6 +243,7 @@ public static class ScriptController
         MuggingScript.Dispose();
         PedDamage.Dispose();
         Dispatch.Dispose();
+        AmbientPlateManager.Dispose();
     }
     private static void ResetRanItems()
     {

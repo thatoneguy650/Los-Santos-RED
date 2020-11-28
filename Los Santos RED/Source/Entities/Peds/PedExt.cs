@@ -1,5 +1,6 @@
 ﻿
 using ExtensionsMethods;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -51,6 +52,8 @@ public class PedExt
     public bool CanBeTasked { get; set; } = true;
     public bool WillCallPolice { get; set; } = true;
     public List<Crime> CrimesWitnessed { get; set; } = new List<Crime>();
+    public VehicleExt VehicleLastSeenPlayerIn { get; set; }
+    public WeaponInformation WeaponLastSeenPlayerWith { get; set; }
     public bool NeedsUpdate
     {
         get
@@ -170,10 +173,17 @@ public class PedExt
         else
             return false;
     }
-    public PedExt(Ped _Pedestrian, int _Health)
+    public PedExt(Ped _Pedestrian)
     {
         Pedestrian = _Pedestrian;
-        Health = _Health;
+        Health = Pedestrian.Health;
+    }
+    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice)
+    {
+        Pedestrian = _Pedestrian;
+        Health = Pedestrian.Health;
+        WillFight = _WillFight;
+        WillCallPolice = _WillCallPolice;
     }
     public void UpdateContinuouslySeen()
     {
@@ -359,6 +369,8 @@ public class PedExt
         CanSeePlayer = true;
         GameTimeLastSeenPlayer = Game.GameTime;
         PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
+        VehicleLastSeenPlayerIn = PlayerState.CurrentVehicle;
+        WeaponLastSeenPlayerWith = PlayerState.CurrentWeapon;
         if(IsCop)
         {
             Police.WasPlayerLastSeenInVehicle = PlayerState.IsInVehicle;

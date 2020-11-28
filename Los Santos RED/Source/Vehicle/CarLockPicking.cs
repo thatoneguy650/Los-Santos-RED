@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
-
+using LSR.Vehicles;
 
 public static class CarLockPicking
 {
@@ -25,9 +25,7 @@ public static class CarLockPicking
                 return false;
             int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
             VehicleClass VehicleClass = (VehicleClass)intVehicleClass;
-            if (VehicleClass == VehicleClass.Boats || VehicleClass == VehicleClass.Cycles || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycles
-                || VehicleClass == VehicleClass.Planes || VehicleClass == VehicleClass.Service || VehicleClass == VehicleClass.Trailer || VehicleClass == VehicleClass.Trains
-                || VehicleClass == VehicleClass.Helicopters)
+            if (VehicleClass == VehicleClass.Boat || VehicleClass == VehicleClass.Cycle || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycle|| VehicleClass == VehicleClass.Plane || VehicleClass == VehicleClass.Service || VehicleClass == VehicleClass.Helicopter)
                 return false;//maybe add utility?
             else if (!TargetVehicle.Doors[0].IsValid() || !TargetVehicle.Doors[1].IsValid())
                 return false;

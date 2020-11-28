@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -15,49 +16,50 @@ public static class PedList
     private static int MaxCopHealth = 125;//25;
     private static int MinCopArmor = 0;//0;
     private static int MaxCopArmor = 50;//25;
-    public static List<Cop> CopPeds { get; private set; }
+    public static List<Cop> Cops { get; private set; }
     public static List<Cop> K9Peds { get; set; }
     public static List<Vehicle> PoliceVehicles { get; set; }
+    public static List<VehicleExt> CivilianVehicles { get; set; }
     public static List<PedExt> Civilians { get; private set; }
     public static bool IsRunning { get; set; } = true;
     public static int TotalSpawnedCops
     {
         get
         {
-            return CopPeds.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+            return Cops.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
         }
     }
     public static bool AnyCopsNearPlayer
     {
         get
         {
-            return CopPeds.Any(x => x.DistanceToPlayer <= 150f);
+            return Cops.Any(x => x.DistanceToPlayer <= 150f);
         }
     }
     public static bool AnyNooseUnitsSpawned
     {
         get
         {
-            return CopPeds.Any(x => x.AssignedAgency.Initials == "NOOSE" && x.WasModSpawned);
+            return Cops.Any(x => x.AssignedAgency.Initials == "NOOSE" && x.WasModSpawned);
         }
     }
     public static bool AnyArmyUnitsSpawned
     {
         get
         {
-            return CopPeds.Any(x => x.AssignedAgency.Initials == "ARMY" && x.WasModSpawned);
+            return Cops.Any(x => x.AssignedAgency.Initials == "ARMY" && x.WasModSpawned);
         }
     }
     public static bool AnyHelicopterUnitsSpawned
     {
         get
         {
-            return CopPeds.Any(x => x.IsInHelicopter && x.WasModSpawned);
+            return Cops.Any(x => x.IsInHelicopter && x.WasModSpawned);
         }
     }
     public static bool AnyCopsNearPosition(Vector3 Position,float Distance)
     {
-        if (Position != Vector3.Zero && CopPeds.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
+        if (Position != Vector3.Zero && Cops.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
             return true;
         else
             return false;
@@ -80,16 +82,17 @@ public static class PedList
     {
         get
         {
-            return string.Join(" ", CopPeds.Where(x => (x.SeenPlayerSince(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => x.AssignedAgency.ColoredInitials).Distinct().ToArray());
+            return string.Join(" ", Cops.Where(x => (x.SeenPlayerSince(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => x.AssignedAgency.ColoredInitials).Distinct().ToArray());
         }
     }
     public static void Initialize()
     {
         IsRunning = true;
-        CopPeds = new List<Cop>();
+        Cops = new List<Cop>();
         K9Peds = new List<Cop>();
         Civilians = new List<PedExt>();
         PoliceVehicles = new List<Vehicle>();
+        CivilianVehicles = new List<VehicleExt>();
     }
     public static void Dispose()
     {
@@ -108,7 +111,7 @@ public static class PedList
                     if (SearchModeStopping.SpotterCop != null && SearchModeStopping.SpotterCop.Handle == Pedestrian.Handle)
                         continue;
 
-                    if (!CopPeds.Any(x => x.Pedestrian == Pedestrian))
+                    if (!Cops.Any(x => x.Pedestrian == Pedestrian))
                     {
                         AddCop(Pedestrian);
                     }
@@ -155,12 +158,12 @@ public static class PedList
         Pedestrian.Inventory.Weapons.Clear();
         PoliceEquipment.IssueWeapons(myCop);
 
-        CopPeds.Add(myCop);
+        Cops.Add(myCop);
     }
     private static void AddCivilian(Ped Pedestrian)
     {
         SetPedestrianStats(Pedestrian,false);
-        Civilians.Add(new PedExt(Pedestrian, Pedestrian.Health) { WillCallPolice = General.RandomPercent(50), WillFight = General.RandomPercent(15) });
+        Civilians.Add(new PedExt(Pedestrian, General.RandomPercent(15), General.RandomPercent(50)));
     }
     private static void SetPedestrianStats(Ped Pedestrian,bool IsCop)
     {
@@ -193,7 +196,7 @@ public static class PedList
         //NativeFunction.CallByName<bool>("SET_PED_SUFFERS_CRITICAL_HITS", Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
     }
-    public static void ScanforPoliceVehicles()
+    public static void ScanForVehicles()
     {
         if (IsRunning)
         {
@@ -209,12 +212,23 @@ public static class PedList
                         PoliceVehicles.Add(Veh);
                     }
                 }
+                else
+                {
+                    if (!CivilianVehicles.Any(x => x.VehicleEnt.Handle == Veh.Handle))
+                    {
+                        AddCivilianVehicle(Veh);
+                    }
+                }
             }
         }
     }
+    private static void AddCivilianVehicle(Vehicle Car)
+    {
+        CivilianVehicles.Add(new VehicleExt(Car));
+    }
     public static void ClearPolice()
     {
-        foreach (Cop Cop in CopPeds)
+        foreach (Cop Cop in Cops)
         {
             if (Cop.Pedestrian.Exists())
             {
@@ -223,7 +237,7 @@ public static class PedList
                 Cop.Pedestrian.Delete();
             }
         }
-        CopPeds.Clear();
+        Cops.Clear();
         foreach (Cop Cop in K9Peds)
         {
             if (Cop.Pedestrian.Exists())
@@ -241,11 +255,11 @@ public static class PedList
         {
             Cop.Pedestrian.Delete();
         }
-        foreach (Cop Cop in CopPeds.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsInAnyVehicle(false)))
+        foreach (Cop Cop in Cops.Where(x => x.Pedestrian.Exists() && !x.Pedestrian.IsInAnyVehicle(false)))
         {
             Cop.Pedestrian.Delete();
         }
-        foreach (Cop Cop in CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsInAnyVehicle(false)))
+        foreach (Cop Cop in Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsInAnyVehicle(false)))
         {
             Cop.Pedestrian.CurrentVehicle.Delete();
             Cop.Pedestrian.Delete();
@@ -263,7 +277,7 @@ public static class PedList
     }
     public static PedExt GetCivilian(uint Handle)
     {
-        if (CopPeds.Any(x => x.Pedestrian.Handle == Handle))
+        if (Cops.Any(x => x.Pedestrian.Handle == Handle))
             return null;
         else
             return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);

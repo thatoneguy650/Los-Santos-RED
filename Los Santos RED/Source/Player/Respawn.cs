@@ -240,7 +240,7 @@ public static class Respawn
     {
         GameFiber.StartNew(delegate
         {
-            Cop CopToBribe = PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            Cop CopToBribe = PedList.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
             Game.TimeScale = 1.0f;
             //CopToBribe.SetUnarmed();
@@ -470,7 +470,7 @@ public static class Respawn
         public bool TransactionOccured { get; private set; }
         private void Setup()
         {
-            CopToBribe = PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            CopToBribe = PedList.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             if(CopToBribe == null)
             {
                 IsFinished = true;
@@ -486,7 +486,7 @@ public static class Respawn
         {
             GameFiber.StartNew(delegate
             {
-                CopToBribe = PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                CopToBribe = PedList.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
                 NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
                 Game.TimeScale = 1.0f;
                 CopToBribe.ShouldAutoSetWeaponState = false;

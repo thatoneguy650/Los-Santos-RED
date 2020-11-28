@@ -33,10 +33,10 @@ public static class NewTasking
     {
         if (IsRunning)
         {
-            PedList.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
+            PedList.Cops.RemoveAll(x => !x.Pedestrian.Exists());
 
             TaskableCops.RemoveAll(x => !x.CopToTask.Pedestrian.Exists());
-            foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists()))
+            foreach (Cop Cop in PedList.Cops.Where(x => x.Pedestrian.Exists()))
             {
                 if (!TaskableCops.Any(x => x.CopToTask.Pedestrian.Handle == Cop.Pedestrian.Handle))
                 {
@@ -325,7 +325,7 @@ public static class NewTasking
                 CopToTask.Pedestrian.CurrentVehicle.IsSirenOn = false;
                 CopToTask.Pedestrian.CurrentVehicle.IsSirenSilent = false;
             }
-            if (CopToTask.DistanceToPlayer <= 150f && CopToTask.Pedestrian.Tasks.CurrentTaskStatus == TaskStatus.NoTask)
+            if (CopToTask.DistanceToPlayer <= 75f && CopToTask.Pedestrian.Tasks.CurrentTaskStatus == TaskStatus.NoTask)//150f causes spam
             {
                 if (!CopToTask.Pedestrian.IsInAnyVehicle(false))
                 {
@@ -383,21 +383,17 @@ public static class NewTasking
         }
         private void Investigate()
         {
-            float DisanceToInvestigation = CopToTask.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition);
-            if (DisanceToInvestigation <= Investigation.InvestigationDistance)
+            if (CopToTask.IsInVehicle || CopToTask.DistanceToInvestigationPosition <= OnFootTaskDistance)
             {
-                if (CopToTask.IsInVehicle || DisanceToInvestigation <= OnFootTaskDistance)
+                if (CurrentTaskLoop != "Investigation")
                 {
-                    if (CurrentTaskLoop != "Investigation")
-                    {
-                        Investigate_Start();
-                    }
-                    else
-                    {
-                        Investigate_Normal();
-                    }
-                    GameTimeLastTasked = Game.GameTime;
+                    Investigate_Start();
                 }
+                else
+                {
+                    Investigate_Normal();
+                }
+                GameTimeLastTasked = Game.GameTime;
             }
             CurrentTaskLoop = "Investigation";
         }
@@ -407,14 +403,23 @@ public static class NewTasking
             {
                 Investigation.InvestigationPosition = Game.LocalPlayer.Character.Position;
                 if (PlayerState.IsWanted)
+                {
                     Investigation.InvestigationPosition = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                }
             }
             CurrentTaskedPosition = Investigation.InvestigationPosition;
             CopToTask.Pedestrian.BlockPermanentEvents = false;
             if (CopToTask.Pedestrian.IsInAnyVehicle(false))
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Investigation.InvestigationPosition.X, Investigation.InvestigationPosition.Y, Investigation.InvestigationPosition.Z, WantedLevelScript.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+            {
+                if (CopToTask.IsDriver)
+                {
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Investigation.InvestigationPosition.X, Investigation.InvestigationPosition.Y, Investigation.InvestigationPosition.Z, WantedLevelScript.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                }
+            }
             else
+            {
                 NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Investigation.InvestigationPosition.X, Investigation.InvestigationPosition.Y, Investigation.InvestigationPosition.Z, 500f, -1, 0f, 2f);
+            }
             CurrentTaskLoop = "Investigation";
             AtInvesstigationPositionThisInvestigation = false;
             Debugging.WriteToLog("Tasking", string.Format("     Started Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, WantedLevelScript.CurrentResponse, WantedLevelScript.ResponseDrivingSpeed, WantedLevelScript.ShouldSirenBeOn));
@@ -427,10 +432,16 @@ public static class NewTasking
                 {
                     CurrentTaskedPosition = Investigation.InvestigationPosition;
                     if (CopToTask.Pedestrian.IsInAnyVehicle(false))
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Investigation.InvestigationPosition.X, Investigation.InvestigationPosition.Y, Investigation.InvestigationPosition.Z, WantedLevelScript.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                    {
+                        if (CopToTask.IsDriver)
+                        {
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Investigation.InvestigationPosition.X, Investigation.InvestigationPosition.Y, Investigation.InvestigationPosition.Z, WantedLevelScript.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                        }
+                    }
                     else
+                    {
                         NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Investigation.InvestigationPosition.X, Investigation.InvestigationPosition.Y, Investigation.InvestigationPosition.Z, 500f, -1, 0f, 2f);
-
+                    }
                     Debugging.WriteToLog("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, WantedLevelScript.CurrentResponse, WantedLevelScript.ResponseDrivingSpeed, WantedLevelScript.ShouldSirenBeOn));
 
                 }
@@ -442,12 +453,19 @@ public static class NewTasking
                         CopToTask.Pedestrian.CurrentVehicle.IsSirenSilent = false;
                     }
                 }
-                if (CopToTask.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition) <= 15f)
+                if (CopToTask.DistanceToInvestigationPosition <= 15f)
                 {
                     AtInvesstigationPositionThisInvestigation = true;
-                    if (CopToTask.Pedestrian.Exists() && CopToTask.Pedestrian.CurrentVehicle.Exists())
+                    if (CopToTask.Pedestrian.Exists())
                     {
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedLevelScript.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);
+                        if (CopToTask.Pedestrian.IsInAnyVehicle(false) && CopToTask.Pedestrian.CurrentVehicle.Exists())
+                        {
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedLevelScript.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);
+                        }
+                        else
+                        {
+                            CopToTask.Pedestrian.Tasks.Wander();
+                        }
                         Debugging.WriteToLog("Tasking", string.Format("     Started Investigation Wander: {0}", CopToTask.Pedestrian.Handle));
                     }
                 }
@@ -565,7 +583,7 @@ public static class NewTasking
         private void VehicleChase_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Police.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (PlayerState.IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", CopToTask.Pedestrian, Game.LocalPlayer.Character); //NativeFunction.CallByName<bool>("TASK_VEHICLE_FOLLOW", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 22f, 4 | 16 | 32 | 262144, 8f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
@@ -580,7 +598,7 @@ public static class NewTasking
         }
         private void VehicleChase_Normal()
         {
-            Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if(CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 10f)
             {
                 if (!PlayerState.IsInVehicle)
@@ -734,7 +752,7 @@ public static class NewTasking
         private void GoToLastSeen_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (CopToTask.IsInVehicle && CopToTask.Pedestrian.CurrentVehicle != null)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
@@ -750,7 +768,7 @@ public static class NewTasking
         }
         private void GoToLastSeen_Normal()
         {
-            Vector3 WantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (!NearWantedCenterThisWanted)
             {
                 if (CurrentTaskedPosition.DistanceTo2D( WantedCenter) >= 5f)
@@ -798,7 +816,7 @@ public static class NewTasking
         }
         private void HeliGoToLastSeen_Start()
         {
-            Cop ClosestCop = PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
+            Cop ClosestCop = PedList.Cops.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
             if (ClosestCop == null)
                 return;
             NativeFunction.CallByName<bool>("TASK_HELI_CHASE", CopToTask.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);
@@ -1116,7 +1134,7 @@ public static class NewTasking
             {
                 if (PlayerState.IsNotWanted)
                 {
-                    WantedLevelScript.CurrentCrimes.AddCrime(CivilianToTask.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, CivilianToTask.PositionLastSeenCrime, null, null);
+                    WantedLevelScript.CurrentCrimes.AddCrime(CivilianToTask.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, CivilianToTask.PositionLastSeenCrime, CivilianToTask.VehicleLastSeenPlayerIn, CivilianToTask.WeaponLastSeenPlayerWith);
 
                     //WANT TO READD THIS IN TEH FUTURE, NEED TO PASS CAR
                     //if (VehToReport != null)
@@ -1126,10 +1144,20 @@ public static class NewTasking
                 }
                 else
                 {
+
+                    //Maybe should be readded? debugging?
+
                     if (PlayerState.AreStarsGreyedOut)
                     {
-                        Police.PlaceLastSeenPlayer = CivilianToTask.PositionToReportToPolice;
+                        if(Game.LocalPlayer.Character.Position.DistanceTo2D(CivilianToTask.PositionToReportToPolice) <= Game.LocalPlayer.Character.Position.DistanceTo2D(Police.PlaceLastSeenPlayer))//closer to the new position
+                        {
+                            Police.PlaceLastSeenPlayer = CivilianToTask.PositionToReportToPolice;//update it, give them a little ESP instead of doing all the timing bullshit
+                        }
+                        
                     }
+
+
+
                 }
                 CivilianToTask.CrimesWitnessed.Clear();
                 CivilianToTask.Pedestrian.IsPersistent = false;

@@ -152,7 +152,31 @@ public static class UI
         // Lines++;
 
         DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Investigation.InInvestigationMode, Investigation.HavePlayerDescription,PlayerState.IsStationary, Investigation.IsSuspicious);
-        DisplayTextOnScreen(DebugLine, 0.1f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+
+        string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", SearchMode.IsInSearchMode,SearchMode.IsInActiveMode,SearchMode.TimeInSearchMode,SearchMode.TimeInActiveMode);
+
+        DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", Police.AnyRecentlySeenPlayer, PlayerState.AreStarsGreyedOut, SearchMode.CurrentSearchTime,Police.PlaceLastSeenPlayer);
+
+
+        
+
+
+        DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+
+        string DebugLine4 = string.Format("NumberPlateIndexSelected {0}", Debugging.NumberPlateIndexSelected);
+
+
+
+
+
+        DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        
+
+
         float Between = 0.01f;
         float Start = 0.15f;
         foreach (string Line in PedDamage.AllPedDamageList)

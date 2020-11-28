@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vehicles;
 
 public static class PersonOfInterest
 {
     private static uint GameTimeLastAppliedWantedStats;
-    public static bool PlayerIsPersonOfInterest { get; set; }
+    public static bool PlayerIsPersonOfInterest { get; private set; }
     public static bool IsRunning { get; set; } = true;
     public static List<CriminalHistory> CriminalHistory { get; set; }
     public static bool RecentlyAppliedWantedStats
@@ -55,9 +55,7 @@ public static class PersonOfInterest
             else
                 return General.MySettings.Police.LastWantedCenterSize;
         }
-    }
-
-    
+    }  
     public static void Initialize()
     {
         IsRunning = true;

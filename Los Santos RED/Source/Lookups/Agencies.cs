@@ -9,7 +9,7 @@ using System.Linq;
 
 public static partial class Agencies
 {
-    private static bool UseVanillaConfig = false;
+    private static bool UseVanillaConfig = true;
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Agencies.xml";
     public static List<Agency> AgenciesList { get; set; }
     private static int LikelyHoodOfAnySpawn { get; set; } = 5;

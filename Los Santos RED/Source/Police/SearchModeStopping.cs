@@ -16,7 +16,7 @@ public static class SearchModeStopping
     private static Model CopModel;
     private static Ped GhostCop;
     private static uint GameTimeLastGhostCopCreated;
-    public static bool StopSearchMode { get; set; }
+    private static bool StopSearchMode;
     public static bool IsRunning { get; set; }
     public static Ped SpotterCop
     {
@@ -70,7 +70,7 @@ public static class SearchModeStopping
             {
                 CreateGhostCop();
             }
-            if (PlayerState.IsWanted && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+            if (PlayerState.IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
             {
                 MoveGhostCopToPosition();
             }
@@ -90,7 +90,8 @@ public static class SearchModeStopping
     {
         if (GhostCop.Exists())
         {
-            if (PlayerState.AreStarsGreyedOut)
+            Entity ToCheck = PlayerState.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;   
+            if (!NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck))
             {
                 if(PlayerState.IsInVehicle)
                 {
@@ -98,7 +99,12 @@ public static class SearchModeStopping
                 }
                 else
                 {
-                    CurrentOffset = new List<Vector3>() { new Vector3(0f, 6f, 1f), new Vector3(6f, 0f, 1f), new Vector3(0f, -6f, 1f), new Vector3(0f, -3f, 1f), new Vector3(0f, 3f, 1f), new Vector3(3f, 0f, 1f), new Vector3(-3f, 0f, 1f) }.PickRandom();
+                    CurrentOffset = new List<Vector3>() { new Vector3(0f, 6f, 1f), new Vector3(6f, 0f, 1f), new Vector3(0f, -6f, 1f)
+                                                        , new Vector3(0f, -3f, 1f), new Vector3(0f, 3f, 1f), new Vector3(3f, 0f, 1f)
+                                                        , new Vector3(-3f, 0f, 1f) , new Vector3(-3f, 3f, 1f), new Vector3(-3f, -3f, 1f)
+
+
+                                                        }.PickRandom();
                 }
                 Debugging.WriteToLog("MoveGhostCopToPosition", string.Format("CurrentOffset {0}", CurrentOffset));
             }

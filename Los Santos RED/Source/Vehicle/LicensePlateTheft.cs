@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
-using Vehicles;
+using LSR.Vehicles;
 
 public static class LicensePlateTheft
 {
@@ -36,7 +36,7 @@ public static class LicensePlateTheft
             VehicleExt VehicleToChange = PlayerState.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
-                VehicleToChange = new VehicleExt(ClosestVehicle,0, false, false,null, true, new LicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle),false));
+                VehicleToChange = new VehicleExt(ClosestVehicle, 0, false, false, true, new LicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
                 PlayerState.TrackedVehicles.Add(VehicleToChange);
             }
             ChangeLicensePlateAnimation(VehicleToChange, false);
@@ -54,7 +54,7 @@ public static class LicensePlateTheft
             VehicleExt VehicleToChange = PlayerState.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
-                VehicleToChange = new VehicleExt(ClosestVehicle,0, false, false,null,true, new LicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
+                VehicleToChange = new VehicleExt(ClosestVehicle, 0, false, false, true, new LicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
                 PlayerState.TrackedVehicles.Add(VehicleToChange);
             }
 

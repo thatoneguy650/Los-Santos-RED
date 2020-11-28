@@ -30,7 +30,7 @@ public class Agency
         {
             if (PlayerState.WantedLevel >= MinWantedLevelSpawn && PlayerState.WantedLevel <= MaxWantedLevelSpawn)
             {
-                if (PedList.CopPeds.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                if (PedList.Cops.Count(x => x.AssignedAgency == this) < SpawnLimit)
                     return true;
                 else
                     return false;

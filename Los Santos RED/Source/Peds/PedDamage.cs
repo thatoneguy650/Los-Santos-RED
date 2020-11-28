@@ -261,7 +261,7 @@ public static class PedDamage
     }
     private static void AddPedsToTrack()
     {
-        foreach (Cop Cop in PedList.CopPeds)
+        foreach (Cop Cop in PedList.Cops)
         {
             if (Cop.Pedestrian.Exists() && !PedHealthStates.Any(x => x.MyPed.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
@@ -277,7 +277,7 @@ public static class PedDamage
         }
         if (!PedHealthStates.Any(x => x.MyPed.Pedestrian.Handle == Game.LocalPlayer.Character.Handle))
         {
-            PedHealthStates.Add(new PedHealthState(new PedExt(Game.LocalPlayer.Character,Game.LocalPlayer.Character.Health)));
+            PedHealthStates.Add(new PedHealthState(new PedExt(Game.LocalPlayer.Character)));
         }
     }
     private static void ResetDamageStats()

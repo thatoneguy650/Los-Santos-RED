@@ -17,6 +17,7 @@ public static class Debugging
 
     public static bool IsRunning { get; set; }
     public static bool IsTesting { get;  }
+    public static int NumberPlateIndexSelected { get; private set; }
 
     public static void Initialize()
     {
@@ -100,7 +101,7 @@ public static class Debugging
 
         if (General.MySettings.Police.DebugShowPoliceTask)
         {
-            foreach (Cop MyCop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+            foreach (Cop MyCop in PedList.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
             {
                 Color ToShow = Color.Black;
                 TaskStatus CurrentOne = MyCop.Pedestrian.Tasks.CurrentTaskStatus;
@@ -165,15 +166,28 @@ public static class Debugging
     }
     private static void DebugNumpad4()
     {
-        PoliceSpawning.SpawnGTACop(Agencies.GetAllSpawnableAgencies(Game.LocalPlayer.Character.GetOffsetPositionFront(5f)).PickRandom(), Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading, null, true);
-        BribePoliceAnimation(0);
+
+        if (NumberPlateIndexSelected <= 47)
+        {
+            NumberPlateIndexSelected++;
+        }
+        else
+        {
+            NumberPlateIndexSelected = 5;
+        }
+        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Game.LocalPlayer.Character.CurrentVehicle, NumberPlateIndexSelected);
+
+
+
+        //PoliceSpawning.SpawnGTACop(Agencies.GetAllSpawnableAgencies(Game.LocalPlayer.Character.GetOffsetPositionFront(5f)).PickRandom(), Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading, null, true);
+        //BribePoliceAnimation(0);
     }
     private static void BribePoliceAnimation(int Amount)//temp public
     {
         GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
-            Cop CopToBribe = PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            Cop CopToBribe = PedList.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
             Game.TimeScale = 1.0f;
 
@@ -325,7 +339,13 @@ public static class Debugging
     }
     private static void DebugNumpad5()
     {
-        Surrender.SetArrestedAnimation(Game.LocalPlayer.Character, false, General.RandomPercent(50));
+        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null)
+        {
+            int Group = NativeFunction.CallByName<int>("GET_WEAPONTYPE_GROUP", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            int Slot = NativeFunction.CallByName<int>("GET_WEAPONTYPE_SLOT", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            WriteToLog("Debugging", string.Format("Hash: {0} GET_WEAPONTYPE_GROUP: {1} GET_WEAPONTYPE_SLOT: {2}", Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Group, Slot));
+        }
+
     }
     private static void DebugNumpad6()
     {
@@ -418,7 +438,7 @@ public static class Debugging
             WriteToLog("Debugging", "--------------------------------");
             WriteToLog("Debugging", "--------Police Status-----------");
 
-            foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
+            foreach (Cop Cop in PedList.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
             {
 
                 WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}", 
@@ -438,7 +458,7 @@ public static class Debugging
             WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Investigation.InvestigationPosition));
             WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Investigation.InvestigationDistance));
             WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Police.ActiveDistance));
-            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", PedList.CopPeds.Any(x => x.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition) <= Investigation.InvestigationDistance)));
+            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", PedList.Cops.Any(x => x.Pedestrian.DistanceTo2D(Investigation.InvestigationPosition) <= Investigation.InvestigationDistance)));
             WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", WantedLevelScript.CurrentPoliceStateString));
             
 

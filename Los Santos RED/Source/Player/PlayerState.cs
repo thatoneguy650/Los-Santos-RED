@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using ExtensionsMethods;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
-using Vehicles;
 
 public static class PlayerState
 {
@@ -334,7 +334,7 @@ public static class PlayerState
         if (CurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeaponHash)
             LastWeaponHash = PlayerCurrentWeapon.Hash;
 
-        AreStarsGreyedOut = NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
+        AreStarsGreyedOut = SearchMode.IsInSearchMode;//NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
         IsJacking = Game.LocalPlayer.Character.IsJacking;
 
         if (Game.IsControlPressed(2, GameControl.Enter))
@@ -407,8 +407,6 @@ public static class PlayerState
                     GameTimePoliceNoticedVehicleChange = Game.GameTime;
                     Debugging.WriteToLog("PlayerState",
                         string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));
-                    //GameTimeLastReportedSpotted = Game.GameTime;
-                    //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.SuspectChangedVehicle, 21) { IsAmbient = true, VehicleToReport = CurrentVehicle });
                 }
 
                 PoliceLastSeenVehicleHandle = CurrentVehicle.VehicleEnt.Handle;
@@ -522,7 +520,7 @@ public static class PlayerState
         var MyPlate = new LicensePlate(CurrVehicle.LicensePlate, CurrVehicle.Handle,
             NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CurrVehicle), false);
         var MyNewCar = new VehicleExt(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding,
-            PreviousOwner, IsStolen, MyPlate);
+            IsStolen, MyPlate);
         if (IsStolen && PreviousOwner.Exists())
         {
             var MyPrevOwner = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);

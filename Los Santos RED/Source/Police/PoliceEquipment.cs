@@ -22,9 +22,9 @@ public static class PoliceEquipment
     {
         if (IsRunning)
         {
-            PedList.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
+            PedList.Cops.RemoveAll(x => !x.Pedestrian.Exists());
             EquipedCops.RemoveAll(x => !x.CopToArm.Pedestrian.Exists());
-            foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists()))
+            foreach (Cop Cop in PedList.Cops.Where(x => x.Pedestrian.Exists()))
             {
                 if (!EquipedCops.Any(x => x.CopToArm.Pedestrian.Handle == Cop.Pedestrian.Handle))
                 {

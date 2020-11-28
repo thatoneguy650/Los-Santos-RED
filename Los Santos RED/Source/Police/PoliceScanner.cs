@@ -1,11 +1,11 @@
 ﻿using ExtensionsMethods;
+using LSR.Vehicles;
 using NAudio.Wave;
 using Rage;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Vehicles;
 using static DispatchScannerFiles;
 
 public static class PoliceScanner
@@ -153,7 +153,7 @@ public static class PoliceScanner
             }
         }
     }
-    public static void AnnounceCrime(Crime crimeAssociated, DispatchCallIn reportInformation)
+    public static void AnnounceCrime(Crime crimeAssociated, PoliceScannerCallIn reportInformation)
     {
         Dispatch ToAnnounce = DetermineDispatchFromCrime(crimeAssociated);
         if(ToAnnounce != null)
@@ -181,7 +181,7 @@ public static class PoliceScanner
             {
                 if (!RequestBackup.HasRecentlyBeenPlayed && WantedLevelScript.RecentlyRequestedBackup)
                 {
-                    AddToQueue(RequestBackup, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                 }
                 if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && PedList.AnyArmyUnitsSpawned)
                 {
@@ -209,26 +209,26 @@ public static class PoliceScanner
                 }
                 if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerState.PoliceRecentlyNoticedVehicleChange && PlayerState.CurrentVehicle != null && !PlayerState.CurrentVehicle.HasBeenDescribedByDispatch)
                 {
-                    AddToQueue(ChangedVehicles, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = PlayerState.CurrentVehicle });
+                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = PlayerState.CurrentVehicle });
                 }
                 if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && PersonOfInterest.RecentlyAppliedWantedStats)
                 {
-                    AddToQueue(WantedSuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = PlayerState.CurrentVehicle });
+                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = PlayerState.CurrentVehicle });
                 }
 
                 if (!PlayerState.IsBusted && !PlayerState.IsDead)
                 {
                     if (!LostVisual.HasRecentlyBeenPlayed && PlayerState.StarsRecentlyGreyedOut && WantedLevelScript.HasBeenWantedFor > 45000 && !PedList.AnyCopsNearPlayer)
                     {
-                        AddToQueue(LostVisual, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                        AddToQueue(LostVisual, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                     }
                     else if (!SuspectSpotted.HasRecentlyBeenPlayed && PlayerState.StarsRecentlyActive && WantedLevelScript.HasBeenWantedFor > 25000 && Police.AnyRecentlySeenPlayer)
                     {
-                        AddToQueue(SuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
                     else if (!RecentlyAnnouncedDispatch && Police.AnyCanSeePlayer && WantedLevelScript.HasBeenWantedFor > 25000)
                     {
-                        AddToQueue(SuspectSpotted, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
                 }
 
@@ -241,7 +241,7 @@ public static class PoliceScanner
                 }
                 if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelScript.RecentlyLostWanted && !Respawn.RecentlyRespawned && !Respawn.RecentlyBribedPolice && !Respawn.RecentlySurrenderedToPolice)
                 {
-                    AddToQueue(SuspectLost, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                 }
                 if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Investigation.LastInvestigationRecentlyExpired && Investigation.DistanceToInvestigationPosition <= 1000f)
                 {
@@ -249,7 +249,7 @@ public static class PoliceScanner
                 }
                 foreach (VehicleExt StolenCar in PlayerState.ReportedStolenVehicles)
                 {
-                    AddToQueue(AnnounceStolenVehicle, new DispatchCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
+                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
                 }
             }
 
@@ -260,7 +260,7 @@ public static class PoliceScanner
 
         }
     }
-    private static void AddToQueue(Dispatch ToAdd,DispatchCallIn ToCallIn)
+    private static void AddToQueue(Dispatch ToAdd,PoliceScannerCallIn ToCallIn)
     {
         Dispatch Existing = DispatchQueue.FirstOrDefault(x => x.Name == ToAdd.Name);
         if (Existing != null)
@@ -302,15 +302,23 @@ public static class PoliceScanner
         foreach (Dispatch ToReset in DispatchList)
         {
             ToReset.HasBeenPlayedThisWanted = false;
-            ToReset.LatestInformation = new DispatchCallIn();
+            ToReset.LatestInformation = new PoliceScannerCallIn();
             ToReset.TimesPlayed = 0;
         }
     }   
     private static void BuildDispatch(Dispatch DispatchToPlay)
     {
-        DispatchEvent EventToPlay = new DispatchEvent();
-        EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
 
+
+        DispatchEvent EventToPlay = new DispatchEvent();
+        if (DispatchToPlay.HasPreamble)
+        {
+            EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
+            AddAudioSet(EventToPlay, DispatchToPlay.PreambleAudioSet.PickRandom());
+            EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+        }
+
+        EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
         EventToPlay.NotificationTitle = DispatchToPlay.NotificationTitle;
 
         if(DispatchToPlay.IsStatus)
@@ -333,16 +341,19 @@ public static class PoliceScanner
                 AddAudioSet(EventToPlay, CiviliansReport.PickRandom());
         }
 
-        AddAudioSet(EventToPlay, DispatchToPlay.MainAudioSet.PickRandom());
+        if(DispatchToPlay.LatestInformation.InstancesObserved > 1 && DispatchToPlay.MainMultiAudioSet.Any())
+        {
+            AddAudioSet(EventToPlay, DispatchToPlay.MainMultiAudioSet.PickRandom());
+        }
+        else
+        {
+            AddAudioSet(EventToPlay, DispatchToPlay.MainAudioSet.PickRandom());
+        }
+        
         AddAudioSet(EventToPlay, DispatchToPlay.SecondaryAudioSet.PickRandom());
 
-        bool AddLicense = false;
-
-        if (!DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.IncludeLicensePlate)
-            AddLicense = true;
-
         if (DispatchToPlay.IncludeDrivingVehicle)
-            AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen, AddLicense);
+            AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen, !DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.IncludeLicensePlate);
 
         if (DispatchToPlay.IncludeRapSheet)
             AddRapSheet(EventToPlay);
@@ -399,7 +410,7 @@ public static class PoliceScanner
 
         PlayDispatch(EventToPlay,DispatchToPlay.LatestInformation);
     }
-    private static void PlayDispatch(DispatchEvent MyAudioEvent,DispatchCallIn MyDispatch)
+    private static void PlayDispatch(DispatchEvent MyAudioEvent,PoliceScannerCallIn MyDispatch)
     {
         /////////Maybe?
         bool AbortedAudio = false;
@@ -1025,7 +1036,12 @@ public static class PoliceScanner
                 new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.Code99allunitsrespond.FileName },"code-99 all units respond"),
                 new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.EmergencyallunitsrespondCode99.FileName },"emergency all units respond code-99"),
                 new Dispatch.AudioSet(new List<string>() { escort_boss.Immediateassistancerequired.FileName },"immediate assistance required"),
-            }
+            },
+            MainMultiAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() { we_have.We_Have_1.FileName, crime_officers_down.Multipleofficersdown.FileName },"we have multiple officers down"),
+                new Dispatch.AudioSet(new List<string>() { we_have.We_Have_2.FileName, crime_officers_down.Severalofficersdown.FileName },"we have several officers down"),
+            },
         };
         ShotsFiredAtAnOfficer = new Dispatch()
         {
@@ -1556,6 +1572,16 @@ public static class PoliceScanner
             {
                 new Dispatch.AudioSet(new List<string>() { dispatch_respond_code.UnitsrespondCode3.FileName },"units respond code-3"),
              },
+            PreambleAudioSet = new List<Dispatch.AudioSet>()
+            {
+                new Dispatch.AudioSet(new List<string>() { s_m_y_cop_white_full_01.RequestingBackup.FileName },"requesting backup"),
+                new Dispatch.AudioSet(new List<string>() { s_m_y_cop_white_full_01.RequestingBackupWeNeedBackup.FileName },"requesting back, we need backup"),
+                new Dispatch.AudioSet(new List<string>() { s_m_y_cop_white_full_01.WeNeedBackupNow.FileName },"we need backup now"),
+                new Dispatch.AudioSet(new List<string>() { s_m_y_cop_white_full_02.MikeOscarSamInHotNeedOfBackup.FileName },"MOS in hot need of backup"),
+                new Dispatch.AudioSet(new List<string>() { s_m_y_cop_white_full_02.MikeOScarSamRequestingBackup.FileName },"MOS requesting backup"),
+                new Dispatch.AudioSet(new List<string>() { s_m_y_cop_white_mini_02.INeedSomeSeriousBackupHere.FileName },"i need some serious backup here"),
+                new Dispatch.AudioSet(new List<string>() { s_m_y_cop_white_mini_03.OfficerInNeedofSomeBackupHere.FileName },"officer in need of some backup here"),
+             },
         };
         WeaponsFree = new Dispatch()
         {
@@ -1620,6 +1646,8 @@ public static class PoliceScanner
         }
         public List<AudioSet> MainAudioSet { get; set; } = new List<AudioSet>();
         public List<AudioSet> SecondaryAudioSet { get; set; } = new List<AudioSet>();
+        public List<AudioSet> MainMultiAudioSet { get; set; } = new List<AudioSet>();
+        public List<AudioSet> PreambleAudioSet { get; set; } = new List<AudioSet>();   
         public bool MarkVehicleAsStolen { get; set; } = false;
         public bool IncludeDrivingVehicle { get; set; } = false;
         public bool VehicleIncludesIn { get; set; } = false;
@@ -1640,7 +1668,7 @@ public static class PoliceScanner
         public bool CanAlwaysBeInterrupted { get; set; } = false;
         public bool CanAlwaysInterrupt { get; set; } = false;
 
-        public DispatchCallIn LatestInformation { get; set; } = new DispatchCallIn();
+        public PoliceScannerCallIn LatestInformation { get; set; } = new PoliceScannerCallIn();
         public bool HasBeenPlayedThisWanted { get; set; } = false;
         public bool HasRecentlyBeenPlayed
         {
@@ -1651,6 +1679,16 @@ public static class PoliceScanner
                     TimeBetween = 60000;
 
                 if (Game.GameTime - GameTimeLastPlayed <= TimeBetween)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool HasPreamble
+        {
+            get
+            {
+                if (PreambleAudioSet.Any())
                     return true;
                 else
                     return false;
@@ -1948,8 +1986,8 @@ public static class PoliceScanner
             new VehicleModelLookup("faggio", 0x9229E4EB, model.FAGGIO01.FileName),
             new VehicleModelLookup("faggio2", 0x350D1AB, model.FAGGIO01.FileName),
             new VehicleModelLookup("faggio3", 0xB328B188, model.FAGGIO01.FileName),
-            new VehicleModelLookup("fbi", 0x432EA949, model.POLICECAR01.FileName),
-            new VehicleModelLookup("fbi2", 0x9DC66994, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("fbi", 0x432EA949, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("fbi2", 0x9DC66994, model.POLICECAR01.FileName),
             new VehicleModelLookup("fcr", 0x25676EAF, model.DOMINATOR01.FileName),
             new VehicleModelLookup("felon", 0xE8A8BDA8, model.FELON01.FileName),
             new VehicleModelLookup("felon2", 0xFAAD85EE, model.FELON01.FileName),
@@ -2015,13 +2053,13 @@ public static class PoliceScanner
             new VehicleModelLookup("phantom3", 0xA90ED5C, model.PHANTOM01.FileName),
             new VehicleModelLookup("phoenix", 0x831A21D5, model.PHOENIX01.FileName),
             new VehicleModelLookup("picador", 0x59E0FBF3, model.PICADOR01.FileName),
-            new VehicleModelLookup("police", 0x79FBB0C5, model.POLICECAR01.FileName),
-            new VehicleModelLookup("police2", 0x9F05F101, model.POLICECAR01.FileName),
-            new VehicleModelLookup("police3", 0x71FA16EA, model.POLICECAR01.FileName),
-            new VehicleModelLookup("police4", 0x8A63C7B9, model.POLICECAR01.FileName),
-            new VehicleModelLookup("policeb", 0xFDEFAEC3, model.POLICECAR01.FileName),
-            new VehicleModelLookup("policeold1", 0xA46462F7, model.POLICECAR01.FileName),
-            new VehicleModelLookup("policeold2", 0x95F4C618, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("police", 0x79FBB0C5, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("police2", 0x9F05F101, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("police3", 0x71FA16EA, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("police4", 0x8A63C7B9, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("policeb", 0xFDEFAEC3, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("policeold1", 0xA46462F7, model.POLICECAR01.FileName),
+            //new VehicleModelLookup("policeold2", 0x95F4C618, model.POLICECAR01.FileName),
             new VehicleModelLookup("policet", 0x1B38E955, model.POLICETRANSPORT01.FileName),
             new VehicleModelLookup("polmav", 0x1517D4D9, model.POLICEMAVERICK01.FileName),
             new VehicleModelLookup("pony", 0xF8DE29A8, model.PONY01.FileName),
@@ -2082,68 +2120,68 @@ public static class PoliceScanner
         };
             VehicleMakeLookups = new List<VehicleMakeLookup>()
         {
-            new VehicleMakeLookup("Albany",Manufacturer.Albany,manufacturer.ALBANY01.FileName),
-            new VehicleMakeLookup("Annis",Manufacturer.Annis,manufacturer.ANNIS01.FileName),
-            new VehicleMakeLookup("Benefactor",Manufacturer.Benefactor,manufacturer.BENEFACTOR01.FileName),
-            new VehicleMakeLookup("Bollokan",Manufacturer.Bollokan,manufacturer.BOLLOKAN01.FileName),
-            new VehicleMakeLookup("Bravado",Manufacturer.Bravado,manufacturer.BRAVADO01.FileName),
-            new VehicleMakeLookup("Brute",Manufacturer.Brute,manufacturer.BRUTE01.FileName),
-            new VehicleMakeLookup("Buckingham",Manufacturer.Buckingham,""),
-            new VehicleMakeLookup("Burgerfahrzeug",Manufacturer.Burgerfahrzeug,manufacturer.BF01.FileName),
-            new VehicleMakeLookup("Canis",Manufacturer.Canis,manufacturer.CANIS01.FileName),
-            new VehicleMakeLookup("Chariot",Manufacturer.Chariot,manufacturer.CHARIOT01.FileName),
-            new VehicleMakeLookup("Cheval",Manufacturer.Cheval,manufacturer.CHEVAL01.FileName),
-            new VehicleMakeLookup("Classique",Manufacturer.Classique,manufacturer.CLASSIQUE01.FileName),
-            new VehicleMakeLookup("Coil",Manufacturer.Coil,manufacturer.COIL01.FileName),
-            new VehicleMakeLookup("Declasse",Manufacturer.Declasse,manufacturer.DECLASSE01.FileName),
-            new VehicleMakeLookup("Dewbauchee",Manufacturer.Dewbauchee,manufacturer.DEWBAUCHEE01.FileName),
-            new VehicleMakeLookup("Dinka",Manufacturer.Dinka,manufacturer.DINKA01.FileName),
-            new VehicleMakeLookup("DUDE",Manufacturer.DUDE,""),
-            new VehicleMakeLookup("Dundreary",Manufacturer.Dundreary,manufacturer.DUNDREARY01.FileName),
-            new VehicleMakeLookup("Emperor",Manufacturer.Emperor,manufacturer.EMPEROR01.FileName),
-            new VehicleMakeLookup("Enus",Manufacturer.Enus,manufacturer.ENUS01.FileName),
-            new VehicleMakeLookup("Fathom",Manufacturer.Fathom,manufacturer.FATHOM01.FileName),
-            new VehicleMakeLookup("Gallivanter",Manufacturer.Gallivanter,manufacturer.GALLIVANTER01.FileName),
-            new VehicleMakeLookup("Grotti",Manufacturer.Grotti,manufacturer.GROTTI01.FileName),
-            new VehicleMakeLookup("Hijak",Manufacturer.Hijak,manufacturer.HIJAK01.FileName),
-            new VehicleMakeLookup("HVY",Manufacturer.HVY,manufacturer.HVY01.FileName),
-            new VehicleMakeLookup("Imponte",Manufacturer.Imponte,manufacturer.IMPONTE01.FileName),
-            new VehicleMakeLookup("Invetero",Manufacturer.Invetero,manufacturer.INVETERO01.FileName),
-            new VehicleMakeLookup("JackSheepe",Manufacturer.JackSheepe,manufacturer.JACKSHEEPE01.FileName),
-            new VehicleMakeLookup("Jobuilt",Manufacturer.Jobuilt,manufacturer.JOEBUILT01.FileName),
-            new VehicleMakeLookup("Karin",Manufacturer.Karin,manufacturer.KARIN01.FileName),
-            new VehicleMakeLookup("Kraken Submersibles",Manufacturer.KrakenSubmersibles,""),
-            new VehicleMakeLookup("Lampadati",Manufacturer.Lampadati,manufacturer.LAMPADATI01.FileName),
-            new VehicleMakeLookup("Liberty Chop Shop",Manufacturer.LibertyChopShop,""),
-            new VehicleMakeLookup("Liberty City Cycles",Manufacturer.LibertyCityCycles,""),
-            new VehicleMakeLookup("Maibatsu Corporation",Manufacturer.MaibatsuCorporation,manufacturer.MAIBATSU01.FileName),
-            new VehicleMakeLookup("Mammoth",Manufacturer.Mammoth,manufacturer.MAMMOTH01.FileName),
-            new VehicleMakeLookup("MTL",Manufacturer.MTL,manufacturer.MTL01.FileName),
-            new VehicleMakeLookup("Nagasaki",Manufacturer.Nagasaki,manufacturer.NAGASAKI01.FileName),
-            new VehicleMakeLookup("Obey",Manufacturer.Obey,manufacturer.OBEY01.FileName),
-            new VehicleMakeLookup("Ocelot",Manufacturer.Ocelot,manufacturer.OCELOT01.FileName),
-            new VehicleMakeLookup("Overflod",Manufacturer.Overflod,manufacturer.OVERFLOD01.FileName),
-            new VehicleMakeLookup("Pegassi",Manufacturer.Pegassi,manufacturer.PEGASI01.FileName),
-            new VehicleMakeLookup("Pfister",Manufacturer.Pfister,""),
-            new VehicleMakeLookup("Principe",Manufacturer.Principe,manufacturer.PRINCIPE01.FileName),
-            new VehicleMakeLookup("Progen",Manufacturer.Progen,manufacturer.PROGEN01.FileName),
-            new VehicleMakeLookup("ProLaps",Manufacturer.ProLaps,""),
-            new VehicleMakeLookup("RUNE",Manufacturer.RUNE,""),
-            new VehicleMakeLookup("Schyster",Manufacturer.Schyster,manufacturer.SCHYSTER01.FileName),
-            new VehicleMakeLookup("Shitzu",Manufacturer.Shitzu,manufacturer.SHITZU01.FileName),
-            new VehicleMakeLookup("Speedophile",Manufacturer.Speedophile,manufacturer.SPEEDOPHILE01.FileName),
-            new VehicleMakeLookup("Stanley",Manufacturer.Stanley,manufacturer.STANLEY01.FileName),
-            new VehicleMakeLookup("SteelHorse",Manufacturer.SteelHorse,manufacturer.STEELHORSE01.FileName),
-            new VehicleMakeLookup("Truffade",Manufacturer.Truffade,manufacturer.TRUFFADE01.FileName),
-            new VehicleMakeLookup("Ubermacht",Manufacturer.Ubermacht,manufacturer.UBERMACHT01.FileName),
-            new VehicleMakeLookup("Vapid",Manufacturer.Vapid,manufacturer.VAPID01.FileName),
-            new VehicleMakeLookup("Vulcar",Manufacturer.Vulcar,manufacturer.VULCAR01.FileName),
-            new VehicleMakeLookup("Vysser",Manufacturer.Vysser,""),
-            new VehicleMakeLookup("Weeny",Manufacturer.Weeny,manufacturer.WEENY01.FileName),
-            new VehicleMakeLookup("Western Company",Manufacturer.WesternCompany,manufacturer.WESTERNCOMPANY01.FileName),
-            new VehicleMakeLookup("Western Motorcycle Company",Manufacturer.WesternMotorcycleCompany,manufacturer.WESTERNMOTORCYCLECOMPANY01.FileName),
-            new VehicleMakeLookup("Willard",Manufacturer.Willard,""),
-            new VehicleMakeLookup("Zirconium",Manufacturer.Zirconium,manufacturer.ZIRCONIUM01.FileName),
+            new VehicleMakeLookup("Albany",manufacturer.ALBANY01.FileName),
+            new VehicleMakeLookup("Annis",manufacturer.ANNIS01.FileName),
+            new VehicleMakeLookup("Benefactor",manufacturer.BENEFACTOR01.FileName),
+            new VehicleMakeLookup("Bollokan",manufacturer.BOLLOKAN01.FileName),
+            new VehicleMakeLookup("Bravado",manufacturer.BRAVADO01.FileName),
+            new VehicleMakeLookup("Brute",manufacturer.BRUTE01.FileName),
+            new VehicleMakeLookup("Buckingham",""),
+            new VehicleMakeLookup("Burgerfahrzeug",manufacturer.BF01.FileName),
+            new VehicleMakeLookup("Canis",manufacturer.CANIS01.FileName),
+            new VehicleMakeLookup("Chariot",manufacturer.CHARIOT01.FileName),
+            new VehicleMakeLookup("Cheval",manufacturer.CHEVAL01.FileName),
+            new VehicleMakeLookup("Classique",manufacturer.CLASSIQUE01.FileName),
+            new VehicleMakeLookup("Coil",manufacturer.COIL01.FileName),
+            new VehicleMakeLookup("Declasse",manufacturer.DECLASSE01.FileName),
+            new VehicleMakeLookup("Dewbauchee",manufacturer.DEWBAUCHEE01.FileName),
+            new VehicleMakeLookup("Dinka",manufacturer.DINKA01.FileName),
+            new VehicleMakeLookup("DUDE",""),
+            new VehicleMakeLookup("Dundreary",manufacturer.DUNDREARY01.FileName),
+            new VehicleMakeLookup("Emperor",manufacturer.EMPEROR01.FileName),
+            new VehicleMakeLookup("Enus",manufacturer.ENUS01.FileName),
+            new VehicleMakeLookup("Fathom",manufacturer.FATHOM01.FileName),
+            new VehicleMakeLookup("Gallivanter",manufacturer.GALLIVANTER01.FileName),
+            new VehicleMakeLookup("Grotti",manufacturer.GROTTI01.FileName),
+            new VehicleMakeLookup("Hijak",manufacturer.HIJAK01.FileName),
+            new VehicleMakeLookup("HVY",manufacturer.HVY01.FileName),
+            new VehicleMakeLookup("Imponte",manufacturer.IMPONTE01.FileName),
+            new VehicleMakeLookup("Invetero",manufacturer.INVETERO01.FileName),
+            new VehicleMakeLookup("JackSheepe",manufacturer.JACKSHEEPE01.FileName),
+            new VehicleMakeLookup("Jobuilt",manufacturer.JOEBUILT01.FileName),
+            new VehicleMakeLookup("Karin",manufacturer.KARIN01.FileName),
+            new VehicleMakeLookup("Kraken Submersibles",""),
+            new VehicleMakeLookup("Lampadati",manufacturer.LAMPADATI01.FileName),
+            new VehicleMakeLookup("Liberty Chop Shop",""),
+            new VehicleMakeLookup("Liberty City Cycles",""),
+            new VehicleMakeLookup("Maibatsu Corporation",manufacturer.MAIBATSU01.FileName),
+            new VehicleMakeLookup("Mammoth",manufacturer.MAMMOTH01.FileName),
+            new VehicleMakeLookup("MTL",manufacturer.MTL01.FileName),
+            new VehicleMakeLookup("Nagasaki",manufacturer.NAGASAKI01.FileName),
+            new VehicleMakeLookup("Obey",manufacturer.OBEY01.FileName),
+            new VehicleMakeLookup("Ocelot",manufacturer.OCELOT01.FileName),
+            new VehicleMakeLookup("Overflod",manufacturer.OVERFLOD01.FileName),
+            new VehicleMakeLookup("Pegassi",manufacturer.PEGASI01.FileName),
+            new VehicleMakeLookup("Pfister",""),
+            new VehicleMakeLookup("Principe",manufacturer.PRINCIPE01.FileName),
+            new VehicleMakeLookup("Progen",manufacturer.PROGEN01.FileName),
+            new VehicleMakeLookup("ProLaps",""),
+            new VehicleMakeLookup("RUNE",""),
+            new VehicleMakeLookup("Schyster",manufacturer.SCHYSTER01.FileName),
+            new VehicleMakeLookup("Shitzu",manufacturer.SHITZU01.FileName),
+            new VehicleMakeLookup("Speedophile",manufacturer.SPEEDOPHILE01.FileName),
+            new VehicleMakeLookup("Stanley",manufacturer.STANLEY01.FileName),
+            new VehicleMakeLookup("SteelHorse",manufacturer.STEELHORSE01.FileName),
+            new VehicleMakeLookup("Truffade",manufacturer.TRUFFADE01.FileName),
+            new VehicleMakeLookup("Ubermacht",manufacturer.UBERMACHT01.FileName),
+            new VehicleMakeLookup("Vapid",manufacturer.VAPID01.FileName),
+            new VehicleMakeLookup("Vulcar",manufacturer.VULCAR01.FileName),
+            new VehicleMakeLookup("Vysser",""),
+            new VehicleMakeLookup("Weeny",manufacturer.WEENY01.FileName),
+            new VehicleMakeLookup("Western Company",manufacturer.WESTERNCOMPANY01.FileName),
+            new VehicleMakeLookup("Western Motorcycle Company",manufacturer.WESTERNMOTORCYCLECOMPANY01.FileName),
+            new VehicleMakeLookup("Willard",""),
+            new VehicleMakeLookup("Zirconium",manufacturer.ZIRCONIUM01.FileName),
         };
         }
         public static string ColorAudio(Color ToLookup)
@@ -2239,16 +2277,14 @@ public static class PoliceScanner
         private class VehicleMakeLookup
         {
             public string MakeName { get; set; }
-            public Manufacturer MakeEnum { get; set; }
             public string ScannerFile { get; set; } = "";
             public VehicleMakeLookup()
             {
 
             }
-            public VehicleMakeLookup(string makeName, Manufacturer makeEnum, string scannerFile)
+            public VehicleMakeLookup(string makeName, string scannerFile)
             {
                 MakeName = makeName;
-                MakeEnum = makeEnum;
                 ScannerFile = scannerFile;
             }
         }
@@ -2682,25 +2718,5 @@ public static class PoliceScanner
         }
     }
 
-}
-public class DispatchCallIn
-{
-    public DispatchCallIn()
-    {
-
-    }
-
-    public DispatchCallIn(bool seenOnFoot, bool seenByOfficers, Vector3 placeSeen)
-    {
-        SeenOnFoot = seenOnFoot;
-        SeenByOfficers = seenByOfficers;
-        PlaceSeen = placeSeen;
-    }
-    public float Speed { get; set; }
-    public WeaponInformation WeaponSeen { get; set; }
-    public VehicleExt VehicleSeen { get; set; }
-    public bool SeenOnFoot { get; set; } = true;
-    public bool SeenByOfficers { get; set; } = false;
-    public Vector3 PlaceSeen { get; set; }
 }
 

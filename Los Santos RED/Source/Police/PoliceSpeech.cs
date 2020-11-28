@@ -21,10 +21,6 @@ internal static class PoliceSpeech
     private static List<string> RegularChaseSpeech;
     private static List<SpeakingCop> SpeakingCops;
     public static bool IsRunning { get; set; }
-    static PoliceSpeech()
-    {
-        rnd = new Random();
-    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -62,9 +58,9 @@ internal static class PoliceSpeech
     }
     private static void AddSpeakingCops()
     {
-        PedList.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
+        PedList.Cops.RemoveAll(x => !x.Pedestrian.Exists());
         SpeakingCops.RemoveAll(x => !x.AssignedCop.Pedestrian.Exists());
-        foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop Cop in PedList.Cops.Where(x => x.Pedestrian.Exists()))
         {
             if (!SpeakingCops.Any(x => x.AssignedCop.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {

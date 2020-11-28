@@ -23,16 +23,16 @@ public static class Police
     public static int PreviousWantedLevel { get; set; }  
     public static bool WasPlayerLastSeenInVehicle { get; set; }
     public static float PlayerLastSeenHeading { get; set; }
-    public static bool InSearchMode
-    {
-        get
-        {
-            if (PlayerState.AreStarsGreyedOut && PedList.CopPeds.All(x => !x.RecentlySeenPlayer))
-                return true;
-            else
-                return false;
-        }
-    }
+    //public static bool InSearchMode
+    //{
+    //    get
+    //    {
+    //        if (PlayerState.AreStarsGreyedOut && PedList.Cops.All(x => !x.RecentlySeenPlayer))
+    //            return true;
+    //        else
+    //            return false;
+    //    }
+    //}
     public static float ActiveDistance
     {
         get
@@ -81,9 +81,9 @@ public static class Police
     }
     private static void UpdateCops()
     {
-        PedList.CopPeds.RemoveAll(x => !x.Pedestrian.Exists());
+        PedList.Cops.RemoveAll(x => !x.Pedestrian.Exists());
         PedList.K9Peds.RemoveAll(x => !x.Pedestrian.Exists());
-        foreach (Cop Cop in PedList.CopPeds)
+        foreach (Cop Cop in PedList.Cops)
         {
             Cop.Update();
             if (Cop.ShouldBustPlayer)
@@ -91,32 +91,35 @@ public static class Police
                 PlayerState.StartManualArrest();
             }
         }
-        foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.IsDead))
+        foreach (Cop Cop in PedList.Cops.Where(x => x.Pedestrian.IsDead))
         {
             PoliceSpawning.MarkNonPersistent(Cop);
         }
-        PedList.CopPeds.RemoveAll(x => x.Pedestrian.IsDead);
+        PedList.Cops.RemoveAll(x => x.Pedestrian.IsDead);
         PedList.PoliceVehicles.RemoveAll(x => !x.Exists());
     }
     private static void UpdateRecognition()
     {
-        AnyCanSeePlayer = PedList.CopPeds.Any(x => x.CanSeePlayer);
-        AnyCanHearPlayerShooting = PedList.CopPeds.Any(x => x.WithinWeaponsAudioRange);
+        AnyCanSeePlayer = PedList.Cops.Any(x => x.CanSeePlayer);
+        AnyCanHearPlayerShooting = PedList.Cops.Any(x => x.WithinWeaponsAudioRange);
 
         if (AnyCanSeePlayer)
             AnyRecentlySeenPlayer = true;
         else
-            AnyRecentlySeenPlayer = PedList.CopPeds.Any(x => x.SeenPlayerSince(General.MySettings.Police.PoliceRecentlySeenTime));
+            AnyRecentlySeenPlayer = PedList.Cops.Any(x => x.SeenPlayerSince(General.MySettings.Police.PoliceRecentlySeenTime));
 
-        AnyCanRecognizePlayer = PedList.CopPeds.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
+        AnyCanRecognizePlayer = PedList.Cops.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
 
         if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer)
             AnySeenPlayerCurrentWanted = true;
 
-        if (!AnySeenPlayerCurrentWanted)
-            PlaceLastSeenPlayer = WantedLevelScript.PlaceWantedStarted;
-        else if (!PlayerState.AreStarsGreyedOut)
-            PlaceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+        if (AnyRecentlySeenPlayer)
+        {
+            if (!AnySeenPlayerCurrentWanted)
+                PlaceLastSeenPlayer = WantedLevelScript.PlaceWantedStarted;
+            else if (!PlayerState.AreStarsGreyedOut)
+                PlaceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+        }
 
         NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlaceLastSeenPlayer.X, PlaceLastSeenPlayer.Y, PlaceLastSeenPlayer.Z);
     }

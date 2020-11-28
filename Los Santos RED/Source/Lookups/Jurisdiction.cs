@@ -27,8 +27,8 @@ public static class Jurisdiction
         }
         else
         {
-            CustomConfig();
-            //DefaultConfig();
+            //CustomConfig();
+            DefaultConfig();
             General.SerializeParams(ZoneJurisdictions, ConfigFileName);
         }
     }

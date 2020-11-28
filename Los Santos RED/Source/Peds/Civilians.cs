@@ -34,7 +34,8 @@ public static class Civilians
         {
             MyPed.Update();
         }
-        PedList.Civilians.RemoveAll(x => !x.Pedestrian.Exists()  || x.Pedestrian.IsDead);   
+        PedList.Civilians.RemoveAll(x => !x.Pedestrian.Exists()  || x.Pedestrian.IsDead);
+        PedList.CivilianVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
     }
     private static void UpdateRecognition()
     {

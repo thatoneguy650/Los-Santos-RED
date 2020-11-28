@@ -9,14 +9,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vehicles
+namespace LSR.Vehicles
 {
     public class VehicleExt
     {
         private uint GameTimeEntered = 0;
 
         public Vehicle VehicleEnt { get; set; } = null;
-        public Ped PreviousOwner { get; set; } = null;
+        //public Ped PreviousOwner { get; set; } = null;
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
@@ -90,13 +90,12 @@ namespace Vehicles
                 }
             }
         }
-        public VehicleExt(Vehicle _Vehicle, uint _GameTimeEntered, bool _WasJacked, bool _WasAlarmed, Ped _PrevIousOwner, bool _IsStolen, LicensePlate _CarPlate)
+        public VehicleExt(Vehicle _Vehicle, uint _GameTimeEntered, bool _WasJacked, bool _WasAlarmed, bool _IsStolen, LicensePlate _CarPlate)
         {
             VehicleEnt = _Vehicle;
             GameTimeEntered = _GameTimeEntered;
             WasJacked = _WasJacked;
             WasAlarmed = _WasAlarmed;
-            PreviousOwner = _PrevIousOwner;
             IsStolen = _IsStolen;
 
             DescriptionColor = _Vehicle.PrimaryColor;
@@ -108,6 +107,15 @@ namespace Vehicles
             else
                 PositionOriginallyEntered = Game.LocalPlayer.Character.Position;
 
+            _Vehicle.FuelLevel = General.MyRand.Next(25, 100);
+        }
+        public VehicleExt(Vehicle _Vehicle)
+        {
+            VehicleEnt = _Vehicle;
+            DescriptionColor = _Vehicle.PrimaryColor;   
+            LicensePlate _CarPlate = new LicensePlate(_Vehicle.LicensePlate, (uint)_Vehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", _Vehicle), false);
+            CarPlate = _CarPlate;
+            OriginalLicensePlate = _CarPlate;
             _Vehicle.FuelLevel = General.MyRand.Next(25, 100);
         }
         public void SetAsEntered()

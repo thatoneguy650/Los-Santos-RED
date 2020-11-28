@@ -38,6 +38,7 @@ public class WeaponInformation
             if(Category == WeaponCategory.Pistol || Category == WeaponCategory.Melee || Category == WeaponCategory.SMG || Category == WeaponCategory.Shotgun)
             {
                 return true;
+                
             }
             else
             {

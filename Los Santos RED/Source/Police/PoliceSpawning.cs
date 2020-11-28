@@ -1,10 +1,10 @@
 ﻿using ExtensionsMethods;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vehicles;
 
 public static class PoliceSpawning
 {
@@ -159,7 +159,7 @@ public static class PoliceSpawning
                     myBlip.Scale = 0.6f;
                     General.CreatedBlips.Add(myBlip);
                 }
-                PedList.CopPeds.Add(MyNewCop);
+                PedList.Cops.Add(MyNewCop);
 
                 if (CurrentVehicleInfo != null)
                 {
@@ -192,7 +192,7 @@ public static class PoliceSpawning
                                     myBlip.Scale = 0.6f;
                                     General.CreatedBlips.Add(myBlip);
                                 }
-                                PedList.CopPeds.Add(MyNewPartnerCop);
+                                PedList.Cops.Add(MyNewPartnerCop);
                                 MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
                                 Debugging.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.VehicleEnt.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
                             }
@@ -294,7 +294,7 @@ public static class PoliceSpawning
             {
                 foreach (Ped Passenger in Cop.Pedestrian.CurrentVehicle.Passengers)
                 {
-                    Cop PassengerCop = PedList.CopPeds.Where(x => x.Pedestrian.Handle == Passenger.Handle).FirstOrDefault();
+                    Cop PassengerCop = PedList.Cops.Where(x => x.Pedestrian.Handle == Passenger.Handle).FirstOrDefault();
                     if (PassengerCop != null)
                     {
                         PassengerCop.Pedestrian.IsPersistent = false;
@@ -323,7 +323,7 @@ public static class PoliceSpawning
     }
     private static void RepairOrRemoveDamagedVehicles()
     {
-        foreach (Cop Cop in PedList.CopPeds.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
+        foreach (Cop Cop in PedList.Cops.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
         {
             if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
             {
@@ -346,7 +346,7 @@ public static class PoliceSpawning
     }
     private static void RemoveDisallowedPeds()
     {
-        foreach(Cop myCop in PedList.CopPeds.Where(x => !x.AssignedAgency.CanSpawn))
+        foreach(Cop myCop in PedList.Cops.Where(x => !x.AssignedAgency.CanSpawn))
         {
             DeleteCop(myCop);
         }
@@ -397,7 +397,7 @@ public static class PoliceSpawning
         GameFiber.Yield();
         if (CopCar.Exists())
         {
-            VehicleExt ToReturn = new VehicleExt(CopCar, 0, false, false, null, false, null);
+            VehicleExt ToReturn = new VehicleExt(CopCar, 0, false, false, false, null);
             if (CopCar.Exists())
             {
                 UpgradeCruiser(CopCar);

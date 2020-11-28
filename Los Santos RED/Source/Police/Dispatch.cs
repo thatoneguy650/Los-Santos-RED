@@ -229,7 +229,7 @@ public static class Dispatch
     {
         if (IsRunning && CanDelete)
         {
-            foreach(Cop OutOfRangeCop in PedList.CopPeds.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
+            foreach(Cop OutOfRangeCop in PedList.Cops.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
             {
                 if (!OutOfRangeCop.AssignedAgency.CanSpawn)
                 {

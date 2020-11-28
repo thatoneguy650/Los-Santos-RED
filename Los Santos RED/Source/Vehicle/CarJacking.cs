@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
-
+using LSR.Vehicles;
 
 public static class CarJacking 
 {
@@ -40,6 +40,8 @@ public static class CarJacking
         }
     }
     public static bool PlayerCarJacking { get; private set; } = false;
+
+
     public static void CarJack(Vehicle VehicleToEnter, Ped DriverPed, int EntrySeat)
     {
         TargetVehicle = VehicleToEnter;
@@ -47,7 +49,6 @@ public static class CarJacking
         SeatTryingToEnter = EntrySeat;
 
         Victim = PedList.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
-        Debugging.WriteToLog("CarJacking", string.Format("Driver: {0}", Driver.Handle));
         Weapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (CanArmedCarJack && PlayerState.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
@@ -58,7 +59,14 @@ public static class CarJacking
         {
             UnarmedCarJack();
         }
+
+
+        
     }
+
+
+
+
     private static void ArmedCarJack()
     {
         if (Victim != null)
@@ -304,7 +312,7 @@ public static class CarJacking
 
         int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
         VehicleClass VehicleClass = (VehicleClass)intVehicleClass;
-        if (VehicleClass == VehicleClass.Boats || VehicleClass == VehicleClass.Cycles || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycles || VehicleClass == VehicleClass.Planes || VehicleClass == VehicleClass.Service || VehicleClass == VehicleClass.Trailer || VehicleClass == VehicleClass.Trains)
+        if (VehicleClass == VehicleClass.Boat || VehicleClass == VehicleClass.Cycle || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Plane || VehicleClass == VehicleClass.Service)
             return false;//maybe add utility?
 
         if (!TargetVehicle.Doors[0].IsValid())
@@ -315,7 +323,7 @@ public static class CarJacking
             GroundZ = 0f;
         float DriverDistanceToGround = DriverSeatCoordinates.Z - (float)GroundZ;
         Debugging.WriteToLog("GetCarjackingAnimations", string.Format("VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
-        if (VehicleClass == VehicleClass.Vans && DriverDistanceToGround > 1.5f)
+        if (VehicleClass == VehicleClass.Van && DriverDistanceToGround > 1.5f)
         {
             if (Weapon.IsTwoHanded)
             {
@@ -330,7 +338,7 @@ public static class CarJacking
                 VictimAnimation = "van_victim_ds_a";
             }
         }
-        else if (VehicleClass == VehicleClass.Helicopters)
+        else if (VehicleClass == VehicleClass.Helicopter)
         {
             if (Weapon.IsTwoHanded)
             {

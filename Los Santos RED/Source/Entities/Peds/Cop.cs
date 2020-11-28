@@ -29,7 +29,7 @@ public class Cop : PedExt
     {
         get
         {
-            return PedList.CopPeds.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
+            return PedList.Cops.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
     public bool ShouldBustPlayer
@@ -41,6 +41,10 @@ public class Cop : PedExt
                 return false;
             }
             else if (!PlayerState.IsBustable)
+            {
+                return false;
+            }
+            else if (IsInVehicle)
             {
                 return false;
             }
@@ -76,7 +80,7 @@ public class Cop : PedExt
             }
         }
     }
-    public Cop(Ped pedestrian, int health, Agency agency) : base(pedestrian, health)
+    public Cop(Ped pedestrian, int health, Agency agency) : base(pedestrian)
     {
         IsCop = true;
         Health = health;

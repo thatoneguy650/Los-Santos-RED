@@ -24,6 +24,7 @@ public static class WantedLevelScript
     private static int PreviousWantedLevel;
     private static PoliceState CurrentPoliceState;
 
+    public static int WantedLevelLastset { get; set; }
     public static float LastWantedSearchRadius { get; set; }
     public static bool PlayerSeenDuringCurrentWanted { get; set; } = false;
     public static bool IsWeaponsFree { get; set; } = false;
@@ -248,6 +249,18 @@ public static class WantedLevelScript
             WantedLevelTick();
         }
     }
+    public static void FreezeTick()
+    {
+        //if (Game.LocalPlayer.WantedLevel != WantedLevelLastset)
+        //{
+        //    Game.LocalPlayer.WantedLevel = WantedLevelLastset;//freeze it 
+        //    NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Police.PlaceLastSeenPlayer.X, Police.PlaceLastSeenPlayer.Y, Police.PlaceLastSeenPlayer.Z);
+        //}
+        //Game.LocalPlayer.WantedLevel = WantedLevelLastset;//freeze it 
+        //NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_LEVEL_NOW", Game.LocalPlayer, false);
+        //NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevelLastset);
+        NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Police.PlaceLastSeenPlayer.X, Police.PlaceLastSeenPlayer.Y, Police.PlaceLastSeenPlayer.Z);
+    }
     public static void Dispose()
     {
         IsRunning = false;
@@ -262,6 +275,7 @@ public static class WantedLevelScript
             NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevel);
             Debugging.WriteToLog("SetWantedLevel", string.Format("Current Wanted: {0}, Desired Wanted: {1}, {2}", Game.LocalPlayer.WantedLevel, WantedLevel, Reason));
             Game.LocalPlayer.WantedLevel = WantedLevel;
+            WantedLevelLastset = WantedLevel;
         }
     }
     public static void ApplyReportedCrimes()
@@ -285,7 +299,7 @@ public static class WantedLevelScript
             if (WorstObserved != null)
             {
                 SetWantedLevel(WorstObserved.AssociatedCrime.ResultingWantedLevel, "you are a suspect!", true);
-                PoliceScanner.AnnounceCrime(WorstObserved.AssociatedCrime, new DispatchCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                PoliceScanner.AnnounceCrime(WorstObserved.AssociatedCrime, new PoliceScannerCallIn(!PlayerState.IsInVehicle, true, Game.LocalPlayer.Character.Position));
             }
         }
     }
@@ -343,6 +357,12 @@ public static class WantedLevelScript
     }
     private static void WantedLevelTick()
     {
+        //Game.LocalPlayer.WantedLevel = WantedLevelLastset;//freeze it 
+        //if (Game.LocalPlayer.WantedLevel != WantedLevelLastset)
+        //{
+        //    SetWantedLevel(WantedLevelLastset, "Freezing Wanted Level", false);
+        //}
+
         if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
             WantedLevelChanged();
 
@@ -356,11 +376,11 @@ public static class WantedLevelScript
         {
             if (!PlayerState.IsDead && !PlayerState.IsBusted)
             {
-                Vector3 CurrentWantedCenter = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                Vector3 CurrentWantedCenter = Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
                 if (CurrentWantedCenter != Vector3.Zero)
                 {
                     LastWantedCenterPosition = CurrentWantedCenter;
-                    UpdateBlip(CurrentWantedCenter);
+                    UpdateBlip(CurrentWantedCenter,SearchMode.BlipSize);
                 }
 
                 if(Police.AnyCanSeePlayer)
@@ -463,7 +483,7 @@ public static class WantedLevelScript
         if (CurrentWantedCenterBlip.Exists())
             CurrentWantedCenterBlip.Delete();
     }
-    private static void UpdateBlip(Vector3 Position)
+    private static void UpdateBlip(Vector3 Position,float Size)
     {
         if (Position == Vector3.Zero)
         {
@@ -473,18 +493,22 @@ public static class WantedLevelScript
         }
         if (!CurrentWantedCenterBlip.Exists())
         {
-            CurrentWantedCenterBlip = new Blip(Position, 100f)
+            CurrentWantedCenterBlip = new Blip(Position, Size)
             {
                 Name = "Current Wanted Center Position",
                 Color = Color.Red,
                 Alpha = 0.5f
             };
-
+            
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)CurrentWantedCenterBlip.Handle, true);
             General.CreatedBlips.Add(CurrentWantedCenterBlip);
         }
         if (CurrentWantedCenterBlip.Exists())
+        {
             CurrentWantedCenterBlip.Position = Position;
+        }
+        CurrentWantedCenterBlip.Color = SearchMode.BlipColor;
+        CurrentWantedCenterBlip.Scale = SearchMode.BlipSize; ;
     }
     private static void UpdateLastBlip(Vector3 Position)
     {
@@ -522,7 +546,7 @@ public static class WantedLevelScript
     }
     private static void ResetStats()
     {
-        foreach (Cop Cop in PedList.CopPeds)
+        foreach (Cop Cop in PedList.Cops)
         {
             Cop.HurtByPlayer = false;
         }
