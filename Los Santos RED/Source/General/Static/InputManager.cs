@@ -132,55 +132,56 @@ public static class InputManager
     {
         if (IsRunning)
         {
-            if (IsPressingSurrender && SurrenderManager.CanSurrender)
+            SurrenderCheck();
+            WeaponDropCheck();
+            VehicleCheck();
+        }
+    }
+    private static void SurrenderCheck()
+    {
+        if (IsPressingSurrender && SurrenderManager.CanSurrender)
+        {
+            if (!PlayerStateManager.HandsAreUp && !PlayerStateManager.IsBusted)
             {
-                if (!PlayerStateManager.HandsAreUp && !PlayerStateManager.IsBusted)
-                {
-                    SurrenderManager.RaiseHands();
-                }
+                SurrenderManager.RaiseHands();
             }
-            else
+        }
+        else
+        {
+            if (PlayerStateManager.HandsAreUp && !PlayerStateManager.IsBusted)
             {
-                if (PlayerStateManager.HandsAreUp && !PlayerStateManager.IsBusted)
-                {
-                    SurrenderManager.LowerHands();
-                }
+                SurrenderManager.LowerHands();
             }
-
-            if (IsPressingDropWeapon && WeaponDroppingManager.CanDropWeapon)
-            {
-                WeaponDroppingManager.DropWeapon();
-            }
-
-            if(IsPressingEngineToggle && VehicleEngineManager.CanToggleEngine)
-            {
-                VehicleEngineManager.ToggleEngine(true, !VehicleEngineManager.IsEngineRunning);
-            }
-
-
-            if (IsPressingRefuel && VehicleFuelManager.CanPumpFuel)
-            {
-                VehicleFuelManager.PumpFuel();
-            }
-
-
-            if (IsPressingHazards && Game.LocalPlayer.Character.IsInAnyVehicle(false))
-            {
-                VehicleIndicatorManager.ToggleHazards();
-            }
-            if (IsPressingLeftIndicator && Game.LocalPlayer.Character.IsInAnyVehicle(false))
-            {
-                VehicleIndicatorManager.ToggleLeftIndicator();
-            }
-            if (IsPressingRightIndicator && Game.LocalPlayer.Character.IsInAnyVehicle(false))
-            {
-                VehicleIndicatorManager.ToggleRightIndicator();
-            }
-
-
-
-
-
+        }
+    }
+    private static void WeaponDropCheck()
+    {
+        if (IsPressingDropWeapon && WeaponDroppingManager.CanDropWeapon)
+        {
+            WeaponDroppingManager.DropWeapon();
+        }
+    }
+    private static void VehicleCheck()
+    {
+        if (IsPressingEngineToggle && VehicleEngineManager.CanToggleEngine)
+        {
+            VehicleEngineManager.ToggleEngine(true, !VehicleEngineManager.IsEngineRunning);
+        }
+        if (IsPressingRefuel && VehicleFuelManager.CanPumpFuel)
+        {
+            VehicleFuelManager.PumpFuel();
+        }
+        if (IsPressingHazards)
+        {
+            VehicleIndicatorManager.ToggleHazards();
+        }
+        if (IsPressingLeftIndicator)
+        {
+            VehicleIndicatorManager.ToggleLeftIndicator();
+        }
+        if (IsPressingRightIndicator)
+        {
+            VehicleIndicatorManager.ToggleRightIndicator();
         }
     }
 }

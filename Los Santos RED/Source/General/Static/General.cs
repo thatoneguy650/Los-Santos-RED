@@ -38,26 +38,82 @@ public static class General
                 MyBlip.Delete();
         }
     }
-    public static void TransitionToSlowMo()
+    public static WeaponInformation GetCurrentWeapon(Ped Pedestrian)
     {
-        Game.TimeScale = 0.4f;//Stuff below works, could add it back, it just doesnt really do much
-        //GameFiber Transition = GameFiber.StartNew(delegate
-        //{
-        //    int WaitTime = 100;
-        //    while (Game.TimeScale > 0.4f)
-        //    {
-        //        Game.TimeScale -= 0.05f;
-        //        GameFiber.Wait(WaitTime);
-        //        if (WaitTime <= 200)
-        //            WaitTime += 1;
-        //    }
-
-        //}, "TransitionIn");
-        //Debugging.GameFibers.Add(Transition);
+        if (Pedestrian.Inventory.EquippedWeapon == null)
+            return null;
+        ulong myHash = (ulong)Pedestrian.Inventory.EquippedWeapon.Hash;
+        WeaponInformation CurrentGun = WeaponManager.GetWeapon(myHash);
+        if (CurrentGun != null)
+            return CurrentGun;
+        else
+            return null;
     }
-    public static void TransitionToMediumMo()
+    public static WeaponVariation GetWeaponVariation(Ped WeaponOwner, uint WeaponHash)
     {
-        Game.TimeScale = 0.8f;
+        int Tint = NativeFunction.CallByName<int>("GET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash);
+        WeaponInformation MyGun = WeaponManager.GetWeapon(WeaponHash);
+        if (MyGun == null)
+            return new WeaponVariation("Variation1", Tint);
+
+        // List<GTAWeapon.WeaponComponent> Components = new List<GTAWeapon.WeaponComponent>();
+
+        //if (!Components.Any())
+        //    return new GTAWeapon.WeaponVariation("Variation1",Tint);
+        List<string> ComponentsOnGun = new List<string>();
+
+        foreach (WeaponComponent PossibleComponent in MyGun.PossibleComponents)
+        {
+            if (NativeFunction.CallByName<bool>("HAS_PED_GOT_WEAPON_COMPONENT", WeaponOwner, WeaponHash, PossibleComponent.Hash))
+            {
+                ComponentsOnGun.Add(PossibleComponent.Name);
+            }
+
+        }
+        return new WeaponVariation("Variation1", Tint, ComponentsOnGun);
+
+    }
+    public static Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
+    {
+        Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+        if (!Screwdriver.Exists())
+            return null;
+        CreatedObjects.Add(Screwdriver);
+        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
+        Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
+        return Screwdriver;
+    }
+    public static PedVariation GetPedVariation(Ped myPed)
+    {
+        try
+        {
+            PedVariation myPedVariation = new PedVariation
+            {
+                MyPedComponents = new List<PedComponent>(),
+                MyPedProps = new List<PedPropComponent>()
+            };
+            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
+            {
+                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
+            }
+            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
+            {
+                myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
+            }
+            return myPedVariation;
+        }
+        catch (Exception e)
+        {
+            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            return null;
+        }
+    }
+    public static bool RandomPercent(float Percent)
+    {
+        if (MyRand.Next(1, 101) <= Percent)
+            return true;
+        else
+            return false;
     }
     public static bool AttemptLockStatus(Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
     {
@@ -84,16 +140,80 @@ public static class General
         ToLock.LockStatus = DesiredLockStatus;//Locked for player
         return true;
     }
-    public static WeaponInformation GetCurrentWeapon(Ped Pedestrian)
+    public static string RandomString(int length)
     {
-        if (Pedestrian.Inventory.EquippedWeapon == null)
-            return null;
-        ulong myHash = (ulong)Pedestrian.Inventory.EquippedWeapon.Hash;
-        WeaponInformation CurrentGun = WeaponManager.GetWeapon(myHash);
-        if (CurrentGun != null)
-            return CurrentGun;
-        else
-            return null;
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789";
+        return new string(Enumerable.Repeat(chars, length)
+          .Select(s => s[MyRand.Next(s.Length)]).ToArray());
+    }
+    public static string GetSimpleCompassHeading(float Heading)
+    {
+        //float Heading = Game.LocalPlayer.Character.Heading;
+        string Abbreviation;
+
+        //yeah could be simpler, whatever idk computers are fast
+        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
+        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
+        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
+        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
+        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
+        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
+        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
+        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
+        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
+        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
+        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
+        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
+        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
+        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
+        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
+        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
+        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
+        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
+        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
+        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
+        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
+        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
+        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
+        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
+        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
+        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
+        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
+        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
+        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
+        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
+        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
+        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else { Abbreviation = ""; }
+
+        return Abbreviation;
+    }
+    public static string GetCompassHeading(float Heading)
+    {
+        List<string> Abbreviations = new List<string>() { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N" };
+        return Abbreviations[Convert.ToInt32(Math.Round(Heading % 360 / 22.5))];
+    }
+    public static void TransitionToSlowMo()
+    {
+        Game.TimeScale = 0.4f;//Stuff below works, could add it back, it just doesnt really do much
+        //GameFiber Transition = GameFiber.StartNew(delegate
+        //{
+        //    int WaitTime = 100;
+        //    while (Game.TimeScale > 0.4f)
+        //    {
+        //        Game.TimeScale -= 0.05f;
+        //        GameFiber.Wait(WaitTime);
+        //        if (WaitTime <= 200)
+        //            WaitTime += 1;
+        //    }
+
+        //}, "TransitionIn");
+        //Debugging.GameFibers.Add(Transition);
+    }
+    public static void TransitionToMediumMo()
+    {
+        Game.TimeScale = 0.8f;
     }
     public static void SetPedUnarmed(Ped Pedestrian, bool SetCantChange)
     {
@@ -103,30 +223,6 @@ public static class General
             if (SetCantChange)
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
         }
-    }
-    public static WeaponVariation GetWeaponVariation(Ped WeaponOwner, uint WeaponHash)
-    {
-        int Tint = NativeFunction.CallByName<int>("GET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash);
-        WeaponInformation MyGun = WeaponManager.GetWeapon(WeaponHash);
-        if (MyGun == null)
-            return new WeaponVariation("Variation1", Tint);
-
-        // List<GTAWeapon.WeaponComponent> Components = new List<GTAWeapon.WeaponComponent>();
-
-        //if (!Components.Any())
-        //    return new GTAWeapon.WeaponVariation("Variation1",Tint);
-        List<string> ComponentsOnGun = new List<string>();
-
-        foreach (WeaponComponent PossibleComponent in MyGun.PossibleComponents)
-        {
-            if (NativeFunction.CallByName<bool>("HAS_PED_GOT_WEAPON_COMPONENT", WeaponOwner, WeaponHash, PossibleComponent.Hash))
-            {
-                ComponentsOnGun.Add(PossibleComponent.Name);
-            }
-
-        }
-        return new WeaponVariation("Variation1", Tint, ComponentsOnGun);
-
     }
     public static void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, WeaponVariation _WeaponVariation)
     {
@@ -206,41 +302,6 @@ public static class General
         while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
             GameFiber.Yield();
     }
-    public static Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
-    {
-        Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
-        if (!Screwdriver.Exists())
-            return null;
-        CreatedObjects.Add(Screwdriver);
-        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
-        Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
-        return Screwdriver;
-    }
-    public static PedVariation GetPedVariation(Ped myPed)
-    {
-        try
-        {
-            PedVariation myPedVariation = new PedVariation
-            {
-                MyPedComponents = new List<PedComponent>(),
-                MyPedProps = new List<PedPropComponent>()
-            };
-            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
-            {
-                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
-            }
-            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
-            {
-                myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
-            }
-            return myPedVariation;
-        }
-        catch (Exception e)
-        {
-            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
-            return null;
-        }
-    }
     public static void ReplacePedComponentVariation(Ped myPed, PedVariation myPedVariation)
     {
         try
@@ -258,60 +319,6 @@ public static class General
         {
             Debugging.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
         }
-    }
-    public static string RandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789";
-        return new string(Enumerable.Repeat(chars, length)
-          .Select(s => s[MyRand.Next(s.Length)]).ToArray());
-    }
-    public static string GetSimpleCompassHeading(float Heading)
-    {
-        //float Heading = Game.LocalPlayer.Character.Heading;
-        string Abbreviation;
-
-        //yeah could be simpler, whatever idk computers are fast
-        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
-        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
-        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
-        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
-        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
-        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
-        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
-        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
-        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
-        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
-        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
-        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
-        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
-        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
-        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
-        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
-        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
-        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
-        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
-        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
-        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
-        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
-        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
-        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
-        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
-        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
-        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
-        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
-        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
-        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
-        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
-        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-        else { Abbreviation = ""; }
-
-        return Abbreviation;
-    }
-    public static string GetCompassHeading(float Heading)
-    {
-        List<string> Abbreviations = new List<string>() { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N" };
-        return Abbreviations[Convert.ToInt32(Math.Round(Heading % 360 / 22.5))];
     }
     public static void SerializeParams<T>(List<T> paramList, string FileName)
     {
@@ -333,11 +340,5 @@ public static class General
         Debugging.WriteToLog("Settings ReadConfig", string.Format("Using Saved Data {0}", FileName));
         return result;
     }
-    public static bool RandomPercent(float Percent)
-    {
-        if (MyRand.Next(1, 101) <= Percent)
-            return true;
-        else
-            return false;
-    }
+
 }

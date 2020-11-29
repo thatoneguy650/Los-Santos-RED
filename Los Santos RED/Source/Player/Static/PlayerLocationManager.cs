@@ -13,12 +13,12 @@ public static class PlayerLocationManager
     private static uint GameTimePlayerGotOnFreeway;
     private static uint GameTimePlayerGotOffFreeway;
     private static Vector3 PlayerClosestNode;
-    public static bool IsRunning { get; set; } = true;
+    public static bool IsRunning { get; set; }
     public static Street PlayerCurrentStreet { get; private set; }
     public static Street PlayerCurrentCrossStreet { get; private set; }
-    public static Zone PlayerCurrentZone { get; private set; } = new Zone();
-    public static bool PlayerIsOffroad { get; private set; } = false;
-    public static bool PlayerIsOnFreeway { get; private set; } = false;
+    public static Zone PlayerCurrentZone { get; private set; }
+    public static bool PlayerIsOffroad { get; private set; }
+    public static bool PlayerIsOnFreeway { get; private set; }
     public static bool PlayerRecentlyGotOnFreeway
     {
         get
@@ -57,7 +57,6 @@ public static class PlayerLocationManager
         {
             Update();
         }
-
     }
     private static void Update()
     {

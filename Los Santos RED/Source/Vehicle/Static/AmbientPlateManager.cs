@@ -28,12 +28,11 @@ public static class AmbientPlateManager
             UpdateVehiclePlates();
         }
     }
-
     private static void UpdateVehiclePlates()
     {
         int VehiclesUpdated = 0;
         AmbientVehicles.RemoveAll(x => !x.CivVehicle.VehicleEnt.Exists());
-        foreach (VehicleExt MyCar in PedManager.CivilianVehicles.Where(x => x.VehicleEnt.Exists()))
+        foreach (VehicleExt MyCar in VehicleManager.CivilianVehicles.Where(x => x.VehicleEnt.Exists()))
         {
             if (!AmbientVehicles.Any(x => x.CivVehicle.VehicleEnt.Handle == MyCar.VehicleEnt.Handle))
             {
@@ -50,11 +49,11 @@ public static class AmbientPlateManager
     }
     private class AmbientVehicle
     {
+        public VehicleExt CivVehicle { get; set; }
         public AmbientVehicle(VehicleExt vehicle)
         {
             CivVehicle = vehicle;
-        }
-        public VehicleExt CivVehicle { get; set; }    
+        }     
         public void UpdatePlate()
         {
             if(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CivVehicle.VehicleEnt) != 4 && General.RandomPercent(30))//SA Exempt don't change, only change 30% of plates

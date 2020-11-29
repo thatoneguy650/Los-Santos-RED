@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 [Serializable()]
 public class PedName
 {
-    public string Name;
-    public NameType Type;
+    public string Name { get; set; }
+    public NameType Type { get; set; }
     public PedName()
     {
 

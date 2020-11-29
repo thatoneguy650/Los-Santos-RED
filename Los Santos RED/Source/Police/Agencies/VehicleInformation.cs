@@ -69,11 +69,11 @@ public class VehicleInformation
     {
         get
         {
-            if (IsHelicopter && PedManager.PoliceVehicles.Count(x => x.IsHelicopter) >= SettingsManager.MySettings.Police.HelicopterLimit)
+            if (IsHelicopter && VehicleManager.PoliceVehicles.Count(x => x.IsHelicopter) >= SettingsManager.MySettings.Police.HelicopterLimit)
             {
                 return false;
             }
-            else if (IsBoat && PedManager.PoliceVehicles.Count(x => x.IsBoat) >= SettingsManager.MySettings.Police.BoatLimit)
+            else if (IsBoat && VehicleManager.PoliceVehicles.Count(x => x.IsBoat) >= SettingsManager.MySettings.Police.BoatLimit)
             {
                 return false;
             }

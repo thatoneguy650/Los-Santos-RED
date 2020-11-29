@@ -231,7 +231,7 @@ namespace ExtensionsMethods
         {
             bool LightsOn;
             bool HighbeamsOn;
-            if (PolicePedManager.IsNightTime)
+            if (PlayerStateManager.IsNightTime)
             {
                 unsafe
                 {
@@ -269,7 +269,7 @@ namespace ExtensionsMethods
                     return true;
             }
 
-            if (PolicePedManager.IsNightTime)
+            if (PlayerStateManager.IsNightTime)
             {
                 if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
                     return true;

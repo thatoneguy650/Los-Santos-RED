@@ -9,13 +9,67 @@ using System.Runtime.InteropServices;
 public static class ZoneManager
 {
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Zones.xml";
-
-    public static List<Zone> ZoneList = new List<Zone>();
+    private static List<Zone> ZoneList = new List<Zone>();
     public static void Initialize()
     {
         ReadConfig();
     }
-    public static void ReadConfig()
+    public static void Dispose()
+    {
+
+    }
+    public static Zone GetZone(Vector3 ZonePosition)
+    {
+        string zoneName = GetInternalZoneString(ZonePosition);
+        Zone ListResult = ZoneList.Where(x => x.InternalGameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
+        if (ListResult == null)
+        {
+            if (ZonePosition.IsInLosSantosCity())
+                return new Zone("UNK_LSCITY", "Los Santos", County.CityOfLosSantos);
+            else
+                return new Zone("UNK_LSCOUNTY", "Los Santos County", County.LosSantosCounty);
+        }
+        else
+        {
+            return ListResult;
+        }
+    }
+    public static Zone GetZone(string InternalGameName)
+    {
+        return ZoneList.Where(x => x.InternalGameName.ToLower() == InternalGameName.ToLower()).FirstOrDefault();
+    }
+    public static string GetName(Zone MyZone, bool WithCounty)
+    {
+        if (WithCounty)
+        {
+            string CountyName = "San Andreas";
+            if (MyZone.ZoneCounty == County.BlaineCounty)
+                CountyName = "Blaine County";
+            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
+                CountyName = "City of Los Santos";
+            else if (MyZone.ZoneCounty == County.LosSantosCounty)
+                CountyName = "Los Santos County";
+
+            return MyZone.DisplayName + ", " + CountyName;
+        }
+        else
+        {
+            return MyZone.DisplayName;
+        }
+
+    }
+    private static string GetInternalZoneString(Vector3 ZonePosition)
+    {
+        string zoneName;
+        unsafe
+        {
+            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
+
+            zoneName = Marshal.PtrToStringAnsi(ptr);
+        }
+        return zoneName;
+    }
+    private static void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
@@ -149,57 +203,4 @@ public static class ZoneManager
     };
         
     }
-    public static Zone GetZone(Vector3 ZonePosition)
-    {
-        string zoneName = GetInternalZoneString(ZonePosition);
-        Zone ListResult = ZoneList.Where(x => x.InternalGameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
-        if(ListResult == null)
-        {
-            if (ZonePosition.IsInLosSantosCity())
-                return new Zone("UNK_LSCITY", "Los Santos", County.CityOfLosSantos);
-            else
-                return new Zone("UNK_LSCOUNTY", "Los Santos County", County.LosSantosCounty);
-        }
-        else
-        {
-            return ListResult;
-        }
-    }
-    public static Zone GetZone(string InternalGameName)
-    {
-        return ZoneList.Where(x => x.InternalGameName.ToLower() == InternalGameName.ToLower()).FirstOrDefault();
-    }
-    public static string GetName(Zone MyZone, bool WithCounty)
-    {
-        if (WithCounty)
-        {
-            string CountyName = "San Andreas";
-            if (MyZone.ZoneCounty == County.BlaineCounty)
-                CountyName = "Blaine County";
-            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
-                CountyName = "City of Los Santos";
-            else if (MyZone.ZoneCounty == County.LosSantosCounty)
-                CountyName = "Los Santos County";
-
-            return MyZone.DisplayName + ", " + CountyName;
-        }
-        else
-        {
-            return MyZone.DisplayName;
-        }
-
-    }
-    private static string GetInternalZoneString(Vector3 ZonePosition)
-    {
-        string zoneName;
-        unsafe
-        {
-            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
-
-            zoneName = Marshal.PtrToStringAnsi(ptr);
-        }
-        return zoneName;
-    }
-
-
 }

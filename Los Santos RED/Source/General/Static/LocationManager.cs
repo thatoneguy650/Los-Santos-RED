@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 public static class LocationManager
 {
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Locations.xml";
-    public static List<GameLocation> LocationsList { get; set; }
-
+    private static List<GameLocation> LocationsList;
     public static void Initialize()
     {
         ReadConfig();
@@ -23,7 +22,22 @@ public static class LocationManager
     {
 
     }
-    public static void ReadConfig()
+    public static GameLocation GetClosestLocation(Vector3 Position,LocationType Type)
+    {
+        return LocationsList.Where(x => x.Type == Type).OrderBy(s => Position.DistanceTo2D(s.LocationPosition)).FirstOrDefault();
+    }
+    public static List<GameLocation> GetLocations(LocationType Type)
+    {
+        return LocationsList.Where(x => x.Type == Type).ToList();
+    }
+    private static void CreateBlips()
+    {
+        foreach (GameLocation MyLocation in LocationsList)
+        {
+            MyLocation.CreateLocationBlip();
+        }
+    }
+    private static void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
@@ -85,20 +99,6 @@ public static class LocationManager
 
     };
     }
-    private static void CreateBlips()
-    {
-        foreach(GameLocation MyLocation in LocationsList)
-        {
-            MyLocation.CreateLocationBlip();
-        }
-    }
-    public static GameLocation GetClosestLocationByType(Vector3 Position,LocationType Type)
-    {
-        return LocationsList.Where(x => x.Type == Type).OrderBy(s => Position.DistanceTo2D(s.LocationPosition)).FirstOrDefault();
-    }
-    public static List<GameLocation> GetAllLocationsOfType(LocationType Type)
-    {
-        return LocationsList.Where(x => x.Type == Type).ToList();
-    }
+
 }
 

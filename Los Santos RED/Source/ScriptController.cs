@@ -92,7 +92,7 @@ public static class ScriptController
                 {
                     MenuManager.Tick();
                     UIManager.Tick();
-                    WantedLevelManager.FreezeTick();//testing this here.....
+                    //WantedLevelManager.FreezeTick();//testing this here.....
                     GameFiber.Yield();
                 }
             }
@@ -120,52 +120,49 @@ public static class ScriptController
         TickTable.Columns.Add("ElapsedMilliseconds");
         MyTickTasks = new List<TickTask>()
         {
-            new TickTask(0, "ClockSystem", ClockManager.Tick, 0,0),
+            new TickTask(0, "ClockManager", ClockManager.Tick, 0,0),
 
+            new TickTask(0, "InputManager", InputManager.Tick, 1,0),
 
-            new TickTask(0, "ControlScript", InputManager.Tick, 1,0),
+            new TickTask(25, "PlayerStateManager", PlayerStateManager.Tick, 2,0),
+            new TickTask(25, "PolicePedManager", PolicePedManager.Tick, 2,1),
 
-            new TickTask(25, "PlayerState", PlayerStateManager.Tick, 2,0),
-            new TickTask(25, "Police", PolicePedManager.Tick, 2,1),
+            new TickTask(0, "VehicleEngineManager", VehicleEngineManager.Tick, 3,0),
 
-            new TickTask(0, "VehicleEngine", VehicleEngineManager.Tick, 3,0),
+            new TickTask(50, "CrimeManager", CrimeManager.Tick, 4,0),
+            new TickTask(50, "WantedLevelManager", WantedLevelManager.Tick, 4,1),
 
-            new TickTask(50, "Crimes", CrimeManager.Tick, 4,0),
-            new TickTask(50, "WantedLevel", WantedLevelManager.Tick, 4,1),
+            new TickTask(100, "SearchModeManager", SearchModeManager.Tick, 5,0),
+            new TickTask(100, "InvestigationManager", InvestigationManager.Tick, 5,1),
+            new TickTask(100, "SearchModeStoppingManager", SearchModeStoppingManager.Tick, 5,2),
+            new TickTask(150, "CivilianManager", CivilianManager.Tick, 5,3),
 
-            new TickTask(100, "SearchMode", SearchModeManager.Tick, 5,0),
-            new TickTask(100, "Investigation", InvestigationManager.Tick, 5,1),
-            new TickTask(100, "SearchModeStopping", SearchModeStoppingManager.Tick, 5,2),
-            new TickTask(150, "Civilians", CivilianManager.Tick, 5,3),
-
-            new TickTask(200, "PedWoundSystem", PedDamageManager.Tick, 6,0),
-            new TickTask(250, "MuggingSystem", MuggingManager.Tick, 6,1),
+            new TickTask(200, "PedDamageManager", PedDamageManager.Tick, 6,0),
+            new TickTask(250, "MuggingManager", MuggingManager.Tick, 6,1),
             
-            new TickTask(1000, "ScanForPeds", PedManager.ScanForPeds, 7,0),
-            new TickTask(1000, "ScanForVehicles", PedManager.ScanForVehicles, 7,1),
-            new TickTask(1000, "Plates", AmbientPlateManager.Tick, 7,2),//NEW
-            new TickTask(500, "ProcessQueue", TaskManager.UpdateTaskableCops, 7,3),
-            new TickTask(500, "TaskPeds", TaskManager.RunActivities, 7,4),
+            new TickTask(1000, "PedManager", PedManager.Tick, 7,0),
+            new TickTask(1000, "VehicleManager", VehicleManager.Tick, 7,1),
+            new TickTask(1000, "AmbientPlateManager", AmbientPlateManager.Tick, 7,2),
+            new TickTask(500, "TaskManager.UpdateTaskablePeds", TaskManager.UpdateTaskablePeds, 7,3),
+            new TickTask(500, "TaskManager.RunActivities", TaskManager.RunActivities, 7,4),
 
+            new TickTask(250, "WeaponDroppingManager", WeaponDroppingManager.Tick, 8,0),
+       
+            new TickTask(500, "TrafficViolationsManager", TrafficViolationsManager.Tick, 9,0),
+            new TickTask(500, "PlayerLocationManager", PlayerLocationManager.Tick, 9,1),
+            new TickTask(500, "PersonOfInterestManager", PersonOfInterestManager.Tick, 9,2),
 
-            new TickTask(250, "WeaponDropping", WeaponDroppingManager.Tick, 8,0),
-
+            new TickTask(250, "PoliceEquipmentManager", PoliceEquipmentManager.Tick, 10,0),
+            new TickTask(500, "ScannerManager", ScannerManager.Tick, 10,1),
+            new TickTask(500, "PoliceSpeechManager", PoliceSpeechManager.Tick, 10,2),
+            new TickTask(500, "PoliceSpawningManager", PoliceSpawningManager.Tick, 10,3),
             
-            new TickTask(500, "TrafficViolations", TrafficViolationsManager.Tick, 9,0),
-            new TickTask(500, "PlayerLocation", PlayerLocationManager.Tick, 9,1),
-            new TickTask(500, "PersonOfInterest", PersonOfInterestManager.Tick, 9,2),
+            new TickTask(500, "DispatchManager.SpawnChecking", DispatchManager.SpawnChecking, 11,0),
+            new TickTask(500, "DispatchManager.DeleteChecking", DispatchManager.DeleteChecking, 11,1),
 
-            new TickTask(250, "ArmCops", PoliceEquipmentManager.ArmCops, 10,0),
-            new TickTask(500, "ScannerScript", ScannerManager.Tick, 10,1),
-            new TickTask(500, "PoliceSpeech", PoliceSpeechManager.Tick, 10,2),
-            new TickTask(500, "CheckRemoveCops", PoliceSpawningManager.CheckRemove, 10,3),
-            
-            new TickTask(500, "DispatchSpawn", DispatchManager.SpawnChecking, 11,0),
-            new TickTask(500, "DispatchDelete", DispatchManager.DeleteChecking, 11,1),
-
-            new TickTask(100, "VehicleFuelSystem", VehicleFuelManager.Tick, 12,0),
-            new TickTask(100, "VehicleIndicators", VehicleIndicatorManager.Tick, 12,1),
-            new TickTask(500, "RadioTuning", RadioManager.Tick, 12,2),
+            new TickTask(100, "VehicleFuelManager", VehicleFuelManager.Tick, 12,0),
+            new TickTask(100, "VehicleIndicatorManager", VehicleIndicatorManager.Tick, 12,1),
+            new TickTask(500, "RadioManager", RadioManager.Tick, 12,2),
 
 
         };
@@ -227,6 +224,7 @@ public static class ScriptController
         LicensePlateTheftManager.Initialize();
         MenuManager.Intitialize();
         PedManager.Initialize();
+        VehicleManager.Initialize();
         ScannerManager.Initialize();
         PoliceSpeechManager.Initialize();
         VehicleEngineManager.Initialize();
@@ -242,6 +240,7 @@ public static class ScriptController
         TrafficViolationsManager.Initialize();
         SearchModeStoppingManager.Initialize();
         UIManager.Initialize();
+        NameManager.Initialize();
         PedSwapManager.Initialize();
         PersonOfInterestManager.Initialize();
         CivilianManager.Initialize();
@@ -260,6 +259,7 @@ public static class ScriptController
         LicensePlateTheftManager.Dispose();
         MenuManager.Dispose();
         PedManager.Dispose();
+        VehicleManager.Dispose();
         ScannerManager.Dispose();
         PoliceSpeechManager.Dispose();
         VehicleEngineManager.Dispose();
@@ -271,7 +271,6 @@ public static class ScriptController
         PoliceEquipmentManager.Dispose();
         AgencyManager.Dispose();
         LocationManager.Dispose();
-        WeaponManager.Dispose();
         WeaponDroppingManager.Dispose();
         StreetManager.Dispose();
         UIManager.Dispose();
@@ -285,6 +284,7 @@ public static class ScriptController
         PoliceSpawningManager.Dispose();
         TrafficViolationsManager.Dispose();
         SearchModeStoppingManager.Dispose();
+        NameManager.Dispose();
         PedSwapManager.Dispose();
         PersonOfInterestManager.Dispose();
         CivilianManager.Dispose();
@@ -358,8 +358,8 @@ public static class ScriptController
             {
                 if (Interval == 0)
                     return false;
-                if (GameTimeLastRan == 0)
-                    return true;
+                //if (GameTimeLastRan == 0)
+                //    return true;
                 else if (Game.GameTime - GameTimeLastRan >= IntervalMissLength)
                     return true;
                 else
@@ -372,8 +372,8 @@ public static class ScriptController
             {
                 if (Interval == 0)
                     return false;
-                if (GameTimeLastRan == 0)
-                    return true;
+                //if (GameTimeLastRan == 0)
+                //    return true;
                 else if (Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2))
                     return true;
                 else

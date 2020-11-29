@@ -34,6 +34,9 @@ public static class PlayerStateManager
     public static bool BeingArrested { get; private set; }
     public static bool DiedInVehicle { get; private set; }
     public static bool IsConsideredArmed { get; private set; }
+    public static bool IsNightTime { get; private set; }
+    public static bool IsInAutomobile { get; private set; }
+    public static bool IsOnMotorcycle { get; private set; }
     public static List<VehicleExt> TrackedVehicles { get; private set; }
     public static VehicleExt CurrentVehicle { get; private set; }
     public static WeaponInformation CurrentWeapon { get; private set; }
@@ -46,7 +49,6 @@ public static class PlayerStateManager
             return WeaponCategory.Unknown;
         }
     }
-
     public static Vector3 CurrentPosition => Game.LocalPlayer.Character.Position;
     public static bool IsJacking
     {
@@ -72,8 +74,6 @@ public static class PlayerStateManager
             }
         }
     }
-    public static bool IsInAutomobile { get; private set; }
-    public static bool IsOnMotorcycle { get; private set; }
     public static bool IsAimingInVehicle
     {
         get => isAimingInVehicle;
@@ -120,7 +120,6 @@ public static class PlayerStateManager
             }
         }
     }
-    public static bool IsNightTime { get; private set; }
     public static bool IsBreakingIntoCar
     {
         get
@@ -224,18 +223,6 @@ public static class PlayerStateManager
             return false;
         }
     }
-    public static bool RecentlyShot(int duration)
-    {
-        if (GameTimeLastShot == 0)
-            return false;
-        if (PedSwapManager.RecentlyTakenOver)
-            return false;
-        if (RespawnManager.RecentlyRespawned)
-            return false;
-        if (Game.GameTime - GameTimeLastShot <= duration) //15000
-            return true;
-        return false;
-    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -285,6 +272,106 @@ public static class PlayerStateManager
             AudioTick();
             TrackedVehiclesTick();
         }
+    }
+    public static bool RecentlyShot(int duration)
+    {
+        if (GameTimeLastShot == 0)
+            return false;
+        if (PedSwapManager.RecentlyTakenOver)
+            return false;
+        if (RespawnManager.RecentlyRespawned)
+            return false;
+        if (Game.GameTime - GameTimeLastShot <= duration) //15000
+            return true;
+        return false;
+    }
+    public static void PlayerShotArtificially()
+    {
+        GameTimeLastShot = Game.GameTime;
+    }
+    public static void ResetState(bool IncludeMaxWanted)
+    {
+        IsDead = false;
+        IsBusted = false;
+        Game.LocalPlayer.HasControl = true;
+        BeingArrested = false;
+        TimesDied = 0;
+        LastWeaponHash = 0;
+        if (IncludeMaxWanted)
+            MaxWantedLastLife = 0; //this might be a problem in here and might need to be removed
+    }
+    public static void StartManualArrest()
+    {
+        BeingArrested = true;
+        if (!IsBusted)
+            BustedEvent();
+    }
+    public static void UpdateStolenStatus()
+    {
+        var MyVehicle = UpdateCurrentVehicle();
+        if (MyVehicle == null || MyVehicle.IsStolen)
+            return;
+
+        if (PedSwapManager.OwnedCar == null || MyVehicle.VehicleEnt.Handle != PedSwapManager.OwnedCar.Handle)
+            MyVehicle.IsStolen = true;
+    }
+    public static void SetPlayerToLastWeapon()
+    {
+        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeaponHash != 0)
+        {
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash,
+                true);
+            Debugging.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
+        }
+    }
+    public static void DisplayPlayerNotification()
+    {
+        var NotifcationText = "Warrants: ~g~None~s~";
+        if (WantedLevelManager.CurrentCrimes.CommittedAnyCrimes)
+            NotifcationText = "Wanted For:" + WantedLevelManager.CurrentCrimes.PrintCrimes();
+
+        var MyCar = UpdateCurrentVehicle();
+        if (MyCar != null && !MyCar.IsStolen)
+        {
+            var Make = MyCar.MakeName();
+            var Model = MyCar.ModelName();
+            var VehicleName = "";
+            if (Make != "")
+                VehicleName = Make;
+            if (Model != "")
+                VehicleName += " " + Model;
+
+            NotifcationText += string.Format("~n~Vehicle: ~p~{0}~s~", VehicleName);
+            NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", MyCar.CarPlate.PlateNumber);
+        }
+
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",
+            string.Format("~y~{0}", PedSwapManager.SuspectName), NotifcationText);
+    }
+    public static void GivePlayerRandomWeapon(WeaponCategory RandomWeaponCategory)
+    {
+        var myGun = WeaponManager.GetRandomRegularWeapon(RandomWeaponCategory);
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
+    }
+    private static VehicleExt UpdateCurrentVehicle()
+    {
+        if (!Game.LocalPlayer.Character.IsInAnyVehicle(false)) return null;
+
+        var CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
+
+        ///NativeFunction.CallByHash<bool>(0x4E20D2A627011E8E, CurrVehicle, 100f);//_SET_VEHICLE_DAMAGE_MODIFIER//doesnt do model damage just starts on fire
+
+
+
+        var ToReturn = TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
+        if (ToReturn == null)
+        {
+            TrackCurrentVehicle();
+            return TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
+        }
+
+        ToReturn.SetAsEntered();
+        return ToReturn;
     }
     private static void UpdatePlayer()
     {
@@ -529,21 +616,6 @@ public static class PlayerStateManager
 
         TrackedVehicles.Add(MyNewCar);
     }
-    private static VehicleExt UpdateCurrentVehicle()
-    {
-        if (!Game.LocalPlayer.Character.IsInAnyVehicle(false)) return null;
-
-        var CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-        var ToReturn = TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
-        if (ToReturn == null)
-        {
-            TrackCurrentVehicle();
-            return TrackedVehicles.Where(x => x.VehicleEnt.Handle == CurrVehicle.Handle).FirstOrDefault();
-        }
-
-        ToReturn.SetAsEntered();
-        return ToReturn;
-    }
     private static void SetDriverWindow(bool RollDown)
     {
         if (Game.LocalPlayer.Character.CurrentVehicle == null)
@@ -575,53 +647,6 @@ public static class PlayerStateManager
                 }
         }
     }
-    public static void UpdateStolenStatus()
-    {
-        var MyVehicle = UpdateCurrentVehicle();
-        if (MyVehicle == null || MyVehicle.IsStolen)
-            return;
-
-        if (PedSwapManager.OwnedCar == null || MyVehicle.VehicleEnt.Handle != PedSwapManager.OwnedCar.Handle)
-            MyVehicle.IsStolen = true;
-    }
-    public static void SetPlayerToLastWeapon()
-    {
-        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeaponHash != 0)
-        {
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash,
-                true);
-            Debugging.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
-        }
-    }
-    public static void DisplayPlayerNotification()
-    {
-        var NotifcationText = "Warrants: ~g~None~s~";
-        if (WantedLevelManager.CurrentCrimes.CommittedAnyCrimes)
-            NotifcationText = "Wanted For:" + WantedLevelManager.CurrentCrimes.PrintCrimes();
-
-        var MyCar = UpdateCurrentVehicle();
-        if (MyCar != null && !MyCar.IsStolen)
-        {
-            var Make = MyCar.MakeName();
-            var Model = MyCar.ModelName();
-            var VehicleName = "";
-            if (Make != "")
-                VehicleName = Make;
-            if (Model != "")
-                VehicleName += " " + Model;
-
-            NotifcationText += string.Format("~n~Vehicle: ~p~{0}~s~", VehicleName);
-            NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", MyCar.CarPlate.PlateNumber);
-        }
-
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",
-            string.Format("~y~{0}", PedSwapManager.SuspectName), NotifcationText);
-    }
-    public static void GivePlayerRandomWeapon(WeaponCategory RandomWeaponCategory)
-    {
-        var myGun = WeaponManager.GetRandomRegularWeapon(RandomWeaponCategory);
-        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
-    }
     private static void UpdateVehicleDescription(VehicleExt MyVehicle)
     {
         if (MyVehicle.VehicleEnt.Exists())
@@ -631,25 +656,5 @@ public static class PlayerStateManager
         if (MyVehicle.IsStolen && !MyVehicle.WasReportedStolen)
             MyVehicle.WasReportedStolen = true;
     }
-    public static void PlayerShotArtificially()
-    {
-        GameTimeLastShot = Game.GameTime;
-    }
-    public static void ResetState(bool IncludeMaxWanted)
-    {
-        IsDead = false;
-        IsBusted = false;
-        Game.LocalPlayer.HasControl = true;
-        BeingArrested = false;
-        TimesDied = 0;
-        LastWeaponHash = 0;
-        if (IncludeMaxWanted)
-            MaxWantedLastLife = 0; //this might be a problem in here and might need to be removed
-    }
-    public static void StartManualArrest()
-    {
-        BeingArrested = true;
-        if (!IsBusted)
-            BustedEvent();
-    }
+
 }

@@ -108,7 +108,7 @@ public static class RespawnManager
     {
         GameTimeLastUndied = Game.GameTime;
         RespawnInPlace(true);
-        ScannerManager.AbortAllAudio();
+        ScannerManager.AbortAudio();
         Game.LocalPlayer.Character.IsInvincible = true;
         GameFiber.StartNew(delegate
         {
@@ -153,7 +153,7 @@ public static class RespawnManager
             }
             GameTimeLastRespawned = Game.GameTime;
             Game.HandleRespawn();
-            ScannerManager.AbortAllAudio();
+            ScannerManager.AbortAudio();
             ClockManager.UnpauseTime();
         }
         catch (Exception e)
@@ -170,10 +170,11 @@ public static class RespawnManager
         SurrenderManager.RaiseHands();
         ResetPlayer(true, true);
         if (PoliceStation == null)
-            PoliceStation = LocationManager.GetClosestLocationByType(Game.LocalPlayer.Character.Position, LocationType.Police);
+            PoliceStation = LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
         SetPlayerAtLocation(PoliceStation);
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
-        PedManager.ClearPoliceCompletely();
+        PedManager.ClearPolice();
+        VehicleManager.ClearPolice();
         FadeIn();
         SetPoliceFee(PoliceStation.Name, BailFee);
         GameTimeLastSurrenderedToPolice = Game.GameTime;
@@ -212,17 +213,18 @@ public static class RespawnManager
         PlayerStateManager.ResetState(true);
         RespawnInPlace(false);
         if (Hospital == null)
-            Hospital = LocationManager.GetClosestLocationByType(Game.LocalPlayer.Character.Position, LocationType.Hospital);
+            Hospital = LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
         SetPlayerAtLocation(Hospital);
         GameTimeLastDischargedFromHospital = Game.GameTime;
-        PedManager.ClearPoliceCompletely();
+        PedManager.ClearPolice();
+        VehicleManager.ClearPolice();
         SetHospitalFee(Hospital.Name);
         FadeIn();   
     }
     public static void ResistArrest()
     {
         PlayerStateManager.ResetState(false);//maxwanted last life maybe wont work?
-        WantedLevelManager.ResetPoliceState();
+        WantedLevelManager.RefreshPoliceState();
         WantedLevelManager.SetWantedLevel(PlayerStateManager.WantedLevel, "Resisting Arrest", true);
         SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
@@ -386,7 +388,7 @@ public static class RespawnManager
     }
     private static void CheckWeapons()
     {
-        if (!PedDamageManager.PlayerKilledCops.Any())
+        if (!PedDamageManager.KilledAnyCops)
         {
             RemoveIllegalWeapons();
         }

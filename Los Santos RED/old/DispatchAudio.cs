@@ -568,7 +568,7 @@ public static class DispatchAudio
     //}
     //private static void CheckEvents()
     //{
-    //    //if (PlayerState.WantedLevel == 5 && !ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.AgencyClassification == Agency.Classification.Military))
+    //    //if (PlayerState.WantedLevel == 5 && !ReportedMilitaryDeployed && PedList.CopPeds.Any(x => x.AssignedAgency.AgencyClassification == Classification.Military))
     //    //{
     //    //    AddDispatchToQueue(new DispatchQueueItem(AvailableDispatch.MilitaryDeployed, 1));
     //    //}

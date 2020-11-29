@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 public static class RadioManager
 {
+    private static bool MobileEnabled;
     private static string CurrentRadioStationName;
-    public static bool AutoTune { get; private set; }
+    public static bool AutoTune { get; set; }
     public static string AutoTuneStation { get; set; }
     public static bool IsRunning { get; set; }
-    public static bool WantedLevelTune { get; set; }
     public static bool CanChangeStation
     {
         get
@@ -33,7 +33,6 @@ public static class RadioManager
         IsRunning = true;
         AutoTune = true;
         AutoTuneStation = "RADIO_19_USER";
-        WantedLevelTune = false;
     }
     public static void Dispose()
     {
@@ -47,14 +46,30 @@ public static class RadioManager
             CheckAutoTuning();
         }
     }
+    public static void ChangeStation(string StationName)
+    {
+        if (CanChangeStation)
+        {
+            if (!Game.LocalPlayer.Character.IsOnBike)
+            {
+                ChangeStationAnimation(StationName);
+            }
+            else
+            {
+                SetRadioStation(StationName);
+            }
+        }
+    }
     private static void EnablePoliceCarMusic()
     {
         if (PlayerStateManager.IsInVehicle && VehicleEngineManager.IsEngineRunning && Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
         {
-           NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
+            MobileEnabled = true;
+            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
         }
         else
         {
+            MobileEnabled = false;
             NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
         }
     }
@@ -73,20 +88,6 @@ public static class RadioManager
                 {
                     SetRadioStation(AutoTuneStation);
                 }
-            }
-        }
-    }
-    public static void ChangeStation(string StationName)
-    {
-        if(CanChangeStation)
-        {
-            if (!Game.LocalPlayer.Character.IsOnBike)
-            {
-                ChangeStationAnimation(StationName);
-            }
-            else
-            {
-                SetRadioStation(StationName);
             }
         }
     }
@@ -121,7 +122,16 @@ public static class RadioManager
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
         {
             Debugging.WriteToLog("RadioTuning", string.Format("Tuned: {0} Desired: {1}", CurrentRadioStationName, StationName));
-            NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
+
+            if(MobileEnabled)
+            {
+                NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_NAME", StationName);
+            }
+            else
+            {
+                NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
+            }
+            
         }
     }
 }

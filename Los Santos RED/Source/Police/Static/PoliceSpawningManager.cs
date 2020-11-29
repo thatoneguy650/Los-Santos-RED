@@ -61,8 +61,7 @@ public static class PoliceSpawningManager
         }
         CreatedEntities.Clear();
     }
-
-    public static void CheckRemove()
+    public static void Tick()
     {
         if (IsRunning)
         {
@@ -99,7 +98,7 @@ public static class PoliceSpawningManager
 
             if (CopCar != null && CopCar.VehicleEnt.Exists())
             {
-                PedManager.PoliceVehicles.Add(CopCar.VehicleEnt);
+                VehicleManager.PoliceVehicles.Add(CopCar.VehicleEnt);
                 List<string> RequiredPedModels = new List<string>();
                 if (CurrentVehicleInfo != null && CurrentVehicleInfo.AllowedPedModels.Any())
                 {
@@ -355,7 +354,7 @@ public static class PoliceSpawningManager
 
         if (Cop.IsMale && General.MyRand.Next(1, 11) <= 4) //40% Chance of Vest
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 9, 2, 0, 2);//Vest male only
-        if (!PolicePedManager.IsNightTime)
+        if (!PlayerStateManager.IsNightTime)
             NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", Cop, 1, 0, 0, 2);//Sunglasses
 
         if (MyInfo.RequiredVariation != null)

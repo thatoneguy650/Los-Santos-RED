@@ -19,16 +19,13 @@ public static class ClockManager
     private static int ClockHours;
     private static uint GameTimeLastSetClock;
     private static bool IsPaused;
-
     private static int StoredClockSeconds;
     private static int StoredClockMinutes;
     private static int StoredClockHours;
-
     private static int Interval = 1000;
     private static int ClockMultiplier = 1;
-
     public static bool IsRunning { get; set; }
-    public static bool OverrideToFastest { get; set; } = false;
+    public static bool OverrideToFastest { get; set; }
     public static string DayOfWeek
     {
         get
@@ -51,14 +48,13 @@ public static class ClockManager
                 return "Sunday";
         }
     }
-   public static string CurrentTime
+    public static string CurrentTime
     {
         get
         {
             return string.Format("Current Time: {0}:{1}:{2}", NativeFunction.CallByName<int>("GET_CLOCK_HOURS"), NativeFunction.CallByName<int>("GET_CLOCK_MINUTES"), NativeFunction.CallByName<int>("GET_CLOCK_SECONDS"));
         }
-    }
-    
+    }  
     public static void Initialize()
     {
         IsRunning = true;

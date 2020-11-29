@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 public static class MuggingManager
 {
     public static bool IsRunning { get; set; }
-    public static bool IsMugging { get; set; }
+    public static bool IsMugging { get; private set; }
     public static void Initialize()
     {
         IsRunning = true;

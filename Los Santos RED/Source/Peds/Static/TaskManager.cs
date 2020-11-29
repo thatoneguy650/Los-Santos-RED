@@ -29,7 +29,7 @@ public static class TaskManager
     {
         IsRunning = false;
     }
-    public static void UpdateTaskableCops()
+    public static void UpdateTaskablePeds()
     {
         if (IsRunning)
         {

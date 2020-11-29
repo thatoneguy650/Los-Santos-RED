@@ -13,8 +13,8 @@ public static class SearchModeManager
     private static bool PrevIsInActiveMode;
     private static uint GameTimeStartedSearchMode;
     private static uint GameTimeStartedActiveMode;
-    public static bool IsInSearchMode { get; set; }
-    public static bool IsInActiveMode { get; set; }
+    public static bool IsInSearchMode { get; private set; }
+    public static bool IsInActiveMode { get; private set; }
     public static bool IsRunning { get; set; }
     public static uint TimeInSearchMode
     {
@@ -191,8 +191,6 @@ public static class SearchModeManager
     }
     private static void EndSearchMode()
     {
-        Debugging.WriteToLog("SearchMode", string.Format("End Search Mode Start, IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", IsInSearchMode, IsInActiveMode, TimeInSearchMode, TimeInActiveMode));
-        Debugging.WriteToLog("SearchMode", string.Format("End Search Mode Start, AnyRecentlySeenPlayer {0},CurrentSearchTime {1}, CurrentActiveTime {2}", PolicePedManager.AnyRecentlySeenPlayer, CurrentSearchTime, CurrentActiveTime));
         IsInActiveMode = false;
         IsInSearchMode = false;
         PrevIsInSearchMode = IsInSearchMode;
@@ -200,8 +198,7 @@ public static class SearchModeManager
         GameTimeStartedSearchMode = 0;
         GameTimeStartedActiveMode = 0;
         WantedLevelManager.SetWantedLevel(0, "Search Mode Timeout", true);
-        Debugging.WriteToLog("SearchMode", string.Format("End Search Mode End, IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", IsInSearchMode, IsInActiveMode, TimeInSearchMode, TimeInActiveMode));
-        Debugging.WriteToLog("SearchMode", string.Format("End Search Mode End, AnyRecentlySeenPlayer {0},CurrentSearchTime {1}, CurrentActiveTime {2}", PolicePedManager.AnyRecentlySeenPlayer, CurrentSearchTime, CurrentActiveTime));
+        Debugging.WriteToLog("SearchMode", "Stop Search Mode");
 
     }
     private static void HandleFlashing()

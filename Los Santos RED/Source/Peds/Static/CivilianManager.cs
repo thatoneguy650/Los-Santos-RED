@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 public static class CivilianManager
 {
     public static bool IsRunning { get; set; }
-    public static bool AnyCanSeePlayer { get; set; }
-    public static bool AnyCanHearPlayer { get; set; }
-    public static bool AnyCanRecognizePlayer { get; set; }
+    public static bool AnyCanSeePlayer { get; private set; }
+    public static bool AnyCanHearPlayer { get; private set; }
+    public static bool AnyCanRecognizePlayer { get; private set; }
     public static void Initialize()
     {
         IsRunning = true;
@@ -35,7 +35,7 @@ public static class CivilianManager
             MyPed.Update();
         }
         PedManager.Civilians.RemoveAll(x => !x.Pedestrian.Exists()  || x.Pedestrian.IsDead);
-        PedManager.CivilianVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
+        VehicleManager.CivilianVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
     }
     private static void UpdateRecognition()
     {

@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 public static class NameManager
 {
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Names.xml";
-
-    public static List<PedName> NameList;
+    private static List<PedName> NameList;
     public static void Initialize()
     {
         ReadConfig();
@@ -19,19 +18,6 @@ public static class NameManager
     {
 
     }
-    public static void ReadConfig()
-    {
-        if (File.Exists(ConfigFileName))
-        {
-            NameList = General.DeserializeParams<PedName>(ConfigFileName);
-        }
-        else
-        {
-            DefaultConfig();
-            General.SerializeParams(NameList, ConfigFileName);
-        }
-    }
-
     public static string GetRandomName(bool IsMale)
     {
         string Name = "";
@@ -50,7 +36,19 @@ public static class NameManager
     {
         return NameList.Where(x => x.Type == NameType.Unisex).PickRandom().Name + " " + NameList.Where(x => x.Type == NameType.Last).PickRandom().Name;
     }
-    public static void DefaultConfig()
+    private static void ReadConfig()
+    {
+        if (File.Exists(ConfigFileName))
+        {
+            NameList = General.DeserializeParams<PedName>(ConfigFileName);
+        }
+        else
+        {
+            DefaultConfig();
+            General.SerializeParams(NameList, ConfigFileName);
+        }
+    }
+    private static void DefaultConfig()
     {
         NameList = new List<PedName>();
 
@@ -3999,7 +3997,6 @@ public static class NameManager
             NameList.Add(new PedName(Name, NameType.Unisex));
         }
     }
-
 }
 
 

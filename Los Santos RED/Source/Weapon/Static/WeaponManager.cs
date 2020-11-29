@@ -12,12 +12,36 @@ using System.Xml.Serialization;
 public static class WeaponManager
 {
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Weapons.xml";
-    public static List<WeaponInformation> WeaponsList;
+    public static List<WeaponInformation> WeaponsList { get; private set; }
     public static void Initialize()
     {
         ReadConfig();
     }
-    public static void ReadConfig()
+    public static WeaponInformation GetWeapon(ulong WeaponHash)
+    {
+        return WeaponsList.Where(x => x.Hash == WeaponHash).FirstOrDefault();
+    }
+    public static WeaponInformation GetWeapon(string WeaponName)
+    {
+        return WeaponsList.Where(x => x.ModelName.ToLower() == WeaponName.ToLower()).FirstOrDefault();
+    }
+    public static List<WeaponComponent> GetAllWeaponVariations(string GunName)
+    {
+        return WeaponsList.Where(x => x.ModelName == GunName).FirstOrDefault().PossibleComponents;
+    }
+    public static WeaponInformation GetRandomWeapon(WeaponCategory MyCategory)
+    {
+        return WeaponsList.Where(x => x.Category == MyCategory).PickRandom();
+    }
+    public static WeaponInformation GetRandomRegularWeapon(WeaponCategory MyCategory)
+    {
+        return WeaponsList.Where(x => x.Category == MyCategory && x.IsRegular).PickRandom();
+    }
+    public static WeaponInformation GetRandomLowEndRegularWeapon()
+    {
+        return WeaponsList.Where(x => x.IsLowEnd && x.IsRegular).PickRandom();
+    }
+    private static void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
@@ -28,10 +52,6 @@ public static class WeaponManager
             DefaultConfig();
             General.SerializeParams(WeaponsList, ConfigFileName);
         }
-    }
-    public static void Dispose()
-    {
-
     }
     private static void DefaultConfig()
     {
@@ -96,9 +116,9 @@ public static class WeaponManager
             //new WeaponVariation("Police3", 0, new List<string> { "Flashlight","Extended Clip" }),
             new WeaponVariation("Player0", 0),
             new WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
-            
+
         };
-        WeaponsList.Add(new WeaponInformation("weapon_pistol", 60, WeaponCategory.Pistol, 1, 453432689, true, false, true) { PossibleComponents = PistolComponents,Variations = PistolVariations, CanPistolSuicide = true });
+        WeaponsList.Add(new WeaponInformation("weapon_pistol", 60, WeaponCategory.Pistol, 1, 453432689, true, false, true) { PossibleComponents = PistolComponents, Variations = PistolVariations, CanPistolSuicide = true });
 
         List<WeaponComponent> PistolMK2Components = new List<WeaponComponent>
         {
@@ -144,7 +164,7 @@ public static class WeaponManager
             new WeaponVariation("Player0", 0),
             new WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_pistol_mk2", 60, WeaponCategory.Pistol, 1, 0xBFE256D4, true, false, true) { PossibleComponents = PistolMK2Components,Variations = PistolMK2Variations, CanPistolSuicide = true });
+        WeaponsList.Add(new WeaponInformation("weapon_pistol_mk2", 60, WeaponCategory.Pistol, 1, 0xBFE256D4, true, false, true) { PossibleComponents = PistolMK2Components, Variations = PistolMK2Variations, CanPistolSuicide = true });
 
         List<WeaponComponent> CombatPistolComponents = new List<WeaponComponent>
         {
@@ -163,7 +183,7 @@ public static class WeaponManager
             new WeaponVariation("Player0", 0),
             new WeaponVariation("Player1", 0, new List<string> { "Suppressor" }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_combatpistol", 60, WeaponCategory.Pistol, 1, 1593441988, true, false, true) { PossibleComponents = CombatPistolComponents,Variations = CombatPistolVariations, CanPistolSuicide = true });
+        WeaponsList.Add(new WeaponInformation("weapon_combatpistol", 60, WeaponCategory.Pistol, 1, 1593441988, true, false, true) { PossibleComponents = CombatPistolComponents, Variations = CombatPistolVariations, CanPistolSuicide = true });
 
 
         List<WeaponComponent> APPistolComponents = new List<WeaponComponent>
@@ -247,9 +267,9 @@ public static class WeaponManager
             //new WeaponVariation("Police1", 0, new List<string> { "Etched Wood Grip Finish" }),
             //new WeaponVariation("Police2", 0, new List<string> { "Flashlight","Extended Clip" }),
             new WeaponVariation("Player0", 0),
-            new WeaponVariation("Player1", 0, new List<string> { "Flashlight","Etched Wood Grip Finish" }),       
+            new WeaponVariation("Player1", 0, new List<string> { "Flashlight","Etched Wood Grip Finish" }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_heavypistol", 60, WeaponCategory.Pistol, 1, 3523564046, true, false, true) { PossibleComponents = HeavyPistolComponents,Variations = HeavyPistolVariations, CanPistolSuicide = true });
+        WeaponsList.Add(new WeaponInformation("weapon_heavypistol", 60, WeaponCategory.Pistol, 1, 3523564046, true, false, true) { PossibleComponents = HeavyPistolComponents, Variations = HeavyPistolVariations, CanPistolSuicide = true });
 
         List<WeaponComponent> VintagePistolComponents = new List<WeaponComponent>
         {
@@ -258,10 +278,10 @@ public static class WeaponManager
             new WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_vintagepistol")
         };
         WeaponsList.Add(new WeaponInformation("weapon_vintagepistol", 60, WeaponCategory.Pistol, 1, 137902532, true, false, true) { PossibleComponents = VintagePistolComponents, CanPistolSuicide = true });
-        
 
-        WeaponsList.Add(new WeaponInformation("weapon_flaregun", 60, WeaponCategory.Pistol, 1, 1198879012, true, false, true) { IsRegular = false,CanPistolSuicide = false });
-        WeaponsList.Add(new WeaponInformation("weapon_marksmanpistol", 60, WeaponCategory.Pistol, 1, 3696079510, true, false, true) { IsRegular = false,CanPistolSuicide = false });
+
+        WeaponsList.Add(new WeaponInformation("weapon_flaregun", 60, WeaponCategory.Pistol, 1, 1198879012, true, false, true) { IsRegular = false, CanPistolSuicide = false });
+        WeaponsList.Add(new WeaponInformation("weapon_marksmanpistol", 60, WeaponCategory.Pistol, 1, 3696079510, true, false, true) { IsRegular = false, CanPistolSuicide = false });
 
         List<WeaponComponent> RevolverComponents = new List<WeaponComponent>
         {
@@ -295,13 +315,13 @@ public static class WeaponManager
             new WeaponComponent("Patriotic", "COMPONENT_REVOLVER_MK2_CAMO_IND_01", 0xD951E867, false, "weapon_revolver_mk2")
         };
         WeaponsList.Add(new WeaponInformation("weapon_revolver_mk2", 60, WeaponCategory.Pistol, 1, 0xCB96392F, true, false, true) { PossibleComponents = RevolverMK2Components, CanPistolSuicide = true });
-        
+
         WeaponsList.Add(new WeaponInformation("weapon_doubleaction", 60, WeaponCategory.Pistol, 1, 0x97EA20B8, true, false, true) { CanPistolSuicide = true });
         List<WeaponComponent> RayGunComponents = new List<WeaponComponent>
         {
             new WeaponComponent("Festive tint", "COMPONENT_RAYPISTOL_VARMOD_XMAS18", 0xD7DBF707, false, "weapon_raypistol")
         };
-        WeaponsList.Add(new WeaponInformation("weapon_raypistol", 60, WeaponCategory.Pistol, 1, 0xAF3696A1, true, false, false) { IsRegular = false, PossibleComponents = RayGunComponents,CanPistolSuicide = false });
+        WeaponsList.Add(new WeaponInformation("weapon_raypistol", 60, WeaponCategory.Pistol, 1, 0xAF3696A1, true, false, false) { IsRegular = false, PossibleComponents = RayGunComponents, CanPistolSuicide = false });
 
         //Shotgun
         List<WeaponComponent> PumpShotgunComponents = new List<WeaponComponent>
@@ -315,7 +335,7 @@ public static class WeaponManager
             //new WeaponVariation("Police0", 0),
             //new WeaponVariation("Police1", 0, new List<string> { "Flashlight" }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_pumpshotgun", 32, WeaponCategory.Shotgun, 2, 487013001, false, true, true) { PossibleComponents = PumpShotgunComponents,Variations = PumpShotgunVariations });
+        WeaponsList.Add(new WeaponInformation("weapon_pumpshotgun", 32, WeaponCategory.Shotgun, 2, 487013001, false, true, true) { PossibleComponents = PumpShotgunComponents, Variations = PumpShotgunVariations });
 
         List<WeaponComponent> PumpShotgunMK2Components = new List<WeaponComponent>
         {
@@ -349,7 +369,7 @@ public static class WeaponManager
             //new WeaponVariation("Police2", 0, new List<string> { "Holographic Sight"}),
             //new WeaponVariation("Police3", 0, new List<string> { "Holographic Sight","Flashlight" }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_pumpshotgun_mk2", 32, WeaponCategory.Shotgun, 2, 0x555AF99A, false, true, true) { PossibleComponents = PumpShotgunMK2Components,Variations = PumpShotgunMK2Variations });
+        WeaponsList.Add(new WeaponInformation("weapon_pumpshotgun_mk2", 32, WeaponCategory.Shotgun, 2, 0x555AF99A, false, true, true) { PossibleComponents = PumpShotgunMK2Components, Variations = PumpShotgunMK2Variations });
 
         List<WeaponComponent> SawnOffShotgunComponents = new List<WeaponComponent>
         {
@@ -374,7 +394,7 @@ public static class WeaponManager
             new WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_bullpupshotgun")
         };
         WeaponsList.Add(new WeaponInformation("weapon_bullpupshotgun", 32, WeaponCategory.Shotgun, 2, 2640438543, false, true, true) { PossibleComponents = BullpupShotgunComponents });
-        
+
         WeaponsList.Add(new WeaponInformation("weapon_musket", 32, WeaponCategory.Shotgun, 2, 2828843422, false, true, true) { IsRegular = false });
 
         List<WeaponComponent> HeavyShotgunComponents = new List<WeaponComponent>
@@ -387,7 +407,7 @@ public static class WeaponManager
             new WeaponComponent("Grip", "COMPONENT_AT_AR_AFGRIP", 0xC164F53, false, "weapon_heavyshotgun")
         };
         WeaponsList.Add(new WeaponInformation("weapon_heavyshotgun", 32, WeaponCategory.Shotgun, 2, 984333226, false, true, true) { PossibleComponents = HeavyShotgunComponents });
-        
+
         WeaponsList.Add(new WeaponInformation("weapon_dbshotgun", 32, WeaponCategory.Shotgun, 2, 4019527611, false, true, false) { CanPistolSuicide = true });
         WeaponsList.Add(new WeaponInformation("weapon_autoshotgun", 32, WeaponCategory.Shotgun, 2, 317205821, false, true, false));
         //SMG
@@ -408,7 +428,7 @@ public static class WeaponManager
             new WeaponVariation("Player2", 0, new List<string> { "Extended Clip" }),
             new WeaponVariation("Player3", 0, new List<string> { "Extended Clip", "Suppressor" }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_microsmg", 32, WeaponCategory.SMG, 2, 324215364, true, false, false) { PossibleComponents = MicroSMGComponents,Variations = MicroSMGVariations ,CanPistolSuicide = true});
+        WeaponsList.Add(new WeaponInformation("weapon_microsmg", 32, WeaponCategory.SMG, 2, 324215364, true, false, false) { PossibleComponents = MicroSMGComponents, Variations = MicroSMGVariations, CanPistolSuicide = true });
 
 
         List<WeaponComponent> SMGComponents = new List<WeaponComponent>
@@ -493,7 +513,7 @@ public static class WeaponManager
             new WeaponVariation("Player2", 0, new List<string> { "Scope", "Grip" }),
             new WeaponVariation("Player3", 0, new List<string> { "Grip","Flashlight","Extended Clip" }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_combatpdw", 32, WeaponCategory.SMG, 2, 171789620, false, true, false) { PossibleComponents = CombatPDWComponents,Variations = CombatPDWVariations });
+        WeaponsList.Add(new WeaponInformation("weapon_combatpdw", 32, WeaponCategory.SMG, 2, 171789620, false, true, false) { PossibleComponents = CombatPDWComponents, Variations = CombatPDWVariations });
 
 
         List<WeaponComponent> MachinePistolComponents = new List<WeaponComponent>
@@ -503,7 +523,7 @@ public static class WeaponManager
             new WeaponComponent("Drum Magazine", "COMPONENT_MACHINEPISTOL_CLIP_03", 0xA9E9CAF4, false, "weapon_machinepistol"),
             new WeaponComponent("Suppressor", "COMPONENT_AT_PI_SUPP", 0xC304849A, false, "weapon_machinepistol")
         };
-        WeaponsList.Add(new WeaponInformation("weapon_machinepistol", 32, WeaponCategory.SMG, 2, 3675956304, true, false, false) { PossibleComponents = MachinePistolComponents,CanPistolSuicide = true });
+        WeaponsList.Add(new WeaponInformation("weapon_machinepistol", 32, WeaponCategory.SMG, 2, 3675956304, true, false, false) { PossibleComponents = MachinePistolComponents, CanPistolSuicide = true });
 
 
 
@@ -512,7 +532,7 @@ public static class WeaponManager
             new WeaponComponent("Default Clip", "COMPONENT_MINISMG_CLIP_01", 0x84C8B2D3, false, "weapon_minismg"),
             new WeaponComponent("Extended Clip", "COMPONENT_MINISMG_CLIP_02", 0x937ED0B7, false, "weapon_minismg")
         };
-        WeaponsList.Add(new WeaponInformation("weapon_minismg", 32, WeaponCategory.SMG, 2, 3173288789, true, false, false) { PossibleComponents = MiniSMGComponents,CanPistolSuicide = true });
+        WeaponsList.Add(new WeaponInformation("weapon_minismg", 32, WeaponCategory.SMG, 2, 3173288789, true, false, false) { PossibleComponents = MiniSMGComponents, CanPistolSuicide = true });
 
         WeaponsList.Add(new WeaponInformation("weapon_raycarbine", 32, WeaponCategory.SMG, 2, 0x476BF155, true, false, false) { IsRegular = false });
         //AR
@@ -590,7 +610,7 @@ public static class WeaponManager
             new WeaponVariation("Player2", 0, new List<string> { "Scope", "Grip" }),
             new WeaponVariation("Player3", 0, new List<string> { "Grip","Flashlight","Extended Clip" }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_carbinerifle", 120, WeaponCategory.AR, 3, 2210333304, false, true, false) { PossibleComponents = CarbineRifleComponents,Variations = CarbineRifleVariations });
+        WeaponsList.Add(new WeaponInformation("weapon_carbinerifle", 120, WeaponCategory.AR, 3, 2210333304, false, true, false) { PossibleComponents = CarbineRifleComponents, Variations = CarbineRifleVariations });
 
 
         List<WeaponComponent> CarbineRifleMK2Components = new List<WeaponComponent>
@@ -639,7 +659,7 @@ public static class WeaponManager
             new WeaponVariation("Player2", 0, new List<string> { "Holographic Sight", "Grip","Flashlight","Extended Clip"  }),
             new WeaponVariation("Player3", 0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip"  }),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_carbinerifle_mk2", 120, WeaponCategory.AR, 3, 0xFAD1F1C9, false, true, false) { PossibleComponents = CarbineRifleMK2Components,Variations = CarbineRifleMK2Variations });
+        WeaponsList.Add(new WeaponInformation("weapon_carbinerifle_mk2", 120, WeaponCategory.AR, 3, 0xFAD1F1C9, false, true, false) { PossibleComponents = CarbineRifleMK2Components, Variations = CarbineRifleMK2Variations });
 
 
         List<WeaponComponent> AdvancedRifleComponents = new List<WeaponComponent>
@@ -973,29 +993,5 @@ public static class WeaponManager
         WeaponsList.Add(new WeaponInformation("weapon_fireextinguisher", 10, WeaponCategory.Misc, 0, 0x060EC506, false, false, false));
         WeaponsList.Add(new WeaponInformation("weapon_hazardcan", 10, WeaponCategory.Misc, 0, 0xBA536372, false, false, false));
 
-    }
-    public static WeaponInformation GetWeapon(ulong WeaponHash)
-    {
-        return WeaponsList.Where(x => x.Hash == WeaponHash).FirstOrDefault();
-    }
-    public static WeaponInformation GetWeapon(string WeaponName)
-    {
-        return WeaponsList.Where(x => x.ModelName.ToLower() == WeaponName.ToLower()).FirstOrDefault();
-    }
-    public static List<WeaponComponent> GetAllWeaponVariations(string GunName)
-    {
-        return WeaponsList.Where(x => x.ModelName == GunName).FirstOrDefault().PossibleComponents;
-    }
-    public static WeaponInformation GetRandomWeapon(WeaponCategory MyCategory)
-    {
-        return WeaponsList.Where(x => x.Category == MyCategory).PickRandom();
-    }
-    public static WeaponInformation GetRandomRegularWeapon(WeaponCategory MyCategory)
-    {
-        return WeaponsList.Where(x => x.Category == MyCategory && x.IsRegular).PickRandom();
-    }
-    public static WeaponInformation GetRandomLowEndRegularWeapon()
-    {
-        return WeaponsList.Where(x => x.IsLowEnd && x.IsRegular).PickRandom();
     }
 }

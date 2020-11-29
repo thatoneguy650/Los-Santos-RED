@@ -10,30 +10,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 public static class PolicePedManager
-
 {
-    public static bool IsRunning { get; set; } = true;
-    public static bool AnyCanSeePlayer { get; set; }
-    public static bool AnyCanHearPlayerShooting { get; set; }
-    public static bool AnyCanRecognizePlayer { get; set; }
-    public static bool AnyRecentlySeenPlayer { get; set; }
-    public static bool AnySeenPlayerCurrentWanted { get; set; }
+    public static bool IsRunning { get; set; }
+    public static bool AnyCanSeePlayer { get; private set; }
+    public static bool AnyCanHearPlayerShooting { get; private set; }
+    public static bool AnyCanRecognizePlayer { get; private set; }
+    public static bool AnyRecentlySeenPlayer { get; private set; }
+    public static bool AnySeenPlayerCurrentWanted { get; private set; }
     public static Vector3 PlaceLastSeenPlayer { get; set; }
     public static Vector3 PlayerLastSeenForwardVector { get; set; }
-    public static bool IsNightTime { get; set; }
     public static int PreviousWantedLevel { get; set; }  
     public static bool WasPlayerLastSeenInVehicle { get; set; }
     public static float PlayerLastSeenHeading { get; set; }
-    //public static bool InSearchMode
-    //{
-    //    get
-    //    {
-    //        if (PlayerState.AreStarsGreyedOut && PedList.Cops.All(x => !x.RecentlySeenPlayer))
-    //            return true;
-    //        else
-    //            return false;
-    //    }
-    //}
     public static float ActiveDistance
     {
         get
@@ -64,7 +52,6 @@ public static class PolicePedManager
         WasPlayerLastSeenInVehicle = false;
         PlayerLastSeenHeading = 0f;
         PlayerLastSeenForwardVector = default;
-        IsNightTime = false;
         PreviousWantedLevel = 0;
         IsRunning = true;
     }
@@ -79,6 +66,10 @@ public static class PolicePedManager
             UpdateCops();
             UpdateRecognition();
         }
+    }
+    public static void Reset()
+    {
+        AnySeenPlayerCurrentWanted = false;
     }
     private static void UpdateCops()
     {
@@ -97,7 +88,7 @@ public static class PolicePedManager
             PoliceSpawningManager.MarkNonPersistent(Cop);
         }
         PedManager.Cops.RemoveAll(x => x.Pedestrian.IsDead);
-        PedManager.PoliceVehicles.RemoveAll(x => !x.Exists());
+        VehicleManager.PoliceVehicles.RemoveAll(x => !x.Exists());
     }
     private static void UpdateRecognition()
     {

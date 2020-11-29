@@ -11,7 +11,6 @@ using System.Windows.Forms;
 
 public static class PoliceSpeechManager
 {
-    private static readonly Random rnd;
     private static List<string> DeadlyChaseSpeech;
     private static List<string> UnarmedChaseSpeech;
     private static List<string> CautiousChaseSpeech;
@@ -24,7 +23,11 @@ public static class PoliceSpeechManager
     public static void Initialize()
     {
         IsRunning = true;
-        SetupLists();
+        DefaultConfig();
+    }
+    public static void Dispose()
+    {
+        IsRunning = false;
     }
     public static void Tick()
     {
@@ -41,11 +44,7 @@ public static class PoliceSpeechManager
             }
         }
     }
-    public static void Dispose()
-    {
-        IsRunning = false;
-    }
-    private static void SetupLists()
+    private static void DefaultConfig()
     {
         DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
         UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
@@ -86,11 +85,6 @@ public static class PoliceSpeechManager
     {
         private uint GameTimeLastSpoke;
         private uint GameTimeLastRadioed;
-
-        public SpeakingCop(Cop assignedCop)
-        {
-            AssignedCop = assignedCop;
-        }
 
         public Cop AssignedCop { get; set; }
         public bool IsSpeechTimedOut
@@ -138,6 +132,10 @@ public static class PoliceSpeechManager
                 else
                     return false;
             }
+        }
+        public SpeakingCop(Cop assignedCop)
+        {
+            AssignedCop = assignedCop;
         }
         public void Speak()
         {

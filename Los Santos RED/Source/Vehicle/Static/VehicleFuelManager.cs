@@ -16,7 +16,7 @@ internal static class VehicleFuelManager
     private static bool NearGasPumps;
     private static uint GameTimeLastCheckedFuel;
     private static float CurrentFuelLevel;
-    public static bool CanPumpFuel { get;private set; }
+    public static bool CanPumpFuel { get; private set; }
     public static bool IsRunning { get; set; }
     public static string FuelUIText
     {
@@ -24,8 +24,7 @@ internal static class VehicleFuelManager
         {
             return string.Format(" Fuel {0}", (Game.LocalPlayer.Character.CurrentVehicle.FuelLevel / 100f).ToString("P2"));
         }
-    }
-    
+    }   
     public static void Initialize()
     {
         IsRunning = true;
@@ -56,6 +55,17 @@ internal static class VehicleFuelManager
             }
         }
     }
+    public static void PumpFuel()
+    {
+        if (Game.LocalPlayer.Character.GetCash() >= 1 && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel < 100f)
+        {
+            Game.LocalPlayer.Character.GiveCash(-1);
+            if (CurrentFuelLevel + 1f <= 100f)
+                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentFuelLevel + 1f;
+            else
+                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = 100f;
+        }
+    }
     private static void EngineRunningTick()
     {
         if (Game.GameTime - GameTimeLastCheckedFuel >= 200)
@@ -74,9 +84,9 @@ internal static class VehicleFuelManager
         NearGasPumps = false;
         CanPumpFuel = false;
     }
-   private static void EngineOffTick()
+    private static void EngineOffTick()
     {
-        GameLocation ClosestGasStation = LocationManager.GetClosestLocationByType(Game.LocalPlayer.Character.Position, LocationType.GasStation);
+        GameLocation ClosestGasStation = LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.GasStation);
         NearGasPumps = false;
         if (ClosestGasStation != null && Game.LocalPlayer.Character.Position.DistanceTo2D(ClosestGasStation.LocationPosition) <= 50f)
         {
@@ -102,17 +112,6 @@ internal static class VehicleFuelManager
         //{
         //    PumpFuel();
         //}
-    }
-    public static void PumpFuel()
-    {
-        if (Game.LocalPlayer.Character.GetCash() >= 1 && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel < 100f)
-        {
-            Game.LocalPlayer.Character.GiveCash(-1);
-            if (CurrentFuelLevel + 1f <= 100f)
-                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentFuelLevel + 1f;
-            else
-                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = 100f;
-        }
     }
 }
 

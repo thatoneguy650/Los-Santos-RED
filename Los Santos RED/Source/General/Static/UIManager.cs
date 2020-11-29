@@ -12,13 +12,6 @@ using System.Threading.Tasks;
 
 public static class UIManager
 {
-    private static BigMessageThread BigMessage;
-    private static bool StartedBandagingEffect = false;
-    private static bool StartedBustedEffect = false;
-    private static bool StartedDeathEffect = false;
-    private static uint GameTimeLastDisplayedBleedingHelp;
-
-    public static string DebugLine { get; set; }
     private enum GTAFont
     {
         FontChaletLondon = 0,
@@ -61,8 +54,14 @@ public static class UIManager
         MAX_HUD_WEAPONS = 22,
         MAX_SCRIPTED_HUD_COMPONENTS = 141,
     }
+    private static BigMessageThread BigMessage;
+    private static bool StartedBandagingEffect = false;
+    private static bool StartedBustedEffect = false;
+    private static bool StartedDeathEffect = false;
+    private static uint GameTimeLastDisplayedBleedingHelp;
+
     public static bool IsRunning { get; set; }
-    public static bool RecentlyDisplayedBleedingHelp
+    private static bool RecentlyDisplayedBleedingHelp
     {
         get
         {
@@ -74,12 +73,10 @@ public static class UIManager
                 return false;
         }
     }
-
     public static void Initialize()
     {
         IsRunning= true;
         BigMessage = new BigMessageThread(true);
-       // MainLoop();
     }
     public static void Dispose()
     {
@@ -87,50 +84,49 @@ public static class UIManager
     }
     public static void Tick()
     {
-        //try
-        //{
-            if (SettingsManager.MySettings.General.AlwaysShowHUD)
-                NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
+        if (SettingsManager.MySettings.General.AlwaysShowHUD)
+        {
+            NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
+        }
 
-            if (SettingsManager.MySettings.General.AlwaysShowRadar)
-                NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+        if (SettingsManager.MySettings.General.AlwaysShowRadar)
+        {
+            NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+        }
 
-            if (SettingsManager.MySettings.Police.ShowPoliceRadarBlips)
-                NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
-            else
-                NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
+        if (SettingsManager.MySettings.Police.ShowPoliceRadarBlips)
+        {
+            NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
+        }
+        else
+        {
+            NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
+        }
 
-            if (SettingsManager.MySettings.General.AlwaysShowCash)
-                NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
+        if (SettingsManager.MySettings.General.AlwaysShowCash)
+        {
+            NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
+        }
 
 
-            if (SettingsManager.MySettings.UI.Enabled && !PlayerStateManager.IsBusted && !PlayerStateManager.IsDead)
-            {
-                ShowUI();
-            }
+        if (SettingsManager.MySettings.UI.Enabled && !PlayerStateManager.IsBusted && !PlayerStateManager.IsDead)
+        {
+            ShowUI();
+        }
 
-            ScreenEffectsTick();
-        //}
-        //catch (Exception e)
-        //{
-        //    //ScriptController.Dispose();
-        //    Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //}
+        ScreenEffectsTick();
     }
     private static void ShowUI()
     {
         ShowDebugUI();
-
-
         HideVanillaUI();
+
         DisplayTextOnScreen(GetPlayerStatusDisplay(), SettingsManager.MySettings.UI.PlayerStatusPositionX, SettingsManager.MySettings.UI.PlayerStatusPositionY, SettingsManager.MySettings.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)SettingsManager.MySettings.UI.PlayerStatusJustificationID);
         DisplayTextOnScreen(GetVehicleStatusDisplay(), SettingsManager.MySettings.UI.VehicleStatusPositionX, SettingsManager.MySettings.UI.VehicleStatusPositionY, SettingsManager.MySettings.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)SettingsManager.MySettings.UI.VehicleStatusJustificationID);
         DisplayTextOnScreen(GetZoneDisplay(), SettingsManager.MySettings.UI.ZonePositionX, SettingsManager.MySettings.UI.ZonePositionY, SettingsManager.MySettings.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)SettingsManager.MySettings.UI.ZoneJustificationID);
         DisplayTextOnScreen(GetStreetDisplay(), SettingsManager.MySettings.UI.StreetPositionX, SettingsManager.MySettings.UI.StreetPositionY, SettingsManager.MySettings.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)SettingsManager.MySettings.UI.StreetJustificationID);
 
-
         DisplayHelpText();
-
     }
     private static void DisplayHelpText()
     {
@@ -151,40 +147,24 @@ public static class UIManager
 
         // Lines++;
 
-        DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", InvestigationManager.InInvestigationMode, InvestigationManager.HavePlayerDescription,PlayerStateManager.IsStationary, InvestigationManager.IsSuspicious);
+        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", InvestigationManager.InInvestigationMode, InvestigationManager.HavePlayerDescription,PlayerStateManager.IsStationary, InvestigationManager.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-
         string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", SearchModeManager.IsInSearchMode,SearchModeManager.IsInActiveMode,SearchModeManager.TimeInSearchMode,SearchModeManager.TimeInActiveMode);
-
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", PolicePedManager.AnyRecentlySeenPlayer, PlayerStateManager.AreStarsGreyedOut, SearchModeManager.CurrentSearchTime,PolicePedManager.PlaceLastSeenPlayer);
-
-
-        
-
-
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-
         string DebugLine4 = string.Format("NumberPlateIndexSelected {0}", Debugging.NumberPlateIndexSelected);
-
-
-
-
-
         DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        
+        string DebugLine5 = string.Format("{0}", VehicleIndicatorManager.DebugStatus);
+        DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        //float Between = 0.01f;
+        //float Start = 0.15f;
+        //foreach (string Line in PedDamageManager.AllPedDamageList)
+        //{
+        //    DisplayTextOnScreen(Line, Start, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        //    Start = Start + Between;
+        //}
 
-
-        float Between = 0.01f;
-        float Start = 0.15f;
-        foreach (string Line in PedDamageManager.AllPedDamageList)
-        {
-            DisplayTextOnScreen(Line, Start, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-            Start = Start + Between;
-        }
-        
     }
     private static void ScreenEffectsTick()
     {

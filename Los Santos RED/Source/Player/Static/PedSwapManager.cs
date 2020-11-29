@@ -23,6 +23,8 @@ public static class PedSwapManager
     private static bool CurrentPlayerIsMale = false;
 
     private static string CurrentPlayerModel;
+    public static Vehicle OwnedCar { get; set; }
+    public static string SuspectName { get; set; }
     public static bool RecentlyTakenOver
     {
         get
@@ -33,15 +35,12 @@ public static class PedSwapManager
                 return false;
         }
     }
-    public static Vehicle OwnedCar { get; set; }
-    public static string SuspectName { get; set; }
     public static void Initialize()
     {
         OriginalModel = default;
         LastModelHash = "";
         TakenOverPeds = new List<TakenOverPed>();
         GameTimeLastTakenOver = Game.GameTime;
-        NameManager.Initialize();
         CurrentPlayerModel = Game.LocalPlayer.Character.Model.Name;
         CurrentPedVariation = General.GetPedVariation(Game.LocalPlayer.Character);
         CurrentPlayerIsMale = Game.LocalPlayer.Character.IsMale;
@@ -61,7 +60,10 @@ public static class PedSwapManager
                 return;
 
             if (ClearNearPolice)
-                PedManager.ClearPoliceCompletely();
+            {
+                PedManager.ClearPolice();
+                VehicleManager.ClearPolice();
+            }
 
             StoreTargetPedData(TargetPed);
 
@@ -80,7 +82,6 @@ public static class PedSwapManager
             Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
-
     public static void BecomeMPCharacter(bool IsMale)
     {
         SetPlayerOffset();
@@ -95,7 +96,6 @@ public static class PedSwapManager
         //}
         
     }
-
     private static Ped FindPedToSwapWith(float Radius, bool Nearest)
     {
         Ped PedToReturn = null;

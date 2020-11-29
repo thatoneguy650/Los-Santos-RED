@@ -138,7 +138,8 @@ public static class Debugging
     {
         WantedLevelManager.Reset();
         Game.LocalPlayer.WantedLevel = 0;
-        PedManager.ClearPoliceCompletely();
+        PedManager.ClearPolice();
+        VehicleManager.ClearPolice();
         Game.TimeScale = 1f;
         PlayerStateManager.ResetState(true);
         NativeFunction.Natives.xB4EDDC19532BFB85();

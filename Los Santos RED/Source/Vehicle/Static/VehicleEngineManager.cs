@@ -19,8 +19,8 @@ public static class VehicleEngineManager
     private static uint GameTimeStartedHotwiring;
     private static bool PrevIsHotwiring;
     private static bool IsPlayerInVehicle;
-
     public static Keys EngineToggleKey { get; private set; }
+    public static bool IsEngineRunning { get; private set; }
     public static bool IsRunning { get; set; }
     public static bool IsHotwiring
     {
@@ -34,7 +34,6 @@ public static class VehicleEngineManager
                 return false;
         }
     }
-    public static bool IsEngineRunning { get; private set; }
     public static bool CanToggleEngine
     {
         get
@@ -100,8 +99,7 @@ public static class VehicleEngineManager
             }
         }
     }
-
-    public static void ToggleEngine(bool _animation, bool DesiredEngineStatus)
+    public static void ToggleEngine(bool PerformAnimation, bool DesiredEngineStatus)
     {
         if (TogglingEngine)
             return;
@@ -123,7 +121,7 @@ public static class VehicleEngineManager
                 TogglingEngine = false;
                 return;
             }
-            if (!Game.LocalPlayer.Character.IsOnBike && _animation)
+            if (!Game.LocalPlayer.Character.IsOnBike && PerformAnimation)
             {
                 StartEngineAnimation();
             }

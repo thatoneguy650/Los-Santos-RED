@@ -34,7 +34,7 @@ public static class SmokingManager
     public static bool IsRunning { get; set; } = true;
     public static Rage.Object PlayersCurrentCigarette { get; set; } = null;
     public static bool PlayersCurrentCigaretteIsLit { get; set; } = false;
-    public static CigarettePosition CurrentAttachedPosition { get; set; } = CigarettePosition.None;
+    private static CigarettePosition CurrentAttachedPosition { get; set; } = CigarettePosition.None;
     public static bool CancelSmoking
     {
         get
@@ -49,13 +49,13 @@ public static class SmokingManager
     {
         rnd = new Random();
     }
-    public enum CigarettePosition
+    private enum CigarettePosition
     {
         None = -1,
         Hand = 0,
         Mouth = 1,
     }
-    public enum CigaretteAnimation
+    private enum CigaretteAnimation
     {
         None = -1,
         Start = 0,

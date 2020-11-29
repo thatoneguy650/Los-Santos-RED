@@ -335,7 +335,7 @@ internal static class MenuManager
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
         menuDeathHospitalRespawn = new UIMenuListItem("Give Up",
             "Respawn at the nearest hospital. Lose a hospital fee and your guns.",
-            LocationManager.GetAllLocationsOfType(LocationType.Hospital));
+            LocationManager.GetLocations(LocationType.Hospital));
         menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
             "Takes over a random pedestrian around the player.",
             new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M"});
@@ -359,7 +359,7 @@ internal static class MenuManager
         menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         menuBustedSurrender = new UIMenuListItem("Surrender",
             "Surrender and get out on bail. Lose bail money and your guns.",
-            LocationManager.GetAllLocationsOfType(LocationType.Police));
+            LocationManager.GetLocations(LocationType.Police));
         menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
             "Takes over a random pedestrian around the player.",
             new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M"});
@@ -490,15 +490,15 @@ internal static class MenuManager
 
     private static void UpdateClosestHospitalIndex()
     {
-        menuDeathHospitalRespawn.Index = LocationManager.GetAllLocationsOfType(LocationType.Hospital)
-            .IndexOf(LocationManager.GetClosestLocationByType(Game.LocalPlayer.Character.Position,
+        menuDeathHospitalRespawn.Index = LocationManager.GetLocations(LocationType.Hospital)
+            .IndexOf(LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position,
                 LocationType.Hospital));
     }
 
     private static void UpdateClosestPoliceStationIndex()
     {
-        menuBustedSurrender.Index = LocationManager.GetAllLocationsOfType(LocationType.Police)
-            .IndexOf(LocationManager.GetClosestLocationByType(Game.LocalPlayer.Character.Position,
+        menuBustedSurrender.Index = LocationManager.GetLocations(LocationType.Police)
+            .IndexOf(LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position,
                 LocationType.Police));
     }
 
@@ -725,7 +725,7 @@ internal static class MenuManager
             if (list == menuDeathHospitalRespawn)
             {
                 CurrentSelectedHospitalLocation =
-                    LocationManager.GetAllLocationsOfType(LocationType.Hospital)[index];
+                    LocationManager.GetLocations(LocationType.Hospital)[index];
                 Debugging.WriteToLog("menuDeathHospitalRespawn Changed",
                     string.Format("Location: {0}", CurrentSelectedHospitalLocation));
             }
@@ -734,7 +734,7 @@ internal static class MenuManager
         {
             if (list == menuBustedSurrender)
             {
-                CurrentSelectedSurrenderLocation = LocationManager.GetAllLocationsOfType(LocationType.Police)[index];
+                CurrentSelectedSurrenderLocation = LocationManager.GetLocations(LocationType.Police)[index];
                 Debugging.WriteToLog("menuBustedSurrender Changed",
                     string.Format("Location: {0}", CurrentSelectedSurrenderLocation));
             }

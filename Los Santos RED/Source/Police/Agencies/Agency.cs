@@ -77,16 +77,7 @@ public class Agency
                 return false;
         }
     }
-    public enum Classification
-    {
-        Police = 0,
-        Sheriff = 1,
-        Federal = 2,
-        State = 3,
-        Security = 4,
-        Military = 5,
-        Other = 6,
-    }
+
     public VehicleInformation GetVehicleInfo(Vehicle CopCar)
     {
         return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();

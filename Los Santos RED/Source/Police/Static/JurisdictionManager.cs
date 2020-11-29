@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 public static class JurisdictionManager
 {
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Jurisdiction.xml";
+    private static bool UseVanillaConfig = true;
     private static List<ZoneJurisdiction> ZoneJurisdictions = new List<ZoneJurisdiction>();
     private static List<CountyJurisdiction> CountyJurisdictions = new List<CountyJurisdiction>();
 
@@ -19,7 +20,69 @@ public static class JurisdictionManager
     {
 
     }
-    public static void ReadConfig()
+    public static Agency GetMainAgency(string ZoneName)
+    {
+        if (ZoneJurisdictions.Any())
+        {
+            ZoneJurisdiction cool = ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(y => y.Priority).FirstOrDefault();
+            if (cool != null)
+            {
+                return cool.GameAgency;
+            }
+        }
+        return null;
+    }
+    public static Agency GetRandomAgency(string ZoneName)
+    {
+        if (ZoneJurisdictions.Any())
+        {
+            List<ZoneJurisdiction> ToPickFrom = ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn).ToList();
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+            int RandomPick = General.MyRand.Next(0, Total);
+            foreach (ZoneJurisdiction MyJurisdiction in ToPickFrom)
+            {
+                int SpawnChance = MyJurisdiction.CurrentSpawnChance;
+                if (RandomPick < SpawnChance)
+                {
+                    return MyJurisdiction.GameAgency;
+                }
+                RandomPick -= SpawnChance;
+            }
+        }
+        return null;
+    }
+    public static Agency GetRandomCountyAgency(string ZoneName)
+    {
+        Zone MyZone = ZoneManager.GetZone(ZoneName);
+        if (MyZone != null)
+        {
+            List<CountyJurisdiction> ToPickFrom = CountyJurisdictions.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn).ToList();
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+            int RandomPick = General.MyRand.Next(0, Total);
+            foreach (CountyJurisdiction MyJurisdiction in ToPickFrom)
+            {
+                int SpawnChance = MyJurisdiction.CurrentSpawnChance;
+                if (RandomPick < SpawnChance)
+                {
+                    return MyJurisdiction.GameAgency;
+                }
+                RandomPick -= SpawnChance;
+            }
+        }
+        return null;
+    }
+    public static List<Agency> GetAgencies(string ZoneName)
+    {
+        if (ZoneJurisdictions.Any())
+        {
+            return ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn).OrderBy(k => k.CurrentSpawnChance).Select(y => y.GameAgency).ToList();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    private static void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
@@ -27,8 +90,14 @@ public static class JurisdictionManager
         }
         else
         {
-            //CustomConfig();
-            DefaultConfig();
+            if (UseVanillaConfig)
+            {
+                DefaultConfig();
+            }
+            else
+            {
+                CustomConfig();
+            }
             General.SerializeParams(ZoneJurisdictions, ConfigFileName);
         }
     }
@@ -518,80 +587,6 @@ public static class JurisdictionManager
             new ZoneJurisdiction("LSSD","ZQ_UAR", 1, 15, 5)
 
         };
-    }
-    public static Agency GetMainAgency(string ZoneName)
-    {
-        if (ZoneJurisdictions.Any())
-        {
-            ZoneJurisdiction cool = ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(y => y.Priority).FirstOrDefault();
-            if (cool != null)
-            {
-                return cool.GameAgency;
-            }
-        }
-        return null;
-    }
-    public static Agency GetRandomAgency(string ZoneName)
-    {
-        if (ZoneJurisdictions.Any())
-        {
-            List<ZoneJurisdiction> ToPickFrom = ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn).ToList();
-            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-            int RandomPick = General.MyRand.Next(0, Total);
-            foreach (ZoneJurisdiction MyJurisdiction in ToPickFrom)
-            {
-                int SpawnChance = MyJurisdiction.CurrentSpawnChance;
-                if (RandomPick < SpawnChance)
-                {
-                    return MyJurisdiction.GameAgency;
-                }
-                RandomPick -= SpawnChance;
-            }
-        }
-        return null;
-    }
-    public static Agency GetRandomCountyAgency(string ZoneName)
-    {
-        Zone MyZone = ZoneManager.GetZone(ZoneName);
-        if (MyZone != null)
-        {
-            List<CountyJurisdiction> ToPickFrom = CountyJurisdictions.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn).ToList();
-            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-            int RandomPick = General.MyRand.Next(0, Total);
-            foreach (CountyJurisdiction MyJurisdiction in ToPickFrom)
-            {
-                int SpawnChance = MyJurisdiction.CurrentSpawnChance;
-                if (RandomPick < SpawnChance)
-                {
-                    return MyJurisdiction.GameAgency;
-                }
-                RandomPick -= SpawnChance;
-            }
-        }
-        return null;
-    }
-    public static List<Agency> GetAllAgencies(string ZoneName)
-    {
-        if (ZoneJurisdictions.Any())
-        {
-            return ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn).OrderBy(k => k.CurrentSpawnChance).Select(y => y.GameAgency).ToList();
-        }
-        else
-        {
-            return null;
-        }
-    }
-    public static bool CanSpawnPedOfficers(string zoneInternalName, string agencyInitials)
-    {
-        ZoneJurisdiction ToFind = ZoneJurisdictions.FirstOrDefault(x => x.GameAgency != null && x.GameAgency.Initials == agencyInitials && x.GameZone.InternalGameName == zoneInternalName);
-        if (ToFind == null)
-        {
-            return false;
-        }
-        else
-        {
-            return ToFind.CanSpawnPedestrianOfficers;
-        }
     }
 
 }

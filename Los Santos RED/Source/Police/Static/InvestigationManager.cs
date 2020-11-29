@@ -9,13 +9,12 @@ public static class InvestigationManager
     private static uint GameTimeStartedInvestigation;
     private static uint GameTimeLastInvestigationExpired;
     private static Blip InvestigationBlip;
-
-    public static float InvestigationDistance { get; set; }
+    public static float InvestigationDistance { get; private set; }
     public static Vector3 InvestigationPosition { get; set; }
-    public static float NearInvestigationDistance { get; set; }
-    public static bool InInvestigationMode { get; set; }
-    public static bool HavePlayerDescription { get; set; }
-    public static bool IsRunning { get; set; } = true;
+    public static float NearInvestigationDistance { get; private set; }
+    public static bool InInvestigationMode { get; private set; }
+    public static bool HavePlayerDescription { get; private set; }
+    public static bool IsRunning { get; set; }
     public static bool InvestigationModeExpired
     {
         get
@@ -52,7 +51,6 @@ public static class InvestigationManager
                 return false;
         }
     }
-
     public static bool NearInvestigationPosition
     {
         get
@@ -89,16 +87,16 @@ public static class InvestigationManager
             InvestigationTick();
         }
     }
+    public static void Reset()
+    {
+        InInvestigationMode = false;
+        HavePlayerDescription = false;
+    }
     public static void StartInvestigation(Vector3 PositionToInvestigate,bool HaveDescription)
     {
         InInvestigationMode = true;
         InvestigationPosition = PositionToInvestigate;
         HavePlayerDescription = HaveDescription;
-    }
-    public static void Reset()
-    {
-        InInvestigationMode = false;
-        HavePlayerDescription = false;
     }
     private static void InvestigationTick()
     {

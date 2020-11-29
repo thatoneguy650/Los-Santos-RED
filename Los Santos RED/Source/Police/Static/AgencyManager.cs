@@ -9,10 +9,10 @@ using System.Linq;
 
 public static class AgencyManager
 {
-    private static bool UseVanillaConfig = true;
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Agencies.xml";
-    public static List<Agency> AgenciesList { get; set; }
-    private static int LikelyHoodOfAnySpawn { get; set; } = 5;
+    private static bool UseVanillaConfig = true;
+    private static int LikelyHoodOfAnySpawn = 5;
+    private static List<Agency> AgenciesList;
     public static void Initialize()
     {
         ReadConfig();
@@ -21,7 +21,7 @@ public static class AgencyManager
     {
 
     }
-    public static List<Agency> GetAllSpawnableAgencies(Vector3 Position)
+    public static List<Agency> GetAgencies(Vector3 Position)
     {
         List<Agency> ToReturn = new List<Agency>();
         Street StreetAtPosition = StreetManager.GetStreet(Position);
@@ -53,7 +53,74 @@ public static class AgencyManager
         }
         return ToReturn;
     }
-    public static void ReadConfig()
+    public static Agency GetAgency(Ped Cop)
+    {
+        if (!Cop.IsPoliceArmy())
+        {
+            return null;
+        }
+        if (Cop.IsArmy())
+        {
+            return AgenciesList.Where(x => x.AgencyClassification == Classification.Military).FirstOrDefault();
+        }
+        else if (Cop.IsPolice())
+        {
+            Agency ToReturn;
+            List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
+            if (ModelMatchAgencies.Count > 1)
+            {
+                Zone ZoneFound = ZoneManager.GetZone(Cop.Position);
+                if (ZoneFound != null)
+                {
+                    foreach (Agency ZoneAgency in JurisdictionManager.GetAgencies(ZoneFound.InternalGameName))
+                    {
+                        if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                            return ZoneAgency;
+                    }
+                }
+            }
+            ToReturn = ModelMatchAgencies.FirstOrDefault();
+            if (ToReturn == null)
+            {
+                Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} ped deleting", Cop.Model.Name));
+                Cop.Delete();
+            }
+            return ToReturn;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public static Agency GetAgency(Vehicle CopCar)
+    {
+        Agency ToReturn;
+        List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
+        if (ModelMatchAgencies.Count > 1)
+        {
+            Zone ZoneFound = ZoneManager.GetZone(CopCar.Position);
+            if (ZoneFound != null)
+            {
+                foreach (Agency ZoneAgency in JurisdictionManager.GetAgencies(ZoneFound.InternalGameName))
+                {
+                    if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                        return ZoneAgency;
+                }
+            }
+        }
+        ToReturn = ModelMatchAgencies.FirstOrDefault();
+        if (ToReturn == null)
+        {
+            Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} car deleting", CopCar.Model.Name));
+            CopCar.Delete();
+        }
+        return ToReturn;
+    }
+    public static Agency GetAgency(string AgencyInitials)
+    {
+        return AgenciesList.Where(x => x.Initials.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
+    }
+    private static void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
@@ -277,38 +344,38 @@ public static class AgencyManager
 
         AgenciesList = new List<Agency>
         {
-            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "Blue", Agency.Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "Blue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-DP", "Los Santos Police - Del Pierro Division", "Blue", Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-RH", "Los Santos Police - Rockford Hills Division", "Blue", Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons) { MaxWantedLevelSpawn = 3 },
 
-            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
 
-            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
-            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
+            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
+            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
 
-            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,CanSpawnAnywhere = true},
-            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 6,CanSpawnAnywhere = true },
-            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true },
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,CanSpawnAnywhere = true},
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 6,CanSpawnAnywhere = true },
+            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true },
 
-            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true },
-            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Agency.Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 2 },
-            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Agency.Classification.State, ParkRangers, ParkRangerVehicles, "",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },            
-            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){ MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
+            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true },
+            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 2 },
+            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, ParkRangers, ParkRangerVehicles, "",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },            
+            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){ MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
 
-            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
-            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
+            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
+            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
 
-            new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1, SpawnLimit = 1 },
+            new Agency("~o~", "PRISEC", "Private Security", "White", Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1, SpawnLimit = 1 },
 
-            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
+            new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
 
 
-            new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
+            new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
 
         };
       
@@ -556,109 +623,43 @@ public static class AgencyManager
 
         AgenciesList = new List<Agency>
         {
-            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Agency.Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "DPPD", "Del Pierro Police Department", "Blue", Agency.Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "Blue", Agency.Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, StandardCops, LSPDVehicles, "LS ",AllWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-VW", "Los Santos Police - Vinewood Division", "Blue", Classification.Police, ExtendedStandardCops, VWPDVehicles, "LSV ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LSPD-ELS", "Los Santos Police - East Los Santos Division", "Blue", Classification.Police, ExtendedStandardCops, EastLSPDVehicles, "LSE ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "DPPD", "Del Pierro Police Department", "Blue", Classification.Police, StandardCops, DPPDVehicles, "VP ",AllWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "RHPD", "Rockford Hills Police Department", "Blue", Classification.Police, StandardCops, RHPDVehicles, "RH ",AllWeapons) { MaxWantedLevelSpawn = 3 },
 
-            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Agency.Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Agency.Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
-            new Agency("~r~", "BCSO", "Blaine County Sheriff", "Red", Agency.Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD", "Los Santos County Sheriff", "Red", Classification.Sheriff, SheriffPeds, LSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Classification.Sheriff, SheriffPeds, VWHillsLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "LSSD-CH", "Los Santos Sheriff - Chumash Division", "Red", Classification.Sheriff, SheriffPeds, ChumashLSSDVehicles, "LSCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
+            new Agency("~r~", "BCSO", "Blaine County Sheriff", "Red", Classification.Sheriff, SheriffPeds, BCSOVehicles, "BCS ",LimitedWeapons) { MaxWantedLevelSpawn = 3 },
 
-            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Agency.Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
-            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Agency.Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
+            new Agency("~b~", "LSPD-ASD", "Los Santos Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
+            new Agency("~r~", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, SheriffAndSwat, SheriffHeliVehicles, "ASD ",HeliWeapons) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
 
-            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Agency.Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,CanSpawnAnywhere = true},
-            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Agency.Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 6,CanSpawnAnywhere = true },
-            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Agency.Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true },
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, NOOSEPeds, NOOSEVehicles, "",BestWeapons) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 4,CanSpawnAnywhere = true},
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 6,CanSpawnAnywhere = true },
+            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true },
 
-            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Agency.Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true },
-            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Agency.Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 2 },
-            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Agency.Classification.State, ParkRangers, ParkRangerVehicles, "",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
-            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Agency.Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){ MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
+            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true },
+            new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 2 },
+            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, ParkRangers, ParkRangerVehicles, "",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
+            new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){ MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
 
-            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Agency.Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
-            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Agency.Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
+            new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
+            new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
 
-            new Agency("~o~", "PRISEC", "Private Security", "White", Agency.Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1, SpawnLimit = 1 },
+            new Agency("~o~", "PRISEC", "Private Security", "White", Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1, SpawnLimit = 1 },
 
-            new Agency("~u~", "ARMY", "Army", "Black", Agency.Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
+            new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
 
 
-            new Agency("~s~", "UNK", "Unknown Agency", "White", Agency.Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
+            new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
 
         };
 
     }
-    public static Agency GetAgency(Ped Cop)
-    {
-        if (!Cop.IsPoliceArmy())
-        {
-            return null;
-        }
-        if (Cop.IsArmy())
-        {
-            return AgenciesList.Where(x => x.AgencyClassification == Agency.Classification.Military).FirstOrDefault();
-        }
-        else if (Cop.IsPolice())
-        {
-            Agency ToReturn;
-            List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
-            if (ModelMatchAgencies.Count > 1)
-            {
-                Zone ZoneFound = ZoneManager.GetZone(Cop.Position);
-                if (ZoneFound != null)
-                {
-                    foreach (Agency ZoneAgency in JurisdictionManager.GetAllAgencies(ZoneFound.InternalGameName))
-                    {
-                        if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
-                            return ZoneAgency;
-                    }
-                }
-            }
-            ToReturn = ModelMatchAgencies.FirstOrDefault();
-            if (ToReturn == null)
-            {
-                Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} ped deleting", Cop.Model.Name));
-                Cop.Delete();
-            }
-            return ToReturn;
-        }
-        else
-        {
-            return null;
-        }
-    }
-    public static Agency GetAgency(Vehicle CopCar)
-    {
-        Agency ToReturn;
-        List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
-        if (ModelMatchAgencies.Count > 1)
-        {
-            Zone ZoneFound = ZoneManager.GetZone(CopCar.Position);
-            if (ZoneFound != null)
-            {
-                foreach (Agency ZoneAgency in JurisdictionManager.GetAllAgencies(ZoneFound.InternalGameName))
-                {
-                    if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
-                        return ZoneAgency;
-                }
-            }
-        }
-        ToReturn = ModelMatchAgencies.FirstOrDefault();
-        if (ToReturn == null)
-        {
-            Debugging.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} car deleting", CopCar.Model.Name));
-            CopCar.Delete();
-        }
-        return ToReturn;
-    }
-    public static Agency GetAgency(string AgencyInitials)
-    {
-        return AgenciesList.Where(x => x.Initials.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
-    }
+
 }
 
 

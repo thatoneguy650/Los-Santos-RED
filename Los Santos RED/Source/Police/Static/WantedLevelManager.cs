@@ -19,17 +19,23 @@ public static class WantedLevelManager
     private static uint GameTimeWantedLevelStarted;
     private static uint GameTimeLastWantedEnded;
     private static uint GameTimeLastRequestedBackup;
-    private static uint GameTimeLostWanted;
     private static Blip CurrentWantedCenterBlip;
     private static Blip LastWantedCenterBlip;
     private static int PreviousWantedLevel;
     private static PoliceState CurrentPoliceState;
-
+    private enum PoliceState
+    {
+        Normal = 0,
+        UnarmedChase = 1,
+        CautiousChase = 2,
+        DeadlyChase = 3,
+        ArrestedWait = 4,
+    }
     public static int WantedLevelLastset { get; set; }
     public static float LastWantedSearchRadius { get; set; }
-    public static bool PlayerSeenDuringCurrentWanted { get; set; } = false;
-    public static bool IsWeaponsFree { get; set; } = false;
-    public static bool IsRunning { get; set; } = true;
+    public static bool PlayerSeenDuringCurrentWanted { get; set; }
+    public static bool IsWeaponsFree { get; set; }
+    public static bool IsRunning { get; set; }
     public static CriminalHistory CurrentCrimes { get; set; } 
     public static Vector3 LastWantedCenterPosition { get; set; }
     public static Vector3 PlaceWantedStarted { get; private set; }
@@ -167,10 +173,6 @@ public static class WantedLevelManager
                 return false;
         }
     }
-    public static bool NearLastWanted(float DistanceTo)
-    {
-        return LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= DistanceTo;
-    }
     public static ResponsePriority CurrentResponse
     {
         get
@@ -210,22 +212,6 @@ public static class WantedLevelManager
             }
         }
     }
-    public enum PoliceState
-    {
-        Normal = 0,
-        UnarmedChase = 1,
-        CautiousChase = 2,
-        DeadlyChase = 3,
-        ArrestedWait = 4,
-    }
-    public enum ResponsePriority
-    {
-        None = 0,
-        Low = 1,
-        Medium = 2,
-        High = 3,
-        Full = 4,
-    }
     public static void Initialize()
     {
         CurrentCrimes = new CriminalHistory();
@@ -242,6 +228,10 @@ public static class WantedLevelManager
         IsRunning = true;
         SetWantedLevel(0, "Initial", true);
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
     public static void Tick()
     {
         if (IsRunning)
@@ -250,21 +240,19 @@ public static class WantedLevelManager
             WantedLevelTick();
         }
     }
-    public static void FreezeTick()
+    public static void Reset()
     {
-        //if (Game.LocalPlayer.WantedLevel != WantedLevelLastset)
-        //{
-        //    Game.LocalPlayer.WantedLevel = WantedLevelLastset;//freeze it 
-        //    NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Police.PlaceLastSeenPlayer.X, Police.PlaceLastSeenPlayer.Y, Police.PlaceLastSeenPlayer.Z);
-        //}
-        //Game.LocalPlayer.WantedLevel = WantedLevelLastset;//freeze it 
-        //NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_LEVEL_NOW", Game.LocalPlayer, false);
-        //NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevelLastset);
-        NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PolicePedManager.PlaceLastSeenPlayer.X, PolicePedManager.PlaceLastSeenPlayer.Y, PolicePedManager.PlaceLastSeenPlayer.Z);
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
+        foreach (Cop Cop in PedManager.Cops)
+        {
+            Cop.HurtByPlayer = false;
+        }
+        CurrentCrimes = new CriminalHistory();
+        IsWeaponsFree = false;
+        CurrentPoliceState = PoliceState.Normal;
+        GameTimeWantedLevelStarted = 0;
+        PolicePedManager.Reset();
+        InvestigationManager.Reset();
+        ScannerManager.Reset();
     }
     public static void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
     {
@@ -304,14 +292,14 @@ public static class WantedLevelManager
             }
         }
     }
-    public static void Reset()
-    {
-        ResetStats();
-    }
-    public static void ResetPoliceState()
+    public static void RefreshPoliceState()
     {
         CurrentPoliceState = PoliceState.Normal;
         GetPoliceState();
+    }
+    public static bool NearLastWanted(float DistanceTo)
+    {
+        return LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= DistanceTo;
     }
     private static void GetPoliceState()
     {
@@ -446,7 +434,7 @@ public static class WantedLevelManager
                 return;
             }
         }
-        InvestigationManager.InInvestigationMode = false;
+        InvestigationManager.Reset();
         CurrentCrimes.GameTimeWantedStarted = Game.GameTime;
         CurrentCrimes.MaxWantedLevel = PlayerStateManager.WantedLevel;
         PlaceWantedStarted = Game.LocalPlayer.Character.Position;
@@ -463,7 +451,7 @@ public static class WantedLevelManager
             {
                 PersonOfInterestManager.StoreCriminalHistory(CurrentCrimes);
             }
-            ResetStats();
+            Reset();
         }
         GameTimeLastWantedEnded = Game.GameTime;
         PlayerSeenDuringCurrentWanted = false;
@@ -545,21 +533,5 @@ public static class WantedLevelManager
         if (LastWantedCenterBlip.Exists())
             LastWantedCenterBlip.Delete();
     }
-    private static void ResetStats()
-    {
-        foreach (Cop Cop in PedManager.Cops)
-        {
-            Cop.HurtByPlayer = false;
-        }
-        CurrentCrimes = new CriminalHistory();
-        Debugging.WriteToLog("WantedLevel", "ResetPoliceStats Ran (Made New Rap Sheet)");
-        IsWeaponsFree = false;
-        CurrentPoliceState = PoliceState.Normal;
-        PolicePedManager.AnySeenPlayerCurrentWanted = false;
-        GameTimeWantedLevelStarted = 0;
-        InvestigationManager.InInvestigationMode = false;
-        ScannerManager.ResetReportedItems();
-    }
-
 }
 

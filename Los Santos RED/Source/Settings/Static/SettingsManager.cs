@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 public static class SettingsManager
 {
-    public static LSRSettings MySettings { get; set; }
-    private static string ConfigFileName { get; } = "Plugins\\LosSantosRED\\Settings.xml";
+    private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
+    public static LSRSettings MySettings { get; private set; }
     public static void Initialize()
     {
         ReadConfig();

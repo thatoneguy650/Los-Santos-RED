@@ -47,6 +47,12 @@ public static class SearchModeStoppingManager
         CopModel.LoadCollisionAndWait();
         GameTimeLastGhostCopCreated = 0;
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+        if (GhostCop.Exists())
+            GhostCop.Delete();
+    }
     public static void Tick()
     {
         if (IsRunning)
@@ -79,12 +85,6 @@ public static class SearchModeStoppingManager
                 MoveGhostCopToOrigin();
             }
         }
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
-        if (GhostCop.Exists())
-            GhostCop.Delete();
     }
     private static void MoveGhostCopToPosition()
     {

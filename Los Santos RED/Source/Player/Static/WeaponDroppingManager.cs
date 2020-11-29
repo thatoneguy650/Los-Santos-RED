@@ -48,6 +48,10 @@ public static class WeaponDroppingManager
         PrevCountWeapons = WeaponCount;
         IsRunning = true;
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+    }
     public static void Tick()
     {
         if (IsRunning)
@@ -56,10 +60,6 @@ public static class WeaponDroppingManager
             if (PrevCountWeapons != WeaponCount)
                 WeaponInventoryChanged(WeaponCount);
         }
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
     }
     public static void Reset()
     {

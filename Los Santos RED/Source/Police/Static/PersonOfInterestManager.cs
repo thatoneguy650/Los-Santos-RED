@@ -12,7 +12,7 @@ public static class PersonOfInterestManager
 {
     private static uint GameTimeLastAppliedWantedStats;
     public static bool PlayerIsPersonOfInterest { get; private set; }
-    public static bool IsRunning { get; set; } = true;
+    public static bool IsRunning { get; set; }
     public static List<CriminalHistory> CriminalHistory { get; set; }
     public static bool RecentlyAppliedWantedStats
     {

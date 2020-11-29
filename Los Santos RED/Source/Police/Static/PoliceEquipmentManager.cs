@@ -1,7 +1,6 @@
 ﻿using ExtensionsMethods;
 using Rage;
 using Rage.Native;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,25 +17,12 @@ public static class PoliceEquipmentManager
     {
         IsRunning = false;
     }
-    public static void ArmCops()
+    public static void Tick()
     {
         if (IsRunning)
         {
-            PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
-            EquipedCops.RemoveAll(x => !x.CopToArm.Pedestrian.Exists());
-            foreach (Cop Cop in PedManager.Cops.Where(x => x.Pedestrian.Exists()))
-            {
-                if (!EquipedCops.Any(x => x.CopToArm.Pedestrian.Handle == Cop.Pedestrian.Handle))
-                {
-                    EquipedCops.Add(new EquipedCop(Cop));
-                }
-            }
-
-            foreach (EquipedCop Cop in EquipedCops.Where(x => x.CopToArm.Pedestrian.Exists()))
-            {
-                Cop.IssueWeapons();
-                Cop.ArmCopAppropriately();
-            }
+            AddCops();
+            ArmCops();
         }
     }
     public static void IssueWeapons(Cop CopToFind)
@@ -47,17 +33,38 @@ public static class PoliceEquipmentManager
             MyCop.IssueWeapons();
         }
     }
+    private static void AddCops()
+    {
+        PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
+        EquipedCops.RemoveAll(x => !x.CopToArm.Pedestrian.Exists());
+        foreach (Cop Cop in PedManager.Cops.Where(x => x.Pedestrian.Exists()))
+        {
+            if (!EquipedCops.Any(x => x.CopToArm.Pedestrian.Handle == Cop.Pedestrian.Handle))
+            {
+                EquipedCops.Add(new EquipedCop(Cop));
+            }
+        }
+    }
+    private static void ArmCops()
+    {
+        foreach (EquipedCop Cop in EquipedCops.Where(x => x.CopToArm.Pedestrian.Exists()))
+        {
+            Cop.IssueWeapons();
+            Cop.ArmCopAppropriately();
+        }
+    }
     private class EquipedCop
     {
         private bool IsSetLessLethal;
         private bool IsSetUnarmed;
         private bool IsSetDeadly;
         private uint GameTimeLastWeaponCheck;
-        private WeaponInformation IssuedPistol;// = new WeaponInformation("weapon_pistol", 60, WeaponCategory.Pistol, 1, 453432689, true, false, true);
+        private WeaponInformation IssuedPistol;
         private WeaponInformation IssuedHeavyWeapon;
         private WeaponVariation PistolVariation;
         private WeaponVariation HeavyVariation;
         public bool ShouldAutoSetWeaponState { get; set; } = true;
+        public Cop CopToArm { get; set; }
         public bool NeedsWeaponCheck
         {
             get
@@ -98,7 +105,6 @@ public static class PoliceEquipmentManager
                 }
             }
         }
-        public Cop CopToArm { get; set; }
         public EquipedCop(Cop _GTAPedToArm)
         {
             CopToArm = _GTAPedToArm;

@@ -15,11 +15,11 @@ public static class TrafficViolationsManager
     private static int TimeSincePlayerHitPed;
     private static int TimeSincePlayerHitVehicle;
     private static bool PlayersVehicleIsSuspicious;
-    private static List<Vehicle> CloseVehicles;
     private static bool TreatAsCop;
     private static float CurrentSpeed;
-
-
+    public static bool IsRunning { get; set; }
+    public static bool PlayerIsSpeeding { get; set; }
+    public static bool PlayerIsRunningRedLight { get; set; }
     private static bool ShouldCheckViolations
     {
         get
@@ -30,9 +30,6 @@ public static class TrafficViolationsManager
                 return false;
         }
     }
-    public static bool IsRunning { get; set; }
-    public static bool PlayerIsSpeeding { get; set; }
-    public static bool PlayerIsRunningRedLight { get; set; }
     public static bool RecentlyRanRed
     {
         get
@@ -104,7 +101,6 @@ public static class TrafficViolationsManager
         GameTimeStartedDrivingOnPavement = 0;
         GameTimeStartedDrivingAgainstTraffic = 0;
         PlayersVehicleIsSuspicious = false;
-        CloseVehicles = new List<Vehicle>();
         IsRunning = true;
         PlayerIsSpeeding = false;
         PlayerIsRunningRedLight = false;

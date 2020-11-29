@@ -12,22 +12,24 @@ public static class LicensePlateTheftManager
 {
     private static Rage.Object Screwdriver;
     private static Rage.Object LicensePlate;
-    public static bool PlayerChangingPlate { get; set; }
+    private static float DistanceToCheckCars = 10f;
+    public static bool PlayerChangingPlate { get; private set; }
+    public static List<LicensePlate> SpareLicensePlates { get; private set; }
     public static void Initialize()
     {
         Screwdriver = null;
         LicensePlate = null;
         PlayerChangingPlate = false;
+        SpareLicensePlates = new List<LicensePlate>();
         SpareLicensePlates.Add(new LicensePlate(General.RandomString(8), 1, 1, false));
     }
     public static void Dispose()
     {
 
     }
-    public static List<LicensePlate> SpareLicensePlates = new List<LicensePlate>();
     public static void RemoveNearestLicensePlate()
     {
-        Vehicle ClosestVehicle = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderCars);
+        Vehicle ClosestVehicle = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
         if (ClosestVehicle.LicensePlate == "        ")
             return;
 
@@ -47,7 +49,7 @@ public static class LicensePlateTheftManager
         if (!SpareLicensePlates.Any())
             return;
 
-        Vehicle ClosestVehicle = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, 10f, GetEntitiesFlags.ConsiderCars);
+        Vehicle ClosestVehicle = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
 
         if (ClosestVehicle != null)
         {
@@ -61,7 +63,7 @@ public static class LicensePlateTheftManager
             ChangeLicensePlateAnimation(VehicleToChange, true);
         }
     }
-    public static void ChangeLicensePlateAnimation(VehicleExt VehicleToChange, bool ChangePlates)
+    private static void ChangeLicensePlateAnimation(VehicleExt VehicleToChange, bool ChangePlates)
     {
         if (!ChangePlates && VehicleToChange.VehicleEnt.LicensePlate == "        ")// Plate already removed
             return;
@@ -136,7 +138,7 @@ public static class LicensePlateTheftManager
         }, "PlayDispatchQueue");
         Debugging.GameFibers.Add(ChangeLicensePlateAnimation);
     }
-    public static bool RemovePlate(VehicleExt VehicleToChange)
+    private static bool RemovePlate(VehicleExt VehicleToChange)
     {
         if (VehicleToChange.VehicleEnt.Exists())
         {
@@ -149,7 +151,7 @@ public static class LicensePlateTheftManager
         }
         return false;
     }
-    public static bool ChangePlate(VehicleExt VehicleToChange)
+    private static bool ChangePlate(VehicleExt VehicleToChange)
     {
         if (VehicleToChange.VehicleEnt.Exists())
         {
@@ -169,7 +171,7 @@ public static class LicensePlateTheftManager
         }
         return false;
     }
-    public static bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
+    private static bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
     {
         bool Continue = true;
         bool isPlayer = false;
@@ -196,7 +198,7 @@ public static class LicensePlateTheftManager
         }
         return true;
     }
-    public static Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
+    private static Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
     {
         Vector3 Position;
         Vector3 Right;
@@ -230,7 +232,7 @@ public static class LicensePlateTheftManager
         else
             return Vector3.Zero;
     }
-    public static Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
+    private static Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
     {
         Rage.Object LicensePlate = new Rage.Object("p_num_plate_01", Pedestrian.GetOffsetPositionUp(55f));
         LicensePlate.IsVisible = true;

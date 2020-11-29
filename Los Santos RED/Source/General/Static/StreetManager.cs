@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 public static class StreetManager
 {
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Streets.xml";
-    public static List<Street> StreetsList;
+    private static List<Street> StreetsList;
     public static void Initialize()
     {
         ReadConfig();
@@ -21,7 +21,37 @@ public static class StreetManager
     {
 
     }
-    public static void ReadConfig()
+    public static Street GetStreet(string StreetName)
+    {
+        return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+    }
+    public static Street GetStreet(Vector3 Position)
+    {
+        string StreetName = GetStreetName(Position);
+        return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+    }
+    private static string GetStreetName(Vector3 Position)
+    {
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        unsafe
+        {
+            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", Position.X, Position.Y, Position.Z, &StreetHash, &CrossingHash);
+        }
+        string StreetName = string.Empty;
+        string CrossStreetName = string.Empty;
+        if (StreetHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+
+                StreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+        }
+        return StreetName;
+    }
+    private static void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
@@ -33,7 +63,7 @@ public static class StreetManager
             General.SerializeParams(StreetsList, ConfigFileName);
         }
     }
-    public static void DefaultConfig()
+    private static void DefaultConfig()
     {
         StreetsList = new List<Street>
         {
@@ -259,36 +289,5 @@ public static class StreetManager
             new Street("Mt Haan Dr", 40f)
         };
     }
-    public static Street GetStreet(string StreetName)
-    {
-        return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
-    }
-    public static Street GetStreet(Vector3 Position)
-    {
-        string StreetName = GetStreetName(Position);
-        return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
-    }
-    private static string GetStreetName(Vector3 Position)
-    {
-        int StreetHash = 0;
-        int CrossingHash = 0;
-        unsafe
-        {
-            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", Position.X, Position.Y, Position.Z, &StreetHash, &CrossingHash);
-        }
-        string StreetName = string.Empty;
-        string CrossStreetName = string.Empty;
-        if (StreetHash != 0)
-        {
-            unsafe
-            {
-                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
-
-                StreetName = Marshal.PtrToStringAnsi(ptr);
-            }
-        }
-        return StreetName;
-    }
-
 }
 

@@ -203,6 +203,11 @@ public static class DispatchManager
     {
         IsRunning = true;
     }
+    public static void Dispose()
+    {
+        IsRunning = false;
+        SetVanillaDispaceServices(true);
+    }
     public static void SpawnChecking()
     {
         if (IsRunning && CanSpawn)
@@ -277,11 +282,6 @@ public static class DispatchManager
             GameTimeCheckedDeleted = Game.GameTime;
         }
     }
-    public static void Dispose()
-    {
-        IsRunning = false;
-        SetVanillaDispaceServices(true);
-    }
     private static void SetVanillaDispaceServices(bool ValueToSet)
     {
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, ValueToSet);
@@ -296,12 +296,12 @@ public static class DispatchManager
     }
     private class PoliceSpawn
     {
-        public Vector3 Position = Vector3.Zero;
-        public float Heading;
-        public Vector3 StreetPosition = Vector3.Zero;
-        public Vector3 SidewalkPosition = Vector3.Zero;
-        public Vector3 FinalSpawnPosition = Vector3.Zero;
-        public Agency AgencyToSpawn = null;
+        public Vector3 Position { get; set; } = Vector3.Zero;
+        public Vector3 StreetPosition { get; set; } = Vector3.Zero;
+        public Vector3 SidewalkPosition { get; set; } = Vector3.Zero;
+        public Vector3 FinalSpawnPosition { get; set; } = Vector3.Zero;
+        public float Heading { get; set; }
+        public Agency AgencyToSpawn { get; set; }
         public bool IsWater
         {
             get
@@ -381,7 +381,7 @@ public static class DispatchManager
         public void GetAgencyToSpawn()
         {
             AgencyToSpawn = null;
-            List<Agency> PossibleAgencies = AgencyManager.GetAllSpawnableAgencies(StreetPosition);
+            List<Agency> PossibleAgencies = AgencyManager.GetAgencies(StreetPosition);
             if (General.RandomPercent(50))//Favor Helicopter Spawns
             {
                 AgencyToSpawn = PossibleAgencies.Where(x => x.HasSpawnableHelicopters).PickRandom();
@@ -392,7 +392,7 @@ public static class DispatchManager
             }
             if (AgencyToSpawn == null)
             {
-                AgencyToSpawn = AgencyManager.GetAllSpawnableAgencies(Position).PickRandom();
+                AgencyToSpawn = AgencyManager.GetAgencies(Position).PickRandom();
             }
         }
         private void GetInitialPosition()
@@ -413,7 +413,11 @@ public static class DispatchManager
         }
         private void GetStreetPosition()
         {
-            General.GetStreetPositionandHeading(Position, out StreetPosition, out Heading, true);
+            Vector3 streetPos;
+            float heading;
+            General.GetStreetPositionandHeading(Position, out streetPos, out heading, true);
+            StreetPosition = streetPos;
+            Heading = heading;
 
             if (StreetPosition.DistanceTo2D(Game.LocalPlayer.Character) < ClosestSpawnToPlayerAllowed)
                 StreetPosition = Vector3.Zero;
@@ -423,7 +427,9 @@ public static class DispatchManager
 
             if(StreetPosition != Vector3.Zero)
             {
-                General.GetSidewalkPositionAndHeading(StreetPosition, out SidewalkPosition);
+                Vector3 sidewalkPosition;
+                General.GetSidewalkPositionAndHeading(StreetPosition, out sidewalkPosition);
+                SidewalkPosition = sidewalkPosition;
             }
         }
 
