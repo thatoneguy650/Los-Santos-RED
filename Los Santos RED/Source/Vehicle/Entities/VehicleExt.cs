@@ -191,9 +191,5 @@ namespace LSR.Vehicles
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", VehicleEnt);
             return ClassInt;
         }
-
-
-
-
     }
 }

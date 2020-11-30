@@ -146,6 +146,23 @@ public static class General
         return new string(Enumerable.Repeat(chars, length)
           .Select(s => s[MyRand.Next(s.Length)]).ToArray());
     }
+    public static string RandomNumberString(int length)
+    {
+        const string chars = "01234567890123456789";
+        return new string(Enumerable.Repeat(chars, length)
+          .Select(s => s[MyRand.Next(s.Length)]).ToArray());
+    }
+    public static char RandomLetter()
+    {
+        int num = MyRand.Next(0, 26); // Zero to 25
+        char let = (char)('a' + num);
+        return let;
+    }
+    public static char RandomNumber()
+    {
+        char let = Convert.ToChar(RandomNumberString(1));
+        return let;
+    }
     public static string GetSimpleCompassHeading(float Heading)
     {
         //float Heading = Game.LocalPlayer.Character.Heading;

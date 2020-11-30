@@ -8,7 +8,7 @@ namespace LSR.Vehicles
 {
     public class LicensePlate
     {
-        public string PlateNumber { get; private set; }
+        public string PlateNumber { get; set; }
         public bool IsWanted { get; set; }
         public uint OriginalVehicleHandle { get; set; }
         public int PlateType { get; set; }

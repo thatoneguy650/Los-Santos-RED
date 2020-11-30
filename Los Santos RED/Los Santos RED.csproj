@@ -156,6 +156,7 @@
     <Compile Include="Source\Settings\Static\SettingsManager.cs" />
     <Compile Include="Source\Settings\Setting\TrafficSettings.cs" />
     <Compile Include="Source\Settings\Setting\UISettings.cs" />
+    <Compile Include="Source\Vehicle\Entities\PlateType.cs" />
     <Compile Include="Source\Vehicle\Static\VehicleManager.cs" />
     <Compile Include="Source\Weapon\Entities\WeaponCategory.cs" />
     <Compile Include="Source\Weapon\Entities\WeaponInformation.cs" />

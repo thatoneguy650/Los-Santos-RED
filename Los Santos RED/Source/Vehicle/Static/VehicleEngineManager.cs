@@ -38,7 +38,11 @@ public static class VehicleEngineManager
     {
         get
         {
-            if (IsPlayerInVehicle && TogglingEngine)
+            if(!IsPlayerInVehicle)
+            {
+                return false;
+            }
+            else if (TogglingEngine)
             {
                 return false;
             }

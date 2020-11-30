@@ -42,7 +42,7 @@ public static class ScriptController
                             TickStopWatch.Stop();
                             ToRun.RunTask();
                             TickStopWatch.Stop();
-                            TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
+                            //TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
                             TickStopWatch.Reset();
                         }
                         foreach (TickTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
@@ -51,7 +51,7 @@ public static class ScriptController
                             TickStopWatch.Stop();
                             RunningBehind.RunTask();
                             TickStopWatch.Stop();
-                            TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
+                           // TickTable.Rows.Add(TickID, GameTimeStarted, Game.GameTime, ToRun.DebugName, TickStopWatch.ElapsedMilliseconds);
                             TickStopWatch.Reset();
                         }
                     }
@@ -132,9 +132,9 @@ public static class ScriptController
             new TickTask(50, "CrimeManager", CrimeManager.Tick, 4,0),
             new TickTask(50, "WantedLevelManager", WantedLevelManager.Tick, 4,1),
 
-            new TickTask(100, "SearchModeManager", SearchModeManager.Tick, 5,0),
-            new TickTask(100, "InvestigationManager", InvestigationManager.Tick, 5,1),
-            new TickTask(100, "SearchModeStoppingManager", SearchModeStoppingManager.Tick, 5,2),
+            new TickTask(150, "SearchModeManager", SearchModeManager.Tick, 5,0),
+            new TickTask(150, "InvestigationManager", InvestigationManager.Tick, 5,1),
+            new TickTask(150, "SearchModeStoppingManager", SearchModeStoppingManager.Tick, 5,2),
             new TickTask(150, "CivilianManager", CivilianManager.Tick, 5,3),
 
             new TickTask(200, "PedDamageManager", PedDamageManager.Tick, 6,0),

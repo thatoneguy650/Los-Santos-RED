@@ -77,7 +77,7 @@ public static class TaskManager
                 int TaskedCivilians = 0;
                 foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
                 {
-                    if (TaskedCivilians < 2)
+                    if (TaskedCivilians < 5)
                     {
                         Civilian.RunCurrentActivity();
                         TaskedCivilians++;
@@ -1005,7 +1005,7 @@ public static class TaskManager
                 {
                     return false;
                 }
-                else if (RespawnManager.RecentlyBribedPolice || RespawnManager.RecentlyRespawned)
+                else if (RespawnManager.RecentlyBribedPolice)
                 {
                     return false;
                 }
@@ -1089,8 +1089,8 @@ public static class TaskManager
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, 10000);
-                            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 10000);
+                            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, 7000);
+                            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
                             NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, -1);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

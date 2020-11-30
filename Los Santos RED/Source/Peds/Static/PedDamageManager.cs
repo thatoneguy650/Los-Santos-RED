@@ -475,10 +475,10 @@ public static class PedDamageManager
                     ArmorInjury = RandomType(false);
                 }
 
-                if(HealthInjury == InjuryType.Critical || HealthInjury == InjuryType.Fatal)
-                {
-                    FlagAsBleeding();
-                }
+                //if(HealthInjury == InjuryType.Critical || HealthInjury == InjuryType.Fatal)
+                //{
+                //    FlagAsBleeding();
+                //}
 
 
 
@@ -542,25 +542,25 @@ public static class PedDamageManager
             if (Health - NewHealth >= 65)
             {
                 NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 3000, 3000, 0, false, false, false);
-                IsBleeding = true;
-                Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
+                //IsBleeding = true;
+                //Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
             }
             else if (Health - NewHealth >= 35 && General.RandomPercent(60))
             {
                 NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
-                IsBleeding = true;
-                Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
+                //IsBleeding = true;
+                //Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
             }
             else if (Health - NewHealth >= 15 && General.RandomPercent(30))
             {
                 NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
-                IsBleeding = true;
-                Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
+                //IsBleeding = true;
+                //Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
             }
             else if (Health - NewHealth >= 10)
             {
-                IsBleeding = true;
-                Debugging.WriteToLog("PlayerHealthChanged", string.Format("Normal Hit, Bleeding"));
+                //IsBleeding = true;
+                //Debugging.WriteToLog("PlayerHealthChanged", string.Format("Normal Hit, Bleeding"));
             }
         }
         private void FlagAsBleeding()

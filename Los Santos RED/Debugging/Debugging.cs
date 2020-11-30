@@ -167,17 +167,7 @@ public static class Debugging
     }
     private static void DebugNumpad4()
     {
-
-        if (NumberPlateIndexSelected <= 47)
-        {
-            NumberPlateIndexSelected++;
-        }
-        else
-        {
-            NumberPlateIndexSelected = 5;
-        }
-        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Game.LocalPlayer.Character.CurrentVehicle, NumberPlateIndexSelected);
-
+        AmbientPlateManager.UpdateCurrentVehiclePlate();
 
 
         //PoliceSpawning.SpawnGTACop(Agencies.GetAllSpawnableAgencies(Game.LocalPlayer.Character.GetOffsetPositionFront(5f)).PickRandom(), Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading, null, true);

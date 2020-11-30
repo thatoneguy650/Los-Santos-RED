@@ -178,7 +178,7 @@ public static class PedManager
     private static void AddCivilian(Ped Pedestrian)
     {
         SetCivilianStats(Pedestrian);
-        Civilians.Add(new PedExt(Pedestrian, General.RandomPercent(15), General.RandomPercent(50)));
+        Civilians.Add(new PedExt(Pedestrian, General.RandomPercent(10), General.RandomPercent(70)));
     }
     private static void SetCivilianStats(Ped Pedestrian)
     {
