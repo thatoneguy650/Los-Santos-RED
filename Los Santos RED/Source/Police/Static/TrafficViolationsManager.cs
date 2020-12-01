@@ -142,7 +142,7 @@ public static class TrafficViolationsManager
 
         if (SettingsManager.MySettings.TrafficViolations.ExemptCode3 && PlayerStateManager.CurrentVehicle.VehicleEnt != null && PlayerStateManager.CurrentVehicle.VehicleEnt.IsPoliceVehicle && PlayerStateManager.CurrentVehicle != null && !PlayerStateManager.CurrentVehicle.WasReportedStolen)
         {
-            if (PlayerStateManager.CurrentVehicle.VehicleEnt.IsSirenOn && !PolicePedManager.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
+            if (PlayerStateManager.CurrentVehicle.VehicleEnt.IsSirenOn && !PoliceManager.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
             {
                 TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
             }

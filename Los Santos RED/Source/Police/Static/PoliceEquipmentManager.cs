@@ -176,7 +176,7 @@ public static class PoliceEquipmentManager
             {
                 WeaponVariation MyVariation = PistolToPick.MyVariation;
                 PistolVariation = MyVariation;
-                General.ApplyWeaponVariation(CopToArm.Pedestrian, (uint)Pistol.Hash, MyVariation);
+                MyVariation.ApplyWeaponVariation(CopToArm.Pedestrian, (uint)Pistol.Hash);
             }
 
             Debugging.WriteToLog("PoliceEquipment", string.Format("Issued Pistol: {0}", IssuedPistol.ModelName));
@@ -201,7 +201,7 @@ public static class PoliceEquipmentManager
             {
                 WeaponVariation MyVariation = HeavyToPick.MyVariation;
                 HeavyVariation = MyVariation;
-                General.ApplyWeaponVariation(CopToArm.Pedestrian, (uint)IssuedHeavy.Hash, MyVariation);
+                MyVariation.ApplyWeaponVariation(CopToArm.Pedestrian, (uint)IssuedHeavy.Hash);
             }
             Debugging.WriteToLog("PoliceEquipment", string.Format("Issued Heavy: {0}", IssuedHeavyWeapon.ModelName));
         }
@@ -250,7 +250,9 @@ public static class PoliceEquipmentManager
             }
 
             if (SettingsManager.MySettings.Police.AllowPoliceWeaponVariations)
-                General.ApplyWeaponVariation(CopToArm.Pedestrian, (uint)IssuedPistol.Hash, PistolVariation);
+            {
+                PistolVariation.ApplyWeaponVariation(CopToArm.Pedestrian, (uint)IssuedPistol.Hash);
+            }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", CopToArm.Pedestrian, true);
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", CopToArm.Pedestrian, 2, true);//can do drivebys
 

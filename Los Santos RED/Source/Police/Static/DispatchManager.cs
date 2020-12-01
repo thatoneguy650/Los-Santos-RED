@@ -101,7 +101,7 @@ public static class DispatchManager
             {
                 return 2000;
             }
-            else  if (!PolicePedManager.AnyRecentlySeenPlayer)
+            else  if (!PoliceManager.AnyRecentlySeenPlayer)
             {
                 return 3000;
             }
@@ -138,7 +138,7 @@ public static class DispatchManager
         {
             if (PlayerStateManager.IsWanted)
             {
-                if (!PolicePedManager.AnyRecentlySeenPlayer)
+                if (!PoliceManager.AnyRecentlySeenPlayer)
                     return 250f - (PlayerStateManager.WantedLevel * -40);
                 else
                     return 400f - (PlayerStateManager.WantedLevel * -40);
@@ -155,7 +155,7 @@ public static class DispatchManager
         {
             if (PlayerStateManager.IsWanted)
             {
-                if (!PolicePedManager.AnyRecentlySeenPlayer)
+                if (!PoliceManager.AnyRecentlySeenPlayer)
                     return 350f;
                 else
                     return 550f;
@@ -382,7 +382,7 @@ public static class DispatchManager
         {
             AgencyToSpawn = null;
             List<Agency> PossibleAgencies = AgencyManager.GetAgencies(StreetPosition);
-            if (General.RandomPercent(50))//Favor Helicopter Spawns
+            if (RandomItems.RandomPercent(50))//Favor Helicopter Spawns
             {
                 AgencyToSpawn = PossibleAgencies.Where(x => x.HasSpawnableHelicopters).PickRandom();
             }
@@ -415,7 +415,7 @@ public static class DispatchManager
         {
             Vector3 streetPos;
             float heading;
-            General.GetStreetPositionandHeading(Position, out streetPos, out heading, true);
+            StreetManager.GetStreetPositionandHeading(Position, out streetPos, out heading, true);
             StreetPosition = streetPos;
             Heading = heading;
 
@@ -428,7 +428,7 @@ public static class DispatchManager
             if(StreetPosition != Vector3.Zero)
             {
                 Vector3 sidewalkPosition;
-                General.GetSidewalkPositionAndHeading(StreetPosition, out sidewalkPosition);
+                StreetManager.GetSidewalkPositionAndHeading(StreetPosition, out sidewalkPosition);
                 SidewalkPosition = sidewalkPosition;
             }
         }

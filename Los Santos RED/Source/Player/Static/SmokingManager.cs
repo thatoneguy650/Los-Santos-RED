@@ -281,8 +281,8 @@ public static class SmokingManager
     public static bool PutCigaretteInMouth()
     {
         SetPedUnarmed(Game.LocalPlayer.Character, false);
-        General.RequestAnimationDictionay(CurrentSmokingAnimation.EnterAnimationDictionary);
-        General.RequestAnimationDictionay(CurrentSmokingAnimation.BaseAnimationDictionary);
+        AnimationManager.RequestAnimationDictionay(CurrentSmokingAnimation.EnterAnimationDictionary);
+        AnimationManager.RequestAnimationDictionay(CurrentSmokingAnimation.BaseAnimationDictionary);
         CurrentAnimationCategory = CigaretteAnimation.Start;
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentSmokingAnimation.EnterAnimationDictionary, CurrentSmokingAnimation.EnterAnimation, 8.0f, -8.0f, -1, 50, 0, false, false, false);
         float AnimationTime = 0f;
@@ -323,7 +323,7 @@ public static class SmokingManager
     {
         CurrentIdleAnimation = CurrentSmokingAnimation.IdleAnimations.PickRandom();
         Debugging.WriteToLog("CurrentIdleAnimation", string.Format("CurrentIdleAnimation.Animation {0}", CurrentIdleAnimation.Animation));
-        General.RequestAnimationDictionay(CurrentIdleAnimation.Dictionary);
+        AnimationManager.RequestAnimationDictionay(CurrentIdleAnimation.Dictionary);
 
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentIdleAnimation.Dictionary, CurrentIdleAnimation.Animation, 4.0f, -4.0f, -1, 49, 0, false, false, false);
         //while (!CurrentPuffingAnimationNearMouth && !CancelSmoking) //while (Game.GameTime - GameTimeStartedAnimation <= 2000 && !CancelSmoking)
@@ -364,7 +364,6 @@ public static class SmokingManager
         if (!PlayersCurrentCigarette.Exists())
         {
             PlayersCurrentCigarette = new Rage.Object(CurrentSmokingAnimation.PropName, Pedestrian.GetOffsetPositionUp(50f));
-            General.CreatedObjects.Add(PlayersCurrentCigarette);
         }
         int BoneIndex = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, CurrentSmokingAnimation.MouthBoneToAttach);
         PlayersCurrentCigarette.AttachTo(Pedestrian, BoneIndex, CurrentSmokingAnimation.MouthAttachPosition, CurrentSmokingAnimation.MouthAttachRotation);
@@ -375,7 +374,6 @@ public static class SmokingManager
         if (!PlayersCurrentCigarette.Exists())
         {
             PlayersCurrentCigarette = new Rage.Object(CurrentSmokingAnimation.PropName, Pedestrian.GetOffsetPositionUp(50f));
-            General.CreatedObjects.Add(PlayersCurrentCigarette);
         }
         int BoneIndex = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, CurrentSmokingAnimation.HandBoneToAttach);
         PlayersCurrentCigarette.AttachTo(Pedestrian, BoneIndex, CurrentSmokingAnimation.HandAttachPosition, CurrentSmokingAnimation.HandAttachRotation);
@@ -411,7 +409,7 @@ public static class SmokingManager
     {
         if (PlayAnimation)
         {
-            General.RequestAnimationDictionay(CurrentSmokingAnimation.ExitAnimationDictionary);
+            AnimationManager.RequestAnimationDictionay(CurrentSmokingAnimation.ExitAnimationDictionary);
             CurrentAnimationCategory = CigaretteAnimation.Exit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, CurrentSmokingAnimation.ExitAnimationDictionary, CurrentSmokingAnimation.ExitAnimation, 4.0f, -4.0f, -1, 48, 0, false, false, false);
             float AnimationTime = 0f;

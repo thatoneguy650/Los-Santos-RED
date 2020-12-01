@@ -75,7 +75,7 @@ public static class PersonOfInterestManager
 
             if(PlayerStateManager.IsWanted)
             {
-                if (!PlayerIsPersonOfInterest && PolicePedManager.AnyCanSeePlayer)
+                if (!PlayerIsPersonOfInterest && PoliceManager.AnyCanSeePlayer)
                 {
                     PlayerIsPersonOfInterest = true;
                 }
@@ -102,7 +102,7 @@ public static class PersonOfInterestManager
     }
     private static void CheckCurrentVehicle()
     {
-        if ((PlayerStateManager.IsNotWanted || PlayerStateManager.WantedLevel == 1) && PolicePedManager.AnyCanRecognizePlayer && PlayerStateManager.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+        if ((PlayerStateManager.IsNotWanted || PlayerStateManager.WantedLevel == 1) && PoliceManager.AnyCanRecognizePlayer && PlayerStateManager.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
             VehicleExt VehicleToCheck = PlayerStateManager.CurrentVehicle;
 
@@ -117,7 +117,7 @@ public static class PersonOfInterestManager
     }
     private static void CheckSight()
     {
-        if (PlayerIsPersonOfInterest && PolicePedManager.AnyCanSeePlayer)
+        if (PlayerIsPersonOfInterest && PoliceManager.AnyCanSeePlayer)
         {
             if (PlayerStateManager.IsWanted)
             {

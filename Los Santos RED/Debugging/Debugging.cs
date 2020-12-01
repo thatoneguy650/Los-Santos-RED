@@ -167,7 +167,7 @@ public static class Debugging
     }
     private static void DebugNumpad4()
     {
-        AmbientPlateManager.UpdateCurrentVehiclePlate();
+        //PlateTypeManager.UpdateCurrentVehiclePlate();
 
 
         //PoliceSpawning.SpawnGTACop(Agencies.GetAllSpawnableAgencies(Game.LocalPlayer.Character.GetOffsetPositionFront(5f)).PickRandom(), Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading, null, true);
@@ -280,7 +280,7 @@ public static class Debugging
                 return;
             }
 
-            General.RequestAnimationDictionay("mp_common");
+            AnimationManager.RequestAnimationDictionay("mp_common");
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", CopToBribe.Pedestrian, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
 
@@ -451,7 +451,7 @@ public static class Debugging
             WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", InvestigationManager.InInvestigationMode));
             WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", InvestigationManager.InvestigationPosition));
             WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", InvestigationManager.InvestigationDistance));
-            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", PolicePedManager.ActiveDistance));
+            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", PoliceManager.ActiveDistance));
             WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", PedManager.Cops.Any(x => x.Pedestrian.DistanceTo2D(InvestigationManager.InvestigationPosition) <= InvestigationManager.InvestigationDistance)));
             WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", WantedLevelManager.CurrentPoliceStateString));
             

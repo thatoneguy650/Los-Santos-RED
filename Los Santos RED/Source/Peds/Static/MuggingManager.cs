@@ -79,7 +79,7 @@ public static class MuggingManager
             uint GameTimeStartedMugging = Game.GameTime;
             MuggingTarget.Pedestrian.BlockPermanentEvents = true;
 
-            General.RequestAnimationDictionay("ped");
+            AnimationManager.RequestAnimationDictionay("ped");
 
             if (!Game.LocalPlayer.Character.IsAnySpeechPlaying)
                 Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");
@@ -128,7 +128,7 @@ public static class MuggingManager
             {
                 NativeFunction.CallByName<bool>("SET_PED_MONEY", MuggingTarget.Pedestrian, 0);
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
-                NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, General.MyRand.Next(15, 100), 1, false, true);
+                NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, RandomItems.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
                 MuggingTarget.AddCrime(CrimeManager.Mugging,MuggingTarget.Pedestrian.Position);
             }
@@ -152,7 +152,7 @@ public static class MuggingManager
     }
     private static bool IsHoldingMelee()
     {
-        WeaponInformation MyWeapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
+        WeaponInformation MyWeapon = WeaponManager.GetCurrentWeapon(Game.LocalPlayer.Character);
         if (MyWeapon == null || MyWeapon.Category != WeaponCategory.Melee)
             return false;
         else

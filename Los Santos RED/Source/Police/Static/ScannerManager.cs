@@ -123,7 +123,7 @@ public static class ScannerManager
                 ExecutingQueue = true;
                 GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
                 {
-                    GameFiber.Sleep(General.MyRand.Next(2500, 4500));//Next(1500, 2500)
+                    GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
                     if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
                     {
                         DispatchQueue.RemoveAll(x => !x.LatestInformation.SeenByOfficers);
@@ -204,11 +204,11 @@ public static class ScannerManager
     {
         if (IsRunning)
         {
-            if (PlayerStateManager.IsWanted && PolicePedManager.AnySeenPlayerCurrentWanted)
+            if (PlayerStateManager.IsWanted && PoliceManager.AnySeenPlayerCurrentWanted)
             {
                 if (!RequestBackup.HasRecentlyBeenPlayed && WantedLevelManager.RecentlyRequestedBackup)
                 {
-                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PolicePedManager.PlaceLastSeenPlayer));
+                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer));
                 }
                 if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && PedManager.AnyArmyUnitsSpawned)
                 {
@@ -230,30 +230,30 @@ public static class ScannerManager
                 {
                     AddToQueue(LethalForceAuthorized);
                 }
-                if (!SuspectArrested.HasRecentlyBeenPlayed && PlayerStateManager.RecentlyBusted && PolicePedManager.AnyCanSeePlayer)
+                if (!SuspectArrested.HasRecentlyBeenPlayed && PlayerStateManager.RecentlyBusted && PoliceManager.AnyCanSeePlayer)
                 {
                     AddToQueue(SuspectArrested);
                 }
                 if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerStateManager.PoliceRecentlyNoticedVehicleChange && PlayerStateManager.CurrentVehicle != null && !PlayerStateManager.CurrentVehicle.HasBeenDescribedByDispatch)
                 {
-                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PolicePedManager.PlaceLastSeenPlayer) { VehicleSeen = PlayerStateManager.CurrentVehicle });
+                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer) { VehicleSeen = PlayerStateManager.CurrentVehicle });
                 }
                 if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && PersonOfInterestManager.RecentlyAppliedWantedStats)
                 {
-                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PolicePedManager.PlaceLastSeenPlayer) { VehicleSeen = PlayerStateManager.CurrentVehicle });
+                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer) { VehicleSeen = PlayerStateManager.CurrentVehicle });
                 }
 
                 if (!PlayerStateManager.IsBusted && !PlayerStateManager.IsDead)
                 {
                     if (!LostVisual.HasRecentlyBeenPlayed && PlayerStateManager.StarsRecentlyGreyedOut && WantedLevelManager.HasBeenWantedFor > 45000 && !PedManager.AnyCopsNearPlayer)
                     {
-                        AddToQueue(LostVisual, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PolicePedManager.PlaceLastSeenPlayer));
+                        AddToQueue(LostVisual, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && PlayerStateManager.StarsRecentlyActive && WantedLevelManager.HasBeenWantedFor > 25000 && PolicePedManager.AnyRecentlySeenPlayer)
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && PlayerStateManager.StarsRecentlyActive && WantedLevelManager.HasBeenWantedFor > 25000 && PoliceManager.AnyRecentlySeenPlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!RecentlyAnnouncedDispatch && PolicePedManager.AnyCanSeePlayer && WantedLevelManager.HasBeenWantedFor > 25000)
+                    else if (!RecentlyAnnouncedDispatch && PoliceManager.AnyCanSeePlayer && WantedLevelManager.HasBeenWantedFor > 25000)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -268,7 +268,7 @@ public static class ScannerManager
                 }
                 if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelManager.RecentlyLostWanted && !RespawnManager.RecentlyRespawned && !RespawnManager.RecentlyBribedPolice && !RespawnManager.RecentlySurrenderedToPolice)
                 {
-                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PolicePedManager.PlaceLastSeenPlayer));
+                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer));
                 }
                 if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && InvestigationManager.LastInvestigationRecentlyExpired && InvestigationManager.DistanceToInvestigationPosition <= 1000f)
                 {
@@ -276,11 +276,11 @@ public static class ScannerManager
                 }
                 foreach (VehicleExt StolenCar in PlayerStateManager.ReportedStolenVehicles)
                 {
-                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PolicePedManager.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
+                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
                 }
             }
 
-            if (!SuspectWasted.HasRecentlyBeenPlayed && PlayerStateManager.RecentlyDied && PolicePedManager.AnyRecentlySeenPlayer && PlayerStateManager.MaxWantedLastLife > 0)
+            if (!SuspectWasted.HasRecentlyBeenPlayed && PlayerStateManager.RecentlyDied && PoliceManager.AnyRecentlySeenPlayer && PlayerStateManager.MaxWantedLastLife > 0)
             {
                 AddToQueue(SuspectWasted);
             }
@@ -548,7 +548,7 @@ public static class ScannerManager
     {
             dispatchEvent.SoundsToPlay.Add((new List<string>() { suspect_heading.TargetLastSeenHeading.FileName, suspect_heading.TargetReportedHeading.FileName, suspect_heading.TargetSeenHeading.FileName, suspect_heading.TargetSpottedHeading.FileName }).PickRandom());
             dispatchEvent.Subtitles += " ~s~suspect heading~s~";
-            string heading = General.GetSimpleCompassHeading(Game.LocalPlayer.Character.Heading);
+            string heading = GetSimpleCompassHeading(Game.LocalPlayer.Character.Heading);
             if (heading == "N")
             {
                 dispatchEvent.SoundsToPlay.Add(direction_heading.North.FileName);
@@ -569,6 +569,49 @@ public static class ScannerManager
                 dispatchEvent.SoundsToPlay.Add(direction_heading.West.FileName);
                 dispatchEvent.Subtitles += " ~g~West~s~";
             }
+    }
+    private static string GetSimpleCompassHeading(float Heading)
+    {
+        //float Heading = Game.LocalPlayer.Character.Heading;
+        string Abbreviation;
+
+        //yeah could be simpler, whatever idk computers are fast
+        if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
+        else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
+        else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
+        else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
+        else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
+        else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
+        else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
+        else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
+        else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
+        else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
+        else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
+        else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
+        else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
+        else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
+        else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
+        else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
+        else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
+        else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
+        else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
+        else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
+        else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
+        else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
+        else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
+        else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
+        else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
+        else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
+        else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
+        else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
+        else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
+        else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
+        else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
+        else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+        else { Abbreviation = ""; }
+
+        return Abbreviation;
     }
     private static void AddStreet(DispatchEvent dispatchEvent)
     {
@@ -786,7 +829,7 @@ public static class ScannerManager
         }
         else
         {
-            int Num = General.MyRand.Next(1, 5);
+            int Num = RandomItems.MyRand.Next(1, 5);
             if (Num == 1)
             {
                 dispatchEvent.SoundsToPlay.Add(carrying_weapon.Armedwithafirearm.FileName);

@@ -12,11 +12,15 @@ public static class ZoneManager
     private static List<Zone> ZoneList = new List<Zone>();
     public static void Initialize()
     {
-        ReadConfig();
-    }
-    public static void Dispose()
-    {
-
+        if (File.Exists(ConfigFileName))
+        {
+            ZoneList = SettingsManager.DeserializeParams<Zone>(ConfigFileName);
+        }
+        else
+        {
+            DefaultConfig();
+            SettingsManager.SerializeParams(ZoneList, ConfigFileName);
+        }
     }
     public static Zone GetZone(Vector3 ZonePosition)
     {
@@ -68,18 +72,6 @@ public static class ZoneManager
             zoneName = Marshal.PtrToStringAnsi(ptr);
         }
         return zoneName;
-    }
-    private static void ReadConfig()
-    {
-        if (File.Exists(ConfigFileName))
-        {
-            ZoneList = General.DeserializeParams<Zone>(ConfigFileName);
-        }
-        else
-        {
-            DefaultConfig();
-            General.SerializeParams(ZoneList, ConfigFileName);
-        }
     }
     private static void DefaultConfig()
     {

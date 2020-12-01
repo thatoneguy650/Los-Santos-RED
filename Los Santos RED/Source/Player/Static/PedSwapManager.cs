@@ -42,13 +42,9 @@ public static class PedSwapManager
         TakenOverPeds = new List<TakenOverPed>();
         GameTimeLastTakenOver = Game.GameTime;
         CurrentPlayerModel = Game.LocalPlayer.Character.Model.Name;
-        CurrentPedVariation = General.GetPedVariation(Game.LocalPlayer.Character);
+        CurrentPedVariation = GetPedVariation(Game.LocalPlayer.Character);
         CurrentPlayerIsMale = Game.LocalPlayer.Character.IsMale;
         GiveName();
-    }
-    public static void Dispose()
-    {
-
     }
     public static void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice)
     {
@@ -103,7 +99,7 @@ public static class PedSwapManager
         if (Nearest)
             PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
         else
-            PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => General.MyRand.Next()).FirstOrDefault();
+            PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         if (PedToReturn == null)
         {
             Debugging.WriteToLog("Ped Takeover", "No Peds Found");
@@ -128,6 +124,31 @@ public static class PedSwapManager
             return PedToReturn;
         }
     }
+    private static PedVariation GetPedVariation(Ped myPed)
+    {
+        try
+        {
+            PedVariation myPedVariation = new PedVariation
+            {
+                MyPedComponents = new List<PedComponent>(),
+                MyPedProps = new List<PedPropComponent>()
+            };
+            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
+            {
+                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
+            }
+            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
+            {
+                myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
+            }
+            return myPedVariation;
+        }
+        catch (Exception e)
+        {
+            Debugging.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            return null;
+        }
+    }
     private static void GiveName()
     {
         if (CurrentPlayerModel.ToLower() == "player_zero")
@@ -141,7 +162,7 @@ public static class PedSwapManager
     }
     private static void StoreTargetPedData(Ped TargetPed)
     {
-        CurrentPedVariation = General.GetPedVariation(TargetPed);
+        CurrentPedVariation = GetPedVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
         CurrentPlayerIsMale = TargetPed.IsMale;
         ClockManager.PauseTime();
@@ -163,13 +184,13 @@ public static class PedSwapManager
                 TargetPedAlreadyTakenOver = true;
                 ChangeModel(OriginalModel.Name);
                 if (!Game.LocalPlayer.Character.IsMainCharacter())
-                    General.ReplacePedComponentVariation(Game.LocalPlayer.Character, CurrentPedVariation);
+                    CurrentPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
             }
         }
 
         OriginalModel = TargetPed.Model;
 
-        AddPedToTakenOverPeds(new TakenOverPed(TargetPed, TargetPed.Handle, General.GetPedVariation(TargetPed), TargetPed.Model, Game.GameTime));
+        AddPedToTakenOverPeds(new TakenOverPed(TargetPed, TargetPed.Handle, GetPedVariation(TargetPed), TargetPed.Model, Game.GameTime));
 
         if (!TargetPedAlreadyTakenOver)
             LastModelHash = TargetPed.Model.Name;
@@ -207,7 +228,7 @@ public static class PedSwapManager
         }
 
         if (!Game.LocalPlayer.Character.IsMainCharacter())
-            General.ReplacePedComponentVariation(Game.LocalPlayer.Character,CurrentPedVariation);
+            CurrentPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
 
         if (TargetPedInVehicle)
         {
@@ -224,7 +245,7 @@ public static class PedSwapManager
         }
 
         if (SettingsManager.MySettings.General.PedTakeoverSetRandomMoney)
-            Game.LocalPlayer.Character.SetCash(General.MyRand.Next(SettingsManager.MySettings.General.PedTakeoverRandomMoneyMin, SettingsManager.MySettings.General.PedTakeoverRandomMoneyMax));
+            Game.LocalPlayer.Character.SetCash(RandomItems.MyRand.Next(SettingsManager.MySettings.General.PedTakeoverRandomMoneyMin, SettingsManager.MySettings.General.PedTakeoverRandomMoneyMax));
 
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
@@ -248,7 +269,7 @@ public static class PedSwapManager
             CurrentPed.IsPersistent = false;
         ActivatePreviousScenarios();
 
-        General.SetPedUnarmed(Game.LocalPlayer.Character, false);
+        Game.LocalPlayer.Character.SetUnarmed();
         GiveName();
         ClockManager.UnpauseTime();
 

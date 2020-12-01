@@ -21,11 +21,7 @@ public static class LicensePlateTheftManager
         LicensePlate = null;
         PlayerChangingPlate = false;
         SpareLicensePlates = new List<LicensePlate>();
-        SpareLicensePlates.Add(new LicensePlate(General.RandomString(8), 1, 1, false));
-    }
-    public static void Dispose()
-    {
-
+        SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 1, 1, false));
     }
     public static void RemoveNearestLicensePlate()
     {
@@ -77,16 +73,16 @@ public static class LicensePlateTheftManager
                 if (ChangeSpot == Vector3.Zero)
                     return;
 
-                General.SetPedUnarmed(Game.LocalPlayer.Character, false);
+                Game.LocalPlayer.Character.SetUnarmed();
                 if (!MovePedToCarPosition(VehicleToChange.VehicleEnt, Game.LocalPlayer.Character, VehicleToChange.VehicleEnt.Heading, ChangeSpot, true))
                     return;
 
                 PlayerChangingPlate = true;
-                Screwdriver = General.AttachScrewdriverToPed(Game.LocalPlayer.Character);
+                Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
                 if (ChangePlates)
                     LicensePlate = AttachLicensePlateToPed(Game.LocalPlayer.Character);
 
-                General.RequestAnimationDictionay("mp_car_bomb");
+                AnimationManager.RequestAnimationDictionay("mp_car_bomb");
                 uint GameTimeStartedAnimation = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_car_bomb", "car_bomb_mechanic", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
                 bool Continue = true;
@@ -137,6 +133,15 @@ public static class LicensePlateTheftManager
             }
         }, "PlayDispatchQueue");
         Debugging.GameFibers.Add(ChangeLicensePlateAnimation);
+    }
+    private static Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
+    {
+        Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+        if (!Screwdriver.Exists())
+            return null;
+        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
+        Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
+        return Screwdriver;
     }
     private static bool RemovePlate(VehicleExt VehicleToChange)
     {

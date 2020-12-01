@@ -56,11 +56,11 @@ public class PlateType
                 }
                 else if (char.IsDigit(c))
                 {
-                    NewChar = General.RandomNumber();
+                    NewChar = RandomItems.RandomNumber();
                 }
                 else if (char.IsLetter(c))
                 {
-                    NewChar = General.RandomLetter();
+                    NewChar = RandomItems.RandomLetter();
                 }
                 NewPlateNumber += NewChar;
                 

@@ -270,7 +270,7 @@ public class PedExt
         if (NeedsDistanceCheck)
         {
             DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
-            DistanceToLastSeen = Pedestrian.DistanceTo2D(PolicePedManager.PlaceLastSeenPlayer);
+            DistanceToLastSeen = Pedestrian.DistanceTo2D(PoliceManager.PlaceLastSeenPlayer);
 
 
             if (DistanceToPlayer <= 0.1f)
@@ -372,9 +372,9 @@ public class PedExt
         WeaponLastSeenPlayerWith = PlayerStateManager.CurrentWeapon;
         if(IsCop)
         {
-            PolicePedManager.WasPlayerLastSeenInVehicle = PlayerStateManager.IsInVehicle;
-            PolicePedManager.PlayerLastSeenHeading = Game.LocalPlayer.Character.Heading;
-            PolicePedManager.PlayerLastSeenForwardVector = Game.LocalPlayer.Character.ForwardVector;
+            PoliceManager.WasPlayerLastSeenInVehicle = PlayerStateManager.IsInVehicle;
+            PoliceManager.PlayerLastSeenHeading = Game.LocalPlayer.Character.Heading;
+            PoliceManager.PlayerLastSeenForwardVector = Game.LocalPlayer.Character.ForwardVector;
         }
     }
     public void CheckPlayerHurtPed()

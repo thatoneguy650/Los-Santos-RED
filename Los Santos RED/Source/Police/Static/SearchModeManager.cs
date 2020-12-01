@@ -123,7 +123,7 @@ public static class SearchModeManager
     {
         if (PlayerStateManager.IsWanted)
         {
-            if (PolicePedManager.AnyRecentlySeenPlayer)
+            if (PoliceManager.AnyRecentlySeenPlayer)
             {
                 IsInActiveMode = true;
                 IsInSearchMode = false;

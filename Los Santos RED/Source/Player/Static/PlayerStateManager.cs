@@ -411,7 +411,7 @@ public static class PlayerStateManager
         IsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
         IsAimingInVehicle = IsInVehicle && Game.LocalPlayer.IsFreeAiming;
         var PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
-        CurrentWeapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
+        CurrentWeapon = WeaponManager.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (PlayerCurrentWeapon != null)
             CurrentWeaponHash = PlayerCurrentWeapon.Hash;
@@ -485,7 +485,7 @@ public static class PlayerStateManager
             if (CurrentVehicle == null)
                 return;
 
-            if (PolicePedManager.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
+            if (PoliceManager.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
             {
                 if (PoliceLastSeenVehicleHandle != 0 &&
                     PoliceLastSeenVehicleHandle != CurrentVehicle.VehicleEnt.Handle &&
@@ -499,7 +499,7 @@ public static class PlayerStateManager
                 PoliceLastSeenVehicleHandle = CurrentVehicle.VehicleEnt.Handle;
             }
 
-            if (PolicePedManager.AnyCanRecognizePlayer)
+            if (PoliceManager.AnyCanRecognizePlayer)
                 if (WantedLevel > 0 && !AreStarsGreyedOut)
                     UpdateVehicleDescription(CurrentVehicle);
         }
@@ -531,7 +531,7 @@ public static class PlayerStateManager
         Game.LocalPlayer.Character.Kill();
         Game.LocalPlayer.Character.Health = 0;
         Game.LocalPlayer.Character.IsInvincible = true;
-        General.TransitionToSlowMo();
+        TransitionToSlowMo();
         var HandleDeath = GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
@@ -539,13 +539,34 @@ public static class PlayerStateManager
         }, "HandleDeath");
         Debugging.GameFibers.Add(HandleDeath);
     }
+    private static void TransitionToSlowMo()
+    {
+        Game.TimeScale = 0.4f;//Stuff below works, could add it back, it just doesnt really do much
+        //GameFiber Transition = GameFiber.StartNew(delegate
+        //{
+        //    int WaitTime = 100;
+        //    while (Game.TimeScale > 0.4f)
+        //    {
+        //        Game.TimeScale -= 0.05f;
+        //        GameFiber.Wait(WaitTime);
+        //        if (WaitTime <= 200)
+        //            WaitTime += 1;
+        //    }
+
+        //}, "TransitionIn");
+        //Debugging.GameFibers.Add(Transition);
+    }
+    private static void TransitionToMediumMo()
+    {
+        Game.TimeScale = 0.8f;
+    }
     private static void IsGettingIntoVehicleChanged()
     {
         if (IsGettingIntoAVehicle)
         {
             var TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
             var SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-            General.AttemptLockStatus(TargetVeh, (VehicleLockStatus)7); //Attempt to lock most car doors
+            TargetVeh.AttemptLockStatus((VehicleLockStatus)7); //Attempt to lock most car doors
             if ((int)TargetVeh.LockStatus == 7) CarLockPickingManager.PickLock(TargetVeh, SeatTryingToEnter);
             if (TargetVeh != null && SeatTryingToEnter == -1)
             {

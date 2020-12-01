@@ -50,7 +50,7 @@ public static class CarJackingManager
         SeatTryingToEnter = EntrySeat;
 
         Victim = PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
-        Weapon = General.GetCurrentWeapon(Game.LocalPlayer.Character);
+        Weapon = WeaponManager.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (CanArmedCarJack && PlayerStateManager.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
         {
@@ -118,7 +118,7 @@ public static class CarJackingManager
             return false;
         }
 
-        General.RequestAnimationDictionay(Dictionary);
+        AnimationManager.RequestAnimationDictionay(Dictionary);
         PlayerStateManager.SetPlayerToLastWeapon();
 
         if (!Driver.IsInAnyVehicle(false))

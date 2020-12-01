@@ -15,11 +15,22 @@ public static class AgencyManager
     private static List<Agency> AgenciesList;
     public static void Initialize()
     {
-        ReadConfig();
-    }
-    public static void Dispose()
-    {
-
+        if (File.Exists(ConfigFileName))
+        {
+            AgenciesList = SettingsManager.DeserializeParams<Agency>(ConfigFileName);
+        }
+        else
+        {
+            if (UseVanillaConfig)
+            {
+                DefaultConfig();
+            }
+            else
+            {
+                CustomConfig();
+            }
+            SettingsManager.SerializeParams(AgenciesList, ConfigFileName);
+        }
     }
     public static List<Agency> GetAgencies(Vector3 Position)
     {
@@ -31,19 +42,19 @@ public static class AgencyManager
         }
         Zone CurrentZone = ZoneManager.GetZone(Position);
 
-        Agency ZoneAgency1 = JurisdictionManager.GetRandomAgency(CurrentZone.InternalGameName);
+        Agency ZoneAgency1 = ZoneJurisdictionManager.GetRandomAgency(CurrentZone.InternalGameName);
         if (ZoneAgency1 != null)
         {
             ToReturn.Add(ZoneAgency1); //Zone Jurisdiciton Random
         }
 
-        Agency CountyAgency1 = JurisdictionManager.GetRandomCountyAgency(CurrentZone.InternalGameName);
+        Agency CountyAgency1 = CountyJurisdictionManager.GetRandomAgency(CurrentZone.InternalGameName);
         if (CountyAgency1 != null)
         {
             ToReturn.Add(CountyAgency1); //Zone Jurisdiciton Random
         }
 
-        if (!ToReturn.Any() || General.RandomPercent(LikelyHoodOfAnySpawn))
+        if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))
         {
             ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn && x.CanSpawnAnywhere));
         }
@@ -72,7 +83,7 @@ public static class AgencyManager
                 Zone ZoneFound = ZoneManager.GetZone(Cop.Position);
                 if (ZoneFound != null)
                 {
-                    foreach (Agency ZoneAgency in JurisdictionManager.GetAgencies(ZoneFound.InternalGameName))
+                    foreach (Agency ZoneAgency in ZoneJurisdictionManager.GetAgencies(ZoneFound.InternalGameName))
                     {
                         if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                             return ZoneAgency;
@@ -101,7 +112,7 @@ public static class AgencyManager
             Zone ZoneFound = ZoneManager.GetZone(CopCar.Position);
             if (ZoneFound != null)
             {
-                foreach (Agency ZoneAgency in JurisdictionManager.GetAgencies(ZoneFound.InternalGameName))
+                foreach (Agency ZoneAgency in ZoneJurisdictionManager.GetAgencies(ZoneFound.InternalGameName))
                 {
                     if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                         return ZoneAgency;
@@ -119,25 +130,6 @@ public static class AgencyManager
     public static Agency GetAgency(string AgencyInitials)
     {
         return AgenciesList.Where(x => x.Initials.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
-    }
-    private static void ReadConfig()
-    {
-        if (File.Exists(ConfigFileName))
-        {
-            AgenciesList = General.DeserializeParams<Agency>(ConfigFileName);
-        }
-        else
-        {
-            if (UseVanillaConfig)
-            {
-                DefaultConfig();
-            }
-            else
-            {
-                CustomConfig();
-            }            
-            General.SerializeParams(AgenciesList, ConfigFileName);
-        }
     }
     private static void DefaultConfig()
     {

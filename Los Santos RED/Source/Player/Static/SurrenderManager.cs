@@ -36,13 +36,13 @@ public static class SurrenderManager
         if (VehicleFuelManager.CanPumpFuel)//usees the same key, might need to change
             return;
 
-        General.SetPedUnarmed(Game.LocalPlayer.Character, false);
+        Game.LocalPlayer.Character.SetUnarmed();
         VehicleEngineManager.TurnOffEngine();
         PlayerStateManager.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
-        General.RequestAnimationDictionay(sDict);
-        General.RequestAnimationDictionay("busted");
+        AnimationManager.RequestAnimationDictionay(sDict);
+        AnimationManager.RequestAnimationDictionay("busted");
         if (inVehicle)
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, true, false, true);
@@ -106,9 +106,9 @@ public static class SurrenderManager
     {
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
-            General.RequestAnimationDictionay("veh@busted_std");
-            General.RequestAnimationDictionay("busted");
-            General.RequestAnimationDictionay("ped");
+            AnimationManager.RequestAnimationDictionay("veh@busted_std");
+            AnimationManager.RequestAnimationDictionay("busted");
+            AnimationManager.RequestAnimationDictionay("ped");
 
             if (!PedToArrest.Exists())
                 return;
@@ -119,7 +119,7 @@ public static class SurrenderManager
             if (!PedToArrest.Exists())
                 return;
 
-            General.SetPedUnarmed(PedToArrest, false);
+            PedToArrest.SetUnarmed();
 
             if (PedToArrest.IsInAnyVehicle(false))
             {
@@ -169,9 +169,9 @@ public static class SurrenderManager
     {
             GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
             {
-                General.RequestAnimationDictionay("random@arrests");
-                General.RequestAnimationDictionay("busted");
-                General.RequestAnimationDictionay("ped");
+                AnimationManager.RequestAnimationDictionay("random@arrests");
+                AnimationManager.RequestAnimationDictionay("busted");
+                AnimationManager.RequestAnimationDictionay("ped");
 
                 if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3))
                 {
@@ -205,13 +205,15 @@ public static class SurrenderManager
             if (!PedToSuicide.IsInAnyVehicle(false))
             {
                 IsCommitingSuicide = true;
-                General.RequestAnimationDictionay("mp_suicide");
+                AnimationManager.RequestAnimationDictionay("mp_suicide");
 
-                WeaponInformation CurrentGun = null;
-                if (PedToSuicide.Inventory.EquippedWeapon != null)
-                    CurrentGun = WeaponManager.WeaponsList.Where(x => (WeaponHash)x.Hash == PedToSuicide.Inventory.EquippedWeapon.Hash && x.CanPistolSuicide).FirstOrDefault();
+                //WeaponInformation CurrentGun = null;
+                //if (PedToSuicide.Inventory.EquippedWeapon != null)
+                //{
+                //    CurrentGun = WeaponManager.WeaponsList.Where(x => (WeaponHash)x.Hash == PedToSuicide.Inventory.EquippedWeapon.Hash && x.CanPistolSuicide).FirstOrDefault();
+                //}
 
-                if (CurrentGun != null)
+                if (WeaponManager.CanPlayerWeaponSuicide(PedToSuicide))
                 {
                     if(PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
                     {

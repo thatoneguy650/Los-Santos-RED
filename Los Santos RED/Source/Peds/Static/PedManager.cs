@@ -150,7 +150,7 @@ public static class PedManager
             Blip myBlip = Pedestrian.AttachBlip();
             myBlip.Color = AssignedAgency.AgencyColor;
             myBlip.Scale = 0.6f;
-            General.CreatedBlips.Add(myBlip);
+            BlipManager.AddBlip(myBlip);
         }
 
         SetCopStats(Pedestrian);
@@ -166,8 +166,8 @@ public static class PedManager
         {
             Pedestrian.Accuracy = SettingsManager.MySettings.Police.PoliceGeneralAccuracy;
         }     
-        int DesiredHealth = General.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
-        int DesiredArmor = General.MyRand.Next(MinCopArmor, MaxCopArmor);
+        int DesiredHealth = RandomItems.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
+        int DesiredArmor = RandomItems.MyRand.Next(MinCopArmor, MaxCopArmor);
         Pedestrian.MaxHealth = DesiredHealth;
         Pedestrian.Health = DesiredHealth;
         Pedestrian.Armor = DesiredArmor;
@@ -178,7 +178,7 @@ public static class PedManager
     private static void AddCivilian(Ped Pedestrian)
     {
         SetCivilianStats(Pedestrian);
-        Civilians.Add(new PedExt(Pedestrian, General.RandomPercent(10), General.RandomPercent(70)));
+        Civilians.Add(new PedExt(Pedestrian, RandomItems.RandomPercent(10), RandomItems.RandomPercent(70)));
     }
     private static void SetCivilianStats(Ped Pedestrian)
     {
@@ -186,7 +186,7 @@ public static class PedManager
         {
             Pedestrian.Accuracy = SettingsManager.MySettings.Police.PoliceGeneralAccuracy;
         }
-        int DesiredHealth = General.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;           
+        int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;           
         Pedestrian.MaxHealth = DesiredHealth;
         Pedestrian.Health = DesiredHealth;   
         Pedestrian.Armor = 0;

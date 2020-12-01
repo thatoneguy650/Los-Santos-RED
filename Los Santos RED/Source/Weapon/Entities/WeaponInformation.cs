@@ -4,6 +4,18 @@ using System.Collections.Generic;
 [Serializable()]
 public class WeaponInformation
 {
+    public string ModelName { get; set; } = "Unknown";
+    public short AmmoAmount { get; set; }
+    public WeaponCategory Category { get; set; }
+    public int WeaponLevel { get; set; }
+    public ulong Hash { get; set; }
+    public bool CanPistolSuicide { get; set; } = false;
+    public bool IsTwoHanded { get; set; } = false;
+    public bool IsOneHanded { get; set; } = false;
+    public bool IsLegal { get; set; } = false;
+    public bool IsRegular { get; set; } = true;
+    public List<WeaponVariation> Variations { get; set; } = new List<WeaponVariation>();
+    public List<WeaponComponent> PossibleComponents { get; set; } = new List<WeaponComponent>();
     public WeaponInformation()
     {
 
@@ -19,18 +31,6 @@ public class WeaponInformation
         IsTwoHanded = _IsTwoHanded;
         IsLegal = _IsLegal;
     }
-    public string ModelName { get; set; } = "Unknown";
-    public short AmmoAmount { get; set; }
-    public WeaponCategory Category { get; set; }
-    public int WeaponLevel { get; set; }
-    public ulong Hash { get; set; }
-    public bool CanPistolSuicide { get; set; } = false;
-    public bool IsTwoHanded { get; set; } = false;
-    public bool IsOneHanded { get; set; } = false;
-    public bool IsLegal { get; set; } = false;
-    public bool IsRegular { get; set; } = true;
-    public List<WeaponVariation> Variations { get; set; } = new List<WeaponVariation>();
-    public List<WeaponComponent> PossibleComponents { get; set; } = new List<WeaponComponent>();
     public bool IsLowEnd
     {
         get

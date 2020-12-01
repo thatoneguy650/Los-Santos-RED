@@ -163,6 +163,21 @@ namespace ExtensionsMethods
                 return false;
 
         }
+        public static void SetUnarmed(this Ped Pedestrian)
+        {
+            if (!(Pedestrian.Inventory.EquippedWeapon == null))
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, (uint)2725352035, true); //Unequip weapon so you don't get shot
+            }
+        }
+        public static void KeepUnarmed(this Ped Pedestrian)
+        {
+            if (!(Pedestrian.Inventory.EquippedWeapon == null))
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, (uint)2725352035, true); //Unequip weapon so you don't get shot
+                NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
+            }
+        }
         public static void GiveCash(this Ped myPed, int Amount)
         {
             int CurrentCash;
@@ -227,6 +242,31 @@ namespace ExtensionsMethods
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
         //Car Stuff
+        public static bool AttemptLockStatus(this Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
+        {
+           // Debugging.WriteToLog("LockCarDoor", string.Format("Start, Lock Status {0}", ToLock.LockStatus));
+            if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)//if (ToLock.LockStatus != (VehicleLockStatus)1) //unlocked
+                return false;
+            if (ToLock.HasDriver)//If they have a driver 
+                return false;
+            foreach (VehicleDoor myDoor in ToLock.GetDoors())
+            {
+                if (!myDoor.IsValid() || myDoor.IsOpen)
+                    return false;//invalid doors make the car not locked
+            }
+            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
+                return false;//broken windows == not locked
+            if (PlayerStateManager.TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
+                return false; //previously entered vehicle arent locked
+            if (ToLock.IsConvertible && ToLock.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
+                return false;
+            if (ToLock.IsBike || ToLock.IsPlane || ToLock.IsHelicopter)
+                return false;
+
+            //Debugging.WriteToLog("LockCarDoor", "Locked");
+            ToLock.LockStatus = DesiredLockStatus;//Locked for player
+            return true;
+        }
         public static bool IsRoadWorthy(this Vehicle myCar)
         {
             bool LightsOn;

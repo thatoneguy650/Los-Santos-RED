@@ -90,7 +90,7 @@ public class Agency
         List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn).ToList();
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
         // Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
-        int RandomPick = General.MyRand.Next(0, Total);
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
         foreach (VehicleInformation Vehicle in ToPickFrom)
         {
             int SpawnChance = Vehicle.CurrentSpawnChance;
@@ -114,7 +114,7 @@ public class Agency
         }
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
         //Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
-        int RandomPick = General.MyRand.Next(0, Total);
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
         foreach (PedestrianInformation Cop in ToPickFrom)
         {
             int SpawnChance = Cop.CurrentSpawnChance;

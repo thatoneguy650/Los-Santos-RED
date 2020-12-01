@@ -151,7 +151,7 @@ public static class UIManager
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", SearchModeManager.IsInSearchMode,SearchModeManager.IsInActiveMode,SearchModeManager.TimeInSearchMode,SearchModeManager.TimeInActiveMode);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", PolicePedManager.AnyRecentlySeenPlayer, PlayerStateManager.AreStarsGreyedOut, SearchModeManager.CurrentSearchTime,PolicePedManager.PlaceLastSeenPlayer);
+        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", PoliceManager.AnyRecentlySeenPlayer, PlayerStateManager.AreStarsGreyedOut, SearchModeManager.CurrentSearchTime,PoliceManager.PlaceLastSeenPlayer);
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         string DebugLine4 = string.Format("NumberPlateIndexSelected {0}", Debugging.NumberPlateIndexSelected);
         DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
@@ -287,7 +287,7 @@ public static class UIManager
         ZoneDisplay = ZoneManager.GetName(PlayerLocationManager.PlayerCurrentZone,true);
         if (PlayerLocationManager.PlayerCurrentZone != null)
         {
-            Agency MainZoneAgency = JurisdictionManager.GetMainAgency(PlayerLocationManager.PlayerCurrentZone.InternalGameName);
+            Agency MainZoneAgency = ZoneJurisdictionManager.GetMainAgency(PlayerLocationManager.PlayerCurrentZone.InternalGameName);
             if (MainZoneAgency != null)
                 CopZoneName = MainZoneAgency.ColoredInitials;
         }

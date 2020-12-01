@@ -9,89 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class AmbientPlateManager
+public static class PlateTypeManager
 {
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\PlateTypes.xml";
     private static List<PlateType> PlateTypes = new List<PlateType>();
-    private static List<AmbientVehicle> AmbientVehicles = new List<AmbientVehicle>();
     private static bool UseVanillaConfig = false;
-    public static bool IsRunning { get; set; }
     public static void Initialize()
-    {
-        IsRunning = true;
-        AmbientVehicles = new List<AmbientVehicle>();
-        PlateTypes = new List<PlateType>();
-        ReadConfig();
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
-    }
-    public static void Tick()
-    {
-        if (IsRunning)
-        {
-            UpdateVehiclePlates();
-        }
-    }
-    public static void UpdateCurrentVehiclePlate()
-    {
-        if (Game.LocalPlayer.Character.CurrentVehicle != null)
-        {
-            AmbientVehicle Mine = AmbientVehicles.FirstOrDefault(x => x.CivVehicle.VehicleEnt.Handle == Game.LocalPlayer.Character.CurrentVehicle.Handle);
-            if (Mine != null)
-            {
-                Mine.UpdatePlate();
-            }
-        }
-    }
-    private static void UpdateVehiclePlates()
-    {
-        int VehiclesUpdated = 0;
-        AmbientVehicles.RemoveAll(x => !x.CivVehicle.VehicleEnt.Exists());
-        foreach (VehicleExt MyCar in VehicleManager.CivilianVehicles.Where(x => x.VehicleEnt.Exists()))
-        {
-            if (!AmbientVehicles.Any(x => x.CivVehicle.VehicleEnt.Handle == MyCar.VehicleEnt.Handle))
-            {
-                AmbientVehicle AmbCar = new AmbientVehicle(MyCar);
-                AmbCar.UpdatePlate();
-                AmbientVehicles.Add(AmbCar);
-                VehiclesUpdated++;
-            }
-            if (VehiclesUpdated > 5)
-            {
-                break;
-            }
-        }
-    }
-    private static PlateType GetPlateType(int CurrentIndex)
-    {
-        return PlateTypes.FirstOrDefault(x => x.Index == CurrentIndex);
-    }
-    private static PlateType GetRandomPlateType()
-    {
-        if (!PlateTypes.Any())
-            return null;
-
-        List<PlateType> ToPickFrom = PlateTypes.Where(x => x.CanSpawn).ToList();
-        int Total = ToPickFrom.Sum(x => x.SpawnChance);
-        int RandomPick = General.MyRand.Next(0, Total);
-        foreach (PlateType Type in ToPickFrom)
-        {
-            int SpawnChance = Type.SpawnChance;
-            if (RandomPick < SpawnChance)
-            {
-                return Type;
-            }
-            RandomPick -= SpawnChance;
-        }
-        return null;
-    }
-    private static void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
-            PlateTypes = General.DeserializeParams<PlateType>(ConfigFileName);
+            PlateTypes = SettingsManager.DeserializeParams<PlateType>(ConfigFileName);
         }
         else
         {
@@ -103,8 +30,31 @@ public static class AmbientPlateManager
             {
                 CustomConfig();
             }
-            General.SerializeParams(PlateTypes, ConfigFileName);
+            SettingsManager.SerializeParams(PlateTypes, ConfigFileName);
         }
+    }
+    public static PlateType GetPlateType(int CurrentIndex)
+    {
+        return PlateTypes.FirstOrDefault(x => x.Index == CurrentIndex);
+    }
+    public static PlateType GetRandomPlateType()
+    {
+        if (!PlateTypes.Any())
+            return null;
+
+        List<PlateType> ToPickFrom = PlateTypes.Where(x => x.CanSpawn).ToList();
+        int Total = ToPickFrom.Sum(x => x.SpawnChance);
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (PlateType Type in ToPickFrom)
+        {
+            int SpawnChance = Type.SpawnChance;
+            if (RandomPick < SpawnChance)
+            {
+                return Type;
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
     }
     private static void DefaultConfig()
     {
@@ -166,80 +116,6 @@ public static class AmbientPlateManager
         PlateTypes.Add(new PlateType(51, "Nothing", "None", 0));
         PlateTypes.Add(new PlateType(52, "Nothing", "None", 0));
     }
-    private class AmbientVehicle
-    {
-        public VehicleExt CivVehicle { get; set; }
-        public bool CanUpdatePlate
-        {
-            get
-            {
-                VehicleClass CurrentClass = (VehicleClass)CivVehicle.ClassInt();
-                if (CurrentClass == VehicleClass.Compact)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Coupe)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Muscle)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.OffRoad)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Sedan)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Sport)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.SportClassic)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Super)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.SUV)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-        public AmbientVehicle(VehicleExt vehicle)
-        {
-            CivVehicle = vehicle;
-        }     
-        public void UpdatePlate()
-        {
-            PlateType CurrentType = GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CivVehicle.VehicleEnt));
-            string CurrentPlateNumber = CivVehicle.VehicleEnt.LicensePlate;
-            if (General.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
-            {
-                PlateType NewType = GetRandomPlateType();
-                if (NewType != null)
-                {
-                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                    if (NewPlateNumber != "")
-                    {
-                        CivVehicle.VehicleEnt.LicensePlate = NewPlateNumber;
-                        CivVehicle.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                        CivVehicle.CarPlate.PlateNumber = NewPlateNumber;
-                    }
-                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CivVehicle.VehicleEnt, NewType.Index);
-                    CivVehicle.OriginalLicensePlate.PlateType = NewType.Index;
-                    CivVehicle.CarPlate.PlateType = NewType.Index;
-                }
-            }
-        }
 
-    }
 }
 

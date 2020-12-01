@@ -141,7 +141,7 @@ public static class TaskManager
         {
             get
             {
-                if (CopToTask.DistanceToPlayer <= PolicePedManager.ActiveDistance)
+                if (CopToTask.DistanceToPlayer <= PoliceManager.ActiveDistance)
                     return true;
                 else
                     return false;
@@ -292,7 +292,7 @@ public static class TaskManager
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                             NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 2f, 9);
-                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, General.MyRand.Next(4000,8000));
+                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000,8000));
                             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -337,7 +337,7 @@ public static class TaskManager
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                             NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 2f, 9);
-                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, General.MyRand.Next(4000, 8000));
+                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
                             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -493,7 +493,7 @@ public static class TaskManager
         {
             if (WithinChaseDistance)
             {
-                if (PolicePedManager.AnyRecentlySeenPlayer && !PlayerStateManager.AreStarsGreyedOut)
+                if (PoliceManager.AnyRecentlySeenPlayer && !PlayerStateManager.AreStarsGreyedOut)
                 {
                     if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
                     {
@@ -583,7 +583,7 @@ public static class TaskManager
         private void VehicleChase_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = PolicePedManager.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = PoliceManager.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (PlayerStateManager.IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", CopToTask.Pedestrian, Game.LocalPlayer.Character); //NativeFunction.CallByName<bool>("TASK_VEHICLE_FOLLOW", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 22f, 4 | 16 | 32 | 262144, 8f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
@@ -598,7 +598,7 @@ public static class TaskManager
         }
         private void VehicleChase_Normal()
         {
-            Vector3 WantedCenter = PolicePedManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = PoliceManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if(CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 10f)
             {
                 if (!PlayerStateManager.IsInVehicle)
@@ -662,7 +662,7 @@ public static class TaskManager
         }
         private void FootChase_Start()
         {
-            double cool = General.MyRand.NextDouble() * (1.175 - 1.1) + 1.1;//(1.17 - 1.075) + 1.075;//(1.175 - 1.1) + 1.1;
+            double cool = RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1;//(1.17 - 1.075) + 1.075;//(1.175 - 1.1) + 1.1;
             float MoveRate = (float)cool;
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_CLIMBOVERS", CopToTask.Pedestrian, true);
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_LADDERS", CopToTask.Pedestrian, true);
@@ -752,7 +752,7 @@ public static class TaskManager
         private void GoToLastSeen_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = PolicePedManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = PoliceManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (CopToTask.IsInVehicle && CopToTask.Pedestrian.CurrentVehicle != null)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
@@ -768,7 +768,7 @@ public static class TaskManager
         }
         private void GoToLastSeen_Normal()
         {
-            Vector3 WantedCenter = PolicePedManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = PoliceManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (!NearWantedCenterThisWanted)
             {
                 if (CurrentTaskedPosition.DistanceTo2D( WantedCenter) >= 5f)
@@ -1151,9 +1151,9 @@ public static class TaskManager
 
                         if (PlayerStateManager.AreStarsGreyedOut)
                         {
-                            if (Game.LocalPlayer.Character.Position.DistanceTo2D(CivilianToTask.PositionToReportToPolice) <= Game.LocalPlayer.Character.Position.DistanceTo2D(PolicePedManager.PlaceLastSeenPlayer))//closer to the new position
+                            if (Game.LocalPlayer.Character.Position.DistanceTo2D(CivilianToTask.PositionToReportToPolice) <= Game.LocalPlayer.Character.Position.DistanceTo2D(PoliceManager.PlaceLastSeenPlayer))//closer to the new position
                             {
-                                PolicePedManager.PlaceLastSeenPlayer = CivilianToTask.PositionToReportToPolice;//update it, give them a little ESP instead of doing all the timing bullshit
+                                PoliceManager.PlaceLastSeenPlayer = CivilianToTask.PositionToReportToPolice;//update it, give them a little ESP instead of doing all the timing bullshit
                             }
 
                         }

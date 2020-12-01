@@ -5,20 +5,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class JurisdictionManager
+public static class ZoneJurisdictionManager
 {
-    private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Jurisdiction.xml";
-    private static bool UseVanillaConfig = true;
+    private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\ZoneJurisdiction.xml"; 
     private static List<ZoneJurisdiction> ZoneJurisdictions = new List<ZoneJurisdiction>();
-    private static List<CountyJurisdiction> CountyJurisdictions = new List<CountyJurisdiction>();
-
+    private static bool UseVanillaConfig = true;
     public static void Initialize()
     {
-        ReadConfig();
-    }
-    public static void Dispose()
-    {
-
+        if (File.Exists(ConfigFileName))
+        {
+            ZoneJurisdictions = SettingsManager.DeserializeParams<ZoneJurisdiction>(ConfigFileName);
+        }
+        else
+        {
+            if (UseVanillaConfig)
+            {
+                DefaultConfig();
+            }
+            else
+            {
+                CustomConfig();
+            }
+            SettingsManager.SerializeParams(ZoneJurisdictions, ConfigFileName);
+        }
     }
     public static Agency GetMainAgency(string ZoneName)
     {
@@ -38,28 +47,8 @@ public static class JurisdictionManager
         {
             List<ZoneJurisdiction> ToPickFrom = ZoneJurisdictions.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn).ToList();
             int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-            int RandomPick = General.MyRand.Next(0, Total);
+            int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (ZoneJurisdiction MyJurisdiction in ToPickFrom)
-            {
-                int SpawnChance = MyJurisdiction.CurrentSpawnChance;
-                if (RandomPick < SpawnChance)
-                {
-                    return MyJurisdiction.GameAgency;
-                }
-                RandomPick -= SpawnChance;
-            }
-        }
-        return null;
-    }
-    public static Agency GetRandomCountyAgency(string ZoneName)
-    {
-        Zone MyZone = ZoneManager.GetZone(ZoneName);
-        if (MyZone != null)
-        {
-            List<CountyJurisdiction> ToPickFrom = CountyJurisdictions.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn).ToList();
-            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-            int RandomPick = General.MyRand.Next(0, Total);
-            foreach (CountyJurisdiction MyJurisdiction in ToPickFrom)
             {
                 int SpawnChance = MyJurisdiction.CurrentSpawnChance;
                 if (RandomPick < SpawnChance)
@@ -82,34 +71,8 @@ public static class JurisdictionManager
             return null;
         }
     }
-    private static void ReadConfig()
-    {
-        if (File.Exists(ConfigFileName))
-        {
-            ZoneJurisdictions = General.DeserializeParams<ZoneJurisdiction>(ConfigFileName);
-        }
-        else
-        {
-            if (UseVanillaConfig)
-            {
-                DefaultConfig();
-            }
-            else
-            {
-                CustomConfig();
-            }
-            General.SerializeParams(ZoneJurisdictions, ConfigFileName);
-        }
-    }
     private static void DefaultConfig()
     {
-        CountyJurisdictions = new List<CountyJurisdiction>()
-        {
-            new CountyJurisdiction("LSPD-ASD",County.CityOfLosSantos, 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD",County.BlaineCounty, 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
-        };
-
         ZoneJurisdictions = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSIAPD","AIRP", 0, 95, 95) {CanSpawnPedestrianOfficers = true },
@@ -347,12 +310,6 @@ public static class JurisdictionManager
     }
     private static void CustomConfig()
     {
-        CountyJurisdictions = new List<CountyJurisdiction>()
-        {
-            new CountyJurisdiction("LSPD-ASD",County.CityOfLosSantos, 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD",County.BlaineCounty, 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
-        };
         ZoneJurisdictions = new List<ZoneJurisdiction>()
         {
             new ZoneJurisdiction("LSIAPD","AIRP", 0, 95, 95) {CanSpawnPedestrianOfficers = true },
@@ -588,7 +545,6 @@ public static class JurisdictionManager
 
         };
     }
-
 }
 
     

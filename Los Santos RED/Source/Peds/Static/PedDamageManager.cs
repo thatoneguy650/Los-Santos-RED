@@ -452,7 +452,7 @@ public static class PedDamageManager
                 int HealthDamage = Health - CurrentHealth;
                 int ArmorDamage = Armor - CurrentArmor;
                 BodyLocation DamagedLocation = GetDamageLocation(MyPed.Pedestrian);
-                WeaponInformation DamagingWeapon = GetWeaponLastDamagedBy(MyPed.Pedestrian);
+                WeaponInformation DamagingWeapon = WeaponManager.GetDamagingWeapon(MyPed.Pedestrian);
 
                 bool CanBeFatal = false;
                 if (DamagedLocation == BodyLocation.Head || DamagedLocation == BodyLocation.Neck || DamagedLocation == BodyLocation.UpperTorso)
@@ -545,13 +545,13 @@ public static class PedDamageManager
                 //IsBleeding = true;
                 //Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
             }
-            else if (Health - NewHealth >= 35 && General.RandomPercent(60))
+            else if (Health - NewHealth >= 35 && RandomItems.RandomPercent(60))
             {
                 NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
                 //IsBleeding = true;
                 //Debugging.WriteToLog("PlayerHealthChanged", string.Format("Critical Hit, Ragdoll"));
             }
-            else if (Health - NewHealth >= 15 && General.RandomPercent(30))
+            else if (Health - NewHealth >= 15 && RandomItems.RandomPercent(30))
             {
                 NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 1500, 1500, 1, false, false, false);
                 //IsBleeding = true;
@@ -692,7 +692,7 @@ public static class PedDamageManager
         }
         private InjuryType RandomType(bool CanBeFatal)
         {
-            int RandomNumber = General.MyRand.Next(1, 101);
+            int RandomNumber = RandomItems.MyRand.Next(1, 101);
             if (RandomNumber <= 60)
                 return InjuryType.Normal;
             else if (RandomNumber <= 70)
@@ -704,28 +704,28 @@ public static class PedDamageManager
             else
                 return InjuryType.Normal;
         }
-        private WeaponInformation GetWeaponLastDamagedBy(Ped Pedestrian)
-        {
-            foreach (WeaponInformation MyWeapon in WeaponManager.WeaponsList)
-            {
-                if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, MyWeapon.Hash, 0))
-                {
-                    NativeFunction.CallByName<bool>("CLEAR_PED_LAST_WEAPON_DAMAGE", Pedestrian);
-                    return MyWeapon;
-                }
-            }
+        //private WeaponInformation GetWeaponLastDamagedBy(Ped Pedestrian)
+        //{
+        //    foreach (WeaponInformation MyWeapon in WeaponManager.WeaponsList)
+        //    {
+        //        if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, MyWeapon.Hash, 0))
+        //        {
+        //            NativeFunction.CallByName<bool>("CLEAR_PED_LAST_WEAPON_DAMAGE", Pedestrian);
+        //            return MyWeapon;
+        //        }
+        //    }
 
-            if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 1))
-                return new WeaponInformation("Generic Melee", 0, WeaponCategory.Melee, 0, 0, false, false, false);
+        //    if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 1))
+        //        return new WeaponInformation("Generic Melee", 0, WeaponCategory.Melee, 0, 0, false, false, false);
 
-            if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 2))
-                return new WeaponInformation("Generic Weapon", 0, WeaponCategory.Melee, 0, 0, false, false, false);
+        //    if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 2))
+        //        return new WeaponInformation("Generic Weapon", 0, WeaponCategory.Melee, 0, 0, false, false, false);
 
-            if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian))
-                return new WeaponInformation("Vehicle Injury", 0, WeaponCategory.Vehicle, 0, 0, false, false, false);
-            else
-                return new WeaponInformation("Unknown", 0, WeaponCategory.Unknown, 0, 0, false, false, false);
-        }
+        //    if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian))
+        //        return new WeaponInformation("Vehicle Injury", 0, WeaponCategory.Vehicle, 0, 0, false, false, false);
+        //    else
+        //        return new WeaponInformation("Unknown", 0, WeaponCategory.Unknown, 0, 0, false, false, false);
+        //}
         public PedHealthState()
         {
 

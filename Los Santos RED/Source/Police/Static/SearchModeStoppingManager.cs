@@ -66,7 +66,7 @@ public static class SearchModeStoppingManager
             if (PrevStopSearchMode != StopSearchMode)
             {
                 PrevStopSearchMode = StopSearchMode;
-                Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, PolicePedManager.AnyRecentlySeenPlayer));
+                Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, PoliceManager.AnyRecentlySeenPlayer));
             }
 
             if (!StopSearchMode)

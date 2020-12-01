@@ -113,7 +113,7 @@ public static class InvestigationManager
             PoliceInInvestigationModeChanged();
 
 
-        if (PlayerStateManager.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && PolicePedManager.AnyCanRecognizePlayer && WantedLevelManager.HasBeenNotWantedFor >= 5000)
+        if (PlayerStateManager.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && PoliceManager.AnyCanRecognizePlayer && WantedLevelManager.HasBeenNotWantedFor >= 5000)
         {
              WantedLevelManager.ApplyReportedCrimes();
         }
@@ -153,7 +153,7 @@ public static class InvestigationManager
     private static void UpdateInvestigationPosition()
     {
         Vector3 SpawnLocation = Vector3.Zero;
-        General.GetStreetPositionandHeading(InvestigationPosition, out SpawnLocation, out float Heading, false);
+        StreetManager.GetStreetPositionandHeading(InvestigationPosition, out SpawnLocation, out float Heading, false);
         if (SpawnLocation != Vector3.Zero)
             InvestigationPosition = SpawnLocation;
     } 
@@ -181,7 +181,7 @@ public static class InvestigationManager
             };
 
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)InvestigationBlip.Handle, true);
-            General.CreatedBlips.Add(InvestigationBlip);
+            BlipManager.AddBlip(InvestigationBlip);
         }
         if (InvestigationBlip.Exists())
             InvestigationBlip.Position = Position;

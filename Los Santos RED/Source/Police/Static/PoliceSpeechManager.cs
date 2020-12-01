@@ -172,13 +172,13 @@ public static class PoliceSpeechManager
         {
     
             string AnimationToPlay = "generic_radio_enter";
-            WeaponInformation CurrentGun = General.GetCurrentWeapon(AssignedCop.Pedestrian);
+            WeaponInformation CurrentGun = WeaponManager.GetCurrentWeapon(AssignedCop.Pedestrian);
             if (CurrentGun != null && CurrentGun.IsOneHanded)
                 AnimationToPlay = "radio_enter";
 
             Speak();
 
-            General.RequestAnimationDictionay("random@arrests");
+            AnimationManager.RequestAnimationDictionay("random@arrests");
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", AssignedCop.Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
             GameTimeLastRadioed = Game.GameTime;
 

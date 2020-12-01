@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class PolicePedManager
+public static class PoliceManager
 {
     public static bool IsRunning { get; set; }
     public static bool AnyCanSeePlayer { get; private set; }

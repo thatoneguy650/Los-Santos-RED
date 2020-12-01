@@ -66,8 +66,8 @@ public static class CarLockPickingManager
     private static bool SetupLockPick()
     {
         OriginalLockStatus = TargetVehicle.LockStatus;
-        General.AttemptLockStatus(TargetVehicle, (VehicleLockStatus)3);//Attempt to lock most car doors
-        General.SetPedUnarmed(Game.LocalPlayer.Character, false);
+        TargetVehicle.AttemptLockStatus((VehicleLockStatus)3);//Attempt to lock most car doors
+        Game.LocalPlayer.Character.SetUnarmed();
 
         TargetVehicle.MustBeHotwired = true;
         uint GameTimeStartedStealing = Game.GameTime;
@@ -116,9 +116,9 @@ public static class CarLockPickingManager
         PlayerLockPicking = true;
         bool Continue = true;
 
-        Screwdriver = General.AttachScrewdriverToPed(Game.LocalPlayer.Character);
+        Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
 
-        General.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
+        AnimationManager.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@break_in@0h@p_m_one@", Animation, 2.0f, -2.0f, -1, 0, 0, false, false, false);
 
         uint GameTimeStarted = Game.GameTime;
@@ -146,6 +146,15 @@ public static class CarLockPickingManager
         TargetVehicle.Doors[DoorIndex].Open(true, false);
 
         return true;
+    }
+    private static Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
+    {
+        Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+        if (!Screwdriver.Exists())
+            return null;
+        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
+        Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
+        return Screwdriver;
     }
     private static bool FinishLockPick()
     {

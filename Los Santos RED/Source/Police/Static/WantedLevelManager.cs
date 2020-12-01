@@ -250,7 +250,7 @@ public static class WantedLevelManager
         IsWeaponsFree = false;
         CurrentPoliceState = PoliceState.Normal;
         GameTimeWantedLevelStarted = 0;
-        PolicePedManager.Reset();
+        PoliceManager.Reset();
         InvestigationManager.Reset();
         ScannerManager.Reset();
     }
@@ -312,9 +312,9 @@ public static class WantedLevelManager
         if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
             return;
 
-        if (PlayerStateManager.WantedLevel >= 1 && PlayerStateManager.WantedLevel <= 3 && PolicePedManager.AnyCanSeePlayer)
+        if (PlayerStateManager.WantedLevel >= 1 && PlayerStateManager.WantedLevel <= 3 && PoliceManager.AnyCanSeePlayer)
         {
-            if (PolicePedManager.AnyCanSeePlayer)
+            if (PoliceManager.AnyCanSeePlayer)
             {   
                 if (CurrentCrimes.LethalForceAuthorized)
                 {
@@ -365,20 +365,20 @@ public static class WantedLevelManager
         {
             if (!PlayerStateManager.IsDead && !PlayerStateManager.IsBusted)
             {
-                Vector3 CurrentWantedCenter = PolicePedManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                Vector3 CurrentWantedCenter = PoliceManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
                 if (CurrentWantedCenter != Vector3.Zero)
                 {
                     LastWantedCenterPosition = CurrentWantedCenter;
                     UpdateBlip(CurrentWantedCenter,SearchModeManager.BlipSize);
                 }
 
-                if(PolicePedManager.AnyCanSeePlayer)
+                if(PoliceManager.AnyCanSeePlayer)
                 {
                     PlayerSeenDuringCurrentWanted = true;
                     CurrentCrimes.PlayerSeenDuringWanted = true;
                 }
 
-                if (SettingsManager.MySettings.Police.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > SettingsManager.MySettings.Police.WantedLevelIncreaseTime && PolicePedManager.AnyCanSeePlayer && PlayerStateManager.WantedLevel <= SettingsManager.MySettings.Police.WantedLevelInceaseOverTimeLimit)
+                if (SettingsManager.MySettings.Police.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > SettingsManager.MySettings.Police.WantedLevelIncreaseTime && PoliceManager.AnyCanSeePlayer && PlayerStateManager.WantedLevel <= SettingsManager.MySettings.Police.WantedLevelInceaseOverTimeLimit)
                 {
                     GameTimeLastRequestedBackup = Game.GameTime;
                     SetWantedLevel(PlayerStateManager.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
@@ -490,7 +490,7 @@ public static class WantedLevelManager
             };
             
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)CurrentWantedCenterBlip.Handle, true);
-            General.CreatedBlips.Add(CurrentWantedCenterBlip);
+            BlipManager.AddBlip(CurrentWantedCenterBlip);
         }
         if (CurrentWantedCenterBlip.Exists())
         {
@@ -523,7 +523,7 @@ public static class WantedLevelManager
             };
 
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastWantedCenterBlip.Handle, true);
-            General.CreatedBlips.Add(LastWantedCenterBlip);
+            BlipManager.AddBlip(LastWantedCenterBlip);
         }
         if (LastWantedCenterBlip.Exists())
             LastWantedCenterBlip.Position = Position;

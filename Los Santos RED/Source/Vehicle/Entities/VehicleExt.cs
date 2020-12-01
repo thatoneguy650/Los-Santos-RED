@@ -14,9 +14,7 @@ namespace LSR.Vehicles
     public class VehicleExt
     {
         private uint GameTimeEntered = 0;
-
         public Vehicle VehicleEnt { get; set; } = null;
-        //public Ped PreviousOwner { get; set; } = null;
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
@@ -27,6 +25,7 @@ namespace LSR.Vehicles
         public bool WasJacked { get; set; }
         public bool IsStolen { get; set; }
         public bool WasReportedStolen { get; set; }
+        public bool HasUpdatedPlateType { get; private set; }
         public bool NeedsToBeReportedStolen
         {
             get
@@ -90,6 +89,50 @@ namespace LSR.Vehicles
                 }
             }
         }
+        public bool CanUpdatePlate
+        {
+            get
+            {
+                VehicleClass CurrentClass = (VehicleClass)ClassInt();
+                if (CurrentClass == VehicleClass.Compact)
+                {
+                    return true;
+                }
+                else if (CurrentClass == VehicleClass.Coupe)
+                {
+                    return true;
+                }
+                else if (CurrentClass == VehicleClass.Muscle)
+                {
+                    return true;
+                }
+                else if (CurrentClass == VehicleClass.OffRoad)
+                {
+                    return true;
+                }
+                else if (CurrentClass == VehicleClass.Sedan)
+                {
+                    return true;
+                }
+                else if (CurrentClass == VehicleClass.Sport)
+                {
+                    return true;
+                }
+                else if (CurrentClass == VehicleClass.SportClassic)
+                {
+                    return true;
+                }
+                else if (CurrentClass == VehicleClass.Super)
+                {
+                    return true;
+                }
+                else if (CurrentClass == VehicleClass.SUV)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public VehicleExt(Vehicle _Vehicle, uint _GameTimeEntered, bool _WasJacked, bool _WasAlarmed, bool _IsStolen, LicensePlate _CarPlate)
         {
             VehicleEnt = _Vehicle;
@@ -107,7 +150,7 @@ namespace LSR.Vehicles
             else
                 PositionOriginallyEntered = Game.LocalPlayer.Character.Position;
 
-            _Vehicle.FuelLevel = General.MyRand.Next(25, 100);
+            _Vehicle.FuelLevel = RandomItems.MyRand.Next(25, 100);
         }
         public VehicleExt(Vehicle _Vehicle)
         {
@@ -116,7 +159,7 @@ namespace LSR.Vehicles
             LicensePlate _CarPlate = new LicensePlate(_Vehicle.LicensePlate, (uint)_Vehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", _Vehicle), false);
             CarPlate = _CarPlate;
             OriginalLicensePlate = _CarPlate;
-            _Vehicle.FuelLevel = General.MyRand.Next(25, 100);
+            _Vehicle.FuelLevel = RandomItems.MyRand.Next(25, 100);
         }
         public void SetAsEntered()
         {
@@ -190,6 +233,29 @@ namespace LSR.Vehicles
         {
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", VehicleEnt);
             return ClassInt;
+        }
+        public void UpdatePlate()//this might need to come out of here.... along with the two bools
+        {
+            HasUpdatedPlateType = true;
+            PlateType CurrentType = PlateTypeManager.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleEnt));
+            string CurrentPlateNumber = VehicleEnt.LicensePlate;
+            if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
+            {
+                PlateType NewType = PlateTypeManager.GetRandomPlateType();
+                if (NewType != null)
+                {
+                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                    if (NewPlateNumber != "")
+                    {
+                        VehicleEnt.LicensePlate = NewPlateNumber;
+                        OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                        CarPlate.PlateNumber = NewPlateNumber;
+                    }
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleEnt, NewType.Index);
+                    OriginalLicensePlate.PlateType = NewType.Index;
+                    CarPlate.PlateType = NewType.Index;
+                }
+            }
         }
     }
 }

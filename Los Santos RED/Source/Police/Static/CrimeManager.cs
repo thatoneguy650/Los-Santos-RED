@@ -121,7 +121,7 @@ public static class CrimeManager
         {
             SuspiciousActivity.IsCurrentlyViolating = false;
         }
-        if (PlayerStateManager.IsWanted && PolicePedManager.AnySeenPlayerCurrentWanted && !PlayerStateManager.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !PlayerStateManager.HandsAreUp && WantedLevelManager.HasBeenWantedFor >= 10000)
+        if (PlayerStateManager.IsWanted && PoliceManager.AnySeenPlayerCurrentWanted && !PlayerStateManager.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !PlayerStateManager.HandsAreUp && WantedLevelManager.HasBeenWantedFor >= 10000)
         {
             ResistingArrest.IsCurrentlyViolating = true;
         }
@@ -182,7 +182,7 @@ public static class CrimeManager
             if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || PlayerStateManager.CurrentWeaponCategory == WeaponCategory.Melee))
             {
                 FiringWeapon.IsCurrentlyViolating = true;
-                if (PolicePedManager.AnyRecentlySeenPlayer || PolicePedManager.AnyCanHearPlayerShooting)
+                if (PoliceManager.AnyRecentlySeenPlayer || PoliceManager.AnyCanHearPlayerShooting)
                     FiringWeaponNearPolice.IsCurrentlyViolating = true;
             }
         }
@@ -269,7 +269,7 @@ public static class CrimeManager
     {
         foreach (Crime Violating in CrimeList.Where(x => x.IsCurrentlyViolating))
         {
-            if (PolicePedManager.AnyCanSeePlayer || (Violating.CanReportBySound && PolicePedManager.AnyCanHearPlayerShooting) || Violating.IsAlwaysFlagged)
+            if (PoliceManager.AnyCanSeePlayer || (Violating.CanReportBySound && PoliceManager.AnyCanHearPlayerShooting) || Violating.IsAlwaysFlagged)
             {
                 WeaponInformation ToSee = null;
                 if (!PlayerStateManager.IsInVehicle)

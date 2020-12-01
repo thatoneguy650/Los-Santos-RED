@@ -100,6 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\General\Locations\County.cs" />
+    <Compile Include="Source\General\Static\AnimationManager.cs" />
+    <Compile Include="Source\General\Static\BlipManager.cs" />
     <Compile Include="Source\Peds\Peds\PedName.cs" />
     <Compile Include="Source\Police\Agencies\Agency.cs" />
     <Compile Include="Source\Police\Agencies\Classification.cs" />
@@ -133,12 +135,13 @@
     <Compile Include="Source\Police\Crimes\Crime.cs" />
     <Compile Include="Source\Police\Crimes\CrimeEvent.cs" />
     <Compile Include="Source\Police\Scanner\AudioSet.cs" />
+    <Compile Include="Source\Police\Static\CountyJurisdictionManager.cs" />
     <Compile Include="Source\Police\Static\CrimeManager.cs" />
     <Compile Include="Source\Police\Crimes\CriminalHistory.cs" />
     <Compile Include="Source\Police\Static\DispatchManager.cs" />
     <Compile Include="Source\Police\Static\InvestigationManager.cs" />
     <Compile Include="Source\Police\Static\PersonOfInterestManager.cs" />
-    <Compile Include="Source\Police\Static\PolicePedManager.cs" />
+    <Compile Include="Source\Police\Static\PoliceManager.cs" />
     <Compile Include="Source\Police\Static\PoliceEquipmentManager.cs" />
     <Compile Include="Source\Police\Static\ScannerManager.cs" />
     <Compile Include="Source\Police\Scanner\PoliceScannerCallIn.cs" />
@@ -165,7 +168,7 @@
     <Compile Include="Source\Weapon\Entities\WeaponVariation.cs" />
     <Compile Include="Source\General\Locations\Zone.cs" />
     <Compile Include="Source\Police\Static\AgencyManager.cs" />
-    <Compile Include="Source\Police\Static\JurisdictionManager.cs" />
+    <Compile Include="Source\Police\Static\ZoneJurisdictionManager.cs" />
     <Compile Include="Source\Weapon\Static\WeaponManager.cs" />
     <Compile Include="Source\Peds\Static\NameManager.cs" />
     <Compile Include="Source\General\Static\StreetManager.cs" />
@@ -179,14 +182,14 @@
     <Compile Include="Source\General\Static\LocationManager.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Source\Extensions\Extensions.cs" />
-    <Compile Include="Source\General\Static\General.cs" />
+    <Compile Include="Source\General\Static\RandomItems.cs" />
     <Compile Include="Source\Peds\Peds\Memory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Police\Scanner\DispatchScannerFiles.cs" />
     <Compile Include="Debugging\Debugging.cs" />
     <Compile Include="Source\Settings\Setting\LSRSettings.cs" />
     <Compile Include="Source\General\Static\ZoneManager.cs" />
-    <Compile Include="Source\Vehicle\Static\AmbientPlateManager.cs" />
+    <Compile Include="Source\Vehicle\Static\PlateTypeManager.cs" />
     <Compile Include="Source\Vehicle\Static\CarJackingManager.cs" />
     <Compile Include="Source\Vehicle\Static\CarLockPickingManager.cs" />
     <Compile Include="Source\Vehicle\Static\LicensePlateTheftManager.cs" />

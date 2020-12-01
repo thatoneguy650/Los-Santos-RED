@@ -147,7 +147,7 @@ public static class RespawnManager
                 ResetPlayer(true, true);
                 Game.LocalPlayer.Character.Inventory.Weapons.Clear();
                 PlayerStateManager.LastWeaponHash = 0;
-                PolicePedManager.PreviousWantedLevel = 0;
+                PoliceManager.PreviousWantedLevel = 0;
                 PlayerStateManager.TimesDied = 0;
                 PlayerStateManager.MaxWantedLastLife = 0;
             }
@@ -190,7 +190,7 @@ public static class RespawnManager
             return;
         }
 
-        if (Amount < (PolicePedManager.PreviousWantedLevel * SettingsManager.MySettings.Police.PoliceBribeWantedLevelScale))
+        if (Amount < (PoliceManager.PreviousWantedLevel * SettingsManager.MySettings.Police.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
@@ -288,7 +288,7 @@ public static class RespawnManager
                 return;
             }
 
-            General.RequestAnimationDictionay("mp_common");
+            AnimationManager.RequestAnimationDictionay("mp_common");
 
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
@@ -324,7 +324,6 @@ public static class RespawnManager
         Rage.Object Money = new Rage.Object("xs_prop_arena_cash_pile_m", Pedestrian.GetOffsetPositionUp(50f));
         if (!Money.Exists())
             return null;
-        General.CreatedObjects.Add(Money);
         int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
         Money.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.12f, 0.03f, -0.01f), new Rotator(0f, -45f, 90f));
         return Money;
@@ -337,7 +336,7 @@ public static class RespawnManager
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
-            WeaponVariation DroppedGunVariation = General.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
+            WeaponVariation DroppedGunVariation = WeaponManager.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
             DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation,Weapon.Ammo);
             MyOldGuns.Add(MyGun);
         }
@@ -350,7 +349,7 @@ public static class RespawnManager
             if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.Weapon.Hash, (short)MyNewGun.Ammo, false);
-                General.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyNewGun.Weapon.Hash, MyNewGun.Variation);
+                MyNewGun.Variation.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyNewGun.Weapon.Hash);
                 NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.Weapon.Hash, MyNewGun.Ammo + 1);
             }
         }
@@ -438,7 +437,7 @@ public static class RespawnManager
             TodaysPayment = TotalNeededPayment;
         }
 
-        bool LesterHelp = General.RandomPercent(20);
+        bool LesterHelp = RandomItems.RandomPercent(20);
         if (!LesterHelp)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStationName, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", BailFee, TodaysPayment, BailFeePastDue));
@@ -535,7 +534,7 @@ public static class RespawnManager
                     return;
                 }
 
-                General.RequestAnimationDictionay("mp_common");
+                AnimationManager.RequestAnimationDictionay("mp_common");
 
                 NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);

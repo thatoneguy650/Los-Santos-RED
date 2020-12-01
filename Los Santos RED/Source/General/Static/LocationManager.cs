@@ -15,12 +15,19 @@ public static class LocationManager
     private static List<GameLocation> LocationsList;
     public static void Initialize()
     {
-        ReadConfig();
-        CreateBlips();
+        if (File.Exists(ConfigFileName))
+        {
+            LocationsList = SettingsManager.DeserializeParams<GameLocation>(ConfigFileName);
+        }
+        else
+        {
+            DefaultConfig();
+            SettingsManager.SerializeParams(LocationsList, ConfigFileName);
+        }
     }
-    public static void Dispose()
+    public static List<GameLocation> GetAllLocations()
     {
-
+        return LocationsList;
     }
     public static GameLocation GetClosestLocation(Vector3 Position,LocationType Type)
     {
@@ -29,25 +36,6 @@ public static class LocationManager
     public static List<GameLocation> GetLocations(LocationType Type)
     {
         return LocationsList.Where(x => x.Type == Type).ToList();
-    }
-    private static void CreateBlips()
-    {
-        foreach (GameLocation MyLocation in LocationsList)
-        {
-            MyLocation.CreateLocationBlip();
-        }
-    }
-    private static void ReadConfig()
-    {
-        if (File.Exists(ConfigFileName))
-        {
-            LocationsList = General.DeserializeParams<GameLocation>(ConfigFileName);
-        }
-        else
-        {
-            DefaultConfig();
-            General.SerializeParams(LocationsList, ConfigFileName);
-        }
     }
     private static void DefaultConfig()
     {
@@ -99,6 +87,5 @@ public static class LocationManager
 
     };
     }
-
 }
 

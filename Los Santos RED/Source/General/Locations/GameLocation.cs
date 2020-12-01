@@ -35,37 +35,6 @@ public class GameLocation
         Name = _Name;
         GasPumps = _GasPumps;
     }
-    public void CreateLocationBlip()
-    {
-        Blip MyLocationBlip = new Blip(LocationPosition)
-        {
-            Name = Name
-        };
-
-        if (Type == LocationType.Hospital)
-        {
-            MyLocationBlip.Sprite = BlipSprite.Hospital;
-            MyLocationBlip.Color = Color.White;
-        }
-        else if (Type == LocationType.Police)
-        {
-            MyLocationBlip.Sprite = BlipSprite.PoliceStation;
-            MyLocationBlip.Color = Color.White;
-        }
-        else if (Type == LocationType.ConvenienceStore)
-        {
-            MyLocationBlip.Sprite = BlipSprite.CriminalHoldups;
-            MyLocationBlip.Color = Color.White;
-        }
-        else if (Type == LocationType.GasStation)
-        {
-            MyLocationBlip.Sprite = BlipSprite.JerryCan;
-            MyLocationBlip.Color = Color.White;
-        }
-
-        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
-        General.CreatedBlips.Add(MyLocationBlip);
-    }
     public override string ToString()
     {
         return Name.ToString();

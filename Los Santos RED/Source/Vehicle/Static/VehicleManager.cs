@@ -30,6 +30,7 @@ public static class VehicleManager
         if (IsRunning)
         {
             ScanForVehicles();
+            UpdateVehiclePlates();
         }
     }
     private static void ScanForVehicles()
@@ -38,6 +39,19 @@ public static class VehicleManager
         foreach (Vehicle Veh in Vehicles)
         {
             AddToLists(Veh);
+        }
+    }
+    private static void UpdateVehiclePlates()
+    {
+        int VehiclesUpdated = 0;
+        foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.VehicleEnt.Exists() && !x.HasUpdatedPlateType))
+        {
+            MyCar.UpdatePlate();
+            VehiclesUpdated++;
+            if (VehiclesUpdated > 5)
+            {
+                break;
+            }
         }
     }
     private static void AddToLists(Vehicle Veh)

@@ -131,13 +131,13 @@ public static class PoliceSpawningManager
                     Blip myBlip = Cop.AttachBlip();
                     myBlip.Color = _Agency.AgencyColor;
                     myBlip.Scale = 0.6f;
-                    General.CreatedBlips.Add(myBlip);
+                    BlipManager.AddBlip(myBlip);
                 }
                 PedManager.Cops.Add(MyNewCop);
 
                 if (CurrentVehicleInfo != null)
                 {
-                    int OccupantsToAdd = General.MyRand.Next(CurrentVehicleInfo.MinOccupants, CurrentVehicleInfo.MaxOccupants + 1) - 1;
+                    int OccupantsToAdd = RandomItems.MyRand.Next(CurrentVehicleInfo.MinOccupants, CurrentVehicleInfo.MaxOccupants + 1) - 1;
                     for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                     {
                         Ped PartnerCop = SpawnCopPed(_Agency, SpawnLocation, false, null);
@@ -164,7 +164,7 @@ public static class PoliceSpawningManager
                                     Blip myBlip = PartnerCop.AttachBlip();
                                     myBlip.Color = _Agency.AgencyColor;
                                     myBlip.Scale = 0.6f;
-                                    General.CreatedBlips.Add(myBlip);
+                                    BlipManager.AddBlip(myBlip);
                                 }
                                 PedManager.Cops.Add(MyNewPartnerCop);
                                 MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
@@ -221,7 +221,7 @@ public static class PoliceSpawningManager
             int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
             NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", CopCar, NewLiveryNumber);
         }
-        CopCar.LicensePlate = AssignedAgency.LicensePlatePrefix + General.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
+        CopCar.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
     }
     public static void UpdateLivery(Vehicle CopCar)
     {
@@ -352,13 +352,15 @@ public static class PoliceSpawningManager
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 4, 1, 0, 0);
         }
 
-        if (Cop.IsMale && General.MyRand.Next(1, 11) <= 4) //40% Chance of Vest
+        if (Cop.IsMale && RandomItems.MyRand.Next(1, 11) <= 4) //40% Chance of Vest
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 9, 2, 0, 2);//Vest male only
         if (!PlayerStateManager.IsNightTime)
             NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", Cop, 1, 0, 0, 2);//Sunglasses
 
         if (MyInfo.RequiredVariation != null)
-            General.ReplacePedComponentVariation(Cop, MyInfo.RequiredVariation);
+        {
+            MyInfo.RequiredVariation.ReplacePedComponentVariation(Cop);
+        }
 
 
         return Cop;

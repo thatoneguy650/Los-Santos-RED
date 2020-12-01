@@ -12,11 +12,15 @@ public static class NameManager
     private static List<PedName> NameList;
     public static void Initialize()
     {
-        ReadConfig();
-    }
-    public static void Dispose()
-    {
-
+        if (File.Exists(ConfigFileName))
+        {
+            NameList = SettingsManager.DeserializeParams<PedName>(ConfigFileName);
+        }
+        else
+        {
+            DefaultConfig();
+            SettingsManager.SerializeParams(NameList, ConfigFileName);
+        }
     }
     public static string GetRandomName(bool IsMale)
     {
@@ -31,22 +35,6 @@ public static class NameManager
         }
         Name += " " + NameList.Where(x => x.Type == NameType.Last).PickRandom().Name;
         return Name;
-    }
-    public static string GetRandomName()
-    {
-        return NameList.Where(x => x.Type == NameType.Unisex).PickRandom().Name + " " + NameList.Where(x => x.Type == NameType.Last).PickRandom().Name;
-    }
-    private static void ReadConfig()
-    {
-        if (File.Exists(ConfigFileName))
-        {
-            NameList = General.DeserializeParams<PedName>(ConfigFileName);
-        }
-        else
-        {
-            DefaultConfig();
-            General.SerializeParams(NameList, ConfigFileName);
-        }
     }
     private static void DefaultConfig()
     {
