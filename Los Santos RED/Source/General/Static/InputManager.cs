@@ -19,10 +19,10 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using Extensions = ExtensionsMethods.Extensions;
 
-public static class InputManager
+public class InputManager
 {
-    public static bool IsRunning { get; set; }
-    private static bool IsPressingSurrender
+    public bool IsRunning { get; set; }
+    private bool IsPressingSurrender
     {
         get
         {
@@ -36,7 +36,7 @@ public static class InputManager
             }
         }
     }
-    private static bool IsPressingRefuel
+    private bool IsPressingRefuel
     {
         get
         {
@@ -50,7 +50,7 @@ public static class InputManager
             }
         }
     }
-    private static bool IsPressingDropWeapon
+    private bool IsPressingDropWeapon
     {
         get
         {
@@ -64,7 +64,7 @@ public static class InputManager
             }
         }
     }
-    private static bool IsPressingEngineToggle
+    private bool IsPressingEngineToggle
     {
         get
         {
@@ -78,7 +78,7 @@ public static class InputManager
             }
         }
     }
-    private static bool IsPressingRightIndicator
+    private bool IsPressingRightIndicator
     {
         get
         {
@@ -92,7 +92,7 @@ public static class InputManager
             }
         }
     }
-    private static bool IsPressingLeftIndicator
+    private bool IsPressingLeftIndicator
     {
         get
         {
@@ -106,7 +106,7 @@ public static class InputManager
             }
         }
     }
-    private static bool IsPressingHazards
+    private bool IsPressingHazards
     {
         get
         {
@@ -120,15 +120,15 @@ public static class InputManager
             }
         }
     }
-    public static void Initialize()
+    public InputManager()
     {
         IsRunning = true;
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
@@ -137,7 +137,7 @@ public static class InputManager
             VehicleCheck();
         }
     }
-    private static void SurrenderCheck()
+    private void SurrenderCheck()
     {
         if (IsPressingSurrender && SurrenderManager.CanSurrender)
         {
@@ -154,14 +154,14 @@ public static class InputManager
             }
         }
     }
-    private static void WeaponDropCheck()
+    private void WeaponDropCheck()
     {
         if (IsPressingDropWeapon && WeaponDroppingManager.CanDropWeapon)
         {
             WeaponDroppingManager.DropWeapon();
         }
     }
-    private static void VehicleCheck()
+    private void VehicleCheck()
     {
         if (IsPressingEngineToggle && VehicleEngineManager.CanToggleEngine)
         {

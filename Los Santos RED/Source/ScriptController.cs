@@ -15,6 +15,8 @@ public static class ScriptController
     private static Stopwatch GameStopWatch;
     private static Stopwatch TickStopWatch;
     private static List<TickTask> MyTickTasks;
+    private static InputManager inputManager;
+    private static UIManager uiManager;
     public static bool IsRunning { get; set; }
     public static void Initialize()
     {
@@ -95,8 +97,7 @@ public static class ScriptController
                 while (IsRunning)
                 {
                     MenuManager.Tick();
-                    UIManager.Tick();
-                    //WantedLevelManager.FreezeTick();//testing this here.....
+                    uiManager.Tick();
                     GameFiber.Yield();
                 }
             }
@@ -126,7 +127,7 @@ public static class ScriptController
         {
             new TickTask(0, "ClockManager", ClockManager.Tick, 0,0),
 
-            new TickTask(0, "InputManager", InputManager.Tick, 1,0),
+            new TickTask(0, "InputManager", inputManager.Tick, 1,0),
 
             new TickTask(25, "PlayerStateManager", PlayerStateManager.Tick, 2,0),
             new TickTask(25, "PolicePedManager", PoliceManager.Tick, 2,1),
@@ -183,18 +184,18 @@ public static class ScriptController
         StreetManager.Initialize();
 
 
-        
-        InputManager.Initialize();
-        Debugging.Initialize();
-        UIManager.Initialize();
-        ClockManager.Initialize();
+
+        inputManager = new InputManager();
+        uiManager = new UIManager();    
         MenuManager.Intitialize();
-        BlipManager.Initialize();
+        
 
         PlayerStateManager.Initialize();
         WeaponDroppingManager.Initialize();
         PlayerLocationManager.Initialize();
 
+        ClockManager.Initialize();
+        BlipManager.Initialize();
 
         VehicleEngineManager.Initialize();
         VehicleIndicatorManager.Initialize();
@@ -227,11 +228,13 @@ public static class ScriptController
 
         LicensePlateTheftManager.Initialize();//Event
         PedSwapManager.Initialize();//Event
+
+        Debugging.Initialize();//debugging
     }
     private static void DisposeSubProcesses()
     {
         PlayerStateManager.Dispose();
-        InputManager.Dispose();
+        inputManager.Dispose();
         MenuManager.Dispose();
         PedManager.Dispose();
         VehicleManager.Dispose();
@@ -245,7 +248,7 @@ public static class ScriptController
         TaskManager.Dispose();
         PoliceEquipmentManager.Dispose();
         WeaponDroppingManager.Dispose();
-        UIManager.Dispose();
+        uiManager.Dispose();
         Debugging.Dispose();
         PlayerLocationManager.Dispose();
         BlipManager.Dispose();

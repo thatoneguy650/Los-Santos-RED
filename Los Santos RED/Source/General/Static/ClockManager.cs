@@ -54,7 +54,7 @@ public static class ClockManager
         {
             return string.Format("Current Time: {0}:{1}:{2}", NativeFunction.CallByName<int>("GET_CLOCK_HOURS"), NativeFunction.CallByName<int>("GET_CLOCK_MINUTES"), NativeFunction.CallByName<int>("GET_CLOCK_SECONDS"));
         }
-    }  
+    }
     public static void Initialize()
     {
         IsRunning = true;
@@ -62,7 +62,7 @@ public static class ClockManager
         ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
         ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
         ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-        NativeFunction.CallByName<int>("PAUSE_CLOCK",true);      
+        NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
     }
     public static void Dispose()
     {
@@ -98,7 +98,7 @@ public static class ClockManager
         GameFiber UnPauseTime = GameFiber.StartNew(delegate
         {
             uint GameTimeStartedResettingTime = Game.GameTime;
-            while(Game.GameTime - GameTimeStartedResettingTime <= 3000)
+            while (Game.GameTime - GameTimeStartedResettingTime <= 3000)
             {
                 SetToStoredTime();
                 GameFiber.Yield();
@@ -117,7 +117,7 @@ public static class ClockManager
     private static void SetToStoredTime()
     {
         //Debugging.WriteToLog("StoreTime", string.Format("Time: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
-        NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds); 
+        NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds);
     }
     private static void GetIntervalAndMultiplier()
     {
@@ -156,7 +156,7 @@ public static class ClockManager
         {
             Interval = 1;
             ClockMultiplier = 30;
-        }  
+        }
     }
     private static void CheckTimeInterval()
     {
@@ -174,4 +174,3 @@ public static class ClockManager
         ClockDayOfWeek = NativeFunction.CallByName<int>("GET_CLOCK_DAY_OF_WEEK");
     }
 }
-

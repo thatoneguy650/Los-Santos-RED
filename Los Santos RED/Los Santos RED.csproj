@@ -99,6 +99,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="lsr\CrimeSomething.cs" />
+    <Compile Include="lsr\InputManager.cs" />
+    <Compile Include="lsr\Mod.cs" />
+    <Compile Include="lsr\Player.cs" />
+    <Compile Include="lsr\Police.cs" />
     <Compile Include="Source\General\Locations\County.cs" />
     <Compile Include="Source\General\Static\AnimationManager.cs" />
     <Compile Include="Source\General\Static\BlipManager.cs" />

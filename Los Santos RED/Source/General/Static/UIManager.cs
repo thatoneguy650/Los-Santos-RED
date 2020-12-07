@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class UIManager
+public class UIManager
 {
     private enum GTAFont
     {
@@ -54,14 +54,14 @@ public static class UIManager
         MAX_HUD_WEAPONS = 22,
         MAX_SCRIPTED_HUD_COMPONENTS = 141,
     }
-    private static BigMessageThread BigMessage;
-    private static bool StartedBandagingEffect = false;
-    private static bool StartedBustedEffect = false;
-    private static bool StartedDeathEffect = false;
-    private static uint GameTimeLastDisplayedBleedingHelp;
+    private BigMessageThread BigMessage;
+    private bool StartedBandagingEffect = false;
+    private bool StartedBustedEffect = false;
+    private bool StartedDeathEffect = false;
+    private uint GameTimeLastDisplayedBleedingHelp;
 
-    public static bool IsRunning { get; set; }
-    private static bool RecentlyDisplayedBleedingHelp
+    public bool IsRunning { get; set; }
+    private bool RecentlyDisplayedBleedingHelp
     {
         get
         {
@@ -73,16 +73,16 @@ public static class UIManager
                 return false;
         }
     }
-    public static void Initialize()
+    public UIManager()
     {
         IsRunning= true;
         BigMessage = new BigMessageThread(true);
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (SettingsManager.MySettings.General.AlwaysShowHUD)
         {
@@ -116,7 +116,7 @@ public static class UIManager
 
         ScreenEffectsTick();
     }
-    private static void ShowUI()
+    private void ShowUI()
     {
         ShowDebugUI();
         HideVanillaUI();
@@ -128,7 +128,7 @@ public static class UIManager
 
         DisplayHelpText();
     }
-    private static void DisplayHelpText()
+    private void DisplayHelpText()
     {
         if (!RecentlyDisplayedBleedingHelp && PedDamageManager.IsPlayerBleeding)
         {
@@ -136,7 +136,7 @@ public static class UIManager
             GameTimeLastDisplayedBleedingHelp = Game.GameTime;
         }
     }
-    private static void ShowDebugUI()
+    private void ShowDebugUI()
     {
         //int Lines = 0;
         //foreach(string LogMessage in Debugging.LogMessages)
@@ -166,7 +166,7 @@ public static class UIManager
         //}
 
     }
-    private static void ScreenEffectsTick()
+    private void ScreenEffectsTick()
     {
         if (PlayerStateManager.IsDead)
         {
@@ -215,7 +215,7 @@ public static class UIManager
         }
 
     }
-    private static void HideVanillaUI()
+    private void HideVanillaUI()
     {
         NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_NAME);
         NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_AREA_NAME);
@@ -223,7 +223,7 @@ public static class UIManager
         NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_STREET_NAME);
         NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
     }
-    private static string GetPlayerStatusDisplay()
+    private string GetPlayerStatusDisplay()
     {
         string PlayerStatusLine = "";
         if (PersonOfInterestManager.PlayerIsPersonOfInterest)
@@ -243,7 +243,7 @@ public static class UIManager
         }
         return PlayerStatusLine;
     }
-    private static string GetVehicleStatusDisplay()
+    private string GetVehicleStatusDisplay()
     {
         string PlayerSpeedLine = "";
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -269,7 +269,7 @@ public static class UIManager
         }
         return PlayerSpeedLine;
     }
-    private static string GetStreetDisplay()
+    private string GetStreetDisplay()
     {
         string StreetDisplay = "";
         if (PlayerLocationManager.PlayerCurrentStreet != null && PlayerLocationManager.PlayerCurrentCrossStreet != null)
@@ -278,7 +278,7 @@ public static class UIManager
             StreetDisplay = string.Format(" {0} ", PlayerLocationManager.PlayerCurrentStreet.Name);
         return StreetDisplay;
     }
-    private static string GetZoneDisplay()
+    private string GetZoneDisplay()
     {
         if (PlayerLocationManager.PlayerCurrentZone == null)
             return "";
@@ -300,7 +300,7 @@ public static class UIManager
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
     }
-    private static void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
+    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
     {
         NativeFunction.CallByName<bool>("SET_TEXT_FONT",(int)Font);
         NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
