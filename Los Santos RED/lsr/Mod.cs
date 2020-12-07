@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr
             while (Game.IsLoading)
                 GameFiber.Yield();
 
-
+            //test comm
             Player.TerminateVanillaRespawn();
 
 
