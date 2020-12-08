@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -40,7 +41,7 @@ internal static class VehicleFuelManager
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsCar)
             {
                 CurrentFuelLevel = Game.LocalPlayer.Character.CurrentVehicle.FuelLevel;
-                if (VehicleEngineManager.IsEngineRunning)
+                if (Mod.VehicleEngineManager.IsEngineRunning)
                 {
                     EngineRunningTick();
                 }
@@ -72,7 +73,7 @@ internal static class VehicleFuelManager
         {
             if (CurrentFuelLevel <= 0)
             {
-                VehicleEngineManager.TurnOffEngine();
+                Mod.VehicleEngineManager.TurnOffEngine();
             }
             else
             {

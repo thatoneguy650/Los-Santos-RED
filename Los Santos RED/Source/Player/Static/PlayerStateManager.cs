@@ -632,7 +632,7 @@ public static class PlayerStateManager
             IsStolen, MyPlate);
         if (IsStolen && PreviousOwner.Exists())
         {
-            var MyPrevOwner = PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
+            var MyPrevOwner = Mod.PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
             if (MyPrevOwner != null) MyPrevOwner.AddCrime(CrimeManager.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
         }
 

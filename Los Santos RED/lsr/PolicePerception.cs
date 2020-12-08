@@ -16,7 +16,7 @@ namespace LosSantosRED.lsr
         public bool AnyRecentlySeenPlayer { get; private set; }
         public bool AnySeenPlayerCurrentWanted { get; private set; }
         public Vector3 PlaceLastSeenPlayer { get; private set; }
-        public Vector3 PlayerLastSeenForwardVector { get; private set; }
+        public Vector3 PlayerLastSeenForwardVector { get; set; }
         public int PreviousWantedLevel { get; set; }
         public bool WasPlayerLastSeenInVehicle { get; set; }
         public float PlayerLastSeenHeading { get; set; }
@@ -50,9 +50,9 @@ namespace LosSantosRED.lsr
         }
         private void UpdateCops()
         {
-            PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
-            PedManager.K9Peds.RemoveAll(x => !x.Pedestrian.Exists());
-            foreach (Cop Cop in PedManager.Cops)
+            Mod.PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
+            Mod.PedManager.K9Peds.RemoveAll(x => !x.Pedestrian.Exists());
+            foreach (Cop Cop in Mod.PedManager.Cops)
             {
                 Cop.Update();
                 if (Cop.ShouldBustPlayer)
@@ -60,24 +60,24 @@ namespace LosSantosRED.lsr
                     Mod.Player.StartManualArrest();
                 }
             }
-            foreach (Cop Cop in PedManager.Cops.Where(x => x.Pedestrian.IsDead))
+            foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.IsDead))
             {
                 PoliceSpawningManager.MarkNonPersistent(Cop);
             }
-            PedManager.Cops.RemoveAll(x => x.Pedestrian.IsDead);
+            Mod.PedManager.Cops.RemoveAll(x => x.Pedestrian.IsDead);
             VehicleManager.PoliceVehicles.RemoveAll(x => !x.Exists());
         }
         private void UpdateRecognition()
         {
-            AnyCanSeePlayer = PedManager.Cops.Any(x => x.CanSeePlayer);
-            AnyCanHearPlayer = PedManager.Cops.Any(x => x.WithinWeaponsAudioRange);
+            AnyCanSeePlayer = Mod.PedManager.Cops.Any(x => x.CanSeePlayer);
+            AnyCanHearPlayer = Mod.PedManager.Cops.Any(x => x.WithinWeaponsAudioRange);
 
             if (AnyCanSeePlayer)
                 AnyRecentlySeenPlayer = true;
             else
-                AnyRecentlySeenPlayer = PedManager.Cops.Any(x => x.SeenPlayerSince(SettingsManager.MySettings.Police.PoliceRecentlySeenTime));
+                AnyRecentlySeenPlayer = Mod.PedManager.Cops.Any(x => x.SeenPlayerSince(SettingsManager.MySettings.Police.PoliceRecentlySeenTime));
 
-            AnyCanRecognizePlayer = PedManager.Cops.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
+            AnyCanRecognizePlayer = Mod.PedManager.Cops.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
 
             if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer && Mod.Player.IsWanted)
                 AnySeenPlayerCurrentWanted = true;

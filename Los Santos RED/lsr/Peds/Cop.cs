@@ -1,5 +1,6 @@
 ﻿
 using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System.Linq;
@@ -29,18 +30,18 @@ public class Cop : PedExt
     {
         get
         {
-            return PedManager.Cops.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
+            return Mod.PedManager.Cops.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
     public bool ShouldBustPlayer
     {
         get
         {
-            if (PlayerStateManager.IsBusted)
+            if (Mod.Player.IsBusted)
             {
                 return false;
             }
-            else if (!PlayerStateManager.IsBustable)
+            else if (!Mod.Player.IsBustable)
             {
                 return false;
             }
@@ -52,13 +53,13 @@ public class Cop : PedExt
             {
                 return false;
             }
-            else if (PlayerStateManager.HandsAreUp && DistanceToPlayer <= 5f)
+            else if (Mod.Player.HandsAreUp && DistanceToPlayer <= 5f)
             {
                 return true;
             }
-            if (PlayerStateManager.IsInVehicle)
+            if (Mod.Player.IsInVehicle)
             {
-                if (PlayerStateManager.IsStationary && DistanceToPlayer <= 1f)
+                if (Mod.Player.IsStationary && DistanceToPlayer <= 1f)
                 {
                     return true;
                 }

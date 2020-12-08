@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LSR.Vehicles;
 using NAudio.Wave;
 using Rage;
@@ -204,17 +205,17 @@ public static class ScannerManager
     {
         if (IsRunning)
         {
-            if (PlayerStateManager.IsWanted && PoliceManager.AnySeenPlayerCurrentWanted)
+            if (Mod.Player.IsWanted && Mod.PolicePerception.AnySeenPlayerCurrentWanted)
             {
                 if (!RequestBackup.HasRecentlyBeenPlayed && WantedLevelManager.RecentlyRequestedBackup)
                 {
-                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer));
+                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
                 }
-                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && PedManager.AnyArmyUnitsSpawned)
+                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && Mod.PedManager.AnyArmyUnitsSpawned)
                 {
                     AddToQueue(RequestMilitaryUnits);
                 }
-                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && PedManager.AnyNooseUnitsSpawned)
+                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && Mod.PedManager.AnyNooseUnitsSpawned)
                 {
                     AddToQueue(RequestNOOSEUnits);
                 }
@@ -222,7 +223,7 @@ public static class ScannerManager
                 {
                     AddToQueue(WeaponsFree);
                 }
-                if (!RequestAirSupport.HasBeenPlayedThisWanted && PedManager.AnyHelicopterUnitsSpawned)
+                if (!RequestAirSupport.HasBeenPlayedThisWanted && Mod.PedManager.AnyHelicopterUnitsSpawned)
                 {
                     AddToQueue(RequestAirSupport);
                 }
@@ -230,32 +231,32 @@ public static class ScannerManager
                 {
                     AddToQueue(LethalForceAuthorized);
                 }
-                if (!SuspectArrested.HasRecentlyBeenPlayed && PlayerStateManager.RecentlyBusted && PoliceManager.AnyCanSeePlayer)
+                if (!SuspectArrested.HasRecentlyBeenPlayed && Mod.Player.RecentlyBusted && Mod.PolicePerception.AnyCanSeePlayer)
                 {
                     AddToQueue(SuspectArrested);
                 }
-                if (!ChangedVehicles.HasRecentlyBeenPlayed && PlayerStateManager.PoliceRecentlyNoticedVehicleChange && PlayerStateManager.CurrentVehicle != null && !PlayerStateManager.CurrentVehicle.HasBeenDescribedByDispatch)
+                if (!ChangedVehicles.HasRecentlyBeenPlayed && Mod.Player.PoliceRecentlyNoticedVehicleChange && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.HasBeenDescribedByDispatch)
                 {
-                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer) { VehicleSeen = PlayerStateManager.CurrentVehicle });
+                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = Mod.Player.CurrentVehicle });
                 }
                 if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && PersonOfInterestManager.RecentlyAppliedWantedStats)
                 {
-                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer) { VehicleSeen = PlayerStateManager.CurrentVehicle });
+                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = Mod.Player.CurrentVehicle });
                 }
 
-                if (!PlayerStateManager.IsBusted && !PlayerStateManager.IsDead)
+                if (!Mod.Player.IsBusted && !Mod.Player.IsDead)
                 {
-                    if (!LostVisual.HasRecentlyBeenPlayed && PlayerStateManager.StarsRecentlyGreyedOut && WantedLevelManager.HasBeenWantedFor > 45000 && !PedManager.AnyCopsNearPlayer)
+                    if (!LostVisual.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyGreyedOut && WantedLevelManager.HasBeenWantedFor > 45000 && !Mod.PedManager.AnyCopsNearPlayer)
                     {
-                        AddToQueue(LostVisual, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer));
+                        AddToQueue(LostVisual, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && PlayerStateManager.StarsRecentlyActive && WantedLevelManager.HasBeenWantedFor > 25000 && PoliceManager.AnyRecentlySeenPlayer)
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyActive && WantedLevelManager.HasBeenWantedFor > 25000 && Mod.PolicePerception.AnyRecentlySeenPlayer)
                     {
-                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!RecentlyAnnouncedDispatch && PoliceManager.AnyCanSeePlayer && WantedLevelManager.HasBeenWantedFor > 25000)
+                    else if (!RecentlyAnnouncedDispatch && Mod.PolicePerception.AnyCanSeePlayer && WantedLevelManager.HasBeenWantedFor > 25000)
                     {
-                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
                 }
 
@@ -268,19 +269,19 @@ public static class ScannerManager
                 }
                 if (!SuspectLost.HasRecentlyBeenPlayed && WantedLevelManager.RecentlyLostWanted && !RespawnManager.RecentlyRespawned && !RespawnManager.RecentlyBribedPolice && !RespawnManager.RecentlySurrenderedToPolice)
                 {
-                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer));
+                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
                 }
                 if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && InvestigationManager.LastInvestigationRecentlyExpired && InvestigationManager.DistanceToInvestigationPosition <= 1000f)
                 {
                     AddToQueue(NoFurtherUnitsNeeded);
                 }
-                foreach (VehicleExt StolenCar in PlayerStateManager.ReportedStolenVehicles)
+                foreach (VehicleExt StolenCar in Mod.Player.ReportedStolenVehicles)
                 {
-                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, true, PoliceManager.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
+                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
                 }
             }
 
-            if (!SuspectWasted.HasRecentlyBeenPlayed && PlayerStateManager.RecentlyDied && PoliceManager.AnyRecentlySeenPlayer && PlayerStateManager.MaxWantedLastLife > 0)
+            if (!SuspectWasted.HasRecentlyBeenPlayed && Mod.Player.RecentlyDied && Mod.PolicePerception.AnyRecentlySeenPlayer && Mod.Player.MaxWantedLastLife > 0)
             {
                 AddToQueue(SuspectWasted);
             }
@@ -397,9 +398,9 @@ public static class ScannerManager
 
         if (DispatchToPlay.IncludeDrivingSpeed)
         {
-            if (PlayerStateManager.CurrentVehicle != null && PlayerStateManager.CurrentVehicle.VehicleEnt.Exists())
+            if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.VehicleEnt.Exists())
             {
-                AddSpeed(EventToPlay,PlayerStateManager.CurrentVehicle.VehicleEnt.Speed);
+                AddSpeed(EventToPlay,Mod.Player.CurrentVehicle.VehicleEnt.Speed);
             }
         }
 
@@ -646,7 +647,7 @@ public static class ScannerManager
     }
     private static void AddZone(DispatchEvent dispatchEvent)
     {
-        Zone MyZone = ZoneManager.GetZone(PlayerStateManager.CurrentPosition);
+        Zone MyZone = Zones.GetZone(Mod.Player.CurrentPosition);
         if (MyZone != null)
         {
             string ScannerAudio = ZoneScanner.GetAudio(MyZone.InternalGameName);

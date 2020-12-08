@@ -40,7 +40,7 @@ public static class AgencyManager
         {
             ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn && x.SpawnsOnHighway));
         }
-        Zone CurrentZone = ZoneManager.GetZone(Position);
+        Zone CurrentZone = Zones.GetZone(Position);
 
         Agency ZoneAgency1 = ZoneJurisdictionManager.GetRandomAgency(CurrentZone.InternalGameName);
         if (ZoneAgency1 != null)
@@ -80,7 +80,7 @@ public static class AgencyManager
             List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
             if (ModelMatchAgencies.Count > 1)
             {
-                Zone ZoneFound = ZoneManager.GetZone(Cop.Position);
+                Zone ZoneFound = Zones.GetZone(Cop.Position);
                 if (ZoneFound != null)
                 {
                     foreach (Agency ZoneAgency in ZoneJurisdictionManager.GetAgencies(ZoneFound.InternalGameName))
@@ -109,7 +109,7 @@ public static class AgencyManager
         List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
         if (ModelMatchAgencies.Count > 1)
         {
-            Zone ZoneFound = ZoneManager.GetZone(CopCar.Position);
+            Zone ZoneFound = Zones.GetZone(CopCar.Position);
             if (ZoneFound != null)
             {
                 foreach (Agency ZoneAgency in ZoneJurisdictionManager.GetAgencies(ZoneFound.InternalGameName))

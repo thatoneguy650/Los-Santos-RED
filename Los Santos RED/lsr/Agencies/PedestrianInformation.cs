@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LosSantosRED.lsr;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,9 @@ public class PedestrianInformation
     {
         get
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
             {
-                if (PlayerStateManager.WantedLevel >= MinWantedLevelSpawn && PlayerStateManager.WantedLevel <= MaxWantedLevelSpawn)
+                if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
                     return WantedSpawnChance > 0;
                 else
                     return false;
@@ -33,9 +34,9 @@ public class PedestrianInformation
         {
             if (!CanCurrentlySpawn)
                 return 0;
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
             {
-                if (PlayerStateManager.WantedLevel >= MinWantedLevelSpawn && PlayerStateManager.WantedLevel <= MaxWantedLevelSpawn)
+                if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
                     return WantedSpawnChance;
                 else
                     return 0;

@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -20,7 +21,7 @@ public static class WeaponDroppingManager
     {
         get
         {
-            if (!DroppingWeapon && !PlayerStateManager.IsInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
+            if (!DroppingWeapon && !Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
                 return true;
             else
                 return false;
@@ -108,7 +109,7 @@ public static class WeaponDroppingManager
     {
         GameFiber DropWeaponAnimation = GameFiber.StartNew(delegate
         {
-            AnimationManager.RequestAnimationDictionay("pickup_object");
+            AnimationDictionary AnimDictionary = new AnimationDictionary("pickup_object");
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "pickup_object", "pickup_low", 8.0f, -8.0f, -1, 56, 0, false, false, false);
         }, "DropWeaponAnimation");
         Debugging.GameFibers.Add(DropWeaponAnimation);

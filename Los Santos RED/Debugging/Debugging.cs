@@ -102,7 +102,7 @@ public static class Debugging
 
         if (SettingsManager.MySettings.Police.DebugShowPoliceTask)
         {
-            foreach (Cop MyCop in PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+            foreach (Cop MyCop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
             {
                 Color ToShow = Color.Black;
                 TaskStatus CurrentOne = MyCop.Pedestrian.Tasks.CurrentTaskStatus;
@@ -139,10 +139,10 @@ public static class Debugging
     {
         WantedLevelManager.Reset();
         Game.LocalPlayer.WantedLevel = 0;
-        PedManager.ClearPolice();
+        Mod.PedManager.ClearPolice();
         VehicleManager.ClearPolice();
         Game.TimeScale = 1f;
-        PlayerStateManager.ResetState(true);
+        Mod.Player.ResetState(true);
         NativeFunction.Natives.xB4EDDC19532BFB85();
     }
     private static void DebugNumpad0()
@@ -155,7 +155,7 @@ public static class Debugging
     }
     private static void DebugNumpad2()
     {
-        int Toassign = PlayerStateManager.WantedLevel;
+        int Toassign = Mod.Player.WantedLevel;
         if (Toassign == 7)
             return;
         Toassign++;
@@ -179,7 +179,7 @@ public static class Debugging
         GameFiber.StartNew(delegate
         {
             GameFiber.Wait(1000);
-            Cop CopToBribe = PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            Cop CopToBribe = Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
             NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
             Game.TimeScale = 1.0f;
 
@@ -281,7 +281,7 @@ public static class Debugging
                 return;
             }
 
-            AnimationManager.RequestAnimationDictionay("mp_common");
+            AnimationDictionary AnimDictionary = new AnimationDictionary("mp_common");
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", CopToBribe.Pedestrian, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
 
@@ -344,7 +344,7 @@ public static class Debugging
     }
     private static void DebugNumpad6()
     {
-        if (PlayerStateManager.CurrentVehicle != null && PlayerStateManager.CurrentVehicle.VehicleEnt.Exists())
+        if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.VehicleEnt.Exists())
         {
             Colorbullshit();
             Colorbullshit2();
@@ -352,14 +352,14 @@ public static class Debugging
     }       
     private static void Colorbullshit()
     {
-        Color Color1 = Extensions.GetBaseColor1(PlayerStateManager.CurrentVehicle.VehicleEnt.PrimaryColor);
-        Color Color2 = Extensions.GetBaseColor2(PlayerStateManager.CurrentVehicle.VehicleEnt.PrimaryColor);
-        Color Color3 = Extensions.GetBaseColor3(PlayerStateManager.CurrentVehicle.VehicleEnt.PrimaryColor);
-        WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", PlayerStateManager.CurrentVehicle.VehicleEnt.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
+        Color Color1 = Extensions.GetBaseColor1(Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor);
+        Color Color2 = Extensions.GetBaseColor2(Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor);
+        Color Color3 = Extensions.GetBaseColor3(Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor);
+        WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
     }
     private static void Colorbullshit2()
     {
-        Color c = PlayerStateManager.CurrentVehicle.VehicleEnt.PrimaryColor;
+        Color c = Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor;
         float targetHue = c.GetHue();
         float targetSat = c.GetSaturation();
         float targetBri = c.GetBrightness();
@@ -415,10 +415,10 @@ public static class Debugging
     {
         WriteToLog("Debugging", Mod.ClockManager.CurrentTime);
 
-        if (PlayerStateManager.CurrentVehicle != null)
+        if (Mod.Player.CurrentVehicle != null)
         {
-            WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", PlayerStateManager.CurrentVehicle.IsStolen, PlayerStateManager.CurrentVehicle.WasReportedStolen, PlayerStateManager.CurrentVehicle.NeedsToBeReportedStolen));
-            WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", PlayerStateManager.CurrentVehicle.CarPlate.IsWanted, PlayerStateManager.CurrentVehicle.OriginalLicensePlate.IsWanted, PlayerStateManager.CurrentVehicle.ColorMatchesDescription,PlayerStateManager.CurrentVehicle.CopsRecognizeAsStolen));
+            WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", Mod.Player.CurrentVehicle.IsStolen, Mod.Player.CurrentVehicle.WasReportedStolen, Mod.Player.CurrentVehicle.NeedsToBeReportedStolen));
+            WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.CurrentVehicle.CarPlate.IsWanted, Mod.Player.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.CurrentVehicle.ColorMatchesDescription,Mod.Player.CurrentVehicle.CopsRecognizeAsStolen));
         }
 
         TaskManager.PrintActivities();
@@ -428,12 +428,12 @@ public static class Debugging
 
         try
         {
-            CameraManager.DebugAbort();
+            //CameraManager.DebugAbort();
 
             WriteToLog("Debugging", "--------------------------------");
             WriteToLog("Debugging", "--------Police Status-----------");
 
-            foreach (Cop Cop in PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
+            foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
             {
 
                 WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}", 
@@ -452,8 +452,8 @@ public static class Debugging
             WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", InvestigationManager.InInvestigationMode));
             WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", InvestigationManager.InvestigationPosition));
             WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", InvestigationManager.InvestigationDistance));
-            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", PoliceManager.ActiveDistance));
-            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", PedManager.Cops.Any(x => x.Pedestrian.DistanceTo2D(InvestigationManager.InvestigationPosition) <= InvestigationManager.InvestigationDistance)));
+            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.PolicePerception.ActiveDistance));
+            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.PedManager.Cops.Any(x => x.Pedestrian.DistanceTo2D(InvestigationManager.InvestigationPosition) <= InvestigationManager.InvestigationDistance)));
             WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", WantedLevelManager.CurrentPoliceStateString));
             
 
@@ -466,7 +466,8 @@ public static class Debugging
     }
     private static void DebugNumpad9()
     {
-        ScriptController.IsRunning = false;
+        //ScriptController.IsRunning = false;
+        Mod.IsRunning = false;
         GameFiber.Sleep(500);
         DebugCopReset();
         Game.DisplayNotification("Instant Action Deactivated");

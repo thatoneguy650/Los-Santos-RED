@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
-
+using LosSantosRED.lsr;
 
 public static class SurrenderManager
 {
@@ -30,19 +30,19 @@ public static class SurrenderManager
         if (Game.LocalPlayer.Character.IsWearingHelmet)
             Game.LocalPlayer.Character.RemoveHelmet(true);
 
-        if (PlayerStateManager.HandsAreUp)
+        if (Mod.Player.HandsAreUp)
             return;
 
         if (VehicleFuelManager.CanPumpFuel)//usees the same key, might need to change
             return;
 
         Game.LocalPlayer.Character.SetUnarmed();
-        VehicleEngineManager.TurnOffEngine();
-        PlayerStateManager.HandsAreUp = true;
+        Mod.VehicleEngineManager.TurnOffEngine();
+        Mod.Player.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
-        AnimationManager.RequestAnimationDictionay(sDict);
-        AnimationManager.RequestAnimationDictionay("busted");
+        AnimationDictionary AnimDictionary = new AnimationDictionary(sDict);
+        AnimationDictionary BustedDictionary = new AnimationDictionary("busted");
         if (inVehicle)
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, true, false, true);
@@ -97,7 +97,7 @@ public static class SurrenderManager
     }
     public static void LowerHands()
     {
-        PlayerStateManager.HandsAreUp = false; // You put your hands down
+        Mod.Player.HandsAreUp = false; // You put your hands down
         Game.LocalPlayer.Character.Tasks.Clear();
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
             Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
@@ -106,9 +106,9 @@ public static class SurrenderManager
     {
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
-            AnimationManager.RequestAnimationDictionay("veh@busted_std");
-            AnimationManager.RequestAnimationDictionay("busted");
-            AnimationManager.RequestAnimationDictionay("ped");
+            AnimationDictionary Busted_Std = new AnimationDictionary("veh@busted_std");
+            AnimationDictionary Busted = new AnimationDictionary("busted");
+            AnimationDictionary Ped = new AnimationDictionary("ped");
 
             if (!PedToArrest.Exists())
                 return;
@@ -151,7 +151,7 @@ public static class SurrenderManager
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(6000);
 
-                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !PlayerStateManager.IsBusted))
+                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Mod.Player.IsBusted))
                         return;
 
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -169,9 +169,9 @@ public static class SurrenderManager
     {
             GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
             {
-                AnimationManager.RequestAnimationDictionay("random@arrests");
-                AnimationManager.RequestAnimationDictionay("busted");
-                AnimationManager.RequestAnimationDictionay("ped");
+                AnimationDictionary RandomArrests = new AnimationDictionary("random@arrests");
+                AnimationDictionary Busted = new AnimationDictionary("busted");
+                AnimationDictionary Ped = new AnimationDictionary("ped");
 
                 if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3))
                 {
@@ -191,7 +191,7 @@ public static class SurrenderManager
         if (IsCommitingSuicide)
             return;
 
-        if (PlayerStateManager.HandsAreUp)
+        if (Mod.Player.HandsAreUp)
             return;
 
         if (PedToSuicide.IsInAnyVehicle(false) || PedToSuicide.IsRagdoll || PedToSuicide.IsSwimming || PedToSuicide.IsInCover)
@@ -205,7 +205,7 @@ public static class SurrenderManager
             if (!PedToSuicide.IsInAnyVehicle(false))
             {
                 IsCommitingSuicide = true;
-                AnimationManager.RequestAnimationDictionay("mp_suicide");
+                AnimationDictionary AnimDictionary = new AnimationDictionary("mp_suicide");
 
                 //WeaponInformation CurrentGun = null;
                 //if (PedToSuicide.Inventory.EquippedWeapon != null)

@@ -135,45 +135,45 @@ namespace LosSantosRED.lsr
             {
                 if (!Mod.Player.HandsAreUp && !Mod.Player.IsBusted)
                 {
-                    //SurrenderManager.RaiseHands();
+                    SurrenderManager.RaiseHands();
                 }
             }
             else
             {
                 if (Mod.Player.HandsAreUp && !Mod.Player.IsBusted)
                 {
-                    //SurrenderManager.LowerHands();
+                    SurrenderManager.LowerHands();
                 }
             }
         }
         private void WeaponDropCheck()
         {
-            if (IsPressingDropWeapon)// && WeaponDroppingManager.CanDropWeapon)
+            if (IsPressingDropWeapon && WeaponDroppingManager.CanDropWeapon)
             {
-                //WeaponDroppingManager.DropWeapon();
+                WeaponDroppingManager.DropWeapon();
             }
         }
         private void VehicleCheck()
         {
-            if (IsPressingEngineToggle)// && VehicleEngineManager.CanToggleEngine)
+            if (IsPressingEngineToggle && Mod.VehicleEngineManager.CanToggleEngine)
             {
-                //VehicleEngineManager.ToggleEngine(true, !VehicleEngineManager.IsEngineRunning);
+                Mod.VehicleEngineManager.ToggleEngine(true, !Mod.VehicleEngineManager.IsEngineRunning);
             }
-            if (IsPressingRefuel)// && VehicleFuelManager.CanPumpFuel)
+            if (IsPressingRefuel && VehicleFuelManager.CanPumpFuel)
             {
-                //VehicleFuelManager.PumpFuel();
+                VehicleFuelManager.PumpFuel();
             }
             if (IsPressingHazards)
             {
-               // VehicleIndicatorManager.ToggleHazards();
+                VehicleIndicatorManager.ToggleHazards();
             }
             if (IsPressingLeftIndicator)
             {
-                //VehicleIndicatorManager.ToggleLeftIndicator();
+                VehicleIndicatorManager.ToggleLeftIndicator();
             }
             if (IsPressingRightIndicator)
             {
-                //VehicleIndicatorManager.ToggleRightIndicator();
+                VehicleIndicatorManager.ToggleRightIndicator();
             }
         }
     }

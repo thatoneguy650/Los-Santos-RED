@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
+using LosSantosRED.lsr;
 
 public static class TrafficViolationsManager
 {
@@ -24,7 +25,7 @@ public static class TrafficViolationsManager
     {
         get
         {
-            if (PlayerStateManager.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (PlayerStateManager.IsInAutomobile || PlayerStateManager.IsOnMotorcycle) && !PedSwapManager.RecentlyTakenOver)
+            if (Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (Mod.Player.IsInAutomobile || Mod.Player.IsOnMotorcycle) && !PedSwapManager.RecentlyTakenOver)
                 return true;
             else
                 return false;
@@ -113,7 +114,7 @@ public static class TrafficViolationsManager
     {
         if (IsRunning)
         {
-            if (!SettingsManager.MySettings.TrafficViolations.Enabled || PlayerStateManager.IsBusted || PlayerStateManager.IsDead)
+            if (!SettingsManager.MySettings.TrafficViolations.Enabled || Mod.Player.IsBusted || Mod.Player.IsDead)
             {
                 ResetViolations();
                 return;
@@ -137,12 +138,12 @@ public static class TrafficViolationsManager
         TreatAsCop = false;
         PlayerIsSpeeding = false;
 
-        if (!PlayerStateManager.CurrentVehicle.VehicleEnt.IsRoadWorthy() || PlayerStateManager.CurrentVehicle.VehicleEnt.IsDamaged())
+        if (!Mod.Player.CurrentVehicle.VehicleEnt.IsRoadWorthy() || Mod.Player.CurrentVehicle.VehicleEnt.IsDamaged())
             PlayersVehicleIsSuspicious = true;
 
-        if (SettingsManager.MySettings.TrafficViolations.ExemptCode3 && PlayerStateManager.CurrentVehicle.VehicleEnt != null && PlayerStateManager.CurrentVehicle.VehicleEnt.IsPoliceVehicle && PlayerStateManager.CurrentVehicle != null && !PlayerStateManager.CurrentVehicle.WasReportedStolen)
+        if (SettingsManager.MySettings.TrafficViolations.ExemptCode3 && Mod.Player.CurrentVehicle.VehicleEnt != null && Mod.Player.CurrentVehicle.VehicleEnt.IsPoliceVehicle && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.WasReportedStolen)
         {
-            if (PlayerStateManager.CurrentVehicle.VehicleEnt.IsSirenOn && !PoliceManager.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
+            if (Mod.Player.CurrentVehicle.VehicleEnt.IsSirenOn && !Mod.PolicePerception.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
             {
                 TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
             }
@@ -152,7 +153,7 @@ public static class TrafficViolationsManager
         //Streets.ResetStreets();
         PlayerIsRunningRedLight = false;
 
-        foreach (PedExt Civilian in PedManager.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+        foreach (PedExt Civilian in Mod.PedManager.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
         {
             Civilian.IsWaitingAtTrafficLight = false;
             Civilian.IsFirstWaitingAtTrafficLight = false;
@@ -209,7 +210,7 @@ public static class TrafficViolationsManager
     }
     private static void CheckViolations()
     {
-        if (SettingsManager.MySettings.TrafficViolations.HitPed && RecentlyHitPed && (PedDamageManager.RecentlyHurtCivilian || PedDamageManager.RecentlyHurtCop) && (PedManager.Civilians.Any(x => x.DistanceToPlayer <= 10f) || PedManager.Cops.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
+        if (SettingsManager.MySettings.TrafficViolations.HitPed && RecentlyHitPed && (PedDamageManager.RecentlyHurtCivilian || PedDamageManager.RecentlyHurtCop) && (Mod.PedManager.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.PedManager.Cops.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
         {
             CrimeManager.HitPedWithCar.IsCurrentlyViolating = true;
         }

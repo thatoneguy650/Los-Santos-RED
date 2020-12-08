@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
 using LSR.Vehicles;
+using LosSantosRED.lsr;
 
 public static class CarJackingManager 
 {
@@ -49,10 +50,10 @@ public static class CarJackingManager
         Driver = DriverPed;
         SeatTryingToEnter = EntrySeat;
 
-        Victim = PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
+        Victim = Mod.PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
         Weapon = WeaponManager.GetCurrentWeapon(Game.LocalPlayer.Character);
 
-        if (CanArmedCarJack && PlayerStateManager.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
+        if (CanArmedCarJack && Mod.Player.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
         {
             ArmedCarJack();
         }
@@ -86,7 +87,7 @@ public static class CarJackingManager
                 if (Victim != null)
                     Victim.CanBeTasked = true;
 
-                CameraManager.RestoreGameplayerCamera();
+                //CameraManager.RestoreGameplayerCamera();
 
             }, "CarJackPedWithWeapon");
             Debugging.GameFibers.Add(CarJackPedWithWeapon);
@@ -99,7 +100,7 @@ public static class CarJackingManager
     }
     private static bool SetupCarJack()
     {
-        PlayerStateManager.SetPlayerToLastWeapon();
+        Mod.Player.SetPlayerToLastWeapon();
         NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
         Driver.BlockPermanentEvents = true;
 
@@ -118,8 +119,8 @@ public static class CarJackingManager
             return false;
         }
 
-        AnimationManager.RequestAnimationDictionay(Dictionary);
-        PlayerStateManager.SetPlayerToLastWeapon();
+        AnimationDictionary AnimDictionary = new AnimationDictionary(Dictionary);
+        Mod.Player.SetPlayerToLastWeapon();
 
         if (!Driver.IsInAnyVehicle(false))
             Driver.WarpIntoVehicle(TargetVehicle, -1);
@@ -146,7 +147,10 @@ public static class CarJackingManager
         bool locOpenDoor = false;
         WantToCancel = false;
         Vector3 OriginalCarPosition = TargetVehicle.Position;
-        CameraManager.TransitionToAltCam(TargetVehicle, GetCameraPosition(), 1500);
+
+        //CameraManager.TransitionToAltCam(TargetVehicle, GetCameraPosition(), 1500);
+
+
         while (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) < 0.75f)
         {
             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
@@ -181,7 +185,7 @@ public static class CarJackingManager
             {
                 Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                 NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
-                PlayerStateManager.PlayerShotArtificially();
+                Mod.Player.PlayerShotArtificially();
 
                 if (ScenePhase <= 0.35f)
                 {
@@ -203,9 +207,9 @@ public static class CarJackingManager
             }
             if (ScenePhase >= 0.5f)
             {
-                CameraManager.RestoreGameplayerCamera();
+                //CameraManager.RestoreGameplayerCamera();
             }
-            if(PlayerStateManager.IsBusted || PlayerStateManager.IsDead)
+            if(Mod.Player.IsBusted || Mod.Player.IsDead)
             {
                 WantToCancel = true;
                 break;
@@ -213,7 +217,7 @@ public static class CarJackingManager
         }
 
 
-        CameraManager.RestoreGameplayerCamera();
+        //CameraManager.RestoreGameplayerCamera();
 
         if (Game.LocalPlayer.Character.IsDead)
         {

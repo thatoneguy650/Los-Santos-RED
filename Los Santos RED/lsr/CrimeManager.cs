@@ -87,7 +87,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckCrimes()
         {
-            if (PlayerStateManager.IsBusted || PlayerStateManager.IsDead)
+            if (Mod.Player.IsBusted || Mod.Player.IsDead)
                 return;
 
             CheckPedDamageCrimes();
@@ -133,7 +133,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckTheftCrimes()
         {
-            if (PlayerStateManager.IsWanted && PlayerStateManager.IsInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
+            if (Mod.Player.IsWanted && Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
             {
                 GotInAirVehicleDuringChase.IsCurrentlyViolating = true;
             }
@@ -141,7 +141,7 @@ namespace LosSantosRED.lsr
             {
                 GotInAirVehicleDuringChase.IsCurrentlyViolating = false;
             }
-            if (PlayerStateManager.CurrentVehicle != null && PlayerStateManager.CurrentVehicle.CopsRecognizeAsStolen)
+            if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.CopsRecognizeAsStolen)
             {
                 DrivingStolenVehicle.IsCurrentlyViolating = true;
             }
@@ -157,7 +157,7 @@ namespace LosSantosRED.lsr
             {
                 Mugging.IsCurrentlyViolating = false;
             }
-            if (PlayerStateManager.IsBreakingIntoCar)
+            if (Mod.Player.IsBreakingIntoCar)
             {
                 GrandTheftAuto.IsCurrentlyViolating = true;
             }
@@ -177,9 +177,9 @@ namespace LosSantosRED.lsr
         }
         private void CheckWeaponCrimes()
         {
-            if (PlayerStateManager.RecentlyShot(5000) || Game.LocalPlayer.Character.IsShooting)
+            if (Mod.Player.RecentlyShot(5000) || Game.LocalPlayer.Character.IsShooting)
             {
-                if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || PlayerStateManager.CurrentWeaponCategory == WeaponCategory.Melee))
+                if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || Mod.Player.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
                     FiringWeapon.IsCurrentlyViolating = true;
                     if (Mod.PolicePerception.AnyRecentlySeenPlayer || Mod.PolicePerception.AnyCanHearPlayer)
@@ -191,10 +191,10 @@ namespace LosSantosRED.lsr
                 FiringWeapon.IsCurrentlyViolating = false;
                 FiringWeaponNearPolice.IsCurrentlyViolating = false;
             }
-            if (CheckBrandishing() && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !PlayerStateManager.IsInVehicle)
+            if (CheckBrandishing() && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !Mod.Player.IsInVehicle)
             {
                 BrandishingWeapon.IsCurrentlyViolating = true;
-                if (PlayerStateManager.CurrentWeapon != null && PlayerStateManager.CurrentWeapon.WeaponLevel >= 4)
+                if (Mod.Player.CurrentWeapon != null && Mod.Player.CurrentWeapon.WeaponLevel >= 4)
                 {
                     TerroristActivity.IsCurrentlyViolating = true;
                 }
@@ -202,7 +202,7 @@ namespace LosSantosRED.lsr
                 {
                     TerroristActivity.IsCurrentlyViolating = false;
                 }
-                if (PlayerStateManager.CurrentWeapon != null && PlayerStateManager.CurrentWeapon.WeaponLevel >= 3)
+                if (Mod.Player.CurrentWeapon != null && Mod.Player.CurrentWeapon.WeaponLevel >= 3)
                 {
                     BrandishingHeavyWeapon.IsCurrentlyViolating = true;
                 }
@@ -210,7 +210,7 @@ namespace LosSantosRED.lsr
                 {
                     BrandishingHeavyWeapon.IsCurrentlyViolating = false;
                 }
-                if (PlayerStateManager.CurrentWeapon != null && PlayerStateManager.CurrentWeapon.Category == WeaponCategory.Melee)
+                if (Mod.Player.CurrentWeapon != null && Mod.Player.CurrentWeapon.Category == WeaponCategory.Melee)
                 {
                     BrandishingCloseCombatWeapon.IsCurrentlyViolating = true;
                 }
@@ -272,15 +272,15 @@ namespace LosSantosRED.lsr
                 if (Mod.PolicePerception.AnyCanSeePlayer || (Violating.CanReportBySound && Mod.PolicePerception.AnyCanHearPlayer) || Violating.IsAlwaysFlagged)
                 {
                     WeaponInformation ToSee = null;
-                    if (!PlayerStateManager.IsInVehicle)
-                        ToSee = PlayerStateManager.CurrentWeapon;
-                    WantedLevelManager.CurrentCrimes.AddCrime(Violating, true, PlayerStateManager.CurrentPosition, PlayerStateManager.CurrentVehicle, ToSee);
+                    if (!Mod.Player.IsInVehicle)
+                        ToSee = Mod.Player.CurrentWeapon;
+                    WantedLevelManager.CurrentCrimes.AddCrime(Violating, true, Mod.Player.CurrentPosition, Mod.Player.CurrentVehicle, ToSee);
                 }
             }
         }
         private bool CheckBrandishing()
         {
-            if (PlayerStateManager.IsConsideredArmed)
+            if (Mod.Player.IsConsideredArmed)
             {
                 if (GameTimeStartedBrandishing == 0)
                     GameTimeStartedBrandishing = Game.GameTime;

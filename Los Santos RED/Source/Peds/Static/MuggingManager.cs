@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -25,7 +26,7 @@ public static class MuggingManager
         {
             if (!IsMugging)
             {
-                if (Game.LocalPlayer.Character.IsConsideredArmed() && !PlayerStateManager.IsInVehicle)
+                if (Game.LocalPlayer.Character.IsConsideredArmed() && !Mod.Player.IsInVehicle)
                 {
                     if (Game.LocalPlayer.Character.IsAiming && !IsHoldingMelee())
                     {
@@ -45,7 +46,7 @@ public static class MuggingManager
         Entity ArmedMuggingTargetPed = Game.LocalPlayer.GetFreeAimingTarget();
         if (ArmedMuggingTargetPed.Exists() && ArmedMuggingTargetPed is Ped)
         {
-            PedExt GTAPedTarget = PedManager.GetCivilian(ArmedMuggingTargetPed.Handle);
+            PedExt GTAPedTarget = Mod.PedManager.GetCivilian(ArmedMuggingTargetPed.Handle);
             if (GTAPedTarget != null)
             {
                 if (!GTAPedTarget.HasBeenMugged && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && GTAPedTarget.Pedestrian.IsAlive)
@@ -60,7 +61,7 @@ public static class MuggingManager
     }
     private static void CheckUnarmedMugging()
     {
-        PedExt GTAPedTarget = PedManager.GetCivilian(GetTargetHandle());
+        PedExt GTAPedTarget = Mod.PedManager.GetCivilian(GetTargetHandle());
         if (GTAPedTarget != null)
         {
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.Pedestrian.IsAlive)
@@ -79,7 +80,7 @@ public static class MuggingManager
             uint GameTimeStartedMugging = Game.GameTime;
             MuggingTarget.Pedestrian.BlockPermanentEvents = true;
 
-            AnimationManager.RequestAnimationDictionay("ped");
+            AnimationDictionary AnimDictionary = new AnimationDictionary("ped");
 
             if (!Game.LocalPlayer.Character.IsAnySpeechPlaying)
                 Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");

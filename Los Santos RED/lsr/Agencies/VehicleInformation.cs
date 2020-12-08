@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -78,9 +79,9 @@ public class VehicleInformation
                 return false;
             }
 
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
             {
-                if (PlayerStateManager.WantedLevel >= MinWantedLevelSpawn && PlayerStateManager.WantedLevel <= MaxWantedLevelSpawn)
+                if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
                     return CanSpawnWanted;
                 else
                     return false;
@@ -95,9 +96,9 @@ public class VehicleInformation
         {
             if (!CanCurrentlySpawn)
                 return 0;
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
             {
-                if (PlayerStateManager.WantedLevel >= MinWantedLevelSpawn && PlayerStateManager.WantedLevel <= MaxWantedLevelSpawn)
+                if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
                     return WantedSpawnChance;
                 else
                     return 0;

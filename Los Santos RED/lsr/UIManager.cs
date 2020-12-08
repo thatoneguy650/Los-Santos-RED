@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using RAGENativeUI.Elements;
@@ -109,7 +110,7 @@ public class UIManager
         }
 
 
-        if (SettingsManager.MySettings.UI.Enabled && !PlayerStateManager.IsBusted && !PlayerStateManager.IsDead)
+        if (SettingsManager.MySettings.UI.Enabled && !Mod.Player.IsBusted && !Mod.Player.IsDead)
         {
             ShowUI();
         }
@@ -147,11 +148,11 @@ public class UIManager
 
         // Lines++;
 
-        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", InvestigationManager.InInvestigationMode, InvestigationManager.HavePlayerDescription,PlayerStateManager.IsStationary, InvestigationManager.IsSuspicious);
+        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", InvestigationManager.InInvestigationMode, InvestigationManager.HavePlayerDescription,Mod.Player.IsStationary, InvestigationManager.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", SearchModeManager.IsInSearchMode,SearchModeManager.IsInActiveMode,SearchModeManager.TimeInSearchMode,SearchModeManager.TimeInActiveMode);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", PoliceManager.AnyRecentlySeenPlayer, PlayerStateManager.AreStarsGreyedOut, SearchModeManager.CurrentSearchTime,PoliceManager.PlaceLastSeenPlayer);
+        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", Mod.PolicePerception.AnyRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, SearchModeManager.CurrentSearchTime, Mod.PolicePerception.PlaceLastSeenPlayer);
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         string DebugLine4 = string.Format("NumberPlateIndexSelected {0}", Debugging.NumberPlateIndexSelected);
         DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
@@ -168,7 +169,7 @@ public class UIManager
     }
     private void ScreenEffectsTick()
     {
-        if (PlayerStateManager.IsDead)
+        if (Mod.Player.IsDead)
         {
             if (!StartedDeathEffect)
             {
@@ -180,7 +181,7 @@ public class UIManager
                 
             }
         }
-        else if (PlayerStateManager.IsBusted)
+        else if (Mod.Player.IsBusted)
         {
             if (!StartedBustedEffect)
             {
@@ -228,16 +229,16 @@ public class UIManager
         string PlayerStatusLine = "";
         if (PersonOfInterestManager.PlayerIsPersonOfInterest)
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
                 PlayerStatusLine = "~r~Wanted~s~";
             else if (WantedLevelManager.HasBeenNotWantedFor <= 45000)
                 PlayerStatusLine = "~o~Wanted~s~";
             else
                 PlayerStatusLine = "~y~Wanted~s~";
         }
-        if (PlayerStateManager.IsWanted)
+        if (Mod.Player.IsWanted)
         {
-            string AgenciesChasingPlayer = PedManager.AgenciesChasingPlayer;
+            string AgenciesChasingPlayer = Mod.PedManager.AgenciesChasingPlayer;
             if (AgenciesChasingPlayer != "")
                 PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
         }
@@ -284,7 +285,7 @@ public class UIManager
             return "";
         string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = ZoneManager.GetName(PlayerLocationManager.PlayerCurrentZone,true);
+        ZoneDisplay = Zones.GetName(PlayerLocationManager.PlayerCurrentZone,true);
         if (PlayerLocationManager.PlayerCurrentZone != null)
         {
             Agency MainZoneAgency = ZoneJurisdictionManager.GetMainAgency(PlayerLocationManager.PlayerCurrentZone.InternalGameName);

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
 using LSR.Vehicles;
+using LosSantosRED.lsr;
 
 public static class LicensePlateTheftManager
 {
@@ -31,11 +32,11 @@ public static class LicensePlateTheftManager
 
         if (ClosestVehicle != null)
         {
-            VehicleExt VehicleToChange = PlayerStateManager.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
+            VehicleExt VehicleToChange = Mod.Player.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
                 VehicleToChange = new VehicleExt(ClosestVehicle, 0, false, false, true, new LicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
-                PlayerStateManager.TrackedVehicles.Add(VehicleToChange);
+                Mod.Player.TrackedVehicles.Add(VehicleToChange);
             }
             ChangeLicensePlateAnimation(VehicleToChange, false);
         }
@@ -49,11 +50,11 @@ public static class LicensePlateTheftManager
 
         if (ClosestVehicle != null)
         {
-            VehicleExt VehicleToChange = PlayerStateManager.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
+            VehicleExt VehicleToChange = Mod.Player.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
                 VehicleToChange = new VehicleExt(ClosestVehicle, 0, false, false, true, new LicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
-                PlayerStateManager.TrackedVehicles.Add(VehicleToChange);
+                Mod.Player.TrackedVehicles.Add(VehicleToChange);
             }
 
             ChangeLicensePlateAnimation(VehicleToChange, true);
@@ -82,7 +83,7 @@ public static class LicensePlateTheftManager
                 if (ChangePlates)
                     LicensePlate = AttachLicensePlateToPed(Game.LocalPlayer.Character);
 
-                AnimationManager.RequestAnimationDictionay("mp_car_bomb");
+                AnimationDictionary AnimDictionary = new AnimationDictionary("mp_car_bomb");
                 uint GameTimeStartedAnimation = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_car_bomb", "car_bomb_mechanic", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
                 bool Continue = true;

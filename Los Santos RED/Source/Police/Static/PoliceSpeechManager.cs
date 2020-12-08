@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using NAudio.Wave;
 using Rage;
 using Rage.Native;
@@ -57,9 +58,9 @@ public static class PoliceSpeechManager
     }
     private static void AddSpeakingCops()
     {
-        PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
+        Mod.PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
         SpeakingCops.RemoveAll(x => !x.AssignedCop.Pedestrian.Exists());
-        foreach (Cop Cop in PedManager.Cops.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists()))
         {
             if (!SpeakingCops.Any(x => x.AssignedCop.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
@@ -139,7 +140,7 @@ public static class PoliceSpeechManager
         }
         public void Speak()
         {
-            if (PlayerStateManager.IsBusted && AssignedCop.DistanceToPlayer <= 20f)
+            if (Mod.Player.IsBusted && AssignedCop.DistanceToPlayer <= 20f)
             {
                 AssignedCop.Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
             }
@@ -147,11 +148,11 @@ public static class PoliceSpeechManager
             {
                 AssignedCop.Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
             }
-            else if (PlayerStateManager.IsWanted && !WantedLevelManager.IsDeadlyChase)
+            else if (Mod.Player.IsWanted && !WantedLevelManager.IsDeadlyChase)
             {
                 AssignedCop.Pedestrian.PlayAmbientSpeech(RegularChaseSpeech.PickRandom());
             }
-            else if (PlayerStateManager.IsNotWanted && RespawnManager.RecentlyBribedPolice)
+            else if (Mod.Player.IsNotWanted && RespawnManager.RecentlyBribedPolice)
             {
                 AssignedCop.Pedestrian.PlayAmbientSpeech(AmbientSpeech.PickRandom());
             }
@@ -178,7 +179,7 @@ public static class PoliceSpeechManager
 
             Speak();
 
-            AnimationManager.RequestAnimationDictionay("random@arrests");
+            AnimationDictionary AnimDictionary = new AnimationDictionary("random@arrests");
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", AssignedCop.Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
             GameTimeLastRadioed = Game.GameTime;
 

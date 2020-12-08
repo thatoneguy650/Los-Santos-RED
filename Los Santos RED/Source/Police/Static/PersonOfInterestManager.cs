@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -68,14 +69,14 @@ public static class PersonOfInterestManager
     }    
     public static void Tick()
     {
-        if (IsRunning && !PlayerStateManager.IsDead && !PlayerStateManager.IsBusted)
+        if (IsRunning && !Mod.Player.IsDead && !Mod.Player.IsBusted)
         {
             CheckCurrentVehicle();
             CheckSight();
 
-            if(PlayerStateManager.IsWanted)
+            if(Mod.Player.IsWanted)
             {
-                if (!PlayerIsPersonOfInterest && PoliceManager.AnyCanSeePlayer)
+                if (!PlayerIsPersonOfInterest && Mod.PolicePerception.AnyCanSeePlayer)
                 {
                     PlayerIsPersonOfInterest = true;
                 }
@@ -102,9 +103,9 @@ public static class PersonOfInterestManager
     }
     private static void CheckCurrentVehicle()
     {
-        if ((PlayerStateManager.IsNotWanted || PlayerStateManager.WantedLevel == 1) && PoliceManager.AnyCanRecognizePlayer && PlayerStateManager.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+        if ((Mod.Player.IsNotWanted || Mod.Player.WantedLevel == 1) && Mod.PolicePerception.AnyCanRecognizePlayer && Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
-            VehicleExt VehicleToCheck = PlayerStateManager.CurrentVehicle;
+            VehicleExt VehicleToCheck = Mod.Player.CurrentVehicle;
 
             if (VehicleToCheck == null)
                 return;
@@ -117,9 +118,9 @@ public static class PersonOfInterestManager
     }
     private static void CheckSight()
     {
-        if (PlayerIsPersonOfInterest && PoliceManager.AnyCanSeePlayer)
+        if (PlayerIsPersonOfInterest && Mod.PolicePerception.AnyCanSeePlayer)
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
             {
                 ApplyLastWantedStats();
             }
@@ -149,7 +150,7 @@ public static class PersonOfInterestManager
         if (CriminalHistory == null)
             return;
 
-        if (PlayerStateManager.WantedLevel < CriminalHistory.MaxWantedLevel)
+        if (Mod.Player.WantedLevel < CriminalHistory.MaxWantedLevel)
             WantedLevelManager.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats",true);
 
 

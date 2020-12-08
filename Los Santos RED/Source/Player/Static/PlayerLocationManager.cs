@@ -66,7 +66,7 @@ public static class PlayerLocationManager
     }
     private static void GetZone()
     {
-        PlayerCurrentZone = ZoneManager.GetZone(Game.LocalPlayer.Character.Position);
+        PlayerCurrentZone = Zones.GetZone(Game.LocalPlayer.Character.Position);
     }
     private static void GetNode()
     {

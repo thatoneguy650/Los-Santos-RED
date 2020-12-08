@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class BlipManager
+public class BlipManager
 {
-    private static List<Blip> CreatedBlips;
-    public static void Initialize()
+    private List<Blip> CreatedBlips;
+    public void Initialize()
     {
         CreatedBlips = new List<Blip>();
         foreach (GameLocation MyLocation in LocationManager.GetAllLocations())
@@ -18,7 +18,7 @@ public static class BlipManager
             CreateBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
         }   
     }
-    public static void Dispose()
+    public void Dispose()
     {
         foreach (Blip MyBlip in CreatedBlips)
         {
@@ -26,11 +26,11 @@ public static class BlipManager
                 MyBlip.Delete();
         }
     }
-    public static void AddBlip(Blip myBlip)//temp, move everything that creates blips outside of this in here.
+    public void AddBlip(Blip myBlip)//temp, move everything that creates blips outside of this in here.
     {
         CreatedBlips.Add(myBlip);
     }
-    public static void CreateBlip(Vector3 LocationPosition, string Name, LocationType Type)
+    public void CreateBlip(Vector3 LocationPosition, string Name, LocationType Type)
     {
         Blip MyLocationBlip = new Blip(LocationPosition)
         {

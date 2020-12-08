@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -36,27 +37,27 @@ public static class DispatchManager
         {
             if (InvestigationManager.InInvestigationMode)
                 return 10;
-            else if(PlayerStateManager.WantedLevel == 0)
+            else if(Mod.Player.WantedLevel == 0)
             {
                 return 5;//10//5
             }
-            else if (PlayerStateManager.WantedLevel == 1)
+            else if (Mod.Player.WantedLevel == 1)
             {
                 return 7;//10//8
             }
-            else if (PlayerStateManager.WantedLevel == 2)
+            else if (Mod.Player.WantedLevel == 2)
             {
                 return 10;//12
             }
-            else if (PlayerStateManager.WantedLevel == 3)
+            else if (Mod.Player.WantedLevel == 3)
             {
                 return 18;//20
             }
-            else if (PlayerStateManager.WantedLevel == 4)
+            else if (Mod.Player.WantedLevel == 4)
             {
                 return 25;
             }
-            else if (PlayerStateManager.WantedLevel == 5)
+            else if (Mod.Player.WantedLevel == 5)
             {
                 return 35;
             }
@@ -101,13 +102,13 @@ public static class DispatchManager
             {
                 return 2000;
             }
-            else  if (!PoliceManager.AnyRecentlySeenPlayer)
+            else  if (!Mod.PolicePerception.AnyRecentlySeenPlayer)
             {
                 return 3000;
             }
             else
             {
-                int InverseWanted = 5 - PlayerStateManager.WantedLevel;
+                int InverseWanted = 5 - Mod.Player.WantedLevel;
                 return (InverseWanted * 2000) + 2000;
             }
         }
@@ -116,7 +117,7 @@ public static class DispatchManager
     {
         get
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
                 return 150f;
             else
                 return 250f;
@@ -126,7 +127,7 @@ public static class DispatchManager
     {
         get
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
                 return 200f;
             else
                 return 500f;
@@ -136,12 +137,12 @@ public static class DispatchManager
     {
         get
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
             {
-                if (!PoliceManager.AnyRecentlySeenPlayer)
-                    return 250f - (PlayerStateManager.WantedLevel * -40);
+                if (!Mod.PolicePerception.AnyRecentlySeenPlayer)
+                    return 250f - (Mod.Player.WantedLevel * -40);
                 else
-                    return 400f - (PlayerStateManager.WantedLevel * -40);
+                    return 400f - (Mod.Player.WantedLevel * -40);
             }
             else if (InvestigationManager.InInvestigationMode)
                 return InvestigationManager.InvestigationDistance / 2;
@@ -153,9 +154,9 @@ public static class DispatchManager
     {
         get
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
             {
-                if (!PoliceManager.AnyRecentlySeenPlayer)
+                if (!Mod.PolicePerception.AnyRecentlySeenPlayer)
                     return 350f;
                 else
                     return 550f;
@@ -170,7 +171,7 @@ public static class DispatchManager
     {
         get
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
                 return 600f;
             else
                 return 1000f;
@@ -180,7 +181,7 @@ public static class DispatchManager
     {
         get
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
                 return 125f;
             else
                 return 1000f;
@@ -190,7 +191,7 @@ public static class DispatchManager
     {
         get
         {
-            if (PedManager.TotalSpawnedCops < SpawnedCopLimit)
+            if (Mod.PedManager.TotalSpawnedCops < SpawnedCopLimit)
                 return true;
             else
                 return false;
@@ -256,7 +257,7 @@ public static class DispatchManager
     {
         if (IsRunning && CanDelete)
         {
-            foreach(Cop OutOfRangeCop in PedManager.Cops.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
+            foreach(Cop OutOfRangeCop in Mod.PedManager.Cops.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
             {
                 if (!OutOfRangeCop.AssignedAgency.CanSpawn)
                 {
@@ -397,7 +398,7 @@ public static class DispatchManager
         }
         private void GetInitialPosition()
         {
-            if (PlayerStateManager.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            if (Mod.Player.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(350f);
             else if (InvestigationManager.InInvestigationMode)
                 Position = InvestigationManager.InvestigationPosition;
@@ -406,7 +407,7 @@ public static class DispatchManager
 
             Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
 
-            if (!InvestigationManager.InInvestigationMode && PedManager.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
+            if (!InvestigationManager.InInvestigationMode && Mod.PedManager.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
             {
                 Position = Vector3.Zero;
             }
@@ -422,7 +423,7 @@ public static class DispatchManager
             if (StreetPosition.DistanceTo2D(Game.LocalPlayer.Character) < ClosestSpawnToPlayerAllowed)
                 StreetPosition = Vector3.Zero;
 
-            if(PedManager.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
+            if(Mod.PedManager.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
                 StreetPosition = Vector3.Zero;
 
             if(StreetPosition != Vector3.Zero)

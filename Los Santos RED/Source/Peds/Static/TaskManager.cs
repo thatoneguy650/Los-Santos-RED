@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,10 @@ public static class TaskManager
     {
         if (IsRunning)
         {
-            PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
+            Mod.PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
 
             TaskableCops.RemoveAll(x => !x.CopToTask.Pedestrian.Exists());
-            foreach (Cop Cop in PedManager.Cops.Where(x => x.Pedestrian.Exists()))
+            foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists()))
             {
                 if (!TaskableCops.Any(x => x.CopToTask.Pedestrian.Handle == Cop.Pedestrian.Handle))
                 {
@@ -45,7 +46,7 @@ public static class TaskManager
             }
 
             TaskableCivilians.RemoveAll(x => !x.CivilianToTask.Pedestrian.Exists());
-            foreach (PedExt Civilian in PedManager.Civilians.Where(x => x.Pedestrian.Exists()))
+            foreach (PedExt Civilian in Mod.PedManager.Civilians.Where(x => x.Pedestrian.Exists()))
             {
                 if (!TaskableCivilians.Any(x => x.CivilianToTask.Pedestrian.Handle == Civilian.Pedestrian.Handle))
                 {
@@ -141,7 +142,7 @@ public static class TaskManager
         {
             get
             {
-                if (CopToTask.DistanceToPlayer <= PoliceManager.ActiveDistance)
+                if (CopToTask.DistanceToPlayer <= Mod.PolicePerception.ActiveDistance)
                     return true;
                 else
                     return false;
@@ -183,7 +184,7 @@ public static class TaskManager
         {
             get
             {
-                if (PlayerStateManager.IsNotWanted)
+                if (Mod.Player.IsNotWanted)
                 {
                     if (InvestigationManager.InInvestigationMode && WithinInvestigationDistance)
                     {
@@ -211,7 +212,7 @@ public static class TaskManager
         {
             get
             {
-                if (PlayerStateManager.IsInVehicle)
+                if (Mod.Player.IsInVehicle)
                 {
                     if (CopToTask.IsInVehicle)
                     {
@@ -402,7 +403,7 @@ public static class TaskManager
             if (InvestigationManager.InvestigationPosition == Vector3.Zero)
             {
                 InvestigationManager.InvestigationPosition = Game.LocalPlayer.Character.Position;
-                if (PlayerStateManager.IsWanted)
+                if (Mod.Player.IsWanted)
                 {
                     InvestigationManager.InvestigationPosition = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
                 }
@@ -493,7 +494,7 @@ public static class TaskManager
         {
             if (WithinChaseDistance)
             {
-                if (PoliceManager.AnyRecentlySeenPlayer && !PlayerStateManager.AreStarsGreyedOut)
+                if (Mod.PolicePerception.AnyRecentlySeenPlayer && !Mod.Player.AreStarsGreyedOut)
                 {
                     if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
                     {
@@ -533,7 +534,7 @@ public static class TaskManager
                     {
                         if (CopToTask.DistanceToPlayer <= OnFootTaskDistance || CopToTask.RecentlySeenPlayer)
                         {
-                            if (WantedLevelManager.IsDeadlyChase && !PlayerStateManager.IsAttemptingToSurrender)
+                            if (WantedLevelManager.IsDeadlyChase && !Mod.Player.IsAttemptingToSurrender)
                                 Kill();
                             else
                                 FootChase();
@@ -583,8 +584,8 @@ public static class TaskManager
         private void VehicleChase_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = PoliceManager.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
-            if (PlayerStateManager.IsInVehicle)
+            Vector3 WantedCenter = Mod.PolicePerception.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            if (Mod.Player.IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", CopToTask.Pedestrian, Game.LocalPlayer.Character); //NativeFunction.CallByName<bool>("TASK_VEHICLE_FOLLOW", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 22f, 4 | 16 | 32 | 262144, 8f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
             }
@@ -598,10 +599,10 @@ public static class TaskManager
         }
         private void VehicleChase_Normal()
         {
-            Vector3 WantedCenter = PoliceManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.PolicePerception.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if(CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 10f)
             {
-                if (!PlayerStateManager.IsInVehicle)
+                if (!Mod.Player.IsInVehicle)
                 {
                     if (CopToTask.Pedestrian.CurrentVehicle.Exists())
                     {
@@ -636,7 +637,7 @@ public static class TaskManager
             {
                 if (CopToTask.Pedestrian.Exists())
                 {
-                    if(PlayerStateManager.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                    if(Mod.Player.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists())
                     {
                         NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", CopToTask.Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2f, 9);
                     }
@@ -669,7 +670,7 @@ public static class TaskManager
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_DROP_FROM_HEIGHT", CopToTask.Pedestrian, true);
             CopToTask.Pedestrian.BlockPermanentEvents = true;
             CopToTask.Pedestrian.KeepTasks = true;
-            if (PlayerStateManager.WantedLevel >= 2)
+            if (Mod.Player.WantedLevel >= 2)
                 NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", CopToTask.Pedestrian, MoveRate);
             CurrentTaskLoop = "FootChase";
             CurrentSubTaskLoop = "";
@@ -689,7 +690,7 @@ public static class TaskManager
             //Can be used to get the actual task assigned instead of using the subtask strings?
 
 
-            if (CurrentSubTaskLoop != "Shoot" && (!PlayerStateManager.IsBusted && !PlayerStateManager.IsAttemptingToSurrender) && CopToTask.DistanceToPlayer <= 7f)
+            if (CurrentSubTaskLoop != "Shoot" && (!Mod.Player.IsBusted && !Mod.Player.IsAttemptingToSurrender) && CopToTask.DistanceToPlayer <= 7f)
             {
                 Debugging.WriteToLog("Tasking", string.Format("     FootChase Shoot: {0}", CopToTask.Pedestrian.Handle));
                 CurrentSubTaskLoop = "Shoot";
@@ -704,7 +705,7 @@ public static class TaskManager
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
             }
-            else if (CurrentSubTaskLoop != "Aim" && (PlayerStateManager.IsBusted || PlayerStateManager.IsAttemptingToSurrender) && CopToTask.DistanceToPlayer <= 7f)
+            else if (CurrentSubTaskLoop != "Aim" && (Mod.Player.IsBusted || Mod.Player.IsAttemptingToSurrender) && CopToTask.DistanceToPlayer <= 7f)
             {
                 Debugging.WriteToLog("Tasking", string.Format("     FootChase Aim: {0}", CopToTask.Pedestrian.Handle));
                 CurrentSubTaskLoop = "Aim";
@@ -752,7 +753,7 @@ public static class TaskManager
         private void GoToLastSeen_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = PoliceManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.PolicePerception.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (CopToTask.IsInVehicle && CopToTask.Pedestrian.CurrentVehicle != null)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
@@ -768,7 +769,7 @@ public static class TaskManager
         }
         private void GoToLastSeen_Normal()
         {
-            Vector3 WantedCenter = PoliceManager.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.PolicePerception.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (!NearWantedCenterThisWanted)
             {
                 if (CurrentTaskedPosition.DistanceTo2D( WantedCenter) >= 5f)
@@ -816,7 +817,7 @@ public static class TaskManager
         }
         private void HeliGoToLastSeen_Start()
         {
-            Cop ClosestCop = PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
+            Cop ClosestCop = Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
             if (ClosestCop == null)
                 return;
             NativeFunction.CallByName<bool>("TASK_HELI_CHASE", CopToTask.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);
@@ -860,7 +861,7 @@ public static class TaskManager
                     CopToTask.Pedestrian.CurrentVehicle.IsSirenOn = false;
                     CopToTask.Pedestrian.CurrentVehicle.IsSirenSilent = false;
                 }
-                if (PlayerStateManager.IsWanted)
+                if (Mod.Player.IsWanted)
                 {
                     NativeFunction.CallByName<bool>("SET_PED_ALERTNESS", CopToTask.Pedestrian, 3);
                     if(WantedLevelManager.IsDeadlyChase)
@@ -925,7 +926,7 @@ public static class TaskManager
                 if (InvestigationManager.InvestigationPosition == Vector3.Zero)
                 {
                     InvestigationManager.InvestigationPosition = Game.LocalPlayer.Character.Position;
-                    if (PlayerStateManager.IsWanted)
+                    if (Mod.Player.IsWanted)
                         InvestigationManager.InvestigationPosition = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
                 }
                 CurrentTaskedPosition = InvestigationManager.InvestigationPosition;
@@ -1074,7 +1075,7 @@ public static class TaskManager
             {
                 if (CivilianToTask.Pedestrian.Exists())
                 {
-                    if (CivilianToTask.WillFight && PlayerStateManager.IsNotWanted)
+                    if (CivilianToTask.WillFight && Mod.Player.IsNotWanted)
                     {
                         CurrentSubTaskLoop = "Fight";
                         GiveWeapon();
@@ -1112,7 +1113,7 @@ public static class TaskManager
             }
             else
             {
-                if(CivilianToTask.WillFight && PlayerStateManager.IsWanted && CurrentSubTaskLoop == "Fight")
+                if(CivilianToTask.WillFight && Mod.Player.IsWanted && CurrentSubTaskLoop == "Fight")
                 {
                     CivilianToTask.Pedestrian.Tasks.Clear();
                     CivilianToTask.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
@@ -1132,9 +1133,9 @@ public static class TaskManager
         {
             if (CivilianToTask.Pedestrian.Exists() && CivilianToTask.Pedestrian.IsAlive && !CivilianToTask.Pedestrian.IsRagdoll)
             {
-                if (!PlayerStateManager.IsDead && !PlayerStateManager.IsBusted && !RespawnManager.RecentlyBribedPolice)
+                if (!Mod.Player.IsDead && !Mod.Player.IsBusted && !RespawnManager.RecentlyBribedPolice)
                 {
-                    if (PlayerStateManager.IsNotWanted)
+                    if (Mod.Player.IsNotWanted)
                     {
                         WantedLevelManager.CurrentCrimes.AddCrime(CivilianToTask.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, CivilianToTask.PositionLastSeenCrime, CivilianToTask.VehicleLastSeenPlayerIn, CivilianToTask.WeaponLastSeenPlayerWith);
 
@@ -1149,16 +1150,19 @@ public static class TaskManager
 
                         //Maybe should be readded? debugging?
 
-                        if (PlayerStateManager.AreStarsGreyedOut)
-                        {
-                            if (Game.LocalPlayer.Character.Position.DistanceTo2D(CivilianToTask.PositionToReportToPolice) <= Game.LocalPlayer.Character.Position.DistanceTo2D(PoliceManager.PlaceLastSeenPlayer))//closer to the new position
-                            {
-                                PoliceManager.PlaceLastSeenPlayer = CivilianToTask.PositionToReportToPolice;//update it, give them a little ESP instead of doing all the timing bullshit
-                            }
-
-                        }
 
 
+                        ////need to readd this elsewhere!!!!!
+                        //if (Mod.Player.AreStarsGreyedOut)
+                        //{
+                        //    if (Game.LocalPlayer.Character.Position.DistanceTo2D(CivilianToTask.PositionToReportToPolice) <= Game.LocalPlayer.Character.Position.DistanceTo2D(PoliceManager.PlaceLastSeenPlayer))//closer to the new position
+                        //    {
+                        //        PoliceManager.PlaceLastSeenPlayer = CivilianToTask.PositionToReportToPolice;//update it, give them a little ESP instead of doing all the timing bullshit
+                        //    }
+
+                        //}
+
+                        //need to readd this elsewhere!!!!!!!!!
 
                     }
                 }

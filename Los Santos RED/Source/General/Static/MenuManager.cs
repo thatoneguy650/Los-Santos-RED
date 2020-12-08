@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -205,14 +206,14 @@ internal static class MenuManager
         //{
         if (Game.IsKeyDown(SettingsManager.MySettings.KeyBinding.MenuKey)) // Our menu on/off switch.
         {
-            if (PlayerStateManager.IsDead)
+            if (Mod.Player.IsDead)
             {
                 if (!deathMenu.Visible)
                     ShowDeathMenu();
                 else
                     deathMenu.Visible = false;
             }
-            else if (PlayerStateManager.IsBusted)
+            else if (Mod.Player.IsBusted)
             {
                 if (!bustedMenu.Visible)
                     ShowBustedMenu();
@@ -284,7 +285,7 @@ internal static class MenuManager
 
     public static void ShowBustedMenu()
     {
-        if (PlayerStateManager.IsDead)
+        if (Mod.Player.IsDead)
             return;
 
         CreateBustedMenu();
@@ -346,7 +347,7 @@ internal static class MenuManager
         deathMenu.AddItem(menuDeathHospitalRespawn);
         deathMenu.AddItem(menuDeathTakeoverRandomPed);
 
-        if (SettingsManager.MySettings.General.UndieLimit == 0 || PlayerStateManager.TimesDied < SettingsManager.MySettings.General.UndieLimit)
+        if (SettingsManager.MySettings.General.UndieLimit == 0 || Mod.Player.TimesDied < SettingsManager.MySettings.General.UndieLimit)
             menuDeathUndie.Enabled = true;
         else
             menuDeathUndie.Enabled = false;
@@ -373,7 +374,7 @@ internal static class MenuManager
         bustedMenu.AddItem(menuBustedTalk);
         bustedMenu.AddItem(menuBustedTakeoverRandomPed);
 
-        if (PlayerStateManager.WantedLevel <= 1)
+        if (Mod.Player.WantedLevel <= 1)
             menuBustedTalk.Enabled = true;
         else
             menuBustedTalk.Enabled = false;
@@ -439,7 +440,7 @@ internal static class MenuManager
         actionsMenu.AddItem(menuMainSuicide);
         actionsMenu.AddItem(menuActionSmoking);
 
-        if (!PlayerStateManager.IsInVehicle)
+        if (!Mod.Player.IsInVehicle)
         {
             actionsMenu.AddItem(menuMainChangeLicensePlate);
             actionsMenu.AddItem(menuMainRemoveLicensePlate);
@@ -506,7 +507,7 @@ internal static class MenuManager
     {
         if (selectedItem == menuMainTakeoverRandomPed)
         {
-            if (PlayerStateManager.WantedLevel > 0)
+            if (Mod.Player.WantedLevel > 0)
             {
                 Game.DisplayNotification("Lose your wanted level first");
                 return;
@@ -519,7 +520,7 @@ internal static class MenuManager
         }
         else if (selectedItem == menuMainShowPlayerStatus)
         {
-            PlayerStateManager.DisplayPlayerNotification();
+            Mod.Player.DisplayPlayerNotification();
         }
 
         mainMenu.Visible = false;

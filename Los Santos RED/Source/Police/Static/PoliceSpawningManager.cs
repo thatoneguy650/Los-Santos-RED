@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -131,9 +132,9 @@ public static class PoliceSpawningManager
                     Blip myBlip = Cop.AttachBlip();
                     myBlip.Color = _Agency.AgencyColor;
                     myBlip.Scale = 0.6f;
-                    BlipManager.AddBlip(myBlip);
+                    Mod.Map.AddBlip(myBlip);
                 }
-                PedManager.Cops.Add(MyNewCop);
+                Mod.PedManager.Cops.Add(MyNewCop);
 
                 if (CurrentVehicleInfo != null)
                 {
@@ -164,9 +165,9 @@ public static class PoliceSpawningManager
                                     Blip myBlip = PartnerCop.AttachBlip();
                                     myBlip.Color = _Agency.AgencyColor;
                                     myBlip.Scale = 0.6f;
-                                    BlipManager.AddBlip(myBlip);
+                                    Mod.Map.AddBlip(myBlip);
                                 }
-                                PedManager.Cops.Add(MyNewPartnerCop);
+                                Mod.PedManager.Cops.Add(MyNewPartnerCop);
                                 MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
                                 Debugging.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.VehicleEnt.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
                             }
@@ -268,7 +269,7 @@ public static class PoliceSpawningManager
             {
                 foreach (Ped Passenger in Cop.Pedestrian.CurrentVehicle.Passengers)
                 {
-                    Cop PassengerCop = PedManager.Cops.Where(x => x.Pedestrian.Handle == Passenger.Handle).FirstOrDefault();
+                    Cop PassengerCop = Mod.PedManager.Cops.Where(x => x.Pedestrian.Handle == Passenger.Handle).FirstOrDefault();
                     if (PassengerCop != null)
                     {
                         PassengerCop.Pedestrian.IsPersistent = false;
@@ -297,7 +298,7 @@ public static class PoliceSpawningManager
     }
     private static void RepairOrRemoveDamagedVehicles()
     {
-        foreach (Cop Cop in PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
+        foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
         {
             if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
             {
@@ -320,7 +321,7 @@ public static class PoliceSpawningManager
     }
     private static void RemoveDisallowedPeds()
     {
-        foreach(Cop myCop in PedManager.Cops.Where(x => !x.AssignedAgency.CanSpawn))
+        foreach(Cop myCop in Mod.PedManager.Cops.Where(x => !x.AssignedAgency.CanSpawn))
         {
             DeleteCop(myCop);
         }
@@ -354,7 +355,7 @@ public static class PoliceSpawningManager
 
         if (Cop.IsMale && RandomItems.MyRand.Next(1, 11) <= 4) //40% Chance of Vest
             NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 9, 2, 0, 2);//Vest male only
-        if (!PlayerStateManager.IsNightTime)
+        if (!Mod.Player.IsNightTime)
             NativeFunction.CallByName<uint>("SET_PED_PROP_INDEX", Cop, 1, 0, 0, 2);//Sunglasses
 
         if (MyInfo.RequiredVariation != null)

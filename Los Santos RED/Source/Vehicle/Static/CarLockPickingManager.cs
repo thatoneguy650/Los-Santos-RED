@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
 using LSR.Vehicles;
+using LosSantosRED.lsr;
 
 public static class CarLockPickingManager
 {
@@ -39,7 +40,7 @@ public static class CarLockPickingManager
     {
         TargetVehicle = VehicleToEnter;
         SeatTryingToEnter = EntrySeat;
-        if (!PlayerStateManager.IsHoldingEnter || !CanLockPick)
+        if (!Mod.Player.IsHoldingEnter || !CanLockPick)
             return;
 
         try
@@ -118,7 +119,7 @@ public static class CarLockPickingManager
 
         Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
 
-        AnimationManager.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
+        AnimationDictionary AnimDictionary = new AnimationDictionary("veh@break_in@0h@p_m_one@");
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@break_in@0h@p_m_one@", Animation, 2.0f, -2.0f, -1, 0, 0, false, false, false);
 
         uint GameTimeStarted = Game.GameTime;

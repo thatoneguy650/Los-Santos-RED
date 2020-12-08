@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-public static class VehicleEngineManager
+public class VehicleEngineManager
 {
-    private static bool PrevEngineRunning;
-    private static bool WasinVehicle;
-    private static bool TogglingEngine;
-    private static uint GameTimeStartedHotwiring;
-    private static bool PrevIsHotwiring;
-    private static bool IsPlayerInVehicle;
-    public static Keys EngineToggleKey { get; private set; }
-    public static bool IsEngineRunning { get; private set; }
-    public static bool IsRunning { get; set; }
-    public static bool IsHotwiring
+    private bool PrevEngineRunning;
+    private bool WasinVehicle;
+    private bool TogglingEngine;
+    private uint GameTimeStartedHotwiring;
+    private bool PrevIsHotwiring;
+    private bool IsPlayerInVehicle;
+    public Keys EngineToggleKey { get; private set; }
+    public bool IsEngineRunning { get; private set; }
+    public bool IsRunning { get; set; }
+    public bool IsHotwiring
     {
         get
         {
@@ -34,7 +34,7 @@ public static class VehicleEngineManager
                 return false;
         }
     }
-    public static bool CanToggleEngine
+    public bool CanToggleEngine
     {
         get
         {
@@ -52,7 +52,7 @@ public static class VehicleEngineManager
             }
         }
     }
-    public static void Initialize()
+    public void Initialize()
     {
         IsRunning = true;
         IsEngineRunning = false;
@@ -69,11 +69,11 @@ public static class VehicleEngineManager
                 IsEngineRunning = Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
         }      
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
@@ -103,7 +103,7 @@ public static class VehicleEngineManager
             }
         }
     }
-    public static void ToggleEngine(bool PerformAnimation, bool DesiredEngineStatus)
+    public void ToggleEngine(bool PerformAnimation, bool DesiredEngineStatus)
     {
         if (TogglingEngine)
             return;
@@ -140,11 +140,11 @@ public static class VehicleEngineManager
         TogglingEngine = false;
         Debugging.WriteToLog("ToggleEngine", string.Format("End {0}", IsEngineRunning));
     }
-    public static void TurnOffEngine()
+    public void TurnOffEngine()
     {
         ToggleEngine(false, false);
     }
-    private static void SetEngineToDesiredStatus()
+    private void SetEngineToDesiredStatus()
     {
         if (!Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
         {
@@ -159,7 +159,7 @@ public static class VehicleEngineManager
             }
         }
     }
-    private static void IsHotWiringChanged()
+    private void IsHotWiringChanged()
     {
         if(IsHotwiring)
         {
@@ -172,12 +172,12 @@ public static class VehicleEngineManager
         }
         PrevIsHotwiring = IsHotwiring;
     }
-    private static void IsEngineRunningChanged()
+    private void IsEngineRunningChanged()
     {
         Debugging.WriteToLog("ToggleEngine", string.Format("EngineRunning: {0}",IsEngineRunning));
         PrevEngineRunning = IsEngineRunning;
     }
-    private static void IsPlayerInVehicleChanged()
+    private void IsPlayerInVehicleChanged()
     {
         if(IsPlayerInVehicle)
         {
@@ -206,7 +206,7 @@ public static class VehicleEngineManager
         }
         WasinVehicle = IsPlayerInVehicle;
     }  
-    private static void StartEngineAnimation()
+    private void StartEngineAnimation()
     {
         GameFiber.StartNew(delegate
         {

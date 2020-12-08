@@ -18,18 +18,18 @@ public class CivilianPerception
     }
     private void UpdateCivilians()
     {
-        PedManager.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
-        foreach (PedExt MyPed in PedManager.Civilians)
+        Mod.PedManager.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
+        foreach (PedExt MyPed in Mod.PedManager.Civilians)
         {
             MyPed.Update();
         }
-        PedManager.Civilians.RemoveAll(x => !x.Pedestrian.Exists()  || x.Pedestrian.IsDead);
+        Mod.PedManager.Civilians.RemoveAll(x => !x.Pedestrian.Exists()  || x.Pedestrian.IsDead);
         VehicleManager.CivilianVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
     }
     private void UpdateRecognition()
     {
-        AnyCanSeePlayer = PedManager.Civilians.Any(x => x.CanSeePlayer);
-        AnyCanHearPlayer = PedManager.Civilians.Any(x => x.WithinWeaponsAudioRange);
-        AnyCanRecognizePlayer = PedManager.Civilians.Any(x => x.CanRecognizePlayer);
+        AnyCanSeePlayer = Mod.PedManager.Civilians.Any(x => x.CanSeePlayer);
+        AnyCanHearPlayer = Mod.PedManager.Civilians.Any(x => x.WithinWeaponsAudioRange);
+        AnyCanRecognizePlayer = Mod.PedManager.Civilians.Any(x => x.CanRecognizePlayer);
     }
 }

@@ -58,7 +58,7 @@ public static class PedSwapManager
 
             if (ClearNearPolice)
             {
-                PedManager.ClearPolice();
+                Mod.PedManager.ClearPolice();
                 VehicleManager.ClearPolice();
             }
 
@@ -252,7 +252,7 @@ public static class PedSwapManager
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
 
 
-        PlayerStateManager.ResetState(true);
+        Mod.Player.ResetState(true);
 
         Game.TimeScale = 1f;
         WantedLevelManager.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
@@ -280,7 +280,7 @@ public static class PedSwapManager
         //PlayerHealth.Armor = Game.LocalPlayer.Character.Armor;
 
         GameFiber.Wait(50);
-        PlayerStateManager.DisplayPlayerNotification();
+        Mod.Player.DisplayPlayerNotification();
 
     }
     private static void AllyClosePedsToPlayer(Ped[] PedList)

@@ -10,6 +10,8 @@ namespace LosSantosRED.lsr
     public static class Mod
     {
         private static List<TickTask> MyTickTasks;
+        public static VehicleEngineManager VehicleEngineManager { get; private set; } = new VehicleEngineManager();
+        public static PedManager PedManager { get; private set; } = new PedManager();
         public static ClockManager ClockManager { get; private set; } = new ClockManager();
         public static PolicePerception PolicePerception { get; private set; } = new PolicePerception();
         public static CivilianPerception CivilianPerception { get; private set; } = new CivilianPerception();
@@ -17,6 +19,7 @@ namespace LosSantosRED.lsr
         public static UIManager UIManager { get; private set; } = new UIManager();
         public static CrimeManager CrimeManager { get; private set; } = new CrimeManager();
         public static Player Player { get; private set; } = new Player();
+        public static Map Map { get; private set; } = new Map();
         public static bool IsRunning { get; set; }
         public static void Initialize()
         {
@@ -24,18 +27,17 @@ namespace LosSantosRED.lsr
 
             while (Game.IsLoading)
                 GameFiber.Yield();
-
-            Player.TerminateVanillaRespawn();
+ 
             Setup();
             RunTasks();
         }
         public static void Dispose()
         {
-            IsRunning = false;
-            Player.ActivateVanillaRespawn();
-
-
-            ClockManager.Dispose();//NEED TO MOVE THIS TO AUTO RUN, maybe add dispose as a field it inherits
+            IsRunning = false;//NEED TO MOVE THIS TO AUTO RUN, maybe add dispose as a field it inherits
+            Player.Dispose();
+            ClockManager.Dispose();
+            PedManager.Dispose();
+            Map.RemoveBlips();
         }
         public static void RunTasks()
         {
@@ -110,7 +112,7 @@ namespace LosSantosRED.lsr
             new TickTask(200, "PedDamageManager", PedDamageManager.Tick, 6,0),
             new TickTask(250, "MuggingManager", MuggingManager.Tick, 6,1),
 
-            new TickTask(1000, "PedManager", PedManager.Tick, 7,0),
+            new TickTask(1000, "PedManager", Mod.PedManager.Tick, 7,0),
             new TickTask(1000, "VehicleManager", VehicleManager.Tick, 7,1),
             new TickTask(500, "TaskManager.UpdateTaskablePeds", TaskManager.UpdateTaskablePeds, 7,3),
             new TickTask(500, "TaskManager.RunActivities", TaskManager.RunActivities, 7,4),
@@ -133,6 +135,7 @@ namespace LosSantosRED.lsr
             new TickTask(100, "VehicleIndicatorManager", VehicleIndicatorManager.Tick, 12,1),
             new TickTask(500, "RadioManager", RadioManager.Tick, 12,2),
         };
+            Map.CreateLocationBlips();
         }
         private static void ResetRanItems()
         {

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,9 @@ public class Agency
     {
         get
         {
-            if (PlayerStateManager.WantedLevel >= MinWantedLevelSpawn && PlayerStateManager.WantedLevel <= MaxWantedLevelSpawn)
+            if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
             {
-                if (PedManager.Cops.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                if (Mod.PedManager.Cops.Count(x => x.AssignedAgency == this) < SpawnLimit)
                     return true;
                 else
                     return false;
@@ -107,7 +108,7 @@ public class Agency
         if (CopModels == null || !CopModels.Any())
             return null;
 
-        List<PedestrianInformation> ToPickFrom = CopModels.Where(x => PlayerStateManager.WantedLevel >= x.MinWantedLevelSpawn && PlayerStateManager.WantedLevel <= x.MaxWantedLevelSpawn).ToList();
+        List<PedestrianInformation> ToPickFrom = CopModels.Where(x => Mod.Player.WantedLevel >= x.MinWantedLevelSpawn && Mod.Player.WantedLevel <= x.MaxWantedLevelSpawn).ToList();
         if (RequiredModels != null && RequiredModels.Any())
         {
             ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -274,14 +275,14 @@ public static class PedDamageManager
     }
     private static void AddPedsToTrack()
     {
-        foreach (Cop Cop in PedManager.Cops)
+        foreach (Cop Cop in Mod.PedManager.Cops)
         {
             if (Cop.Pedestrian.Exists() && !PedHealthStates.Any(x => x.MyPed.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
                 PedHealthStates.Add(new PedHealthState(Cop));
             }
         }
-        foreach (PedExt Civilian in PedManager.Civilians)
+        foreach (PedExt Civilian in Mod.PedManager.Civilians)
         {
             if (Civilian.Pedestrian.Exists() && !PedHealthStates.Any(x => x.MyPed.Pedestrian.Handle == Civilian.Pedestrian.Handle))
             {
@@ -387,7 +388,7 @@ public static class PedDamageManager
                     Debugging.WriteToLog("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
                 }
 
-                if (IsPlayerPed && IsBleeding && !IsBandaging && PlayerStateManager.IsStationary)
+                if (IsPlayerPed && IsBleeding && !IsBandaging && Mod.Player.IsStationary)
                 {
                     BandagePed(Game.LocalPlayer.Character);
                 }

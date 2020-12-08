@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ public static class RadioManager
     {
         get
         {
-            if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn && !VehicleEngineManager.IsHotwiring)
+            if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn && !Mod.VehicleEngineManager.IsHotwiring)
             {
                 return true;
             }
@@ -62,7 +63,7 @@ public static class RadioManager
     }
     private static void EnablePoliceCarMusic()
     {
-        if (PlayerStateManager.IsInVehicle && VehicleEngineManager.IsEngineRunning && Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
+        if (Mod.Player.IsInVehicle && Mod.VehicleEngineManager.IsEngineRunning && Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
         {
             MobileEnabled = true;
             NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
@@ -75,7 +76,7 @@ public static class RadioManager
     }
     private static void CheckAutoTuning()
     {
-        if (PlayerStateManager.IsInVehicle)
+        if (Mod.Player.IsInVehicle)
         {
             if (AutoTuneStation.ToUpper() != "NONE")
             {

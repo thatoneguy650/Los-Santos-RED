@@ -15,7 +15,7 @@ public static class ScriptController
     private static Stopwatch GameStopWatch;
     private static Stopwatch TickStopWatch;
    // private static List<TickTask> MyTickTasks;
-    private static InputManager inputManager;
+    //private static InputManager inputManager;
     private static UIManager uiManager;
     public static bool IsRunning { get; set; }
     //public static void Initialize()
@@ -129,7 +129,7 @@ public static class ScriptController
 
     //        new TickTask(0, "InputManager", inputManager.Tick, 1,0),
 
-    //        new TickTask(25, "PlayerStateManager", PlayerStateManager.Tick, 2,0),
+    //        new TickTask(25, "PlayerStateManager", Mod.Player.Tick, 2,0),
     //        new TickTask(25, "PolicePedManager", PoliceManager.Tick, 2,1),
 
     //        new TickTask(0, "VehicleEngineManager", VehicleEngineManager.Tick, 3,0),
@@ -145,7 +145,7 @@ public static class ScriptController
     //        new TickTask(200, "PedDamageManager", PedDamageManager.Tick, 6,0),
     //        new TickTask(250, "MuggingManager", MuggingManager.Tick, 6,1),
             
-    //        new TickTask(1000, "PedManager", PedManager.Tick, 7,0),
+    //        new TickTask(1000, "PedManager", Mod.PedManager.Tick, 7,0),
     //        new TickTask(1000, "VehicleManager", VehicleManager.Tick, 7,1),
     //        new TickTask(500, "TaskManager.UpdateTaskablePeds", TaskManager.UpdateTaskablePeds, 7,3),
     //        new TickTask(500, "TaskManager.RunActivities", TaskManager.RunActivities, 7,4),
@@ -190,7 +190,7 @@ public static class ScriptController
     //    MenuManager.Intitialize();
         
 
-    //    PlayerStateManager.Initialize();
+    //    Mod.Player.Initialize();
     //    WeaponDroppingManager.Initialize();
     //    PlayerLocationManager.Initialize();
 
@@ -222,7 +222,7 @@ public static class ScriptController
     //    PoliceManager.Initialize();
     //    MuggingManager.Initialize();
     //    PedDamageManager.Initialize();
-    //    PedManager.Initialize();
+    //    Mod.PedManager.Initialize();
     //    VehicleManager.Initialize();
 
     //    LicensePlateTheftManager.Initialize();//Event
@@ -232,10 +232,10 @@ public static class ScriptController
     //}
     //private static void DisposeSubProcesses()
     //{
-    //    PlayerStateManager.Dispose();
+    //    Mod.Player.Dispose();
     //    inputManager.Dispose();
     //    MenuManager.Dispose();
-    //    PedManager.Dispose();
+    //    Mod.PedManager.Dispose();
     //    VehicleManager.Dispose();
     //    ScannerManager.Dispose();
     //    PoliceSpeechManager.Dispose();

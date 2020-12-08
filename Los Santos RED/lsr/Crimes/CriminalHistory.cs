@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -83,11 +84,11 @@ public class CriminalHistory
                 CrimesReported.Add(new CrimeEvent(CrimeInstance));
             }
         }
-        if (ByPolice && PlayerStateManager.WantedLevel != CrimeInstance.ResultingWantedLevel)
+        if (ByPolice && Mod.Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
         {
             WantedLevelManager.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
         }
-        ScannerManager.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!PlayerStateManager.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed,InstancesObserved = CurrentInstances });
+        ScannerManager.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed,InstancesObserved = CurrentInstances });
 
     }
 

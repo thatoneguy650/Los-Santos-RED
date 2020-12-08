@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System.Collections.Generic;
@@ -35,9 +36,9 @@ public static class PoliceEquipmentManager
     }
     private static void AddCops()
     {
-        PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
+        Mod.PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
         EquipedCops.RemoveAll(x => !x.CopToArm.Pedestrian.Exists());
-        foreach (Cop Cop in PedManager.Cops.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists()))
         {
             if (!EquipedCops.Any(x => x.CopToArm.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
@@ -129,7 +130,7 @@ public static class PoliceEquipmentManager
             {
                 if (WantedLevelManager.IsDeadlyChase)
                 {
-                    if (CopToArm.IsInVehicle && PlayerStateManager.WantedLevel < 4)
+                    if (CopToArm.IsInVehicle && Mod.Player.WantedLevel < 4)
                     {
                         SetUnarmed();
                     }
@@ -140,7 +141,7 @@ public static class PoliceEquipmentManager
                 }
                 else
                 {
-                    if (PlayerStateManager.IsNotWanted)
+                    if (Mod.Player.IsNotWanted)
                     {
                         SetUnarmed();
                     }

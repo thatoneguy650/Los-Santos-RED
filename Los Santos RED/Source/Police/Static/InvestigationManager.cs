@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using Rage.Native;
 using System.Drawing;
 
@@ -100,7 +101,7 @@ public static class InvestigationManager
     }
     private static void InvestigationTick()
     {
-        if (PlayerStateManager.IsWanted)
+        if (Mod.Player.IsWanted)
             InInvestigationMode = false;
 
         if (InvestigationModeExpired) //remove after 3 minutes
@@ -113,7 +114,7 @@ public static class InvestigationManager
             PoliceInInvestigationModeChanged();
 
 
-        if (PlayerStateManager.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && PoliceManager.AnyCanRecognizePlayer && WantedLevelManager.HasBeenNotWantedFor >= 5000)
+        if (Mod.Player.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Mod.PolicePerception.AnyCanRecognizePlayer && WantedLevelManager.HasBeenNotWantedFor >= 5000)
         {
              WantedLevelManager.ApplyReportedCrimes();
         }
@@ -135,7 +136,7 @@ public static class InvestigationManager
         {
             if (InvestigationBlip.Exists())
                 InvestigationBlip.Delete();
-            if (PlayerStateManager.IsNotWanted)
+            if (Mod.Player.IsNotWanted)
             {
                 HavePlayerDescription = false;
             }
@@ -181,7 +182,7 @@ public static class InvestigationManager
             };
 
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)InvestigationBlip.Handle, true);
-            BlipManager.AddBlip(InvestigationBlip);
+            Mod.Map.AddBlip(InvestigationBlip);
         }
         if (InvestigationBlip.Exists())
             InvestigationBlip.Position = Position;

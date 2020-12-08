@@ -1,4 +1,5 @@
 ﻿
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -256,7 +257,7 @@ namespace ExtensionsMethods
             }
             if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
                 return false;//broken windows == not locked
-            if (PlayerStateManager.TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
+            if (Mod.Player.TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
                 return false; //previously entered vehicle arent locked
             if (ToLock.IsConvertible && ToLock.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
                 return false;
@@ -271,7 +272,7 @@ namespace ExtensionsMethods
         {
             bool LightsOn;
             bool HighbeamsOn;
-            if (PlayerStateManager.IsNightTime)
+            if (Mod.Player.IsNightTime)
             {
                 unsafe
                 {
@@ -309,7 +310,7 @@ namespace ExtensionsMethods
                     return true;
             }
 
-            if (PlayerStateManager.IsNightTime)
+            if (Mod.Player.IsNightTime)
             {
                 if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
                     return true;

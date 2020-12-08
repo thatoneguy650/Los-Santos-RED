@@ -1,5 +1,6 @@
 ﻿
 using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -229,7 +230,7 @@ public class PedExt
     private void SetDrivingFlags()
     {
         NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
-        if (IsCop && PlayerStateManager.IsWanted)
+        if (IsCop && Mod.Player.IsWanted)
         {
             NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
             if (!IsInHelicopter)
@@ -270,7 +271,7 @@ public class PedExt
         if (NeedsDistanceCheck)
         {
             DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
-            DistanceToLastSeen = Pedestrian.DistanceTo2D(PoliceManager.PlaceLastSeenPlayer);
+            DistanceToLastSeen = Pedestrian.DistanceTo2D(Mod.PolicePerception.PlaceLastSeenPlayer);
 
 
             if (DistanceToPlayer <= 0.1f)
@@ -309,7 +310,7 @@ public class PedExt
             else if (Pedestrian.IsInHelicopter)
             {
                 float DistanceToSee = 150f;
-                if (PlayerStateManager.IsWanted)
+                if (Mod.Player.IsWanted)
                     DistanceToSee = 350f;
                 if (DistanceToPlayer <= DistanceToSee && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Pedestrian, ToCheck, 17))
                 {
@@ -368,13 +369,13 @@ public class PedExt
         CanSeePlayer = true;
         GameTimeLastSeenPlayer = Game.GameTime;
         PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
-        VehicleLastSeenPlayerIn = PlayerStateManager.CurrentVehicle;
-        WeaponLastSeenPlayerWith = PlayerStateManager.CurrentWeapon;
+        VehicleLastSeenPlayerIn = Mod.Player.CurrentVehicle;
+        WeaponLastSeenPlayerWith = Mod.Player.CurrentWeapon;
         if(IsCop)
         {
-            PoliceManager.WasPlayerLastSeenInVehicle = PlayerStateManager.IsInVehicle;
-            PoliceManager.PlayerLastSeenHeading = Game.LocalPlayer.Character.Heading;
-            PoliceManager.PlayerLastSeenForwardVector = Game.LocalPlayer.Character.ForwardVector;
+            Mod.PolicePerception.WasPlayerLastSeenInVehicle = Mod.Player.IsInVehicle;
+            Mod.PolicePerception.PlayerLastSeenHeading = Game.LocalPlayer.Character.Heading;
+            Mod.PolicePerception.PlayerLastSeenForwardVector = Game.LocalPlayer.Character.ForwardVector;
         }
     }
     public void CheckPlayerHurtPed()

@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -141,14 +142,14 @@ public class InputManager
     {
         if (IsPressingSurrender && SurrenderManager.CanSurrender)
         {
-            if (!PlayerStateManager.HandsAreUp && !PlayerStateManager.IsBusted)
+            if (!Mod.Player.HandsAreUp && !Mod.Player.IsBusted)
             {
                 SurrenderManager.RaiseHands();
             }
         }
         else
         {
-            if (PlayerStateManager.HandsAreUp && !PlayerStateManager.IsBusted)
+            if (Mod.Player.HandsAreUp && !Mod.Player.IsBusted)
             {
                 SurrenderManager.LowerHands();
             }
@@ -163,9 +164,9 @@ public class InputManager
     }
     private void VehicleCheck()
     {
-        if (IsPressingEngineToggle && VehicleEngineManager.CanToggleEngine)
+        if (IsPressingEngineToggle && Mod.VehicleEngineManager.CanToggleEngine)
         {
-            VehicleEngineManager.ToggleEngine(true, !VehicleEngineManager.IsEngineRunning);
+            Mod.VehicleEngineManager.ToggleEngine(true, !Mod.VehicleEngineManager.IsEngineRunning);
         }
         if (IsPressingRefuel && VehicleFuelManager.CanPumpFuel)
         {

@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -57,7 +58,7 @@ public static class SearchModeStoppingManager
     {
         if (IsRunning)
         {
-            if (PlayerStateManager.IsWanted)
+            if (Mod.Player.IsWanted)
                 StopSearchMode = true;
             else
                 StopSearchMode = false;
@@ -66,7 +67,7 @@ public static class SearchModeStoppingManager
             if (PrevStopSearchMode != StopSearchMode)
             {
                 PrevStopSearchMode = StopSearchMode;
-                Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, PoliceManager.AnyRecentlySeenPlayer));
+                Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.PolicePerception.AnyRecentlySeenPlayer));
             }
 
             if (!StopSearchMode)
@@ -76,7 +77,7 @@ public static class SearchModeStoppingManager
             {
                 CreateGhostCop();
             }
-            if (PlayerStateManager.IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+            if (Mod.Player.IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
             {
                 MoveGhostCopToPosition();
             }
@@ -90,10 +91,10 @@ public static class SearchModeStoppingManager
     {
         if (GhostCop.Exists())
         {
-            Entity ToCheck = PlayerStateManager.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;   
+            Entity ToCheck = Mod.Player.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;   
             if (!NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck))
             {
-                if(PlayerStateManager.IsInVehicle)
+                if(Mod.Player.IsInVehicle)
                 {
                     CurrentOffset = new List<Vector3>() { new Vector3(6f, 0f, 1f), new Vector3(3f, 0f, 1f), new Vector3(-3f, 0f, 1f) }.PickRandom();
                 }

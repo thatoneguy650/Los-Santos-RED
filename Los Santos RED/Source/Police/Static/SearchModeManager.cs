@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -88,14 +89,14 @@ public static class SearchModeManager
     {
         get
         {
-            return (uint)PlayerStateManager.WantedLevel * 30000;//30 seconds each
+            return (uint)Mod.Player.WantedLevel * 30000;//30 seconds each
         }
     }
     public static uint CurrentActiveTime
     {
         get
         {
-            return (uint)PlayerStateManager.WantedLevel * 30000;//30 seconds each
+            return (uint)Mod.Player.WantedLevel * 30000;//30 seconds each
         }
     }
     public static void Initialize()
@@ -121,9 +122,9 @@ public static class SearchModeManager
     }
     private static void DetermineMode()
     {
-        if (PlayerStateManager.IsWanted)
+        if (Mod.Player.IsWanted)
         {
-            if (PoliceManager.AnyRecentlySeenPlayer)
+            if (Mod.PolicePerception.AnyRecentlySeenPlayer)
             {
                 IsInActiveMode = true;
                 IsInSearchMode = false;

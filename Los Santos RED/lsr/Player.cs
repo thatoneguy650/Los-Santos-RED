@@ -10,6 +10,7 @@ namespace LosSantosRED.lsr
 {
     public class Player
     {
+        private bool VanillaRespawn;
         private bool isGettingIntoVehicle;
         private bool isInVehicle;
         private bool isAimingInVehicle;
@@ -28,9 +29,8 @@ namespace LosSantosRED.lsr
 
         public Player()
         {
-
+            VanillaRespawn = true;
         }
-
         public bool IsRunning { get; set; }
         public int TimesDied { get; set; }
         public bool HandsAreUp { get; set; }
@@ -236,6 +236,7 @@ namespace LosSantosRED.lsr
             var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
             Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
             Game.TerminateAllScriptsWithName("respawn_controller");
+            VanillaRespawn = false;
         }
         public void ActivateVanillaRespawn()
         {
@@ -243,14 +244,23 @@ namespace LosSantosRED.lsr
             Marshal.WriteInt32(MyPtr, 0); //setting it to 0 turns it on somehow?
             Game.StartNewScript("respawn_controller");
             Game.StartNewScript("selector");
+            VanillaRespawn = true;
         }
         public void Tick()
         {
+            if(VanillaRespawn)
+            {
+                TerminateVanillaRespawn();
+            }
             UpdatePlayer();
             StateTick();
             TurnOffRespawnScripts();
             AudioTick();
             TrackedVehiclesTick();
+        }
+        public void Dispose()
+        {
+            ActivateVanillaRespawn();
         }
         public bool RecentlyShot(int duration)
         {
@@ -610,7 +620,7 @@ namespace LosSantosRED.lsr
                 IsStolen, MyPlate);
             if (IsStolen && PreviousOwner.Exists())
             {
-                var MyPrevOwner = PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
+                var MyPrevOwner = Mod.PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
                 if (MyPrevOwner != null) MyPrevOwner.AddCrime(Mod.CrimeManager.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
             }
 

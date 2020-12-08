@@ -11,9 +11,13 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-public static class AnimationManager
+public class AnimationDictionary
 {
-    public static void RequestAnimationDictionay(string sDict)
+    public AnimationDictionary(string sDict)
+    {
+        RequestAnimationDictionay(sDict);
+    }
+    public void RequestAnimationDictionay(string sDict)
     {
         NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
         while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
