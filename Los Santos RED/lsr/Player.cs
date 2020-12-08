@@ -464,7 +464,7 @@ namespace LosSantosRED.lsr
                 if (CurrentVehicle == null)
                     return;
 
-                if (Mod.Police.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
+                if (Mod.PolicePerception.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
                 {
                     if (PoliceLastSeenVehicleHandle != 0 &&
                         PoliceLastSeenVehicleHandle != CurrentVehicle.VehicleEnt.Handle &&
@@ -478,7 +478,7 @@ namespace LosSantosRED.lsr
                     PoliceLastSeenVehicleHandle = CurrentVehicle.VehicleEnt.Handle;
                 }
 
-                if (Mod.Police.AnyCanRecognizePlayer)
+                if (Mod.PolicePerception.AnyCanRecognizePlayer)
                     if (WantedLevel > 0 && !AreStarsGreyedOut)
                         UpdateVehicleDescription(CurrentVehicle);
             }
@@ -503,7 +503,7 @@ namespace LosSantosRED.lsr
         }
         private void DeathEvent()
         {
-            ClockManager.PauseTime();
+            Mod.ClockManager.PauseTime();
             DiedInVehicle = IsInVehicle;
             IsDead = true;
             GameTimeLastDied = Game.GameTime;
@@ -611,7 +611,7 @@ namespace LosSantosRED.lsr
             if (IsStolen && PreviousOwner.Exists())
             {
                 var MyPrevOwner = PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
-                if (MyPrevOwner != null) MyPrevOwner.AddCrime(Mod.CrimeSomething.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
+                if (MyPrevOwner != null) MyPrevOwner.AddCrime(Mod.CrimeManager.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
             }
 
             TrackedVehicles.Add(MyNewCar);

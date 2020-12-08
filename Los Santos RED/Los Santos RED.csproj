@@ -99,11 +99,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="lsr\CrimeSomething.cs" />
+    <Compile Include="lsr\CrimeManager.cs" />
     <Compile Include="lsr\InputManager.cs" />
     <Compile Include="lsr\Mod.cs" />
     <Compile Include="lsr\Player.cs" />
-    <Compile Include="lsr\Police.cs" />
+    <Compile Include="lsr\PolicePerception.cs" />
     <Compile Include="Source\General\Locations\County.cs" />
     <Compile Include="Source\General\Static\AnimationManager.cs" />
     <Compile Include="Source\General\Static\BlipManager.cs" />
@@ -123,7 +123,7 @@
     <Compile Include="Source\General\Static\InputManager.cs" />
     <Compile Include="Source\General\Static\MenuManager.cs" />
     <Compile Include="Source\General\Static\UIManager.cs" />
-    <Compile Include="Source\Peds\Static\CivilianManager.cs" />
+    <Compile Include="lsr\CivilianPerception.cs" />
     <Compile Include="Source\Peds\Static\MuggingManager.cs" />
     <Compile Include="Source\Peds\Static\TaskManager.cs" />
     <Compile Include="Source\Peds\Static\PedDamageManager.cs" />
@@ -134,7 +134,6 @@
     <Compile Include="Source\Player\Static\PlayerStateManager.cs" />
     <Compile Include="Source\Player\Static\RespawnManager.cs" />
     <Compile Include="Source\Player\Static\ScenarioManager.cs" />
-    <Compile Include="Source\Player\Static\SmokingManager.cs" />
     <Compile Include="Source\Player\Static\SurrenderManager.cs" />
     <Compile Include="Source\Player\Static\WeaponDroppingManager.cs" />
     <Compile Include="Source\Police\Crimes\Crime.cs" />

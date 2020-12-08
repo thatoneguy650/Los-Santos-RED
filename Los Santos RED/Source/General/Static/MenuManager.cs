@@ -643,8 +643,8 @@ internal static class MenuManager
     {
         if (selectedItem == menuMainSuicide)
             SurrenderManager.CommitSuicide(Game.LocalPlayer.Character);
-        else if (selectedItem == menuActionSmoking)
-            SmokingManager.StartScenario();
+        //else if (selectedItem == menuActionSmoking)
+        //    SmokingManager.StartScenario();
         else if (selectedItem == menuMainChangeLicensePlate)
             LicensePlateTheftManager.ChangeNearestLicensePlate();
         else if (selectedItem == menuMainRemoveLicensePlate) LicensePlateTheftManager.RemoveNearestLicensePlate();

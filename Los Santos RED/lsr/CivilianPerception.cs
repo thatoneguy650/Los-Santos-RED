@@ -1,33 +1,22 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class CivilianManager
+public class CivilianPerception
 {
-    public static bool IsRunning { get; set; }
-    public static bool AnyCanSeePlayer { get; private set; }
-    public static bool AnyCanHearPlayer { get; private set; }
-    public static bool AnyCanRecognizePlayer { get; private set; }
-    public static void Initialize()
+    public bool AnyCanSeePlayer { get; set; }
+    public bool AnyCanHearPlayer { get; set; }
+    public bool AnyCanRecognizePlayer { get; set; }
+    public void Tick()
     {
-        IsRunning = true;
+        UpdateCivilians();
+        UpdateRecognition();
     }
-    public static void Dispose()
-    {
-        IsRunning = false;
-    }
-    public static void Tick()
-    {
-        if (IsRunning)
-        {
-            UpdateCivilians();
-            UpdateRecognition();
-        }
-    }
-    private static void UpdateCivilians()
+    private void UpdateCivilians()
     {
         PedManager.Civilians.RemoveAll(x => !x.Pedestrian.Exists());
         foreach (PedExt MyPed in PedManager.Civilians)
@@ -37,7 +26,7 @@ public static class CivilianManager
         PedManager.Civilians.RemoveAll(x => !x.Pedestrian.Exists()  || x.Pedestrian.IsDead);
         VehicleManager.CivilianVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
     }
-    private static void UpdateRecognition()
+    private void UpdateRecognition()
     {
         AnyCanSeePlayer = PedManager.Civilians.Any(x => x.CanSeePlayer);
         AnyCanHearPlayer = PedManager.Civilians.Any(x => x.WithinWeaponsAudioRange);

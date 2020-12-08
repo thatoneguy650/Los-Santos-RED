@@ -8,16 +8,15 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr
 {
-    public class Police
+    public class PolicePerception
     {
-        public bool IsRunning { get; set; }
         public bool AnyCanSeePlayer { get; private set; }
-        public bool AnyCanHearPlayerShooting { get; private set; }
+        public bool AnyCanHearPlayer { get; private set; }
         public bool AnyCanRecognizePlayer { get; private set; }
         public bool AnyRecentlySeenPlayer { get; private set; }
         public bool AnySeenPlayerCurrentWanted { get; private set; }
-        public Vector3 PlaceLastSeenPlayer { get; set; }
-        public Vector3 PlayerLastSeenForwardVector { get; set; }
+        public Vector3 PlaceLastSeenPlayer { get; private set; }
+        public Vector3 PlayerLastSeenForwardVector { get; private set; }
         public int PreviousWantedLevel { get; set; }
         public bool WasPlayerLastSeenInVehicle { get; set; }
         public float PlayerLastSeenHeading { get; set; }
@@ -42,11 +41,8 @@ namespace LosSantosRED.lsr
         }
         public void Tick()
         {
-            if (IsRunning)
-            {
-                UpdateCops();
-                UpdateRecognition();
-            }
+            UpdateCops();
+            UpdateRecognition();
         }
         public void Reset()
         {
@@ -74,7 +70,7 @@ namespace LosSantosRED.lsr
         private void UpdateRecognition()
         {
             AnyCanSeePlayer = PedManager.Cops.Any(x => x.CanSeePlayer);
-            AnyCanHearPlayerShooting = PedManager.Cops.Any(x => x.WithinWeaponsAudioRange);
+            AnyCanHearPlayer = PedManager.Cops.Any(x => x.WithinWeaponsAudioRange);
 
             if (AnyCanSeePlayer)
                 AnyRecentlySeenPlayer = true;
@@ -83,7 +79,7 @@ namespace LosSantosRED.lsr
 
             AnyCanRecognizePlayer = PedManager.Cops.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
 
-            if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer)
+            if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer && Mod.Player.IsWanted)
                 AnySeenPlayerCurrentWanted = true;
 
             if (AnyRecentlySeenPlayer)

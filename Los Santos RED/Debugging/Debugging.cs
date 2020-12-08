@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -338,7 +339,7 @@ public static class Debugging
         }
 
 
-        ScriptController.OutputTable();
+        //ScriptController.OutputTable();
 
     }
     private static void DebugNumpad6()
@@ -412,7 +413,7 @@ public static class Debugging
     }
     private static void DebugNumpad7()
     {
-        WriteToLog("Debugging", ClockManager.CurrentTime);
+        WriteToLog("Debugging", Mod.ClockManager.CurrentTime);
 
         if (PlayerStateManager.CurrentVehicle != null)
         {
@@ -469,7 +470,8 @@ public static class Debugging
         GameFiber.Sleep(500);
         DebugCopReset();
         Game.DisplayNotification("Instant Action Deactivated");
-        ScriptController.Dispose();
+        Mod.Dispose();
+        //ScriptController.Dispose();
     }
 
     public static void WriteToLog(String ProcedureString, String TextToLog)

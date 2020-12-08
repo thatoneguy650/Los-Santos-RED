@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 namespace LosSantosRED.lsr
 {
 
-    public class CrimeSomething
+    public class CrimeManager
     {
         private uint GameTimeStartedBrandishing;
         private List<Crime> CrimeList;
 
-        public CrimeSomething()
+        public CrimeManager()
         {
             IsRunning = true;
             CrimeList = new List<Crime>();
@@ -121,7 +121,7 @@ namespace LosSantosRED.lsr
             {
                 SuspiciousActivity.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.IsWanted && Mod.Police.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && WantedLevelManager.HasBeenWantedFor >= 10000)
+            if (Mod.Player.IsWanted && Mod.PolicePerception.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && WantedLevelManager.HasBeenWantedFor >= 10000)
             {
                 ResistingArrest.IsCurrentlyViolating = true;
             }
@@ -182,7 +182,7 @@ namespace LosSantosRED.lsr
                 if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || PlayerStateManager.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
                     FiringWeapon.IsCurrentlyViolating = true;
-                    if (Mod.Police.AnyRecentlySeenPlayer || Mod.Police.AnyCanHearPlayerShooting)
+                    if (Mod.PolicePerception.AnyRecentlySeenPlayer || Mod.PolicePerception.AnyCanHearPlayer)
                         FiringWeaponNearPolice.IsCurrentlyViolating = true;
                 }
             }
@@ -269,7 +269,7 @@ namespace LosSantosRED.lsr
         {
             foreach (Crime Violating in CrimeList.Where(x => x.IsCurrentlyViolating))
             {
-                if (Mod.Police.AnyCanSeePlayer || (Violating.CanReportBySound && Mod.Police.AnyCanHearPlayerShooting) || Violating.IsAlwaysFlagged)
+                if (Mod.PolicePerception.AnyCanSeePlayer || (Violating.CanReportBySound && Mod.PolicePerception.AnyCanHearPlayer) || Violating.IsAlwaysFlagged)
                 {
                     WeaponInformation ToSee = null;
                     if (!PlayerStateManager.IsInVehicle)

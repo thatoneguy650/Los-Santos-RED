@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -524,7 +525,7 @@ public static class PlayerStateManager
     }
     private static void DeathEvent()
     {
-        ClockManager.PauseTime();
+        Mod.ClockManager.PauseTime();
         DiedInVehicle = IsInVehicle;
         IsDead = true;
         GameTimeLastDied = Game.GameTime;

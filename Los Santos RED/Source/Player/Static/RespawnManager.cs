@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -154,7 +155,7 @@ public static class RespawnManager
             GameTimeLastRespawned = Game.GameTime;
             Game.HandleRespawn();
             ScannerManager.AbortAudio();
-            ClockManager.UnpauseTime();
+            Mod.ClockManager.UnpauseTime();
         }
         catch (Exception e)
         {

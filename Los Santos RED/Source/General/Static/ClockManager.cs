@@ -8,25 +8,32 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class ClockManager
+public class ClockManager
 {
-    private static int ClockYear;
-    private static int ClockMonth;
-    private static int ClockDayOfMonth;
-    private static int ClockDayOfWeek;
-    private static int ClockSeconds;
-    private static int ClockMinutes;
-    private static int ClockHours;
-    private static uint GameTimeLastSetClock;
-    private static bool IsPaused;
-    private static int StoredClockSeconds;
-    private static int StoredClockMinutes;
-    private static int StoredClockHours;
-    private static int Interval = 1000;
-    private static int ClockMultiplier = 1;
-    public static bool IsRunning { get; set; }
-    public static bool OverrideToFastest { get; set; }
-    public static string DayOfWeek
+    private int ClockYear;
+    private int ClockMonth;
+    private int ClockDayOfMonth;
+    private int ClockDayOfWeek;
+    private int ClockSeconds;
+    private int ClockMinutes;
+    private int ClockHours;
+    private uint GameTimeLastSetClock;
+    private bool IsPaused;
+    private int StoredClockSeconds;
+    private int StoredClockMinutes;
+    private int StoredClockHours;
+    private int Interval = 1000;
+    private int ClockMultiplier = 1;
+
+    public ClockManager()
+    {
+        ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
+        ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
+        ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+        NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
+    }
+    public bool OverrideToFastest { get; set; }
+    public string DayOfWeek
     {
         get
         {
@@ -48,48 +55,35 @@ public static class ClockManager
                 return "Sunday";
         }
     }
-    public static string CurrentTime
+    public string CurrentTime
     {
         get
         {
             return string.Format("Current Time: {0}:{1}:{2}", NativeFunction.CallByName<int>("GET_CLOCK_HOURS"), NativeFunction.CallByName<int>("GET_CLOCK_MINUTES"), NativeFunction.CallByName<int>("GET_CLOCK_SECONDS"));
         }
     }
-    public static void Initialize()
+    public void Dispose()
     {
-        IsRunning = true;
-
-        ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
-        ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
-        ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-        NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
         NativeFunction.CallByName<int>("PAUSE_CLOCK", false);
     }
-    public static void Tick()
+    public void Tick()
     {
-        if (IsRunning)
+        if (IsPaused)
         {
-            if (IsPaused)
-            {
-                SetToStoredTime();
-            }
-            else
-            {
-                GetIntervalAndMultiplier();
-                CheckTimeInterval();
-            }
+            SetToStoredTime();
         }
+        else
+        {
+            GetIntervalAndMultiplier();
+            CheckTimeInterval();
+        }  
     }
-    public static void PauseTime()
+    public void PauseTime()
     {
         StoreTime();
         IsPaused = true;
     }
-    public static void UnpauseTime()
+    public void UnpauseTime()
     {
         Debugging.WriteToLog("Clock", string.Format("Unpaused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
         IsPaused = false;
@@ -107,19 +101,19 @@ public static class ClockManager
         Debugging.GameFibers.Add(UnPauseTime);
 
     }
-    private static void StoreTime()
+    private void StoreTime()
     {
         StoredClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
         StoredClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
         StoredClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
         Debugging.WriteToLog("Clock", string.Format("Paused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
     }
-    private static void SetToStoredTime()
+    private void SetToStoredTime()
     {
         //Debugging.WriteToLog("StoreTime", string.Format("Time: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
         NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds);
     }
-    private static void GetIntervalAndMultiplier()
+    private void GetIntervalAndMultiplier()
     {
         float Speed = Game.LocalPlayer.Character.Speed;
         if (Speed <= 4.0f)
@@ -158,7 +152,7 @@ public static class ClockManager
             ClockMultiplier = 30;
         }
     }
-    private static void CheckTimeInterval()
+    private void CheckTimeInterval()
     {
         if (Game.GameTime - GameTimeLastSetClock >= Interval)
         {
@@ -166,7 +160,7 @@ public static class ClockManager
             GameTimeLastSetClock = Game.GameTime;
         }
     }
-    private static void StoreDate()
+    private void StoreDate()
     {
         ClockYear = NativeFunction.CallByName<int>("GET_CLOCK_YEAR");
         ClockMonth = NativeFunction.CallByName<int>("GET_CLOCK_MONTH");

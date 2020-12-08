@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -165,7 +166,7 @@ public static class PedSwapManager
         CurrentPedVariation = GetPedVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
         CurrentPlayerIsMale = TargetPed.IsMale;
-        ClockManager.PauseTime();
+        Mod.ClockManager.PauseTime();
 
         CurrentPedPosition = Game.LocalPlayer.Character.Position;
         TargetPedPosition = TargetPed.Position;
@@ -271,7 +272,7 @@ public static class PedSwapManager
 
         Game.LocalPlayer.Character.SetUnarmed();
         GiveName();
-        ClockManager.UnpauseTime();
+        Mod.ClockManager.UnpauseTime();
 
         WeaponDroppingManager.Reset();
 
