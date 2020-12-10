@@ -3,20 +3,20 @@ using Rage;
 using Rage.Native;
 using System.Drawing;
 
-public static class InvestigationManager
+public class InvestigationManager
 {
-    private static bool PrevIsInInvestigationMode;
-    private static Vector3 PrevInvestigationPosition;
-    private static uint GameTimeStartedInvestigation;
-    private static uint GameTimeLastInvestigationExpired;
-    private static Blip InvestigationBlip;
-    public static float InvestigationDistance { get; private set; }
-    public static Vector3 InvestigationPosition { get; set; }
-    public static float NearInvestigationDistance { get; private set; }
-    public static bool InInvestigationMode { get; private set; }
-    public static bool HavePlayerDescription { get; private set; }
-    public static bool IsRunning { get; set; }
-    public static bool InvestigationModeExpired
+    private bool PrevIsInInvestigationMode;
+    private Vector3 PrevInvestigationPosition;
+    private uint GameTimeStartedInvestigation;
+    private uint GameTimeLastInvestigationExpired;
+    private Blip InvestigationBlip;
+    public float InvestigationDistance { get; private set; }
+    public Vector3 InvestigationPosition { get; set; }
+    public float NearInvestigationDistance { get; private set; }
+    public bool InInvestigationMode { get; private set; }
+    public bool HavePlayerDescription { get; private set; }
+    public bool IsRunning { get; set; }
+    public bool InvestigationModeExpired
     {
         get
         {
@@ -28,7 +28,7 @@ public static class InvestigationManager
                 return false;
         }
     }
-    public static bool IsSuspicious
+    public bool IsSuspicious
     {
         get
         {
@@ -40,7 +40,7 @@ public static class InvestigationManager
                 return false;
         }
     }
-    public static bool LastInvestigationRecentlyExpired
+    public bool LastInvestigationRecentlyExpired
     {
         get
         {
@@ -52,14 +52,14 @@ public static class InvestigationManager
                 return false;
         }
     }
-    public static bool NearInvestigationPosition
+    public bool NearInvestigationPosition
     {
         get
         {
             return InvestigationPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition) <= NearInvestigationDistance;
         }
     }
-    public static float DistanceToInvestigationPosition
+    public float DistanceToInvestigationPosition
     {
         get
         {
@@ -69,7 +69,7 @@ public static class InvestigationManager
                 return Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition);
         }
     }
-    public static void Initialize()
+    public void Initialize()
     {
         InvestigationPosition = Vector3.Zero;
         InvestigationDistance = 800f;//350f;
@@ -77,29 +77,29 @@ public static class InvestigationManager
         NearInvestigationDistance = 250f;
         IsRunning = true;
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
             InvestigationTick();
         }
     }
-    public static void Reset()
+    public void Reset()
     {
         InInvestigationMode = false;
         HavePlayerDescription = false;
     }
-    public static void StartInvestigation(Vector3 PositionToInvestigate,bool HaveDescription)
+    public void StartInvestigation(Vector3 PositionToInvestigate,bool HaveDescription)
     {
         InInvestigationMode = true;
         InvestigationPosition = PositionToInvestigate;
         HavePlayerDescription = HaveDescription;
     }
-    private static void InvestigationTick()
+    private void InvestigationTick()
     {
         if (Mod.Player.IsWanted)
             InInvestigationMode = false;
@@ -114,18 +114,18 @@ public static class InvestigationManager
             PoliceInInvestigationModeChanged();
 
 
-        if (Mod.Player.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Mod.PolicePerception.AnyCanRecognizePlayer && WantedLevelManager.HasBeenNotWantedFor >= 5000)
+        if (Mod.Player.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Mod.PolicePerception.AnyCanRecognizePlayer && Mod.WantedLevelManager.HasBeenNotWantedFor >= 5000)
         {
-             WantedLevelManager.ApplyReportedCrimes();
+            Mod.WantedLevelManager.ApplyReportedCrimes();
         }
     }
-    private static void InvestigationPositionChanged()
+    private void InvestigationPositionChanged()
     {
         UpdateInvestigationUI();
         Debugging.WriteToLog("ValueChecker", string.Format("InvestigationPosition Changed to: {0}", InvestigationPosition));
         PrevInvestigationPosition = InvestigationPosition;
     }
-    private static void PoliceInInvestigationModeChanged()
+    private void PoliceInInvestigationModeChanged()
     {
         if (InInvestigationMode) //added
         {
@@ -146,19 +146,19 @@ public static class InvestigationManager
         Debugging.WriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", InInvestigationMode));
         PrevIsInInvestigationMode = InInvestigationMode;
     }
-    private static void UpdateInvestigationUI()
+    private void UpdateInvestigationUI()
     {
         UpdateInvestigationPosition();
         AddUpdateInvestigationBlip(InvestigationPosition, NearInvestigationDistance);
     }
-    private static void UpdateInvestigationPosition()
+    private void UpdateInvestigationPosition()
     {
         Vector3 SpawnLocation = Vector3.Zero;
         StreetManager.GetStreetPositionandHeading(InvestigationPosition, out SpawnLocation, out float Heading, false);
         if (SpawnLocation != Vector3.Zero)
             InvestigationPosition = SpawnLocation;
     } 
-    private static void AddUpdateInvestigationBlip(Vector3 Position, float Size)
+    private void AddUpdateInvestigationBlip(Vector3 Position, float Size)
     {
         if (Position == Vector3.Zero)
         {

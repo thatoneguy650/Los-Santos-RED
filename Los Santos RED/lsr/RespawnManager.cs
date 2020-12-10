@@ -9,19 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class RespawnManager
+public class RespawnManager
 {
-    private static int BailFee;
-    private static uint GameTimeLastUndied;
-    private static uint GameTimeLastRespawned;
-    private static uint GameTimeLastSurrenderedToPolice;
-    private static uint GameTimeLastBribedPolice;
-    private static uint GameTimeLastDischargedFromHospital;
-    private static uint GameTimeLastResistedArrest;
-    private static uint GameTimeLastTalkedToPolice;
-    private static int HospitalBillPastDue;
-    private static int BailFeePastDue;
-    public static bool RecentlyUndied
+    private int BailFee;
+    private uint GameTimeLastUndied;
+    private uint GameTimeLastRespawned;
+    private uint GameTimeLastSurrenderedToPolice;
+    private uint GameTimeLastBribedPolice;
+    private uint GameTimeLastDischargedFromHospital;
+    private uint GameTimeLastResistedArrest;
+    private uint GameTimeLastTalkedToPolice;
+    private int HospitalBillPastDue;
+    private int BailFeePastDue;
+    public bool RecentlyUndied
     {
         get
         {
@@ -33,7 +33,7 @@ public static class RespawnManager
                 return false;
         }
     }
-    public static bool RecentlyRespawned
+    public bool RecentlyRespawned
     {
         get
         {
@@ -45,7 +45,7 @@ public static class RespawnManager
                 return false;
         }
     }
-    public static bool RecentlySurrenderedToPolice
+    public bool RecentlySurrenderedToPolice
     {
         get
         {
@@ -57,7 +57,7 @@ public static class RespawnManager
                 return false;
         }
     }
-    public static bool RecentlyBribedPolice
+    public bool RecentlyBribedPolice
     {
         get
         {
@@ -69,7 +69,7 @@ public static class RespawnManager
                 return false;
         }
     }
-    public static bool RecentlyDischargedFromHospital
+    public bool RecentlyDischargedFromHospital
     {
         get
         {
@@ -81,7 +81,7 @@ public static class RespawnManager
                 return false;
         }
     }
-    public static bool RecentlyResistedArrest
+    public bool RecentlyResistedArrest
     {
         get
         {
@@ -93,7 +93,7 @@ public static class RespawnManager
                 return false;
         }
     }
-    public static bool RecentlyTalkedtoPolice
+    public bool RecentlyTalkedtoPolice
     {
         get
         {
@@ -105,11 +105,11 @@ public static class RespawnManager
                 return false;
         }
     }
-    public static void UnDie()
+    public void UnDie()
     {
         GameTimeLastUndied = Game.GameTime;
         RespawnInPlace(true);
-        ScannerManager.AbortAudio();
+        Mod.ScannerManager.AbortAudio();
         Game.LocalPlayer.Character.IsInvincible = true;
         GameFiber.StartNew(delegate
         {
@@ -117,7 +117,7 @@ public static class RespawnManager
             Game.LocalPlayer.Character.IsInvincible = false;
         });
     }
-    public static void RespawnInPlace(bool AsOldCharacter)
+    public void RespawnInPlace(bool AsOldCharacter)
     {
         try
         {
@@ -140,7 +140,7 @@ public static class RespawnManager
             if (AsOldCharacter)
             {
                 ResetPlayer(false, false);
-                WantedLevelManager.SetWantedLevel(Mod.Player.MaxWantedLastLife, "Resetting to max wanted last life after respawn in place", true);
+                Mod.WantedLevelManager.SetWantedLevel(Mod.Player.MaxWantedLastLife, "Resetting to max wanted last life after respawn in place", true);
                 ++Mod.Player.TimesDied;
             }
             else
@@ -154,7 +154,7 @@ public static class RespawnManager
             }
             GameTimeLastRespawned = Game.GameTime;
             Game.HandleRespawn();
-            ScannerManager.AbortAudio();
+            Mod.ScannerManager.AbortAudio();
             Mod.ClockManager.UnpauseTime();
         }
         catch (Exception e)
@@ -162,13 +162,13 @@ public static class RespawnManager
             Debugging.WriteToLog("RespawnInPlace", e.Message);
         }
     }
-    public static void SurrenderToPolice(GameLocation PoliceStation)
+    public void SurrenderToPolice(GameLocation PoliceStation)
     {
         FadeOut();
         CheckWeapons();
         BailFee = Mod.Player.MaxWantedLastLife * SettingsManager.MySettings.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         Mod.Player.ResetState(true);
-        SurrenderManager.RaiseHands();
+        Mod.SurrenderManager.RaiseHands();
         ResetPlayer(true, true);
         if (PoliceStation == null)
             PoliceStation = LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
@@ -180,7 +180,7 @@ public static class RespawnManager
         SetPoliceFee(PoliceStation.Name, BailFee);
         GameTimeLastSurrenderedToPolice = Game.GameTime;
     }
-    public static void BribePolice(int Amount)
+    public void BribePolice(int Amount)
     {
         if (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.IsSwimming)
             return;
@@ -202,13 +202,13 @@ public static class RespawnManager
             GameTimeLastBribedPolice = Game.GameTime;
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
-            SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+            Mod.SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
             ResetPlayer(true, false);
 
             //Animation goes here if you want to add it somehow
         }
     }
-    public static void RespawnAtHospital(GameLocation Hospital)
+    public void RespawnAtHospital(GameLocation Hospital)
     {
         FadeOut();
         Mod.Player.ResetState(true);
@@ -222,24 +222,24 @@ public static class RespawnManager
         SetHospitalFee(Hospital.Name);
         FadeIn();   
     }
-    public static void ResistArrest()
+    public void ResistArrest()
     {
         Mod.Player.ResetState(false);//maxwanted last life maybe wont work?
-        WantedLevelManager.RefreshPoliceState();
-        WantedLevelManager.SetWantedLevel(Mod.Player.WantedLevel, "Resisting Arrest", true);
-        SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+        Mod.WantedLevelManager.RefreshPoliceState();
+        Mod.WantedLevelManager.SetWantedLevel(Mod.Player.WantedLevel, "Resisting Arrest", true);
+        Mod.SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
         GameTimeLastResistedArrest = Game.GameTime;
     }
-    public static void Talk()
+    public void Talk()
     {
         //GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         //MovePlayerToCop(ClosestCop,false,0);
         GameTimeLastTalkedToPolice = Game.GameTime;
         Game.DisplayHelp("~INPUT_SELECT_WEAPON_UNARMED~ \"Hello Officer, what seems to be the problem?\",~INPUT_SELECT_WEAPON_MELEE~ \"Am I being Detained?\"", 8000);
     }
-    private static bool BribePoliceAnimation(int Amount)//temp public
+    private bool BribePoliceAnimation(int Amount)//temp public
     {
         GameFiber.StartNew(delegate
         {
@@ -248,7 +248,7 @@ public static class RespawnManager
             Game.TimeScale = 1.0f;
             //CopToBribe.SetUnarmed();
 
-            SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+            Mod.SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 
             while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Game.LocalPlayer.Character, "random@arrests", "kneeling_arrest_escape", 1))
                 GameFiber.Wait(250);
@@ -320,7 +320,7 @@ public static class RespawnManager
 
         return true;
     }
-    private static Rage.Object AttachMoneyToPed(Ped Pedestrian)
+    private Rage.Object AttachMoneyToPed(Ped Pedestrian)
     {
         Rage.Object Money = new Rage.Object("xs_prop_arena_cash_pile_m", Pedestrian.GetOffsetPositionUp(50f));
         if (!Money.Exists())
@@ -329,7 +329,7 @@ public static class RespawnManager
         Money.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.12f, 0.03f, -0.01f), new Rotator(0f, -45f, 90f));
         return Money;
     }
-    private static void RemoveIllegalWeapons()
+    private void RemoveIllegalWeapons()
     {
         //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
         //Make a list of my old guns
@@ -355,7 +355,7 @@ public static class RespawnManager
             }
         }
     }
-    private static void ResetPlayer(bool ClearWanted, bool ResetHealth)
+    private void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {
         Mod.Player.ResetState(false);
 
@@ -364,13 +364,13 @@ public static class RespawnManager
         Game.TimeScale = 1f;
         if (ClearWanted)
         {
-            PersonOfInterestManager.Reset();
-            WantedLevelManager.Reset();
-            WantedLevelManager.SetWantedLevel(0, "Reset player with Clear Wanted", false);
+            Mod.PersonOfInterestManager.Reset();
+            Mod.WantedLevelManager.Reset();
+            Mod.WantedLevelManager.SetWantedLevel(0, "Reset player with Clear Wanted", false);
             Mod.Player.MaxWantedLastLife = 0;
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-            PedDamageManager.Reset();
-            InvestigationManager.Reset();
+            Mod.PedDamageManager.Reset();
+            Mod.InvestigationManager.Reset();
         }
 
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
@@ -386,9 +386,9 @@ public static class RespawnManager
 
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
     }
-    private static void CheckWeapons()
+    private void CheckWeapons()
     {
-        if (!PedDamageManager.KilledAnyCops)
+        if (!Mod.PedDamageManager.KilledAnyCops)
         {
             RemoveIllegalWeapons();
         }
@@ -397,7 +397,7 @@ public static class RespawnManager
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         }
     }
-    private static void SetHospitalFee(string HospitalName)
+    private void SetHospitalFee(string HospitalName)
     {
         int HospitalFee = SettingsManager.MySettings.Police.HospitalFee * (1 + Mod.Player.MaxWantedLastLife);
         int CurrentCash = Game.LocalPlayer.Character.GetCash();
@@ -420,7 +420,7 @@ public static class RespawnManager
 
         Game.LocalPlayer.Character.GiveCash(-1 * TodaysPayment);
     }
-    private static void SetPoliceFee(string PoliceStationName, int BailFee)
+    private void SetPoliceFee(string PoliceStationName, int BailFee)
     {
         int CurrentCash = Game.LocalPlayer.Character.GetCash();
         int TodaysPayment = 0;
@@ -449,17 +449,17 @@ public static class RespawnManager
             Game.DisplayNotification("CHAR_LESTER", "CHAR_LESTER", PoliceStationName, "Bail Fees", string.Format("~g~${0} ~s~", 0));
         }
     }
-    private static void SetPlayerAtLocation(GameLocation ToSet)
+    private void SetPlayerAtLocation(GameLocation ToSet)
     {
         Game.LocalPlayer.Character.Position = ToSet.LocationPosition;
         Game.LocalPlayer.Character.Heading = ToSet.Heading;
     }
-    private static void FadeOut()
+    private void FadeOut()
     {
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
     }
-    private static void FadeIn()
+    private void FadeIn()
     {
         GameFiber.Wait(1500);
         Game.FadeScreenIn(1500);
@@ -492,9 +492,9 @@ public static class RespawnManager
                 NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
                 Game.TimeScale = 1.0f;
                 CopToBribe.ShouldAutoSetWeaponState = false;
-               // CopToBribe.SetUnarmed();//need to change this
+                // CopToBribe.SetUnarmed();//need to change this
 
-                SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+                Mod.SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 
                 while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Game.LocalPlayer.Character, "random@arrests", "kneeling_arrest_escape", 1))
                     GameFiber.Wait(250);
@@ -540,13 +540,13 @@ public static class RespawnManager
                 NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
 
-                Rage.Object MoneyPile = AttachMoneyToPed(PedToMove);
+                Rage.Object MoneyPile = Mod.RespawnManager.AttachMoneyToPed(PedToMove);
 
                 GameFiber.Wait(1500);
                 if (MoneyPile.Exists())
                     MoneyPile.Delete();
 
-                MoneyPile = AttachMoneyToPed(PedToMoveTo);
+                MoneyPile = Mod.RespawnManager.AttachMoneyToPed(PedToMoveTo);
                 GameFiber.Wait(1500);
                 if (MoneyPile.Exists())
                     MoneyPile.Delete();
@@ -560,7 +560,7 @@ public static class RespawnManager
                 CopToBribe.Pedestrian.PlayAmbientSpeech("GENERIC_THANKS");
                 //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
 
-                ResetPlayer(true, false);
+                Mod.RespawnManager.ResetPlayer(true, false);
             });
 
 

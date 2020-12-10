@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using ExtensionsMethods;
 using LosSantosRED.lsr;
 
-public static class SurrenderManager
+public class SurrenderManager
 {
-    public static bool IsCommitingSuicide { get; set; }
-    public static bool CanSurrender
+    public bool IsCommitingSuicide { get; set; }
+    public bool CanSurrender
     {
         get
         {
@@ -25,7 +25,7 @@ public static class SurrenderManager
             }
         }
     }
-    public static void RaiseHands()
+    public void RaiseHands()
     {
         if (Game.LocalPlayer.Character.IsWearingHelmet)
             Game.LocalPlayer.Character.RemoveHelmet(true);
@@ -95,14 +95,14 @@ public static class SurrenderManager
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Speed <= 10f)
             Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = false;
     }
-    public static void LowerHands()
+    public void LowerHands()
     {
         Mod.Player.HandsAreUp = false; // You put your hands down
         Game.LocalPlayer.Character.Tasks.Clear();
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
             Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
     }
-    public static void SetArrestedAnimation(Ped PedToArrest, bool MarkAsNoLongerNeeded, bool StayStanding)
+    public void SetArrestedAnimation(Ped PedToArrest, bool MarkAsNoLongerNeeded, bool StayStanding)
     {
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
@@ -165,7 +165,7 @@ public static class SurrenderManager
         Debugging.GameFibers.Add(SetArrestedAnimation);
 
     }
-    public static void UnSetArrestedAnimation(Ped PedToArrest)
+    public void UnSetArrestedAnimation(Ped PedToArrest)
     {
             GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
             {
@@ -186,7 +186,7 @@ public static class SurrenderManager
             }, "UnSetArrestedAnimation");
             Debugging.GameFibers.Add(UnSetArrestedAnimationGF);
     }
-    public static void CommitSuicide(Ped PedToSuicide)
+    public void CommitSuicide(Ped PedToSuicide)
     {
         if (IsCommitingSuicide)
             return;

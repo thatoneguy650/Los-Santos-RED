@@ -7,26 +7,26 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-public static class PedSwapManager
+public class PedSwapManager
 {
-    private static Vector3 CurrentPedPosition;
-    private static Vector3 TargetPedPosition;
-    private static bool TargetPedUsingScenario;
-    private static Ped CurrentPed;
-    private static bool TargetPedInVehicle;
-    private static Vehicle TargetPedVehicle;
-    private static bool TargetPedAlreadyTakenOver;
-    private static List<TakenOverPed> TakenOverPeds;
-    private static Model OriginalModel;
-    private static string LastModelHash;
-    private static PedVariation CurrentPedVariation;
-    private static uint GameTimeLastTakenOver;
-    private static bool CurrentPlayerIsMale = false;
+    private Vector3 CurrentPedPosition;
+    private Vector3 TargetPedPosition;
+    private bool TargetPedUsingScenario;
+    private Ped CurrentPed;
+    private bool TargetPedInVehicle;
+    private Vehicle TargetPedVehicle;
+    private bool TargetPedAlreadyTakenOver;
+    private List<TakenOverPed> TakenOverPeds;
+    private Model OriginalModel;
+    private string LastModelHash;
+    private PedVariation CurrentPedVariation;
+    private uint GameTimeLastTakenOver;
+    private bool CurrentPlayerIsMale = false;
 
-    private static string CurrentPlayerModel;
-    public static Vehicle OwnedCar { get; set; }
-    public static string SuspectName { get; set; }
-    public static bool RecentlyTakenOver
+    private string CurrentPlayerModel;
+    public Vehicle OwnedCar { get; set; }
+    public string SuspectName { get; set; }
+    public bool RecentlyTakenOver
     {
         get
         {
@@ -36,7 +36,7 @@ public static class PedSwapManager
                 return false;
         }
     }
-    public static void Initialize()
+    public void Initialize()
     {
         OriginalModel = default;
         LastModelHash = "";
@@ -47,7 +47,7 @@ public static class PedSwapManager
         CurrentPlayerIsMale = Game.LocalPlayer.Character.IsMale;
         GiveName();
     }
-    public static void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice)
+    public void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice)
     {
         try
         {
@@ -79,7 +79,7 @@ public static class PedSwapManager
             Debugging.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
-    public static void BecomeMPCharacter(bool IsMale)
+    public void BecomeMPCharacter(bool IsMale)
     {
         SetPlayerOffset();
         ChangeModel(SettingsManager.MySettings.General.MainCharacterToAliasModelName);
@@ -93,7 +93,7 @@ public static class PedSwapManager
         //}
         
     }
-    private static Ped FindPedToSwapWith(float Radius, bool Nearest)
+    private Ped FindPedToSwapWith(float Radius, bool Nearest)
     {
         Ped PedToReturn = null;
         Ped[] closestPed = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, Radius, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAllPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
@@ -125,7 +125,7 @@ public static class PedSwapManager
             return PedToReturn;
         }
     }
-    private static PedVariation GetPedVariation(Ped myPed)
+    private PedVariation GetPedVariation(Ped myPed)
     {
         try
         {
@@ -150,7 +150,7 @@ public static class PedSwapManager
             return null;
         }
     }
-    private static void GiveName()
+    private void GiveName()
     {
         if (CurrentPlayerModel.ToLower() == "player_zero")
             SuspectName = "Michael De Santa";
@@ -161,7 +161,7 @@ public static class PedSwapManager
         else
             SuspectName = NameManager.GetRandomName(CurrentPlayerIsMale);
     }
-    private static void StoreTargetPedData(Ped TargetPed)
+    private void StoreTargetPedData(Ped TargetPed)
     {
         CurrentPedVariation = GetPedVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
@@ -173,7 +173,7 @@ public static class PedSwapManager
 
         if (Game.LocalPlayer.Character.IsDead)
         {
-            RespawnManager.RespawnInPlace(false);
+            Mod.RespawnManager.RespawnInPlace(false);
         }
         Vector3 PlayerOriginalPedPosition = Game.LocalPlayer.Character.Position;
         TargetPedAlreadyTakenOver = false;
@@ -217,7 +217,7 @@ public static class PedSwapManager
             AllyClosePedsToPlayer(Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, 5f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x)));
         }
     }
-    private static void PostTakeover(string ModelToChange)
+    private void PostTakeover(string ModelToChange)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
 
@@ -255,17 +255,17 @@ public static class PedSwapManager
         Mod.Player.ResetState(true);
 
         Game.TimeScale = 1f;
-        WantedLevelManager.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
+        Mod.WantedLevelManager.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
 
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
 
-        WantedLevelManager.Reset();
-        PersonOfInterestManager.Reset();
+        Mod.WantedLevelManager.Reset();
+        Mod.PersonOfInterestManager.Reset();
         GameTimeLastTakenOver = Game.GameTime;
-        MenuManager.SelectedTakeoverRadius = -1f;//reset this on the menu
+        Mod.MenuManager.SelectedTakeoverRadius = -1f;//reset this on the menu
         if(CurrentPed.Exists())
             CurrentPed.IsPersistent = false;
         ActivatePreviousScenarios();
@@ -274,7 +274,7 @@ public static class PedSwapManager
         GiveName();
         Mod.ClockManager.UnpauseTime();
 
-        WeaponDroppingManager.Reset();
+        Mod.WeaponDroppingManager.Reset();
 
         //PlayerHealth.Health = Game.LocalPlayer.Character.Health;
         //PlayerHealth.Armor = Game.LocalPlayer.Character.Armor;
@@ -283,7 +283,7 @@ public static class PedSwapManager
         Mod.Player.DisplayPlayerNotification();
 
     }
-    private static void AllyClosePedsToPlayer(Ped[] PedList)
+    private void AllyClosePedsToPlayer(Ped[] PedList)
     {
         foreach (Ped PedToAlly in PedList)
         {
@@ -291,7 +291,7 @@ public static class PedSwapManager
             PedToAlly.StaysInVehiclesWhenJacked = true;
         }
     }
-    private static void ActivatePreviousScenarios()
+    private void ActivatePreviousScenarios()
     {
         if (TargetPedUsingScenario)
         {
@@ -305,14 +305,14 @@ public static class PedSwapManager
             Debugging.GameFibers.Add(ScenarioWatcher);
         }
     }
-    private static void AddPedToTakenOverPeds(TakenOverPed MyPed)
+    private void AddPedToTakenOverPeds(TakenOverPed MyPed)
     {
         if (!TakenOverPeds.Any(x => x.OriginalHandle == MyPed.Pedestrian.Handle))
         {
             TakenOverPeds.Add(MyPed);
         }
     }
-    private static void SetPlayerOffset()
+    private void SetPlayerOffset()
     {
         //i have no idea how this works
         const int WORLD_OFFSET = 8;
@@ -334,7 +334,7 @@ public static class PedSwapManager
             GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
 
     }
-    private static void TaskFormerPed(Ped FormerPlayer)
+    private void TaskFormerPed(Ped FormerPlayer)
     {
         if (FormerPlayer.IsDead)
         {
@@ -354,7 +354,7 @@ public static class PedSwapManager
             FormerPlayer.Tasks.Wander();
         }
     }
-    private static void ChangeModel(string ModelRequested)
+    private void ChangeModel(string ModelRequested)
     {
         Model characterModel = new Model(ModelRequested);
         characterModel.LoadAndWait();

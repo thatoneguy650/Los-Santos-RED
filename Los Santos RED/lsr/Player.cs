@@ -98,7 +98,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (HandsAreUp && !WantedLevelManager.IsWeaponsFree)
+                if (HandsAreUp && !Mod.WantedLevelManager.IsWeaponsFree)
                     return true;
                 else
                     return false;
@@ -198,9 +198,9 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (WantedLevelManager.HasBeenWantedFor <= 3000)
+                if (Mod.WantedLevelManager.HasBeenWantedFor <= 3000)
                     return true;
-                if (SurrenderManager.IsCommitingSuicide)
+                if (Mod.SurrenderManager.IsCommitingSuicide)
                     return true;
                 if (RecentlyBusted)
                     return true;
@@ -266,9 +266,9 @@ namespace LosSantosRED.lsr
         {
             if (GameTimeLastShot == 0)
                 return false;
-            if (PedSwapManager.RecentlyTakenOver)
+            if (Mod.PedSwapManager.RecentlyTakenOver)
                 return false;
-            if (RespawnManager.RecentlyRespawned)
+            if (Mod.RespawnManager.RecentlyRespawned)
                 return false;
             if (Game.GameTime - GameTimeLastShot <= duration) //15000
                 return true;
@@ -301,7 +301,7 @@ namespace LosSantosRED.lsr
             if (MyVehicle == null || MyVehicle.IsStolen)
                 return;
 
-            if (PedSwapManager.OwnedCar == null || MyVehicle.VehicleEnt.Handle != PedSwapManager.OwnedCar.Handle)
+            if (Mod.PedSwapManager.OwnedCar == null || MyVehicle.VehicleEnt.Handle != Mod.PedSwapManager.OwnedCar.Handle)
                 MyVehicle.IsStolen = true;
         }
         public void SetPlayerToLastWeapon()
@@ -316,8 +316,8 @@ namespace LosSantosRED.lsr
         public void DisplayPlayerNotification()
         {
             var NotifcationText = "Warrants: ~g~None~s~";
-            if (WantedLevelManager.CurrentCrimes.CommittedAnyCrimes)
-                NotifcationText = "Wanted For:" + WantedLevelManager.CurrentCrimes.PrintCrimes();
+            if (Mod.WantedLevelManager.CurrentCrimes.CommittedAnyCrimes)
+                NotifcationText = "Wanted For:" + Mod.WantedLevelManager.CurrentCrimes.PrintCrimes();
 
             var MyCar = UpdateCurrentVehicle();
             if (MyCar != null && !MyCar.IsStolen)
@@ -335,7 +335,7 @@ namespace LosSantosRED.lsr
             }
 
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",
-                string.Format("~y~{0}", PedSwapManager.SuspectName), NotifcationText);
+                string.Format("~y~{0}", Mod.PedSwapManager.SuspectName), NotifcationText);
         }
         public void GivePlayerRandomWeapon(WeaponCategory RandomWeaponCategory)
         {
@@ -502,11 +502,11 @@ namespace LosSantosRED.lsr
             // Game.LocalPlayer.Character.Tasks.Clear();
             // General.TransitionToMediumMo();//was slowmo slowmo lets try this
             HandsAreUp = false;
-            SurrenderManager.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);
+            Mod.SurrenderManager.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);
             var HandleBusted = GameFiber.StartNew(delegate
             {
                 GameFiber.Wait(1000);
-                MenuManager.ShowBustedMenu();
+                Mod.MenuManager.ShowBustedMenu();
             }, "HandleBusted");
             Debugging.GameFibers.Add(HandleBusted);
             Game.LocalPlayer.HasControl = false;
@@ -524,7 +524,7 @@ namespace LosSantosRED.lsr
             var HandleDeath = GameFiber.StartNew(delegate
             {
                 GameFiber.Wait(1000);
-                MenuManager.ShowDeathMenu();
+                Mod.MenuManager.ShowDeathMenu();
             }, "HandleDeath");
             Debugging.GameFibers.Add(HandleDeath);
         }
@@ -600,7 +600,7 @@ namespace LosSantosRED.lsr
         {
             var CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
             var IsStolen = true;
-            if (PedSwapManager.OwnedCar != null && PedSwapManager.OwnedCar.Handle == CurrVehicle.Handle)
+            if (Mod.PedSwapManager.OwnedCar != null && Mod.PedSwapManager.OwnedCar.Handle == CurrVehicle.Handle)
                 IsStolen = false;
 
             CurrVehicle.IsStolen = IsStolen;

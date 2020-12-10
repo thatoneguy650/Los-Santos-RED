@@ -7,15 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public static class PoliceSpawningManager
+public class PoliceSpawningManager
 {
-    private static uint GameTimeLastRemovedCop;
-    private static uint GameTimeLastSpawnedCop;
-    private static List<Vehicle> CreatedPoliceVehicles;
-    private static List<Entity> CreatedEntities;
-    private static VehicleInformation CurrentVehicleInfo;
-    public static bool IsRunning { get; set; }
-    public static bool RecentlySpawnedCop
+    private uint GameTimeLastRemovedCop;
+    private uint GameTimeLastSpawnedCop;
+    private List<Vehicle> CreatedPoliceVehicles;
+    private List<Entity> CreatedEntities;
+    private VehicleInformation CurrentVehicleInfo;
+    public bool IsRunning { get; set; }
+    public bool RecentlySpawnedCop
     {
         get
         {
@@ -27,7 +27,7 @@ public static class PoliceSpawningManager
                 return false;
         }
     }
-    public static bool RecentlyRemovedCop
+    public bool RecentlyRemovedCop
     {
         get
         {
@@ -39,13 +39,13 @@ public static class PoliceSpawningManager
                 return false;
         }
     }
-    public static void Initialize()
+    public void Initialize()
     {
         CreatedPoliceVehicles = new List<Vehicle>();
         CreatedEntities = new List<Entity>();
         IsRunning = true;
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
         foreach (Entity ent in CreatedEntities)
@@ -62,20 +62,20 @@ public static class PoliceSpawningManager
         }
         CreatedEntities.Clear();
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
             RepairOrRemoveDamagedVehicles();
             RemoveAbandonedVehicles();
 
-            if(PedSwapManager.RecentlyTakenOver || RespawnManager.RecentlySurrenderedToPolice)
+            if(Mod.PedSwapManager.RecentlyTakenOver || Mod.RespawnManager.RecentlySurrenderedToPolice)
             {
                 RemoveDisallowedPeds();
             }
         }
     }
-    public static bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading, VehicleInformation MyCarInfo, bool CanSpawnOnFoot)
+    public bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading, VehicleInformation MyCarInfo, bool CanSpawnOnFoot)
     {
         if (_Agency == null)
             return false;
@@ -118,7 +118,7 @@ public static class PoliceSpawningManager
                 CopCar.VehicleEnt.IsPersistent = true;
                 Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
                 Cop MyNewCop = new Cop(Cop, Cop.Health, _Agency);
-                PoliceEquipmentManager.IssueWeapons(MyNewCop);
+                Mod.PoliceEquipmentManager.IssueWeapons(MyNewCop);
                 MyNewCop.WasModSpawned = true;
                 MyNewCop.WasMarkedNonPersistent = true;
                 MyNewCop.WasSpawnedAsDriver = true;
@@ -156,7 +156,7 @@ public static class PoliceSpawningManager
                                 PartnerCop.WarpIntoVehicle(CopCar.VehicleEnt, OccupantIndex - 1);
                                 PartnerCop.IsPersistent = true;
                                 Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, _Agency);
-                                PoliceEquipmentManager.IssueWeapons(MyNewPartnerCop);
+                                Mod.PoliceEquipmentManager.IssueWeapons(MyNewPartnerCop);
                                 MyNewPartnerCop.WasModSpawned = true;
                                 MyNewPartnerCop.WasMarkedNonPersistent = true;
 
@@ -180,7 +180,7 @@ public static class PoliceSpawningManager
             return false;
         }
     }
-    public static void UpgradeCruiser(Vehicle CopCruiser)
+    public void UpgradeCruiser(Vehicle CopCruiser)
     {
         if (!CopCruiser.Exists())
             return;
@@ -200,7 +200,7 @@ public static class PoliceSpawningManager
             // NativeFunction.CallByName<bool>("SET_VEHICLE_WINDOW_TINT", CopCruiser, 1);
         }
     }
-    public static void UpdateLivery(Vehicle CopCar, Agency AssignedAgency)
+    public void UpdateLivery(Vehicle CopCar, Agency AssignedAgency)
     {
         VehicleInformation MyVehicle = null;
         if (AssignedAgency != null && AssignedAgency.Vehicles != null && CopCar.Exists())
@@ -224,12 +224,12 @@ public static class PoliceSpawningManager
         }
         CopCar.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
     }
-    public static void UpdateLivery(Vehicle CopCar)
+    public void UpdateLivery(Vehicle CopCar)
     {
         Agency AssignedAgency = AgencyManager.GetAgency(CopCar);
         UpdateLivery(CopCar, AssignedAgency);
     }
-    public static void DeleteCop(Cop Cop)
+    public void DeleteCop(Cop Cop)
     {
         if (Cop == null)
             return;
@@ -258,7 +258,7 @@ public static class PoliceSpawningManager
         Cop.WasMarkedNonPersistent = false;
         GameTimeLastRemovedCop = Game.GameTime;
     }
-    public static void MarkNonPersistent(Cop Cop)
+    public void MarkNonPersistent(Cop Cop)
     {
         if (!Cop.Pedestrian.Exists())
             return;
@@ -282,7 +282,7 @@ public static class PoliceSpawningManager
         Cop.Pedestrian.IsPersistent = false;
         Cop.WasMarkedNonPersistent = false;
     }
-    private static void RemoveAbandonedVehicles()
+    private void RemoveAbandonedVehicles()
     {
         foreach (Vehicle PoliceCar in CreatedPoliceVehicles.Where(x => x.Exists()))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
         {
@@ -296,7 +296,7 @@ public static class PoliceSpawningManager
         }
         CreatedPoliceVehicles.RemoveAll(x => !x.Exists());
     }
-    private static void RepairOrRemoveDamagedVehicles()
+    private void RepairOrRemoveDamagedVehicles()
     {
         foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
         {
@@ -311,7 +311,7 @@ public static class PoliceSpawningManager
             }
         }
     }
-    private static void RemoveBlip(Ped MyPed)
+    private void RemoveBlip(Ped MyPed)
     {
         if (!MyPed.Exists())
             return;
@@ -319,14 +319,14 @@ public static class PoliceSpawningManager
         if (MyBlip.Exists())
             MyBlip.Delete();
     }
-    private static void RemoveDisallowedPeds()
+    private void RemoveDisallowedPeds()
     {
         foreach(Cop myCop in Mod.PedManager.Cops.Where(x => !x.AssignedAgency.CanSpawn))
         {
             DeleteCop(myCop);
         }
     }
-    private static Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
+    private Ped SpawnCopPed(Agency _Agency,Vector3 SpawnLocation, bool IsBike, List<string> RequiredModels)
     {
         if (_Agency == null)
             return null;
@@ -366,7 +366,7 @@ public static class PoliceSpawningManager
 
         return Cop;
     }
-    private static VehicleExt SpawnCopVehicle(Agency _Agency, VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
+    private VehicleExt SpawnCopVehicle(Agency _Agency, VehicleInformation MyCarInfo, Vector3 SpawnLocation,float Heading)
     {
         string ModelName = MyCarInfo.ModelName;
         Vehicle CopCar = new Vehicle(ModelName, SpawnLocation, Heading);

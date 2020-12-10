@@ -98,7 +98,7 @@ public static class CrimeManager
     }
     private static void CheckOtherCrimes()
     {
-        if (SurrenderManager.IsCommitingSuicide)
+        if (Mod.SurrenderManager.IsCommitingSuicide)
         {
             AttemptingSuicide.IsCurrentlyViolating = true;
         }
@@ -106,7 +106,7 @@ public static class CrimeManager
         {
             AttemptingSuicide.IsCurrentlyViolating = false;
         }
-        if (Mod.Player.IsWanted && PlayerLocationManager.PlayerCurrentZone.IsRestrictedDuringWanted)
+        if (Mod.Player.IsWanted && Mod.PlayerLocationManager.PlayerCurrentZone.IsRestrictedDuringWanted)
         {
             TrespessingOnGovtProperty.IsCurrentlyViolating = true;
         }
@@ -150,7 +150,7 @@ public static class CrimeManager
         {
             DrivingStolenVehicle.IsCurrentlyViolating = false;
         }
-        if (MuggingManager.IsMugging)
+        if (Mod.MuggingManager.IsMugging)
         {
             Mugging.IsCurrentlyViolating = true;
         }
@@ -230,7 +230,7 @@ public static class CrimeManager
     }
     private static void CheckPedDamageCrimes()
     {
-        if (PedDamageManager.RecentlyKilledCop)
+        if (Mod.PedDamageManager.RecentlyKilledCop)
         {
             KillingPolice.IsCurrentlyViolating = true;
         }
@@ -239,7 +239,7 @@ public static class CrimeManager
             KillingPolice.IsCurrentlyViolating = false;
         }
 
-        if (PedDamageManager.RecentlyHurtCop)
+        if (Mod.PedDamageManager.RecentlyHurtCop)
         {
             HurtingPolice.IsCurrentlyViolating = true;
         }
@@ -248,7 +248,7 @@ public static class CrimeManager
             HurtingPolice.IsCurrentlyViolating = false;
         }
 
-        if (PedDamageManager.RecentlyKilledCivilian || PedDamageManager.NearCivilianMurderVictim)
+        if (Mod.PedDamageManager.RecentlyKilledCivilian || Mod.PedDamageManager.NearCivilianMurderVictim)
         {
             KillingCivilians.IsCurrentlyViolating = true;
         }
@@ -257,7 +257,7 @@ public static class CrimeManager
             KillingCivilians.IsCurrentlyViolating = false;
         }
 
-        if (PedDamageManager.RecentlyHurtCivilian)
+        if (Mod.PedDamageManager.RecentlyHurtCivilian)
         {
             HurtingCivilians.IsCurrentlyViolating = true;
         }

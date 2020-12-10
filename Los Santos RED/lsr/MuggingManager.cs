@@ -8,19 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class MuggingManager
+public class MuggingManager
 {
-    public static bool IsRunning { get; set; }
-    public static bool IsMugging { get; private set; }
-    public static void Initialize()
+    public bool IsRunning { get; set; }
+    public bool IsMugging { get; private set; }
+    public void Initialize()
     {
         IsRunning = true;
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
@@ -41,7 +41,7 @@ public static class MuggingManager
         }
 
     }
-    private static void CheckArmedMugging()
+    private void CheckArmedMugging()
     {
         Entity ArmedMuggingTargetPed = Game.LocalPlayer.GetFreeAimingTarget();
         if (ArmedMuggingTargetPed.Exists() && ArmedMuggingTargetPed is Ped)
@@ -59,7 +59,7 @@ public static class MuggingManager
             }
         }
     }
-    private static void CheckUnarmedMugging()
+    private void CheckUnarmedMugging()
     {
         PedExt GTAPedTarget = Mod.PedManager.GetCivilian(GetTargetHandle());
         if (GTAPedTarget != null)
@@ -68,7 +68,7 @@ public static class MuggingManager
                 MugTarget(GTAPedTarget, true);
         }
     }
-    private static void MugTarget(PedExt MuggingTarget,bool IsMelee)
+    private void MugTarget(PedExt MuggingTarget,bool IsMelee)
     {
         if (!MuggingTarget.CanBeTasked)
             return;
@@ -131,13 +131,13 @@ public static class MuggingManager
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, RandomItems.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
-                MuggingTarget.AddCrime(CrimeManager.Mugging,MuggingTarget.Pedestrian.Position);
+                MuggingTarget.AddCrime(Mod.CrimeManager.Mugging,MuggingTarget.Pedestrian.Position);
             }
             MuggingTarget.CanBeTasked = true;
             IsMugging = false;      
         });
     }
-    private static uint GetTargetHandle()
+    private uint GetTargetHandle()
     {
         uint TargetEntity;
         bool Found;
@@ -151,7 +151,7 @@ public static class MuggingManager
         uint Handle = TargetEntity;
         return Handle;
     }
-    private static bool IsHoldingMelee()
+    private bool IsHoldingMelee()
     {
         WeaponInformation MyWeapon = WeaponManager.GetCurrentWeapon(Game.LocalPlayer.Character);
         if (MyWeapon == null || MyWeapon.Category != WeaponCategory.Melee)

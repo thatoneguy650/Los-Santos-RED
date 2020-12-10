@@ -235,7 +235,7 @@ public class PedExt
             NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
             if (!IsInHelicopter)
             {
-                if (WantedLevelManager.PoliceChasingRecklessly)
+                if (Mod.WantedLevelManager.PoliceChasingRecklessly)
                 {
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4, true);
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 8, true);
@@ -243,12 +243,12 @@ public class PedExt
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 512, true);
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 262144, true);
                 }
-                else if (!WantedLevelManager.PoliceChasingRecklessly && DistanceToPlayer <= 15f)
+                else if (!Mod.WantedLevelManager.PoliceChasingRecklessly && DistanceToPlayer <= 15f)
                 {
                     NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);//only originally this one for reckless pursuit
                 }
 
-                if (PlayerLocationManager.PlayerIsOffroad && DistanceToPlayer <= 200f)
+                if (Mod.PlayerLocationManager.PlayerIsOffroad && DistanceToPlayer <= 200f)
                 {
                     NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 4194304);
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, true);

@@ -17,7 +17,7 @@ public class ZoneJurisdiction
     {
         get
         {
-            return Zones.GetZone(ZoneInternalGameName);
+            return ZoneManager.GetZone(ZoneInternalGameName);
         }
     }
     public Agency GameAgency

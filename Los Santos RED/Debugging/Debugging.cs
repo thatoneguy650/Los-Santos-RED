@@ -137,7 +137,7 @@ public static class Debugging
     }
     private static void DebugCopReset()
     {
-        WantedLevelManager.Reset();
+        Mod.WantedLevelManager.Reset();
         Game.LocalPlayer.WantedLevel = 0;
         Mod.PedManager.ClearPolice();
         VehicleManager.ClearPolice();
@@ -159,12 +159,12 @@ public static class Debugging
         if (Toassign == 7)
             return;
         Toassign++;
-        WantedLevelManager.SetWantedLevel(Toassign, "Debug", true);
+        Mod.WantedLevelManager.SetWantedLevel(Toassign, "Debug", true);
 
     }
     private static void DebugNumpad3()
     {
-        WantedLevelManager.SetWantedLevel(0, "Debug", true);
+        Mod.WantedLevelManager.SetWantedLevel(0, "Debug", true);
     }
     private static void DebugNumpad4()
     {
@@ -188,7 +188,7 @@ public static class Debugging
 
             CopToBribe.CanBeTasked = false;
 
-            SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+            Mod.SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
 
             //while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Game.LocalPlayer.Character, "random@arrests", "kneeling_arrest_escape", 1))
             //    GameFiber.Wait(250);
@@ -421,7 +421,7 @@ public static class Debugging
             WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.CurrentVehicle.CarPlate.IsWanted, Mod.Player.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.CurrentVehicle.ColorMatchesDescription,Mod.Player.CurrentVehicle.CopsRecognizeAsStolen));
         }
 
-        TaskManager.PrintActivities();
+        Mod.TaskManager.PrintActivities();
     }
     public static void DebugNumpad8()
     {
@@ -449,12 +449,12 @@ public static class Debugging
 
 
             }
-            WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", InvestigationManager.InInvestigationMode));
-            WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", InvestigationManager.InvestigationPosition));
-            WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", InvestigationManager.InvestigationDistance));
+            WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.InvestigationManager.InInvestigationMode));
+            WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.InvestigationManager.InvestigationPosition));
+            WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.InvestigationManager.InvestigationDistance));
             WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.PolicePerception.ActiveDistance));
-            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.PedManager.Cops.Any(x => x.Pedestrian.DistanceTo2D(InvestigationManager.InvestigationPosition) <= InvestigationManager.InvestigationDistance)));
-            WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", WantedLevelManager.CurrentPoliceStateString));
+            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.PedManager.Cops.Any(x => x.Pedestrian.DistanceTo2D(Mod.InvestigationManager.InvestigationPosition) <= Mod.InvestigationManager.InvestigationDistance)));
+            WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.WantedLevelManager.CurrentPoliceStateString));
             
 
 

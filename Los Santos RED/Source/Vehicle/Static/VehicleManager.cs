@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -60,8 +61,8 @@ public static class VehicleManager
         {
             if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
             {
-                PoliceSpawningManager.UpdateLivery(Veh);
-                PoliceSpawningManager.UpgradeCruiser(Veh);
+                Mod.PoliceSpawningManager.UpdateLivery(Veh);
+                Mod.PoliceSpawningManager.UpgradeCruiser(Veh);
                 PoliceVehicles.Add(Veh);
             }
         }

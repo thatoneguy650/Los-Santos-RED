@@ -31,7 +31,7 @@ public static class CountyJurisdictionManager
     }
     public static Agency GetRandomAgency(string ZoneName)
     {
-        Zone MyZone = Zones.GetZone(ZoneName);
+        Zone MyZone = ZoneManager.GetZone(ZoneName);
         if (MyZone != null)
         {
             List<CountyJurisdiction> ToPickFrom = CountyJurisdictions.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn).ToList();

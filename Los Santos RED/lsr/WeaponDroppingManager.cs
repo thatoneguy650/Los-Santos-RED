@@ -9,15 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class WeaponDroppingManager
+public class WeaponDroppingManager
 {
-    private static List<DroppedWeapon> DroppedWeapons;
-    private static bool DroppingWeapon;
-    private static int PrevCountWeapons;
-    private static int WeaponCount;
-    private static int CurrentWeaponAmmo;
-    public static bool IsRunning { get; set; }
-    public static bool CanDropWeapon
+    private List<DroppedWeapon> DroppedWeapons;
+    private bool DroppingWeapon;
+    private int PrevCountWeapons;
+    private int WeaponCount;
+    private int CurrentWeaponAmmo;
+    public bool IsRunning { get; set; }
+    public bool CanDropWeapon
     {
         get
         {
@@ -27,7 +27,7 @@ public static class WeaponDroppingManager
                 return false;
         }
     }
-    public static int AmmoToDrop
+    public int AmmoToDrop
     {
         get
         {
@@ -40,7 +40,7 @@ public static class WeaponDroppingManager
                 return CurrentWeaponAmmo;
         }
     }
-    public static void Initialize()
+    public void Initialize()
     {
         DroppedWeapons = new List<DroppedWeapon>();
         DroppingWeapon = false;
@@ -49,11 +49,11 @@ public static class WeaponDroppingManager
         PrevCountWeapons = WeaponCount;
         IsRunning = true;
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
@@ -62,12 +62,12 @@ public static class WeaponDroppingManager
                 WeaponInventoryChanged(WeaponCount);
         }
     }
-    public static void Reset()
+    public void Reset()
     {
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
         PrevCountWeapons = WeaponCount;
     }
-    public static void DropWeapon()
+    public void DropWeapon()
     {
         DroppingWeapon = true;
         GameFiber DropWeapon = GameFiber.StartNew(delegate
@@ -88,7 +88,7 @@ public static class WeaponDroppingManager
         }, "DropWeapon");
         Debugging.GameFibers.Add(DropWeapon);
     }
-    private static void WeaponInventoryChanged(int weaponCount)
+    private void WeaponInventoryChanged(int weaponCount)
     {
         if (weaponCount > PrevCountWeapons) //Added Weapon
         {
@@ -105,7 +105,7 @@ public static class WeaponDroppingManager
         }
         PrevCountWeapons = weaponCount;
     }
-    private static void DropWeaponAnimation()
+    private void DropWeaponAnimation()
     {
         GameFiber DropWeaponAnimation = GameFiber.StartNew(delegate
         {

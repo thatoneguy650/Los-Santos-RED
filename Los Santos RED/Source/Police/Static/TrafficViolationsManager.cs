@@ -25,7 +25,7 @@ public static class TrafficViolationsManager
     {
         get
         {
-            if (Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (Mod.Player.IsInAutomobile || Mod.Player.IsOnMotorcycle) && !PedSwapManager.RecentlyTakenOver)
+            if (Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (Mod.Player.IsInAutomobile || Mod.Player.IsOnMotorcycle) && !Mod.PedSwapManager.RecentlyTakenOver)
                 return true;
             else
                 return false;
@@ -203,63 +203,63 @@ public static class TrafficViolationsManager
         TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
 
         float SpeedLimit = 60f;
-        if (PlayerLocationManager.PlayerCurrentStreet != null)
-            SpeedLimit = PlayerLocationManager.PlayerCurrentStreet.SpeedLimit;
+        if (Mod.PlayerLocationManager.PlayerCurrentStreet != null)
+            SpeedLimit = Mod.PlayerLocationManager.PlayerCurrentStreet.SpeedLimit;
 
         PlayerIsSpeeding = CurrentSpeed > SpeedLimit + SettingsManager.MySettings.TrafficViolations.SpeedingOverLimitThreshold;
     }
     private static void CheckViolations()
     {
-        if (SettingsManager.MySettings.TrafficViolations.HitPed && RecentlyHitPed && (PedDamageManager.RecentlyHurtCivilian || PedDamageManager.RecentlyHurtCop) && (Mod.PedManager.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.PedManager.Cops.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
+        if (SettingsManager.MySettings.TrafficViolations.HitPed && RecentlyHitPed && (Mod.PedDamageManager.RecentlyHurtCivilian || Mod.PedDamageManager.RecentlyHurtCop) && (Mod.PedManager.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.PedManager.Cops.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
         {
-            CrimeManager.HitPedWithCar.IsCurrentlyViolating = true;
+            Mod.CrimeManager.HitPedWithCar.IsCurrentlyViolating = true;
         }
         else
         {
-            CrimeManager.HitPedWithCar.IsCurrentlyViolating = false;
+            Mod.CrimeManager.HitPedWithCar.IsCurrentlyViolating = false;
         }
         if (SettingsManager.MySettings.TrafficViolations.HitVehicle && RecentlyHitVehicle)
         {
-            CrimeManager.HitCarWithCar.IsCurrentlyViolating = true;
+            Mod.CrimeManager.HitCarWithCar.IsCurrentlyViolating = true;
         }
         else
         {
-            CrimeManager.HitCarWithCar.IsCurrentlyViolating = false;
+            Mod.CrimeManager.HitCarWithCar.IsCurrentlyViolating = false;
         }
         if (!TreatAsCop)
         {
             if (SettingsManager.MySettings.TrafficViolations.DrivingAgainstTraffic && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
-                CrimeManager.DrivingAgainstTraffic.IsCurrentlyViolating = true;
+                Mod.CrimeManager.DrivingAgainstTraffic.IsCurrentlyViolating = true;
             }
             else
             {
-                CrimeManager.DrivingAgainstTraffic.IsCurrentlyViolating = false;
+                Mod.CrimeManager.DrivingAgainstTraffic.IsCurrentlyViolating = false;
             }
             if (SettingsManager.MySettings.TrafficViolations.DrivingOnPavement && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
             {
-                CrimeManager.DrivingOnPavement.IsCurrentlyViolating = true;
+                Mod.CrimeManager.DrivingOnPavement.IsCurrentlyViolating = true;
             }
             else
             {
-                CrimeManager.DrivingOnPavement.IsCurrentlyViolating = false;
+                Mod.CrimeManager.DrivingOnPavement.IsCurrentlyViolating = false;
             }
 
             if (SettingsManager.MySettings.TrafficViolations.NotRoadworthy && PlayersVehicleIsSuspicious)
             {
-                CrimeManager.NonRoadworthyVehicle.IsCurrentlyViolating = true;
+                Mod.CrimeManager.NonRoadworthyVehicle.IsCurrentlyViolating = true;
             }
             else
             {
-                CrimeManager.NonRoadworthyVehicle.IsCurrentlyViolating = false;
+                Mod.CrimeManager.NonRoadworthyVehicle.IsCurrentlyViolating = false;
             }
             if (SettingsManager.MySettings.TrafficViolations.Speeding && PlayerIsSpeeding)
             {
-                CrimeManager.FelonySpeeding.IsCurrentlyViolating = true;
+                Mod.CrimeManager.FelonySpeeding.IsCurrentlyViolating = true;
             }
             else
             {
-                CrimeManager.FelonySpeeding.IsCurrentlyViolating = false;
+                Mod.CrimeManager.FelonySpeeding.IsCurrentlyViolating = false;
             }
             if (SettingsManager.MySettings.TrafficViolations.RunningRedLight && RecentlyRanRed)
             {
@@ -267,7 +267,7 @@ public static class TrafficViolationsManager
             }
             else
             {
-                CrimeManager.RunningARedLight.IsCurrentlyViolating = false;
+                Mod.CrimeManager.RunningARedLight.IsCurrentlyViolating = false;
             }
         }
 
@@ -283,11 +283,11 @@ public static class TrafficViolationsManager
         PlayersVehicleIsSuspicious = false;
         CurrentSpeed = 0f;
 
-        CrimeManager.HitCarWithCar.IsCurrentlyViolating = false;
-        CrimeManager.HitPedWithCar.IsCurrentlyViolating = false;
-        CrimeManager.DrivingOnPavement.IsCurrentlyViolating = false;
-        CrimeManager.DrivingAgainstTraffic.IsCurrentlyViolating = false;
-        CrimeManager.NonRoadworthyVehicle.IsCurrentlyViolating = false;
-        CrimeManager.FelonySpeeding.IsCurrentlyViolating = false;
+        Mod.CrimeManager.HitCarWithCar.IsCurrentlyViolating = false;
+        Mod.CrimeManager.HitPedWithCar.IsCurrentlyViolating = false;
+        Mod.CrimeManager.DrivingOnPavement.IsCurrentlyViolating = false;
+        Mod.CrimeManager.DrivingAgainstTraffic.IsCurrentlyViolating = false;
+        Mod.CrimeManager.NonRoadworthyVehicle.IsCurrentlyViolating = false;
+        Mod.CrimeManager.FelonySpeeding.IsCurrentlyViolating = false;
     }
 }

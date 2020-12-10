@@ -16,7 +16,7 @@ public class Cop : PedExt
     {
         get
         {
-            return Pedestrian.DistanceTo2D(InvestigationManager.InvestigationPosition);
+            return Pedestrian.DistanceTo2D(Mod.InvestigationManager.InvestigationPosition);
         }
     }
     public uint HasBeenSpawnedFor

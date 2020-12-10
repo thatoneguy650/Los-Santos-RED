@@ -10,7 +10,27 @@ namespace LosSantosRED.lsr
     public static class Mod
     {
         private static List<TickTask> MyTickTasks;
+
+
+        public static MenuManager MenuManager { get; private set; } = new MenuManager();
+
+        public static PedDamageManager PedDamageManager { get; private set; } = new PedDamageManager();
+        public static MuggingManager MuggingManager { get; private set; } = new MuggingManager();
+        public static TaskManager TaskManager { get; private set; } = new TaskManager();
+        public static PedSwapManager PedSwapManager { get; private set; } = new PedSwapManager();
+        public static PlayerLocationManager PlayerLocationManager { get; private set; } = new PlayerLocationManager();
+        public static RespawnManager RespawnManager { get; private set; } = new RespawnManager();
+        public static SurrenderManager SurrenderManager { get; private set; } = new SurrenderManager();
+        public static WeaponDroppingManager WeaponDroppingManager { get; private set; } = new WeaponDroppingManager();
+        public static DispatchManager DispatchManager { get; private set; } = new DispatchManager();
+        public static InvestigationManager InvestigationManager { get; private set; } = new InvestigationManager();
+        public static PersonOfInterestManager PersonOfInterestManager { get; private set; } = new PersonOfInterestManager();
+        public static WantedLevelManager WantedLevelManager { get; private set; } = new WantedLevelManager();
         public static VehicleEngineManager VehicleEngineManager { get; private set; } = new VehicleEngineManager();
+        public static PoliceSpawningManager PoliceSpawningManager { get; private set; } = new PoliceSpawningManager();
+        public static ScannerManager ScannerManager { get; private set; } = new ScannerManager();
+        public static PoliceEquipmentManager PoliceEquipmentManager { get; private set; } = new PoliceEquipmentManager();
+        public static PoliceSpeechManager PoliceSpeechManager { get; private set; } = new PoliceSpeechManager();
         public static PedManager PedManager { get; private set; } = new PedManager();
         public static ClockManager ClockManager { get; private set; } = new ClockManager();
         public static PolicePerception PolicePerception { get; private set; } = new PolicePerception();
@@ -28,7 +48,10 @@ namespace LosSantosRED.lsr
             while (Game.IsLoading)
                 GameFiber.Yield();
  
+
             Setup();
+            InitializeStaticClasses();
+            Map.CreateLocationBlips();
             RunTasks();
         }
         public static void Dispose()
@@ -91,51 +114,67 @@ namespace LosSantosRED.lsr
         private static void Setup()
         {
             MyTickTasks = new List<TickTask>()
+            {
+                new TickTask(0, "ClockManager", ClockManager.Tick, 0,0),
+
+                new TickTask(0, "InputManager", InputManager.Tick, 1,0),
+
+                new TickTask(25, "Player", Player.Tick, 2,0),
+                new TickTask(25, "PolicePerception", PolicePerception.Tick, 2,1),
+
+                new TickTask(0, "VehicleEngineManager", VehicleEngineManager.Tick, 3,0),
+
+                new TickTask(50, "CrimeManager", CrimeManager.Tick, 4,0),
+                new TickTask(50, "WantedLevelManager", WantedLevelManager.Tick, 4,1),
+
+                new TickTask(150, "SearchModeManager", SearchModeManager.Tick, 5,0),
+                new TickTask(150, "InvestigationManager", Mod.InvestigationManager.Tick, 5,1),
+                new TickTask(150, "SearchModeStoppingManager", SearchModeStoppingManager.Tick, 5,2),
+                new TickTask(150, "CivilianManager", CivilianPerception.Tick, 5,3),
+
+                new TickTask(200, "PedDamageManager", PedDamageManager.Tick, 6,0),
+                new TickTask(250, "MuggingManager", MuggingManager.Tick, 6,1),
+
+                new TickTask(1000, "PedManager", PedManager.Tick, 7,0),
+                new TickTask(1000, "VehicleManager", VehicleManager.Tick, 7,1),
+                new TickTask(500, "TaskManager.UpdateTaskablePeds", TaskManager.UpdateTaskablePeds, 7,3),
+                new TickTask(500, "TaskManager.RunActivities", TaskManager.RunActivities, 7,4),
+
+                new TickTask(250, "WeaponDroppingManager", WeaponDroppingManager.Tick, 8,0),
+
+                new TickTask(500, "TrafficViolationsManager", TrafficViolationsManager.Tick, 9,0),
+                new TickTask(500, "PlayerLocationManager", PlayerLocationManager.Tick, 9,1),
+                new TickTask(500, "PersonOfInterestManager", PersonOfInterestManager.Tick, 9,2),
+
+                new TickTask(250, "PoliceEquipmentManager", PoliceEquipmentManager.Tick, 10,0),
+                new TickTask(500, "ScannerManager", ScannerManager.Tick, 10,1),
+                new TickTask(500, "PoliceSpeechManager", PoliceSpeechManager.Tick, 10,2),
+                new TickTask(500, "PoliceSpawningManager", PoliceSpawningManager.Tick, 10,3),
+
+                new TickTask(500, "DispatchManager.SpawnChecking", DispatchManager.SpawnChecking, 11,0),
+                new TickTask(500, "DispatchManager.DeleteChecking", DispatchManager.DeleteChecking, 11,1),
+
+                new TickTask(100, "VehicleFuelManager", VehicleFuelManager.Tick, 12,0),
+                new TickTask(100, "VehicleIndicatorManager", VehicleIndicatorManager.Tick, 12,1),
+                new TickTask(500, "RadioManager", RadioManager.Tick, 12,2),
+            };
+            
+
+
+            
+        }
+        private static void InitializeStaticClasses()
         {
-            new TickTask(0, "ClockManager", ClockManager.Tick, 0,0),
-
-            new TickTask(0, "InputManager", InputManager.Tick, 1,0),
-
-            new TickTask(25, "Player", Player.Tick, 2,0),
-            new TickTask(25, "PolicePerception", PolicePerception.Tick, 2,1),
-
-            new TickTask(0, "VehicleEngineManager", VehicleEngineManager.Tick, 3,0),
-
-            new TickTask(50, "CrimeManager", CrimeManager.Tick, 4,0),
-            new TickTask(50, "WantedLevelManager", WantedLevelManager.Tick, 4,1),
-
-            new TickTask(150, "SearchModeManager", SearchModeManager.Tick, 5,0),
-            new TickTask(150, "InvestigationManager", InvestigationManager.Tick, 5,1),
-            new TickTask(150, "SearchModeStoppingManager", SearchModeStoppingManager.Tick, 5,2),
-            new TickTask(150, "CivilianManager", CivilianPerception.Tick, 5,3),
-
-            new TickTask(200, "PedDamageManager", PedDamageManager.Tick, 6,0),
-            new TickTask(250, "MuggingManager", MuggingManager.Tick, 6,1),
-
-            new TickTask(1000, "PedManager", Mod.PedManager.Tick, 7,0),
-            new TickTask(1000, "VehicleManager", VehicleManager.Tick, 7,1),
-            new TickTask(500, "TaskManager.UpdateTaskablePeds", TaskManager.UpdateTaskablePeds, 7,3),
-            new TickTask(500, "TaskManager.RunActivities", TaskManager.RunActivities, 7,4),
-
-            new TickTask(250, "WeaponDroppingManager", WeaponDroppingManager.Tick, 8,0),
-
-            new TickTask(500, "TrafficViolationsManager", TrafficViolationsManager.Tick, 9,0),
-            new TickTask(500, "PlayerLocationManager", PlayerLocationManager.Tick, 9,1),
-            new TickTask(500, "PersonOfInterestManager", PersonOfInterestManager.Tick, 9,2),
-
-            new TickTask(250, "PoliceEquipmentManager", PoliceEquipmentManager.Tick, 10,0),
-            new TickTask(500, "ScannerManager", ScannerManager.Tick, 10,1),
-            new TickTask(500, "PoliceSpeechManager", PoliceSpeechManager.Tick, 10,2),
-            new TickTask(500, "PoliceSpawningManager", PoliceSpawningManager.Tick, 10,3),
-
-            new TickTask(500, "DispatchManager.SpawnChecking", DispatchManager.SpawnChecking, 11,0),
-            new TickTask(500, "DispatchManager.DeleteChecking", DispatchManager.DeleteChecking, 11,1),
-
-            new TickTask(100, "VehicleFuelManager", VehicleFuelManager.Tick, 12,0),
-            new TickTask(100, "VehicleIndicatorManager", VehicleIndicatorManager.Tick, 12,1),
-            new TickTask(500, "RadioManager", RadioManager.Tick, 12,2),
-        };
-            Map.CreateLocationBlips();
+            SettingsManager.Initialize();
+            ZoneManager.Initialize();
+            StreetManager.Initialize();
+            WeaponManager.Initialize();
+            LocationManager.Initialize();
+            NameManager.Initialize();
+            AgencyManager.Initialize();
+            ZoneJurisdictionManager.Initialize();
+            CountyJurisdictionManager.Initialize();    
+            PlateTypeManager.Initialize(); 
         }
         private static void ResetRanItems()
         {

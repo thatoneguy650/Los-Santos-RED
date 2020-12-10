@@ -8,18 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class PlayerLocationManager
+public class PlayerLocationManager
 {
-    private static uint GameTimePlayerGotOnFreeway;
-    private static uint GameTimePlayerGotOffFreeway;
-    private static Vector3 PlayerClosestNode;
-    public static bool IsRunning { get; set; }
-    public static Street PlayerCurrentStreet { get; private set; }
-    public static Street PlayerCurrentCrossStreet { get; private set; }
-    public static Zone PlayerCurrentZone { get; private set; }
-    public static bool PlayerIsOffroad { get; private set; }
-    public static bool PlayerIsOnFreeway { get; private set; }
-    public static bool PlayerRecentlyGotOnFreeway
+    private uint GameTimePlayerGotOnFreeway;
+    private uint GameTimePlayerGotOffFreeway;
+    private Vector3 PlayerClosestNode;
+    public bool IsRunning { get; set; }
+    public Street PlayerCurrentStreet { get; private set; }
+    public Street PlayerCurrentCrossStreet { get; private set; }
+    public Zone PlayerCurrentZone { get; private set; }
+    public bool PlayerIsOffroad { get; private set; }
+    public bool PlayerIsOnFreeway { get; private set; }
+    public bool PlayerRecentlyGotOnFreeway
     {
         get
         {
@@ -29,7 +29,7 @@ public static class PlayerLocationManager
                 return false;
         }
     }
-    public static bool PlayerRecentlyGotOffFreeway
+    public bool PlayerRecentlyGotOffFreeway
     {
         get
         {
@@ -39,7 +39,7 @@ public static class PlayerLocationManager
                 return false;
         }
     }
-    public static void Initialize()
+    public void Initialize()
     {
         IsRunning = true;
         PlayerCurrentStreet = null;
@@ -47,28 +47,28 @@ public static class PlayerLocationManager
         PlayerCurrentZone = new Zone();
         PlayerIsOffroad  = false;
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
             Update();
         }
     }
-    private static void Update()
+    private void Update()
     {
         GetZone();
         GetNode();
         GetStreets();
     }
-    private static void GetZone()
+    private void GetZone()
     {
-        PlayerCurrentZone = Zones.GetZone(Game.LocalPlayer.Character.Position);
+        PlayerCurrentZone = ZoneManager.GetZone(Game.LocalPlayer.Character.Position);
     }
-    private static void GetNode()
+    private void GetNode()
     {
         PlayerClosestNode = World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position);
         if (PlayerClosestNode.DistanceTo2D(Game.LocalPlayer.Character) >= 15f)//was 25f
@@ -80,7 +80,7 @@ public static class PlayerLocationManager
             PlayerIsOffroad = false;
         }
     }
-    private static void GetStreets()
+    private void GetStreets()
     {
         if (PlayerIsOffroad)
         {

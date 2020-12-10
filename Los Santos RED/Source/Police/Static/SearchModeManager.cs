@@ -66,7 +66,7 @@ public static class SearchModeManager
                 }
                 else
                 {
-                    return PersonOfInterestManager.SearchRadius * TimeInSearchMode / CurrentSearchTime;
+                    return Mod.PersonOfInterestManager.SearchRadius * TimeInSearchMode / CurrentSearchTime;
                 }
             }
         }
@@ -198,7 +198,7 @@ public static class SearchModeManager
         PrevIsInActiveMode = IsInActiveMode;
         GameTimeStartedSearchMode = 0;
         GameTimeStartedActiveMode = 0;
-        WantedLevelManager.SetWantedLevel(0, "Search Mode Timeout", true);
+        Mod.WantedLevelManager.SetWantedLevel(0, "Search Mode Timeout", true);
         Debugging.WriteToLog("SearchMode", "Stop Search Mode");
 
     }

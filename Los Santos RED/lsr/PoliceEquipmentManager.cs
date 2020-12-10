@@ -5,20 +5,20 @@ using Rage.Native;
 using System.Collections.Generic;
 using System.Linq;
 
-public static class PoliceEquipmentManager
+public class PoliceEquipmentManager
 {
-    private static List<EquipedCop> EquipedCops;
-    public static bool IsRunning { get; set; }
-    public static void Initialize()
+    private List<EquipedCop> EquipedCops;
+    public bool IsRunning { get; set; }
+    public void Initialize()
     {
         IsRunning = true;
         EquipedCops = new List<EquipedCop>();
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
@@ -26,7 +26,7 @@ public static class PoliceEquipmentManager
             ArmCops();
         }
     }
-    public static void IssueWeapons(Cop CopToFind)
+    public void IssueWeapons(Cop CopToFind)
     {
         EquipedCop MyCop = EquipedCops.FirstOrDefault(x => x.CopToArm.Pedestrian.Handle == CopToFind.Pedestrian.Handle);
         if(MyCop != null)
@@ -34,7 +34,7 @@ public static class PoliceEquipmentManager
             MyCop.IssueWeapons();
         }
     }
-    private static void AddCops()
+    private void AddCops()
     {
         Mod.PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
         EquipedCops.RemoveAll(x => !x.CopToArm.Pedestrian.Exists());
@@ -46,7 +46,7 @@ public static class PoliceEquipmentManager
             }
         }
     }
-    private static void ArmCops()
+    private void ArmCops()
     {
         foreach (EquipedCop Cop in EquipedCops.Where(x => x.CopToArm.Pedestrian.Exists()))
         {
@@ -118,7 +118,7 @@ public static class PoliceEquipmentManager
                 {
                     IssuePistol();
                 }
-                if (SettingsManager.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelManager.IsDeadlyChase && !HasHeavyWeapon)
+                if (SettingsManager.MySettings.Police.IssuePoliceHeavyWeapons && Mod.WantedLevelManager.IsDeadlyChase && !HasHeavyWeapon)
                 {
                     CheckIssueHeavy();
                 }
@@ -128,7 +128,7 @@ public static class PoliceEquipmentManager
         {
             if (CopToArm.ShouldAutoSetWeaponState)
             {
-                if (WantedLevelManager.IsDeadlyChase)
+                if (Mod.WantedLevelManager.IsDeadlyChase)
                 {
                     if (CopToArm.IsInVehicle && Mod.Player.WantedLevel < 4)
                     {
@@ -154,7 +154,7 @@ public static class PoliceEquipmentManager
         }
         public void CheckIssueHeavy()
         {
-            if (SettingsManager.MySettings.Police.IssuePoliceHeavyWeapons && WantedLevelManager.IsDeadlyChase && !HasHeavyWeapon && CopToArm.IsInVehicle)
+            if (SettingsManager.MySettings.Police.IssuePoliceHeavyWeapons && Mod.WantedLevelManager.IsDeadlyChase && !HasHeavyWeapon && CopToArm.IsInVehicle)
                 IssueHeavyWeapon();
         }
         public void IssuePistol()

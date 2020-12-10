@@ -62,7 +62,7 @@ namespace LosSantosRED.lsr
             }
             foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.IsDead))
             {
-                PoliceSpawningManager.MarkNonPersistent(Cop);
+                Mod.PoliceSpawningManager.MarkNonPersistent(Cop);
             }
             Mod.PedManager.Cops.RemoveAll(x => x.Pedestrian.IsDead);
             VehicleManager.PoliceVehicles.RemoveAll(x => !x.Exists());
@@ -85,7 +85,7 @@ namespace LosSantosRED.lsr
             if (AnyRecentlySeenPlayer)
             {
                 if (!AnySeenPlayerCurrentWanted)
-                    PlaceLastSeenPlayer = WantedLevelManager.PlaceWantedStarted;
+                    PlaceLastSeenPlayer = Mod.WantedLevelManager.PlaceWantedStarted;
                 else if (!Mod.Player.AreStarsGreyedOut)
                     PlaceLastSeenPlayer = Game.LocalPlayer.Character.Position;
             }

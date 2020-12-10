@@ -161,9 +161,9 @@ public static class LicensePlateTheftManager
     {
         if (VehicleToChange.VehicleEnt.Exists())
         {
-            LicensePlate PlateToAdd = SpareLicensePlates[MenuManager.SelectedPlateIndex];
+            LicensePlate PlateToAdd = SpareLicensePlates[Mod.MenuManager.SelectedPlateIndex];
             LicensePlate PlateToRemove = VehicleToChange.CarPlate;
-            SpareLicensePlates.RemoveAt(MenuManager.SelectedPlateIndex);
+            SpareLicensePlates.RemoveAt(Mod.MenuManager.SelectedPlateIndex);
             if (PlateToRemove != null)
             {
                 SpareLicensePlates.Add(PlateToRemove);

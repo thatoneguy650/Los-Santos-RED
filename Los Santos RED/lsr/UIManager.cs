@@ -131,7 +131,7 @@ public class UIManager
     }
     private void DisplayHelpText()
     {
-        if (!RecentlyDisplayedBleedingHelp && PedDamageManager.IsPlayerBleeding)
+        if (!RecentlyDisplayedBleedingHelp && Mod.PedDamageManager.IsPlayerBleeding)
         {
             Game.DisplayHelp("Hold still to bandage!", 5000);
             GameTimeLastDisplayedBleedingHelp = Game.GameTime;
@@ -148,7 +148,7 @@ public class UIManager
 
         // Lines++;
 
-        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", InvestigationManager.InInvestigationMode, InvestigationManager.HavePlayerDescription,Mod.Player.IsStationary, InvestigationManager.IsSuspicious);
+        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Mod.InvestigationManager.InInvestigationMode, Mod.InvestigationManager.HavePlayerDescription,Mod.Player.IsStationary, Mod.InvestigationManager.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", SearchModeManager.IsInSearchMode,SearchModeManager.IsInActiveMode,SearchModeManager.TimeInSearchMode,SearchModeManager.TimeInActiveMode);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
@@ -160,7 +160,7 @@ public class UIManager
         DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //float Between = 0.01f;
         //float Start = 0.15f;
-        //foreach (string Line in PedDamageManager.AllPedDamageList)
+        //foreach (string Line in Mod.PedDamageManager.AllPedDamageList)
         //{
         //    DisplayTextOnScreen(Line, Start, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //    Start = Start + Between;
@@ -192,7 +192,7 @@ public class UIManager
                 StartedBustedEffect = true;
             }
         }
-        else if (PedDamageManager.IsPlayerBleeding)
+        else if (Mod.PedDamageManager.IsPlayerBleeding)
         {
             if (!StartedBandagingEffect)
             {
@@ -227,11 +227,11 @@ public class UIManager
     private string GetPlayerStatusDisplay()
     {
         string PlayerStatusLine = "";
-        if (PersonOfInterestManager.PlayerIsPersonOfInterest)
+        if (Mod.PersonOfInterestManager.PlayerIsPersonOfInterest)
         {
             if (Mod.Player.IsWanted)
                 PlayerStatusLine = "~r~Wanted~s~";
-            else if (WantedLevelManager.HasBeenNotWantedFor <= 45000)
+            else if (Mod.WantedLevelManager.HasBeenNotWantedFor <= 45000)
                 PlayerStatusLine = "~o~Wanted~s~";
             else
                 PlayerStatusLine = "~y~Wanted~s~";
@@ -259,8 +259,8 @@ public class UIManager
                 if (TrafficViolationsManager.PlayerIsSpeeding)
                     ColorPrefx = "~r~";
 
-                if (PlayerLocationManager.PlayerCurrentStreet != null)
-                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), PlayerLocationManager.PlayerCurrentStreet.SpeedLimit);
+                if (Mod.PlayerLocationManager.PlayerCurrentStreet != null)
+                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Mod.PlayerLocationManager.PlayerCurrentStreet.SpeedLimit);
             }
 
             if (TrafficViolationsManager.ViolatingTrafficLaws)
@@ -273,22 +273,22 @@ public class UIManager
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (PlayerLocationManager.PlayerCurrentStreet != null && PlayerLocationManager.PlayerCurrentCrossStreet != null)
-            StreetDisplay = string.Format(" {0} at {1} ", PlayerLocationManager.PlayerCurrentStreet.Name, PlayerLocationManager.PlayerCurrentCrossStreet.Name);
-        else if (PlayerLocationManager.PlayerCurrentStreet != null)
-            StreetDisplay = string.Format(" {0} ", PlayerLocationManager.PlayerCurrentStreet.Name);
+        if (Mod.PlayerLocationManager.PlayerCurrentStreet != null && Mod.PlayerLocationManager.PlayerCurrentCrossStreet != null)
+            StreetDisplay = string.Format(" {0} at {1} ", Mod.PlayerLocationManager.PlayerCurrentStreet.Name, Mod.PlayerLocationManager.PlayerCurrentCrossStreet.Name);
+        else if (Mod.PlayerLocationManager.PlayerCurrentStreet != null)
+            StreetDisplay = string.Format(" {0} ", Mod.PlayerLocationManager.PlayerCurrentStreet.Name);
         return StreetDisplay;
     }
     private string GetZoneDisplay()
     {
-        if (PlayerLocationManager.PlayerCurrentZone == null)
+        if (Mod.PlayerLocationManager.PlayerCurrentZone == null)
             return "";
         string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = Zones.GetName(PlayerLocationManager.PlayerCurrentZone,true);
-        if (PlayerLocationManager.PlayerCurrentZone != null)
+        ZoneDisplay = ZoneManager.GetName(Mod.PlayerLocationManager.PlayerCurrentZone,true);
+        if (Mod.PlayerLocationManager.PlayerCurrentZone != null)
         {
-            Agency MainZoneAgency = ZoneJurisdictionManager.GetMainAgency(PlayerLocationManager.PlayerCurrentZone.InternalGameName);
+            Agency MainZoneAgency = ZoneJurisdictionManager.GetMainAgency(Mod.PlayerLocationManager.PlayerCurrentZone.InternalGameName);
             if (MainZoneAgency != null)
                 CopZoneName = MainZoneAgency.ColoredInitials;
         }

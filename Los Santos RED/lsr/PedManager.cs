@@ -134,8 +134,8 @@ public class PedManager
             Vehicle PoliceCar = Pedestrian.CurrentVehicle;
             if (!VehicleManager.PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
             {
-                PoliceSpawningManager.UpdateLivery(PoliceCar, AssignedAgency);
-                PoliceSpawningManager.UpgradeCruiser(PoliceCar);
+                Mod.PoliceSpawningManager.UpdateLivery(PoliceCar, AssignedAgency);
+                Mod.PoliceSpawningManager.UpgradeCruiser(PoliceCar);
                 VehicleManager.PoliceVehicles.Add(PoliceCar);
             }
         }
@@ -151,7 +151,7 @@ public class PedManager
         SetCopStats(Pedestrian);
 
         Pedestrian.Inventory.Weapons.Clear();
-        PoliceEquipmentManager.IssueWeapons(myCop);
+        Mod.PoliceEquipmentManager.IssueWeapons(myCop);
 
         Cops.Add(myCop);
     }

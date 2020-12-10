@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class PedDamageManager
+public class PedDamageManager
 {
     private enum BodyLocation
     {
@@ -31,17 +31,16 @@ public static class PedDamageManager
         Critical = 2,
         Fatal = 3,
     }
-    private static uint GameTimeLastHurtCivilian;
-    private static uint GameTimeLastKilledCivilian;
-    private static uint GameTimeLastHurtCop;
-    private static uint GameTimeLastKilledCop;
-    private static List<PedBone> PedBones = new List<PedBone>();
-    private static List<PedHealthState> PedHealthStates = new List<PedHealthState>();
-    private static List<PedExt> PlayerKilledCivilians = new List<PedExt>();
-    private static List<PedExt> PlayerKilledCops = new List<PedExt>();
+    private uint GameTimeLastHurtCivilian;
+    private uint GameTimeLastKilledCivilian;
+    private uint GameTimeLastHurtCop;
+    private uint GameTimeLastKilledCop;
+    private List<PedBone> PedBones = new List<PedBone>();
+    private List<PedHealthState> PedHealthStates = new List<PedHealthState>();
+    private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
+    private List<PedExt> PlayerKilledCops = new List<PedExt>();
 
-    // public static List<string> AllPedDamageList { get; private set; } = new List<string>();
-    public static bool RecentlyHurtCivilian
+    public bool RecentlyHurtCivilian
     {
         get
             {
@@ -53,7 +52,7 @@ public static class PedDamageManager
                 return false;
         }
     }
-    public static bool RecentlyKilledCivilian
+    public bool RecentlyKilledCivilian
     {
         get
         {
@@ -65,7 +64,7 @@ public static class PedDamageManager
                 return false;
         }
     }
-    public static bool RecentlyHurtPed
+    public bool RecentlyHurtPed
     {
         get
         {
@@ -75,7 +74,7 @@ public static class PedDamageManager
                 return false;
         }
     }
-    public static bool RecentlyHurtCop
+    public bool RecentlyHurtCop
     {
         get
         {
@@ -87,7 +86,7 @@ public static class PedDamageManager
                 return false;
         }
     }
-    public static bool RecentlyKilledCop
+    public bool RecentlyKilledCop
     {
         get
         {
@@ -99,14 +98,14 @@ public static class PedDamageManager
                 return false;
         }
     }
-    public static bool KilledAnyCops
+    public bool KilledAnyCops
     {
         get
         {
             return PlayerKilledCops.Any();
         }
     }
-    public static bool NearCivilianMurderVictim
+    public bool NearCivilianMurderVictim
     {
         get
         {
@@ -116,7 +115,7 @@ public static class PedDamageManager
                 return false;
         }
     }
-    public static bool NearCopMurderVictim
+    public bool NearCopMurderVictim
     {
         get
         {
@@ -126,20 +125,20 @@ public static class PedDamageManager
                 return false;
         }
     }
-    public static bool IsPlayerBleeding
+    public bool IsPlayerBleeding
     {
         get
         {
             return PedHealthStates.Any(x => x.IsBleeding && x.IsPlayerPed);
         }
     }
-    public static bool IsRunning { get; set; }
-    public static void Initialize()
+    public bool IsRunning { get; set; }
+    public void Initialize()
     {
         IsRunning = true;
         SetupLists();
     }
-    private static void SetupLists()
+    private void SetupLists()
     {
         PlayerKilledCivilians = new List<PedExt>();
         PlayerKilledCops = new List<PedExt>();
@@ -247,11 +246,11 @@ public static class PedDamageManager
         PedHealthStates = new List<PedHealthState>();
         AddPedsToTrack();
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning)
         {
@@ -266,14 +265,14 @@ public static class PedDamageManager
             ResetDamageStats();
         }
     }
-    public static void Reset()
+    public void Reset()
     {
         GameTimeLastHurtCivilian = 0;
         GameTimeLastKilledCivilian = 0;
         GameTimeLastHurtCop = 0;
         GameTimeLastKilledCop = 0;
     }
-    private static void AddPedsToTrack()
+    private void AddPedsToTrack()
     {
         foreach (Cop Cop in Mod.PedManager.Cops)
         {
@@ -294,7 +293,7 @@ public static class PedDamageManager
             PedHealthStates.Add(new PedHealthState(new PedExt(Game.LocalPlayer.Character)));
         }
     }
-    private static void ResetDamageStats()
+    private void ResetDamageStats()
     {
         // NativeFunction.CallByName<bool>("SET_PLAYER_WEAPON_DAMAGE_MODIFIER", Game.LocalPlayer, 2.0f);
         //NativeFunction.CallByName<bool>("SET_AI_WEAPON_DAMAGE_MODIFIER", 1.0f);
@@ -411,15 +410,15 @@ public static class PedDamageManager
                     Debugging.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
                     if (MyPed.IsCop)
                     {
-                        PlayerKilledCops.Add(MyPed);
-                        GameTimeLastKilledCop = Game.GameTime;
-                        GameTimeLastHurtCop = Game.GameTime;
+                        Mod.PedDamageManager.PlayerKilledCops.Add(MyPed);
+                        Mod.PedDamageManager.GameTimeLastKilledCop = Game.GameTime;
+                        Mod.PedDamageManager.GameTimeLastHurtCop = Game.GameTime;
                     }
                     else
                     {
-                        PlayerKilledCivilians.Add(MyPed);
-                        GameTimeLastKilledCivilian = Game.GameTime;
-                        GameTimeLastHurtCivilian = Game.GameTime;
+                        Mod.PedDamageManager.PlayerKilledCivilians.Add(MyPed);
+                        Mod.PedDamageManager.GameTimeLastKilledCivilian = Game.GameTime;
+                        Mod.PedDamageManager.GameTimeLastHurtCivilian = Game.GameTime;
                     }
                 }
             }
@@ -433,11 +432,11 @@ public static class PedDamageManager
                         Debugging.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
                         if (MyPed.IsCop)
                         {
-                            GameTimeLastHurtCop = Game.GameTime;
+                            Mod.PedDamageManager.GameTimeLastHurtCop = Game.GameTime;
                         }
                         else
                         {
-                            GameTimeLastHurtCivilian = Game.GameTime;
+                            Mod.PedDamageManager.GameTimeLastHurtCivilian = Game.GameTime;
                         }
                     }
                 }
@@ -676,7 +675,7 @@ public static class PedDamageManager
             {
                 NativeFunction.CallByName<bool>("CLEAR_PED_LAST_DAMAGE_BONE", Pedestrian);
                 int DamagedBoneId = outBone;
-                PedBone DamagedOne = PedBones.FirstOrDefault(x => x.Tag == DamagedBoneId);
+                PedBone DamagedOne = Mod.PedDamageManager.PedBones.FirstOrDefault(x => x.Tag == DamagedBoneId);
                 if (DamagedOne != null)
                 {
                     return DamagedOne.Location;

@@ -9,13 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class PersonOfInterestManager
+public class PersonOfInterestManager
 {
-    private static uint GameTimeLastAppliedWantedStats;
-    public static bool PlayerIsPersonOfInterest { get; private set; }
-    public static bool IsRunning { get; set; }
-    public static List<CriminalHistory> CriminalHistory { get; set; }
-    public static bool RecentlyAppliedWantedStats
+    private uint GameTimeLastAppliedWantedStats;
+    public bool PlayerIsPersonOfInterest { get; private set; }
+    public bool IsRunning { get; set; }
+    public List<CriminalHistory> CriminalHistory { get; set; }
+    public bool RecentlyAppliedWantedStats
     {
         get
         {
@@ -25,7 +25,7 @@ public static class PersonOfInterestManager
                 return Game.GameTime - GameTimeLastAppliedWantedStats <= 5000;
         }
     }
-    public static int MaxWantedLevel
+    public int MaxWantedLevel
     {
         get
         {
@@ -36,7 +36,7 @@ public static class PersonOfInterestManager
                 return 0;
         }
     }
-    public static bool LethalForceAuthorized
+    public bool LethalForceAuthorized
     {
         get
         {
@@ -47,7 +47,7 @@ public static class PersonOfInterestManager
                 return false;
         }
     }
-    public static float SearchRadius
+    public float SearchRadius
     {
         get
         {
@@ -57,17 +57,17 @@ public static class PersonOfInterestManager
                 return SettingsManager.MySettings.Police.LastWantedCenterSize;
         }
     }  
-    public static void Initialize()
+    public void Initialize()
     {
         IsRunning = true;
         CriminalHistory = new List<CriminalHistory>();
         PlayerIsPersonOfInterest = false;
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
     }    
-    public static void Tick()
+    public void Tick()
     {
         if (IsRunning && !Mod.Player.IsDead && !Mod.Player.IsBusted)
         {
@@ -83,25 +83,25 @@ public static class PersonOfInterestManager
             }
             else
             {
-                if (PlayerIsPersonOfInterest && WantedLevelManager.HasBeenNotWantedFor >= 120000)
+                if (PlayerIsPersonOfInterest && Mod.WantedLevelManager.HasBeenNotWantedFor >= 120000)
                 {
                     Reset();
                 }
             }
         }
     }
-    public static void StoreCriminalHistory(CriminalHistory rapSheet)
+    public void StoreCriminalHistory(CriminalHistory rapSheet)
     {
         CriminalHistory.Add(rapSheet);
         Debugging.WriteToLog("StoreCriminalHistory", "Stored this Rap Sheet");
     }
-    public static void Reset()
+    public void Reset()
     {
         PlayerIsPersonOfInterest = false;
         CriminalHistory.Clear();
         Debugging.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are cleared");
     }
-    private static void CheckCurrentVehicle()
+    private void CheckCurrentVehicle()
     {
         if ((Mod.Player.IsNotWanted || Mod.Player.WantedLevel == 1) && Mod.PolicePerception.AnyCanRecognizePlayer && Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
@@ -116,7 +116,7 @@ public static class PersonOfInterestManager
             }
         }
     }
-    private static void CheckSight()
+    private void CheckSight()
     {
         if (PlayerIsPersonOfInterest && Mod.PolicePerception.AnyCanSeePlayer)
         {
@@ -126,48 +126,48 @@ public static class PersonOfInterestManager
             }
             else
             {
-                if (WantedLevelManager.NearLastWanted(SearchRadius) && WantedLevelManager.HasBeenNotWantedFor >= 5000)
+                if (Mod.WantedLevelManager.NearLastWanted(SearchRadius) && Mod.WantedLevelManager.HasBeenNotWantedFor >= 5000)
                 {
                     ApplyLastWantedStats();
                 }
             }
         }
     }
-    private static void ApplyWantedStatsForPlate(string PlateNumber)
+    private void ApplyWantedStatsForPlate(string PlateNumber)
     {
         CriminalHistory StatsForPlate = GetWantedLevelStatsForPlate(PlateNumber);
         if (StatsForPlate != null)
             ApplyWantedStats(StatsForPlate);
     }
-    private static void ApplyLastWantedStats()
+    private void ApplyLastWantedStats()
     {
         CriminalHistory CriminalHistory = GetLastWantedStats();
         if (CriminalHistory != null)
             ApplyWantedStats(CriminalHistory);
     }
-    private static void ApplyWantedStats(CriminalHistory CriminalHistory)
+    private void ApplyWantedStats(CriminalHistory CriminalHistory)
     {
         if (CriminalHistory == null)
             return;
 
         if (Mod.Player.WantedLevel < CriminalHistory.MaxWantedLevel)
-            WantedLevelManager.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats",true);
+            Mod.WantedLevelManager.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats",true);
 
 
-        PersonOfInterestManager.CriminalHistory.Remove(CriminalHistory);
-        WantedLevelManager.CurrentCrimes = CriminalHistory;
+        Mod.PersonOfInterestManager.CriminalHistory.Remove(CriminalHistory);
+        Mod.WantedLevelManager.CurrentCrimes = CriminalHistory;
 
         GameTimeLastAppliedWantedStats = Game.GameTime;
-        Debugging.WriteToLog("WantedLevelStats Replace", WantedLevelManager.CurrentCrimes.DebugPrintCrimes());
+        Debugging.WriteToLog("WantedLevelStats Replace", Mod.WantedLevelManager.CurrentCrimes.DebugPrintCrimes());
     }
-    private static CriminalHistory GetLastWantedStats()
+    private CriminalHistory GetLastWantedStats()
     {
         if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
             return null;
 
         return CriminalHistory.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
     }
-    private static CriminalHistory GetWantedLevelStatsForPlate(string PlateNumber)
+    private CriminalHistory GetWantedLevelStatsForPlate(string PlateNumber)
     {
         if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
             return null;

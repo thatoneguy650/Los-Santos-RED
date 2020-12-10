@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-public static class Zones
+public static class ZoneManager
 {
     private static readonly string ConfigFileName = "Plugins\\LosSantosRED\\Zones.xml";
     private static List<Zone> ZoneList = new List<Zone>();

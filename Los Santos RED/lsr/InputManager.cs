@@ -131,26 +131,26 @@ namespace LosSantosRED.lsr
         }
         private void SurrenderCheck()
         {
-            if (IsPressingSurrender && SurrenderManager.CanSurrender)
+            if (IsPressingSurrender && Mod.SurrenderManager.CanSurrender)
             {
                 if (!Mod.Player.HandsAreUp && !Mod.Player.IsBusted)
                 {
-                    SurrenderManager.RaiseHands();
+                    Mod.SurrenderManager.RaiseHands();
                 }
             }
             else
             {
                 if (Mod.Player.HandsAreUp && !Mod.Player.IsBusted)
                 {
-                    SurrenderManager.LowerHands();
+                    Mod.SurrenderManager.LowerHands();
                 }
             }
         }
         private void WeaponDropCheck()
         {
-            if (IsPressingDropWeapon && WeaponDroppingManager.CanDropWeapon)
+            if (IsPressingDropWeapon && Mod.WeaponDroppingManager.CanDropWeapon)
             {
-                WeaponDroppingManager.DropWeapon();
+                Mod.WeaponDroppingManager.DropWeapon();
             }
         }
         private void VehicleCheck()

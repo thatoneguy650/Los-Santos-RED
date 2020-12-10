@@ -11,58 +11,58 @@ using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 
-internal static class MenuManager
+public class MenuManager
 {
-    private static UIMenuListItem menuMainTakeoverRandomPed;
-    private static UIMenuItem menuDebugResetCharacter;
-    private static UIMenuItem menuMainSuicide;
-    private static UIMenuItem menuMainChangeLicensePlate;
-    private static UIMenuItem menuMainRemoveLicensePlate;
-    private static UIMenuItem menuMainShowPlayerStatus;
-    private static UIMenuItem menuMainChangeHelmet;
-    private static UIMenuItem menuDebugKillPlayer;
-    private static UIMenuListItem menuDebugRandomWeapon;
-    private static UIMenuItem menuDebugRandomVariation;
-    private static UIMenuListItem menuDebugScreenEffect;
+    private UIMenuListItem menuMainTakeoverRandomPed;
+    private UIMenuItem menuDebugResetCharacter;
+    private UIMenuItem menuMainSuicide;
+    private UIMenuItem menuMainChangeLicensePlate;
+    private UIMenuItem menuMainRemoveLicensePlate;
+    private UIMenuItem menuMainShowPlayerStatus;
+    private UIMenuItem menuMainChangeHelmet;
+    private UIMenuItem menuDebugKillPlayer;
+    private UIMenuListItem menuDebugRandomWeapon;
+    private UIMenuItem menuDebugRandomVariation;
+    private UIMenuListItem menuDebugScreenEffect;
 
-    private static UIMenuItem menuDeathUndie;
-    private static UIMenuListItem menuDeathTakeoverRandomPed;
-    private static UIMenuItem menuBustedResistArrest;
-    private static UIMenuItem menuBustedBribe;
-    private static UIMenuItem menuBustedTalk;
-    private static UIMenuListItem menuBustedTakeoverRandomPed;
-    private static UIMenuListItem menuBustedSurrender;
-    private static UIMenuListItem menuDeathHospitalRespawn;
-    private static UIMenuItem menuDebugGiveMoney;
-    private static UIMenuItem menuDebugHealthAndArmor;
-    private static UIMenuItem menuActionSmoking;
-    private static UIMenuListItem menuAutoSetRadioStation;
-    private static UIMenuItem menuDebugResetMod;
-    private static UIMenuItem ReloadSettings;
+    private UIMenuItem menuDeathUndie;
+    private UIMenuListItem menuDeathTakeoverRandomPed;
+    private UIMenuItem menuBustedResistArrest;
+    private UIMenuItem menuBustedBribe;
+    private UIMenuItem menuBustedTalk;
+    private UIMenuListItem menuBustedTakeoverRandomPed;
+    private UIMenuListItem menuBustedSurrender;
+    private UIMenuListItem menuDeathHospitalRespawn;
+    private UIMenuItem menuDebugGiveMoney;
+    private UIMenuItem menuDebugHealthAndArmor;
+    private UIMenuItem menuActionSmoking;
+    private UIMenuListItem menuAutoSetRadioStation;
+    private UIMenuItem menuDebugResetMod;
+    private UIMenuItem ReloadSettings;
 
-    private static MenuPool menuPool;
-    private static UIMenu mainMenu;
-    private static UIMenu deathMenu;
-    private static UIMenu debugMenu;
-    private static UIMenu bustedMenu;
-    private static UIMenu optionsMenu;
-    private static UIMenu actionsMenu;
-    private static UIMenu scenariosMenu;
-
-
-    private static UIMenu settingsMenuGeneral;
-    private static UIMenu settingsMenuPolice;
-    private static UIMenu settingsMenuUISettings;
-    private static UIMenu settingsMenuKeySettings;
-    private static UIMenu settingsMenuTrafficViolations;
-    private static int RandomWeaponCategory;
-
-    private static GameLocation CurrentSelectedSurrenderLocation;
-    private static GameLocation CurrentSelectedHospitalLocation;
-    private static UIMenuItem scenariosMainPrisonEscape;
+    private MenuPool menuPool;
+    private UIMenu mainMenu;
+    private UIMenu deathMenu;
+    private UIMenu debugMenu;
+    private UIMenu bustedMenu;
+    private UIMenu optionsMenu;
+    private UIMenu actionsMenu;
+    private UIMenu scenariosMenu;
 
 
-    private static readonly List<string> strRadioStations = new List<string>
+    private UIMenu settingsMenuGeneral;
+    private UIMenu settingsMenuPolice;
+    private UIMenu settingsMenuUISettings;
+    private UIMenu settingsMenuKeySettings;
+    private UIMenu settingsMenuTrafficViolations;
+    private int RandomWeaponCategory;
+
+    private GameLocation CurrentSelectedSurrenderLocation;
+    private GameLocation CurrentSelectedHospitalLocation;
+    private UIMenuItem scenariosMainPrisonEscape;
+
+
+    private readonly List<string> strRadioStations = new List<string>
     {
         "NONE", "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01",
         "RADIO_06_COUNTRY", "RADIO_07_DANCE_01", "RADIO_08_MEXICAN", "RADIO_09_HIPHOP_OLD", "RADIO_12_REGGAE",
@@ -71,7 +71,7 @@ internal static class MenuManager
         "OFF"
     };
 
-    private static readonly List<string> ScreenEffects = new List<string>
+    private readonly List<string> ScreenEffects = new List<string>
     {
         "SwitchHUDIn",
         "SwitchHUDOut",
@@ -156,12 +156,12 @@ internal static class MenuManager
         "Dont_tazeme_bro"
     };
 
-    public static float SelectedTakeoverRadius { get; set; }
-    public static int SelectedPlateIndex { get; set; }
-    public static string CurrentScreenEffect { get; set; }
-    public static bool IsRunning { get; set; }
+    public float SelectedTakeoverRadius { get; set; }
+    public int SelectedPlateIndex { get; set; }
+    public string CurrentScreenEffect { get; set; }
+    public bool IsRunning { get; set; }
 
-    public static void Intitialize()
+    public void Intitialize()
     {
         IsRunning = true;
         RandomWeaponCategory = 0;
@@ -200,7 +200,7 @@ internal static class MenuManager
         debugMenu.OnCheckboxChange += OnCheckboxChange;
     }
 
-    public static void Tick()
+    public void Tick()
     {
         //try
         //{
@@ -257,19 +257,19 @@ internal static class MenuManager
         //}
     }
 
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
         menuPool = null;
     }
 
-    public static void ShowMainMenu()
+    public void ShowMainMenu()
     {
         CreateMainMenu();
         mainMenu.Visible = true;
     }
 
-    public static void ShowDeathMenu()
+    public void ShowDeathMenu()
     {
         CreateDeathMenu();
 
@@ -283,7 +283,7 @@ internal static class MenuManager
         deathMenu.Visible = true;
     }
 
-    public static void ShowBustedMenu()
+    public void ShowBustedMenu()
     {
         if (Mod.Player.IsDead)
             return;
@@ -300,7 +300,7 @@ internal static class MenuManager
         bustedMenu.Visible = true;
     }
 
-    public static void ShowDebugMenu()
+    public void ShowDebugMenu()
     {
         CreateDebugMenu();
 
@@ -313,7 +313,7 @@ internal static class MenuManager
         debugMenu.Visible = true;
     }
 
-    private static void CreateMainMenu()
+    private void CreateMainMenu()
     {
         mainMenu.Clear();
         menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
@@ -330,7 +330,7 @@ internal static class MenuManager
         CreateScenariosMenu();
     }
 
-    private static void CreateDeathMenu()
+    private void CreateDeathMenu()
     {
         deathMenu.Clear();
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
@@ -353,7 +353,7 @@ internal static class MenuManager
             menuDeathUndie.Enabled = false;
     }
 
-    private static void CreateBustedMenu()
+    private void CreateBustedMenu()
     {
         bustedMenu.Clear();
         menuBustedResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
@@ -380,7 +380,7 @@ internal static class MenuManager
             menuBustedTalk.Enabled = false;
     }
 
-    private static void CreateOptionsMenu()
+    private void CreateOptionsMenu()
     {
         ReloadSettings = new UIMenuItem("Reload Settings", "Reload All settings from XML");
         optionsMenu.AddItem(ReloadSettings);
@@ -409,7 +409,7 @@ internal static class MenuManager
         settingsMenuTrafficViolations.OnItemSelect += SettingsMenuSelect;
     }
 
-    private static void CreateSettingSubMenu(FieldInfo[] Fields, object SettingsSubType, UIMenu MenuToSet)
+    private void CreateSettingSubMenu(FieldInfo[] Fields, object SettingsSubType, UIMenu MenuToSet)
     {
         foreach (FieldInfo fi in Fields)
         {
@@ -427,7 +427,7 @@ internal static class MenuManager
         }
     }
 
-    private static void CreateActionsMenu()
+    private void CreateActionsMenu()
     {
         menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
         menuActionSmoking = new UIMenuItem("Smoking", "Start smoking.");
@@ -451,7 +451,7 @@ internal static class MenuManager
         actionsMenu.OnCheckboxChange += OnCheckboxChange;
     }
 
-    private static void CreateScenariosMenu()
+    private void CreateScenariosMenu()
     {
         scenariosMainPrisonEscape = new UIMenuItem("Prison Escape", "Escape the prison");
 
@@ -463,7 +463,7 @@ internal static class MenuManager
         scenariosMenu.OnCheckboxChange += OnCheckboxChange;
     }
 
-    private static void CreateDebugMenu()
+    private void CreateDebugMenu()
     {
         debugMenu.Clear();
         menuDebugResetCharacter = new UIMenuItem("Reset Character", "Change your character back to the default model.");
@@ -489,21 +489,21 @@ internal static class MenuManager
         debugMenu.AddItem(menuDebugResetMod);
     }
 
-    private static void UpdateClosestHospitalIndex()
+    private void UpdateClosestHospitalIndex()
     {
         menuDeathHospitalRespawn.Index = LocationManager.GetLocations(LocationType.Hospital)
             .IndexOf(LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position,
                 LocationType.Hospital));
     }
 
-    private static void UpdateClosestPoliceStationIndex()
+    private void UpdateClosestPoliceStationIndex()
     {
         menuBustedSurrender.Index = LocationManager.GetLocations(LocationType.Police)
             .IndexOf(LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position,
                 LocationType.Police));
     }
 
-    private static void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuMainTakeoverRandomPed)
         {
@@ -514,9 +514,9 @@ internal static class MenuManager
             }
 
             if (SelectedTakeoverRadius == -1f)
-                PedSwapManager.TakeoverPed(500f, true, false, true);
+                Mod.PedSwapManager.TakeoverPed(500f, true, false, true);
             else
-                PedSwapManager.TakeoverPed(SelectedTakeoverRadius, false, false, true);
+                Mod.PedSwapManager.TakeoverPed(SelectedTakeoverRadius, false, false, true);
         }
         else if (selectedItem == menuMainShowPlayerStatus)
         {
@@ -526,56 +526,56 @@ internal static class MenuManager
         mainMenu.Visible = false;
     }
 
-    private static void BustedMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void BustedMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuBustedResistArrest)
-            RespawnManager.ResistArrest();
+            Mod.RespawnManager.ResistArrest();
         else if (selectedItem == menuBustedBribe)
             if (int.TryParse(GetKeyboardInput(""), out int BribeAmount))
-                RespawnManager.BribePolice(BribeAmount);
+                Mod.RespawnManager.BribePolice(BribeAmount);
         if (selectedItem == menuBustedSurrender)
         {
-            RespawnManager.SurrenderToPolice(CurrentSelectedSurrenderLocation);
+            Mod.RespawnManager.SurrenderToPolice(CurrentSelectedSurrenderLocation);
         }
         else if (selectedItem == menuBustedTalk)
         {
-            RespawnManager.Talk();
+            Mod.RespawnManager.Talk();
         }
         else if (selectedItem == menuBustedTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                PedSwapManager.TakeoverPed(500f, true, true, true);
+                Mod.PedSwapManager.TakeoverPed(500f, true, true, true);
             else
-                PedSwapManager.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+                Mod.PedSwapManager.TakeoverPed(SelectedTakeoverRadius, false, true, true);
         }
 
         bustedMenu.Visible = false;
     }
 
-    private static void DeathMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void DeathMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem == menuDeathUndie) RespawnManager.UnDie();
+        if (selectedItem == menuDeathUndie) Mod.RespawnManager.UnDie();
         if (selectedItem == menuDeathHospitalRespawn)
         {
-            RespawnManager.RespawnAtHospital(CurrentSelectedHospitalLocation);
+            Mod.RespawnManager.RespawnAtHospital(CurrentSelectedHospitalLocation);
         }
         else if (selectedItem == menuDeathTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                PedSwapManager.TakeoverPed(500f, true, true, true);
+                Mod.PedSwapManager.TakeoverPed(500f, true, true, true);
             else
-                PedSwapManager.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+                Mod.PedSwapManager.TakeoverPed(SelectedTakeoverRadius, false, true, true);
         }
 
         deathMenu.Visible = false;
     }
 
-    private static void OptionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void OptionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
        //if (selectedItem == ReloadSettings) SettingsManager.ReadAllConfigs();
     }
 
-    private static void SettingsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void SettingsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         string MySettingName = selectedItem.Text.Split(':')[0];
         FieldInfo[] MyFields = typeof(GeneralSettings).GetFields();
@@ -640,10 +640,10 @@ internal static class MenuManager
         SettingsManager.SerializeAllSettings();
     }
 
-    private static void ActionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void ActionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuMainSuicide)
-            SurrenderManager.CommitSuicide(Game.LocalPlayer.Character);
+            Mod.SurrenderManager.CommitSuicide(Game.LocalPlayer.Character);
         //else if (selectedItem == menuActionSmoking)
         //    SmokingManager.StartScenario();
         else if (selectedItem == menuMainChangeLicensePlate)
@@ -651,7 +651,7 @@ internal static class MenuManager
         else if (selectedItem == menuMainRemoveLicensePlate) LicensePlateTheftManager.RemoveNearestLicensePlate();
     }
 
-    private static void ScenarioMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void ScenarioMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == scenariosMainPrisonEscape)
         {
@@ -659,7 +659,7 @@ internal static class MenuManager
         }
     }
 
-    private static void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuDebugKillPlayer) Game.LocalPlayer.Character.Kill();
         if (selectedItem == menuDebugRandomWeapon)
@@ -695,7 +695,7 @@ internal static class MenuManager
         debugMenu.Visible = false;
     }
 
-    private static void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
+    private void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
     {
         if (sender == optionsMenu)
         {
@@ -705,7 +705,7 @@ internal static class MenuManager
         }
     }
 
-    private static void OnListChange(UIMenu sender, UIMenuListItem list, int index)
+    private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
     {
         if (sender == mainMenu)
         {
@@ -751,7 +751,7 @@ internal static class MenuManager
         }
     }
 
-    private static string GetKeyboardInput(string DefaultText)
+    private string GetKeyboardInput(string DefaultText)
     {
         NativeFunction.CallByName<bool>("DISPLAY_ONSCREEN_KEYBOARD", true, "FMMC_KEY_TIP8", "", DefaultText, "", "", "",
             255 + 1);

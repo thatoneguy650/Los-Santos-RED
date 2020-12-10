@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class DispatchManager
+public class DispatchManager
 {
     private enum DispatchType
     {
@@ -28,14 +28,14 @@ public static class DispatchManager
         ArmyVehicle = 14,
         BikerBackup = 15
     };
-    private static PoliceSpawn CurrentSpawn = new PoliceSpawn();
-    private static uint GameTimeCheckedSpawn;
-    private static uint GameTimeCheckedDeleted;
-    private static int SpawnedCopLimit
+    private PoliceSpawn CurrentSpawn = new PoliceSpawn();
+    private uint GameTimeCheckedSpawn;
+    private uint GameTimeCheckedDeleted;
+    private int SpawnedCopLimit
     {
         get
         {
-            if (InvestigationManager.InInvestigationMode)
+            if (Mod.InvestigationManager.InInvestigationMode)
                 return 10;
             else if(Mod.Player.WantedLevel == 0)
             {
@@ -68,13 +68,13 @@ public static class DispatchManager
             //return 10 + 2 * PlayerState.WantedLevel;
         }
     }
-    private static bool CanSpawn
+    private bool CanSpawn
     {
         get
         {
             if (GameTimeCheckedSpawn == 0)
                 return true;
-            else if (InvestigationManager.InInvestigationMode && !TaskManager.HasCopsInvestigating)
+            else if (Mod.InvestigationManager.InInvestigationMode && !Mod.TaskManager.HasCopsInvestigating)
                 return true;
             else if (Game.GameTime - GameTimeCheckedSpawn >= TimeBetweenSpawn)
                 return true;
@@ -82,7 +82,7 @@ public static class DispatchManager
                 return false;
         }
     }
-    private static bool CanDelete
+    private bool CanDelete
     {
         get
         {
@@ -94,11 +94,11 @@ public static class DispatchManager
                 return false;
         }
     }
-    private static int TimeBetweenSpawn
+    private int TimeBetweenSpawn
     {
         get
         {
-            if (PersonOfInterestManager.LethalForceAuthorized)
+            if (Mod.PersonOfInterestManager.LethalForceAuthorized)
             {
                 return 2000;
             }
@@ -113,7 +113,7 @@ public static class DispatchManager
             }
         }
     }
-    private static float ClosestSpawnToPlayerAllowed
+    private float ClosestSpawnToPlayerAllowed
     {
         get
         {
@@ -123,7 +123,7 @@ public static class DispatchManager
                 return 250f;
         }
     }
-    private static float ClosestSpawnToOtherPoliceAllowed
+    private float ClosestSpawnToOtherPoliceAllowed
     {
         get
         {
@@ -133,7 +133,7 @@ public static class DispatchManager
                 return 500f;
         }
     }
-    private static float MinDistanceToSpawn
+    private float MinDistanceToSpawn
     {
         get
         {
@@ -144,13 +144,13 @@ public static class DispatchManager
                 else
                     return 400f - (Mod.Player.WantedLevel * -40);
             }
-            else if (InvestigationManager.InInvestigationMode)
-                return InvestigationManager.InvestigationDistance / 2;
+            else if (Mod.InvestigationManager.InInvestigationMode)
+                return Mod.InvestigationManager.InvestigationDistance / 2;
             else
                 return 350f;//450f;//750f
         }
     }
-    private static float MaxDistanceToSpawn
+    private float MaxDistanceToSpawn
     {
         get
         {
@@ -161,13 +161,13 @@ public static class DispatchManager
                 else
                     return 550f;
             }
-            else if (InvestigationManager.InInvestigationMode)
-                return InvestigationManager.InvestigationDistance;
+            else if (Mod.InvestigationManager.InInvestigationMode)
+                return Mod.InvestigationManager.InvestigationDistance;
             else
                 return 900f;//1250f//1500f
         }
     }
-    private static float DistanceToDelete
+    private float DistanceToDelete
     {
         get
         {
@@ -177,7 +177,7 @@ public static class DispatchManager
                 return 1000f;
         }
     }
-    private static float DistanceToDeleteOnFoot
+    private float DistanceToDeleteOnFoot
     {
         get
         {
@@ -187,7 +187,7 @@ public static class DispatchManager
                 return 1000f;
         }
     }
-    private static bool NeedToSpawn
+    private bool NeedToSpawn
     {
         get
         {
@@ -197,19 +197,19 @@ public static class DispatchManager
                 return false;
         }
     }
-    private static uint MinimumExistingTime { get; set; } = 20000;//30000
-    private static float MinimumDeleteDistance{ get; set; } = 200f;//350f
-    public static bool IsRunning { get; set; }
-    public static void Initialize()
+    private uint MinimumExistingTime { get; set; } = 20000;//30000
+    private float MinimumDeleteDistance{ get; set; } = 200f;//350f
+    public bool IsRunning { get; set; }
+    public void Initialize()
     {
         IsRunning = true;
     }
-    public static void Dispose()
+    public void Dispose()
     {
         IsRunning = false;
         SetVanillaDispaceServices(true);
     }
-    public static void SpawnChecking()
+    public void SpawnChecking()
     {
         if (IsRunning && CanSpawn)
         {
@@ -244,7 +244,7 @@ public static class DispatchManager
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.StreetPosition;
                 }
-                PoliceSpawningManager.SpawnGTACop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle, false);
+                Mod.PoliceSpawningManager.SpawnGTACop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle, false);
             }
             GameTimeCheckedSpawn = Game.GameTime;
         }
@@ -253,7 +253,7 @@ public static class DispatchManager
             SetVanillaDispaceServices(false);
         }
     }
-    public static void DeleteChecking()
+    public void DeleteChecking()
     {
         if (IsRunning && CanDelete)
         {
@@ -261,29 +261,29 @@ public static class DispatchManager
             {
                 if (!OutOfRangeCop.AssignedAgency.CanSpawn)
                 {
-                    PoliceSpawningManager.DeleteCop(OutOfRangeCop);
+                    Mod.PoliceSpawningManager.DeleteCop(OutOfRangeCop);
                 }
                 if (OutOfRangeCop.IsInVehicle && OutOfRangeCop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
                 {
-                    PoliceSpawningManager.DeleteCop(OutOfRangeCop);
+                    Mod.PoliceSpawningManager.DeleteCop(OutOfRangeCop);
                 }
                 else if (!OutOfRangeCop.IsInVehicle && OutOfRangeCop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
                 {
-                    PoliceSpawningManager.DeleteCop(OutOfRangeCop);
+                    Mod.PoliceSpawningManager.DeleteCop(OutOfRangeCop);
                 }
                 else if (OutOfRangeCop.ClosestDistanceToPlayer <= 15f) //Got Close and Then got away
                 {
-                    PoliceSpawningManager.DeleteCop(OutOfRangeCop);
+                    Mod.PoliceSpawningManager.DeleteCop(OutOfRangeCop);
                 }
                 else if (OutOfRangeCop.CountNearbyCops >= 3 && OutOfRangeCop.TimeBehindPlayer >= 15000) //Got Close and Then got away
                 {
-                    PoliceSpawningManager.DeleteCop(OutOfRangeCop);
+                    Mod.PoliceSpawningManager.DeleteCop(OutOfRangeCop);
                 }
             }
             GameTimeCheckedDeleted = Game.GameTime;
         }
     }
-    private static void SetVanillaDispaceServices(bool ValueToSet)
+    private void SetVanillaDispaceServices(bool ValueToSet)
     {
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, ValueToSet);
         NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceHelicopter, ValueToSet);
@@ -400,14 +400,14 @@ public static class DispatchManager
         {
             if (Mod.Player.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(350f);
-            else if (InvestigationManager.InInvestigationMode)
-                Position = InvestigationManager.InvestigationPosition;
+            else if (Mod.InvestigationManager.InInvestigationMode)
+                Position = Mod.InvestigationManager.InvestigationPosition;
             else
                 Position = Game.LocalPlayer.Character.Position;
 
-            Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
+            Position = Position.Around2D(Mod.DispatchManager.MinDistanceToSpawn, Mod.DispatchManager.MaxDistanceToSpawn);
 
-            if (!InvestigationManager.InInvestigationMode && Mod.PedManager.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
+            if (!Mod.InvestigationManager.InInvestigationMode && Mod.PedManager.AnyCopsNearPosition(Position, Mod.DispatchManager.ClosestSpawnToOtherPoliceAllowed))
             {
                 Position = Vector3.Zero;
             }
@@ -420,10 +420,10 @@ public static class DispatchManager
             StreetPosition = streetPos;
             Heading = heading;
 
-            if (StreetPosition.DistanceTo2D(Game.LocalPlayer.Character) < ClosestSpawnToPlayerAllowed)
+            if (StreetPosition.DistanceTo2D(Game.LocalPlayer.Character) < Mod.DispatchManager.ClosestSpawnToPlayerAllowed)
                 StreetPosition = Vector3.Zero;
 
-            if(Mod.PedManager.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
+            if(Mod.PedManager.AnyCopsNearPosition(StreetPosition, Mod.DispatchManager.ClosestSpawnToOtherPoliceAllowed))
                 StreetPosition = Vector3.Zero;
 
             if(StreetPosition != Vector3.Zero)

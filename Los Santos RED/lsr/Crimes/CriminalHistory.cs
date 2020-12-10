@@ -86,9 +86,9 @@ public class CriminalHistory
         }
         if (ByPolice && Mod.Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
         {
-            WantedLevelManager.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
+            Mod.WantedLevelManager.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
         }
-        ScannerManager.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed,InstancesObserved = CurrentInstances });
+        Mod.ScannerManager.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed,InstancesObserved = CurrentInstances });
 
     }
 
