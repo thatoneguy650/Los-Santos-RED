@@ -33,7 +33,7 @@ public class SurrenderManager
         if (Mod.Player.HandsAreUp)
             return;
 
-        if (VehicleFuelManager.CanPumpFuel)//usees the same key, might need to change
+        if (Mod.VehicleFuelManager.CanPumpFuel)//usees the same key, might need to change
             return;
 
         Game.LocalPlayer.Character.SetUnarmed();

@@ -7,9 +7,8 @@ using System.Linq;
 
 public class TaskManager
 {
-    private List<TaskableCop> TaskableCops;
-    private List<TaskableCivilian> TaskableCivilians;
-    public bool IsRunning { get; set; }
+    private List<TaskableCop> TaskableCops = new List<TaskableCop>();
+    private List<TaskableCivilian> TaskableCivilians = new List<TaskableCivilian>();
     public bool HasCopsInvestigating
     {
         get
@@ -20,38 +19,25 @@ public class TaskManager
                 return false;
         }
     }
-    public void Initialize()
-    {
-        IsRunning = true;
-        TaskableCops = new List<TaskableCop>();
-        TaskableCivilians = new List<TaskableCivilian>();
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
-    }
     public void UpdateTaskablePeds()
     {
-        if (IsRunning)
+        Mod.PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
+
+        TaskableCops.RemoveAll(x => !x.CopToTask.Pedestrian.Exists());
+        foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists()))
         {
-            Mod.PedManager.Cops.RemoveAll(x => !x.Pedestrian.Exists());
-
-            TaskableCops.RemoveAll(x => !x.CopToTask.Pedestrian.Exists());
-            foreach (Cop Cop in Mod.PedManager.Cops.Where(x => x.Pedestrian.Exists()))
+            if (!TaskableCops.Any(x => x.CopToTask.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
-                if (!TaskableCops.Any(x => x.CopToTask.Pedestrian.Handle == Cop.Pedestrian.Handle))
-                {
-                    TaskableCops.Add(new TaskableCop(Cop));
-                }
+                TaskableCops.Add(new TaskableCop(Cop));
             }
+        }
 
-            TaskableCivilians.RemoveAll(x => !x.CivilianToTask.Pedestrian.Exists());
-            foreach (PedExt Civilian in Mod.PedManager.Civilians.Where(x => x.Pedestrian.Exists()))
+        TaskableCivilians.RemoveAll(x => !x.CivilianToTask.Pedestrian.Exists());
+        foreach (PedExt Civilian in Mod.PedManager.Civilians.Where(x => x.Pedestrian.Exists()))
+        {
+            if (!TaskableCivilians.Any(x => x.CivilianToTask.Pedestrian.Handle == Civilian.Pedestrian.Handle))
             {
-                if (!TaskableCivilians.Any(x => x.CivilianToTask.Pedestrian.Handle == Civilian.Pedestrian.Handle))
-                {
-                    TaskableCivilians.Add(new TaskableCivilian(Civilian));
-                }
+                TaskableCivilians.Add(new TaskableCivilian(Civilian));
             }
         }
     }
@@ -59,36 +45,32 @@ public class TaskManager
     {
         try
         {
-            if (IsRunning)
+            int TaskedCops = 0;
+            foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
-                int TaskedCops = 0;
-                foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
+                if (TaskedCops < 2)
                 {
-                    if (TaskedCops < 2)
-                    {
-                        Cop.RunCurrentActivity();
-                        TaskedCops++;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    Cop.RunCurrentActivity();
+                    TaskedCops++;
                 }
-
-                int TaskedCivilians = 0;
-                foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
+                else
                 {
-                    if (TaskedCivilians < 5)
-                    {
-                        Civilian.RunCurrentActivity();
-                        TaskedCivilians++;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    break;
                 }
+            }
 
+            int TaskedCivilians = 0;
+            foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
+            {
+                if (TaskedCivilians < 5)
+                {
+                    Civilian.RunCurrentActivity();
+                    TaskedCivilians++;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
         catch (Exception e)
@@ -414,7 +396,7 @@ public class TaskManager
             {
                 if (CopToTask.IsDriver)
                 {
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, Mod.WantedLevelManager.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                 }
             }
             else
@@ -423,7 +405,7 @@ public class TaskManager
             }
             CurrentTaskLoop = "Investigation";
             AtInvesstigationPositionThisInvestigation = false;
-            Debugging.WriteToLog("Tasking", string.Format("     Started Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.WantedLevelManager.CurrentResponse, Mod.WantedLevelManager.ResponseDrivingSpeed, Mod.WantedLevelManager.ShouldSirenBeOn));
+            Debugging.WriteToLog("Tasking", string.Format("     Started Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.Player.CurrentPoliceResponse.CurrentResponse, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn));
         }
         private void Investigate_Normal()
         {
@@ -436,17 +418,17 @@ public class TaskManager
                     {
                         if (CopToTask.IsDriver)
                         {
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, Mod.WantedLevelManager.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                         }
                     }
                     else
                     {
                         NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, 500f, -1, 0f, 2f);
                     }
-                    Debugging.WriteToLog("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.WantedLevelManager.CurrentResponse, Mod.WantedLevelManager.ResponseDrivingSpeed, Mod.WantedLevelManager.ShouldSirenBeOn));
+                    Debugging.WriteToLog("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.Player.CurrentPoliceResponse.CurrentResponse, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn));
 
                 }
-                if (CopToTask.IsDriver && CopToTask.Pedestrian.CurrentVehicle != null && CopToTask.Pedestrian.CurrentVehicle.HasSiren && Mod.WantedLevelManager.ShouldSirenBeOn)
+                if (CopToTask.IsDriver && CopToTask.Pedestrian.CurrentVehicle != null && CopToTask.Pedestrian.CurrentVehicle.HasSiren && Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn)
                 {
                     if (!CopToTask.Pedestrian.CurrentVehicle.IsSirenOn)
                     {
@@ -461,7 +443,7 @@ public class TaskManager
                     {
                         if (CopToTask.Pedestrian.IsInAnyVehicle(false) && CopToTask.Pedestrian.CurrentVehicle.Exists())
                         {
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.WantedLevelManager.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);
                         }
                         else
                         {
@@ -534,7 +516,7 @@ public class TaskManager
                     {
                         if (CopToTask.DistanceToPlayer <= OnFootTaskDistance || CopToTask.RecentlySeenPlayer)
                         {
-                            if (Mod.WantedLevelManager.IsDeadlyChase && !Mod.Player.IsAttemptingToSurrender)
+                            if (Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !Mod.Player.IsAttemptingToSurrender)
                                 Kill();
                             else
                                 FootChase();
@@ -864,7 +846,7 @@ public class TaskManager
                 if (Mod.Player.IsWanted)
                 {
                     NativeFunction.CallByName<bool>("SET_PED_ALERTNESS", CopToTask.Pedestrian, 3);
-                    if(Mod.WantedLevelManager.IsDeadlyChase)
+                    if(Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
                     {
                         CopToTask.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
                     }
@@ -932,12 +914,12 @@ public class TaskManager
                 CurrentTaskedPosition = Mod.InvestigationManager.InvestigationPosition;
                 CopToTask.Pedestrian.BlockPermanentEvents = false;
                 if (CopToTask.Pedestrian.IsInAnyVehicle(false))
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, Mod.WantedLevelManager.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                 else
                     NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, 500f, -1, 0f, 2f);
                 CurrentTaskLoop = "Investigation";
                 AtInvesstigationPositionThisInvestigation = false;
-                Debugging.WriteToLog("Tasking", string.Format("     Started Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.WantedLevelManager.CurrentResponse, Mod.WantedLevelManager.ResponseDrivingSpeed, Mod.WantedLevelManager.ShouldSirenBeOn));
+                Debugging.WriteToLog("Tasking", string.Format("     Started Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.Player.CurrentPoliceResponse.CurrentResponse, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn));
             }
             private void Investigate_Normal()
             {
@@ -947,14 +929,14 @@ public class TaskManager
                     {
                         CurrentTaskedPosition = Mod.InvestigationManager.InvestigationPosition;
                         if (CopToTask.Pedestrian.IsInAnyVehicle(false))
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, Mod.WantedLevelManager.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                         else
                             NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Mod.InvestigationManager.InvestigationPosition.X, Mod.InvestigationManager.InvestigationPosition.Y, Mod.InvestigationManager.InvestigationPosition.Z, 500f, -1, 0f, 2f);
 
-                        Debugging.WriteToLog("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.WantedLevelManager.CurrentResponse, Mod.WantedLevelManager.ResponseDrivingSpeed, Mod.WantedLevelManager.ShouldSirenBeOn));
+                        Debugging.WriteToLog("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.Player.CurrentPoliceResponse.CurrentResponse, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn));
 
                     }
-                    if (CopToTask.IsDriver && CopToTask.Pedestrian.CurrentVehicle != null && CopToTask.Pedestrian.CurrentVehicle.HasSiren && Mod.WantedLevelManager.ShouldSirenBeOn)
+                    if (CopToTask.IsDriver && CopToTask.Pedestrian.CurrentVehicle != null && CopToTask.Pedestrian.CurrentVehicle.HasSiren && Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn)
                     {
                         if (!CopToTask.Pedestrian.CurrentVehicle.IsSirenOn)
                         {
@@ -967,7 +949,7 @@ public class TaskManager
                         AtInvesstigationPositionThisInvestigation = true;
                         if (CopToTask.Pedestrian.Exists() && CopToTask.Pedestrian.CurrentVehicle.Exists())
                         {
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.WantedLevelManager.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);
                             Debugging.WriteToLog("Tasking", string.Format("     Started Investigation Wander: {0}", CopToTask.Pedestrian.Handle));
                         }
                     }
@@ -1041,11 +1023,11 @@ public class TaskManager
                     {
                         return Activities.ReactToCrime;
                     }
-                    else if(CivilianToTask.CanRecognizePlayer && Mod.CrimeManager.PlayerViolatingInFrontOfCivilians)
+                    else if(CivilianToTask.CanRecognizePlayer && Mod.Violations.PlayerViolatingInFrontOfCivilians)
                     {
                         return Activities.ReactToCrime;
                     }
-                    else if (CivilianToTask.WithinWeaponsAudioRange && Mod.CrimeManager.PlayerViolatingAudioCivilians)
+                    else if (CivilianToTask.WithinWeaponsAudioRange && Mod.Violations.PlayerViolatingAudioCivilians)
                     {
                         return Activities.ReactToCrime;
                     }
@@ -1137,7 +1119,7 @@ public class TaskManager
                 {
                     if (Mod.Player.IsNotWanted)
                     {
-                        Mod.WantedLevelManager.CurrentCrimes.AddCrime(CivilianToTask.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, CivilianToTask.PositionLastSeenCrime, CivilianToTask.VehicleLastSeenPlayerIn, CivilianToTask.WeaponLastSeenPlayerWith);
+                        Mod.Player.CurrentPoliceResponse.CurrentCrimes.AddCrime(CivilianToTask.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, CivilianToTask.PositionLastSeenCrime, CivilianToTask.VehicleLastSeenPlayerIn, CivilianToTask.WeaponLastSeenPlayerWith);
 
                         //WANT TO READD THIS IN TEH FUTURE, NEED TO PASS CAR
                         //if (VehToReport != null)
@@ -1173,7 +1155,7 @@ public class TaskManager
         }
         private void AddCurrentCrimes()
         {
-            foreach(Crime CurrentlyViolating in Mod.CrimeManager.CurrentlyViolatingCanBeReportedByCivilians)
+            foreach(Crime CurrentlyViolating in Mod.Violations.CurrentlyViolatingCanBeReportedByCivilians)
             {
                 CivilianToTask.AddCrime(CurrentlyViolating, Game.LocalPlayer.Character.Position);
             }

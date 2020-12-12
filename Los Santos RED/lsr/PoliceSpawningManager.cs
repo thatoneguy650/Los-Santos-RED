@@ -11,10 +11,9 @@ public class PoliceSpawningManager
 {
     private uint GameTimeLastRemovedCop;
     private uint GameTimeLastSpawnedCop;
-    private List<Vehicle> CreatedPoliceVehicles;
-    private List<Entity> CreatedEntities;
+    private List<Vehicle> CreatedPoliceVehicles = new List<Vehicle>();
+    private List<Entity> CreatedEntities = new List<Entity>();
     private VehicleInformation CurrentVehicleInfo;
-    public bool IsRunning { get; set; }
     public bool RecentlySpawnedCop
     {
         get
@@ -39,15 +38,8 @@ public class PoliceSpawningManager
                 return false;
         }
     }
-    public void Initialize()
-    {
-        CreatedPoliceVehicles = new List<Vehicle>();
-        CreatedEntities = new List<Entity>();
-        IsRunning = true;
-    }
     public void Dispose()
     {
-        IsRunning = false;
         foreach (Entity ent in CreatedEntities)
         {
             if (ent.Exists())
@@ -64,16 +56,13 @@ public class PoliceSpawningManager
     }
     public void Tick()
     {
-        if (IsRunning)
-        {
-            RepairOrRemoveDamagedVehicles();
-            RemoveAbandonedVehicles();
+        RepairOrRemoveDamagedVehicles();
+        RemoveAbandonedVehicles();
 
-            if(Mod.PedSwapManager.RecentlyTakenOver || Mod.RespawnManager.RecentlySurrenderedToPolice)
-            {
-                RemoveDisallowedPeds();
-            }
-        }
+        if(Mod.PedSwapManager.RecentlyTakenOver || Mod.RespawnManager.RecentlySurrenderedToPolice)
+        {
+            RemoveDisallowedPeds();
+        }   
     }
     public bool SpawnGTACop(Agency _Agency, Vector3 SpawnLocation, float Heading, VehicleInformation MyCarInfo, bool CanSpawnOnFoot)
     {
@@ -99,7 +88,7 @@ public class PoliceSpawningManager
 
             if (CopCar != null && CopCar.VehicleEnt.Exists())
             {
-                VehicleManager.PoliceVehicles.Add(CopCar.VehicleEnt);
+                Mod.VehicleManager.PoliceVehicles.Add(CopCar.VehicleEnt);
                 List<string> RequiredPedModels = new List<string>();
                 if (CurrentVehicleInfo != null && CurrentVehicleInfo.AllowedPedModels.Any())
                 {

@@ -7,24 +7,16 @@ using System.Linq;
 
 public class PoliceEquipmentManager
 {
-    private List<EquipedCop> EquipedCops;
-    public bool IsRunning { get; set; }
-    public void Initialize()
+    private List<EquipedCop> EquipedCops = new List<EquipedCop>();
+
+    public PoliceEquipmentManager()
     {
-        IsRunning = true;
         EquipedCops = new List<EquipedCop>();
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
     }
     public void Tick()
     {
-        if (IsRunning)
-        {
-            AddCops();
-            ArmCops();
-        }
+        AddCops();
+        ArmCops();
     }
     public void IssueWeapons(Cop CopToFind)
     {
@@ -118,7 +110,7 @@ public class PoliceEquipmentManager
                 {
                     IssuePistol();
                 }
-                if (SettingsManager.MySettings.Police.IssuePoliceHeavyWeapons && Mod.WantedLevelManager.IsDeadlyChase && !HasHeavyWeapon)
+                if (SettingsManager.MySettings.Police.IssuePoliceHeavyWeapons && Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon)
                 {
                     CheckIssueHeavy();
                 }
@@ -128,7 +120,7 @@ public class PoliceEquipmentManager
         {
             if (CopToArm.ShouldAutoSetWeaponState)
             {
-                if (Mod.WantedLevelManager.IsDeadlyChase)
+                if (Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
                 {
                     if (CopToArm.IsInVehicle && Mod.Player.WantedLevel < 4)
                     {
@@ -154,7 +146,7 @@ public class PoliceEquipmentManager
         }
         public void CheckIssueHeavy()
         {
-            if (SettingsManager.MySettings.Police.IssuePoliceHeavyWeapons && Mod.WantedLevelManager.IsDeadlyChase && !HasHeavyWeapon && CopToArm.IsInVehicle)
+            if (SettingsManager.MySettings.Police.IssuePoliceHeavyWeapons && Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon && CopToArm.IsInVehicle)
                 IssueHeavyWeapon();
         }
         public void IssuePistol()

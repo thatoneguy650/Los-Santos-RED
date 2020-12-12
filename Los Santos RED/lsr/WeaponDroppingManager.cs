@@ -11,12 +11,11 @@ using System.Threading.Tasks;
 
 public class WeaponDroppingManager
 {
-    private List<DroppedWeapon> DroppedWeapons;
+    private List<DroppedWeapon> DroppedWeapons = new List<DroppedWeapon>();
     private bool DroppingWeapon;
-    private int PrevCountWeapons;
-    private int WeaponCount;
+    private int PrevCountWeapons = 1;
+    private int WeaponCount = 1;
     private int CurrentWeaponAmmo;
-    public bool IsRunning { get; set; }
     public bool CanDropWeapon
     {
         get
@@ -40,27 +39,11 @@ public class WeaponDroppingManager
                 return CurrentWeaponAmmo;
         }
     }
-    public void Initialize()
-    {
-        DroppedWeapons = new List<DroppedWeapon>();
-        DroppingWeapon = false;
-        PrevCountWeapons = 1;
-        WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
-        PrevCountWeapons = WeaponCount;
-        IsRunning = true;
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
-    }
     public void Tick()
     {
-        if (IsRunning)
-        {
-            WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
-            if (PrevCountWeapons != WeaponCount)
-                WeaponInventoryChanged(WeaponCount);
-        }
+        WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
+        if (PrevCountWeapons != WeaponCount)
+            WeaponInventoryChanged(WeaponCount);
     }
     public void Reset()
     {

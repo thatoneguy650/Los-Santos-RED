@@ -11,22 +11,40 @@ namespace LosSantosRED.lsr
     {
         private static List<TickTask> MyTickTasks;
 
-
+        public static Player Player { get; private set; } = new Player();
+        public static Map Map { get; private set; } = new Map();
+        public static InputManager InputManager { get; private set; } = new InputManager();
+        public static UIManager UIManager { get; private set; } = new UIManager();
+        public static Violations Violations { get; private set; } = new Violations();
         public static MenuManager MenuManager { get; private set; } = new MenuManager();
 
+
+
+
+        public static VehicleEngineManager VehicleEngineManager { get; private set; } = new VehicleEngineManager();
+
+
+
+
+
+        public static SearchModeManager SearchModeManager { get; private set; } = new SearchModeManager();
+        public static SearchModeStoppingManager SearchModeStoppingManager { get; private set; } = new SearchModeStoppingManager();
+        public static PlateTheft LicensePlateTheftManager { get; private set; } = new PlateTheft();
+        public static RadioManager RadioManager { get; private set; } = new RadioManager();
+        public static VehicleFuelManager VehicleFuelManager { get; private set; } = new VehicleFuelManager();
+        public static VehicleIndicatorManager VehicleIndicatorManager { get; private set; } = new VehicleIndicatorManager();
+        public static VehicleManager VehicleManager { get; private set; } = new VehicleManager();
         public static PedDamageManager PedDamageManager { get; private set; } = new PedDamageManager();
         public static MuggingManager MuggingManager { get; private set; } = new MuggingManager();
         public static TaskManager TaskManager { get; private set; } = new TaskManager();
         public static PedSwapManager PedSwapManager { get; private set; } = new PedSwapManager();
-        public static PlayerLocationManager PlayerLocationManager { get; private set; } = new PlayerLocationManager();
         public static RespawnManager RespawnManager { get; private set; } = new RespawnManager();
         public static SurrenderManager SurrenderManager { get; private set; } = new SurrenderManager();
         public static WeaponDroppingManager WeaponDroppingManager { get; private set; } = new WeaponDroppingManager();
         public static DispatchManager DispatchManager { get; private set; } = new DispatchManager();
         public static InvestigationManager InvestigationManager { get; private set; } = new InvestigationManager();
         public static PersonOfInterestManager PersonOfInterestManager { get; private set; } = new PersonOfInterestManager();
-        public static WantedLevelManager WantedLevelManager { get; private set; } = new WantedLevelManager();
-        public static VehicleEngineManager VehicleEngineManager { get; private set; } = new VehicleEngineManager();
+        
         public static PoliceSpawningManager PoliceSpawningManager { get; private set; } = new PoliceSpawningManager();
         public static ScannerManager ScannerManager { get; private set; } = new ScannerManager();
         public static PoliceEquipmentManager PoliceEquipmentManager { get; private set; } = new PoliceEquipmentManager();
@@ -35,11 +53,7 @@ namespace LosSantosRED.lsr
         public static ClockManager ClockManager { get; private set; } = new ClockManager();
         public static PolicePerception PolicePerception { get; private set; } = new PolicePerception();
         public static CivilianPerception CivilianPerception { get; private set; } = new CivilianPerception();
-        public static InputManager InputManager { get; private set; } = new InputManager();
-        public static UIManager UIManager { get; private set; } = new UIManager();
-        public static CrimeManager CrimeManager { get; private set; } = new CrimeManager();
-        public static Player Player { get; private set; } = new Player();
-        public static Map Map { get; private set; } = new Map();
+       
         public static bool IsRunning { get; set; }
         public static void Initialize()
         {
@@ -61,6 +75,10 @@ namespace LosSantosRED.lsr
             ClockManager.Dispose();
             PedManager.Dispose();
             Map.RemoveBlips();
+            VehicleManager.Dispose();
+            PedManager.Dispose();
+            DispatchManager.Dispose();
+            PoliceSpawningManager.Dispose();
         }
         public static void RunTasks()
         {
@@ -113,19 +131,20 @@ namespace LosSantosRED.lsr
         }
         private static void Setup()
         {
+
             MyTickTasks = new List<TickTask>()
             {
                 new TickTask(0, "ClockManager", ClockManager.Tick, 0,0),
 
                 new TickTask(0, "InputManager", InputManager.Tick, 1,0),
 
-                new TickTask(25, "Player", Player.Tick, 2,0),
+                new TickTask(25, "Player", Player.Update, 2,0),
                 new TickTask(25, "PolicePerception", PolicePerception.Tick, 2,1),
 
                 new TickTask(0, "VehicleEngineManager", VehicleEngineManager.Tick, 3,0),
 
-                new TickTask(50, "CrimeManager", CrimeManager.Tick, 4,0),
-                new TickTask(50, "WantedLevelManager", WantedLevelManager.Tick, 4,1),
+                new TickTask(50, "CrimeManager", Violations.Tick, 4,0),
+                new TickTask(50, "WantedLevelManager", Player.CurrentPoliceResponse.Update, 4,1),
 
                 new TickTask(150, "SearchModeManager", SearchModeManager.Tick, 5,0),
                 new TickTask(150, "InvestigationManager", Mod.InvestigationManager.Tick, 5,1),
@@ -142,8 +161,8 @@ namespace LosSantosRED.lsr
 
                 new TickTask(250, "WeaponDroppingManager", WeaponDroppingManager.Tick, 8,0),
 
-                new TickTask(500, "TrafficViolationsManager", TrafficViolationsManager.Tick, 9,0),
-                new TickTask(500, "PlayerLocationManager", PlayerLocationManager.Tick, 9,1),
+                new TickTask(500, "TrafficViolationsManager", Violations.TrafficTick, 9,0),
+                new TickTask(500, "PlayerLocationManager", Player.CurrentLocation.Update, 9,1),
                 new TickTask(500, "PersonOfInterestManager", PersonOfInterestManager.Tick, 9,2),
 
                 new TickTask(250, "PoliceEquipmentManager", PoliceEquipmentManager.Tick, 10,0),
@@ -158,10 +177,6 @@ namespace LosSantosRED.lsr
                 new TickTask(100, "VehicleIndicatorManager", VehicleIndicatorManager.Tick, 12,1),
                 new TickTask(500, "RadioManager", RadioManager.Tick, 12,2),
             };
-            
-
-
-            
         }
         private static void InitializeStaticClasses()
         {
@@ -174,7 +189,8 @@ namespace LosSantosRED.lsr
             AgencyManager.Initialize();
             ZoneJurisdictionManager.Initialize();
             CountyJurisdictionManager.Initialize();    
-            PlateTypeManager.Initialize(); 
+            PlateTypeManager.Initialize();
+            DispatchScannerFiles.Initialize();
         }
         private static void ResetRanItems()
         {

@@ -85,11 +85,10 @@ namespace LosSantosRED.lsr
 
         public ScannerManager()
         {
-
+            DefaultConfig();
         }
 
         public bool CancelAudio { get; set; }
-        public bool IsRunning { get; set; }
         public bool IsAudioPlaying
         {
             get
@@ -109,18 +108,9 @@ namespace LosSantosRED.lsr
                     return false;
             }
         }
-        public void Initialize()
-        {
-            DefaultConfig();
-            IsRunning = true;
-        }
-        public void Dispose()
-        {
-            IsRunning = false;
-        }
         public void Tick()
         {
-            if (IsRunning && SettingsManager.MySettings.Police.DispatchAudio)
+            if (SettingsManager.MySettings.Police.DispatchAudio)
             {
                 CheckDispatch();
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
@@ -207,90 +197,86 @@ namespace LosSantosRED.lsr
         }
         private void CheckDispatch()
         {
-            if (IsRunning)
+            if (Mod.Player.IsWanted && Mod.PolicePerception.AnySeenPlayerCurrentWanted)
             {
-                if (Mod.Player.IsWanted && Mod.PolicePerception.AnySeenPlayerCurrentWanted)
+                if (!RequestBackup.HasRecentlyBeenPlayed && Mod.Player.CurrentPoliceResponse.RecentlyRequestedBackup)
                 {
-                    if (!RequestBackup.HasRecentlyBeenPlayed && Mod.WantedLevelManager.RecentlyRequestedBackup)
-                    {
-                        AddToQueue(RequestBackup, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
-                    }
-                    if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && Mod.PedManager.AnyArmyUnitsSpawned)
-                    {
-                        AddToQueue(RequestMilitaryUnits);
-                    }
-                    if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && Mod.PedManager.AnyNooseUnitsSpawned)
-                    {
-                        AddToQueue(RequestNOOSEUnits);
-                    }
-                    if (!WeaponsFree.HasBeenPlayedThisWanted && Mod.WantedLevelManager.IsWeaponsFree)
-                    {
-                        AddToQueue(WeaponsFree);
-                    }
-                    if (!RequestAirSupport.HasBeenPlayedThisWanted && Mod.PedManager.AnyHelicopterUnitsSpawned)
-                    {
-                        AddToQueue(RequestAirSupport);
-                    }
-                    if (!ReportedLethalForceAuthorized && Mod.WantedLevelManager.IsDeadlyChase)
-                    {
-                        AddToQueue(LethalForceAuthorized);
-                    }
-                    if (!SuspectArrested.HasRecentlyBeenPlayed && Mod.Player.RecentlyBusted && Mod.PolicePerception.AnyCanSeePlayer)
-                    {
-                        AddToQueue(SuspectArrested);
-                    }
-                    if (!ChangedVehicles.HasRecentlyBeenPlayed && Mod.Player.PoliceRecentlyNoticedVehicleChange && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.HasBeenDescribedByDispatch)
-                    {
-                        AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = Mod.Player.CurrentVehicle });
-                    }
-                    if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && Mod.PersonOfInterestManager.RecentlyAppliedWantedStats)
-                    {
-                        AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = Mod.Player.CurrentVehicle });
-                    }
-
-                    if (!Mod.Player.IsBusted && !Mod.Player.IsDead)
-                    {
-                        if (!LostVisual.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyGreyedOut && Mod.WantedLevelManager.HasBeenWantedFor > 45000 && !Mod.PedManager.AnyCopsNearPlayer)
-                        {
-                            AddToQueue(LostVisual, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
-                        }
-                        else if (!SuspectSpotted.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyActive && Mod.WantedLevelManager.HasBeenWantedFor > 25000 && Mod.PolicePerception.AnyRecentlySeenPlayer)
-                        {
-                            AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
-                        }
-                        else if (!RecentlyAnnouncedDispatch && Mod.PolicePerception.AnyCanSeePlayer && Mod.WantedLevelManager.HasBeenWantedFor > 25000)
-                        {
-                            AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
-                        }
-                    }
-
+                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
                 }
-                else
+                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && Mod.PedManager.AnyArmyUnitsSpawned)
                 {
-                    if (!ResumePatrol.HasRecentlyBeenPlayed && Mod.RespawnManager.RecentlyBribedPolice)
-                    {
-                        AddToQueue(ResumePatrol);
-                    }
-                    if (!SuspectLost.HasRecentlyBeenPlayed && Mod.WantedLevelManager.RecentlyLostWanted && !Mod.RespawnManager.RecentlyRespawned && !Mod.RespawnManager.RecentlyBribedPolice && !Mod.RespawnManager.RecentlySurrenderedToPolice)
-                    {
-                        AddToQueue(SuspectLost, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
-                    }
-                    if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Mod.InvestigationManager.LastInvestigationRecentlyExpired && Mod.InvestigationManager.DistanceToInvestigationPosition <= 1000f)
-                    {
-                        AddToQueue(NoFurtherUnitsNeeded);
-                    }
-                    foreach (VehicleExt StolenCar in Mod.Player.ReportedStolenVehicles)
-                    {
-                        AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
-                    }
+                    AddToQueue(RequestMilitaryUnits);
+                }
+                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && Mod.PedManager.AnyNooseUnitsSpawned)
+                {
+                    AddToQueue(RequestNOOSEUnits);
+                }
+                if (!WeaponsFree.HasBeenPlayedThisWanted && Mod.Player.CurrentPoliceResponse.IsWeaponsFree)
+                {
+                    AddToQueue(WeaponsFree);
+                }
+                if (!RequestAirSupport.HasBeenPlayedThisWanted && Mod.PedManager.AnyHelicopterUnitsSpawned)
+                {
+                    AddToQueue(RequestAirSupport);
+                }
+                if (!ReportedLethalForceAuthorized && Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
+                {
+                    AddToQueue(LethalForceAuthorized);
+                }
+                if (!SuspectArrested.HasRecentlyBeenPlayed && Mod.Player.RecentlyBusted && Mod.PolicePerception.AnyCanSeePlayer)
+                {
+                    AddToQueue(SuspectArrested);
+                }
+                if (!ChangedVehicles.HasRecentlyBeenPlayed && Mod.Player.PoliceRecentlyNoticedVehicleChange && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.HasBeenDescribedByDispatch)
+                {
+                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = Mod.Player.CurrentVehicle });
+                }
+                if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && Mod.PersonOfInterestManager.RecentlyAppliedWantedStats)
+                {
+                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = Mod.Player.CurrentVehicle });
                 }
 
-                if (!SuspectWasted.HasRecentlyBeenPlayed && Mod.Player.RecentlyDied && Mod.PolicePerception.AnyRecentlySeenPlayer && Mod.Player.MaxWantedLastLife > 0)
+                if (!Mod.Player.IsBusted && !Mod.Player.IsDead)
                 {
-                    AddToQueue(SuspectWasted);
+                    if (!LostVisual.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyGreyedOut && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 45000 && !Mod.PedManager.AnyCopsNearPlayer)
+                    {
+                        AddToQueue(LostVisual, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
+                    }
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyActive && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Mod.PolicePerception.AnyRecentlySeenPlayer)
+                    {
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                    }
+                    else if (!RecentlyAnnouncedDispatch && Mod.PolicePerception.AnyCanSeePlayer && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000)
+                    {
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                    }
                 }
 
             }
+            else
+            {
+                if (!ResumePatrol.HasRecentlyBeenPlayed && Mod.RespawnManager.RecentlyBribedPolice)
+                {
+                    AddToQueue(ResumePatrol);
+                }
+                if (!SuspectLost.HasRecentlyBeenPlayed && Mod.Player.CurrentPoliceResponse.RecentlyLostWanted && !Mod.RespawnManager.RecentlyRespawned && !Mod.RespawnManager.RecentlyBribedPolice && !Mod.RespawnManager.RecentlySurrenderedToPolice)
+                {
+                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer));
+                }
+                if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Mod.InvestigationManager.LastInvestigationRecentlyExpired && Mod.InvestigationManager.DistanceToInvestigationPosition <= 1000f)
+                {
+                    AddToQueue(NoFurtherUnitsNeeded);
+                }
+                foreach (VehicleExt StolenCar in Mod.Player.ReportedStolenVehicles)
+                {
+                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.PolicePerception.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
+                }
+            }
+
+            if (!SuspectWasted.HasRecentlyBeenPlayed && Mod.Player.RecentlyDied && Mod.PolicePerception.AnyRecentlySeenPlayer && Mod.Player.MaxWantedLastLife > 0)
+            {
+                AddToQueue(SuspectWasted);
+            }        
         }
         private void AddToQueue(Dispatch ToAdd, PoliceScannerCallIn ToCallIn)
         {
@@ -317,7 +303,7 @@ namespace LosSantosRED.lsr
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
         {
-            CrimeDispatch ToLookup = DispatchLookup.FirstOrDefault(x => x.CrimeIdentified == crimeAssociated);
+            CrimeDispatch ToLookup = DispatchLookup.FirstOrDefault(x => x.CrimeID == crimeAssociated.ID);
             if (ToLookup != null && ToLookup.DispatchToPlay != null)
             {
                 ToLookup.DispatchToPlay.Priority = crimeAssociated.Priority;
@@ -620,7 +606,7 @@ namespace LosSantosRED.lsr
         }
         private void AddStreet(DispatchEvent dispatchEvent)
         {
-            Street MyStreet = Mod.PlayerLocationManager.PlayerCurrentStreet;
+            Street MyStreet = Mod.Player.CurrentLocation.CurrentStreet;
             if (MyStreet != null)
             {
                 string StreetAudio = StreetScanner.GetAudio(MyStreet.Name);
@@ -631,9 +617,9 @@ namespace LosSantosRED.lsr
                     dispatchEvent.Subtitles += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
                     dispatchEvent.NotificationText += "~n~~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
 
-                    if (Mod.PlayerLocationManager.PlayerCurrentCrossStreet != null)
+                    if (Mod.Player.CurrentLocation.CurrentCrossStreet != null)
                     {
-                        Street MyCrossStreet = Mod.PlayerLocationManager.PlayerCurrentCrossStreet;
+                        Street MyCrossStreet = Mod.Player.CurrentLocation.CurrentCrossStreet;
                         if (MyCrossStreet != null)
                         {
                             string CrossStreetAudio = StreetScanner.GetAudio(MyCrossStreet.Name);
@@ -860,7 +846,7 @@ namespace LosSantosRED.lsr
         }
         private void AddRapSheet(DispatchEvent dispatchEvent)
         {
-            dispatchEvent.NotificationText = "Wanted For:" + Mod.WantedLevelManager.CurrentCrimes.PrintCrimes();
+            dispatchEvent.NotificationText = "Wanted For:" + Mod.Player.CurrentPoliceResponse.CurrentCrimes.PrintCrimes();
         }
         private void AddSpeed(DispatchEvent dispatchEvent, float Speed)
         {
@@ -954,31 +940,31 @@ namespace LosSantosRED.lsr
             SetupDispatches();
             DispatchLookup = new List<CrimeDispatch>
         {
-            new CrimeDispatch(Mod.CrimeManager.AttemptingSuicide,AttemptingSuicide),
-            new CrimeDispatch(Mod.CrimeManager.BrandishingWeapon,CarryingWeapon),
-            new CrimeDispatch(Mod.CrimeManager.ChangingPlates,SuspiciousActivity),
-            new CrimeDispatch(Mod.CrimeManager.DrivingAgainstTraffic,RecklessDriving),
-            new CrimeDispatch(Mod.CrimeManager.DrivingOnPavement,RecklessDriving),
-            new CrimeDispatch(Mod.CrimeManager.FelonySpeeding,FelonySpeeding),
-            new CrimeDispatch(Mod.CrimeManager.FiringWeapon,ShotsFired),
-            new CrimeDispatch(Mod.CrimeManager.FiringWeaponNearPolice,ShotsFiredAtAnOfficer),
-            new CrimeDispatch(Mod.CrimeManager.GotInAirVehicleDuringChase,StealingAirVehicle),
-            new CrimeDispatch(Mod.CrimeManager.GrandTheftAuto,GrandTheftAuto),
-            new CrimeDispatch(Mod.CrimeManager.HitCarWithCar,VehicleHitAndRun),
-            new CrimeDispatch(Mod.CrimeManager.HitPedWithCar,PedHitAndRun),
-            new CrimeDispatch(Mod.CrimeManager.RunningARedLight,RunningARedLight),
-            new CrimeDispatch(Mod.CrimeManager.HurtingCivilians,CivilianInjury),
-            new CrimeDispatch(Mod.CrimeManager.HurtingPolice,AssaultingOfficer),
-            new CrimeDispatch(Mod.CrimeManager.KillingCivilians,CivilianDown),
-            new CrimeDispatch(Mod.CrimeManager.KillingPolice,OfficerDown),
-            new CrimeDispatch(Mod.CrimeManager.Mugging,Mugging),
-            new CrimeDispatch(Mod.CrimeManager.NonRoadworthyVehicle,SuspiciousVehicle),
-            new CrimeDispatch(Mod.CrimeManager.ResistingArrest,ResistingArrest),
-            new CrimeDispatch(Mod.CrimeManager.TrespessingOnGovtProperty,TrespassingOnGovernmentProperty),
-            new CrimeDispatch(Mod.CrimeManager.DrivingStolenVehicle,DrivingAtStolenVehicle),
-            new CrimeDispatch(Mod.CrimeManager.TerroristActivity,TerroristActivity),
-            new CrimeDispatch(Mod.CrimeManager.BrandishingCloseCombatWeapon,CarryingWeapon),
-            new CrimeDispatch(Mod.CrimeManager.SuspiciousActivity,SuspiciousActivity),
+            new CrimeDispatch("AttemptingSuicide",AttemptingSuicide),
+            new CrimeDispatch("BrandishingWeapon",CarryingWeapon),
+            new CrimeDispatch("ChangingPlates",SuspiciousActivity),
+            new CrimeDispatch("DrivingAgainstTraffic",RecklessDriving),
+            new CrimeDispatch("DrivingOnPavement",RecklessDriving),
+            new CrimeDispatch("FelonySpeeding",FelonySpeeding),
+            new CrimeDispatch("FiringWeapon",ShotsFired),
+            new CrimeDispatch("FiringWeaponNearPolice",ShotsFiredAtAnOfficer),
+            new CrimeDispatch("GotInAirVehicleDuringChase",StealingAirVehicle),
+            new CrimeDispatch("GrandTheftAuto",GrandTheftAuto),
+            new CrimeDispatch("HitCarWithCar",VehicleHitAndRun),
+            new CrimeDispatch("HitPedWithCar",PedHitAndRun),
+            new CrimeDispatch("RunningARedLight",RunningARedLight),
+            new CrimeDispatch("HurtingCivilians",CivilianInjury),
+            new CrimeDispatch("HurtingPolice",AssaultingOfficer),
+            new CrimeDispatch("KillingCivilians",CivilianDown),
+            new CrimeDispatch("KillingPolice",OfficerDown),
+            new CrimeDispatch("Mugging",Mugging),
+            new CrimeDispatch("NonRoadworthyVehicle",SuspiciousVehicle),
+            new CrimeDispatch("ResistingArrest",ResistingArrest),
+            new CrimeDispatch("TrespessingOnGovtProperty",TrespassingOnGovernmentProperty),
+            new CrimeDispatch("DrivingStolenVehicle",DrivingAtStolenVehicle),
+            new CrimeDispatch("TerroristActivity",TerroristActivity),
+            new CrimeDispatch("BrandishingCloseCombatWeapon",CarryingWeapon),
+            new CrimeDispatch("SuspiciousActivity",SuspiciousActivity),
 
         };
             DispatchList = new List<Dispatch>
@@ -1751,11 +1737,11 @@ namespace LosSantosRED.lsr
         }
         private class CrimeDispatch
         {
-            public Crime CrimeIdentified { get; set; }
+            public string CrimeID { get; set; }
             public Dispatch DispatchToPlay { get; set; }
-            public CrimeDispatch(Crime crimeIdentified, Dispatch dispatchToPlay)
+            public CrimeDispatch(string crimeIdentified, Dispatch dispatchToPlay)
             {
-                CrimeIdentified = crimeIdentified;
+                CrimeID = crimeIdentified;
                 DispatchToPlay = dispatchToPlay;
             }
         }

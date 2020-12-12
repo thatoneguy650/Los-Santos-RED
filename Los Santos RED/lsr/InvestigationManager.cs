@@ -15,7 +15,6 @@ public class InvestigationManager
     public float NearInvestigationDistance { get; private set; }
     public bool InInvestigationMode { get; private set; }
     public bool HavePlayerDescription { get; private set; }
-    public bool IsRunning { get; set; }
     public bool InvestigationModeExpired
     {
         get
@@ -69,24 +68,9 @@ public class InvestigationManager
                 return Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition);
         }
     }
-    public void Initialize()
-    {
-        InvestigationPosition = Vector3.Zero;
-        InvestigationDistance = 800f;//350f;
-        PrevInvestigationPosition = Vector3.Zero;
-        NearInvestigationDistance = 250f;
-        IsRunning = true;
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
-    }
     public void Tick()
     {
-        if (IsRunning)
-        {
-            InvestigationTick();
-        }
+        InvestigationTick(); 
     }
     public void Reset()
     {
@@ -114,9 +98,9 @@ public class InvestigationManager
             PoliceInInvestigationModeChanged();
 
 
-        if (Mod.Player.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Mod.PolicePerception.AnyCanRecognizePlayer && Mod.WantedLevelManager.HasBeenNotWantedFor >= 5000)
+        if (Mod.Player.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Mod.PolicePerception.AnyCanRecognizePlayer && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
         {
-            Mod.WantedLevelManager.ApplyReportedCrimes();
+            Mod.Player.CurrentPoliceResponse.ApplyReportedCrimes();
         }
     }
     private void InvestigationPositionChanged()

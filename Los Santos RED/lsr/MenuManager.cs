@@ -156,22 +156,8 @@ public class MenuManager
         "Dont_tazeme_bro"
     };
 
-    public float SelectedTakeoverRadius { get; set; }
-    public int SelectedPlateIndex { get; set; }
-    public string CurrentScreenEffect { get; set; }
-    public bool IsRunning { get; set; }
-
-    public void Intitialize()
+    public MenuManager()
     {
-        IsRunning = true;
-        RandomWeaponCategory = 0;
-
-        CurrentSelectedSurrenderLocation = null;
-        CurrentSelectedHospitalLocation = null;
-
-        SelectedTakeoverRadius = -1f;
-        SelectedPlateIndex = 0;
-
         menuPool = new MenuPool();
         mainMenu = new UIMenu("Los Santos RED", "Select an Option");
         menuPool.Add(mainMenu);
@@ -200,6 +186,9 @@ public class MenuManager
         debugMenu.OnCheckboxChange += OnCheckboxChange;
     }
 
+    public float SelectedTakeoverRadius { get; set; }
+    public int SelectedPlateIndex { get; set; }
+    public string CurrentScreenEffect { get; set; }
     public void Tick()
     {
         //try
@@ -256,19 +245,11 @@ public class MenuManager
         //    Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
         //}
     }
-
-    public void Dispose()
-    {
-        IsRunning = false;
-        menuPool = null;
-    }
-
     public void ShowMainMenu()
     {
         CreateMainMenu();
         mainMenu.Visible = true;
     }
-
     public void ShowDeathMenu()
     {
         CreateDeathMenu();
@@ -282,7 +263,6 @@ public class MenuManager
 
         deathMenu.Visible = true;
     }
-
     public void ShowBustedMenu()
     {
         if (Mod.Player.IsDead)
@@ -299,7 +279,6 @@ public class MenuManager
 
         bustedMenu.Visible = true;
     }
-
     public void ShowDebugMenu()
     {
         CreateDebugMenu();
@@ -312,7 +291,6 @@ public class MenuManager
 
         debugMenu.Visible = true;
     }
-
     private void CreateMainMenu()
     {
         mainMenu.Clear();
@@ -329,7 +307,6 @@ public class MenuManager
         CreateOptionsMenu();
         CreateScenariosMenu();
     }
-
     private void CreateDeathMenu()
     {
         deathMenu.Clear();
@@ -352,7 +329,6 @@ public class MenuManager
         else
             menuDeathUndie.Enabled = false;
     }
-
     private void CreateBustedMenu()
     {
         bustedMenu.Clear();
@@ -379,7 +355,6 @@ public class MenuManager
         else
             menuBustedTalk.Enabled = false;
     }
-
     private void CreateOptionsMenu()
     {
         ReloadSettings = new UIMenuItem("Reload Settings", "Reload All settings from XML");
@@ -408,7 +383,6 @@ public class MenuManager
         settingsMenuKeySettings.OnItemSelect += SettingsMenuSelect;
         settingsMenuTrafficViolations.OnItemSelect += SettingsMenuSelect;
     }
-
     private void CreateSettingSubMenu(FieldInfo[] Fields, object SettingsSubType, UIMenu MenuToSet)
     {
         foreach (FieldInfo fi in Fields)
@@ -426,14 +400,11 @@ public class MenuManager
             }
         }
     }
-
     private void CreateActionsMenu()
     {
         menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
         menuActionSmoking = new UIMenuItem("Smoking", "Start smoking.");
-        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.",
-            LicensePlateTheftManager
-                .SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
+        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.",Mod.Player.SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
 
@@ -450,7 +421,6 @@ public class MenuManager
         actionsMenu.OnListChange += OnListChange;
         actionsMenu.OnCheckboxChange += OnCheckboxChange;
     }
-
     private void CreateScenariosMenu()
     {
         scenariosMainPrisonEscape = new UIMenuItem("Prison Escape", "Escape the prison");
@@ -462,7 +432,6 @@ public class MenuManager
         scenariosMenu.OnListChange += OnListChange;
         scenariosMenu.OnCheckboxChange += OnCheckboxChange;
     }
-
     private void CreateDebugMenu()
     {
         debugMenu.Clear();
@@ -488,21 +457,18 @@ public class MenuManager
         debugMenu.AddItem(menuDebugScreenEffect);
         debugMenu.AddItem(menuDebugResetMod);
     }
-
     private void UpdateClosestHospitalIndex()
     {
         menuDeathHospitalRespawn.Index = LocationManager.GetLocations(LocationType.Hospital)
             .IndexOf(LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position,
                 LocationType.Hospital));
     }
-
     private void UpdateClosestPoliceStationIndex()
     {
         menuBustedSurrender.Index = LocationManager.GetLocations(LocationType.Police)
             .IndexOf(LocationManager.GetClosestLocation(Game.LocalPlayer.Character.Position,
                 LocationType.Police));
     }
-
     private void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuMainTakeoverRandomPed)
@@ -525,7 +491,6 @@ public class MenuManager
 
         mainMenu.Visible = false;
     }
-
     private void BustedMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuBustedResistArrest)
@@ -551,7 +516,6 @@ public class MenuManager
 
         bustedMenu.Visible = false;
     }
-
     private void DeathMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuDeathUndie) Mod.RespawnManager.UnDie();
@@ -569,12 +533,10 @@ public class MenuManager
 
         deathMenu.Visible = false;
     }
-
     private void OptionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
        //if (selectedItem == ReloadSettings) SettingsManager.ReadAllConfigs();
     }
-
     private void SettingsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         string MySettingName = selectedItem.Text.Split(':')[0];
@@ -639,18 +601,23 @@ public class MenuManager
 
         SettingsManager.SerializeAllSettings();
     }
-
     private void ActionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuMainSuicide)
+        {
             Mod.SurrenderManager.CommitSuicide(Game.LocalPlayer.Character);
-        //else if (selectedItem == menuActionSmoking)
-        //    SmokingManager.StartScenario();
+        }
         else if (selectedItem == menuMainChangeLicensePlate)
-            LicensePlateTheftManager.ChangeNearestLicensePlate();
-        else if (selectedItem == menuMainRemoveLicensePlate) LicensePlateTheftManager.RemoveNearestLicensePlate();
+        {
+            PlateTheft plateTheft = new PlateTheft();
+            plateTheft.ChangePlate(Mod.Player.SpareLicensePlates[Mod.MenuManager.SelectedPlateIndex]);
+        }
+        else if (selectedItem == menuMainRemoveLicensePlate)
+        {
+            PlateTheft plateTheft = new PlateTheft();
+            plateTheft.RemovePlate();
+        }
     }
-
     private void ScenarioMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == scenariosMainPrisonEscape)
@@ -658,7 +625,6 @@ public class MenuManager
             //PedSwap.BecomeScenarioPed();
         }
     }
-
     private void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuDebugKillPlayer) Game.LocalPlayer.Character.Kill();
@@ -694,7 +660,6 @@ public class MenuManager
 
         debugMenu.Visible = false;
     }
-
     private void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
     {
         if (sender == optionsMenu)
@@ -704,7 +669,6 @@ public class MenuManager
             MySetting.SetValue(null, Checked);
         }
     }
-
     private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
     {
         if (sender == mainMenu)
@@ -745,12 +709,11 @@ public class MenuManager
             if (list == menuDebugRandomWeapon)
                 RandomWeaponCategory = list.Index;
             else if (list == menuAutoSetRadioStation)
-                RadioManager.AutoTuneStation = strRadioStations[index];
+                Mod.RadioManager.AutoTuneStation = strRadioStations[index];
             if (list == menuDebugScreenEffect)
                 CurrentScreenEffect = ScreenEffects[index];
         }
     }
-
     private string GetKeyboardInput(string DefaultText)
     {
         NativeFunction.CallByName<bool>("DISPLAY_ONSCREEN_KEYBOARD", true, "FMMC_KEY_TIP8", "", DefaultText, "", "", "",

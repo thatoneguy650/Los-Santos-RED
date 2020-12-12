@@ -10,36 +10,23 @@ using System.Threading.Tasks;
 
 public class MuggingManager
 {
-    public bool IsRunning { get; set; }
     public bool IsMugging { get; private set; }
-    public void Initialize()
-    {
-        IsRunning = true;
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
-    }
     public void Tick()
     {
-        if (IsRunning)
+        if (!IsMugging)
         {
-            if (!IsMugging)
+            if (Game.LocalPlayer.Character.IsConsideredArmed() && !Mod.Player.IsInVehicle)
             {
-                if (Game.LocalPlayer.Character.IsConsideredArmed() && !Mod.Player.IsInVehicle)
+                if (Game.LocalPlayer.Character.IsAiming && !IsHoldingMelee())
                 {
-                    if (Game.LocalPlayer.Character.IsAiming && !IsHoldingMelee())
-                    {
-                        CheckArmedMugging();
-                    }
-                    else
-                    {
-                        CheckUnarmedMugging();
-                    }
+                    CheckArmedMugging();
+                }
+                else
+                {
+                    CheckUnarmedMugging();
                 }
             }
         }
-
     }
     private void CheckArmedMugging()
     {
@@ -131,7 +118,7 @@ public class MuggingManager
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, RandomItems.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
-                MuggingTarget.AddCrime(Mod.CrimeManager.Mugging,MuggingTarget.Pedestrian.Position);
+                //MuggingTarget.AddCrime(Mod.Violations.Mugging,MuggingTarget.Pedestrian.Position);
             }
             MuggingTarget.CanBeTasked = true;
             IsMugging = false;      

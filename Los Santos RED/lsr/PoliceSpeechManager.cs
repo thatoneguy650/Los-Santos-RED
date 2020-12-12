@@ -20,32 +20,8 @@ public class PoliceSpeechManager
     private List<string> AmbientSpeech;
     private List<string> RegularChaseSpeech;
     private List<SpeakingCop> SpeakingCops;
-    public bool IsRunning { get; set; }
-    public void Initialize()
-    {
-        IsRunning = true;
-        DefaultConfig();
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
-    }
-    public void Tick()
-    {
-        if (IsRunning)
-        {
-            try
-            {
-                AddSpeakingCops();
-                CheckSpeech();
-            }
-            catch (Exception e)
-            {
-                Debugging.WriteToLog(e.Message, e.StackTrace);
-            }
-        }
-    }
-    private void DefaultConfig()
+
+    public PoliceSpeechManager()
     {
         DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
         UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
@@ -55,6 +31,19 @@ public class PoliceSpeechManager
         ArrestedWaitSpeech = new List<string> { "WON_DISPUTE" };
         PlayerDeadSpeech = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE", "SUSPECT_KILLED_REPORT" };
         SpeakingCops = new List<SpeakingCop>();
+    }
+    public void Tick()
+    {
+        try
+        {
+            AddSpeakingCops();
+            CheckSpeech();
+        }
+        catch (Exception e)
+        {
+            Debugging.WriteToLog(e.Message, e.StackTrace);
+        }
+        
     }
     private void AddSpeakingCops()
     {
@@ -76,7 +65,7 @@ public class PoliceSpeechManager
             {
                 Cop.Speak();
             }
-            if (Cop.CanRadioIn && Cop.AssignedCop.CanRecognizePlayer && Mod.CrimeManager.IsViolatingAnyCrimes)
+            if (Cop.CanRadioIn && Cop.AssignedCop.CanRecognizePlayer && Mod.Violations.IsViolatingAnyLaws)
             {
                 Cop.RadioIn();
             }
@@ -148,7 +137,7 @@ public class PoliceSpeechManager
             {
                 AssignedCop.Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
             }
-            else if (Mod.Player.IsWanted && !Mod.WantedLevelManager.IsDeadlyChase)
+            else if (Mod.Player.IsWanted && !Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
             {
                 AssignedCop.Pedestrian.PlayAmbientSpeech(Mod.PoliceSpeechManager.RegularChaseSpeech.PickRandom());
             }
@@ -156,7 +145,7 @@ public class PoliceSpeechManager
             {
                 AssignedCop.Pedestrian.PlayAmbientSpeech(Mod.PoliceSpeechManager.AmbientSpeech.PickRandom());
             }
-            else if (Mod.WantedLevelManager.IsDeadlyChase)
+            else if (Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
             {
                 AssignedCop.Pedestrian.PlayAmbientSpeech(Mod.PoliceSpeechManager.DeadlyChaseSpeech.PickRandom());
             }

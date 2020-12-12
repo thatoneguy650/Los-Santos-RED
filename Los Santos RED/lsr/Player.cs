@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using ExtensionsMethods;
+using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -14,7 +15,6 @@ namespace LosSantosRED.lsr
         private bool isGettingIntoVehicle;
         private bool isInVehicle;
         private bool isAimingInVehicle;
-        private bool isJacking;
         private bool areStarsGreyedOut;
         private uint GameTimeStartedHoldingEnter;
         private uint GameTimeLastShot;
@@ -30,8 +30,10 @@ namespace LosSantosRED.lsr
         public Player()
         {
             VanillaRespawn = true;
+            SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 1, 1, false));
         }
-        public bool IsRunning { get; set; }
+        public LocationData CurrentLocation { get; private set; } = new LocationData(Game.LocalPlayer.Character);
+        public PoliceResponse CurrentPoliceResponse { get; private set; } = new PoliceResponse();
         public int TimesDied { get; set; }
         public bool HandsAreUp { get; set; }
         public int MaxWantedLastLife { get; set; }
@@ -42,10 +44,28 @@ namespace LosSantosRED.lsr
         public bool BeingArrested { get; private set; }
         public bool DiedInVehicle { get; private set; }
         public bool IsConsideredArmed { get; private set; }
+        public bool IsAliveAndFree
+        {
+            get
+            {
+                if(IsBusted || IsDead)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        public bool IsCarJacking { get; set; }
+        public bool IsLockPicking { get; set; }
+        public bool IsChangingLicensePlates { get; set; }
+        public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public bool IsNightTime { get; private set; }
         public bool IsInAutomobile { get; private set; }
         public bool IsOnMotorcycle { get; private set; }
-        public List<VehicleExt> TrackedVehicles { get; private set; }
+        public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
         public WeaponCategory CurrentWeaponCategory
@@ -58,18 +78,6 @@ namespace LosSantosRED.lsr
             }
         }
         public Vector3 CurrentPosition => Game.LocalPlayer.Character.Position;
-        public bool IsJacking
-        {
-            get => isJacking;
-            private set
-            {
-                if (isJacking != value)
-                {
-                    isJacking = value;
-                    IsJackingChanged();
-                }
-            }
-        }
         public bool IsInVehicle
         {
             get => isInVehicle;
@@ -98,7 +106,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (HandsAreUp && !Mod.WantedLevelManager.IsWeaponsFree)
+                if (HandsAreUp && !Mod.Player.CurrentPoliceResponse.IsWeaponsFree)
                     return true;
                 else
                     return false;
@@ -132,23 +140,19 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (CarJackingManager.PlayerCarJacking || CarLockPickingManager.PlayerLockPicking)
-                    return true;
-                return false;
+                if (IsCarJacking || IsLockPicking)
+                { 
+                    return true; 
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         public bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
         public bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
-        public bool WasJustJacking
-        {
-            get
-            {
-                if (GameTimeLastStartedJacking == 0)
-                    return false;
-                return Game.GameTime - GameTimeLastStartedJacking >= 5000;
-            }
-        }
         public bool IsStationary
         {
             get
@@ -198,7 +202,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Mod.WantedLevelManager.HasBeenWantedFor <= 3000)
+                if (Mod.Player.CurrentPoliceResponse.HasBeenWantedFor <= 3000)
                     return true;
                 if (Mod.SurrenderManager.IsCommitingSuicide)
                     return true;
@@ -246,13 +250,13 @@ namespace LosSantosRED.lsr
             Game.StartNewScript("selector");
             VanillaRespawn = true;
         }
-        public void Tick()
+        public void Update()
         {
             if(VanillaRespawn)
             {
                 TerminateVanillaRespawn();
             }
-            UpdatePlayer();
+            CachePlayerData();
             StateTick();
             TurnOffRespawnScripts();
             AudioTick();
@@ -316,8 +320,8 @@ namespace LosSantosRED.lsr
         public void DisplayPlayerNotification()
         {
             var NotifcationText = "Warrants: ~g~None~s~";
-            if (Mod.WantedLevelManager.CurrentCrimes.CommittedAnyCrimes)
-                NotifcationText = "Wanted For:" + Mod.WantedLevelManager.CurrentCrimes.PrintCrimes();
+            if (Mod.Player.CurrentPoliceResponse.CurrentCrimes.CommittedAnyCrimes)
+                NotifcationText = "Wanted For:" + Mod.Player.CurrentPoliceResponse.CurrentCrimes.PrintCrimes();
 
             var MyCar = UpdateCurrentVehicle();
             if (MyCar != null && !MyCar.IsStolen)
@@ -362,7 +366,7 @@ namespace LosSantosRED.lsr
             ToReturn.SetAsEntered();
             return ToReturn;
         }
-        private void UpdatePlayer()
+        private void CachePlayerData()
         {
             IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             if (IsInVehicle)
@@ -392,6 +396,10 @@ namespace LosSantosRED.lsr
                 if (Game.LocalPlayer.Character.Speed >= 0.2f)
                     GameTimeLastMoved = Game.GameTime;
             }
+            if(CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                CurrentLocation.CharacterToLocate = Game.LocalPlayer.Character;
+            }
 
             if (Game.LocalPlayer.Character.IsShooting)
                 GameTimeLastShot = Game.GameTime;
@@ -410,8 +418,7 @@ namespace LosSantosRED.lsr
             if (CurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeaponHash)
                 LastWeaponHash = PlayerCurrentWeapon.Hash;
 
-            AreStarsGreyedOut = SearchModeManager.IsInSearchMode;//NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
-            IsJacking = Game.LocalPlayer.Character.IsJacking;
+            AreStarsGreyedOut = Mod.SearchModeManager.IsInSearchMode;//NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
 
             if (Game.IsControlPressed(2, GameControl.Enter))
             {
@@ -454,8 +461,7 @@ namespace LosSantosRED.lsr
             if (BeingArrested && !IsBusted)
                 BustedEvent();
 
-            if (WantedLevel > MaxWantedLastLife
-            ) // The max wanted level i saw in the last life, not just right before being busted
+            if (WantedLevel > MaxWantedLastLife) // The max wanted level i saw in the last life, not just right before being busted
                 MaxWantedLastLife = WantedLevel;
         }
         private void AudioTick()
@@ -553,17 +559,27 @@ namespace LosSantosRED.lsr
         {
             if (IsGettingIntoAVehicle)
             {
-                var TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
-                var SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-                TargetVeh.AttemptLockStatus((VehicleLockStatus)7); //Attempt to lock most car doors
-                if ((int)TargetVeh.LockStatus == 7) CarLockPickingManager.PickLock(TargetVeh, SeatTryingToEnter);
-                if (TargetVeh != null && SeatTryingToEnter == -1)
+                Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
+                if(TargetVeh == null)
                 {
-                    var Driver = TargetVeh.Driver;
-                    if (Driver != null && Driver.IsAlive) CarJackingManager.CarJack(TargetVeh, Driver, SeatTryingToEnter);
+                    return;
+                }
+                int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
+                if(!HasEntered(TargetVeh))//If you havent entered it
+                {
+                    TargetVeh.AttemptLockStatus((VehicleLockStatus)7); //Attempt to lock most car doors
+                }
+                if ((int)TargetVeh.LockStatus == 7) //Is Locked
+                {
+                    CarLockPick MyLockPick = new CarLockPick(TargetVeh, SeatTryingToEnter);
+                    MyLockPick.PickLock();
+                }
+                else if (SeatTryingToEnter == -1 && TargetVeh.Driver != null && TargetVeh.Driver.IsAlive) //Driver
+                {
+                    CarJack MyJack = new CarJack(TargetVeh, TargetVeh.Driver, SeatTryingToEnter);
+                    MyJack.StartCarJack();
                 }
             }
-
             isGettingIntoVehicle = IsGettingIntoAVehicle;
         }
         private void IsInVehicleChanged()
@@ -579,21 +595,13 @@ namespace LosSantosRED.lsr
                 SetDriverWindow(false);
             Debugging.WriteToLog("ValueChecker", string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
         }
-        private void IsJackingChanged()
-        {
-            if (IsJacking) GameTimeLastStartedJacking = Game.GameTime;
-            Debugging.WriteToLog("ValueChecker", string.Format("IsJacking Changed to: {0}", IsJacking));
-        }
         private void AreStarsGreyedOutChanged()
         {
             if (AreStarsGreyedOut)
                 GameTimeLastStarsGreyedOut = Game.GameTime;
             else
                 GameTimeLastStarsNotGreyedOut = Game.GameTime;
-            //foreach (Cop Cop in PedList.CopPeds)
-            //{
-            //    Cop.AtWantedCenterDuringSearchMode = false;
-            //}
+
             Debugging.WriteToLog("ValueChecker", string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
         private void TrackCurrentVehicle()
@@ -604,7 +612,7 @@ namespace LosSantosRED.lsr
                 IsStolen = false;
 
             CurrVehicle.IsStolen = IsStolen;
-            var AmStealingCarFromPrerson = IsJacking;
+            var AmStealingCarFromPrerson = Game.LocalPlayer.Character.IsJacking;
             Ped PreviousOwner;
 
             if (CurrVehicle.HasDriver && CurrVehicle.Driver.Handle != Game.LocalPlayer.Character.Handle)
@@ -616,13 +624,18 @@ namespace LosSantosRED.lsr
                 PreviousOwner.Handle != Game.LocalPlayer.Character.Handle) AmStealingCarFromPrerson = true;
             var MyPlate = new LicensePlate(CurrVehicle.LicensePlate, CurrVehicle.Handle,
                 NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CurrVehicle), false);
-            var MyNewCar = new VehicleExt(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding,
-                IsStolen, MyPlate);
-            if (IsStolen && PreviousOwner.Exists())
-            {
-                var MyPrevOwner = Mod.PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
-                if (MyPrevOwner != null) MyPrevOwner.AddCrime(Mod.CrimeManager.GrandTheftAuto, MyPrevOwner.Pedestrian.Position);
-            }
+            var MyNewCar = new VehicleExt(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding,IsStolen, MyPlate);
+
+
+            //Maybe Add this back?
+            //if (IsStolen && PreviousOwner.Exists())
+            //{
+            //    PedExt MyPrevOwner = Mod.PedManager.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == PreviousOwner.Handle);
+            //    if (MyPrevOwner != null) 
+            //    { 
+            //        MyPrevOwner.AddCrime(Mod.Violations.GrandTheftAuto, MyPrevOwner.Pedestrian.Position); 
+            //    }
+            //}
 
             TrackedVehicles.Add(MyNewCar);
         }
@@ -665,6 +678,17 @@ namespace LosSantosRED.lsr
                 MyVehicle.CarPlate.IsWanted = true;
             if (MyVehicle.IsStolen && !MyVehicle.WasReportedStolen)
                 MyVehicle.WasReportedStolen = true;
+        }
+        private bool HasEntered(Vehicle TargetVeh)
+        {
+            if (TrackedVehicles.Any(x => x.VehicleEnt.Handle == TargetVeh.Handle))//Entered By Player
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }

@@ -19,9 +19,7 @@ public class VehicleEngineManager
     private uint GameTimeStartedHotwiring;
     private bool PrevIsHotwiring;
     private bool IsPlayerInVehicle;
-    public Keys EngineToggleKey { get; private set; }
     public bool IsEngineRunning { get; private set; }
-    public bool IsRunning { get; set; }
     public bool IsHotwiring
     {
         get
@@ -52,56 +50,40 @@ public class VehicleEngineManager
             }
         }
     }
-    public void Initialize()
+    public VehicleEngineManager()
     {
-        IsRunning = true;
-        IsEngineRunning = false;
-        PrevEngineRunning = false;
-        WasinVehicle = false;
-        TogglingEngine = false;
-        GameTimeStartedHotwiring = 0;
-        PrevIsHotwiring = false; 
-        EngineToggleKey = SettingsManager.MySettings.KeyBinding.VehicleKey;
-
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
-        {
-            if(Game.LocalPlayer.Character.CurrentVehicle != null)
-                IsEngineRunning = Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
-        }      
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
+        //if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat)
+        //{
+        //    if(Game.LocalPlayer.Character.CurrentVehicle != null)
+        //        IsEngineRunning = Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
+        //}      
     }
     public void Tick()
     {
-        if (IsRunning)
+        IsPlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+        if (WasinVehicle != IsPlayerInVehicle)
         {
-            IsPlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-            if (WasinVehicle != IsPlayerInVehicle)
-            {
-                IsPlayerInVehicleChanged();
-            }
-
-            if (PrevIsHotwiring != IsHotwiring)
-            {
-                IsHotWiringChanged();
-            }
-
-            if (IsPlayerInVehicle)
-            {
-                SetEngineToDesiredStatus();
-            }
-            else
-            {
-                GameTimeStartedHotwiring = 0;
-            }
-
-            if (PrevEngineRunning != IsEngineRunning)
-            {
-                IsEngineRunningChanged();
-            }
+            IsPlayerInVehicleChanged();
         }
+
+        if (PrevIsHotwiring != IsHotwiring)
+        {
+            IsHotWiringChanged();
+        }
+
+        if (IsPlayerInVehicle)
+        {
+            SetEngineToDesiredStatus();
+        }
+        else
+        {
+            GameTimeStartedHotwiring = 0;
+        }
+
+        if (PrevEngineRunning != IsEngineRunning)
+        {
+            IsEngineRunningChanged();
+        }      
     }
     public void ToggleEngine(bool PerformAnimation, bool DesiredEngineStatus)
     {

@@ -245,26 +245,35 @@ namespace ExtensionsMethods
         //Car Stuff
         public static bool AttemptLockStatus(this Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
         {
-           // Debugging.WriteToLog("LockCarDoor", string.Format("Start, Lock Status {0}", ToLock.LockStatus));
-            if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)//if (ToLock.LockStatus != (VehicleLockStatus)1) //unlocked
+
+            if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)
+            { 
+                return false; 
+            }
+            if (ToLock.HasDriver)
+            {
                 return false;
-            if (ToLock.HasDriver)//If they have a driver 
-                return false;
+            }
             foreach (VehicleDoor myDoor in ToLock.GetDoors())
             {
                 if (!myDoor.IsValid() || myDoor.IsOpen)
+                {
                     return false;//invalid doors make the car not locked
+                }
             }
             if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
+            {
                 return false;//broken windows == not locked
-            if (Mod.Player.TrackedVehicles.Any(x => x.VehicleEnt.Handle == ToLock.Handle))
-                return false; //previously entered vehicle arent locked
+            }
             if (ToLock.IsConvertible && ToLock.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
+            {
                 return false;
+            }
             if (ToLock.IsBike || ToLock.IsPlane || ToLock.IsHelicopter)
+            {
                 return false;
+            }
 
-            //Debugging.WriteToLog("LockCarDoor", "Locked");
             ToLock.LockStatus = DesiredLockStatus;//Locked for player
             return true;
         }

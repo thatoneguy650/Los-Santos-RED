@@ -13,8 +13,7 @@ public class PersonOfInterestManager
 {
     private uint GameTimeLastAppliedWantedStats;
     public bool PlayerIsPersonOfInterest { get; private set; }
-    public bool IsRunning { get; set; }
-    public List<CriminalHistory> CriminalHistory { get; set; }
+    public List<CriminalHistory> CriminalHistory { get; set; } = new List<CriminalHistory>();
     public bool RecentlyAppliedWantedStats
     {
         get
@@ -57,19 +56,9 @@ public class PersonOfInterestManager
                 return SettingsManager.MySettings.Police.LastWantedCenterSize;
         }
     }  
-    public void Initialize()
-    {
-        IsRunning = true;
-        CriminalHistory = new List<CriminalHistory>();
-        PlayerIsPersonOfInterest = false;
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
-    }    
     public void Tick()
     {
-        if (IsRunning && !Mod.Player.IsDead && !Mod.Player.IsBusted)
+        if (!Mod.Player.IsDead && !Mod.Player.IsBusted)
         {
             CheckCurrentVehicle();
             CheckSight();
@@ -83,7 +72,7 @@ public class PersonOfInterestManager
             }
             else
             {
-                if (PlayerIsPersonOfInterest && Mod.WantedLevelManager.HasBeenNotWantedFor >= 120000)
+                if (PlayerIsPersonOfInterest && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 120000)
                 {
                     Reset();
                 }
@@ -126,7 +115,7 @@ public class PersonOfInterestManager
             }
             else
             {
-                if (Mod.WantedLevelManager.NearLastWanted(SearchRadius) && Mod.WantedLevelManager.HasBeenNotWantedFor >= 5000)
+                if (Mod.Player.CurrentPoliceResponse.NearLastWanted(SearchRadius) && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
                 {
                     ApplyLastWantedStats();
                 }
@@ -151,14 +140,14 @@ public class PersonOfInterestManager
             return;
 
         if (Mod.Player.WantedLevel < CriminalHistory.MaxWantedLevel)
-            Mod.WantedLevelManager.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats",true);
+            Mod.Player.CurrentPoliceResponse.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats",true);
 
 
         Mod.PersonOfInterestManager.CriminalHistory.Remove(CriminalHistory);
-        Mod.WantedLevelManager.CurrentCrimes = CriminalHistory;
+        Mod.Player.CurrentPoliceResponse.CurrentCrimes = CriminalHistory;
 
         GameTimeLastAppliedWantedStats = Game.GameTime;
-        Debugging.WriteToLog("WantedLevelStats Replace", Mod.WantedLevelManager.CurrentCrimes.DebugPrintCrimes());
+        Debugging.WriteToLog("WantedLevelStats Replace", Mod.Player.CurrentPoliceResponse.CurrentCrimes.DebugPrintCrimes());
     }
     private CriminalHistory GetLastWantedStats()
     {

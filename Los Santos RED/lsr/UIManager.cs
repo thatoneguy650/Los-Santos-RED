@@ -60,8 +60,6 @@ public class UIManager
     private bool StartedBustedEffect = false;
     private bool StartedDeathEffect = false;
     private uint GameTimeLastDisplayedBleedingHelp;
-
-    public bool IsRunning { get; set; }
     private bool RecentlyDisplayedBleedingHelp
     {
         get
@@ -76,12 +74,7 @@ public class UIManager
     }
     public UIManager()
     {
-        IsRunning= true;
         BigMessage = new BigMessageThread(true);
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
     }
     public void Tick()
     {
@@ -150,13 +143,13 @@ public class UIManager
 
         string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Mod.InvestigationManager.InInvestigationMode, Mod.InvestigationManager.HavePlayerDescription,Mod.Player.IsStationary, Mod.InvestigationManager.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", SearchModeManager.IsInSearchMode,SearchModeManager.IsInActiveMode,SearchModeManager.TimeInSearchMode,SearchModeManager.TimeInActiveMode);
+        string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", Mod.SearchModeManager.IsInSearchMode, Mod.SearchModeManager.IsInActiveMode, Mod.SearchModeManager.TimeInSearchMode, Mod.SearchModeManager.TimeInActiveMode);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", Mod.PolicePerception.AnyRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, SearchModeManager.CurrentSearchTime, Mod.PolicePerception.PlaceLastSeenPlayer);
+        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", Mod.PolicePerception.AnyRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, Mod.SearchModeManager.CurrentSearchTime, Mod.PolicePerception.PlaceLastSeenPlayer);
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine4 = string.Format("NumberPlateIndexSelected {0}", Debugging.NumberPlateIndexSelected);
+        string DebugLine4 = string.Format("NumberPlateIndexSelected {0}", -9999);
         DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine5 = string.Format("{0}", VehicleIndicatorManager.DebugStatus);
+        string DebugLine5 = string.Format("{0}", Mod.VehicleIndicatorManager.DebugStatus);
         DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         //float Between = 0.01f;
         //float Start = 0.15f;
@@ -231,7 +224,7 @@ public class UIManager
         {
             if (Mod.Player.IsWanted)
                 PlayerStatusLine = "~r~Wanted~s~";
-            else if (Mod.WantedLevelManager.HasBeenNotWantedFor <= 45000)
+            else if (Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor <= 45000)
                 PlayerStatusLine = "~o~Wanted~s~";
             else
                 PlayerStatusLine = "~y~Wanted~s~";
@@ -256,39 +249,39 @@ public class UIManager
             else
             {
                 string ColorPrefx = "~s~";
-                if (TrafficViolationsManager.PlayerIsSpeeding)
+                if (Mod.Violations.PlayerIsSpeeding)
                     ColorPrefx = "~r~";
 
-                if (Mod.PlayerLocationManager.PlayerCurrentStreet != null)
-                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Mod.PlayerLocationManager.PlayerCurrentStreet.SpeedLimit);
+                if (Mod.Player.CurrentLocation.CurrentStreet != null)
+                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Mod.Player.CurrentLocation.CurrentStreet.SpeedLimit);
             }
 
-            if (TrafficViolationsManager.ViolatingTrafficLaws)
+            if (Mod.Violations.IsViolatingAnyTrafficLaws)
                 PlayerSpeedLine += " !";
 
-            PlayerSpeedLine += "~n~" + VehicleFuelManager.FuelUIText;
+            PlayerSpeedLine += "~n~" + Mod.VehicleFuelManager.FuelUIText;
         }
         return PlayerSpeedLine;
     }
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (Mod.PlayerLocationManager.PlayerCurrentStreet != null && Mod.PlayerLocationManager.PlayerCurrentCrossStreet != null)
-            StreetDisplay = string.Format(" {0} at {1} ", Mod.PlayerLocationManager.PlayerCurrentStreet.Name, Mod.PlayerLocationManager.PlayerCurrentCrossStreet.Name);
-        else if (Mod.PlayerLocationManager.PlayerCurrentStreet != null)
-            StreetDisplay = string.Format(" {0} ", Mod.PlayerLocationManager.PlayerCurrentStreet.Name);
+        if (Mod.Player.CurrentLocation.CurrentStreet != null && Mod.Player.CurrentLocation.CurrentCrossStreet != null)
+            StreetDisplay = string.Format(" {0} at {1} ", Mod.Player.CurrentLocation.CurrentStreet.Name, Mod.Player.CurrentLocation.CurrentCrossStreet.Name);
+        else if (Mod.Player.CurrentLocation.CurrentStreet != null)
+            StreetDisplay = string.Format(" {0} ", Mod.Player.CurrentLocation.CurrentStreet.Name);
         return StreetDisplay;
     }
     private string GetZoneDisplay()
     {
-        if (Mod.PlayerLocationManager.PlayerCurrentZone == null)
+        if (Mod.Player.CurrentLocation.CurrentZone == null)
             return "";
         string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = ZoneManager.GetName(Mod.PlayerLocationManager.PlayerCurrentZone,true);
-        if (Mod.PlayerLocationManager.PlayerCurrentZone != null)
+        ZoneDisplay = ZoneManager.GetName(Mod.Player.CurrentLocation.CurrentZone,true);
+        if (Mod.Player.CurrentLocation.CurrentZone != null)
         {
-            Agency MainZoneAgency = ZoneJurisdictionManager.GetMainAgency(Mod.PlayerLocationManager.PlayerCurrentZone.InternalGameName);
+            Agency MainZoneAgency = ZoneJurisdictionManager.GetMainAgency(Mod.Player.CurrentLocation.CurrentZone.InternalGameName);
             if (MainZoneAgency != null)
                 CopZoneName = MainZoneAgency.ColoredInitials;
         }

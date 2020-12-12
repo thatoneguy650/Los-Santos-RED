@@ -9,24 +9,23 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public static class SearchModeStoppingManager
+public class SearchModeStoppingManager
 {
-    private static Vector3 CurrentOffset = new Vector3(0f, 6f, 1f);
-    private static bool PrevStopSearchMode;
-    private static Vector3 PositionSet;
-    private static Model CopModel;
-    private static Ped GhostCop;
-    private static uint GameTimeLastGhostCopCreated;
-    private static bool StopSearchMode;
-    public static bool IsRunning { get; set; }
-    public static Ped SpotterCop
+    private Vector3 CurrentOffset = new Vector3(0f, 6f, 1f);
+    private bool PrevStopSearchMode;
+    private Vector3 PositionSet;
+    private Model CopModel = new Model("s_m_y_cop_01");
+    private Ped GhostCop;
+    private uint GameTimeLastGhostCopCreated;
+    private bool StopSearchMode;
+    public Ped SpotterCop
     {
         get
         {
             return GhostCop;
         }
     }
-    public static bool CanCreateGhostCop
+    public bool CanCreateGhostCop
     {
         get
         {
@@ -38,56 +37,42 @@ public static class SearchModeStoppingManager
                 return false;
         }
     }
-    public static void Initialize()
+    public SearchModeStoppingManager()
     {
-        CopModel = new Model("s_m_y_cop_01");
-        GhostCop = null;
-        StopSearchMode = false;
-        IsRunning = true;
         CopModel.LoadAndWait();
         CopModel.LoadCollisionAndWait();
-        GameTimeLastGhostCopCreated = 0;
     }
-    public static void Dispose()
+    public void Tick()
     {
-        IsRunning = false;
-        if (GhostCop.Exists())
-            GhostCop.Delete();
-    }
-    public static void Tick()
-    {
-        if (IsRunning)
+        if (Mod.Player.IsWanted)
+            StopSearchMode = true;
+        else
+            StopSearchMode = false;
+
+
+        if (PrevStopSearchMode != StopSearchMode)
         {
-            if (Mod.Player.IsWanted)
-                StopSearchMode = true;
-            else
-                StopSearchMode = false;
+            PrevStopSearchMode = StopSearchMode;
+            Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.PolicePerception.AnyRecentlySeenPlayer));
+        }
 
+        if (!StopSearchMode)
+            return;
 
-            if (PrevStopSearchMode != StopSearchMode)
-            {
-                PrevStopSearchMode = StopSearchMode;
-                Debugging.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.PolicePerception.AnyRecentlySeenPlayer));
-            }
-
-            if (!StopSearchMode)
-                return;
-
-            if (!GhostCop.Exists())
-            {
-                CreateGhostCop();
-            }
-            if (Mod.Player.IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
-            {
-                MoveGhostCopToPosition();
-            }
-            else
-            {
-                MoveGhostCopToOrigin();
-            }
+        if (!GhostCop.Exists())
+        {
+            CreateGhostCop();
+        }
+        if (Mod.Player.IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+        {
+            MoveGhostCopToPosition();
+        }
+        else
+        {
+            MoveGhostCopToOrigin();
         }
     }
-    private static void MoveGhostCopToPosition()
+    private void MoveGhostCopToPosition()
     {
         if (GhostCop.Exists())
         {
@@ -117,12 +102,12 @@ public static class SearchModeStoppingManager
             GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
         }
     }
-    private static void MoveGhostCopToOrigin()
+    private void MoveGhostCopToOrigin()
     {
         if (GhostCop != null)
             GhostCop.Position = new Vector3(0f, 0f, 0f);
     }
-    private static void CreateGhostCop()
+    private void CreateGhostCop()
     {    
         GhostCop = new Ped(CopModel, new Vector3(0f, 0f, 0f), 0f);
         GameTimeLastGhostCopCreated = Game.GameTime;

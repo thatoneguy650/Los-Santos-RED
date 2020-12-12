@@ -9,62 +9,66 @@ using ExtensionsMethods;
 using LSR.Vehicles;
 using LosSantosRED.lsr;
 
-public static class LicensePlateTheftManager
+public class PlateTheft
 {
-    private static Rage.Object Screwdriver;
-    private static Rage.Object LicensePlate;
-    private static float DistanceToCheckCars = 10f;
-    public static bool PlayerChangingPlate { get; private set; }
-    public static List<LicensePlate> SpareLicensePlates { get; private set; }
-    public static void Initialize()
-    {
-        Screwdriver = null;
-        LicensePlate = null;
-        PlayerChangingPlate = false;
-        SpareLicensePlates = new List<LicensePlate>();
-        SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 1, 1, false));
-    }
-    public static void RemoveNearestLicensePlate()
-    {
-        Vehicle ClosestVehicle = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
-        if (ClosestVehicle.LicensePlate == "        ")
-            return;
+    private Rage.Object ScrewdriverModel;
+    private Rage.Object LicensePlateModel;
+    private float DistanceToCheckCars = 10f;
+    private Vehicle VehicleWithPlate;
 
-        if (ClosestVehicle != null)
+    private VehicleExt VehicleToChange;
+    private LicensePlate PlateToAdd;
+    private bool HasLicensePlate
+    {
+        get
         {
-            VehicleExt VehicleToChange = Mod.Player.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
-            if (VehicleToChange == null)
+            if(VehicleToChange.VehicleEnt.LicensePlate == "        ")
             {
-                VehicleToChange = new VehicleExt(ClosestVehicle, 0, false, false, true, new LicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
-                Mod.Player.TrackedVehicles.Add(VehicleToChange);
+                return false;
             }
-            ChangeLicensePlateAnimation(VehicleToChange, false);
+            else
+            {
+                return true;
+            }
         }
     }
-    public static void ChangeNearestLicensePlate()
+    public PlateTheft()
     {
-        if (!SpareLicensePlates.Any())
-            return;
 
-        Vehicle ClosestVehicle = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
-
-        if (ClosestVehicle != null)
+    }
+    public PlateTheft(LicensePlate plateToChange)
+    {
+        PlateToAdd = plateToChange;
+    }
+    public void RemovePlate()
+    {
+        GetClosestTrackedVehicle();
+        if(HasLicensePlate)
         {
-            VehicleExt VehicleToChange = Mod.Player.TrackedVehicles.Where(x => x.VehicleEnt.Handle == ClosestVehicle.Handle).FirstOrDefault();
-            if (VehicleToChange == null)
-            {
-                VehicleToChange = new VehicleExt(ClosestVehicle, 0, false, false, true, new LicensePlate(ClosestVehicle.LicensePlate, (uint)ClosestVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", ClosestVehicle), false));
-                Mod.Player.TrackedVehicles.Add(VehicleToChange);
-            }
-
-            ChangeLicensePlateAnimation(VehicleToChange, true);
+            PlateAnimation(false);
         }
     }
-    private static void ChangeLicensePlateAnimation(VehicleExt VehicleToChange, bool ChangePlates)
+    public void ChangePlate(LicensePlate plateToAdd)
     {
-        if (!ChangePlates && VehicleToChange.VehicleEnt.LicensePlate == "        ")// Plate already removed
-            return;
-
+        PlateToAdd = plateToAdd;
+        GetClosestTrackedVehicle();
+        PlateAnimation(true);
+    }
+    private void GetClosestTrackedVehicle()
+    {
+        VehicleWithPlate = (Vehicle)World.GetClosestEntity(Game.LocalPlayer.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
+        if (VehicleWithPlate != null && VehicleWithPlate.LicensePlate != "        ")
+        {
+            VehicleToChange = Mod.Player.TrackedVehicles.Where(x => x.VehicleEnt.Handle == VehicleWithPlate.Handle).FirstOrDefault();
+            if (VehicleToChange == null)
+            {
+                VehicleToChange = new VehicleExt(VehicleWithPlate);
+                Mod.Player.TrackedVehicles.Add(VehicleToChange);
+            }
+        }
+    }
+    private void PlateAnimation(bool IsChanging)
+    {
         GameFiber ChangeLicensePlateAnimation = GameFiber.StartNew(delegate
         {
             try
@@ -78,10 +82,12 @@ public static class LicensePlateTheftManager
                 if (!MovePedToCarPosition(VehicleToChange.VehicleEnt, Game.LocalPlayer.Character, VehicleToChange.VehicleEnt.Heading, ChangeSpot, true))
                     return;
 
-                PlayerChangingPlate = true;
-                Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
-                if (ChangePlates)
-                    LicensePlate = AttachLicensePlateToPed(Game.LocalPlayer.Character);
+                Mod.Player.IsChangingLicensePlates = true;
+                ScrewdriverModel = AttachScrewdriverToPed(Game.LocalPlayer.Character);
+                if (IsChanging)
+                {
+                    LicensePlateModel = AttachLicensePlateToPed(Game.LocalPlayer.Character);
+                }
 
                 AnimationDictionary AnimDictionary = new AnimationDictionary("mp_car_bomb");
                 uint GameTimeStartedAnimation = Game.GameTime;
@@ -101,41 +107,60 @@ public static class LicensePlateTheftManager
 
                 if (Continue && CarPosition.DistanceTo2D(VehicleToChange.VehicleEnt.Position) <= 1f && Game.LocalPlayer.Character.DistanceTo2D(ChangeSpot) <= 2f && !Game.LocalPlayer.Character.IsDead)
                 {
-                    if (ChangePlates)
-                        ChangePlate(VehicleToChange);
-                    else
-                        RemovePlate(VehicleToChange);
+                    UpdateModelPlates(IsChanging);
                 }
                 else
                 {
                     Game.LocalPlayer.Character.Tasks.Clear();
                 }
-                if (LicensePlate != null && LicensePlate.Exists())
-                    LicensePlate.Delete();
+                if (LicensePlateModel != null && LicensePlateModel.Exists())
+                    LicensePlateModel.Delete();
                 GameFiber.Sleep(750);
-                if(Screwdriver != null && Screwdriver.Exists())
-                    Screwdriver.Delete();
+                if(ScrewdriverModel != null && ScrewdriverModel.Exists())
+                    ScrewdriverModel.Delete();
 
-                LicensePlate = null;
-                Screwdriver = null;
-                PlayerChangingPlate = false;
+                LicensePlateModel = null;
+                ScrewdriverModel = null;
+                Mod.Player.IsChangingLicensePlates = false;
             }
             catch (Exception e)
             {
-                if (LicensePlate != null && LicensePlate.Exists())
-                    LicensePlate.Delete();
-                if (Screwdriver != null && Screwdriver.Exists())
-                    Screwdriver.Delete();
+                if (LicensePlateModel != null && LicensePlateModel.Exists())
+                    LicensePlateModel.Delete();
+                if (ScrewdriverModel != null && ScrewdriverModel.Exists())
+                    ScrewdriverModel.Delete();
 
-                LicensePlate = null;
-                Screwdriver = null;
-                PlayerChangingPlate = false;
+                LicensePlateModel = null;
+                ScrewdriverModel = null;
+                Mod.Player.IsChangingLicensePlates = false;
                 Debugging.WriteToLog("ChangeLicensePlate", e.StackTrace);
             }
         }, "PlayDispatchQueue");
         Debugging.GameFibers.Add(ChangeLicensePlateAnimation);
     }
-    private static Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
+    private void UpdateModelPlates(bool IsChanging)
+    {
+        if (IsChanging)
+        {
+            LicensePlate PlateToRemove = VehicleToChange.CarPlate;
+            Mod.Player.SpareLicensePlates.RemoveAt(Mod.MenuManager.SelectedPlateIndex);
+            if (PlateToRemove != null)
+            {
+                Mod.Player.SpareLicensePlates.Add(PlateToRemove);
+            }
+            VehicleToChange.CarPlate = PlateToAdd;
+            VehicleToChange.VehicleEnt.LicensePlate = PlateToAdd.PlateNumber;
+            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleToChange.VehicleEnt, PlateToAdd.PlateType);
+        }
+        else
+        {
+            Mod.Player.SpareLicensePlates.Add(VehicleToChange.CarPlate);
+            VehicleToChange.CarPlate = null;
+            VehicleToChange.VehicleEnt.LicensePlate = "        ";
+            VehicleToChange.CarPlate = null;
+        }
+    }
+    private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
     {
         Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
         if (!Screwdriver.Exists())
@@ -144,40 +169,7 @@ public static class LicensePlateTheftManager
         Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
         return Screwdriver;
     }
-    private static bool RemovePlate(VehicleExt VehicleToChange)
-    {
-        if (VehicleToChange.VehicleEnt.Exists())
-        {
-            SpareLicensePlates.Add(VehicleToChange.CarPlate);
-            //Menus.UpdateLists();
-            VehicleToChange.CarPlate = null;
-            VehicleToChange.VehicleEnt.LicensePlate = "        ";
-            VehicleToChange.CarPlate = null;
-            return true;
-        }
-        return false;
-    }
-    private static bool ChangePlate(VehicleExt VehicleToChange)
-    {
-        if (VehicleToChange.VehicleEnt.Exists())
-        {
-            LicensePlate PlateToAdd = SpareLicensePlates[Mod.MenuManager.SelectedPlateIndex];
-            LicensePlate PlateToRemove = VehicleToChange.CarPlate;
-            SpareLicensePlates.RemoveAt(Mod.MenuManager.SelectedPlateIndex);
-            if (PlateToRemove != null)
-            {
-                SpareLicensePlates.Add(PlateToRemove);
-            }
-
-            VehicleToChange.CarPlate = PlateToAdd;
-            VehicleToChange.VehicleEnt.LicensePlate = PlateToAdd.PlateNumber;
-            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleToChange.VehicleEnt, PlateToAdd.PlateType);
-            //Menus.UpdateLists();
-            return true;
-        }
-        return false;
-    }
-    private static bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
+    private bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
     {
         bool Continue = true;
         bool isPlayer = false;
@@ -204,7 +196,7 @@ public static class LicensePlateTheftManager
         }
         return true;
     }
-    private static Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
+    private Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
     {
         Vector3 Position;
         Vector3 Right;
@@ -238,7 +230,7 @@ public static class LicensePlateTheftManager
         else
             return Vector3.Zero;
     }
-    private static Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
+    private Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
     {
         Rage.Object LicensePlate = new Rage.Object("p_num_plate_01", Pedestrian.GetOffsetPositionUp(55f));
         LicensePlate.IsVisible = true;

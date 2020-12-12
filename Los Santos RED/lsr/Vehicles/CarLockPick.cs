@@ -9,16 +9,23 @@ using ExtensionsMethods;
 using LSR.Vehicles;
 using LosSantosRED.lsr;
 
-public static class CarLockPickingManager
+public class CarLockPick
 {
-    private static string Animation = "std_force_entry_ds";
-    private static int DoorIndex = 0;
-    private static int WaitTime = 1750;
-    private static VehicleLockStatus OriginalLockStatus;
-    private static Rage.Object Screwdriver;
-    private static Vehicle TargetVehicle;
-    private static int SeatTryingToEnter;
-    private static bool CanLockPick
+    private string Animation = "std_force_entry_ds";
+    private int DoorIndex = 0;
+    private int WaitTime = 1750;
+    private VehicleLockStatus OriginalLockStatus;
+    private Rage.Object Screwdriver;
+    private Vehicle TargetVehicle;
+    private int SeatTryingToEnter;
+
+    public CarLockPick(Vehicle targetVehicle, int seatTryingToEnter)
+    {
+        TargetVehicle = targetVehicle;
+        SeatTryingToEnter = seatTryingToEnter;
+    }
+
+    private bool CanLockPick
     {
         get
         {
@@ -35,14 +42,10 @@ public static class CarLockPickingManager
         }
     }
 
-    public static bool PlayerLockPicking { get; set; } = false;
-    public static void PickLock(Vehicle VehicleToEnter, int EntrySeat)
+    public void PickLock()
     {
-        TargetVehicle = VehicleToEnter;
-        SeatTryingToEnter = EntrySeat;
         if (!Mod.Player.IsHoldingEnter || !CanLockPick)
             return;
-
         try
         {
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
@@ -60,11 +63,11 @@ public static class CarLockPickingManager
         }
         catch (Exception e)
         {
-            PlayerLockPicking = false;
+            Mod.Player.IsLockPicking = false;
             Debugging.WriteToLog("PickLock", e.Message);
         }
     }
-    private static bool SetupLockPick()
+    private bool SetupLockPick()
     {
         OriginalLockStatus = TargetVehicle.LockStatus;
         TargetVehicle.AttemptLockStatus((VehicleLockStatus)3);//Attempt to lock most car doors
@@ -112,9 +115,9 @@ public static class CarLockPickingManager
         }
         return true;
     }   
-    private static bool LockPickAnimation()
+    private bool LockPickAnimation()
     {
-        PlayerLockPicking = true;
+        Mod.Player.IsLockPicking = true;
         bool Continue = true;
 
         Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
@@ -138,7 +141,7 @@ public static class CarLockPickingManager
             Game.LocalPlayer.Character.Tasks.Clear();
             if (Screwdriver != null && Screwdriver.Exists())
                 Screwdriver.Delete();
-            PlayerLockPicking = false;
+            Mod.Player.IsLockPicking = false;
             TargetVehicle.LockStatus = OriginalLockStatus;
             return false;
         }
@@ -148,7 +151,7 @@ public static class CarLockPickingManager
 
         return true;
     }
-    private static Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
+    private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
     {
         Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
         if (!Screwdriver.Exists())
@@ -157,7 +160,7 @@ public static class CarLockPickingManager
         Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
         return Screwdriver;
     }
-    private static bool FinishLockPick()
+    private bool FinishLockPick()
     {
         uint GameTimeStarted = Game.GameTime;
         Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
@@ -179,7 +182,7 @@ public static class CarLockPickingManager
         if (Screwdriver != null && Screwdriver.Exists())
             Screwdriver.Delete();
 
-        PlayerLockPicking = false;
+        Mod.Player.IsLockPicking = false;
 
         return true;
     }

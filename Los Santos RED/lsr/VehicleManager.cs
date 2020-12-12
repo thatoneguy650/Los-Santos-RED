@@ -9,32 +9,21 @@ using System.Diagnostics;
 using System.Linq;
 
 
-public static class VehicleManager
+public class VehicleManager
 {
-    private static readonly float DistanceToScan = 450f;
-    public static List<Vehicle> PoliceVehicles { get; private set; }
-    public static List<VehicleExt> CivilianVehicles { get; private set; }
-    public static bool IsRunning { get; set; }
-    public static void Initialize()
+    private readonly float DistanceToScan = 450f;
+    public List<Vehicle> PoliceVehicles { get; private set; } = new List<Vehicle>();
+    public List<VehicleExt> CivilianVehicles { get; private set; } = new List<VehicleExt>();
+    public void Dispose()
     {
-        IsRunning = true;
-        PoliceVehicles = new List<Vehicle>();
-        CivilianVehicles = new List<VehicleExt>();
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
         ClearPolice();
     }
-    public static void Tick()
+    public void Tick()
     {
-        if (IsRunning)
-        {
-            ScanForVehicles();
-            UpdateVehiclePlates();
-        }
+        ScanForVehicles();
+        UpdateVehiclePlates();  
     }
-    private static void ScanForVehicles()
+    private void ScanForVehicles()
     {
         Vehicle[] Vehicles = Array.ConvertAll(World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), (x => (Vehicle)x));//250
         foreach (Vehicle Veh in Vehicles)
@@ -42,7 +31,7 @@ public static class VehicleManager
             AddToLists(Veh);
         }
     }
-    private static void UpdateVehiclePlates()
+    private void UpdateVehiclePlates()
     {
         int VehiclesUpdated = 0;
         foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.VehicleEnt.Exists() && !x.HasUpdatedPlateType))
@@ -55,7 +44,7 @@ public static class VehicleManager
             }
         }
     }
-    private static void AddToLists(Vehicle Veh)
+    private void AddToLists(Vehicle Veh)
     {
         if (Veh.IsPoliceVehicle)
         {
@@ -74,7 +63,7 @@ public static class VehicleManager
             }
         }
     }
-    public static void ClearPolice()
+    public void ClearPolice()
     {
         foreach (Vehicle Veh in PoliceVehicles)
         {

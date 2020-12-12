@@ -99,7 +99,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="lsr\CrimeManager.cs" />
+    <Compile Include="lsr\Locations\LocationData.cs" />
+    <Compile Include="lsr\Violations.cs" />
     <Compile Include="lsr\Helper\RandomItems.cs" />
     <Compile Include="lsr\InputManager.cs" />
     <Compile Include="lsr\Mod.cs" />
@@ -129,7 +130,6 @@
     <Compile Include="lsr\PedManager.cs" />
     <Compile Include="lsr\ClockManager.cs" />
     <Compile Include="lsr\PedSwapManager.cs" />
-    <Compile Include="lsr\PlayerLocationManager.cs" />
     <Compile Include="lsr\RespawnManager.cs" />
     <Compile Include="lsr\SurrenderManager.cs" />
     <Compile Include="lsr\WeaponDroppingManager.cs" />
@@ -146,10 +146,9 @@
     <Compile Include="lsr\Scanner\PoliceScannerCallIn.cs" />
     <Compile Include="lsr\PoliceSpawningManager.cs" />
     <Compile Include="lsr\PoliceSpeechManager.cs" />
-    <Compile Include="Source\Police\Static\SearchModeManager.cs" />
-    <Compile Include="Source\Police\Static\SearchModeStoppingManager.cs" />
-    <Compile Include="Source\Police\Static\TrafficViolationsManager.cs" />
-    <Compile Include="lsr\WantedLevelManager.cs" />
+    <Compile Include="lsr\SearchModeManager.cs" />
+    <Compile Include="lsr\SearchModeStoppingManager.cs" />
+    <Compile Include="lsr\PoliceResponse.cs" />
     <Compile Include="lsr\WantedLevel\ResponsePriority.cs" />
     <Compile Include="lsr\Setting\GeneralSettings.cs" />
     <Compile Include="lsr\Setting\KeySettings.cs" />
@@ -158,7 +157,7 @@
     <Compile Include="lsr\Setting\TrafficSettings.cs" />
     <Compile Include="lsr\Setting\UISettings.cs" />
     <Compile Include="lsr\Vehicles\PlateType.cs" />
-    <Compile Include="Source\Vehicle\Static\VehicleManager.cs" />
+    <Compile Include="lsr\VehicleManager.cs" />
     <Compile Include="lsr\Weapon\WeaponCategory.cs" />
     <Compile Include="lsr\Weapon\WeaponInformation.cs" />
     <Compile Include="lsr\Peds\PedExt.cs" />
@@ -187,13 +186,13 @@
     <Compile Include="lsr\Setting\LSRSettings.cs" />
     <Compile Include="lsr\Data\ZoneManager.cs" />
     <Compile Include="lsr\Data\PlateTypeManager.cs" />
-    <Compile Include="Source\Vehicle\Static\CarJackingManager.cs" />
-    <Compile Include="Source\Vehicle\Static\CarLockPickingManager.cs" />
-    <Compile Include="Source\Vehicle\Static\LicensePlateTheftManager.cs" />
-    <Compile Include="Source\Vehicle\Static\RadioManager.cs" />
+    <Compile Include="lsr\Vehicles\CarJack.cs" />
+    <Compile Include="lsr\Vehicles\CarLockPick.cs" />
+    <Compile Include="lsr\PlateTheft.cs" />
+    <Compile Include="lsr\RadioManager.cs" />
     <Compile Include="lsr\VehicleEngineManager.cs" />
-    <Compile Include="Source\Vehicle\Static\VehicleFuelManager.cs" />
-    <Compile Include="Source\Vehicle\Static\VehicleIndicatorManager.cs" />
+    <Compile Include="lsr\VehicleFuelManager.cs" />
+    <Compile Include="lsr\VehicleIndicatorManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

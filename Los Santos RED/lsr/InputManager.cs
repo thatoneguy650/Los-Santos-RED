@@ -159,21 +159,21 @@ namespace LosSantosRED.lsr
             {
                 Mod.VehicleEngineManager.ToggleEngine(true, !Mod.VehicleEngineManager.IsEngineRunning);
             }
-            if (IsPressingRefuel && VehicleFuelManager.CanPumpFuel)
+            if (IsPressingRefuel && Mod.VehicleFuelManager.CanPumpFuel)
             {
-                VehicleFuelManager.PumpFuel();
+                Mod.VehicleFuelManager.PumpFuel();
             }
             if (IsPressingHazards)
             {
-                VehicleIndicatorManager.ToggleHazards();
+                Mod.VehicleIndicatorManager.ToggleHazards();
             }
             if (IsPressingLeftIndicator)
             {
-                VehicleIndicatorManager.ToggleLeftIndicator();
+                Mod.VehicleIndicatorManager.ToggleLeftIndicator();
             }
             if (IsPressingRightIndicator)
             {
-                VehicleIndicatorManager.ToggleRightIndicator();
+                Mod.VehicleIndicatorManager.ToggleRightIndicator();
             }
         }
     }

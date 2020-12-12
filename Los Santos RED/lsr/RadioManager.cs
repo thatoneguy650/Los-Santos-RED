@@ -8,14 +8,13 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class RadioManager
+public class RadioManager
 {
-    private static bool MobileEnabled;
-    private static string CurrentRadioStationName;
-    public static bool AutoTune { get; set; }
-    public static string AutoTuneStation { get; set; }
-    public static bool IsRunning { get; set; }
-    public static bool CanChangeStation
+    private bool MobileEnabled;
+    private string CurrentRadioStationName;
+    public bool AutoTune { get; set; } = true;
+    public string AutoTuneStation { get; set; } = "RADIO_19_USER";
+    public bool CanChangeStation
     {
         get
         {
@@ -29,25 +28,12 @@ public static class RadioManager
             }
         }
     }
-    public static void Initialize()
+    public void Tick()
     {
-        IsRunning = true;
-        AutoTune = true;
-        AutoTuneStation = "RADIO_19_USER";
+        EnablePoliceCarMusic();
+        CheckAutoTuning();  
     }
-    public static void Dispose()
-    {
-        IsRunning = false;
-    }
-    public static void Tick()
-    {
-        if (IsRunning)
-        {
-            EnablePoliceCarMusic();
-            CheckAutoTuning();
-        }
-    }
-    public static void ChangeStation(string StationName)
+    public void ChangeStation(string StationName)
     {
         if (CanChangeStation)
         {
@@ -61,7 +47,7 @@ public static class RadioManager
             }
         }
     }
-    private static void EnablePoliceCarMusic()
+    private void EnablePoliceCarMusic()
     {
         if (Mod.Player.IsInVehicle && Mod.VehicleEngineManager.IsEngineRunning && Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
         {
@@ -74,7 +60,7 @@ public static class RadioManager
             NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
         }
     }
-    private static void CheckAutoTuning()
+    private void CheckAutoTuning()
     {
         if (Mod.Player.IsInVehicle)
         {
@@ -92,7 +78,7 @@ public static class RadioManager
             }
         }
     }
-    private static void ChangeStationAnimation(string StationName)
+    private void ChangeStationAnimation(string StationName)
     {
         GameFiber.StartNew(delegate
         {
@@ -118,7 +104,7 @@ public static class RadioManager
 
         });
     }
-    private static void SetRadioStation(string StationName)
+    private void SetRadioStation(string StationName)
     {
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
         {

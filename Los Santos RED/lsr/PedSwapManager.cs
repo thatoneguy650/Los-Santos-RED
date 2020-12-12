@@ -16,7 +16,7 @@ public class PedSwapManager
     private bool TargetPedInVehicle;
     private Vehicle TargetPedVehicle;
     private bool TargetPedAlreadyTakenOver;
-    private List<TakenOverPed> TakenOverPeds;
+    private List<TakenOverPed> TakenOverPeds = new List<TakenOverPed>();
     private Model OriginalModel;
     private string LastModelHash;
     private PedVariation CurrentPedVariation;
@@ -24,6 +24,16 @@ public class PedSwapManager
     private bool CurrentPlayerIsMale = false;
 
     private string CurrentPlayerModel;
+
+    public PedSwapManager()
+    {
+        GameTimeLastTakenOver = Game.GameTime;
+        CurrentPlayerModel = Game.LocalPlayer.Character.Model.Name;
+        CurrentPedVariation = GetPedVariation(Game.LocalPlayer.Character);
+        CurrentPlayerIsMale = Game.LocalPlayer.Character.IsMale;
+        GiveName();
+    }
+
     public Vehicle OwnedCar { get; set; }
     public string SuspectName { get; set; }
     public bool RecentlyTakenOver
@@ -35,17 +45,6 @@ public class PedSwapManager
             else
                 return false;
         }
-    }
-    public void Initialize()
-    {
-        OriginalModel = default;
-        LastModelHash = "";
-        TakenOverPeds = new List<TakenOverPed>();
-        GameTimeLastTakenOver = Game.GameTime;
-        CurrentPlayerModel = Game.LocalPlayer.Character.Model.Name;
-        CurrentPedVariation = GetPedVariation(Game.LocalPlayer.Character);
-        CurrentPlayerIsMale = Game.LocalPlayer.Character.IsMale;
-        GiveName();
     }
     public void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice)
     {
@@ -59,7 +58,7 @@ public class PedSwapManager
             if (ClearNearPolice)
             {
                 Mod.PedManager.ClearPolice();
-                VehicleManager.ClearPolice();
+                Mod.VehicleManager.ClearPolice();
             }
 
             StoreTargetPedData(TargetPed);
@@ -255,14 +254,14 @@ public class PedSwapManager
         Mod.Player.ResetState(true);
 
         Game.TimeScale = 1f;
-        Mod.WantedLevelManager.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
+        Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Reset After Takeover as a precaution",false);
 
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
 
-        Mod.WantedLevelManager.Reset();
+        Mod.Player.CurrentPoliceResponse.Reset();
         Mod.PersonOfInterestManager.Reset();
         GameTimeLastTakenOver = Game.GameTime;
         Mod.MenuManager.SelectedTakeoverRadius = -1f;//reset this on the menu

@@ -65,7 +65,7 @@ namespace LosSantosRED.lsr
                 Mod.PoliceSpawningManager.MarkNonPersistent(Cop);
             }
             Mod.PedManager.Cops.RemoveAll(x => x.Pedestrian.IsDead);
-            VehicleManager.PoliceVehicles.RemoveAll(x => !x.Exists());
+            Mod.VehicleManager.PoliceVehicles.RemoveAll(x => !x.Exists());
         }
         private void UpdateRecognition()
         {
@@ -85,7 +85,7 @@ namespace LosSantosRED.lsr
             if (AnyRecentlySeenPlayer)
             {
                 if (!AnySeenPlayerCurrentWanted)
-                    PlaceLastSeenPlayer = Mod.WantedLevelManager.PlaceWantedStarted;
+                    PlaceLastSeenPlayer = Mod.Player.CurrentPoliceResponse.PlaceWantedStarted;
                 else if (!Mod.Player.AreStarsGreyedOut)
                     PlaceLastSeenPlayer = Game.LocalPlayer.Character.Position;
             }

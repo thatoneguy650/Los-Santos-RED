@@ -132,13 +132,7 @@ public class PedDamageManager
             return PedHealthStates.Any(x => x.IsBleeding && x.IsPlayerPed);
         }
     }
-    public bool IsRunning { get; set; }
-    public void Initialize()
-    {
-        IsRunning = true;
-        SetupLists();
-    }
-    private void SetupLists()
+    public PedDamageManager()
     {
         PlayerKilledCivilians = new List<PedExt>();
         PlayerKilledCops = new List<PedExt>();
@@ -244,26 +238,16 @@ public class PedDamageManager
             new PedBone("IK_Root", 119, 56604, BodyLocation.LowerTorso)
         };
         PedHealthStates = new List<PedHealthState>();
-        AddPedsToTrack();
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
     }
     public void Tick()
     {
-        if (IsRunning)
+        PedHealthStates.RemoveAll(x => !x.MyPed.Pedestrian.Exists());
+        AddPedsToTrack();
+        foreach (PedHealthState MyHealthState in PedHealthStates)
         {
-            PedHealthStates.RemoveAll(x => !x.MyPed.Pedestrian.Exists());
-            AddPedsToTrack();
-            //AllPedDamageList.Clear();
-            foreach (PedHealthState MyHealthState in PedHealthStates)
-            {
-                MyHealthState.Update();
-                //AllPedDamageList.AddRange(MyHealthState.GetDamageList());
-            }
-            ResetDamageStats();
+            MyHealthState.Update();
         }
+        ResetDamageStats();   
     }
     public void Reset()
     {

@@ -10,8 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class WantedLevelManager
-
+public class PoliceResponse
 {
     private PoliceState PrevPoliceState;
     private uint GameTimePoliceStateStart;
@@ -24,6 +23,13 @@ public class WantedLevelManager
     private Blip LastWantedCenterBlip;
     private int PreviousWantedLevel;
     private PoliceState CurrentPoliceState;
+
+    public PoliceResponse()
+    {
+        CurrentCrimes = new CriminalHistory();
+        SetWantedLevel(0, "Initial", true);
+    }
+
     private enum PoliceState
     {
         Normal = 0,
@@ -36,7 +42,6 @@ public class WantedLevelManager
     public float LastWantedSearchRadius { get; set; }
     public bool PlayerSeenDuringCurrentWanted { get; set; }
     public bool IsWeaponsFree { get; set; }
-    public bool IsRunning { get; set; }
     public CriminalHistory CurrentCrimes { get; set; } 
     public Vector3 LastWantedCenterPosition { get; set; }
     public Vector3 PlaceWantedStarted { get; private set; }
@@ -168,7 +173,7 @@ public class WantedLevelManager
     {
         get
         {
-            if (CurrentPoliceState == PoliceState.DeadlyChase && (CurrentCrimes.InstancesOfCrime(Mod.CrimeManager.KillingPolice) >= 1 || CurrentCrimes.InstancesOfCrime(Mod.CrimeManager.KillingCivilians) >= 2 || Mod.Player.WantedLevel >= 4))
+            if (CurrentPoliceState == PoliceState.DeadlyChase && (CurrentCrimes.InstancesOfCrime("KillingPolice") >= 1 || CurrentCrimes.InstancesOfCrime("KillingCivilians") >= 2 || Mod.Player.WantedLevel >= 4))
                 return true;
             else
                 return false;
@@ -213,44 +218,18 @@ public class WantedLevelManager
             }
         }
     }
-    public void Initialize()
+    public void Update()
     {
-        CurrentCrimes = new CriminalHistory();
-        LastWantedCenterPosition = default;
-        LastWantedSearchRadius = SettingsManager.MySettings.Police.LastWantedCenterSize;
-        LastWantedCenterBlip = default;
-        PlaceWantedStarted = default;
-        CurrentWantedCenterBlip = default;
-        GameTimePoliceStateStart = 0;
-        GameTimeLastSetWanted = 0;
-        PrevPoliceState = PoliceState.Normal;
-        CurrentPoliceState = PoliceState.Normal;
-        PreviousWantedLevel = 0;
-        IsRunning = true;
-        SetWantedLevel(0, "Initial", true);
-    }
-    public void Dispose()
-    {
-        IsRunning = false;
-    }
-    public void Tick()
-    {
-        if (IsRunning)
-        {
-            GetPoliceState();
-            WantedLevelTick();
-        }
+        GetPoliceState();
+        WantedLevelTick();
     }
     public void Reset()
-    {
-        foreach (Cop Cop in Mod.PedManager.Cops)
-        {
-            Cop.HurtByPlayer = false;
-        }
+    {     
         CurrentCrimes = new CriminalHistory();
         IsWeaponsFree = false;
         CurrentPoliceState = PoliceState.Normal;
         GameTimeWantedLevelStarted = 0;
+        Mod.PedManager.Reset();
         Mod.PolicePerception.Reset();
         Mod.InvestigationManager.Reset();
         Mod.ScannerManager.Reset();
@@ -370,7 +349,7 @@ public class WantedLevelManager
                 if (CurrentWantedCenter != Vector3.Zero)
                 {
                     LastWantedCenterPosition = CurrentWantedCenter;
-                    UpdateBlip(CurrentWantedCenter,SearchModeManager.BlipSize);
+                    UpdateBlip(CurrentWantedCenter, Mod.SearchModeManager.BlipSize);
                 }
 
                 if(Mod.PolicePerception.AnyCanSeePlayer)
@@ -388,15 +367,15 @@ public class WantedLevelManager
                 {
                     SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
                 }
-                CrimeEvent KillingPolice = CurrentCrimes.CrimesObserved.FirstOrDefault(x => x.AssociatedCrime == Mod.CrimeManager.KillingPolice);
-                if (KillingPolice != null)
+                int PoliceKilled = CurrentCrimes.InstancesOfCrime("KillingPolice");
+                if (PoliceKilled > 0)
                 {
-                    if (KillingPolice.Instances >= 2 * SettingsManager.MySettings.Police.PoliceKilledSurrenderLimit && Mod.Player.WantedLevel < 5)
+                    if (PoliceKilled >= 2 * SettingsManager.MySettings.Police.PoliceKilledSurrenderLimit && Mod.Player.WantedLevel < 5)
                     {
                         SetWantedLevel(5, "You killed too many cops 5 Stars", true);
                         IsWeaponsFree = true;
                     }
-                    else if (KillingPolice.Instances >= SettingsManager.MySettings.Police.PoliceKilledSurrenderLimit && Mod.Player.WantedLevel < 4)
+                    else if (PoliceKilled >= SettingsManager.MySettings.Police.PoliceKilledSurrenderLimit && Mod.Player.WantedLevel < 4)
                     {
                         SetWantedLevel(4, "You killed too many cops 4 Stars", true);
                         IsWeaponsFree = true;
@@ -497,8 +476,8 @@ public class WantedLevelManager
         {
             CurrentWantedCenterBlip.Position = Position;
         }
-        CurrentWantedCenterBlip.Color = SearchModeManager.BlipColor;
-        CurrentWantedCenterBlip.Scale = SearchModeManager.BlipSize; ;
+        CurrentWantedCenterBlip.Color = Mod.SearchModeManager.BlipColor;
+        CurrentWantedCenterBlip.Scale = Mod.SearchModeManager.BlipSize; ;
     }
     private void UpdateLastBlip(Vector3 Position)
     {

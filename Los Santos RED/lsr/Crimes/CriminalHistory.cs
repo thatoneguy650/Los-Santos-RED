@@ -50,6 +50,14 @@ public class CriminalHistory
         }
         return CrimeString;
     }
+    public int InstancesOfCrime(string CrimeID)
+    {
+        CrimeEvent MyStuff = CrimesObserved.Where(x => x.AssociatedCrime.ID == CrimeID).FirstOrDefault();
+        if (MyStuff == null)
+            return 0;
+        else
+            return MyStuff.Instances;
+    }
     public int InstancesOfCrime(Crime ToCheck)
     {
         CrimeEvent MyStuff = CrimesObserved.Where(x => x.AssociatedCrime == ToCheck).FirstOrDefault();
@@ -86,7 +94,7 @@ public class CriminalHistory
         }
         if (ByPolice && Mod.Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
         {
-            Mod.WantedLevelManager.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
+            Mod.Player.CurrentPoliceResponse.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
         }
         Mod.ScannerManager.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed,InstancesObserved = CurrentInstances });
 

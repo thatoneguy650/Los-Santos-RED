@@ -20,8 +20,19 @@ public static class EntryPoint
             GameFiber.Yield();
         }
         Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Loaded", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~v0.1 Loaded by Greskrendtregk");
-        //ScriptController.Initialize();
         LosSantosRED.lsr.Mod.Initialize();
+        Debugging.Initialize();
+
+
+        while(true)
+        {
+            if(!LosSantosRED.lsr.Mod.IsRunning && Game.IsKeyDown(Keys.F10))
+            {
+                LosSantosRED.lsr.Mod.Initialize();
+                Debugging.Initialize();
+            }
+            GameFiber.Yield();
+        }
     }
        
 }

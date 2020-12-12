@@ -6,24 +6,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-public static class VehicleIndicatorManager
+public class VehicleIndicatorManager
 {
-    private static bool LeftBlinkerStartedTurn;
-    private static bool RightBlinkerStartedTurn;
-    private static int TimeWheelsTurnedRight;
-    private static int TimeWheelsTurnedLeft;
-    private static int TimeWheelsStraight;
-    private static Vehicle CurrentVehicle;
+    private bool LeftBlinkerStartedTurn;
+    private bool RightBlinkerStartedTurn;
+    private int TimeWheelsTurnedRight;
+    private int TimeWheelsTurnedLeft;
+    private int TimeWheelsStraight;
+    private Vehicle CurrentVehicle;
 
-    private static uint GameTimeStartedTurnWheelRight;
-    private static uint GameTimeStartedTurnWheelLeft;
-    private static uint GameTimeStartedTurnWheelStraight;
+    private uint GameTimeStartedTurnWheelRight;
+    private uint GameTimeStartedTurnWheelLeft;
+    private uint GameTimeStartedTurnWheelStraight;
 
-    public static bool IsRunning { get; set; }
-    public static bool LeftBlinkerOn { get; private set; }
-    public static bool RightBlinkerOn { get; private set; }
-    public static bool HazardsOn { get; private set; }
-    public static string DebugStatus
+    public bool LeftBlinkerOn { get; private set; }
+    public bool RightBlinkerOn { get; private set; }
+    public bool HazardsOn { get; private set; }
+    public string DebugStatus
     {
         get
         {
@@ -31,7 +30,7 @@ public static class VehicleIndicatorManager
                             , RightBlinkerOn, GameTimeStartedTurnWheelRight, RightBlinkerStartedTurn, LeftBlinkerOn, GameTimeStartedTurnWheelLeft, LeftBlinkerStartedTurn, GameTimeStartedTurnWheelStraight);
         }
     }
-    public static string Status
+    public string Status
     {
         get
         {
@@ -45,26 +44,16 @@ public static class VehicleIndicatorManager
                 return "";
         }
     }
-    public static void Initialize()
+    public void Tick()
     {
-        IsRunning = true;
-    }
-    public static void Dispose()
-    {
-        IsRunning = false;
-    }
-    public static void Tick()
-    {
-        if (IsRunning)
+        bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+        if (PlayerInVehicle)
         {
-            bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-            if (PlayerInVehicle)
-            {
-                IndicatorsTick();
-            }
+            IndicatorsTick();
         }
+        
     }
-    public static void ToggleHazards()
+    public void ToggleHazards()
     {
         Vehicle MyCar = Game.LocalPlayer.Character.CurrentVehicle;
         if (MyCar == null || !MyCar.Exists())
@@ -84,7 +73,7 @@ public static class VehicleIndicatorManager
             return;
         }
     }
-    public static void ToggleLeftIndicator()
+    public void ToggleLeftIndicator()
     {
         Vehicle MyCar = Game.LocalPlayer.Character.CurrentVehicle;
         if (MyCar == null || !MyCar.Exists())
@@ -103,7 +92,7 @@ public static class VehicleIndicatorManager
             HazardsOn = false;
         }
     }
-    public static void ToggleRightIndicator()
+    public void ToggleRightIndicator()
     {
         Vehicle MyCar = Game.LocalPlayer.Character.CurrentVehicle;
         if (MyCar == null || !MyCar.Exists())
@@ -123,7 +112,7 @@ public static class VehicleIndicatorManager
         }
         
     }
-    private static void IndicatorsTick()
+    private void IndicatorsTick()
     {
         CurrentVehicle = Game.LocalPlayer.Character.CurrentVehicle;
         if (CurrentVehicle == null || !CurrentVehicle.Exists())
@@ -132,7 +121,7 @@ public static class VehicleIndicatorManager
         RightBlinkerTick();
         LeftBlinkerTick();
     }
-    private static void RightBlinkerTick()
+    private void RightBlinkerTick()
     {
         if (RightBlinkerOn)
         {
@@ -177,7 +166,7 @@ public static class VehicleIndicatorManager
             RightBlinkerOn = false;
         }
     }
-    private static void LeftBlinkerTick()
+    private void LeftBlinkerTick()
     {
         if (LeftBlinkerOn)
         {
@@ -222,7 +211,7 @@ public static class VehicleIndicatorManager
             LeftBlinkerOn = false;
         }
     }
-    private static void RightBlinkerTickOld()
+    private void RightBlinkerTickOld()
     {
         if (RightBlinkerOn)
         {
@@ -253,7 +242,7 @@ public static class VehicleIndicatorManager
             RightBlinkerOn = false;
         }
     }
-    private static void LeftBlinkerTickOld()
+    private void LeftBlinkerTickOld()
     {
         if (LeftBlinkerOn)
         {

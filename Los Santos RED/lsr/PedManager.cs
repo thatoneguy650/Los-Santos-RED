@@ -79,7 +79,7 @@ public class PedManager
         {
             if (Pedestrian.IsPoliceArmy())
             {
-                if (SearchModeStoppingManager.SpotterCop != null && SearchModeStoppingManager.SpotterCop.Handle == Pedestrian.Handle)
+                if (Mod.SearchModeStoppingManager.SpotterCop != null && Mod.SearchModeStoppingManager.SpotterCop.Handle == Pedestrian.Handle)
                     continue;
 
                 if (!Cops.Any(x => x.Pedestrian == Pedestrian))
@@ -95,6 +95,14 @@ public class PedManager
                 }
             }
         }    
+    }
+    public void Reset()
+    {
+        foreach (Cop Cop in Mod.PedManager.Cops)
+        {
+            Cop.HurtByPlayer = false;
+            Cop.KilledByPlayer = false;
+        }
     }
     public void ClearPolice()
     {
@@ -132,11 +140,11 @@ public class PedManager
         if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
         {
             Vehicle PoliceCar = Pedestrian.CurrentVehicle;
-            if (!VehicleManager.PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
+            if (!Mod.VehicleManager.PoliceVehicles.Any(x => x.Handle == PoliceCar.Handle))
             {
                 Mod.PoliceSpawningManager.UpdateLivery(PoliceCar, AssignedAgency);
                 Mod.PoliceSpawningManager.UpgradeCruiser(PoliceCar);
-                VehicleManager.PoliceVehicles.Add(PoliceCar);
+                Mod.VehicleManager.PoliceVehicles.Add(PoliceCar);
             }
         }
 

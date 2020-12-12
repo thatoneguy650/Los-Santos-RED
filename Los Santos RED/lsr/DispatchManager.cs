@@ -199,19 +199,13 @@ public class DispatchManager
     }
     private uint MinimumExistingTime { get; set; } = 20000;//30000
     private float MinimumDeleteDistance{ get; set; } = 200f;//350f
-    public bool IsRunning { get; set; }
-    public void Initialize()
-    {
-        IsRunning = true;
-    }
     public void Dispose()
     {
-        IsRunning = false;
         SetVanillaDispaceServices(true);
     }
     public void SpawnChecking()
     {
-        if (IsRunning && CanSpawn)
+        if (CanSpawn)
         {
             CurrentSpawn.UpdateSpawnPosition();
             if (NeedToSpawn && CurrentSpawn.HasSpawns)
@@ -248,14 +242,12 @@ public class DispatchManager
             }
             GameTimeCheckedSpawn = Game.GameTime;
         }
-        if (IsRunning)
-        {
-            SetVanillaDispaceServices(false);
-        }
+        SetVanillaDispaceServices(false);
+        
     }
     public void DeleteChecking()
     {
-        if (IsRunning && CanDelete)
+        if (CanDelete)
         {
             foreach(Cop OutOfRangeCop in Mod.PedManager.Cops.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
             {

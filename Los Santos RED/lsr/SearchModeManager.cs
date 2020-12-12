@@ -8,16 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class SearchModeManager
+public class SearchModeManager
 {
-    private static bool PrevIsInSearchMode;
-    private static bool PrevIsInActiveMode;
-    private static uint GameTimeStartedSearchMode;
-    private static uint GameTimeStartedActiveMode;
-    public static bool IsInSearchMode { get; private set; }
-    public static bool IsInActiveMode { get; private set; }
-    public static bool IsRunning { get; set; }
-    public static uint TimeInSearchMode
+    private bool PrevIsInSearchMode;
+    private bool PrevIsInActiveMode;
+    private uint GameTimeStartedSearchMode;
+    private uint GameTimeStartedActiveMode;
+    public bool IsInSearchMode { get; private set; }
+    public bool IsInActiveMode { get; private set; }
+    public uint TimeInSearchMode
     {
         get
         {
@@ -35,7 +34,7 @@ public static class SearchModeManager
             
         }
     }
-    public static uint TimeInActiveMode
+    public uint TimeInActiveMode
     {
         get
         {
@@ -50,7 +49,7 @@ public static class SearchModeManager
 
         }
     }
-    public static float BlipSize
+    public float BlipSize
     {
         get
         {
@@ -71,7 +70,7 @@ public static class SearchModeManager
             }
         }
     }
-    public static Color BlipColor
+    public Color BlipColor
     {
         get
         {
@@ -85,42 +84,31 @@ public static class SearchModeManager
             }
         }
     }
-    public static uint CurrentSearchTime
+    public uint CurrentSearchTime
     {
         get
         {
             return (uint)Mod.Player.WantedLevel * 30000;//30 seconds each
         }
     }
-    public static uint CurrentActiveTime
+    public uint CurrentActiveTime
     {
         get
         {
             return (uint)Mod.Player.WantedLevel * 30000;//30 seconds each
         }
     }
-    public static void Initialize()
+    public void Tick()
     {
-        IsRunning = true;
+        UpdateWanted();
     }
-    public static void Dispose()
-    {
-        IsRunning = false;
-    }
-    public static void Tick()
-    {
-        if (IsRunning)
-        {
-            UpdateWanted();
-        }
-    }
-    private static void UpdateWanted()
+    private void UpdateWanted()
     {
         DetermineMode();
         ToggleModes();
         HandleFlashing();
     }
-    private static void DetermineMode()
+    private void DetermineMode()
     {
         if (Mod.Player.IsWanted)
         {
@@ -148,7 +136,7 @@ public static class SearchModeManager
             IsInSearchMode = false;
         }
     }
-    private static void ToggleModes()
+    private void ToggleModes()
     {
         if(PrevIsInActiveMode != IsInActiveMode)
         {
@@ -170,7 +158,7 @@ public static class SearchModeManager
             }
         }
     }
-    private static void StartSearchMode()
+    private void StartSearchMode()
     {
         IsInActiveMode = false;
         IsInSearchMode = true;
@@ -180,7 +168,7 @@ public static class SearchModeManager
         GameTimeStartedActiveMode = 0;
         Debugging.WriteToLog("SearchMode", "Start Search Mode");
     }
-    private static void StartActiveMode()
+    private void StartActiveMode()
     {
         IsInActiveMode = true;
         IsInSearchMode = false;
@@ -190,7 +178,7 @@ public static class SearchModeManager
         GameTimeStartedSearchMode = 0;
         Debugging.WriteToLog("SearchMode", "Start Active Mode");
     }
-    private static void EndSearchMode()
+    private void EndSearchMode()
     {
         IsInActiveMode = false;
         IsInSearchMode = false;
@@ -198,11 +186,11 @@ public static class SearchModeManager
         PrevIsInActiveMode = IsInActiveMode;
         GameTimeStartedSearchMode = 0;
         GameTimeStartedActiveMode = 0;
-        Mod.WantedLevelManager.SetWantedLevel(0, "Search Mode Timeout", true);
+        Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
         Debugging.WriteToLog("SearchMode", "Stop Search Mode");
 
     }
-    private static void HandleFlashing()
+    private void HandleFlashing()
     {
         if (IsInActiveMode)
         {

@@ -140,7 +140,7 @@ public class RespawnManager
             if (AsOldCharacter)
             {
                 ResetPlayer(false, false);
-                Mod.WantedLevelManager.SetWantedLevel(Mod.Player.MaxWantedLastLife, "Resetting to max wanted last life after respawn in place", true);
+                Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.MaxWantedLastLife, "Resetting to max wanted last life after respawn in place", true);
                 ++Mod.Player.TimesDied;
             }
             else
@@ -175,7 +175,7 @@ public class RespawnManager
         SetPlayerAtLocation(PoliceStation);
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
         Mod.PedManager.ClearPolice();
-        VehicleManager.ClearPolice();
+        Mod.VehicleManager.ClearPolice();
         FadeIn();
         SetPoliceFee(PoliceStation.Name, BailFee);
         GameTimeLastSurrenderedToPolice = Game.GameTime;
@@ -218,15 +218,15 @@ public class RespawnManager
         SetPlayerAtLocation(Hospital);
         GameTimeLastDischargedFromHospital = Game.GameTime;
         Mod.PedManager.ClearPolice();
-        VehicleManager.ClearPolice();
+        Mod.VehicleManager.ClearPolice();
         SetHospitalFee(Hospital.Name);
         FadeIn();   
     }
     public void ResistArrest()
     {
         Mod.Player.ResetState(false);//maxwanted last life maybe wont work?
-        Mod.WantedLevelManager.RefreshPoliceState();
-        Mod.WantedLevelManager.SetWantedLevel(Mod.Player.WantedLevel, "Resisting Arrest", true);
+        Mod.Player.CurrentPoliceResponse.RefreshPoliceState();
+        Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.WantedLevel, "Resisting Arrest", true);
         Mod.SurrenderManager.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
@@ -365,8 +365,8 @@ public class RespawnManager
         if (ClearWanted)
         {
             Mod.PersonOfInterestManager.Reset();
-            Mod.WantedLevelManager.Reset();
-            Mod.WantedLevelManager.SetWantedLevel(0, "Reset player with Clear Wanted", false);
+            Mod.Player.CurrentPoliceResponse.Reset();
+            Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Reset player with Clear Wanted", false);
             Mod.Player.MaxWantedLastLife = 0;
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
             Mod.PedDamageManager.Reset();

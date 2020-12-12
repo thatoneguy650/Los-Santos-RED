@@ -24,7 +24,7 @@ public class CivilianPerception
             MyPed.Update();
         }
         Mod.PedManager.Civilians.RemoveAll(x => !x.Pedestrian.Exists()  || x.Pedestrian.IsDead);
-        VehicleManager.CivilianVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
+        Mod.VehicleManager.CivilianVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
     }
     private void UpdateRecognition()
     {
