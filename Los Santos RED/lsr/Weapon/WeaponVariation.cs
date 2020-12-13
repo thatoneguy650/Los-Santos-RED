@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ public class WeaponVariation
     public void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash)
     {
         NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, Tint);
-        WeaponInformation LookupGun = WeaponManager.GetWeapon(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
+        WeaponInformation LookupGun = Mod.DataMart.Weapons.GetWeapon(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
         if (LookupGun == null)
             return;
         foreach (WeaponComponent ToRemove in LookupGun.PossibleComponents)

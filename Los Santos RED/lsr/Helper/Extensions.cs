@@ -5,17 +5,20 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace ExtensionsMethods
 {
     public static class Extensions
     {
         public static List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01","s_m_m_ammucountry","u_m_y_tattoo_01","s_f_y_shop_low","s_f_y_shop_mid","s_f_m_shop_high","s_m_m_autoshop_01","s_m_m_autoshop_02" };
-
         public static float NextFloat(this Random MyRand, float min,float max)
         {
             return (float)(MyRand.NextDouble() * (max - min) + min);
@@ -182,7 +185,7 @@ namespace ExtensionsMethods
         public static void GiveCash(this Ped myPed, int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = CashHash(SettingsManager.MySettings.General.MainCharacterToAlias);
+            uint PlayerCashHash = CashHash(Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -197,14 +200,14 @@ namespace ExtensionsMethods
             int CurrentCash;
             unsafe
             {
-                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(SettingsManager.MySettings.General.MainCharacterToAlias), &CurrentCash, -1);
+                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias), &CurrentCash, -1);
             }
 
             return CurrentCash;
         }
         public static void SetCash(this Ped myPed, int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(SettingsManager.MySettings.General.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias), Amount, 1);
         }
         private static uint CashHash(String PlayerName)
         {
@@ -281,7 +284,7 @@ namespace ExtensionsMethods
         {
             bool LightsOn;
             bool HighbeamsOn;
-            if (Mod.Player.IsNightTime)
+            if (Mod.World.IsNightTime)
             {
                 unsafe
                 {
@@ -319,7 +322,7 @@ namespace ExtensionsMethods
                     return true;
             }
 
-            if (Mod.Player.IsNightTime)
+            if (Mod.World.IsNightTime)
             {
                 if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
                     return true;

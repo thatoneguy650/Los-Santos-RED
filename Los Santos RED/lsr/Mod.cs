@@ -2,85 +2,45 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr
 {
     public static class Mod
     {
-        private static List<TickTask> MyTickTasks;
-
+        private static List<ModTask> MyTickTasks;
+        public static Debug Debug { get; private set; } = new Debug();
         public static Player Player { get; private set; } = new Player();
-        public static Map Map { get; private set; } = new Map();
-        public static InputManager InputManager { get; private set; } = new InputManager();
-        public static UIManager UIManager { get; private set; } = new UIManager();
-        public static Violations Violations { get; private set; } = new Violations();
-        public static MenuManager MenuManager { get; private set; } = new MenuManager();
-
-
-
-
-        public static VehicleEngineManager VehicleEngineManager { get; private set; } = new VehicleEngineManager();
-
-
-
-
-
-        public static SearchModeManager SearchModeManager { get; private set; } = new SearchModeManager();
-        public static SearchModeStoppingManager SearchModeStoppingManager { get; private set; } = new SearchModeStoppingManager();
-        public static PlateTheft LicensePlateTheftManager { get; private set; } = new PlateTheft();
-        public static RadioManager RadioManager { get; private set; } = new RadioManager();
-        public static VehicleFuelManager VehicleFuelManager { get; private set; } = new VehicleFuelManager();
-        public static VehicleIndicatorManager VehicleIndicatorManager { get; private set; } = new VehicleIndicatorManager();
-        public static VehicleManager VehicleManager { get; private set; } = new VehicleManager();
-        public static PedDamageManager PedDamageManager { get; private set; } = new PedDamageManager();
-        public static MuggingManager MuggingManager { get; private set; } = new MuggingManager();
-        public static TaskManager TaskManager { get; private set; } = new TaskManager();
-        public static PedSwapManager PedSwapManager { get; private set; } = new PedSwapManager();
-        public static RespawnManager RespawnManager { get; private set; } = new RespawnManager();
-        public static SurrenderManager SurrenderManager { get; private set; } = new SurrenderManager();
-        public static WeaponDroppingManager WeaponDroppingManager { get; private set; } = new WeaponDroppingManager();
-        public static DispatchManager DispatchManager { get; private set; } = new DispatchManager();
-        public static InvestigationManager InvestigationManager { get; private set; } = new InvestigationManager();
-        public static PersonOfInterestManager PersonOfInterestManager { get; private set; } = new PersonOfInterestManager();
-        
-        public static PoliceSpawningManager PoliceSpawningManager { get; private set; } = new PoliceSpawningManager();
-        public static ScannerManager ScannerManager { get; private set; } = new ScannerManager();
-        public static PoliceEquipmentManager PoliceEquipmentManager { get; private set; } = new PoliceEquipmentManager();
-        public static PoliceSpeechManager PoliceSpeechManager { get; private set; } = new PoliceSpeechManager();
-        public static PedManager PedManager { get; private set; } = new PedManager();
-        public static ClockManager ClockManager { get; private set; } = new ClockManager();
-        public static PolicePerception PolicePerception { get; private set; } = new PolicePerception();
-        public static CivilianPerception CivilianPerception { get; private set; } = new CivilianPerception();
-       
-        public static bool IsRunning { get; set; }
-        public static void Initialize()
+        public static World World { get; private set; } = new World();
+        public static Input Input { get; private set; } = new Input();
+        public static UI UI { get; private set; } = new UI();
+        public static Menu Menu { get; private set; } = new Menu();
+        public static DataMart DataMart { get; private set; } = new DataMart();
+        public static bool IsRunning { get; private set; }
+        public static void Start()
         {
             IsRunning = true;
 
             while (Game.IsLoading)
                 GameFiber.Yield();
- 
 
-            Setup();
-            InitializeStaticClasses();
-            Map.CreateLocationBlips();
+            DataMart.ReadConfig();
+            Player.AddSpareLicensePlates();
+            World.CreateLocationBlips();
+            Debug.Start();
+
+            SetupModTasks();
             RunTasks();
+
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Loaded", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~v0.1 Loaded by Greskrendtregk");
         }
         public static void Dispose()
         {
-            IsRunning = false;//NEED TO MOVE THIS TO AUTO RUN, maybe add dispose as a field it inherits
+            IsRunning = false;
+            GameFiber.Sleep(500);
             Player.Dispose();
-            ClockManager.Dispose();
-            PedManager.Dispose();
-            Map.RemoveBlips();
-            VehicleManager.Dispose();
-            PedManager.Dispose();
-            DispatchManager.Dispose();
-            PoliceSpawningManager.Dispose();
+            World.Dispose();
         }
-        public static void RunTasks()
+        private static void RunTasks()
         {
             GameFiber.StartNew(delegate
             {
@@ -90,113 +50,106 @@ namespace LosSantosRED.lsr
                     {
                         foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                         {
-                            TickTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or 
+                            ModTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or 
                             if (ToRun != null)
                             {
-                                ToRun.RunTask();
+                                ToRun.Run();
                             }
-                            foreach (TickTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
+                            foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                             {
-                                RunningBehind.RunTask();
+                                RunningBehind.Run();
                             }
                         }
-                        ResetRanItems();
+                        MyTickTasks.ForEach(x => x.RanThisTick = false);
                         GameFiber.Yield();
                     }
                 }
                 catch (Exception e)
                 {
                     Dispose();
-                    Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
                 }
             }, "Run Game Logic");
             GameFiber.Yield();
+
             GameFiber.StartNew(delegate
             {
                 try
                 {
                     while (IsRunning)
                     {
-                        MenuManager.Tick();
-                        UIManager.Tick();
+                        Menu.Tick();
+                        UI.Tick();
                         GameFiber.Yield();
                     }
                 }
                 catch (Exception e)
                 {
                     Dispose();
-                    Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
                 }
             }, "Run Menu/UI Logic");
         }
-        private static void Setup()
+        private static void SetupModTasks()
         {
-
-            MyTickTasks = new List<TickTask>()
+            MyTickTasks = new List<ModTask>()
             {
-                new TickTask(0, "ClockManager", ClockManager.Tick, 0,0),
+                new ModTask(0, "ClockManager", World.Clock.Tick, 0,0),
 
-                new TickTask(0, "InputManager", InputManager.Tick, 1,0),
+                new ModTask(0, "InputManager", Input.Tick, 1,0),
 
-                new TickTask(25, "Player", Player.Update, 2,0),
-                new TickTask(25, "PolicePerception", PolicePerception.Tick, 2,1),
+                new ModTask(25, "Player", Player.Update, 2,0),
+                new ModTask(25, "PolicePerception", World.PolicePerception.Tick, 2,1),
 
-                new TickTask(0, "VehicleEngineManager", VehicleEngineManager.Tick, 3,0),
+                new ModTask(0, "VehicleEngineManager", Player.VehicleEngine.Tick, 3,0),
 
-                new TickTask(50, "CrimeManager", Violations.Tick, 4,0),
-                new TickTask(50, "WantedLevelManager", Player.CurrentPoliceResponse.Update, 4,1),
+                new ModTask(50, "CrimeManager", Player.Violations.Update, 4,0),
+                new ModTask(50, "WantedLevelManager", Player.CurrentPoliceResponse.Update, 4,1),
 
-                new TickTask(150, "SearchModeManager", SearchModeManager.Tick, 5,0),
-                new TickTask(150, "InvestigationManager", Mod.InvestigationManager.Tick, 5,1),
-                new TickTask(150, "SearchModeStoppingManager", SearchModeStoppingManager.Tick, 5,2),
-                new TickTask(150, "CivilianManager", CivilianPerception.Tick, 5,3),
+                
+                new ModTask(150, "InvestigationManager", Player.Investigations.Tick, 5,0),
+                new ModTask(150, "CivilianManager", World.CivilianPerception.Tick, 5,1),
 
-                new TickTask(200, "PedDamageManager", PedDamageManager.Tick, 6,0),
-                new TickTask(250, "MuggingManager", MuggingManager.Tick, 6,1),
+                new ModTask(200, "PedDamageManager", World.PedDamage.Tick, 6,0),
+                new ModTask(250, "MuggingManager", Player.Mugging.Tick, 6,1),
+     
+                new ModTask(250, "PrunePedList", World.Pedestrians.PrunePeds, 7,0),
+                new ModTask(1000, "ScanForNewPeds", World.Pedestrians.ScanForPeds, 7,1),
+                new ModTask(250, "PruneVehicleList", World.Vehicles.PruneVehicles, 7,2),
+                new ModTask(1000, "VehicleManager", World.Vehicles.ScanForVehicles, 7,3),
+                new ModTask(500, "VehicleManager", World.Vehicles.UpdateVehiclePlates, 7,4),
 
-                new TickTask(1000, "PedManager", PedManager.Tick, 7,0),
-                new TickTask(1000, "VehicleManager", VehicleManager.Tick, 7,1),
-                new TickTask(500, "TaskManager.UpdateTaskablePeds", TaskManager.UpdateTaskablePeds, 7,3),
-                new TickTask(500, "TaskManager.RunActivities", TaskManager.RunActivities, 7,4),
+                new ModTask(250, "WeaponDroppingManager", Player.WeaponDropping.Tick, 8,0),
 
-                new TickTask(250, "WeaponDroppingManager", WeaponDroppingManager.Tick, 8,0),
+                new ModTask(500, "TrafficViolationsManager", Player.Violations.TrafficUpdate, 9,0),
+                new ModTask(500, "PlayerLocationManager", Player.CurrentLocation.Update, 9,1),
+                new ModTask(500, "ArrestWarrant", Player.ArrestWarrant.Update, 9,2),
 
-                new TickTask(500, "TrafficViolationsManager", Violations.TrafficTick, 9,0),
-                new TickTask(500, "PlayerLocationManager", Player.CurrentLocation.Update, 9,1),
-                new TickTask(500, "PersonOfInterestManager", PersonOfInterestManager.Tick, 9,2),
+                new ModTask(250, "PoliceEquipmentManager", World.PoliceEquipmentManager.Tick, 10,0),
+                
+                new ModTask(500, "PoliceSpeechManager", World.PoliceSpeechManager.Tick, 10,2),
+                new ModTask(500, "PoliceSpawningManager", World.PoliceSpawning.Tick, 10,3),
 
-                new TickTask(250, "PoliceEquipmentManager", PoliceEquipmentManager.Tick, 10,0),
-                new TickTask(500, "ScannerManager", ScannerManager.Tick, 10,1),
-                new TickTask(500, "PoliceSpeechManager", PoliceSpeechManager.Tick, 10,2),
-                new TickTask(500, "PoliceSpawningManager", PoliceSpawningManager.Tick, 10,3),
+                new ModTask(500, "DispatchManager.SpawnChecking", World.Dispatch.SpawnChecking, 11,0),
+                new ModTask(500, "DispatchManager.DeleteChecking", World.Dispatch.DeleteChecking, 11,1),
 
-                new TickTask(500, "DispatchManager.SpawnChecking", DispatchManager.SpawnChecking, 11,0),
-                new TickTask(500, "DispatchManager.DeleteChecking", DispatchManager.DeleteChecking, 11,1),
+                new ModTask(100, "VehicleFuelManager", Player.VehicleFuel.Tick, 12,0),
+                new ModTask(100, "VehicleIndicatorManager", Player.VehicleIndicators.Tick, 12,1),
+                new ModTask(500, "RadioManager", Player.VehicleRadio.Tick, 12,2),
 
-                new TickTask(100, "VehicleFuelManager", VehicleFuelManager.Tick, 12,0),
-                new TickTask(100, "VehicleIndicatorManager", VehicleIndicatorManager.Tick, 12,1),
-                new TickTask(500, "RadioManager", RadioManager.Tick, 12,2),
+                new ModTask(500, "WorldCache",World.CacheWorldData,13,0),
+
+                new ModTask(500, "TaskManager.UpdateTaskablePeds", World.Tasking.UpdateTaskablePeds, 14,0),
+                new ModTask(500, "TaskManager.RunActivities", World.Tasking.RunActivities, 14,1),
+
+
+                new ModTask(150, "SearchModeManager", Player.SearchMode.UpdateWanted, 15,0),
+                new ModTask(150, "SearchModeStoppingManager", Player.SearchMode.StopVanillaSearchMode, 15,1),
+
+                new ModTask(500, "ScannerManager", World.Scanner.Tick, 16,0),
             };
         }
-        private static void InitializeStaticClasses()
-        {
-            SettingsManager.Initialize();
-            ZoneManager.Initialize();
-            StreetManager.Initialize();
-            WeaponManager.Initialize();
-            LocationManager.Initialize();
-            NameManager.Initialize();
-            AgencyManager.Initialize();
-            ZoneJurisdictionManager.Initialize();
-            CountyJurisdictionManager.Initialize();    
-            PlateTypeManager.Initialize();
-            DispatchScannerFiles.Initialize();
-        }
-        private static void ResetRanItems()
-        {
-            MyTickTasks.ForEach(x => x.RanThisTick = false);
-        }
-        private class TickTask
+        private class ModTask
         {
             public bool RanThisTick = false;
             public uint GameTimeLastRan = 0;
@@ -206,7 +159,7 @@ namespace LosSantosRED.lsr
             public Action TickToRun;
             public int RunGroup;
             public int RunOrder;
-            public TickTask(uint _Interval, string _DebugName, Action _TickToRun, int _RunGroup, int _RunOrder)
+            public ModTask(uint _Interval, string _DebugName, Action _TickToRun, int _RunGroup, int _RunOrder)
             {
                 GameTimeLastRan = 0;
                 Interval = _Interval;
@@ -256,13 +209,12 @@ namespace LosSantosRED.lsr
                         return false;
                 }
             }
-            public void RunTask()
+            public void Run()
             {
                 TickToRun();
                 GameTimeLastRan = Game.GameTime;
                 RanThisTick = true;
             }
-
         }
     }
 }

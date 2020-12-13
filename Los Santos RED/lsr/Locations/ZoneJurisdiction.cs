@@ -17,14 +17,14 @@ public class ZoneJurisdiction
     {
         get
         {
-            return ZoneManager.GetZone(ZoneInternalGameName);
+            return Mod.DataMart.Zones.GetZone(ZoneInternalGameName);
         }
     }
     public Agency GameAgency
     {
         get
         {
-            return AgencyManager.GetAgency(AgencyInitials);
+            return Mod.DataMart.Agencies.GetAgency(AgencyInitials);
         }
     }
     public ZoneJurisdiction()

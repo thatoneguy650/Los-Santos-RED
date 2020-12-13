@@ -16,7 +16,7 @@ public class Cop : PedExt
     {
         get
         {
-            return Pedestrian.DistanceTo2D(Mod.InvestigationManager.InvestigationPosition);
+            return Pedestrian.DistanceTo2D(Mod.Player.Investigations.InvestigationPosition);
         }
     }
     public uint HasBeenSpawnedFor
@@ -30,7 +30,7 @@ public class Cop : PedExt
     {
         get
         {
-            return Mod.PedManager.Cops.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
+            return Mod.World.Pedestrians.Cops.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
     public bool ShouldBustPlayer
@@ -89,8 +89,8 @@ public class Cop : PedExt
 
         Pedestrian.VisionRange = 55f;
         Pedestrian.HearingRange = 25;
-        if (SettingsManager.MySettings.Police.OverridePoliceAccuracy)
-            Pedestrian.Accuracy = SettingsManager.MySettings.Police.PoliceGeneralAccuracy;
+        if (Mod.DataMart.Settings.MySettings.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = Mod.DataMart.Settings.MySettings.Police.PoliceGeneralAccuracy;
     }
 }
 

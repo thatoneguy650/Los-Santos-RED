@@ -11,12 +11,11 @@ namespace LosSantosRED.lsr
 {
     public class Player
     {
-        private bool VanillaRespawn;
+        private bool VanillaRespawn = true;
         private bool isGettingIntoVehicle;
         private bool isInVehicle;
         private bool isAimingInVehicle;
         private bool areStarsGreyedOut;
-        private uint GameTimeStartedHoldingEnter;
         private uint GameTimeLastShot;
         private uint GameTimeLastStartedJacking;
         private uint GameTimeLastStarsGreyedOut;
@@ -26,19 +25,44 @@ namespace LosSantosRED.lsr
         private uint GameTimePoliceNoticedVehicleChange;
         private uint GameTimeLastMoved;
         private uint PoliceLastSeenVehicleHandle;
-
         public Player()
         {
-            VanillaRespawn = true;
-            SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 1, 1, false));
+
         }
+        public VehicleEngine VehicleEngine { get; private set; } = new VehicleEngine();
+        public SearchMode SearchMode { get; private set; } = new SearchMode();   
+        public VehicleRadio VehicleRadio { get; private set; } = new VehicleRadio();
+        public VehicleFuel VehicleFuel { get; private set; } = new VehicleFuel();
+        public VehicleIndicators VehicleIndicators { get; private set; } = new VehicleIndicators();
+        public Violations Violations { get; private set; } = new Violations();
+        public Mugging Mugging { get; private set; } = new Mugging();
+        public PedSwap PedSwap { get; private set; } = new PedSwap();
+        public Respawning Respawning { get; private set; } = new Respawning();
+        public Surrendering Surrendering { get; private set; } = new Surrendering();
+        public WeaponDropping WeaponDropping { get; private set; } = new WeaponDropping();
+        public Investigations Investigations { get; private set; } = new Investigations();
+        public ArrestWarrant ArrestWarrant { get; private set; } = new ArrestWarrant();
         public LocationData CurrentLocation { get; private set; } = new LocationData(Game.LocalPlayer.Character);
         public PoliceResponse CurrentPoliceResponse { get; private set; } = new PoliceResponse();
+        public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
+        public VehicleExt CurrentVehicle { get; private set; }
+        public WeaponInformation CurrentWeapon { get; private set; }
+        public WeaponCategory CurrentWeaponCategory
+        {
+            get
+            {
+                if (CurrentWeapon != null)
+                    return CurrentWeapon.Category;
+                return WeaponCategory.Unknown;
+            }
+        }
+        public Vector3 CurrentPosition => Game.LocalPlayer.Character.Position;
+        public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
+        public WeaponHash LastWeaponHash { get; set; }
+        public WeaponHash CurrentWeaponHash { get; set; }
         public int TimesDied { get; set; }
         public bool HandsAreUp { get; set; }
         public int MaxWantedLastLife { get; set; }
-        public WeaponHash LastWeaponHash { get; set; }
-        public WeaponHash CurrentWeaponHash { get; set; }
         public bool IsDead { get; private set; }
         public bool IsBusted { get; private set; }
         public bool BeingArrested { get; private set; }
@@ -61,23 +85,9 @@ namespace LosSantosRED.lsr
         public bool IsCarJacking { get; set; }
         public bool IsLockPicking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
-        public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
-        public bool IsNightTime { get; private set; }
+
         public bool IsInAutomobile { get; private set; }
         public bool IsOnMotorcycle { get; private set; }
-        public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
-        public VehicleExt CurrentVehicle { get; private set; }
-        public WeaponInformation CurrentWeapon { get; private set; }
-        public WeaponCategory CurrentWeaponCategory
-        {
-            get
-            {
-                if (CurrentWeapon != null)
-                    return CurrentWeapon.Category;
-                return WeaponCategory.Unknown;
-            }
-        }
-        public Vector3 CurrentPosition => Game.LocalPlayer.Character.Position;
         public bool IsInVehicle
         {
             get => isInVehicle;
@@ -204,7 +214,7 @@ namespace LosSantosRED.lsr
             {
                 if (Mod.Player.CurrentPoliceResponse.HasBeenWantedFor <= 3000)
                     return true;
-                if (Mod.SurrenderManager.IsCommitingSuicide)
+                if (Mod.Player.Surrendering.IsCommitingSuicide)
                     return true;
                 if (RecentlyBusted)
                     return true;
@@ -224,25 +234,15 @@ namespace LosSantosRED.lsr
         {
             get { return TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList(); }
         }
-        public bool IsHoldingEnter
-        {
-            get
-            {
-                if (GameTimeStartedHoldingEnter == 0)
-                    return false;
-                if (Game.GameTime - GameTimeStartedHoldingEnter >= 75)
-                    return true;
-                return false;
-            }
-        }
-        public void TerminateVanillaRespawn()
+
+        private void TerminateVanillaRespawn()
         {
             var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
             Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
             Game.TerminateAllScriptsWithName("respawn_controller");
             VanillaRespawn = false;
         }
-        public void ActivateVanillaRespawn()
+        private void ActivateVanillaRespawn()
         {
             var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
             Marshal.WriteInt32(MyPtr, 0); //setting it to 0 turns it on somehow?
@@ -262,6 +262,10 @@ namespace LosSantosRED.lsr
             AudioTick();
             TrackedVehiclesTick();
         }
+        public void AddSpareLicensePlates()
+        {
+            SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 1, 1, false));
+        }
         public void Dispose()
         {
             ActivateVanillaRespawn();
@@ -270,9 +274,9 @@ namespace LosSantosRED.lsr
         {
             if (GameTimeLastShot == 0)
                 return false;
-            if (Mod.PedSwapManager.RecentlyTakenOver)
+            if (Mod.Player.PedSwap.RecentlyTakenOver)
                 return false;
-            if (Mod.RespawnManager.RecentlyRespawned)
+            if (Mod.Player.Respawning.RecentlyRespawned)
                 return false;
             if (Game.GameTime - GameTimeLastShot <= duration) //15000
                 return true;
@@ -305,7 +309,7 @@ namespace LosSantosRED.lsr
             if (MyVehicle == null || MyVehicle.IsStolen)
                 return;
 
-            if (Mod.PedSwapManager.OwnedCar == null || MyVehicle.VehicleEnt.Handle != Mod.PedSwapManager.OwnedCar.Handle)
+            if (Mod.Player.PedSwap.OwnedCar == null || MyVehicle.VehicleEnt.Handle != Mod.Player.PedSwap.OwnedCar.Handle)
                 MyVehicle.IsStolen = true;
         }
         public void SetPlayerToLastWeapon()
@@ -314,7 +318,7 @@ namespace LosSantosRED.lsr
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash,
                     true);
-                Debugging.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
+                Mod.Debug.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
             }
         }
         public void DisplayPlayerNotification()
@@ -339,12 +343,7 @@ namespace LosSantosRED.lsr
             }
 
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",
-                string.Format("~y~{0}", Mod.PedSwapManager.SuspectName), NotifcationText);
-        }
-        public void GivePlayerRandomWeapon(WeaponCategory RandomWeaponCategory)
-        {
-            var myGun = WeaponManager.GetRandomRegularWeapon(RandomWeaponCategory);
-            Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
+                string.Format("~y~{0}", Mod.Player.PedSwap.SuspectName), NotifcationText);
         }
         private VehicleExt UpdateCurrentVehicle()
         {
@@ -408,7 +407,7 @@ namespace LosSantosRED.lsr
             IsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
             IsAimingInVehicle = IsInVehicle && Game.LocalPlayer.IsFreeAiming;
             var PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
-            CurrentWeapon = WeaponManager.GetCurrentWeapon(Game.LocalPlayer.Character);
+            CurrentWeapon = Mod.DataMart.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
 
             if (PlayerCurrentWeapon != null)
                 CurrentWeaponHash = PlayerCurrentWeapon.Hash;
@@ -418,24 +417,7 @@ namespace LosSantosRED.lsr
             if (CurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeaponHash)
                 LastWeaponHash = PlayerCurrentWeapon.Hash;
 
-            AreStarsGreyedOut = Mod.SearchModeManager.IsInSearchMode;//NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
-
-            if (Game.IsControlPressed(2, GameControl.Enter))
-            {
-                if (GameTimeStartedHoldingEnter == 0)
-                    GameTimeStartedHoldingEnter = Game.GameTime;
-            }
-            else
-            {
-                GameTimeStartedHoldingEnter = 0;
-            }
-
-
-            IsNightTime = false;
-            var HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-            var MinuteOfDay = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
-            if (HourOfDay >= 19 || HourOfDay <= 6)//7pm to 6 am lights need to be on
-                IsNightTime = true;
+            AreStarsGreyedOut = Mod.Player.SearchMode.IsInSearchMode;//NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
         }
         private void TurnOffRespawnScripts()
         {
@@ -466,9 +448,9 @@ namespace LosSantosRED.lsr
         }
         private void AudioTick()
         {
-            if (SettingsManager.MySettings.Police.DisableAmbientScanner)
+            if (Mod.DataMart.Settings.MySettings.Police.DisableAmbientScanner)
                 NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
-            if (SettingsManager.MySettings.Police.WantedMusicDisable)
+            if (Mod.DataMart.Settings.MySettings.Police.WantedMusicDisable)
                 NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
         }
         private void TrackedVehiclesTick()
@@ -480,21 +462,21 @@ namespace LosSantosRED.lsr
                 if (CurrentVehicle == null)
                     return;
 
-                if (Mod.PolicePerception.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
+                if (Mod.World.PolicePerception.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
                 {
                     if (PoliceLastSeenVehicleHandle != 0 &&
                         PoliceLastSeenVehicleHandle != CurrentVehicle.VehicleEnt.Handle &&
                         !CurrentVehicle.HasBeenDescribedByDispatch)
                     {
                         GameTimePoliceNoticedVehicleChange = Game.GameTime;
-                        Debugging.WriteToLog("PlayerState",
+                        Mod.Debug.WriteToLog("PlayerState",
                             string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));
                     }
 
                     PoliceLastSeenVehicleHandle = CurrentVehicle.VehicleEnt.Handle;
                 }
 
-                if (Mod.PolicePerception.AnyCanRecognizePlayer)
+                if (Mod.World.PolicePerception.AnyCanRecognizePlayer)
                     if (WantedLevel > 0 && !AreStarsGreyedOut)
                         UpdateVehicleDescription(CurrentVehicle);
             }
@@ -508,18 +490,18 @@ namespace LosSantosRED.lsr
             // Game.LocalPlayer.Character.Tasks.Clear();
             // General.TransitionToMediumMo();//was slowmo slowmo lets try this
             HandsAreUp = false;
-            Mod.SurrenderManager.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);
+            Mod.Player.Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);
             var HandleBusted = GameFiber.StartNew(delegate
             {
                 GameFiber.Wait(1000);
-                Mod.MenuManager.ShowBustedMenu();
+                Mod.Menu.ShowBustedMenu();
             }, "HandleBusted");
-            Debugging.GameFibers.Add(HandleBusted);
+            Mod.Debug.GameFibers.Add(HandleBusted);
             Game.LocalPlayer.HasControl = false;
         }
         private void DeathEvent()
         {
-            Mod.ClockManager.PauseTime();
+            Mod.World.Clock.PauseTime();
             DiedInVehicle = IsInVehicle;
             IsDead = true;
             GameTimeLastDied = Game.GameTime;
@@ -530,9 +512,9 @@ namespace LosSantosRED.lsr
             var HandleDeath = GameFiber.StartNew(delegate
             {
                 GameFiber.Wait(1000);
-                Mod.MenuManager.ShowDeathMenu();
+                Mod.Menu.ShowDeathMenu();
             }, "HandleDeath");
-            Debugging.GameFibers.Add(HandleDeath);
+            Mod.Debug.GameFibers.Add(HandleDeath);
         }
         private void TransitionToSlowMo()
         {
@@ -550,10 +532,6 @@ namespace LosSantosRED.lsr
 
             //}, "TransitionIn");
             //Debugging.GameFibers.Add(Transition);
-        }
-        private void TransitionToMediumMo()
-        {
-            Game.TimeScale = 0.8f;
         }
         private void IsGettingIntoVehicleChanged()
         {
@@ -585,7 +563,7 @@ namespace LosSantosRED.lsr
         private void IsInVehicleChanged()
         {
             if (IsInVehicle) UpdateStolenStatus();
-            Debugging.WriteToLog("ValueChecker", string.Format("IsInVehicle Changed to: {0}", IsInVehicle));
+            Mod.Debug.WriteToLog("ValueChecker", string.Format("IsInVehicle Changed to: {0}", IsInVehicle));
         }
         private void IsAimingInVehicleChanged()
         {
@@ -593,7 +571,7 @@ namespace LosSantosRED.lsr
                 SetDriverWindow(true);
             else
                 SetDriverWindow(false);
-            Debugging.WriteToLog("ValueChecker", string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
+            Mod.Debug.WriteToLog("ValueChecker", string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
         }
         private void AreStarsGreyedOutChanged()
         {
@@ -602,13 +580,13 @@ namespace LosSantosRED.lsr
             else
                 GameTimeLastStarsNotGreyedOut = Game.GameTime;
 
-            Debugging.WriteToLog("ValueChecker", string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
+            Mod.Debug.WriteToLog("ValueChecker", string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
         private void TrackCurrentVehicle()
         {
             var CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
             var IsStolen = true;
-            if (Mod.PedSwapManager.OwnedCar != null && Mod.PedSwapManager.OwnedCar.Handle == CurrVehicle.Handle)
+            if (Mod.Player.PedSwap.OwnedCar != null && Mod.Player.PedSwap.OwnedCar.Handle == CurrVehicle.Handle)
                 IsStolen = false;
 
             CurrVehicle.IsStolen = IsStolen;

@@ -52,11 +52,11 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetZone()
         {
-            CurrentZone = ZoneManager.GetZone(CharacterToLocate.Position);
+            CurrentZone = Mod.DataMart.Zones.GetZone(CharacterToLocate.Position);
         }
         private void GetNode()
         {
-            ClosestNode = World.GetNextPositionOnStreet(CharacterToLocate.Position);
+            ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);
             if (ClosestNode.DistanceTo2D(CharacterToLocate) >= 15f)//was 25f
             {
                 IsOffroad = true;
@@ -78,8 +78,8 @@ namespace LosSantosRED.lsr.Locations
 
             int StreetHash = 0;
             int CrossingHash = 0;
-            string PlayerCurrentStreetName;
-            string PlayerCurrentCrossStreetName;
+            string CurrentStreetName;
+            string CurrentCrossStreetName;
             unsafe
             {
                 NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
@@ -92,10 +92,10 @@ namespace LosSantosRED.lsr.Locations
                     IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
                     StreetName = Marshal.PtrToStringAnsi(ptr);
                 }
-                PlayerCurrentStreetName = StreetName;
+                CurrentStreetName = StreetName;
             }
             else
-                PlayerCurrentStreetName = "";
+                CurrentStreetName = "";
 
             string CrossStreetName = string.Empty;
             if (CrossingHash != 0)
@@ -105,18 +105,18 @@ namespace LosSantosRED.lsr.Locations
                     IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", CrossingHash);
                     CrossStreetName = Marshal.PtrToStringAnsi(ptr);
                 }
-                PlayerCurrentCrossStreetName = CrossStreetName;
+                CurrentCrossStreetName = CrossStreetName;
             }
             else
-                PlayerCurrentCrossStreetName = "";
+                CurrentCrossStreetName = "";
 
 
-            CurrentStreet = StreetManager.GetStreet(PlayerCurrentStreetName);
-            CurrentCrossStreet = StreetManager.GetStreet(PlayerCurrentCrossStreetName);
+            CurrentStreet = Mod.DataMart.Streets.GetStreet(CurrentStreetName);
+            CurrentCrossStreet = Mod.DataMart.Streets.GetStreet(CurrentCrossStreetName);
 
             if (CurrentStreet == null)
             {
-                CurrentStreet = new Street(StreetManager.GetStreet(Game.LocalPlayer.Character.Position) + "?", 60f);
+                CurrentStreet = new Street(Mod.DataMart.Streets.GetStreet(CharacterToLocate.Position) + "?", 60f);
                 if (CurrentStreet.IsHighway)
                 {
                     if (!IsOnFreeway)

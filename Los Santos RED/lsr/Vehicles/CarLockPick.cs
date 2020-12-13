@@ -44,7 +44,7 @@ public class CarLockPick
 
     public void PickLock()
     {
-        if (!Mod.Player.IsHoldingEnter || !CanLockPick)
+        if (!Mod.Input.IsHoldingEnter || !CanLockPick)
             return;
         try
         {
@@ -59,12 +59,12 @@ public class CarLockPick
                 FinishLockPick();
 
             }, "PickLock");
-            Debugging.GameFibers.Add(UnlockCarDoor);
+            Mod.Debug.GameFibers.Add(UnlockCarDoor);
         }
         catch (Exception e)
         {
             Mod.Player.IsLockPicking = false;
-            Debugging.WriteToLog("PickLock", e.Message);
+            Mod.Debug.WriteToLog("PickLock", e.Message);
         }
     }
     private bool SetupLockPick()

@@ -88,7 +88,7 @@ public class CriminalHistory
             }
             else
             {
-                Debugging.WriteToLog("Crimes", string.Format("Crime Reported: {0}", CrimeInstance.Name));
+                Mod.Debug.WriteToLog("Crimes", string.Format("Crime Reported: {0}", CrimeInstance.Name));
                 CrimesReported.Add(new CrimeEvent(CrimeInstance));
             }
         }
@@ -96,7 +96,7 @@ public class CriminalHistory
         {
             Mod.Player.CurrentPoliceResponse.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
         }
-        Mod.ScannerManager.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed,InstancesObserved = CurrentInstances });
+        Mod.World.Scanner.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed,InstancesObserved = CurrentInstances });
 
     }
 

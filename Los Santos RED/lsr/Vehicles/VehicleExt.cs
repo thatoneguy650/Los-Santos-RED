@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -237,11 +238,11 @@ namespace LSR.Vehicles
         public void UpdatePlate()//this might need to come out of here.... along with the two bools
         {
             HasUpdatedPlateType = true;
-            PlateType CurrentType = PlateTypeManager.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleEnt));
+            PlateType CurrentType = Mod.DataMart.PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleEnt));
             string CurrentPlateNumber = VehicleEnt.LicensePlate;
             if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
             {
-                PlateType NewType = PlateTypeManager.GetRandomPlateType();
+                PlateType NewType = Mod.DataMart.PlateTypes.GetRandomPlateType();
                 if (NewType != null)
                 {
                     string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();

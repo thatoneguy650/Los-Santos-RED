@@ -31,7 +31,7 @@ public class Agency
         {
             if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
             {
-                if (Mod.PedManager.Cops.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                if (Mod.World.Pedestrians.Cops.Count(x => x.AssignedAgency == this) < SpawnLimit)
                     return true;
                 else
                     return false;
@@ -90,7 +90,7 @@ public class Agency
 
         List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn).ToList();
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-        // Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
+        // Mod.Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
         int RandomPick = RandomItems.MyRand.Next(0, Total);
         foreach (VehicleInformation Vehicle in ToPickFrom)
         {
@@ -114,7 +114,7 @@ public class Agency
             ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
         }
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
-        //Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
+        //Mod.Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
         int RandomPick = RandomItems.MyRand.Next(0, Total);
         foreach (PedestrianInformation Cop in ToPickFrom)
         {

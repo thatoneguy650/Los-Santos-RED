@@ -17,7 +17,7 @@ public class CountyJurisdiction
     {
         get
         {
-            return AgencyManager.GetAgency(AgencyInitials);
+            return Mod.DataMart.Agencies.GetAgency(AgencyInitials);
         }
     }
     public bool CanCurrentlySpawn
