@@ -75,6 +75,13 @@ namespace LosSantosRED.lsr
                 return CrimeList.Any(x => x.IsCurrentlyViolating);
             }
         }
+        public string LawsViolating
+        {
+            get
+            {
+                return string.Join(",", CrimeList.Where(x => x.IsCurrentlyViolating).Select(x => x.Name));
+            }
+        }
         public bool IsViolatingAnyTrafficLaws
         {
             get
@@ -384,7 +391,7 @@ namespace LosSantosRED.lsr
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (Mod.DataMart.Settings.MySettings.TrafficViolations.HitPed && RecentlyHitPed && (Mod.World.PedDamage.RecentlyHurtCivilian || Mod.World.PedDamage.RecentlyHurtCop) && (Mod.World.Pedestrians.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.Pedestrians.Cops.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
+            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (Mod.World.PedDamage.RecentlyHurtCivilian || Mod.World.PedDamage.RecentlyHurtCop) && (Mod.World.Pedestrians.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.Pedestrians.Cops.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
             {
                 HitPedWithCar.IsCurrentlyViolating = true;
             }
@@ -392,7 +399,7 @@ namespace LosSantosRED.lsr
             {
                 HitPedWithCar.IsCurrentlyViolating = false;
             }
-            if (Mod.DataMart.Settings.MySettings.TrafficViolations.HitVehicle && RecentlyHitVehicle)
+            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.HitVehicle && RecentlyHitVehicle)
             {
                 HitCarWithCar.IsCurrentlyViolating = true;
             }
@@ -402,7 +409,7 @@ namespace LosSantosRED.lsr
             }
             if (!TreatAsCop)
             {
-                if (Mod.DataMart.Settings.MySettings.TrafficViolations.DrivingAgainstTraffic && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.DrivingAgainstTraffic && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
                 {
                     DrivingAgainstTraffic.IsCurrentlyViolating = true;
                 }
@@ -410,7 +417,7 @@ namespace LosSantosRED.lsr
                 {
                     DrivingAgainstTraffic.IsCurrentlyViolating = false;
                 }
-                if (Mod.DataMart.Settings.MySettings.TrafficViolations.DrivingOnPavement && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.DrivingOnPavement && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
                 {
                     DrivingOnPavement.IsCurrentlyViolating = true;
                 }
@@ -419,7 +426,7 @@ namespace LosSantosRED.lsr
                     DrivingOnPavement.IsCurrentlyViolating = false;
                 }
 
-                if (Mod.DataMart.Settings.MySettings.TrafficViolations.NotRoadworthy && PlayersVehicleIsSuspicious)
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.NotRoadworthy && PlayersVehicleIsSuspicious)
                 {
                     NonRoadworthyVehicle.IsCurrentlyViolating = true;
                 }
@@ -427,7 +434,8 @@ namespace LosSantosRED.lsr
                 {
                     NonRoadworthyVehicle.IsCurrentlyViolating = false;
                 }
-                if (Mod.DataMart.Settings.MySettings.TrafficViolations.Speeding && PlayerIsSpeeding)
+
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.Speeding && PlayerIsSpeeding)
                 {
                     FelonySpeeding.IsCurrentlyViolating = true;
                 }
@@ -435,7 +443,7 @@ namespace LosSantosRED.lsr
                 {
                     FelonySpeeding.IsCurrentlyViolating = false;
                 }
-                if (Mod.DataMart.Settings.MySettings.TrafficViolations.RunningRedLight && RecentlyRanRed)
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.RunningRedLight && RecentlyRanRed)
                 {
                     //RunningARedLight.IsCurrentlyViolating = true;//turned off for now until i fix it
                 }
@@ -453,12 +461,15 @@ namespace LosSantosRED.lsr
             TreatAsCop = false;
             PlayerIsSpeeding = false;
 
-            if (!Mod.Player.CurrentVehicle.VehicleEnt.IsRoadWorthy() || Mod.Player.CurrentVehicle.VehicleEnt.IsDamaged())
-                PlayersVehicleIsSuspicious = true;
-
-            if (Mod.DataMart.Settings.MySettings.TrafficViolations.ExemptCode3 && Mod.Player.CurrentVehicle.VehicleEnt != null && Mod.Player.CurrentVehicle.VehicleEnt.IsPoliceVehicle && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.WasReportedStolen)
+            if (!Mod.Player.CurrentVehicle.Vehicle.IsRoadWorthy() || Mod.Player.CurrentVehicle.Vehicle.IsDamaged())
             {
-                if (Mod.Player.CurrentVehicle.VehicleEnt.IsSirenOn && !Mod.World.PolicePerception.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
+                PlayersVehicleIsSuspicious = true;
+            }
+            
+
+            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.ExemptCode3 && Mod.Player.CurrentVehicle.Vehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.WasReportedStolen)
+            {
+                if (Mod.Player.CurrentVehicle.Vehicle.IsSirenOn && !Mod.World.PolicePerception.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
                 {
                     TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
                 }
@@ -513,7 +524,7 @@ namespace LosSantosRED.lsr
             if (Mod.Player.CurrentLocation.CurrentStreet != null)
                 SpeedLimit = Mod.Player.CurrentLocation.CurrentStreet.SpeedLimit;
 
-            PlayerIsSpeeding = CurrentSpeed > SpeedLimit + Mod.DataMart.Settings.MySettings.TrafficViolations.SpeedingOverLimitThreshold;
+            PlayerIsSpeeding = CurrentSpeed > SpeedLimit + Mod.DataMart.Settings.SettingsManager.TrafficViolations.SpeedingOverLimitThreshold;
         }
         private void FlagViolations()
         {

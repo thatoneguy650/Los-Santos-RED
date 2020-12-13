@@ -8,17 +8,23 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-public class VehicleRadio
+public class Radio
 {
     private bool MobileEnabled;
     private string CurrentRadioStationName;
+
+    public Radio()
+    {
+
+    }
+
     public bool AutoTune { get; set; } = true;
     public string AutoTuneStation { get; set; } = "RADIO_19_USER";
     public bool CanChangeStation
     {
         get
         {
-            if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn && !Mod.Player.VehicleEngine.IsHotwiring)
+            if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsInHelicopter && !Game.LocalPlayer.Character.IsInPlane && !Game.LocalPlayer.Character.IsInBoat && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn && !Mod.Player.IsHotwiring)
             {
                 return true;
             }
@@ -49,7 +55,7 @@ public class VehicleRadio
     }
     private void EnablePoliceCarMusic()
     {
-        if (Mod.Player.IsInVehicle && Mod.Player.VehicleEngine.IsEngineRunning && Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
+        if (Mod.Player.IsInVehicle && Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Engine.IsRunning && Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
         {
             MobileEnabled = true;
             NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
@@ -62,19 +68,16 @@ public class VehicleRadio
     }
     private void CheckAutoTuning()
     {
-        if (Mod.Player.IsInVehicle)
+        if (AutoTuneStation.ToUpper() != "NONE")
         {
-            if (AutoTuneStation.ToUpper() != "NONE")
+            unsafe
             {
-                unsafe
-                {
-                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
-                    CurrentRadioStationName = Marshal.PtrToStringAnsi(ptr);
-                }
-                if (CurrentRadioStationName != AutoTuneStation && Game.LocalPlayer.Character.CurrentVehicle != null)
-                {
-                    SetRadioStation(AutoTuneStation);
-                }
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
+                CurrentRadioStationName = Marshal.PtrToStringAnsi(ptr);
+            }
+            if (CurrentRadioStationName != AutoTuneStation && Game.LocalPlayer.Character.CurrentVehicle != null)
+            {
+                SetRadioStation(AutoTuneStation);
             }
         }
     }

@@ -9,7 +9,7 @@ using System.Xml;
 using System.Xml.Serialization;
 
 [Serializable()]
-public class LSRSettings
+public class SettingsManager
 {
     public GeneralSettings General = new GeneralSettings();
     public UISettings UI = new UISettings();

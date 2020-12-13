@@ -110,7 +110,7 @@ namespace LosSantosRED.lsr
         }
         public void Tick()
         {
-            if (Mod.DataMart.Settings.MySettings.Police.DispatchAudio)
+            if (Mod.DataMart.Settings.SettingsManager.Police.DispatchAudio)
             {
                 CheckDispatch();
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
@@ -388,9 +388,9 @@ namespace LosSantosRED.lsr
 
             if (DispatchToPlay.IncludeDrivingSpeed)
             {
-                if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.VehicleEnt.Exists())
+                if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.Exists())
                 {
-                    AddSpeed(EventToPlay, Mod.Player.CurrentVehicle.VehicleEnt.Speed);
+                    AddSpeed(EventToPlay, Mod.Player.CurrentVehicle.Vehicle.Speed);
                 }
             }
 
@@ -439,7 +439,7 @@ namespace LosSantosRED.lsr
                     GameFiber.Yield();
                 }
 
-                if (MyAudioEvent.NotificationTitle != "" && Mod.DataMart.Settings.MySettings.Police.DispatchNotifications)
+                if (MyAudioEvent.NotificationTitle != "" && Mod.DataMart.Settings.SettingsManager.Police.DispatchNotifications)
                 {
                     RemoveAllNotifications();
                     NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
@@ -456,7 +456,7 @@ namespace LosSantosRED.lsr
 
                     while (IsAudioPlaying)
                     {
-                        if (MyAudioEvent.Subtitles != "" && Mod.DataMart.Settings.MySettings.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                        if (MyAudioEvent.Subtitles != "" && Mod.DataMart.Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                         {
                             Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
                             GameTimeLastDisplayedSubtitle = Game.GameTime;
@@ -490,7 +490,7 @@ namespace LosSantosRED.lsr
                 {
                     audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", _Audio))
                     {
-                        Volume = Mod.DataMart.Settings.MySettings.Police.DispatchAudioVolume
+                        Volume = Mod.DataMart.Settings.SettingsManager.Police.DispatchAudioVolume
                     };
                     outputDevice.Init(audioFile);
                 }
@@ -659,7 +659,7 @@ namespace LosSantosRED.lsr
             //else
             //    VehicleToDescribe.HasBeenDescribedByDispatch = true;
 
-            if (VehicleToDescribe != null && VehicleToDescribe.VehicleEnt.Exists())
+            if (VehicleToDescribe != null && VehicleToDescribe.Vehicle.Exists())
             {
                 dispatchEvent.NotificationText += "~n~Vehicle:~s~";
                 dispatchEvent.SoundsToPlay.Add(suspect_is.SuspectIs.FileName);
@@ -676,7 +676,7 @@ namespace LosSantosRED.lsr
                 string ColorAudio = Mod.DataMart.VehicleScannerAudio.GetColorAudio(CarColor);
                 string MakeAudio = Mod.DataMart.VehicleScannerAudio.GetMakeAudio(MakeName);
                 string ClassAudio = Mod.DataMart.VehicleScannerAudio.GetClassAudio(ClassInt);
-                string ModelAudio = Mod.DataMart.VehicleScannerAudio.GetModelAudio(VehicleToDescribe.VehicleEnt.Model.Hash);
+                string ModelAudio = Mod.DataMart.VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
 
                 if (ColorAudio != "")
                 {
@@ -713,7 +713,7 @@ namespace LosSantosRED.lsr
                     dispatchEvent.NotificationText += " ~s~Plate: " + LicensePlateText + "~s~";
                 }
 
-                Mod.Debug.WriteToLog("ScannerScript", string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.VehicleEnt.Model.Name));
+                Mod.Debug.WriteToLog("ScannerScript", string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.Vehicle.Model.Name));
             }
 
         }

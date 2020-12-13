@@ -9,33 +9,34 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+
 public class Settings
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
-    public LSRSettings MySettings { get; private set; }
+    public SettingsManager SettingsManager { get; private set; }
     public void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
         {
-            MySettings = Serialization.DeserializeParams<LSRSettings>(ConfigFileName).FirstOrDefault();
+            SettingsManager = Serialization.DeserializeParams<SettingsManager>(ConfigFileName).FirstOrDefault();
         }
         else
         {
-            MySettings = new LSRSettings();
-            List<LSRSettings> ToSerialize = new List<LSRSettings>
+            SettingsManager = new SettingsManager();
+            List<SettingsManager> ToSerialize = new List<SettingsManager>
             {
-                MySettings
+                SettingsManager
             };
             Serialization.SerializeParams(ToSerialize, ConfigFileName);
         }
     }
     public void SerializeAllSettings()
     {
-        if (MySettings == null)
-            MySettings = new LSRSettings();
-        List<LSRSettings> ToSerialize = new List<LSRSettings>
+        if (SettingsManager == null)
+            SettingsManager = new SettingsManager();
+        List<SettingsManager> ToSerialize = new List<SettingsManager>
         {
-            MySettings
+            SettingsManager
         };
         Serialization.SerializeParams(ToSerialize, ConfigFileName);
     }

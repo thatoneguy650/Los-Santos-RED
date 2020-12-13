@@ -81,7 +81,7 @@ public class PedSwap
     public void BecomeMPCharacter(bool IsMale)
     {
         SetPlayerOffset();
-        ChangeModel(Mod.DataMart.Settings.MySettings.General.MainCharacterToAliasModelName);
+        ChangeModel(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAliasModelName);
         //if(IsMale)
         //{
         //    ChangeModel(ModelToChange);
@@ -223,7 +223,7 @@ public class PedSwap
         if (!TargetPedAlreadyTakenOver)
         {
             SetPlayerOffset();
-            ChangeModel(Mod.DataMart.Settings.MySettings.General.MainCharacterToAliasModelName);
+            ChangeModel(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAliasModelName);
             ChangeModel(ModelToChange);
         }
 
@@ -244,8 +244,8 @@ public class PedSwap
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
 
-        if (Mod.DataMart.Settings.MySettings.General.PedTakeoverSetRandomMoney)
-            Game.LocalPlayer.Character.SetCash(RandomItems.MyRand.Next(Mod.DataMart.Settings.MySettings.General.PedTakeoverRandomMoneyMin, Mod.DataMart.Settings.MySettings.General.PedTakeoverRandomMoneyMax));
+        if (Mod.DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
+            Game.LocalPlayer.Character.SetCash(RandomItems.MyRand.Next(Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
 
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
@@ -325,11 +325,11 @@ public class PedSwap
         UInt64 Second = GTA.Read<UInt64>(Player + SECOND_OFFSET);
         UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
 
-        if (Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias == "Michael")
+        if (Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Michael")
             GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
-        else if (Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias == "Franklin")
+        else if (Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Franklin")
             GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
-        else if (Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias == "Trevor")
+        else if (Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Trevor")
             GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
 
     }

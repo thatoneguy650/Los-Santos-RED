@@ -21,7 +21,7 @@ public class Vehicles
 
     public void PruneVehicles()
     {
-        CivilianVehicles.RemoveAll(x => !x.VehicleEnt.Exists());
+        CivilianVehicles.RemoveAll(x => !x.Vehicle.Exists());
         PoliceVehicles.RemoveAll(x => !x.Exists());
     }
     public void ScanForVehicles()
@@ -35,7 +35,7 @@ public class Vehicles
     public void UpdateVehiclePlates()
     {
         int VehiclesUpdated = 0;
-        foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.VehicleEnt.Exists() && !x.HasUpdatedPlateType))
+        foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType))
         {
             MyCar.UpdatePlate();
             VehiclesUpdated++;
@@ -58,7 +58,7 @@ public class Vehicles
         }
         else
         {
-            if (!CivilianVehicles.Any(x => x.VehicleEnt.Handle == Veh.Handle))
+            if (!CivilianVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
             {
                 CivilianVehicles.Add(new VehicleExt(Veh));
             }

@@ -358,7 +358,7 @@ public class PoliceResponse
                     CurrentCrimes.PlayerSeenDuringWanted = true;
                 }
 
-                if (Mod.DataMart.Settings.MySettings.Police.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Mod.DataMart.Settings.MySettings.Police.WantedLevelIncreaseTime && Mod.World.PolicePerception.AnyCanSeePlayer && Mod.Player.WantedLevel <= Mod.DataMart.Settings.MySettings.Police.WantedLevelInceaseOverTimeLimit)
+                if (Mod.DataMart.Settings.SettingsManager.Police.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Mod.DataMart.Settings.SettingsManager.Police.WantedLevelIncreaseTime && Mod.World.PolicePerception.AnyCanSeePlayer && Mod.Player.WantedLevel <= Mod.DataMart.Settings.SettingsManager.Police.WantedLevelInceaseOverTimeLimit)
                 {
                     GameTimeLastRequestedBackup = Game.GameTime;
                     SetWantedLevel(Mod.Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
@@ -370,12 +370,12 @@ public class PoliceResponse
                 int PoliceKilled = CurrentCrimes.InstancesOfCrime("KillingPolice");
                 if (PoliceKilled > 0)
                 {
-                    if (PoliceKilled >= 2 * Mod.DataMart.Settings.MySettings.Police.PoliceKilledSurrenderLimit && Mod.Player.WantedLevel < 5)
+                    if (PoliceKilled >= 2 * Mod.DataMart.Settings.SettingsManager.Police.PoliceKilledSurrenderLimit && Mod.Player.WantedLevel < 5)
                     {
                         SetWantedLevel(5, "You killed too many cops 5 Stars", true);
                         IsWeaponsFree = true;
                     }
-                    else if (PoliceKilled >= Mod.DataMart.Settings.MySettings.Police.PoliceKilledSurrenderLimit && Mod.Player.WantedLevel < 4)
+                    else if (PoliceKilled >= Mod.DataMart.Settings.SettingsManager.Police.PoliceKilledSurrenderLimit && Mod.Player.WantedLevel < 4)
                     {
                         SetWantedLevel(4, "You killed too many cops 4 Stars", true);
                         IsWeaponsFree = true;
@@ -477,7 +477,7 @@ public class PoliceResponse
             CurrentWantedCenterBlip.Position = Position;
         }
         CurrentWantedCenterBlip.Color = Mod.Player.SearchMode.BlipColor;
-        CurrentWantedCenterBlip.Scale = Mod.Player.SearchMode.BlipSize; ;
+        CurrentWantedCenterBlip.Scale = Mod.Player.SearchMode.BlipSize;
     }
     private void UpdateLastBlip(Vector3 Position)
     {
@@ -491,9 +491,9 @@ public class PoliceResponse
         {
             int MaxWanted = Mod.Player.ArrestWarrant.MaxWantedLevel;
             if (MaxWanted != 0)
-                LastWantedSearchRadius = MaxWanted * Mod.DataMart.Settings.MySettings.Police.LastWantedCenterSize;
+                LastWantedSearchRadius = MaxWanted * Mod.DataMart.Settings.SettingsManager.Police.LastWantedCenterSize;
             else
-                LastWantedSearchRadius = Mod.DataMart.Settings.MySettings.Police.LastWantedCenterSize;
+                LastWantedSearchRadius = Mod.DataMart.Settings.SettingsManager.Police.LastWantedCenterSize;
 
             LastWantedCenterBlip = new Blip(LastWantedCenterPosition, LastWantedSearchRadius)
             {

@@ -6,13 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-public class VehicleIndicators
+public class Indicators
 {
     private bool LeftBlinkerStartedTurn;
     private bool RightBlinkerStartedTurn;
-    private int TimeWheelsTurnedRight;
-    private int TimeWheelsTurnedLeft;
-    private int TimeWheelsStraight;
     private Vehicle CurrentVehicle;
 
     private uint GameTimeStartedTurnWheelRight;
@@ -206,68 +203,6 @@ public class VehicleIndicators
         {
             GameTimeStartedTurnWheelLeft = 0;
             GameTimeStartedTurnWheelStraight = 0;
-            LeftBlinkerStartedTurn = false;
-            CurrentVehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
-            LeftBlinkerOn = false;
-        }
-    }
-    private void RightBlinkerTickOld()
-    {
-        if (RightBlinkerOn)
-        {
-            if (CurrentVehicle.SteeringAngle <= -25f)
-                TimeWheelsTurnedRight++;
-            else
-                TimeWheelsTurnedRight = 0;
-
-            if (TimeWheelsTurnedRight >= 20)
-            {
-                RightBlinkerStartedTurn = true;
-            }
-
-        }
-        if (RightBlinkerOn && RightBlinkerStartedTurn)
-        {
-            if (CurrentVehicle.SteeringAngle > -10f)
-                TimeWheelsStraight++;
-            else
-                TimeWheelsStraight = 0;
-        }
-        if (RightBlinkerOn && TimeWheelsStraight >= 20)
-        {
-            TimeWheelsTurnedRight = 0;
-            TimeWheelsStraight = 0;
-            RightBlinkerStartedTurn = false;
-            CurrentVehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
-            RightBlinkerOn = false;
-        }
-    }
-    private void LeftBlinkerTickOld()
-    {
-        if (LeftBlinkerOn)
-        {
-            if (CurrentVehicle.SteeringAngle >= 25f)
-                TimeWheelsTurnedLeft++;
-            else
-                TimeWheelsTurnedLeft = 0;
-
-            if (TimeWheelsTurnedLeft >= 20)
-            {
-                LeftBlinkerStartedTurn = true;
-            }
-
-        }
-        if (LeftBlinkerOn && LeftBlinkerStartedTurn)
-        {
-            if (CurrentVehicle.SteeringAngle < 10f)
-                TimeWheelsStraight++;
-            else
-                TimeWheelsStraight = 0;
-        }
-        if (LeftBlinkerOn && TimeWheelsStraight >= 20)
-        {
-            TimeWheelsTurnedLeft = 0;
-            TimeWheelsStraight = 0;
             LeftBlinkerStartedTurn = false;
             CurrentVehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
             LeftBlinkerOn = false;

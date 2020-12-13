@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-public class VehicleFuel
+public class FuelTank
 {
     private bool NearGasPumps;
     private uint GameTimeLastCheckedFuel;
-    private float CurrentFuelLevel;
-    public bool CanPumpFuel { get; private set; }
-    public string FuelUIText
+    private float CurrentLevel;
+    public bool CanPump { get; private set; }
+    public string UIText
     {
         get
         {
@@ -29,8 +29,8 @@ public class VehicleFuel
     {
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsCar)
         {
-            CurrentFuelLevel = Game.LocalPlayer.Character.CurrentVehicle.FuelLevel;
-            if (Mod.Player.VehicleEngine.IsEngineRunning)
+            CurrentLevel = Game.LocalPlayer.Character.CurrentVehicle.FuelLevel;
+            if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Engine.IsRunning)
             {
                 EngineRunningTick();
             }
@@ -41,7 +41,7 @@ public class VehicleFuel
         }
         else
         {
-            CanPumpFuel = false;
+            CanPump = false;
         }
         
     }
@@ -50,8 +50,8 @@ public class VehicleFuel
         if (Game.LocalPlayer.Character.GetCash() >= 1 && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel < 100f)
         {
             Game.LocalPlayer.Character.GiveCash(-1);
-            if (CurrentFuelLevel + 1f <= 100f)
-                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentFuelLevel + 1f;
+            if (CurrentLevel + 1f <= 100f)
+                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentLevel + 1f;
             else
                 Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = 100f;
         }
@@ -60,19 +60,22 @@ public class VehicleFuel
     {
         if (Game.GameTime - GameTimeLastCheckedFuel >= 200)
         {
-            if (CurrentFuelLevel <= 0)
+            if (CurrentLevel <= 0)
             {
-                Mod.Player.VehicleEngine.TurnOffEngine();
+                if (Mod.Player.CurrentVehicle != null)
+                {
+                    Mod.Player.CurrentVehicle.ToggleEngine(Game.LocalPlayer.Character, false, false);
+                }
             }
             else
             {
                 float AmountToSubtract = 0.001f + Game.LocalPlayer.Character.CurrentVehicle.Speed * 0.0001f;
-                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentFuelLevel - AmountToSubtract;
+                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentLevel - AmountToSubtract;
             }
             GameTimeLastCheckedFuel = Game.GameTime;
         }
         NearGasPumps = false;
-        CanPumpFuel = false;
+        CanPump = false;
     }
     private void EngineOffTick()
     {
@@ -87,15 +90,15 @@ public class VehicleFuel
         }
         if (NearGasPumps && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel <= 100f)
         {
-            if (!CanPumpFuel)
+            if (!CanPump)
             {
                 Game.DisplayHelp("Hold ~INPUT_CONTEXT~ to refuel", 5000);
             }
-            CanPumpFuel = true;
+            CanPump = true;
         }
         else
         {
-            CanPumpFuel = false;
+            CanPump = false;
         }
 
         //if (CanPumpFuel && Game.IsKeyDownRightNow(SettingsManager.MySettings.KeyBinding.SurrenderKey))

@@ -109,7 +109,7 @@ public class PoliceEquipmentManager
                 {
                     IssuePistol();
                 }
-                if (Mod.DataMart.Settings.MySettings.Police.IssuePoliceHeavyWeapons && Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon)
+                if (Mod.DataMart.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon)
                 {
                     CheckIssueHeavy();
                 }
@@ -145,7 +145,7 @@ public class PoliceEquipmentManager
         }
         public void CheckIssueHeavy()
         {
-            if (Mod.DataMart.Settings.MySettings.Police.IssuePoliceHeavyWeapons && Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon && CopToArm.IsInVehicle)
+            if (Mod.DataMart.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon && CopToArm.IsInVehicle)
                 IssueHeavyWeapon();
         }
         public void IssuePistol()
@@ -164,7 +164,7 @@ public class PoliceEquipmentManager
                 return;
             }
             CopToArm.Pedestrian.Inventory.GiveNewWeapon(Pistol.ModelName, Pistol.AmmoAmount, false);
-            if (Mod.DataMart.Settings.MySettings.Police.AllowPoliceWeaponVariations)
+            if (Mod.DataMart.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
             {
                 WeaponVariation MyVariation = PistolToPick.MyVariation;
                 PistolVariation = MyVariation;
@@ -189,7 +189,7 @@ public class PoliceEquipmentManager
                 return;
             }
             CopToArm.Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.ModelName, IssuedHeavy.AmmoAmount, true);
-            if (Mod.DataMart.Settings.MySettings.Police.AllowPoliceWeaponVariations)
+            if (Mod.DataMart.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
             {
                 WeaponVariation MyVariation = HeavyToPick.MyVariation;
                 HeavyVariation = MyVariation;
@@ -201,8 +201,8 @@ public class PoliceEquipmentManager
         {
             if (!CopToArm.Pedestrian.Exists() || CopToArm.Pedestrian.IsDead || (IsSetUnarmed && !NeedsWeaponCheck))
                 return;
-            if (Mod.DataMart.Settings.MySettings.Police.OverridePoliceAccuracy)
-                CopToArm.Pedestrian.Accuracy = Mod.DataMart.Settings.MySettings.Police.PoliceGeneralAccuracy;
+            if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+                CopToArm.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
 
             NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", CopToArm.Pedestrian, 0);
             if (!(CopToArm.Pedestrian.Inventory.EquippedWeapon == null))
@@ -227,8 +227,8 @@ public class PoliceEquipmentManager
         {
             if (!CopToArm.Pedestrian.Exists() || CopToArm.Pedestrian.IsDead || (IsSetDeadly && !NeedsWeaponCheck))
                 return;
-            if (Mod.DataMart.Settings.MySettings.Police.OverridePoliceAccuracy)
-                CopToArm.Pedestrian.Accuracy = Mod.DataMart.Settings.MySettings.Police.PoliceGeneralAccuracy;
+            if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+                CopToArm.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
             NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", CopToArm.Pedestrian, 30);
             if (!CopToArm.Pedestrian.Inventory.Weapons.Contains(IssuedPistol.ModelName))
                 CopToArm.Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.ModelName, -1, true);
@@ -241,7 +241,7 @@ public class PoliceEquipmentManager
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", CopToArm.Pedestrian, NativeFunction.CallByName<bool>("GET_BEST_PED_WEAPON", CopToArm.Pedestrian, 0), true);
             }
 
-            if (Mod.DataMart.Settings.MySettings.Police.AllowPoliceWeaponVariations)
+            if (Mod.DataMart.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
             {
                 PistolVariation.ApplyWeaponVariation(CopToArm.Pedestrian, (uint)IssuedPistol.Hash);
             }
@@ -264,8 +264,8 @@ public class PoliceEquipmentManager
             if (!CopToArm.Pedestrian.Exists() || CopToArm.Pedestrian.IsDead || (IsSetLessLethal && !NeedsWeaponCheck))
                 return;
 
-            if (Mod.DataMart.Settings.MySettings.Police.OverridePoliceAccuracy)
-                CopToArm.Pedestrian.Accuracy = Mod.DataMart.Settings.MySettings.Police.PoliceTazerAccuracy;
+            if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+                CopToArm.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceTazerAccuracy;
             NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", CopToArm.Pedestrian, 100);
             if (!CopToArm.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {

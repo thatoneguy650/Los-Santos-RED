@@ -84,7 +84,7 @@ public class Debug
             DebugNumpad9();
         }
 
-        if (true)
+        if (false)
         {
             foreach (Cop MyCop in Mod.World.Pedestrians.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
             {
@@ -151,7 +151,7 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.VehicleEnt.Exists())
+        if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.Exists())
         {
             Colorbullshit();
             Colorbullshit2();
@@ -159,14 +159,14 @@ public class Debug
     }       
     private void Colorbullshit()
     {
-        Color Color1 = Extensions.GetBaseColor1(Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor);
-        Color Color2 = Extensions.GetBaseColor2(Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor);
-        Color Color3 = Extensions.GetBaseColor3(Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor);
-        WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
+        Color Color1 = Extensions.GetBaseColor1(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
+        Color Color2 = Extensions.GetBaseColor2(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
+        Color Color3 = Extensions.GetBaseColor3(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
+        WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.CurrentVehicle.Vehicle.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
     }
     private void Colorbullshit2()
     {
-        Color c = Mod.Player.CurrentVehicle.VehicleEnt.PrimaryColor;
+        Color c = Mod.Player.CurrentVehicle.Vehicle.PrimaryColor;
         float targetHue = c.GetHue();
         float targetSat = c.GetSaturation();
         float targetBri = c.GetBrightness();

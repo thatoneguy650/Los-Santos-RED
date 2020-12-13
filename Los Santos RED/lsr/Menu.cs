@@ -193,7 +193,7 @@ public class Menu
     {
         //try
         //{
-        if (Game.IsKeyDown(Mod.DataMart.Settings.MySettings.KeyBinding.MenuKey)) // Our menu on/off switch.
+        if (Game.IsKeyDown(Mod.DataMart.Settings.SettingsManager.KeyBinding.MenuKey)) // Our menu on/off switch.
         {
             if (Mod.Player.IsDead)
             {
@@ -229,7 +229,7 @@ public class Menu
                     mainMenu.Visible = false;
             }
         }
-        else if (Game.IsKeyDown(Mod.DataMart.Settings.MySettings.KeyBinding.DebugMenuKey)) // Our menu on/off switch.
+        else if (Game.IsKeyDown(Mod.DataMart.Settings.SettingsManager.KeyBinding.DebugMenuKey)) // Our menu on/off switch.
         {
             if (!debugMenu.Visible)
                 ShowDebugMenu();
@@ -324,7 +324,7 @@ public class Menu
         deathMenu.AddItem(menuDeathHospitalRespawn);
         deathMenu.AddItem(menuDeathTakeoverRandomPed);
 
-        if (Mod.DataMart.Settings.MySettings.General.UndieLimit == 0 || Mod.Player.TimesDied < Mod.DataMart.Settings.MySettings.General.UndieLimit)
+        if (Mod.DataMart.Settings.SettingsManager.General.UndieLimit == 0 || Mod.Player.TimesDied < Mod.DataMart.Settings.SettingsManager.General.UndieLimit)
             menuDeathUndie.Enabled = true;
         else
             menuDeathUndie.Enabled = false;
@@ -365,11 +365,11 @@ public class Menu
         settingsMenuKeySettings = menuPool.AddSubMenu(optionsMenu, "Key Settings");
         settingsMenuTrafficViolations = menuPool.AddSubMenu(optionsMenu, "Traffic Violations Settings");
 
-        CreateSettingSubMenu(typeof(GeneralSettings).GetFields(), Mod.DataMart.Settings.MySettings.General, settingsMenuGeneral);
-        CreateSettingSubMenu(typeof(PoliceSettings).GetFields(), Mod.DataMart.Settings.MySettings.Police, settingsMenuPolice);
-        CreateSettingSubMenu(typeof(UISettings).GetFields(), Mod.DataMart.Settings.MySettings.UI, settingsMenuUISettings);
-        CreateSettingSubMenu(typeof(KeySettings).GetFields(), Mod.DataMart.Settings.MySettings.KeyBinding, settingsMenuKeySettings);
-        CreateSettingSubMenu(typeof(TrafficSettings).GetFields(), Mod.DataMart.Settings.MySettings.TrafficViolations,
+        CreateSettingSubMenu(typeof(GeneralSettings).GetFields(), Mod.DataMart.Settings.SettingsManager.General, settingsMenuGeneral);
+        CreateSettingSubMenu(typeof(PoliceSettings).GetFields(), Mod.DataMart.Settings.SettingsManager.Police, settingsMenuPolice);
+        CreateSettingSubMenu(typeof(UISettings).GetFields(), Mod.DataMart.Settings.SettingsManager.UI, settingsMenuUISettings);
+        CreateSettingSubMenu(typeof(KeySettings).GetFields(), Mod.DataMart.Settings.SettingsManager.KeyBinding, settingsMenuKeySettings);
+        CreateSettingSubMenu(typeof(TrafficSettings).GetFields(), Mod.DataMart.Settings.SettingsManager.TrafficViolations,
             settingsMenuTrafficViolations);
 
         optionsMenu.OnItemSelect += OptionsMenuSelect;
@@ -537,7 +537,7 @@ public class Menu
     {
         string MySettingName = selectedItem.Text.Split(':')[0];
         FieldInfo[] MyFields = typeof(GeneralSettings).GetFields();
-        object ToSet = Mod.DataMart.Settings.MySettings.General;
+        object ToSet = Mod.DataMart.Settings.SettingsManager.General;
 
         if (sender == settingsMenuGeneral)
         {
@@ -545,22 +545,22 @@ public class Menu
         }
         else if (sender == settingsMenuPolice)
         {
-            ToSet = Mod.DataMart.Settings.MySettings.Police;
+            ToSet = Mod.DataMart.Settings.SettingsManager.Police;
             MyFields = typeof(PoliceSettings).GetFields();
         }
         else if (sender == settingsMenuKeySettings)
         {
-            ToSet = Mod.DataMart.Settings.MySettings.KeyBinding;
+            ToSet = Mod.DataMart.Settings.SettingsManager.KeyBinding;
             MyFields = typeof(KeySettings).GetFields();
         }
         else if (sender == settingsMenuUISettings)
         {
-            ToSet = Mod.DataMart.Settings.MySettings.UI;
+            ToSet = Mod.DataMart.Settings.SettingsManager.UI;
             MyFields = typeof(UISettings).GetFields();
         }
         else if (sender == settingsMenuTrafficViolations)
         {
-            ToSet = Mod.DataMart.Settings.MySettings.TrafficViolations;
+            ToSet = Mod.DataMart.Settings.SettingsManager.TrafficViolations;
             MyFields = typeof(TrafficSettings).GetFields();
         }
 
@@ -701,8 +701,8 @@ public class Menu
         {
             if (list == menuDebugRandomWeapon)
                 RandomWeaponCategory = list.Index;
-            else if (list == menuAutoSetRadioStation)
-                Mod.Player.VehicleRadio.AutoTuneStation = strRadioStations[index];
+            //else if (list == menuAutoSetRadioStation)
+            //    Mod.Player.VehicleRadio.AutoTuneStation = strRadioStations[index];
             if (list == menuDebugScreenEffect)
                 CurrentScreenEffect = ScreenEffects[index];
         }

@@ -67,7 +67,7 @@ namespace LosSantosRED.lsr
             if (AnyCanSeePlayer)
                 AnyRecentlySeenPlayer = true;
             else
-                AnyRecentlySeenPlayer = Mod.World.Pedestrians.Cops.Any(x => x.SeenPlayerSince(Mod.DataMart.Settings.MySettings.Police.PoliceRecentlySeenTime));
+                AnyRecentlySeenPlayer = Mod.World.Pedestrians.Cops.Any(x => x.SeenPlayerSince(Mod.DataMart.Settings.SettingsManager.Police.PoliceRecentlySeenTime));
 
             AnyCanRecognizePlayer = Mod.World.Pedestrians.Cops.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
 

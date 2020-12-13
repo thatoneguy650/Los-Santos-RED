@@ -281,7 +281,7 @@ public class PedExt
             if (DistanceToPlayer <= ClosestDistanceToPlayer)
                 ClosestDistanceToPlayer = DistanceToPlayer;
 
-            if (DistanceToPlayer <= 45f)
+            if (DistanceToPlayer <= 100f)//45f
                 WithinWeaponsAudioRange = true;
             else
                 WithinWeaponsAudioRange = false;

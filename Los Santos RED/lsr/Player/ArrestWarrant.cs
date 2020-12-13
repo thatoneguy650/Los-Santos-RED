@@ -51,9 +51,9 @@ public class ArrestWarrant
         get
         {
             if (MaxWantedLevel > 0)
-                return MaxWantedLevel * Mod.DataMart.Settings.MySettings.Police.LastWantedCenterSize;
+                return MaxWantedLevel * Mod.DataMart.Settings.SettingsManager.Police.LastWantedCenterSize;
             else
-                return Mod.DataMart.Settings.MySettings.Police.LastWantedCenterSize;
+                return Mod.DataMart.Settings.SettingsManager.Police.LastWantedCenterSize;
         }
     }  
     public void Update()

@@ -86,9 +86,9 @@ public class PoliceSpawning
             CopCar = SpawnCopVehicle(_Agency, MyCarInfo, SpawnLocation, Heading);
             GameFiber.Yield();
 
-            if (CopCar != null && CopCar.VehicleEnt.Exists())
+            if (CopCar != null && CopCar.Vehicle.Exists())
             {
-                Mod.World.Vehicles.PoliceVehicles.Add(CopCar.VehicleEnt);
+                Mod.World.Vehicles.PoliceVehicles.Add(CopCar.Vehicle);
                 List<string> RequiredPedModels = new List<string>();
                 if (CurrentVehicleInfo != null && CurrentVehicleInfo.AllowedPedModels.Any())
                 {
@@ -100,11 +100,11 @@ public class PoliceSpawning
                 if (Cop == null || !Cop.Exists())
                     return false;
                 CreatedEntities.Add(Cop);
-                CreatedPoliceVehicles.Add(CopCar.VehicleEnt);
-                CreatedEntities.Add(CopCar.VehicleEnt);
-                Cop.WarpIntoVehicle(CopCar.VehicleEnt, -1);
+                CreatedPoliceVehicles.Add(CopCar.Vehicle);
+                CreatedEntities.Add(CopCar.Vehicle);
+                Cop.WarpIntoVehicle(CopCar.Vehicle, -1);
                 Cop.IsPersistent = true;
-                CopCar.VehicleEnt.IsPersistent = true;
+                CopCar.Vehicle.IsPersistent = true;
                 Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
                 Cop MyNewCop = new Cop(Cop, Cop.Health, _Agency);
                 Mod.World.PoliceEquipmentManager.IssueWeapons(MyNewCop);
@@ -114,9 +114,9 @@ public class PoliceSpawning
 
                 //MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
                 MyNewCop.GameTimeSpawned = Game.GameTime;
-                Mod.Debug.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.VehicleEnt.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
+                Mod.Debug.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.Vehicle.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
 
-                if (Mod.DataMart.Settings.MySettings.Police.SpawnedAmbientPoliceHaveBlip && Cop.Exists())
+                if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Cop.Exists())
                 {
                     Blip myBlip = Cop.AttachBlip();
                     myBlip.Color = _Agency.AgencyColor;
@@ -135,21 +135,21 @@ public class PoliceSpawning
                         if (PartnerCop != null)
                         {
                             CreatedEntities.Add(PartnerCop);
-                            if (!CopCar.VehicleEnt.Exists())
+                            if (!CopCar.Vehicle.Exists())
                             {
                                 if (PartnerCop.Exists())
                                     PartnerCop.Delete();
                             }
                             else
                             {
-                                PartnerCop.WarpIntoVehicle(CopCar.VehicleEnt, OccupantIndex - 1);
+                                PartnerCop.WarpIntoVehicle(CopCar.Vehicle, OccupantIndex - 1);
                                 PartnerCop.IsPersistent = true;
                                 Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, _Agency);
                                 Mod.World.PoliceEquipmentManager.IssueWeapons(MyNewPartnerCop);
                                 MyNewPartnerCop.WasModSpawned = true;
                                 MyNewPartnerCop.WasMarkedNonPersistent = true;
 
-                                if (Mod.DataMart.Settings.MySettings.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
+                                if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
                                 {
                                     Blip myBlip = PartnerCop.AttachBlip();
                                     myBlip.Color = _Agency.AgencyColor;
@@ -158,7 +158,7 @@ public class PoliceSpawning
                                 }
                                 Mod.World.Pedestrians.Cops.Add(MyNewPartnerCop);
                                 MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
-                                Mod.Debug.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.VehicleEnt.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
+                                Mod.Debug.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.Vehicle.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
                             }
                         }
                     }

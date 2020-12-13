@@ -15,7 +15,11 @@ namespace LSR.Vehicles
     public class VehicleExt
     {
         private uint GameTimeEntered = 0;
-        public Vehicle VehicleEnt { get; set; } = null;
+        public Vehicle Vehicle { get; set; } = null;
+        public Engine Engine { get; set; } = new Engine();
+        public Radio Radio { get; set; } = new Radio();
+        public Indicators Indicators { get; set; } = new Indicators();
+        public FuelTank FuelTank { get; set; } = new FuelTank();   
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
@@ -53,7 +57,7 @@ namespace LSR.Vehicles
         {
             get
             {
-                if (VehicleEnt.PrimaryColor == DescriptionColor)
+                if (Vehicle.PrimaryColor == DescriptionColor)
                     return true;
                 else
                     return false;
@@ -136,7 +140,7 @@ namespace LSR.Vehicles
         }
         public VehicleExt(Vehicle _Vehicle, uint _GameTimeEntered, bool _WasJacked, bool _WasAlarmed, bool _IsStolen, LicensePlate _CarPlate)
         {
-            VehicleEnt = _Vehicle;
+            Vehicle = _Vehicle;
             GameTimeEntered = _GameTimeEntered;
             WasJacked = _WasJacked;
             WasAlarmed = _WasAlarmed;
@@ -146,8 +150,8 @@ namespace LSR.Vehicles
             CarPlate = _CarPlate;
             OriginalLicensePlate = _CarPlate;
 
-            if (VehicleEnt.Exists())
-                PositionOriginallyEntered = VehicleEnt.Position;
+            if (Vehicle.Exists())
+                PositionOriginallyEntered = Vehicle.Position;
             else
                 PositionOriginallyEntered = Game.LocalPlayer.Character.Position;
 
@@ -155,7 +159,7 @@ namespace LSR.Vehicles
         }
         public VehicleExt(Vehicle _Vehicle)
         {
-            VehicleEnt = _Vehicle;
+            Vehicle = _Vehicle;
             DescriptionColor = _Vehicle.PrimaryColor;   
             LicensePlate _CarPlate = new LicensePlate(_Vehicle.LicensePlate, (uint)_Vehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", _Vehicle), false);
             CarPlate = _CarPlate;
@@ -169,7 +173,7 @@ namespace LSR.Vehicles
         }
         public Color VehicleColor()
         {
-            if (VehicleEnt.Exists())
+            if (Vehicle.Exists())
             {
                 Color BaseColor = Extensions.GetBaseColor(DescriptionColor);
                 return BaseColor;
@@ -181,12 +185,12 @@ namespace LSR.Vehicles
         }
         public string MakeName()
         {
-            if (VehicleEnt.Exists())
+            if (Vehicle.Exists())
             {
                 string MakeName;
                 unsafe
                 {
-                    IntPtr ptr = NativeFunction.CallByHash<IntPtr>(0xF7AF4F159FF99F97, VehicleEnt.Model.Hash);
+                    IntPtr ptr = NativeFunction.CallByHash<IntPtr>(0xF7AF4F159FF99F97, Vehicle.Model.Hash);
                     MakeName = Marshal.PtrToStringAnsi(ptr);
                 }
                 unsafe
@@ -207,12 +211,12 @@ namespace LSR.Vehicles
         }
         public string ModelName()
         {
-            if (VehicleEnt.Exists())
+            if (Vehicle.Exists())
             {
                 string ModelName;
                 unsafe
                 {
-                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", VehicleEnt.Model.Hash);
+                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", Vehicle.Model.Hash);
                     ModelName = Marshal.PtrToStringAnsi(ptr);
                 }
                 unsafe
@@ -232,14 +236,14 @@ namespace LSR.Vehicles
         }
         public int ClassInt()
         {
-            int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", VehicleEnt);
+            int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
             return ClassInt;
         }
         public void UpdatePlate()//this might need to come out of here.... along with the two bools
         {
             HasUpdatedPlateType = true;
-            PlateType CurrentType = Mod.DataMart.PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleEnt));
-            string CurrentPlateNumber = VehicleEnt.LicensePlate;
+            PlateType CurrentType = Mod.DataMart.PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle));
+            string CurrentPlateNumber = Vehicle.LicensePlate;
             if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
             {
                 PlateType NewType = Mod.DataMart.PlateTypes.GetRandomPlateType();
@@ -248,14 +252,56 @@ namespace LSR.Vehicles
                     string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                     if (NewPlateNumber != "")
                     {
-                        VehicleEnt.LicensePlate = NewPlateNumber;
+                        Vehicle.LicensePlate = NewPlateNumber;
                         OriginalLicensePlate.PlateNumber = NewPlateNumber;
                         CarPlate.PlateNumber = NewPlateNumber;
                     }
-                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleEnt, NewType.Index);
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle, NewType.Index);
                     OriginalLicensePlate.PlateType = NewType.Index;
                     CarPlate.PlateType = NewType.Index;
                 }
+            }
+        }
+        public void Update()
+        {
+            Engine.Update(this);
+            Radio.Tick();
+            Indicators.Tick();
+            FuelTank.Tick();
+        }
+        public void ToggleEngine(Ped Driver, bool PerformAnimation, bool DesiredEngineStatus)
+        {
+            if (IsCar)
+            {
+                Engine.ToggleEngine(this, Driver, PerformAnimation, DesiredEngineStatus);
+            }
+        }
+        public bool IsCar
+        {
+            get
+            {
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle.Model.Hash);
+            }
+        }
+        public bool IsMotorcycle
+        {
+            get
+            {
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BIKE", Vehicle.Model.Hash);
+            }
+        }
+        public bool IsHelicopter
+        {
+            get
+            {
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", Vehicle.Model.Hash);
+            }
+        }
+        public bool IsBoat
+        {
+            get
+            {
+                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", Vehicle.Model.Hash);
             }
         }
     }

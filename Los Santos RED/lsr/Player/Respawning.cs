@@ -165,7 +165,7 @@ public class Respawning
     {
         FadeOut();
         CheckWeapons();
-        BailFee = Mod.Player.MaxWantedLastLife * Mod.DataMart.Settings.MySettings.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        BailFee = Mod.Player.MaxWantedLastLife * Mod.DataMart.Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         Mod.Player.ResetState(true);
         Mod.Player.Surrendering.RaiseHands();
         ResetPlayer(true, true);
@@ -190,7 +190,7 @@ public class Respawning
             return;
         }
 
-        if (Amount < (Mod.Player.WantedLevel * Mod.DataMart.Settings.MySettings.Police.PoliceBribeWantedLevelScale))
+        if (Amount < (Mod.Player.WantedLevel * Mod.DataMart.Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
             Game.LocalPlayer.Character.GiveCash(-1 * Amount);
@@ -398,7 +398,7 @@ public class Respawning
     }
     private void SetHospitalFee(string HospitalName)
     {
-        int HospitalFee = Mod.DataMart.Settings.MySettings.Police.HospitalFee * (1 + Mod.Player.MaxWantedLastLife);
+        int HospitalFee = Mod.DataMart.Settings.SettingsManager.Police.HospitalFee * (1 + Mod.Player.MaxWantedLastLife);
         int CurrentCash = Game.LocalPlayer.Character.GetCash();
         int TodaysPayment = 0;
 

@@ -33,11 +33,14 @@ public class Surrendering
         if (Mod.Player.HandsAreUp)
             return;
 
-        if (Mod.Player.VehicleFuel.CanPumpFuel)//usees the same key, might need to change
-            return;
+        //if (Mod.Player.CurrentVehicle == null || Mod.Player.CurrentVehicle.FuelTank.CanPump)//usees the same key, might need to change
+        //    return;
 
         Game.LocalPlayer.Character.SetUnarmed();
-        Mod.Player.VehicleEngine.TurnOffEngine();
+        if(Mod.Player.CurrentVehicle != null)
+        {
+            Mod.Player.CurrentVehicle.ToggleEngine(Game.LocalPlayer.Character,false,false);
+        }
         Mod.Player.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";

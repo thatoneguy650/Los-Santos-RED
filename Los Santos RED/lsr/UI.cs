@@ -78,17 +78,17 @@ public class UI
     }
     public void Tick()
     {
-        if (Mod.DataMart.Settings.MySettings.General.AlwaysShowHUD)
+        if (Mod.DataMart.Settings.SettingsManager.General.AlwaysShowHUD)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
 
-        if (Mod.DataMart.Settings.MySettings.General.AlwaysShowRadar)
+        if (Mod.DataMart.Settings.SettingsManager.General.AlwaysShowRadar)
         {
             NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
         }
 
-        if (Mod.DataMart.Settings.MySettings.Police.ShowPoliceRadarBlips)
+        if (Mod.DataMart.Settings.SettingsManager.Police.ShowPoliceRadarBlips)
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
         }
@@ -97,13 +97,13 @@ public class UI
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
 
-        if (Mod.DataMart.Settings.MySettings.General.AlwaysShowCash)
+        if (Mod.DataMart.Settings.SettingsManager.General.AlwaysShowCash)
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
 
 
-        if (Mod.DataMart.Settings.MySettings.UI.Enabled && !Mod.Player.IsBusted && !Mod.Player.IsDead)
+        if (Mod.DataMart.Settings.SettingsManager.UI.Enabled && !Mod.Player.IsBusted && !Mod.Player.IsDead)
         {
             ShowUI();
         }
@@ -115,10 +115,10 @@ public class UI
         ShowDebugUI();
         HideVanillaUI();
 
-        DisplayTextOnScreen(GetPlayerStatusDisplay(), Mod.DataMart.Settings.MySettings.UI.PlayerStatusPositionX, Mod.DataMart.Settings.MySettings.UI.PlayerStatusPositionY, Mod.DataMart.Settings.MySettings.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Mod.DataMart.Settings.MySettings.UI.PlayerStatusJustificationID);
-        DisplayTextOnScreen(GetVehicleStatusDisplay(), Mod.DataMart.Settings.MySettings.UI.VehicleStatusPositionX, Mod.DataMart.Settings.MySettings.UI.VehicleStatusPositionY, Mod.DataMart.Settings.MySettings.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Mod.DataMart.Settings.MySettings.UI.VehicleStatusJustificationID);
-        DisplayTextOnScreen(GetZoneDisplay(), Mod.DataMart.Settings.MySettings.UI.ZonePositionX, Mod.DataMart.Settings.MySettings.UI.ZonePositionY, Mod.DataMart.Settings.MySettings.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Mod.DataMart.Settings.MySettings.UI.ZoneJustificationID);
-        DisplayTextOnScreen(GetStreetDisplay(), Mod.DataMart.Settings.MySettings.UI.StreetPositionX, Mod.DataMart.Settings.MySettings.UI.StreetPositionY, Mod.DataMart.Settings.MySettings.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Mod.DataMart.Settings.MySettings.UI.StreetJustificationID);
+        DisplayTextOnScreen(GetPlayerStatusDisplay(), Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusPositionX, Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusPositionY, Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusJustificationID);
+        DisplayTextOnScreen(GetVehicleStatusDisplay(), Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusPositionX, Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusPositionY, Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusJustificationID);
+        DisplayTextOnScreen(GetZoneDisplay(), Mod.DataMart.Settings.SettingsManager.UI.ZonePositionX, Mod.DataMart.Settings.SettingsManager.UI.ZonePositionY, Mod.DataMart.Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.ZoneJustificationID);
+        DisplayTextOnScreen(GetStreetDisplay(), Mod.DataMart.Settings.SettingsManager.UI.StreetPositionX, Mod.DataMart.Settings.SettingsManager.UI.StreetPositionY, Mod.DataMart.Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.StreetJustificationID);
 
         DisplayHelpText();
     }
@@ -149,8 +149,14 @@ public class UI
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         string DebugLine4 = string.Format("NumberPlateIndexSelected {0}", -9999);
         DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine5 = string.Format("{0}", Mod.Player.VehicleIndicators.DebugStatus);
+        string DebugLine5 = string.Format("{0}", Mod.Player.Violations.LawsViolating);
         DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+
+
+
+
+
         //float Between = 0.01f;
         //float Start = 0.15f;
         //foreach (string Line in Mod.PedDamageManager.AllPedDamageList)
@@ -240,10 +246,10 @@ public class UI
     private string GetVehicleStatusDisplay()
     {
         string PlayerSpeedLine = "";
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        if (Mod.Player.CurrentVehicle != null && Game.LocalPlayer.Character.IsInAnyVehicle(false))//was game.localpalyer.character.isinanyvehicle(false)
         {
 
-            float VehicleSpeedMPH = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+            float VehicleSpeedMPH = Mod.Player.CurrentVehicle.Vehicle.Speed * 2.23694f;
             if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
                 PlayerSpeedLine = "ENGINE OFF";
             else
@@ -259,7 +265,7 @@ public class UI
             if (Mod.Player.Violations.IsViolatingAnyTrafficLaws)
                 PlayerSpeedLine += " !";
 
-            PlayerSpeedLine += "~n~" + Mod.Player.VehicleFuel.FuelUIText;
+            PlayerSpeedLine += "~n~" + Mod.Player.CurrentVehicle.FuelTank.UIText;
         }
         return PlayerSpeedLine;
     }

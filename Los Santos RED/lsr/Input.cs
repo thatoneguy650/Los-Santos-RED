@@ -39,7 +39,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.MySettings.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -53,7 +53,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.MySettings.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 {
                     return true;
                 }
@@ -67,7 +67,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.MySettings.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -81,7 +81,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.MySettings.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -182,25 +182,28 @@ namespace LosSantosRED.lsr
         }
         private void VehicleCheck()
         {
-            if (IsPressingEngineToggle && Mod.Player.VehicleEngine.CanToggleEngine)
+            if(Mod.Player.CurrentVehicle != null)
             {
-                Mod.Player.VehicleEngine.ToggleEngine(true, !Mod.Player.VehicleEngine.IsEngineRunning);
-            }
-            if (IsPressingRefuel && Mod.Player.VehicleFuel.CanPumpFuel)
-            {
-                Mod.Player.VehicleFuel.PumpFuel();
-            }
-            if (IsPressingHazards)
-            {
-                Mod.Player.VehicleIndicators.ToggleHazards();
-            }
-            if (IsPressingLeftIndicator)
-            {
-                Mod.Player.VehicleIndicators.ToggleLeftIndicator();
-            }
-            if (IsPressingRightIndicator)
-            {
-                Mod.Player.VehicleIndicators.ToggleRightIndicator();
+                if (IsPressingEngineToggle && Mod.Player.CurrentVehicle.Engine.CanToggleEngine)
+                {
+                    Mod.Player.CurrentVehicle.ToggleEngine(Game.LocalPlayer.Character, true, !Mod.Player.CurrentVehicle.Engine.IsRunning);
+                }
+                if (IsPressingRefuel && Mod.Player.CurrentVehicle.FuelTank.CanPump)
+                {
+                    Mod.Player.CurrentVehicle.FuelTank.PumpFuel();
+                }
+                if (IsPressingHazards)
+                {
+                    Mod.Player.CurrentVehicle.Indicators.ToggleHazards();
+                }
+                if (IsPressingLeftIndicator)
+                {
+                    Mod.Player.CurrentVehicle.Indicators.ToggleLeftIndicator();
+                }
+                if (IsPressingRightIndicator)
+                {
+                    Mod.Player.CurrentVehicle.Indicators.ToggleRightIndicator();
+                }
             }
         }
     }

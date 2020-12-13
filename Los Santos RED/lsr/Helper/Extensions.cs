@@ -185,7 +185,7 @@ namespace ExtensionsMethods
         public static void GiveCash(this Ped myPed, int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = CashHash(Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias);
+            uint PlayerCashHash = CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -200,14 +200,14 @@ namespace ExtensionsMethods
             int CurrentCash;
             unsafe
             {
-                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias), &CurrentCash, -1);
+                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
             }
 
             return CurrentCash;
         }
         public static void SetCash(this Ped myPed, int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Mod.DataMart.Settings.MySettings.General.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
         }
         private static uint CashHash(String PlayerName)
         {
@@ -308,6 +308,9 @@ namespace ExtensionsMethods
         }
         public static bool IsDamaged(this Vehicle myCar)
         {
+            if (!myCar.Exists())
+                return false;
+
             if (myCar.Health <= 700 || myCar.EngineHealth <= 700)
                 return true;
 

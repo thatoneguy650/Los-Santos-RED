@@ -156,7 +156,7 @@ public class Pedestrians
             }
         }
 
-        if (Mod.DataMart.Settings.MySettings.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+        if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
         {
             Blip myBlip = Pedestrian.AttachBlip();
             myBlip.Color = AssignedAgency.AgencyColor;
@@ -173,9 +173,9 @@ public class Pedestrians
     }
     private void SetCopStats(Ped Pedestrian)
     {
-        if (Mod.DataMart.Settings.MySettings.Police.OverridePoliceAccuracy)
+        if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = Mod.DataMart.Settings.MySettings.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }     
         int DesiredHealth = RandomItems.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(MinCopArmor, MaxCopArmor);
@@ -189,13 +189,13 @@ public class Pedestrians
     private void AddCivilian(Ped Pedestrian)
     {
         SetCivilianStats(Pedestrian);
-        Civilians.Add(new PedExt(Pedestrian, RandomItems.RandomPercent(10), RandomItems.RandomPercent(70)));
+        Civilians.Add(new PedExt(Pedestrian, RandomItems.RandomPercent(5), RandomItems.RandomPercent(80)));
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
-        if (Mod.DataMart.Settings.MySettings.Police.OverridePoliceAccuracy)
+        if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = Mod.DataMart.Settings.MySettings.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
         int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;           
         Pedestrian.MaxHealth = DesiredHealth;

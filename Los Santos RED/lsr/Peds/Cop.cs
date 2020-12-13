@@ -89,8 +89,8 @@ public class Cop : PedExt
 
         Pedestrian.VisionRange = 55f;
         Pedestrian.HearingRange = 25;
-        if (Mod.DataMart.Settings.MySettings.Police.OverridePoliceAccuracy)
-            Pedestrian.Accuracy = Mod.DataMart.Settings.MySettings.Police.PoliceGeneralAccuracy;
+        if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+            Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
     }
 }
 

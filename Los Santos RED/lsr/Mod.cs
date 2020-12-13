@@ -101,8 +101,6 @@ namespace LosSantosRED.lsr
                 new ModTask(25, "Player", Player.Update, 2,0),
                 new ModTask(25, "PolicePerception", World.PolicePerception.Tick, 2,1),
 
-                new ModTask(0, "VehicleEngineManager", Player.VehicleEngine.Tick, 3,0),
-
                 new ModTask(50, "CrimeManager", Player.Violations.Update, 4,0),
                 new ModTask(50, "WantedLevelManager", Player.CurrentPoliceResponse.Update, 4,1),
 
@@ -133,9 +131,9 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "DispatchManager.SpawnChecking", World.Dispatch.SpawnChecking, 11,0),
                 new ModTask(500, "DispatchManager.DeleteChecking", World.Dispatch.DeleteChecking, 11,1),
 
-                new ModTask(100, "VehicleFuelManager", Player.VehicleFuel.Tick, 12,0),
-                new ModTask(100, "VehicleIndicatorManager", Player.VehicleIndicators.Tick, 12,1),
-                new ModTask(500, "RadioManager", Player.VehicleRadio.Tick, 12,2),
+                //new ModTask(100, "VehicleFuelManager", Player.VehicleFuel.Tick, 12,0),
+                //new ModTask(100, "VehicleIndicatorManager", Player.VehicleIndicators.Tick, 12,1),
+                //new ModTask(500, "RadioManager", Player.VehicleRadio.Tick, 12,2),
 
                 new ModTask(500, "WorldCache",World.CacheWorldData,13,0),
 

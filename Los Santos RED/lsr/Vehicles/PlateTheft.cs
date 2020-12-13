@@ -22,7 +22,7 @@ public class PlateTheft
     {
         get
         {
-            if(VehicleToChange.VehicleEnt.LicensePlate == "        ")
+            if(VehicleToChange.Vehicle.LicensePlate == "        ")
             {
                 return false;
             }
@@ -59,7 +59,7 @@ public class PlateTheft
         VehicleWithPlate = (Vehicle)Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
         if (VehicleWithPlate != null && VehicleWithPlate.LicensePlate != "        ")
         {
-            VehicleToChange = Mod.Player.TrackedVehicles.Where(x => x.VehicleEnt.Handle == VehicleWithPlate.Handle).FirstOrDefault();
+            VehicleToChange = Mod.Player.TrackedVehicles.Where(x => x.Vehicle.Handle == VehicleWithPlate.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
                 VehicleToChange = new VehicleExt(VehicleWithPlate);
@@ -73,13 +73,13 @@ public class PlateTheft
         {
             try
             {
-                Vector3 CarPosition = VehicleToChange.VehicleEnt.Position;
-                Vector3 ChangeSpot = GetLicensePlateChangePosition(VehicleToChange.VehicleEnt);
+                Vector3 CarPosition = VehicleToChange.Vehicle.Position;
+                Vector3 ChangeSpot = GetLicensePlateChangePosition(VehicleToChange.Vehicle);
                 if (ChangeSpot == Vector3.Zero)
                     return;
 
                 Game.LocalPlayer.Character.SetUnarmed();
-                if (!MovePedToCarPosition(VehicleToChange.VehicleEnt, Game.LocalPlayer.Character, VehicleToChange.VehicleEnt.Heading, ChangeSpot, true))
+                if (!MovePedToCarPosition(VehicleToChange.Vehicle, Game.LocalPlayer.Character, VehicleToChange.Vehicle.Heading, ChangeSpot, true))
                     return;
 
                 Mod.Player.IsChangingLicensePlates = true;
@@ -105,7 +105,7 @@ public class PlateTheft
                     GameFiber.Yield();
                 }
 
-                if (Continue && CarPosition.DistanceTo2D(VehicleToChange.VehicleEnt.Position) <= 1f && Game.LocalPlayer.Character.DistanceTo2D(ChangeSpot) <= 2f && !Game.LocalPlayer.Character.IsDead)
+                if (Continue && CarPosition.DistanceTo2D(VehicleToChange.Vehicle.Position) <= 1f && Game.LocalPlayer.Character.DistanceTo2D(ChangeSpot) <= 2f && !Game.LocalPlayer.Character.IsDead)
                 {
                     UpdateModelPlates(IsChanging);
                 }
@@ -149,14 +149,14 @@ public class PlateTheft
                 Mod.Player.SpareLicensePlates.Add(PlateToRemove);
             }
             VehicleToChange.CarPlate = PlateToAdd;
-            VehicleToChange.VehicleEnt.LicensePlate = PlateToAdd.PlateNumber;
-            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleToChange.VehicleEnt, PlateToAdd.PlateType);
+            VehicleToChange.Vehicle.LicensePlate = PlateToAdd.PlateNumber;
+            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", VehicleToChange.Vehicle, PlateToAdd.PlateType);
         }
         else
         {
             Mod.Player.SpareLicensePlates.Add(VehicleToChange.CarPlate);
             VehicleToChange.CarPlate = null;
-            VehicleToChange.VehicleEnt.LicensePlate = "        ";
+            VehicleToChange.Vehicle.LicensePlate = "        ";
             VehicleToChange.CarPlate = null;
         }
     }
