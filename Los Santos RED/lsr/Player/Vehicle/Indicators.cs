@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,17 @@ using System.Windows.Forms;
 
 public class Indicators
 {
+    private VehicleExt VehicleExt;
     private bool LeftBlinkerStartedTurn;
     private bool RightBlinkerStartedTurn;
-    private Vehicle CurrentVehicle;
-
     private uint GameTimeStartedTurnWheelRight;
     private uint GameTimeStartedTurnWheelLeft;
     private uint GameTimeStartedTurnWheelStraight;
 
+    public Indicators(VehicleExt vehicleToMonitor)
+    {
+        VehicleExt = vehicleToMonitor;
+    }
     public bool LeftBlinkerOn { get; private set; }
     public bool RightBlinkerOn { get; private set; }
     public bool HazardsOn { get; private set; }
@@ -41,68 +45,60 @@ public class Indicators
                 return "";
         }
     }
-    public void Tick()
+    public void Update()
     {
-        bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-        if (PlayerInVehicle)
-        {
-            IndicatorsTick();
-        }
-        
+        IndicatorsTick();
     }
     public void ToggleHazards()
     {
-        Vehicle MyCar = Game.LocalPlayer.Character.CurrentVehicle;
-        if (MyCar == null || !MyCar.Exists())
+        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
             return;
 
         if (HazardsOn)
         {
-            MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
+            VehicleExt.Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
             HazardsOn = false;
         }
         else
         {
-            MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Both;
+            VehicleExt.Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Both;
             HazardsOn = true;
             LeftBlinkerOn = false;
             RightBlinkerOn = false;
             return;
         }
     }
-    public void ToggleLeftIndicator()
+    public void ToggleLeft()
     {
-        Vehicle MyCar = Game.LocalPlayer.Character.CurrentVehicle;
-        if (MyCar == null || !MyCar.Exists())
+        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
             return;
 
         if (LeftBlinkerOn)
         {
-            MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
+            VehicleExt.Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
             LeftBlinkerOn = false;
         }
         else
         {
-            MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.LeftOnly;
+            VehicleExt.Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.LeftOnly;
             LeftBlinkerOn = true;
             RightBlinkerOn = false;
             HazardsOn = false;
         }
     }
-    public void ToggleRightIndicator()
+    public void ToggleRight()
     {
-        Vehicle MyCar = Game.LocalPlayer.Character.CurrentVehicle;
-        if (MyCar == null || !MyCar.Exists())
+        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
             return;
 
         if (RightBlinkerOn)
         {
-            MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
+            VehicleExt.Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
             RightBlinkerOn = false;
         }
         else
         {
-            MyCar.IndicatorLightsStatus = VehicleIndicatorLightsStatus.RightOnly;
+            VehicleExt.Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.RightOnly;
             RightBlinkerOn = true;
             LeftBlinkerOn = false;
             HazardsOn = false;
@@ -111,8 +107,7 @@ public class Indicators
     }
     private void IndicatorsTick()
     {
-        CurrentVehicle = Game.LocalPlayer.Character.CurrentVehicle;
-        if (CurrentVehicle == null || !CurrentVehicle.Exists())
+        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
             return;
 
         RightBlinkerTick();
@@ -122,7 +117,7 @@ public class Indicators
     {
         if (RightBlinkerOn)
         {
-            if (CurrentVehicle.SteeringAngle <= -25f)
+            if (VehicleExt.Vehicle.SteeringAngle <= -25f)
             {
                 if (GameTimeStartedTurnWheelRight == 0)
                 {
@@ -142,7 +137,7 @@ public class Indicators
         }
         if (RightBlinkerOn && RightBlinkerStartedTurn)
         {
-            if (CurrentVehicle.SteeringAngle > -10f)
+            if (VehicleExt.Vehicle.SteeringAngle > -10f)
             {
                 if (GameTimeStartedTurnWheelStraight == 0)
                 {
@@ -159,7 +154,7 @@ public class Indicators
             GameTimeStartedTurnWheelRight = 0;
             GameTimeStartedTurnWheelStraight = 0;
             RightBlinkerStartedTurn = false;
-            CurrentVehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
+            VehicleExt.Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
             RightBlinkerOn = false;
         }
     }
@@ -167,7 +162,7 @@ public class Indicators
     {
         if (LeftBlinkerOn)
         {
-            if (CurrentVehicle.SteeringAngle >= 25f)
+            if (VehicleExt.Vehicle.SteeringAngle >= 25f)
             {
                 if(GameTimeStartedTurnWheelLeft == 0)
                 {
@@ -187,7 +182,7 @@ public class Indicators
         }
         if (LeftBlinkerOn && LeftBlinkerStartedTurn)
         {
-            if (CurrentVehicle.SteeringAngle < 10f)
+            if (VehicleExt.Vehicle.SteeringAngle < 10f)
             {
                 if (GameTimeStartedTurnWheelStraight == 0)
                 {
@@ -204,7 +199,7 @@ public class Indicators
             GameTimeStartedTurnWheelLeft = 0;
             GameTimeStartedTurnWheelStraight = 0;
             LeftBlinkerStartedTurn = false;
-            CurrentVehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
+            VehicleExt.Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
             LeftBlinkerOn = false;
         }
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr
 {
-    public class PolicePerception
+    public class PoliceForce
     {
         public bool AnyCanSeePlayer { get; private set; }
         public bool AnyCanHearPlayer { get; private set; }
@@ -43,6 +43,20 @@ namespace LosSantosRED.lsr
             UpdateCops();
             UpdateRecognition();
         }
+        public void SpeechTick()
+        {
+            foreach (Cop Cop in Mod.World.Pedestrians.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+            {
+                if(Cop.CanRadioIn)
+                {
+                    Cop.RadioIn();
+                }
+                if (Cop.CanSpeak)
+                {
+                    Cop.Speak();
+                }
+            }
+        }
         public void Reset()
         {
             AnySeenPlayerCurrentWanted = false;
@@ -56,9 +70,11 @@ namespace LosSantosRED.lsr
                 {
                     Mod.Player.StartManualArrest();
                 }
+                Cop.Loadout.Update();//Here for now
             }
             Mod.World.Vehicles.PoliceVehicles.RemoveAll(x => !x.Exists());
         }
+
         private void UpdateRecognition()
         {
             AnyCanSeePlayer = Mod.World.Pedestrians.Cops.Any(x => x.CanSeePlayer);

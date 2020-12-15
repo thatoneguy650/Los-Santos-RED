@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+//Needs to be moved out of here and its own thing
 public class PedDamage
 {
     private enum BodyLocation

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 public class Debug
@@ -130,23 +131,38 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        //PlateTypeManager.UpdateCurrentVehiclePlate();
-
-
-        //PoliceSpawning.SpawnGTACop(Agencies.GetAllSpawnableAgencies(Game.LocalPlayer.Character.GetOffsetPositionFront(5f)).PickRandom(), Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading, null, true);
-        //BribePoliceAnimation(0);
-    }
-    private void DebugNumpad5()
-    {
-        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null)
+        string GET_PLAYER_RADIO_STATION_NAME = "";
+        unsafe
         {
-            int Group = NativeFunction.CallByName<int>("GET_WEAPONTYPE_GROUP", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-            int Slot = NativeFunction.CallByName<int>("GET_WEAPONTYPE_SLOT", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-            WriteToLog("Debugging", string.Format("Hash: {0} GET_WEAPONTYPE_GROUP: {1} GET_WEAPONTYPE_SLOT: {2}", Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Group, Slot));
+            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
+            GET_PLAYER_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
         }
 
 
-        //ScriptController.OutputTable();
+        int GET_PLAYER_RADIO_STATION_INDEX = NativeFunction.CallByName<int>("GET_PLAYER_RADIO_STATION_INDEX");
+        
+
+        WriteToLog("Debugging", string.Format("GET_PLAYER_RADIO_STATION_NAME: {0}, GET_PLAYER_RADIO_STATION_INDEX: {1}", GET_PLAYER_RADIO_STATION_NAME, GET_PLAYER_RADIO_STATION_INDEX));
+        NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_NAME", "RADIO_19_USER");
+    }
+    private void DebugNumpad5()
+    {
+        //if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null)
+        //{
+        //    int Group = NativeFunction.CallByName<int>("GET_WEAPONTYPE_GROUP", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+        //    int Slot = NativeFunction.CallByName<int>("GET_WEAPONTYPE_SLOT", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+        //    WriteToLog("Debugging", string.Format("Hash: {0} GET_WEAPONTYPE_GROUP: {1} GET_WEAPONTYPE_SLOT: {2}", Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Group, Slot));
+        //}
+        string GET_RADIO_STATION_NAME = "";
+        unsafe
+        {
+            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_RADIO_STATION_NAME");
+            GET_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
+        }
+        
+
+        NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_INDEX", 1);
+        WriteToLog("Debugging", string.Format("GET_RADIO_STATION_NAME: {0}", GET_RADIO_STATION_NAME));
 
     }
     private void DebugNumpad6()
@@ -259,7 +275,7 @@ public class Debug
             WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Investigations.InInvestigationMode));
             WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Investigations.InvestigationPosition));
             WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Investigations.InvestigationDistance));
-            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.PolicePerception.ActiveDistance));
+            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.PoliceForce.ActiveDistance));
             WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Pedestrians.Cops.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Investigations.InvestigationPosition) <= Mod.Player.Investigations.InvestigationDistance)));
             WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.CurrentPoliceResponse.CurrentPoliceStateString));
             

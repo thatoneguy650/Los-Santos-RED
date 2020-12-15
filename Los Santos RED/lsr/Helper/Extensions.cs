@@ -182,47 +182,47 @@ namespace ExtensionsMethods
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
             }
         }
-        public static void GiveCash(this Ped myPed, int Amount)
-        {
-            int CurrentCash;
-            uint PlayerCashHash = CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias);
-            unsafe
-            {
-                NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
-            }
-            if(CurrentCash + Amount < 0)
-                NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, 0, 1);
-            else
-                NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
-        }
-        public static int GetCash(this Ped myPed)
-        {
-            int CurrentCash;
-            unsafe
-            {
-                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
-            }
+        //public static void GiveCash(this Ped myPed, int Amount)
+        //{
+        //    int CurrentCash;
+        //    uint PlayerCashHash = CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias);
+        //    unsafe
+        //    {
+        //        NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
+        //    }
+        //    if(CurrentCash + Amount < 0)
+        //        NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, 0, 1);
+        //    else
+        //        NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
+        //}
+        //public static int GetCash(this Ped myPed)
+        //{
+        //    int CurrentCash;
+        //    unsafe
+        //    {
+        //        NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
+        //    }
 
-            return CurrentCash;
-        }
-        public static void SetCash(this Ped myPed, int Amount)
-        {
-            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
-        }
-        private static uint CashHash(String PlayerName)
-        {
-            switch (PlayerName)
-            {
-                case "Michael":
-                    return Game.GetHashKey("SP0_TOTAL_CASH");
-                case "Franklin":
-                    return Game.GetHashKey("SP1_TOTAL_CASH");
-                case "Trevor":
-                    return Game.GetHashKey("SP2_TOTAL_CASH");
-                default:
-                    return Game.GetHashKey("SP0_TOTAL_CASH");
-            }
-        }
+        //    return CurrentCash;
+        //}
+        //public static void SetCash(this Ped myPed, int Amount)
+        //{
+        //    NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
+        //}
+        //private static uint CashHash(String PlayerName)
+        //{
+        //    switch (PlayerName)
+        //    {
+        //        case "Michael":
+        //            return Game.GetHashKey("SP0_TOTAL_CASH");
+        //        case "Franklin":
+        //            return Game.GetHashKey("SP1_TOTAL_CASH");
+        //        case "Trevor":
+        //            return Game.GetHashKey("SP2_TOTAL_CASH");
+        //        default:
+        //            return Game.GetHashKey("SP0_TOTAL_CASH");
+        //    }
+        //}
         public static bool IsInRangeOf(this Ped myPed, Vector3 position, float range)
         {
             return Vector3.Subtract(myPed.Position, position).LengthSquared() < range * range;

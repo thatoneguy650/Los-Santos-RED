@@ -16,10 +16,10 @@ namespace LSR.Vehicles
     {
         private uint GameTimeEntered = 0;
         public Vehicle Vehicle { get; set; } = null;
-        public Engine Engine { get; set; } = new Engine();
-        public Radio Radio { get; set; } = new Radio();
-        public Indicators Indicators { get; set; } = new Indicators();
-        public FuelTank FuelTank { get; set; } = new FuelTank();   
+        public Engine Engine { get; set; } //= new Engine();
+        public Radio Radio { get; set; }// = new Radio();
+        public Indicators Indicators { get; set; }// = new Indicators();
+        public FuelTank FuelTank { get; set; }// = new FuelTank();   
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
@@ -156,6 +156,11 @@ namespace LSR.Vehicles
                 PositionOriginallyEntered = Game.LocalPlayer.Character.Position;
 
             _Vehicle.FuelLevel = RandomItems.MyRand.Next(25, 100);
+
+            Engine = new Engine(this);
+            Radio = new Radio(this);
+            Indicators = new Indicators(this);
+            FuelTank = new FuelTank(this);
         }
         public VehicleExt(Vehicle _Vehicle)
         {
@@ -165,6 +170,11 @@ namespace LSR.Vehicles
             CarPlate = _CarPlate;
             OriginalLicensePlate = _CarPlate;
             _Vehicle.FuelLevel = RandomItems.MyRand.Next(25, 100);
+
+            Engine = new Engine(this);
+            Radio = new Radio(this);
+            Indicators = new Indicators(this);
+            FuelTank = new FuelTank(this);
         }
         public void SetAsEntered()
         {
@@ -264,16 +274,12 @@ namespace LSR.Vehicles
         }
         public void Update()
         {
-            Engine.Update(this);
-            Radio.Tick();
-            Indicators.Tick();
-            FuelTank.Tick();
-        }
-        public void ToggleEngine(Ped Driver, bool PerformAnimation, bool DesiredEngineStatus)
-        {
             if (IsCar)
             {
-                Engine.ToggleEngine(this, Driver, PerformAnimation, DesiredEngineStatus);
+                Engine.Update();
+                Radio.Update();
+                Indicators.Update();
+                FuelTank.Update();
             }
         }
         public bool IsCar
@@ -281,27 +287,6 @@ namespace LSR.Vehicles
             get
             {
                 return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle.Model.Hash);
-            }
-        }
-        public bool IsMotorcycle
-        {
-            get
-            {
-                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BIKE", Vehicle.Model.Hash);
-            }
-        }
-        public bool IsHelicopter
-        {
-            get
-            {
-                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", Vehicle.Model.Hash);
-            }
-        }
-        public bool IsBoat
-        {
-            get
-            {
-                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", Vehicle.Model.Hash);
             }
         }
     }

@@ -28,6 +28,7 @@ public class CriminalHistory
             return CrimesObserved.Any();
         }
     }
+
     public CriminalHistory()
     {
 

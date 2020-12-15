@@ -227,7 +227,7 @@ namespace LosSantosRED.lsr
             {
                 SuspiciousActivity.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.IsWanted && Mod.World.PolicePerception.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor >= 10000)
+            if (Mod.Player.IsWanted && Mod.World.PoliceForce.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor >= 10000)
             {
                 ResistingArrest.IsCurrentlyViolating = true;
             }
@@ -288,7 +288,7 @@ namespace LosSantosRED.lsr
                 if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || Mod.Player.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
                     FiringWeapon.IsCurrentlyViolating = true;
-                    if (Mod.World.PolicePerception.AnyRecentlySeenPlayer || Mod.World.PolicePerception.AnyCanHearPlayer)
+                    if (Mod.World.PoliceForce.AnyRecentlySeenPlayer || Mod.World.PoliceForce.AnyCanHearPlayer)
                         FiringWeaponNearPolice.IsCurrentlyViolating = true;
                 }
             }
@@ -469,7 +469,7 @@ namespace LosSantosRED.lsr
 
             if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.ExemptCode3 && Mod.Player.CurrentVehicle.Vehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.WasReportedStolen)
             {
-                if (Mod.Player.CurrentVehicle.Vehicle.IsSirenOn && !Mod.World.PolicePerception.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
+                if (Mod.Player.CurrentVehicle.Vehicle.IsSirenOn && !Mod.World.PoliceForce.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
                 {
                     TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
                 }
@@ -530,7 +530,7 @@ namespace LosSantosRED.lsr
         {
             foreach (Crime Violating in CrimeList.Where(x => x.IsCurrentlyViolating))
             {
-                if (Mod.World.PolicePerception.AnyCanSeePlayer || (Violating.CanReportBySound && Mod.World.PolicePerception.AnyCanHearPlayer) || Violating.IsAlwaysFlagged)
+                if (Mod.World.PoliceForce.AnyCanSeePlayer || (Violating.CanReportBySound && Mod.World.PoliceForce.AnyCanHearPlayer) || Violating.IsAlwaysFlagged)
                 {
                     WeaponInformation ToSee = null;
                     if (!Mod.Player.IsInVehicle)

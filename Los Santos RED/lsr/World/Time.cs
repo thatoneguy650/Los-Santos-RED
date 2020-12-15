@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Clock
+public class Time
 {
     private int ClockYear;
     private int ClockMonth;
@@ -26,7 +26,7 @@ public class Clock
     private int Interval = 1000;
     private int ClockMultiplier = 1;
 
-    public Clock()
+    public Time()
     {
         ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
         ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");

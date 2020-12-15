@@ -107,7 +107,8 @@ public class PoliceSpawning
                 CopCar.Vehicle.IsPersistent = true;
                 Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
                 Cop MyNewCop = new Cop(Cop, Cop.Health, _Agency);
-                Mod.World.PoliceEquipmentManager.IssueWeapons(MyNewCop);
+                MyNewCop.Loadout.IssueWeapons();
+                //Mod.World.PoliceEquipmentManager.IssueWeapons(MyNewCop);
                 MyNewCop.WasModSpawned = true;
                 MyNewCop.WasMarkedNonPersistent = true;
                 MyNewCop.WasSpawnedAsDriver = true;
@@ -145,7 +146,8 @@ public class PoliceSpawning
                                 PartnerCop.WarpIntoVehicle(CopCar.Vehicle, OccupantIndex - 1);
                                 PartnerCop.IsPersistent = true;
                                 Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, _Agency);
-                                Mod.World.PoliceEquipmentManager.IssueWeapons(MyNewPartnerCop);
+                                //Mod.World.PoliceEquipmentManager.IssueWeapons(MyNewPartnerCop);
+                                MyNewPartnerCop.Loadout.IssueWeapons();
                                 MyNewPartnerCop.WasModSpawned = true;
                                 MyNewPartnerCop.WasMarkedNonPersistent = true;
 

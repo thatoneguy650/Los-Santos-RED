@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -10,12 +11,13 @@ using System.Threading.Tasks;
 
 public class Radio
 {
+    private VehicleExt VehicleToMonitor;
     private bool MobileEnabled;
     private string CurrentRadioStationName;
 
-    public Radio()
+    public Radio(VehicleExt vehicleToMonitor)
     {
-
+        VehicleToMonitor = vehicleToMonitor;
     }
 
     public bool AutoTune { get; set; } = true;
@@ -34,7 +36,7 @@ public class Radio
             }
         }
     }
-    public void Tick()
+    public void Update()
     {
         EnablePoliceCarMusic();
         CheckAutoTuning();  
@@ -43,19 +45,12 @@ public class Radio
     {
         if (CanChangeStation)
         {
-            if (!Game.LocalPlayer.Character.IsOnBike)
-            {
-                ChangeStationAnimation(StationName);
-            }
-            else
-            {
-                SetRadioStation(StationName);
-            }
+            SetRadioStation(StationName);
         }
     }
     private void EnablePoliceCarMusic()
     {
-        if (Mod.Player.IsInVehicle && Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Engine.IsRunning && Game.LocalPlayer.Character.IsInAnyPoliceVehicle)
+        if (VehicleToMonitor != null && VehicleToMonitor.Engine.IsRunning && VehicleToMonitor.Vehicle.Exists() && VehicleToMonitor.Vehicle.IsPoliceVehicle)
         {
             MobileEnabled = true;
             NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
@@ -75,7 +70,25 @@ public class Radio
                 IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
                 CurrentRadioStationName = Marshal.PtrToStringAnsi(ptr);
             }
-            if (CurrentRadioStationName != AutoTuneStation && Game.LocalPlayer.Character.CurrentVehicle != null)
+
+
+            string GET_PLAYER_RADIO_STATION_NAME = "";
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
+                GET_PLAYER_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
+            }
+
+
+            int GET_PLAYER_RADIO_STATION_INDEX = NativeFunction.CallByName<int>("GET_PLAYER_RADIO_STATION_INDEX");
+
+
+
+
+
+
+
+            if (CurrentRadioStationName != AutoTuneStation)
             {
                 SetRadioStation(AutoTuneStation);
             }
@@ -109,17 +122,17 @@ public class Radio
     }
     private void SetRadioStation(string StationName)
     {
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle != null && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+        if (VehicleToMonitor != null && VehicleToMonitor.Engine.IsRunning && VehicleToMonitor.Vehicle.Exists())
         {
             Mod.Debug.WriteToLog("RadioTuning", string.Format("Tuned: {0} Desired: {1}", CurrentRadioStationName, StationName));
-
             if(MobileEnabled)
             {
+                NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_INDEX", 1);//just do this to wake it up for now, eventually get the index from the station?
                 NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_NAME", StationName);
             }
             else
             {
-                NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", Game.LocalPlayer.Character.CurrentVehicle, StationName);
+                NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", VehicleToMonitor.Vehicle, StationName);
             }
             
         }

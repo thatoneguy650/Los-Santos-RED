@@ -101,6 +101,20 @@ public class PoliceResponse
             return CurrentPoliceState.ToString();
         }
     }
+    public string CrimesObservedJoined
+    {
+        get
+        {
+            return string.Join(",", CurrentCrimes.CrimesObserved.Select(x => x.AssociatedCrime.Name));
+        }
+    }
+    public string CrimesReportedJoined
+    {
+        get
+        {
+            return string.Join(",", CurrentCrimes.CrimesReported.Select(x => x.AssociatedCrime.Name));
+        }
+    }
     public bool RecentlySetWanted
     {
         get
@@ -230,7 +244,7 @@ public class PoliceResponse
         CurrentPoliceState = PoliceState.Normal;
         GameTimeWantedLevelStarted = 0;
         Mod.World.Pedestrians.Reset();
-        Mod.World.PolicePerception.Reset();
+        Mod.World.PoliceForce.Reset();
         Mod.Player.Investigations.Reset();
         Mod.World.Scanner.Reset();
     }
@@ -292,9 +306,9 @@ public class PoliceResponse
         if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
             return;
 
-        if (Mod.Player.WantedLevel >= 1 && Mod.Player.WantedLevel <= 3 && Mod.World.PolicePerception.AnyCanSeePlayer)
+        if (Mod.Player.WantedLevel >= 1 && Mod.Player.WantedLevel <= 3 && Mod.World.PoliceForce.AnyCanSeePlayer)
         {
-            if (Mod.World.PolicePerception.AnyCanSeePlayer)
+            if (Mod.World.PoliceForce.AnyCanSeePlayer)
             {   
                 if (CurrentCrimes.LethalForceAuthorized)
                 {
@@ -345,20 +359,20 @@ public class PoliceResponse
         {
             if (!Mod.Player.IsDead && !Mod.Player.IsBusted)
             {
-                Vector3 CurrentWantedCenter = Mod.World.PolicePerception.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                Vector3 CurrentWantedCenter = Mod.World.PoliceForce.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
                 if (CurrentWantedCenter != Vector3.Zero)
                 {
                     LastWantedCenterPosition = CurrentWantedCenter;
                     UpdateBlip(CurrentWantedCenter, Mod.Player.SearchMode.BlipSize);
                 }
 
-                if(Mod.World.PolicePerception.AnyCanSeePlayer)
+                if(Mod.World.PoliceForce.AnyCanSeePlayer)
                 {
                     PlayerSeenDuringCurrentWanted = true;
                     CurrentCrimes.PlayerSeenDuringWanted = true;
                 }
 
-                if (Mod.DataMart.Settings.SettingsManager.Police.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Mod.DataMart.Settings.SettingsManager.Police.WantedLevelIncreaseTime && Mod.World.PolicePerception.AnyCanSeePlayer && Mod.Player.WantedLevel <= Mod.DataMart.Settings.SettingsManager.Police.WantedLevelInceaseOverTimeLimit)
+                if (Mod.DataMart.Settings.SettingsManager.Police.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > Mod.DataMart.Settings.SettingsManager.Police.WantedLevelIncreaseTime && Mod.World.PoliceForce.AnyCanSeePlayer && Mod.Player.WantedLevel <= Mod.DataMart.Settings.SettingsManager.Police.WantedLevelInceaseOverTimeLimit)
                 {
                     GameTimeLastRequestedBackup = Game.GameTime;
                     SetWantedLevel(Mod.Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);

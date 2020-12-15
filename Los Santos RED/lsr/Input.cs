@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr
 {
     public class Input
     {
-
+        private bool EngineKeyDown;
         private uint GameTimeStartedHoldingEnter;
         public bool IsHoldingEnter
         {
@@ -155,7 +155,6 @@ namespace LosSantosRED.lsr
                 GameTimeStartedHoldingEnter = 0;
             }
         }
-
         private void SurrenderCheck()
         {
             if (IsPressingSurrender && Mod.Player.Surrendering.CanSurrender)
@@ -184,27 +183,54 @@ namespace LosSantosRED.lsr
         {
             if(Mod.Player.CurrentVehicle != null)
             {
-                if (IsPressingEngineToggle && Mod.Player.CurrentVehicle.Engine.CanToggleEngine)
+                if (IsPressingEngineToggle)
                 {
-                    Mod.Player.CurrentVehicle.ToggleEngine(Game.LocalPlayer.Character, true, !Mod.Player.CurrentVehicle.Engine.IsRunning);
+                    Mod.Player.CurrentVehicle.Engine.Toggle();
+                    GameFiber.Sleep(500);
                 }
-                if (IsPressingRefuel && Mod.Player.CurrentVehicle.FuelTank.CanPump)
+                if (IsPressingRefuel && Mod.Player.CurrentVehicle.FuelTank.CanPump && Mod.Player.GetCash() >= 1)
                 {
+                    Mod.Player.GiveCash(-1);
                     Mod.Player.CurrentVehicle.FuelTank.PumpFuel();
+                    GameFiber.Sleep(100);
                 }
                 if (IsPressingHazards)
                 {
                     Mod.Player.CurrentVehicle.Indicators.ToggleHazards();
+                    GameFiber.Sleep(500);
                 }
                 if (IsPressingLeftIndicator)
                 {
-                    Mod.Player.CurrentVehicle.Indicators.ToggleLeftIndicator();
+                    Mod.Player.CurrentVehicle.Indicators.ToggleLeft();
+                    GameFiber.Sleep(500);
                 }
                 if (IsPressingRightIndicator)
                 {
-                    Mod.Player.CurrentVehicle.Indicators.ToggleRightIndicator();
+                    Mod.Player.CurrentVehicle.Indicators.ToggleRight();
+                    GameFiber.Sleep(500);
                 }
             }
         }
+        //private void StartEngineAnimation()
+        //{
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        var sDict = "veh@van@ds@base";
+        //        NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
+        //        while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
+        //            GameFiber.Yield();
+        //        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
+
+        //        uint GameTimeStartedAnimation = Game.GameTime;
+        //        while (Game.GameTime - GameTimeStartedAnimation <= 1000)
+        //        {
+        //            if (Game.IsControlJustPressed(0, GameControl.VehicleExit) || !Mod.Player.IsInVehicle)
+        //            {
+        //                NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
+        //            }
+        //            GameFiber.Sleep(200);
+        //        }
+        //    });
+        //}
     }
 }

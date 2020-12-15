@@ -99,14 +99,14 @@ namespace LosSantosRED.lsr
                 new ModTask(0, "InputManager", Input.Tick, 1,0),
 
                 new ModTask(25, "Player", Player.Update, 2,0),
-                new ModTask(25, "PolicePerception", World.PolicePerception.Tick, 2,1),
+                new ModTask(25, "PolicePerception", World.PoliceForce.Tick, 2,1),
 
                 new ModTask(50, "CrimeManager", Player.Violations.Update, 4,0),
                 new ModTask(50, "WantedLevelManager", Player.CurrentPoliceResponse.Update, 4,1),
 
                 
                 new ModTask(150, "InvestigationManager", Player.Investigations.Tick, 5,0),
-                new ModTask(150, "CivilianManager", World.CivilianPerception.Tick, 5,1),
+                new ModTask(150, "CivilianManager", World.Civilians.Tick, 5,1),
 
                 new ModTask(200, "PedDamageManager", World.PedDamage.Tick, 6,0),
                 new ModTask(250, "MuggingManager", Player.Mugging.Tick, 6,1),
@@ -123,9 +123,9 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "PlayerLocationManager", Player.CurrentLocation.Update, 9,1),
                 new ModTask(500, "ArrestWarrant", Player.ArrestWarrant.Update, 9,2),
 
-                new ModTask(250, "PoliceEquipmentManager", World.PoliceEquipmentManager.Tick, 10,0),
+                //new ModTask(250, "PoliceEquipmentManager", World.PoliceEquipmentManager.Tick, 10,0),
                 
-                new ModTask(500, "PoliceSpeechManager", World.PoliceSpeechManager.Tick, 10,2),
+                new ModTask(500, "PoliceSpeechManager", World.PoliceForce.SpeechTick, 10,2),
                 new ModTask(500, "PoliceSpawningManager", World.PoliceSpawning.Tick, 10,3),
 
                 new ModTask(500, "DispatchManager.SpawnChecking", World.Dispatch.SpawnChecking, 11,0),

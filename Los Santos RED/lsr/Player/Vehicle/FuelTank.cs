@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -14,46 +15,48 @@ using System.Windows.Forms;
 
 public class FuelTank
 {
+    private VehicleExt VehicleExt;
     private bool NearGasPumps;
     private uint GameTimeLastCheckedFuel;
     private float CurrentLevel;
+
+    public FuelTank(VehicleExt vehicleToMonitor)
+    {
+        VehicleExt = vehicleToMonitor;
+    }
+
     public bool CanPump { get; private set; }
     public string UIText
     {
         get
         {
-            return string.Format(" Fuel {0}", (Game.LocalPlayer.Character.CurrentVehicle.FuelLevel / 100f).ToString("P2"));
+           return string.Format(" Fuel {0}", (CurrentLevel / 100f).ToString("P2"));
         }
     }   
-    public void Tick()
+    public void Update()
     {
-        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsCar)
+        CurrentLevel = VehicleExt.Vehicle.FuelLevel;
+        if (VehicleExt != null && VehicleExt.Engine.IsRunning)
         {
-            CurrentLevel = Game.LocalPlayer.Character.CurrentVehicle.FuelLevel;
-            if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Engine.IsRunning)
-            {
-                EngineRunningTick();
-            }
-            else
-            {
-                EngineOffTick();
-            }
+            EngineRunningTick();
         }
         else
         {
-            CanPump = false;
-        }
-        
+            EngineOffTick();
+        }     
     }
     public void PumpFuel()
     {
-        if (Game.LocalPlayer.Character.GetCash() >= 1 && Game.LocalPlayer.Character.CurrentVehicle.FuelLevel < 100f)
+        if (VehicleExt.Vehicle.FuelLevel < 100f)
         {
-            Game.LocalPlayer.Character.GiveCash(-1);
             if (CurrentLevel + 1f <= 100f)
-                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentLevel + 1f;
+            {
+                VehicleExt.Vehicle.FuelLevel = CurrentLevel + 1f;
+            }
             else
-                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = 100f;
+            {
+                VehicleExt.Vehicle.FuelLevel = 100f;
+            }
         }
     }
     private void EngineRunningTick()
@@ -62,15 +65,15 @@ public class FuelTank
         {
             if (CurrentLevel <= 0)
             {
-                if (Mod.Player.CurrentVehicle != null)
+                if (VehicleExt != null)
                 {
-                    Mod.Player.CurrentVehicle.ToggleEngine(Game.LocalPlayer.Character, false, false);
+                    VehicleExt.Engine.Toggle(false);
                 }
             }
             else
             {
-                float AmountToSubtract = 0.001f + Game.LocalPlayer.Character.CurrentVehicle.Speed * 0.0001f;
-                Game.LocalPlayer.Character.CurrentVehicle.FuelLevel = CurrentLevel - AmountToSubtract;
+                float AmountToSubtract = 0.001f + VehicleExt.Vehicle.Speed * 0.0001f;
+                VehicleExt.Vehicle.FuelLevel = CurrentLevel - AmountToSubtract;
             }
             GameTimeLastCheckedFuel = Game.GameTime;
         }
@@ -79,6 +82,13 @@ public class FuelTank
     }
     private void EngineOffTick()
     {
+
+        CanPump = false;
+
+
+        return;
+        //needs reorganizing twith payment and peds
+
         GameLocation ClosestGasStation = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.GasStation);
         NearGasPumps = false;
         if (ClosestGasStation != null && Game.LocalPlayer.Character.Position.DistanceTo2D(ClosestGasStation.LocationPosition) <= 50f)

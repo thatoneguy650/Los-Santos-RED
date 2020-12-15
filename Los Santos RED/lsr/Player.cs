@@ -395,6 +395,49 @@ namespace LosSantosRED.lsr
 
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",string.Format("~y~{0}", Mod.Player.PedSwap.SuspectName), NotifcationText);
         }
+
+
+        public void GiveCash(int Amount)
+        {
+            int CurrentCash;
+            uint PlayerCashHash = CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias);
+            unsafe
+            {
+                NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
+            }
+            if (CurrentCash + Amount < 0)
+                NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, 0, 1);
+            else
+                NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
+        }
+        public int GetCash()
+        {
+            int CurrentCash;
+            unsafe
+            {
+                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
+            }
+
+            return CurrentCash;
+        }
+        public void SetCash(int Amount)
+        {
+            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
+        }
+        private uint CashHash(string PlayerName)
+        {
+            switch (PlayerName)
+            {
+                case "Michael":
+                    return Game.GetHashKey("SP0_TOTAL_CASH");
+                case "Franklin":
+                    return Game.GetHashKey("SP1_TOTAL_CASH");
+                case "Trevor":
+                    return Game.GetHashKey("SP2_TOTAL_CASH");
+                default:
+                    return Game.GetHashKey("SP0_TOTAL_CASH");
+            }
+        }
         private VehicleExt UpdateCurrentVehicle()
         {
             if (!Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -510,7 +553,7 @@ namespace LosSantosRED.lsr
                 {
                     Game.LocalPlayer.Character.LastVehicle.IsEngineOn = LeftLastVehicleEngineOn;
                 }
-
+                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
 
             }
             if (CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
@@ -602,7 +645,7 @@ namespace LosSantosRED.lsr
                     return;
                 }
 
-                if (Mod.World.PolicePerception.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
+                if (Mod.World.PoliceForce.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
                 {
                     if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentVehicle.Vehicle.Handle && !CurrentVehicle.HasBeenDescribedByDispatch)
                     {
@@ -612,7 +655,7 @@ namespace LosSantosRED.lsr
                     PoliceLastSeenVehicleHandle = CurrentVehicle.Vehicle.Handle;
                 }
 
-                if (Mod.World.PolicePerception.AnyCanRecognizePlayer && IsWanted && !AreStarsGreyedOut)
+                if (Mod.World.PoliceForce.AnyCanRecognizePlayer && IsWanted && !AreStarsGreyedOut)
                 {
                     UpdateVehicleDescription(CurrentVehicle);
                 }
@@ -719,7 +762,7 @@ namespace LosSantosRED.lsr
 
                 if (CurrentVehicle != null)
                 {
-                    CurrentVehicle.ToggleEngine(Game.LocalPlayer.Character, false, IsEngineOnOfEnteringVehicle);
+                    CurrentVehicle.Engine.Toggle(IsEngineOnOfEnteringVehicle);
                 }
             }
             else
@@ -762,7 +805,7 @@ namespace LosSantosRED.lsr
             {
                 if (CurrentVehicle != null)
                 {
-                    CurrentVehicle.ToggleEngine(Game.LocalPlayer.Character, false, true);
+                    CurrentVehicle.Engine.Toggle(true);
                 }
             }
             isHotwiring = IsHotwiring;
@@ -851,6 +894,8 @@ namespace LosSantosRED.lsr
                 MyVehicle.WasReportedStolen = true;
             }
         }
+
+
 
     }
 }

@@ -65,7 +65,7 @@ public class ArrestWarrant
 
             if(Mod.Player.IsWanted)
             {
-                if (!PlayerIsPersonOfInterest && Mod.World.PolicePerception.AnyCanSeePlayer)
+                if (!PlayerIsPersonOfInterest && Mod.World.PoliceForce.AnyCanSeePlayer)
                 {
                     PlayerIsPersonOfInterest = true;
                 }
@@ -92,7 +92,7 @@ public class ArrestWarrant
     }
     private void CheckCurrentVehicle()
     {
-        if ((Mod.Player.IsNotWanted || Mod.Player.WantedLevel == 1) && Mod.World.PolicePerception.AnyCanRecognizePlayer && Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+        if ((Mod.Player.IsNotWanted || Mod.Player.WantedLevel == 1) && Mod.World.PoliceForce.AnyCanRecognizePlayer && Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
         {
             VehicleExt VehicleToCheck = Mod.Player.CurrentVehicle;
 
@@ -107,7 +107,7 @@ public class ArrestWarrant
     }
     private void CheckSight()
     {
-        if (PlayerIsPersonOfInterest && Mod.World.PolicePerception.AnyCanSeePlayer)
+        if (PlayerIsPersonOfInterest && Mod.World.PoliceForce.AnyCanSeePlayer)
         {
             if (Mod.Player.IsWanted)
             {

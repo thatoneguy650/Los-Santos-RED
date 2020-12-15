@@ -245,7 +245,7 @@ public class PedSwap
         }
 
         if (Mod.DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
-            Game.LocalPlayer.Character.SetCash(RandomItems.MyRand.Next(Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
+            Mod.Player.SetCash(RandomItems.MyRand.Next(Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
 
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);

@@ -102,7 +102,7 @@ public class Dispatch
             {
                 return 2000;
             }
-            else  if (!Mod.World.PolicePerception.AnyRecentlySeenPlayer)
+            else  if (!Mod.World.PoliceForce.AnyRecentlySeenPlayer)
             {
                 return 3000;
             }
@@ -139,7 +139,7 @@ public class Dispatch
         {
             if (Mod.Player.IsWanted)
             {
-                if (!Mod.World.PolicePerception.AnyRecentlySeenPlayer)
+                if (!Mod.World.PoliceForce.AnyRecentlySeenPlayer)
                     return 250f - (Mod.Player.WantedLevel * -40);
                 else
                     return 400f - (Mod.Player.WantedLevel * -40);
@@ -156,7 +156,7 @@ public class Dispatch
         {
             if (Mod.Player.IsWanted)
             {
-                if (!Mod.World.PolicePerception.AnyRecentlySeenPlayer)
+                if (!Mod.World.PoliceForce.AnyRecentlySeenPlayer)
                     return 350f;
                 else
                     return 550f;

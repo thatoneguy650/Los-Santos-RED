@@ -167,7 +167,8 @@ public class Pedestrians
         SetCopStats(Pedestrian);
 
         Pedestrian.Inventory.Weapons.Clear();
-        Mod.World.PoliceEquipmentManager.IssueWeapons(myCop);
+        //Mod.World.PoliceEquipmentManager.IssueWeapons(myCop);
+        myCop.Loadout.IssueWeapons();
 
         Cops.Add(myCop);
     }

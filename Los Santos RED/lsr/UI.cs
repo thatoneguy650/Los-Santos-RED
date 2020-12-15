@@ -143,14 +143,21 @@ public class UI
 
         string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Mod.Player.Investigations.InInvestigationMode, Mod.Player.Investigations.HavePlayerDescription,Mod.Player.IsStationary, Mod.Player.Investigations.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
         string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", Mod.Player.SearchMode.IsInSearchMode, Mod.Player.SearchMode.IsInActiveMode, Mod.Player.SearchMode.TimeInSearchMode, Mod.Player.SearchMode.TimeInActiveMode);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", Mod.World.PolicePerception.AnyRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, Mod.Player.SearchMode.CurrentSearchTime, Mod.World.PolicePerception.PlaceLastSeenPlayer);
+
+        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", Mod.World.PoliceForce.AnyRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, Mod.Player.SearchMode.CurrentSearchTime, Mod.World.PoliceForce.PlaceLastSeenPlayer);
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine4 = string.Format("NumberPlateIndexSelected {0}", -9999);
+
+        string DebugLine4 = string.Format("CrimesObs {0}", Mod.Player.CurrentPoliceResponse.CrimesObservedJoined);
         DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        string DebugLine5 = string.Format("{0}", Mod.Player.Violations.LawsViolating);
+
+        string DebugLine5 = string.Format("CrimesRep {0}", Mod.Player.CurrentPoliceResponse.CrimesReportedJoined);
         DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+        string DebugLine6 = string.Format("{0}", Mod.Player.Violations.LawsViolating);
+        DisplayTextOnScreen(DebugLine6, 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
 
 

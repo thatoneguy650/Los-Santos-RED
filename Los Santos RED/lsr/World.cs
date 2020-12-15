@@ -18,12 +18,10 @@ namespace LosSantosRED.lsr
         public Tasking Tasking { get; private set; } = new Tasking();
         public PedDamage PedDamage { get; private set; } = new PedDamage();
         public Scanner Scanner { get; private set; } = new Scanner();
-        public PoliceEquipmentManager PoliceEquipmentManager { get; private set; } = new PoliceEquipmentManager();
-        public PoliceSpeechManager PoliceSpeechManager { get; private set; } = new PoliceSpeechManager();
         public Pedestrians Pedestrians { get; private set; } = new Pedestrians();
-        public Clock Clock { get; private set; } = new Clock();
-        public PolicePerception PolicePerception { get; private set; } = new PolicePerception();
-        public CivilianPerception CivilianPerception { get; private set; } = new CivilianPerception();
+        public Time Clock { get; private set; } = new Time();
+        public PoliceForce PoliceForce { get; private set; } = new PoliceForce();
+        public Civilians Civilians { get; private set; } = new Civilians();
         public Dispatch Dispatch { get; private set; } = new Dispatch();
         public bool IsNightTime { get; private set; }
         public World()

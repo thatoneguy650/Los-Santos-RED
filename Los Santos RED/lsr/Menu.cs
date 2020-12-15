@@ -631,7 +631,7 @@ public class Menu
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
         }
 
-        if (selectedItem == menuDebugGiveMoney) Game.LocalPlayer.Character.GiveCash(50000);
+        if (selectedItem == menuDebugGiveMoney) Mod.Player.GiveCash(50000);
         if (selectedItem == menuDebugResetMod)
         {
             //ScriptController.Dispose();

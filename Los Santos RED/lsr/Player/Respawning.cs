@@ -184,7 +184,7 @@ public class Respawning
         if (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.IsSwimming)
             return;
 
-        if (Game.LocalPlayer.Character.GetCash() < Amount)
+        if (Mod.Player.GetCash() < Amount)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
             return;
@@ -193,14 +193,14 @@ public class Respawning
         if (Amount < (Mod.Player.WantedLevel * Mod.DataMart.Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
-            Game.LocalPlayer.Character.GiveCash(-1 * Amount);
+            Mod.Player.GiveCash(-1 * Amount);
             return;
         }
         else
         {
             GameTimeLastBribedPolice = Game.GameTime;
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
-            Game.LocalPlayer.Character.GiveCash(-1 * Amount);
+            Mod.Player.GiveCash(-1 * Amount);
             Mod.Player.Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
             ResetPlayer(true, false);
 
@@ -309,7 +309,7 @@ public class Respawning
             CopToBribe.Pedestrian.BlockPermanentEvents = false;
             CopToBribe.Pedestrian.IsPositionFrozen = false;
 
-            Game.LocalPlayer.Character.GiveCash(-1 * Amount);
+            Mod.Player.GiveCash(-1 * Amount);
             CopToBribe.Pedestrian.PlayAmbientSpeech("GENERIC_THANKS");
             //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
 
@@ -364,11 +364,12 @@ public class Respawning
         if (ClearWanted)
         {
             Mod.Player.ArrestWarrant.Reset();
-            Mod.Player.CurrentPoliceResponse.Reset();
+            Mod.Player.CurrentPoliceResponse.Reset(); 
             Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Reset player with Clear Wanted", false);
             Mod.Player.MaxWantedLastLife = 0;
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
             Mod.World.PedDamage.Reset();
+            Mod.World.Civilians.Reset();
             Mod.Player.Investigations.Reset();
         }
 
@@ -399,7 +400,7 @@ public class Respawning
     private void SetHospitalFee(string HospitalName)
     {
         int HospitalFee = Mod.DataMart.Settings.SettingsManager.Police.HospitalFee * (1 + Mod.Player.MaxWantedLastLife);
-        int CurrentCash = Game.LocalPlayer.Character.GetCash();
+        int CurrentCash = Mod.Player.GetCash();
         int TodaysPayment = 0;
 
         int TotalNeededPayment = HospitalFee + HospitalBillPastDue;
@@ -417,11 +418,11 @@ public class Respawning
 
         Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", HospitalFee, TodaysPayment, HospitalBillPastDue));
 
-        Game.LocalPlayer.Character.GiveCash(-1 * TodaysPayment);
+        Mod.Player.GiveCash(-1 * TodaysPayment);
     }
     private void SetPoliceFee(string PoliceStationName, int BailFee)
     {
-        int CurrentCash = Game.LocalPlayer.Character.GetCash();
+        int CurrentCash = Mod.Player.GetCash();
         int TodaysPayment = 0;
 
         int TotalNeededPayment = BailFee + BailFeePastDue;
@@ -441,7 +442,7 @@ public class Respawning
         if (!LesterHelp)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStationName, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", BailFee, TodaysPayment, BailFeePastDue));
-            Game.LocalPlayer.Character.GiveCash(-1 * TodaysPayment);
+            Mod.Player.GiveCash(-1 * TodaysPayment);
         }
         else
         {
@@ -555,7 +556,7 @@ public class Respawning
                 CopToBribe.Pedestrian.BlockPermanentEvents = false;
                 CopToBribe.Pedestrian.IsPositionFrozen = false;
 
-                Game.LocalPlayer.Character.GiveCash(-1 * Amount);
+                Mod.Player.GiveCash(-1 * Amount);
                 CopToBribe.Pedestrian.PlayAmbientSpeech("GENERIC_THANKS");
                 //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
 
