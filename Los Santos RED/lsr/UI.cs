@@ -262,7 +262,7 @@ public class UI
             else
             {
                 string ColorPrefx = "~s~";
-                if (Mod.Player.Violations.PlayerIsSpeeding)
+                if (Mod.Player.Violations.IsSpeeding)
                     ColorPrefx = "~r~";
 
                 if (Mod.Player.CurrentLocation.CurrentStreet != null)

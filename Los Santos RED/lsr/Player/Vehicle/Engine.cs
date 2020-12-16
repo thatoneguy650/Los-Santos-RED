@@ -37,9 +37,16 @@ public class Engine
     }
     public void Update()
     {
+
+        if (VehicleToMonitor.Vehicle.IsEngineStarting)
+        {
+            IsRunning = true;
+        }
+
         if (!IsRunning)
         {
             VehicleToMonitor.Vehicle.IsDriveable = false;
+            VehicleToMonitor.Vehicle.IsEngineOn = false;
         }
         else
         {

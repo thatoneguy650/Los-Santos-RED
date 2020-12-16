@@ -51,10 +51,16 @@ public class CarLockPick
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
                 if (!SetupLockPick())
+                {
+                    Mod.Debug.WriteToLog("PickLock", "Setup Failed");
                     return;
+                }
 
                 if (!LockPickAnimation())
+                {
+                    Mod.Debug.WriteToLog("PickLock", "Animation Failed");
                     return;
+                }
 
                 FinishLockPick();
 
@@ -70,7 +76,7 @@ public class CarLockPick
     private bool SetupLockPick()
     {
         OriginalLockStatus = TargetVehicle.LockStatus;
-        TargetVehicle.AttemptLockStatus((VehicleLockStatus)3);//Attempt to lock most car doors
+        TargetVehicle.SetLock((VehicleLockStatus)3);//Attempt to lock most car doors
         Game.LocalPlayer.Character.SetUnarmed();
 
         TargetVehicle.MustBeHotwired = true;
@@ -147,7 +153,11 @@ public class CarLockPick
         }
 
         TargetVehicle.LockStatus = VehicleLockStatus.Unlocked;
-        TargetVehicle.Doors[DoorIndex].Open(true, false);
+
+        if (RandomItems.RandomPercent(50))
+        {
+            TargetVehicle.Doors[DoorIndex].Open(true, false);
+        }
 
         return true;
     }
@@ -162,23 +172,31 @@ public class CarLockPick
     }
     private bool FinishLockPick()
     {
-        uint GameTimeStarted = Game.GameTime;
+       // uint GameTimeStarted = Game.GameTime;
         Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
-        while (!Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 10000)
-        {
-            GameFiber.Yield();
-            if (Extensions.IsMoveControlPressed())
-            {
-                break;
-            }
-        }
 
-        if (TargetVehicle.Doors[DoorIndex].IsValid())
-            NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, DoorIndex, 4, 0f);
-        if (DoorIndex == 0)//Driver side
-            GameFiber.Sleep(5000);
-        else
-            GameFiber.Sleep(8000);//Passenger takes longer
+        //while (!Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 10000)
+        //{
+        //    GameFiber.Yield();
+        //    if (Extensions.IsMoveControlPressed())
+        //    {
+        //        break;
+        //    }
+        //}
+
+        //if (TargetVehicle.Doors[DoorIndex].IsValid())
+        //{
+        //    NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, DoorIndex, 4, 0f);
+        //}
+
+        //if (DoorIndex == 0)//Driver side
+        //{
+        //    GameFiber.Sleep(5000);
+        //}
+        //else
+        //{
+        //    GameFiber.Sleep(8000);//Passenger takes longer
+        //}
         if (Screwdriver != null && Screwdriver.Exists())
             Screwdriver.Delete();
 

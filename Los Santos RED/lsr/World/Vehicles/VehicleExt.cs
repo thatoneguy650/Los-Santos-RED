@@ -138,6 +138,22 @@ namespace LSR.Vehicles
                 return false;
             }
         }
+        public bool HasBeenEnteredByPlayer
+        {
+            get
+            {
+                if(GameTimeEntered == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        public VehicleLockStatus OriginalLockStatus { get; private set; }
+        public bool OriginalEngineStatus { get; private set; }
         public VehicleExt(Vehicle _Vehicle, uint _GameTimeEntered, bool _WasJacked, bool _WasAlarmed, bool _IsStolen, LicensePlate _CarPlate)
         {
             Vehicle = _Vehicle;
@@ -156,6 +172,9 @@ namespace LSR.Vehicles
                 PositionOriginallyEntered = Game.LocalPlayer.Character.Position;
 
             _Vehicle.FuelLevel = RandomItems.MyRand.Next(25, 100);
+            OriginalLockStatus = _Vehicle.LockStatus;
+            OriginalEngineStatus = _Vehicle.IsEngineOn;
+            _Vehicle.SetLock((VehicleLockStatus)7);
 
             Engine = new Engine(this);
             Radio = new Radio(this);
@@ -170,6 +189,9 @@ namespace LSR.Vehicles
             CarPlate = _CarPlate;
             OriginalLicensePlate = _CarPlate;
             _Vehicle.FuelLevel = RandomItems.MyRand.Next(25, 100);
+            OriginalLockStatus = _Vehicle.LockStatus;
+            OriginalEngineStatus = _Vehicle.IsEngineOn;
+            _Vehicle.SetLock((VehicleLockStatus)7);
 
             Engine = new Engine(this);
             Radio = new Radio(this);
@@ -289,5 +311,39 @@ namespace LSR.Vehicles
                 return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle.Model.Hash);
             }
         }
+        //public bool SetLock(VehicleLockStatus DesiredStatus)
+        //{
+        //    if (Vehicle.LockStatus != (VehicleLockStatus)1 && Vehicle.LockStatus != (VehicleLockStatus)7)
+        //    {
+        //        return false;
+        //    }
+        //    if (Vehicle.HasDriver)
+        //    {
+        //        return false;
+        //    }
+        //    foreach (VehicleDoor myDoor in Vehicle.GetDoors())
+        //    {
+        //        if (!myDoor.IsValid() || myDoor.IsOpen)
+        //        {
+        //            return false;//invalid doors make the car not locked
+        //        }
+        //    }
+        //    if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", Vehicle))
+        //    {
+        //        return false;//broken windows == not locked
+        //    }
+        //    if (Vehicle.IsConvertible && Vehicle.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
+        //    {
+        //        return false;
+        //    }
+        //    if (Vehicle.IsBike || Vehicle.IsPlane || Vehicle.IsHelicopter)
+        //    {
+        //        return false;
+        //    }
+
+        //    Vehicle.MustBeHotwired = true;
+        //    Vehicle.LockStatus = DesiredStatus;//Locked for player
+        //    return true;
+        //}
     }
 }

@@ -246,17 +246,16 @@ namespace ExtensionsMethods
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
         //Car Stuff
-        public static bool AttemptLockStatus(this Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
+        public static bool SetLock(this Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
         {
-
-            if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)
-            { 
-                return false; 
-            }
-            if (ToLock.HasDriver)
-            {
-                return false;
-            }
+            //if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)
+            //{
+            //    return false;
+            //}
+            //if (ToLock.HasDriver)
+            //{
+            //    return false;
+            //}
             foreach (VehicleDoor myDoor in ToLock.GetDoors())
             {
                 if (!myDoor.IsValid() || myDoor.IsOpen)
@@ -277,6 +276,7 @@ namespace ExtensionsMethods
                 return false;
             }
 
+            ToLock.MustBeHotwired = true;
             ToLock.LockStatus = DesiredLockStatus;//Locked for player
             return true;
         }

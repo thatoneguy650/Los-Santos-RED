@@ -643,7 +643,14 @@ public class Menu
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
             Game.LocalPlayer.Character.Armor = 100;
         }
-
+        if (selectedItem == menuDebugRandomVariation)
+        {
+            //WeaponInformation MyWeap = Mod.DataMart.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
+            //if(MyWeap != null)
+            //{
+            //    MyWeap.Variations.
+            //}
+        }
         if (selectedItem == menuDebugScreenEffect)
         {
             NativeFunction.Natives.xB4EDDC19532BFB85(); //ANIMPOSTFX_STOP_ALL

@@ -251,8 +251,21 @@ public class CarJack
             else
             {
                 Game.LocalPlayer.Character.WarpIntoVehicle(TargetVehicle, -1);
+
+
+
+                VehicleExt MyCar = Mod.Player.TrackedVehicles.FirstOrDefault(x => x.Vehicle.Handle == TargetVehicle.Handle);
+                if (MyCar != null)
+                {
+                    MyCar.Engine.Toggle(true);
+                }
+
+
+
                 if (TargetVehicle.Doors[0].IsValid())
+                {
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
+                }
             }
         }
 

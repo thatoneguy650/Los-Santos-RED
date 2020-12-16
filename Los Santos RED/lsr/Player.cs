@@ -11,7 +11,7 @@ namespace LosSantosRED.lsr
 {
     public class Player
     {
-        private bool IsEngineOnOfEnteringVehicle;
+
         private bool LeftLastVehicleEngineOn;
         private bool VanillaRespawn = true;
         private bool isHotwiring;
@@ -454,7 +454,7 @@ namespace LosSantosRED.lsr
             ToReturn.SetAsEntered();
             return ToReturn;
         }
-        private bool HasEntered(Vehicle TargetVeh)
+        private bool IsTracked(Vehicle TargetVeh)
         {
             if (TrackedVehicles.Any(x => x.Vehicle.Handle == TargetVeh.Handle))//Entered By Player
             {
@@ -534,10 +534,10 @@ namespace LosSantosRED.lsr
                 }
 
 
-                if (isHotwiring != IsHotwiring)
-                {
-                    IsHotWiringChanged();
-                }
+                //if (isHotwiring != IsHotwiring)
+                //{
+                //    IsHotWiringChanged();
+                //}
             }
             else
             {
@@ -717,29 +717,39 @@ namespace LosSantosRED.lsr
         {
             if (IsGettingIntoAVehicle)
             {
-                Vehicle TargetVeh = Game.LocalPlayer.Character.VehicleTryingToEnter;
-                if (TargetVeh == null)
+                Vehicle EnteringVehicle = Game.LocalPlayer.Character.VehicleTryingToEnter;
+                int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
+                if (EnteringVehicle == null)
                 {
                     return;
-                }
-                IsEngineOnOfEnteringVehicle = TargetVeh.IsEngineOn;
-                Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("                 IsEngineOnOfEnteringVehicle Changed to: {0}", IsEngineOnOfEnteringVehicle));
-                int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-                bool LockedCar = false;
-                if (!HasEntered(TargetVeh))//If you havent entered it
+                }  
+                VehicleExt MyCar = TrackedVehicles.FirstOrDefault(x => x.Vehicle.Handle == EnteringVehicle.Handle);
+                if(MyCar == null)
                 {
-                    LockedCar = TargetVeh.AttemptLockStatus((VehicleLockStatus)7); //Attempt to lock most car doors
+                    MyCar = new VehicleExt(EnteringVehicle);
+                    TrackedVehicles.Add(MyCar);
+                    Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("Handle: {0}, Not Seen", EnteringVehicle.Handle));
                 }
-                Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("             LockedCar Changed to: {0}", LockedCar));
-                if (LockedCar && (int)TargetVeh.LockStatus == 7) //Is Locked
+                else
                 {
-                    CarLockPick MyLockPick = new CarLockPick(TargetVeh, SeatTryingToEnter);
+                    Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("Handle: {0}, Seen", EnteringVehicle.Handle));
+                }
+
+                if (EnteringVehicle.Driver == null && EnteringVehicle.LockStatus == (VehicleLockStatus)7 && !EnteringVehicle.IsEngineOn)//no driver && Unlocked
+                {
+                    Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("1 Handle: {0} LockPick", EnteringVehicle.Handle));
+                    CarLockPick MyLockPick = new CarLockPick(EnteringVehicle, SeatTryingToEnter);
                     MyLockPick.PickLock();
                 }
-                else if (SeatTryingToEnter == -1 && TargetVeh.Driver != null && TargetVeh.Driver.IsAlive) //Driver
+                else if (SeatTryingToEnter == -1 && EnteringVehicle.Driver != null && EnteringVehicle.Driver.IsAlive) //Driver
                 {
-                    CarJack MyJack = new CarJack(TargetVeh, TargetVeh.Driver, SeatTryingToEnter);
+                    Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("2 Handle: {0} CarJack", EnteringVehicle.Handle));
+                    CarJack MyJack = new CarJack(EnteringVehicle, EnteringVehicle.Driver, SeatTryingToEnter);
                     MyJack.StartCarJack();
+                }
+                else
+                {
+                    Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("3 Handle: {0}, LockStatus: {1}, MustBeHotwired: {2}", EnteringVehicle.Handle, EnteringVehicle.LockStatus, EnteringVehicle.MustBeHotwired));
                 }
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
@@ -752,22 +762,22 @@ namespace LosSantosRED.lsr
                 UpdateStolenStatus();
 
 
-                if (Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
-                {
-                    if (Game.LocalPlayer.Character.SeatIndex == -1)
-                        GameTimeStartedHotwiring = Game.GameTime;
-                    else
-                        GameTimeStartedHotwiring = Game.GameTime + 2000;
-                }
+                //if (Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
+                //{
+                //    if (Game.LocalPlayer.Character.SeatIndex == -1)
+                //        GameTimeStartedHotwiring = Game.GameTime;
+                //    else
+                //        GameTimeStartedHotwiring = Game.GameTime + 2000;
+                //}
 
-                if (CurrentVehicle != null)
-                {
-                    CurrentVehicle.Engine.Toggle(IsEngineOnOfEnteringVehicle);
-                }
+                //if (CurrentVehicle != null)
+                //{
+                //    CurrentVehicle.Engine.Toggle(IsEngineOnOfEnteringVehicle);
+                //}
             }
             else
             {
-                GameTimeStartedHotwiring = 0;
+                //GameTimeStartedHotwiring = 0;
             }
             Mod.Debug.WriteToLog("ValueChecker", string.Format("IsInVehicle Changed to: {0}", IsInVehicle));
         }
@@ -795,22 +805,22 @@ namespace LosSantosRED.lsr
             }
             Mod.Debug.WriteToLog("ValueChecker", string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
-        private void IsHotWiringChanged()
-        {
-            if (IsHotwiring)
-            {
+        //private void IsHotWiringChanged()
+        //{
+        //    if (IsHotwiring)
+        //    {
 
-            }
-            else
-            {
-                if (CurrentVehicle != null)
-                {
-                    CurrentVehicle.Engine.Toggle(true);
-                }
-            }
-            isHotwiring = IsHotwiring;
-            Mod.Debug.WriteToLog("ValueChecker", string.Format("IsHotwiring Changed to: {0}", IsHotwiring));
-        }
+        //    }
+        //    else
+        //    {
+        //        if (CurrentVehicle != null)
+        //        {
+        //            CurrentVehicle.Engine.Toggle(true);
+        //        }
+        //    }
+        //    isHotwiring = IsHotwiring;
+        //    Mod.Debug.WriteToLog("ValueChecker", string.Format("IsHotwiring Changed to: {0}", IsHotwiring));
+        //}
         private void TrackCurrentVehicle()
         {
             Vehicle CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
@@ -839,6 +849,9 @@ namespace LosSantosRED.lsr
             }
             LicensePlate MyPlate = new LicensePlate(CurrVehicle.LicensePlate, CurrVehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", CurrVehicle), false);
             VehicleExt MyNewCar = new VehicleExt(CurrVehicle, Game.GameTime, AmStealingCarFromPrerson, CurrVehicle.IsAlarmSounding, IsStolen, MyPlate);
+           
+            
+            
             //Maybe Add this back?
             //if (IsStolen && PreviousOwner.Exists())
             //{
@@ -848,6 +861,9 @@ namespace LosSantosRED.lsr
             //        MyPrevOwner.AddCrime(Mod.Violations.GrandTheftAuto, MyPrevOwner.Pedestrian.Position); 
             //    }
             //}
+
+
+
             TrackedVehicles.Add(MyNewCar);
         }
         private void SetDriverWindow(bool RollDown)
