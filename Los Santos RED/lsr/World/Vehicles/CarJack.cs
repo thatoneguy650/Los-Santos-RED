@@ -254,10 +254,10 @@ public class CarJack
 
 
 
-                VehicleExt MyCar = Mod.Player.TrackedVehicles.FirstOrDefault(x => x.Vehicle.Handle == TargetVehicle.Handle);
+                VehicleExt MyCar = Mod.World.Vehicles.GetVehicle(TargetVehicle);
                 if (MyCar != null)
                 {
-                    MyCar.Engine.Toggle(true);
+                    MyCar.ToggleEngine(true);
                 }
 
 

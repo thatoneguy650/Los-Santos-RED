@@ -185,15 +185,16 @@ namespace LosSantosRED.lsr
             {
                 if (IsPressingEngineToggle)
                 {
-                    Mod.Player.CurrentVehicle.Engine.Toggle();
-                    GameFiber.Sleep(500);
+                    ToggleEngineAnimation();
+                    GameFiber.Sleep(200);
+                    Mod.Player.CurrentVehicle.ToggleEngine();
                 }
-                if (IsPressingRefuel && Mod.Player.CurrentVehicle.FuelTank.CanPump && Mod.Player.GetCash() >= 1)
-                {
-                    Mod.Player.GiveCash(-1);
-                    Mod.Player.CurrentVehicle.FuelTank.PumpFuel();
-                    GameFiber.Sleep(100);
-                }
+                //if (IsPressingRefuel &&  Mod.Player.GetCash() >= 1)
+                //{
+                //    Mod.Player.GiveCash(-1);
+                //    Mod.Player.CurrentVehicle.FuelTank.PumpFuel();
+                //    GameFiber.Sleep(100);
+                //}
                 if (IsPressingHazards)
                 {
                     Mod.Player.CurrentVehicle.Indicators.ToggleHazards();
@@ -211,7 +212,28 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        //private void StartEngineAnimation()
+        private void ToggleEngineAnimation()
+        {
+            GameFiber.StartNew(delegate
+            {
+                var sDict = "veh@van@ds@base";
+                NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
+                while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
+                    GameFiber.Yield();
+                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
+
+                uint GameTimeStartedAnimation = Game.GameTime;
+                while (Game.GameTime - GameTimeStartedAnimation <= 1000)
+                {
+                    if (Game.IsControlJustPressed(0, GameControl.VehicleExit) || !Mod.Player.IsInVehicle)
+                    {
+                        NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
+                    }
+                    GameFiber.Sleep(200);
+                }
+            });
+        }
+        //private void ChangeStationAnimation(string StationName)
         //{
         //    GameFiber.StartNew(delegate
         //    {
@@ -221,15 +243,20 @@ namespace LosSantosRED.lsr
         //            GameFiber.Yield();
         //        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
 
+        //        bool Cancel = false;
         //        uint GameTimeStartedAnimation = Game.GameTime;
         //        while (Game.GameTime - GameTimeStartedAnimation <= 1000)
         //        {
-        //            if (Game.IsControlJustPressed(0, GameControl.VehicleExit) || !Mod.Player.IsInVehicle)
+        //            if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
         //            {
         //                NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
+        //                Cancel = true;
         //            }
         //            GameFiber.Sleep(200);
         //        }
+        //        if (!Cancel)
+        //            SetRadioStation(StationName);
+
         //    });
         //}
     }

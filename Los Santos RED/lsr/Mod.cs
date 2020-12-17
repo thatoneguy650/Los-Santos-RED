@@ -13,6 +13,7 @@ namespace LosSantosRED.lsr
         public static World World { get; private set; } = new World();
         public static Input Input { get; private set; } = new Input();
         public static UI UI { get; private set; } = new UI();
+        public static Audio Audio { get; private set; } = new Audio();
         public static Menu Menu { get; private set; } = new Menu();
         public static DataMart DataMart { get; private set; } = new DataMart();
         public static bool IsRunning { get; private set; }
@@ -104,18 +105,31 @@ namespace LosSantosRED.lsr
                 new ModTask(50, "CrimeManager", Player.Violations.Update, 4,0),
                 new ModTask(50, "WantedLevelManager", Player.CurrentPoliceResponse.Update, 4,1),
 
-                
-                new ModTask(150, "InvestigationManager", Player.Investigations.Tick, 5,0),
-                new ModTask(150, "CivilianManager", World.Civilians.Tick, 5,1),
 
-                new ModTask(200, "PedDamageManager", World.PedDamage.Tick, 6,0),
-                new ModTask(250, "MuggingManager", Player.Mugging.Tick, 6,1),
-     
-                new ModTask(250, "PrunePedList", World.Pedestrians.PrunePeds, 7,0),
-                new ModTask(1000, "ScanForNewPeds", World.Pedestrians.ScanForPeds, 7,1),
-                new ModTask(250, "PruneVehicleList", World.Vehicles.PruneVehicles, 7,2),
-                new ModTask(1000, "VehicleManager", World.Vehicles.ScanForVehicles, 7,3),
-                new ModTask(500, "VehicleManager", World.Vehicles.UpdateVehiclePlates, 7,4),
+                new ModTask(150, "InvestigationManager", Player.Investigations.Tick, 5,0),
+                new ModTask(150, "CivilianManager", World.Civilians.Tick, 5,1),//still happens
+
+                new ModTask(200, "PedDamageManager", World.PedDamage.Tick, 6,0),//still happens
+                new ModTask(250, "MuggingManager", Player.Mugging.Tick, 6,1),//still happens
+
+                new ModTask(250, "PrunePedList", World.Pedestrians.PrunePeds, 7,0),//still happens
+                new ModTask(1000, "ScanForNewPeds", World.Pedestrians.ScanForPeds, 7,1),//still happens
+
+
+
+
+
+
+                new ModTask(250, "PruneVehicleList", World.Vehicles.PruneVehicles, 7,2),//test
+                new ModTask(1000, "VehicleManager", World.Vehicles.ScanForVehicles, 7,3),//test
+                new ModTask(500, "VehicleManager", World.Vehicles.UpdateVehiclePlates, 7,4),//test
+
+
+
+
+
+
+
 
                 new ModTask(250, "WeaponDroppingManager", Player.WeaponDropping.Tick, 8,0),
 
@@ -123,17 +137,12 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "PlayerLocationManager", Player.CurrentLocation.Update, 9,1),
                 new ModTask(500, "ArrestWarrant", Player.ArrestWarrant.Update, 9,2),
 
-                //new ModTask(250, "PoliceEquipmentManager", World.PoliceEquipmentManager.Tick, 10,0),
-                
                 new ModTask(500, "PoliceSpeechManager", World.PoliceForce.SpeechTick, 10,2),
-                new ModTask(500, "PoliceSpawningManager", World.PoliceSpawning.Tick, 10,3),
+                new ModTask(500, "PoliceSpawningManager", World.PoliceSpawning.Tick, 10,3),//still happens
 
-                new ModTask(500, "DispatchManager.SpawnChecking", World.Dispatch.SpawnChecking, 11,0),
-                new ModTask(500, "DispatchManager.DeleteChecking", World.Dispatch.DeleteChecking, 11,1),
 
-                //new ModTask(100, "VehicleFuelManager", Player.VehicleFuel.Tick, 12,0),
-                //new ModTask(100, "VehicleIndicatorManager", Player.VehicleIndicators.Tick, 12,1),
-                //new ModTask(500, "RadioManager", Player.VehicleRadio.Tick, 12,2),
+                new ModTask(500, "DispatchManager.SpawnChecking", World.Dispatch.SpawnChecking, 11,0),//still happens
+                new ModTask(500, "DispatchManager.DeleteChecking", World.Dispatch.DeleteChecking, 11,1),//still happens
 
                 new ModTask(500, "WorldCache",World.CacheWorldData,13,0),
 
@@ -145,6 +154,11 @@ namespace LosSantosRED.lsr
                 new ModTask(150, "SearchModeStoppingManager", Player.SearchMode.StopVanillaSearchMode, 15,1),
 
                 new ModTask(500, "ScannerManager", World.Scanner.Tick, 16,0),
+
+
+                new ModTask(100, "Audio",Audio.Tick,17,0),
+                
+
             };
         }
         private class ModTask

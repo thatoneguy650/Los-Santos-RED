@@ -144,6 +144,10 @@ public class UI
         string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Mod.Player.Investigations.InInvestigationMode, Mod.Player.Investigations.HavePlayerDescription,Mod.Player.IsStationary, Mod.Player.Investigations.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
+        string DebugLine1 = string.Format("IsDrunk {0}", Mod.Player.IsDrunk);
+        DisplayTextOnScreen(DebugLine1, 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+
         string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", Mod.Player.SearchMode.IsInSearchMode, Mod.Player.SearchMode.IsInActiveMode, Mod.Player.SearchMode.TimeInSearchMode, Mod.Player.SearchMode.TimeInActiveMode);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 

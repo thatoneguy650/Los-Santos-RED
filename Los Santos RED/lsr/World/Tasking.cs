@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -48,7 +49,7 @@ public class Tasking
             int TaskedCops = 0;
             foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
-                if (TaskedCops < 50)//2
+                if (TaskedCops < 2)//2
                 {
                     Cop.RunCurrentActivity();
                     TaskedCops++;
@@ -62,7 +63,7 @@ public class Tasking
             int TaskedCivilians = 0;
             foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
-                if (TaskedCivilians < 50)//5
+                if (TaskedCivilians < 3)//5
                 {
                     Civilian.RunCurrentActivity();
                     TaskedCivilians++;
@@ -270,11 +271,12 @@ public class Tasking
                     Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
                     if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
                     {
+                        LastVehicle.LockStatus = (VehicleLockStatus)1;
                         unsafe
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 2f, 9);
+                            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 1f, 9);
                             NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000,8000));
                             NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
@@ -308,61 +310,31 @@ public class Tasking
                 CopToTask.Pedestrian.CurrentVehicle.IsSirenOn = false;
                 CopToTask.Pedestrian.CurrentVehicle.IsSirenSilent = false;
             }
-            if (CopToTask.DistanceToPlayer <= 75f && CopToTask.Pedestrian.Tasks.CurrentTaskStatus == TaskStatus.NoTask)//150f causes spam
+            if (CopToTask.DistanceToPlayer <= 75f && CopToTask.Pedestrian.Tasks.CurrentTaskStatus == TaskStatus.NoTask && !CopToTask.Pedestrian.IsInAnyVehicle(false))//150f causes spam
             {
-                if (!CopToTask.Pedestrian.IsInAnyVehicle(false))
+                Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
+                if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
                 {
-                    Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
-                    if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
+                    LastVehicle.LockStatus = (VehicleLockStatus)1;
+                    unsafe
                     {
-                        unsafe
-                        {
-                            int lol = 0;
-                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 2f, 9);
-                            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
-                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", CopToTask.Pedestrian, lol);
-                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                        }
-                    }
-                    else
-                    {
-                        CopToTask.Pedestrian.Tasks.Wander();
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 0.5f, 9);
+                        NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", CopToTask.Pedestrian, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                     }
                 }
+                else
+                {
+                    CopToTask.Pedestrian.Tasks.Wander();
+                }       
                 Mod.Debug.WriteToLog("Tasking", string.Format("     ReSet Idle: {0} CurrentTaskLoop: {1}", CopToTask.Pedestrian.Handle, CurrentTaskLoop));
             }
-            //if (CopToTask.Pedestrian.Tasks.CurrentTaskStatus == TaskStatus.Interrupted)
-            //{
-            //    if (!CopToTask.Pedestrian.IsInAnyVehicle(false))
-            //    {
-            //        Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
-            //        if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
-            //        {
-            //            unsafe
-            //            {
-            //                int lol = 0;
-            //                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            //                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, LastVehicle, -1, CopToTask.LastSeatIndex, 2f, 9);
-            //                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, LastVehicle, 18f, 183);
-            //                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            //                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            //                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", CopToTask.Pedestrian, lol);
-            //                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            CopToTask.Pedestrian.Tasks.Wander();
-            //        }
-            //    }
-            //    Mod.Debugging.WriteToLog("Tasking", string.Format("     ReSet Idle: {0} CurrentTaskLoop: {1}", CopToTask.Pedestrian.Handle, CurrentTaskLoop));
-            //}
-
-
         }
         private void Investigate()
         {

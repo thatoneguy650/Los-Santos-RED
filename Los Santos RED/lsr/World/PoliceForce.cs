@@ -72,7 +72,7 @@ namespace LosSantosRED.lsr
                 }
                 Cop.Loadout.Update();//Here for now
             }
-            Mod.World.Vehicles.PoliceVehicles.RemoveAll(x => !x.Exists());
+            Mod.World.Vehicles.PoliceVehicles.RemoveAll(x => !x.Vehicle.Exists());
         }
 
         private void UpdateRecognition()

@@ -153,16 +153,25 @@ public class Debug
         //    int Slot = NativeFunction.CallByName<int>("GET_WEAPONTYPE_SLOT", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
         //    WriteToLog("Debugging", string.Format("Hash: {0} GET_WEAPONTYPE_GROUP: {1} GET_WEAPONTYPE_SLOT: {2}", Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Group, Slot));
         //}
-        string GET_RADIO_STATION_NAME = "";
-        unsafe
-        {
-            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_RADIO_STATION_NAME");
-            GET_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
-        }
-        
+        //string GET_RADIO_STATION_NAME = "";
+        //unsafe
+        //{
+        //    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_RADIO_STATION_NAME");
+        //    GET_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
+        //}
 
-        NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_INDEX", 1);
-        WriteToLog("Debugging", string.Format("GET_RADIO_STATION_NAME: {0}", GET_RADIO_STATION_NAME));
+
+        //NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_INDEX", 1);
+        //WriteToLog("Debugging", string.Format("GET_RADIO_STATION_NAME: {0}", GET_RADIO_STATION_NAME));
+
+
+        WriteToLog("Debugging", string.Format("GET_TIMECYCLE_MODIFIER_INDEX: {0}", NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX")));
+        //722 drunk
+
+
+        WriteToLog("Debugging", string.Format("PED_FLAG_DRUNK: {0}", NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1)));
+
+        
 
     }
     private void DebugNumpad6()

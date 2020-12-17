@@ -15,22 +15,35 @@ namespace LSR.Vehicles
     public class VehicleExt
     {
         private uint GameTimeEntered = 0;
+        private bool HasAttemptedToLock;
         public Vehicle Vehicle { get; set; } = null;
-        public Engine Engine { get; set; } //= new Engine();
-        public Radio Radio { get; set; }// = new Radio();
-        public Indicators Indicators { get; set; }// = new Indicators();
-        public FuelTank FuelTank { get; set; }// = new FuelTank();   
+        public Radio Radio { get; set; }
+        public Indicators Indicators { get; set; }
+        public FuelTank FuelTank { get; set; }  
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
         public bool ManuallyRolledDriverWindowDown { get; set; }
-        public Vector3 PositionOriginallyEntered { get; set; } = Vector3.Zero;
         public bool HasBeenDescribedByDispatch { get; set; }
         public bool WasAlarmed { get; set; }
-        public bool WasJacked { get; set; }
         public bool IsStolen { get; set; }
+        public bool OwnedByPlayer { get; set; }
         public bool WasReportedStolen { get; set; }
         public bool HasUpdatedPlateType { get; private set; }
+        private bool CanToggleEngine
+        {
+            get
+            {
+                if (Vehicle.Speed > 2f)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
         public bool NeedsToBeReportedStolen
         {
             get
@@ -152,48 +165,20 @@ namespace LSR.Vehicles
                 }
             }
         }
-        public VehicleLockStatus OriginalLockStatus { get; private set; }
-        public bool OriginalEngineStatus { get; private set; }
-        public VehicleExt(Vehicle _Vehicle, uint _GameTimeEntered, bool _WasJacked, bool _WasAlarmed, bool _IsStolen, LicensePlate _CarPlate)
+        public VehicleExt(Vehicle vehicle, uint gameTimeEntered) : this(vehicle)
         {
-            Vehicle = _Vehicle;
-            GameTimeEntered = _GameTimeEntered;
-            WasJacked = _WasJacked;
-            WasAlarmed = _WasAlarmed;
-            IsStolen = _IsStolen;
-
-            DescriptionColor = _Vehicle.PrimaryColor;
-            CarPlate = _CarPlate;
-            OriginalLicensePlate = _CarPlate;
-
-            if (Vehicle.Exists())
-                PositionOriginallyEntered = Vehicle.Position;
-            else
-                PositionOriginallyEntered = Game.LocalPlayer.Character.Position;
-
-            _Vehicle.FuelLevel = RandomItems.MyRand.Next(25, 100);
-            OriginalLockStatus = _Vehicle.LockStatus;
-            OriginalEngineStatus = _Vehicle.IsEngineOn;
-            _Vehicle.SetLock((VehicleLockStatus)7);
-
-            Engine = new Engine(this);
-            Radio = new Radio(this);
-            Indicators = new Indicators(this);
-            FuelTank = new FuelTank(this);
+            GameTimeEntered = gameTimeEntered;
         }
-        public VehicleExt(Vehicle _Vehicle)
+        public VehicleExt(Vehicle vehicle)
         {
-            Vehicle = _Vehicle;
-            DescriptionColor = _Vehicle.PrimaryColor;   
-            LicensePlate _CarPlate = new LicensePlate(_Vehicle.LicensePlate, (uint)_Vehicle.Handle, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", _Vehicle), false);
-            CarPlate = _CarPlate;
-            OriginalLicensePlate = _CarPlate;
-            _Vehicle.FuelLevel = RandomItems.MyRand.Next(25, 100);
-            OriginalLockStatus = _Vehicle.LockStatus;
-            OriginalEngineStatus = _Vehicle.IsEngineOn;
-            _Vehicle.SetLock((VehicleLockStatus)7);
-
-            Engine = new Engine(this);
+            Vehicle = vehicle;
+            if(Vehicle.Exists())
+            {
+                DescriptionColor = Vehicle.PrimaryColor;
+                CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
+                OriginalLicensePlate = CarPlate;
+                Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f)); ;//RandomItems.MyRand.Next(8, 100);
+            }
             Radio = new Radio(this);
             Indicators = new Indicators(this);
             FuelTank = new FuelTank(this);
@@ -298,11 +283,76 @@ namespace LSR.Vehicles
         {
             if (IsCar)
             {
-                Engine.Update();
                 Radio.Update();
                 Indicators.Update();
                 FuelTank.Update();
             }
+        }
+        public void UpdateDescription()
+        {
+            if (Vehicle.Exists() && DescriptionColor != Vehicle.PrimaryColor)
+            {
+                DescriptionColor = Vehicle.PrimaryColor;
+            }
+            if (CarPlate != null && !CarPlate.IsWanted)
+            {
+                CarPlate.IsWanted = true;
+            }
+            if (IsStolen && !WasReportedStolen)
+            {
+                WasReportedStolen = true;
+            }
+        }
+        public void AttemptToLock()
+        {
+            if (!HasAttemptedToLock)
+            {
+                if (!Vehicle.HasOccupants)
+                {
+                    if (Vehicle.SetLock((VehicleLockStatus)7) && !Vehicle.IsEngineOn)
+                    {
+                        HasAttemptedToLock = true;
+                        Vehicle.MustBeHotwired = true;
+                    }
+                }
+            }
+        }
+        public void SetDriverWindow(bool RollDown)
+        {
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0))
+            {
+                if (RollDown)
+                {
+                    NativeFunction.CallByName<bool>("ROLL_DOWN_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+                    ManuallyRolledDriverWindowDown = true;
+                }
+                else
+                {
+                    ManuallyRolledDriverWindowDown = false;
+                    NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+                }
+            }
+            else if (!RollDown)
+            {
+                if (Vehicle != null && ManuallyRolledDriverWindowDown)
+                {
+                    ManuallyRolledDriverWindowDown = false;
+                    NativeFunction.CallByName<bool>("ROLL_UP_WINDOW", Game.LocalPlayer.Character.CurrentVehicle, 0);
+                }
+            }
+        }
+        public void ToggleEngine()
+        {
+            ToggleEngine(!Vehicle.IsEngineOn);
+        }
+        public void ToggleEngine(bool DesiredStatus)
+        {
+            Mod.Debug.WriteToLog("ToggleEngine", string.Format("Start {0}", Vehicle.IsEngineOn));
+            if (CanToggleEngine)
+            {
+                Vehicle.IsEngineOn = DesiredStatus;
+            }
+            Mod.Debug.WriteToLog("ToggleEngine", string.Format("End {0}", Vehicle.IsEngineOn));
         }
         public bool IsCar
         {
@@ -311,39 +361,5 @@ namespace LSR.Vehicles
                 return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle.Model.Hash);
             }
         }
-        //public bool SetLock(VehicleLockStatus DesiredStatus)
-        //{
-        //    if (Vehicle.LockStatus != (VehicleLockStatus)1 && Vehicle.LockStatus != (VehicleLockStatus)7)
-        //    {
-        //        return false;
-        //    }
-        //    if (Vehicle.HasDriver)
-        //    {
-        //        return false;
-        //    }
-        //    foreach (VehicleDoor myDoor in Vehicle.GetDoors())
-        //    {
-        //        if (!myDoor.IsValid() || myDoor.IsOpen)
-        //        {
-        //            return false;//invalid doors make the car not locked
-        //        }
-        //    }
-        //    if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", Vehicle))
-        //    {
-        //        return false;//broken windows == not locked
-        //    }
-        //    if (Vehicle.IsConvertible && Vehicle.ConvertibleRoofState == VehicleConvertibleRoofState.Lowered)
-        //    {
-        //        return false;
-        //    }
-        //    if (Vehicle.IsBike || Vehicle.IsPlane || Vehicle.IsHelicopter)
-        //    {
-        //        return false;
-        //    }
-
-        //    Vehicle.MustBeHotwired = true;
-        //    Vehicle.LockStatus = DesiredStatus;//Locked for player
-        //    return true;
-        //}
     }
 }

@@ -248,14 +248,11 @@ namespace ExtensionsMethods
         //Car Stuff
         public static bool SetLock(this Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
         {
-            //if (ToLock.LockStatus != (VehicleLockStatus)1 && ToLock.LockStatus != (VehicleLockStatus)7)
-            //{
-            //    return false;
-            //}
-            //if (ToLock.HasDriver)
-            //{
-            //    return false;
-            //}
+            if(ToLock.LockStatus == DesiredLockStatus)
+            {
+                return true;
+            }
+
             foreach (VehicleDoor myDoor in ToLock.GetDoors())
             {
                 if (!myDoor.IsValid() || myDoor.IsOpen)
@@ -275,9 +272,7 @@ namespace ExtensionsMethods
             {
                 return false;
             }
-
-            ToLock.MustBeHotwired = true;
-            ToLock.LockStatus = DesiredLockStatus;//Locked for player
+            ToLock.LockStatus = DesiredLockStatus;
             return true;
         }
         public static bool IsRoadWorthy(this Vehicle myCar)

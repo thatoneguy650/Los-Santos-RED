@@ -88,7 +88,7 @@ public class PoliceSpawning
 
             if (CopCar != null && CopCar.Vehicle.Exists())
             {
-                Mod.World.Vehicles.PoliceVehicles.Add(CopCar.Vehicle);
+                Mod.World.Vehicles.PoliceVehicles.Add(CopCar);
                 List<string> RequiredPedModels = new List<string>();
                 if (CurrentVehicleInfo != null && CurrentVehicleInfo.AllowedPedModels.Any())
                 {
@@ -97,7 +97,7 @@ public class PoliceSpawning
 
                 Ped Cop = SpawnCopPed(_Agency, SpawnLocation, MyCarInfo.IsMotorcycle, RequiredPedModels);
                 GameFiber.Yield();
-                if (Cop == null || !Cop.Exists())
+                if (Cop == null || !Cop.Exists() || !CopCar.Vehicle.Exists())
                     return false;
                 CreatedEntities.Add(Cop);
                 CreatedPoliceVehicles.Add(CopCar.Vehicle);
@@ -365,7 +365,7 @@ public class PoliceSpawning
         GameFiber.Yield();
         if (CopCar.Exists())
         {
-            VehicleExt ToReturn = new VehicleExt(CopCar, 0, false, false, false, null);
+            VehicleExt ToReturn = new VehicleExt(CopCar);
             if (CopCar.Exists())
             {
                 UpgradeCruiser(CopCar);

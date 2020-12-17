@@ -33,6 +33,7 @@ namespace LosSantosRED.lsr
         private readonly Crime ChangingPlates = new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, 4, true, true, false);
         private readonly Crime ResistingArrest = new Crime("ResistingArrest", "Resisting Arrest", 2, false, 19, 4, false);
         private readonly Crime SuspiciousActivity = new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, 5, false);
+        private readonly Crime DrunkDriving = new Crime("DrunkDriving", "Drunk Driving", 2, false, 30, 4, false, false, false);
         private readonly Crime DrivingAgainstTraffic = new Crime("DrivingAgainstTraffic", "Driving Against Traffic", 1, false, 32, 4, false, false, false) { IsTrafficViolation = true };
         private readonly Crime DrivingOnPavement = new Crime("DrivingOnPavement", "Driving On Pavement", 1, false, 33, 4, false, false, false) { IsTrafficViolation = true };
         private readonly Crime NonRoadworthyVehicle = new Crime("NonRoadworthyVehicle", "Non -Roadworthy Vehicle", 1, false, 34, 4, false, false, false) { IsTrafficViolation = true };
@@ -54,7 +55,7 @@ namespace LosSantosRED.lsr
             CrimeList = new List<Crime>
                 {
                     BrandishingCloseCombatWeapon,TerroristActivity,BrandishingHeavyWeapon, FiringWeapon, Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon,
-                    ChangingPlates, GrandTheftAuto, DrivingStolenVehicle, HurtingCivilians, SuspiciousActivity,DrivingAgainstTraffic,DrivingOnPavement,NonRoadworthyVehicle,FelonySpeeding,RunningARedLight,HitPedWithCar,HitCarWithCar
+                    ChangingPlates, GrandTheftAuto, DrivingStolenVehicle, HurtingCivilians, SuspiciousActivity,DrivingAgainstTraffic,DrivingOnPavement,NonRoadworthyVehicle,FelonySpeeding,RunningARedLight,HitPedWithCar,HitCarWithCar,DrunkDriving
                 };
 
         }
@@ -463,7 +464,14 @@ namespace LosSantosRED.lsr
                     RunningARedLight.IsCurrentlyViolating = false;
                 }
             }
-
+            if (Mod.Player.IsDrunk && (DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
+            {
+                DrunkDriving.IsCurrentlyViolating = true;
+            }
+            else
+            {
+                DrunkDriving.IsCurrentlyViolating = false;
+            }
         }
         private void UpdateTrafficStats()
         {

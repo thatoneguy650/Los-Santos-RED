@@ -12,7 +12,7 @@ using System.Linq;
 public class Vehicles
 {
     private readonly float DistanceToScan = 450f;
-    public List<Vehicle> PoliceVehicles { get; private set; } = new List<Vehicle>();
+    public List<VehicleExt> PoliceVehicles { get; private set; } = new List<VehicleExt>();
     public List<VehicleExt> CivilianVehicles { get; private set; } = new List<VehicleExt>();
     public void Dispose()
     {
@@ -22,7 +22,7 @@ public class Vehicles
     public void PruneVehicles()
     {
         CivilianVehicles.RemoveAll(x => !x.Vehicle.Exists());
-        PoliceVehicles.RemoveAll(x => !x.Exists());
+        PoliceVehicles.RemoveAll(x => !x.Vehicle.Exists());
     }
     public void ScanForVehicles()
     {
@@ -49,30 +49,49 @@ public class Vehicles
     {
         if (Veh.IsPoliceVehicle)
         {
-            if (!PoliceVehicles.Any(x => x.Handle == Veh.Handle))
+            if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
             {
                 Mod.World.PoliceSpawning.UpdateLivery(Veh);
                 Mod.World.PoliceSpawning.UpgradeCruiser(Veh);
-                PoliceVehicles.Add(Veh);
+                VehicleExt PoliceCar = new VehicleExt(Veh);
+                PoliceVehicles.Add(PoliceCar);
             }
         }
         else
         {
             if (!CivilianVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
             {
-                CivilianVehicles.Add(new VehicleExt(Veh));
+                VehicleExt CivilianCar = new VehicleExt(Veh);
+                //if (!CivilianCar.Vehicle.HasDriver)
+                //{
+                //    CivilianCar.Vehicle.SetLock((VehicleLockStatus)7);
+                //    if (!CivilianCar.Vehicle.IsEngineOn)
+                //    {
+                //        CivilianCar.Vehicle.MustBeHotwired = true;
+                //    }
+                //}
+                CivilianVehicles.Add(CivilianCar);
             }
         }
     }
     public void ClearPolice()
     {
-        foreach (Vehicle Veh in PoliceVehicles)
+        foreach (VehicleExt Veh in PoliceVehicles)
         {
-            if (Veh.Exists())
+            if (Veh.Vehicle.Exists())
             {
-                Veh.Delete();
+                Veh.Vehicle.Delete();
             }
         }
         PoliceVehicles.Clear();
+    }
+    public VehicleExt GetVehicle(Vehicle ToFind)
+    {
+        VehicleExt ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Handle == ToFind.Handle);
+        if(ToReturn == null)
+        {
+            ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == ToFind.Handle);
+        }
+        return ToReturn;
     }
 }

@@ -39,7 +39,7 @@ public class Surrendering
         Game.LocalPlayer.Character.SetUnarmed();
         if(Mod.Player.CurrentVehicle != null)
         {
-            Mod.Player.CurrentVehicle.Engine.Toggle(false);
+            Mod.Player.CurrentVehicle.ToggleEngine(false);
         }
         Mod.Player.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);

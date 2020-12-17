@@ -97,14 +97,15 @@ public class Loadout
             }
             else
             {
-                if (Mod.Player.IsNotWanted)
-                {
-                    SetUnarmed();
-                }
-                else
+                if (Mod.Player.IsWanted)
                 {
                     SetLessLethal();
                 }
+                else
+                {
+                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);
+                }
+
             }
         }
     }

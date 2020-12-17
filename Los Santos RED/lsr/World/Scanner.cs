@@ -71,6 +71,7 @@ namespace LosSantosRED.lsr
         private Dispatch ChangedVehicles;
         private Dispatch RequestBackup;
         private Dispatch WeaponsFree;
+        private Dispatch DrunkDriving;
         private Dispatch LethalForceAuthorized;
         private Dispatch RunningARedLight;
         private List<Dispatch> DispatchList = new List<Dispatch>();
@@ -393,7 +394,7 @@ namespace LosSantosRED.lsr
             if (Mod.Player.CurrentPoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
                 AddWeaponsFree(EventToPlay);
 
-            if(Mod.World.Pedestrians.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
+            if (Mod.World.Pedestrians.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
                 AddRequestAirSupport(EventToPlay);
 
             if (DispatchToPlay.IncludeDrivingSpeed)
@@ -1003,6 +1004,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("TerroristActivity",TerroristActivity),
             new CrimeDispatch("BrandishingCloseCombatWeapon",CarryingWeapon),
             new CrimeDispatch("SuspiciousActivity",SuspiciousActivity),
+            new CrimeDispatch("DrunkDriving",DrunkDriving),
 
         };
             DispatchList = new List<Dispatch>
@@ -1048,6 +1050,7 @@ namespace LosSantosRED.lsr
             ,WeaponsFree
             ,LethalForceAuthorized
             ,RunningARedLight
+            ,DrunkDriving
         };
 
         }
@@ -1433,6 +1436,21 @@ namespace LosSantosRED.lsr
             {
                 new AudioSet(new List<string>() { crime_reckless_driver.Arecklessdriver.FileName},"a reckless driver"),
                 new AudioSet(new List<string>() { crime_5_05.A505.FileName,crime_5_05.Adriveroutofcontrol.FileName },"a 505, a driver out of control"),
+            },
+            };
+
+
+            DrunkDriving = new Dispatch()
+            {
+                Name = "Drunk Driving",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_5_02.Adriverundertheinfluence.FileName},"a driver under the influence"),
+                new AudioSet(new List<string>() { crime_5_02.Adriverundertheinfluence1.FileName},"a driver under the influence"),
+                new AudioSet(new List<string>() { crime_5_02.ADUI.FileName},"a dui"),
+                new AudioSet(new List<string>() { crime_5_02.A502DUI.FileName},"a 502 dui"),
             },
             };
 

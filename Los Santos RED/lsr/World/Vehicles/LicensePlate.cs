@@ -10,12 +10,10 @@ namespace LSR.Vehicles
     {
         public string PlateNumber { get; set; }
         public bool IsWanted { get; set; }
-        public uint OriginalVehicleHandle { get; set; }
         public int PlateType { get; set; }
-        public LicensePlate(string plateNumber, uint originalVehicleHandle, int plateType, bool isWanted)
+        public LicensePlate(string plateNumber, int plateType, bool isWanted)
         {
             PlateNumber = plateNumber;
-            OriginalVehicleHandle = originalVehicleHandle;
             PlateType = plateType;
             IsWanted = isWanted;
         }

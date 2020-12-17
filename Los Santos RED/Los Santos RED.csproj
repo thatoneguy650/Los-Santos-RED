@@ -99,6 +99,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="lsr\Audio.cs" />
     <Compile Include="lsr\DataMart.cs" />
     <Compile Include="lsr\Data\StreetScannerAudio.cs" />
     <Compile Include="lsr\Data\VehicleScannerAudio.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="lsr\Mod.cs" />
     <Compile Include="lsr\Player.cs" />
     <Compile Include="lsr\World\Peds\Loadout.cs" />
+    <Compile Include="lsr\World\Peds\PedConfigFlags.cs" />
     <Compile Include="lsr\World\PoliceForce.cs" />
     <Compile Include="lsr\World\Locations\County.cs" />
     <Compile Include="lsr\Player\Animations\AnimationDictionary.cs" />
