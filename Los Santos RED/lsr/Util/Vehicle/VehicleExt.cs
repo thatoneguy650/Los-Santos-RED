@@ -172,12 +172,12 @@ namespace LSR.Vehicles
         public VehicleExt(Vehicle vehicle)
         {
             Vehicle = vehicle;
-            if(Vehicle.Exists())
+            if (Vehicle.Exists())
             {
                 DescriptionColor = Vehicle.PrimaryColor;
                 CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
                 OriginalLicensePlate = CarPlate;
-                Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f)); ;//RandomItems.MyRand.Next(8, 100);
+                Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f));//RandomItems.MyRand.Next(8, 100);
             }
             Radio = new Radio(this);
             Indicators = new Indicators(this);
@@ -192,7 +192,7 @@ namespace LSR.Vehicles
         {
             if (Vehicle.Exists())
             {
-                Color BaseColor = Extensions.GetBaseColor(DescriptionColor);
+                Color BaseColor = GetBaseColor(DescriptionColor);
                 return BaseColor;
             }
             else
@@ -305,6 +305,9 @@ namespace LSR.Vehicles
         }
         public void AttemptToLock()
         {
+            //in here also check for owner?
+            //maybe call this onentrycar lock status?
+            //in here check who the owner is, if it is a regular car, if it can be locked, etc.
             if (!HasAttemptedToLock)
             {
                 if (!Vehicle.HasOccupants)
@@ -360,6 +363,50 @@ namespace LSR.Vehicles
             {
                 return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle.Model.Hash);
             }
+        }
+        private int ClosestColor(List<Color> colors, Color target)
+        {
+            var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
+            return colors.FindIndex(n => ColorDiff(n, target) == colorDiffs);
+        }
+        private Color GetBaseColor(Color PrimaryColor)
+        {
+            List<Color> BaseColorList = new List<Color>
+        {
+            Color.Red,
+            Color.Aqua,
+            Color.Beige,
+            Color.Black,
+            Color.Blue,
+            Color.Brown,
+            Color.DarkBlue,
+            Color.DarkGreen,
+            Color.DarkGray,
+            Color.DarkOrange,
+            Color.DarkRed,
+            Color.Gold,
+            Color.Green,
+            Color.Gray,
+            Color.LightBlue,
+            Color.Maroon,
+            Color.Orange,
+            Color.Pink,
+            Color.Purple,
+            Color.Silver,
+            Color.White,
+            Color.Yellow
+        };
+
+            Color MyColor = PrimaryColor;
+
+            int Index = ClosestColor(BaseColorList, MyColor);
+            return BaseColorList[Index];
+        }
+        private int ColorDiff(Color c1, Color c2)
+        {
+            return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
+                                    + (c1.G - c2.G) * (c1.G - c2.G)
+                                    + (c1.B - c2.B) * (c1.B - c2.B));
         }
     }
 }

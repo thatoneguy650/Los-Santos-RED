@@ -16,9 +16,6 @@ namespace LosSantosRED.lsr
         public bool AnyRecentlySeenPlayer { get; private set; }
         public bool AnySeenPlayerCurrentWanted { get; private set; }
         public Vector3 PlaceLastSeenPlayer { get; private set; }
-        public Vector3 PlayerLastSeenForwardVector { get; set; }
-        public bool WasPlayerLastSeenInVehicle { get; set; }
-        public float PlayerLastSeenHeading { get; set; }
         public float ActiveDistance
         {
             get
@@ -72,36 +69,41 @@ namespace LosSantosRED.lsr
                 }
                 Cop.Loadout.Update();//Here for now
             }
-            Mod.World.Vehicles.PoliceVehicles.RemoveAll(x => !x.Vehicle.Exists());
         }
-
         private void UpdateRecognition()
         {
             AnyCanSeePlayer = Mod.World.Pedestrians.Cops.Any(x => x.CanSeePlayer);
             AnyCanHearPlayer = Mod.World.Pedestrians.Cops.Any(x => x.WithinWeaponsAudioRange);
 
             if (AnyCanSeePlayer)
+            {
                 AnyRecentlySeenPlayer = true;
+            }
             else
+            {
                 AnyRecentlySeenPlayer = Mod.World.Pedestrians.Cops.Any(x => x.SeenPlayerSince(Mod.DataMart.Settings.SettingsManager.Police.PoliceRecentlySeenTime));
+            }
 
             AnyCanRecognizePlayer = Mod.World.Pedestrians.Cops.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
 
             if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer && Mod.Player.IsWanted)
+            {
                 AnySeenPlayerCurrentWanted = true;
+            }
 
             if (AnyRecentlySeenPlayer)
             {
                 if (!AnySeenPlayerCurrentWanted)
+                {
                     PlaceLastSeenPlayer = Mod.Player.CurrentPoliceResponse.PlaceWantedStarted;
+                }
                 else if (!Mod.Player.AreStarsGreyedOut)
+                {
                     PlaceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+                }
             }
 
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlaceLastSeenPlayer.X, PlaceLastSeenPlayer.Y, PlaceLastSeenPlayer.Z);
         }
-
     }
-
-
 }

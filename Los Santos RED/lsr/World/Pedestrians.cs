@@ -144,16 +144,16 @@ public class Pedestrians
             return;
 
         Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency);
-        if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
-        {
-            Vehicle PoliceCar = Pedestrian.CurrentVehicle;
-            if (!Mod.World.Vehicles.PoliceVehicles.Any(x => x.Vehicle.Handle == PoliceCar.Handle))
-            {
-                Mod.World.PoliceSpawning.UpdateLivery(PoliceCar, AssignedAgency);
-                Mod.World.PoliceSpawning.UpgradeCruiser(PoliceCar);
-                Mod.World.Vehicles.PoliceVehicles.Add(new VehicleExt(PoliceCar));
-            }
-        }
+        //if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
+        //{
+        //    Vehicle PoliceCar = Pedestrian.CurrentVehicle;
+        //    if (!Mod.World.Vehicles.PoliceVehicles.Any(x => x.Vehicle.Handle == PoliceCar.Handle))
+        //    {
+        //        Mod.World.PoliceSpawning.UpdateLivery(PoliceCar, AssignedAgency);
+        //        Mod.World.PoliceSpawning.UpgradeCruiser(PoliceCar);
+        //        Mod.World.Vehicles.PoliceVehicles.Add(new VehicleExt(PoliceCar));
+        //    }
+        //}
         if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
         {
             Blip myBlip = Pedestrian.AttachBlip();
@@ -196,8 +196,8 @@ public class Pedestrians
         Pedestrian.MaxHealth = DesiredHealth;
         Pedestrian.Health = DesiredHealth;   
         Pedestrian.Armor = 0;
-       // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
-      //  NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
+        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
+        NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
     }
 
 }

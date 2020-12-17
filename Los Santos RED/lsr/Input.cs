@@ -91,6 +91,16 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        public bool IsMoveControlPressed
+        {
+            get
+            {
+                if (Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft))
+                    return true;
+                else
+                    return false;
+            }
+        }
         private bool IsPressingRightIndicator
         {
             get

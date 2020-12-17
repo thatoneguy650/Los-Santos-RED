@@ -30,10 +30,7 @@ public class Zones
         Zone ListResult = ZoneList.Where(x => x.InternalGameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
         if (ListResult == null)
         {
-            if (ZonePosition.IsInLosSantosCity())
-                return new Zone("UNK_LSCITY", "Los Santos", County.CityOfLosSantos);
-            else
-                return new Zone("UNK_LSCOUNTY", "Los Santos County", County.LosSantosCounty);
+            return new Zone("UNK", "Unknown", County.Unknown);
         }
         else
         {

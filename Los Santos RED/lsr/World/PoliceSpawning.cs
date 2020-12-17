@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+//Needs some refactoring
 public class PoliceSpawning
 {
     private uint GameTimeLastRemovedCop;
@@ -59,7 +60,7 @@ public class PoliceSpawning
         RepairOrRemoveDamagedVehicles();
         RemoveAbandonedVehicles();
 
-        if(Mod.Player.PedSwap.RecentlyTakenOver || Mod.Player.Respawning.RecentlySurrenderedToPolice)
+        if(Mod.World.PedSwap.RecentlyTakenOver || Mod.Player.Respawning.RecentlySurrenderedToPolice)
         {
             RemoveDisallowedPeds();
         }   
@@ -88,7 +89,12 @@ public class PoliceSpawning
 
             if (CopCar != null && CopCar.Vehicle.Exists())
             {
-                Mod.World.Vehicles.PoliceVehicles.Add(CopCar);
+
+                Mod.World.Vehicles.AddToList(CopCar);
+
+
+
+
                 List<string> RequiredPedModels = new List<string>();
                 if (CurrentVehicleInfo != null && CurrentVehicleInfo.AllowedPedModels.Any())
                 {
@@ -108,12 +114,9 @@ public class PoliceSpawning
                 Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
                 Cop MyNewCop = new Cop(Cop, Cop.Health, _Agency);
                 MyNewCop.Loadout.IssueWeapons();
-                //Mod.World.PoliceEquipmentManager.IssueWeapons(MyNewCop);
                 MyNewCop.WasModSpawned = true;
                 MyNewCop.WasMarkedNonPersistent = true;
                 MyNewCop.WasSpawnedAsDriver = true;
-
-                //MyNewCop.IsBikeCop = MyCarInfo.IsMotorcycle;
                 MyNewCop.GameTimeSpawned = Game.GameTime;
                 Mod.Debug.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.Vehicle.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
 
@@ -370,6 +373,7 @@ public class PoliceSpawning
             {
                 UpgradeCruiser(CopCar);
                 CurrentVehicleInfo = MyCarInfo;
+                Mod.World.Vehicles.AddToList(ToReturn);
                 return ToReturn;
             }
             else

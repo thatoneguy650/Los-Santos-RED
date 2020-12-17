@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using Rage;
 using Rage.Native;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//Needs to be moved out of here and its own thing
+//Needs Full Rewrite/Refactor
 public class PedDamage
 {
     private enum BodyLocation
@@ -586,7 +587,7 @@ public class PedDamage
                 bool IsFinished = true;
                 while (Game.GameTime - GameTimeStartedBandaging <= 2000)
                 {
-                    if (ExtensionsMethods.Extensions.IsMoveControlPressed() || Game.LocalPlayer.Character.IsDead)
+                    if (Mod.Input.IsMoveControlPressed || Game.LocalPlayer.Character.IsDead)
                     {
                         IsFinished = false;
                         break;

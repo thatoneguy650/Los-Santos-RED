@@ -7,7 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 
+//needs rewrite to change the ped to the character
 public class Surrendering
 {
     public bool IsCommitingSuicide { get; set; }
@@ -36,7 +38,7 @@ public class Surrendering
         //if (Mod.Player.CurrentVehicle == null || Mod.Player.CurrentVehicle.FuelTank.CanPump)//usees the same key, might need to change
         //    return;
 
-        Game.LocalPlayer.Character.SetUnarmed();
+        Mod.Player.SetUnarmed();
         if(Mod.Player.CurrentVehicle != null)
         {
             Mod.Player.CurrentVehicle.ToggleEngine(false);
@@ -122,7 +124,7 @@ public class Surrendering
             if (!PedToArrest.Exists())
                 return;
 
-            PedToArrest.SetUnarmed();
+            Mod.Player.SetUnarmed();
 
             if (PedToArrest.IsInAnyVehicle(false))
             {
@@ -238,7 +240,7 @@ public class Surrendering
                         while (Game.GameTime - GameTimeStartedSuicide <= 20000)
                         {
                             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                            if (Extensions.IsMoveControlPressed())
+                            if (Mod.Input.IsMoveControlPressed)
                             {
                                 break;
                             }
@@ -286,7 +288,7 @@ public class Surrendering
                         while (Game.GameTime - GameTimeStartedSuicide <= 20000 && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 1.0f)
                         {
                             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                            if (Extensions.IsMoveControlPressed())
+                            if (Mod.Input.IsMoveControlPressed)
                             {
                                 break;
                             }

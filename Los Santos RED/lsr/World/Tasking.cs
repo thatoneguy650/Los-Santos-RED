@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+//Needs Full Rewrite/Refactor
 public class Tasking
 {
     private List<TaskableCop> TaskableCops = new List<TaskableCop>();
@@ -49,7 +50,7 @@ public class Tasking
             int TaskedCops = 0;
             foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
-                if (TaskedCops < 2)//2
+                if (TaskedCops < 4)//2
                 {
                     Cop.RunCurrentActivity();
                     TaskedCops++;
@@ -59,11 +60,14 @@ public class Tasking
                     break;
                 }
             }
-
+            if(TaskedCops > 0)//any cop tasking, let the civies wait
+            {
+                return;
+            }
             int TaskedCivilians = 0;
             foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
-                if (TaskedCivilians < 3)//5
+                if (TaskedCivilians < 4)//5
                 {
                     Civilian.RunCurrentActivity();
                     TaskedCivilians++;
@@ -271,7 +275,7 @@ public class Tasking
                     Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
                     if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
                     {
-                        LastVehicle.LockStatus = (VehicleLockStatus)1;
+                        //LastVehicle.LockStatus = (VehicleLockStatus)1;
                         unsafe
                         {
                             int lol = 0;
@@ -315,7 +319,7 @@ public class Tasking
                 Vehicle LastVehicle = CopToTask.Pedestrian.LastVehicle;
                 if (LastVehicle.Exists() && LastVehicle.IsDriveable && LastVehicle.FreeSeatsCount > 0)
                 {
-                    LastVehicle.LockStatus = (VehicleLockStatus)1;
+                    //LastVehicle.LockStatus = (VehicleLockStatus)1;
                     unsafe
                     {
                         int lol = 0;

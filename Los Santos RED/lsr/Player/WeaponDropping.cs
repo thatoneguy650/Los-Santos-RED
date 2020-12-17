@@ -20,7 +20,7 @@ public class WeaponDropping
     {
         get
         {
-            if (!DroppingWeapon && !Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsConsideredArmed())
+            if (!DroppingWeapon && !Mod.Player.IsInVehicle && Mod.Player.IsConsideredArmed)//was player one
                 return true;
             else
                 return false;

@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr
         public PoliceForce PoliceForce { get; private set; } = new PoliceForce();
         public Civilians Civilians { get; private set; } = new Civilians();
         public Dispatch Dispatch { get; private set; } = new Dispatch();
+        public PedSwap PedSwap { get; private set; } = new PedSwap();
         public bool IsNightTime { get; private set; }
         public World()
         {
@@ -47,7 +48,7 @@ namespace LosSantosRED.lsr
             Pedestrians.Dispose();
             Dispatch.Dispose();
             PoliceSpawning.Dispose();
-            Vehicles.Dispose();
+            Vehicles.ClearPolice();
             Dispatch.Dispose();
         }
         public void CreateLocationBlips()

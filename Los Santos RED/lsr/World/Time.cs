@@ -11,13 +11,7 @@ using System.Threading.Tasks;
 
 public class Time
 {
-    private int ClockYear;
-    private int ClockMonth;
-    private int ClockDayOfMonth;
     private int ClockDayOfWeek;
-    private int ClockSeconds;
-    private int ClockMinutes;
-    private int ClockHours;
     private uint GameTimeLastSetClock;
     private bool IsPaused;
     private int StoredClockSeconds;
@@ -28,33 +22,7 @@ public class Time
 
     public Time()
     {
-        ClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
-        ClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
-        ClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
         NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
-    }
-    public bool OverrideToFastest { get; set; }
-    public string DayOfWeek
-    {
-        get
-        {
-            if (ClockDayOfWeek == 0)
-                return "Sunday";
-            else if (ClockDayOfWeek == 1)
-                return "Monday";
-            else if (ClockDayOfWeek == 2)
-                return "Tuesday";
-            else if (ClockDayOfWeek == 3)
-                return "Wednesday";
-            else if (ClockDayOfWeek == 4)
-                return "Thrusday";
-            else if (ClockDayOfWeek == 5)
-                return "Friday";
-            else if (ClockDayOfWeek == 6)
-                return "Saturday";
-            else
-                return "Sunday";
-        }
     }
     public string CurrentTime
     {
@@ -147,11 +115,6 @@ public class Time
             Interval = 10;
             ClockMultiplier = 3;
         }
-        if (OverrideToFastest)
-        {
-            Interval = 1;
-            ClockMultiplier = 30;
-        }
     }
     private void CheckTimeInterval()
     {
@@ -160,12 +123,5 @@ public class Time
             NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);
             GameTimeLastSetClock = Game.GameTime;
         }
-    }
-    private void StoreDate()
-    {
-        ClockYear = NativeFunction.CallByName<int>("GET_CLOCK_YEAR");
-        ClockMonth = NativeFunction.CallByName<int>("GET_CLOCK_MONTH");
-        ClockDayOfMonth = NativeFunction.CallByName<int>("GET_CLOCK_DAY_OF_MONTH");
-        ClockDayOfWeek = NativeFunction.CallByName<int>("GET_CLOCK_DAY_OF_WEEK");
     }
 }

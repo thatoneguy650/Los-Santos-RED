@@ -1,12 +1,13 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
+//needs full rewrite/refactor and to be moved
 public class PedSwap
 {
     private Vector3 CurrentPedPosition;
@@ -22,9 +23,8 @@ public class PedSwap
     private PedVariation CurrentPedVariation;
     private uint GameTimeLastTakenOver;
     private bool CurrentPlayerIsMale = false;
-
     private string CurrentPlayerModel;
-
+    private List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01", "s_m_m_ammucountry", "u_m_y_tattoo_01", "s_f_y_shop_low", "s_f_y_shop_mid", "s_f_m_shop_high", "s_m_m_autoshop_01", "s_m_m_autoshop_02" };
     public PedSwap()
     {
         GameTimeLastTakenOver = Game.GameTime;
@@ -33,7 +33,6 @@ public class PedSwap
         CurrentPlayerIsMale = Game.LocalPlayer.Character.IsMale;
         GiveName();
     }
-
     public Vehicle OwnedCar { get; set; }
     public string SuspectName { get; set; }
     public bool RecentlyTakenOver
@@ -78,28 +77,14 @@ public class PedSwap
             Mod.Debug.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
-    public void BecomeMPCharacter(bool IsMale)
-    {
-        SetPlayerOffset();
-        ChangeModel(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAliasModelName);
-        //if(IsMale)
-        //{
-        //    ChangeModel(ModelToChange);
-        //}
-        //else
-        //{
-        //    ChangeModel(ModelToChange);
-        //}
-        
-    }
     private Ped FindPedToSwapWith(float Radius, bool Nearest)
     {
         Ped PedToReturn = null;
         Ped[] closestPed = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, Radius, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAllPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
         if (Nearest)
-            PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
+            PedToReturn = closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
         else
-            PedToReturn = closestPed.Where(s => s.CanTakeoverPed()).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
+            PedToReturn = closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         if (PedToReturn == null)
         {
             Mod.Debug.WriteToLog("Ped Takeover", "No Peds Found");
@@ -183,7 +168,7 @@ public class PedSwap
             {
                 TargetPedAlreadyTakenOver = true;
                 ChangeModel(OriginalModel.Name);
-                if (!Game.LocalPlayer.Character.IsMainCharacter())
+                if (!IsConsideredMainCharacter(Game.LocalPlayer.Character))
                     CurrentPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
             }
         }
@@ -227,7 +212,7 @@ public class PedSwap
             ChangeModel(ModelToChange);
         }
 
-        if (!Game.LocalPlayer.Character.IsMainCharacter())
+        if (!IsConsideredMainCharacter(Game.LocalPlayer.Character))
             CurrentPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
 
         if (TargetPedInVehicle)
@@ -245,7 +230,7 @@ public class PedSwap
         }
 
         if (Mod.DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
-            Mod.Player.SetCash(RandomItems.MyRand.Next(Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
+            Mod.Player.SetMoney(RandomItems.MyRand.Next(Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Mod.DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
 
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
@@ -269,7 +254,7 @@ public class PedSwap
             CurrentPed.IsPersistent = false;
         ActivatePreviousScenarios();
 
-        Game.LocalPlayer.Character.SetUnarmed();
+        Mod.Player.SetUnarmed();
         GiveName();
         Mod.World.Clock.UnpauseTime();
 
@@ -297,7 +282,7 @@ public class PedSwap
             NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
-                while (!Extensions.IsMoveControlPressed())
+                while (!Mod.Input.IsMoveControlPressed)
                     GameFiber.Yield();
                 Game.LocalPlayer.Character.Tasks.Clear();
         }, "ScenarioWatcher");
@@ -360,6 +345,66 @@ public class PedSwap
         characterModel.LoadCollisionAndWait();
         Game.LocalPlayer.Model = characterModel;
         Game.LocalPlayer.Character.IsCollisionEnabled = true;
+    }
+    private bool CanTakeoverPed(Ped myPed)
+    {
+        if (myPed.Exists() && myPed != Game.LocalPlayer.Character && myPed.IsAlive && myPed.IsHuman && !myPed.IsPoliceArmy() && !InSameCar(myPed,Game.LocalPlayer.Character) && IsNormalPed(myPed) && !IsBelowWorld(myPed))
+            return true;
+        else
+            return false;
+    }
+    private bool IsNormalPed(Ped myPed)
+    {
+        if (myPed.Model.Hash == 225514697 || myPed.Model.Hash == 2602752943 || myPed.Model.Hash == 2608926626)
+        {
+            return false;
+        }
+        int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);
+        if (PedType == 4 || PedType == 5 || PedType == 26)
+        {
+            string ModelName = myPed.Model.Name.ToLower();
+            if (ShopPeds.Contains(ModelName))
+                return false;
+            else
+                return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private bool IsBelowWorld(Ped myPed)
+    {
+        if (myPed.Position.Z <= -50)
+            return true;
+        else
+            return false;
+    }
+    private bool InSameCar(Ped myPed, Ped PedToCompare)
+    {
+        bool ImInVehicle = myPed.IsInAnyVehicle(false);
+        bool YourInVehicle = PedToCompare.IsInAnyVehicle(false);
+        if (ImInVehicle && YourInVehicle)
+        {
+            if (myPed.CurrentVehicle == PedToCompare.CurrentVehicle)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+    private bool IsConsideredMainCharacter(Ped myPed)
+    {
+        int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+        if (PedType == 0 || PedType == 1 || PedType == 2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     private class TakenOverPed
     {

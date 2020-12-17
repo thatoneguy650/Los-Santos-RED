@@ -14,11 +14,10 @@ public class Cop : PedExt
     private readonly List<string> CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
     private readonly List<string> ArrestedWaitSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED", "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
     private readonly List<string> PlayerDeadSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
-    private readonly List<string> AmbientSpeech = new List<string> { "WON_DISPUTE" };
-    private readonly List<string> RegularChaseSpeech = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE", "SUSPECT_KILLED_REPORT" };
+    private readonly List<string> SuspectBusted = new List<string> { "WON_DISPUTE" };
+    private readonly List<string> SuspectDown = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE", "SUSPECT_KILLED_REPORT" };
     private uint GameTimeLastSpoke;
     private uint GameTimeLastRadioed;
-
     public bool IsSpeechTimedOut
     {
         get
@@ -65,7 +64,6 @@ public class Cop : PedExt
                 return false;
         }
     }
-
     public bool WasModSpawned { get; set; }
     public bool WasSpawnedAsDriver { get; set; }
     public bool ShouldAutoSetWeaponState { get; set; } = true;
@@ -167,11 +165,11 @@ public class Cop : PedExt
             }
             else if (Mod.Player.IsWanted && !Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
             {
-                Pedestrian.PlayAmbientSpeech(RegularChaseSpeech.PickRandom());
+                Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
             }
             else if (Mod.Player.IsNotWanted && Mod.Player.Respawning.RecentlyBribedPolice)
             {
-                Pedestrian.PlayAmbientSpeech(AmbientSpeech.PickRandom());
+                Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom());
             }
             else if (Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
             {

@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using Rage;
 using Rage.Native;
 using System;
@@ -17,7 +18,7 @@ public class Mugging
         {
             if (Mod.Player.IsConsideredArmed && !Mod.Player.IsInVehicle)
             {
-                if (Game.LocalPlayer.Character.IsAiming && !IsHoldingMelee())
+                if (Game.LocalPlayer.Character.IsAiming && Mod.Player.CurrentWeapon.Category != WeaponCategory.Melee)
                 {
                     CheckArmedMugging();
                 }
@@ -48,7 +49,7 @@ public class Mugging
     }
     private void CheckUnarmedMugging()
     {
-        PedExt GTAPedTarget = Mod.World.Pedestrians.GetCivilian(GetTargetHandle());
+        PedExt GTAPedTarget = Mod.World.Pedestrians.GetCivilian(Natives.GetTargettingHandle());
         if (GTAPedTarget != null)
         {
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.Pedestrian.IsAlive)
@@ -123,27 +124,5 @@ public class Mugging
             MuggingTarget.CanBeTasked = true;
             IsMugging = false;      
         });
-    }
-    private uint GetTargetHandle()
-    {
-        uint TargetEntity;
-        bool Found;
-        unsafe
-        {
-            Found = NativeFunction.CallByName<bool>("GET_PLAYER_TARGET_ENTITY", Game.LocalPlayer, &TargetEntity);
-        }
-        if (!Found)
-            return 0;
-
-        uint Handle = TargetEntity;
-        return Handle;
-    }
-    private bool IsHoldingMelee()
-    {
-        WeaponInformation MyWeapon = Mod.DataMart.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
-        if (MyWeapon == null || MyWeapon.Category != WeaponCategory.Melee)
-            return false;
-        else
-            return true;
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using Rage;
@@ -25,13 +26,12 @@ namespace LosSantosRED.lsr
         private uint GameTimePoliceNoticedVehicleChange;
         private uint GameTimeLastMoved;
         private uint PoliceLastSeenVehicleHandle;
+        private Mugging Mugging = new Mugging();
         public SearchMode SearchMode { get; private set; } = new SearchMode();
-        public Violations Violations { get; private set; } = new Violations();
-        public Mugging Mugging { get; private set; } = new Mugging();
-        public PedSwap PedSwap { get; private set; } = new PedSwap();
+        public Violations Violations { get; private set; } = new Violations(); 
         public Respawning Respawning { get; private set; } = new Respawning();
         public Surrendering Surrendering { get; private set; } = new Surrendering();
-        public WeaponDropping WeaponDropping { get; private set; } = new WeaponDropping();
+        public WeaponDropping WeaponDropping { get; private set; } = new WeaponDropping();//make private
         public Investigations Investigations { get; private set; } = new Investigations();
         public ArrestWarrant ArrestWarrant { get; private set; } = new ArrestWarrant();
         public LocationData CurrentLocation { get; private set; } = new LocationData(Game.LocalPlayer.Character);
@@ -80,6 +80,18 @@ namespace LosSantosRED.lsr
         public bool IsChangingLicensePlates { get; set; }
         public bool IsInAutomobile { get; private set; }
         public bool IsOnMotorcycle { get; private set; }
+        public int Money
+        {
+            get
+            {
+                int CurrentCash;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("STAT_GET_INT", Natives.CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
+                }
+                return CurrentCash;
+            }
+        }
         public bool IsInVehicle
         {
             get => isInVehicle;
@@ -91,6 +103,10 @@ namespace LosSantosRED.lsr
                     IsInVehicleChanged();
                 }
             }
+        }
+        public bool IsMugging
+        {
+            get => Mugging.IsMugging;
         }
         public bool IsAimingInVehicle
         {
@@ -275,10 +291,14 @@ namespace LosSantosRED.lsr
             {
                 TerminateVanillaRespawn();
             }
-            CachePlayerData();
+            CacheData();
             StateTick();
             TurnOffRespawnScripts();
             TrackedVehiclesTick();
+        }
+        public void MuggingTick()
+        {
+            Mugging.Tick();
         }
         public void AddSpareLicensePlates()
         {
@@ -294,7 +314,7 @@ namespace LosSantosRED.lsr
             {
                 return false;
             }
-            else if (Mod.Player.PedSwap.RecentlyTakenOver)
+            else if (Mod.World.PedSwap.RecentlyTakenOver)
             {
                 return false;
             }
@@ -311,7 +331,7 @@ namespace LosSantosRED.lsr
                 return false;
             }
         }
-        public void PlayerShotArtificially()
+        public void FlagShooting()
         {
             GameTimeLastShot = Game.GameTime;
         }
@@ -370,48 +390,28 @@ namespace LosSantosRED.lsr
                 NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", CurrentVehicle.CarPlate.PlateNumber);
             }
 
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",string.Format("~y~{0}", Mod.Player.PedSwap.SuspectName), NotifcationText);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info",string.Format("~y~{0}", Mod.World.PedSwap.SuspectName), NotifcationText);
         }
-        public void GiveCash(int Amount)
+        public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias);
+            uint PlayerCashHash = Natives.CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
             }
             if (CurrentCash + Amount < 0)
+            {
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, 0, 1);
+            }
             else
+            {
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
-        }
-        public int GetCash()
-        {
-            int CurrentCash;
-            unsafe
-            {
-                NativeFunction.CallByName<int>("STAT_GET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
             }
-
-            return CurrentCash;
         }
-        public void SetCash(int Amount)
+        public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
-        }
-        private uint CashHash(string PlayerName)
-        {
-            switch (PlayerName)
-            {
-                case "Michael":
-                    return Game.GetHashKey("SP0_TOTAL_CASH");
-                case "Franklin":
-                    return Game.GetHashKey("SP1_TOTAL_CASH");
-                case "Trevor":
-                    return Game.GetHashKey("SP2_TOTAL_CASH");
-                default:
-                    return Game.GetHashKey("SP0_TOTAL_CASH");
-            }
+            NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
         }
         private VehicleExt UpdateCurrentVehicle()
         {
@@ -445,7 +445,7 @@ namespace LosSantosRED.lsr
             Game.StartNewScript("selector");
             VanillaRespawn = true;
         }
-        private void CachePlayerData()
+        private void CacheData()
         {
             IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             if (IsInVehicle)
@@ -475,16 +475,10 @@ namespace LosSantosRED.lsr
                     CurrentVehicle.Update();
                 }
 
-                if (Extensions.IsMoveControlPressed() || Game.LocalPlayer.Character.Speed >= 0.1f)
+                if (Mod.Input.IsMoveControlPressed || Game.LocalPlayer.Character.Speed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;
                 }
-
-
-
-
-
-
             }
             else
             {
@@ -509,7 +503,7 @@ namespace LosSantosRED.lsr
             }
 
             IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
-            IsConsideredArmed = Game.LocalPlayer.Character.IsConsideredArmed();
+            IsConsideredArmed = CheckIsArmed();
             IsAimingInVehicle = IsInVehicle && Game.LocalPlayer.IsFreeAiming;
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
             CurrentWeapon = Mod.DataMart.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
@@ -536,24 +530,7 @@ namespace LosSantosRED.lsr
             {
                 IsDrunk = false;
             }
-
-
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-
-
-
-            //if(Game.LocalPlayer.Character.IsInAnyVehicle(true) && Game.LocalPlayer.Character.CurrentVehicle != null && !Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired)
-            //{
-            //    Game.LocalPlayer.Character.CurrentVehicle.MustBeHotwired = true;
-            //    Mod.Debug.WriteToLog("Manually Setting Hotwire in the get in stage", string.Format("Handle: {0}", Game.LocalPlayer.Character.CurrentVehicle.Handle));
-            //}
-
-
-
-
-
-
-
             AreStarsGreyedOut = Mod.Player.SearchMode.IsInSearchMode;//NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
         }
         private void TurnOffRespawnScripts()
@@ -657,6 +634,20 @@ namespace LosSantosRED.lsr
                 VehicleExt MyCar = Mod.World.Vehicles.GetVehicle(EnteringVehicle);
                 if(MyCar != null)
                 {
+                    //MyCar.
+                    //Maybe Call MyCar.EnterEvent(Mod.Player.Character)
+                    //that will check if you are the owner and just unlock the doors
+                    //alos how to check if the car is owned by ped by the game
+
+
+                    //also need in tasking when you are idle set them in, use the same function iwtht he ped passed in
+                    //will need to have a list of owners or occupants? 
+                    //maybe check relationship group of the ped driver and if they are friendly set it unlocked
+
+                    //add auto door locks to the cars
+                        //when you start going they auto lock and peds cannot carjack you as easily
+          
+
                     MyCar.AttemptToLock();
                     if (Mod.Input.IsHoldingEnter && EnteringVehicle.Driver == null && EnteringVehicle.LockStatus == (VehicleLockStatus)7 && !EnteringVehicle.IsEngineOn)//no driver && Unlocked
                     {
@@ -739,6 +730,43 @@ namespace LosSantosRED.lsr
                 {
                     CurrentVehicle.UpdateDescription();
                 }
+            }
+        }
+        private bool CheckIsArmed()
+        {
+            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.IsFreeAiming)
+            {
+                return false;
+            }
+            else if (Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)
+            {
+                return false;
+            }
+            else if (Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)2725352035
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)966099553
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x787F0BB//weapon_snowball
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x060EC506//weapon_fireextinguisher
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x34A67B97//weapon_petrolcan
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0xBA536372//weapon_hazardcan
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x8BB05FD7//weapon_flashlight
+                || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x23C9F95C)//weapon_ball
+            {
+                return false;
+            }
+            else if (!NativeFunction.CallByName<bool>("IS_PLAYER_CONTROL_ON", Game.LocalPlayer))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        public void SetUnarmed()
+        {
+            if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true); //Unequip weapon so you don't get shot
             }
         }
     }

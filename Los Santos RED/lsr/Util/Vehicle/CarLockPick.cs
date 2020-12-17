@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ExtensionsMethods;
 using LSR.Vehicles;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 
 public class CarLockPick
 {
@@ -77,7 +78,7 @@ public class CarLockPick
     {
         OriginalLockStatus = TargetVehicle.LockStatus;
         TargetVehicle.SetLock((VehicleLockStatus)3);//Attempt to lock most car doors
-        Game.LocalPlayer.Character.SetUnarmed();
+        Mod.Player.SetUnarmed();
 
         TargetVehicle.MustBeHotwired = true;
         uint GameTimeStartedStealing = Game.GameTime;
@@ -85,7 +86,7 @@ public class CarLockPick
 
         while (Game.LocalPlayer.Character.IsGettingIntoVehicle && Game.GameTime - GameTimeStartedStealing <= 3500)
         {
-            if (Extensions.IsMoveControlPressed())
+            if (Mod.Input.IsMoveControlPressed)
             {
                 StartAnimation = false;
                 break;
@@ -135,7 +136,7 @@ public class CarLockPick
         while (Game.GameTime - GameTimeStarted <= WaitTime)
         {
             GameFiber.Yield();
-            if (Extensions.IsMoveControlPressed())
+            if (Mod.Input.IsMoveControlPressed)
             {
                 Continue = false;
                 break;

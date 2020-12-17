@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ExtensionsMethods;
 using LSR.Vehicles;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 
 public class PlateTheft
 {
@@ -78,7 +79,7 @@ public class PlateTheft
                 if (ChangeSpot == Vector3.Zero)
                     return;
 
-                Game.LocalPlayer.Character.SetUnarmed();
+                Mod.Player.SetUnarmed();
                 if (!MovePedToCarPosition(VehicleToChange.Vehicle, Game.LocalPlayer.Character, VehicleToChange.Vehicle.Heading, ChangeSpot, true))
                     return;
 
@@ -95,7 +96,7 @@ public class PlateTheft
                 bool Continue = true;
                 while (Game.LocalPlayer.Character.IsAlive)//CarPosition.DistanceTo2D(VehicleToChange.VehicleEnt.Position) <= 0.5f && Game.LocalPlayer.Character.DistanceTo2D(ChangeSpot) <= 0.5f && Game.LocalPlayer.Character.IsAlive)
                 {
-                    if (Extensions.IsMoveControlPressed())
+                    if (Mod.Input.IsMoveControlPressed)
                     {
                         Continue = false;
                         break;
@@ -178,10 +179,10 @@ public class PlateTheft
         Ped Driver = TargetVehicle.Driver;
         NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
 
-        while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.Heading.IsWithin(DesiredHeading - 5f, DesiredHeading + 5f)))
+        while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading,DesiredHeading - 5f, DesiredHeading + 5f)))
         {
             GameFiber.Yield();
-            if (isPlayer && Extensions.IsMoveControlPressed())
+            if (isPlayer && Mod.Input.IsMoveControlPressed)
             {
                 Continue = false;
                 break;
@@ -238,6 +239,10 @@ public class PlateTheft
         LicensePlate.AttachTo(Game.LocalPlayer.Character, BoneIndexLeftHand, new Vector3(0.19f, 0.08f, 0.0f), new Rotator(-57.2f, 90f, -173f));
 
         return LicensePlate;
+    }
+    private bool FloatIsWithin(float value, float minimum, float maximum)
+    {
+        return value >= minimum && value <= maximum;
     }
 }
 

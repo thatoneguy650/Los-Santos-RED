@@ -11,6 +11,7 @@ using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 
+//basically need to redo this entire class, it is a dumpster fire
 public class Menu
 {
     private UIMenuListItem menuMainTakeoverRandomPed;
@@ -476,9 +477,9 @@ public class Menu
             }
 
             if (SelectedTakeoverRadius == -1f)
-                Mod.Player.PedSwap.TakeoverPed(500f, true, false, true);
+                Mod.World.PedSwap.TakeoverPed(500f, true, false, true);
             else
-                Mod.Player.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true);
+                Mod.World.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true);
         }
         else if (selectedItem == menuMainShowPlayerStatus)
         {
@@ -505,9 +506,9 @@ public class Menu
         else if (selectedItem == menuBustedTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                Mod.Player.PedSwap.TakeoverPed(500f, true, true, true);
+                Mod.World.PedSwap.TakeoverPed(500f, true, true, true);
             else
-                Mod.Player.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+                Mod.World.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
         }
 
         bustedMenu.Visible = false;
@@ -522,9 +523,9 @@ public class Menu
         else if (selectedItem == menuDeathTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                Mod.Player.PedSwap.TakeoverPed(500f, true, true, true);
+                Mod.World.PedSwap.TakeoverPed(500f, true, true, true);
             else
-                Mod.Player.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+                Mod.World.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
         }
 
         deathMenu.Visible = false;
@@ -631,7 +632,7 @@ public class Menu
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
         }
 
-        if (selectedItem == menuDebugGiveMoney) Mod.Player.GiveCash(50000);
+        if (selectedItem == menuDebugGiveMoney) Mod.Player.GiveMoney(50000);
         if (selectedItem == menuDebugResetMod)
         {
             //ScriptController.Dispose();

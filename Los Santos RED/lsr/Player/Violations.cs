@@ -63,7 +63,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (Mod.Player.IsInAutomobile || Mod.Player.IsOnMotorcycle) && !Mod.Player.PedSwap.RecentlyTakenOver)
+                if (Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (Mod.Player.IsInAutomobile || Mod.Player.IsOnMotorcycle) && !Mod.World.PedSwap.RecentlyTakenOver)
                     return true;
                 else
                     return false;
@@ -267,7 +267,7 @@ namespace LosSantosRED.lsr
             {
                 DrivingStolenVehicle.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.Mugging.IsMugging)
+            if (Mod.Player.IsMugging)
             {
                 Mugging.IsCurrentlyViolating = true;
             }
@@ -480,7 +480,7 @@ namespace LosSantosRED.lsr
             TreatAsCop = false;
             IsSpeeding = false;
 
-            if (!Mod.Player.CurrentVehicle.Vehicle.IsRoadWorthy() || Mod.Player.CurrentVehicle.Vehicle.IsDamaged())
+            if (!IsRoadWorthy(Mod.Player.CurrentVehicle.Vehicle) || IsDamaged(Mod.Player.CurrentVehicle.Vehicle))
             {
                 VehicleIsSuspicious = true;
             }
@@ -557,6 +557,83 @@ namespace LosSantosRED.lsr
                     Mod.Player.CurrentPoliceResponse.CurrentCrimes.AddCrime(Violating, true, Mod.Player.CurrentPosition, Mod.Player.CurrentVehicle, ToSee);
                 }
             }
+        }
+        private bool IsRoadWorthy(Vehicle myCar)
+        {
+            bool LightsOn;
+            bool HighbeamsOn;
+            if (Mod.World.IsNightTime)
+            {
+                unsafe
+                {
+                    NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", myCar, &LightsOn, &HighbeamsOn);
+                }
+                if (!LightsOn)
+                {
+                    return false;
+                }
+                if (HighbeamsOn)
+                {
+                    return false;
+                }
+
+
+
+                if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                {
+                    return false;
+                }
+            }
+
+            if (myCar.LicensePlate == "        ")
+                return false;
+
+            return true;
+        }
+        private bool IsDamaged(Vehicle myCar)
+        {
+            if (!myCar.Exists())
+                return false;
+
+            if (myCar.Health <= 700 || myCar.EngineHealth <= 700)
+                return true;
+
+            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar))
+                return true;
+
+            VehicleDoor[] CarDoors = myCar.GetDoors();
+
+            foreach (VehicleDoor myDoor in CarDoors)
+            {
+                if (myDoor.IsDamaged)
+                    return true;
+            }
+
+            if (Mod.World.IsNightTime)
+            {
+                if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                    return true;
+            }
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 0, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 1, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 2, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 3, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 4, false))
+                return true;
+
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 5, false))
+                return true;
+
+            return false;
         }
     }
 }

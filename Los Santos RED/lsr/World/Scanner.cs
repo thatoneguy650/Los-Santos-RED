@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using static DispatchScannerFiles;
 
+//Needs some refactoring
 namespace LosSantosRED.lsr
 {
     public class Scanner
@@ -85,12 +86,10 @@ namespace LosSantosRED.lsr
         private List<AudioSet> LicensePlateSet;
         private List<CrimeDispatch> DispatchLookup;
         private bool ExecutingQueue;
-
         public Scanner()
         {
             DefaultConfig();
         }
-
         public bool CancelAudio { get; set; }
         public bool IsAudioPlaying
         {
@@ -319,8 +318,6 @@ namespace LosSantosRED.lsr
         }
         private void BuildDispatch(Dispatch DispatchToPlay)
         {
-
-
             DispatchEvent EventToPlay = new DispatchEvent();
             if (DispatchToPlay.HasPreamble)
             {
@@ -678,7 +675,21 @@ namespace LosSantosRED.lsr
                 dispatchEvent.Subtitles += " suspect is driving a ~s~";
 
 
-                Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
+                Color CarColor = Color.White;   
+                
+                
+                
+                //temp turned off for debug testing
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                //VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
                 string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
                 int ClassInt = VehicleToDescribe.ClassInt();// Vehicles.VehicleManager.ClassInt(VehicleToDescribe);
                 string ClassName = Mod.DataMart.VehicleScannerAudio.ClassName(ClassInt);

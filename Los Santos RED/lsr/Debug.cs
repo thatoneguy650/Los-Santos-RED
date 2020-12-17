@@ -168,7 +168,7 @@ public class Debug
         WriteToLog("Debugging", string.Format("GET_TIMECYCLE_MODIFIER_INDEX: {0}", NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX")));
         //722 drunk
 
-
+        Vehicle[] Vehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
         WriteToLog("Debugging", string.Format("PED_FLAG_DRUNK: {0}", NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1)));
 
         
@@ -184,10 +184,10 @@ public class Debug
     }       
     private void Colorbullshit()
     {
-        Color Color1 = Extensions.GetBaseColor1(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
-        Color Color2 = Extensions.GetBaseColor2(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
-        Color Color3 = Extensions.GetBaseColor3(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
-        WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.CurrentVehicle.Vehicle.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
+        //Color Color1 = Extensions.GetBaseColor1(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
+        //Color Color2 = Extensions.GetBaseColor2(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
+        //Color Color3 = Extensions.GetBaseColor3(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
+        //WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.CurrentVehicle.Vehicle.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
     }
     private void Colorbullshit2()
     {

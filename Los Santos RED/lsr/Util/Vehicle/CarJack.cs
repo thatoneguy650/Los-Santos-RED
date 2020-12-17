@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ExtensionsMethods;
 using LSR.Vehicles;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 
 public class CarJack 
 {
@@ -154,7 +155,7 @@ public class CarJack
         {
             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
             GameFiber.Yield();
-            if (ScenePhase <= 0.4f && Extensions.IsMoveControlPressed())
+            if (ScenePhase <= 0.4f && Mod.Input.IsMoveControlPressed)
             {
                 WantToCancel = true;
                 break;
@@ -180,11 +181,11 @@ public class CarJack
                 WantToCancel = true;
                 break;
             }
-            if (Game.LocalPlayer.Character.IsConsideredArmed() && Game.IsControlPressed(2, GameControl.Attack))
+            if (Mod.Player.IsConsideredArmed && Game.IsControlPressed(2, GameControl.Attack))//Game.LocalPlayer.Character.IsConsideredArmed()
             {
                 Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                 NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
-                Mod.Player.PlayerShotArtificially();
+                Mod.Player.FlagShooting();
 
                 if (ScenePhase <= 0.35f)
                 {
@@ -194,7 +195,7 @@ public class CarJack
                     break;
                 }
             }
-            if (Game.LocalPlayer.Character.IsConsideredArmed() && Game.IsControlJustPressed(2, GameControl.Aim))
+            if (Mod.Player.IsConsideredArmed && Game.IsControlJustPressed(2, GameControl.Aim))//Game.LocalPlayer.Character.IsConsideredArmed()
             {
                 if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) <= 0.4f)
                 {

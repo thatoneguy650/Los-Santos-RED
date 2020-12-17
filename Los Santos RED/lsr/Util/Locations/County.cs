@@ -10,4 +10,5 @@ public enum County
     LosSantosCounty = 1,
     BlaineCounty = 2,
     PacificOcean = 3,
+    Unknown = 4,
 }

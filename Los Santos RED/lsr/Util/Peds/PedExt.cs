@@ -200,7 +200,7 @@ public class PedExt
             IsInVehicle = Pedestrian.IsInAnyVehicle(false);
             if (IsInVehicle)
             {
-                IsDriver = Pedestrian.IsDriver();
+                IsDriver = Pedestrian.SeatIndex == -1;
                 LastSeatIndex = Pedestrian.SeatIndex;
                 IsInHelicopter = Pedestrian.IsInHelicopter;
                 if (!IsInHelicopter)
@@ -216,7 +216,7 @@ public class PedExt
                 IsOnBike = false;
                 IsDriver = false;
             }
-            if (!Game.LocalPlayer.Character.IsInFront(Pedestrian))
+            if (!IsInFront(Game.LocalPlayer.Character,Pedestrian))
             {
                 if (GameTimeBehindPlayer == 0)
                     GameTimeBehindPlayer = Game.GameTime;
@@ -237,13 +237,13 @@ public class PedExt
             {
                 if (Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly)
                 {
-                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 4, true);
-                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 8, true);
-                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 16, true);
-                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 512, true);
-                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 262144, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 8, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 16, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 512, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 262144, true);
                 }
-                else if (!Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly && DistanceToPlayer <= 15f)
+                else// if (!Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly && DistanceToPlayer <= 15f)
                 {
                     NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);//only originally this one for reckless pursuit
                 }
@@ -251,12 +251,12 @@ public class PedExt
                 if (Mod.Player.CurrentLocation.IsOffroad && DistanceToPlayer <= 200f)
                 {
                     NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 4194304);
-                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, true);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, true);
                 }
                 else
                 {
                     NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 1074528293);
-                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, false);
+                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, false);
                 }
             }
         }
@@ -297,7 +297,7 @@ public class PedExt
             Entity ToCheck = PlayerInVehicle ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
             if (IsCop && !Pedestrian.IsInHelicopter)
             {  
-                if (DistanceToPlayer <= 90f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
+                if (DistanceToPlayer <= 90f && PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
                 {
                     SetPlayerSeen();
                 }
@@ -324,7 +324,7 @@ public class PedExt
             }
             else
             {
-                if (DistanceToPlayer <= 90f && Pedestrian.PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
+                if (DistanceToPlayer <= 90f && PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
                 {
                     SetPlayerSeen();
                 }
@@ -371,12 +371,6 @@ public class PedExt
         PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
         VehicleLastSeenPlayerIn = Mod.Player.CurrentVehicle;
         WeaponLastSeenPlayerWith = Mod.Player.CurrentWeapon;
-        if(IsCop)
-        {
-            Mod.World.PoliceForce.WasPlayerLastSeenInVehicle = Mod.Player.IsInVehicle;
-            Mod.World.PoliceForce.PlayerLastSeenHeading = Game.LocalPlayer.Character.Heading;
-            Mod.World.PoliceForce.PlayerLastSeenForwardVector = Game.LocalPlayer.Character.ForwardVector;
-        }
     }
     public void CheckPlayerHurtPed()
     {
@@ -405,7 +399,35 @@ public class PedExt
         {
             if (HurtByPlayer)
                 KilledByPlayer = true;
-        }     
+        }
+    }
+
+    private float GetDotVectorResult(Entity source, Entity target)
+    {
+        if (source.Exists() && target.Exists())
+        {
+            Vector3 dir = (target.Position - source.Position).ToNormalized();
+            return Vector3.Dot(dir, source.ForwardVector);
+        }
+        else return -1.0f;
+    }
+    public bool PlayerIsInFront()
+    {
+        float Result = GetDotVectorResult(Pedestrian, Game.LocalPlayer.Character);
+        if (Result > 0)
+            return true;
+        else
+            return false;
+
+    }
+    private bool IsInFront(Entity Target, Entity Source)
+    {
+        float Result = GetDotVectorResult(Target, Source);
+        if (Result > 0)
+            return true;
+        else
+            return false;
+
     }
 }
 
