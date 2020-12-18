@@ -150,7 +150,7 @@ public class PedSwap
         CurrentPedVariation = GetPedVariation(TargetPed);
         CurrentPlayerModel = TargetPed.Model.Name;
         CurrentPlayerIsMale = TargetPed.IsMale;
-        Mod.World.Clock.PauseTime();
+        Mod.World.Time.PauseTime();
 
         CurrentPedPosition = Game.LocalPlayer.Character.Position;
         TargetPedPosition = TargetPed.Position;
@@ -256,7 +256,7 @@ public class PedSwap
 
         Mod.Player.SetUnarmed();
         GiveName();
-        Mod.World.Clock.UnpauseTime();
+        Mod.World.Time.UnpauseTime();
 
         Mod.Player.WeaponDropping.Reset();
 

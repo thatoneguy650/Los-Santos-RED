@@ -117,7 +117,7 @@ public class SearchMode
         ToggleModes();
         HandleFlashing();
     }
-    public void StopVanillaSearchMode()
+    public void StopVanilla()
     {
         StopSearchMode.Tick();
     }
@@ -125,7 +125,7 @@ public class SearchMode
     {
         if (Mod.Player.IsWanted)
         {
-            if (Mod.World.PoliceForce.AnyRecentlySeenPlayer)
+            if (Mod.World.Police.AnyRecentlySeenPlayer)
             {
                 IsInActiveMode = true;
                 IsInSearchMode = false;
@@ -258,7 +258,7 @@ public class SearchMode
             if (PrevStopSearchMode != StopSearchMode)
             {
                 PrevStopSearchMode = StopSearchMode;
-                Mod.Debug.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.World.PoliceForce.AnyRecentlySeenPlayer));
+                Mod.Debug.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.World.Police.AnyRecentlySeenPlayer));
             }
 
             if (!StopSearchMode)

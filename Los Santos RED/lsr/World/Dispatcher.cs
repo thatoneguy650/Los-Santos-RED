@@ -2,42 +2,25 @@
 using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-public class Dispatch
+public class Dispatcher
 {
-    private enum DispatchType
-    {
-        PoliceAutomobile = 1,
-        PoliceHelicopter = 2,
-        FireDepartment = 3,
-        SwatAutomobile = 4,
-        AmbulanceDepartment = 5,
-        PoliceRiders = 6,
-        PoliceVehicleRequest = 7,
-        PoliceRoadBlock = 8,
-        PoliceAutomobileWaitPulledOver = 9,
-        PoliceAutomobileWaitCruising = 10,
-        Gangs = 11,
-        SwatHelicopter = 12,
-        PoliceBoat = 13,
-        ArmyVehicle = 14,
-        BikerBackup = 15
-    };
     private PoliceSpawn CurrentSpawn = new PoliceSpawn();
     private uint GameTimeCheckedSpawn;
     private uint GameTimeCheckedDeleted;
+    private uint MinimumExistingTime = 20000;//30000//will be a setting
+    private float MinimumDeleteDistance = 200f;//350f//will be a setting
     private int SpawnedCopLimit
     {
         get
         {
             if (Mod.Player.Investigations.InInvestigationMode)
-                return 10;
-            else if(Mod.Player.WantedLevel == 0)
+            {
+                return 6;//10
+            }
+            else if (Mod.Player.WantedLevel == 0)
             {
                 return 5;//10//5
             }
@@ -63,35 +46,48 @@ public class Dispatch
             }
             else
             {
-                return 15;
+                return 5;//15
             }
-            //return 10 + 2 * PlayerState.WantedLevel;
         }
     }
-    private bool CanSpawn
+    private bool CanDispatch
     {
         get
         {
             if (GameTimeCheckedSpawn == 0)
+            {
                 return true;
+            }
             else if (Mod.Player.Investigations.InInvestigationMode && !Mod.World.Tasking.HasCopsInvestigating)
+            {
                 return true;
+            }
             else if (Game.GameTime - GameTimeCheckedSpawn >= TimeBetweenSpawn)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
-    private bool CanDelete
+    private bool CanRecall
     {
         get
         {
             if (GameTimeCheckedDeleted == 0)
+            {
                 return true;
+            }
             else if (Game.GameTime - GameTimeCheckedDeleted >= TimeBetweenSpawn)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
     private int TimeBetweenSpawn
@@ -102,25 +98,28 @@ public class Dispatch
             {
                 return 2000;
             }
-            else  if (!Mod.World.PoliceForce.AnyRecentlySeenPlayer)
+            else  if (!Mod.World.Police.AnyRecentlySeenPlayer)
             {
                 return 3000;
             }
             else
             {
-                int InverseWanted = 5 - Mod.Player.WantedLevel;
-                return (InverseWanted * 2000) + 2000;
+                return ((5 - Mod.Player.WantedLevel) * 2000) + 2000;
             }
         }
     }
-    private float ClosestSpawnToPlayerAllowed
+    private float ClosestSpawnToSuspectAllowed
     {
         get
         {
             if (Mod.Player.IsWanted)
+            {
                 return 150f;
+            }
             else
+            {
                 return 250f;
+            }
         }
     }
     private float ClosestSpawnToOtherPoliceAllowed
@@ -128,9 +127,13 @@ public class Dispatch
         get
         {
             if (Mod.Player.IsWanted)
+            {
                 return 200f;
+            }
             else
+            {
                 return 500f;
+            }
         }
     }
     private float MinDistanceToSpawn
@@ -139,15 +142,23 @@ public class Dispatch
         {
             if (Mod.Player.IsWanted)
             {
-                if (!Mod.World.PoliceForce.AnyRecentlySeenPlayer)
+                if (!Mod.World.Police.AnyRecentlySeenPlayer)
+                {
                     return 250f - (Mod.Player.WantedLevel * -40);
+                }
                 else
+                {
                     return 400f - (Mod.Player.WantedLevel * -40);
+                }
             }
             else if (Mod.Player.Investigations.InInvestigationMode)
+            {
                 return Mod.Player.Investigations.InvestigationDistance / 2;
+            }
             else
+            {
                 return 350f;//450f;//750f
+            }
         }
     }
     private float MaxDistanceToSpawn
@@ -156,15 +167,23 @@ public class Dispatch
         {
             if (Mod.Player.IsWanted)
             {
-                if (!Mod.World.PoliceForce.AnyRecentlySeenPlayer)
+                if (!Mod.World.Police.AnyRecentlySeenPlayer)
+                {
                     return 350f;
+                }
                 else
+                {
                     return 550f;
+                }
             }
             else if (Mod.Player.Investigations.InInvestigationMode)
+            {
                 return Mod.Player.Investigations.InvestigationDistance;
+            }
             else
+            {
                 return 900f;//1250f//1500f
+            }
         }
     }
     private float DistanceToDelete
@@ -172,9 +191,13 @@ public class Dispatch
         get
         {
             if (Mod.Player.IsWanted)
+            {
                 return 600f;
+            }
             else
+            {
                 return 1000f;
+            }
         }
     }
     private float DistanceToDeleteOnFoot
@@ -182,9 +205,13 @@ public class Dispatch
         get
         {
             if (Mod.Player.IsWanted)
+            {
                 return 125f;
+            }
             else
+            {
                 return 1000f;
+            }
         }
     }
     private bool NeedToSpawn
@@ -192,25 +219,27 @@ public class Dispatch
         get
         {
             if (Mod.World.Pedestrians.TotalSpawnedCops < SpawnedCopLimit)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
-    private uint MinimumExistingTime { get; set; } = 20000;//30000
-    private float MinimumDeleteDistance{ get; set; } = 200f;//350f
     public void Dispose()
     {
-        SetVanillaDispaceServices(true);
+        SetVanilla(true);
     }
-    public void SpawnChecking()
+    public void Dispatch()
     {
-        if (CanSpawn)
+        if (CanDispatch)
         {
-            CurrentSpawn.UpdateSpawnPosition();
+            CurrentSpawn.Update();
             if (NeedToSpawn && CurrentSpawn.HasSpawns)
             {
-                CurrentSpawn.GetAgencyToSpawn();
+                CurrentSpawn.GetAgency();
                 if (!CurrentSpawn.HasAgency)
                 {
                     Mod.Debug.WriteToLog("Dispatch", string.Format("Could not find Agencies To Spawn {0}", 1));
@@ -238,54 +267,57 @@ public class Dispatch
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.StreetPosition;
                 }
-                Mod.World.PoliceSpawning.SpawnGTACop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle, false);
+                Mod.World.Spawner.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle, false);
             }
             GameTimeCheckedSpawn = Game.GameTime;
         }
-        SetVanillaDispaceServices(false);
-        
+        SetVanilla(false);      
     }
-    public void DeleteChecking()
+    public void Recall()
     {
-        if (CanDelete)
+        if (CanRecall)
         {
-            foreach(Cop OutOfRangeCop in Mod.World.Pedestrians.Cops.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
+            foreach(Cop OutOfRangeCop in Mod.World.Pedestrians.Police.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
             {
                 if (!OutOfRangeCop.AssignedAgency.CanSpawn)
                 {
-                    Mod.World.PoliceSpawning.DeleteCop(OutOfRangeCop);
+                    Mod.World.Spawner.Delete(OutOfRangeCop);
                 }
                 if (OutOfRangeCop.IsInVehicle && OutOfRangeCop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
                 {
-                    Mod.World.PoliceSpawning.DeleteCop(OutOfRangeCop);
+                    Mod.World.Spawner.Delete(OutOfRangeCop);
                 }
                 else if (!OutOfRangeCop.IsInVehicle && OutOfRangeCop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
                 {
-                    Mod.World.PoliceSpawning.DeleteCop(OutOfRangeCop);
+                    Mod.World.Spawner.Delete(OutOfRangeCop);
                 }
                 else if (OutOfRangeCop.ClosestDistanceToPlayer <= 15f) //Got Close and Then got away
                 {
-                    Mod.World.PoliceSpawning.DeleteCop(OutOfRangeCop);
+                    Mod.World.Spawner.Delete(OutOfRangeCop);
                 }
                 else if (OutOfRangeCop.CountNearbyCops >= 3 && OutOfRangeCop.TimeBehindPlayer >= 15000) //Got Close and Then got away
                 {
-                    Mod.World.PoliceSpawning.DeleteCop(OutOfRangeCop);
+                    Mod.World.Spawner.Delete(OutOfRangeCop);
+                }
+                if(!OutOfRangeCop.AssignedAgency.CanSpawn)
+                {
+                    Mod.World.Spawner.Delete(OutOfRangeCop);
                 }
             }
             GameTimeCheckedDeleted = Game.GameTime;
         }
     }
-    private void SetVanillaDispaceServices(bool ValueToSet)
+    private void SetVanilla(bool Enabled)
     {
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobile, ValueToSet);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceHelicopter, ValueToSet);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceVehicleRequest, ValueToSet);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatAutomobile, ValueToSet);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.SwatHelicopter, ValueToSet);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRiders, ValueToSet);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceRoadBlock, ValueToSet);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitCruising, ValueToSet);
-        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)DispatchType.PoliceAutomobileWaitPulledOver, ValueToSet);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.PoliceAutomobile, Enabled);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.PoliceHelicopter, Enabled);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.PoliceVehicleRequest, Enabled);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.SwatAutomobile, Enabled);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.SwatHelicopter, Enabled);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.PoliceRiders, Enabled);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.PoliceRoadBlock, Enabled);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.PoliceAutomobileWaitCruising, Enabled);
+        NativeFunction.CallByName<bool>("ENABLE_DISPATCH_SERVICE", (int)VanillaDispatchType.PoliceAutomobileWaitPulledOver, Enabled);
     }
     private class PoliceSpawn
     {
@@ -302,7 +334,9 @@ public class Dispatch
                 if (NativeFunction.Natives.GET_WATER_HEIGHT<bool>(Position.X, Position.Y, Position.Z, out float height))
                 {
                     if (height >= 0.5f)//2f// has some water depth
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -323,9 +357,13 @@ public class Dispatch
             get
             {
                 if (Position != Vector3.Zero && StreetPosition != Vector3.Zero)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
 
             }
         }
@@ -334,10 +372,13 @@ public class Dispatch
             get
             {
                 if (SidewalkPosition != Vector3.Zero)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
-
+                }
             }
         }
         public bool HasAgency
@@ -358,7 +399,7 @@ public class Dispatch
         {
 
         }
-        public void UpdateSpawnPosition()
+        public void Update()
         {
             Position = Vector3.Zero;
             StreetPosition = Vector3.Zero;
@@ -371,7 +412,7 @@ public class Dispatch
                 TimesTried++;
             }
         }
-        public void GetAgencyToSpawn()
+        public void GetAgency()
         {
             AgencyToSpawn = null;
             List<Agency> PossibleAgencies = Mod.DataMart.Agencies.GetAgencies(StreetPosition);
@@ -397,9 +438,9 @@ public class Dispatch
             else
                 Position = Game.LocalPlayer.Character.Position;
 
-            Position = Position.Around2D(Mod.World.Dispatch.MinDistanceToSpawn, Mod.World.Dispatch.MaxDistanceToSpawn);
+            Position = Position.Around2D(Mod.World.Dispatcher.MinDistanceToSpawn, Mod.World.Dispatcher.MaxDistanceToSpawn);
 
-            if (!Mod.Player.Investigations.InInvestigationMode && Mod.World.Pedestrians.AnyCopsNearPosition(Position, Mod.World.Dispatch.ClosestSpawnToOtherPoliceAllowed))
+            if (!Mod.Player.Investigations.InInvestigationMode && Mod.World.Pedestrians.AnyCopsNearPosition(Position, Mod.World.Dispatcher.ClosestSpawnToOtherPoliceAllowed))
             {
                 Position = Vector3.Zero;
             }
@@ -412,10 +453,10 @@ public class Dispatch
             StreetPosition = streetPos;
             Heading = heading;
 
-            if (StreetPosition.DistanceTo2D(Game.LocalPlayer.Character) < Mod.World.Dispatch.ClosestSpawnToPlayerAllowed)
+            if (StreetPosition.DistanceTo2D(Game.LocalPlayer.Character) < Mod.World.Dispatcher.ClosestSpawnToSuspectAllowed)
                 StreetPosition = Vector3.Zero;
 
-            if(Mod.World.Pedestrians.AnyCopsNearPosition(StreetPosition, Mod.World.Dispatch.ClosestSpawnToOtherPoliceAllowed))
+            if(Mod.World.Pedestrians.AnyCopsNearPosition(StreetPosition, Mod.World.Dispatcher.ClosestSpawnToOtherPoliceAllowed))
                 StreetPosition = Vector3.Zero;
 
             if(StreetPosition != Vector3.Zero)
@@ -425,7 +466,23 @@ public class Dispatch
                 SidewalkPosition = sidewalkPosition;
             }
         }
-
     }
-
+    private enum VanillaDispatchType //Only for disabling
+    {
+        PoliceAutomobile = 1,
+        PoliceHelicopter = 2,
+        FireDepartment = 3,
+        SwatAutomobile = 4,
+        AmbulanceDepartment = 5,
+        PoliceRiders = 6,
+        PoliceVehicleRequest = 7,
+        PoliceRoadBlock = 8,
+        PoliceAutomobileWaitPulledOver = 9,
+        PoliceAutomobileWaitCruising = 10,
+        Gangs = 11,
+        SwatHelicopter = 12,
+        PoliceBoat = 13,
+        ArmyVehicle = 14,
+        BikerBackup = 15
+    };
 }

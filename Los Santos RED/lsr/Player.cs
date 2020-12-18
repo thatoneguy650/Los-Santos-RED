@@ -348,7 +348,7 @@ namespace LosSantosRED.lsr
                 MaxWantedLastLife = 0; //this might be a problem in here and might need to be removed
             }
         }
-        public void StartManualArrest()
+        private void StartManualArrest()
         {
             BeingArrested = true;
             if (!IsBusted)
@@ -548,6 +548,15 @@ namespace LosSantosRED.lsr
                 DeathEvent();
             }
 
+
+            if (Mod.World.Pedestrians.ShouldBustPlayer)
+            {
+                StartManualArrest();
+            }
+
+
+
+
             if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 0))
             {
                 BeingArrested = true;
@@ -589,7 +598,7 @@ namespace LosSantosRED.lsr
         }
         private void DeathEvent()
         {
-            Mod.World.Clock.PauseTime();
+            Mod.World.Time.PauseTime();
             DiedInVehicle = IsInVehicle;
             IsDead = true;
             GameTimeLastDied = Game.GameTime;
@@ -716,7 +725,7 @@ namespace LosSantosRED.lsr
                     return;
                 }
 
-                if (Mod.World.PoliceForce.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
+                if (Mod.World.Police.AnyCanSeePlayer && IsWanted && !AreStarsGreyedOut)
                 {
                     if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentVehicle.Vehicle.Handle && !CurrentVehicle.HasBeenDescribedByDispatch)
                     {
@@ -726,7 +735,7 @@ namespace LosSantosRED.lsr
                     PoliceLastSeenVehicleHandle = CurrentVehicle.Vehicle.Handle;
                 }
 
-                if (Mod.World.PoliceForce.AnyCanRecognizePlayer && IsWanted && !AreStarsGreyedOut)
+                if (Mod.World.Police.AnyCanRecognizePlayer && IsWanted && !AreStarsGreyedOut)
                 {
                     CurrentVehicle.UpdateDescription();
                 }

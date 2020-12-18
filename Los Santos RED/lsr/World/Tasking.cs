@@ -21,12 +21,12 @@ public class Tasking
                 return false;
         }
     }
-    public void UpdateTaskablePeds()
+    public void UpdatePeds()
     {
-        Mod.World.Pedestrians.Cops.RemoveAll(x => !x.Pedestrian.Exists());
+        Mod.World.Pedestrians.Police.RemoveAll(x => !x.Pedestrian.Exists());
 
         TaskableCops.RemoveAll(x => !x.CopToTask.Pedestrian.Exists());
-        foreach (Cop Cop in Mod.World.Pedestrians.Cops.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists()))
         {
             if (!TaskableCops.Any(x => x.CopToTask.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
@@ -43,7 +43,7 @@ public class Tasking
             }
         }
     }
-    public void RunActivities()
+    public void TaskCops()
     {
         try
         {
@@ -60,10 +60,16 @@ public class Tasking
                     break;
                 }
             }
-            if(TaskedCops > 0)//any cop tasking, let the civies wait
-            {
-                return;
-            }
+        }
+        catch (Exception e)
+        {
+            Mod.Debug.WriteToLog("RunActivities Error", e.Message + " : " + e.StackTrace);
+        }
+    }
+    public void TaskCivilians()
+    {
+        try
+        {
             int TaskedCivilians = 0;
             foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
@@ -129,7 +135,7 @@ public class Tasking
         {
             get
             {
-                if (CopToTask.DistanceToPlayer <= Mod.World.PoliceForce.ActiveDistance)
+                if (CopToTask.DistanceToPlayer <= Mod.World.Police.ActiveDistance)
                     return true;
                 else
                     return false;
@@ -452,7 +458,7 @@ public class Tasking
         {
             if (WithinChaseDistance)
             {
-                if (Mod.World.PoliceForce.AnyRecentlySeenPlayer && !Mod.Player.AreStarsGreyedOut)
+                if (Mod.World.Police.AnyRecentlySeenPlayer && !Mod.Player.AreStarsGreyedOut)
                 {
                     if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
                     {
@@ -542,7 +548,7 @@ public class Tasking
         private void VehicleChase_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = Mod.World.PoliceForce.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.Police.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (Mod.Player.IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", CopToTask.Pedestrian, Game.LocalPlayer.Character); //NativeFunction.CallByName<bool>("TASK_VEHICLE_FOLLOW", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 22f, 4 | 16 | 32 | 262144, 8f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
@@ -557,7 +563,7 @@ public class Tasking
         }
         private void VehicleChase_Normal()
         {
-            Vector3 WantedCenter = Mod.World.PoliceForce.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if(CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 10f)
             {
                 if (!Mod.Player.IsInVehicle)
@@ -711,7 +717,7 @@ public class Tasking
         private void GoToLastSeen_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = Mod.World.PoliceForce.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (CopToTask.IsInVehicle && CopToTask.Pedestrian.CurrentVehicle != null)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
@@ -727,7 +733,7 @@ public class Tasking
         }
         private void GoToLastSeen_Normal()
         {
-            Vector3 WantedCenter = Mod.World.PoliceForce.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (!NearWantedCenterThisWanted)
             {
                 if (CurrentTaskedPosition.DistanceTo2D( WantedCenter) >= 5f)
@@ -775,7 +781,7 @@ public class Tasking
         }
         private void HeliGoToLastSeen_Start()
         {
-            Cop ClosestCop = Mod.World.Pedestrians.Cops.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
+            Cop ClosestCop = Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
             if (ClosestCop == null)
                 return;
             NativeFunction.CallByName<bool>("TASK_HELI_CHASE", CopToTask.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);

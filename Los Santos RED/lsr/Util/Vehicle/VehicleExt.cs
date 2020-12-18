@@ -23,6 +23,7 @@ namespace LSR.Vehicles
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
+        public bool WasModSpawned { get; set; }
         public bool ManuallyRolledDriverWindowDown { get; set; }
         public bool HasBeenDescribedByDispatch { get; set; }
         public bool WasAlarmed { get; set; }
@@ -183,6 +184,10 @@ namespace LSR.Vehicles
             Indicators = new Indicators(this);
             FuelTank = new FuelTank(this);
         }
+        public VehicleExt(Vehicle vehicle,bool wasModSpawned) : this(vehicle)
+        {
+            WasModSpawned = wasModSpawned;
+        }
         public void SetAsEntered()
         {
             if (GameTimeEntered == 0)
@@ -276,6 +281,7 @@ namespace LSR.Vehicles
                     NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle, NewType.Index);
                     OriginalLicensePlate.PlateType = NewType.Index;
                     CarPlate.PlateType = NewType.Index;
+                   // Mod.Debug.WriteToLog("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }
         }
@@ -319,6 +325,45 @@ namespace LSR.Vehicles
                     }
                 }
             }
+        }
+        public void UpgradeCopCarPerformance()//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 
+        {
+            if (Vehicle.Exists() && !Vehicle.IsHelicopter && Vehicle.IsPoliceVehicle)
+            {
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT", Vehicle, 0);//Required to work
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 11) - 1, true);//Engine
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 12) - 1, true);//Brakes
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 13) - 1, true);//Tranny
+                NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 15) - 1, true);//Suspension
+            }
+        }
+        public void UpdateCopCarLivery(Agency AssignedAgency)
+        {
+            VehicleInformation MyVehicle = null;
+            if (AssignedAgency != null && AssignedAgency.Vehicles != null && Vehicle.Exists())
+            {
+                MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == Vehicle.Model.Name.ToLower()).FirstOrDefault();
+            }
+            if (MyVehicle == null)
+            {
+                if (Vehicle.Exists())
+                {
+                    Mod.Debug.WriteToLog("ChangeLivery", string.Format("No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
+                    Vehicle.Delete();
+                }
+                return;
+            }
+            if (MyVehicle.Liveries != null && MyVehicle.Liveries.Any())
+            {
+                int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+                NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, NewLiveryNumber);
+            }
+            Vehicle.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
+        }
+        public void UpdateCopCarLivery()
+        {
+            Agency AssignedAgency = Mod.DataMart.Agencies.GetAgency(Vehicle);
+            UpdateCopCarLivery(AssignedAgency);
         }
         public void SetDriverWindow(bool RollDown)
         {

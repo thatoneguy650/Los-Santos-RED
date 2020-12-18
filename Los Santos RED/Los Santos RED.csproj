@@ -114,7 +114,7 @@
     <Compile Include="lsr\Player.cs" />
     <Compile Include="lsr\Util\Peds\Loadout.cs" />
     <Compile Include="lsr\Util\Peds\PedConfigFlags.cs" />
-    <Compile Include="lsr\World\PoliceForce.cs" />
+    <Compile Include="lsr\World\Police.cs" />
     <Compile Include="lsr\Util\Locations\County.cs" />
     <Compile Include="lsr\Util\Animations\AnimationDictionary.cs" />
     <Compile Include="lsr\World.cs" />
@@ -135,7 +135,7 @@
     <Compile Include="lsr\World\Civilians.cs" />
     <Compile Include="lsr\Player\Mugging.cs" />
     <Compile Include="lsr\World\Tasking.cs" />
-    <Compile Include="lsr\World\PedDamage.cs" />
+    <Compile Include="lsr\World\Wounds.cs" />
     <Compile Include="lsr\World\Pedestrians.cs" />
     <Compile Include="lsr\World\Time.cs" />
     <Compile Include="lsr\World\PedSwap.cs" />
@@ -147,12 +147,12 @@
     <Compile Include="lsr\Util\Scanner\AudioSet.cs" />
     <Compile Include="lsr\Util\Police\CountyJurisdictions.cs" />
     <Compile Include="lsr\Util\Crimes\CriminalHistory.cs" />
-    <Compile Include="lsr\World\Dispatch.cs" />
+    <Compile Include="lsr\World\Dispatcher.cs" />
     <Compile Include="lsr\Player\Investigations.cs" />
     <Compile Include="lsr\Player\ArrestWarrant.cs" />
     <Compile Include="lsr\World\Scanner.cs" />
     <Compile Include="lsr\Util\Scanner\PoliceScannerCallIn.cs" />
-    <Compile Include="lsr\World\PoliceSpawning.cs" />
+    <Compile Include="lsr\World\Spawner.cs" />
     <Compile Include="lsr\Player\SearchMode.cs" />
     <Compile Include="lsr\Player\PoliceResponse.cs" />
     <Compile Include="lsr\Util\WantedLevel\ResponsePriority.cs" />

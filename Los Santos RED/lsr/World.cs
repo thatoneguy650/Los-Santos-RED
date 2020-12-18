@@ -12,30 +12,30 @@ namespace LosSantosRED.lsr
     public class World
     {
         private List<Blip> CreatedBlips;
-
-        public PoliceSpawning PoliceSpawning { get; private set; } = new PoliceSpawning();
+        public Spawner Spawner { get; private set; } = new Spawner();
         public Vehicles Vehicles { get; private set; } = new Vehicles();
-        public Tasking Tasking { get; private set; } = new Tasking();
-        public PedDamage PedDamage { get; private set; } = new PedDamage();
-        public Scanner Scanner { get; private set; } = new Scanner();
         public Pedestrians Pedestrians { get; private set; } = new Pedestrians();
-        public Time Clock { get; private set; } = new Time();
-        public PoliceForce PoliceForce { get; private set; } = new PoliceForce();
+        public Tasking Tasking { get; private set; } = new Tasking();
+        public Wounds Wounds { get; private set; } = new Wounds();
+        public Scanner Scanner { get; private set; } = new Scanner();
+        public Dispatcher Dispatcher { get; private set; } = new Dispatcher();
+        public Time Time { get; private set; } = new Time();
+        public Police Police { get; private set; } = new Police();//maybe go under pedestrians?
         public Civilians Civilians { get; private set; } = new Civilians();
-        public Dispatch Dispatch { get; private set; } = new Dispatch();
-        public PedSwap PedSwap { get; private set; } = new PedSwap();
+        public PedSwap PedSwap { get; private set; } = new PedSwap();//dunno about this, go in player? go static?
         public bool IsNightTime { get; private set; }
         public World()
         {
             
         }
-        public void CacheWorldData()
+        public void Update()
         {
             IsNightTime = false;
             var HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-            //var MinuteOfDay = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
             if (HourOfDay >= 19 || HourOfDay <= 6)//7pm to 6 am lights need to be on
+            {
                 IsNightTime = true;
+            }
         }
         public void PuneVehicleList()
         {
@@ -44,12 +44,11 @@ namespace LosSantosRED.lsr
         public void Dispose()
         {
             RemoveBlips();
-            Clock.Dispose();
+            Time.Dispose();
             Pedestrians.Dispose();
-            Dispatch.Dispose();
-            PoliceSpawning.Dispose();
+            Dispatcher.Dispose();
+            Spawner.Dispose();
             Vehicles.ClearPolice();
-            Dispatch.Dispose();
         }
         public void CreateLocationBlips()
         {
@@ -68,7 +67,7 @@ namespace LosSantosRED.lsr
                     MyBlip.Delete();
             }
         }
-        public void AddBlip(Blip myBlip)//temp, move everything that creates blips outside of this in here.
+        public void AddBlip(Blip myBlip)
         {
             CreatedBlips.Add(myBlip);
         }

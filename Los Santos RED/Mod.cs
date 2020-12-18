@@ -95,61 +95,44 @@ namespace LosSantosRED.lsr
         {
             MyTickTasks = new List<ModTask>()
             {
-                new ModTask(0, "ClockManager", World.Clock.Tick, 0,0),
-
-                new ModTask(0, "InputManager", Input.Tick, 1,0),
-
-                new ModTask(25, "Player", Player.Update, 2,0),
-                new ModTask(25, "PolicePerception", World.PoliceForce.Tick, 2,1),
-
-
-
-
-                new ModTask(50, "CrimeManager", Player.Violations.Update, 4,0),
-                new ModTask(50, "WantedLevelManager", Player.CurrentPoliceResponse.Update, 4,1),
-
-
-                new ModTask(150, "InvestigationManager", Player.Investigations.Tick, 5,0),
-                new ModTask(150, "CivilianManager", World.Civilians.Tick, 5,1),
-
-                new ModTask(200, "PedDamageManager", World.PedDamage.Tick, 6,0),
-                new ModTask(250, "MuggingManager", Player.MuggingTick, 6,1),
-
-                new ModTask(250, "PrunePedList", World.Pedestrians.PrunePeds, 7,0),
-                new ModTask(1000, "ScanForNewPeds", World.Pedestrians.ScanForPeds, 7,1),
-
-                new ModTask(250, "PruneVehicleList", World.Vehicles.CleanLists, 7,2),
-                new ModTask(1000, "VehicleManager", World.Vehicles.Scan, 7,3),
-                new ModTask(500, "VehicleManager", World.Vehicles.UpdatePlates, 7,4),
-
-                new ModTask(250, "WeaponDroppingManager", Player.WeaponDropping.Tick, 8,0),
-
-                new ModTask(500, "TrafficViolationsManager", Player.Violations.TrafficUpdate, 9,0),
-                new ModTask(500, "PlayerLocationManager", Player.CurrentLocation.Update, 9,1),
-                new ModTask(500, "ArrestWarrant", Player.ArrestWarrant.Update, 9,2),
-
-                new ModTask(500, "PoliceSpeechManager", World.PoliceForce.SpeechTick, 10,2),
-                new ModTask(500, "PoliceSpawningManager", World.PoliceSpawning.Tick, 10,3),
+                new ModTask(0, "World.Clock.Tick", World.Time.Tick, 0,0),
+                new ModTask(0, "Input.Tick", Input.Tick, 1,0),
+                new ModTask(25, "Player.Update", Player.Update, 2,0),
+                new ModTask(25, "World.PoliceForce.Tick", World.Police.Tick, 2,1),
+                new ModTask(50, "Player.Violations.Update", Player.Violations.Update, 4,0),
+                new ModTask(50, "Player.CurrentPoliceResponse.Update", Player.CurrentPoliceResponse.Update, 4,1),
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigations.Tick, 5,0),
+                new ModTask(150, "World.Civilians.Tick", World.Civilians.Tick, 5,1),
+                new ModTask(200, "World.PedDamage.Tick", World.Wounds.Tick, 6,0),
+                new ModTask(250, "Player.MuggingTick", Player.MuggingTick, 6,1),
+                new ModTask(250, "World.Pedestrians.Prune", World.Pedestrians.Prune, 7,0),
+                new ModTask(1000, "World.Pedestrians.Scan", World.Pedestrians.Scan, 7,1),
+                new ModTask(250, "World.Vehicles.CleanLists", World.Vehicles.CleanLists, 7,2),
+                new ModTask(1000, "World.Vehicles.Scan", World.Vehicles.Scan, 7,3),
+                
+                new ModTask(250, "Player.WeaponDropping.Tick", Player.WeaponDropping.Tick, 8,0),
+                new ModTask(500, "Player.Violations.TrafficUpdate", Player.Violations.TrafficUpdate, 9,0),
+                new ModTask(500, "Player.CurrentLocation.Update", Player.CurrentLocation.Update, 9,1),
+                new ModTask(500, "Player.ArrestWarrant.Update", Player.ArrestWarrant.Update, 9,2),
+                new ModTask(500, "World.PoliceForce.SpeechTick", World.Police.SpeechTick, 10,2),
+                new ModTask(500, "World.Vehicles.Tick", World.Vehicles.Tick, 10,3),
+                new ModTask(500, "World.Dispatch.SpawnChecking", World.Dispatcher.Dispatch, 11,0),
+                new ModTask(500, "World.Dispatch.DeleteChecking", World.Dispatcher.Recall, 11,1),
+                new ModTask(500, "World.Update",World.Update,13,0),//not as scary as it seems
 
 
-                new ModTask(500, "DispatchManager.SpawnChecking", World.Dispatch.SpawnChecking, 11,0),
-                new ModTask(500, "DispatchManager.DeleteChecking", World.Dispatch.DeleteChecking, 11,1),
-
-                new ModTask(500, "WorldCache",World.CacheWorldData,13,0),
-
-                new ModTask(500, "TaskManager.UpdateTaskablePeds", World.Tasking.UpdateTaskablePeds, 14,0),
-                new ModTask(500, "TaskManager.RunActivities", World.Tasking.RunActivities, 14,1),
+                new ModTask(500, "World.Tasking.UpdatePeds", World.Tasking.UpdatePeds, 14,0),
+                new ModTask(500, "World.Tasking.Tick", World.Tasking.TaskCops, 14,1),
+                new ModTask(750, "World.Tasking.Tick", World.Tasking.TaskCivilians, 14,2),
 
 
-                new ModTask(150, "SearchModeManager", Player.SearchMode.UpdateWanted, 15,0),
-                new ModTask(150, "SearchModeStoppingManager", Player.SearchMode.StopVanillaSearchMode, 15,1),
-
-                new ModTask(500, "ScannerManager", World.Scanner.Tick, 16,0),
-
-
-                new ModTask(100, "Audio",Audio.Tick,17,0),
+                new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchMode.UpdateWanted, 15,0),
+                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.SearchMode.StopVanilla, 15,1),
+                new ModTask(500, "World.Scanner.Tick", World.Scanner.Tick, 16,0),
+                new ModTask(100, "Audio.Tick",Audio.Tick,17,0),
 
 
+                new ModTask(1000, "World.Vehicles.UpdatePlates", World.Vehicles.UpdatePlates, 18,0),
             };
         }
         private class ModTask

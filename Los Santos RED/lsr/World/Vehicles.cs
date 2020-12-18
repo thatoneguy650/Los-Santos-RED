@@ -36,6 +36,12 @@ public class Vehicles
         {
             AddToList(Veh);
         }
+
+    }
+    public void Tick()
+    {
+        RemoveAbandonedPoliceVehicles();
+        FixDamagedPoliceVehicles();
     }
     public void CleanLists()
     {
@@ -55,6 +61,36 @@ public class Vehicles
             }
         }
     }
+
+
+    private void RemoveAbandonedPoliceVehicles()
+    {
+        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
+        {
+            if (PoliceCar.Vehicle.IsEmpty)
+            {
+                if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                {
+                    PoliceCar.Vehicle.Delete();
+                }
+            }
+        }
+    }
+    private void FixDamagedPoliceVehicles()
+    {
+        foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
+        {
+            if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
+            {
+                Cop.Pedestrian.CurrentVehicle.Repair();
+            }
+            else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
+            {
+                Mod.World.Spawner.Delete(Cop);
+            }
+        }
+    }
+
     public void ClearPolice()
     {
         foreach (VehicleExt Veh in PoliceVehicles)
@@ -79,14 +115,14 @@ public class Vehicles
     {
         if (Veh.Exists())
         {
-            VehicleExt Car = new VehicleExt(Veh);
+            
             if (Veh.IsPoliceVehicle)
             {
                 if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
                 {
-                    Mod.World.PoliceSpawning.UpdateLivery(Veh);
-                    Mod.World.PoliceSpawning.UpgradeCruiser(Veh);
-
+                    VehicleExt Car = new VehicleExt(Veh);
+                    Car.UpdateCopCarLivery();
+                    Car.UpgradeCopCarPerformance();
                     PoliceVehicles.Add(Car);
                 }
             }
@@ -94,30 +130,30 @@ public class Vehicles
             {
                 if (!CivilianVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
                 {
+                    VehicleExt Car = new VehicleExt(Veh);
                     CivilianVehicles.Add(Car);
                 }
             }
         }
     }
-    public void AddToList(VehicleExt Veh)
+    public void AddToList(VehicleExt Car)
     {
-        if (Veh.Vehicle.Exists())
+        if (Car.Vehicle.Exists())
         {
-            if (Veh.Vehicle.IsPoliceVehicle)
+            if (Car.Vehicle.IsPoliceVehicle)
             {
-                if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Veh.Vehicle.Handle))
+                if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Car.Vehicle.Handle))
                 {
-                    Mod.World.PoliceSpawning.UpdateLivery(Veh.Vehicle);
-                    Mod.World.PoliceSpawning.UpgradeCruiser(Veh.Vehicle);
-
-                    PoliceVehicles.Add(Veh);
+                    Car.UpdateCopCarLivery();
+                    Car.UpgradeCopCarPerformance();
+                    PoliceVehicles.Add(Car);
                 }
             }
             else
             {
-                if (!CivilianVehicles.Any(x => x.Vehicle.Handle == Veh.Vehicle.Handle))
+                if (!CivilianVehicles.Any(x => x.Vehicle.Handle == Car.Vehicle.Handle))
                 {
-                    CivilianVehicles.Add(Veh);
+                    CivilianVehicles.Add(Car);
                 }
             }
         }

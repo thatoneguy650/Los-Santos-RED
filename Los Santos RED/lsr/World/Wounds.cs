@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Needs Full Rewrite/Refactor
-public class PedDamage
+public class Wounds
 {
     private enum BodyLocation
     {
@@ -133,7 +133,7 @@ public class PedDamage
             return PedHealthStates.Any(x => x.IsBleeding && x.IsPlayerPed);
         }
     }
-    public PedDamage()
+    public Wounds()
     {
         PlayerKilledCivilians = new List<PedExt>();
         PlayerKilledCops = new List<PedExt>();
@@ -259,7 +259,7 @@ public class PedDamage
     }
     private void AddPedsToTrack()
     {
-        foreach (Cop Cop in Mod.World.Pedestrians.Cops.Where(x=> x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+        foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x=> x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         {
             if (Cop.Pedestrian.Exists() && !PedHealthStates.Any(x => x.MyPed.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
@@ -395,15 +395,15 @@ public class PedDamage
                     Mod.Debug.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
                     if (MyPed.IsCop)
                     {
-                        Mod.World.PedDamage.PlayerKilledCops.Add(MyPed);
-                        Mod.World.PedDamage.GameTimeLastKilledCop = Game.GameTime;
-                        Mod.World.PedDamage.GameTimeLastHurtCop = Game.GameTime;
+                        Mod.World.Wounds.PlayerKilledCops.Add(MyPed);
+                        Mod.World.Wounds.GameTimeLastKilledCop = Game.GameTime;
+                        Mod.World.Wounds.GameTimeLastHurtCop = Game.GameTime;
                     }
                     else
                     {
-                        Mod.World.PedDamage.PlayerKilledCivilians.Add(MyPed);
-                        Mod.World.PedDamage.GameTimeLastKilledCivilian = Game.GameTime;
-                        Mod.World.PedDamage.GameTimeLastHurtCivilian = Game.GameTime;
+                        Mod.World.Wounds.PlayerKilledCivilians.Add(MyPed);
+                        Mod.World.Wounds.GameTimeLastKilledCivilian = Game.GameTime;
+                        Mod.World.Wounds.GameTimeLastHurtCivilian = Game.GameTime;
                     }
                 }
             }
@@ -417,11 +417,11 @@ public class PedDamage
                         Mod.Debug.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
                         if (MyPed.IsCop)
                         {
-                            Mod.World.PedDamage.GameTimeLastHurtCop = Game.GameTime;
+                            Mod.World.Wounds.GameTimeLastHurtCop = Game.GameTime;
                         }
                         else
                         {
-                            Mod.World.PedDamage.GameTimeLastHurtCivilian = Game.GameTime;
+                            Mod.World.Wounds.GameTimeLastHurtCivilian = Game.GameTime;
                         }
                     }
                 }
@@ -660,7 +660,7 @@ public class PedDamage
             {
                 NativeFunction.CallByName<bool>("CLEAR_PED_LAST_DAMAGE_BONE", Pedestrian);
                 int DamagedBoneId = outBone;
-                PedBone DamagedOne = Mod.World.PedDamage.PedBones.FirstOrDefault(x => x.Tag == DamagedBoneId);
+                PedBone DamagedOne = Mod.World.Wounds.PedBones.FirstOrDefault(x => x.Tag == DamagedBoneId);
                 if (DamagedOne != null)
                 {
                     return DamagedOne.Location;

@@ -239,7 +239,7 @@ namespace LosSantosRED.lsr
             {
                 SuspiciousActivity.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.IsWanted && Mod.World.PoliceForce.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor >= 10000)
+            if (Mod.Player.IsWanted && Mod.World.Police.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor >= 10000)
             {
                 ResistingArrest.IsCurrentlyViolating = true;
             }
@@ -300,7 +300,7 @@ namespace LosSantosRED.lsr
                 if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || Mod.Player.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
                     FiringWeapon.IsCurrentlyViolating = true;
-                    if (Mod.World.PoliceForce.AnyRecentlySeenPlayer || Mod.World.PoliceForce.AnyCanHearPlayer)
+                    if (Mod.World.Police.AnyRecentlySeenPlayer || Mod.World.Police.AnyCanHearPlayer)
                         FiringWeaponNearPolice.IsCurrentlyViolating = true;
                 }
             }
@@ -347,7 +347,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckPedDamageCrimes()
         {
-            if (Mod.World.PedDamage.RecentlyKilledCop)
+            if (Mod.World.Wounds.RecentlyKilledCop)
             {
                 KillingPolice.IsCurrentlyViolating = true;
             }
@@ -356,7 +356,7 @@ namespace LosSantosRED.lsr
                 KillingPolice.IsCurrentlyViolating = false;
             }
 
-            if (Mod.World.PedDamage.RecentlyHurtCop)
+            if (Mod.World.Wounds.RecentlyHurtCop)
             {
                 HurtingPolice.IsCurrentlyViolating = true;
             }
@@ -365,7 +365,7 @@ namespace LosSantosRED.lsr
                 HurtingPolice.IsCurrentlyViolating = false;
             }
 
-            if (Mod.World.PedDamage.RecentlyKilledCivilian || Mod.World.PedDamage.NearCivilianMurderVictim)
+            if (Mod.World.Wounds.RecentlyKilledCivilian || Mod.World.Wounds.NearCivilianMurderVictim)
             {
                 KillingCivilians.IsCurrentlyViolating = true;
             }
@@ -374,7 +374,7 @@ namespace LosSantosRED.lsr
                 KillingCivilians.IsCurrentlyViolating = false;
             }
 
-            if (Mod.World.PedDamage.RecentlyHurtCivilian)
+            if (Mod.World.Wounds.RecentlyHurtCivilian)
             {
                 HurtingCivilians.IsCurrentlyViolating = true;
             }
@@ -403,7 +403,7 @@ namespace LosSantosRED.lsr
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (Mod.World.PedDamage.RecentlyHurtCivilian || Mod.World.PedDamage.RecentlyHurtCop) && (Mod.World.Pedestrians.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.Pedestrians.Cops.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
+            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (Mod.World.Wounds.RecentlyHurtCivilian || Mod.World.Wounds.RecentlyHurtCop) && (Mod.World.Pedestrians.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.Pedestrians.Police.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
             {
                 HitPedWithCar.IsCurrentlyViolating = true;
             }
@@ -488,7 +488,7 @@ namespace LosSantosRED.lsr
 
             if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.ExemptCode3 && Mod.Player.CurrentVehicle.Vehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.WasReportedStolen)
             {
-                if (Mod.Player.CurrentVehicle.Vehicle.IsSirenOn && !Mod.World.PoliceForce.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
+                if (Mod.Player.CurrentVehicle.Vehicle.IsSirenOn && !Mod.World.Police.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
                 {
                     TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
                 }
@@ -549,7 +549,7 @@ namespace LosSantosRED.lsr
         {
             foreach (Crime Violating in CrimeList.Where(x => x.IsCurrentlyViolating))
             {
-                if (Mod.World.PoliceForce.AnyCanSeePlayer || (Violating.CanReportBySound && Mod.World.PoliceForce.AnyCanHearPlayer) || Violating.IsAlwaysFlagged)
+                if (Mod.World.Police.AnyCanSeePlayer || (Violating.CanReportBySound && Mod.World.Police.AnyCanHearPlayer) || Violating.IsAlwaysFlagged)
                 {
                     WeaponInformation ToSee = null;
                     if (!Mod.Player.IsInVehicle)

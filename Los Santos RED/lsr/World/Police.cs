@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr
 {
-    public class PoliceForce
+    public class Police
     {
         public bool AnyCanSeePlayer { get; private set; }
         public bool AnyCanHearPlayer { get; private set; }
@@ -27,12 +27,16 @@ namespace LosSantosRED.lsr
         {
             get
             {
+                float Time = 2000;
                 if (Mod.World.IsNightTime)
-                    return 3500;
+                {
+                    Time+= 3500;
+                }
                 else if (Mod.Player.IsInVehicle)
-                    return 750;
-                else
-                    return 2000;
+                {
+                    Time += 750;
+                }
+                return Time;
             }
         }
         public void Tick()
@@ -42,7 +46,7 @@ namespace LosSantosRED.lsr
         }
         public void SpeechTick()
         {
-            foreach (Cop Cop in Mod.World.Pedestrians.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+            foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
             {
                 if(Cop.CanRadioIn)
                 {
@@ -60,37 +64,29 @@ namespace LosSantosRED.lsr
         }
         private void UpdateCops()
         {
-            foreach (Cop Cop in Mod.World.Pedestrians.Cops.Where(x=> x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+            foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x=> x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
             {
                 Cop.Update();
-                if (Cop.ShouldBustPlayer)
-                {
-                    Mod.Player.StartManualArrest();
-                }
-                Cop.Loadout.Update();//Here for now
+                Cop.Loadout.Update();
             }
         }
-        private void UpdateRecognition()
+        private void UpdateRecognition()//most likely remove this and let these be proepties instead of cached values
         {
-            AnyCanSeePlayer = Mod.World.Pedestrians.Cops.Any(x => x.CanSeePlayer);
-            AnyCanHearPlayer = Mod.World.Pedestrians.Cops.Any(x => x.WithinWeaponsAudioRange);
-
+            AnyCanSeePlayer = Mod.World.Pedestrians.Police.Any(x => x.CanSeePlayer);
+            AnyCanHearPlayer = Mod.World.Pedestrians.Police.Any(x => x.WithinWeaponsAudioRange);
             if (AnyCanSeePlayer)
             {
                 AnyRecentlySeenPlayer = true;
             }
             else
             {
-                AnyRecentlySeenPlayer = Mod.World.Pedestrians.Cops.Any(x => x.SeenPlayerSince(Mod.DataMart.Settings.SettingsManager.Police.PoliceRecentlySeenTime));
+                AnyRecentlySeenPlayer = Mod.World.Pedestrians.Police.Any(x => x.SeenPlayerSince(Mod.DataMart.Settings.SettingsManager.Police.PoliceRecentlySeenTime));
             }
-
-            AnyCanRecognizePlayer = Mod.World.Pedestrians.Cops.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
-
+            AnyCanRecognizePlayer = Mod.World.Pedestrians.Police.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
             if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer && Mod.Player.IsWanted)
             {
                 AnySeenPlayerCurrentWanted = true;
             }
-
             if (AnyRecentlySeenPlayer)
             {
                 if (!AnySeenPlayerCurrentWanted)
@@ -102,7 +98,6 @@ namespace LosSantosRED.lsr
                     PlaceLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 }
             }
-
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlaceLastSeenPlayer.X, PlaceLastSeenPlayer.Y, PlaceLastSeenPlayer.Z);
         }
     }

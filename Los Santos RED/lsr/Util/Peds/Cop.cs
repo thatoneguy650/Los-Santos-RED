@@ -86,7 +86,7 @@ public class Cop : PedExt
     {
         get
         {
-            return Mod.World.Pedestrians.Cops.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
+            return Mod.World.Pedestrians.Police.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
     public bool ShouldBustPlayer
@@ -159,7 +159,7 @@ public class Cop : PedExt
             {
                 Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
             }
-            else if (Mod.World.PedDamage.RecentlyKilledCop)
+            else if (Mod.World.Wounds.RecentlyKilledCop)
             {
                 Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
             }

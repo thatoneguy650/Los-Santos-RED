@@ -31,7 +31,7 @@ public class Agency
         {
             if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
             {
-                if (Mod.World.Pedestrians.Cops.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                if (Mod.World.Pedestrians.Police.Count(x => x.AssignedAgency == this) < SpawnLimit)
                     return true;
                 else
                     return false;

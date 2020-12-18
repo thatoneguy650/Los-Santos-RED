@@ -124,7 +124,7 @@ public class UI
     }
     private void DisplayHelpText()
     {
-        if (!RecentlyDisplayedBleedingHelp && Mod.World.PedDamage.IsPlayerBleeding)
+        if (!RecentlyDisplayedBleedingHelp && Mod.World.Wounds.IsPlayerBleeding)
         {
             Game.DisplayHelp("Hold still to bandage!", 5000);
             GameTimeLastDisplayedBleedingHelp = Game.GameTime;
@@ -151,7 +151,7 @@ public class UI
         string DebugLine2 = string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", Mod.Player.SearchMode.IsInSearchMode, Mod.Player.SearchMode.IsInActiveMode, Mod.Player.SearchMode.TimeInSearchMode, Mod.Player.SearchMode.TimeInActiveMode);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", Mod.World.PoliceForce.AnyRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, Mod.Player.SearchMode.CurrentSearchTime, Mod.World.PoliceForce.PlaceLastSeenPlayer);
+        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, SrchTm {2}, LastSeen {3}", Mod.World.Police.AnyRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, Mod.Player.SearchMode.CurrentSearchTime, Mod.World.Police.PlaceLastSeenPlayer);
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine4 = string.Format("CrimesObs {0}", Mod.Player.CurrentPoliceResponse.CrimesObservedJoined);
@@ -202,7 +202,7 @@ public class UI
                 StartedBustedEffect = true;
             }
         }
-        else if (Mod.World.PedDamage.IsPlayerBleeding)
+        else if (Mod.World.Wounds.IsPlayerBleeding)
         {
             if (!StartedBandagingEffect)
             {

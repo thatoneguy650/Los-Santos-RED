@@ -8,15 +8,11 @@ using System.Threading.Tasks;
 
 public class Civilians
 {
-    public bool AnyCanSeePlayer { get; set; }
-    public bool AnyCanHearPlayer { get; set; }
-    public bool AnyCanRecognizePlayer { get; set; }
     public void Tick()
     {
         Update();
-        SetRecognition();
     }
-    public void Reset()
+    public void ResetWitnessedCrimes()
     {
         Mod.World.Pedestrians.Civilians.ForEach(x => x.CrimesWitnessed.Clear());
     }
@@ -26,11 +22,5 @@ public class Civilians
         {
             MyPed.Update();
         }
-    }
-    private void SetRecognition()
-    {
-        AnyCanSeePlayer = Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer);
-        AnyCanHearPlayer = Mod.World.Pedestrians.Civilians.Any(x => x.WithinWeaponsAudioRange);
-        AnyCanRecognizePlayer = Mod.World.Pedestrians.Civilians.Any(x => x.CanRecognizePlayer);
     }
 }

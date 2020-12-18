@@ -98,7 +98,7 @@ public class Investigations
             PoliceInInvestigationModeChanged();
 
 
-        if (Mod.Player.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Mod.World.PoliceForce.AnyCanRecognizePlayer && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
+        if (Mod.Player.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Mod.World.Police.AnyCanRecognizePlayer && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
         {
             Mod.Player.CurrentPoliceResponse.ApplyReportedCrimes();
         }

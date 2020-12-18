@@ -110,7 +110,8 @@ public class Respawning
     {
         GameTimeLastUndied = Game.GameTime;
         RespawnInPlace(true);
-        Mod.World.Scanner.AbortAudio();
+        Mod.Audio.Abort();
+        Mod.World.Scanner.Abort();
         Game.LocalPlayer.Character.IsInvincible = true;
         GameFiber.StartNew(delegate
         {
@@ -154,8 +155,9 @@ public class Respawning
             }
             GameTimeLastRespawned = Game.GameTime;
             Game.HandleRespawn();
-            Mod.World.Scanner.AbortAudio();
-            Mod.World.Clock.UnpauseTime();
+            Mod.Audio.Abort();
+            Mod.World.Scanner.Abort();
+            Mod.World.Time.UnpauseTime();
         }
         catch (Exception e)
         {
@@ -369,8 +371,8 @@ public class Respawning
             Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Reset player with Clear Wanted", false);
             Mod.Player.MaxWantedLastLife = 0;
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-            Mod.World.PedDamage.Reset();
-            Mod.World.Civilians.Reset();
+            Mod.World.Wounds.Reset();
+            Mod.World.Civilians.ResetWitnessedCrimes();
             Mod.Player.Investigations.Reset();
         }
 
@@ -389,7 +391,7 @@ public class Respawning
     }
     private void CheckWeapons()
     {
-        if (!Mod.World.PedDamage.KilledAnyCops)
+        if (!Mod.World.Wounds.KilledAnyCops)
         {
             RemoveIllegalWeapons();
         }
