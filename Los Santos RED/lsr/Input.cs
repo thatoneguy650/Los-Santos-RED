@@ -22,7 +22,6 @@ namespace LosSantosRED.lsr
 {
     public class Input
     {
-        private bool EngineKeyDown;
         private uint GameTimeStartedHoldingEnter;
         public bool IsHoldingEnter
         {

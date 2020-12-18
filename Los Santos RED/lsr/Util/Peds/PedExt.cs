@@ -327,8 +327,11 @@ public class PedExt
         {
             if (Pedestrian.IsDead)
             {
-                Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
-                if (killer.Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == killer.Handle))
+                //Entity killer = NativeFunction.CallByName<Entity>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
+                //Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
+                //Entity killer = NativeFunction.Natives.GetPedKiller<Entity>(Pedestrian);//was working before update from 2060.
+                uint Handle = NativeFunction.CallByName<uint>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
+                if (Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == Handle))
                 {
                     KilledByPlayer = true;
                 }

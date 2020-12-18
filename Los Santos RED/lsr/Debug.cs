@@ -85,28 +85,28 @@ public class Debug
             DebugNumpad9();
         }
 
-        if (false)
-        {
-            foreach (Cop MyCop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
-            {
-                Color ToShow = Color.Black;
-                TaskStatus CurrentOne = MyCop.Pedestrian.Tasks.CurrentTaskStatus;
-                if (CurrentOne == TaskStatus.InProgress)
-                    ToShow = Color.Green;
-                else if (CurrentOne == TaskStatus.Interrupted)
-                    ToShow = Color.Red;
-                else if (CurrentOne == TaskStatus.NoTask)
-                    ToShow = Color.White;
-                else if (CurrentOne == TaskStatus.None)
-                    ToShow = Color.Blue;
-                else if (CurrentOne == TaskStatus.NoTask)
-                    ToShow = Color.Purple;
-                else if (CurrentOne == TaskStatus.Preparing)
-                    ToShow = Color.Yellow;
+        //if (false)
+        //{
+        //    foreach (Cop MyCop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+        //    {
+        //        Color ToShow = Color.Black;
+        //        TaskStatus CurrentOne = MyCop.Pedestrian.Tasks.CurrentTaskStatus;
+        //        if (CurrentOne == TaskStatus.InProgress)
+        //            ToShow = Color.Green;
+        //        else if (CurrentOne == TaskStatus.Interrupted)
+        //            ToShow = Color.Red;
+        //        else if (CurrentOne == TaskStatus.NoTask)
+        //            ToShow = Color.White;
+        //        else if (CurrentOne == TaskStatus.None)
+        //            ToShow = Color.Blue;
+        //        else if (CurrentOne == TaskStatus.NoTask)
+        //            ToShow = Color.Purple;
+        //        else if (CurrentOne == TaskStatus.Preparing)
+        //            ToShow = Color.Yellow;
 
-                    Rage.Debug.DrawArrowDebug(new Vector3(MyCop.Pedestrian.Position.X, MyCop.Pedestrian.Position.Y, MyCop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, ToShow);
-            }
-        }
+        //            Rage.Debug.DrawArrowDebug(new Vector3(MyCop.Pedestrian.Position.X, MyCop.Pedestrian.Position.Y, MyCop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, ToShow);
+        //    }
+        //}
     }
     private void DebugNumpad0()
     {
@@ -300,16 +300,10 @@ public class Debug
     {
         WriteToLog("Debugging", "Pressed Num9");
         Mod.Dispose();
-        GameFiber.Sleep(500);
-        Mod.Player.CurrentPoliceResponse.Reset();
         Game.LocalPlayer.WantedLevel = 0;
-        Mod.World.Pedestrians.ClearPolice();
-        Mod.World.Vehicles.ClearPolice();
         Game.TimeScale = 1f;
-        Mod.Player.ResetState(true);
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.DisplayNotification("Instant Action Deactivated");
-        Mod.Dispose();
     }
     private void DebugNonInvincible()
     {

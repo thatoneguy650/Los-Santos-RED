@@ -57,8 +57,12 @@ namespace LosSantosRED.lsr.Data
             List<string> AudioFiles = new List<string>();
             foreach (char c in LicensePlate)
             {
-                string DispatchFileName = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).PickRandom().ScannerFile;
-                AudioFiles.Add(DispatchFileName);
+                List<LetterLookup> Possible = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).ToList();
+                if(Possible.Any())
+                {
+                    string DispatchFileName = Possible.PickRandom().ScannerFile;
+                    AudioFiles.Add(DispatchFileName);
+                }
             }
             return AudioFiles;
         }

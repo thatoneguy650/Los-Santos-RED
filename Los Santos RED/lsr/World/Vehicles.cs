@@ -18,14 +18,14 @@ public class Vehicles
     {
         get
         {
-            return Mod.World.Vehicles.PoliceVehicles.Count(x => x.Vehicle.IsHelicopter);
+            return Mod.World.Vehicles.PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsHelicopter);
         }
     }
     public int PoliceBoatsCount
     {
         get
         {
-            return Mod.World.Vehicles.PoliceVehicles.Count(x => x.Vehicle.IsBoat);
+            return Mod.World.Vehicles.PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
         }
     }
     public void Scan()

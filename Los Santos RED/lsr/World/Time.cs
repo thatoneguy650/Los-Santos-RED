@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 public class Time
 {
-    private int ClockDayOfWeek;
     private uint GameTimeLastSetClock;
     private bool IsPaused;
     private int StoredClockSeconds;

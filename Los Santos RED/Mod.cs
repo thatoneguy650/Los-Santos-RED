@@ -22,7 +22,9 @@ namespace LosSantosRED.lsr
             IsRunning = true;
 
             while (Game.IsLoading)
+            {
                 GameFiber.Yield();
+            }
 
             DataMart.ReadConfig();
             Player.AddSpareLicensePlates();
@@ -37,7 +39,6 @@ namespace LosSantosRED.lsr
         public static void Dispose()
         {
             IsRunning = false;
-            GameFiber.Sleep(500);
             Player.Dispose();
             World.Dispose();
         }

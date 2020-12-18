@@ -41,7 +41,6 @@ namespace LosSantosRED.lsr
         private readonly Crime RunningARedLight = new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, 5, false, false, false) { IsTrafficViolation = true };
         private readonly Crime HitPedWithCar = new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 15, 3, true, true, true) { IsTrafficViolation = true };
         private readonly Crime HitCarWithCar = new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, 4, true, true, true) { IsTrafficViolation = true };
-        private uint GameTimeLastRanRed;
         private uint GameTimeStartedDrivingOnPavement;
         private uint GameTimeStartedDrivingAgainstTraffic;
         private int TimeSincePlayerHitPed;
@@ -112,18 +111,6 @@ namespace LosSantosRED.lsr
             get
             {
                 return CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians && x.CanReportBySound);
-            }
-        }
-        public bool RecentlyRanRed
-        {
-            get
-            {
-                if (GameTimeLastRanRed == 0)
-                    return false;
-                else if (Game.GameTime - GameTimeLastRanRed <= 1000)
-                    return true;
-                else
-                    return false;
             }
         }
         public bool RecentlyHitPed
@@ -455,7 +442,7 @@ namespace LosSantosRED.lsr
                 {
                     FelonySpeeding.IsCurrentlyViolating = false;
                 }
-                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.RunningRedLight && RecentlyRanRed)
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.RunningRedLight)//Off for now
                 {
                     //RunningARedLight.IsCurrentlyViolating = true;//turned off for now until i fix it
                 }
