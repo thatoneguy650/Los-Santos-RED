@@ -156,17 +156,93 @@ public class Debug
         //WriteToLog("Debugging", string.Format("Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer))): {0}", Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer)));
         //WriteToLog("Debugging", string.Format("Game.LocalPlayer.Character.GetBoneOrientation(0): {0}", Game.LocalPlayer.Character.GetBoneOrientation(0)));
 
-        
 
+        ////Errors
+        //Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
+        //while (myPed.Exists() && myPed.IsAlive)
+        //{
+        //    GameFiber.Yield();
+        //}
+        //if (myPed.Exists() && myPed.IsDead)
+        //{
+        //    Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(myPed);
+        //    Game.Console.Print(string.Format("Killer Handle {0}", killer.Handle));
+        //}
+
+        ////Errors
+        //Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
+        //while (myPed.Exists() && myPed.IsAlive)
+        //{
+        //    GameFiber.Yield();
+        //}
+        //if (myPed.Exists() && myPed.IsDead)
+        //{
+        //    Entity killer = NativeFunction.Natives.GET_PED_SOURCE_OF_DEATH<Entity>(myPed);
+        //    Game.Console.Print(string.Format("Killer Handle {0}", killer.Handle));
+        //}
+
+       // Works for Player, not Vehicle
+        Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
+        myPed.BlockPermanentEvents = true;
+        while (myPed.Exists() && myPed.IsAlive)
+        {
+            GameFiber.Yield();
+        }
+        if (myPed.Exists() && myPed.IsDead)
+        {
+            uint killer = NativeFunction.Natives.GetPedSourceOfDeath<uint>(myPed);
+            Game.Console.Print(string.Format("Killer Handle {0}, Player Handle {1}, Player Killed {2}", killer, Game.LocalPlayer.Character.Handle, Game.LocalPlayer.Character.Handle == killer));
+            myPed.Delete();
+        }
+
+
+
+
+        //Ped PedToKill = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
+        //PedToKill.BlockPermanentEvents = true;
+        //while (PedToKill.Exists() && PedToKill.IsAlive)
+        //{
+        //    GameFiber.Yield();
+        //}
+        //if (PedToKill.Exists() && PedToKill.IsDead)
+        //{
+        //    Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(PedToKill);
+        //    Game.Console.Print(string.Format("Killer Handle {0}, Player Handle {1}, Player Killed {2}", killer.Handle, Game.LocalPlayer.Character.Handle, Game.LocalPlayer.Character.Handle == killer.Handle));
+        //    PedToKill.Delete();
+        //}
 
     }
     private void DebugNumpad6()
     {
-        if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.Exists())
-        {
-            Colorbullshit();
-            Colorbullshit2();
-        }
+        //if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.Exists())
+        //{
+        //    Colorbullshit();
+        //    Colorbullshit2();
+        //}
+
+
+        //AnimationDictionary Dict = new AnimationDictionary("get_up@directional@transition@prone_to_knees@injured");//"back"
+        //AnimationDictionary Dict2 = new AnimationDictionary("get_up@directional@movement@from_knees@injured");//"getup_l_-180"
+        //AnimationDictionary Dict3 = new AnimationDictionary("anim@gangops@morgue@table@");//"ko_back"
+        ////NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "get_up@directional@transition@prone_to_knees@injured", "back", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+        //Game.LocalPlayer.Character.IsRagdoll = true;
+        //GameFiber.Sleep(1500);
+        //Game.LocalPlayer.Character.IsRagdoll = false;
+        //unsafe
+        //{
+        //    int lol = 0;
+        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "anim@gangops@morgue@table@", "ko_back", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "get_up@directional@transition@prone_to_knees@injured", "back", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "get_up@directional@movement@from_knees@injured", "getup_r_180", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Game.LocalPlayer.Character, lol);
+        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //}
+
+        WriteToLog("Position", $"Vector3 {Game.LocalPlayer.Character.Position} Heading {Game.LocalPlayer.Character.Heading}");
+
     }       
     private void Colorbullshit()
     {

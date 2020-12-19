@@ -242,8 +242,9 @@ public class Wounds
     }
     public void Tick()
     {
-        PedHealthStates.RemoveAll(x => !x.MyPed.Pedestrian.Exists());
+        
         AddPedsToTrack();
+        PedHealthStates.RemoveAll(x => !x.MyPed.Pedestrian.Exists());
         foreach (PedHealthState MyHealthState in PedHealthStates)
         {
             MyHealthState.Update();
@@ -351,7 +352,7 @@ public class Wounds
         }
         public void Update()
         {
-            if (NeedDamageCheck)
+            if (NeedDamageCheck && MyPed.Pedestrian.Exists())
             {
                 GameTimeLastCheckedDamage = Game.GameTime;
                 CurrentHealth = MyPed.Pedestrian.Health;

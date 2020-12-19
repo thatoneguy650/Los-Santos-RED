@@ -70,25 +70,25 @@ public class Tasking
     {
         try
         {
-            TaskableCivilian Civilian = TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.CivilianToTask.DistanceToPlayer).FirstOrDefault();
-            if(Civilian != null)
-            {
-                Civilian.RunCurrentActivity();
-            }
-
-            //int TaskedCivilians = 0;
-            //foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.CivilianToTask.DistanceToPlayer))//foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
+            //TaskableCivilian Civilian = TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.CivilianToTask.DistanceToPlayer).FirstOrDefault();
+            //if(Civilian != null)
             //{
-            //    if (TaskedCivilians < 1)//5//4
-            //    {
-            //        Civilian.RunCurrentActivity();
-            //        TaskedCivilians++;
-            //    }
-            //    else
-            //    {
-            //        break;
-            //    }
+            //    Civilian.RunCurrentActivity();
             //}
+
+            int TaskedCivilians = 0;
+            foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.CivilianToTask.DistanceToPlayer))//foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
+            {
+                if (TaskedCivilians < 1)//5//4
+                {
+                    Civilian.RunCurrentActivity();
+                    TaskedCivilians++;
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
         catch (Exception e)
         {

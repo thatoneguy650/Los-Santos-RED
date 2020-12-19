@@ -366,28 +366,36 @@ public class PedExt
     {
         try
         {
-            if (Pedestrian.IsDead)
+            if (Pedestrian.Exists() && Pedestrian.IsDead)
             {
+                //Pre Update Working Stuff
                 //Entity killer = NativeFunction.CallByName<Entity>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
                 //Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);//was working before update from 2060.
                 //Entity killer = NativeFunction.Natives.x93C8B64DEB84728C<Entity>(Pedestrian);//was working before update from 2060, with Hash instead of name
                 //uint Handle = NativeFunction.CallByName<uint>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
                 //Mod.Debug.WriteToLog("CheckPlayerKilledPed", string.Format("Killed Handle: {0}, Player Handle: {1}, killer: {2}", Handle,Game.LocalPlayer.Character.Handle, killer.Handle));
-                //if (Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == Handle))
+                //if (killer.Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == killer.Handle))
                 //{
                 //    KilledByPlayer = true;
                 //}
 
+                //Temp Stuff that works regardless
                 //temp as the above native functions are not working on this version of RPH, assume if you hurt them, you killed them
-                if(!HurtByPlayer)
-                {
-                    CheckPlayerHurtPed();
-                }
-                if (HurtByPlayer)
+                //if (!HurtByPlayer)
+                //{
+                //    CheckPlayerHurtPed();
+                //}
+                //if (HurtByPlayer)
+                //{
+                //    KilledByPlayer = true;
+                //}
+
+                //Temp that will only get shooting, not vehicle!
+                uint killer = NativeFunction.Natives.GetPedSourceOfDeath<uint>(Pedestrian);
+                if (killer == Game.LocalPlayer.Character.Handle)
                 {
                     KilledByPlayer = true;
                 }
-
             }
         }
         catch

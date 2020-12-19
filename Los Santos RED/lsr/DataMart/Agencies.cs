@@ -13,14 +13,12 @@ public class Agencies
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Agencies.xml";
     private bool UseVanillaConfig = true;
-    private int LikelyHoodOfAnySpawn = 5;
+    private readonly int LikelyHoodOfAnySpawn = 5;
     private List<Agency> AgenciesList;
-
     public Agencies()
     {
 
     }
-
     public void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
@@ -659,7 +657,6 @@ public class Agencies
         };
 
     }
-
 }
 
 

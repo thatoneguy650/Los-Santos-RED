@@ -173,7 +173,9 @@ public class Respawning
         Mod.Player.Surrendering.RaiseHands();
         ResetPlayer(true, true);
         if (PoliceStation == null)
+        {
             PoliceStation = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
+        }
         SetPlayerAtLocation(PoliceStation);
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
         Mod.World.Pedestrians.ClearPolice();
@@ -210,19 +212,35 @@ public class Respawning
             //Animation goes here if you want to add it somehow
         }
     }
-    public void RespawnAtHospital(GameLocation Hospital)
+    public void RespawnAtHospital(GameLocation PlaceToSpawn)
     {
         FadeOut();
         Mod.Player.ResetState(true);
         RespawnInPlace(false);
-        if (Hospital == null)
-            Hospital = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
-        SetPlayerAtLocation(Hospital);
+        if (PlaceToSpawn == null)
+        {
+            PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
+        }
+        SetPlayerAtLocation(PlaceToSpawn);
         GameTimeLastDischargedFromHospital = Game.GameTime;
         Mod.World.Pedestrians.ClearPolice();
         Mod.World.Vehicles.ClearPolice();
-        SetHospitalFee(Hospital.Name);
+        SetHospitalFee(PlaceToSpawn.Name);
         FadeIn();   
+    }
+    public void RespawnAtGrave()
+    {
+        FadeOut();
+        Mod.Player.ResetState(true);
+        RespawnInPlace(false);
+        GameLocation PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
+        SetPlayerAtLocation(PlaceToSpawn);
+        GameTimeLastDischargedFromHospital = Game.GameTime;
+        Mod.World.Pedestrians.ClearPolice();
+        Mod.World.Vehicles.ClearPolice();
+        Game.LocalPlayer.Character.IsRagdoll = true;
+        FadeIn();
+        Game.LocalPlayer.Character.IsRagdoll = false;
     }
     public void ResistArrest()
     {
@@ -456,6 +474,10 @@ public class Respawning
     {
         Game.LocalPlayer.Character.Position = ToSet.LocationPosition;
         Game.LocalPlayer.Character.Heading = ToSet.Heading;
+        if(ToSet.Type == LocationType.Grave)
+        {
+            Game.LocalPlayer.Character.IsRagdoll = true;
+        }
     }
     private void FadeOut()
     {

@@ -145,7 +145,7 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.Pedestrians.Scan", World.Pedestrians.Scan, 6,1),
                 new ModTask(250, "World.Vehicles.CleanLists", World.Vehicles.CleanLists, 6,2),
                 new ModTask(1000, "World.Vehicles.Scan", World.Vehicles.Scan, 6,3),
-                
+
                 new ModTask(250, "Player.WeaponDropping.Tick", Player.WeaponDropping.Tick, 7,0),
 
                 new ModTask(500, "Player.Violations.TrafficUpdate", Player.Violations.TrafficUpdate, 8,0),

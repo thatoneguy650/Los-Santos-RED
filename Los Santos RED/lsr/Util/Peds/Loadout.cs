@@ -26,9 +26,13 @@ public class Loadout
         get
         {
             if (GameTimeLastWeaponCheck == 0)
+            {
                 return true;
+            }
             else if (Game.GameTime > GameTimeLastWeaponCheck + 750)//500
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -101,18 +105,23 @@ public class Loadout
                 {
                     SetLessLethal();
                 }
+                else if (Cop.IsInVehicle)
+                {
+                    SetUnarmed();
+                }
                 else
                 {
                     NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);
                 }
-
             }
         }
     }
     private void CheckIssueHeavy()
     {
         if (Mod.DataMart.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon && Cop.IsInVehicle)
+        {
             IssueHeavyWeapon();
+        }
     }
     private void IssuePistol()
     {
@@ -136,8 +145,7 @@ public class Loadout
             PistolVariation = MyVariation;
             MyVariation.ApplyWeaponVariation(Cop.Pedestrian, (uint)Pistol.Hash);
         }
-
-        Mod.Debug.WriteToLog("PoliceEquipment", string.Format("Issued Pistol: {0}", IssuedPistol.ModelName));
+        Mod.Debug.WriteToLog("PoliceEquipment", $"Issued Pistol: {IssuedPistol.ModelName} to {Cop.Pedestrian.Handle}");
     }
     private void IssueHeavyWeapon()
     {
@@ -161,15 +169,18 @@ public class Loadout
             HeavyVariation = MyVariation;
             MyVariation.ApplyWeaponVariation(Cop.Pedestrian, (uint)IssuedHeavy.Hash);
         }
-        Mod.Debug.WriteToLog("PoliceEquipment", string.Format("Issued Heavy: {0}", IssuedHeavyWeapon.ModelName));
+        Mod.Debug.WriteToLog("PoliceEquipment", $"Issued Heavy: {IssuedHeavy.ModelName} to {Cop.Pedestrian.Handle}");
     }
     private void SetUnarmed()
     {
         if (!Cop.Pedestrian.Exists() || Cop.Pedestrian.IsDead || (IsSetUnarmed && !NeedsWeaponCheck))
+        {
             return;
+        }
         if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        {
             Cop.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
-
+        }
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 0);
         if (!(Cop.Pedestrian.Inventory.EquippedWeapon == null))
         {
@@ -177,13 +188,6 @@ public class Loadout
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
         }
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
-
-        //if (!IsSetUnarmed)
-        //{
-        //    General.RequestAnimationDictionay("weapons@holster_1h");
-        //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "weapons@holster_1h", "holster", 2.0f, -2.0f, -1, 52, 0, false, false, false);
-        //}
-
         IsSetLessLethal = false;
         IsSetUnarmed = true;
         IsSetDeadly = false;
@@ -192,34 +196,32 @@ public class Loadout
     private void SetDeadly()
     {
         if (!Cop.Pedestrian.Exists() || Cop.Pedestrian.IsDead || (IsSetDeadly && !NeedsWeaponCheck))
+        {
             return;
+        }
         if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        {
             Cop.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+        }
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 30);
         if (!Cop.Pedestrian.Inventory.Weapons.Contains(IssuedPistol.ModelName))
+        {
             Cop.Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.ModelName, -1, true);
-
+        }
         if ((Cop.Pedestrian.Inventory.EquippedWeapon == null || Cop.Pedestrian.Inventory.EquippedWeapon.Hash == WeaponHash.StunGun) && Game.LocalPlayer.WantedLevel >= 0)
+        {
             Cop.Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.ModelName, -1, true);
-
+        }
         if (IssuedHeavyWeapon != null)
         {
             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, NativeFunction.CallByName<bool>("GET_BEST_PED_WEAPON", Cop.Pedestrian, 0), true);
         }
-
         if (Mod.DataMart.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
         {
             PistolVariation.ApplyWeaponVariation(Cop.Pedestrian, (uint)IssuedPistol.Hash);
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys
-
-        //if (!IsSetDeadly)
-        //{
-        //    General.RequestAnimationDictionay("weapons@holster_1h");
-        //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "weapons@holster_1h", "unholster", 2.0f, -2.0f, -1, 52, 0, false, false, false);
-        //}
-
         IsSetLessLethal = false;
         IsSetUnarmed = false;
         IsSetDeadly = true;
@@ -228,10 +230,13 @@ public class Loadout
     private void SetLessLethal()
     {
         if (!Cop.Pedestrian.Exists() || Cop.Pedestrian.IsDead || (IsSetLessLethal && !NeedsWeaponCheck))
+        {
             return;
-
+        }
         if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        {
             Cop.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceTazerAccuracy;
+        }
         NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 100);
         if (!Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
         {
@@ -243,12 +248,6 @@ public class Loadout
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, false);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, false);//cant do drivebys
-
-        //if (!IsSetLessLethal)
-        //{
-        //    General.RequestAnimationDictionay("weapons@holster_1h");
-        //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "weapons@holster_1h", "unholster", 2.0f, -2.0f, -1, 52, 0, false, false, false);
-        //}
         IsSetLessLethal = true;
         IsSetUnarmed = false;
         IsSetDeadly = false;

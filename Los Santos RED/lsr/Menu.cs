@@ -518,7 +518,16 @@ public class Menu
         if (selectedItem == menuDeathUndie) Mod.Player.Respawning.UnDie();
         if (selectedItem == menuDeathHospitalRespawn)
         {
-            Mod.Player.Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
+            if(RandomItems.RandomPercent(0))//turned off for testing
+            {
+                Mod.Player.Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
+            }
+            else
+            {
+                Mod.Player.Respawning.RespawnAtGrave();
+            }
+
+            
         }
         else if (selectedItem == menuDeathTakeoverRandomPed)
         {

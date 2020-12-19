@@ -248,7 +248,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckDispatch()
         {
-            if (Mod.Player.IsWanted && Mod.World.Police.AnySeenPlayerCurrentWanted)
+            if (Mod.Player.IsWanted && Mod.World.Police.AnySeenPlayerCurrentWanted && Mod.Player.IsAliveAndFree)
             {
                 if (!RequestBackup.HasRecentlyBeenPlayed && Mod.Player.CurrentPoliceResponse.RecentlyRequestedBackup)
                 {
@@ -317,7 +317,7 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(SuspectLost, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.Police.PlaceLastSeenPlayer));
                 }
-                if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Mod.Player.Investigations.LastInvestigationRecentlyExpired && Mod.Player.Investigations.DistanceToInvestigationPosition <= 1000f)
+                if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Mod.Player.Investigations.LastInvestigationRecentlyExpired)
                 {
                     AddToQueue(NoFurtherUnitsNeeded);
                 }
