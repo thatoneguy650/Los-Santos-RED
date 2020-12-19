@@ -17,7 +17,7 @@ public class Surrendering
     {
         get
         {
-            if(!Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+            if (!Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
             {
                 return true;
             }
@@ -39,7 +39,7 @@ public class Surrendering
         //    return;
 
         Mod.Player.SetUnarmed();
-        if(Mod.Player.CurrentVehicle != null)
+        if (Mod.Player.CurrentVehicle != null)
         {
             Mod.Player.CurrentVehicle.ToggleEngine(false);
         }
@@ -116,13 +116,19 @@ public class Surrendering
             AnimationDictionary Ped = new AnimationDictionary("ped");
 
             if (!PedToArrest.Exists())
+            {
                 return;
+            }
 
             while (PedToArrest.Exists() && (PedToArrest.IsRagdoll || PedToArrest.IsStunned))
+            {
                 GameFiber.Yield();
+            }
 
             if (!PedToArrest.Exists())
+            {
                 return;
+            }
 
             Mod.Player.SetUnarmed();
 
@@ -136,10 +142,6 @@ public class Surrendering
                     GameFiber.Wait(2500);
                 }
             }
-
-            //if (PedToArrest == Game.LocalPlayer.Character && !PlayerState.IsBusted)
-            //    return;
-
             if (StayStanding)
             {
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
@@ -157,7 +159,9 @@ public class Surrendering
                     GameFiber.Wait(6000);
 
                     if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Mod.Player.IsBusted))
+                    {
                         return;
+                    }
 
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 }
@@ -165,30 +169,32 @@ public class Surrendering
             PedToArrest.KeepTasks = true;
 
             if (MarkAsNoLongerNeeded)
+            {
                 PedToArrest.IsPersistent = false;
+            }
         }, "SetArrestedAnimation");
         Mod.Debug.GameFibers.Add(SetArrestedAnimation);
 
     }
     public void UnSetArrestedAnimation(Ped PedToArrest)
     {
-            GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
-            {
-                AnimationDictionary RandomArrests = new AnimationDictionary("random@arrests");
-                AnimationDictionary Busted = new AnimationDictionary("busted");
-                AnimationDictionary Ped = new AnimationDictionary("ped");
+        GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
+        {
+            AnimationDictionary RandomArrests = new AnimationDictionary("random@arrests");
+            AnimationDictionary Busted = new AnimationDictionary("busted");
+            AnimationDictionary Ped = new AnimationDictionary("ped");
 
-                if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3))
-                {
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
+            if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3))
+            {
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 120, 0, 0, 1, 0);//"random@arrests", "kneeling_arrest_escape", 8.0f, -8.0f, -1, 4096, 0, 0, 1, 0);
                     GameFiber.Wait(1000);//1250
                     PedToArrest.Tasks.Clear();
-                }
-                else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
-                {
-                    PedToArrest.Tasks.Clear();
-                }
-            }, "UnSetArrestedAnimation");
+            }
+            else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
+            {
+                PedToArrest.Tasks.Clear();
+            }
+        }, "UnSetArrestedAnimation");
         Mod.Debug.GameFibers.Add(UnSetArrestedAnimationGF);
     }
     public void CommitSuicide(Ped PedToSuicide)
@@ -220,7 +226,7 @@ public class Surrendering
 
                 if (Mod.DataMart.Weapons.CanPlayerWeaponSuicide(PedToSuicide))
                 {
-                    if(PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
+                    if (PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
                     {
                         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToSuicide, "mp_suicide", "pistol", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                         GameFiber.Wait(750);
@@ -262,12 +268,12 @@ public class Surrendering
                             GameFiber.Yield();
                         }
                         PedToSuicide.Tasks.Clear();
-                    }         
+                    }
                 }
                 else
                 {
                     NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", PedToSuicide, (uint)2725352035, true);
-                    
+
                     if (PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
                     {
                         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToSuicide, "mp_suicide", "pill", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -311,8 +317,10 @@ public class Surrendering
                             }
                             GameFiber.Yield();
                         }
-                        if(IsSuicide)
+                        if (IsSuicide)
+                        {
                             PedToSuicide.Kill();
+                        }
                         else
                             PedToSuicide.Tasks.Clear();
                     }

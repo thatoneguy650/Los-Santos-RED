@@ -269,8 +269,9 @@ public class ZoneJurisdictions
             new ZoneJurisdiction("LSSD-BC","SLAB", 0, 85, 75),
             new ZoneJurisdiction("LSSD","SLAB", 1, 15, 5),
 
-            new ZoneJurisdiction("PRISEC","STAD", 0, 95, 0),
-            new ZoneJurisdiction("LSPD","STAD", 1, 5, 100),
+            //new ZoneJurisdiction("PRISEC","STAD", 0, 95, 0),
+            //new ZoneJurisdiction("LSPD","STAD", 1, 5, 100),
+            new ZoneJurisdiction("LSPD","STAD", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","STRAW", 0, 100, 70),
 
@@ -506,8 +507,9 @@ public class ZoneJurisdictions
             new ZoneJurisdiction("BCSO","SLAB", 0, 85, 75),
             new ZoneJurisdiction("LSSD","SLAB", 1, 15, 5),
 
-            new ZoneJurisdiction("PRISEC","STAD", 0, 95, 0),
-            new ZoneJurisdiction("LSPD","STAD", 1, 5, 100),
+            //new ZoneJurisdiction("PRISEC","STAD", 0, 95, 0),
+            //new ZoneJurisdiction("LSPD","STAD", 1, 5, 100),
+            new ZoneJurisdiction("LSPD","STAD", 0, 100, 100),
 
             new ZoneJurisdiction("LSPD","STRAW", 0, 100, 70),
 

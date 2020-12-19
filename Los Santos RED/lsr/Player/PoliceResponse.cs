@@ -42,7 +42,7 @@ public class PoliceResponse
     public float LastWantedSearchRadius { get; set; }
     public bool PlayerSeenDuringCurrentWanted { get; set; }
     public bool IsWeaponsFree { get; set; }
-    public CriminalHistory CurrentCrimes { get; set; } 
+    public CriminalHistory CurrentCrimes { get; set; }
     public Vector3 LastWantedCenterPosition { get; set; }
     public Vector3 PlaceWantedStarted { get; private set; }
     public uint HasBeenNotWantedFor
@@ -50,9 +50,13 @@ public class PoliceResponse
         get
         {
             if (Game.LocalPlayer.WantedLevel != 0)
+            {
                 return 0;
+            }
             if (GameTimeLastWantedEnded == 0)
+            {
                 return 0;
+            }
             else
                 return Game.GameTime - GameTimeLastWantedEnded;
         }
@@ -62,7 +66,9 @@ public class PoliceResponse
         get
         {
             if (Game.LocalPlayer.WantedLevel == 0)
+            {
                 return 0;
+            }
             else
                 return Game.GameTime - GameTimeWantedStarted;
         }
@@ -72,7 +78,9 @@ public class PoliceResponse
         get
         {
             if (Game.LocalPlayer.WantedLevel == 0)
+            {
                 return 0;
+            }
             else
                 return Game.GameTime - GameTimeWantedLevelStarted;
         }
@@ -81,7 +89,7 @@ public class PoliceResponse
     {
         get
         {
-             return Game.GameTime - GameTimePoliceStateStart;
+            return Game.GameTime - GameTimePoliceStateStart;
         }
     }
     public bool IsDeadlyChase
@@ -89,7 +97,9 @@ public class PoliceResponse
         get
         {
             if (CurrentPoliceState == PoliceState.DeadlyChase)
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -115,14 +125,25 @@ public class PoliceResponse
             return string.Join(",", CurrentCrimes.CrimesReported.Select(x => x.AssociatedCrime.Name));
         }
     }
+    public bool HasReportedCrimes
+    {
+        get
+        {
+            return CurrentCrimes.CrimesReported.Any();
+        }
+    }
     public bool RecentlySetWanted
     {
         get
         {
             if (GameTimeLastSetWanted == 0)
+            {
                 return false;
+            }
             else if (Game.GameTime - GameTimeLastSetWanted <= 5000)
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -132,9 +153,13 @@ public class PoliceResponse
         get
         {
             if (GameTimeLastRequestedBackup == 0)
+            {
                 return false;
+            }
             else if (Game.GameTime - GameTimeLastRequestedBackup <= 5000)
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -144,9 +169,13 @@ public class PoliceResponse
         get
         {
             if (GameTimeLastWantedEnded == 0)
+            {
                 return false;
+            }
             else if (Game.GameTime - GameTimeLastWantedEnded <= 5000)
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -188,7 +217,9 @@ public class PoliceResponse
         get
         {
             if (CurrentPoliceState == PoliceState.DeadlyChase && (CurrentCrimes.InstancesOfCrime("KillingPolice") >= 1 || CurrentCrimes.InstancesOfCrime("KillingCivilians") >= 2 || Mod.Player.WantedLevel >= 4))
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -238,7 +269,7 @@ public class PoliceResponse
         WantedLevelTick();
     }
     public void Reset()
-    {     
+    {
         CurrentCrimes = new CriminalHistory();
         IsWeaponsFree = false;
         CurrentPoliceState = PoliceState.Normal;
@@ -251,7 +282,9 @@ public class PoliceResponse
     public void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
     {
         if (UpdateRecent)
+        {
             GameTimeLastSetWanted = Game.GameTime;
+        }
 
         if (Game.LocalPlayer.WantedLevel < WantedLevel || WantedLevel == 0)
         {
@@ -298,18 +331,24 @@ public class PoliceResponse
     private void GetPoliceState()
     {
         if (Mod.Player.WantedLevel == 0)
-            CurrentPoliceState = PoliceState.Normal;//Default state
+        {
+            CurrentPoliceState = PoliceState.Normal;
+        }//Default state
 
         if (Mod.Player.IsBusted)
+        {
             CurrentPoliceState = PoliceState.ArrestedWait;
+        }
 
         if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
+        {
             return;
+        }
 
         if (Mod.Player.WantedLevel >= 1 && Mod.Player.WantedLevel <= 3 && Mod.World.Police.AnyCanSeePlayer)
         {
             if (Mod.World.Police.AnyCanSeePlayer)
-            {   
+            {
                 if (CurrentCrimes.LethalForceAuthorized)
                 {
                     CurrentPoliceState = PoliceState.DeadlyChase;
@@ -329,7 +368,9 @@ public class PoliceResponse
             }
         }
         else if (Mod.Player.WantedLevel >= 4)
+        {
             CurrentPoliceState = PoliceState.DeadlyChase;
+        }
 
     }
     private void PoliceStateChanged()
@@ -340,21 +381,18 @@ public class PoliceResponse
     }
     private void WantedLevelTick()
     {
-        //Game.LocalPlayer.WantedLevel = WantedLevelLastset;//freeze it 
-        //if (Game.LocalPlayer.WantedLevel != WantedLevelLastset)
-        //{
-        //    SetWantedLevel(WantedLevelLastset, "Freezing Wanted Level", false);
-        //}
-
         if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
+        {
             WantedLevelChanged();
-
+        }
         if (PrevPoliceState != CurrentPoliceState)
+        {
             PoliceStateChanged();
-
+        }
         if (!Mod.Player.ArrestWarrant.PlayerIsPersonOfInterest)
+        {
             RemoveLastBlip();
-
+        }
         if (Mod.Player.IsWanted)
         {
             if (!Mod.Player.IsDead && !Mod.Player.IsBusted)
@@ -366,7 +404,7 @@ public class PoliceResponse
                     UpdateBlip(CurrentWantedCenter, Mod.Player.SearchMode.BlipSize);
                 }
 
-                if(Mod.World.Police.AnyCanSeePlayer)
+                if (Mod.World.Police.AnyCanSeePlayer)
                 {
                     PlayerSeenDuringCurrentWanted = true;
                     CurrentCrimes.PlayerSeenDuringWanted = true;
@@ -464,14 +502,18 @@ public class PoliceResponse
     private void RemoveBlip()
     {
         if (CurrentWantedCenterBlip.Exists())
+        {
             CurrentWantedCenterBlip.Delete();
+        }
     }
-    private void UpdateBlip(Vector3 Position,float Size)
+    private void UpdateBlip(Vector3 Position, float Size)
     {
         if (Position == Vector3.Zero)
         {
             if (CurrentWantedCenterBlip.Exists())
+            {
                 CurrentWantedCenterBlip.Delete();
+            }
             return;
         }
         if (!CurrentWantedCenterBlip.Exists())
@@ -482,7 +524,7 @@ public class PoliceResponse
                 Color = Color.Red,
                 Alpha = 0.5f
             };
-            
+
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)CurrentWantedCenterBlip.Handle, true);
             Mod.World.AddBlip(CurrentWantedCenterBlip);
         }
@@ -498,14 +540,18 @@ public class PoliceResponse
         if (Position == Vector3.Zero)
         {
             if (LastWantedCenterBlip.Exists())
+            {
                 LastWantedCenterBlip.Delete();
+            }
             return;
         }
         if (!LastWantedCenterBlip.Exists())
         {
             int MaxWanted = Mod.Player.ArrestWarrant.MaxWantedLevel;
             if (MaxWanted != 0)
+            {
                 LastWantedSearchRadius = MaxWanted * Mod.DataMart.Settings.SettingsManager.Police.LastWantedCenterSize;
+            }
             else
                 LastWantedSearchRadius = Mod.DataMart.Settings.SettingsManager.Police.LastWantedCenterSize;
 
@@ -520,12 +566,16 @@ public class PoliceResponse
             Mod.World.AddBlip(LastWantedCenterBlip);
         }
         if (LastWantedCenterBlip.Exists())
+        {
             LastWantedCenterBlip.Position = Position;
+        }
     }
     private void RemoveLastBlip()
     {
         if (LastWantedCenterBlip.Exists())
+        {
             LastWantedCenterBlip.Delete();
+        }
     }
 }
 

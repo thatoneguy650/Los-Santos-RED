@@ -98,6 +98,13 @@ namespace LosSantosRED.lsr
                     PlaceLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 }
             }
+            else
+            {
+                if (Mod.Player.AreStarsGreyedOut && Mod.Player.CurrentPoliceResponse.HasReportedCrimes && Mod.Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime != Vector3.Zero)
+                {
+                    PlaceLastSeenPlayer = Mod.Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime;
+                }
+            }
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlaceLastSeenPlayer.X, PlaceLastSeenPlayer.Y, PlaceLastSeenPlayer.Z);
         }
     }

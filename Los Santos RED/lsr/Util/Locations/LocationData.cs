@@ -29,9 +29,13 @@ namespace LosSantosRED.lsr.Locations
             get
             {
                 if (IsOnFreeway && Game.GameTime - GameTimeGotOnFreeway <= 10000)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
             }
         }
         public bool RecentlyGotOffFreeway
@@ -39,9 +43,13 @@ namespace LosSantosRED.lsr.Locations
             get
             {
                 if (!IsOnFreeway && Game.GameTime - GameTimeGotOffFreeway <= 10000)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
             }
         }
         public void Update()
@@ -56,8 +64,7 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetNode()
         {
-            ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);
-            if (ClosestNode.DistanceTo2D(CharacterToLocate) >= 15f)//was 25f
+            if (Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position).DistanceTo2D(CharacterToLocate) >= 10f)//was 15f
             {
                 IsOffroad = true;
             }
@@ -95,7 +102,9 @@ namespace LosSantosRED.lsr.Locations
                 CurrentStreetName = StreetName;
             }
             else
+                {
                 CurrentStreetName = "";
+            }
 
             string CrossStreetName = string.Empty;
             if (CrossingHash != 0)
@@ -108,26 +117,31 @@ namespace LosSantosRED.lsr.Locations
                 CurrentCrossStreetName = CrossStreetName;
             }
             else
+            {
                 CurrentCrossStreetName = "";
+            }
 
 
             CurrentStreet = Mod.DataMart.Streets.GetStreet(CurrentStreetName);
             CurrentCrossStreet = Mod.DataMart.Streets.GetStreet(CurrentCrossStreetName);
-
             if (CurrentStreet == null)
             {
                 CurrentStreet = new Street(Mod.DataMart.Streets.GetStreet(CharacterToLocate.Position) + "?", 60f);
                 if (CurrentStreet.IsHighway)
                 {
                     if (!IsOnFreeway)
+                    {
                         GameTimeGotOnFreeway = Game.GameTime;
+                    }
 
                     IsOnFreeway = true;
                 }
                 else
                 {
                     if (IsOnFreeway)
+                        {
                         GameTimeGotOffFreeway = Game.GameTime;
+                    }
 
                     IsOnFreeway = false;
                 }

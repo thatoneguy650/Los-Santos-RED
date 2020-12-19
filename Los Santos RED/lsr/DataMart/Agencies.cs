@@ -370,7 +370,7 @@ public class Agencies
             new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
             new Agency("~p~", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, StandardCops, LSPDVehicles, "LSA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
 
-            new Agency("~o~", "PRISEC", "Private Security", "White", Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1, SpawnLimit = 1 },
+           // new Agency("~o~", "PRISEC", "Private Security", "White", Classification.Security, SecurityPeds, SecurityVehicles, "",LimitedWeapons) {MaxWantedLevelSpawn = 1, SpawnLimit = 1 },
 
             new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
 

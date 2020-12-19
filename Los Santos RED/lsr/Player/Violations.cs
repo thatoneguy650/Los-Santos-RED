@@ -13,7 +13,7 @@ namespace LosSantosRED.lsr
     public class Violations
     {
         private readonly List<Crime> CrimeList = new List<Crime>();
-        private readonly Crime KillingPolice = new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1,false) { IsAlwaysFlagged = true };
+        private readonly Crime KillingPolice = new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false) { IsAlwaysFlagged = true };
         private readonly Crime FiringWeaponNearPolice = new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, 1, false) { CanReportBySound = true };
         private readonly Crime TerroristActivity = new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, 1) { CanReportBySound = true };
         private readonly Crime BrandishingHeavyWeapon = new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, 1, false, true, true);
@@ -25,7 +25,7 @@ namespace LosSantosRED.lsr
         private readonly Crime KillingCivilians = new Crime("KillingCivilians", "Civilian Fatality", 2, false, 10, 2, true, true, true);
         private readonly Crime GrandTheftAuto = new Crime("GrandTheftAuto", "Grand Theft Auto", 2, false, 16, 3, true, true, true);
         private readonly Crime DrivingStolenVehicle = new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, 5, false);
-        private readonly Crime Mugging = new Crime("Mugging", "Mugging", 2, false, 11, 2, true, true, true); 
+        private readonly Crime Mugging = new Crime("Mugging", "Mugging", 2, false, 11, 2, true, true, true);
         private readonly Crime AttemptingSuicide = new Crime("AttemptingSuicide", "Attempting Suicide", 2, false, 12, 3);
         private readonly Crime BrandishingWeapon = new Crime("BrandishingWeapon", "Brandishing Weapon", 2, false, 18, 3, true, true, true);
         private readonly Crime BrandishingCloseCombatWeapon = new Crime("BrandishingCloseCombatWeapon", "Brandishing Close Combat Weapon", 1, false, 20, 4, true, true, true);
@@ -63,7 +63,9 @@ namespace LosSantosRED.lsr
             get
             {
                 if (Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (Mod.Player.IsInAutomobile || Mod.Player.IsOnMotorcycle) && !Mod.World.PedSwap.RecentlyTakenOver)
+                {
                     return true;
+                }
                 else
                     return false;
             }
@@ -87,7 +89,9 @@ namespace LosSantosRED.lsr
             get
             {
                 if (HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || IsSpeeding || VehicleIsSuspicious)
+                {
                     return true;
+                }
                 else
                     return false;
             }
@@ -118,7 +122,9 @@ namespace LosSantosRED.lsr
             get
             {
                 if (TimeSincePlayerHitPed > -1 && TimeSincePlayerHitPed <= 1000)
+                {
                     return true;
+                }
                 else
                     return false;
             }
@@ -128,7 +134,9 @@ namespace LosSantosRED.lsr
             get
             {
                 if (TimeSincePlayerHitVehicle > -1 && TimeSincePlayerHitVehicle <= 1000)
+                {
                     return true;
+                }
                 else
                     return false;
             }
@@ -138,9 +146,13 @@ namespace LosSantosRED.lsr
             get
             {
                 if (GameTimeStartedDrivingAgainstTraffic == 0)
+                {
                     return false;
+                }
                 else if (Game.GameTime - GameTimeStartedDrivingAgainstTraffic >= 1000)
+                {
                     return true;
+                }
                 else
                     return false;
             }
@@ -150,9 +162,13 @@ namespace LosSantosRED.lsr
             get
             {
                 if (GameTimeStartedDrivingOnPavement == 0)
+                {
                     return false;
+                }
                 else if (Game.GameTime - GameTimeStartedDrivingOnPavement >= 1000)
+                {
                     return true;
+                }
                 else
                     return false;
             }
@@ -183,7 +199,7 @@ namespace LosSantosRED.lsr
             }
             else
             {
-                foreach(Crime Traffic in CrimeList.Where(x => x.IsTrafficViolation))
+                foreach (Crime Traffic in CrimeList.Where(x => x.IsTrafficViolation))
                 {
                     Traffic.IsCurrentlyViolating = false;
                 }
@@ -226,7 +242,7 @@ namespace LosSantosRED.lsr
             {
                 SuspiciousActivity.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.IsWanted && Mod.World.Police.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor >= 10000)
+            if (Mod.Player.IsWanted && Mod.World.Police.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor >= 20000)
             {
                 ResistingArrest.IsCurrentlyViolating = true;
             }
@@ -383,7 +399,9 @@ namespace LosSantosRED.lsr
             }
 
             if (GameTimeStartedBrandishing > 0 && Game.GameTime - GameTimeStartedBrandishing >= 1500)
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -462,75 +480,72 @@ namespace LosSantosRED.lsr
         }
         private void UpdateTrafficStats()
         {
-            CurrentSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
             VehicleIsSuspicious = false;
             TreatAsCop = false;
             IsSpeeding = false;
-
-            if (!IsRoadWorthy(Mod.Player.CurrentVehicle.Vehicle) || IsDamaged(Mod.Player.CurrentVehicle.Vehicle))
+            if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.Exists())
             {
-                VehicleIsSuspicious = true;
-            }
-            
-
-            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.ExemptCode3 && Mod.Player.CurrentVehicle.Vehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.WasReportedStolen)
-            {
-                if (Mod.Player.CurrentVehicle.Vehicle.IsSirenOn && !Mod.World.Police.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
+                CurrentSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+                if (!IsRoadWorthy(Mod.Player.CurrentVehicle.Vehicle) || IsDamaged(Mod.Player.CurrentVehicle.Vehicle))
                 {
-                    TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
+                    VehicleIsSuspicious = true;
                 }
-            }
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.ExemptCode3 && Mod.Player.CurrentVehicle.Vehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.WasReportedStolen)
+                {
+                    if (Mod.Player.CurrentVehicle.Vehicle.IsSirenOn && !Mod.World.Police.AnyCanRecognizePlayer) //see thru ur disguise if ur too close
+                    {
+                        TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
+                    }
+                }
+                IsRunningRedLight = false;
+                //foreach (PedExt Civilian in Mod.World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+                //{
+                //    Civilian.IsWaitingAtTrafficLight = false;
+                //    Civilian.IsFirstWaitingAtTrafficLight = false;
+                //    Civilian.PlaceCheckingInfront = Vector3.Zero;
+                //    if (Civilian.DistanceToPlayer <= 250f && Civilian.IsInVehicle)
+                //    {
+                //        if (Civilian.Pedestrian.IsInAnyVehicle(false) && Civilian.Pedestrian.CurrentVehicle != null)
+                //        {
+                //            Vehicle PedCar = Civilian.Pedestrian.CurrentVehicle;
+                //            if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", PedCar))
+                //            {
+                //                Civilian.IsWaitingAtTrafficLight = true;
 
-            IsRunningRedLight = false;
-
-            //foreach (PedExt Civilian in Mod.World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
-            //{
-            //    Civilian.IsWaitingAtTrafficLight = false;
-            //    Civilian.IsFirstWaitingAtTrafficLight = false;
-            //    Civilian.PlaceCheckingInfront = Vector3.Zero;
-            //    if (Civilian.DistanceToPlayer <= 250f && Civilian.IsInVehicle)
-            //    {
-            //        if (Civilian.Pedestrian.IsInAnyVehicle(false) && Civilian.Pedestrian.CurrentVehicle != null)
-            //        {
-            //            Vehicle PedCar = Civilian.Pedestrian.CurrentVehicle;
-            //            if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", PedCar))
-            //            {
-            //                Civilian.IsWaitingAtTrafficLight = true;
-
-            //                if (Extensions.FacingSameOrOppositeDirection(Civilian.Pedestrian, Game.LocalPlayer.Character) && Game.LocalPlayer.Character.InFront(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 10f && Game.LocalPlayer.Character.Speed >= 3f)
-            //                {
-            //                    GameTimeLastRanRed = Game.GameTime;
-            //                    PlayerIsRunningRedLight = true;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            if (Game.LocalPlayer.IsDrivingOnPavement)
-            {
-                if (GameTimeStartedDrivingOnPavement == 0)
-                    GameTimeStartedDrivingOnPavement = Game.GameTime;
-            }
-            else
-                GameTimeStartedDrivingOnPavement = 0;
-
-            if (Game.LocalPlayer.IsDrivingAgainstTraffic)
-            {
-                if (GameTimeStartedDrivingAgainstTraffic == 0)
+                //                if (Extensions.FacingSameOrOppositeDirection(Civilian.Pedestrian, Game.LocalPlayer.Character) && Game.LocalPlayer.Character.InFront(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 10f && Game.LocalPlayer.Character.Speed >= 3f)
+                //                {
+                //                    GameTimeLastRanRed = Game.GameTime;
+                //                    PlayerIsRunningRedLight = true;
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                if (Game.LocalPlayer.IsDrivingOnPavement && GameTimeStartedDrivingOnPavement == 0)
+                {
+                     GameTimeStartedDrivingOnPavement = Game.GameTime;
+                }
+                else
+                {
+                    GameTimeStartedDrivingOnPavement = 0;
+                }
+                if (Game.LocalPlayer.IsDrivingAgainstTraffic && GameTimeStartedDrivingAgainstTraffic == 0)
+                {
                     GameTimeStartedDrivingAgainstTraffic = Game.GameTime;
+                }
+                else
+                {
+                    GameTimeStartedDrivingAgainstTraffic = 0;
+                }
+                TimeSincePlayerHitPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
+                TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
+                float SpeedLimit = 60f;
+                if (Mod.Player.CurrentLocation.CurrentStreet != null)
+                {
+                    SpeedLimit = Mod.Player.CurrentLocation.CurrentStreet.SpeedLimit;
+                }
+                IsSpeeding = CurrentSpeed > SpeedLimit + Mod.DataMart.Settings.SettingsManager.TrafficViolations.SpeedingOverLimitThreshold;
             }
-            else
-                GameTimeStartedDrivingAgainstTraffic = 0;
-
-
-            TimeSincePlayerHitPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
-            TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
-
-            float SpeedLimit = 60f;
-            if (Mod.Player.CurrentLocation.CurrentStreet != null)
-                SpeedLimit = Mod.Player.CurrentLocation.CurrentStreet.SpeedLimit;
-
-            IsSpeeding = CurrentSpeed > SpeedLimit + Mod.DataMart.Settings.SettingsManager.TrafficViolations.SpeedingOverLimitThreshold;
         }
         private void FlagViolations()
         {
@@ -538,10 +553,7 @@ namespace LosSantosRED.lsr
             {
                 if (Mod.World.Police.AnyCanSeePlayer || (Violating.CanReportBySound && Mod.World.Police.AnyCanHearPlayer) || Violating.IsAlwaysFlagged)
                 {
-                    WeaponInformation ToSee = null;
-                    if (!Mod.Player.IsInVehicle)
-                        ToSee = Mod.Player.CurrentWeapon;
-                    Mod.Player.CurrentPoliceResponse.CurrentCrimes.AddCrime(Violating, true, Mod.Player.CurrentPosition, Mod.Player.CurrentVehicle, ToSee);
+                    Mod.Player.CurrentPoliceResponse.CurrentCrimes.AddCrime(Violating, true, Mod.Player.CurrentPosition, Mod.Player.CurrentSeenVehicle, Mod.Player.CurrentSeenWeapon,true);
                 }
             }
         }
@@ -563,63 +575,69 @@ namespace LosSantosRED.lsr
                 {
                     return false;
                 }
-
-
-
                 if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
                 {
                     return false;
                 }
             }
-
             if (myCar.LicensePlate == "        ")
+            {
                 return false;
-
+            }
             return true;
         }
         private bool IsDamaged(Vehicle myCar)
         {
             if (!myCar.Exists())
+            {
                 return false;
-
+            }
             if (myCar.Health <= 700 || myCar.EngineHealth <= 700)
+            {
                 return true;
-
+            }
             if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar))
+            {
                 return true;
-
-            VehicleDoor[] CarDoors = myCar.GetDoors();
-
-            foreach (VehicleDoor myDoor in CarDoors)
+            }
+            foreach (VehicleDoor myDoor in myCar.GetDoors())
             {
                 if (myDoor.IsDamaged)
+                {
                     return true;
+                }
             }
-
             if (Mod.World.IsNightTime)
             {
                 if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                {
                     return true;
+                }
             }
-
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 0, false))
+            {
                 return true;
-
+            }
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 1, false))
+            {
                 return true;
-
+            }
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 2, false))
+            {
                 return true;
-
+            }
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 3, false))
+            {
                 return true;
-
+            }
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 4, false))
+            {
                 return true;
-
+            }
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar, 5, false))
+            {
                 return true;
-
+            }
             return false;
         }
     }

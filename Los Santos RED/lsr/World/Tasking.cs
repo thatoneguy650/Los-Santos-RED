@@ -48,9 +48,9 @@ public class Tasking
         try
         {
             int TaskedCops = 0;
-            foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
+            foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.CopToTask.DistanceToPlayer))//foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
-                if (TaskedCops < 4)//2
+                if (TaskedCops < 2)//2
                 {
                     Cop.RunCurrentActivity();
                     TaskedCops++;
@@ -70,19 +70,25 @@ public class Tasking
     {
         try
         {
-            int TaskedCivilians = 0;
-            foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
+            TaskableCivilian Civilian = TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.CivilianToTask.DistanceToPlayer).FirstOrDefault();
+            if(Civilian != null)
             {
-                if (TaskedCivilians < 4)//5
-                {
-                    Civilian.RunCurrentActivity();
-                    TaskedCivilians++;
-                }
-                else
-                {
-                    break;
-                }
+                Civilian.RunCurrentActivity();
             }
+
+            //int TaskedCivilians = 0;
+            //foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.CivilianToTask.DistanceToPlayer))//foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
+            //{
+            //    if (TaskedCivilians < 1)//5//4
+            //    {
+            //        Civilian.RunCurrentActivity();
+            //        TaskedCivilians++;
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+            //}
         }
         catch (Exception e)
         {
@@ -940,9 +946,7 @@ public class Tasking
     }
     private class TaskableCivilian
     {
-        private uint GameTimeLastReportedCrime { get; set; }
-        private uint GameTimeLastReactedToCrime { get; set; }
-        private bool HasSeenPlayerCommitCrime { get; set; } = false;
+
         private enum Activities
         {
             Idle,
@@ -953,32 +957,6 @@ public class Tasking
         public PedExt CivilianToTask { get; set; }
         public uint GameTimeLastRanActivity { get; set; }
         public uint GameTimeLastTasked { get; set; }
-        public bool ShouldReportCrime
-        {
-            get
-            {
-                if(GameTimeLastReactedToCrime == 0)
-                {
-                    return false;
-                }
-                else if (Game.GameTime - GameTimeLastReactedToCrime < 15000)
-                {
-                    return false;
-                }
-                else if (!CivilianToTask.CrimesWitnessed.Any())
-                {
-                    return false;
-                }
-                else if (Mod.Player.Respawning.RecentlyBribedPolice)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
         public string DebugTaskState
         {
             get
@@ -1000,7 +978,7 @@ public class Tasking
                 }
                 else
                 {
-                    if(HasSeenPlayerCommitCrime)
+                    if(CivilianToTask.HasSeenPlayerCommitCrime)
                     {
                         return Activities.ReactToCrime;
                     }
@@ -1053,7 +1031,7 @@ public class Tasking
                         {
                             int lol = 0;
                             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, 7000);
+                            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 50f, 7000);//100f
                             NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
                             NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, -1);
                             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
@@ -1061,15 +1039,17 @@ public class Tasking
                             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", CivilianToTask.Pedestrian, lol);
                             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                         }
-                        CivilianToTask.Pedestrian.IsPersistent = true;
+
+                        if(Mod.World.Civilians.PersistentCount <= 2)
+                        {
+                            CivilianToTask.Pedestrian.IsPersistent = true;
+                        }
                         CurrentSubTaskLoop = "CallIn";
                     }
                     else
                     {
-                        CivilianToTask.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 100f, -1);
+                        CivilianToTask.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 50f, -1);
                     }
-                    HasSeenPlayerCommitCrime = true;
-                    GameTimeLastReactedToCrime = Game.GameTime;
                     CurrentSubTaskLoop = "Flee";
                     Mod.Debug.WriteToLog("Tasking", string.Format("     Started ReactToCrime: {0} Old CurrentTaskLoop: {1} Fight: {2} CallPolice: {3}", CivilianToTask.Pedestrian.Handle, CurrentTaskLoop, CivilianToTask.WillFight,CivilianToTask.WillCallPolice));
                 }
@@ -1084,56 +1064,10 @@ public class Tasking
                     CurrentSubTaskLoop = "Flee";
                     Mod.Debug.WriteToLog("Tasking", string.Format("     Started Flee After Fight: {0} Old CurrentTaskLoop: {1} Fight: {2} CallPolice: {3}", CivilianToTask.Pedestrian.Handle, CurrentTaskLoop, CivilianToTask.WillFight, CivilianToTask.WillCallPolice));
                 }
-                else if (CivilianToTask.WillCallPolice && ShouldReportCrime)
-                {
-                    ReportCrime();
-                }
             }
             CurrentTaskLoop = "ReactToCrime";
             GameTimeLastTasked = Game.GameTime;
-        }
-        private void ReportCrime()
-        {
-            if (CivilianToTask.Pedestrian.Exists() && CivilianToTask.Pedestrian.IsAlive && !CivilianToTask.Pedestrian.IsRagdoll)
-            {
-                if (!Mod.Player.IsDead && !Mod.Player.IsBusted && !Mod.Player.Respawning.RecentlyBribedPolice)
-                {
-                    if (Mod.Player.IsNotWanted)
-                    {
-                        Mod.Player.CurrentPoliceResponse.CurrentCrimes.AddCrime(CivilianToTask.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, CivilianToTask.PositionLastSeenCrime, CivilianToTask.VehicleLastSeenPlayerIn, CivilianToTask.WeaponLastSeenPlayerWith);
-
-                        //WANT TO READD THIS IN TEH FUTURE, NEED TO PASS CAR
-                        //if (VehToReport != null)
-                        //    VehToReport.WasReportedStolen = true;//even if it doesnt make it to us
-
-                        Mod.Player.Investigations.StartInvestigation(CivilianToTask.PositionToReportToPolice, CivilianToTask.EverSeenPlayer && CivilianToTask.ClosestDistanceToPlayer <= 20f);
-                    }
-                    else
-                    {
-
-                        //Maybe should be readded? debugging?
-
-
-
-                        ////need to readd this elsewhere!!!!!
-                        //if (Mod.Player.AreStarsGreyedOut)
-                        //{
-                        //    if (Game.LocalPlayer.Character.Position.DistanceTo2D(CivilianToTask.PositionToReportToPolice) <= Game.LocalPlayer.Character.Position.DistanceTo2D(PoliceManager.PlaceLastSeenPlayer))//closer to the new position
-                        //    {
-                        //        PoliceManager.PlaceLastSeenPlayer = CivilianToTask.PositionToReportToPolice;//update it, give them a little ESP instead of doing all the timing bullshit
-                        //    }
-
-                        //}
-
-                        //need to readd this elsewhere!!!!!!!!!
-
-                    }
-                }
-                CivilianToTask.CrimesWitnessed.Clear();
-                CivilianToTask.Pedestrian.IsPersistent = false;
-                GameTimeLastReportedCrime = Game.GameTime;      
-            }
-        }
+        }        
         private void AddCurrentCrimes()
         {
             foreach(Crime CurrentlyViolating in Mod.Player.Violations.CivilianReportableCrimesViolating)

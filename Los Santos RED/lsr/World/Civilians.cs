@@ -8,6 +8,13 @@ using System.Threading.Tasks;
 
 public class Civilians
 {
+    public int PersistentCount
+    {
+        get
+        {
+            return Mod.World.Pedestrians.Civilians.Count(x => x.Pedestrian.Exists() && x.Pedestrian.IsPersistent);
+        }
+    }
     public void Tick()
     {
         Update();

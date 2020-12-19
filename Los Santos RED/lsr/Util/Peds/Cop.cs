@@ -57,11 +57,17 @@ public class Cop : PedExt
         get
         {
             if (IsRadioTimedOut)
+            {
                 return false;
+            }
             else if (!IsInVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
     public bool WasModSpawned { get; set; }
@@ -93,48 +99,22 @@ public class Cop : PedExt
     {
         get
         {
-            if (Mod.Player.IsBusted)
+            if (Mod.Player.IsBustable)
             {
-                return false;
-            }
-            else if (!Mod.Player.IsBustable)
-            {
-                return false;
-            }
-            else if (IsInVehicle)
-            {
-                return false;
-            }
-            else if (DistanceToPlayer < 0.1f) //weird cases where they are my same position
-            {
-                return false;
-            }
-            else if (Mod.Player.HandsAreUp && DistanceToPlayer <= 5f)
-            {
-                return true;
-            }
-            if (Mod.Player.IsInVehicle)
-            {
-                if (Mod.Player.IsStationary && DistanceToPlayer <= 1f)
-                {
-                    return true;
-                }
-                else
+                if (DistanceToPlayer < 0.1f) //weird cases where they are my same position
                 {
                     return false;
                 }
-            }
-            else
-            {
-                if ((Game.LocalPlayer.Character.IsStunned || Game.LocalPlayer.Character.IsRagdoll) && DistanceToPlayer <= 3f)
+                else if (Mod.Player.HandsAreUp && DistanceToPlayer <= 5f)
                 {
                     return true;
                 }
-                else
+                else if (Mod.Player.IsIncapacitated && DistanceToPlayer <= 3f)
                 {
-                    return false;
+                    return true;
                 }
             }
+            return false;
         }
     }
     public Loadout Loadout { get; set; }

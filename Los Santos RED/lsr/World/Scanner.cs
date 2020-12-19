@@ -26,9 +26,13 @@ namespace LosSantosRED.lsr
         private int HighestOfficerReportedPriority = 99;
         private uint GameTimeLastDisplayedSubtitle;
         private uint GameTimeLastAnnouncedDispatch;
+        private uint GameTimeLastMentionedStreet;
+        private uint GameTimeLastMentionedZone;
         private bool ReportedLethalForceAuthorized;
         private bool ReportedWeaponsFree;
         private bool ReportedRequestAirSupport;
+        private bool ExecutingQueue;
+
         private Dispatch OfficerDown;
         private Dispatch ShotsFiredAtAnOfficer;
         private Dispatch AssaultingOfficer;
@@ -82,7 +86,8 @@ namespace LosSantosRED.lsr
         private List<AudioSet> LethalForce;
         private List<AudioSet> LicensePlateSet;
         private List<CrimeDispatch> DispatchLookup;
-        private bool ExecutingQueue;
+
+
         public Scanner()
         {
             DefaultConfig();
@@ -92,11 +97,53 @@ namespace LosSantosRED.lsr
             get
             {
                 if (GameTimeLastAnnouncedDispatch == 0)
+                {
                     return false;
+                }
                 if (Game.GameTime - GameTimeLastAnnouncedDispatch <= 25000)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
+            }
+        }
+        public bool RecentlyMentionedStreet
+        {
+            get
+            {
+                if (GameTimeLastMentionedStreet == 0)
+                {
+                    return false;
+                }
+                if (Game.GameTime - GameTimeLastMentionedStreet <= 10000)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        public bool RecentlyMentionedZone
+        {
+            get
+            {
+                if (GameTimeLastMentionedZone == 0)
+                {
+                    return false;
+                }
+                if (Game.GameTime - GameTimeLastMentionedZone <= 10000)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         public void Tick()
@@ -165,12 +212,16 @@ namespace LosSantosRED.lsr
                     if (reportInformation.SeenByOfficers)
                     {
                         if (ToAnnounce.Priority <= HighestOfficerReportedPriority)
+                        {
                             AddToQueue(ToAnnounce, reportInformation);
+                        }
                     }
                     else
                     {
-                        if (ToAnnounce.Priority <= HighestCivilianReportedPriority)
+                        if (ToAnnounce.Priority <= HighestCivilianReportedPriority && !Mod.Player.IsWanted)
+                        {
                             AddToQueue(ToAnnounce, reportInformation);
+                        }
                     }
                 }
             }
@@ -246,11 +297,11 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!RecentlyAnnouncedDispatch && Mod.World.Police.AnyCanSeePlayer && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000)
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && Mod.World.Police.AnyCanSeePlayer && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    if (!RecentlyAnnouncedDispatch && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Mod.World.Police.AnyRecentlySeenPlayer)
+                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Mod.World.Police.AnyRecentlySeenPlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -431,13 +482,19 @@ namespace LosSantosRED.lsr
         private void AddLocationDescription(DispatchEvent dispatchEvent, LocationSpecificity locationSpecificity)
         {
             if (locationSpecificity == LocationSpecificity.HeadingAndStreet)
+            {
                 AddHeading(dispatchEvent);
+            }
 
             if (locationSpecificity == LocationSpecificity.Street || locationSpecificity == LocationSpecificity.HeadingAndStreet || locationSpecificity == LocationSpecificity.StreetAndZone)
+            {
                 AddStreet(dispatchEvent);
+            }
 
             if (locationSpecificity == LocationSpecificity.Zone || locationSpecificity == LocationSpecificity.StreetAndZone)
+            {
                 AddZone(dispatchEvent);
+            }
         }
         private void AddHeading(DispatchEvent dispatchEvent)
         {
@@ -510,6 +567,10 @@ namespace LosSantosRED.lsr
         }
         private void AddStreet(DispatchEvent dispatchEvent)
         {
+            if(RecentlyMentionedStreet)
+            {
+                return;
+            }
             Street MyStreet = Mod.Player.CurrentLocation.CurrentStreet;
             if (MyStreet != null)
             {
@@ -520,6 +581,7 @@ namespace LosSantosRED.lsr
                     dispatchEvent.SoundsToPlay.Add(StreetAudio);
                     dispatchEvent.Subtitles += " ~s~on ~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
                     dispatchEvent.NotificationText += "~n~~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
+                    dispatchEvent.HasStreetAudio = true;
 
                     if (Mod.Player.CurrentLocation.CurrentCrossStreet != null)
                     {
@@ -541,6 +603,10 @@ namespace LosSantosRED.lsr
         }
         private void AddZone(DispatchEvent dispatchEvent)
         {
+            if(RecentlyMentionedZone)
+            {
+                return;
+            }
             Zone MyZone = Mod.DataMart.Zones.GetZone(Mod.Player.CurrentPosition);
             if (MyZone != null)
             {
@@ -551,6 +617,7 @@ namespace LosSantosRED.lsr
                     dispatchEvent.SoundsToPlay.Add(ScannerAudio);
                     dispatchEvent.Subtitles += " ~s~near ~p~" + MyZone.DisplayName + "~s~";
                     dispatchEvent.NotificationText += "~n~~p~" + MyZone.DisplayName + "~s~";
+                    dispatchEvent.HasZoneAudio = true;
                 }
             }
         }
@@ -893,6 +960,14 @@ namespace LosSantosRED.lsr
                             GameTimeLastDisplayedSubtitle = Game.GameTime;
                         }
                         GameTimeLastAnnouncedDispatch = Game.GameTime;
+                        if(MyAudioEvent.HasStreetAudio)
+                        {
+                            GameTimeLastMentionedStreet = Game.GameTime;
+                        }
+                        if(MyAudioEvent.HasZoneAudio)
+                        {
+                            GameTimeLastMentionedZone = Game.GameTime;
+                        }
                         GameFiber.Yield();
                     }
                     if (Mod.Audio.CancelAudio)
@@ -1604,6 +1679,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
+                
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { assistance_required.Assistanceneeded.FileName },"assistance needed"),
@@ -1731,6 +1807,9 @@ namespace LosSantosRED.lsr
             public string NotificationSubtitle { get; set; } = "Status";
             public string NotificationText { get; set; } = "~b~Scanner Audio";
             public int Priority { get; set; } = 99;
+            public bool HasZoneAudio { get; set; }
+            public bool HasStreetAudio { get; set; }
+
             public DispatchEvent()
             {
 

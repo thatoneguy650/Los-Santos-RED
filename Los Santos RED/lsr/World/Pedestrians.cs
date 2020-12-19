@@ -31,7 +31,7 @@ public class Pedestrians
         get
         {
             return Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.ShouldBustPlayer);
-        }  
+        }
     }
     public bool AnyCopsNearPlayer
     {
@@ -99,7 +99,7 @@ public class Pedestrians
                     AddCivilian(Pedestrian);
                 }
             }
-        }    
+        }
     }
     public void Prune()
     {
@@ -115,9 +115,6 @@ public class Pedestrians
 
 
 
-
-
-
     public void ResetDamagedBy()
     {
         foreach (Cop Cop in Police)
@@ -125,7 +122,7 @@ public class Pedestrians
             Cop.HurtByPlayer = false;
             Cop.KilledByPlayer = false;
         }
-        foreach(PedExt Ped in Civilians)
+        foreach (PedExt Ped in Civilians)
         {
             Ped.HurtByPlayer = false;
             Ped.KilledByPlayer = false;
@@ -159,8 +156,10 @@ public class Pedestrians
     private void AddCop(Ped Pedestrian)
     {
         Agency AssignedAgency = Mod.DataMart.Agencies.GetAgency(Pedestrian);
-        if (AssignedAgency == null && !Pedestrian.Exists())
+        if (AssignedAgency == null || !Pedestrian.Exists())
+        {
             return;
+        }
 
         Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency);
         //if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
@@ -190,7 +189,7 @@ public class Pedestrians
         if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
             Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
-        }     
+        }
         int DesiredHealth = RandomItems.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(MinCopArmor, MaxCopArmor);
         Pedestrian.MaxHealth = DesiredHealth;
@@ -203,7 +202,39 @@ public class Pedestrians
     private void AddCivilian(Ped Pedestrian)
     {
         SetCivilianStats(Pedestrian);
-        Civilians.Add(new PedExt(Pedestrian, RandomItems.RandomPercent(5), RandomItems.RandomPercent(80)));
+
+        bool WillFight = RandomItems.RandomPercent(5);
+        bool WillCallPolice = RandomItems.RandomPercent(80);
+        if (Pedestrian.Exists())
+        {
+            if(Pedestrian.IsGangMember())
+            {
+                WillFight = RandomItems.RandomPercent(95);
+                WillCallPolice = false;
+            }
+            else if (Pedestrian.IsSecurity())
+            {
+                WillFight = true;
+                WillCallPolice = false;
+            }
+            //string Nameo = Pedestrian.RelationshipGroup.Name;
+            ////Mod.Debug.WriteToLog("Tasking", string.Format("Handle {0}, Nameo !!{1}!!", Pedestrian.Handle, Nameo));
+            //if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo))
+            //{
+            //    if (Nameo.Contains("GANG"))
+            //    {
+            //        WillFight = true;
+            //        WillCallPolice = false;
+            //        int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Pedestrian);
+            //        string Model = Pedestrian.Model.Name;
+            //        string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;
+            //       // Mod.Debug.WriteToLog("Tasking", string.Format("Handle {0}, Type {1}, Model {2}, RelationshipGroupName {3}, Nameo {4}", Pedestrian.Handle, PedType, Model, RelationshipGroupName, Nameo));
+            //    }
+            //}
+
+
+        }
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice));
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
@@ -211,9 +242,9 @@ public class Pedestrians
         {
             Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
-        int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;           
+        int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;
         Pedestrian.MaxHealth = DesiredHealth;
-        Pedestrian.Health = DesiredHealth;   
+        Pedestrian.Health = DesiredHealth;
         Pedestrian.Armor = 0;
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
         NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);

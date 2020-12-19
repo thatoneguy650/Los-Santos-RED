@@ -1,6 +1,7 @@
 ﻿using Rage;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace LosSantosRED.lsr
@@ -8,6 +9,7 @@ namespace LosSantosRED.lsr
     public static class Mod
     {
         private static List<ModTask> MyTickTasks;
+        private static readonly Stopwatch TickStopWatch = new Stopwatch();
         public static Debug Debug { get; private set; } = new Debug();
         public static Player Player { get; private set; } = new Player();
         public static World World { get; private set; } = new World();
@@ -29,7 +31,6 @@ namespace LosSantosRED.lsr
             DataMart.ReadConfig();
             Player.AddSpareLicensePlates();
             World.CreateLocationBlips();
-            Debug.Start();
 
             SetupModTasks();
             RunTasks();
@@ -39,6 +40,7 @@ namespace LosSantosRED.lsr
         public static void Dispose()
         {
             IsRunning = false;
+            GameFiber.Sleep(500);
             Player.Dispose();
             World.Dispose();
         }
@@ -50,8 +52,16 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
+                        TickStopWatch.Start();
+
                         foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                         {
+                            if (RunGroup >= 4 && TickStopWatch.ElapsedMilliseconds >= 16)//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            {
+                                Debug.WriteToLog("GameLogic", string.Format("Tick took > 16 ms ({0} ms), aborting", TickStopWatch.ElapsedMilliseconds));
+                                break;
+                            }
+
                             ModTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or 
                             if (ToRun != null)
                             {
@@ -63,6 +73,8 @@ namespace LosSantosRED.lsr
                             }
                         }
                         MyTickTasks.ForEach(x => x.RanThisTick = false);
+
+                        TickStopWatch.Reset();
                         GameFiber.Yield();
                     }
                 }
@@ -91,6 +103,24 @@ namespace LosSantosRED.lsr
                     Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
                 }
             }, "Run Menu/UI Logic");
+
+
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        Debug.DebugLoop();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Dispose();
+                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                }
+            }, "Run Debug Logic");
         }
         private static void SetupModTasks()
         {
@@ -98,42 +128,46 @@ namespace LosSantosRED.lsr
             {
                 new ModTask(0, "World.Clock.Tick", World.Time.Tick, 0,0),
                 new ModTask(0, "Input.Tick", Input.Tick, 1,0),
-                new ModTask(25, "Player.Update", Player.Update, 2,0),
-                new ModTask(25, "World.PoliceForce.Tick", World.Police.Tick, 2,1),
-                new ModTask(50, "Player.Violations.Update", Player.Violations.Update, 4,0),
-                new ModTask(50, "Player.CurrentPoliceResponse.Update", Player.CurrentPoliceResponse.Update, 4,1),
-                new ModTask(150, "Player.Investigations.Tick", Player.Investigations.Tick, 5,0),
-                new ModTask(150, "World.Civilians.Tick", World.Civilians.Tick, 5,1),
-                new ModTask(200, "World.PedDamage.Tick", World.Wounds.Tick, 6,0),
-                new ModTask(250, "Player.MuggingTick", Player.MuggingTick, 6,1),
-                new ModTask(250, "World.Pedestrians.Prune", World.Pedestrians.Prune, 7,0),
-                new ModTask(1000, "World.Pedestrians.Scan", World.Pedestrians.Scan, 7,1),
-                new ModTask(250, "World.Vehicles.CleanLists", World.Vehicles.CleanLists, 7,2),
-                new ModTask(1000, "World.Vehicles.Scan", World.Vehicles.Scan, 7,3),
-                
-                new ModTask(250, "Player.WeaponDropping.Tick", Player.WeaponDropping.Tick, 8,0),
-                new ModTask(500, "Player.Violations.TrafficUpdate", Player.Violations.TrafficUpdate, 9,0),
-                new ModTask(500, "Player.CurrentLocation.Update", Player.CurrentLocation.Update, 9,1),
-                new ModTask(500, "Player.ArrestWarrant.Update", Player.ArrestWarrant.Update, 9,2),
-                new ModTask(500, "World.PoliceForce.SpeechTick", World.Police.SpeechTick, 10,2),
-                new ModTask(500, "World.Vehicles.Tick", World.Vehicles.Tick, 10,3),
-                new ModTask(500, "World.Dispatch.SpawnChecking", World.Dispatcher.Dispatch, 11,0),
-                new ModTask(500, "World.Dispatch.DeleteChecking", World.Dispatcher.Recall, 11,1),
-                new ModTask(500, "World.Update",World.Update,13,0),//not as scary as it seems
 
+                new ModTask(25, "Player.Update", Player.Update, 2,0),
+                new ModTask(100, "World.PoliceForce.Tick", World.Police.Tick, 2,1),//25
+
+                new ModTask(200, "Player.Violations.Update", Player.Violations.Update, 3,0),//50
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.CurrentPoliceResponse.Update, 3,1),//50
+
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigations.Tick, 4,0),
+                new ModTask(500, "World.Civilians.Tick", World.Civilians.Tick, 4,1),//150
+
+                new ModTask(200, "World.PedDamage.Tick", World.Wounds.Tick, 5,0),
+                new ModTask(250, "Player.MuggingTick", Player.MuggingTick, 5,1),
+
+                new ModTask(250, "World.Pedestrians.Prune", World.Pedestrians.Prune, 6,0),
+                new ModTask(1000, "World.Pedestrians.Scan", World.Pedestrians.Scan, 6,1),
+                new ModTask(250, "World.Vehicles.CleanLists", World.Vehicles.CleanLists, 6,2),
+                new ModTask(1000, "World.Vehicles.Scan", World.Vehicles.Scan, 6,3),
+                
+                new ModTask(250, "Player.WeaponDropping.Tick", Player.WeaponDropping.Tick, 7,0),
+
+                new ModTask(500, "Player.Violations.TrafficUpdate", Player.Violations.TrafficUpdate, 8,0),
+                new ModTask(500, "Player.CurrentLocation.Update", Player.CurrentLocation.Update, 8,1),
+                new ModTask(500, "Player.ArrestWarrant.Update", Player.ArrestWarrant.Update, 8,2),
+                new ModTask(500, "World.PoliceForce.SpeechTick", World.Police.SpeechTick, 9,0),
+                new ModTask(500, "World.Vehicles.Tick", World.Vehicles.Tick, 9,1),
+
+                new ModTask(500, "World.Update",World.Update,10,0),//not as scary as it seems
+
+                new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchMode.UpdateWanted, 11,0),
+                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.SearchMode.StopVanilla, 11,1),
+                new ModTask(500, "World.Scanner.Tick", World.Scanner.Tick, 12,0),
+                new ModTask(100, "Audio.Tick",Audio.Tick,13,0),
 
                 new ModTask(500, "World.Tasking.UpdatePeds", World.Tasking.UpdatePeds, 14,0),
                 new ModTask(500, "World.Tasking.Tick", World.Tasking.TaskCops, 14,1),
                 new ModTask(750, "World.Tasking.Tick", World.Tasking.TaskCivilians, 14,2),
 
-
-                new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchMode.UpdateWanted, 15,0),
-                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.SearchMode.StopVanilla, 15,1),
-                new ModTask(500, "World.Scanner.Tick", World.Scanner.Tick, 16,0),
-                new ModTask(100, "Audio.Tick",Audio.Tick,17,0),
-
-
-                new ModTask(1000, "World.Vehicles.UpdatePlates", World.Vehicles.UpdatePlates, 18,0),
+                new ModTask(500, "World.Dispatch.SpawnChecking", World.Dispatcher.Dispatch, 15,0),
+                new ModTask(500, "World.Dispatch.DeleteChecking", World.Dispatcher.Recall, 15,1),
+                new ModTask(1000, "World.Vehicles.UpdatePlates", World.Vehicles.UpdatePlates, 16,2),
             };
         }
         private class ModTask

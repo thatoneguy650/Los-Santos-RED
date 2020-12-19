@@ -14,6 +14,8 @@ public class CriminalHistory
     public uint GameTimeWantedStarted;
     public uint GameTimeWantedEnded;
     public bool PlayerSeenDuringWanted = false;
+    public bool PoliceHaveDescription { get; private set; }
+    public Vector3 PlaceLastReportedCrime { get; private set; }
     public bool LethalForceAuthorized
     {
         get
@@ -67,38 +69,49 @@ public class CriminalHistory
         else
             return MyStuff.Instances;
     }
-    public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved)
+    public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
     {
-        CrimeEvent PreviousViolation;
-        if (ByPolice)
-            PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime.Name == CrimeInstance.Name);
-        else
-            PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.Name == CrimeInstance.Name);
-
-        int CurrentInstances = 1;
-        if (PreviousViolation != null)
+        if (Mod.Player.IsAliveAndFree && !Mod.Player.Respawning.RecentlyBribedPolice)
         {
-            PreviousViolation.AddInstance();
-            CurrentInstances = PreviousViolation.Instances;
-        }
-        else
-        {
+            if (HaveDescription)
+            {
+                PoliceHaveDescription = HaveDescription;
+            }
+            PlaceLastReportedCrime = Location;
+            CrimeEvent PreviousViolation;
             if (ByPolice)
             {
-                CrimesObserved.Add(new CrimeEvent(CrimeInstance));
+                PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime.Name == CrimeInstance.Name);
             }
             else
             {
-                Mod.Debug.WriteToLog("Crimes", string.Format("Crime Reported: {0}", CrimeInstance.Name));
-                CrimesReported.Add(new CrimeEvent(CrimeInstance));
+                PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.Name == CrimeInstance.Name);
             }
-        }
-        if (ByPolice && Mod.Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
-        {
-            Mod.Player.CurrentPoliceResponse.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
-        }
-        Mod.World.Scanner.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed,InstancesObserved = CurrentInstances });
 
+            int CurrentInstances = 1;
+            if (PreviousViolation != null)
+            {
+                PreviousViolation.AddInstance();
+                CurrentInstances = PreviousViolation.Instances;
+            }
+            else
+            {
+                if (ByPolice)
+                {
+                    CrimesObserved.Add(new CrimeEvent(CrimeInstance));
+                }
+                else
+                {
+                    Mod.Debug.WriteToLog("Crimes", string.Format("Crime Reported: {0}", CrimeInstance.Name));
+                    CrimesReported.Add(new CrimeEvent(CrimeInstance));
+                }
+            }
+            if (ByPolice && Mod.Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
+            {
+                Mod.Player.CurrentPoliceResponse.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
+            }
+            Mod.World.Scanner.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances });
+        }
     }
 
 }

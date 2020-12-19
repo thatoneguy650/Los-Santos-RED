@@ -18,6 +18,9 @@ public class PedExt
     private uint GameTimeContinuoslySeenPlayerSince;
     private uint GameTimeLastDistanceCheck;
     private uint GameTimeLastLOSCheck;
+    private uint GameTimeLastSeenCrime;
+    private uint GameTimeLastReportedCrime;
+
     public int Health { get; set; }
     public Ped Pedestrian { get; set; }
     public uint GameTimeSpawned { get; set; }
@@ -90,11 +93,36 @@ public class PedExt
         }
     }
     public int LastSeatIndex { get; set; }
-
+    public bool ShouldReportCrime
+    {
+        get
+        {
+            if (GameTimeLastSeenCrime == 0)
+            {
+                return false;
+            }
+            else if (Game.GameTime - GameTimeLastSeenCrime < 10000)
+            {
+                return false;
+            }
+            else if (!CrimesWitnessed.Any())
+            {
+                return false;
+            }
+            else if (Mod.Player.Respawning.RecentlyBribedPolice)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
     public List<Crime> CrimesWitnessed { get; set; } = new List<Crime>();
     public Vector3 PositionLastSeenCrime { get; set; } = Vector3.Zero;
 
-
+    public bool HasSeenPlayerCommitCrime { get; set; } = false;
     public float ClosestDistanceToPlayer { get; set; } = 2000f;
     public bool CanSeePlayer { get; set; } = false;
     public bool CanRecognizePlayer { get; set; } = false;
@@ -225,6 +253,18 @@ public class PedExt
             {
                 UpdateLineOfSight();
             }
+
+
+            if (WillCallPolice && ShouldReportCrime)
+            {
+                ReportCrime();
+                Mod.Debug.WriteToLog("WillCallPolice && ShouldReportCrime", string.Format(" {0} to WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
+            }
+
+            if(!HasSeenPlayerCommitCrime)
+            {
+                Pedestrian.IsPersistent = false;
+            }
         }
     }
     public void AddCrime(Crime CrimeToAdd, Vector3 PositionToReport)
@@ -233,6 +273,8 @@ public class PedExt
         {
             CrimesWitnessed.Add(CrimeToAdd);
             PositionLastSeenCrime = PositionToReport;
+            GameTimeLastSeenCrime = Game.GameTime;
+            Mod.Debug.WriteToLog("AddCrime", string.Format(" Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
         }
     }
     private void SetDrivingFlags()
@@ -277,7 +319,6 @@ public class PedExt
 
         }
     }
-
     public bool SeenPlayerSince(int _Duration)
     {
         if (CanSeePlayer)
@@ -328,13 +369,25 @@ public class PedExt
             if (Pedestrian.IsDead)
             {
                 //Entity killer = NativeFunction.CallByName<Entity>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
-                //Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
-                //Entity killer = NativeFunction.Natives.GetPedKiller<Entity>(Pedestrian);//was working before update from 2060.
-                uint Handle = NativeFunction.CallByName<uint>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
-                if (Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == Handle))
+                //Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);//was working before update from 2060.
+                //Entity killer = NativeFunction.Natives.x93C8B64DEB84728C<Entity>(Pedestrian);//was working before update from 2060, with Hash instead of name
+                //uint Handle = NativeFunction.CallByName<uint>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
+                //Mod.Debug.WriteToLog("CheckPlayerKilledPed", string.Format("Killed Handle: {0}, Player Handle: {1}, killer: {2}", Handle,Game.LocalPlayer.Character.Handle, killer.Handle));
+                //if (Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == Handle))
+                //{
+                //    KilledByPlayer = true;
+                //}
+
+                //temp as the above native functions are not working on this version of RPH, assume if you hurt them, you killed them
+                if(!HurtByPlayer)
+                {
+                    CheckPlayerHurtPed();
+                }
+                if (HurtByPlayer)
                 {
                     KilledByPlayer = true;
                 }
+
             }
         }
         catch
@@ -345,7 +398,16 @@ public class PedExt
             }
         }
     }
-
+    private void ReportCrime()
+    {
+        if (Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsRagdoll)
+        {
+            Mod.Player.CurrentPoliceResponse.CurrentCrimes.AddCrime(CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 20f);
+            CrimesWitnessed.Clear();
+            GameTimeLastReportedCrime = Game.GameTime;
+            Pedestrian.IsPersistent = false;
+        }
+    }
     private void UpdateDistance()
     {
         DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
@@ -448,8 +510,8 @@ public class PedExt
         CanSeePlayer = true;
         GameTimeLastSeenPlayer = Game.GameTime;
         PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
-        VehicleLastSeenPlayerIn = Mod.Player.CurrentVehicle;
-        WeaponLastSeenPlayerWith = Mod.Player.CurrentWeapon;
+        VehicleLastSeenPlayerIn = Mod.Player.CurrentSeenVehicle;
+        WeaponLastSeenPlayerWith = Mod.Player.CurrentSeenWeapon;
     }
     private float GetDotVectorResult(Entity source, Entity target)
     {

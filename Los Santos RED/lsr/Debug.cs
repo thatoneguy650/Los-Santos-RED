@@ -14,24 +14,6 @@ using System.Windows.Forms;
 public class Debug
 {
     public List<GameFiber> GameFibers = new List<GameFiber>();
-    public void Start()
-    {
-        GameFiber.StartNew(delegate
-        {
-        try
-        {
-            while (Mod.IsRunning)
-            {
-                DebugLoop();
-                GameFiber.Yield();
-            }
-            }
-            catch (Exception e)
-            {
-                WriteToLog("Error", e.Message + " : " + e.StackTrace);
-            }
-        });
-    }
     public void WriteToLog(String ProcedureString, String TextToLog)
     {
         if (ProcedureString == "Error")
@@ -42,7 +24,7 @@ public class Debug
         string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
         Game.Console.Print(Message);
     }
-    private void DebugLoop()
+    public void DebugLoop()
     {
         if (Game.IsKeyDown(Keys.NumPad0))
         {
@@ -165,13 +147,17 @@ public class Debug
         //WriteToLog("Debugging", string.Format("GET_RADIO_STATION_NAME: {0}", GET_RADIO_STATION_NAME));
 
 
-        WriteToLog("Debugging", string.Format("GET_TIMECYCLE_MODIFIER_INDEX: {0}", NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX")));
-        //722 drunk
+        //WriteToLog("Debugging", string.Format("GET_TIMECYCLE_MODIFIER_INDEX: {0}", NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX")));
+        ////722 drunk
 
-        //Vehicle[] Vehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
-        WriteToLog("Debugging", string.Format("PED_FLAG_DRUNK: {0}", NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1)));
+        ////Vehicle[] Vehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
+        //WriteToLog("Debugging", string.Format("PED_FLAG_DRUNK: {0}", NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1)));
 
-        WriteToLog("Debugging", string.Format("Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer))): {0}", Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer)));
+        //WriteToLog("Debugging", string.Format("Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer))): {0}", Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer)));
+        //WriteToLog("Debugging", string.Format("Game.LocalPlayer.Character.GetBoneOrientation(0): {0}", Game.LocalPlayer.Character.GetBoneOrientation(0)));
+
+        
+
 
     }
     private void DebugNumpad6()
@@ -298,6 +284,7 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+
         WriteToLog("Debugging", "Pressed Num9");
         Mod.Dispose();
         Game.LocalPlayer.WantedLevel = 0;

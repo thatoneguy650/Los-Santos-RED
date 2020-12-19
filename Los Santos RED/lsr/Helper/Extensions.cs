@@ -17,13 +17,46 @@ using System.Xml.Serialization;
 namespace ExtensionsMethods
 {
     public static class Extensions
-    {  
+    {
+        private enum ePedType
+        {
+            PED_TYPE_PLAYER_0,
+            PED_TYPE_PLAYER_1,
+            PED_TYPE_NETWORK_PLAYER,
+            PED_TYPE_PLAYER_2,
+            PED_TYPE_CIVMALE,
+            PED_TYPE_CIVFEMALE,
+            PED_TYPE_COP,
+            PED_TYPE_GANG_ALBANIAN,
+            PED_TYPE_GANG_BIKER_1,
+            PED_TYPE_GANG_BIKER_2,
+            PED_TYPE_GANG_ITALIAN,
+            PED_TYPE_GANG_RUSSIAN,
+            PED_TYPE_GANG_RUSSIAN_2,
+            PED_TYPE_GANG_IRISH,
+            PED_TYPE_GANG_JAMAICAN,
+            PED_TYPE_GANG_AFRICAN_AMERICAN,
+            PED_TYPE_GANG_KOREAN,
+            PED_TYPE_GANG_CHINESE_JAPANESE,
+            PED_TYPE_GANG_PUERTO_RICAN,
+            PED_TYPE_DEALER,
+            PED_TYPE_MEDIC,
+            PED_TYPE_FIREMAN,
+            PED_TYPE_CRIMINAL,
+            PED_TYPE_BUM,
+            PED_TYPE_PROSTITUTE,
+            PED_TYPE_SPECIAL,
+            PED_TYPE_MISSION,
+            PED_TYPE_SWAT,
+            PED_TYPE_ANIMAL,
+            PED_TYPE_ARMY
+        };
         public static bool IsPoliceArmy(this Ped myPed)
         {
             string ModelName = myPed.Model.Name.ToLower();
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
-            if ((PedType == 6 || PedType == 29 || PedType == 27 || ModelName == "s_m_m_prisguard_01" || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")//PedHash.Shepherd)
-            {  
+            if (PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_ARMY || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01")//if ((PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_ARMY || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01" || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
+            {
                 return true;
             }
             else
@@ -35,7 +68,7 @@ namespace ExtensionsMethods
         {
             string ModelName = myPed.Model.Name.ToLower();
             int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
-            if ((PedType == 6 || PedType == 27 || ModelName == "s_m_m_prisguard_01" || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
+            if (PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01")// || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
             {
                 return true;
             }
@@ -46,7 +79,31 @@ namespace ExtensionsMethods
         }
         public static bool IsArmy(this Ped myPed)
         {
-            if (NativeFunction.CallByName<int>("GET_PED_TYPE", myPed) == 29)
+            if (NativeFunction.CallByName<int>("GET_PED_TYPE", myPed) == (int)ePedType.PED_TYPE_ARMY)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsGangMember(this Ped myPed)
+        {
+            string Nameo = myPed.RelationshipGroup.Name;
+            if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo) && Nameo.ToLower().Contains("gang"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsSecurity(this Ped myPed)
+        {
+            string Nameo = myPed.RelationshipGroup.Name;
+            if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo) && Nameo.ToLower().Contains("securitygurad"))
             {
                 return true;
             }
@@ -57,7 +114,7 @@ namespace ExtensionsMethods
         }
         public static bool SetLock(this Vehicle ToLock, VehicleLockStatus DesiredLockStatus)
         {
-            if(ToLock.LockStatus == DesiredLockStatus)
+            if (ToLock.LockStatus == DesiredLockStatus)
             {
                 return true;
             }
@@ -97,6 +154,6 @@ namespace ExtensionsMethods
         private static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
         {
             return source.OrderBy(x => Guid.NewGuid());
-    }
+        }
     }
 }

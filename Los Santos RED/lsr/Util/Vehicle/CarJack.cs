@@ -94,7 +94,7 @@ public class CarJack
         }
         catch (Exception e)
         {
-            Mod.Player.IsCarJacking = false;
+            Mod.Player.IsCarJackingManual = false;
             Mod.Debug.WriteToLog("UnlockCarDoor", e.Message);
         }
     }
@@ -143,7 +143,7 @@ public class CarJack
     private bool CarJackAnimation()
     {
 
-        Mod.Player.IsCarJacking = true;
+        Mod.Player.IsCarJackingManual = true;
         bool locOpenDoor = false;
         WantToCancel = false;
         Vector3 OriginalCarPosition = TargetVehicle.Position;
@@ -221,7 +221,7 @@ public class CarJack
 
         if (Game.LocalPlayer.Character.IsDead)
         {
-            Mod.Player.IsCarJacking = false;
+            Mod.Player.IsCarJackingManual = false;
             if (Victim != null)
                 Victim.CanBeTasked = true;
             return false;
@@ -275,7 +275,7 @@ public class CarJack
 
         if (WantToCancel)
         {
-            Mod.Player.IsCarJacking = false;
+            Mod.Player.IsCarJackingManual = false;
             return false;
         }
 
@@ -300,14 +300,14 @@ public class CarJack
             }
         }
         GameFiber.Sleep(5000);
-        Mod.Player.IsCarJacking = false;
+        Mod.Player.IsCarJackingManual = false;
         return true;
     }
     private void UnarmedCarJack()
     {
         GameFiber CarJackPed = GameFiber.StartNew(delegate
         {
-            Mod.Player.IsCarJacking = true;
+            //Mod.Player.IsCarJacking = true;
 
             if (Victim != null)
                 Victim.CanBeTasked = false;
@@ -317,7 +317,7 @@ public class CarJack
                 Victim.CanBeTasked = true;
 
             GameFiber.Sleep(4000);
-            Mod.Player.IsCarJacking = false;
+            //Mod.Player.IsCarJacking = false;
         }, "CarJackPed");
         Mod.Debug.GameFibers.Add(CarJackPed);
     }
