@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr
         public VehicleScannerAudio VehicleScannerAudio { get; private set; } = new VehicleScannerAudio();
         public ZoneScannerAudio ZoneScannerAudio { get; private set; } = new ZoneScannerAudio();
         public StreetScannerAudio StreetScannerAudio { get; private set; } = new StreetScannerAudio();
+        public Bones Bones { get; private set; } = new Bones();
         public void ReadConfig()
         {
             Places.ReadConfig();

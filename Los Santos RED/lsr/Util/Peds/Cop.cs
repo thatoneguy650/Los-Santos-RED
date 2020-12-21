@@ -60,8 +60,8 @@ public class Cop : PedExt
             {
                 return false;
             }
-            else if (!IsInVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe)
-            {
+            else if (!IsInVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe && !Pedestrian.IsGettingIntoVehicle && !Pedestrian.IsInAnyVehicle(true) && !Pedestrian.IsInAnyVehicle(false))
+            {//simplify this, testing seems to make them be deleted?
                 return true;
             }
             else
@@ -139,7 +139,7 @@ public class Cop : PedExt
             {
                 Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
             }
-            else if (Mod.World.Wounds.RecentlyKilledCop)
+            else if (Mod.Player.RecentlyKilledCop)
             {
                 Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
             }

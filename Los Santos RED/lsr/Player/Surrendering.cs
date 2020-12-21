@@ -39,10 +39,10 @@ public class Surrendering
         //    return;
 
         Mod.Player.SetUnarmed();
-        if (Mod.Player.CurrentVehicle != null)
-        {
-            Mod.Player.CurrentVehicle.ToggleEngine(false);
-        }
+        //if (Mod.Player.CurrentVehicle != null)
+        //{
+        //    Mod.Player.CurrentVehicle.ToggleEngine(false);
+        //}
         Mod.Player.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";

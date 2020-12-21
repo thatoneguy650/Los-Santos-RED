@@ -101,15 +101,20 @@
   <ItemGroup>
     <Compile Include="lsr\Audio.cs" />
     <Compile Include="lsr\DataMart.cs" />
+    <Compile Include="lsr\DataMart\Bones.cs" />
     <Compile Include="lsr\DataMart\StreetScannerAudio.cs" />
     <Compile Include="lsr\DataMart\VehicleScannerAudio.cs" />
     <Compile Include="lsr\DataMart\ZoneScannerAudio.cs" />
     <Compile Include="lsr\Helper\Natives.cs" />
     <Compile Include="lsr\Helper\Serialization.cs" />
+    <Compile Include="lsr\Util\Injury\InjuryType.cs" />
+    <Compile Include="lsr\Util\Injury\HealthState.cs" />
     <Compile Include="lsr\Util\Locations\LocationData.cs" />
     <Compile Include="lsr\Player\Violations.cs" />
     <Compile Include="lsr\Helper\RandomItems.cs" />
     <Compile Include="lsr\Input.cs" />
+    <Compile Include="lsr\Util\Peds\BodyLocation.cs" />
+    <Compile Include="lsr\Util\Peds\Bone.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="lsr\Player.cs" />
     <Compile Include="lsr\Util\Peds\Loadout.cs" />
@@ -135,7 +140,6 @@
     <Compile Include="lsr\World\Civilians.cs" />
     <Compile Include="lsr\Player\Mugging.cs" />
     <Compile Include="lsr\World\Tasking.cs" />
-    <Compile Include="lsr\World\Wounds.cs" />
     <Compile Include="lsr\World\Pedestrians.cs" />
     <Compile Include="lsr\World\Time.cs" />
     <Compile Include="lsr\World\PedSwap.cs" />

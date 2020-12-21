@@ -10,6 +10,7 @@ namespace LosSantosRED.lsr
     {
         private static List<ModTask> MyTickTasks;
         private static readonly Stopwatch TickStopWatch = new Stopwatch();
+        private static string LastRanTask;
         public static Debug Debug { get; private set; } = new Debug();
         public static Player Player { get; private set; } = new Player();
         public static World World { get; private set; } = new World();
@@ -58,7 +59,7 @@ namespace LosSantosRED.lsr
                         {
                             if (RunGroup >= 4 && TickStopWatch.ElapsedMilliseconds >= 16)//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
                             {
-                                Debug.WriteToLog("GameLogic", string.Format("Tick took > 16 ms ({0} ms), aborting", TickStopWatch.ElapsedMilliseconds));
+                                Debug.WriteToLog("GameLogic", string.Format("Tick took > 16 ms ({0} ms), aborting, Last Ran {1}", TickStopWatch.ElapsedMilliseconds, LastRanTask));
                                 break;
                             }
 
@@ -66,10 +67,12 @@ namespace LosSantosRED.lsr
                             if (ToRun != null)
                             {
                                 ToRun.Run();
+                                LastRanTask = ToRun.DebugName;
                             }
                             foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                             {
                                 RunningBehind.Run();
+                                LastRanTask = ToRun.DebugName;
                             }
                         }
                         MyTickTasks.ForEach(x => x.RanThisTick = false);
@@ -130,7 +133,7 @@ namespace LosSantosRED.lsr
                 new ModTask(0, "Input.Tick", Input.Tick, 1,0),
 
                 new ModTask(25, "Player.Update", Player.Update, 2,0),
-                new ModTask(100, "World.PoliceForce.Tick", World.Police.Tick, 2,1),//25
+                new ModTask(100, "World.Police.Tick", World.Police.Tick, 2,1),//25
 
                 new ModTask(200, "Player.Violations.Update", Player.Violations.Update, 3,0),//50
                 new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.CurrentPoliceResponse.Update, 3,1),//50
@@ -138,7 +141,7 @@ namespace LosSantosRED.lsr
                 new ModTask(150, "Player.Investigations.Tick", Player.Investigations.Tick, 4,0),
                 new ModTask(500, "World.Civilians.Tick", World.Civilians.Tick, 4,1),//150
 
-                new ModTask(200, "World.PedDamage.Tick", World.Wounds.Tick, 5,0),
+                //new ModTask(200, "World.PedDamage.Tick", World.Wounds.Tick, 5,0),//moved to the ped updates for now, might need to readd them here
                 new ModTask(250, "Player.MuggingTick", Player.MuggingTick, 5,1),
 
                 new ModTask(250, "World.Pedestrians.Prune", World.Pedestrians.Prune, 6,0),
@@ -159,15 +162,17 @@ namespace LosSantosRED.lsr
                 new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchMode.UpdateWanted, 11,0),
                 new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.SearchMode.StopVanilla, 11,1),
                 new ModTask(500, "World.Scanner.Tick", World.Scanner.Tick, 12,0),
+
                 new ModTask(100, "Audio.Tick",Audio.Tick,13,0),
+                new ModTask(1000, "World.Vehicles.UpdatePlates", World.Vehicles.UpdatePlates, 13,1),
 
                 new ModTask(500, "World.Tasking.UpdatePeds", World.Tasking.UpdatePeds, 14,0),
                 new ModTask(500, "World.Tasking.Tick", World.Tasking.TaskCops, 14,1),
                 new ModTask(750, "World.Tasking.Tick", World.Tasking.TaskCivilians, 14,2),
 
-                new ModTask(500, "World.Dispatch.SpawnChecking", World.Dispatcher.Dispatch, 15,0),
-                new ModTask(500, "World.Dispatch.DeleteChecking", World.Dispatcher.Recall, 15,1),
-                new ModTask(1000, "World.Vehicles.UpdatePlates", World.Vehicles.UpdatePlates, 16,2),
+                
+                new ModTask(500, "World.Dispatch.DeleteChecking", World.Dispatcher.Recall, 15,0),
+                new ModTask(500, "World.Dispatch.SpawnChecking", World.Dispatcher.Dispatch, 15,1),
             };
         }
         private class ModTask

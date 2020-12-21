@@ -89,6 +89,32 @@ public class Debug
         //            Rage.Debug.DrawArrowDebug(new Vector3(MyCop.Pedestrian.Position.X, MyCop.Pedestrian.Position.Y, MyCop.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, ToShow);
         //    }
         //}
+
+
+
+        foreach (PedExt MyPed in Mod.World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.DistanceToPlayer <= 100f))
+        {
+            Color ToShow = Color.Purple;
+
+            if (MyPed.HasSeenPlayerCommitCrime)
+            {
+                ToShow = Color.Red;
+            }
+            else if (MyPed.HasReactedToCrimes)
+            {
+                ToShow = Color.Orange;
+            }
+            else if (MyPed.CanRecognizePlayer)
+            {
+                ToShow = Color.Black;
+            }
+            else if (MyPed.CanSeePlayer)
+            {
+                ToShow = Color.White;
+            }
+            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Pedestrian.Position.X, MyPed.Pedestrian.Position.Y, MyPed.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, ToShow);
+        }
+
     }
     private void DebugNumpad0()
     {
@@ -122,7 +148,7 @@ public class Debug
 
 
         int GET_PLAYER_RADIO_STATION_INDEX = NativeFunction.CallByName<int>("GET_PLAYER_RADIO_STATION_INDEX");
-        
+
 
         WriteToLog("Debugging", string.Format("GET_PLAYER_RADIO_STATION_NAME: {0}, GET_PLAYER_RADIO_STATION_INDEX: {1}", GET_PLAYER_RADIO_STATION_NAME, GET_PLAYER_RADIO_STATION_INDEX));
         NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_NAME", "RADIO_19_USER");
@@ -181,7 +207,7 @@ public class Debug
         //    Game.Console.Print(string.Format("Killer Handle {0}", killer.Handle));
         //}
 
-       // Works for Player, not Vehicle
+        // Works for Player, not Vehicle
         Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
         myPed.BlockPermanentEvents = true;
         while (myPed.Exists() && myPed.IsAlive)
@@ -243,7 +269,7 @@ public class Debug
 
         WriteToLog("Position", $"Vector3 {Game.LocalPlayer.Character.Position} Heading {Game.LocalPlayer.Character.Heading}");
 
-    }       
+    }
     private void Colorbullshit()
     {
         //Color Color1 = Extensions.GetBaseColor1(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
@@ -312,7 +338,7 @@ public class Debug
         if (Mod.Player.CurrentVehicle != null)
         {
             WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", Mod.Player.CurrentVehicle.IsStolen, Mod.Player.CurrentVehicle.WasReportedStolen, Mod.Player.CurrentVehicle.NeedsToBeReportedStolen));
-            WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.CurrentVehicle.CarPlate.IsWanted, Mod.Player.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.CurrentVehicle.ColorMatchesDescription,Mod.Player.CurrentVehicle.CopsRecognizeAsStolen));
+            WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.CurrentVehicle.CarPlate.IsWanted, Mod.Player.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.CurrentVehicle.ColorMatchesDescription, Mod.Player.CurrentVehicle.CopsRecognizeAsStolen));
         }
 
         Mod.World.Tasking.PrintActivities();
@@ -330,13 +356,13 @@ public class Debug
             foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
             {
 
-                WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}", 
+                WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}",
                     Cop.Pedestrian.Handle
-                    ,Cop.Pedestrian.Model.Name
-                    ,Cop.AssignedAgency.Initials
-                    ,Cop.DistanceToPlayer
-                    ,NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS",Cop.Pedestrian,Game.LocalPlayer.Character)
-                    ,NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Game.LocalPlayer.Character, Cop.Pedestrian)
+                    , Cop.Pedestrian.Model.Name
+                    , Cop.AssignedAgency.Initials
+                    , Cop.DistanceToPlayer
+                    , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Cop.Pedestrian, Game.LocalPlayer.Character)
+                    , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Game.LocalPlayer.Character, Cop.Pedestrian)
 
 
                     ));
@@ -349,11 +375,11 @@ public class Debug
             WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.Police.ActiveDistance));
             WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Pedestrians.Police.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Investigations.InvestigationPosition) <= Mod.Player.Investigations.InvestigationDistance)));
             WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.CurrentPoliceResponse.CurrentPoliceStateString));
-            
+
 
 
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             WriteToLog("Debugging error", e.Message + e.StackTrace);
         }

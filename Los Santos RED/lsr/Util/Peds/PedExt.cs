@@ -20,6 +20,37 @@ public class PedExt
     private uint GameTimeLastLOSCheck;
     private uint GameTimeLastSeenCrime;
     private uint GameTimeLastReportedCrime;
+    private Entity Killer;
+    private Entity LastHurtBy;
+    private HealthState CurrentHealthState;
+    private int DistanceUpdate
+    {
+        get
+        {
+            if(IsCop)
+            {
+                return 150;//150//keep this low for busting and tasking etc?
+            }
+            else
+            {
+                return 750;//500
+            }
+        }
+    }
+    private int LosUpdate
+    {
+        get
+        {
+            if (IsCop)
+            {
+                return 750;//500
+            }
+            else
+            {
+                return 750;//750
+            }
+        }
+    }
 
     public int Health { get; set; }
     public Ped Pedestrian { get; set; }
@@ -66,30 +97,36 @@ public class PedExt
     {
         get
         {
-            int DistanceUpdate = 150;//25
-            if (!IsCop)
-                DistanceUpdate = 500;//150
             if (GameTimeLastDistanceCheck == 0)
+            {
                 return true;
-            else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate)
+            }
+            else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate + RandomItems.MyRand.Next(100))
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
     public bool NeedsLOSCheck
     {
         get
         {
-            int DistanceUpdate = 500;
-            if (!IsCop)
-                DistanceUpdate = 750;
             if (GameTimeLastLOSCheck == 0)
+            {
                 return true;
-            else if (Game.GameTime > GameTimeLastLOSCheck + DistanceUpdate)
+            }
+            else if (Game.GameTime > GameTimeLastLOSCheck + LosUpdate + RandomItems.MyRand.Next(100))
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
     public int LastSeatIndex { get; set; }
@@ -119,16 +156,59 @@ public class PedExt
             }
         }
     }
+    public bool CanRemove
+    {
+        get
+        {
+            if (!Pedestrian.Exists())
+            {
+                return true;
+            }
+            else if (Pedestrian.IsDead && CurrentHealthState.HasLoggedDeath)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
     public List<Crime> CrimesWitnessed { get; set; } = new List<Crime>();
     public Vector3 PositionLastSeenCrime { get; set; } = Vector3.Zero;
-
     public bool HasSeenPlayerCommitCrime { get; set; } = false;
     public float ClosestDistanceToPlayer { get; set; } = 2000f;
     public bool CanSeePlayer { get; set; } = false;
-    public bool CanRecognizePlayer { get; set; } = false;
+    public bool CanRecognizePlayer
+    {
+        get
+        {
+            if (Mod.Player.IsInVehicle)
+            {
+                if (CanSeePlayer || DistanceToPlayer <= 7f)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (TimeContinuoslySeenPlayer >= 500)//1250
+                {
+                    return true;
+                }
+                else if (CanSeePlayer && DistanceToPlayer <= 8f && DistanceToPlayer > 0.1f)//(DistanceToPlayer <= 2f && DistanceToPlayer > 0f)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+    }
     public bool WithinWeaponsAudioRange { get; set; } = false;
-    public bool HurtByPlayer { get; set; } = false;
-    public bool KilledByPlayer { get; set; } = false;
     public float DistanceToPlayer { get; set; } = 999f;
     public float DistanceToLastSeen { get; set; } = 99f;
     public uint TimeContinuoslySeenPlayer
@@ -136,9 +216,13 @@ public class PedExt
         get
         {
             if (GameTimeContinuoslySeenPlayerSince == 0)
+            {
                 return 0;
+            }
             else
+            {
                 return (Game.GameTime - GameTimeContinuoslySeenPlayerSince);
+            }
         }
     }
     public uint TimeBehindPlayer
@@ -175,6 +259,7 @@ public class PedExt
                 return false;
         }
     }
+    public bool HasReactedToCrimes { get; set; } = false;
     public VehicleExt VehicleLastSeenPlayerIn { get; set; }
     public WeaponInformation WeaponLastSeenPlayerWith { get; set; }
     public Vector3 PositionLastSeenPlayer { get; private set; }
@@ -193,111 +278,128 @@ public class PedExt
             else
             {
                 return Pedestrian.Position;
-            }    
+            }
         }
     }
-
-
     public PedExt(Ped _Pedestrian)
     {
         Pedestrian = _Pedestrian;
         Health = Pedestrian.Health;
+        CurrentHealthState = new HealthState(this);
     }
-    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice)
+    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice) : this(_Pedestrian)
     {
-        Pedestrian = _Pedestrian;
-        Health = Pedestrian.Health;
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
     }
-
     public void Update()
     {
-        if (NeedsUpdate && Pedestrian.IsAlive)
+        if (Pedestrian.IsAlive)
         {
-            IsInVehicle = Pedestrian.IsInAnyVehicle(false);
-            if (IsInVehicle)
+            if (NeedsUpdate)
             {
-                IsDriver = Pedestrian.SeatIndex == -1;
-                LastSeatIndex = Pedestrian.SeatIndex;
-                IsInHelicopter = Pedestrian.IsInHelicopter;
-                if (!IsInHelicopter)
-                {
-                    IsOnBike = Pedestrian.IsOnBike;
-                    SetDrivingFlags();
-                }
-                //NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 1|2|128|256);//use blinkers?
-            }
-            else
-            {
-                IsInHelicopter = false;
-                IsOnBike = false;
-                IsDriver = false;
-            }
-            if (!IsInFront(Game.LocalPlayer.Character, Pedestrian))
-            {
-                if (GameTimeBehindPlayer == 0)
-                {
-                    GameTimeBehindPlayer = Game.GameTime;
-                }
-            }
-            else
-            {
-                GameTimeBehindPlayer = 0;
-            }
-            if (NeedsDistanceCheck)
-            {
+                UpdateVehicleState();
                 UpdateDistance();
-            }
-            if (NeedsLOSCheck)
-            {
                 UpdateLineOfSight();
-            }
-
-
-            if (WillCallPolice && ShouldReportCrime)
-            {
-                ReportCrime();
-                Mod.Debug.WriteToLog("WillCallPolice && ShouldReportCrime", string.Format(" {0} to WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
-            }
-
-            if(!HasSeenPlayerCommitCrime)
-            {
-                Pedestrian.IsPersistent = false;
+                UpdateCrimes();
             }
         }
+        else
+        {
+            CanSeePlayer = false;
+            GameTimeContinuoslySeenPlayerSince = 0;
+        }
+        CurrentHealthState.Update();
     }
-    public void AddCrime(Crime CrimeToAdd, Vector3 PositionToReport)
+    public void WitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {
         if (!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
         {
             CrimesWitnessed.Add(CrimeToAdd);
             PositionLastSeenCrime = PositionToReport;
             GameTimeLastSeenCrime = Game.GameTime;
+            HasSeenPlayerCommitCrime = true;
             Mod.Debug.WriteToLog("AddCrime", string.Format(" Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
         }
     }
-    private void SetDrivingFlags()
+    public bool SeenPlayerFor(int _Duration)
     {
-        NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
+        if (CanSeePlayer)
+        {
+            return true;
+        }
+        else if (Game.GameTime - GameTimeLastSeenPlayer <= _Duration)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool HurtBy(Ped ToCheck)
+    {
+        if (LastHurtBy == ToCheck)
+        {
+            return true;
+        }
+        if (Pedestrian.Handle != ToCheck.Handle)
+        {
+            if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, ToCheck, true))
+            {
+                LastHurtBy = ToCheck;
+                return true;
+
+            }
+            else if (ToCheck.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, ToCheck.CurrentVehicle, true))
+            {
+                LastHurtBy = ToCheck;
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool KilledBy(Ped ToCheck)
+    {
+        try
+        {
+            if (Pedestrian.Exists() && Pedestrian.IsDead && Pedestrian.Handle != ToCheck.Handle)
+            {
+                Killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
+                if (Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.Handle == Killer.Handle))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Mod.Debug.WriteToLog("KilledBy Error", $"Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
+            return HurtBy(ToCheck);
+        }
+
+    }
+    private void SetDrivingFlags()
+    {  
         if (IsCop && Mod.Player.IsWanted)
         {
-            
+            NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
             NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
             if (!IsInHelicopter)
             {
                 if (Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly)
                 {
-                    NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1f);
-                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4, true);
-                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 8, true);
-                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 16, true);
-                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 512, true);
-                    NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 262144, true);
+                    //NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1f);
+                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4, true);
+                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 8, true);
+                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 16, true);
+                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 512, true);
+                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 262144, true);
                 }
                 else// if (!Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly && DistanceToPlayer <= 15f)
                 {
-                    NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 0.5f);
+                   // NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 0.5f);
                     NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);//only originally this one for reckless pursuit
                 }
 
@@ -316,94 +418,6 @@ public class PedExt
         else
         {
             NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 183);
-
-        }
-    }
-    public bool SeenPlayerSince(int _Duration)
-    {
-        if (CanSeePlayer)
-        {
-            return true;
-        }
-        else if (Game.GameTime - GameTimeLastSeenPlayer <= _Duration)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    public bool PlayerIsInFront()
-    {
-        float Result = GetDotVectorResult(Pedestrian, Game.LocalPlayer.Character);
-        if (Result > 0)
-            return true;
-        else
-            return false;
-
-    }
-    public void UpdateContinuouslySeen()
-    {
-        if (GameTimeContinuoslySeenPlayerSince == 0)
-        {
-            GameTimeContinuoslySeenPlayerSince = Game.GameTime;
-        }
-    }
-    public void CheckPlayerHurtPed()
-    {
-        if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, Game.LocalPlayer.Character, true))
-        {
-            HurtByPlayer = true;
-
-        }
-        else if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, true))
-        {
-            HurtByPlayer = true;
-        }
-    }
-    public void CheckPlayerKilledPed()
-    {
-        try
-        {
-            if (Pedestrian.Exists() && Pedestrian.IsDead)
-            {
-                //Pre Update Working Stuff
-                //Entity killer = NativeFunction.CallByName<Entity>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
-                //Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);//was working before update from 2060.
-                //Entity killer = NativeFunction.Natives.x93C8B64DEB84728C<Entity>(Pedestrian);//was working before update from 2060, with Hash instead of name
-                //uint Handle = NativeFunction.CallByName<uint>("GET_PED_SOURCE_OF_DEATH", Pedestrian);
-                //Mod.Debug.WriteToLog("CheckPlayerKilledPed", string.Format("Killed Handle: {0}, Player Handle: {1}, killer: {2}", Handle,Game.LocalPlayer.Character.Handle, killer.Handle));
-                //if (killer.Handle == Game.LocalPlayer.Character.Handle || (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Handle == killer.Handle))
-                //{
-                //    KilledByPlayer = true;
-                //}
-
-                //Temp Stuff that works regardless
-                //temp as the above native functions are not working on this version of RPH, assume if you hurt them, you killed them
-                //if (!HurtByPlayer)
-                //{
-                //    CheckPlayerHurtPed();
-                //}
-                //if (HurtByPlayer)
-                //{
-                //    KilledByPlayer = true;
-                //}
-
-                //Temp that will only get shooting, not vehicle!
-                uint killer = NativeFunction.Natives.GetPedSourceOfDeath<uint>(Pedestrian);
-                if (killer == Game.LocalPlayer.Character.Handle)
-                {
-                    KilledByPlayer = true;
-                }
-            }
-        }
-        catch
-        {
-            if (HurtByPlayer)
-            {
-                KilledByPlayer = true;
-            }
         }
     }
     private void ReportCrime()
@@ -414,10 +428,47 @@ public class PedExt
             CrimesWitnessed.Clear();
             GameTimeLastReportedCrime = Game.GameTime;
             Pedestrian.IsPersistent = false;
+            Mod.Debug.WriteToLog("WillCallPolice && ShouldReportCrime", string.Format(" {0} to WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
+        }
+    }
+    private void UpdateVehicleState()
+    {
+        IsInVehicle = Pedestrian.IsInAnyVehicle(false);
+        if (IsInVehicle)
+        {
+            IsDriver = Pedestrian.SeatIndex == -1;
+            LastSeatIndex = Pedestrian.SeatIndex;
+            IsInHelicopter = Pedestrian.IsInHelicopter;
+            if (!IsInHelicopter)
+            {
+                IsOnBike = Pedestrian.IsOnBike;
+                SetDrivingFlags();
+            }
+        }
+        else
+        {
+            IsInHelicopter = false;
+            IsOnBike = false;
+            IsDriver = false;
+        }
+    }
+    private void UpdateCrimes()
+    {
+        if (WillCallPolice && ShouldReportCrime)
+        {
+            ReportCrime();
+        }
+        if (!HasSeenPlayerCommitCrime && Pedestrian.IsPersistent)
+        {
+            Pedestrian.IsPersistent = false;
         }
     }
     private void UpdateDistance()
     {
+        if (!NeedsDistanceCheck)
+        {
+            return;
+        }
         DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
         DistanceToLastSeen = Pedestrian.DistanceTo2D(Mod.World.Police.PlaceLastSeenPlayer);
         if (DistanceToPlayer <= 0.1f)
@@ -436,90 +487,108 @@ public class PedExt
         {
             WithinWeaponsAudioRange = false;
         }
-        GameTimeLastDistanceCheck = Game.GameTime;  
+        if (!IsBehind(Game.LocalPlayer.Character))
+        {
+            if (GameTimeBehindPlayer == 0)
+            {
+                GameTimeBehindPlayer = Game.GameTime;
+            }
+        }
+        else
+        {
+            GameTimeBehindPlayer = 0;
+        }
+        GameTimeLastDistanceCheck = Game.GameTime;
     }
     private void UpdateLineOfSight()
     {
-        bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-        Entity ToCheck = PlayerInVehicle ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
-        if (IsCop && !Pedestrian.IsInHelicopter)
+        if (NeedsLOSCheck)
         {
-            if (DistanceToPlayer <= 90f && PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
+            bool PlayerInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+            Entity ToCheck = PlayerInVehicle ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
+            if (IsCop && !Pedestrian.IsInHelicopter)
             {
-                SetPlayerSeen();
+                if (DistanceToPlayer <= 90f && IsInFrontOf(Game.LocalPlayer.Character) && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
+                {
+                    SetPlayerSeen();
+                }
+                else
+                {
+                    SetPlayerUnseen();
+                }
+            }
+            else if (Pedestrian.IsInHelicopter)
+            {
+                float DistanceToSee = 150f;
+                if (Mod.Player.IsWanted)
+                {
+                    DistanceToSee = 350f;
+                }
+                if (DistanceToPlayer <= DistanceToSee && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Pedestrian, ToCheck, 17))
+                {
+                    SetPlayerSeen();
+                }
+                else
+                {
+                    SetPlayerUnseen();
+                }
             }
             else
             {
-                GameTimeContinuoslySeenPlayerSince = 0;
-                CanSeePlayer = false;
+                if (DistanceToPlayer <= 90f && IsInFrontOf(Game.LocalPlayer.Character) && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
+                {
+                    SetPlayerSeen();
+                }
+                else
+                {
+                    SetPlayerUnseen();
+                }
             }
-        }
-        else if (Pedestrian.IsInHelicopter)
-        {
-            float DistanceToSee = 150f;
-            if (Mod.Player.IsWanted)
-            {
-                DistanceToSee = 350f;
-            }
-            if (DistanceToPlayer <= DistanceToSee && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Pedestrian, ToCheck, 17))
-            {
-                SetPlayerSeen();
-            }
-            else
-            {
-                GameTimeContinuoslySeenPlayerSince = 0;
-                CanSeePlayer = false;
-            }
-        }
-        else
-        {
-            if (DistanceToPlayer <= 90f && PlayerIsInFront() && !Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, ToCheck))//55f
-            {
-                SetPlayerSeen();
-            }
-            else
-            {
-                GameTimeContinuoslySeenPlayerSince = 0;
-                CanSeePlayer = false;
-            }
-        }
 
-        if (PlayerInVehicle)
-        {
-            if (CanSeePlayer || DistanceToPlayer <= 7f)
-            {
-                CanRecognizePlayer = true;
-            }
-            else
-            {
-                CanRecognizePlayer = false;
-            }
+
+            GameTimeLastLOSCheck = Game.GameTime;
         }
-        else
-        {
-            if (TimeContinuoslySeenPlayer >= 1250)
-            {
-                CanRecognizePlayer = true;
-            }
-            else if (DistanceToPlayer <= 2f && DistanceToPlayer > 0f)
-            {
-                CanRecognizePlayer = true;
-            }
-            else
-            {
-                CanRecognizePlayer = false;
-            }
-        }
-        GameTimeLastLOSCheck = Game.GameTime;
+    }
+    private void SetPlayerUnseen()
+    {
+        GameTimeContinuoslySeenPlayerSince = 0;
+        CanSeePlayer = false;
     }
     private void SetPlayerSeen()
     {
-        UpdateContinuouslySeen();
         CanSeePlayer = true;
         GameTimeLastSeenPlayer = Game.GameTime;
         PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
         VehicleLastSeenPlayerIn = Mod.Player.CurrentSeenVehicle;
         WeaponLastSeenPlayerWith = Mod.Player.CurrentSeenWeapon;
+        if (GameTimeContinuoslySeenPlayerSince == 0)
+        {
+            GameTimeContinuoslySeenPlayerSince = Game.GameTime;
+        }
+    }
+    private bool IsBehind(Entity Target)
+    {
+        if (GetDotVectorResult(Target, Pedestrian) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+    private bool IsInFrontOf(Ped ToCheck)
+    {
+        float Result = GetDotVectorResult(Pedestrian, ToCheck);
+        if (Result > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     private float GetDotVectorResult(Entity source, Entity target)
     {
@@ -529,15 +598,6 @@ public class PedExt
             return Vector3.Dot(dir, source.ForwardVector);
         }
         else return -1.0f;
-    }
-    private bool IsInFront(Entity Target, Entity Source)
-    {
-        float Result = GetDotVectorResult(Target, Source);
-        if (Result > 0)
-            return true;
-        else
-            return false;
-
     }
 
 }

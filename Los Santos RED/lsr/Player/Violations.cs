@@ -350,7 +350,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckPedDamageCrimes()
         {
-            if (Mod.World.Wounds.RecentlyKilledCop)
+            if (Mod.Player.RecentlyKilledCop)
             {
                 KillingPolice.IsCurrentlyViolating = true;
             }
@@ -359,7 +359,7 @@ namespace LosSantosRED.lsr
                 KillingPolice.IsCurrentlyViolating = false;
             }
 
-            if (Mod.World.Wounds.RecentlyHurtCop)
+            if (Mod.Player.RecentlyHurtCop)
             {
                 HurtingPolice.IsCurrentlyViolating = true;
             }
@@ -368,7 +368,7 @@ namespace LosSantosRED.lsr
                 HurtingPolice.IsCurrentlyViolating = false;
             }
 
-            if (Mod.World.Wounds.RecentlyKilledCivilian || Mod.World.Wounds.NearCivilianMurderVictim)
+            if (Mod.Player.RecentlyKilledCivilian || Mod.Player.NearCivilianMurderVictim)
             {
                 KillingCivilians.IsCurrentlyViolating = true;
             }
@@ -377,7 +377,7 @@ namespace LosSantosRED.lsr
                 KillingCivilians.IsCurrentlyViolating = false;
             }
 
-            if (Mod.World.Wounds.RecentlyHurtCivilian)
+            if (Mod.Player.RecentlyHurtCivilian)
             {
                 HurtingCivilians.IsCurrentlyViolating = true;
             }
@@ -408,7 +408,7 @@ namespace LosSantosRED.lsr
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (Mod.World.Wounds.RecentlyHurtCivilian || Mod.World.Wounds.RecentlyHurtCop) && (Mod.World.Pedestrians.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.Pedestrians.Police.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
+            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (Mod.Player.RecentlyHurtCivilian || Mod.Player.RecentlyHurtCop) && (Mod.World.Pedestrians.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.Pedestrians.Police.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
             {
                 HitPedWithCar.IsCurrentlyViolating = true;
             }

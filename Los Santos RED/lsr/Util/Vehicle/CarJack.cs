@@ -185,7 +185,7 @@ public class CarJack
             {
                 Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                 NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
-                Mod.Player.FlagShooting();
+                Mod.Player.SetShot();
 
                 if (ScenePhase <= 0.35f)
                 {
@@ -256,9 +256,10 @@ public class CarJack
 
 
                 VehicleExt MyCar = Mod.World.Vehicles.GetVehicle(TargetVehicle);
-                if (MyCar != null)
+                if (MyCar != null && MyCar.Vehicle.Exists())
                 {
-                    MyCar.ToggleEngine(true);
+                    MyCar.Vehicle.IsEngineOn = true;
+                   // MyCar.ToggleEngine(true);
                 }
 
 

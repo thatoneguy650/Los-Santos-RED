@@ -389,7 +389,7 @@ public class Respawning
             Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Reset player with Clear Wanted", false);
             Mod.Player.MaxWantedLastLife = 0;
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-            Mod.World.Wounds.Reset();
+            Mod.Player.ResetInjuredPeds();
             Mod.World.Civilians.ResetWitnessedCrimes();
             Mod.Player.Investigations.Reset();
         }
@@ -409,7 +409,7 @@ public class Respawning
     }
     private void CheckWeapons()
     {
-        if (!Mod.World.Wounds.KilledAnyCops)
+        if (!Mod.Player.KilledAnyCops)
         {
             RemoveIllegalWeapons();
         }

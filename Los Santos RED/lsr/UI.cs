@@ -124,11 +124,11 @@ public class UI
     }
     private void DisplayHelpText()
     {
-        if (!RecentlyDisplayedBleedingHelp && Mod.World.Wounds.IsPlayerBleeding)
-        {
-            Game.DisplayHelp("Hold still to bandage!", 5000);
-            GameTimeLastDisplayedBleedingHelp = Game.GameTime;
-        }
+        //if (!RecentlyDisplayedBleedingHelp && Mod.World.Wounds.IsPlayerBleeding)
+        //{
+        //    Game.DisplayHelp("Hold still to bandage!", 5000);
+        //    GameTimeLastDisplayedBleedingHelp = Game.GameTime;
+        //}
     }
     private void ShowDebugUI()
     {
@@ -202,16 +202,16 @@ public class UI
                 StartedBustedEffect = true;
             }
         }
-        else if (Mod.World.Wounds.IsPlayerBleeding)
-        {
-            if (!StartedBandagingEffect)
-            {
-                NativeFunction.Natives.x80C8B1846639BB19(1);
-                NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);
-                BigMessage.MessageInstance.ShowColoredShard("BLEEDING", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 1500);
-                StartedBandagingEffect = true;
-            }
-        }
+        //else if (Mod.World.Wounds.IsPlayerBleeding)
+        //{
+        //    if (!StartedBandagingEffect)
+        //    {
+        //        NativeFunction.Natives.x80C8B1846639BB19(1);
+        //        NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);
+        //        BigMessage.MessageInstance.ShowColoredShard("BLEEDING", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 1500);
+        //        StartedBandagingEffect = true;
+        //    }
+        //}
         else
         {
             if(StartedBandagingEffect)

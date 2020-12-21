@@ -50,7 +50,7 @@ public class Tasking
             int TaskedCops = 0;
             foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.CopToTask.DistanceToPlayer))//foreach (TaskableCop Cop in TaskableCops.Where(x => x.CopToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
-                if (TaskedCops < 2)//2
+                if (TaskedCops < 5)//2
                 {
                     Cop.RunCurrentActivity();
                     TaskedCops++;
@@ -79,7 +79,7 @@ public class Tasking
             int TaskedCivilians = 0;
             foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.CivilianToTask.DistanceToPlayer))//foreach (TaskableCivilian Civilian in TaskableCivilians.Where(x => x.CivilianToTask.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastRanActivity))
             {
-                if (TaskedCivilians < 1)//5//4
+                if (TaskedCivilians < 5)//5//4
                 {
                     Civilian.RunCurrentActivity();
                     TaskedCivilians++;
@@ -1016,6 +1016,7 @@ public class Tasking
             {
                 if (CivilianToTask.Pedestrian.Exists())
                 {
+                    CivilianToTask.HasReactedToCrimes = true;
                     if (CivilianToTask.WillFight && Mod.Player.IsNotWanted)
                     {
                         CurrentSubTaskLoop = "Fight";
@@ -1072,7 +1073,7 @@ public class Tasking
         {
             foreach(Crime CurrentlyViolating in Mod.Player.Violations.CivilianReportableCrimesViolating)
             {
-                CivilianToTask.AddCrime(CurrentlyViolating, Game.LocalPlayer.Character.Position);
+                CivilianToTask.WitnessedCrime(CurrentlyViolating, Game.LocalPlayer.Character.Position);
             }
         }
         private void GiveWeapon()

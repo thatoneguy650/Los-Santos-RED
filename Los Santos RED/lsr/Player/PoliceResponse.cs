@@ -274,7 +274,6 @@ public class PoliceResponse
         IsWeaponsFree = false;
         CurrentPoliceState = PoliceState.Normal;
         GameTimeWantedLevelStarted = 0;
-        Mod.World.Pedestrians.ResetDamagedBy();
         Mod.World.Police.Reset();
         Mod.Player.Investigations.Reset();
         Mod.World.Scanner.Reset();

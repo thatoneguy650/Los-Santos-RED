@@ -40,7 +40,6 @@ public class Pedestrians
             return Police.Any(x => x.DistanceToPlayer <= 150f);
         }
     }
-
     public bool AnyNooseUnitsSpawned
     {
         get
@@ -66,7 +65,7 @@ public class Pedestrians
     {
         get
         {
-            return string.Join(" ", Police.Where(x => (x.SeenPlayerSince(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => x.AssignedAgency.ColoredInitials).Distinct().ToArray());
+            return string.Join(" ", Police.Where(x => (x.SeenPlayerFor(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => x.AssignedAgency.ColoredInitials).Distinct().ToArray());
         }
     }
     public Pedestrians()
@@ -103,30 +102,14 @@ public class Pedestrians
     }
     public void Prune()
     {
-        Police.RemoveAll(x => !x.Pedestrian.Exists());
-        Civilians.RemoveAll(x => !x.Pedestrian.Exists());
+        Police.RemoveAll(x => x.CanRemove);
+        Civilians.RemoveAll(x => x.CanRemove);
         foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.IsDead))
         {
             Mod.World.Spawner.MarkNonPersistent(Cop);
         }
-        Police.RemoveAll(x => x.Pedestrian.IsDead);
-        Civilians.RemoveAll(x => x.Pedestrian.IsDead);
-    }
-
-
-
-    public void ResetDamagedBy()
-    {
-        foreach (Cop Cop in Police)
-        {
-            Cop.HurtByPlayer = false;
-            Cop.KilledByPlayer = false;
-        }
-        foreach (PedExt Ped in Civilians)
-        {
-            Ped.HurtByPlayer = false;
-            Ped.KilledByPlayer = false;
-        }
+        Police.RemoveAll(x => x.CanRemove);
+        Civilians.RemoveAll(x => x.CanRemove);
     }
     public void ClearPolice()
     {

@@ -27,6 +27,13 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastMoved;
         private uint GameTimeLastSmashedVehicleWindow;
         private uint PoliceLastSeenVehicleHandle;
+        private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
+        private List<PedExt> PlayerKilledCops = new List<PedExt>();
+        private uint GameTimeLastHurtCivilian;
+        private uint GameTimeLastKilledCivilian;
+        private uint GameTimeLastHurtCop;
+        private uint GameTimeLastKilledCop;
+        private HealthState CurrentHealth;
         private bool RecentlySmashedWindow
         {
             get
@@ -189,7 +196,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-
         public bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
         public bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
@@ -288,6 +294,91 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        public bool RecentlyHurtCivilian
+        {
+            get
+            {
+                if (GameTimeLastHurtCivilian == 0)
+                    return false;
+                else if (Game.GameTime - GameTimeLastHurtCivilian <= 5000)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool RecentlyKilledCivilian
+        {
+            get
+            {
+                if (GameTimeLastKilledCivilian == 0)
+                    return false;
+                else if (Game.GameTime - GameTimeLastKilledCivilian <= 5000)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool RecentlyHurtPed
+        {
+            get
+            {
+                if (RecentlyHurtCivilian || RecentlyHurtCop)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool RecentlyHurtCop
+        {
+            get
+            {
+                if (GameTimeLastHurtCop == 0)
+                    return false;
+                else if (Game.GameTime - GameTimeLastHurtCop <= 5000)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool RecentlyKilledCop
+        {
+            get
+            {
+                if (GameTimeLastKilledCop == 0)
+                    return false;
+                else if (Game.GameTime - GameTimeLastKilledCop <= 5000)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool KilledAnyCops
+        {
+            get
+            {
+                return PlayerKilledCops.Any();
+            }
+        }
+        public bool NearCivilianMurderVictim
+        {
+            get
+            {
+                if (PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 9f))
+                    return true;
+                else
+                    return false;
+            }
+        }
+        public bool NearCopMurderVictim
+        {
+            get
+            {
+                if (PlayerKilledCops.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 15f))
+                    return true;
+                else
+                    return false;
+            }
+        }
         public VehicleExt CurrentSeenVehicle
         {
             get
@@ -336,7 +427,7 @@ namespace LosSantosRED.lsr
         }
         public Player()
         {
-
+             CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
         }
         public void Update()
         {
@@ -346,8 +437,17 @@ namespace LosSantosRED.lsr
             }
             CacheData();
             StateTick();
-            TurnOffRespawnScripts();
+            //TerminateRespawnScripts();
+            TerminateVanillaHealthRecharge();
             TrackedVehiclesTick();
+            CurrentHealth.Update();
+        }
+        public void SetUnarmed()
+        {
+            if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true); //Unequip weapon so you don't get shot
+            }
         }
         public void MuggingTick()
         {
@@ -384,7 +484,7 @@ namespace LosSantosRED.lsr
                 return false;
             }
         }
-        public void FlagShooting()
+        public void SetShot()
         {
             GameTimeLastShot = Game.GameTime;
         }
@@ -445,6 +545,13 @@ namespace LosSantosRED.lsr
 
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", Mod.World.PedSwap.SuspectName), NotifcationText);
         }
+        public void ResetInjuredPeds()
+        {
+            GameTimeLastHurtCivilian = 0;
+            GameTimeLastKilledCivilian = 0;
+            GameTimeLastHurtCop = 0;
+            GameTimeLastKilledCop = 0;
+        }
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
@@ -465,6 +572,34 @@ namespace LosSantosRED.lsr
         public void SetMoney(int Amount)
         {
             NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
+        }
+        public void Killed(PedExt MyPed)
+        {
+            if (MyPed.IsCop)
+            {
+                PlayerKilledCops.Add(MyPed);
+                GameTimeLastKilledCop = Game.GameTime;
+                GameTimeLastHurtCop = Game.GameTime;
+            }
+            else
+            {
+                PlayerKilledCivilians.Add(MyPed);
+                GameTimeLastKilledCivilian = Game.GameTime;
+                GameTimeLastHurtCivilian = Game.GameTime;
+            }
+            Mod.Debug.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+        }
+        public void Injured(PedExt MyPed)
+        {
+            if (MyPed.IsCop)
+            {
+                GameTimeLastHurtCop = Game.GameTime;
+            }
+            else
+            {
+                GameTimeLastHurtCivilian = Game.GameTime;
+            }
+            Mod.Debug.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
         }
         private VehicleExt UpdateCurrentVehicle()
         {
@@ -616,7 +751,7 @@ namespace LosSantosRED.lsr
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
             AreStarsGreyedOut = Mod.Player.SearchMode.IsInSearchMode;//NativeFunction.CallByName<bool>("ARE_PLAYER_STARS_GREYED_OUT", Game.LocalPlayer);
         }
-        private void TurnOffRespawnScripts()
+        private void TerminateRespawnScripts()
         {
             Game.DisableAutomaticRespawn = true;
             Game.FadeScreenOutOnDeath = false;
@@ -857,12 +992,9 @@ namespace LosSantosRED.lsr
                 return true;
             }
         }
-        public void SetUnarmed()
+        private void TerminateVanillaHealthRecharge()
         {
-            if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
-            {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true); //Unequip weapon so you don't get shot
-            }
+            NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
         }
     }
 }

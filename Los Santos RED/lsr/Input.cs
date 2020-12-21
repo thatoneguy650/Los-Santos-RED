@@ -38,7 +38,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -192,12 +192,12 @@ namespace LosSantosRED.lsr
         {
             if(Mod.Player.CurrentVehicle != null)
             {
-                if (IsPressingEngineToggle)
-                {
-                    ToggleEngineAnimation();
-                    GameFiber.Sleep(200);
-                    Mod.Player.CurrentVehicle.ToggleEngine();
-                }
+                //if (IsPressingEngineToggle)
+                //{
+                //    ToggleEngineAnimation();
+                //    GameFiber.Sleep(200);
+                //    Mod.Player.CurrentVehicle.ToggleEngine();
+                //}
                 //if (IsPressingRefuel &&  Mod.Player.GetCash() >= 1)
                 //{
                 //    Mod.Player.GiveCash(-1);

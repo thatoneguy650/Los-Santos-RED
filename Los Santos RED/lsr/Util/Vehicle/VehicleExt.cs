@@ -389,19 +389,19 @@ namespace LSR.Vehicles
                 }
             }
         }
-        public void ToggleEngine()
-        {
-            ToggleEngine(!Vehicle.IsEngineOn);
-        }
-        public void ToggleEngine(bool DesiredStatus)
-        {
-            Mod.Debug.WriteToLog("ToggleEngine", string.Format("Start {0}", Vehicle.IsEngineOn));
-            if (CanToggleEngine)
-            {
-                Vehicle.IsEngineOn = DesiredStatus;
-            }
-            Mod.Debug.WriteToLog("ToggleEngine", string.Format("End {0}", Vehicle.IsEngineOn));
-        }
+        //public void ToggleEngine()
+        //{
+        //    ToggleEngine(!Vehicle.IsEngineOn);
+        //}
+        //public void ToggleEngine(bool DesiredStatus)
+        //{
+        //    Mod.Debug.WriteToLog("ToggleEngine", string.Format("Start {0}", Vehicle.IsEngineOn));
+        //    if (CanToggleEngine)
+        //    {
+        //        Vehicle.IsEngineOn = DesiredStatus;
+        //    }
+        //    Mod.Debug.WriteToLog("ToggleEngine", string.Format("End {0}", Vehicle.IsEngineOn));
+        //}
         public bool IsCar
         {
             get

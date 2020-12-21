@@ -25,9 +25,15 @@ public class Civilians
     }
     private void Update()
     {
-        foreach (PedExt MyPed in Mod.World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+        int PedsUpdated = 0;
+        foreach (PedExt MyPed in Mod.World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.Pedestrian.DistanceTo(Game.LocalPlayer.Character)))
         {
             MyPed.Update();
+            PedsUpdated++;
+            if(PedsUpdated > 25)
+            {
+                break;
+            }
         }
     }
 }

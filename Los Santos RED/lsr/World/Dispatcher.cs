@@ -267,7 +267,7 @@ public class Dispatcher
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.StreetPosition;
                 }
-                Mod.World.Spawner.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle, false);
+                Mod.World.Spawner.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle);
             }
             GameTimeCheckedSpawn = Game.GameTime;
         }
@@ -432,11 +432,17 @@ public class Dispatcher
         private void GetInitialPosition()
         {
             if (Mod.Player.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            {
                 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(350f);
+            }
             else if (Mod.Player.Investigations.InInvestigationMode)
+            {
                 Position = Mod.Player.Investigations.InvestigationPosition;
+            }
             else
+            {
                 Position = Game.LocalPlayer.Character.Position;
+            }
 
             Position = Position.Around2D(Mod.World.Dispatcher.MinDistanceToSpawn, Mod.World.Dispatcher.MaxDistanceToSpawn);
 

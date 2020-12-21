@@ -64,7 +64,7 @@ namespace LosSantosRED.lsr
         }
         private void UpdateCops()
         {
-            foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x=> x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+            foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x=> x.Pedestrian.Exists()))
             {
                 Cop.Update();
                 Cop.Loadout.Update();
@@ -80,7 +80,7 @@ namespace LosSantosRED.lsr
             }
             else
             {
-                AnyRecentlySeenPlayer = Mod.World.Pedestrians.Police.Any(x => x.SeenPlayerSince(Mod.DataMart.Settings.SettingsManager.Police.PoliceRecentlySeenTime));
+                AnyRecentlySeenPlayer = Mod.World.Pedestrians.Police.Any(x => x.SeenPlayerFor(Mod.DataMart.Settings.SettingsManager.Police.PoliceRecentlySeenTime));
             }
             AnyCanRecognizePlayer = Mod.World.Pedestrians.Police.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
             if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer && Mod.Player.IsWanted)

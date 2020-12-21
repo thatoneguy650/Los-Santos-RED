@@ -16,7 +16,6 @@ namespace LosSantosRED.lsr
         public Vehicles Vehicles { get; private set; } = new Vehicles();
         public Pedestrians Pedestrians { get; private set; } = new Pedestrians();
         public Tasking Tasking { get; private set; } = new Tasking();
-        public Wounds Wounds { get; private set; } = new Wounds();
         public Scanner Scanner { get; private set; } = new Scanner();
         public Dispatcher Dispatcher { get; private set; } = new Dispatcher();
         public Time Time { get; private set; } = new Time();
