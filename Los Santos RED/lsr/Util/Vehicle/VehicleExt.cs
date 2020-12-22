@@ -191,7 +191,9 @@ namespace LSR.Vehicles
         public void SetAsEntered()
         {
             if (GameTimeEntered == 0)
+            {
                 GameTimeEntered = Game.GameTime;
+            }
         }
         public Color VehicleColor()
         {
@@ -314,14 +316,17 @@ namespace LSR.Vehicles
             //in here also check for owner?
             //maybe call this onentrycar lock status?
             //in here check who the owner is, if it is a regular car, if it can be locked, etc.
+
             if (!HasAttemptedToLock)
             {
+                Mod.Debug.WriteToLog("AttemptToLock", $"Vehicle: {Vehicle.Handle}");
                 if (!Vehicle.HasOccupants)
                 {
                     if (Vehicle.SetLock((VehicleLockStatus)7) && !Vehicle.IsEngineOn)
                     {
                         HasAttemptedToLock = true;
                         Vehicle.MustBeHotwired = true;
+                        Mod.Debug.WriteToLog("AttemptToLock", $"Locked & Hotwired Vehicle: {Vehicle.Handle}");
                     }
                 }
             }

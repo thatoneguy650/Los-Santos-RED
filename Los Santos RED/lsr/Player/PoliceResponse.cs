@@ -388,7 +388,7 @@ public class PoliceResponse
         {
             PoliceStateChanged();
         }
-        if (!Mod.Player.ArrestWarrant.PlayerIsPersonOfInterest)
+        if (!Mod.Player.ArrestWarrant.IsPersonOfInterest)
         {
             RemoveLastBlip();
         }
@@ -489,7 +489,7 @@ public class PoliceResponse
         RemoveBlip();
 
 
-        if (Mod.Player.ArrestWarrant.PlayerIsPersonOfInterest)
+        if (Mod.Player.ArrestWarrant.IsPersonOfInterest)
         {
             UpdateLastBlip(LastWantedCenterPosition);
         }

@@ -237,7 +237,7 @@ public class UI
     private string GetPlayerStatusDisplay()
     {
         string PlayerStatusLine = "";
-        if (Mod.Player.ArrestWarrant.PlayerIsPersonOfInterest)
+        if (Mod.Player.ArrestWarrant.IsPersonOfInterest)
         {
             if (Mod.Player.IsWanted)
                 PlayerStatusLine = "~r~Wanted~s~";

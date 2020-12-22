@@ -62,7 +62,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false) && (Mod.Player.IsInAutomobile || Mod.Player.IsOnMotorcycle) && !Mod.World.PedSwap.RecentlyTakenOver)
+                if (Mod.Player.IsInVehicle && (Mod.Player.IsInAutomobile || Mod.Player.IsOnMotorcycle) && !Mod.World.PedSwap.RecentlyTakenOver)
                 {
                     return true;
                 }
@@ -242,7 +242,7 @@ namespace LosSantosRED.lsr
             {
                 SuspiciousActivity.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.IsWanted && Mod.World.Police.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Game.LocalPlayer.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor >= 20000)
+            if (Mod.Player.IsWanted && Mod.World.Police.AnySeenPlayerCurrentWanted && !Mod.Player.AreStarsGreyedOut && Mod.Player.Character.Speed >= 2.0f && !Mod.Player.HandsAreUp && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor >= 20000)
             {
                 ResistingArrest.IsCurrentlyViolating = true;
             }
@@ -254,7 +254,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckTheftCrimes()
         {
-            if (Mod.Player.IsWanted && Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAirVehicle)
+            if (Mod.Player.IsWanted && Mod.Player.IsInVehicle && Mod.Player.IsInAirVehicle)
             {
                 GotInAirVehicleDuringChase.IsCurrentlyViolating = true;
             }
@@ -300,7 +300,7 @@ namespace LosSantosRED.lsr
         {
             if (Mod.Player.RecentlyShot(5000) || Game.LocalPlayer.Character.IsShooting)
             {
-                if (!(Game.LocalPlayer.Character.IsCurrentWeaponSilenced || Mod.Player.CurrentWeaponCategory == WeaponCategory.Melee))
+                if (!(Mod.Player.Character.IsCurrentWeaponSilenced || Mod.Player.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
                     FiringWeapon.IsCurrentlyViolating = true;
                     if (Mod.World.Police.AnyRecentlySeenPlayer || Mod.World.Police.AnyCanHearPlayer)
@@ -312,7 +312,7 @@ namespace LosSantosRED.lsr
                 FiringWeapon.IsCurrentlyViolating = false;
                 FiringWeaponNearPolice.IsCurrentlyViolating = false;
             }
-            if (CheckBrandishing() && Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && !Mod.Player.IsInVehicle)
+            if (CheckBrandishing() && Mod.Player.Character.Inventory.EquippedWeapon != null && !Mod.Player.IsInVehicle)
             {
                 BrandishingWeapon.IsCurrentlyViolating = true;
                 if (Mod.Player.CurrentWeapon != null && Mod.Player.CurrentWeapon.WeaponLevel >= 4)
@@ -426,7 +426,7 @@ namespace LosSantosRED.lsr
             }
             if (!TreatAsCop)
             {
-                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.DrivingAgainstTraffic && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.DrivingAgainstTraffic && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Mod.Player.Character.CurrentVehicle.Speed >= 10f)))
                 {
                     DrivingAgainstTraffic.IsCurrentlyViolating = true;
                 }
@@ -434,7 +434,7 @@ namespace LosSantosRED.lsr
                 {
                     DrivingAgainstTraffic.IsCurrentlyViolating = false;
                 }
-                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.DrivingOnPavement && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Game.LocalPlayer.Character.CurrentVehicle.Speed >= 10f)))
+                if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.DrivingOnPavement && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Mod.Player.Character.CurrentVehicle.Speed >= 10f)))
                 {
                     DrivingOnPavement.IsCurrentlyViolating = true;
                 }
@@ -485,7 +485,7 @@ namespace LosSantosRED.lsr
             IsSpeeding = false;
             if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.Exists())
             {
-                CurrentSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed * 2.23694f;
+                CurrentSpeed = Mod.Player.Character.CurrentVehicle.Speed * 2.23694f;
                 if (!IsRoadWorthy(Mod.Player.CurrentVehicle.Vehicle) || IsDamaged(Mod.Player.CurrentVehicle.Vehicle))
                 {
                     VehicleIsSuspicious = true;
@@ -575,7 +575,7 @@ namespace LosSantosRED.lsr
                 {
                     return false;
                 }
-                if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
                 {
                     return false;
                 }
@@ -609,7 +609,7 @@ namespace LosSantosRED.lsr
             }
             if (Mod.World.IsNightTime)
             {
-                if (NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
+                if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
                 {
                     return true;
                 }

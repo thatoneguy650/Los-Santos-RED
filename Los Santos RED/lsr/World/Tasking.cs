@@ -744,7 +744,7 @@ public class Tasking
             {
                 if (CurrentTaskedPosition.DistanceTo2D( WantedCenter) >= 5f)
                 {
-                    if (CopToTask.IsInVehicle)
+                    if (CopToTask.IsInVehicle && CopToTask.Pedestrian.IsInAnyVehicle(false))
                     {
                         NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
                     }

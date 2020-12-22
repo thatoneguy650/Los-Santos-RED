@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//needs full refactor/rewrite
 public class Mugging
 {
     public bool IsMugging { get; private set; }
@@ -40,9 +41,13 @@ public class Mugging
                 if (!GTAPedTarget.HasBeenMugged && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && GTAPedTarget.Pedestrian.IsAlive)
                 {
                     if (GTAPedTarget.DistanceToPlayer <= 7f)
+                    {
                         MugTarget(GTAPedTarget, false);
+                    }
                     else if (GTAPedTarget.DistanceToPlayer <= 15f && GTAPedTarget.CanSeePlayer)
+                    {
                         MugTarget(GTAPedTarget, false);
+                    }
                 }
             }
         }
@@ -53,13 +58,17 @@ public class Mugging
         if (GTAPedTarget != null)
         {
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.Pedestrian.IsAlive)
+            {
                 MugTarget(GTAPedTarget, true);
+            }
         }
     }
-    private void MugTarget(PedExt MuggingTarget,bool IsMelee)
+    private void MugTarget(PedExt MuggingTarget, bool IsMelee)
     {
         if (!MuggingTarget.CanBeTasked)
+        {
             return;
+        }
 
         GameFiber.StartNew(delegate
         {
@@ -71,8 +80,10 @@ public class Mugging
             AnimationDictionary AnimDictionary = new AnimationDictionary("ped");
 
             if (!Game.LocalPlayer.Character.IsAnySpeechPlaying)
+            {
                 Game.LocalPlayer.Character.PlayAmbientSpeech("CHALLENGE_THREATEN");
-            
+            }
+
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", MuggingTarget.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
             GameFiber.Sleep(750);
             MuggingTarget.Pedestrian.PlayAmbientSpeech("GUN_BEG");
@@ -81,7 +92,7 @@ public class Mugging
                 GameFiber.Sleep(100);
 
 
-                if(Game.GameTime - GameTimeStartedMugging >= 2500)
+                if (Game.GameTime - GameTimeStartedMugging >= 2500)
                 {
                     IsMugging = false;
                     MuggingTarget.CanBeTasked = true;
@@ -90,14 +101,16 @@ public class Mugging
             }
 
             if (!IsMugging)
+            {
                 return;
+            }
 
             GameFiber.Sleep(500);
 
             GameTimeStartedMugging = Game.GameTime;
             bool Intimidated = false;
             while (Game.GameTime - GameTimeStartedMugging <= 1500)
-            {      
+            {
                 if (!IsMelee && !Game.LocalPlayer.IsFreeAiming)
                 {
                     Intimidated = false;
@@ -122,7 +135,7 @@ public class Mugging
                 //MuggingTarget.AddCrime(Mod.Player.Violations.,MuggingTarget.Pedestrian.Position);
             }
             MuggingTarget.CanBeTasked = true;
-            IsMugging = false;      
+            IsMugging = false;
         });
     }
 }

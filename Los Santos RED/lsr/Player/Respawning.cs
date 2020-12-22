@@ -142,7 +142,7 @@ public class Respawning
             if (AsOldCharacter)
             {
                 ResetPlayer(false, false);
-                Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.MaxWantedLastLife, "Resetting to max wanted last life after respawn in place", true);
+                //Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.MaxWantedLastLife, "Resetting to max wanted last life after respawn in place", true);
                 ++Mod.Player.TimesDied;
             }
             else
@@ -245,8 +245,8 @@ public class Respawning
     public void ResistArrest()
     {
         Mod.Player.ResetState(false);//maxwanted last life maybe wont work?
-        Mod.Player.CurrentPoliceResponse.RefreshPoliceState();
-        Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.WantedLevel, "Resisting Arrest", true);
+        //Mod.Player.CurrentPoliceResponse.RefreshPoliceState();
+       // Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.WantedLevel, "Resisting Arrest", true);
         Mod.Player.Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);

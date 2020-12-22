@@ -10,6 +10,7 @@ using LSR.Vehicles;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 
+//lots more refactoring please
 public class CarJack 
 {
     private int PlayerScene;
@@ -94,7 +95,7 @@ public class CarJack
         }
         catch (Exception e)
         {
-            Mod.Player.IsCarJackingManual = false;
+            Mod.Player.SetCarJacking(false);
             Mod.Debug.WriteToLog("UnlockCarDoor", e.Message);
         }
     }
@@ -143,7 +144,7 @@ public class CarJack
     private bool CarJackAnimation()
     {
 
-        Mod.Player.IsCarJackingManual = true;
+        Mod.Player.SetCarJacking(true);
         bool locOpenDoor = false;
         WantToCancel = false;
         Vector3 OriginalCarPosition = TargetVehicle.Position;
@@ -219,11 +220,13 @@ public class CarJack
 
         //CameraManager.RestoreGameplayerCamera();
 
-        if (Game.LocalPlayer.Character.IsDead)
+        if (Mod.Player.IsDead)
         {
-            Mod.Player.IsCarJackingManual = false;
+            Mod.Player.SetCarJacking(false);
             if (Victim != null)
+            {
                 Victim.CanBeTasked = true;
+            }
             return false;
         }
         return true;
@@ -276,7 +279,7 @@ public class CarJack
 
         if (WantToCancel)
         {
-            Mod.Player.IsCarJackingManual = false;
+            Mod.Player.SetCarJacking(false);
             return false;
         }
 
@@ -301,7 +304,7 @@ public class CarJack
             }
         }
         GameFiber.Sleep(5000);
-        Mod.Player.IsCarJackingManual = false;
+        Mod.Player.SetCarJacking(false);
         return true;
     }
     private void UnarmedCarJack()
