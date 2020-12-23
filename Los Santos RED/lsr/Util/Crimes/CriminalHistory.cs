@@ -71,7 +71,7 @@ public class CriminalHistory
     }
     public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
     {
-        if (Mod.Player.IsAliveAndFree && !Mod.Player.Respawning.RecentlyBribedPolice)
+        if (Mod.Player.IsAliveAndFree && !Mod.Player.RecentlyBribedPolice)
         {
             if (HaveDescription)
             {
@@ -110,8 +110,7 @@ public class CriminalHistory
             {
                 Mod.Player.CurrentPoliceResponse.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
             }
-            Mod.World.Scanner.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances });
+            Mod.World.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances });
         }
     }
-
 }

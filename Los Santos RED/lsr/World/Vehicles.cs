@@ -18,14 +18,14 @@ public class Vehicles
     {
         get
         {
-            return Mod.World.Vehicles.PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsHelicopter);
+            return PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsHelicopter);
         }
     }
     public int PoliceBoatsCount
     {
         get
         {
-            return Mod.World.Vehicles.PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
+            return PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
         }
     }
     public void Scan()
@@ -86,7 +86,7 @@ public class Vehicles
             }
             else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
             {
-                Mod.World.Spawner.Delete(Cop);
+                Mod.World.Delete(Cop);
             }
         }
     }

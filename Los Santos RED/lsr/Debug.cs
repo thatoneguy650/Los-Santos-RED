@@ -333,7 +333,7 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        WriteToLog("Debugging", Mod.World.Time.CurrentTime);
+        WriteToLog("Debugging", Mod.World.CurrentTime);
 
         if (Mod.Player.CurrentVehicle != null)
         {
@@ -341,7 +341,7 @@ public class Debug
             WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.CurrentVehicle.CarPlate.IsWanted, Mod.Player.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.CurrentVehicle.ColorMatchesDescription, Mod.Player.CurrentVehicle.CopsRecognizeAsStolen));
         }
 
-        Mod.World.Tasking.PrintActivities();
+        Mod.World.PrintTasksDEBUG();
     }
     public void DebugNumpad8()
     {
@@ -369,14 +369,16 @@ public class Debug
 
 
             }
-            WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Investigations.InInvestigationMode));
-            WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Investigations.InvestigationPosition));
-            WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Investigations.InvestigationDistance));
-            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.Police.ActiveDistance));
-            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Pedestrians.Police.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Investigations.InvestigationPosition) <= Mod.Player.Investigations.InvestigationDistance)));
+            WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Investigations.IsActive));
+            WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Investigations.Position));
+            WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Investigations.Distance));
+            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.ActiveDistance));
+            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Pedestrians.Police.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Investigations.Position) <= Mod.Player.Investigations.Distance)));
             WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.CurrentPoliceResponse.CurrentPoliceStateString));
-
-
+            WriteToLog("Debugging", string.Format("Mod.Player.IsAliveAndFree: {0}", Mod.Player.IsAliveAndFree));
+            WriteToLog("Debugging", string.Format("Mod.Player.Character.Handle: {0}", Mod.Player.Character.Handle));
+            WriteToLog("Debugging", string.Format("Mod.Player.IsConsideredArmed: {0}", Mod.Player.IsConsideredArmed));
+            WriteToLog("Debugging", string.Format("Mod.Player.CheckIsArmed(): {0}", Mod.Player.CheckIsArmed()));
 
         }
         catch (Exception e)

@@ -28,7 +28,7 @@ namespace LosSantosRED.lsr
             get
             {
                 float Time = 2000;
-                if (Mod.World.IsNightTime)
+                if (Mod.World.IsNight)
                 {
                     Time+= 3500;
                 }

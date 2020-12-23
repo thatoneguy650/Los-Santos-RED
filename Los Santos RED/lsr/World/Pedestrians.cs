@@ -1,50 +1,27 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
-using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-
 
 public class Pedestrians
 {
-    private int MinCivilianHealth = 70;//10;
-    private int MaxCivilianHealth = 100;//20;
-    private int MinCopHealth = 85;//15;
-    private int MaxCopHealth = 125;//25;
-    private int MinCopArmor = 0;//0;
-    private int MaxCopArmor = 50;//25;
-    public List<Cop> Police { get; private set; } = new List<Cop>();
-    public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
-    public int TotalSpawnedCops
+    private int MaxCivilianHealth = 100;
+    private int MaxCopArmor = 50;
+    private int MaxCopHealth = 125;
+    private int MinCivilianHealth = 70;
+    private int MinCopArmor = 0;
+    private int MinCopHealth = 85;
+    public Pedestrians()
     {
-        get
-        {
-            return Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-        }
     }
-    public bool ShouldBustPlayer
+    public string AgenciesChasingPlayer
     {
         get
         {
-            return Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.ShouldBustPlayer);
-        }
-    }
-    public bool AnyCopsNearPlayer
-    {
-        get
-        {
-            return Police.Any(x => x.DistanceToPlayer <= 150f);
-        }
-    }
-    public bool AnyNooseUnitsSpawned
-    {
-        get
-        {
-            return Police.Any(x => x.AssignedAgency.Initials == "NOOSE" && x.WasModSpawned);
+            return string.Join(" ", Police.Where(x => (x.SeenPlayerFor(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => x.AssignedAgency.ColoredInitials).Distinct().ToArray());
         }
     }
     public bool AnyArmyUnitsSpawned
@@ -54,6 +31,13 @@ public class Pedestrians
             return Police.Any(x => x.AssignedAgency.Initials == "ARMY" && x.WasModSpawned);
         }
     }
+    public bool AnyCopsNearPlayer
+    {
+        get
+        {
+            return Police.Any(x => x.DistanceToPlayer <= 150f);
+        }
+    }
     public bool AnyHelicopterUnitsSpawned
     {
         get
@@ -61,20 +45,68 @@ public class Pedestrians
             return Police.Any(x => x.IsInHelicopter && x.WasModSpawned);
         }
     }
-    public string AgenciesChasingPlayer
+    public bool AnyNooseUnitsSpawned
     {
         get
         {
-            return string.Join(" ", Police.Where(x => (x.SeenPlayerFor(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => x.AssignedAgency.ColoredInitials).Distinct().ToArray());
+            return Police.Any(x => x.AssignedAgency.Initials == "NOOSE" && x.WasModSpawned);
         }
     }
-    public Pedestrians()
+    public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
+    public List<Cop> Police { get; private set; } = new List<Cop>();
+    public bool ShouldBustPlayer
     {
-
+        get
+        {
+            return Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.ShouldBustPlayer);
+        }
     }
-    public void Dispose()
+    public int TotalSpawnedCops
     {
-        ClearPolice();
+        get
+        {
+            return Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+        }
+    }
+    public bool AnyCopsNearPosition(Vector3 Position, float Distance)
+    {
+        if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
+            return true;
+        else
+            return false;
+    }
+    public void ClearPolice()
+    {
+        foreach (Cop Cop in Police)
+        {
+            if (Cop.Pedestrian.Exists())
+            {
+                Cop.Pedestrian.Delete();
+            }
+        }
+        Police.Clear();
+    }
+    public int CountNearbyCops(Ped Pedestrian)
+    {
+        return Police.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
+    }
+    public PedExt GetCivilian(uint Handle)
+    {
+        if (Police.Any(x => x.Pedestrian.Handle == Handle))
+            return null;
+        else
+            return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+    }
+    public void Prune()
+    {
+        Police.RemoveAll(x => x.CanRemove);
+        Civilians.RemoveAll(x => x.CanRemove);
+        foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.IsDead))
+        {
+            Mod.World.MarkNonPersistent(Cop);
+        }
+        Police.RemoveAll(x => x.CanRemove);
+        Civilians.RemoveAll(x => x.CanRemove);
     }
     public void Scan()
     {
@@ -83,8 +115,12 @@ public class Pedestrians
         {
             if (Pedestrian.IsPoliceArmy())
             {
-                if (Mod.Player.SearchMode.IsSpotterCop(Pedestrian.Handle))
+                //if (Mod.Player.SearchMode.IsSpotterCop(Pedestrian.Handle))
+                //    continue;
+                if (!Pedestrian.IsVisible)//trying to remove that call with this
+                {
                     continue;
+                }
 
                 if (!Police.Any(x => x.Pedestrian == Pedestrian))
                 {
@@ -100,41 +136,40 @@ public class Pedestrians
             }
         }
     }
-    public void Prune()
+    private void AddCivilian(Ped Pedestrian)
     {
-        Police.RemoveAll(x => x.CanRemove);
-        Civilians.RemoveAll(x => x.CanRemove);
-        foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.IsDead))
+        SetCivilianStats(Pedestrian);
+
+        bool WillFight = RandomItems.RandomPercent(5);
+        bool WillCallPolice = RandomItems.RandomPercent(80);
+        if (Pedestrian.Exists())
         {
-            Mod.World.Spawner.MarkNonPersistent(Cop);
-        }
-        Police.RemoveAll(x => x.CanRemove);
-        Civilians.RemoveAll(x => x.CanRemove);
-    }
-    public void ClearPolice()
-    {
-        foreach (Cop Cop in Police)
-        {
-            if (Cop.Pedestrian.Exists())
+            if (Pedestrian.IsGangMember())
             {
-                Cop.Pedestrian.Delete();
+                WillFight = RandomItems.RandomPercent(95);
+                WillCallPolice = false;
             }
+            else if (Pedestrian.IsSecurity())
+            {
+                WillFight = true;
+                WillCallPolice = false;
+            }
+            //string Nameo = Pedestrian.RelationshipGroup.Name;
+            ////Mod.Debug.WriteToLog("Tasking", string.Format("Handle {0}, Nameo !!{1}!!", Pedestrian.Handle, Nameo));
+            //if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo))
+            //{
+            //    if (Nameo.Contains("GANG"))
+            //    {
+            //        WillFight = true;
+            //        WillCallPolice = false;
+            //        int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Pedestrian);
+            //        string Model = Pedestrian.Model.Name;
+            //        string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;
+            //       // Mod.Debug.WriteToLog("Tasking", string.Format("Handle {0}, Type {1}, Model {2}, RelationshipGroupName {3}, Nameo {4}", Pedestrian.Handle, PedType, Model, RelationshipGroupName, Nameo));
+            //    }
+            //}
         }
-        Police.Clear();
-    }
-    public PedExt GetCivilian(uint Handle)
-    {
-        if (Police.Any(x => x.Pedestrian.Handle == Handle))
-            return null;
-        else
-            return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
-    }
-    public bool AnyCopsNearPosition(Vector3 Position, float Distance)
-    {
-        if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
-            return true;
-        else
-            return false;
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice));
     }
     private void AddCop(Ped Pedestrian)
     {
@@ -167,6 +202,19 @@ public class Pedestrians
         myCop.Loadout.IssueWeapons();
         Police.Add(myCop);
     }
+    private void SetCivilianStats(Ped Pedestrian)
+    {
+        if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        {
+            Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+        }
+        int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;
+        Pedestrian.MaxHealth = DesiredHealth;
+        Pedestrian.Health = DesiredHealth;
+        Pedestrian.Armor = 0;
+        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
+        NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
+    }
     private void SetCopStats(Ped Pedestrian)
     {
         if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
@@ -182,55 +230,4 @@ public class Pedestrians
         NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
     }
-    private void AddCivilian(Ped Pedestrian)
-    {
-        SetCivilianStats(Pedestrian);
-
-        bool WillFight = RandomItems.RandomPercent(5);
-        bool WillCallPolice = RandomItems.RandomPercent(80);
-        if (Pedestrian.Exists())
-        {
-            if(Pedestrian.IsGangMember())
-            {
-                WillFight = RandomItems.RandomPercent(95);
-                WillCallPolice = false;
-            }
-            else if (Pedestrian.IsSecurity())
-            {
-                WillFight = true;
-                WillCallPolice = false;
-            }
-            //string Nameo = Pedestrian.RelationshipGroup.Name;
-            ////Mod.Debug.WriteToLog("Tasking", string.Format("Handle {0}, Nameo !!{1}!!", Pedestrian.Handle, Nameo));
-            //if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo))
-            //{
-            //    if (Nameo.Contains("GANG"))
-            //    {
-            //        WillFight = true;
-            //        WillCallPolice = false;
-            //        int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Pedestrian);
-            //        string Model = Pedestrian.Model.Name;
-            //        string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;
-            //       // Mod.Debug.WriteToLog("Tasking", string.Format("Handle {0}, Type {1}, Model {2}, RelationshipGroupName {3}, Nameo {4}", Pedestrian.Handle, PedType, Model, RelationshipGroupName, Nameo));
-            //    }
-            //}
-
-
-        }
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice));
-    }
-    private void SetCivilianStats(Ped Pedestrian)
-    {
-        if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
-        {
-            Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
-        }
-        int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;
-        Pedestrian.MaxHealth = DesiredHealth;
-        Pedestrian.Health = DesiredHealth;
-        Pedestrian.Armor = 0;
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
-        NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
-    }
-
 }

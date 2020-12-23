@@ -31,15 +31,23 @@ public class Audio
         {
             NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
         }
-        if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsEngineOn && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle && !IsMobileRadioEnabled)
+        if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsEngineOn && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle)
         {
-            IsMobileRadioEnabled = true;
-            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
+            if(!IsMobileRadioEnabled)
+            {
+                IsMobileRadioEnabled = true;
+                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
+                Mod.Debug.WriteToLog("Audio", "Mobile Radio Enabled");
+            }
         }
         else
         {
-            IsMobileRadioEnabled = false;
-            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+            if(IsMobileRadioEnabled)
+            {
+                IsMobileRadioEnabled = false;
+                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+                Mod.Debug.WriteToLog("Audio", "Mobile Radio Disabled");
+            }
         }
         if (CancelAudio && outputDevice == null)
         {

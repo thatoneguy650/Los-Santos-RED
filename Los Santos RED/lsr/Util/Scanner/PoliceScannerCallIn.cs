@@ -12,12 +12,18 @@ public class PoliceScannerCallIn
     {
 
     }
-
     public PoliceScannerCallIn(bool seenOnFoot, bool seenByOfficers, Vector3 placeSeen)
     {
         SeenOnFoot = seenOnFoot;
         SeenByOfficers = seenByOfficers;
         PlaceSeen = placeSeen;
+    }
+    public PoliceScannerCallIn(bool seenOnFoot, bool seenByOfficers, Vector3 placeSeen, bool haveDescription)
+    {
+        SeenOnFoot = seenOnFoot;
+        SeenByOfficers = seenByOfficers;
+        PlaceSeen = placeSeen;
+        HaveDescription = haveDescription;
     }
     public float Speed { get; set; }
     public WeaponInformation WeaponSeen { get; set; }
@@ -26,4 +32,5 @@ public class PoliceScannerCallIn
     public bool SeenByOfficers { get; set; } = false;
     public int InstancesObserved { get; set; }
     public Vector3 PlaceSeen { get; set; }
+    public bool HaveDescription { get; set; }
 }

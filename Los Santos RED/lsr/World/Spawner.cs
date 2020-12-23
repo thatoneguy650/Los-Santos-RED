@@ -29,10 +29,17 @@ public class Spawner
     }
     public void SpawnCop(Agency agency, Vector3 position, float heading, VehicleInformation vehicleInfo)
     {
-        DesiredSpawn DS = new DesiredSpawn(agency, position, heading, vehicleInfo);
-        DS.SpawnCops();
+        try
+        {
+            DesiredSpawn DS = new DesiredSpawn(agency, position, heading, vehicleInfo);
+            DS.SpawnCops();
+        }
+        catch(Exception ex)
+        {
+            Mod.Debug.WriteToLog("SpawnCop", ex.Message + " : " + ex.StackTrace);
+        }
     }
-    public void Delete(Cop Cop)
+    public void DeleteCop(Cop Cop)
     {
         if (Cop == null)
         {
@@ -143,7 +150,7 @@ public class Spawner
             {
                 return;
             }
-            Mod.World.Vehicles.AddToList(CopCar);
+            Mod.World.AddToList(CopCar);
             Ped Cop = SpawnCopPed();
             GameFiber.Yield();
             if (Cop == null || !Cop.Exists() || !CopCar.Vehicle.Exists())
@@ -260,7 +267,7 @@ public class Spawner
                 {
                     ToReturn.UpdateCopCarLivery(Agency);
                     ToReturn.UpgradeCopCarPerformance();
-                    Mod.World.Vehicles.AddToList(ToReturn);
+                    Mod.World.AddToList(ToReturn);
                     return ToReturn;
                 }
                 else

@@ -110,8 +110,7 @@ public class Respawning
     {
         GameTimeLastUndied = Game.GameTime;
         RespawnInPlace(true);
-        Mod.Audio.Abort();
-        Mod.World.Scanner.Abort();
+
         Game.LocalPlayer.Character.IsInvincible = true;
         GameFiber.StartNew(delegate
         {
@@ -156,8 +155,8 @@ public class Respawning
             GameTimeLastRespawned = Game.GameTime;
             Game.HandleRespawn();
             Mod.Audio.Abort();
-            Mod.World.Scanner.Abort();
-            Mod.World.Time.UnpauseTime();
+            Mod.World.AbortScanner();
+            Mod.World.UnPauseTime();
         }
         catch (Exception e)
         {
@@ -170,7 +169,7 @@ public class Respawning
         CheckWeapons();
         BailFee = Mod.Player.MaxWantedLastLife * Mod.DataMart.Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         Mod.Player.ResetState(true);
-        Mod.Player.Surrendering.RaiseHands();
+        Mod.Player.RaiseHands();
         ResetPlayer(true, true);
         if (PoliceStation == null)
         {
@@ -178,8 +177,7 @@ public class Respawning
         }
         SetPlayerAtLocation(PoliceStation);
         Game.LocalPlayer.Character.Tasks.ClearImmediately();
-        Mod.World.Pedestrians.ClearPolice();
-        Mod.World.Vehicles.ClearPolice();
+        Mod.World.ClearPolice();
         FadeIn();
         SetPoliceFee(PoliceStation.Name, BailFee);
         GameTimeLastSurrenderedToPolice = Game.GameTime;
@@ -206,7 +204,7 @@ public class Respawning
             GameTimeLastBribedPolice = Game.GameTime;
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
             Mod.Player.GiveMoney(-1 * Amount);
-            Mod.Player.Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+            Mod.Player.UnSetArrestedAnimation(Game.LocalPlayer.Character);
             ResetPlayer(true, false);
 
             //Animation goes here if you want to add it somehow
@@ -223,8 +221,7 @@ public class Respawning
         }
         SetPlayerAtLocation(PlaceToSpawn);
         GameTimeLastDischargedFromHospital = Game.GameTime;
-        Mod.World.Pedestrians.ClearPolice();
-        Mod.World.Vehicles.ClearPolice();
+        Mod.World.ClearPolice();
         SetHospitalFee(PlaceToSpawn.Name);
         FadeIn();   
     }
@@ -236,8 +233,7 @@ public class Respawning
         GameLocation PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
         SetPlayerAtLocation(PlaceToSpawn);
         GameTimeLastDischargedFromHospital = Game.GameTime;
-        Mod.World.Pedestrians.ClearPolice();
-        Mod.World.Vehicles.ClearPolice();
+        Mod.World.ClearPolice();
         Game.LocalPlayer.Character.IsRagdoll = true;
         FadeIn();
         Game.LocalPlayer.Character.IsRagdoll = false;
@@ -247,7 +243,7 @@ public class Respawning
         Mod.Player.ResetState(false);//maxwanted last life maybe wont work?
         //Mod.Player.CurrentPoliceResponse.RefreshPoliceState();
        // Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.WantedLevel, "Resisting Arrest", true);
-        Mod.Player.Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+       // Mod.Player.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         ResetPlayer(false, false);
         GameTimeLastResistedArrest = Game.GameTime;
@@ -378,19 +374,19 @@ public class Respawning
     private void ResetPlayer(bool ClearWanted, bool ResetHealth)
     {
         Mod.Player.ResetState(false);
-
+        Mod.Player.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
         Game.TimeScale = 1f;
         if (ClearWanted)
         {
-            Mod.Player.ArrestWarrant.Reset();
+           // Mod.Player.ArrestWarrant.Reset();
             Mod.Player.CurrentPoliceResponse.Reset(); 
             Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Reset player with Clear Wanted", false);
             Mod.Player.MaxWantedLastLife = 0;
             NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
             Mod.Player.ResetInjuredPeds();
-            Mod.World.Civilians.ResetWitnessedCrimes();
+            Mod.World.ResetWitnessedCrimes();
             Mod.Player.Investigations.Reset();
         }
 

@@ -70,11 +70,11 @@ public class VehicleInformation
     {
         get
         {
-            if (IsHelicopter && Mod.World.Vehicles.PoliceHelicoptersCount >= Mod.DataMart.Settings.SettingsManager.Police.HelicopterLimit)
+            if (IsHelicopter && Mod.World.PoliceHelicoptersCount >= Mod.DataMart.Settings.SettingsManager.Police.HelicopterLimit)
             {
                 return false;
             }
-            else if (IsBoat && Mod.World.Vehicles.PoliceBoatsCount >= Mod.DataMart.Settings.SettingsManager.Police.BoatLimit)
+            else if (IsBoat && Mod.World.PoliceBoatsCount >= Mod.DataMart.Settings.SettingsManager.Police.BoatLimit)
             {
                 return false;
             }

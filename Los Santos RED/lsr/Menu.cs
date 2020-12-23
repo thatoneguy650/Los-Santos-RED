@@ -296,7 +296,7 @@ public class Menu
     {
         mainMenu.Clear();
         menuMainTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
-            "Takes over a random pedestrian around the player.", new List<dynamic> {"Closest", "100 M", "500 M"});
+            "Takes over a random pedestrian around the player.", new List<dynamic> { "Closest", "100 M", "500 M" });
         menuMainShowPlayerStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
         mainMenu.AddItem(menuMainTakeoverRandomPed);
         mainMenu.AddItem(menuMainShowPlayerStatus);
@@ -317,7 +317,7 @@ public class Menu
             Mod.DataMart.Places.GetLocations(LocationType.Hospital));
         menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
             "Takes over a random pedestrian around the player.",
-            new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M"});
+            new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
 
         UpdateClosestHospitalIndex();
 
@@ -340,7 +340,7 @@ public class Menu
             Mod.DataMart.Places.GetLocations(LocationType.Police));
         menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
             "Takes over a random pedestrian around the player.",
-            new List<dynamic> {"Closest", "20 M", "40 M", "60 M", "100 M", "500 M"});
+            new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
         menuBustedTalk = new UIMenuItem("Talk", "Try to talk your way out of an arrest.");
 
         UpdateClosestPoliceStationIndex();
@@ -390,7 +390,7 @@ public class Menu
         {
             if (fi.FieldType == typeof(bool))
             {
-                UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool) fi.GetValue(SettingsSubType));
+                UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(fi.Name, (bool)fi.GetValue(SettingsSubType));
                 MenuToSet.AddItem(MySetting);
             }
 
@@ -405,7 +405,7 @@ public class Menu
     {
         menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
         menuActionSmoking = new UIMenuItem("Smoking", "Start smoking.");
-        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.",Mod.Player.SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
+        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", Mod.Player.SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
 
@@ -460,11 +460,11 @@ public class Menu
     }
     private void UpdateClosestHospitalIndex()
     {
-        menuDeathHospitalRespawn.Index = Mod.DataMart.Places.GetLocations(LocationType.Hospital).IndexOf(Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position,LocationType.Hospital));
+        menuDeathHospitalRespawn.Index = Mod.DataMart.Places.GetLocations(LocationType.Hospital).IndexOf(Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital));
     }
     private void UpdateClosestPoliceStationIndex()
     {
-        menuBustedSurrender.Index = Mod.DataMart.Places.GetLocations(LocationType.Police).IndexOf(Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position,LocationType.Police));
+        menuBustedSurrender.Index = Mod.DataMart.Places.GetLocations(LocationType.Police).IndexOf(Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police));
     }
     private void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -477,9 +477,13 @@ public class Menu
             }
 
             if (SelectedTakeoverRadius == -1f)
-                Mod.World.PedSwap.TakeoverPed(500f, true, false, true);
+            {
+                Mod.PedSwap.TakeoverPed(500f, true, false, true);
+            }
             else
-                Mod.World.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true);
+            {
+                Mod.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true);
+            }
         }
         else if (selectedItem == menuMainShowPlayerStatus)
         {
@@ -491,57 +495,70 @@ public class Menu
     private void BustedMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == menuBustedResistArrest)
-            Mod.Player.Respawning.ResistArrest();
+        {
+            Mod.Player.ResistArrest();
+        }
         else if (selectedItem == menuBustedBribe)
             if (int.TryParse(GetKeyboardInput(""), out int BribeAmount))
-                Mod.Player.Respawning.BribePolice(BribeAmount);
+            {
+                Mod.Player.BribePolice(BribeAmount);
+            }
         if (selectedItem == menuBustedSurrender)
         {
-            Mod.Player.Respawning.SurrenderToPolice(CurrentSelectedSurrenderLocation);
+            Mod.Player.SurrenderToPolice(CurrentSelectedSurrenderLocation);
         }
         else if (selectedItem == menuBustedTalk)
         {
-            Mod.Player.Respawning.Talk();
+            //Mod.Player.Respawning.Talk();
         }
         else if (selectedItem == menuBustedTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                Mod.World.PedSwap.TakeoverPed(500f, true, true, true);
+            {
+                Mod.PedSwap.TakeoverPed(500f, true, true, true);
+            }
             else
-                Mod.World.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+            {
+                Mod.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+            }
         }
 
         bustedMenu.Visible = false;
     }
     private void DeathMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem == menuDeathUndie) Mod.Player.Respawning.UnDie();
+        if (selectedItem == menuDeathUndie)
+        {
+            Mod.Player.UnDie();
+        }
         if (selectedItem == menuDeathHospitalRespawn)
         {
-            if(RandomItems.RandomPercent(0))//turned off for testing
+            if (RandomItems.RandomPercent(0))//turned off for testing
             {
-                Mod.Player.Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
+                Mod.Player.RespawnAtHospital(CurrentSelectedHospitalLocation);
             }
             else
             {
-                Mod.Player.Respawning.RespawnAtGrave();
+                Mod.Player.RespawnAtGrave();
             }
-
-            
         }
         else if (selectedItem == menuDeathTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
-                Mod.World.PedSwap.TakeoverPed(500f, true, true, true);
+            {
+                Mod.PedSwap.TakeoverPed(500f, true, true, true);
+            }
             else
-                Mod.World.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+            {
+                Mod.PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+            }
         }
 
         deathMenu.Visible = false;
     }
     private void OptionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-       //if (selectedItem == ReloadSettings) SettingsManager.ReadAllConfigs();
+        //if (selectedItem == ReloadSettings) SettingsManager.ReadAllConfigs();
     }
     private void SettingsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -611,7 +628,7 @@ public class Menu
     {
         if (selectedItem == menuMainSuicide)
         {
-            Mod.Player.Surrendering.CommitSuicide(Game.LocalPlayer.Character);
+            Mod.Player.CommitSuicide();
         }
         else if (selectedItem == menuMainChangeLicensePlate)
         {
@@ -636,7 +653,7 @@ public class Menu
         if (selectedItem == menuDebugKillPlayer) Game.LocalPlayer.Character.Kill();
         if (selectedItem == menuDebugRandomWeapon)
         {
-            WeaponInformation myGun = Mod.DataMart.Weapons.GetRandomRegularWeapon((WeaponCategory) RandomWeaponCategory);
+            WeaponInformation myGun = Mod.DataMart.Weapons.GetRandomRegularWeapon((WeaponCategory)RandomWeaponCategory);
             if (myGun != null)
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
         }
@@ -703,7 +720,7 @@ public class Menu
             if (list == menuDeathHospitalRespawn)
             {
                 CurrentSelectedHospitalLocation = Mod.DataMart.Places.GetLocations(LocationType.Hospital)[index];
-                Mod.Debug.WriteToLog("menuDeathHospitalRespawn Changed",string.Format("Location: {0}", CurrentSelectedHospitalLocation));
+                Mod.Debug.WriteToLog("menuDeathHospitalRespawn Changed", string.Format("Location: {0}", CurrentSelectedHospitalLocation));
             }
         }
         else if (sender == bustedMenu)
@@ -711,7 +728,7 @@ public class Menu
             if (list == menuBustedSurrender)
             {
                 CurrentSelectedSurrenderLocation = Mod.DataMart.Places.GetLocations(LocationType.Police)[index];
-                Mod.Debug.WriteToLog("menuBustedSurrender Changed",string.Format("Location: {0}", CurrentSelectedSurrenderLocation));
+                Mod.Debug.WriteToLog("menuBustedSurrender Changed", string.Format("Location: {0}", CurrentSelectedSurrenderLocation));
             }
         }
         else if (sender == debugMenu)

@@ -21,7 +21,7 @@ public class Tasking
                 return false;
         }
     }
-    public void UpdatePeds()
+    public void AddTaskablePeds()
     {
         Mod.World.Pedestrians.Police.RemoveAll(x => !x.Pedestrian.Exists());
 
@@ -141,7 +141,7 @@ public class Tasking
         {
             get
             {
-                if (CopToTask.DistanceToPlayer <= Mod.World.Police.ActiveDistance)
+                if (CopToTask.DistanceToPlayer <= Mod.World.ActiveDistance)
                     return true;
                 else
                     return false;
@@ -151,7 +151,7 @@ public class Tasking
         {
             get
             {
-                if (CopToTask.DistanceToInvestigationPosition <= Mod.Player.Investigations.InvestigationDistance)
+                if (CopToTask.DistanceToInvestigationPosition <= Mod.Player.Investigations.Distance)
                     return true;
                 else
                     return false;
@@ -185,7 +185,7 @@ public class Tasking
             {
                 if (Mod.Player.IsNotWanted)
                 {
-                    if (Mod.Player.Investigations.InInvestigationMode && WithinInvestigationDistance)
+                    if (Mod.Player.Investigations.IsActive && WithinInvestigationDistance)
                     {
                         return Activities.Investigate;
                     }
@@ -370,26 +370,26 @@ public class Tasking
         }
         private void Investigate_Start()
         {
-            if (Mod.Player.Investigations.InvestigationPosition == Vector3.Zero)
+            if (Mod.Player.Investigations.Position == Vector3.Zero)
             {
-                Mod.Player.Investigations.InvestigationPosition = Game.LocalPlayer.Character.Position;
+                Mod.Player.Investigations.Position = Game.LocalPlayer.Character.Position;
                 if (Mod.Player.IsWanted)
                 {
-                    Mod.Player.Investigations.InvestigationPosition = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                    Mod.Player.Investigations.Position = NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
                 }
             }
-            CurrentTaskedPosition = Mod.Player.Investigations.InvestigationPosition;
+            CurrentTaskedPosition = Mod.Player.Investigations.Position;
             CopToTask.Pedestrian.BlockPermanentEvents = false;
             if (CopToTask.Pedestrian.IsInAnyVehicle(false))
             {
                 if (CopToTask.IsDriver)
                 {
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.Player.Investigations.InvestigationPosition.X, Mod.Player.Investigations.InvestigationPosition.Y, Mod.Player.Investigations.InvestigationPosition.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.Player.Investigations.Position.X, Mod.Player.Investigations.Position.Y, Mod.Player.Investigations.Position.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                 }
             }
             else
             {
-                NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Mod.Player.Investigations.InvestigationPosition.X, Mod.Player.Investigations.InvestigationPosition.Y, Mod.Player.Investigations.InvestigationPosition.Z, 500f, -1, 0f, 2f);
+                NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Mod.Player.Investigations.Position.X, Mod.Player.Investigations.Position.Y, Mod.Player.Investigations.Position.Z, 500f, -1, 0f, 2f);
             }
             CurrentTaskLoop = "Investigation";
             AtInvesstigationPositionThisInvestigation = false;
@@ -399,19 +399,19 @@ public class Tasking
         {
             if (!AtInvesstigationPositionThisInvestigation)
             {
-                if (Mod.Player.Investigations.InvestigationPosition != Vector3.Zero && Mod.Player.Investigations.InvestigationPosition != CurrentTaskedPosition) //retask them if it changes
+                if (Mod.Player.Investigations.Position != Vector3.Zero && Mod.Player.Investigations.Position != CurrentTaskedPosition) //retask them if it changes
                 {
-                    CurrentTaskedPosition = Mod.Player.Investigations.InvestigationPosition;
+                    CurrentTaskedPosition = Mod.Player.Investigations.Position;
                     if (CopToTask.Pedestrian.IsInAnyVehicle(false))
                     {
                         if (CopToTask.IsDriver)
                         {
-                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.Player.Investigations.InvestigationPosition.X, Mod.Player.Investigations.InvestigationPosition.Y, Mod.Player.Investigations.InvestigationPosition.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Mod.Player.Investigations.Position.X, Mod.Player.Investigations.Position.Y, Mod.Player.Investigations.Position.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                         }
                     }
                     else
                     {
-                        NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Mod.Player.Investigations.InvestigationPosition.X, Mod.Player.Investigations.InvestigationPosition.Y, Mod.Player.Investigations.InvestigationPosition.Z, 500f, -1, 0f, 2f);
+                        NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", CopToTask.Pedestrian, Mod.Player.Investigations.Position.X, Mod.Player.Investigations.Position.Y, Mod.Player.Investigations.Position.Z, 500f, -1, 0f, 2f);
                     }
                     Mod.Debug.WriteToLog("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", CopToTask.Pedestrian.Handle, Mod.Player.CurrentPoliceResponse.CurrentResponse, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn));
 
@@ -464,7 +464,7 @@ public class Tasking
         {
             if (WithinChaseDistance)
             {
-                if (Mod.World.Police.AnyRecentlySeenPlayer && !Mod.Player.AreStarsGreyedOut)
+                if (Mod.World.AnyPoliceRecentlySeenPlayer && !Mod.Player.AreStarsGreyedOut)
                 {
                     if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
                     {
@@ -554,7 +554,7 @@ public class Tasking
         private void VehicleChase_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = Mod.World.Police.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.PlacePoliceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (Mod.Player.IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", CopToTask.Pedestrian, Game.LocalPlayer.Character); //NativeFunction.CallByName<bool>("TASK_VEHICLE_FOLLOW", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 22f, 4 | 16 | 32 | 262144, 8f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
@@ -569,7 +569,7 @@ public class Tasking
         }
         private void VehicleChase_Normal()
         {
-            Vector3 WantedCenter = Mod.World.Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if(CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 10f)
             {
                 if (!Mod.Player.IsInVehicle)
@@ -723,7 +723,7 @@ public class Tasking
         private void GoToLastSeen_Start()
         {
             CopToTask.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = Mod.World.Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (CopToTask.IsInVehicle && CopToTask.Pedestrian.CurrentVehicle != null)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
@@ -739,7 +739,7 @@ public class Tasking
         }
         private void GoToLastSeen_Normal()
         {
-            Vector3 WantedCenter = Mod.World.Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (!NearWantedCenterThisWanted)
             {
                 if (CurrentTaskedPosition.DistanceTo2D( WantedCenter) >= 5f)
@@ -946,7 +946,6 @@ public class Tasking
     }
     private class TaskableCivilian
     {
-
         private enum Activities
         {
             Idle,
@@ -978,15 +977,15 @@ public class Tasking
                 }
                 else
                 {
-                    if(CivilianToTask.HasSeenPlayerCommitCrime)
+                    if (CivilianToTask.HasSeenPlayerCommitCrime)
                     {
                         return Activities.ReactToCrime;
                     }
-                    else if(CivilianToTask.CanRecognizePlayer && Mod.Player.Violations.IsViolatingAnyCivilianReportableCrime)
+                    else if (CivilianToTask.CanRecognizePlayer && Mod.Player.IsViolatingAnyCivilianReportableCrime)
                     {
                         return Activities.ReactToCrime;
                     }
-                    else if (CivilianToTask.WithinWeaponsAudioRange && Mod.Player.Violations.IsViolatingAnyAudioBasedCivilianReportableCrime)
+                    else if (CivilianToTask.WithinWeaponsAudioRange && Mod.Player.IsViolatingAnyAudioBasedCivilianReportableCrime)
                     {
                         return Activities.ReactToCrime;
                     }
@@ -1041,10 +1040,10 @@ public class Tasking
                             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                         }
 
-                        if(Mod.World.Civilians.PersistentCount <= 2)
-                        {
-                            CivilianToTask.Pedestrian.IsPersistent = true;
-                        }
+                        //if(Mod.World.PersistentCivilians <= 2)
+                        //{
+                        //    CivilianToTask.Pedestrian.IsPersistent = true;
+                        //}
                         CurrentSubTaskLoop = "CallIn";
                     }
                     else
@@ -1071,7 +1070,7 @@ public class Tasking
         }        
         private void AddCurrentCrimes()
         {
-            foreach(Crime CurrentlyViolating in Mod.Player.Violations.CivilianReportableCrimesViolating)
+            foreach (Crime CurrentlyViolating in Mod.Player.CivilianReportableCrimesViolating)
             {
                 CivilianToTask.WitnessedCrime(CurrentlyViolating, Game.LocalPlayer.Character.Position);
             }

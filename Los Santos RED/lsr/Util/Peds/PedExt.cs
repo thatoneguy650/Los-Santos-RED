@@ -146,7 +146,7 @@ public class PedExt
             {
                 return false;
             }
-            else if (Mod.Player.Respawning.RecentlyBribedPolice)
+            else if (Mod.Player.RecentlyBribedPolice)
             {
                 return false;
             }
@@ -260,6 +260,34 @@ public class PedExt
         }
     }
     public bool HasReactedToCrimes { get; set; } = false;
+    //public AIDynamic CurrentDynamic
+    //{
+    //    get
+    //    {
+    //        if (Mod.Player.IsInVehicle)
+    //        {
+    //            if (CopToTask.IsInVehicle)
+    //            {
+    //                return AIDynamic.Cop_InVehicle_Player_InVehicle;
+    //            }
+    //            else
+    //            {
+    //                return AIDynamic.Cop_OnFoot_Player_InVehicle;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (CopToTask.IsInVehicle)
+    //            {
+    //                return AIDynamic.Cop_InVehicle_Player_OnFoot;
+    //            }
+    //            else
+    //            {
+    //                return AIDynamic.Cop_OnFoot_Player_OnFoot;
+    //            }
+    //        }
+    //    }
+    //}
     public VehicleExt VehicleLastSeenPlayerIn { get; set; }
     public WeaponInformation WeaponLastSeenPlayerWith { get; set; }
     public Vector3 PositionLastSeenPlayer { get; private set; }
@@ -390,7 +418,7 @@ public class PedExt
             {
                 if (Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly)
                 {
-                    //NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1f);
+                    NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1.0f);
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4, true);
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 8, true);
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 16, true);
@@ -399,11 +427,11 @@ public class PedExt
                 }
                 else// if (!Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly && DistanceToPlayer <= 15f)
                 {
-                   // NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 0.5f);
+                   NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 0.75f);
                     NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);//only originally this one for reckless pursuit
                 }
 
-                if (Mod.Player.CurrentLocation.IsOffroad && DistanceToPlayer <= 200f)
+                if (Mod.Player.IsOffroad && DistanceToPlayer <= 200f)
                 {
                     NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 4194304);
                     NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, true);
@@ -470,7 +498,7 @@ public class PedExt
             return;
         }
         DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
-        DistanceToLastSeen = Pedestrian.DistanceTo2D(Mod.World.Police.PlaceLastSeenPlayer);
+        DistanceToLastSeen = Pedestrian.DistanceTo2D(Mod.World.PlacePoliceLastSeenPlayer);
         if (DistanceToPlayer <= 0.1f)
         {
             DistanceToPlayer = 999f;

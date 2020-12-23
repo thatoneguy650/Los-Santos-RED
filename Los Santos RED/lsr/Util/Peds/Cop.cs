@@ -78,7 +78,7 @@ public class Cop : PedExt
     {
         get
         {
-            return Pedestrian.DistanceTo2D(Mod.Player.Investigations.InvestigationPosition);
+            return Pedestrian.DistanceTo2D(Mod.Player.Investigations.Position);
         }
     }
     public uint HasBeenSpawnedFor
@@ -86,13 +86,6 @@ public class Cop : PedExt
         get
         {
             return Game.GameTime - GameTimeSpawned;
-        }
-    }
-    public int CountNearbyCops
-    {
-        get
-        {
-            return Mod.World.Pedestrians.Police.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
         }
     }
     public bool ShouldBustPlayer
@@ -147,7 +140,7 @@ public class Cop : PedExt
             {
                 Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
             }
-            else if (Mod.Player.IsNotWanted && Mod.Player.Respawning.RecentlyBribedPolice)
+            else if (Mod.Player.IsNotWanted && Mod.Player.RecentlyBribedPolice)
             {
                 Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom());
             }

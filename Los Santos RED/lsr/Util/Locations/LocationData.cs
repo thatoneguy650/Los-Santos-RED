@@ -64,7 +64,8 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetNode()
         {
-            if (Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position).DistanceTo2D(CharacterToLocate) >= 10f)//was 15f
+            ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);
+            if (ClosestNode.DistanceTo2D(CharacterToLocate) >= 10f)//was 15f
             {
                 IsOffroad = true;
             }

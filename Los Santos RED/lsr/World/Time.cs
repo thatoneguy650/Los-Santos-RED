@@ -23,6 +23,7 @@ public class Time
     {
         NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
     }
+    public bool IsNight { get; private set; }
     public string CurrentTime
     {
         get
@@ -117,9 +118,19 @@ public class Time
     }
     private void CheckTimeInterval()
     {
+
         if (Game.GameTime - GameTimeLastSetClock >= Interval)
         {
-            NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);
+            NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);         
+            var HourOfDay = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
+            if (HourOfDay >= 19 || HourOfDay <= 6)//7pm to 6 am lights need to be on
+            {
+                IsNight = true;
+            }
+            else
+            {
+                IsNight = false;
+            }
             GameTimeLastSetClock = Game.GameTime;
         }
     }

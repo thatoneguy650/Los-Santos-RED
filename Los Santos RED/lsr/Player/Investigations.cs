@@ -5,17 +5,17 @@ using System.Drawing;
 
 public class Investigations
 {
-    private bool PrevIsInInvestigationMode;
-    private Vector3 PrevInvestigationPosition;
+    private bool PrevIsActive;
+    private Vector3 PrevPosition;
     private uint GameTimeStartedInvestigation;
     private uint GameTimeLastInvestigationExpired;
-    private Blip InvestigationBlip;
-    public float InvestigationDistance { get; private set; } = 800f;
-    public Vector3 InvestigationPosition { get; set; }
+    private Blip blip;
+    public float Distance { get; private set; } = 800f;
+    public Vector3 Position { get; set; }
     public float NearInvestigationDistance { get; private set; } = 250f;
-    public bool InInvestigationMode { get; private set; }
-    public bool HavePlayerDescription { get; private set; }
-    public bool InvestigationModeExpired
+    public bool IsActive { get; private set; }
+    public bool HaveDescription { get; private set; }
+    public bool Expired
     {
         get
         {
@@ -37,11 +37,11 @@ public class Investigations
     {
         get
         {
-            if (!InInvestigationMode)
+            if (!IsActive)
             {
                 return false;
             }
-            else if (InInvestigationMode && NearInvestigationPosition && HavePlayerDescription)
+            else if (IsActive && NearInvestigationPosition && HaveDescription)
             {
                 return true;
             }
@@ -73,20 +73,20 @@ public class Investigations
     {
         get
         {
-            return InvestigationPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition) <= NearInvestigationDistance;
+            return Position != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(Position) <= NearInvestigationDistance;
         }
     }
     public float DistanceToInvestigationPosition
     {
         get
         {
-            if (!InInvestigationMode || InvestigationPosition == Vector3.Zero)
+            if (!IsActive || Position == Vector3.Zero)
             {
                 return 9999f;
             }
             else
             {
-                return Game.LocalPlayer.Character.DistanceTo2D(InvestigationPosition);
+                return Game.LocalPlayer.Character.DistanceTo2D(Position);
             }
         }
     }
@@ -96,126 +96,117 @@ public class Investigations
     }
     public void Reset()
     {
-        InInvestigationMode = false;
-        HavePlayerDescription = false;
+        IsActive = false;
+        HaveDescription = false;
     }
-    public void StartInvestigation(Vector3 PositionToInvestigate, bool HaveDescription)
+    public void StartInvestigation(Vector3 position, bool haveDescription)
     {
-        InInvestigationMode = true;
-        InvestigationPosition = PositionToInvestigate;
-        HavePlayerDescription = HaveDescription;
+        IsActive = true;
+        Position = position;
+        HaveDescription = haveDescription;
     }
     private void InvestigationTick()
     {
         if (Mod.Player.IsWanted)
         {
-            InInvestigationMode = false;
+            IsActive = false;
         }
-        else if (InvestigationModeExpired) //remove after 3 minutes
+        else if (Expired) //remove after 3 minutes
         {
-            InInvestigationMode = false;
+            IsActive = false;
         }
-        else if (!InInvestigationMode && Mod.Player.CurrentPoliceResponse.HasReportedCrimes)
+        else if (!IsActive && Mod.Player.CurrentPoliceResponse.HasReportedCrimes)
         {
             StartInvestigation(Mod.Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime, Mod.Player.CurrentPoliceResponse.CurrentCrimes.PoliceHaveDescription);
         }
 
-
-
-
-        if (PrevInvestigationPosition != InvestigationPosition)
+        if (PrevPosition != Position)
         {
             InvestigationPositionChanged();
         }
-        if (PrevIsInInvestigationMode != InInvestigationMode)
+        if (PrevIsActive != IsActive)
         {
             PoliceInInvestigationModeChanged();
         }
-        if (Mod.Player.IsNotWanted && InInvestigationMode && NearInvestigationPosition && HavePlayerDescription && Mod.World.Police.AnyCanRecognizePlayer && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
+        if (Mod.Player.IsNotWanted && IsActive && NearInvestigationPosition && HaveDescription && Mod.World.AnyPoliceCanRecognizePlayer && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
         {
             Mod.Player.CurrentPoliceResponse.ApplyReportedCrimes();
         }
-
-
-
-
-
-
     }
     private void InvestigationPositionChanged()
     {
         UpdateInvestigationUI();
-        Mod.Debug.WriteToLog("ValueChecker", string.Format("InvestigationPosition Changed to: {0}", InvestigationPosition));
-        PrevInvestigationPosition = InvestigationPosition;
+        Mod.Debug.WriteToLog("ValueChecker", string.Format("InvestigationPosition Changed to: {0}", Position));
+        PrevPosition = Position;
     }
     private void PoliceInInvestigationModeChanged()
     {
-        if (InInvestigationMode) //added
+        if (IsActive) //added
         {
             UpdateInvestigationUI();
             GameTimeStartedInvestigation = Game.GameTime;
         }
         else //removed
         {
-            if (InvestigationBlip.Exists())
+            if (blip.Exists())
             {
-                InvestigationBlip.Delete();
+                blip.Delete();
             }
             if (Mod.Player.IsNotWanted)
             {
-                HavePlayerDescription = false;
+                HaveDescription = false;
             }
             GameTimeStartedInvestigation = 0;
             GameTimeLastInvestigationExpired = Game.GameTime;
         }
-        Mod.Debug.WriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", InInvestigationMode));
-        PrevIsInInvestigationMode = InInvestigationMode;
+        Mod.Debug.WriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", IsActive));
+        PrevIsActive = IsActive;
     }
     private void UpdateInvestigationUI()
     {
         UpdateInvestigationPosition();
-        AddUpdateInvestigationBlip(InvestigationPosition, NearInvestigationDistance);
+        AddUpdateInvestigationBlip(Position, NearInvestigationDistance);
     }
     private void UpdateInvestigationPosition()
     {
-        Mod.DataMart.Streets.GetStreetPositionandHeading(InvestigationPosition, out Vector3 SpawnLocation, out float Heading, false);
+        Mod.DataMart.Streets.GetStreetPositionandHeading(Position, out Vector3 SpawnLocation, out float Heading, false);
         if (SpawnLocation != Vector3.Zero)
         {
-            InvestigationPosition = SpawnLocation;
+            Position = SpawnLocation;
         }
     }
     private void AddUpdateInvestigationBlip(Vector3 Position, float Size)
     {
         if (Position == Vector3.Zero)
         {
-            if (InvestigationBlip.Exists())
+            if (blip.Exists())
             {
-                InvestigationBlip.Delete();
+                blip.Delete();
             }
             return;
         }
-        if (!InInvestigationMode)
+        if (!IsActive)
         {
-            if (InvestigationBlip.Exists())
+            if (blip.Exists())
             {
-                InvestigationBlip.Delete();
+                blip.Delete();
             }
             return;
         }
-        if (!InvestigationBlip.Exists())
+        if (!blip.Exists())
         {
-            InvestigationBlip = new Blip(Position, Size)
+            blip = new Blip(Position, Size)
             {
                 Name = "Investigation Center",
                 Color = Color.Orange,
                 Alpha = 0.25f
             };
-            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)InvestigationBlip.Handle, true);
-            Mod.World.AddBlip(InvestigationBlip);
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)blip.Handle, true);
+            Mod.World.AddBlip(blip);
         }
-        if (InvestigationBlip.Exists())
+        if (blip.Exists())
         {
-            InvestigationBlip.Position = Position;
+            blip.Position = Position;
         }
     }
 }

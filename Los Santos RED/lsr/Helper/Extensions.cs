@@ -18,6 +18,7 @@ namespace ExtensionsMethods
 {
     public static class Extensions
     {
+        private static List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01", "s_m_m_ammucountry", "u_m_y_tattoo_01", "s_f_y_shop_low", "s_f_y_shop_mid", "s_f_m_shop_high", "s_m_m_autoshop_01", "s_m_m_autoshop_02" };
         private enum ePedType
         {
             PED_TYPE_PLAYER_0,
@@ -104,6 +105,42 @@ namespace ExtensionsMethods
         {
             string Nameo = myPed.RelationshipGroup.Name;
             if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo) && Nameo.ToLower().Contains("securitygurad"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsNormalPerson(this Ped myPed)
+        {
+            if (myPed.Model.Hash == 225514697 || myPed.Model.Hash == 2602752943 || myPed.Model.Hash == 2608926626)
+            {
+                return false;
+            }
+            int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            if (PedType == (int)ePedType.PED_TYPE_CIVMALE || PedType == (int)ePedType.PED_TYPE_CIVFEMALE || PedType == (int)ePedType.PED_TYPE_CIVFEMALE || PedType == (int)ePedType.PED_TYPE_MISSION)// || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
+            {
+                string ModelName = myPed.Model.Name.ToLower();
+                if (ShopPeds.Contains(ModelName))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool IsConsideredMainCharacter(this Ped myPed)
+        {
+            int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            if (PedType == 0 || PedType == 1 || PedType == 2)
             {
                 return true;
             }

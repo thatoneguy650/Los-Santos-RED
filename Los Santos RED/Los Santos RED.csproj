@@ -115,6 +115,7 @@
     <Compile Include="lsr\Input.cs" />
     <Compile Include="lsr\Util\Peds\BodyLocation.cs" />
     <Compile Include="lsr\Util\Peds\Bone.cs" />
+    <Compile Include="lsr\Util\Tasking\Activity.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="lsr\Player.cs" />
     <Compile Include="lsr\Util\Peds\Loadout.cs" />
@@ -142,7 +143,7 @@
     <Compile Include="lsr\World\Tasking.cs" />
     <Compile Include="lsr\World\Pedestrians.cs" />
     <Compile Include="lsr\World\Time.cs" />
-    <Compile Include="lsr\World\PedSwap.cs" />
+    <Compile Include="lsr\PedSwap.cs" />
     <Compile Include="lsr\Player\Respawning.cs" />
     <Compile Include="lsr\Player\Surrendering.cs" />
     <Compile Include="lsr\Player\WeaponDropping.cs" />

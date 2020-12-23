@@ -58,41 +58,6 @@ namespace LosSantosRED.lsr
 
             }
         }
-        public float BlipSize
-        {
-            get
-            {
-                if (IsInActiveMode)
-                {
-                    return 100f;
-                }
-                else
-                {
-                    if (CurrentSearchTime == 0)
-                    {
-                        return 100f;
-                    }
-                    else
-                    {
-                        return Mod.Player.ArrestWarrant.SearchRadius * TimeInSearchMode / CurrentSearchTime;
-                    }
-                }
-            }
-        }
-        public Color BlipColor
-        {
-            get
-            {
-                if (IsInActiveMode)
-                {
-                    return Color.Red;
-                }
-                else
-                {
-                    return Color.Orange;
-                }
-            }
-        }
         public uint CurrentSearchTime
         {
             get
@@ -132,7 +97,7 @@ namespace LosSantosRED.lsr
         {
             if (CurrentPlayer.IsWanted)
             {
-                if (Mod.World.Police.AnyRecentlySeenPlayer)
+                if (Mod.World.AnyPoliceRecentlySeenPlayer)
                 {
                     IsInActiveMode = true;
                     IsInSearchMode = false;
@@ -210,17 +175,6 @@ namespace LosSantosRED.lsr
             Mod.Debug.WriteToLog("SearchMode", "Stop Search Mode");
 
         }
-        //private void HandleFlashing()
-        //{
-        //    if (IsInActiveMode)
-        //    {
-        //        NativeFunction.CallByName<bool>("FLASH_WANTED_DISPLAY", true);
-        //    }
-        //    else
-        //    {
-        //        NativeFunction.CallByName<bool>("FLASH_WANTED_DISPLAY", false);
-        //    }
-        //}
         private class StopVanillaSeachMode
         {
             private Vector3 CurrentOffset = new Vector3(0f, 6f, 1f);
@@ -265,7 +219,7 @@ namespace LosSantosRED.lsr
                 if (PrevStopSearchMode != StopSearchMode)
                 {
                     PrevStopSearchMode = StopSearchMode;
-                    Mod.Debug.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.World.Police.AnyRecentlySeenPlayer));
+                    Mod.Debug.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.World.AnyPoliceRecentlySeenPlayer));
                 }
 
                 if (!StopSearchMode)

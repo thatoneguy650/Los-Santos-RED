@@ -258,7 +258,7 @@ public class CarJack
 
 
 
-                VehicleExt MyCar = Mod.World.Vehicles.GetVehicle(TargetVehicle);
+                VehicleExt MyCar = Mod.World.GetVehicle(TargetVehicle);
                 if (MyCar != null && MyCar.Vehicle.Exists())
                 {
                     MyCar.Vehicle.IsEngineOn = true;

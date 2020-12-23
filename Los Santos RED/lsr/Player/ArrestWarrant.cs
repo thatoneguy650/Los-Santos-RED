@@ -20,7 +20,7 @@ namespace LosSantosRED.lsr
             CurrentPlayer = currentPlayer;
         }
         public bool IsPersonOfInterest { get; private set; }
-        public List<CriminalHistory> CriminalHistory { get; set; } = new List<CriminalHistory>();
+        public List<CriminalHistory> CriminalHistoryList { get; set; } = new List<CriminalHistory>();
         public bool RecentlyAppliedWantedStats
         {
             get
@@ -88,7 +88,7 @@ namespace LosSantosRED.lsr
 
                 if (CurrentPlayer.IsWanted)
                 {
-                    if (!IsPersonOfInterest && Mod.World.Police.AnyCanSeePlayer)
+                    if (!IsPersonOfInterest && Mod.World.AnyPoliceCanSeePlayer)
                     {
                         IsPersonOfInterest = true;
                     }
@@ -104,18 +104,18 @@ namespace LosSantosRED.lsr
         }
         public void StoreCriminalHistory(CriminalHistory rapSheet)
         {
-            CriminalHistory.Add(rapSheet);
+            CriminalHistoryList.Add(rapSheet);
             Mod.Debug.WriteToLog("StoreCriminalHistory", "Stored this Rap Sheet");
         }
         public void Reset()
         {
             IsPersonOfInterest = false;
-            CriminalHistory.Clear();
+            CriminalHistoryList.Clear();
             Mod.Debug.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are cleared");
         }
         private void CheckCurrentVehicle()
         {
-            if ((CurrentPlayer.IsNotWanted || CurrentPlayer.WantedLevel == 1) && Mod.World.Police.AnyCanRecognizePlayer && CurrentPlayer.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+            if ((CurrentPlayer.IsNotWanted || CurrentPlayer.WantedLevel == 1) && Mod.World.AnyPoliceCanRecognizePlayer && CurrentPlayer.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
             {
                 VehicleExt VehicleToCheck = CurrentPlayer.CurrentVehicle;
 
@@ -132,7 +132,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckSight()
         {
-            if (IsPersonOfInterest && Mod.World.Police.AnyCanSeePlayer)
+            if (IsPersonOfInterest && Mod.World.AnyPoliceCanSeePlayer)
             {
                 if (CurrentPlayer.IsWanted)
                 {
@@ -169,12 +169,11 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-
             if (CurrentPlayer.WantedLevel < CriminalHistory.MaxWantedLevel)
             {
                 CurrentPlayer.CurrentPoliceResponse.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats", true);
             }
-            CurrentPlayer.ArrestWarrant.CriminalHistory.Remove(CriminalHistory);
+            CriminalHistoryList.Remove(CriminalHistory);
             CurrentPlayer.CurrentPoliceResponse.CurrentCrimes = CriminalHistory;
 
             GameTimeLastAppliedWantedStats = Game.GameTime;
@@ -182,21 +181,21 @@ namespace LosSantosRED.lsr
         }
         private CriminalHistory GetLastWantedStats()
         {
-            if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
+            if (CriminalHistoryList == null || !CriminalHistoryList.Where(x => x.PlayerSeenDuringWanted).Any())
             {
                 return null;
             }
 
-            return CriminalHistory.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
+            return CriminalHistoryList.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
         }
         private CriminalHistory GetWantedLevelStatsForPlate(string PlateNumber)
         {
-            if (CriminalHistory == null || !CriminalHistory.Where(x => x.PlayerSeenDuringWanted).Any())
+            if (CriminalHistoryList == null || !CriminalHistoryList.Where(x => x.PlayerSeenDuringWanted).Any())
             {
                 return null;
             }
 
-            return CriminalHistory.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
+            return CriminalHistoryList.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
         }
     }
 }
