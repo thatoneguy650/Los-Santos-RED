@@ -16,6 +16,13 @@ public class WeaponDropping
     private int PrevCountWeapons = 1;
     private int WeaponCount = 1;
     private int CurrentWeaponAmmo;
+
+    public WeaponDropping()
+    {
+        WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
+        PrevCountWeapons = WeaponCount;
+    }
+
     public bool CanDropWeapon
     {
         get
@@ -44,11 +51,6 @@ public class WeaponDropping
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
         if (PrevCountWeapons != WeaponCount)
             WeaponInventoryChanged(WeaponCount);
-    }
-    public void Reset()
-    {
-        WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
-        PrevCountWeapons = WeaponCount;
     }
     public void DropWeapon()
     {

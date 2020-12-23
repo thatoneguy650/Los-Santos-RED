@@ -44,7 +44,7 @@ public class PedSwap
             Game.LocalPlayer.Character.WarpIntoVehicle(Car, SeatIndex);
         }
     }
-    public void StoreVanillaVariation()
+    public void StoreInitialVariation()
     {
         VanillaVariation = GetPedVariation(Game.LocalPlayer.Character);
     }
@@ -261,6 +261,8 @@ public class PedSwap
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
 
+
+        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         ActivatePreviousScenarios();
         Mod.Player.SetUnarmed();
         Mod.World.UnPauseTime();
@@ -305,7 +307,7 @@ public class PedSwap
         Mod.World.PauseTime();
         if (Game.LocalPlayer.Character.IsDead)
         {
-            Mod.Player.RespawnInPlace(false);
+            Mod.Player.RespawnHere(false,true);
         }
         Vector3 PlayerOriginalPedPosition = Game.LocalPlayer.Character.Position;
         TargetPedAlreadyTakenOver = false;

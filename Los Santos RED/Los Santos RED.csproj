@@ -105,6 +105,7 @@
     <Compile Include="lsr\DataMart\StreetScannerAudio.cs" />
     <Compile Include="lsr\DataMart\VehicleScannerAudio.cs" />
     <Compile Include="lsr\DataMart\ZoneScannerAudio.cs" />
+    <Compile Include="lsr\Helper\ModTask.cs" />
     <Compile Include="lsr\Helper\Natives.cs" />
     <Compile Include="lsr\Helper\Serialization.cs" />
     <Compile Include="lsr\Util\Injury\InjuryType.cs" />

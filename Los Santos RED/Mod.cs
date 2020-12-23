@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Helper;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,7 +39,7 @@ namespace LosSantosRED.lsr
         {
 
             HasSwappedPeds = true;
-            Player.Restart();// = new Player();//will break the static reference for some reason, need more info
+            Player.Reset(true,true,true);// = new Player();//will break the static reference for some reason, need more info
             Player.GiveName(ModelName, Male);
             if (DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
             {
@@ -54,93 +55,16 @@ namespace LosSantosRED.lsr
             }
             DataMart.ReadConfig();
             Player.GiveName();
-            Player.AddSpareLicensePlates();
+            Player.AddSpareLicensePlate();
 
-            World.CreateLocationBlips();
-            PedSwap.StoreVanillaVariation();
+            World.AddBlipsToMap();
+            PedSwap.StoreInitialVariation();
 
-            Run();
-            Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
-        }
-        private static void Run()
-        {
             SetupModTasks();
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    while (IsRunning)
-                    {
-                        TickStopWatch.Start();
-
-                        foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
-                        {
-                            if (RunGroup >= 4 && TickStopWatch.ElapsedMilliseconds >= 16)//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
-                            {
-                                Debug.WriteToLog("GameLogic", string.Format("Tick took > 16 ms ({0} ms), aborting, Last Ran {1}", TickStopWatch.ElapsedMilliseconds, LastRanTask));
-                                break;
-                            }
-
-                            ModTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
-                            if (ToRun != null)
-                            {
-                                ToRun.Run();
-                                LastRanTask = ToRun.DebugName;
-                            }
-                            foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
-                            {
-                                RunningBehind.Run();
-                                LastRanTask = ToRun.DebugName;
-                            }
-                        }
-                        MyTickTasks.ForEach(x => x.RanThisTick = false);
-
-                        TickStopWatch.Reset();
-                        GameFiber.Yield();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Dispose();
-                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-                }
-            }, "Run Game Logic");
-            GameFiber.Yield();
-
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    while (IsRunning)
-                    {
-                        Menu.Update();
-                        UI.Update();
-                        GameFiber.Yield();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Dispose();
-                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-                }
-            }, "Run Menu/UI Logic");
-
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    while (IsRunning)
-                    {
-                        Debug.Update();
-                        GameFiber.Yield();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Dispose();
-                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-                }
-            }, "Run Debug Logic");
+            StartGameLogic();
+            StartMenuLogic();
+            StartDebugLogic();
+            Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
         }
         private static void SetupModTasks()
         {
@@ -189,72 +113,88 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Dispatch.SpawnChecking", World.Dispatch, 15,1),
             };
         }
-        private class ModTask
+        private static void StartDebugLogic()
         {
-            public string DebugName;
-            public uint GameTimeLastRan = 0;
-            public uint Interval = 500;
-            public uint IntervalMissLength;
-            public bool RanThisTick = false;
-            public int RunGroup;
-            public int RunOrder;
-            public Action TickToRun;
-            public ModTask(uint _Interval, string _DebugName, Action _TickToRun, int _RunGroup, int _RunOrder)
+            GameFiber.StartNew(delegate
             {
-                GameTimeLastRan = 0;
-                Interval = _Interval;
-                IntervalMissLength = Interval * 2;
-                DebugName = _DebugName;
-                TickToRun = _TickToRun;
-                RunGroup = _RunGroup;
-                RunOrder = _RunOrder;
-            }
-            public bool MissedInterval
-            {
-                get
+                try
                 {
-                    if (Interval == 0)
-                        return false;
-                    //if (GameTimeLastRan == 0)
-                    //    return true;
-                    else if (Game.GameTime - GameTimeLastRan >= IntervalMissLength)
-                        return true;
-                    else
-                        return false;
+                    while (IsRunning)
+                    {
+                        Debug.Update();
+                        GameFiber.Yield();
+                    }
                 }
-            }
-            public bool RunningBehind
-            {
-                get
+                catch (Exception e)
                 {
-                    if (Interval == 0)
-                        return false;
-                    //if (GameTimeLastRan == 0)
-                    //    return true;
-                    else if (Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2))
-                        return true;
-                    else
-                        return false;
+                    Dispose();
+                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
                 }
-            }
-            public bool ShouldRun
+            }, "Run Debug Logic");
+        }
+        private static void StartGameLogic()
+        {
+            GameFiber.StartNew(delegate
             {
-                get
+                try
                 {
-                    if (GameTimeLastRan == 0)
-                        return true;
-                    else if (Game.GameTime - GameTimeLastRan > Interval)
-                        return true;
-                    else
-                        return false;
+                    while (IsRunning)
+                    {
+                        TickStopWatch.Start();
+
+                        foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
+                        {
+                            if (RunGroup >= 4 && TickStopWatch.ElapsedMilliseconds >= 16)//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            {
+                                Debug.WriteToLog("GameLogic", string.Format("Tick took > 16 ms ({0} ms), aborting, Last Ran {1}", TickStopWatch.ElapsedMilliseconds, LastRanTask));
+                                break;
+                            }
+
+                            ModTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+                            if (ToRun != null)
+                            {
+                                ToRun.Run();
+                                LastRanTask = ToRun.DebugName;
+                            }
+                            foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
+                            {
+                                RunningBehind.Run();
+                                LastRanTask = ToRun.DebugName;
+                            }
+                        }
+                        MyTickTasks.ForEach(x => x.RanThisTick = false);
+
+                        TickStopWatch.Reset();
+                        GameFiber.Yield();
+                    }
                 }
-            }
-            public void Run()
+                catch (Exception e)
+                {
+                    Dispose();
+                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                }
+            }, "Run Game Logic");
+            GameFiber.Yield();
+        }
+        private static void StartMenuLogic()
+        {
+            GameFiber.StartNew(delegate
             {
-                TickToRun();
-                GameTimeLastRan = Game.GameTime;
-                RanThisTick = true;
-            }
+                try
+                {
+                    while (IsRunning)
+                    {
+                        Menu.Update();
+                        UI.Update();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Dispose();
+                    Debug.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                }
+            }, "Run Menu/UI Logic");
         }
     }
 }

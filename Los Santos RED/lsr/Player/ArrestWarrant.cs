@@ -13,13 +13,8 @@ namespace LosSantosRED.lsr
 {
     public class ArrestWarrant
     {
-        private Player CurrentPlayer;
         private uint GameTimeLastAppliedWantedStats;
-        public ArrestWarrant(Player currentPlayer)
-        {
-            CurrentPlayer = currentPlayer;
-        }
-        public bool IsPersonOfInterest { get; private set; }
+        public bool IsActive { get; private set; }
         public List<CriminalHistory> CriminalHistoryList { get; set; } = new List<CriminalHistory>();
         public bool RecentlyAppliedWantedStats
         {
@@ -81,21 +76,21 @@ namespace LosSantosRED.lsr
         }
         public void Update()
         {
-            if (!CurrentPlayer.IsDead && !CurrentPlayer.IsBusted)
+            if (!Mod.Player.IsDead && !Mod.Player.IsBusted)
             {
                 CheckCurrentVehicle();
                 CheckSight();
 
-                if (CurrentPlayer.IsWanted)
+                if (Mod.Player.IsWanted)
                 {
-                    if (!IsPersonOfInterest && Mod.World.AnyPoliceCanSeePlayer)
+                    if (!IsActive && Mod.World.AnyPoliceCanSeePlayer)
                     {
-                        IsPersonOfInterest = true;
+                        IsActive = true;
                     }
                 }
                 else
                 {
-                    if (IsPersonOfInterest && CurrentPlayer.CurrentPoliceResponse.HasBeenNotWantedFor >= 120000)
+                    if (IsActive && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 120000)
                     {
                         Reset();
                     }
@@ -109,15 +104,15 @@ namespace LosSantosRED.lsr
         }
         public void Reset()
         {
-            IsPersonOfInterest = false;
+            IsActive = false;
             CriminalHistoryList.Clear();
             Mod.Debug.WriteToLog("ResetPersonOfInterest", "All Previous wanted items are cleared");
         }
         private void CheckCurrentVehicle()
         {
-            if ((CurrentPlayer.IsNotWanted || CurrentPlayer.WantedLevel == 1) && Mod.World.AnyPoliceCanRecognizePlayer && CurrentPlayer.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+            if ((Mod.Player.IsNotWanted || Mod.Player.WantedLevel == 1) && Mod.World.AnyPoliceCanRecognizePlayer && Mod.Player.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
             {
-                VehicleExt VehicleToCheck = CurrentPlayer.CurrentVehicle;
+                VehicleExt VehicleToCheck = Mod.Player.CurrentVehicle;
 
                 if (VehicleToCheck == null)
                 {
@@ -132,15 +127,15 @@ namespace LosSantosRED.lsr
         }
         private void CheckSight()
         {
-            if (IsPersonOfInterest && Mod.World.AnyPoliceCanSeePlayer)
+            if (IsActive && Mod.World.AnyPoliceCanSeePlayer)
             {
-                if (CurrentPlayer.IsWanted)
+                if (Mod.Player.IsWanted)
                 {
                     ApplyLastWantedStats();
                 }
                 else
                 {
-                    if (CurrentPlayer.CurrentPoliceResponse.NearLastWanted(SearchRadius) && CurrentPlayer.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
+                    if (Mod.Player.CurrentPoliceResponse.NearLastWanted(SearchRadius) && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
                     {
                         ApplyLastWantedStats();
                     }
@@ -169,15 +164,15 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            if (CurrentPlayer.WantedLevel < CriminalHistory.MaxWantedLevel)
+            if (Mod.Player.WantedLevel < CriminalHistory.MaxWantedLevel)
             {
-                CurrentPlayer.CurrentPoliceResponse.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats", true);
+                Mod.Player.CurrentPoliceResponse.SetWantedLevel(CriminalHistory.MaxWantedLevel, "Applying old Wanted stats", true);
             }
             CriminalHistoryList.Remove(CriminalHistory);
-            CurrentPlayer.CurrentPoliceResponse.CurrentCrimes = CriminalHistory;
+            Mod.Player.CurrentPoliceResponse.CurrentCrimes = CriminalHistory;
 
             GameTimeLastAppliedWantedStats = Game.GameTime;
-            Mod.Debug.WriteToLog("WantedLevelStats Replace", CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.DebugPrintCrimes());
+            Mod.Debug.WriteToLog("WantedLevelStats Replace", Mod.Player.CurrentPoliceResponse.CurrentCrimes.DebugPrintCrimes());
         }
         private CriminalHistory GetLastWantedStats()
         {

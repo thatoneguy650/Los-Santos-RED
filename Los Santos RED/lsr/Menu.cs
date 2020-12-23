@@ -529,7 +529,7 @@ public class Menu
     {
         if (selectedItem == menuDeathUndie)
         {
-            Mod.Player.UnDie();
+            Mod.Player.RespawnHere(true, false);
         }
         if (selectedItem == menuDeathHospitalRespawn)
         {

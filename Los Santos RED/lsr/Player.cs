@@ -48,15 +48,16 @@ namespace LosSantosRED.lsr
         {
             CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
             Mugging = new Mugging();
-            SearchMode = new SearchMode(this);
+            SearchMode = new SearchMode();
             Violations = new Violations();
             Respawning = new Respawning();
             Surrendering = new Surrendering();
             WeaponDropping = new WeaponDropping();
             Investigations = new Investigations();
-            ArrestWarrant = new ArrestWarrant(this);
+            ArrestWarrant = new ArrestWarrant();
             CurrentLocation = new LocationData(Game.LocalPlayer.Character);
-            CurrentPoliceResponse = new PoliceResponse(this);
+            CurrentPoliceResponse = new PoliceResponse();
+            CurrentPoliceResponse.SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
             GameTimeStartedPlaying = Game.GameTime;
         }
@@ -167,6 +168,7 @@ namespace LosSantosRED.lsr
         }
         public bool DiedInVehicle { get; private set; }
         public bool HandsAreUp { get; set; }
+        public bool HasActiveArrestWarrant => ArrestWarrant.IsActive;
         public Investigations Investigations { get; private set; }
         public bool IsAimingInVehicle
         {
@@ -259,7 +261,6 @@ namespace LosSantosRED.lsr
         public bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
         public bool IsOffroad => CurrentLocation.IsOffroad;
         public bool IsOnMotorcycle { get; private set; }
-        public bool IsPersonOfInterest => ArrestWarrant.IsPersonOfInterest;
         public bool IsRagdoll { get; private set; }
         public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStationary => GameTimeLastMoved != 0 && Game.GameTime - GameTimeLastMoved >= 1500;
@@ -324,7 +325,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public void AddSpareLicensePlates()
+        public void AddSpareLicensePlate()
         {
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
         }
@@ -530,26 +531,39 @@ namespace LosSantosRED.lsr
                 return false;
             }
         }
-        public void ResetInjuredPeds()
+        public void ResetInjuries()
         {
             GameTimeLastHurtCivilian = 0;
             GameTimeLastKilledCivilian = 0;
             GameTimeLastHurtCop = 0;
             GameTimeLastKilledCop = 0;
         }
-        public void ResetState(bool IncludeMaxWanted)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons)
         {
             IsDead = false;
             IsBusted = false;
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
-            TimesDied = 0;
-            LastWeaponHash = 0;
-            WeaponDropping.Reset();
-            if (IncludeMaxWanted)
+            CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
+            if (resetWanted)
             {
                 ArrestWarrant.Reset();
-                MaxWantedLastLife = 0; //this might be a problem in here and might need to be removed
+                CurrentPoliceResponse.Reset();
+                Investigations.Reset();
+                ResetInjuries();
+                Mod.World.ResetWitnessedCrimes();
+                Mod.World.ResetScanner();
+                NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
+                MaxWantedLastLife = 0;
+                GameTimeStartedPlaying = Game.GameTime;
+            }
+            if(resetTimesDied)
+            {
+                TimesDied = 0;
+            }
+            if(clearWeapons)
+            {
+                Game.LocalPlayer.Character.Inventory.Weapons.Clear();
             }
         }
         public void ResistArrest()
@@ -564,25 +578,9 @@ namespace LosSantosRED.lsr
         {
             Respawning.RespawnAtHospital(currentSelectedHospitalLocation);
         }
-        public void RespawnInPlace(bool AsOldCharacter)
+        public void RespawnHere(bool withInvincibility, bool resetWanted)
         {
-            Respawning.RespawnInPlace(AsOldCharacter);
-        }
-        public void Restart()
-        {
-            CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
-            Mugging = new Mugging();
-            SearchMode = new SearchMode(this);
-            Violations = new Violations();
-            Respawning = new Respawning();
-            Surrendering = new Surrendering();
-            WeaponDropping = new WeaponDropping();
-            Investigations = new Investigations();
-            ArrestWarrant = new ArrestWarrant(this);
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character);
-            CurrentPoliceResponse = new PoliceResponse(this);
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-            GameTimeStartedPlaying = Game.GameTime;
+            Respawning.RespawnHere(withInvincibility, resetWanted);
         }
         public void SearchModeUpdate()
         {
@@ -630,10 +628,6 @@ namespace LosSantosRED.lsr
         public void TrafficViolationsUpdate()
         {
             Violations.TrafficUpdate();
-        }
-        public void UnDie()
-        {
-            Respawning.UnDie();
         }
         public void UnSetArrestedAnimation(Ped character)
         {
@@ -788,6 +782,23 @@ namespace LosSantosRED.lsr
             {
             }
             Mod.Debug.WriteToLog("ValueChecker", string.Format("IsInVehicle Changed: {0}", IsInVehicle));
+        }
+        private void SetupTasks()
+        {
+            List<ModTask>  MyTickTasks = new List<ModTask>()
+            {
+                new ModTask(25, "Player.Update", Update, 2,0),
+                new ModTask(200, "Player.Violations.Update", ViolationsUpdate, 3,0),//50
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", CurrentPoliceResponse.Update, 3,1),//50
+                new ModTask(150, "Player.Investigations.Tick", Investigations.Update, 4,0),        
+                new ModTask(250, "Player.MuggingTick", MuggingUpdate, 5,1),
+                new ModTask(500, "Player.Violations.TrafficUpdate", TrafficViolationsUpdate, 8,0),
+                new ModTask(500, "Player.CurrentLocation.Update", LocationUpdate, 8,1),
+                new ModTask(500, "Player.ArrestWarrant.Update", ArrestWarrantUpdate, 8,2),
+                new ModTask(150, "Player.SearchMode.UpdateWanted", SearchModeUpdate, 11,0),
+                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", StopVanillaSearchMode, 11,1),
+            
+            };
         }
         private void StartManualArrest()
         {
@@ -946,6 +957,10 @@ namespace LosSantosRED.lsr
             if (CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
             {
                 CurrentLocation.CharacterToLocate = Game.LocalPlayer.Character;
+            }
+            if(CurrentHealth.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                CurrentHealth.MyPed = new PedExt(Game.LocalPlayer.Character);
             }
 
             if (Game.LocalPlayer.Character.IsShooting)

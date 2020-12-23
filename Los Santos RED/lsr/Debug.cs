@@ -379,7 +379,7 @@ public class Debug
             WriteToLog("Debugging", string.Format("Mod.Player.Character.Handle: {0}", Mod.Player.Character.Handle));
             WriteToLog("Debugging", string.Format("Mod.Player.IsConsideredArmed: {0}", Mod.Player.IsConsideredArmed));
             WriteToLog("Debugging", string.Format("Mod.Player.CheckIsArmed(): {0}", Mod.Player.CheckIsArmed()));
-
+            WriteToLog("Debugging", string.Format("Mod.Player.CurrentPoliceResponse.RecentlySetWanted: {0}", Mod.Player.CurrentPoliceResponse.RecentlySetWanted));
         }
         catch (Exception e)
         {

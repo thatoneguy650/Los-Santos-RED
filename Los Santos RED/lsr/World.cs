@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Util.Locations;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Util.Locations;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -21,6 +22,27 @@ namespace LosSantosRED.lsr
         private Tasking Tasking = new Tasking();
         private Time Time = new Time();
         private Vehicles Vehicles = new Vehicles();
+        private void SetupTasks()//Hopefully will move to the world calling its own update instead od passing it 
+        {
+            List<ModTask> MyTickTasks = new List<ModTask>()
+            {
+                new ModTask(0, "World.UpdateTime", UpdateTime, 0,0),    
+                new ModTask(100, "World.Police.Tick", UpdatePolice, 2,1),
+                new ModTask(500, "World.Civilians.Tick", UpdateCivilians, 4,1),     
+                new ModTask(250, "World.Pedestrians.Prune", PrunePedestrians, 6,0),
+                new ModTask(1000, "World.Pedestrians.Scan", ScaneForPedestrians, 6,1),
+                new ModTask(250, "World.Vehicles.CleanLists", PruneVehicles, 6,2),
+                new ModTask(1000, "World.Vehicles.Scan", ScanForVehicles, 6,3),        
+                new ModTask(500, "World.Vehicles.Tick", VehiclesTick, 9,1),      
+                new ModTask(500, "World.Scanner.Tick", UpdateScanner, 12,0),         
+                new ModTask(1000, "World.Vehicles.UpdatePlates", UpdateVehiclePlates, 13,1),
+                new ModTask(500, "World.Tasking.UpdatePeds", AddTaskablePeds, 14,0),
+                new ModTask(500, "World.Tasking.Tick", TaskCops, 14,1),
+                new ModTask(750, "World.Tasking.Tick", TaskCivilians, 14,2),
+                new ModTask(500, "World.Dispatch.DeleteChecking", Recall, 15,0),
+                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatch, 15,1),
+            };
+        }
         public World()
         {
         }
@@ -81,7 +103,7 @@ namespace LosSantosRED.lsr
         {
             return Pedestrians.CountNearbyCops(pedestrian);
         }
-        public void CreateLocationBlips()
+        public void AddBlipsToMap()
         {
             CreatedBlips = new List<Blip>();
             foreach (GameLocation MyLocation in Mod.DataMart.Places.GetAllPlaces())

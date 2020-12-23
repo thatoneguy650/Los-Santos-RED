@@ -12,16 +12,15 @@ namespace LosSantosRED.lsr
 {
     public class SearchMode
     {
-        private Player CurrentPlayer;
         private bool PrevIsInSearchMode;
         private bool PrevIsInActiveMode;
         private uint GameTimeStartedSearchMode;
         private uint GameTimeStartedActiveMode;
         private StopVanillaSeachMode StopSearchMode = new StopVanillaSeachMode();
 
-        public SearchMode(Player currentPlayer)
+        public SearchMode()
         {
-            CurrentPlayer = currentPlayer;
+
         }
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
@@ -95,7 +94,7 @@ namespace LosSantosRED.lsr
         }
         private void DetermineMode()
         {
-            if (CurrentPlayer.IsWanted)
+            if (Mod.Player.IsWanted)
             {
                 if (Mod.World.AnyPoliceRecentlySeenPlayer)
                 {
@@ -171,7 +170,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
-            CurrentPlayer.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
+            Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
             Mod.Debug.WriteToLog("SearchMode", "Stop Search Mode");
 
         }

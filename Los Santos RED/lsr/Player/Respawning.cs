@@ -13,51 +13,14 @@ using System.Threading.Tasks;
 public class Respawning
 {
     private int BailFee;
-    private uint GameTimeLastUndied;
-    private uint GameTimeLastRespawned;
-    private uint GameTimeLastSurrenderedToPolice;
+    private int BailFeePastDue;
     private uint GameTimeLastBribedPolice;
     private uint GameTimeLastDischargedFromHospital;
     private uint GameTimeLastResistedArrest;
-    private uint GameTimeLastTalkedToPolice;
+    private uint GameTimeLastRespawned;
+    private uint GameTimeLastSurrenderedToPolice;
+    private uint GameTimeLastUndied;
     private int HospitalBillPastDue;
-    private int BailFeePastDue;
-    public bool RecentlyUndied
-    {
-        get
-        {
-            if (GameTimeLastUndied == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastUndied <= 5000)
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool RecentlyRespawned
-    {
-        get
-        {
-            if (GameTimeLastRespawned == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastRespawned <= 5000)
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool RecentlySurrenderedToPolice
-    {
-        get
-        {
-            if (GameTimeLastSurrenderedToPolice == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastSurrenderedToPolice <= 5000)
-                return true;
-            else
-                return false;
-        }
-    }
     public bool RecentlyBribedPolice
     {
         get
@@ -94,256 +57,143 @@ public class Respawning
                 return false;
         }
     }
-    public bool RecentlyTalkedtoPolice
+    public bool RecentlyRespawned
     {
         get
         {
-            if (GameTimeLastTalkedToPolice == 0)
+            if (GameTimeLastRespawned == 0)
                 return false;
-            else if (Game.GameTime - GameTimeLastTalkedToPolice <= 5000)
+            else if (Game.GameTime - GameTimeLastRespawned <= 5000)
                 return true;
             else
                 return false;
         }
     }
-    public void UnDie()
+    public bool RecentlySurrenderedToPolice
     {
-        GameTimeLastUndied = Game.GameTime;
-        RespawnInPlace(true);
-
-        Game.LocalPlayer.Character.IsInvincible = true;
-        GameFiber.StartNew(delegate
+        get
         {
-            GameFiber.Sleep(5000);
-            Game.LocalPlayer.Character.IsInvincible = false;
-        });
+            if (GameTimeLastSurrenderedToPolice == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastSurrenderedToPolice <= 5000)
+                return true;
+            else
+                return false;
+        }
     }
-    public void RespawnInPlace(bool AsOldCharacter)
+    public bool RecentlyUndied
     {
-        try
+        get
         {
-            Mod.Player.ResetState(false);
-            Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-            NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
-            if (Mod.Player.DiedInVehicle)
-            {
-                NativeFunction.Natives.xEA23C49EAA83ACFB(Game.LocalPlayer.Character.Position.X + 10f, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z, 0, false, false);//"NETWORK_RESURRECT_LOCAL_PLAYER"
-                if (Game.LocalPlayer.Character.LastVehicle.Exists() && Game.LocalPlayer.Character.LastVehicle.IsDriveable)
-                {
-                    Game.LocalPlayer.Character.WarpIntoVehicle(Game.LocalPlayer.Character.LastVehicle, -1);
-                }
-            }
+            if (GameTimeLastUndied == 0)
+                return false;
+            else if (Game.GameTime - GameTimeLastUndied <= 5000)
+                return true;
             else
-            {
-                NativeFunction.Natives.xEA23C49EAA83ACFB(Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z, 0, false, false);//"NETWORK_RESURRECT_LOCAL_PLAYER"
-            }
-            NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
-            if (AsOldCharacter)
-            {
-                ResetPlayer(false, false);
-                //Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.MaxWantedLastLife, "Resetting to max wanted last life after respawn in place", true);
-                ++Mod.Player.TimesDied;
-            }
-            else
-            {
-                ResetPlayer(true, true);
-                Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-                Mod.Player.LastWeaponHash = 0;
-                Mod.Player.TimesDied = 0;
-                Mod.Player.MaxWantedLastLife = 0;
-            }
-            GameTimeLastRespawned = Game.GameTime;
-            Game.HandleRespawn();
-            Mod.Audio.Abort();
-            Mod.World.AbortScanner();
-            Mod.World.UnPauseTime();
+                return false;
         }
-        catch (Exception e)
+    }
+    public void BribePolice(int Amount)
+    {
+        if (Mod.Player.Money < Amount)
         {
-            Mod.Debug.WriteToLog("RespawnInPlace", e.Message);
+            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
         }
+        else if (Amount < (Mod.Player.WantedLevel * Mod.DataMart.Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
+        {
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
+            Mod.Player.GiveMoney(-1 * Amount);
+        }
+        else
+        {       
+            ResetPlayer(true, false, false, false);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
+            Mod.Player.GiveMoney(-1 * Amount);
+            GameTimeLastBribedPolice = Game.GameTime;
+        }
+    }
+    public void ResistArrest()
+    {
+        ResetPlayer(false, false, false, false);
+        GameTimeLastResistedArrest = Game.GameTime;
+    }
+    public void RespawnAtGrave()
+    {
+        FadeOut();
+        Respawn(true, true, true, true);
+        GameLocation PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
+        SetPlayerAtLocation(PlaceToSpawn);     
+        Mod.World.ClearPolice();
+        Game.LocalPlayer.Character.IsRagdoll = true;
+        FadeIn();
+        Game.LocalPlayer.Character.IsRagdoll = false;
+        GameTimeLastDischargedFromHospital = Game.GameTime;
+    }
+    public void RespawnAtHospital(GameLocation PlaceToSpawn)
+    {
+        FadeOut();
+        Respawn(true, true, true, true);
+        if (PlaceToSpawn == null)
+        {
+            PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
+        }
+        SetPlayerAtLocation(PlaceToSpawn);   
+        Mod.World.ClearPolice(); 
+        FadeIn();
+        SetHospitalFee(PlaceToSpawn.Name);
+        GameTimeLastDischargedFromHospital = Game.GameTime;
+    }
+    public void RespawnHere(bool withInvicibility, bool resetWanted)
+    {
+        Respawn(resetWanted, true, false, false);
+        if (withInvicibility)
+        {
+            Game.LocalPlayer.Character.IsInvincible = true;
+            GameFiber.StartNew(delegate
+            {
+                GameFiber.Sleep(5000);
+                Game.LocalPlayer.Character.IsInvincible = false;
+            });
+        }
+        GameTimeLastUndied = Game.GameTime;
     }
     public void SurrenderToPolice(GameLocation PoliceStation)
     {
         FadeOut();
         CheckWeapons();
         BailFee = Mod.Player.MaxWantedLastLife * Mod.DataMart.Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
-        Mod.Player.ResetState(true);
         Mod.Player.RaiseHands();
-        ResetPlayer(true, true);
+        ResetPlayer(true, true,false,true);
         if (PoliceStation == null)
         {
             PoliceStation = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
         }
         SetPlayerAtLocation(PoliceStation);
-        Game.LocalPlayer.Character.Tasks.ClearImmediately();
         Mod.World.ClearPolice();
         FadeIn();
         SetPoliceFee(PoliceStation.Name, BailFee);
         GameTimeLastSurrenderedToPolice = Game.GameTime;
     }
-    public void BribePolice(int Amount)
+    private void CheckWeapons()
     {
-        if (Game.LocalPlayer.Character.IsRagdoll || Game.LocalPlayer.Character.IsSwimming)
-            return;
-
-        if (Mod.Player.Money < Amount)
+        if (!Mod.Player.KilledAnyCops)
         {
-            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
-            return;
-        }
-
-        if (Amount < (Mod.Player.WantedLevel * Mod.DataMart.Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
-        {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
-            Mod.Player.GiveMoney(-1 * Amount);
-            return;
+            RemoveIllegalWeapons();
         }
         else
         {
-            GameTimeLastBribedPolice = Game.GameTime;
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
-            Mod.Player.GiveMoney(-1 * Amount);
-            Mod.Player.UnSetArrestedAnimation(Game.LocalPlayer.Character);
-            ResetPlayer(true, false);
-
-            //Animation goes here if you want to add it somehow
+            Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         }
     }
-    public void RespawnAtHospital(GameLocation PlaceToSpawn)
+    private void FadeIn()
     {
-        FadeOut();
-        Mod.Player.ResetState(true);
-        RespawnInPlace(false);
-        if (PlaceToSpawn == null)
-        {
-            PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
-        }
-        SetPlayerAtLocation(PlaceToSpawn);
-        GameTimeLastDischargedFromHospital = Game.GameTime;
-        Mod.World.ClearPolice();
-        SetHospitalFee(PlaceToSpawn.Name);
-        FadeIn();   
+        GameFiber.Wait(1500);
+        Game.FadeScreenIn(1500);
     }
-    public void RespawnAtGrave()
+    private void FadeOut()
     {
-        FadeOut();
-        Mod.Player.ResetState(true);
-        RespawnInPlace(false);
-        GameLocation PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
-        SetPlayerAtLocation(PlaceToSpawn);
-        GameTimeLastDischargedFromHospital = Game.GameTime;
-        Mod.World.ClearPolice();
-        Game.LocalPlayer.Character.IsRagdoll = true;
-        FadeIn();
-        Game.LocalPlayer.Character.IsRagdoll = false;
-    }
-    public void ResistArrest()
-    {
-        Mod.Player.ResetState(false);//maxwanted last life maybe wont work?
-        //Mod.Player.CurrentPoliceResponse.RefreshPoliceState();
-       // Mod.Player.CurrentPoliceResponse.SetWantedLevel(Mod.Player.WantedLevel, "Resisting Arrest", true);
-       // Mod.Player.UnSetArrestedAnimation(Game.LocalPlayer.Character);
-        NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-        ResetPlayer(false, false);
-        GameTimeLastResistedArrest = Game.GameTime;
-    }
-    public void Talk()
-    {
-        //GTACop ClosestCop = PoliceScanning.CopPeds.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        //MovePlayerToCop(ClosestCop,false,0);
-        GameTimeLastTalkedToPolice = Game.GameTime;
-        Game.DisplayHelp("~INPUT_SELECT_WEAPON_UNARMED~ \"Hello Officer, what seems to be the problem?\",~INPUT_SELECT_WEAPON_MELEE~ \"Am I being Detained?\"", 8000);
-    }
-    //private bool BribePoliceAnimation(int Amount)//temp public
-    //{
-    //    GameFiber.StartNew(delegate
-    //    {
-    //        Cop CopToBribe = Mod.World.Pedestrians.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-    //        NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
-    //        Game.TimeScale = 1.0f;
-    //        //CopToBribe.SetUnarmed();
-
-    //        Mod.Player.Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
-
-    //        while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Game.LocalPlayer.Character, "random@arrests", "kneeling_arrest_escape", 1))
-    //            GameFiber.Wait(250);
-
-
-    //        GameFiber.Wait(2000);
-
-    //        if (!CopToBribe.Pedestrian.Exists())
-    //            return;
-
-    //        CopToBribe.Pedestrian.BlockPermanentEvents = true;
-    //        CopToBribe.Pedestrian.IsPositionFrozen = true;
-
-
-    //        Ped PedToMove = Game.LocalPlayer.Character;
-    //        Ped PedToMoveTo = CopToBribe.Pedestrian;
-    //        Vector3 OriginalPosition = PedToMoveTo.Position;
-
-    //        bool Continue = true;
-    //        Vector3 PositionToMoveTo = PedToMoveTo.GetOffsetPositionFront(1f);
-    //        float DesiredHeading = PedToMoveTo.Heading - 180;
-    //        NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading);
-    //        uint GameTimeStarted = Game.GameTime;
-    //        while (Game.GameTime - GameTimeStarted <= 15000 && !(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.FacingOppositeDirection(PedToMoveTo)))// PedToMove.Heading.IsWithin(DesiredHeading - 15f, DesiredHeading + 15f)))
-    //        {
-    //            GameFiber.Yield();
-    //            if (Natives.IsMoveControlPressed() || PedToMoveTo.DistanceTo2D(OriginalPosition) >= 0.1f)
-    //            {
-    //                Continue = false;
-    //                break;
-    //            }
-    //        }
-    //        if (!Continue)
-    //        {
-    //            CopToBribe.Pedestrian.BlockPermanentEvents = false;
-    //            CopToBribe.Pedestrian.IsPositionFrozen = false;
-    //            PedToMove.Tasks.Clear();
-    //            return;
-    //        }
-
-    //        AnimationDictionary AnimDictionary = new AnimationDictionary("mp_common");
-
-    //        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-    //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-
-    //        Rage.Object MoneyPile = AttachMoneyToPed(PedToMove);
-
-    //        GameFiber.Wait(1500);
-    //        if (MoneyPile.Exists())
-    //            MoneyPile.Delete();
-
-    //        MoneyPile = AttachMoneyToPed(PedToMoveTo);
-    //        GameFiber.Wait(1500);
-    //        if (MoneyPile.Exists())
-    //            MoneyPile.Delete();
-
-    //        Game.LocalPlayer.Character.Tasks.Clear();
-    //        PedToMoveTo.Tasks.Clear();
-    //        CopToBribe.Pedestrian.BlockPermanentEvents = false;
-    //        CopToBribe.Pedestrian.IsPositionFrozen = false;
-
-    //        Mod.Player.GiveMoney(-1 * Amount);
-    //        CopToBribe.Pedestrian.PlayAmbientSpeech("GENERIC_THANKS");
-    //        //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
-
-    //        ResetPlayer(true, false);
-    //    });
-
-
-    //    return true;
-    //}
-    private Rage.Object AttachMoneyToPed(Ped Pedestrian)
-    {
-        Rage.Object Money = new Rage.Object("xs_prop_arena_cash_pile_m", Pedestrian.GetOffsetPositionUp(50f));
-        if (!Money.Exists())
-            return null;
-        int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
-        Money.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.12f, 0.03f, -0.01f), new Rotator(0f, -45f, 90f));
-        return Money;
+        Game.FadeScreenOut(1500);
+        GameFiber.Wait(1500);
     }
     private void RemoveIllegalWeapons()
     {
@@ -354,7 +204,7 @@ public class Respawning
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
             WeaponVariation DroppedGunVariation = Mod.DataMart.Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
-            DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation,Weapon.Ammo);
+            DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation, Weapon.Ammo);
             MyOldGuns.Add(MyGun);
         }
         //Totally clear our guns
@@ -371,47 +221,61 @@ public class Respawning
             }
         }
     }
-    private void ResetPlayer(bool ClearWanted, bool ResetHealth)
+    private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons)
     {
-        Mod.Player.ResetState(false);
+        Mod.Player.Reset(resetWanted, resetTimesDied, clearWeapons);
         Mod.Player.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
+        NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         NativeFunction.Natives.xC0AA53F866B3134D();
         Game.TimeScale = 1f;
-        if (ClearWanted)
-        {
-           // Mod.Player.ArrestWarrant.Reset();
-            Mod.Player.CurrentPoliceResponse.Reset(); 
-            Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Reset player with Clear Wanted", false);
-            Mod.Player.MaxWantedLastLife = 0;
-            NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
-            Mod.Player.ResetInjuredPeds();
-            Mod.World.ResetWitnessedCrimes();
-            Mod.Player.Investigations.Reset();
-        }
-
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
         NativeFunction.Natives.x80C8B1846639BB19(0);
-
-        if (ResetHealth)
+        if (resetHealth)
+        {
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-
+        }
         NativeFunction.CallByName<bool>("RESET_HUD_COMPONENT_VALUES", 0);
-
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
-
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
+        Mod.Audio.Abort();
+        Mod.World.AbortScanner();
     }
-    private void CheckWeapons()
+    private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons)
     {
-        if (!Mod.Player.KilledAnyCops)
+        try
         {
-            RemoveIllegalWeapons();
+            ResurrectPlayer(resetTimesDied);
+            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons);    
+            Game.HandleRespawn();
+            Mod.World.UnPauseTime();
+            GameTimeLastRespawned = Game.GameTime;
+        }
+        catch (Exception e)
+        {
+            Mod.Debug.WriteToLog("RespawnInPlace", e.Message);
+        }
+    }
+    private void ResurrectPlayer(bool resetTimesDied)
+    {
+        if (!resetTimesDied)
+        {
+            ++Mod.Player.TimesDied;
+        }
+        NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
+        NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
+        if (Mod.Player.DiedInVehicle)
+        {
+            NativeFunction.Natives.xEA23C49EAA83ACFB(Game.LocalPlayer.Character.Position.X + 10f, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z, 0, false, false);//"NETWORK_RESURRECT_LOCAL_PLAYER"
+            if (Game.LocalPlayer.Character.LastVehicle.Exists() && Game.LocalPlayer.Character.LastVehicle.IsDriveable)
+            {
+                Game.LocalPlayer.Character.WarpIntoVehicle(Game.LocalPlayer.Character.LastVehicle, -1);
+            }
         }
         else
         {
-            Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+            NativeFunction.Natives.xEA23C49EAA83ACFB(Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z, 0, false, false);//"NETWORK_RESURRECT_LOCAL_PLAYER"
         }
     }
     private void SetHospitalFee(string HospitalName)
@@ -436,6 +300,16 @@ public class Respawning
         Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", HospitalFee, TodaysPayment, HospitalBillPastDue));
 
         Mod.Player.GiveMoney(-1 * TodaysPayment);
+    }
+    private void SetPlayerAtLocation(GameLocation ToSet)
+    {
+        Game.LocalPlayer.Character.Position = ToSet.LocationPosition;
+        Game.LocalPlayer.Character.Heading = ToSet.Heading;
+        if (ToSet.Type == LocationType.Grave)
+        {
+            Game.LocalPlayer.Character.IsRagdoll = true;
+        }
+        Game.LocalPlayer.Character.Tasks.ClearImmediately();
     }
     private void SetPoliceFee(string PoliceStationName, int BailFee)
     {
@@ -466,149 +340,6 @@ public class Respawning
             Game.DisplayNotification("CHAR_LESTER", "CHAR_LESTER", PoliceStationName, "Bail Fees", string.Format("~g~${0} ~s~", 0));
         }
     }
-    private void SetPlayerAtLocation(GameLocation ToSet)
-    {
-        Game.LocalPlayer.Character.Position = ToSet.LocationPosition;
-        Game.LocalPlayer.Character.Heading = ToSet.Heading;
-        if(ToSet.Type == LocationType.Grave)
-        {
-            Game.LocalPlayer.Character.IsRagdoll = true;
-        }
-    }
-    private void FadeOut()
-    {
-        Game.FadeScreenOut(1500);
-        GameFiber.Wait(1500);
-    }
-    private void FadeIn()
-    {
-        GameFiber.Wait(1500);
-        Game.FadeScreenIn(1500);
-    }
-
-    //private class PoliceBribeAnimation
-    //{
-    //    private Cop CopToBribe;
-    //    public bool IsFinished { get; private set; }
-    //    public bool TransactionOccured { get; private set; }
-    //    private void Setup()
-    //    {
-    //        CopToBribe = Mod.World.Pedestrians.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-    //        if(CopToBribe == null)
-    //        {
-    //            IsFinished = true;
-    //            return;
-    //        }
-    //        CopToBribe.ShouldAutoSetWeaponState = false;
-    //        //CopToBribe.SetUnarmed();//need to change this
-
-    //        NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
-    //        Game.TimeScale = 1.0f;
-    //    }
-    //    private bool BribePoliceAnimation(int Amount)//temp public
-    //    {
-    //        GameFiber.StartNew(delegate
-    //        {
-    //            CopToBribe = Mod.World.Pedestrians.Cops.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-    //            NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
-    //            Game.TimeScale = 1.0f;
-    //            CopToBribe.ShouldAutoSetWeaponState = false;
-    //            // CopToBribe.SetUnarmed();//need to change this
-
-    //            Mod.Player.Surrendering.UnSetArrestedAnimation(Game.LocalPlayer.Character);
-
-    //            while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Game.LocalPlayer.Character, "random@arrests", "kneeling_arrest_escape", 1))
-    //                GameFiber.Wait(250);
-
-
-    //            GameFiber.Wait(2000);
-
-    //            if (!CopToBribe.Pedestrian.Exists())
-    //                return;
-
-    //            CopToBribe.Pedestrian.BlockPermanentEvents = true;
-    //            CopToBribe.Pedestrian.IsPositionFrozen = true;
-
-
-    //            Ped PedToMove = Game.LocalPlayer.Character;
-    //            Ped PedToMoveTo = CopToBribe.Pedestrian;
-    //            Vector3 OriginalPosition = PedToMoveTo.Position;
-
-    //            bool Continue = true;
-    //            Vector3 PositionToMoveTo = PedToMoveTo.GetOffsetPositionFront(1f);
-    //            float DesiredHeading = PedToMoveTo.Heading - 180;
-    //            NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading);
-    //            uint GameTimeStarted = Game.GameTime;
-    //            while (Game.GameTime - GameTimeStarted <= 15000 && !(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && PedToMove.FacingOppositeDirection(PedToMoveTo)))// PedToMove.Heading.IsWithin(DesiredHeading - 15f, DesiredHeading + 15f)))
-    //            {
-    //                GameFiber.Yield();
-    //                if (Natives.IsMoveControlPressed() || PedToMoveTo.DistanceTo2D(OriginalPosition) >= 0.1f)
-    //                {
-    //                    Continue = false;
-    //                    break;
-    //                }
-    //            }
-    //            if (!Continue)
-    //            {
-    //                CopToBribe.Pedestrian.BlockPermanentEvents = false;
-    //                CopToBribe.Pedestrian.IsPositionFrozen = false;
-    //                PedToMove.Tasks.Clear();
-    //                return;
-    //            }
-
-    //            AnimationDictionary AnimDictionary = new AnimationDictionary("mp_common");
-
-    //            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_common", "givetake1_a", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-    //            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToMoveTo, "mp_common", "givetake1_b", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-
-    //            Rage.Object MoneyPile = Mod.Player.Respawning.AttachMoneyToPed(PedToMove);
-
-    //            GameFiber.Wait(1500);
-    //            if (MoneyPile.Exists())
-    //                MoneyPile.Delete();
-
-    //            MoneyPile = Mod.Player.Respawning.AttachMoneyToPed(PedToMoveTo);
-    //            GameFiber.Wait(1500);
-    //            if (MoneyPile.Exists())
-    //                MoneyPile.Delete();
-
-    //            Game.LocalPlayer.Character.Tasks.Clear();
-    //            PedToMoveTo.Tasks.Clear();
-    //            CopToBribe.Pedestrian.BlockPermanentEvents = false;
-    //            CopToBribe.Pedestrian.IsPositionFrozen = false;
-
-    //            Mod.Player.GiveMoney(-1 * Amount);
-    //            CopToBribe.Pedestrian.PlayAmbientSpeech("GENERIC_THANKS");
-    //            //DispatchAudio.AddDispatchToQueue(new DispatchAudio.DispatchQueueItem(DispatchAudio.AvailableDispatch.ResumePatrol, 3));
-
-    //            Mod.Player.Respawning.ResetPlayer(true, false);
-    //        });
-
-
-    //        return true;
-    //    }
-    //}
-
-    //public static bool FacingOppositeDirection(this Entity Entity1, Entity Entity2)
-    //{
-    //    float MyAngle = Angle(Entity1.ForwardVector, Entity2.ForwardVector);
-    //    if (MyAngle >= 170 && MyAngle <= 190)//if (MyAngle >= 140f && MyAngle <= 220f)
-    //    {
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-    //}
-
-    //private static float Angle(Vector3 from, Vector3 to)
-    //{
-    //    from.Normalize();
-    //    to.Normalize();
-    //    double dot = Dot(from, to);
-    //    return (float)(System.Math.Acos((dot)) * (180.0 / System.Math.PI));
-    //}
 }
 
 

@@ -207,9 +207,15 @@ public class Loadout
                     PistolVariation.ApplyWeaponVariation(Cop.Pedestrian, (uint)IssuedPistol.Hash);
                 }
             }
-            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 30);
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, NativeFunction.CallByName<bool>("GET_BEST_PED_WEAPON", Cop.Pedestrian, 0), true);
-            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);
+            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Cop.Pedestrian, 50);//30
+            if(IssuedHeavyWeapon != null)
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, IssuedHeavyWeapon.Hash, true);
+            }
+            else
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, IssuedPistol.Hash, true);
+            }
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys
             IsSetLessLethal = false;
             IsSetUnarmed = false;

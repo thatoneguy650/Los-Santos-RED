@@ -9,12 +9,30 @@ using System.Threading.Tasks;
 
 public class HealthState
 {
+    private int Armor;
+    private int CurrentArmor;
+    private int CurrentHealth;
     private uint GameTimeLastBled;
+    private uint GameTimeLastCheckedDamage;
+    private int Health;
     private bool HurtByPed;
     private bool HurtByVehicle;
-    private int CurrentHealth;
-    private int CurrentArmor;
-    private uint GameTimeLastCheckedDamage;
+    private bool IsBleeding;
+    
+    public HealthState()
+    {
+
+    }
+    public HealthState(PedExt _MyPed)
+    {
+        MyPed = _MyPed;
+        Health = _MyPed.Pedestrian.Health;
+        Armor = _MyPed.Pedestrian.Armor;
+        CurrentArmor = Armor;
+        CurrentHealth = Health;
+    }
+    public PedExt MyPed { get; set; }
+    public bool HasLoggedDeath { get; private set; }
     private bool NeedDamageCheck
     {
         get
@@ -37,11 +55,6 @@ public class HealthState
                 return false;
         }
     }
-    private PedExt MyPed;
-    private int Health;
-    private int Armor;
-    private bool IsBleeding;
-    public bool HasLoggedDeath { get; private set; }
     public void Update()
     {
         if (NeedDamageCheck && MyPed.Pedestrian.Exists() && !HasLoggedDeath)
@@ -80,6 +93,63 @@ public class HealthState
         else if (MyPed.Pedestrian.IsAlive && MyPed.HurtBy(Game.LocalPlayer.Character))
         {
             Mod.Player.Injured(MyPed);
+        }
+    }
+    private BodyLocation GetDamageLocation(Ped Pedestrian)
+    {
+        int outBone = 0;
+        unsafe
+        {
+            NativeFunction.CallByName<bool>("GET_PED_LAST_DAMAGE_BONE", Pedestrian, &outBone);
+        }
+
+        if (outBone != 0)
+        {
+            NativeFunction.CallByName<bool>("CLEAR_PED_LAST_DAMAGE_BONE", Pedestrian);
+            Bone DamagedOne = Mod.DataMart.Bones.GetBone(outBone);//    .FirstOrDefault(x => x.Tag == DamagedBoneId);
+            if (DamagedOne != null)
+            {
+                return DamagedOne.Location;
+            }
+            else
+            {
+                return BodyLocation.Unknown;
+            }
+        }
+        else
+        {
+            return BodyLocation.Unknown;
+        }
+    }
+    private float GetDamageModifier(InjuryType injury, bool IsArmor)
+    {
+        if (IsArmor)
+        {
+            if (injury == InjuryType.Normal)
+                return 1.0f;
+            else if (injury == InjuryType.Graze)
+                return 0.25f;
+            else if (injury == InjuryType.Critical)
+                return 2.0f;
+            else if (injury == InjuryType.Vanilla)
+                return 1.0f;
+            else
+                return 1.0f;
+        }
+        else
+        {
+            if (injury == InjuryType.Fatal)
+                return 10.0f;
+            else if (injury == InjuryType.Normal)
+                return 2.0f;//5.0f;//3.0f;//1.0f;
+            else if (injury == InjuryType.Graze)
+                return 0.75f;//0.25f;
+            else if (injury == InjuryType.Critical)
+                return 3.0f;//8.0f;// 6.0f;//2.0f;
+            else if (injury == InjuryType.Vanilla)
+                return 1.0f;// 6.0f;//2.0f;
+            else
+                return 1.0f;
         }
     }
     private void ModifyDamage()
@@ -166,6 +236,20 @@ public class HealthState
         }
 
     }
+    private InjuryType RandomType(bool CanBeFatal)
+    {
+        int RandomNumber = RandomItems.MyRand.Next(1, 101);
+        if (RandomNumber <= 60)
+            return InjuryType.Normal;
+        else if (RandomNumber <= 70)
+            return InjuryType.Graze;
+        else if (RandomNumber <= 92)
+            return InjuryType.Critical;
+        else if (RandomNumber <= 100 && CanBeFatal)
+            return InjuryType.Fatal;
+        else
+            return InjuryType.Normal;
+    }
     private void SetRagdoll(int NewHealth)
     {
         if (Health - NewHealth >= 65)
@@ -191,88 +275,5 @@ public class HealthState
             //IsBleeding = true;
             //Mod.Debugging.WriteToLog("PlayerHealthChanged", string.Format("Normal Hit, Bleeding"));
         }
-    }
-    private float GetDamageModifier(InjuryType injury, bool IsArmor)
-    {
-        if (IsArmor)
-        {
-            if (injury == InjuryType.Normal)
-                return 1.0f;
-            else if (injury == InjuryType.Graze)
-                return 0.25f;
-            else if (injury == InjuryType.Critical)
-                return 2.0f;
-            else if (injury == InjuryType.Vanilla)
-                return 1.0f;
-            else
-                return 1.0f;
-        }
-        else
-        {
-            if (injury == InjuryType.Fatal)
-                return 10.0f;
-            else if (injury == InjuryType.Normal)
-                return 2.0f;//5.0f;//3.0f;//1.0f;
-            else if (injury == InjuryType.Graze)
-                return 0.75f;//0.25f;
-            else if (injury == InjuryType.Critical)
-                return 3.0f;//8.0f;// 6.0f;//2.0f;
-            else if (injury == InjuryType.Vanilla)
-                return 1.0f;// 6.0f;//2.0f;
-            else
-                return 1.0f;
-        }
-    }
-    private BodyLocation GetDamageLocation(Ped Pedestrian)
-    {
-        int outBone = 0;
-        unsafe
-        {
-            NativeFunction.CallByName<bool>("GET_PED_LAST_DAMAGE_BONE", Pedestrian, &outBone);
-        }
-
-        if (outBone != 0)
-        {
-            NativeFunction.CallByName<bool>("CLEAR_PED_LAST_DAMAGE_BONE", Pedestrian);
-            Bone DamagedOne = Mod.DataMart.Bones.GetBone(outBone);//    .FirstOrDefault(x => x.Tag == DamagedBoneId);
-            if (DamagedOne != null)
-            {
-                return DamagedOne.Location;
-            }
-            else
-            {
-                return BodyLocation.Unknown;
-            }
-        }
-        else
-        {
-            return BodyLocation.Unknown;
-        }
-    }
-    private InjuryType RandomType(bool CanBeFatal)
-    {
-        int RandomNumber = RandomItems.MyRand.Next(1, 101);
-        if (RandomNumber <= 60)
-            return InjuryType.Normal;
-        else if (RandomNumber <= 70)
-            return InjuryType.Graze;
-        else if (RandomNumber <= 92)
-            return InjuryType.Critical;
-        else if (RandomNumber <= 100 && CanBeFatal)
-            return InjuryType.Fatal;
-        else
-            return InjuryType.Normal;
-    }
-    public HealthState()
-    {
-
-    }
-    public HealthState(PedExt _MyPed)
-    {
-        MyPed = _MyPed;
-        Health = _MyPed.Pedestrian.Health;
-        Armor = _MyPed.Pedestrian.Armor;
-        CurrentArmor = Armor;
-        CurrentHealth = Health;
     }
 }
