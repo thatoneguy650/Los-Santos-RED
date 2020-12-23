@@ -524,7 +524,7 @@ namespace LosSantosRED.lsr.Util.Tasking
         }
         private void HeliGoToLastSeen_Start()
         {
-            Cop ClosestCop = Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
+            Cop ClosestCop = Mod.World.PoliceList.Where(x => x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
             if (ClosestCop == null)
                 return;
             NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);

@@ -11,6 +11,7 @@ namespace LosSantosRED.lsr
         private static readonly Stopwatch TickStopWatch = new Stopwatch();
         private static string LastRanTask;
         private static List<ModTask> MyTickTasks;
+        private static bool HasSwappedPeds;
         public static Audio Audio { get; private set; } = new Audio();
         public static DataMart DataMart { get; private set; } = new DataMart();
         public static Debug Debug { get; private set; } = new Debug();
@@ -35,6 +36,8 @@ namespace LosSantosRED.lsr
         }
         public static void NewPlayer(string ModelName, bool Male)
         {
+
+            HasSwappedPeds = true;
             Player.Restart();// = new Player();//will break the static reference for some reason, need more info
             Player.GiveName(ModelName, Male);
             if (DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
@@ -110,8 +113,8 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        Menu.Tick();
-                        UI.Tick();
+                        Menu.Update();
+                        UI.Update();
                         GameFiber.Yield();
                     }
                 }
@@ -128,7 +131,7 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        Debug.DebugLoop();
+                        Debug.Update();
                         GameFiber.Yield();
                     }
                 }
@@ -144,7 +147,7 @@ namespace LosSantosRED.lsr
             MyTickTasks = new List<ModTask>()
             {
                new ModTask(0, "World.UpdateTime", World.UpdateTime, 0,0),
-                new ModTask(0, "Input.Tick", Input.Tick, 1,0),
+                new ModTask(0, "Input.Tick", Input.Update, 1,0),
 
                 new ModTask(25, "Player.Update", Player.Update, 2,0),
                 new ModTask(100, "World.Police.Tick", World.UpdatePolice, 2,1),//25
@@ -152,14 +155,14 @@ namespace LosSantosRED.lsr
                 new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 3,0),//50
                 new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.CurrentPoliceResponse.Update, 3,1),//50
 
-                new ModTask(150, "Player.Investigations.Tick", Player.Investigations.Tick, 4,0),
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigations.Update, 4,0),
                 new ModTask(500, "World.Civilians.Tick", World.UpdateCivilians, 4,1),//150
 
                 //new ModTask(200, "World.PedDamage.Tick", World.Wounds.Tick, 5,0),//moved to the ped updates for now, might need to readd them here
                 new ModTask(250, "Player.MuggingTick", Player.MuggingUpdate, 5,1),
 
-                new ModTask(250, "World.Pedestrians.Prune", World.Pedestrians.Prune, 6,0),
-                new ModTask(1000, "World.Pedestrians.Scan", World.Pedestrians.Scan, 6,1),
+                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 6,0),
+                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 6,1),
                 new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 6,2),
                 new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 6,3),
 
@@ -168,14 +171,14 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.Violations.TrafficUpdate", Player.TrafficViolationsUpdate, 8,0),
                 new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
                 new ModTask(500, "Player.ArrestWarrant.Update", Player.ArrestWarrantUpdate, 8,2),
-                new ModTask(500, "World.PoliceForce.SpeechTick", World.UpdatePoliceSpeech, 9,0),
+               // new ModTask(500, "World.PoliceForce.SpeechTick", World.UpdatePoliceSpeech, 9,0),//moved to regular police updates
                 new ModTask(500, "World.Vehicles.Tick", World.VehiclesTick, 9,1),
 
                 new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchModeUpdate, 11,0),
                 new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.StopVanillaSearchMode, 11,1),
                 new ModTask(500, "World.Scanner.Tick", World.UpdateScanner, 12,0),
 
-                new ModTask(100, "Audio.Tick",Audio.Tick,13,0),
+                new ModTask(100, "Audio.Tick",Audio.Update,13,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,1),
 
                 new ModTask(500, "World.Tasking.UpdatePeds", World.AddTaskablePeds, 14,0),

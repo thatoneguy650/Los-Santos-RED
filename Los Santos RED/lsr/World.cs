@@ -1,8 +1,11 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Util.Locations;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace LosSantosRED.lsr
 {
@@ -11,6 +14,7 @@ namespace LosSantosRED.lsr
         private Civilians Civilians = new Civilians();
         private List<Blip> CreatedBlips;
         private Dispatcher Dispatcher = new Dispatcher();
+        private Pedestrians Pedestrians = new Pedestrians();
         private Police Police = new Police();
         private Scanner Scanner = new Scanner();
         private Spawner Spawner = new Spawner();
@@ -20,55 +24,26 @@ namespace LosSantosRED.lsr
         public World()
         {
         }
-        public float ActiveDistance
-        {
-            get
-            {
-                return Police.ActiveDistance;
-            }
-        }
+        public float ActiveDistance => Police.ActiveDistance;
+        public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
+        public bool AnyCopsNearPlayer => Pedestrians.AnyCopsNearPlayer;
+        public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
+        public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
         public bool AnyPoliceCanHearPlayer => Police.AnyCanHearPlayer;
         public bool AnyPoliceCanRecognizePlayer => Police.AnyCanRecognizePlayer;
         public bool AnyPoliceCanSeePlayer => Police.AnyCanSeePlayer;
         public bool AnyPoliceRecentlySeenPlayer => Police.AnyRecentlySeenPlayer;
         public bool AnyPoliceSeenPlayerCurrentWanted => Police.AnySeenPlayerCurrentWanted;
-        public string CurrentTime
-        {
-            get
-            {
-                return Time.CurrentTime;
-            }
-        }
-        public bool IsNight
-        {
-            get
-            {
-                return Time.IsNight;
-            }
-        }
-        public Pedestrians Pedestrians { get; private set; } = new Pedestrians();//soon you will be 
-        public int PersistentCivilians
-        {
-            get
-            {
-                return Civilians.PersistentCount;
-            }
-        }
+        public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
+        public string CurrentTime => Time.CurrentTime;
+        public bool IsNight => Time.IsNight;
+        public int PersistentCivilians => Civilians.PersistentCount;
         public Vector3 PlacePoliceLastSeenPlayer => Police.PlaceLastSeenPlayer;
-        public int PoliceBoatsCount
-        {
-            get
-            {
-                return Vehicles.PoliceBoatsCount;
-            }
-        }
-        public int PoliceHelicoptersCount
-        {
-            get
-            {
-                return Vehicles.PoliceHelicoptersCount;
-            }
-        }
+        public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
+        public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
+        public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
+        public bool ShouldBustPlayer => Pedestrians.ShouldBustPlayer;
+        public int TotalSpawnedCops => Pedestrians.TotalSpawnedCops;
         public void AbortScanner()
         {
             Scanner.Abort();
@@ -76,6 +51,10 @@ namespace LosSantosRED.lsr
         public void AddBlip(Blip myBlip)
         {
             CreatedBlips.Add(myBlip);
+        }
+        public void AddCop(Cop myNewCop)
+        {
+            Pedestrians.Police.Add(myNewCop);
         }
         public void AddTaskablePeds()
         {
@@ -89,10 +68,18 @@ namespace LosSantosRED.lsr
         {
             Scanner.AnnounceCrime(crimeAssociated, reportInformation);
         }
+        public bool AnyCopsNearPosition(Vector3 position, float radius)
+        {
+            return Pedestrians.AnyCopsNearPosition(position, radius);
+        }
         public void ClearPolice()
         {
             Pedestrians.ClearPolice();
             Vehicles.ClearPolice();
+        }
+        public int CountNearbyCops(Ped pedestrian)
+        {
+            return Pedestrians.CountNearbyCops(pedestrian);
         }
         public void CreateLocationBlips()
         {
@@ -100,7 +87,7 @@ namespace LosSantosRED.lsr
             foreach (GameLocation MyLocation in Mod.DataMart.Places.GetAllPlaces())
             {
                 MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
-                myBlip.Create();
+                myBlip.AddToMap();
             }
         }
         public void Delete(Cop cop)
@@ -119,6 +106,10 @@ namespace LosSantosRED.lsr
             RemoveBlips();
             ClearPolice();
         }
+        public PedExt GetCivilian(uint handle)
+        {
+            return Pedestrians.GetCivilian(handle);
+        }
         public VehicleExt GetVehicle(Vehicle vehicleTryingToEnter)
         {
             return Vehicles.GetVehicle(vehicleTryingToEnter);
@@ -134,6 +125,10 @@ namespace LosSantosRED.lsr
         public void PrintTasksDEBUG()
         {
             Tasking.PrintActivities();
+        }
+        public void PrunePedestrians()
+        {
+            Pedestrians.Prune();
         }
         public void PruneVehicles()
         {
@@ -163,6 +158,10 @@ namespace LosSantosRED.lsr
         {
             Civilians.ResetWitnessedCrimes();
         }
+        public void ScaneForPedestrians()
+        {
+            Pedestrians.Scan();
+        }
         public void ScanForVehicles()
         {
             Vehicles.Scan();
@@ -185,15 +184,11 @@ namespace LosSantosRED.lsr
         }
         public void UpdateCivilians()
         {
-            Civilians.Tick();
+            Civilians.Update();
         }
         public void UpdatePolice()
         {
-            Police.Tick();
-        }
-        public void UpdatePoliceSpeech()
-        {
-            Police.SpeechTick();
+            Police.Update();
         }
         public void UpdateScanner()
         {
@@ -210,54 +205,6 @@ namespace LosSantosRED.lsr
         public void VehiclesTick()
         {
             Vehicles.Tick();
-        }
-        private class MapBlip
-        {
-            public MapBlip(Vector3 LocationPosition, string Name, LocationType Type)
-            {
-                this.LocationPosition = LocationPosition;
-                this.Name = Name;
-                this.Type = Type;
-            }
-            public Vector3 LocationPosition { get; }
-            public string Name { get; }
-            public LocationType Type { get; }
-            private BlipSprite Icon
-            {
-                get
-                {
-                    if (Type == LocationType.Hospital)
-                    {
-                        return BlipSprite.Hospital;
-                    }
-                    else if (Type == LocationType.Police)
-                    {
-                        return BlipSprite.PoliceStation;
-                    }
-                    else if (Type == LocationType.ConvenienceStore)
-                    {
-                        return BlipSprite.CriminalHoldups;
-                    }
-                    else if (Type == LocationType.GasStation)
-                    {
-                        return BlipSprite.JerryCan;
-                    }
-                    else
-                    {
-                        return BlipSprite.Objective;
-                    }
-                }
-            }
-            public void Create()
-            {
-                Blip MyLocationBlip = new Blip(LocationPosition)
-                {
-                    Name = Name
-                };
-                MyLocationBlip.Sprite = Icon;
-                MyLocationBlip.Color = Color.White;
-                NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
-            }
         }
     }
 }

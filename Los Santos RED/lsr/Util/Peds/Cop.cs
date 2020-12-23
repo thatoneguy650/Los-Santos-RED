@@ -18,6 +18,7 @@ public class Cop : PedExt
     private readonly List<string> SuspectDown = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE", "SUSPECT_KILLED_REPORT" };
     private uint GameTimeLastSpoke;
     private uint GameTimeLastRadioed;
+    private uint GameTimeSpawned;
     public bool IsSpeechTimedOut
     {
         get
@@ -70,7 +71,7 @@ public class Cop : PedExt
             }
         }
     }
-    public bool WasModSpawned { get; set; }
+    public bool WasModSpawned { get; private set; }
     public bool WasSpawnedAsDriver { get; set; }
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public Agency AssignedAgency { get; set; } = new Agency();
@@ -111,18 +112,29 @@ public class Cop : PedExt
         }
     }
     public Loadout Loadout { get; set; }
-    public Cop(Ped pedestrian, int health, Agency agency) : base(pedestrian)
+    public Cop(Ped pedestrian, int health, Agency agency, bool wasModSpawned) : base(pedestrian)
     {
         IsCop = true;
         Health = health;
         AssignedAgency = agency;
-
+        WasModSpawned = wasModSpawned;
+        if(WasModSpawned)
+        {
+            GameTimeSpawned = Game.GameTime;
+        }
         Pedestrian.VisionRange = 90f;//55F
         Pedestrian.HearingRange = 55;//25
         if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        {
             Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+        }
 
         Loadout = new Loadout(this);
+    }
+    public void CheckSpeech()
+    {
+        Speak();
+        RadioIn();
     }
     public void Speak()
     {

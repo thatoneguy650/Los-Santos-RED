@@ -3,7 +3,6 @@ using NAudio.Wave;
 using Rage.Native;
 using System;
 
-
 public class Audio
 {
     private WaveOutEvent outputDevice;
@@ -19,9 +18,8 @@ public class Audio
     }
     public Audio()
     {
-
     }
-    public void Tick()
+    public void Update()
     {
         if (Mod.DataMart.Settings.SettingsManager.Police.DisableAmbientScanner)
         {
@@ -33,7 +31,7 @@ public class Audio
         }
         if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsEngineOn && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle)
         {
-            if(!IsMobileRadioEnabled)
+            if (!IsMobileRadioEnabled)
             {
                 IsMobileRadioEnabled = true;
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
@@ -42,7 +40,7 @@ public class Audio
         }
         else
         {
-            if(IsMobileRadioEnabled)
+            if (IsMobileRadioEnabled)
             {
                 IsMobileRadioEnabled = false;
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
@@ -109,6 +107,4 @@ public class Audio
         }
         audioFile = null;
     }
-
 }
-

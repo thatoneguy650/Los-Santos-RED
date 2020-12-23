@@ -23,10 +23,10 @@ public class Tasking
     }
     public void AddTaskablePeds()
     {
-        Mod.World.Pedestrians.Police.RemoveAll(x => !x.Pedestrian.Exists());
+        Mod.World.PoliceList.RemoveAll(x => !x.Pedestrian.Exists());
 
         TaskableCops.RemoveAll(x => !x.CopToTask.Pedestrian.Exists());
-        foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop Cop in Mod.World.PoliceList.Where(x => x.Pedestrian.Exists()))
         {
             if (!TaskableCops.Any(x => x.CopToTask.Pedestrian.Handle == Cop.Pedestrian.Handle))
             {
@@ -35,7 +35,7 @@ public class Tasking
         }
 
         TaskableCivilians.RemoveAll(x => !x.CivilianToTask.Pedestrian.Exists());
-        foreach (PedExt Civilian in Mod.World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()))
+        foreach (PedExt Civilian in Mod.World.CivilianList.Where(x => x.Pedestrian.Exists()))
         {
             if (!TaskableCivilians.Any(x => x.CivilianToTask.Pedestrian.Handle == Civilian.Pedestrian.Handle))
             {
@@ -787,7 +787,7 @@ public class Tasking
         }
         private void HeliGoToLastSeen_Start()
         {
-            Cop ClosestCop = Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
+            Cop ClosestCop = Mod.World.PoliceList.Where(x => x.Pedestrian.Exists() && x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
             if (ClosestCop == null)
                 return;
             NativeFunction.CallByName<bool>("TASK_HELI_CHASE", CopToTask.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);

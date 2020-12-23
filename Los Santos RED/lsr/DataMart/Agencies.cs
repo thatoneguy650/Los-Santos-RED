@@ -2,10 +2,7 @@
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using Rage;
-using Rage.Native;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -17,7 +14,6 @@ public class Agencies
     private List<Agency> AgenciesList;
     public Agencies()
     {
-
     }
     public void ReadConfig()
     {
@@ -42,7 +38,7 @@ public class Agencies
     {
         List<Agency> ToReturn = new List<Agency>();
         Street StreetAtPosition = Mod.DataMart.Streets.GetStreet(Position);
-        if(StreetAtPosition != null && Mod.DataMart.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
+        if (StreetAtPosition != null && Mod.DataMart.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
         {
             ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn && x.SpawnsOnHighway));
         }
@@ -199,7 +195,7 @@ public class Agencies
         List<VehicleInformation> CoastGuardVehicles = new List<VehicleInformation>() {
             new VehicleInformation("predator", 75, 50),
             new VehicleInformation("dinghy", 0, 25),
-            new VehicleInformation("seashark2", 25, 25) { MaxOccupants = 1 },};      
+            new VehicleInformation("seashark2", 25, 25) { MaxOccupants = 1 },};
         List<VehicleInformation> SecurityVehicles = new List<VehicleInformation>() {
             new VehicleInformation("dilettante2", 100, 100) {MaxOccupants = 1 } };
         List<VehicleInformation> ParkRangerVehicles = new List<VehicleInformation>() {
@@ -337,7 +333,6 @@ public class Agencies
             new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
             new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
             new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
-
         };
 
         AgenciesList = new List<Agency>
@@ -362,7 +357,7 @@ public class Agencies
 
             new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true },
             new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 2 },
-            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, ParkRangers, ParkRangerVehicles, "",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },            
+            new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, ParkRangers, ParkRangerVehicles, "",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
             new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){ MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
 
             new Agency("~p~", "LSPA", "Port Authority of Los Santos", "LightGray", Classification.Police, SecurityPeds, UnmarkedVehicles, "LSPA ",LimitedWeapons) {MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
@@ -372,11 +367,8 @@ public class Agencies
 
             new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
 
-
             new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
-
         };
-      
     }
     private void CustomConfig()
     {
@@ -518,7 +510,6 @@ public class Agencies
             new VehicleInformation("rhpolice2", 33, 33),
             new VehicleInformation("rhpolice3", 33, 33) };
         List<VehicleInformation> DPPDVehicles = new List<VehicleInformation>() {
-
            // My Liveries 0,1 DP -- 2,3 LSPD VW -- (4,5 LSPDCH) -- (6,7 LSPDELS) (8,9 BCSO) (10  LSSD)(11 LSSDVW) (12 LSSD CH)
             new VehicleInformation("dppolice", 25, 25),
             new VehicleInformation("dppolice2", 25, 25) { Liveries = new List<int>() { 0,1 } },
@@ -526,7 +517,7 @@ public class Agencies
             new VehicleInformation("dppolice4", 25, 25) };
         List<VehicleInformation> ChumashLSPDVehicles = new List<VehicleInformation>() {
             new VehicleInformation("dppolice2", 50,50) { Liveries = new List<int>() { 4, 5 } },
-          
+
             new VehicleInformation("pscout", 50,50) { Liveries = new List<int>() { 4, 5 } },
             new VehicleInformation("policet", 0, 25) { MinWantedLevelSpawn = 3} };
         List<VehicleInformation> EastLSPDVehicles = new List<VehicleInformation>() {
@@ -616,7 +607,6 @@ public class Agencies
             new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
             new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
             new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
-
         };
 
         AgenciesList = new List<Agency>
@@ -651,18 +641,7 @@ public class Agencies
 
             new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
 
-
             new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
-
         };
-
     }
 }
-
-
-
-
-
-
-
-

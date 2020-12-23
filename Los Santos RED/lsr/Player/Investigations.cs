@@ -90,7 +90,7 @@ public class Investigations
             }
         }
     }
-    public void Tick()
+    public void Update()
     {
         InvestigationTick();
     }

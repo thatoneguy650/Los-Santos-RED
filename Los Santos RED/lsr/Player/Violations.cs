@@ -412,7 +412,7 @@ namespace LosSantosRED.lsr
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (Mod.Player.RecentlyHurtCivilian || Mod.Player.RecentlyHurtCop) && (Mod.World.Pedestrians.Civilians.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.Pedestrians.Police.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
+            if (Mod.DataMart.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (Mod.Player.RecentlyHurtCivilian || Mod.Player.RecentlyHurtCop) && (Mod.World.CivilianList.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.PoliceList.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
             {
                 HitPedWithCar.IsCurrentlyViolating = true;
             }

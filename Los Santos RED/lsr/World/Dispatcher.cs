@@ -218,7 +218,7 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.World.Pedestrians.TotalSpawnedCops < SpawnedCopLimit)
+            if (Mod.World.TotalSpawnedCops < SpawnedCopLimit)
             {
                 return true;
             }
@@ -279,7 +279,7 @@ public class Dispatcher
     {
         if (CanRecall)
         {
-            foreach(Cop OutOfRangeCop in Mod.World.Pedestrians.Police.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
+            foreach(Cop OutOfRangeCop in Mod.World.PoliceList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
             {
                 bool ShouldDelete = false;
                 if (!OutOfRangeCop.AssignedAgency.CanSpawn)
@@ -298,7 +298,7 @@ public class Dispatcher
                 {
                     ShouldDelete = true;
                 }
-                else if (Mod.World.Pedestrians.CountNearbyCops(OutOfRangeCop.Pedestrian) >= 3 && OutOfRangeCop.TimeBehindPlayer >= 15000) //Got Close and Then got away
+                else if (Mod.World.CountNearbyCops(OutOfRangeCop.Pedestrian) >= 3 && OutOfRangeCop.TimeBehindPlayer >= 15000) //Got Close and Then got away
                 {
                     ShouldDelete = true;
                 }
@@ -460,7 +460,7 @@ public class Dispatcher
 
             Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
 
-            if (!Mod.Player.Investigations.IsActive && Mod.World.Pedestrians.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
+            if (!Mod.Player.Investigations.IsActive && Mod.World.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
             {
                 Position = Vector3.Zero;
             }
@@ -478,7 +478,7 @@ public class Dispatcher
                 StreetPosition = Vector3.Zero;
             }
 
-            if (Mod.World.Pedestrians.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
+            if (Mod.World.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
             {
                 StreetPosition = Vector3.Zero;
             }

@@ -101,7 +101,7 @@ public class Pedestrians
     {
         Police.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
-        foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.IsDead))
+        foreach (Cop Cop in Police.Where(x => x.Pedestrian.IsDead))
         {
             Mod.World.MarkNonPersistent(Cop);
         }
@@ -139,7 +139,6 @@ public class Pedestrians
     private void AddCivilian(Ped Pedestrian)
     {
         SetCivilianStats(Pedestrian);
-
         bool WillFight = RandomItems.RandomPercent(5);
         bool WillCallPolice = RandomItems.RandomPercent(80);
         if (Pedestrian.Exists())
@@ -154,53 +153,27 @@ public class Pedestrians
                 WillFight = true;
                 WillCallPolice = false;
             }
-            //string Nameo = Pedestrian.RelationshipGroup.Name;
-            ////Mod.Debug.WriteToLog("Tasking", string.Format("Handle {0}, Nameo !!{1}!!", Pedestrian.Handle, Nameo));
-            //if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo))
-            //{
-            //    if (Nameo.Contains("GANG"))
-            //    {
-            //        WillFight = true;
-            //        WillCallPolice = false;
-            //        int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", Pedestrian);
-            //        string Model = Pedestrian.Model.Name;
-            //        string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;
-            //       // Mod.Debug.WriteToLog("Tasking", string.Format("Handle {0}, Type {1}, Model {2}, RelationshipGroupName {3}, Nameo {4}", Pedestrian.Handle, PedType, Model, RelationshipGroupName, Nameo));
-            //    }
-            //}
         }
         Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice));
     }
     private void AddCop(Ped Pedestrian)
     {
         Agency AssignedAgency = Mod.DataMart.Agencies.GetAgency(Pedestrian);
-        if (AssignedAgency == null || !Pedestrian.Exists())
+        if (AssignedAgency != null && Pedestrian.Exists())
         {
-            return;
+            Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
+            if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+            {
+                Blip myBlip = Pedestrian.AttachBlip();
+                myBlip.Color = AssignedAgency.AgencyColor;
+                myBlip.Scale = 0.6f;
+                Mod.World.AddBlip(myBlip);
+            }
+            SetCopStats(Pedestrian);
+            Pedestrian.Inventory.Weapons.Clear();
+            myCop.Loadout.IssueWeapons();
+            Police.Add(myCop);
         }
-
-        Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency);
-        //if (Pedestrian.IsInAnyPoliceVehicle && Pedestrian.CurrentVehicle != null && Pedestrian.CurrentVehicle.IsPoliceVehicle)
-        //{
-        //    Vehicle PoliceCar = Pedestrian.CurrentVehicle;
-        //    if (!Mod.World.Vehicles.PoliceVehicles.Any(x => x.Vehicle.Handle == PoliceCar.Handle))
-        //    {
-        //        Mod.World.PoliceSpawning.UpdateLivery(PoliceCar, AssignedAgency);
-        //        Mod.World.PoliceSpawning.UpgradeCruiser(PoliceCar);
-        //        Mod.World.Vehicles.PoliceVehicles.Add(new VehicleExt(PoliceCar));
-        //    }
-        //}
-        if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
-        {
-            Blip myBlip = Pedestrian.AttachBlip();
-            myBlip.Color = AssignedAgency.AgencyColor;
-            myBlip.Scale = 0.6f;
-            Mod.World.AddBlip(myBlip);
-        }
-        SetCopStats(Pedestrian);
-        Pedestrian.Inventory.Weapons.Clear();
-        myCop.Loadout.IssueWeapons();
-        Police.Add(myCop);
     }
     private void SetCivilianStats(Ped Pedestrian)
     {

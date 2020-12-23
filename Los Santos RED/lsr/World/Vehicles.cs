@@ -78,7 +78,7 @@ public class Vehicles
     }
     private void FixDamagedPoliceVehicles()
     {
-        foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
+        foreach (Cop Cop in Mod.World.PoliceList.Where(x => x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
         {
             if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
             {
@@ -90,7 +90,6 @@ public class Vehicles
             }
         }
     }
-
     public void ClearPolice()
     {
         foreach (VehicleExt Veh in PoliceVehicles)

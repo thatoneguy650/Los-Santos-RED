@@ -13,6 +13,15 @@ using System.Threading.Tasks;
 
 public class UI
 {
+    private BigMessageThread BigMessage;
+    private uint GameTimeLastDisplayedBleedingHelp;
+    private bool StartedBandagingEffect = false;
+    private bool StartedBustedEffect = false;
+    private bool StartedDeathEffect = false;
+    public UI()
+    {
+        BigMessage = new BigMessageThread(true);
+    }
     private enum GTAFont
     {
         FontChaletLondon = 0,
@@ -21,12 +30,6 @@ public class UI
         FontWingDings = 3,
         FontChaletComprimeCologne = 4,
         FontPricedown = 7
-    };
-    private enum GTATextJustification
-    {
-        Center = 0,
-        Left = 1,
-        Right = 2,
     };
     private enum GTAHudComponent
     {
@@ -55,34 +58,13 @@ public class UI
         MAX_HUD_WEAPONS = 22,
         MAX_SCRIPTED_HUD_COMPONENTS = 141,
     }
-    private BigMessageThread BigMessage;
-    private bool StartedBandagingEffect = false;
-    private bool StartedBustedEffect = false;
-    private bool StartedDeathEffect = false;
-    private uint GameTimeLastDisplayedBleedingHelp;
-    private bool RecentlyDisplayedBleedingHelp
+    private enum GTATextJustification
     {
-        get
-        {
-            if (GameTimeLastDisplayedBleedingHelp == 0)
-            {
-                return false;
-            }
-            else if (Game.GameTime - GameTimeLastDisplayedBleedingHelp <= 25000)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-    public UI()
-    {
-        BigMessage = new BigMessageThread(true);
-    }
-    public void Tick()
+        Center = 0,
+        Left = 1,
+        Right = 2,
+    };
+    public void Update()
     {
         if (Mod.DataMart.Settings.SettingsManager.General.AlwaysShowHUD)
         {
@@ -108,76 +90,138 @@ public class UI
         {
             ShowUI();
         }
-        ScreenEffectsTick();
+        ScreenEffectsUpdate();
     }
-    private void ShowUI()
+    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
     {
-        ShowDebugUI();
-        HideVanillaUI();
+        NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
+        NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
+        NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255);
 
-        DisplayTextOnScreen(GetPlayerStatusDisplay(), Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusPositionX, Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusPositionY, Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusJustificationID);
-        DisplayTextOnScreen(GetVehicleStatusDisplay(), Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusPositionX, Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusPositionY, Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusJustificationID);
-        DisplayTextOnScreen(GetZoneDisplay(), Mod.DataMart.Settings.SettingsManager.UI.ZonePositionX, Mod.DataMart.Settings.SettingsManager.UI.ZonePositionY, Mod.DataMart.Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.ZoneJustificationID);
-        DisplayTextOnScreen(GetStreetDisplay(), Mod.DataMart.Settings.SettingsManager.UI.StreetPositionX, Mod.DataMart.Settings.SettingsManager.UI.StreetPositionY, Mod.DataMart.Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.StreetJustificationID);
+        NativeFunction.Natives.SetTextJustification((int)Justification);
+        NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
 
-        DisplayHelpText();
+        if (Justification == GTATextJustification.Right)
+        {
+            NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
+        }
+        else
+            NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
+
+        NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING");
+        NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, TextToShow);
+        NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
+        NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
+        return;
     }
-    private void DisplayHelpText()
+    //private string GetPlayerStatusDisplay()
+    //{
+    //    string PlayerStatusLine = "";
+    //    if (Mod.Player.IsPersonOfInterest)
+    //    {
+    //        if (Mod.Player.IsWanted)
+    //        {
+    //            PlayerStatusLine = "~r~Wanted~s~";
+    //        }
+    //        else if (Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor <= 45000)
+    //        {
+    //            PlayerStatusLine = "~o~Wanted~s~";
+    //        }
+    //        else
+    //            PlayerStatusLine = "~y~Wanted~s~";
+    //    }
+    //    if (Mod.Player.IsWanted)
+    //    {
+    //        string AgenciesChasingPlayer = Mod.World.AgenciesChasingPlayer;
+    //        if (AgenciesChasingPlayer != "")
+    //        {
+    //            PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
+    //        }
+    //    }
+    //    return PlayerStatusLine;
+    //}
+    private string GetStreetDisplay()
     {
-        //if (!RecentlyDisplayedBleedingHelp && Mod.World.Wounds.IsPlayerBleeding)
-        //{
-        //    Game.DisplayHelp("Hold still to bandage!", 5000);
-        //    GameTimeLastDisplayedBleedingHelp = Game.GameTime;
-        //}
+        string StreetDisplay = "";
+        if (Mod.Player.CurrentStreet != null && Mod.Player.CurrentCrossStreet != null)
+        {
+            StreetDisplay = string.Format(" {0} at {1} ", Mod.Player.CurrentStreet.Name, Mod.Player.CurrentCrossStreet.Name);
+        }
+        else if (Mod.Player.CurrentStreet != null)
+        {
+            StreetDisplay = string.Format(" {0} ", Mod.Player.CurrentStreet.Name);
+        }
+        return StreetDisplay;
     }
-    private void ShowDebugUI()
+    private string GetVehicleStatusDisplay()
     {
-        //int Lines = 0;
-        //foreach(string LogMessage in Debugging.LogMessages)
-        //{
-        //    DisplayTextOnScreen(LogMessage, Lines * 0.02f, 0.0f, 0.23f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        //    Lines++;
-        //}
+        string PlayerSpeedLine = "";
+        if (Mod.Player.CurrentVehicle != null && Game.LocalPlayer.Character.IsInAnyVehicle(false))//was game.localpalyer.character.isinanyvehicle(false)
+        {
 
-        // Lines++;
+            float VehicleSpeedMPH = Mod.Player.CurrentVehicle.Vehicle.Speed * 2.23694f;
+            if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+            {
+                PlayerSpeedLine = "ENGINE OFF";
+            }
+            else
+            {
+                string ColorPrefx = "~s~";
+                if (Mod.Player.IsSpeeding)
+                {
+                    ColorPrefx = "~r~";
+                }
 
-        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Mod.Player.Investigations.IsActive, Mod.Player.Investigations.HaveDescription, Mod.Player.IsStationary, Mod.Player.Investigations.IsSuspicious);
-        DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+                if (Mod.Player.CurrentStreet != null)
+                {
+                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Mod.Player.CurrentStreet.SpeedLimit);
+                }
+            }
 
-        string DebugLine1 = string.Format("IsDrunk {0}", Mod.Player.IsDrunk);
-        DisplayTextOnScreen(DebugLine1, 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+            if (Mod.Player.IsViolatingAnyTrafficLaws)
+            {
+                PlayerSpeedLine += " !";
+            }
 
-
-        string DebugLine2 = string.Format("{0}", Mod.Player.SearchModeDebug);
-        DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, LastSeen {2}", Mod.World.AnyPoliceRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, Mod.World.PlacePoliceLastSeenPlayer);
-        DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine4 = string.Format("CrimesObs {0}", Mod.Player.CurrentPoliceResponse.CrimesObservedJoined);
-        DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine5 = string.Format("CrimesRep {0}", Mod.Player.CurrentPoliceResponse.CrimesReportedJoined);
-        DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine6 = string.Format("{0}", Mod.Player.LawsViolatingDisplay);
-        DisplayTextOnScreen(DebugLine6, 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-
-
-
-
-
-        //float Between = 0.01f;
-        //float Start = 0.15f;
-        //foreach (string Line in Mod.PedDamageManager.AllPedDamageList)
-        //{
-        //    DisplayTextOnScreen(Line, Start, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        //    Start = Start + Between;
-        //}
-
+            PlayerSpeedLine += "~n~" + Mod.Player.CurrentVehicle.FuelTank.UIText;
+        }
+        return PlayerSpeedLine;
     }
-    private void ScreenEffectsTick()
+    private string GetZoneDisplay()
+    {
+        if (Mod.Player.CurrentZone == null)
+        {
+            return "";
+        }
+        string ZoneDisplay = "";
+        string CopZoneName = "";
+        ZoneDisplay = Mod.DataMart.Zones.GetName(Mod.Player.CurrentZone, true);
+        if (Mod.Player.CurrentZone != null)
+        {
+            Agency MainZoneAgency = Mod.DataMart.ZoneJurisdiction.GetMainAgency(Mod.Player.CurrentZone.InternalGameName);
+            if (MainZoneAgency != null)
+            {
+                CopZoneName = MainZoneAgency.ColoredInitials;
+            }
+        }
+        //if(PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
+        //{
+        //    Agency HighwayPatrol = Agencies.RandomHighwayAgency;
+        //    if(HighwayPatrol != null)
+        //    CopZoneName += "~s~ / " + HighwayPatrol.ColoredInitials;
+        //}
+        ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
+        return ZoneDisplay;
+    }
+    private void HideVanillaUI()
+    {
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_AREA_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_STREET_NAME);
+        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
+    }
+    private void ScreenEffectsUpdate()
     {
         if (Mod.Player.IsDead)
         {
@@ -226,134 +270,62 @@ public class UI
         }
 
     }
-    private void HideVanillaUI()
+    private void ShowDebugUI()
     {
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_NAME);
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_AREA_NAME);
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_STREET_NAME);
-        NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
-    }
-    private string GetPlayerStatusDisplay()
-    {
-        string PlayerStatusLine = "";
-        if (Mod.Player.IsPersonOfInterest)
-        {
-            if (Mod.Player.IsWanted)
-            {
-                PlayerStatusLine = "~r~Wanted~s~";
-            }
-            else if (Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor <= 45000)
-            {
-                PlayerStatusLine = "~o~Wanted~s~";
-            }
-            else
-                PlayerStatusLine = "~y~Wanted~s~";
-        }
-        if (Mod.Player.IsWanted)
-        {
-            string AgenciesChasingPlayer = Mod.World.Pedestrians.AgenciesChasingPlayer;
-            if (AgenciesChasingPlayer != "")
-            {
-                PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
-            }
-        }
-        return PlayerStatusLine;
-    }
-    private string GetVehicleStatusDisplay()
-    {
-        string PlayerSpeedLine = "";
-        if (Mod.Player.CurrentVehicle != null && Game.LocalPlayer.Character.IsInAnyVehicle(false))//was game.localpalyer.character.isinanyvehicle(false)
-        {
-
-            float VehicleSpeedMPH = Mod.Player.CurrentVehicle.Vehicle.Speed * 2.23694f;
-            if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
-            {
-                PlayerSpeedLine = "ENGINE OFF";
-            }
-            else
-            {
-                string ColorPrefx = "~s~";
-                if (Mod.Player.IsSpeeding)
-                {
-                    ColorPrefx = "~r~";
-                }
-
-                if (Mod.Player.CurrentStreet != null)
-                {
-                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Mod.Player.CurrentStreet.SpeedLimit);
-                }
-            }
-
-            if (Mod.Player.IsViolatingAnyTrafficLaws)
-            {
-                PlayerSpeedLine += " !";
-            }
-
-            PlayerSpeedLine += "~n~" + Mod.Player.CurrentVehicle.FuelTank.UIText;
-        }
-        return PlayerSpeedLine;
-    }
-    private string GetStreetDisplay()
-    {
-        string StreetDisplay = "";
-        if (Mod.Player.CurrentStreet != null && Mod.Player.CurrentCrossStreet != null)
-        {
-            StreetDisplay = string.Format(" {0} at {1} ", Mod.Player.CurrentStreet.Name, Mod.Player.CurrentCrossStreet.Name);
-        }
-        else if (Mod.Player.CurrentStreet != null)
-        {
-            StreetDisplay = string.Format(" {0} ", Mod.Player.CurrentStreet.Name);
-        }
-        return StreetDisplay;
-    }
-    private string GetZoneDisplay()
-    {
-        if (Mod.Player.CurrentZone == null)
-        {
-            return "";
-        }
-        string ZoneDisplay = "";
-        string CopZoneName = "";
-        ZoneDisplay = Mod.DataMart.Zones.GetName(Mod.Player.CurrentZone, true);
-        if (Mod.Player.CurrentZone != null)
-        {
-            Agency MainZoneAgency = Mod.DataMart.ZoneJurisdiction.GetMainAgency(Mod.Player.CurrentZone.InternalGameName);
-            if (MainZoneAgency != null)
-            {
-                CopZoneName = MainZoneAgency.ColoredInitials;
-            }
-        }
-        //if(PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
+        //int Lines = 0;
+        //foreach(string LogMessage in Debugging.LogMessages)
         //{
-        //    Agency HighwayPatrol = Agencies.RandomHighwayAgency;
-        //    if(HighwayPatrol != null)
-        //    CopZoneName += "~s~ / " + HighwayPatrol.ColoredInitials;
+        //    DisplayTextOnScreen(LogMessage, Lines * 0.02f, 0.0f, 0.23f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        //    Lines++;
         //}
-        ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
-        return ZoneDisplay;
+
+        // Lines++;
+
+        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Mod.Player.Investigations.IsActive, Mod.Player.Investigations.HaveDescription, Mod.Player.IsStationary, Mod.Player.Investigations.IsSuspicious);
+        DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+        string DebugLine1 = string.Format("IsDrunk {0}", Mod.Player.IsDrunk);
+        DisplayTextOnScreen(DebugLine1, 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+
+        string DebugLine2 = string.Format("{0}", Mod.Player.SearchModeDebug);
+        DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, LastSeen {2}", Mod.World.AnyPoliceRecentlySeenPlayer, Mod.Player.AreStarsGreyedOut, Mod.World.PlacePoliceLastSeenPlayer);
+        DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+        string DebugLine4 = string.Format("CrimesObs {0}", Mod.Player.CurrentPoliceResponse.CrimesObservedJoined);
+        DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+        string DebugLine5 = string.Format("CrimesRep {0}", Mod.Player.CurrentPoliceResponse.CrimesReportedJoined);
+        DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+        string DebugLine6 = string.Format("{0}", Mod.Player.LawsViolatingDisplay);
+        DisplayTextOnScreen(DebugLine6, 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+
+
+
+
+
+
+        //float Between = 0.01f;
+        //float Start = 0.15f;
+        //foreach (string Line in Mod.PedDamageManager.AllPedDamageList)
+        //{
+        //    DisplayTextOnScreen(Line, Start, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        //    Start = Start + Between;
+        //}
+
     }
-    private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
+    private void ShowUI()
     {
-        NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
-        NativeFunction.CallByName<bool>("SET_TEXT_SCALE", Scale, Scale);
-        NativeFunction.CallByName<uint>("SET_TEXT_COLOUR", (int)TextColor.R, (int)TextColor.G, (int)TextColor.B, 255);
+        ShowDebugUI();
+        HideVanillaUI();
 
-        NativeFunction.Natives.SetTextJustification((int)Justification);
-        NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
-
-        if (Justification == GTATextJustification.Right)
-        {
-            NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
-        }
-        else
-            NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
-
-        NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING");
-        NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, TextToShow);
-        NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
-        NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
-        return;
+        //DisplayTextOnScreen(GetPlayerStatusDisplay(), Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusPositionX, Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusPositionY, Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.PlayerStatusJustificationID);
+        DisplayTextOnScreen(GetVehicleStatusDisplay(), Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusPositionX, Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusPositionY, Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.VehicleStatusJustificationID);
+        DisplayTextOnScreen(GetZoneDisplay(), Mod.DataMart.Settings.SettingsManager.UI.ZonePositionX, Mod.DataMart.Settings.SettingsManager.UI.ZonePositionY, Mod.DataMart.Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.ZoneJustificationID);
+        DisplayTextOnScreen(GetStreetDisplay(), Mod.DataMart.Settings.SettingsManager.UI.StreetPositionX, Mod.DataMart.Settings.SettingsManager.UI.StreetPositionY, Mod.DataMart.Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Mod.DataMart.Settings.SettingsManager.UI.StreetJustificationID);
     }
 }
 

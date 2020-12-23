@@ -86,7 +86,7 @@ public class Spawner
             {
                 foreach (Ped Passenger in Cop.Pedestrian.CurrentVehicle.Passengers)
                 {
-                    Cop PassengerCop = Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Handle == Passenger.Handle).FirstOrDefault();
+                    Cop PassengerCop = Mod.World.PoliceList.Where(x => x.Pedestrian.Handle == Passenger.Handle).FirstOrDefault();
                     if (PassengerCop != null)
                     {
                         PassengerCop.Pedestrian.IsPersistent = false;
@@ -161,12 +161,11 @@ public class Spawner
             Cop.IsPersistent = true;
             CopCar.Vehicle.IsPersistent = true;
             Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
-            Cop MyNewCop = new Cop(Cop, Cop.Health, Agency);
+            Cop MyNewCop = new Cop(Cop, Cop.Health, Agency, true);
             MyNewCop.Loadout.IssueWeapons();
-            MyNewCop.WasModSpawned = true;
             MyNewCop.WasMarkedNonPersistent = true;
             MyNewCop.WasSpawnedAsDriver = true;
-            MyNewCop.GameTimeSpawned = Game.GameTime;
+            
             if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Cop.Exists())
             {
                 Blip myBlip = Cop.AttachBlip();
@@ -174,7 +173,9 @@ public class Spawner
                 myBlip.Scale = 0.6f;
                 Mod.World.AddBlip(myBlip);
             }
-            Mod.World.Pedestrians.Police.Add(MyNewCop);
+
+
+            Mod.World.AddCop(MyNewCop);
             //Mod.Debug.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.Vehicle.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
             if (VehicleInformation != null)
             {
@@ -197,9 +198,8 @@ public class Spawner
                         {
                             PartnerCop.WarpIntoVehicle(CopCar.Vehicle, OccupantIndex - 1);
                             PartnerCop.IsPersistent = true;
-                            Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, Agency);
+                            Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, Agency, true);
                             MyNewPartnerCop.Loadout.IssueWeapons();
-                            MyNewPartnerCop.WasModSpawned = true;
                             MyNewPartnerCop.WasMarkedNonPersistent = true;
                             if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
                             {
@@ -208,8 +208,7 @@ public class Spawner
                                 myBlip.Scale = 0.6f;
                                 Mod.World.AddBlip(myBlip);
                             }
-                            Mod.World.Pedestrians.Police.Add(MyNewPartnerCop);
-                            MyNewPartnerCop.GameTimeSpawned = Game.GameTime;
+                            Mod.World.AddCop(MyNewPartnerCop);
                             //Mod.Debug.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.Vehicle.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
                         }
                     }

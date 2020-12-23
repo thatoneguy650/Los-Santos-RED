@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 public class Mugging
 {
     public bool IsMugging { get; private set; }
-    public void Tick()
+    public void Update()
     {
         if (!IsMugging)
         {
@@ -35,7 +35,7 @@ public class Mugging
         Entity ArmedMuggingTargetPed = Game.LocalPlayer.GetFreeAimingTarget();
         if (ArmedMuggingTargetPed.Exists() && ArmedMuggingTargetPed is Ped)
         {
-            PedExt GTAPedTarget = Mod.World.Pedestrians.GetCivilian(ArmedMuggingTargetPed.Handle);
+            PedExt GTAPedTarget = Mod.World.GetCivilian(ArmedMuggingTargetPed.Handle);
             if (GTAPedTarget != null)
             {
                 if (!GTAPedTarget.HasBeenMugged && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && GTAPedTarget.Pedestrian.IsAlive)
@@ -54,7 +54,7 @@ public class Mugging
     }
     private void CheckUnarmedMugging()
     {
-        PedExt GTAPedTarget = Mod.World.Pedestrians.GetCivilian(Natives.GetTargettingHandle());
+        PedExt GTAPedTarget = Mod.World.GetCivilian(Natives.GetTargettingHandle());
         if (GTAPedTarget != null)
         {
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.Pedestrian.IsAlive)

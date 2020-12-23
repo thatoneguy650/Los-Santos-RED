@@ -190,7 +190,7 @@ public class Menu
     public float SelectedTakeoverRadius { get; set; }
     public int SelectedPlateIndex { get; set; }
     public string CurrentScreenEffect { get; set; }
-    public void Tick()
+    public void Update()
     {
         //try
         //{

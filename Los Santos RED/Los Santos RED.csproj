@@ -113,6 +113,7 @@
     <Compile Include="lsr\Player\Violations.cs" />
     <Compile Include="lsr\Helper\RandomItems.cs" />
     <Compile Include="lsr\Input.cs" />
+    <Compile Include="lsr\Util\Locations\MapBlip.cs" />
     <Compile Include="lsr\Util\Peds\BodyLocation.cs" />
     <Compile Include="lsr\Util\Peds\Bone.cs" />
     <Compile Include="lsr\Util\Tasking\Activity.cs" />

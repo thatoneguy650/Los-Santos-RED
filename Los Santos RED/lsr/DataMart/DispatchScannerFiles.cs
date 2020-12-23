@@ -1,16 +1,7 @@
-﻿using ExtensionsMethods;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public class DispatchScannerFiles
+﻿public class DispatchScannerFiles
 {
     public DispatchScannerFiles()
     {
-
     }
     public class gtaiv_legacy_support
     {
@@ -30,7 +21,6 @@ public class DispatchScannerFiles
     }
     public class gtaiv_legacy_support_small
     {
-
         public static ScannerFile Suspect { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x003685A2.wav", "Suspect", "0_gtaiv_legacy_support_small"); } }
         public static ScannerFile for121 { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x01A766C8.wav", "for(?)", "0_gtaiv_legacy_support_small"); } }
         public static ScannerFile Uhh { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x01E5D9FA.wav", "Uhh...", "0_gtaiv_legacy_support_small"); } }
@@ -41,7 +31,6 @@ public class DispatchScannerFiles
         public static ScannerFile Lastseen { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x15B4F5FC.wav", "Last seen", "0_gtaiv_legacy_support_small"); } }
         public static ScannerFile beep { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x189A930F.wav", "*beep*", "0_gtaiv_legacy_support_small"); } }
         public static ScannerFile Heading { get { return new ScannerFile("01_0_gtaiv_legacy_support_small\\0x19DDC879.wav", "Heading", "0_gtaiv_legacy_support_small"); } }
-
     }
     public class age
     {
@@ -1482,7 +1471,6 @@ public class DispatchScannerFiles
     }
     public class dispatch_custom_field_report_response
     {
-
         public static ScannerFile copythat104 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x01A472D4.wav", "10-4, copy that.", "dispatch_custom_field_report_response"); } }
         public static ScannerFile Copythat1041 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x06283BDB.wav", "Copy that, 10-4.", "dispatch_custom_field_report_response"); } }
         public static ScannerFile Rogerthat { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x0DD40B1E.wav", "Roger that.", "dispatch_custom_field_report_response"); } }
@@ -1490,7 +1478,6 @@ public class DispatchScannerFiles
         public static ScannerFile Number104 { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x1460D84C.wav", "10-4.", "dispatch_custom_field_report_response"); } }
         public static ScannerFile Number104copy { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x17D59F36.wav", "10-4, copy.", "dispatch_custom_field_report_response"); } }
         public static ScannerFile Roger { get { return new ScannerFile("01_dispatch_custom_field_report_response\\0x1E802C76.wav", "Roger.", "dispatch_custom_field_report_response"); } }
-
     }
     public class dispatch_respond_code
     {
@@ -1874,16 +1861,6 @@ public class DispatchScannerFiles
         public static ScannerFile Niner1 { get { return new ScannerFile("01_lp_numbers\\0x04E10A53.wav", "Niner", "lp_numbers"); } }
         public static ScannerFile Niner2 { get { return new ScannerFile("01_lp_numbers\\0x0AC5F426.wav", "Niner", "lp_numbers"); } }
         public static ScannerFile Niner3 { get { return new ScannerFile("01_lp_numbers\\0x0B111513.wav", "Niner", "lp_numbers"); } }
-
-
-
-
-
-
-
-
-
-
 
         public static ScannerFile HASH0BD3DC4A { get { return new ScannerFile("01_lp_numbers\\0x0BD3DC4A.wav", "0x0BD3DC4A", "lp_numbers"); } }
         public static ScannerFile HASH0BDF3B4E { get { return new ScannerFile("01_lp_numbers\\0x0BDF3B4E.wav", "0x0BDF3B4E", "lp_numbers"); } }
@@ -4357,4 +4334,3 @@ public class DispatchScannerFiles
         public string GroupName { get; set; }
     }
 }
-

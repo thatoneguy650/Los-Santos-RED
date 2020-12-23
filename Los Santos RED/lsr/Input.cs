@@ -145,7 +145,7 @@ namespace LosSantosRED.lsr
         public Input()
         {
         }
-        public void Tick()
+        public void Update()
         {
             SurrenderCheck();
             WeaponDropCheck();

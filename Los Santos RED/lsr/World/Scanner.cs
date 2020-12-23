@@ -107,6 +107,24 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        public bool VeryRecentlyAnnouncedDispatch
+        {
+            get
+            {
+                if (GameTimeLastAnnouncedDispatch == 0)
+                {
+                    return false;
+                }
+                if (Game.GameTime - GameTimeLastAnnouncedDispatch <= 10000)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
         public bool RecentlyMentionedStreet
         {
             get
@@ -734,7 +752,7 @@ namespace LosSantosRED.lsr
             {
                 AddWeaponsFree(EventToPlay);
             }
-            if (Mod.World.Pedestrians.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
+            if (Mod.World.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
             {
                 AddRequestAirSupport(EventToPlay);
             }
@@ -772,11 +790,11 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(RequestBackup, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.PlacePoliceLastSeenPlayer));
                 }
-                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && Mod.World.Pedestrians.AnyArmyUnitsSpawned)
+                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && Mod.World.AnyArmyUnitsSpawned)
                 {
                     AddToQueue(RequestMilitaryUnits);
                 }
-                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && Mod.World.Pedestrians.AnyNooseUnitsSpawned)
+                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && Mod.World.AnyNooseUnitsSpawned)
                 {
                     AddToQueue(RequestNOOSEUnits);
                 }
@@ -784,7 +802,7 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(WeaponsFree);
                 }
-                if (!ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && Mod.World.Pedestrians.AnyHelicopterUnitsSpawned)
+                if (!ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && Mod.World.AnyHelicopterUnitsSpawned)
                 {
                     AddToQueue(RequestAirSupport);
                 }
@@ -807,7 +825,7 @@ namespace LosSantosRED.lsr
 
                 if (!Mod.Player.IsBusted && !Mod.Player.IsDead)
                 {
-                    if (!LostVisual.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyGreyedOut && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 45000 && !Mod.World.Pedestrians.AnyCopsNearPlayer)
+                    if (!LostVisual.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyGreyedOut && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 45000 && !Mod.World.AnyCopsNearPlayer)
                     {
                         AddToQueue(LostVisual, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.PlacePoliceLastSeenPlayer));
                     }
@@ -815,7 +833,7 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && Mod.World.AnyPoliceCanSeePlayer && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000)
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Mod.World.AnyPoliceCanSeePlayer && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }

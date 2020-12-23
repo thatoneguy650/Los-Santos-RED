@@ -24,7 +24,7 @@ public class Debug
         string Message = DateTime.Now.ToString("HH:mm:ss.fff") + ": " + ProcedureString + ": " + TextToLog;
         Game.Console.Print(Message);
     }
-    public void DebugLoop()
+    public void Update()
     {
         if (Game.IsKeyDown(Keys.NumPad0))
         {
@@ -92,28 +92,28 @@ public class Debug
 
 
 
-        foreach (PedExt MyPed in Mod.World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.DistanceToPlayer <= 100f))
-        {
-            Color ToShow = Color.Purple;
+        //foreach (PedExt MyPed in Mod.World.CivilianList.Where(x => x.Pedestrian.IsAlive && x.DistanceToPlayer <= 100f))
+        //{
+        //    Color ToShow = Color.Purple;
 
-            if (MyPed.HasSeenPlayerCommitCrime)
-            {
-                ToShow = Color.Red;
-            }
-            else if (MyPed.HasReactedToCrimes)
-            {
-                ToShow = Color.Orange;
-            }
-            else if (MyPed.CanRecognizePlayer)
-            {
-                ToShow = Color.Black;
-            }
-            else if (MyPed.CanSeePlayer)
-            {
-                ToShow = Color.White;
-            }
-            Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Pedestrian.Position.X, MyPed.Pedestrian.Position.Y, MyPed.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, ToShow);
-        }
+        //    if (MyPed.HasSeenPlayerCommitCrime)
+        //    {
+        //        ToShow = Color.Red;
+        //    }
+        //    else if (MyPed.HasReactedToCrimes)
+        //    {
+        //        ToShow = Color.Orange;
+        //    }
+        //    else if (MyPed.CanRecognizePlayer)
+        //    {
+        //        ToShow = Color.Black;
+        //    }
+        //    else if (MyPed.CanSeePlayer)
+        //    {
+        //        ToShow = Color.White;
+        //    }
+        //    Rage.Debug.DrawArrowDebug(new Vector3(MyPed.Pedestrian.Position.X, MyPed.Pedestrian.Position.Y, MyPed.Pedestrian.Position.Z + 2f), Vector3.Zero, Rotator.Zero, 1f, ToShow);
+        //}
 
     }
     private void DebugNumpad0()
@@ -353,7 +353,7 @@ public class Debug
             WriteToLog("Debugging", "--------------------------------");
             WriteToLog("Debugging", "--------Police Status-----------");
 
-            foreach (Cop Cop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
+            foreach (Cop Cop in Mod.World.PoliceList.Where(x => x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
             {
 
                 WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}",
@@ -373,7 +373,7 @@ public class Debug
             WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Investigations.Position));
             WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Investigations.Distance));
             WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.ActiveDistance));
-            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Pedestrians.Police.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Investigations.Position) <= Mod.Player.Investigations.Distance)));
+            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.PoliceList.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Investigations.Position) <= Mod.Player.Investigations.Distance)));
             WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.CurrentPoliceResponse.CurrentPoliceStateString));
             WriteToLog("Debugging", string.Format("Mod.Player.IsAliveAndFree: {0}", Mod.Player.IsAliveAndFree));
             WriteToLog("Debugging", string.Format("Mod.Player.Character.Handle: {0}", Mod.Player.Character.Handle));

@@ -51,7 +51,7 @@ public class CarJack
     }
     public void StartCarJack()
     {
-        Victim = Mod.World.Pedestrians.Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
+        Victim = Mod.World.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
         Weapon = Mod.DataMart.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (CanArmedCarJack && Mod.Input.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
