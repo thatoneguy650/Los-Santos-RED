@@ -51,6 +51,14 @@ public class Radio
             }
         }
     }
+    public void SetNextTrack()
+    {
+        if(CanChangeStation)
+        {
+            NativeFunction.CallByName<bool>("SKIP_RADIO_FORWARD");
+        }
+        
+    }
     public void ChangeStation(string StationName)
     {
         if (CanChangeStation)

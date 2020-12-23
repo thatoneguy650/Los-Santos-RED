@@ -40,9 +40,13 @@ namespace LosSantosRED.lsr.Util.Locations
                 {
                     return BlipSprite.JerryCan;
                 }
+                else if (Type == LocationType.Grave)
+                {
+                    return BlipSprite.Dead;
+                }
                 else
                 {
-                    return BlipSprite.Objective;
+                    return BlipSprite.PointOfInterest;
                 }
             }
         }

@@ -142,6 +142,20 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        private bool IsPressingNextTrack
+        {
+            get
+            {
+                if (Game.IsKeyDown(Keys.O) && !Game.IsShiftKeyDownRightNow)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
         public Input()
         {
         }
@@ -190,7 +204,7 @@ namespace LosSantosRED.lsr
         }
         private void VehicleCheck()
         {
-            if(Mod.Player.CurrentVehicle != null)
+            if (Mod.Player.CurrentVehicle != null)
             {
                 //if (IsPressingEngineToggle)
                 //{
@@ -204,6 +218,11 @@ namespace LosSantosRED.lsr
                 //    Mod.Player.CurrentVehicle.FuelTank.PumpFuel();
                 //    GameFiber.Sleep(100);
                 //}
+                if(IsPressingNextTrack)
+                {
+                    Mod.Player.CurrentVehicle.Radio.SetNextTrack();
+                    GameFiber.Sleep(100);
+                }
                 if (IsPressingHazards)
                 {
                     Mod.Player.CurrentVehicle.Indicators.ToggleHazards();
