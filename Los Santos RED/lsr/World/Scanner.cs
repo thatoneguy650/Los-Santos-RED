@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using System;
@@ -12,6 +13,7 @@ namespace LosSantosRED.lsr
 {
     public class Scanner
     {
+        private IAudioPlayer AudioPlayer;
         private Dispatch AnnounceStolenVehicle;
         private Dispatch AssaultingOfficer;
         private Dispatch AttemptingSuicide;
@@ -77,9 +79,10 @@ namespace LosSantosRED.lsr
         private Dispatch VehicleHitAndRun;
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
-        public Scanner()
+        public Scanner(IAudioPlayer audioPlayer)
         {
-            DefaultConfig();
+            AudioPlayer = audioPlayer;
+            DefaultConfig(); 
         }
         private enum LocationSpecificity
         {
@@ -163,6 +166,7 @@ namespace LosSantosRED.lsr
         }
         public void Abort()
         {
+            AudioPlayer.Abort();
             DispatchQueue.Clear();
             RemoveAllNotifications();
         }
@@ -1017,18 +1021,18 @@ namespace LosSantosRED.lsr
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
                 Debug.Instance.WriteToLog("ScannerScript", string.Format("Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
-                Audio.Instance.Abort();
+                AudioPlayer.Abort();
                 AbortedAudio = true;
             }
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
                 if (AbortedAudio)
                 {
-                    Audio.Instance.Play(RadioEnd.PickRandom());
+                    AudioPlayer.Play(RadioEnd.PickRandom());
                     GameFiber.Sleep(1000);
                 }
 
-                while (Audio.Instance.IsAudioPlaying)
+                while (AudioPlayer.IsAudioPlaying)
                 {
                     GameFiber.Yield();
                 }
@@ -1045,9 +1049,9 @@ namespace LosSantosRED.lsr
 
                 foreach (string audioname in MyAudioEvent.SoundsToPlay)
                 {
-                    Audio.Instance.Play(audioname);
+                    AudioPlayer.Play(audioname);
 
-                    while (Audio.Instance.IsAudioPlaying)
+                    while (AudioPlayer.IsAudioPlaying)
                     {
                         if (MyAudioEvent.Subtitles != "" && DataMart.Instance.Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                         {
@@ -1065,9 +1069,9 @@ namespace LosSantosRED.lsr
                         }
                         GameFiber.Yield();
                     }
-                    if (Audio.Instance.CancelAudio)
+                    if (AudioPlayer.CancelAudio)
                     {
-                        Audio.Instance.CancelAudio = false;
+                        AudioPlayer.CancelAudio = false;
                         Debug.Instance.WriteToLog("ScannerScript", "CancelAudio Set to False");
                         break;
                     }

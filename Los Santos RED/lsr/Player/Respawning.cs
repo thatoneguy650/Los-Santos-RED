@@ -240,7 +240,7 @@ public class Respawning
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
-        Audio.Instance.Abort();
+        //Audio.Instance.Abort();//moved into the scanner abort function
         Mod.World.Instance.AbortScanner();
     }
     private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons)

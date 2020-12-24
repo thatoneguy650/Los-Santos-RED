@@ -1,19 +1,20 @@
 ﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using LSR;
 using NAudio.Wave;
 using Rage.Native;
 using System;
 
-public class Audio
+public class Audio : IAudioPlayer
 {
-    private static readonly Lazy<Audio> lazy =
-    new Lazy<Audio>(() => new Audio());
+    //private static readonly Lazy<Audio> lazy =
+    //new Lazy<Audio>(() => new Audio());
 
-    public static Audio Instance { get { return lazy.Value; } }
+    //public static Audio Instance { get { return lazy.Value; } }
 
-    private Audio()
-    {
-    }
+    //private Audio()
+    //{
+    //}
     private WaveOutEvent outputDevice;
     private AudioFileReader audioFile;
     public bool IsMobileRadioEnabled { get; private set; }

@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Util.Locations;
 using LSR.Vehicles;
 using Rage;
@@ -26,32 +27,26 @@ namespace Mod
         private Dispatcher Dispatcher = new Dispatcher();
         private Pedestrians Pedestrians = new Pedestrians();
         private Police Police = new Police();
-        private Scanner Scanner = new Scanner();
+        private Scanner Scanner;// = new Scanner();
         private Spawner Spawner = new Spawner();
         private Tasking Tasking = new Tasking();
         private Time Time = new Time();
         private Vehicles Vehicles = new Vehicles();
-        private void SetupTasks()//Hopefully will move to the world calling its own update instead od passing it 
+
+        public void Start()
         {
-            List<ModTask> MyTickTasks = new List<ModTask>()
-            {
-                new ModTask(0, "World.UpdateTime", UpdateTime, 0,0),    
-                new ModTask(100, "World.Police.Tick", UpdatePolice, 2,1),
-                new ModTask(500, "World.Civilians.Tick", UpdateCivilians, 4,1),     
-                new ModTask(250, "World.Pedestrians.Prune", PrunePedestrians, 6,0),
-                new ModTask(1000, "World.Pedestrians.Scan", ScaneForPedestrians, 6,1),
-                new ModTask(250, "World.Vehicles.CleanLists", PruneVehicles, 6,2),
-                new ModTask(1000, "World.Vehicles.Scan", ScanForVehicles, 6,3),        
-                new ModTask(500, "World.Vehicles.Tick", VehiclesTick, 9,1),      
-                new ModTask(500, "World.Scanner.Tick", UpdateScanner, 12,0),         
-                new ModTask(1000, "World.Vehicles.UpdatePlates", UpdateVehiclePlates, 13,1),
-                new ModTask(500, "World.Tasking.UpdatePeds", AddTaskablePeds, 14,0),
-                new ModTask(500, "World.Tasking.Tick", TaskCops, 14,1),
-                new ModTask(750, "World.Tasking.Tick", TaskCivilians, 14,2),
-                new ModTask(500, "World.Dispatch.DeleteChecking", Recall, 15,0),
-                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatch, 15,1),
-            };
+            Civilians = new Civilians();
+            Dispatcher = new Dispatcher();
+            Pedestrians = new Pedestrians();
+            Police = new Police();
+            Scanner = new Scanner(AudioPlayer);
+            Spawner = new Spawner();
+            Tasking = new Tasking();
+            Time = new Time();
+            Vehicles = new Vehicles();
         }
+
+        public IAudioPlayer AudioPlayer;
         public float ActiveDistance => Police.ActiveDistance;
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
         public bool AnyCopsNearPlayer => Pedestrians.AnyCopsNearPlayer;

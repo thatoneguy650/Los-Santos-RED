@@ -108,6 +108,7 @@
     <Compile Include="lsr\Helper\ModTask.cs" />
     <Compile Include="lsr\Helper\Natives.cs" />
     <Compile Include="lsr\Helper\Serialization.cs" />
+    <Compile Include="lsr\Interface\IAudioPlayer.cs" />
     <Compile Include="lsr\Util\Injury\InjuryType.cs" />
     <Compile Include="lsr\Util\Injury\HealthState.cs" />
     <Compile Include="lsr\Util\Locations\LocationData.cs" />

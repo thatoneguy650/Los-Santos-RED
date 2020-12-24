@@ -12,6 +12,13 @@ namespace LosSantosRED.lsr
         private readonly Stopwatch TickStopWatch = new Stopwatch();
         private string LastRanTask;
         private List<ModTask> MyTickTasks;
+        private Audio Audio;
+
+        public ModController()
+        {
+            Audio = new Audio();
+        }
+
         public bool IsRunning { get; private set; }
         public void NewPlayer(string ModelName, bool Male)
         {
@@ -34,6 +41,13 @@ namespace LosSantosRED.lsr
             Mod.Player.Instance.AddSpareLicensePlate();
 
             Mod.World.Instance.AddBlipsToMap();
+
+
+
+            Mod.World.Instance.AudioPlayer = Audio;
+            Mod.World.Instance.Start();
+
+
             PedSwap.Instance.StoreInitialVariation();
 
             SetupModTasks();
@@ -78,7 +92,7 @@ namespace LosSantosRED.lsr
                 new ModTask(150, "Player.SearchMode.UpdateWanted", Mod.Player.Instance.SearchModeUpdate, 11,0),
                 new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Mod.Player.Instance.StopVanillaSearchMode, 11,1),
                 new ModTask(500, "World.Scanner.Tick", Mod.World.Instance.UpdateScanner, 12,0),
-                new ModTask(100, "Audio.Tick",Audio.Instance.Update,13,0),
+                new ModTask(100, "Audio.Tick",Audio.Update,13,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", Mod.World.Instance.UpdateVehiclePlates, 13,1),
                 new ModTask(500, "World.Tasking.UpdatePeds", Mod.World.Instance.AddTaskablePeds, 14,0),
                 new ModTask(500, "World.Tasking.Tick", Mod.World.Instance.TaskCops, 14,1),
