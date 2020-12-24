@@ -27,7 +27,7 @@ public class WeaponDropping
     {
         get
         {
-            if (!DroppingWeapon && !Mod.Player.IsInVehicle && Mod.Player.IsConsideredArmed)//was player one
+            if (!DroppingWeapon && !Mod.Player.Instance.IsInVehicle && Mod.Player.Instance.IsConsideredArmed)//was player one
                 return true;
             else
                 return false;
@@ -60,7 +60,7 @@ public class WeaponDropping
             DropWeaponAnimation();
             NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
 
-            WeaponVariation DroppedGunVariation = Mod.DataMart.Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            WeaponVariation DroppedGunVariation = DataMart.Instance.Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
             DroppedWeapons.Add(new DroppedWeapon(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
 
             NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
@@ -71,7 +71,7 @@ public class WeaponDropping
             GameFiber.Sleep(1000);
             DroppingWeapon = false;
         }, "DropWeapon");
-        Mod.Debug.GameFibers.Add(DropWeapon);
+        Debug.Instance.GameFibers.Add(DropWeapon);
     }
     private void WeaponInventoryChanged(int weaponCount)
     {
@@ -97,7 +97,7 @@ public class WeaponDropping
             AnimationDictionary AnimDictionary = new AnimationDictionary("pickup_object");
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "pickup_object", "pickup_low", 8.0f, -8.0f, -1, 56, 0, false, false, false);
         }, "DropWeaponAnimation");
-        Mod.Debug.GameFibers.Add(DropWeaponAnimation);
+        Debug.Instance.GameFibers.Add(DropWeaponAnimation);
 
         if (Game.LocalPlayer.Character.IsRunning)
             GameFiber.Sleep(500);

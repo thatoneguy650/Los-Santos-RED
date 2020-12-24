@@ -22,6 +22,12 @@ namespace LosSantosRED.lsr
 {
     public class Input
     {
+        private static readonly Lazy<Input> lazy =
+        new Lazy<Input>(() => new Input());
+        public static Input Instance { get { return lazy.Value; } }
+        private Input()
+        {
+        }
         private uint GameTimeStartedHoldingEnter;
         public bool IsHoldingEnter
         {
@@ -38,7 +44,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(DataMart.Instance.Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -52,7 +58,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                if (Game.IsKeyDownRightNow(DataMart.Instance.Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 {
                     return true;
                 }
@@ -66,7 +72,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(DataMart.Instance.Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -80,7 +86,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Mod.DataMart.Settings.SettingsManager.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(DataMart.Instance.Settings.SettingsManager.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -156,9 +162,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public Input()
-        {
-        }
         public void Update()
         {
             SurrenderCheck();
@@ -180,62 +183,62 @@ namespace LosSantosRED.lsr
         }
         private void SurrenderCheck()
         {
-            if (IsPressingSurrender && Mod.Player.CanSurrender)
+            if (IsPressingSurrender && Mod.Player.Instance.CanSurrender)
             {
-                if (!Mod.Player.HandsAreUp && !Mod.Player.IsBusted)
+                if (!Mod.Player.Instance.HandsAreUp && !Mod.Player.Instance.IsBusted)
                 {
-                    Mod.Player.RaiseHands();
+                    Mod.Player.Instance.RaiseHands();
                 }
             }
             else
             {
-                if (Mod.Player.HandsAreUp && !Mod.Player.IsBusted)
+                if (Mod.Player.Instance.HandsAreUp && !Mod.Player.Instance.IsBusted)
                 {
-                    Mod.Player.LowerHands();
+                    Mod.Player.Instance.LowerHands();
                 }
             }
         }
         private void WeaponDropCheck()
         {
-            if (IsPressingDropWeapon && Mod.Player.CanDropWeapon)
+            if (IsPressingDropWeapon && Mod.Player.Instance.CanDropWeapon)
             {
-                Mod.Player.DropWeapon();
+                Mod.Player.Instance.DropWeapon();
             }
         }
         private void VehicleCheck()
         {
-            if (Mod.Player.CurrentVehicle != null)
+            if (Mod.Player.Instance.CurrentVehicle != null)
             {
                 //if (IsPressingEngineToggle)
                 //{
                 //    ToggleEngineAnimation();
                 //    GameFiber.Sleep(200);
-                //    Mod.Player.CurrentVehicle.ToggleEngine();
+                //    Mod.Player.Instance.CurrentVehicle.ToggleEngine();
                 //}
-                //if (IsPressingRefuel &&  Mod.Player.GetCash() >= 1)
+                //if (IsPressingRefuel &&  Mod.Player.Instance.GetCash() >= 1)
                 //{
-                //    Mod.Player.GiveCash(-1);
-                //    Mod.Player.CurrentVehicle.FuelTank.PumpFuel();
+                //    Mod.Player.Instance.GiveCash(-1);
+                //    Mod.Player.Instance.CurrentVehicle.FuelTank.PumpFuel();
                 //    GameFiber.Sleep(100);
                 //}
                 if(IsPressingNextTrack)
                 {
-                    Mod.Player.CurrentVehicle.Radio.SetNextTrack();
+                    Mod.Player.Instance.CurrentVehicle.Radio.SetNextTrack();
                     GameFiber.Sleep(100);
                 }
                 if (IsPressingHazards)
                 {
-                    Mod.Player.CurrentVehicle.Indicators.ToggleHazards();
+                    Mod.Player.Instance.CurrentVehicle.Indicators.ToggleHazards();
                     GameFiber.Sleep(500);
                 }
                 if (IsPressingLeftIndicator)
                 {
-                    Mod.Player.CurrentVehicle.Indicators.ToggleLeft();
+                    Mod.Player.Instance.CurrentVehicle.Indicators.ToggleLeft();
                     GameFiber.Sleep(500);
                 }
                 if (IsPressingRightIndicator)
                 {
-                    Mod.Player.CurrentVehicle.Indicators.ToggleRight();
+                    Mod.Player.Instance.CurrentVehicle.Indicators.ToggleRight();
                     GameFiber.Sleep(500);
                 }
             }
@@ -253,7 +256,7 @@ namespace LosSantosRED.lsr
                 uint GameTimeStartedAnimation = Game.GameTime;
                 while (Game.GameTime - GameTimeStartedAnimation <= 1000)
                 {
-                    if (Game.IsControlJustPressed(0, GameControl.VehicleExit) || !Mod.Player.IsInVehicle)
+                    if (Game.IsControlJustPressed(0, GameControl.VehicleExit) || !Mod.Player.Instance.IsInVehicle)
                     {
                         NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
                     }

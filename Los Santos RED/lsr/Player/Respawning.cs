@@ -63,7 +63,7 @@ public class Respawning
         {
             if (GameTimeLastRespawned == 0)
                 return false;
-            else if (Game.GameTime - GameTimeLastRespawned <= 5000)
+            else if (Game.GameTime - GameTimeLastRespawned <= 1000)
                 return true;
             else
                 return false;
@@ -95,20 +95,20 @@ public class Respawning
     }
     public void BribePolice(int Amount)
     {
-        if (Mod.Player.Money < Amount)
+        if (Mod.Player.Instance.Money < Amount)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
         }
-        else if (Amount < (Mod.Player.WantedLevel * Mod.DataMart.Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
+        else if (Amount < (Mod.Player.Instance.WantedLevel * DataMart.Instance.Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
-            Mod.Player.GiveMoney(-1 * Amount);
+            Mod.Player.Instance.GiveMoney(-1 * Amount);
         }
         else
         {       
             ResetPlayer(true, false, false, false);
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
-            Mod.Player.GiveMoney(-1 * Amount);
+            Mod.Player.Instance.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
         }
     }
@@ -121,9 +121,9 @@ public class Respawning
     {
         FadeOut();
         Respawn(true, true, true, true);
-        GameLocation PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
+        GameLocation PlaceToSpawn = DataMart.Instance.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
         SetPlayerAtLocation(PlaceToSpawn);     
-        Mod.World.ClearPolice();
+        Mod.World.Instance.ClearPolice();
         Game.LocalPlayer.Character.IsRagdoll = true;
         FadeIn();
         Game.LocalPlayer.Character.IsRagdoll = false;
@@ -135,17 +135,18 @@ public class Respawning
         Respawn(true, true, true, true);
         if (PlaceToSpawn == null)
         {
-            PlaceToSpawn = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
+            PlaceToSpawn = DataMart.Instance.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
         }
         SetPlayerAtLocation(PlaceToSpawn);   
-        Mod.World.ClearPolice(); 
+        Mod.World.Instance.ClearPolice(); 
         FadeIn();
         SetHospitalFee(PlaceToSpawn.Name);
         GameTimeLastDischargedFromHospital = Game.GameTime;
     }
-    public void RespawnHere(bool withInvicibility, bool resetWanted)
+    public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted)
     {
         Respawn(resetWanted, true, false, false);
+        Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(Mod.Player.Instance.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
         if (withInvicibility)
         {
             Game.LocalPlayer.Character.IsInvincible = true;
@@ -161,22 +162,22 @@ public class Respawning
     {
         FadeOut();
         CheckWeapons();
-        BailFee = Mod.Player.MaxWantedLastLife * Mod.DataMart.Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
-        Mod.Player.RaiseHands();
+        BailFee = Mod.Player.Instance.MaxWantedLastLife * DataMart.Instance.Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        Mod.Player.Instance.RaiseHands();
         ResetPlayer(true, true,false,true);
         if (PoliceStation == null)
         {
-            PoliceStation = Mod.DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
+            PoliceStation = DataMart.Instance.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
         }
         SetPlayerAtLocation(PoliceStation);
-        Mod.World.ClearPolice();
+        Mod.World.Instance.ClearPolice();
         FadeIn();
         SetPoliceFee(PoliceStation.Name, BailFee);
         GameTimeLastSurrenderedToPolice = Game.GameTime;
     }
     private void CheckWeapons()
     {
-        if (!Mod.Player.KilledAnyCops)
+        if (!Mod.Player.Instance.KilledAnyCops)
         {
             RemoveIllegalWeapons();
         }
@@ -203,7 +204,7 @@ public class Respawning
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
-            WeaponVariation DroppedGunVariation = Mod.DataMart.Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
+            WeaponVariation DroppedGunVariation = DataMart.Instance.Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
             DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation, Weapon.Ammo);
             MyOldGuns.Add(MyGun);
         }
@@ -212,7 +213,7 @@ public class Respawning
         //Add out guns back with variations
         foreach (DroppedWeapon MyNewGun in MyOldGuns)
         {
-            WeaponInformation MyGTANewGun = Mod.DataMart.Weapons.GetWeapon((ulong)MyNewGun.Weapon.Hash);
+            WeaponInformation MyGTANewGun = DataMart.Instance.Weapons.GetWeapon((ulong)MyNewGun.Weapon.Hash);
             if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.Weapon.Hash, (short)MyNewGun.Ammo, false);
@@ -223,8 +224,8 @@ public class Respawning
     }
     private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons)
     {
-        Mod.Player.Reset(resetWanted, resetTimesDied, clearWeapons);
-        Mod.Player.UnSetArrestedAnimation(Game.LocalPlayer.Character);
+        Mod.Player.Instance.Reset(resetWanted, resetTimesDied, clearWeapons);
+        Mod.Player.Instance.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         NativeFunction.Natives.xC0AA53F866B3134D();
@@ -239,8 +240,8 @@ public class Respawning
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
-        Mod.Audio.Abort();
-        Mod.World.AbortScanner();
+        Audio.Instance.Abort();
+        Mod.World.Instance.AbortScanner();
     }
     private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons)
     {
@@ -249,23 +250,23 @@ public class Respawning
             ResurrectPlayer(resetTimesDied);
             ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons);    
             Game.HandleRespawn();
-            Mod.World.UnPauseTime();
+            Mod.World.Instance.UnPauseTime();
             GameTimeLastRespawned = Game.GameTime;
         }
         catch (Exception e)
         {
-            Mod.Debug.WriteToLog("RespawnInPlace", e.Message);
+            Debug.Instance.WriteToLog("RespawnInPlace", e.Message);
         }
     }
     private void ResurrectPlayer(bool resetTimesDied)
     {
         if (!resetTimesDied)
         {
-            ++Mod.Player.TimesDied;
+            ++Mod.Player.Instance.TimesDied;
         }
         NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
-        if (Mod.Player.DiedInVehicle)
+        if (Mod.Player.Instance.DiedInVehicle)
         {
             NativeFunction.Natives.xEA23C49EAA83ACFB(Game.LocalPlayer.Character.Position.X + 10f, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z, 0, false, false);//"NETWORK_RESURRECT_LOCAL_PLAYER"
             if (Game.LocalPlayer.Character.LastVehicle.Exists() && Game.LocalPlayer.Character.LastVehicle.IsDriveable)
@@ -280,8 +281,8 @@ public class Respawning
     }
     private void SetHospitalFee(string HospitalName)
     {
-        int HospitalFee = Mod.DataMart.Settings.SettingsManager.Police.HospitalFee * (1 + Mod.Player.MaxWantedLastLife);
-        int CurrentCash = Mod.Player.Money;
+        int HospitalFee = DataMart.Instance.Settings.SettingsManager.Police.HospitalFee * (1 + Mod.Player.Instance.MaxWantedLastLife);
+        int CurrentCash = Mod.Player.Instance.Money;
         int TodaysPayment = 0;
 
         int TotalNeededPayment = HospitalFee + HospitalBillPastDue;
@@ -299,7 +300,7 @@ public class Respawning
 
         Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", HospitalFee, TodaysPayment, HospitalBillPastDue));
 
-        Mod.Player.GiveMoney(-1 * TodaysPayment);
+        Mod.Player.Instance.GiveMoney(-1 * TodaysPayment);
     }
     private void SetPlayerAtLocation(GameLocation ToSet)
     {
@@ -313,7 +314,7 @@ public class Respawning
     }
     private void SetPoliceFee(string PoliceStationName, int BailFee)
     {
-        int CurrentCash = Mod.Player.Money;
+        int CurrentCash = Mod.Player.Instance.Money;
         int TodaysPayment = 0;
 
         int TotalNeededPayment = BailFee + BailFeePastDue;
@@ -333,7 +334,7 @@ public class Respawning
         if (!LesterHelp)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStationName, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", BailFee, TodaysPayment, BailFeePastDue));
-            Mod.Player.GiveMoney(-1 * TodaysPayment);
+            Mod.Player.Instance.GiveMoney(-1 * TodaysPayment);
         }
         else
         {

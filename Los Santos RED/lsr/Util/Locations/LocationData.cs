@@ -60,7 +60,7 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetZone()
         {
-            CurrentZone = Mod.DataMart.Zones.GetZone(CharacterToLocate.Position);
+            CurrentZone = DataMart.Instance.Zones.GetZone(CharacterToLocate.Position);
         }
         private void GetNode()
         {
@@ -123,11 +123,11 @@ namespace LosSantosRED.lsr.Locations
             }
 
 
-            CurrentStreet = Mod.DataMart.Streets.GetStreet(CurrentStreetName);
-            CurrentCrossStreet = Mod.DataMart.Streets.GetStreet(CurrentCrossStreetName);
+            CurrentStreet = DataMart.Instance.Streets.GetStreet(CurrentStreetName);
+            CurrentCrossStreet = DataMart.Instance.Streets.GetStreet(CurrentCrossStreetName);
             if (CurrentStreet == null)
             {
-                CurrentStreet = new Street(Mod.DataMart.Streets.GetStreet(CharacterToLocate.Position) + "?", 60f);
+                CurrentStreet = new Street(DataMart.Instance.Streets.GetStreet(CharacterToLocate.Position) + "?", 60f);
                 if (CurrentStreet.IsHighway)
                 {
                     if (!IsOnFreeway)

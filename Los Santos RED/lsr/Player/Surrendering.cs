@@ -32,18 +32,18 @@ public class Surrendering
         if (Game.LocalPlayer.Character.IsWearingHelmet)
             Game.LocalPlayer.Character.RemoveHelmet(true);
 
-        if (Mod.Player.HandsAreUp)
+        if (Mod.Player.Instance.HandsAreUp)
             return;
 
-        //if (Mod.Player.CurrentVehicle == null || Mod.Player.CurrentVehicle.FuelTank.CanPump)//usees the same key, might need to change
+        //if (Mod.Player.Instance.CurrentVehicle == null || Mod.Player.Instance.CurrentVehicle.FuelTank.CanPump)//usees the same key, might need to change
         //    return;
 
-        Mod.Player.SetUnarmed();
-        //if (Mod.Player.CurrentVehicle != null)
+        Mod.Player.Instance.SetUnarmed();
+        //if (Mod.Player.Instance.CurrentVehicle != null)
         //{
-        //    Mod.Player.CurrentVehicle.ToggleEngine(false);
+        //    Mod.Player.Instance.CurrentVehicle.ToggleEngine(false);
         //}
-        Mod.Player.HandsAreUp = true;
+        Mod.Player.Instance.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
         AnimationDictionary AnimDictionary = new AnimationDictionary(sDict);
@@ -102,7 +102,7 @@ public class Surrendering
     }
     public void LowerHands()
     {
-        Mod.Player.HandsAreUp = false; // You put your hands down
+        Mod.Player.Instance.HandsAreUp = false; // You put your hands down
         Game.LocalPlayer.Character.Tasks.Clear();
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
             Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
@@ -130,14 +130,14 @@ public class Surrendering
                 return;
             }
 
-            Mod.Player.SetUnarmed();
+            Mod.Player.Instance.SetUnarmed();
 
             if (PedToArrest.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = PedToArrest.CurrentVehicle;
                 if (PedToArrest.Exists() && oldVehicle.Exists())
                 {
-                    Mod.Debug.WriteToLog("SetArrestedAnimation", "Tasked to leave the vehicle");
+                    Debug.Instance.WriteToLog("SetArrestedAnimation", "Tasked to leave the vehicle");
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
                     GameFiber.Wait(2500);
                 }
@@ -147,18 +147,18 @@ public class Surrendering
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
                 {
                     NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-                    Mod.Debug.WriteToLog("SetArrestedAnimation", "Standing Animation");
+                    Debug.Instance.WriteToLog("SetArrestedAnimation", "Standing Animation");
                 }
             }
             else
             {
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
                 {
-                    Mod.Debug.WriteToLog("SetArrestedAnimation", "Kneel Animation");
+                    Debug.Instance.WriteToLog("SetArrestedAnimation", "Kneel Animation");
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(6000);
 
-                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Mod.Player.IsBusted))
+                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Mod.Player.Instance.IsBusted))
                     {
                         return;
                     }
@@ -173,7 +173,7 @@ public class Surrendering
                 PedToArrest.IsPersistent = false;
             }
         }, "SetArrestedAnimation");
-        Mod.Debug.GameFibers.Add(SetArrestedAnimation);
+        Debug.Instance.GameFibers.Add(SetArrestedAnimation);
 
     }
     public void UnSetArrestedAnimation(Ped PedToArrest)
@@ -195,14 +195,14 @@ public class Surrendering
                 PedToArrest.Tasks.Clear();
             }
         }, "UnSetArrestedAnimation");
-        Mod.Debug.GameFibers.Add(UnSetArrestedAnimationGF);
+        Debug.Instance.GameFibers.Add(UnSetArrestedAnimationGF);
     }
     public void CommitSuicide(Ped PedToSuicide)
     {
         if (IsCommitingSuicide)
             return;
 
-        if (Mod.Player.HandsAreUp)
+        if (Mod.Player.Instance.HandsAreUp)
             return;
 
         if (PedToSuicide.IsInAnyVehicle(false) || PedToSuicide.IsRagdoll || PedToSuicide.IsSwimming || PedToSuicide.IsInCover)
@@ -224,7 +224,7 @@ public class Surrendering
                 //    CurrentGun = WeaponManager.WeaponsList.Where(x => (WeaponHash)x.Hash == PedToSuicide.Inventory.EquippedWeapon.Hash && x.CanPistolSuicide).FirstOrDefault();
                 //}
 
-                if (Mod.DataMart.Weapons.CanPlayerWeaponSuicide(PedToSuicide))
+                if (DataMart.Instance.Weapons.CanPlayerWeaponSuicide(PedToSuicide))
                 {
                     if (PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
                     {
@@ -246,7 +246,7 @@ public class Surrendering
                         while (Game.GameTime - GameTimeStartedSuicide <= 20000)
                         {
                             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                            if (Mod.Input.IsMoveControlPressed)
+                            if (Input.Instance.IsMoveControlPressed)
                             {
                                 break;
                             }
@@ -294,7 +294,7 @@ public class Surrendering
                         while (Game.GameTime - GameTimeStartedSuicide <= 20000 && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 1.0f)
                         {
                             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                            if (Mod.Input.IsMoveControlPressed)
+                            if (Input.Instance.IsMoveControlPressed)
                             {
                                 break;
                             }
@@ -328,7 +328,7 @@ public class Surrendering
                 IsCommitingSuicide = false;
             }
         }, "Suicide");
-        Mod.Debug.GameFibers.Add(Suicide);
+        Debug.Instance.GameFibers.Add(Suicide);
     }
 }
 

@@ -1,17 +1,39 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace LosSantosRED.lsr
+namespace Mod
 {
     public class Player
     {
+        private static Lazy<Player> lazy =
+        new Lazy<Player>(() => new Player());
+        public static Player Instance { get { return lazy.Value; } }
+        private Player()
+        {
+            CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
+            Mugging = new Mugging();
+            SearchMode = new SearchMode();
+            Violations = new Violations();
+            Respawning = new Respawning();
+            Surrendering = new Surrendering();
+            WeaponDropping = new WeaponDropping();
+            Investigations = new Investigations();
+            ArrestWarrant = new ArrestWarrant();
+            CurrentLocation = new LocationData(Game.LocalPlayer.Character);
+            CurrentPoliceResponse = new PoliceResponse();
+            CurrentPoliceResponse.SetWantedLevel(0, "Initial", true);
+            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+            GameTimeStartedPlaying = Game.GameTime;
+        }
         private bool areStarsGreyedOut;
         private ArrestWarrant ArrestWarrant;
         private HealthState CurrentHealth;
@@ -44,23 +66,23 @@ namespace LosSantosRED.lsr
         private bool VanillaRespawn = true;
         private Violations Violations;
         private WeaponDropping WeaponDropping;
-        public Player()
-        {
-            CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
-            Mugging = new Mugging();
-            SearchMode = new SearchMode();
-            Violations = new Violations();
-            Respawning = new Respawning();
-            Surrendering = new Surrendering();
-            WeaponDropping = new WeaponDropping();
-            Investigations = new Investigations();
-            ArrestWarrant = new ArrestWarrant();
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character);
-            CurrentPoliceResponse = new PoliceResponse();
-            CurrentPoliceResponse.SetWantedLevel(0, "Initial", true);
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-            GameTimeStartedPlaying = Game.GameTime;
-        }
+        //public Player()
+        //{
+        //    CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
+        //    Mugging = new Mugging();
+        //    SearchMode = new SearchMode();
+        //    Violations = new Violations();
+        //    Respawning = new Respawning();
+        //    Surrendering = new Surrendering();
+        //    WeaponDropping = new WeaponDropping();
+        //    Investigations = new Investigations();
+        //    ArrestWarrant = new ArrestWarrant();
+        //    CurrentLocation = new LocationData(Game.LocalPlayer.Character);
+        //    CurrentPoliceResponse = new PoliceResponse();
+        //    CurrentPoliceResponse.SetWantedLevel(0, "Initial", true);
+        //    NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+        //    GameTimeStartedPlaying = Game.GameTime;
+        //}
         public bool AreStarsGreyedOut
         {
             get => areStarsGreyedOut;
@@ -274,7 +296,7 @@ namespace LosSantosRED.lsr
         public string LawsViolatingDisplay => Violations.LawsViolatingDisplay;
         public bool LethalForceAuthorized => ArrestWarrant.LethalForceAuthorized;
         public int MaxWantedLastLife { get; set; }
-        public int MaxWantedLevel => ArrestWarrant.MaxWantedLevel;
+        public int MaxWantedLevel => ArrestWarrant.LastWantedMaxLevel;
         public int Money
         {
             get
@@ -282,7 +304,7 @@ namespace LosSantosRED.lsr
                 int CurrentCash;
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", Natives.CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
+                    NativeFunction.CallByName<int>("STAT_GET_INT", Natives.CashHash(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
                 }
                 return CurrentCash;
             }
@@ -411,7 +433,7 @@ namespace LosSantosRED.lsr
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = Natives.CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias);
+            uint PlayerCashHash = Natives.CashHash(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -461,7 +483,7 @@ namespace LosSantosRED.lsr
             }
             else
             {
-                SuspectsName = Mod.DataMart.Names.GetRandomName(isMale);
+                SuspectsName = DataMart.Instance.Names.GetRandomName(isMale);
             }
         }
         public void Injured(PedExt MyPed)
@@ -474,7 +496,7 @@ namespace LosSantosRED.lsr
             {
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
-            Mod.Debug.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+            Debug.Instance.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
         }
         public void Killed(PedExt MyPed)
         {
@@ -490,7 +512,7 @@ namespace LosSantosRED.lsr
                 GameTimeLastKilledCivilian = Game.GameTime;
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
-            Mod.Debug.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+            Debug.Instance.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
         }
         public void LocationUpdate()
         {
@@ -538,6 +560,10 @@ namespace LosSantosRED.lsr
             GameTimeLastHurtCop = 0;
             GameTimeLastKilledCop = 0;
         }
+        public void Cool()
+        {
+            lazy = new Lazy<Player>(() => new Player());
+        }
         public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons)
         {
             IsDead = false;
@@ -551,11 +577,12 @@ namespace LosSantosRED.lsr
                 CurrentPoliceResponse.Reset();
                 Investigations.Reset();
                 ResetInjuries();
-                Mod.World.ResetWitnessedCrimes();
-                Mod.World.ResetScanner();
+                Mod.World.Instance.ResetWitnessedCrimes();
+                Mod.World.Instance.ResetScanner();
                 NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
+                Update();
             }
             if(resetTimesDied)
             {
@@ -580,7 +607,7 @@ namespace LosSantosRED.lsr
         }
         public void RespawnHere(bool withInvincibility, bool resetWanted)
         {
-            Respawning.RespawnHere(withInvincibility, resetWanted);
+            Respawning.RespawnAtCurrentLocation(withInvincibility, resetWanted);
         }
         public void SearchModeUpdate()
         {
@@ -592,14 +619,14 @@ namespace LosSantosRED.lsr
         }
         public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
         }
         public void SetPlayerToLastWeapon()
         {
             if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeaponHash != 0)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash, true);
-                Mod.Debug.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
+                Debug.Instance.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
             }
         }
         public void SetShot()
@@ -670,7 +697,7 @@ namespace LosSantosRED.lsr
             {
                 GameTimeLastStarsNotGreyedOut = Game.GameTime;
             }
-            Mod.Debug.WriteToLog("ValueChecker", string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
+            Debug.Instance.WriteToLog("ValueChecker", string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
         private void BustedEvent()
         {
@@ -685,14 +712,14 @@ namespace LosSantosRED.lsr
             var HandleBusted = GameFiber.StartNew(delegate
             {
                 GameFiber.Wait(1000);
-                Mod.Menu.ShowBustedMenu();
+                Menu.Instance.ShowBustedMenu();
             }, "HandleBusted");
-            Mod.Debug.GameFibers.Add(HandleBusted);
+            Debug.Instance.GameFibers.Add(HandleBusted);
             Game.LocalPlayer.HasControl = false;
         }
         private void DeathEvent()
         {
-            Mod.World.PauseTime();
+            Mod.World.Instance.PauseTime();
             DiedInVehicle = IsInVehicle;
             IsDead = true;
             GameTimeLastDied = Game.GameTime;
@@ -703,9 +730,9 @@ namespace LosSantosRED.lsr
             var HandleDeath = GameFiber.StartNew(delegate
             {
                 GameFiber.Wait(1000);
-                Mod.Menu.ShowDeathMenu();
+                Menu.Instance.ShowDeathMenu();
             }, "HandleDeath");
-            Mod.Debug.GameFibers.Add(HandleDeath);
+            Debug.Instance.GameFibers.Add(HandleDeath);
         }
         private void IsAimingInVehicleChanged()
         {
@@ -717,7 +744,7 @@ namespace LosSantosRED.lsr
             {
                 CurrentVehicle.SetDriverWindow(false);
             }
-            Mod.Debug.WriteToLog("ValueChecker", string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
+            Debug.Instance.WriteToLog("ValueChecker", string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
         }
         private void IsGettingIntoVehicleChanged()
         {
@@ -729,7 +756,7 @@ namespace LosSantosRED.lsr
                 {
                     return;
                 }
-                VehicleExt MyCar = Mod.World.GetVehicle(VehicleTryingToEnter);
+                VehicleExt MyCar = Mod.World.Instance.GetVehicle(VehicleTryingToEnter);
                 if (MyCar != null)
                 {
                     VehicleGettingInto = MyCar;
@@ -747,15 +774,15 @@ namespace LosSantosRED.lsr
                     //when you start going they auto lock and peds cannot carjack you as easily
 
                     MyCar.AttemptToLock();
-                    if (Mod.Input.IsHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
+                    if (Input.Instance.IsHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
                     {
-                        //Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("1 Handle: {0} LockPick", EnteringVehicle.Handle));
+                        //Debug.Instance.WriteToLog("IsGettingIntoVehicleChanged", string.Format("1 Handle: {0} LockPick", EnteringVehicle.Handle));
                         CarLockPick MyLockPick = new CarLockPick(VehicleTryingToEnter, SeatTryingToEnter);
                         MyLockPick.PickLock();
                     }
-                    else if (Mod.Input.IsHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
+                    else if (Input.Instance.IsHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
                     {
-                        //Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("2 Handle: {0} CarJack", EnteringVehicle.Handle));
+                        //Debug.Instance.WriteToLog("IsGettingIntoVehicleChanged", string.Format("2 Handle: {0} CarJack", EnteringVehicle.Handle));
                         CarJack MyJack = new CarJack(VehicleTryingToEnter, VehicleTryingToEnter.Driver, SeatTryingToEnter);
                         MyJack.StartCarJack();
                     }
@@ -766,12 +793,12 @@ namespace LosSantosRED.lsr
                     }
                     //else
                     //{
-                    //    //Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format("3 Handle: {0}, LockStatus: {1}, MustBeHotwired: {2}", EnteringVehicle.Handle, EnteringVehicle.LockStatus, EnteringVehicle.MustBeHotwired));
+                    //    //Debug.Instance.WriteToLog("IsGettingIntoVehicleChanged", string.Format("3 Handle: {0}, LockStatus: {1}, MustBeHotwired: {2}", EnteringVehicle.Handle, EnteringVehicle.LockStatus, EnteringVehicle.MustBeHotwired));
                     //}
                 }
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
-            Mod.Debug.WriteToLog("IsGettingIntoVehicleChanged", string.Format(" to {0}", IsGettingIntoAVehicle));
+            Debug.Instance.WriteToLog("IsGettingIntoVehicleChanged", string.Format(" to {0}", IsGettingIntoAVehicle));
         }
         private void IsInVehicleChanged()
         {
@@ -781,7 +808,7 @@ namespace LosSantosRED.lsr
             else
             {
             }
-            Mod.Debug.WriteToLog("ValueChecker", string.Format("IsInVehicle Changed: {0}", IsInVehicle));
+            Debug.Instance.WriteToLog("ValueChecker", string.Format("IsInVehicle Changed: {0}", IsInVehicle));
         }
         private void SetupTasks()
         {
@@ -837,17 +864,17 @@ namespace LosSantosRED.lsr
                     return;
                 }
 
-                if (Mod.World.AnyPoliceCanSeePlayer && IsWanted && !AreStarsGreyedOut)
+                if (Mod.World.Instance.AnyPoliceCanSeePlayer && IsWanted && !AreStarsGreyedOut)
                 {
                     if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentSeenVehicle.Vehicle.Handle && !CurrentSeenVehicle.HasBeenDescribedByDispatch)
                     {
                         GameTimePoliceNoticedVehicleChange = Game.GameTime;
-                        Mod.Debug.WriteToLog("PlayerState", string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));
+                        Debug.Instance.WriteToLog("PlayerState", string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));
                     }
                     PoliceLastSeenVehicleHandle = CurrentSeenVehicle.Vehicle.Handle;
                 }
 
-                if (Mod.World.AnyPoliceCanRecognizePlayer && IsWanted && !AreStarsGreyedOut)
+                if (Mod.World.Instance.AnyPoliceCanRecognizePlayer && IsWanted && !AreStarsGreyedOut)
                 {
                     CurrentVehicle.UpdateDescription();
                 }
@@ -934,7 +961,7 @@ namespace LosSantosRED.lsr
                 {
                     IsHotWiring = false;
                 }
-                if (Mod.Input.IsMoveControlPressed || Game.LocalPlayer.Character.Speed >= 0.1f)
+                if (Input.Instance.IsMoveControlPressed || Game.LocalPlayer.Character.Speed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;
                 }
@@ -982,7 +1009,7 @@ namespace LosSantosRED.lsr
                 IsCarJacking = Game.LocalPlayer.Character.IsJacking;
             }
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
-            CurrentWeapon = Mod.DataMart.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
+            CurrentWeapon = DataMart.Instance.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
 
             if (PlayerCurrentWeapon != null)
             {
@@ -1014,7 +1041,7 @@ namespace LosSantosRED.lsr
             {
                 DeathEvent();
             }
-            if (Mod.World.ShouldBustPlayer)
+            if (Mod.World.Instance.ShouldBustPlayer)
             {
                 StartManualArrest();
             }

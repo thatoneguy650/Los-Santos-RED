@@ -103,7 +103,7 @@ public class Pedestrians
         Civilians.RemoveAll(x => x.CanRemove);
         foreach (Cop Cop in Police.Where(x => x.Pedestrian.IsDead))
         {
-            Mod.World.MarkNonPersistent(Cop);
+            Mod.World.Instance.MarkNonPersistent(Cop);
         }
         Police.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
@@ -115,7 +115,7 @@ public class Pedestrians
         {
             if (Pedestrian.IsPoliceArmy())
             {
-                //if (Mod.Player.SearchMode.IsSpotterCop(Pedestrian.Handle))
+                //if (Mod.Player.Instance.SearchMode.IsSpotterCop(Pedestrian.Handle))
                 //    continue;
                 if (!Pedestrian.IsVisible)//trying to remove that call with this
                 {
@@ -158,16 +158,16 @@ public class Pedestrians
     }
     private void AddCop(Ped Pedestrian)
     {
-        Agency AssignedAgency = Mod.DataMart.Agencies.GetAgency(Pedestrian);
+        Agency AssignedAgency = DataMart.Instance.Agencies.GetAgency(Pedestrian);
         if (AssignedAgency != null && Pedestrian.Exists())
         {
             Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
-            if (Mod.DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+            if (DataMart.Instance.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.AgencyColor;
                 myBlip.Scale = 0.6f;
-                Mod.World.AddBlip(myBlip);
+                Mod.World.Instance.AddBlip(myBlip);
             }
             SetCopStats(Pedestrian);
             Pedestrian.Inventory.Weapons.Clear();
@@ -177,9 +177,9 @@ public class Pedestrians
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
-        if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
         int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;
         Pedestrian.MaxHealth = DesiredHealth;
@@ -190,9 +190,9 @@ public class Pedestrians
     }
     private void SetCopStats(Ped Pedestrian)
     {
-        if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
         int DesiredHealth = RandomItems.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(MinCopArmor, MaxCopArmor);

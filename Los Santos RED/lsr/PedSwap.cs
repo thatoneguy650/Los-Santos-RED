@@ -8,6 +8,12 @@ using System.Linq;
 
 public class PedSwap
 {
+    private static readonly Lazy<PedSwap> lazy =
+    new Lazy<PedSwap>(() => new PedSwap());
+    public static PedSwap Instance { get { return lazy.Value; } }
+    private PedSwap()
+    {
+    }
     private Ped CurrentPed;
     private Vector3 CurrentPedPosition;
     private PedVariation CurrentPedVariation;
@@ -22,12 +28,7 @@ public class PedSwap
     private bool TargetPedUsingScenario;
     private Vehicle TargetPedVehicle;
     private PedVariation VanillaVariation;
-
     public int OriginalMoney { get; private set; }
-    public PedSwap()
-    {
-
-    }
     public void Dispose()
     {
         Vehicle Car = Game.LocalPlayer.Character.CurrentVehicle;
@@ -37,7 +38,7 @@ public class PedSwap
         {
             SeatIndex = Game.LocalPlayer.Character.SeatIndex;
         }
-        ChangeModel(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAliasModelName);
+        ChangeModel(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAliasModelName);
         VanillaVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
         if(Car.Exists() && WasInCar)
         {
@@ -59,7 +60,7 @@ public class PedSwap
             }
             if (ClearNearPolice)
             {
-                Mod.World.ClearPolice();
+                Mod.World.Instance.ClearPolice();
             }
             StoreTargetPedData(TargetPed);
             NativeFunction.CallByName<uint>("CHANGE_PLAYER_PED", Game.LocalPlayer, TargetPed, false, false);
@@ -76,7 +77,7 @@ public class PedSwap
         }
         catch (Exception e3)
         {
-            Mod.Debug.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
+            Debug.Instance.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
     private void ActivatePreviousScenarios()
@@ -86,13 +87,13 @@ public class PedSwap
             NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
-                while (!Mod.Input.IsMoveControlPressed)
+                while (!Input.Instance.IsMoveControlPressed)
                 {
                     GameFiber.Yield();
                 }
                 Game.LocalPlayer.Character.Tasks.Clear();
             }, "ScenarioWatcher");
-            Mod.Debug.GameFibers.Add(ScenarioWatcher);
+            Debug.Instance.GameFibers.Add(ScenarioWatcher);
         }
     }
     private void AddPedToTakenOverPeds(TakenOverPed MyPed)
@@ -139,7 +140,7 @@ public class PedSwap
             PedToReturn = closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         if (PedToReturn == null)
         {
-            Mod.Debug.WriteToLog("Ped Takeover", "No Peds Found");
+            Debug.Instance.WriteToLog("Ped Takeover", "No Peds Found");
             return null;
         }
         else if (PedToReturn.IsInAnyVehicle(false))
@@ -182,7 +183,7 @@ public class PedSwap
         }
         catch (Exception e)
         {
-            Mod.Debug.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            Debug.Instance.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
             return null;
         }
     }
@@ -223,7 +224,7 @@ public class PedSwap
         if (!TargetPedAlreadyTakenOver)
         {
             SetPlayerOffset();
-            ChangeModel(Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAliasModelName);
+            ChangeModel(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAliasModelName);
             ChangeModel(ModelToChange);
         }
 
@@ -246,12 +247,14 @@ public class PedSwap
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
 
-        Mod.NewPlayer(ModelBeforeTakeOver, IsMaleBeforeTakeover);
+        //Mod.NewPlayer(ModelBeforeTakeOver, IsMaleBeforeTakeover);
+        EntryPoint.ModController.NewPlayer(ModelBeforeTakeOver, IsMaleBeforeTakeover);
 
-        //Mod.Player.ResetState(true);
-        //Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Reset After Takeover as a precaution", false);
-        //Mod.Player.CurrentPoliceResponse.Reset();
-        // Mod.Player.ArrestWarrant.Reset();
+
+        //Mod.Player.Instance.ResetState(true);
+        //Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(0, "Reset After Takeover as a precaution", false);
+        //Mod.Player.Instance.CurrentPoliceResponse.Reset();
+        // Mod.Player.Instance.ArrestWarrant.Reset();
 
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
@@ -264,10 +267,10 @@ public class PedSwap
 
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         ActivatePreviousScenarios();
-        Mod.Player.SetUnarmed();
-        Mod.World.UnPauseTime();
+        Mod.Player.Instance.SetUnarmed();
+        Mod.World.Instance.UnPauseTime();
         GameFiber.Wait(50);
-        Mod.Player.DisplayPlayerNotification();
+        Mod.Player.Instance.DisplayPlayerNotification();
     }
     private void SetPlayerOffset()
     {
@@ -283,31 +286,31 @@ public class PedSwap
         UInt64 Second = GTA.Read<UInt64>(Player + SECOND_OFFSET);
         UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
 
-        if (Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Michael")
+        if (DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias == "Michael")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
         }
-        else if (Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Franklin")
+        else if (DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias == "Franklin")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
         }
-        else if (Mod.DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Trevor")
+        else if (DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias == "Trevor")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
         }
     }
     private void StoreTargetPedData(Ped TargetPed)
     {
-        OriginalMoney = Mod.Player.Money;
+        OriginalMoney = Mod.Player.Instance.Money;
         ModelBeforeTakeOver = TargetPed.Model.Name;
         IsMaleBeforeTakeover = TargetPed.IsMale;
         CurrentPedVariation = GetPedVariation(TargetPed);
         TargetPedPosition = TargetPed.Position;
         CurrentPedPosition = Game.LocalPlayer.Character.Position;
-        Mod.World.PauseTime();
+        Mod.World.Instance.PauseTime();
         if (Game.LocalPlayer.Character.IsDead)
         {
-            Mod.Player.RespawnHere(false,true);
+            Mod.Player.Instance.RespawnHere(false,true);
         }
         Vector3 PlayerOriginalPedPosition = Game.LocalPlayer.Character.Position;
         TargetPedAlreadyTakenOver = false;

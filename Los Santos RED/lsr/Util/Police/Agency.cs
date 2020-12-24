@@ -29,9 +29,9 @@ public class Agency
     {
         get
         {
-            if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
+            if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
             {
-                if (Mod.World.PoliceList.Count(x => x.AssignedAgency == this) < SpawnLimit)
+                if (Mod.World.Instance.PoliceList.Count(x => x.AssignedAgency == this) < SpawnLimit)
                 {
                     return true;
                 }
@@ -114,7 +114,7 @@ public class Agency
         if (CopModels == null || !CopModels.Any())
             return null;
 
-        List<PedestrianInformation> ToPickFrom = CopModels.Where(x => Mod.Player.WantedLevel >= x.MinWantedLevelSpawn && Mod.Player.WantedLevel <= x.MaxWantedLevelSpawn).ToList();
+        List<PedestrianInformation> ToPickFrom = CopModels.Where(x => Mod.Player.Instance.WantedLevel >= x.MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= x.MaxWantedLevelSpawn).ToList();
         if (RequiredModels != null && RequiredModels.Any())
         {
             ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();

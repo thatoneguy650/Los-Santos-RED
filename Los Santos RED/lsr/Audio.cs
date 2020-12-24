@@ -1,10 +1,19 @@
 ﻿using LosSantosRED.lsr;
+using LSR;
 using NAudio.Wave;
 using Rage.Native;
 using System;
 
 public class Audio
 {
+    private static readonly Lazy<Audio> lazy =
+    new Lazy<Audio>(() => new Audio());
+
+    public static Audio Instance { get { return lazy.Value; } }
+
+    private Audio()
+    {
+    }
     private WaveOutEvent outputDevice;
     private AudioFileReader audioFile;
     public bool IsMobileRadioEnabled { get; private set; }
@@ -16,26 +25,23 @@ public class Audio
             return outputDevice != null;
         }
     }
-    public Audio()
-    {
-    }
     public void Update()
     {
-        if (Mod.DataMart.Settings.SettingsManager.Police.DisableAmbientScanner)
+        if (DataMart.Instance.Settings.SettingsManager.Police.DisableAmbientScanner)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
         }
-        if (Mod.DataMart.Settings.SettingsManager.Police.WantedMusicDisable)
+        if (DataMart.Instance.Settings.SettingsManager.Police.WantedMusicDisable)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
         }
-        if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.IsEngineOn && Mod.Player.CurrentVehicle.Vehicle.IsPoliceVehicle)
+        if (Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.IsEngineOn && Mod.Player.Instance.CurrentVehicle.Vehicle.IsPoliceVehicle)
         {
             if (!IsMobileRadioEnabled)
             {
                 IsMobileRadioEnabled = true;
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
-                Mod.Debug.WriteToLog("Audio", "Mobile Radio Enabled");
+                Debug.Instance.WriteToLog("Audio", "Mobile Radio Enabled");
             }
         }
         else
@@ -44,7 +50,7 @@ public class Audio
             {
                 IsMobileRadioEnabled = false;
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-                Mod.Debug.WriteToLog("Audio", "Mobile Radio Disabled");
+                Debug.Instance.WriteToLog("Audio", "Mobile Radio Disabled");
             }
         }
         if (CancelAudio && outputDevice == null)
@@ -69,7 +75,7 @@ public class Audio
             {
                 audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName))
                 {
-                    Volume = Mod.DataMart.Settings.SettingsManager.Police.DispatchAudioVolume
+                    Volume = DataMart.Instance.Settings.SettingsManager.Police.DispatchAudioVolume
                 };
                 outputDevice.Init(audioFile);
             }
@@ -81,7 +87,7 @@ public class Audio
         }
         catch (Exception e)
         {
-            Mod.Debug.WriteToLog("Audio", e.Message);
+            Debug.Instance.WriteToLog("Audio", e.Message);
         }
     }
     public void Abort()

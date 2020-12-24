@@ -80,7 +80,7 @@ public class HealthState
                 CurrentHealth = MyPed.Pedestrian.Health;
                 CurrentArmor = MyPed.Pedestrian.Armor;
                 GameTimeLastBled = Game.GameTime;
-                Mod.Debug.WriteToLog("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
+                Debug.Instance.WriteToLog("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
             }
         }
     }
@@ -88,11 +88,11 @@ public class HealthState
     {
         if (MyPed.Pedestrian.IsDead && MyPed.KilledBy(Game.LocalPlayer.Character))
         {
-            Mod.Player.Killed(MyPed);
+            Mod.Player.Instance.Killed(MyPed);
         }
         else if (MyPed.Pedestrian.IsAlive && MyPed.HurtBy(Game.LocalPlayer.Character))
         {
-            Mod.Player.Injured(MyPed);
+            Mod.Player.Instance.Injured(MyPed);
         }
     }
     private BodyLocation GetDamageLocation(Ped Pedestrian)
@@ -106,7 +106,7 @@ public class HealthState
         if (outBone != 0)
         {
             NativeFunction.CallByName<bool>("CLEAR_PED_LAST_DAMAGE_BONE", Pedestrian);
-            Bone DamagedOne = Mod.DataMart.Bones.GetBone(outBone);//    .FirstOrDefault(x => x.Tag == DamagedBoneId);
+            Bone DamagedOne = DataMart.Instance.Bones.GetBone(outBone);//    .FirstOrDefault(x => x.Tag == DamagedBoneId);
             if (DamagedOne != null)
             {
                 return DamagedOne.Location;
@@ -162,7 +162,7 @@ public class HealthState
             int HealthDamage = Health - CurrentHealth;
             int ArmorDamage = Armor - CurrentArmor;
             BodyLocation DamagedLocation = GetDamageLocation(MyPed.Pedestrian);
-            WeaponInformation DamagingWeapon = Mod.DataMart.Weapons.GetDamagingWeapon(MyPed.Pedestrian);
+            WeaponInformation DamagingWeapon = DataMart.Instance.Weapons.GetDamagingWeapon(MyPed.Pedestrian);
 
             bool CanBeFatal = false;
             if (DamagedLocation == BodyLocation.Head || DamagedLocation == BodyLocation.Neck || DamagedLocation == BodyLocation.UpperTorso)
@@ -228,7 +228,7 @@ public class HealthState
                 DisplayString = string.Format("  Ped: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
                   MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, DamagingWeapon.ModelName, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
             }
-            Mod.Debug.WriteToLog("PedWoundSystem", DisplayString);
+            Debug.Instance.WriteToLog("PedWoundSystem", DisplayString);
         }
         if (Health != CurrentHealth)
         {

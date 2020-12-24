@@ -7,13 +7,20 @@ using System.Linq;
 
 public class CriminalHistory
 {
-    public int MaxWantedLevel = 0;
+    //public int MaxWantedLevel = 0;
     public List<CrimeEvent> CrimesObserved = new List<CrimeEvent>();
     public List<CrimeEvent> CrimesReported = new List<CrimeEvent>();
     public List<LicensePlate> WantedPlates = new List<LicensePlate>();
     public uint GameTimeWantedStarted;
     public uint GameTimeWantedEnded;
     public bool PlayerSeenDuringWanted = false;
+    public int ObservedMaxWantedLevel
+    {
+        get
+        {
+            return CrimesObserved.Max(x => x.AssociatedCrime.ResultingWantedLevel);
+        }
+    }
     public bool PoliceHaveDescription { get; private set; }
     public Vector3 PlaceLastReportedCrime { get; private set; }
     public bool LethalForceAuthorized
@@ -71,7 +78,7 @@ public class CriminalHistory
     }
     public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
     {
-        if (Mod.Player.IsAliveAndFree && !Mod.Player.RecentlyBribedPolice)
+        if (Mod.Player.Instance.IsAliveAndFree && !Mod.Player.Instance.RecentlyBribedPolice)
         {
             if (HaveDescription)
             {
@@ -102,15 +109,15 @@ public class CriminalHistory
                 }
                 else
                 {
-                    Mod.Debug.WriteToLog("Crimes", string.Format("Crime Reported: {0}", CrimeInstance.Name));
+                    Debug.Instance.WriteToLog("Crimes", string.Format("Crime Reported: {0}", CrimeInstance.Name));
                     CrimesReported.Add(new CrimeEvent(CrimeInstance));
                 }
             }
-            if (ByPolice && Mod.Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
+            if (ByPolice && Mod.Player.Instance.WantedLevel != CrimeInstance.ResultingWantedLevel)
             {
-                Mod.Player.CurrentPoliceResponse.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
+                Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
             }
-            Mod.World.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances });
+            Mod.World.Instance.AnnounceCrime(CrimeInstance, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances });
         }
     }
 }

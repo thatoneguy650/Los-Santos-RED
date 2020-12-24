@@ -60,11 +60,11 @@ public class PlateTheft
         VehicleWithPlate = (Vehicle)Rage.World.GetClosestEntity(Game.LocalPlayer.Character.Position, DistanceToCheckCars, GetEntitiesFlags.ConsiderCars);
         if (VehicleWithPlate != null && VehicleWithPlate.LicensePlate != "        ")
         {
-            VehicleToChange = Mod.Player.TrackedVehicles.Where(x => x.Vehicle.Handle == VehicleWithPlate.Handle).FirstOrDefault();
+            VehicleToChange = Mod.Player.Instance.TrackedVehicles.Where(x => x.Vehicle.Handle == VehicleWithPlate.Handle).FirstOrDefault();
             if (VehicleToChange == null)
             {
                 VehicleToChange = new VehicleExt(VehicleWithPlate);
-                Mod.Player.TrackedVehicles.Add(VehicleToChange);
+                Mod.Player.Instance.TrackedVehicles.Add(VehicleToChange);
             }
         }
     }
@@ -79,11 +79,11 @@ public class PlateTheft
                 if (ChangeSpot == Vector3.Zero)
                     return;
 
-                Mod.Player.SetUnarmed();
+                Mod.Player.Instance.SetUnarmed();
                 if (!MovePedToCarPosition(VehicleToChange.Vehicle, Game.LocalPlayer.Character, VehicleToChange.Vehicle.Heading, ChangeSpot, true))
                     return;
 
-                Mod.Player.IsChangingLicensePlates = true;
+                Mod.Player.Instance.IsChangingLicensePlates = true;
                 ScrewdriverModel = AttachScrewdriverToPed(Game.LocalPlayer.Character);
                 if (IsChanging)
                 {
@@ -96,7 +96,7 @@ public class PlateTheft
                 bool Continue = true;
                 while (Game.LocalPlayer.Character.IsAlive)//CarPosition.DistanceTo2D(VehicleToChange.VehicleEnt.Position) <= 0.5f && Game.LocalPlayer.Character.DistanceTo2D(ChangeSpot) <= 0.5f && Game.LocalPlayer.Character.IsAlive)
                 {
-                    if (Mod.Input.IsMoveControlPressed)
+                    if (Input.Instance.IsMoveControlPressed)
                     {
                         Continue = false;
                         break;
@@ -122,7 +122,7 @@ public class PlateTheft
 
                 LicensePlateModel = null;
                 ScrewdriverModel = null;
-                Mod.Player.IsChangingLicensePlates = false;
+                Mod.Player.Instance.IsChangingLicensePlates = false;
             }
             catch (Exception e)
             {
@@ -133,21 +133,21 @@ public class PlateTheft
 
                 LicensePlateModel = null;
                 ScrewdriverModel = null;
-                Mod.Player.IsChangingLicensePlates = false;
-                Mod.Debug.WriteToLog("ChangeLicensePlate", e.StackTrace);
+                Mod.Player.Instance.IsChangingLicensePlates = false;
+                Debug.Instance.WriteToLog("ChangeLicensePlate", e.StackTrace);
             }
         }, "PlayDispatchQueue");
-        Mod.Debug.GameFibers.Add(ChangeLicensePlateAnimation);
+        Debug.Instance.GameFibers.Add(ChangeLicensePlateAnimation);
     }
     private void UpdateModelPlates(bool IsChanging)
     {
         if (IsChanging)
         {
             LicensePlate PlateToRemove = VehicleToChange.CarPlate;
-            Mod.Player.SpareLicensePlates.RemoveAt(Mod.Menu.SelectedPlateIndex);
+            Mod.Player.Instance.SpareLicensePlates.RemoveAt(Menu.Instance.SelectedPlateIndex);
             if (PlateToRemove != null)
             {
-                Mod.Player.SpareLicensePlates.Add(PlateToRemove);
+                Mod.Player.Instance.SpareLicensePlates.Add(PlateToRemove);
             }
             VehicleToChange.CarPlate = PlateToAdd;
             VehicleToChange.Vehicle.LicensePlate = PlateToAdd.PlateNumber;
@@ -155,7 +155,7 @@ public class PlateTheft
         }
         else
         {
-            Mod.Player.SpareLicensePlates.Add(VehicleToChange.CarPlate);
+            Mod.Player.Instance.SpareLicensePlates.Add(VehicleToChange.CarPlate);
             VehicleToChange.CarPlate = null;
             VehicleToChange.Vehicle.LicensePlate = "        ";
             VehicleToChange.CarPlate = null;
@@ -182,7 +182,7 @@ public class PlateTheft
         while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading,DesiredHeading - 5f, DesiredHeading + 5f)))
         {
             GameFiber.Yield();
-            if (isPlayer && Mod.Input.IsMoveControlPressed)
+            if (isPlayer && Input.Instance.IsMoveControlPressed)
             {
                 Continue = false;
                 break;

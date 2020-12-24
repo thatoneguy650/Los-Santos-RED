@@ -12,17 +12,17 @@ public class Civilians
     {
         get
         {
-            return Mod.World.CivilianList.Count(x => x.Pedestrian.IsPersistent);
+            return Mod.World.Instance.CivilianList.Count(x => x.Pedestrian.IsPersistent);
         }
     }
     public void ResetWitnessedCrimes()
     {
-        Mod.World.CivilianList.ForEach(x => x.CrimesWitnessed.Clear());
+        Mod.World.Instance.CivilianList.ForEach(x => x.CrimesWitnessed.Clear());
     }
     public void Update()
     {
         int PedsUpdated = 0;
-        foreach (PedExt MyPed in Mod.World.CivilianList.OrderBy(x => x.Pedestrian.DistanceTo(Game.LocalPlayer.Character)))
+        foreach (PedExt MyPed in Mod.World.Instance.CivilianList.OrderBy(x => x.Pedestrian.DistanceTo(Game.LocalPlayer.Character)))
         {
             MyPed.Update();
             PedsUpdated++;

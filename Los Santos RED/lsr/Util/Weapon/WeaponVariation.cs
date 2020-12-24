@@ -35,7 +35,7 @@ public class WeaponVariation
     public void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash)
     {
         NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, Tint);
-        WeaponInformation LookupGun = Mod.DataMart.Weapons.GetWeapon(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
+        WeaponInformation LookupGun = DataMart.Instance.Weapons.GetWeapon(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
         if (LookupGun == null)
             return;
         foreach (WeaponComponent ToRemove in LookupGun.PossibleComponents)

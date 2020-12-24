@@ -33,7 +33,7 @@ public class CountyJurisdictions
     }
     public Agency GetRandomAgency(string ZoneName)
     {
-        Zone MyZone = Mod.DataMart.Zones.GetZone(ZoneName);
+        Zone MyZone = DataMart.Instance.Zones.GetZone(ZoneName);
         if (MyZone != null)
         {
             List<CountyJurisdiction> ToPickFrom = CountyJurisdictionList.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn).ToList();

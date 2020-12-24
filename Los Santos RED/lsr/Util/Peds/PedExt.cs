@@ -39,7 +39,7 @@ public class PedExt
     {
         get
         {
-            if (Mod.Player.IsInVehicle)
+            if (Mod.Player.Instance.IsInVehicle)
             {
                 if (CanSeePlayer || DistanceToPlayer <= 7f)
                 {
@@ -222,7 +222,7 @@ public class PedExt
             {
                 return false;
             }
-            else if (Mod.Player.RecentlyBribedPolice)
+            else if (Mod.Player.Instance.RecentlyBribedPolice)
             {
                 return false;
             }
@@ -328,7 +328,7 @@ public class PedExt
         }
         catch (Exception ex)
         {
-            Mod.Debug.WriteToLog("KilledBy Error", $"Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
+            Debug.Instance.WriteToLog("KilledBy Error", $"Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
             return HurtBy(ToCheck);
         }
 
@@ -375,7 +375,7 @@ public class PedExt
             PositionLastSeenCrime = PositionToReport;
             GameTimeLastSeenCrime = Game.GameTime;
             HasSeenPlayerCommitCrime = true;
-            Mod.Debug.WriteToLog("AddCrime", string.Format(" Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
+            Debug.Instance.WriteToLog("AddCrime", string.Format(" Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
         }
     }
     private float GetDotVectorResult(Entity source, Entity target)
@@ -415,22 +415,22 @@ public class PedExt
     {
         if (Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsRagdoll)
         {
-            Mod.Player.CurrentPoliceResponse.CurrentCrimes.AddCrime(CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 20f);
+            Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.AddCrime(CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 20f);
             CrimesWitnessed.Clear();
             GameTimeLastReportedCrime = Game.GameTime;
             Pedestrian.IsPersistent = false;
-            Mod.Debug.WriteToLog("WillCallPolice && ShouldReportCrime", string.Format(" {0} to WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
+            Debug.Instance.WriteToLog("WillCallPolice && ShouldReportCrime", string.Format(" {0} to WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
         }
     }
     private void SetDrivingFlags()
     {  
-        if (IsCop && Mod.Player.IsWanted)
+        if (IsCop && Mod.Player.Instance.IsWanted)
         {
             NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
             NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
             if (!IsInHelicopter)
             {
-                if (Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly)
+                if (Mod.Player.Instance.CurrentPoliceResponse.PoliceChasingRecklessly)
                 {
                     NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1.0f);
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4, true);
@@ -439,13 +439,13 @@ public class PedExt
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 512, true);
                     //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 262144, true);
                 }
-                else// if (!Mod.Player.CurrentPoliceResponse.PoliceChasingRecklessly && DistanceToPlayer <= 15f)
+                else// if (!Mod.Player.Instance.CurrentPoliceResponse.PoliceChasingRecklessly && DistanceToPlayer <= 15f)
                 {
                    NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 0.75f);
                     NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);//only originally this one for reckless pursuit
                 }
 
-                if (Mod.Player.IsOffroad && DistanceToPlayer <= 200f)
+                if (Mod.Player.Instance.IsOffroad && DistanceToPlayer <= 200f)
                 {
                     NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 4194304);
                     NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 4194304, true);
@@ -467,8 +467,8 @@ public class PedExt
         CanSeePlayer = true;
         GameTimeLastSeenPlayer = Game.GameTime;
         PositionLastSeenPlayer = Game.LocalPlayer.Character.Position;
-        VehicleLastSeenPlayerIn = Mod.Player.CurrentSeenVehicle;
-        WeaponLastSeenPlayerWith = Mod.Player.CurrentSeenWeapon;
+        VehicleLastSeenPlayerIn = Mod.Player.Instance.CurrentSeenVehicle;
+        WeaponLastSeenPlayerWith = Mod.Player.Instance.CurrentSeenWeapon;
         if (GameTimeContinuoslySeenPlayerSince == 0)
         {
             GameTimeContinuoslySeenPlayerSince = Game.GameTime;
@@ -497,7 +497,7 @@ public class PedExt
             return;
         }
         DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
-        DistanceToLastSeen = Pedestrian.DistanceTo2D(Mod.World.PlacePoliceLastSeenPlayer);
+        DistanceToLastSeen = Pedestrian.DistanceTo2D(Mod.World.Instance.PlacePoliceLastSeenPlayer);
         if (DistanceToPlayer <= 0.1f)
         {
             DistanceToPlayer = 999f;
@@ -547,7 +547,7 @@ public class PedExt
             else if (Pedestrian.IsInHelicopter)
             {
                 float DistanceToSee = 150f;
-                if (Mod.Player.IsWanted)
+                if (Mod.Player.Instance.IsWanted)
                 {
                     DistanceToSee = 350f;
                 }

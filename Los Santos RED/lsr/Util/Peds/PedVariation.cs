@@ -46,7 +46,7 @@ using System.Threading.Tasks;
         }
         catch (Exception e)
         {
-            Mod.Debug.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
+            Debug.Instance.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
         }
     }
 }

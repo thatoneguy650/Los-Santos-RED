@@ -76,7 +76,7 @@ public class Loadout
             {
                 IssuePistol();
             }
-            if (Mod.DataMart.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && !HasHeavyWeapon && Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
+            if (DataMart.Instance.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && !HasHeavyWeapon && Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
             {
                 CheckIssueHeavy();
             }
@@ -87,9 +87,9 @@ public class Loadout
         IssueWeapons();
         if (Cop.ShouldAutoSetWeaponState)
         {
-            if (Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
+            if (Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
             {
-                if (Cop.IsInVehicle && Mod.Player.WantedLevel < 4)
+                if (Cop.IsInVehicle && Mod.Player.Instance.WantedLevel < 4)
                 {
                     SetUnarmed();
                 }
@@ -100,7 +100,7 @@ public class Loadout
             }
             else
             {
-                if (Mod.Player.IsWanted)
+                if (Mod.Player.Instance.IsWanted)
                 {
                     SetLessLethal();
                 }
@@ -117,7 +117,7 @@ public class Loadout
     }
     private void CheckIssueHeavy()
     {
-        if (Mod.DataMart.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon && Cop.IsInVehicle)
+        if (DataMart.Instance.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon && Cop.IsInVehicle)
         {
             IssueHeavyWeapon();
         }
@@ -131,20 +131,20 @@ public class Loadout
         {
             PistolToPick = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
         }
-        Pistol = Mod.DataMart.Weapons.GetWeapon(PistolToPick.ModelName);
+        Pistol = DataMart.Instance.Weapons.GetWeapon(PistolToPick.ModelName);
         IssuedPistol = Pistol;
         if (IssuedPistol == null)
         {
             return;
         }
         Cop.Pedestrian.Inventory.GiveNewWeapon(Pistol.ModelName, Pistol.AmmoAmount, false);
-        if (Mod.DataMart.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
+        if (DataMart.Instance.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
         {
             WeaponVariation MyVariation = PistolToPick.MyVariation;
             PistolVariation = MyVariation;
             MyVariation.ApplyWeaponVariation(Cop.Pedestrian, (uint)Pistol.Hash);
         }
-        Mod.Debug.WriteToLog("PoliceEquipment", $"Issued Pistol: {IssuedPistol.ModelName} to {Cop.Pedestrian.Handle}");
+        Debug.Instance.WriteToLog("PoliceEquipment", $"Issued Pistol: {IssuedPistol.ModelName} to {Cop.Pedestrian.Handle}");
     }
     private void IssueHeavyWeapon()
     {
@@ -155,28 +155,28 @@ public class Loadout
         {
             HeavyToPick = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
         }
-        IssuedHeavy = Mod.DataMart.Weapons.GetWeapon(HeavyToPick.ModelName);
+        IssuedHeavy = DataMart.Instance.Weapons.GetWeapon(HeavyToPick.ModelName);
         IssuedHeavyWeapon = IssuedHeavy;
         if (IssuedHeavyWeapon == null)
         {
             return;
         }
         Cop.Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.ModelName, IssuedHeavy.AmmoAmount, true);
-        if (Mod.DataMart.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
+        if (DataMart.Instance.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
         {
             WeaponVariation MyVariation = HeavyToPick.MyVariation;
             HeavyVariation = MyVariation;
             MyVariation.ApplyWeaponVariation(Cop.Pedestrian, (uint)IssuedHeavy.Hash);
         }
-        Mod.Debug.WriteToLog("PoliceEquipment", $"Issued Heavy: {IssuedHeavy.ModelName} to {Cop.Pedestrian.Handle}");
+        Debug.Instance.WriteToLog("PoliceEquipment", $"Issued Heavy: {IssuedHeavy.ModelName} to {Cop.Pedestrian.Handle}");
     }
     private void SetUnarmed()
     {
         if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && (!IsSetUnarmed || NeedsWeaponCheck))
         {
-            if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+            if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
             {
-                Cop.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+                Cop.Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
             }
             if (Cop.Pedestrian.Inventory.EquippedWeapon != null)
             {
@@ -195,14 +195,14 @@ public class Loadout
     {
         if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && (!IsSetDeadly || NeedsWeaponCheck))
         {
-            if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+            if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
             {
-                Cop.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+                Cop.Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
             }
             if (!Cop.Pedestrian.Inventory.Weapons.Contains(IssuedPistol.ModelName))
             {
                 Cop.Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.ModelName, -1, true);
-                if (Mod.DataMart.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
+                if (DataMart.Instance.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
                 {
                     PistolVariation.ApplyWeaponVariation(Cop.Pedestrian, (uint)IssuedPistol.Hash);
                 }
@@ -227,9 +227,9 @@ public class Loadout
     {
         if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && (!IsSetLessLethal || NeedsWeaponCheck))
         {
-            if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+            if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
             {
-                Cop.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceTazerAccuracy;
+                Cop.Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceTazerAccuracy;
             }  
             if (!Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
@@ -252,14 +252,14 @@ public class Loadout
     {
         if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && (!IsSetDeadly || NeedsWeaponCheck))
         {
-            if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+            if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
             {
-                Cop.Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+                Cop.Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
             }
             if (!Cop.Pedestrian.Inventory.Weapons.Contains(IssuedPistol.ModelName))
             {
                 Cop.Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.ModelName, -1, true);
-                if (Mod.DataMart.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
+                if (DataMart.Instance.Settings.SettingsManager.Police.AllowPoliceWeaponVariations)
                 {
                     PistolVariation.ApplyWeaponVariation(Cop.Pedestrian, (uint)IssuedPistol.Hash);
                 }

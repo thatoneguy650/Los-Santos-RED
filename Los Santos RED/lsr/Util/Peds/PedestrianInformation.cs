@@ -17,9 +17,9 @@ public class PedestrianInformation
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
-                if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
+                if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
                     return WantedSpawnChance > 0;
                 else
                     return false;
@@ -34,9 +34,9 @@ public class PedestrianInformation
         {
             if (!CanCurrentlySpawn)
                 return 0;
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
-                if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
+                if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
                     return WantedSpawnChance;
                 else
                     return 0;

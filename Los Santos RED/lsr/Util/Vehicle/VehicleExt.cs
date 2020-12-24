@@ -266,11 +266,11 @@ namespace LSR.Vehicles
         public void UpdatePlate()//this might need to come out of here.... along with the two bools
         {
             HasUpdatedPlateType = true;
-            PlateType CurrentType = Mod.DataMart.PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle));
+            PlateType CurrentType = DataMart.Instance.PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle));
             string CurrentPlateNumber = Vehicle.LicensePlate;
             if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
             {
-                PlateType NewType = Mod.DataMart.PlateTypes.GetRandomPlateType();
+                PlateType NewType = DataMart.Instance.PlateTypes.GetRandomPlateType();
                 if (NewType != null)
                 {
                     string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
@@ -283,7 +283,7 @@ namespace LSR.Vehicles
                     NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle, NewType.Index);
                     OriginalLicensePlate.PlateType = NewType.Index;
                     CarPlate.PlateType = NewType.Index;
-                   // Mod.Debug.WriteToLog("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                   // Debug.Instance.WriteToLog("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }
         }
@@ -319,14 +319,14 @@ namespace LSR.Vehicles
 
             if (!HasAttemptedToLock)
             {
-                Mod.Debug.WriteToLog("AttemptToLock", $"Vehicle: {Vehicle.Handle}");
+                Debug.Instance.WriteToLog("AttemptToLock", $"Vehicle: {Vehicle.Handle}");
                 if (!Vehicle.HasOccupants)
                 {
                     if (Vehicle.SetLock((VehicleLockStatus)7) && !Vehicle.IsEngineOn)
                     {
                         HasAttemptedToLock = true;
                         Vehicle.MustBeHotwired = true;
-                        Mod.Debug.WriteToLog("AttemptToLock", $"Locked & Hotwired Vehicle: {Vehicle.Handle}");
+                        Debug.Instance.WriteToLog("AttemptToLock", $"Locked & Hotwired Vehicle: {Vehicle.Handle}");
                     }
                 }
             }
@@ -353,7 +353,7 @@ namespace LSR.Vehicles
             {
                 if (Vehicle.Exists())
                 {
-                    Mod.Debug.WriteToLog("ChangeLivery", string.Format("No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
+                    Debug.Instance.WriteToLog("ChangeLivery", string.Format("No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
                     Vehicle.Delete();
                 }
                 return;
@@ -367,7 +367,7 @@ namespace LSR.Vehicles
         }
         public void UpdateCopCarLivery()
         {
-            Agency AssignedAgency = Mod.DataMart.Agencies.GetAgency(Vehicle);
+            Agency AssignedAgency = DataMart.Instance.Agencies.GetAgency(Vehicle);
             UpdateCopCarLivery(AssignedAgency);
         }
         public void SetDriverWindow(bool RollDown)
@@ -400,12 +400,12 @@ namespace LSR.Vehicles
         //}
         //public void ToggleEngine(bool DesiredStatus)
         //{
-        //    Mod.Debug.WriteToLog("ToggleEngine", string.Format("Start {0}", Vehicle.IsEngineOn));
+        //    Debug.Instance.WriteToLog("ToggleEngine", string.Format("Start {0}", Vehicle.IsEngineOn));
         //    if (CanToggleEngine)
         //    {
         //        Vehicle.IsEngineOn = DesiredStatus;
         //    }
-        //    Mod.Debug.WriteToLog("ToggleEngine", string.Format("End {0}", Vehicle.IsEngineOn));
+        //    Debug.Instance.WriteToLog("ToggleEngine", string.Format("End {0}", Vehicle.IsEngineOn));
         //}
         public bool IsCar
         {

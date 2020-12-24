@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Util.Locations;
 using LSR.Vehicles;
 using Rage;
@@ -8,10 +9,18 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace LosSantosRED.lsr
+namespace Mod
 {
     public class World
     {
+        private static readonly Lazy<World> lazy =
+        new Lazy<World>(() => new World());
+
+        public static World Instance { get { return lazy.Value; } }
+
+        private World()
+        {
+        }
         private Civilians Civilians = new Civilians();
         private List<Blip> CreatedBlips;
         private Dispatcher Dispatcher = new Dispatcher();
@@ -42,9 +51,6 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Dispatch.DeleteChecking", Recall, 15,0),
                 new ModTask(500, "World.Dispatch.SpawnChecking", Dispatch, 15,1),
             };
-        }
-        public World()
-        {
         }
         public float ActiveDistance => Police.ActiveDistance;
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
@@ -106,7 +112,7 @@ namespace LosSantosRED.lsr
         public void AddBlipsToMap()
         {
             CreatedBlips = new List<Blip>();
-            foreach (GameLocation MyLocation in Mod.DataMart.Places.GetAllPlaces())
+            foreach (GameLocation MyLocation in DataMart.Instance.Places.GetAllPlaces())
             {
                 MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
                 myBlip.AddToMap();

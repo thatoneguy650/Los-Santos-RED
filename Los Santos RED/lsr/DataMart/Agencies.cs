@@ -37,20 +37,20 @@ public class Agencies
     public List<Agency> GetAgencies(Vector3 Position)
     {
         List<Agency> ToReturn = new List<Agency>();
-        Street StreetAtPosition = Mod.DataMart.Streets.GetStreet(Position);
-        if (StreetAtPosition != null && Mod.DataMart.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
+        Street StreetAtPosition = DataMart.Instance.Streets.GetStreet(Position);
+        if (StreetAtPosition != null && DataMart.Instance.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
         {
             ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn && x.SpawnsOnHighway));
         }
-        Zone CurrentZone = Mod.DataMart.Zones.GetZone(Position);
+        Zone CurrentZone = DataMart.Instance.Zones.GetZone(Position);
 
-        Agency ZoneAgency1 = Mod.DataMart.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName);
+        Agency ZoneAgency1 = DataMart.Instance.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName);
         if (ZoneAgency1 != null)
         {
             ToReturn.Add(ZoneAgency1); //Zone Jurisdiciton Random
         }
 
-        Agency CountyAgency1 = Mod.DataMart.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName);
+        Agency CountyAgency1 = DataMart.Instance.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName);
         if (CountyAgency1 != null)
         {
             ToReturn.Add(CountyAgency1); //Zone Jurisdiciton Random
@@ -62,7 +62,7 @@ public class Agencies
         }
         foreach (Agency ag in ToReturn)
         {
-            Mod.Debug.WriteToLog("Debugging", string.Format("Agencies At Pos: {0}", ag.Initials));
+            Debug.Instance.WriteToLog("Debugging", string.Format("Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
     }
@@ -82,10 +82,10 @@ public class Agencies
             List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
             if (ModelMatchAgencies.Count > 1)
             {
-                Zone ZoneFound = Mod.DataMart.Zones.GetZone(Cop.Position);
+                Zone ZoneFound = DataMart.Instance.Zones.GetZone(Cop.Position);
                 if (ZoneFound != null)
                 {
-                    foreach (Agency ZoneAgency in Mod.DataMart.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName))
+                    foreach (Agency ZoneAgency in DataMart.Instance.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName))
                     {
                         if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                             return ZoneAgency;
@@ -95,7 +95,7 @@ public class Agencies
             ToReturn = ModelMatchAgencies.FirstOrDefault();
             if (ToReturn == null)
             {
-                Mod.Debug.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} ped deleting", Cop.Model.Name));
+                Debug.Instance.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} ped deleting", Cop.Model.Name));
                 Cop.Delete();
             }
             return ToReturn;
@@ -111,10 +111,10 @@ public class Agencies
         List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
         if (ModelMatchAgencies.Count > 1)
         {
-            Zone ZoneFound = Mod.DataMart.Zones.GetZone(CopCar.Position);
+            Zone ZoneFound = DataMart.Instance.Zones.GetZone(CopCar.Position);
             if (ZoneFound != null)
             {
-                foreach (Agency ZoneAgency in Mod.DataMart.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName))
+                foreach (Agency ZoneAgency in DataMart.Instance.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName))
                 {
                     if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                         return ZoneAgency;
@@ -124,7 +124,7 @@ public class Agencies
         ToReturn = ModelMatchAgencies.FirstOrDefault();
         if (ToReturn == null)
         {
-            Mod.Debug.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} car deleting", CopCar.Model.Name));
+            Debug.Instance.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} car deleting", CopCar.Model.Name));
             CopCar.Delete();
         }
         return ToReturn;

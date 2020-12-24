@@ -17,9 +17,9 @@ public class Mugging
     {
         if (!IsMugging)
         {
-            if (Mod.Player.IsConsideredArmed && !Mod.Player.IsInVehicle)
+            if (Mod.Player.Instance.IsConsideredArmed && !Mod.Player.Instance.IsInVehicle)
             {
-                if (Game.LocalPlayer.Character.IsAiming && Mod.Player.CurrentWeapon.Category != WeaponCategory.Melee)
+                if (Game.LocalPlayer.Character.IsAiming && Mod.Player.Instance.CurrentWeapon.Category != WeaponCategory.Melee)
                 {
                     CheckArmedMugging();
                 }
@@ -35,7 +35,7 @@ public class Mugging
         Entity ArmedMuggingTargetPed = Game.LocalPlayer.GetFreeAimingTarget();
         if (ArmedMuggingTargetPed.Exists() && ArmedMuggingTargetPed is Ped)
         {
-            PedExt GTAPedTarget = Mod.World.GetCivilian(ArmedMuggingTargetPed.Handle);
+            PedExt GTAPedTarget = Mod.World.Instance.GetCivilian(ArmedMuggingTargetPed.Handle);
             if (GTAPedTarget != null)
             {
                 if (!GTAPedTarget.HasBeenMugged && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && GTAPedTarget.Pedestrian.IsAlive)
@@ -54,7 +54,7 @@ public class Mugging
     }
     private void CheckUnarmedMugging()
     {
-        PedExt GTAPedTarget = Mod.World.GetCivilian(Natives.GetTargettingHandle());
+        PedExt GTAPedTarget = Mod.World.Instance.GetCivilian(Natives.GetTargettingHandle());
         if (GTAPedTarget != null)
         {
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.Pedestrian.IsAlive)
@@ -132,7 +132,7 @@ public class Mugging
                 Vector3 MoneyPos = MuggingTarget.Pedestrian.Position.Around2D(0.5f, 1.5f);
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, RandomItems.MyRand.Next(15, 100), 1, false, true);
                 MuggingTarget.HasBeenMugged = true;
-                //MuggingTarget.AddCrime(Mod.Player.Violations.,MuggingTarget.Pedestrian.Position);
+                //MuggingTarget.AddCrime(Mod.Player.Instance.Violations.,MuggingTarget.Pedestrian.Position);
             }
             MuggingTarget.CanBeTasked = true;
             IsMugging = false;

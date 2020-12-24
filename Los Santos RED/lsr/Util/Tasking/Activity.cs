@@ -59,10 +59,10 @@ namespace LosSantosRED.lsr.Util.Tasking
                     Cop.Pedestrian.CurrentVehicle.IsSirenOn = false;
                     Cop.Pedestrian.CurrentVehicle.IsSirenSilent = false;
                 }
-                if (Mod.Player.IsWanted)
+                if (Mod.Player.Instance.IsWanted)
                 {
                     NativeFunction.CallByName<bool>("SET_PED_ALERTNESS", Cop.Pedestrian, 3);
-                    if (Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
+                    if (Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
                     {
                         Cop.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);//just help them incase they get confused
                     }
@@ -70,7 +70,7 @@ namespace LosSantosRED.lsr.Util.Tasking
                 CurrentTaskLoop = "None";
                 CurrentSubTaskLoop = "";
 
-                Mod.Debug.WriteToLog("Tasking", string.Format("     ClearedTasks: {0}", Cop.Pedestrian.Handle));
+                Debug.Instance.WriteToLog("Tasking", string.Format("     ClearedTasks: {0}", Cop.Pedestrian.Handle));
             }
 
         }
@@ -83,7 +83,7 @@ namespace LosSantosRED.lsr.Util.Tasking
         {
             get
             {
-                return Mod.Player.Investigations.Position != Vector3.Zero && Mod.Player.Investigations.Position != CurrentTaskedPosition;
+                return Mod.Player.Instance.Investigations.Position != Vector3.Zero && Mod.Player.Instance.Investigations.Position != CurrentTaskedPosition;
             }
         }
         public Investigate(Cop PedToAssign) : base(PedToAssign)
@@ -104,23 +104,23 @@ namespace LosSantosRED.lsr.Util.Tasking
         }
         private void UpdatePositionToSearch()
         {
-            CurrentTaskedPosition = Mod.Player.Investigations.Position;
+            CurrentTaskedPosition = Mod.Player.Instance.Investigations.Position;
             if (Cop.Pedestrian.IsInAnyVehicle(false))
             {
                 if (Cop.IsDriver)
                 {
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Mod.Player.Investigations.Position.X, Mod.Player.Investigations.Position.Y, Mod.Player.Investigations.Position.Z, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Mod.Player.Instance.Investigations.Position.X, Mod.Player.Instance.Investigations.Position.Y, Mod.Player.Instance.Investigations.Position.Z, Mod.Player.Instance.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, PositionOfInterest.X, PositionOfInterest.Y, PositionOfInterest.Z, 70f, 4 | 16 | 32 | 262144, 35f);
                 }
             }
             else
             {
-                NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.Pedestrian, Mod.Player.Investigations.Position.X, Mod.Player.Investigations.Position.Y, Mod.Player.Investigations.Position.Z, 500f, -1, 0f, 2f);
+                NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.Pedestrian, Mod.Player.Instance.Investigations.Position.X, Mod.Player.Instance.Investigations.Position.Y, Mod.Player.Instance.Investigations.Position.Z, 500f, -1, 0f, 2f);
             }
-            Mod.Debug.WriteToLog("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", Cop.Pedestrian.Handle, Mod.Player.CurrentPoliceResponse.CurrentResponse, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn));
+            Debug.Instance.WriteToLog("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", Cop.Pedestrian.Handle, Mod.Player.Instance.CurrentPoliceResponse.CurrentResponse, Mod.Player.Instance.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.Instance.CurrentPoliceResponse.ShouldSirenBeOn));
         }
         private void SetSiren()
         {
-            if (Cop.IsDriver && Cop.Pedestrian.CurrentVehicle != null && Cop.Pedestrian.CurrentVehicle.HasSiren && Mod.Player.CurrentPoliceResponse.ShouldSirenBeOn)
+            if (Cop.IsDriver && Cop.Pedestrian.CurrentVehicle != null && Cop.Pedestrian.CurrentVehicle.HasSiren && Mod.Player.Instance.CurrentPoliceResponse.ShouldSirenBeOn)
             {
                 if (!Cop.Pedestrian.CurrentVehicle.IsSirenOn)
                 {
@@ -138,13 +138,13 @@ namespace LosSantosRED.lsr.Util.Tasking
                 {
                     if (Cop.Pedestrian.IsInAnyVehicle(false) && Cop.Pedestrian.CurrentVehicle.Exists())
                     {
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Mod.Player.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Mod.Player.Instance.CurrentPoliceResponse.ResponseDrivingSpeed, 4 | 16 | 32 | 262144, 10f);
                     }
                     else
                     {
                         Cop.Pedestrian.Tasks.Wander();
                     }
-                    Mod.Debug.WriteToLog("Tasking", string.Format("     Started Investigation Wander: {0}", Cop.Pedestrian.Handle));
+                    Debug.Instance.WriteToLog("Tasking", string.Format("     Started Investigation Wander: {0}", Cop.Pedestrian.Handle));
                 }
             }
         }
@@ -163,7 +163,7 @@ namespace LosSantosRED.lsr.Util.Tasking
         {
             get
             {
-                if (Mod.Player.IsInVehicle)
+                if (Mod.Player.Instance.IsInVehicle)
                 {
                     if (Cop.IsInVehicle)
                     {
@@ -191,7 +191,7 @@ namespace LosSantosRED.lsr.Util.Tasking
         {
             get
             {
-                if (Cop.DistanceToPlayer <= Mod.World.ActiveDistance)
+                if (Cop.DistanceToPlayer <= Mod.World.Instance.ActiveDistance)
                     return true;
                 else
                     return false;
@@ -205,7 +205,7 @@ namespace LosSantosRED.lsr.Util.Tasking
         {
             if (WithinChaseDistance)
             {
-                if (Mod.World.AnyPoliceRecentlySeenPlayer && !Mod.Player.AreStarsGreyedOut)
+                if (Mod.World.Instance.AnyPoliceRecentlySeenPlayer && !Mod.Player.Instance.AreStarsGreyedOut)
                 {
                     if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
                     {
@@ -243,7 +243,7 @@ namespace LosSantosRED.lsr.Util.Tasking
                     {
                         if (Cop.DistanceToPlayer <= 25f || Cop.RecentlySeenPlayer)
                         {
-                            if (Mod.Player.CurrentPoliceResponse.IsDeadlyChase && !Mod.Player.IsAttemptingToSurrender)
+                            if (Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase && !Mod.Player.Instance.IsAttemptingToSurrender)
                             {
                                 Kill();
                             }
@@ -291,8 +291,8 @@ namespace LosSantosRED.lsr.Util.Tasking
         private void VehicleChase_Start()
         {
             Cop.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = Mod.World.PlacePoliceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
-            if (Mod.Player.IsInVehicle)
+            Vector3 WantedCenter = Mod.World.Instance.PlacePoliceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            if (Mod.Player.Instance.IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character); //NativeFunction.CallByName<bool>("TASK_VEHICLE_FOLLOW", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 22f, 4 | 16 | 32 | 262144, 8f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
             }
@@ -302,19 +302,19 @@ namespace LosSantosRED.lsr.Util.Tasking
             }
             CurrentTaskedPosition = WantedCenter;
             CurrentTaskLoop = "VehicleChase";
-            Mod.Debug.WriteToLog("Tasking", string.Format("     Started VehicleChase: {0}", Cop.Pedestrian.Handle));
+            Debug.Instance.WriteToLog("Tasking", string.Format("     Started VehicleChase: {0}", Cop.Pedestrian.Handle));
         }
         private void VehicleChase_Normal()
         {
-            Vector3 WantedCenter = Mod.World.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.Instance.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 10f)
             {
-                if (!Mod.Player.IsInVehicle)
+                if (!Mod.Player.Instance.IsInVehicle)
                 {
                     if (Cop.Pedestrian.CurrentVehicle.Exists())
                     {
                         NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
-                        Mod.Debug.WriteToLog("Tasking", string.Format("     Updated VehicleChase: {0}", Cop.Pedestrian.Handle));
+                        Debug.Instance.WriteToLog("Tasking", string.Format("     Updated VehicleChase: {0}", Cop.Pedestrian.Handle));
                     }
                 }
                 CurrentTaskedPosition = WantedCenter;
@@ -335,7 +335,7 @@ namespace LosSantosRED.lsr.Util.Tasking
                 NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character, -50f, 50f, 60f);
                 CurrentTaskLoop = "HeliChase";
                 GameTimeLastTasked = Game.GameTime;
-                Mod.Debug.WriteToLog("Tasking", string.Format("     Started HeliChase: {0}", Cop.Pedestrian.Handle));
+                Debug.Instance.WriteToLog("Tasking", string.Format("     Started HeliChase: {0}", Cop.Pedestrian.Handle));
             }
         }
         private void CarJack()
@@ -344,11 +344,11 @@ namespace LosSantosRED.lsr.Util.Tasking
             {
                 if (Cop.Pedestrian.Exists())
                 {
-                    if (Mod.Player.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                    if (Mod.Player.Instance.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists())
                     {
                         NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Cop.Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2f, 9);
                     }
-                    Mod.Debug.WriteToLog("Tasking", string.Format("     Started CarJack: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
+                    Debug.Instance.WriteToLog("Tasking", string.Format("     Started CarJack: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
                 }
             }
             CurrentTaskLoop = "CarJack";
@@ -377,11 +377,11 @@ namespace LosSantosRED.lsr.Util.Tasking
             NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_DROP_FROM_HEIGHT", Cop.Pedestrian, true);
             Cop.Pedestrian.BlockPermanentEvents = true;
             Cop.Pedestrian.KeepTasks = true;
-            if (Mod.Player.WantedLevel >= 2)
+            if (Mod.Player.Instance.WantedLevel >= 2)
                 NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.Pedestrian, MoveRate);
             CurrentTaskLoop = "FootChase";
             CurrentSubTaskLoop = "";
-            Mod.Debug.WriteToLog("Tasking", string.Format("     Started FootChase: {0}", Cop.Pedestrian.Handle));
+            Debug.Instance.WriteToLog("Tasking", string.Format("     Started FootChase: {0}", Cop.Pedestrian.Handle));
             FootChase_Normal();
         }
         private void FootChase_Normal()
@@ -397,9 +397,9 @@ namespace LosSantosRED.lsr.Util.Tasking
             //Can be used to get the actual task assigned instead of using the subtask strings?
 
 
-            if (CurrentSubTaskLoop != "Shoot" && (!Mod.Player.IsBusted && !Mod.Player.IsAttemptingToSurrender) && Cop.DistanceToPlayer <= 7f)
+            if (CurrentSubTaskLoop != "Shoot" && (!Mod.Player.Instance.IsBusted && !Mod.Player.Instance.IsAttemptingToSurrender) && Cop.DistanceToPlayer <= 7f)
             {
-                Mod.Debug.WriteToLog("Tasking", string.Format("     FootChase Shoot: {0}", Cop.Pedestrian.Handle));
+                Debug.Instance.WriteToLog("Tasking", string.Format("     FootChase Shoot: {0}", Cop.Pedestrian.Handle));
                 CurrentSubTaskLoop = "Shoot";
                 unsafe
                 {
@@ -412,9 +412,9 @@ namespace LosSantosRED.lsr.Util.Tasking
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
             }
-            else if (CurrentSubTaskLoop != "Aim" && (Mod.Player.IsBusted || Mod.Player.IsAttemptingToSurrender) && Cop.DistanceToPlayer <= 7f)
+            else if (CurrentSubTaskLoop != "Aim" && (Mod.Player.Instance.IsBusted || Mod.Player.Instance.IsAttemptingToSurrender) && Cop.DistanceToPlayer <= 7f)
             {
-                Mod.Debug.WriteToLog("Tasking", string.Format("     FootChase Aim: {0}", Cop.Pedestrian.Handle));
+                Debug.Instance.WriteToLog("Tasking", string.Format("     FootChase Aim: {0}", Cop.Pedestrian.Handle));
                 CurrentSubTaskLoop = "Aim";
                 unsafe
                 {
@@ -429,7 +429,7 @@ namespace LosSantosRED.lsr.Util.Tasking
             }
             else if (CurrentSubTaskLoop != "GoTo" && Cop.DistanceToPlayer >= 15f)
             {
-                Mod.Debug.WriteToLog("Tasking", string.Format("     FootChase GoTo: {0}", Cop.Pedestrian.Handle));
+                Debug.Instance.WriteToLog("Tasking", string.Format("     FootChase GoTo: {0}", Cop.Pedestrian.Handle));
                 CurrentSubTaskLoop = "GoTo";
                 unsafe
                 {
@@ -460,7 +460,7 @@ namespace LosSantosRED.lsr.Util.Tasking
         private void GoToLastSeen_Start()
         {
             Cop.Pedestrian.BlockPermanentEvents = false;
-            Vector3 WantedCenter = Mod.World.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.Instance.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (Cop.IsInVehicle && Cop.Pedestrian.CurrentVehicle != null)
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
@@ -472,11 +472,11 @@ namespace LosSantosRED.lsr.Util.Tasking
             CurrentTaskedPosition = WantedCenter;
             NearWantedCenterThisWanted = false;
             CurrentTaskLoop = "GoToLastSeen";
-            Mod.Debug.WriteToLog("Tasking", string.Format("     Started GoToLastSeen: {0}", Cop.Pedestrian.Handle));
+            Debug.Instance.WriteToLog("Tasking", string.Format("     Started GoToLastSeen: {0}", Cop.Pedestrian.Handle));
         }
         private void GoToLastSeen_Normal()
         {
-            Vector3 WantedCenter = Mod.World.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            Vector3 WantedCenter = Mod.World.Instance.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (!NearWantedCenterThisWanted)
             {
                 if (CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 5f)
@@ -491,7 +491,7 @@ namespace LosSantosRED.lsr.Util.Tasking
                     }
                     CurrentTaskedPosition = WantedCenter;
                     CurrentTaskLoop = "GoToLastSeen";
-                    Mod.Debug.WriteToLog("Tasking", string.Format("     Updated GoToLastSeen: {0}", Cop.Pedestrian.Handle));
+                    Debug.Instance.WriteToLog("Tasking", string.Format("     Updated GoToLastSeen: {0}", Cop.Pedestrian.Handle));
                 }
                 if (Cop.DistanceToLastSeen <= 25f)
                 {
@@ -504,7 +504,7 @@ namespace LosSantosRED.lsr.Util.Tasking
                     {
                         Cop.Pedestrian.Tasks.Wander();
                     }
-                    Mod.Debug.WriteToLog("Tasking", string.Format("     Post GoToLastSeen: {0}", Cop.Pedestrian.Handle));
+                    Debug.Instance.WriteToLog("Tasking", string.Format("     Post GoToLastSeen: {0}", Cop.Pedestrian.Handle));
                 }
             }
         }
@@ -524,11 +524,11 @@ namespace LosSantosRED.lsr.Util.Tasking
         }
         private void HeliGoToLastSeen_Start()
         {
-            Cop ClosestCop = Mod.World.PoliceList.Where(x => x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
+            Cop ClosestCop = Mod.World.Instance.PoliceList.Where(x => x.IsDriver).OrderBy(x => x.DistanceToLastSeen).FirstOrDefault();
             if (ClosestCop == null)
                 return;
             NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);
-            Mod.Debug.WriteToLog("Tasking", string.Format("     Heli Lost you following closest cop: {0}", Cop.Pedestrian.Handle));
+            Debug.Instance.WriteToLog("Tasking", string.Format("     Heli Lost you following closest cop: {0}", Cop.Pedestrian.Handle));
             NearWantedCenterThisWanted = false;
             CurrentTaskLoop = "HeliGoToLastSeen";
         }
@@ -552,7 +552,7 @@ namespace LosSantosRED.lsr.Util.Tasking
             ClearTasks();
             CurrentTaskLoop = "Kill";
             GameTimeLastTasked = Game.GameTime;
-            Mod.Debug.WriteToLog("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
+            Debug.Instance.WriteToLog("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
         }
     }
     public class Kill : Activity
@@ -577,7 +577,7 @@ namespace LosSantosRED.lsr.Util.Tasking
             ClearTasks();
             CurrentTaskLoop = "Kill";
             GameTimeLastTasked = Game.GameTime;
-            Mod.Debug.WriteToLog("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
+            Debug.Instance.WriteToLog("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
         }
     }
 }

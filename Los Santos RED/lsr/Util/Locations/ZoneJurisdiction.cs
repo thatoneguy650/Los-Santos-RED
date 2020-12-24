@@ -17,14 +17,14 @@ public class ZoneJurisdiction
     {
         get
         {
-            return Mod.DataMart.Zones.GetZone(ZoneInternalGameName);
+            return DataMart.Instance.Zones.GetZone(ZoneInternalGameName);
         }
     }
     public Agency GameAgency
     {
         get
         {
-            return Mod.DataMart.Agencies.GetAgency(AgencyInitials);
+            return DataMart.Instance.Agencies.GetAgency(AgencyInitials);
         }
     }
     public ZoneJurisdiction()
@@ -43,7 +43,7 @@ public class ZoneJurisdiction
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
                 return WantedSpawnChance > 0;
             else
                 return AmbientSpawnChance > 0;
@@ -53,7 +53,7 @@ public class ZoneJurisdiction
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
                 return WantedSpawnChance;
             else
                 return AmbientSpawnChance;

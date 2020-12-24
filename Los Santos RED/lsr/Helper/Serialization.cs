@@ -20,7 +20,7 @@ namespace LosSantosRED.lsr.Helper
             serializer.Serialize(writer, paramList);
             writer.Close();
             File.WriteAllText(FileName, doc.ToString());
-            Mod.Debug.WriteToLog("Settings ReadConfig", string.Format("Using Default Data {0}", FileName));
+            Debug.Instance.WriteToLog("Settings ReadConfig", string.Format("Using Default Data {0}", FileName));
         }
         public static List<T> DeserializeParams<T>(string FileName)
         {
@@ -29,7 +29,7 @@ namespace LosSantosRED.lsr.Helper
             XmlReader reader = doc.CreateReader();
             List<T> result = (List<T>)serializer.Deserialize(reader);
             reader.Close();
-            Mod.Debug.WriteToLog("Settings ReadConfig", string.Format("Using Saved Data {0}", FileName));
+            Debug.Instance.WriteToLog("Settings ReadConfig", string.Format("Using Saved Data {0}", FileName));
             return result;
         }
     }

@@ -107,7 +107,7 @@ public class Investigations
     }
     private void InvestigationTick()
     {
-        if (Mod.Player.IsWanted)
+        if (Mod.Player.Instance.IsWanted)
         {
             IsActive = false;
         }
@@ -115,9 +115,9 @@ public class Investigations
         {
             IsActive = false;
         }
-        else if (!IsActive && Mod.Player.CurrentPoliceResponse.HasReportedCrimes)
+        else if (!IsActive && Mod.Player.Instance.CurrentPoliceResponse.HasReportedCrimes)
         {
-            StartInvestigation(Mod.Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime, Mod.Player.CurrentPoliceResponse.CurrentCrimes.PoliceHaveDescription);
+            StartInvestigation(Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime, Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.PoliceHaveDescription);
         }
 
         if (PrevPosition != Position)
@@ -128,15 +128,15 @@ public class Investigations
         {
             PoliceInInvestigationModeChanged();
         }
-        if (Mod.Player.IsNotWanted && IsActive && NearInvestigationPosition && HaveDescription && Mod.World.AnyPoliceCanRecognizePlayer && Mod.Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
+        if (Mod.Player.Instance.IsNotWanted && IsActive && NearInvestigationPosition && HaveDescription && Mod.World.Instance.AnyPoliceCanRecognizePlayer && Mod.Player.Instance.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
         {
-            Mod.Player.CurrentPoliceResponse.ApplyReportedCrimes();
+            Mod.Player.Instance.CurrentPoliceResponse.ApplyReportedCrimes();
         }
     }
     private void InvestigationPositionChanged()
     {
         UpdateInvestigationUI();
-        Mod.Debug.WriteToLog("ValueChecker", string.Format("InvestigationPosition Changed to: {0}", Position));
+        Debug.Instance.WriteToLog("ValueChecker", string.Format("InvestigationPosition Changed to: {0}", Position));
         PrevPosition = Position;
     }
     private void PoliceInInvestigationModeChanged()
@@ -152,14 +152,14 @@ public class Investigations
             {
                 blip.Delete();
             }
-            if (Mod.Player.IsNotWanted)
+            if (Mod.Player.Instance.IsNotWanted)
             {
                 HaveDescription = false;
             }
             GameTimeStartedInvestigation = 0;
             GameTimeLastInvestigationExpired = Game.GameTime;
         }
-        Mod.Debug.WriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", IsActive));
+        Debug.Instance.WriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", IsActive));
         PrevIsActive = IsActive;
     }
     private void UpdateInvestigationUI()
@@ -169,7 +169,7 @@ public class Investigations
     }
     private void UpdateInvestigationPosition()
     {
-        Mod.DataMart.Streets.GetStreetPositionandHeading(Position, out Vector3 SpawnLocation, out float Heading, false);
+        DataMart.Instance.Streets.GetStreetPositionandHeading(Position, out Vector3 SpawnLocation, out float Heading, false);
         if (SpawnLocation != Vector3.Zero)
         {
             Position = SpawnLocation;
@@ -202,7 +202,7 @@ public class Investigations
                 Alpha = 0.25f
             };
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)blip.Handle, true);
-            Mod.World.AddBlip(blip);
+            Mod.World.Instance.AddBlip(blip);
         }
         if (blip.Exists())
         {

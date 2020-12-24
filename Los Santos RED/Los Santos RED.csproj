@@ -118,7 +118,7 @@
     <Compile Include="lsr\Util\Peds\BodyLocation.cs" />
     <Compile Include="lsr\Util\Peds\Bone.cs" />
     <Compile Include="lsr\Util\Tasking\Activity.cs" />
-    <Compile Include="Mod.cs" />
+    <Compile Include="ModController.cs" />
     <Compile Include="lsr\Player.cs" />
     <Compile Include="lsr\Util\Peds\Loadout.cs" />
     <Compile Include="lsr\Util\Peds\PedConfigFlags.cs" />

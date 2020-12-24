@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mod;
 
 public class VehicleInformation
 {
@@ -51,7 +52,9 @@ public class VehicleInformation
         get
         {
             if (WantedSpawnChance > 0)
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -61,7 +64,9 @@ public class VehicleInformation
         get
         {
             if (AmbientSpawnChance > 0)
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -70,24 +75,29 @@ public class VehicleInformation
     {
         get
         {
-            if (IsHelicopter && Mod.World.PoliceHelicoptersCount >= Mod.DataMart.Settings.SettingsManager.Police.HelicopterLimit)
+            if (IsHelicopter && Mod.World.Instance.PoliceHelicoptersCount >= DataMart.Instance.Settings.SettingsManager.Police.HelicopterLimit)
             {
                 return false;
             }
-            else if (IsBoat && Mod.World.PoliceBoatsCount >= Mod.DataMart.Settings.SettingsManager.Police.BoatLimit)
+            else if (IsBoat && Mod.World.Instance.PoliceBoatsCount >= DataMart.Instance.Settings.SettingsManager.Police.BoatLimit)
             {
                 return false;
             }
-
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
-                if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
+                if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
+                {
                     return CanSpawnWanted;
+                }
                 else
+                {
                     return false;
+                }
             }
             else
+            {
                 return CanSpawnAmbient;
+            }
         }
     }
     public int CurrentSpawnChance
@@ -95,16 +105,24 @@ public class VehicleInformation
         get
         {
             if (!CanCurrentlySpawn)
-                return 0;
-            if (Mod.Player.IsWanted)
             {
-                if (Mod.Player.WantedLevel >= MinWantedLevelSpawn && Mod.Player.WantedLevel <= MaxWantedLevelSpawn)
+                return 0;
+            }
+            if (Mod.Player.Instance.IsWanted)
+            {
+                if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
+                {
                     return WantedSpawnChance;
+                }
                 else
+                {
                     return 0;
+                }
             }
             else
+            {
                 return AmbientSpawnChance;
+            }
         }
     }
     public VehicleInformation()

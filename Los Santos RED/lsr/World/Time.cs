@@ -54,7 +54,7 @@ public class Time
     }
     public void UnpauseTime()
     {
-        Mod.Debug.WriteToLog("Clock", string.Format("Unpaused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
+        Debug.Instance.WriteToLog("Clock", string.Format("Unpaused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
         IsPaused = false;
 
 
@@ -67,7 +67,7 @@ public class Time
                 GameFiber.Yield();
             }
         }, "UnPauseTime");
-        Mod.Debug.GameFibers.Add(UnPauseTime);
+        Debug.Instance.GameFibers.Add(UnPauseTime);
 
     }
     private void StoreTime()
@@ -75,7 +75,7 @@ public class Time
         StoredClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
         StoredClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
         StoredClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-        Mod.Debug.WriteToLog("Clock", string.Format("Paused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
+        Debug.Instance.WriteToLog("Clock", string.Format("Paused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
     }
     private void SetToStoredTime()
     {

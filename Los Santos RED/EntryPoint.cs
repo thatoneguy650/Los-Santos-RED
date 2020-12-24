@@ -5,6 +5,7 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
 public static class EntryPoint
 {
+    public static ModController ModController { get; set; }
     public static void Main()
     {
         while (Game.IsLoading)
@@ -12,13 +13,15 @@ public static class EntryPoint
             GameFiber.Yield();
         }
 
-        Mod.Start();
+        ModController = new ModController();
+        ModController.Start();
 
         while (true)
         {
-            if (!Mod.IsRunning && Game.IsKeyDown(Keys.F10))
+            if (!ModController.IsRunning && Game.IsKeyDown(Keys.F10))
             {
-                Mod.Start();
+                ModController = new ModController();
+                ModController.Start();
             }
             GameFiber.Yield();
         }

@@ -182,7 +182,7 @@ namespace LosSantosRED.lsr
                     }
                     else
                     {
-                        if (ToAnnounce.Priority <= HighestCivilianReportedPriority && !Mod.Player.IsWanted)
+                        if (ToAnnounce.Priority <= HighestCivilianReportedPriority && !Mod.Player.Instance.IsWanted)
                         {
                             AddToQueue(ToAnnounce, reportInformation);
                         }
@@ -206,7 +206,7 @@ namespace LosSantosRED.lsr
         }
         public void Tick()
         {
-            if (Mod.DataMart.Settings.SettingsManager.Police.DispatchAudio)
+            if (DataMart.Instance.Settings.SettingsManager.Police.DispatchAudio)
             {
                 CheckDispatch();
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
@@ -237,7 +237,7 @@ namespace LosSantosRED.lsr
                         }
                         ExecutingQueue = false;
                     }, "PlayDispatchQueue");
-                    Mod.Debug.GameFibers.Add(PlayDispatchQueue);
+                    Debug.Instance.GameFibers.Add(PlayDispatchQueue);
                 }
             }
         }
@@ -306,7 +306,7 @@ namespace LosSantosRED.lsr
         }
         private void AddRapSheet(DispatchEvent dispatchEvent)
         {
-            dispatchEvent.NotificationText = "Wanted For:" + Mod.Player.CurrentPoliceResponse.CurrentCrimes.PrintCrimes();
+            dispatchEvent.NotificationText = "Wanted For:" + Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.PrintCrimes();
         }
         private void AddRequestAirSupport(DispatchEvent dispatchEvent)
         {
@@ -390,10 +390,10 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Street MyStreet = Mod.Player.CurrentStreet;
+            Street MyStreet = Mod.Player.Instance.CurrentStreet;
             if (MyStreet != null)
             {
-                string StreetAudio = Mod.DataMart.StreetScannerAudio.GetAudio(MyStreet.Name);
+                string StreetAudio = DataMart.Instance.StreetScannerAudio.GetAudio(MyStreet.Name);
                 if (StreetAudio != "")
                 {
                     dispatchEvent.SoundsToPlay.Add(new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }.PickRandom());
@@ -402,12 +402,12 @@ namespace LosSantosRED.lsr
                     dispatchEvent.NotificationText += "~n~~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
                     dispatchEvent.HasStreetAudio = true;
 
-                    if (Mod.Player.CurrentCrossStreet != null)
+                    if (Mod.Player.Instance.CurrentCrossStreet != null)
                     {
-                        Street MyCrossStreet = Mod.Player.CurrentCrossStreet;
+                        Street MyCrossStreet = Mod.Player.Instance.CurrentCrossStreet;
                         if (MyCrossStreet != null)
                         {
-                            string CrossStreetAudio = Mod.DataMart.StreetScannerAudio.GetAudio(MyCrossStreet.Name);
+                            string CrossStreetAudio = DataMart.Instance.StreetScannerAudio.GetAudio(MyCrossStreet.Name);
                             if (CrossStreetAudio != "")
                             {
                                 dispatchEvent.SoundsToPlay.Add(new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }.PickRandom());
@@ -430,7 +430,7 @@ namespace LosSantosRED.lsr
             else
             {
                 ToAdd.LatestInformation = ToCallIn;
-                Mod.Debug.WriteToLog("ScannerScript", ToAdd.Name);
+                Debug.Instance.WriteToLog("ScannerScript", ToAdd.Name);
                 DispatchQueue.Add(ToAdd);
             }
         }
@@ -440,7 +440,7 @@ namespace LosSantosRED.lsr
             if (Existing == null)
             {
                 DispatchQueue.Add(ToAdd);
-                Mod.Debug.WriteToLog("ScannerScript", ToAdd.Name);
+                Debug.Instance.WriteToLog("ScannerScript", ToAdd.Name);
             }
         }
         private void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate)
@@ -463,13 +463,13 @@ namespace LosSantosRED.lsr
                 Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
                 string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
                 int ClassInt = VehicleToDescribe.ClassInt();// Vehicles.VehicleManager.ClassInt(VehicleToDescribe);
-                string ClassName = Mod.DataMart.VehicleScannerAudio.ClassName(ClassInt);
+                string ClassName = DataMart.Instance.VehicleScannerAudio.ClassName(ClassInt);
                 string ModelName = VehicleToDescribe.ModelName();// Vehicles.VehicleManager.ModelName(VehicleToDescribe);
 
-                string ColorAudio = Mod.DataMart.VehicleScannerAudio.GetColorAudio(CarColor);
-                string MakeAudio = Mod.DataMart.VehicleScannerAudio.GetMakeAudio(MakeName);
-                string ClassAudio = Mod.DataMart.VehicleScannerAudio.GetClassAudio(ClassInt);
-                string ModelAudio = Mod.DataMart.VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
+                string ColorAudio = DataMart.Instance.VehicleScannerAudio.GetColorAudio(CarColor);
+                string MakeAudio = DataMart.Instance.VehicleScannerAudio.GetMakeAudio(MakeName);
+                string ClassAudio = DataMart.Instance.VehicleScannerAudio.GetClassAudio(ClassInt);
+                string ModelAudio = DataMart.Instance.VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
 
                 if (ColorAudio != "")
                 {
@@ -501,12 +501,12 @@ namespace LosSantosRED.lsr
                 {
                     AddAudioSet(dispatchEvent, LicensePlateSet.PickRandom());
                     string LicensePlateText = VehicleToDescribe.OriginalLicensePlate.PlateNumber;
-                    dispatchEvent.SoundsToPlay.AddRange(Mod.DataMart.VehicleScannerAudio.GetPlateAudio(LicensePlateText));
+                    dispatchEvent.SoundsToPlay.AddRange(DataMart.Instance.VehicleScannerAudio.GetPlateAudio(LicensePlateText));
                     dispatchEvent.Subtitles += " ~s~" + LicensePlateText + "~s~";
                     dispatchEvent.NotificationText += " ~s~Plate: " + LicensePlateText + "~s~";
                 }
 
-                Mod.Debug.WriteToLog("ScannerScript", string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.Vehicle.Model.Name));
+                Debug.Instance.WriteToLog("ScannerScript", string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.Vehicle.Model.Name));
             }
 
         }
@@ -652,10 +652,10 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Zone MyZone = Mod.DataMart.Zones.GetZone(Mod.Player.CurrentPosition);
+            Zone MyZone = DataMart.Instance.Zones.GetZone(Mod.Player.Instance.CurrentPosition);
             if (MyZone != null)
             {
-                string ScannerAudio = Mod.DataMart.ZoneScannerAudio.GetAudio(MyZone.InternalGameName);
+                string ScannerAudio = DataMart.Instance.ZoneScannerAudio.GetAudio(MyZone.InternalGameName);
                 if (ScannerAudio != "")
                 {
                     dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
@@ -732,11 +732,11 @@ namespace LosSantosRED.lsr
                 if (DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.PlateNumber == DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.PlateNumber)
                 {
                     DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.IsWanted = true;
-                    Mod.Debug.WriteToLog("ScannerScript", "MarkedAsStolen Current Plate");
+                    Debug.Instance.WriteToLog("ScannerScript", "MarkedAsStolen Current Plate");
                 }
                 else
                 {
-                    Mod.Debug.WriteToLog("ScannerScript", "MarkedAsStolen");
+                    Debug.Instance.WriteToLog("ScannerScript", "MarkedAsStolen");
                 }
 
             }
@@ -748,23 +748,23 @@ namespace LosSantosRED.lsr
             {
                 AddLethalForce(EventToPlay);
             }
-            if (Mod.Player.CurrentPoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
+            if (Mod.Player.Instance.CurrentPoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
             {
                 AddWeaponsFree(EventToPlay);
             }
-            if (Mod.World.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
+            if (Mod.World.Instance.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
             {
                 AddRequestAirSupport(EventToPlay);
             }
-            if (DispatchToPlay.IncludeDrivingSpeed && Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.Exists())
+            if (DispatchToPlay.IncludeDrivingSpeed && Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.Exists())
             {
-                AddSpeed(EventToPlay, Mod.Player.CurrentVehicle.Vehicle.Speed);
+                AddSpeed(EventToPlay, Mod.Player.Instance.CurrentVehicle.Vehicle.Speed);
             }
             if (DispatchToPlay.LocationDescription != LocationSpecificity.Nothing)
             {
                 AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
             }
-            if (Mod.Player.Investigations.HaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
+            if (Mod.Player.Instance.Investigations.HaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
             {
                 AddHaveDescription(EventToPlay);
             }
@@ -784,86 +784,86 @@ namespace LosSantosRED.lsr
         }
         private void CheckDispatch()
         {
-            if (Mod.Player.IsWanted && Mod.World.AnyPoliceSeenPlayerCurrentWanted && Mod.Player.IsAliveAndFree)
+            if (Mod.Player.Instance.IsWanted && Mod.World.Instance.AnyPoliceSeenPlayerCurrentWanted && Mod.Player.Instance.IsAliveAndFree)
             {
-                if (!RequestBackup.HasRecentlyBeenPlayed && Mod.Player.CurrentPoliceResponse.RecentlyRequestedBackup)
+                if (!RequestBackup.HasRecentlyBeenPlayed && Mod.Player.Instance.CurrentPoliceResponse.RecentlyRequestedBackup)
                 {
-                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.PlacePoliceLastSeenPlayer));
+                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Mod.World.Instance.PlacePoliceLastSeenPlayer));
                 }
-                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && Mod.World.AnyArmyUnitsSpawned)
+                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && Mod.World.Instance.AnyArmyUnitsSpawned)
                 {
                     AddToQueue(RequestMilitaryUnits);
                 }
-                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && Mod.World.AnyNooseUnitsSpawned)
+                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && Mod.World.Instance.AnyNooseUnitsSpawned)
                 {
                     AddToQueue(RequestNOOSEUnits);
                 }
-                if (!ReportedWeaponsFree & !WeaponsFree.HasBeenPlayedThisWanted && Mod.Player.CurrentPoliceResponse.IsWeaponsFree)
+                if (!ReportedWeaponsFree & !WeaponsFree.HasBeenPlayedThisWanted && Mod.Player.Instance.CurrentPoliceResponse.IsWeaponsFree)
                 {
                     AddToQueue(WeaponsFree);
                 }
-                if (!ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && Mod.World.AnyHelicopterUnitsSpawned)
+                if (!ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && Mod.World.Instance.AnyHelicopterUnitsSpawned)
                 {
                     AddToQueue(RequestAirSupport);
                 }
-                if (!ReportedLethalForceAuthorized && !LethalForceAuthorized.HasBeenPlayedThisWanted && Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
+                if (!ReportedLethalForceAuthorized && !LethalForceAuthorized.HasBeenPlayedThisWanted && Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
                 {
                     AddToQueue(LethalForceAuthorized);
                 }
-                if (!SuspectArrested.HasRecentlyBeenPlayed && Mod.Player.RecentlyBusted && Mod.World.AnyPoliceCanSeePlayer)
+                if (!SuspectArrested.HasRecentlyBeenPlayed && Mod.Player.Instance.RecentlyBusted && Mod.World.Instance.AnyPoliceCanSeePlayer)
                 {
                     AddToQueue(SuspectArrested);
                 }
-                if (!ChangedVehicles.HasRecentlyBeenPlayed && Mod.Player.PoliceRecentlyNoticedVehicleChange && Mod.Player.CurrentVehicle != null && !Mod.Player.CurrentVehicle.HasBeenDescribedByDispatch)
+                if (!ChangedVehicles.HasRecentlyBeenPlayed && Mod.Player.Instance.PoliceRecentlyNoticedVehicleChange && Mod.Player.Instance.CurrentVehicle != null && !Mod.Player.Instance.CurrentVehicle.HasBeenDescribedByDispatch)
                 {
-                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.PlacePoliceLastSeenPlayer) { VehicleSeen = Mod.Player.CurrentVehicle });
+                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Mod.World.Instance.PlacePoliceLastSeenPlayer) { VehicleSeen = Mod.Player.Instance.CurrentVehicle });
                 }
-                if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && Mod.Player.RecentlyAppliedWantedStats)
+                if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && Mod.Player.Instance.RecentlyAppliedWantedStats)
                 {
-                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.PlacePoliceLastSeenPlayer) { VehicleSeen = Mod.Player.CurrentVehicle });
+                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Mod.World.Instance.PlacePoliceLastSeenPlayer) { VehicleSeen = Mod.Player.Instance.CurrentVehicle });
                 }
 
-                if (!Mod.Player.IsBusted && !Mod.Player.IsDead)
+                if (!Mod.Player.Instance.IsBusted && !Mod.Player.Instance.IsDead)
                 {
-                    if (!LostVisual.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyGreyedOut && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 45000 && !Mod.World.AnyCopsNearPlayer)
+                    if (!LostVisual.HasRecentlyBeenPlayed && Mod.Player.Instance.StarsRecentlyGreyedOut && Mod.Player.Instance.CurrentPoliceResponse.HasBeenWantedFor > 45000 && !Mod.World.Instance.AnyCopsNearPlayer)
                     {
-                        AddToQueue(LostVisual, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.PlacePoliceLastSeenPlayer));
+                        AddToQueue(LostVisual, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Mod.World.Instance.PlacePoliceLastSeenPlayer));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && Mod.Player.StarsRecentlyActive && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Mod.World.AnyPoliceRecentlySeenPlayer)
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && Mod.Player.Instance.StarsRecentlyActive && Mod.Player.Instance.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Mod.World.Instance.AnyPoliceRecentlySeenPlayer)
                     {
-                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Mod.World.AnyPoliceCanSeePlayer && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000)
+                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Mod.World.Instance.AnyPoliceCanSeePlayer && Mod.Player.Instance.CurrentPoliceResponse.HasBeenWantedFor > 25000)
                     {
-                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && Mod.Player.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Mod.World.AnyPoliceRecentlySeenPlayer)
+                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && Mod.Player.Instance.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Mod.World.Instance.AnyPoliceRecentlySeenPlayer)
                     {
-                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
                 }
             }
             else
             {
-                if (!ResumePatrol.HasRecentlyBeenPlayed && Mod.Player.RecentlyBribedPolice)
+                if (!ResumePatrol.HasRecentlyBeenPlayed && Mod.Player.Instance.RecentlyBribedPolice)
                 {
                     AddToQueue(ResumePatrol);
                 }
-                if (!SuspectLost.HasRecentlyBeenPlayed && Mod.Player.CurrentPoliceResponse.RecentlyLostWanted && !Mod.Player.RecentlyRespawned && !Mod.Player.RecentlyBribedPolice && !Mod.Player.RecentlySurrenderedToPolice)
+                if (!SuspectLost.HasRecentlyBeenPlayed && Mod.Player.Instance.CurrentPoliceResponse.RecentlyLostWanted && !Mod.Player.Instance.RecentlyRespawned && !Mod.Player.Instance.RecentlyBribedPolice && !Mod.Player.Instance.RecentlySurrenderedToPolice)
                 {
-                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.PlacePoliceLastSeenPlayer));
+                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Mod.World.Instance.PlacePoliceLastSeenPlayer));
                 }
-                if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Mod.Player.Investigations.LastInvestigationRecentlyExpired)
+                if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && Mod.Player.Instance.Investigations.LastInvestigationRecentlyExpired)
                 {
                     AddToQueue(NoFurtherUnitsNeeded);
                 }
-                foreach (VehicleExt StolenCar in Mod.Player.ReportedStolenVehicles)
+                foreach (VehicleExt StolenCar in Mod.Player.Instance.ReportedStolenVehicles)
                 {
-                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!Mod.Player.IsInVehicle, true, Mod.World.PlacePoliceLastSeenPlayer) { VehicleSeen = StolenCar });
+                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!Mod.Player.Instance.IsInVehicle, true, Mod.World.Instance.PlacePoliceLastSeenPlayer) { VehicleSeen = StolenCar });
                 }
             }
 
-            if (!SuspectWasted.HasRecentlyBeenPlayed && Mod.Player.RecentlyDied && Mod.World.AnyPoliceRecentlySeenPlayer && Mod.Player.MaxWantedLastLife > 0)
+            if (!SuspectWasted.HasRecentlyBeenPlayed && Mod.Player.Instance.RecentlyDied && Mod.World.Instance.AnyPoliceRecentlySeenPlayer && Mod.Player.Instance.MaxWantedLastLife > 0)
             {
                 AddToQueue(SuspectWasted);
             }
@@ -1016,40 +1016,40 @@ namespace LosSantosRED.lsr
             bool AbortedAudio = false;
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-                Mod.Debug.WriteToLog("ScannerScript", string.Format("Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
-                Mod.Audio.Abort();
+                Debug.Instance.WriteToLog("ScannerScript", string.Format("Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
+                Audio.Instance.Abort();
                 AbortedAudio = true;
             }
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
                 if (AbortedAudio)
                 {
-                    Mod.Audio.Play(RadioEnd.PickRandom());
+                    Audio.Instance.Play(RadioEnd.PickRandom());
                     GameFiber.Sleep(1000);
                 }
 
-                while (Mod.Audio.IsAudioPlaying)
+                while (Audio.Instance.IsAudioPlaying)
                 {
                     GameFiber.Yield();
                 }
 
-                if (MyAudioEvent.NotificationTitle != "" && Mod.DataMart.Settings.SettingsManager.Police.DispatchNotifications)
+                if (MyAudioEvent.NotificationTitle != "" && DataMart.Instance.Settings.SettingsManager.Police.DispatchNotifications)
                 {
                     RemoveAllNotifications();
                     NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
                 }
 
-                Mod.Debug.WriteToLog("ScannerScript", string.Format("Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
+                Debug.Instance.WriteToLog("ScannerScript", string.Format("Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
                 CurrentlyPlaying = MyAudioEvent;
 
 
                 foreach (string audioname in MyAudioEvent.SoundsToPlay)
                 {
-                    Mod.Audio.Play(audioname);
+                    Audio.Instance.Play(audioname);
 
-                    while (Mod.Audio.IsAudioPlaying)
+                    while (Audio.Instance.IsAudioPlaying)
                     {
-                        if (MyAudioEvent.Subtitles != "" && Mod.DataMart.Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                        if (MyAudioEvent.Subtitles != "" && DataMart.Instance.Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                         {
                             Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
                             GameTimeLastDisplayedSubtitle = Game.GameTime;
@@ -1065,10 +1065,10 @@ namespace LosSantosRED.lsr
                         }
                         GameFiber.Yield();
                     }
-                    if (Mod.Audio.CancelAudio)
+                    if (Audio.Instance.CancelAudio)
                     {
-                        Mod.Audio.CancelAudio = false;
-                        Mod.Debug.WriteToLog("ScannerScript", "CancelAudio Set to False");
+                        Audio.Instance.CancelAudio = false;
+                        Debug.Instance.WriteToLog("ScannerScript", "CancelAudio Set to False");
                         break;
                     }
                 }
@@ -1078,7 +1078,7 @@ namespace LosSantosRED.lsr
                     MyDispatch.VehicleSeen.HasBeenDescribedByDispatch = true;
                 }
             }, "PlayAudioList");
-            Mod.Debug.GameFibers.Add(PlayAudioList);
+            Debug.Instance.GameFibers.Add(PlayAudioList);
         }
         private void RemoveAllNotifications()
         {

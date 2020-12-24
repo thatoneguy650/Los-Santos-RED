@@ -9,9 +9,13 @@ namespace LosSantosRED.lsr
 {
     public class DataMart
     {
-        public DataMart()
-        {
+        private static readonly Lazy<DataMart> lazy =
+        new Lazy<DataMart>(() => new DataMart());
 
+        public static DataMart Instance { get { return lazy.Value; } }
+
+        private DataMart()
+        {
         }
         public Places Places { get; private set; } = new Places();
         public Agencies Agencies { get; private set; } = new Agencies();

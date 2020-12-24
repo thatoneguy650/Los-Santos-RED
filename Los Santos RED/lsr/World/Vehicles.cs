@@ -78,7 +78,7 @@ public class Vehicles
     }
     private void FixDamagedPoliceVehicles()
     {
-        foreach (Cop Cop in Mod.World.PoliceList.Where(x => x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
+        foreach (Cop Cop in Mod.World.Instance.PoliceList.Where(x => x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
         {
             if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
             {
@@ -86,7 +86,7 @@ public class Vehicles
             }
             else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
             {
-                Mod.World.Delete(Cop);
+                Mod.World.Instance.Delete(Cop);
             }
         }
     }

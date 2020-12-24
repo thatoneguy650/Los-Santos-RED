@@ -13,6 +13,14 @@ using System.Windows.Forms;
 
 public class Debug
 {
+    private static readonly Lazy<Debug> lazy =
+    new Lazy<Debug>(() => new Debug());
+
+    public static Debug Instance { get { return lazy.Value; } }
+
+    private Debug()
+    {
+    }
     public List<GameFiber> GameFibers = new List<GameFiber>();
     public void WriteToLog(String ProcedureString, String TextToLog)
     {
@@ -69,7 +77,7 @@ public class Debug
 
         //if (false)
         //{
-        //    foreach (Cop MyCop in Mod.World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
+        //    foreach (Cop MyCop in Mod.World.Instance.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive))
         //    {
         //        Color ToShow = Color.Black;
         //        TaskStatus CurrentOne = MyCop.Pedestrian.Tasks.CurrentTaskStatus;
@@ -92,7 +100,7 @@ public class Debug
 
 
 
-        //foreach (PedExt MyPed in Mod.World.CivilianList.Where(x => x.Pedestrian.IsAlive && x.DistanceToPlayer <= 100f))
+        //foreach (PedExt MyPed in Mod.World.Instance.CivilianList.Where(x => x.Pedestrian.IsAlive && x.DistanceToPlayer <= 100f))
         //{
         //    Color ToShow = Color.Purple;
 
@@ -126,16 +134,16 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        int Toassign = Mod.Player.WantedLevel;
+        int Toassign = Mod.Player.Instance.WantedLevel;
         if (Toassign == 7)
             return;
         Toassign++;
-        Mod.Player.CurrentPoliceResponse.SetWantedLevel(Toassign, "Debug", true);
+        Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(Toassign, "Debug", true);
 
     }
     private void DebugNumpad3()
     {
-        Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Debug", true);
+        Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(0, "Debug", true);
     }
     private void DebugNumpad4()
     {
@@ -179,7 +187,7 @@ public class Debug
         ////Vehicle[] Vehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
         //WriteToLog("Debugging", string.Format("PED_FLAG_DRUNK: {0}", NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1)));
 
-        //WriteToLog("Debugging", string.Format("Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer))): {0}", Mod.World.Pedestrians.Civilians.Any(x => x.CanSeePlayer)));
+        //WriteToLog("Debugging", string.Format("Mod.World.Instance.Pedestrians.Civilians.Any(x => x.CanSeePlayer))): {0}", Mod.World.Instance.Pedestrians.Civilians.Any(x => x.CanSeePlayer)));
         //WriteToLog("Debugging", string.Format("Game.LocalPlayer.Character.GetBoneOrientation(0): {0}", Game.LocalPlayer.Character.GetBoneOrientation(0)));
 
 
@@ -240,7 +248,7 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        //if (Mod.Player.CurrentVehicle != null && Mod.Player.CurrentVehicle.Vehicle.Exists())
+        //if (Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.Exists())
         //{
         //    Colorbullshit();
         //    Colorbullshit2();
@@ -272,14 +280,14 @@ public class Debug
     }
     private void Colorbullshit()
     {
-        //Color Color1 = Extensions.GetBaseColor1(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
-        //Color Color2 = Extensions.GetBaseColor2(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
-        //Color Color3 = Extensions.GetBaseColor3(Mod.Player.CurrentVehicle.Vehicle.PrimaryColor);
-        //WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.CurrentVehicle.Vehicle.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
+        //Color Color1 = Extensions.GetBaseColor1(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
+        //Color Color2 = Extensions.GetBaseColor2(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
+        //Color Color3 = Extensions.GetBaseColor3(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
+        //WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
     }
     private void Colorbullshit2()
     {
-        Color c = Mod.Player.CurrentVehicle.Vehicle.PrimaryColor;
+        Color c = Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor;
         float targetHue = c.GetHue();
         float targetSat = c.GetSaturation();
         float targetBri = c.GetBrightness();
@@ -333,15 +341,15 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        WriteToLog("Debugging", Mod.World.CurrentTime);
+        WriteToLog("Debugging", Mod.World.Instance.CurrentTime);
 
-        if (Mod.Player.CurrentVehicle != null)
+        if (Mod.Player.Instance.CurrentVehicle != null)
         {
-            WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", Mod.Player.CurrentVehicle.IsStolen, Mod.Player.CurrentVehicle.WasReportedStolen, Mod.Player.CurrentVehicle.NeedsToBeReportedStolen));
-            WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.CurrentVehicle.CarPlate.IsWanted, Mod.Player.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.CurrentVehicle.ColorMatchesDescription, Mod.Player.CurrentVehicle.CopsRecognizeAsStolen));
+            WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", Mod.Player.Instance.CurrentVehicle.IsStolen, Mod.Player.Instance.CurrentVehicle.WasReportedStolen, Mod.Player.Instance.CurrentVehicle.NeedsToBeReportedStolen));
+            WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.Instance.CurrentVehicle.CarPlate.IsWanted, Mod.Player.Instance.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.Instance.CurrentVehicle.ColorMatchesDescription, Mod.Player.Instance.CurrentVehicle.CopsRecognizeAsStolen));
         }
 
-        Mod.World.PrintTasksDEBUG();
+        Mod.World.Instance.PrintTasksDEBUG();
     }
     public void DebugNumpad8()
     {
@@ -353,7 +361,7 @@ public class Debug
             WriteToLog("Debugging", "--------------------------------");
             WriteToLog("Debugging", "--------Police Status-----------");
 
-            foreach (Cop Cop in Mod.World.PoliceList.Where(x => x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
+            foreach (Cop Cop in Mod.World.Instance.PoliceList.Where(x => x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
             {
 
                 WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}",
@@ -369,17 +377,31 @@ public class Debug
 
 
             }
-            WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Investigations.IsActive));
-            WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Investigations.Position));
-            WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Investigations.Distance));
-            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.ActiveDistance));
-            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.PoliceList.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Investigations.Position) <= Mod.Player.Investigations.Distance)));
-            WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.CurrentPoliceResponse.CurrentPoliceStateString));
-            WriteToLog("Debugging", string.Format("Mod.Player.IsAliveAndFree: {0}", Mod.Player.IsAliveAndFree));
-            WriteToLog("Debugging", string.Format("Mod.Player.Character.Handle: {0}", Mod.Player.Character.Handle));
-            WriteToLog("Debugging", string.Format("Mod.Player.IsConsideredArmed: {0}", Mod.Player.IsConsideredArmed));
-            WriteToLog("Debugging", string.Format("Mod.Player.CheckIsArmed(): {0}", Mod.Player.CheckIsArmed()));
-            WriteToLog("Debugging", string.Format("Mod.Player.CurrentPoliceResponse.RecentlySetWanted: {0}", Mod.Player.CurrentPoliceResponse.RecentlySetWanted));
+            WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Instance.Investigations.IsActive));
+            WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Instance.Investigations.Position));
+            WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Instance.Investigations.Distance));
+            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.Instance.ActiveDistance));
+            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Instance.PoliceList.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Instance.Investigations.Position) <= Mod.Player.Instance.Investigations.Distance)));
+            WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentPoliceStateString));
+            WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsAliveAndFree: {0}", Mod.Player.Instance.IsAliveAndFree));
+            WriteToLog("Debugging", string.Format("Mod.Player.Instance.Character.Handle: {0}", Mod.Player.Instance.Character.Handle));
+            WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsConsideredArmed: {0}", Mod.Player.Instance.IsConsideredArmed));
+            WriteToLog("Debugging", string.Format("Mod.Player.Instance.CheckIsArmed(): {0}", Mod.Player.Instance.CheckIsArmed()));
+            WriteToLog("Debugging", string.Format("Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted: {0}", Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted));
+
+            WriteToLog("Debugging", "==============PLAYER===================");
+            WriteToLog("Debugging", string.Format("CrimesObserved: {0}", Mod.Player.Instance.CurrentPoliceResponse.CrimesObservedJoined));
+            WriteToLog("Debugging", string.Format("HasActiveArrestWarrant: {0}", Mod.Player.Instance.HasActiveArrestWarrant));
+            WriteToLog("Debugging", string.Format("LethalForceAuthorized: {0}", Mod.Player.Instance.LethalForceAuthorized));
+            WriteToLog("Debugging", string.Format("MaxWantedLastLife: {0}", Mod.Player.Instance.MaxWantedLastLife));
+            WriteToLog("Debugging", string.Format("MaxWantedLevel: {0}", Mod.Player.Instance.MaxWantedLevel));
+            WriteToLog("Debugging", string.Format("CurrentCrimes.ObservedMaxWantedLevel: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.ObservedMaxWantedLevel));
+            WriteToLog("Debugging", string.Format("RecentlyAppliedWantedStats: {0}", Mod.Player.Instance.RecentlyAppliedWantedStats));
+            WriteToLog("Debugging", string.Format("RecentlyRespawned: {0}", Mod.Player.Instance.RecentlyRespawned));
+            WriteToLog("Debugging", string.Format("TimesDied: {0}", Mod.Player.Instance.TimesDied));
+            WriteToLog("Debugging", string.Format("WantedLevel: {0}", Mod.Player.Instance.WantedLevel));
+            WriteToLog("Debugging", "==============PLAYER===================");
+
         }
         catch (Exception e)
         {
@@ -390,7 +412,10 @@ public class Debug
     {
 
         WriteToLog("Debugging", "Pressed Num9");
-        Mod.Dispose();
+
+
+        EntryPoint.ModController.Stop();
+
         Game.LocalPlayer.WantedLevel = 0;
         Game.TimeScale = 1f;
         NativeFunction.Natives.xB4EDDC19532BFB85();

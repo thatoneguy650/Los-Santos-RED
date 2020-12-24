@@ -61,14 +61,14 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                return (uint)Mod.Player.WantedLevel * 30000;//30 seconds each
+                return (uint)Mod.Player.Instance.WantedLevel * 30000;//30 seconds each
             }
         }
         public uint CurrentActiveTime
         {
             get
             {
-                return (uint)Mod.Player.WantedLevel * 30000;//30 seconds each
+                return (uint)Mod.Player.Instance.WantedLevel * 30000;//30 seconds each
             }
         }
         public bool IsSpotterCop(uint Handle)
@@ -94,9 +94,9 @@ namespace LosSantosRED.lsr
         }
         private void DetermineMode()
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
-                if (Mod.World.AnyPoliceRecentlySeenPlayer)
+                if (Mod.World.Instance.AnyPoliceRecentlySeenPlayer)
                 {
                     IsInActiveMode = true;
                     IsInSearchMode = false;
@@ -150,7 +150,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = Game.GameTime;
             GameTimeStartedActiveMode = 0;
-            Mod.Debug.WriteToLog("SearchMode", "Start Search Mode");
+            Debug.Instance.WriteToLog("SearchMode", "Start Search Mode");
         }
         private void StartActiveMode()
         {
@@ -160,7 +160,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedActiveMode = Game.GameTime;
             GameTimeStartedSearchMode = 0;
-            Mod.Debug.WriteToLog("SearchMode", "Start Active Mode");
+            Debug.Instance.WriteToLog("SearchMode", "Start Active Mode");
         }
         private void EndSearchMode()
         {
@@ -170,8 +170,8 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
-            Mod.Player.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
-            Mod.Debug.WriteToLog("SearchMode", "Stop Search Mode");
+            Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
+            Debug.Instance.WriteToLog("SearchMode", "Stop Search Mode");
 
         }
         private class StopVanillaSeachMode
@@ -209,7 +209,7 @@ namespace LosSantosRED.lsr
             }
             public void Tick()
             {
-                if (Mod.Player.IsWanted)
+                if (Mod.Player.Instance.IsWanted)
                     StopSearchMode = true;
                 else
                     StopSearchMode = false;
@@ -218,7 +218,7 @@ namespace LosSantosRED.lsr
                 if (PrevStopSearchMode != StopSearchMode)
                 {
                     PrevStopSearchMode = StopSearchMode;
-                    Mod.Debug.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.World.AnyPoliceRecentlySeenPlayer));
+                    Debug.Instance.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.World.Instance.AnyPoliceRecentlySeenPlayer));
                 }
 
                 if (!StopSearchMode)
@@ -228,7 +228,7 @@ namespace LosSantosRED.lsr
                 {
                     CreateGhostCop();
                 }
-                if (Mod.Player.IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+                if (Mod.Player.Instance.IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
                 {
                     MoveGhostCopToPosition();
                 }
@@ -241,10 +241,10 @@ namespace LosSantosRED.lsr
             {
                 if (GhostCop.Exists())
                 {
-                    Entity ToCheck = Mod.Player.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
+                    Entity ToCheck = Mod.Player.Instance.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
                     if (!NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck))
                     {
-                        if (Mod.Player.IsInVehicle)
+                        if (Mod.Player.Instance.IsInVehicle)
                         {
                             CurrentOffset = new List<Vector3>() { new Vector3(6f, 0f, 1f), new Vector3(3f, 0f, 1f), new Vector3(-3f, 0f, 1f) }.PickRandom();
                         }
@@ -257,7 +257,7 @@ namespace LosSantosRED.lsr
 
                                                         }.PickRandom();
                         }
-                        Mod.Debug.WriteToLog("MoveGhostCopToPosition", string.Format("CurrentOffset {0}", CurrentOffset));
+                        Debug.Instance.WriteToLog("MoveGhostCopToPosition", string.Format("CurrentOffset {0}", CurrentOffset));
                     }
                     Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
                     PositionSet = DesiredPosition;

@@ -79,7 +79,7 @@ public class Cop : PedExt
     {
         get
         {
-            return Pedestrian.DistanceTo2D(Mod.Player.Investigations.Position);
+            return Pedestrian.DistanceTo2D(Mod.Player.Instance.Investigations.Position);
         }
     }
     public uint HasBeenSpawnedFor
@@ -93,17 +93,17 @@ public class Cop : PedExt
     {
         get
         {
-            if (Mod.Player.IsBustable)
+            if (Mod.Player.Instance.IsBustable)
             {
                 if (DistanceToPlayer < 0.1f) //weird cases where they are my same position
                 {
                     return false;
                 }
-                else if (Mod.Player.HandsAreUp && DistanceToPlayer <= 5f)
+                else if (Mod.Player.Instance.HandsAreUp && DistanceToPlayer <= 5f)
                 {
                     return true;
                 }
-                else if (Mod.Player.IsIncapacitated && DistanceToPlayer <= 3f)
+                else if (Mod.Player.Instance.IsIncapacitated && DistanceToPlayer <= 3f)
                 {
                     return true;
                 }
@@ -124,9 +124,9 @@ public class Cop : PedExt
         }
         Pedestrian.VisionRange = 90f;//55F
         Pedestrian.HearingRange = 55;//25
-        if (Mod.DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = Mod.DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
 
         Loadout = new Loadout(this);
@@ -140,23 +140,23 @@ public class Cop : PedExt
     {
         if (CanSpeak)
         {
-            if (Mod.Player.IsBusted && DistanceToPlayer <= 20f)
+            if (Mod.Player.Instance.IsBusted && DistanceToPlayer <= 20f)
             {
                 Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
             }
-            else if (Mod.Player.RecentlyKilledCop)
+            else if (Mod.Player.Instance.RecentlyKilledCop)
             {
                 Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
             }
-            else if (Mod.Player.IsWanted && !Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
+            else if (Mod.Player.Instance.IsWanted && !Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
             {
                 Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
             }
-            else if (Mod.Player.IsNotWanted && Mod.Player.RecentlyBribedPolice)
+            else if (Mod.Player.Instance.IsNotWanted && Mod.Player.Instance.RecentlyBribedPolice)
             {
                 Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom());
             }
-            else if (Mod.Player.CurrentPoliceResponse.IsDeadlyChase)
+            else if (Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
             {
                 Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom());
             }
@@ -175,7 +175,7 @@ public class Cop : PedExt
         if (CanRadioIn)
         {
             string AnimationToPlay = "generic_radio_enter";
-            WeaponInformation CurrentGun = Mod.DataMart.Weapons.GetCurrentWeapon(Pedestrian);
+            WeaponInformation CurrentGun = DataMart.Instance.Weapons.GetCurrentWeapon(Pedestrian);
             if (CurrentGun != null && CurrentGun.IsOneHanded)
                 AnimationToPlay = "radio_enter";
 

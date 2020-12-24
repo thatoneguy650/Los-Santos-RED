@@ -17,14 +17,14 @@ public class CountyJurisdiction
     {
         get
         {
-            return Mod.DataMart.Agencies.GetAgency(AgencyInitials);
+            return DataMart.Instance.Agencies.GetAgency(AgencyInitials);
         }
     }
     public bool CanCurrentlySpawn
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
                 return WantedSpawnChance > 0;
             else
                 return AmbientSpawnChance > 0;
@@ -34,7 +34,7 @@ public class CountyJurisdiction
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
                 return WantedSpawnChance;
             else
                 return AmbientSpawnChance;

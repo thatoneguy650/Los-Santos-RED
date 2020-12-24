@@ -16,31 +16,31 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.Player.Investigations.IsActive)
+            if (Mod.Player.Instance.Investigations.IsActive)
             {
                 return 6;//10
             }
-            else if (Mod.Player.WantedLevel == 0)
+            else if (Mod.Player.Instance.WantedLevel == 0)
             {
                 return 5;//10//5
             }
-            else if (Mod.Player.WantedLevel == 1)
+            else if (Mod.Player.Instance.WantedLevel == 1)
             {
                 return 7;//10//8
             }
-            else if (Mod.Player.WantedLevel == 2)
+            else if (Mod.Player.Instance.WantedLevel == 2)
             {
                 return 10;//12
             }
-            else if (Mod.Player.WantedLevel == 3)
+            else if (Mod.Player.Instance.WantedLevel == 3)
             {
                 return 18;//20
             }
-            else if (Mod.Player.WantedLevel == 4)
+            else if (Mod.Player.Instance.WantedLevel == 4)
             {
                 return 25;
             }
-            else if (Mod.Player.WantedLevel == 5)
+            else if (Mod.Player.Instance.WantedLevel == 5)
             {
                 return 35;
             }
@@ -58,7 +58,7 @@ public class Dispatcher
             {
                 return true;
             }
-            //else if (Mod.Player.Investigations.IsActive && !Mod.World.Tasking.HasCopsInvestigating)//maybe add this back, maybe not? breaks lots of over reach....
+            //else if (Mod.Player.Instance.Investigations.IsActive && !Mod.World.Instance.Tasking.HasCopsInvestigating)//maybe add this back, maybe not? breaks lots of over reach....
             //{
             //    return true;
             //}
@@ -94,17 +94,17 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.Player.LethalForceAuthorized)
+            if (Mod.Player.Instance.LethalForceAuthorized)
             {
                 return 2000;
             }
-            else  if (!Mod.World.AnyPoliceRecentlySeenPlayer)
+            else  if (!Mod.World.Instance.AnyPoliceRecentlySeenPlayer)
             {
                 return 3000;
             }
             else
             {
-                return ((5 - Mod.Player.WantedLevel) * 2000) + 2000;
+                return ((5 - Mod.Player.Instance.WantedLevel) * 2000) + 2000;
             }
         }
     }
@@ -112,7 +112,7 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
                 return 150f;
             }
@@ -126,7 +126,7 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
                 return 200f;
             }
@@ -140,20 +140,20 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
-                if (!Mod.World.AnyPoliceRecentlySeenPlayer)
+                if (!Mod.World.Instance.AnyPoliceRecentlySeenPlayer)
                 {
-                    return 250f - (Mod.Player.WantedLevel * -40);
+                    return 250f - (Mod.Player.Instance.WantedLevel * -40);
                 }
                 else
                 {
-                    return 400f - (Mod.Player.WantedLevel * -40);
+                    return 400f - (Mod.Player.Instance.WantedLevel * -40);
                 }
             }
-            else if (Mod.Player.Investigations.IsActive)
+            else if (Mod.Player.Instance.Investigations.IsActive)
             {
-                return Mod.Player.Investigations.Distance / 2;
+                return Mod.Player.Instance.Investigations.Distance / 2;
             }
             else
             {
@@ -165,9 +165,9 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
-                if (!Mod.World.AnyPoliceRecentlySeenPlayer)
+                if (!Mod.World.Instance.AnyPoliceRecentlySeenPlayer)
                 {
                     return 350f;
                 }
@@ -176,9 +176,9 @@ public class Dispatcher
                     return 550f;
                 }
             }
-            else if (Mod.Player.Investigations.IsActive)
+            else if (Mod.Player.Instance.Investigations.IsActive)
             {
-                return Mod.Player.Investigations.Distance;
+                return Mod.Player.Instance.Investigations.Distance;
             }
             else
             {
@@ -190,7 +190,7 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
                 return 600f;
             }
@@ -204,7 +204,7 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.Player.IsWanted)
+            if (Mod.Player.Instance.IsWanted)
             {
                 return 125f;
             }
@@ -218,7 +218,7 @@ public class Dispatcher
     {
         get
         {
-            if (Mod.World.TotalSpawnedCops < SpawnedCopLimit)
+            if (Mod.World.Instance.TotalSpawnedCops < SpawnedCopLimit)
             {
                 return true;
             }
@@ -244,32 +244,32 @@ public class Dispatcher
                 CurrentSpawn.GetAgency();
                 if (!CurrentSpawn.HasAgency)
                 {
-                    Mod.Debug.WriteToLog("Dispatch", string.Format("Could not find Agencies To Spawn {0}", 1));
+                    Debug.Instance.WriteToLog("Dispatch", string.Format("Could not find Agencies To Spawn {0}", 1));
                     return;
                 }
 
                 VehicleInformation AgencyVehicle = CurrentSpawn.AgencyToSpawn.GetRandomVehicle();
                 if (AgencyVehicle == null)
                 {
-                    Mod.Debug.WriteToLog("Dispatch", string.Format("Could not find Auto for {0}", CurrentSpawn.AgencyToSpawn.Initials));
+                    Debug.Instance.WriteToLog("Dispatch", string.Format("Could not find Auto for {0}", CurrentSpawn.AgencyToSpawn.Initials));
                     return;
                 }
 
                 if (AgencyVehicle.IsHelicopter)
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.Position + new Vector3(0f, 0f, 250f);
-                    Mod.Debug.WriteToLog("Dispatch", string.Format("Helicopter: {0}", AgencyVehicle.ModelName));
+                    Debug.Instance.WriteToLog("Dispatch", string.Format("Helicopter: {0}", AgencyVehicle.ModelName));
                 }
                 else if (AgencyVehicle.IsBoat)
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.Position;
-                    Mod.Debug.WriteToLog("Dispatch", string.Format("Boat: {0} isWater {1} WaterHieght {2}", AgencyVehicle.ModelName, CurrentSpawn.IsWater, CurrentSpawn.WaterHeight));
+                    Debug.Instance.WriteToLog("Dispatch", string.Format("Boat: {0} isWater {1} WaterHieght {2}", AgencyVehicle.ModelName, CurrentSpawn.IsWater, CurrentSpawn.WaterHeight));
                 }
                 else
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.StreetPosition;
                 }
-                Mod.World.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle);
+                Mod.World.Instance.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle);
             }
             GameTimeCheckedSpawn = Game.GameTime;
         }
@@ -279,7 +279,7 @@ public class Dispatcher
     {
         if (CanRecall)
         {
-            foreach(Cop OutOfRangeCop in Mod.World.PoliceList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
+            foreach(Cop OutOfRangeCop in Mod.World.Instance.PoliceList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
             {
                 bool ShouldDelete = false;
                 if (!OutOfRangeCop.AssignedAgency.CanSpawn)
@@ -298,7 +298,7 @@ public class Dispatcher
                 {
                     ShouldDelete = true;
                 }
-                else if (Mod.World.CountNearbyCops(OutOfRangeCop.Pedestrian) >= 3 && OutOfRangeCop.TimeBehindPlayer >= 15000) //Got Close and Then got away
+                else if (Mod.World.Instance.CountNearbyCops(OutOfRangeCop.Pedestrian) >= 3 && OutOfRangeCop.TimeBehindPlayer >= 15000) //Got Close and Then got away
                 {
                     ShouldDelete = true;
                 }
@@ -308,7 +308,7 @@ public class Dispatcher
                 }
                 if(ShouldDelete)
                 {
-                    Mod.World.Delete(OutOfRangeCop);
+                    Mod.World.Instance.Delete(OutOfRangeCop);
                 }
             }
             GameTimeCheckedDeleted = Game.GameTime;
@@ -429,7 +429,7 @@ public class Dispatcher
         public void GetAgency()
         {
             AgencyToSpawn = null;
-            List<Agency> PossibleAgencies = Mod.DataMart.Agencies.GetAgencies(StreetPosition);
+            List<Agency> PossibleAgencies = DataMart.Instance.Agencies.GetAgencies(StreetPosition);
             if (RandomItems.RandomPercent(50))//Favor Helicopter Spawns
             {
                 AgencyToSpawn = PossibleAgencies.Where(x => x.HasSpawnableHelicopters).PickRandom();
@@ -440,18 +440,18 @@ public class Dispatcher
             }
             if (AgencyToSpawn == null)
             {
-                AgencyToSpawn = Mod.DataMart.Agencies.GetAgencies(Position).PickRandom();
+                AgencyToSpawn = DataMart.Instance.Agencies.GetAgencies(Position).PickRandom();
             }
         }
         private void GetInitialPosition()
         {
-            if (Mod.Player.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            if (Mod.Player.Instance.IsWanted && Game.LocalPlayer.Character.IsInAnyVehicle(false))
             {
                 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(350f);
             }
-            else if (Mod.Player.Investigations.IsActive)
+            else if (Mod.Player.Instance.Investigations.IsActive)
             {
-                Position = Mod.Player.Investigations.Position;
+                Position = Mod.Player.Instance.Investigations.Position;
             }
             else
             {
@@ -460,7 +460,7 @@ public class Dispatcher
 
             Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
 
-            if (!Mod.Player.Investigations.IsActive && Mod.World.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
+            if (!Mod.Player.Instance.Investigations.IsActive && Mod.World.Instance.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
             {
                 Position = Vector3.Zero;
             }
@@ -469,7 +469,7 @@ public class Dispatcher
         {
             Vector3 streetPos;
             float heading;
-            Mod.DataMart.Streets.GetStreetPositionandHeading(Position, out streetPos, out heading, true);
+            DataMart.Instance.Streets.GetStreetPositionandHeading(Position, out streetPos, out heading, true);
             StreetPosition = streetPos;
             Heading = heading;
 
@@ -478,7 +478,7 @@ public class Dispatcher
                 StreetPosition = Vector3.Zero;
             }
 
-            if (Mod.World.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
+            if (Mod.World.Instance.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
             {
                 StreetPosition = Vector3.Zero;
             }
@@ -486,7 +486,7 @@ public class Dispatcher
             if(StreetPosition != Vector3.Zero)
             {
                 Vector3 sidewalkPosition;
-                Mod.DataMart.Streets.GetSidewalkPositionAndHeading(StreetPosition, out sidewalkPosition);
+                DataMart.Instance.Streets.GetSidewalkPositionAndHeading(StreetPosition, out sidewalkPosition);
                 SidewalkPosition = sidewalkPosition;
             }
         }
