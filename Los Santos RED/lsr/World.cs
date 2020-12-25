@@ -12,65 +12,33 @@ using System.Linq;
 
 namespace Mod
 {
-    public class World
+    public class World : IWorld , IWorldLogger
     {
-        private static readonly Lazy<World> lazy =
-        new Lazy<World>(() => new World());
-
-        public static World Instance { get { return lazy.Value; } }
-
-        private World()
-        {
-        }
-        private Civilians Civilians = new Civilians();
         private List<Blip> CreatedBlips;
-        private Dispatcher Dispatcher = new Dispatcher();
-        private Pedestrians Pedestrians = new Pedestrians();
-        private Police Police = new Police();
-        private Scanner Scanner;// = new Scanner();
-        private Spawner Spawner = new Spawner();
-        private Tasking Tasking = new Tasking();
-        private Time Time = new Time();
-        private Vehicles Vehicles = new Vehicles();
+        private Pedestrians Pedestrians;
+        private Time Time;
+        private Vehicles Vehicles;
 
-        public void Start()
+        public World()
         {
-            Civilians = new Civilians();
-            Dispatcher = new Dispatcher();
-            Pedestrians = new Pedestrians();
-            Police = new Police();
-            Scanner = new Scanner(AudioPlayer);
-            Spawner = new Spawner();
-            Tasking = new Tasking();
+            Pedestrians = new Pedestrians(this);
             Time = new Time();
             Vehicles = new Vehicles();
         }
-
-        public IAudioPlayer AudioPlayer;
-        public float ActiveDistance => Police.ActiveDistance;
+        public IPlayer CurrentPlayer { get; private set; }
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
         public bool AnyCopsNearPlayer => Pedestrians.AnyCopsNearPlayer;
         public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
         public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
-        public bool AnyPoliceCanHearPlayer => Police.AnyCanHearPlayer;
-        public bool AnyPoliceCanRecognizePlayer => Police.AnyCanRecognizePlayer;
-        public bool AnyPoliceCanSeePlayer => Police.AnyCanSeePlayer;
-        public bool AnyPoliceRecentlySeenPlayer => Police.AnyRecentlySeenPlayer;
-        public bool AnyPoliceSeenPlayerCurrentWanted => Police.AnySeenPlayerCurrentWanted;
         public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
         public string CurrentTime => Time.CurrentTime;
         public bool IsNight => Time.IsNight;
-        public int PersistentCivilians => Civilians.PersistentCount;
-        public Vector3 PlacePoliceLastSeenPlayer => Police.PlaceLastSeenPlayer;
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
         public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
         public bool ShouldBustPlayer => Pedestrians.ShouldBustPlayer;
         public int TotalSpawnedCops => Pedestrians.TotalSpawnedCops;
-        public void AbortScanner()
-        {
-            Scanner.Abort();
-        }
+        public bool AnyHumansNearPlayer => Pedestrians.AnyHumansNearPlayer;
         public void AddBlip(Blip myBlip)
         {
             CreatedBlips.Add(myBlip);
@@ -79,17 +47,9 @@ namespace Mod
         {
             Pedestrians.Police.Add(myNewCop);
         }
-        public void AddTaskablePeds()
-        {
-            Tasking.AddTaskablePeds();
-        }
         public void AddToList(VehicleExt toReturn)
         {
             Vehicles.AddToList(toReturn);
-        }
-        public void AnnounceCrime(Crime crimeAssociated, PoliceScannerCallIn reportInformation)
-        {
-            Scanner.AnnounceCrime(crimeAssociated, reportInformation);
         }
         public bool AnyCopsNearPosition(Vector3 position, float radius)
         {
@@ -113,19 +73,9 @@ namespace Mod
                 myBlip.AddToMap();
             }
         }
-        public void Delete(Cop cop)
-        {
-            Spawner.DeleteCop(cop);
-        }
-        public void Dispatch()
-        {
-            Dispatcher.Dispatch();
-        }
         public void Dispose()
         {
             Time.Dispose();
-            Dispatcher.Dispose();
-            Spawner.Dispose();
             RemoveBlips();
             ClearPolice();
         }
@@ -137,17 +87,9 @@ namespace Mod
         {
             return Vehicles.GetVehicle(vehicleTryingToEnter);
         }
-        public void MarkNonPersistent(Cop cop)
-        {
-            Spawner.MarkNonPersistent(cop);
-        }
         public void PauseTime()
         {
             Time.PauseTime();
-        }
-        public void PrintTasksDEBUG()
-        {
-            Tasking.PrintActivities();
         }
         public void PrunePedestrians()
         {
@@ -157,10 +99,6 @@ namespace Mod
         {
             Vehicles.CleanLists();
         }
-        public void Recall()
-        {
-            Dispatcher.Recall();
-        }
         public void RemoveBlips()
         {
             foreach (Blip MyBlip in CreatedBlips)
@@ -168,18 +106,6 @@ namespace Mod
                 if (MyBlip.Exists())
                     MyBlip.Delete();
             }
-        }
-        public void ResetPolice()
-        {
-            Police.Reset();
-        }
-        public void ResetScanner()
-        {
-            Scanner.Reset();
-        }
-        public void ResetWitnessedCrimes()
-        {
-            Civilians.ResetWitnessedCrimes();
         }
         public void ScaneForPedestrians()
         {
@@ -189,33 +115,9 @@ namespace Mod
         {
             Vehicles.Scan();
         }
-        public void SpawnCop(Agency agency, Vector3 position, float heading, VehicleInformation vehicleInformation)
-        {
-            Spawner.SpawnCop(agency, position, heading, vehicleInformation);
-        }
-        public void TaskCivilians()
-        {
-            Tasking.TaskCivilians();
-        }
-        public void TaskCops()
-        {
-            Tasking.TaskCops();
-        }
         public void UnPauseTime()
         {
             Time.UnpauseTime();
-        }
-        public void UpdateCivilians()
-        {
-            Civilians.Update();
-        }
-        public void UpdatePolice()
-        {
-            Police.Update();
-        }
-        public void UpdateScanner()
-        {
-            Scanner.Tick();
         }
         public void UpdateTime()
         {
@@ -229,5 +131,6 @@ namespace Mod
         {
             Vehicles.Tick();
         }
+       
     }
 }

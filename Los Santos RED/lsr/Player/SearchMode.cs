@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -10,17 +11,73 @@ using System.Text;
 using System.Threading.Tasks;
 namespace LosSantosRED.lsr
 {
-    public class SearchMode
+    public class SearchMode : ISearchMode
     {
+        private IWorld World;
+        private IPlayer CurrentPlayer;
+        private IPolice Police;
+        private bool areStarsGreyedOut;
         private bool PrevIsInSearchMode;
         private bool PrevIsInActiveMode;
         private uint GameTimeStartedSearchMode;
         private uint GameTimeStartedActiveMode;
+        private uint GameTimeLastStarsGreyedOut;
+        private uint GameTimeLastStarsNotGreyedOut;
         private StopVanillaSeachMode StopSearchMode = new StopVanillaSeachMode();
 
-        public SearchMode()
+        public SearchMode(IWorld world, IPlayer currentPlayer, IPolice police)
         {
-
+            World = world;
+            CurrentPlayer = currentPlayer;
+            Police = police;
+        }
+        public bool AreStarsGreyedOut
+        {
+            get => areStarsGreyedOut;
+            private set
+            {
+                if (areStarsGreyedOut != value)
+                {
+                    areStarsGreyedOut = value;
+                    AreStarsGreyedOutChanged();
+                }
+            }
+        }
+        public Color BlipColor
+        {
+            get
+            {
+                if (IsInActiveMode)
+                {
+                    return Color.Red;
+                }
+                else
+                {
+                    return Color.Orange;
+                }
+            }
+        }
+        public float BlipSize//probably gonna remove these both and have a static size or do something else.
+        {
+            get
+            {
+                if (IsInActiveMode)
+                {
+                    return 100f;
+                }
+                else
+                {
+                    if (CurrentSearchTime == 0)
+                    {
+                        return 100f;
+                    }
+                    //else
+                    //{
+                    //    return ArrestWarrant.SearchRadius * SearchMode.TimeInSearchMode / SearchMode.CurrentSearchTime;
+                    //}
+                }
+                return 100f;
+            }
         }
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
@@ -61,16 +118,19 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                return (uint)Mod.Player.Instance.WantedLevel * 30000;//30 seconds each
+                return (uint)CurrentPlayer.WantedLevel * 30000;//30 seconds each
             }
         }
         public uint CurrentActiveTime
         {
             get
             {
-                return (uint)Mod.Player.Instance.WantedLevel * 30000;//30 seconds each
+                return (uint)CurrentPlayer.WantedLevel * 30000;//30 seconds each
             }
         }
+        public string SearchModeDebug => string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", IsInSearchMode, IsInActiveMode, TimeInSearchMode, TimeInActiveMode);
+        public bool StarsRecentlyActive => GameTimeLastStarsNotGreyedOut != 0 && Game.GameTime - GameTimeLastStarsNotGreyedOut <= 1500;
+        public bool StarsRecentlyGreyedOut => GameTimeLastStarsGreyedOut != 0 && Game.GameTime - GameTimeLastStarsGreyedOut <= 1500;
         public bool IsSpotterCop(uint Handle)
         {
             if (StopSearchMode.SpotterCop != null && StopSearchMode.SpotterCop.Handle == Handle)
@@ -83,20 +143,21 @@ namespace LosSantosRED.lsr
             }
         }
         public void UpdateWanted()
-        {
+        {  
             DetermineMode();
             ToggleModes();
+            CurrentPlayer.IsInSearchMode = IsInSearchMode;
             //HandleFlashing();
         }
         public void StopVanilla()
         {
-            StopSearchMode.Tick();
+            StopSearchMode.Tick(CurrentPlayer.IsWanted,CurrentPlayer.IsInVehicle);
         }
         private void DetermineMode()
         {
-            if (Mod.Player.Instance.IsWanted)
+            if (CurrentPlayer.IsWanted)
             {
-                if (Mod.World.Instance.AnyPoliceRecentlySeenPlayer)
+                if (Police.AnyRecentlySeenPlayer)
                 {
                     IsInActiveMode = true;
                     IsInSearchMode = false;
@@ -170,9 +231,21 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
-            Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
+            CurrentPlayer.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
             Debug.Instance.WriteToLog("SearchMode", "Stop Search Mode");
 
+        }
+        private void AreStarsGreyedOutChanged()
+        {
+            if (AreStarsGreyedOut)
+            {
+                GameTimeLastStarsGreyedOut = Game.GameTime;
+            }
+            else
+            {
+                GameTimeLastStarsNotGreyedOut = Game.GameTime;
+            }
+            Debug.Instance.WriteToLog("ValueChecker", string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
         private class StopVanillaSeachMode
         {
@@ -207,9 +280,9 @@ namespace LosSantosRED.lsr
                 CopModel.LoadAndWait();
                 CopModel.LoadCollisionAndWait();
             }
-            public void Tick()
+            public void Tick(bool IsWanted, bool TargetIsInVehicle)
             {
-                if (Mod.Player.Instance.IsWanted)
+                if (IsWanted)
                     StopSearchMode = true;
                 else
                     StopSearchMode = false;
@@ -218,7 +291,6 @@ namespace LosSantosRED.lsr
                 if (PrevStopSearchMode != StopSearchMode)
                 {
                     PrevStopSearchMode = StopSearchMode;
-                    Debug.Instance.WriteToLog("StopSearchMode", string.Format("Changed To: {0}, AnyPoliceRecentlySeenPlayer {1}", StopSearchMode, Mod.World.Instance.AnyPoliceRecentlySeenPlayer));
                 }
 
                 if (!StopSearchMode)
@@ -228,23 +300,23 @@ namespace LosSantosRED.lsr
                 {
                     CreateGhostCop();
                 }
-                if (Mod.Player.Instance.IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
+                if (IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
                 {
-                    MoveGhostCopToPosition();
+                    MoveGhostCopToPosition(TargetIsInVehicle);
                 }
                 else
                 {
                     MoveGhostCopToOrigin();
                 }
             }
-            private void MoveGhostCopToPosition()
+            private void MoveGhostCopToPosition(bool TargetIsInVehicle)
             {
                 if (GhostCop.Exists())
                 {
-                    Entity ToCheck = Mod.Player.Instance.IsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
+                    Entity ToCheck = TargetIsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
                     if (!NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck))
                     {
-                        if (Mod.Player.Instance.IsInVehicle)
+                        if (TargetIsInVehicle)
                         {
                             CurrentOffset = new List<Vector3>() { new Vector3(6f, 0f, 1f), new Vector3(3f, 0f, 1f), new Vector3(-3f, 0f, 1f) }.PickRandom();
                         }

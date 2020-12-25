@@ -31,17 +31,17 @@ public class CountyJurisdictions
             Serialization.SerializeParams(CountyJurisdictionList, ConfigFileName);
         }
     }
-    public Agency GetRandomAgency(string ZoneName)
+    public Agency GetRandomAgency(string ZoneName, int WantedLevel)
     {
         Zone MyZone = DataMart.Instance.Zones.GetZone(ZoneName);
         if (MyZone != null)
         {
-            List<CountyJurisdiction> ToPickFrom = CountyJurisdictionList.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn).ToList();
-            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+            List<CountyJurisdiction> ToPickFrom = CountyJurisdictionList.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn(WantedLevel)).ToList();
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
             int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (CountyJurisdiction MyJurisdiction in ToPickFrom)
             {
-                int SpawnChance = MyJurisdiction.CurrentSpawnChance;
+                int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
                 if (RandomPick < SpawnChance)
                 {
                     return MyJurisdiction.GameAgency;

@@ -68,7 +68,7 @@ public class Loadout
     {
         Cop = cop;
     }
-    public void IssueWeapons()
+    public void IssueWeapons(bool IsDeadlyChase)
     {
         if (Cop != null)
         {
@@ -76,20 +76,20 @@ public class Loadout
             {
                 IssuePistol();
             }
-            if (DataMart.Instance.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && !HasHeavyWeapon && Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
+            if (DataMart.Instance.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && !HasHeavyWeapon && IsDeadlyChase)
             {
-                CheckIssueHeavy();
+                CheckIssueHeavy(IsDeadlyChase);
             }
         }
     }
-    public void Update()
+    public void Update(bool IsDeadlyChase, int WantedLevel)
     {
-        IssueWeapons();
+        IssueWeapons(IsDeadlyChase);
         if (Cop.ShouldAutoSetWeaponState)
         {
-            if (Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
+            if (IsDeadlyChase)
             {
-                if (Cop.IsInVehicle && Mod.Player.Instance.WantedLevel < 4)
+                if (Cop.IsInVehicle && WantedLevel < 4)
                 {
                     SetUnarmed();
                 }
@@ -100,7 +100,7 @@ public class Loadout
             }
             else
             {
-                if (Mod.Player.Instance.IsWanted)
+                if (WantedLevel > 0)
                 {
                     SetLessLethal();
                 }
@@ -115,9 +115,9 @@ public class Loadout
             }
         }
     }
-    private void CheckIssueHeavy()
+    private void CheckIssueHeavy(bool IsDeadlyChase)
     {
-        if (DataMart.Instance.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase && !HasHeavyWeapon && Cop.IsInVehicle)
+        if (DataMart.Instance.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && IsDeadlyChase && !HasHeavyWeapon && Cop.IsInVehicle)
         {
             IssueHeavyWeapon();
         }

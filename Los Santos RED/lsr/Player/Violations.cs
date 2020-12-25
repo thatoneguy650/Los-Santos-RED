@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -12,6 +13,8 @@ namespace LosSantosRED.lsr
 
     public class Violations
     {
+        private IWorld World;
+        private IPlayer CurrentPlayer;
         private readonly List<Crime> CrimeList = new List<Crime>();
         private readonly Crime KillingPolice = new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false) { IsAlwaysFlagged = true };
         private readonly Crime FiringWeaponNearPolice = new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, 1, false) { CanReportBySound = true };
@@ -49,8 +52,10 @@ namespace LosSantosRED.lsr
         private bool TreatAsCop;
         private float CurrentSpeed;
         private uint GameTimeStartedBrandishing;
-        public Violations()
+        public Violations(IPlayer currentPlayer, IWorld world)
         {
+            World = world;
+            CurrentPlayer = currentPlayer;
             CrimeList = new List<Crime>
                 {
                     BrandishingCloseCombatWeapon,TerroristActivity,BrandishingHeavyWeapon, FiringWeapon, Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon,
@@ -62,7 +67,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Mod.Player.Instance.IsInVehicle && (Mod.Player.Instance.IsInAutomobile || Mod.Player.Instance.IsOnMotorcycle) && !Mod.Player.Instance.RecentlyStartedPlaying)
+                if (CurrentPlayer.IsInVehicle && (CurrentPlayer.IsInAutomobile || CurrentPlayer.IsOnMotorcycle) && !CurrentPlayer.RecentlyStartedPlaying)
                 {
                     return true;
                 }
@@ -177,7 +182,7 @@ namespace LosSantosRED.lsr
         public bool IsRunningRedLight { get; set; }
         public void Update()
         {
-            if (Mod.Player.Instance.IsAliveAndFree)
+            if (CurrentPlayer.IsAliveAndFree)
             {
                 CheckViolations();
                 FlagViolations();
@@ -193,7 +198,7 @@ namespace LosSantosRED.lsr
         }
         public void TrafficUpdate()
         {
-            if (Mod.Player.Instance.IsAliveAndFree && ShouldCheckTrafficViolations)
+            if (CurrentPlayer.IsAliveAndFree && ShouldCheckTrafficViolations)
             {
                 CheckTrafficViolations();
             }
@@ -218,7 +223,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckOtherCrimes()
         {
-            if (Mod.Player.Instance.IsCommitingSuicide)
+            if (CurrentPlayer.IsCommitingSuicide)
             {
                 AttemptingSuicide.IsCurrentlyViolating = true;
             }
@@ -226,7 +231,7 @@ namespace LosSantosRED.lsr
             {
                 AttemptingSuicide.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.Instance.IsWanted && Mod.Player.Instance.CurrentZone.IsRestrictedDuringWanted)
+            if (CurrentPlayer.IsWanted && CurrentPlayer.CurrentZone.IsRestrictedDuringWanted)
             {
                 TrespessingOnGovtProperty.IsCurrentlyViolating = true;
             }
@@ -234,7 +239,7 @@ namespace LosSantosRED.lsr
             {
                 TrespessingOnGovtProperty.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.Instance.Investigations.IsSuspicious)
+            if (CurrentPlayer.Investigations.IsSuspicious)
             {
                 SuspiciousActivity.IsCurrentlyViolating = true;
             }
@@ -242,7 +247,7 @@ namespace LosSantosRED.lsr
             {
                 SuspiciousActivity.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.Instance.IsWanted && Mod.World.Instance.AnyPoliceSeenPlayerCurrentWanted && !Mod.Player.Instance.AreStarsGreyedOut && Mod.Player.Instance.Character.Speed >= 2.0f && !Mod.Player.Instance.HandsAreUp && Mod.Player.Instance.CurrentPoliceResponse.HasBeenWantedFor >= 20000)
+            if (CurrentPlayer.IsWanted && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && !CurrentPlayer.IsInSearchMode && CurrentPlayer.Character.Speed >= 2.0f && !CurrentPlayer.HandsAreUp && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor >= 20000)
             {
                 ResistingArrest.IsCurrentlyViolating = true;
             }
@@ -254,7 +259,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckTheftCrimes()
         {
-            if (Mod.Player.Instance.IsWanted && Mod.Player.Instance.IsInVehicle && Mod.Player.Instance.IsInAirVehicle)
+            if (CurrentPlayer.IsWanted && CurrentPlayer.IsInVehicle && CurrentPlayer.IsInAirVehicle)
             {
                 GotInAirVehicleDuringChase.IsCurrentlyViolating = true;
             }
@@ -262,7 +267,7 @@ namespace LosSantosRED.lsr
             {
                 GotInAirVehicleDuringChase.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.CopsRecognizeAsStolen)
+            if (CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.CopsRecognizeAsStolen)
             {
                 DrivingStolenVehicle.IsCurrentlyViolating = true;
             }
@@ -270,7 +275,7 @@ namespace LosSantosRED.lsr
             {
                 DrivingStolenVehicle.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.Instance.IsMugging)
+            if (CurrentPlayer.IsMugging)
             {
                 Mugging.IsCurrentlyViolating = true;
             }
@@ -278,7 +283,7 @@ namespace LosSantosRED.lsr
             {
                 Mugging.IsCurrentlyViolating = false;
             }
-            if (Mod.Player.Instance.IsBreakingIntoCar)
+            if (CurrentPlayer.IsBreakingIntoCar)
             {
                 GrandTheftAuto.IsCurrentlyViolating = true;
             }
@@ -287,7 +292,7 @@ namespace LosSantosRED.lsr
                 GrandTheftAuto.IsCurrentlyViolating = false;
             }
 
-            if (Mod.Player.Instance.IsChangingLicensePlates)
+            if (CurrentPlayer.IsChangingLicensePlates)
             {
                 ChangingPlates.IsCurrentlyViolating = true;
             }
@@ -298,12 +303,12 @@ namespace LosSantosRED.lsr
         }
         private void CheckWeaponCrimes()
         {
-            if (Mod.Player.Instance.RecentlyShot(5000) || Game.LocalPlayer.Character.IsShooting)
+            if (CurrentPlayer.RecentlyShot(5000) || Game.LocalPlayer.Character.IsShooting)
             {
-                if (!(Mod.Player.Instance.Character.IsCurrentWeaponSilenced || Mod.Player.Instance.CurrentWeaponCategory == WeaponCategory.Melee))
+                if (!(CurrentPlayer.Character.IsCurrentWeaponSilenced || CurrentPlayer.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
                     FiringWeapon.IsCurrentlyViolating = true;
-                    if (Mod.World.Instance.AnyPoliceRecentlySeenPlayer || Mod.World.Instance.AnyPoliceCanHearPlayer)
+                    if (CurrentPlayer.AnyPoliceRecentlySeenPlayer || CurrentPlayer.AnyPoliceCanHearPlayer)
                     {
                         FiringWeaponNearPolice.IsCurrentlyViolating = true;
                     }
@@ -314,10 +319,10 @@ namespace LosSantosRED.lsr
                 FiringWeapon.IsCurrentlyViolating = false;
                 FiringWeaponNearPolice.IsCurrentlyViolating = false;
             }
-            if (CheckBrandishing() && Mod.Player.Instance.Character.Inventory.EquippedWeapon != null && !Mod.Player.Instance.IsInVehicle)
+            if (CheckBrandishing() && CurrentPlayer.Character.Inventory.EquippedWeapon != null && !CurrentPlayer.IsInVehicle)
             {
                 BrandishingWeapon.IsCurrentlyViolating = true;
-                if (Mod.Player.Instance.CurrentWeapon != null && Mod.Player.Instance.CurrentWeapon.WeaponLevel >= 4)
+                if (CurrentPlayer.CurrentWeapon != null && CurrentPlayer.CurrentWeapon.WeaponLevel >= 4)
                 {
                     TerroristActivity.IsCurrentlyViolating = true;
                 }
@@ -325,7 +330,7 @@ namespace LosSantosRED.lsr
                 {
                     TerroristActivity.IsCurrentlyViolating = false;
                 }
-                if (Mod.Player.Instance.CurrentWeapon != null && Mod.Player.Instance.CurrentWeapon.WeaponLevel >= 3)
+                if (CurrentPlayer.CurrentWeapon != null && CurrentPlayer.CurrentWeapon.WeaponLevel >= 3)
                 {
                     BrandishingHeavyWeapon.IsCurrentlyViolating = true;
                 }
@@ -333,7 +338,7 @@ namespace LosSantosRED.lsr
                 {
                     BrandishingHeavyWeapon.IsCurrentlyViolating = false;
                 }
-                if (Mod.Player.Instance.CurrentWeapon != null && Mod.Player.Instance.CurrentWeapon.Category == WeaponCategory.Melee)
+                if (CurrentPlayer.CurrentWeapon != null && CurrentPlayer.CurrentWeapon.Category == WeaponCategory.Melee)
                 {
                     BrandishingCloseCombatWeapon.IsCurrentlyViolating = true;
                 }
@@ -352,7 +357,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckPedDamageCrimes()
         {
-            if (Mod.Player.Instance.RecentlyKilledCop)
+            if (CurrentPlayer.RecentlyKilledCop)
             {
                 KillingPolice.IsCurrentlyViolating = true;
             }
@@ -361,7 +366,7 @@ namespace LosSantosRED.lsr
                 KillingPolice.IsCurrentlyViolating = false;
             }
 
-            if (Mod.Player.Instance.RecentlyHurtCop)
+            if (CurrentPlayer.RecentlyHurtCop)
             {
                 HurtingPolice.IsCurrentlyViolating = true;
             }
@@ -370,7 +375,7 @@ namespace LosSantosRED.lsr
                 HurtingPolice.IsCurrentlyViolating = false;
             }
 
-            if (Mod.Player.Instance.RecentlyKilledCivilian || Mod.Player.Instance.NearCivilianMurderVictim)
+            if (CurrentPlayer.RecentlyKilledCivilian || CurrentPlayer.NearCivilianMurderVictim)
             {
                 KillingCivilians.IsCurrentlyViolating = true;
             }
@@ -379,7 +384,7 @@ namespace LosSantosRED.lsr
                 KillingCivilians.IsCurrentlyViolating = false;
             }
 
-            if (Mod.Player.Instance.RecentlyHurtCivilian)
+            if (CurrentPlayer.RecentlyHurtCivilian)
             {
                 HurtingCivilians.IsCurrentlyViolating = true;
             }
@@ -390,7 +395,7 @@ namespace LosSantosRED.lsr
         }
         private bool CheckBrandishing()
         {
-            if (Mod.Player.Instance.IsConsideredArmed)
+            if (CurrentPlayer.IsConsideredArmed)
             {
                 if (GameTimeStartedBrandishing == 0)
                 {
@@ -412,7 +417,7 @@ namespace LosSantosRED.lsr
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (Mod.Player.Instance.RecentlyHurtCivilian || Mod.Player.Instance.RecentlyHurtCop) && (Mod.World.Instance.CivilianList.Any(x => x.DistanceToPlayer <= 10f) || Mod.World.Instance.PoliceList.Any(x => x.DistanceToPlayer <= 10f)))//needed for non humans that are returned from this native
+            if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.HitPed && RecentlyHitPed && (CurrentPlayer.RecentlyHurtCivilian || CurrentPlayer.RecentlyHurtCop) && (World.AnyHumansNearPlayer))//needed for non humans that are returned from this native
             {
                 HitPedWithCar.IsCurrentlyViolating = true;
             }
@@ -430,7 +435,7 @@ namespace LosSantosRED.lsr
             }
             if (!TreatAsCop)
             {
-                if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.DrivingAgainstTraffic && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Mod.Player.Instance.Character.CurrentVehicle.Speed >= 10f)))
+                if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.DrivingAgainstTraffic && (HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && CurrentPlayer.Character.CurrentVehicle.Speed >= 10f)))
                 {
                     DrivingAgainstTraffic.IsCurrentlyViolating = true;
                 }
@@ -438,7 +443,7 @@ namespace LosSantosRED.lsr
                 {
                     DrivingAgainstTraffic.IsCurrentlyViolating = false;
                 }
-                if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.DrivingOnPavement && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Mod.Player.Instance.Character.CurrentVehicle.Speed >= 10f)))
+                if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.DrivingOnPavement && (HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && CurrentPlayer.Character.CurrentVehicle.Speed >= 10f)))
                 {
                     DrivingOnPavement.IsCurrentlyViolating = true;
                 }
@@ -473,7 +478,7 @@ namespace LosSantosRED.lsr
                     RunningARedLight.IsCurrentlyViolating = false;
                 }
             }
-            if (Mod.Player.Instance.IsDrunk && (DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
+            if (CurrentPlayer.IsDrunk && (DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
             {
                 DrunkDriving.IsCurrentlyViolating = true;
             }
@@ -487,22 +492,22 @@ namespace LosSantosRED.lsr
             VehicleIsSuspicious = false;
             TreatAsCop = false;
             IsSpeeding = false;
-            if (Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.Exists())
+            if (CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists())
             {
-                CurrentSpeed = Mod.Player.Instance.CurrentVehicle.Vehicle.Speed * 2.23694f;
-                if (!IsRoadWorthy(Mod.Player.Instance.CurrentVehicle.Vehicle) || IsDamaged(Mod.Player.Instance.CurrentVehicle.Vehicle))
+                CurrentSpeed = CurrentPlayer.CurrentVehicle.Vehicle.Speed * 2.23694f;
+                if (!IsRoadWorthy(CurrentPlayer.CurrentVehicle.Vehicle) || IsDamaged(CurrentPlayer.CurrentVehicle.Vehicle))
                 {
                     VehicleIsSuspicious = true;
                 }
-                if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.ExemptCode3 && Mod.Player.Instance.CurrentVehicle.Vehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.IsPoliceVehicle && Mod.Player.Instance.CurrentVehicle != null && !Mod.Player.Instance.CurrentVehicle.WasReportedStolen)
-                {
-                    if (Mod.Player.Instance.CurrentVehicle.Vehicle.IsSirenOn && !Mod.World.Instance.AnyPoliceCanRecognizePlayer) //see thru ur disguise if ur too close
-                    {
-                        TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
-                    }
-                }
+                //if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.ExemptCode3 && CurrentPlayer.CurrentVehicle.Vehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.IsPoliceVehicle && CurrentPlayer.CurrentVehicle != null && !CurrentPlayer.CurrentVehicle.WasReportedStolen)
+                //{
+                //    if (CurrentPlayer.CurrentVehicle.Vehicle.IsSirenOn && !World.AnyPoliceCanRecognizePlayer) //see thru ur disguise if ur too close
+                //    {
+                //        TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
+                //    }
+                //}
                 IsRunningRedLight = false;
-                //foreach (PedExt Civilian in Mod.World.Instance.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+                //foreach (PedExt Civilian in World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
                 //{
                 //    Civilian.IsWaitingAtTrafficLight = false;
                 //    Civilian.IsFirstWaitingAtTrafficLight = false;
@@ -544,9 +549,9 @@ namespace LosSantosRED.lsr
                 TimeSincePlayerHitPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
                 TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
                 float SpeedLimit = 60f;
-                if (Mod.Player.Instance.CurrentStreet != null)
+                if (CurrentPlayer.CurrentStreet != null)
                 {
-                    SpeedLimit = Mod.Player.Instance.CurrentStreet.SpeedLimit;
+                    SpeedLimit = CurrentPlayer.CurrentStreet.SpeedLimit;
                 }
                 IsSpeeding = CurrentSpeed > SpeedLimit + DataMart.Instance.Settings.SettingsManager.TrafficViolations.SpeedingOverLimitThreshold;
             }
@@ -555,9 +560,9 @@ namespace LosSantosRED.lsr
         {
             foreach (Crime Violating in CrimeList.Where(x => x.IsCurrentlyViolating))
             {
-                if (Mod.World.Instance.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Mod.World.Instance.AnyPoliceCanHearPlayer) || Violating.IsAlwaysFlagged)
+                if (CurrentPlayer.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && CurrentPlayer.AnyPoliceCanHearPlayer) || Violating.IsAlwaysFlagged)
                 {
-                    Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.AddCrime(Violating, true, Mod.Player.Instance.CurrentPosition, Mod.Player.Instance.CurrentSeenVehicle, Mod.Player.Instance.CurrentSeenWeapon,true);
+                    CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.AddCrime(Violating, true, CurrentPlayer.CurrentPosition, CurrentPlayer.CurrentSeenVehicle, CurrentPlayer.CurrentSeenWeapon,true);
                 }
             }
         }
@@ -565,7 +570,7 @@ namespace LosSantosRED.lsr
         {
             bool LightsOn;
             bool HighbeamsOn;
-            if (Mod.World.Instance.IsNight)
+            if (World.IsNight)
             {
                 unsafe
                 {
@@ -611,7 +616,7 @@ namespace LosSantosRED.lsr
                     return true;
                 }
             }
-            if (Mod.World.Instance.IsNight)
+            if (World.IsNight)
             {
                 if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar))
                 {

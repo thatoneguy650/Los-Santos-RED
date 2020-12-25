@@ -8,10 +8,17 @@ using System.Threading.Tasks;
 using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 
 //needs rewrite to change the ped to the character
 public class Surrendering
 {
+    private IPlayer CurrentPlayer;
+    public Surrendering(IPlayer currentPlayer)
+    {
+        CurrentPlayer = currentPlayer;
+    }
+
     public bool IsCommitingSuicide { get; set; }
     public bool CanSurrender
     {
@@ -32,18 +39,18 @@ public class Surrendering
         if (Game.LocalPlayer.Character.IsWearingHelmet)
             Game.LocalPlayer.Character.RemoveHelmet(true);
 
-        if (Mod.Player.Instance.HandsAreUp)
+        if (CurrentPlayer.HandsAreUp)
             return;
 
         //if (Mod.Player.Instance.CurrentVehicle == null || Mod.Player.Instance.CurrentVehicle.FuelTank.CanPump)//usees the same key, might need to change
         //    return;
 
-        Mod.Player.Instance.SetUnarmed();
+        CurrentPlayer.SetUnarmed();
         //if (Mod.Player.Instance.CurrentVehicle != null)
         //{
         //    Mod.Player.Instance.CurrentVehicle.ToggleEngine(false);
         //}
-        Mod.Player.Instance.HandsAreUp = true;
+        CurrentPlayer.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
         AnimationDictionary AnimDictionary = new AnimationDictionary(sDict);
@@ -102,7 +109,7 @@ public class Surrendering
     }
     public void LowerHands()
     {
-        Mod.Player.Instance.HandsAreUp = false; // You put your hands down
+        CurrentPlayer.HandsAreUp = false; // You put your hands down
         Game.LocalPlayer.Character.Tasks.Clear();
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
             Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
@@ -130,7 +137,7 @@ public class Surrendering
                 return;
             }
 
-            Mod.Player.Instance.SetUnarmed();
+            CurrentPlayer.SetUnarmed();
 
             if (PedToArrest.IsInAnyVehicle(false))
             {
@@ -158,7 +165,7 @@ public class Surrendering
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(6000);
 
-                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Mod.Player.Instance.IsBusted))
+                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !CurrentPlayer.IsBusted))
                     {
                         return;
                     }
@@ -202,7 +209,7 @@ public class Surrendering
         if (IsCommitingSuicide)
             return;
 
-        if (Mod.Player.Instance.HandsAreUp)
+        if (CurrentPlayer.HandsAreUp)
             return;
 
         if (PedToSuicide.IsInAnyVehicle(false) || PedToSuicide.IsRagdoll || PedToSuicide.IsSwimming || PedToSuicide.IsInCover)
@@ -246,7 +253,7 @@ public class Surrendering
                         while (Game.GameTime - GameTimeStartedSuicide <= 20000)
                         {
                             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                            if (Input.Instance.IsMoveControlPressed)
+                            if (EntryPoint.IsMoveControlPressed)
                             {
                                 break;
                             }
@@ -294,7 +301,7 @@ public class Surrendering
                         while (Game.GameTime - GameTimeStartedSuicide <= 20000 && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 1.0f)
                         {
                             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                            if (Input.Instance.IsMoveControlPressed)
+                            if (CurrentPlayer.IsMoveControlPressed)
                             {
                                 break;
                             }

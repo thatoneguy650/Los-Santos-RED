@@ -9,12 +9,14 @@ public class CrimeEvent
 {
     private uint GameTimeLastOccurred;
     private uint InstanceDuration = 20000;
-    public CrimeEvent(Crime crimeToReport)
+    public CrimeEvent(Crime crimeToReport, PoliceScannerCallIn currentInfo)
     {
         AssociatedCrime = crimeToReport;
+        CurrentInformation = currentInfo;
         GameTimeLastOccurred = Game.GameTime;
     }
     public Crime AssociatedCrime { get; set; }
+    public PoliceScannerCallIn CurrentInformation { get; set; }
     public int Instances { get; set; } = 1;
     public bool CanAddInstance
     {

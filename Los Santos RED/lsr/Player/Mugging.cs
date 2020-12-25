@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -12,14 +13,21 @@ using System.Threading.Tasks;
 //needs full refactor/rewrite
 public class Mugging
 {
+    private IWorld World;
+    private IPlayer CurrentPlayer;
+    public Mugging(IPlayer currentPlayer, IWorld world)
+    {
+        World = world;
+        CurrentPlayer = currentPlayer;
+    }
     public bool IsMugging { get; private set; }
     public void Update()
     {
         if (!IsMugging)
         {
-            if (Mod.Player.Instance.IsConsideredArmed && !Mod.Player.Instance.IsInVehicle)
+            if (CurrentPlayer.IsConsideredArmed && !CurrentPlayer.IsInVehicle)
             {
-                if (Game.LocalPlayer.Character.IsAiming && Mod.Player.Instance.CurrentWeapon.Category != WeaponCategory.Melee)
+                if (Game.LocalPlayer.Character.IsAiming && CurrentPlayer.CurrentWeapon.Category != WeaponCategory.Melee)
                 {
                     CheckArmedMugging();
                 }
@@ -35,7 +43,7 @@ public class Mugging
         Entity ArmedMuggingTargetPed = Game.LocalPlayer.GetFreeAimingTarget();
         if (ArmedMuggingTargetPed.Exists() && ArmedMuggingTargetPed is Ped)
         {
-            PedExt GTAPedTarget = Mod.World.Instance.GetCivilian(ArmedMuggingTargetPed.Handle);
+            PedExt GTAPedTarget = World.GetCivilian(ArmedMuggingTargetPed.Handle);
             if (GTAPedTarget != null)
             {
                 if (!GTAPedTarget.HasBeenMugged && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && GTAPedTarget.Pedestrian.IsAlive)
@@ -54,7 +62,7 @@ public class Mugging
     }
     private void CheckUnarmedMugging()
     {
-        PedExt GTAPedTarget = Mod.World.Instance.GetCivilian(Natives.GetTargettingHandle());
+        PedExt GTAPedTarget = World.GetCivilian(Natives.GetTargettingHandle());
         if (GTAPedTarget != null)
         {
             if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.Pedestrian.IsAlive)

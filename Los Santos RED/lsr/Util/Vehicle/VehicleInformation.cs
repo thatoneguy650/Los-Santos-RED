@@ -71,58 +71,52 @@ public class VehicleInformation
                 return false;
         }
     }
-    public bool CanCurrentlySpawn
+    public bool CanCurrentlySpawn(int WantedLevel)
     {
-        get
+        //if (IsHelicopter && Mod.World.Instance.PoliceHelicoptersCount >= DataMart.Instance.Settings.SettingsManager.Police.HelicopterLimit)
+        //{
+        //    return false;
+        //}
+        //else if (IsBoat && Mod.World.Instance.PoliceBoatsCount >= DataMart.Instance.Settings.SettingsManager.Police.BoatLimit)
+        //{
+        //    return false;
+        //}
+        if (WantedLevel > 0)
         {
-            if (IsHelicopter && Mod.World.Instance.PoliceHelicoptersCount >= DataMart.Instance.Settings.SettingsManager.Police.HelicopterLimit)
+            if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
             {
-                return false;
-            }
-            else if (IsBoat && Mod.World.Instance.PoliceBoatsCount >= DataMart.Instance.Settings.SettingsManager.Police.BoatLimit)
-            {
-                return false;
-            }
-            if (Mod.Player.Instance.IsWanted)
-            {
-                if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
-                {
-                    return CanSpawnWanted;
-                }
-                else
-                {
-                    return false;
-                }
+                return CanSpawnWanted;
             }
             else
             {
-                return CanSpawnAmbient;
+                return false;
             }
         }
-    }
-    public int CurrentSpawnChance
-    {
-        get
+        else
         {
-            if (!CanCurrentlySpawn)
+            return CanSpawnAmbient;
+        }
+    }
+    public int CurrentSpawnChance(int WantedLevel)
+    {
+        if (!CanCurrentlySpawn(WantedLevel))
+        {
+            return 0;
+        }
+        if (WantedLevel > 0)
+        {
+            if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
+            {
+                return WantedSpawnChance;
+            }
+            else
             {
                 return 0;
             }
-            if (Mod.Player.Instance.IsWanted)
-            {
-                if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
-                {
-                    return WantedSpawnChance;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            else
-            {
-                return AmbientSpawnChance;
-            }
+        }
+        else
+        {
+            return AmbientSpawnChance;
         }
     }
     public VehicleInformation()

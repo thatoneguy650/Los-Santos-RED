@@ -1,26 +1,30 @@
-﻿using System;
+﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
+using Rage;
+using Rage.Native;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using ExtensionsMethods;
-using LosSantosRED.lsr;
-using Rage;
-using Rage.Native;
-using RAGENativeUI;
-using RAGENativeUI.Elements;
 
 //basically need to redo this entire class, it is a dumpster fire
 public class Menu
 {
-    private static readonly Lazy<Menu> lazy =
-    new Lazy<Menu>(() => new Menu());
-
-    public static Menu Instance { get { return lazy.Value; } }
-
-    private Menu()
+    private IPlayer CurrentPlayer;
+    private IWorld World;
+    private IPedSwap PedSwap;
+    private IRespawning Respawning;
+    private IInput Input;
+    public Menu(IWorld world, IPlayer currentPlayer, IPedSwap pedSwap, IRespawning respawning)
     {
+        CurrentPlayer = currentPlayer;
+        World = world;
+        PedSwap = pedSwap;
+        Respawning = respawning;
         menuPool = new MenuPool();
         mainMenu = new UIMenu("Los Santos RED", "Select an Option");
         menuPool.Add(mainMenu);
@@ -48,6 +52,7 @@ public class Menu
         debugMenu.OnListChange += OnListChange;
         debugMenu.OnCheckboxChange += OnCheckboxChange;
     }
+
     private UIMenuListItem menuMainTakeoverRandomPed;
     private UIMenuItem menuDebugResetCharacter;
     private UIMenuItem menuMainSuicide;
@@ -84,7 +89,6 @@ public class Menu
     private UIMenu actionsMenu;
     private UIMenu scenariosMenu;
 
-
     private UIMenu settingsMenuGeneral;
     private UIMenu settingsMenuPolice;
     private UIMenu settingsMenuUISettings;
@@ -95,8 +99,8 @@ public class Menu
     private GameLocation CurrentSelectedSurrenderLocation;
     private GameLocation CurrentSelectedHospitalLocation;
     private UIMenuItem scenariosMainPrisonEscape;
-
-
+    private bool ShownBustedMenuThisBust;
+    private bool ShownDeathMenuThisDeath;
     private readonly List<string> strRadioStations = new List<string>
     {
         "NONE", "RADIO_01_CLASS_ROCK", "RADIO_02_POP", "RADIO_03_HIPHOP_NEW", "RADIO_04_PUNK", "RADIO_05_TALK_01",
@@ -226,18 +230,16 @@ public class Menu
     public string CurrentScreenEffect { get; set; }
     public void Update()
     {
-        //try
-        //{
         if (Game.IsKeyDown(DataMart.Instance.Settings.SettingsManager.KeyBinding.MenuKey)) // Our menu on/off switch.
         {
-            if (Mod.Player.Instance.IsDead)
+            if (CurrentPlayer.IsDead)
             {
                 if (!deathMenu.Visible)
                     ShowDeathMenu();
                 else
                     deathMenu.Visible = false;
             }
-            else if (Mod.Player.Instance.IsBusted)
+            else if (CurrentPlayer.IsBusted)
             {
                 if (!bustedMenu.Visible)
                     ShowBustedMenu();
@@ -272,13 +274,33 @@ public class Menu
                 debugMenu.Visible = false;
         }
 
-        menuPool.ProcessMenus(); // Process all our menus: draw the menu and process the key strokes and the mouse.      
-        //}
-        //catch (Exception e)
-        //{
-        //    ScriptController.Dispose();
-        //    Mod.Debugging.WriteToLog("Error", e.Message + " : " + e.StackTrace);
-        //}
+        menuPool.ProcessMenus();
+
+        if (CurrentPlayer.IsBusted && !ShownBustedMenuThisBust)
+        {
+            ShownBustedMenuThisBust = true;
+            var HandleBusted = GameFiber.StartNew(delegate
+            {
+                GameFiber.Wait(1000);
+                ShowBustedMenu(); 
+            }, "HandleBusted");
+            Debug.Instance.GameFibers.Add(HandleBusted);
+        }
+        if (CurrentPlayer.IsDead && !ShownDeathMenuThisDeath)
+        {
+            ShownDeathMenuThisDeath = true;
+            var HandleDeath = GameFiber.StartNew(delegate
+            {
+                GameFiber.Wait(1000);
+                ShowDeathMenu();
+            }, "HandleDeath");
+            Debug.Instance.GameFibers.Add(HandleDeath);
+        }
+        if (!CurrentPlayer.IsDead && !CurrentPlayer.IsBusted)
+        {
+            ShownBustedMenuThisBust = false;
+            ShownDeathMenuThisDeath = false;
+        }
     }
     public void ShowMainMenu()
     {
@@ -300,7 +322,7 @@ public class Menu
     }
     public void ShowBustedMenu()
     {
-        if (Mod.Player.Instance.IsDead)
+        if (CurrentPlayer.IsDead)
             return;
 
         CreateBustedMenu();
@@ -359,7 +381,7 @@ public class Menu
         deathMenu.AddItem(menuDeathHospitalRespawn);
         deathMenu.AddItem(menuDeathTakeoverRandomPed);
 
-        if (DataMart.Instance.Settings.SettingsManager.General.UndieLimit == 0 || Mod.Player.Instance.TimesDied < DataMart.Instance.Settings.SettingsManager.General.UndieLimit)
+        if (DataMart.Instance.Settings.SettingsManager.General.UndieLimit == 0 || CurrentPlayer.TimesDied < DataMart.Instance.Settings.SettingsManager.General.UndieLimit)
             menuDeathUndie.Enabled = true;
         else
             menuDeathUndie.Enabled = false;
@@ -385,7 +407,7 @@ public class Menu
         bustedMenu.AddItem(menuBustedTalk);
         bustedMenu.AddItem(menuBustedTakeoverRandomPed);
 
-        if (Mod.Player.Instance.WantedLevel <= 1)
+        if (CurrentPlayer.WantedLevel <= 1)
             menuBustedTalk.Enabled = true;
         else
             menuBustedTalk.Enabled = false;
@@ -410,7 +432,6 @@ public class Menu
         optionsMenu.OnItemSelect += OptionsMenuSelect;
         optionsMenu.OnListChange += OnListChange;
         optionsMenu.OnCheckboxChange += OnCheckboxChange;
-
 
         settingsMenuGeneral.OnItemSelect += SettingsMenuSelect;
         settingsMenuPolice.OnItemSelect += SettingsMenuSelect;
@@ -439,14 +460,14 @@ public class Menu
     {
         menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
         menuActionSmoking = new UIMenuItem("Smoking", "Start smoking.");
-        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", Mod.Player.Instance.SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
+        //off cuz the middle thing is throwing an error?//menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", CurrentPlayer.SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
 
         actionsMenu.AddItem(menuMainSuicide);
         actionsMenu.AddItem(menuActionSmoking);
 
-        if (!Mod.Player.Instance.IsInVehicle)
+        if (!CurrentPlayer.IsInVehicle)
         {
             actionsMenu.AddItem(menuMainChangeLicensePlate);
             actionsMenu.AddItem(menuMainRemoveLicensePlate);
@@ -461,7 +482,6 @@ public class Menu
         scenariosMainPrisonEscape = new UIMenuItem("Prison Escape", "Escape the prison");
 
         scenariosMenu.AddItem(scenariosMainPrisonEscape);
-
 
         scenariosMenu.OnItemSelect += ScenarioMenuSelect;
         scenariosMenu.OnListChange += OnListChange;
@@ -504,7 +524,7 @@ public class Menu
     {
         if (selectedItem == menuMainTakeoverRandomPed)
         {
-            if (Mod.Player.Instance.WantedLevel > 0)
+            if (CurrentPlayer.WantedLevel > 0)
             {
                 Game.DisplayNotification("Lose your wanted level first");
                 return;
@@ -512,16 +532,16 @@ public class Menu
 
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.Instance.TakeoverPed(500f, true, false, true);
+                PedSwap.TakeoverPed(500f, true, false, true);
             }
             else
             {
-                PedSwap.Instance.TakeoverPed(SelectedTakeoverRadius, false, false, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true);
             }
         }
         else if (selectedItem == menuMainShowPlayerStatus)
         {
-            Mod.Player.Instance.DisplayPlayerNotification();
+            CurrentPlayer.DisplayPlayerNotification();
         }
 
         mainMenu.Visible = false;
@@ -530,30 +550,30 @@ public class Menu
     {
         if (selectedItem == menuBustedResistArrest)
         {
-            Mod.Player.Instance.ResistArrest();
+            Respawning.ResistArrest();
         }
         else if (selectedItem == menuBustedBribe)
             if (int.TryParse(GetKeyboardInput(""), out int BribeAmount))
             {
-                Mod.Player.Instance.BribePolice(BribeAmount);
+                Respawning.BribePolice(BribeAmount);
             }
         if (selectedItem == menuBustedSurrender)
         {
-            Mod.Player.Instance.SurrenderToPolice(CurrentSelectedSurrenderLocation);
+            Respawning.SurrenderToPolice(CurrentSelectedSurrenderLocation);
         }
         else if (selectedItem == menuBustedTalk)
         {
-            //Mod.Player.Instance.Respawning.Talk();
+            //CurrentPlayer.Respawning.Talk();
         }
         else if (selectedItem == menuBustedTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.Instance.TakeoverPed(500f, true, true, true);
+                PedSwap.TakeoverPed(500f, true, true, true);
             }
             else
             {
-                PedSwap.Instance.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
             }
         }
 
@@ -563,28 +583,28 @@ public class Menu
     {
         if (selectedItem == menuDeathUndie)
         {
-            Mod.Player.Instance.RespawnHere(true, false);
+            Respawning.RespawnAtCurrentLocation(true, false);
         }
         if (selectedItem == menuDeathHospitalRespawn)
         {
             if (RandomItems.RandomPercent(0))//turned off for testing
             {
-                Mod.Player.Instance.RespawnAtHospital(CurrentSelectedHospitalLocation);
+                Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
             }
             else
             {
-                Mod.Player.Instance.RespawnAtGrave();
+                Respawning.RespawnAtGrave();
             }
         }
         else if (selectedItem == menuDeathTakeoverRandomPed)
         {
             if (SelectedTakeoverRadius == -1f)
             {
-                PedSwap.Instance.TakeoverPed(500f, true, true, true);
+                PedSwap.TakeoverPed(500f, true, true, true);
             }
             else
             {
-                PedSwap.Instance.TakeoverPed(SelectedTakeoverRadius, false, true, true);
+                PedSwap.TakeoverPed(SelectedTakeoverRadius, false, true, true);
             }
         }
 
@@ -662,16 +682,16 @@ public class Menu
     {
         if (selectedItem == menuMainSuicide)
         {
-            Mod.Player.Instance.CommitSuicide();
+            CurrentPlayer.CommitSuicide();
         }
         else if (selectedItem == menuMainChangeLicensePlate)
         {
-            PlateTheft plateTheft = new PlateTheft();
-            plateTheft.ChangePlate(Mod.Player.Instance.SpareLicensePlates[SelectedPlateIndex]);
+            PlateTheft plateTheft = new PlateTheft(CurrentPlayer,Input);
+            plateTheft.ChangePlate(CurrentPlayer.SpareLicensePlates[SelectedPlateIndex]);
         }
         else if (selectedItem == menuMainRemoveLicensePlate)
         {
-            PlateTheft plateTheft = new PlateTheft();
+            PlateTheft plateTheft = new PlateTheft(CurrentPlayer, Input);
             plateTheft.RemovePlate();
         }
     }
@@ -692,7 +712,7 @@ public class Menu
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
         }
 
-        if (selectedItem == menuDebugGiveMoney) Mod.Player.Instance.GiveMoney(50000);
+        if (selectedItem == menuDebugGiveMoney) CurrentPlayer.GiveMoney(50000);
         if (selectedItem == menuDebugResetMod)
         {
             //ScriptController.Dispose();
@@ -716,7 +736,6 @@ public class Menu
         {
             NativeFunction.Natives.xB4EDDC19532BFB85(); //ANIMPOSTFX_STOP_ALL
             Debug.Instance.WriteToLog("Screen Effect: ", CurrentScreenEffect);
-
 
             if (CurrentScreenEffect != "")
                 NativeFunction.Natives.x2206BF9A37B7F724(CurrentScreenEffect, 0, true); //ANIMPOSTFX_PLAY
@@ -770,7 +789,7 @@ public class Menu
             if (list == menuDebugRandomWeapon)
                 RandomWeaponCategory = list.Index;
             //else if (list == menuAutoSetRadioStation)
-            //    Mod.Player.Instance.VehicleRadio.AutoTuneStation = strRadioStations[index];
+            //    CurrentPlayer.VehicleRadio.AutoTuneStation = strRadioStations[index];
             if (list == menuDebugScreenEffect)
                 CurrentScreenEffect = ScreenEffects[index];
         }

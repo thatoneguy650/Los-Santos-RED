@@ -65,7 +65,7 @@ public class Vehicles
 
     private void RemoveAbandonedPoliceVehicles()
     {
-        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))//cleanup abandoned police cars, either cop dies or he gets marked non persisitent
+        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))
         {
             if (PoliceCar.Vehicle.IsEmpty)
             {
@@ -78,15 +78,11 @@ public class Vehicles
     }
     private void FixDamagedPoliceVehicles()
     {
-        foreach (Cop Cop in Mod.World.Instance.PoliceList.Where(x => x.DistanceToPlayer >= 100f && x.Pedestrian.IsInAnyVehicle(false)))//was 175f
+        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))
         {
-            if (Cop.Pedestrian.CurrentVehicle.Health < Cop.Pedestrian.CurrentVehicle.MaxHealth || Cop.Pedestrian.CurrentVehicle.EngineHealth < 1000f)
+            if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth || PoliceCar.Vehicle.EngineHealth < 1000f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 75f)
             {
-                Cop.Pedestrian.CurrentVehicle.Repair();
-            }
-            else if (Cop.Pedestrian.CurrentVehicle.Health <= 600 || Cop.Pedestrian.CurrentVehicle.EngineHealth <= 600 || Cop.Pedestrian.CurrentVehicle.IsUpsideDown)
-            {
-                Mod.World.Instance.Delete(Cop);
+                PoliceCar.Vehicle.Repair();
             }
         }
     }

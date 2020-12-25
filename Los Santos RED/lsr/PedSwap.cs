@@ -1,18 +1,20 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PedSwap
+public class PedSwap : IPedSwap
 {
-    private static readonly Lazy<PedSwap> lazy =
-    new Lazy<PedSwap>(() => new PedSwap());
-    public static PedSwap Instance { get { return lazy.Value; } }
-    private PedSwap()
+    private IWorld World;
+    private IPlayer Player;
+    public PedSwap(IWorld world, IPlayer player)
     {
+        World = world;
+        Player = player;
     }
     private Ped CurrentPed;
     private Vector3 CurrentPedPosition;
@@ -60,7 +62,7 @@ public class PedSwap
             }
             if (ClearNearPolice)
             {
-                Mod.World.Instance.ClearPolice();
+                World.ClearPolice();
             }
             StoreTargetPedData(TargetPed);
             NativeFunction.CallByName<uint>("CHANGE_PLAYER_PED", Game.LocalPlayer, TargetPed, false, false);
@@ -87,7 +89,7 @@ public class PedSwap
             NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
-                while (!Input.Instance.IsMoveControlPressed)
+                while (!EntryPoint.IsMoveControlPressed)
                 {
                     GameFiber.Yield();
                 }
@@ -267,10 +269,10 @@ public class PedSwap
 
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         ActivatePreviousScenarios();
-        Mod.Player.Instance.SetUnarmed();
-        Mod.World.Instance.UnPauseTime();
+        Player.SetUnarmed();
+        World.UnPauseTime();
         GameFiber.Wait(50);
-        Mod.Player.Instance.DisplayPlayerNotification();
+        Player.DisplayPlayerNotification();
     }
     private void SetPlayerOffset()
     {
@@ -301,16 +303,19 @@ public class PedSwap
     }
     private void StoreTargetPedData(Ped TargetPed)
     {
-        OriginalMoney = Mod.Player.Instance.Money;
+        OriginalMoney = Player.Money;
         ModelBeforeTakeOver = TargetPed.Model.Name;
         IsMaleBeforeTakeover = TargetPed.IsMale;
         CurrentPedVariation = GetPedVariation(TargetPed);
         TargetPedPosition = TargetPed.Position;
         CurrentPedPosition = Game.LocalPlayer.Character.Position;
-        Mod.World.Instance.PauseTime();
+        World.PauseTime();
         if (Game.LocalPlayer.Character.IsDead)
         {
-            Mod.Player.Instance.RespawnHere(false,true);
+            //Player.RespawnHere(false,true);
+            NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
+            NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
+            Game.HandleRespawn();
         }
         Vector3 PlayerOriginalPedPosition = Game.LocalPlayer.Character.Position;
         TargetPedAlreadyTakenOver = false;

@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -13,7 +14,12 @@ namespace LosSantosRED.lsr
 {
     public class ArrestWarrant
     {
+        private IPlayer CurrentPlayer;
         private uint GameTimeLastAppliedWantedStats;
+        public ArrestWarrant(IPlayer currentPlayer)
+        {
+            CurrentPlayer = currentPlayer;
+        }
         public bool IsActive { get; private set; }
         public List<CriminalHistory> CriminalHistoryList { get; set; } = new List<CriminalHistory>();
         public bool RecentlyAppliedWantedStats
@@ -76,21 +82,21 @@ namespace LosSantosRED.lsr
         }
         public void Update()
         {
-            if (!Mod.Player.Instance.IsDead && !Mod.Player.Instance.IsBusted)
+            if (!CurrentPlayer.IsDead && !CurrentPlayer.IsBusted)
             {
                 CheckCurrentVehicle();
                 CheckSight();
 
-                if (Mod.Player.Instance.IsWanted)
+                if (CurrentPlayer.IsWanted)
                 {
-                    if (!IsActive && Mod.World.Instance.AnyPoliceCanSeePlayer)
+                    if (!IsActive && CurrentPlayer.AnyPoliceCanSeePlayer)
                     {
                         IsActive = true;
                     }
                 }
                 else
                 {
-                    if (IsActive && Mod.Player.Instance.CurrentPoliceResponse.HasBeenNotWantedFor >= 120000)
+                    if (IsActive && CurrentPlayer.CurrentPoliceResponse.HasBeenNotWantedFor >= 120000)
                     {
                         Reset();
                     }
@@ -110,9 +116,9 @@ namespace LosSantosRED.lsr
         }
         private void CheckCurrentVehicle()
         {
-            if ((Mod.Player.Instance.IsNotWanted || Mod.Player.Instance.WantedLevel == 1) && Mod.World.Instance.AnyPoliceCanRecognizePlayer && Mod.Player.Instance.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
+            if ((CurrentPlayer.IsNotWanted || CurrentPlayer.WantedLevel == 1) && CurrentPlayer.AnyPoliceCanRecognizePlayer && CurrentPlayer.IsInVehicle && Game.LocalPlayer.Character.IsInAnyVehicle(false))//first check is cheaper, but second is required to verify
             {
-                VehicleExt VehicleToCheck = Mod.Player.Instance.CurrentVehicle;
+                VehicleExt VehicleToCheck = CurrentPlayer.CurrentVehicle;
 
                 if (VehicleToCheck == null)
                 {
@@ -127,15 +133,15 @@ namespace LosSantosRED.lsr
         }
         private void CheckSight()
         {
-            if (IsActive && Mod.World.Instance.AnyPoliceCanSeePlayer)
+            if (IsActive && CurrentPlayer.AnyPoliceCanSeePlayer)
             {
-                if (Mod.Player.Instance.IsWanted)
+                if (CurrentPlayer.IsWanted)
                 {
                     ApplyLastWantedStats();
                 }
                 else
                 {
-                    if (Mod.Player.Instance.CurrentPoliceResponse.NearLastWanted(SearchRadius) && Mod.Player.Instance.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
+                    if (CurrentPlayer.CurrentPoliceResponse.NearLastWanted(SearchRadius) && CurrentPlayer.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
                     {
                         ApplyLastWantedStats();
                     }
@@ -164,15 +170,15 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            if (Mod.Player.Instance.WantedLevel < CriminalHistory.ObservedMaxWantedLevel)
+            if (CurrentPlayer.WantedLevel < CriminalHistory.ObservedMaxWantedLevel)
             {
-                Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(CriminalHistory.ObservedMaxWantedLevel, "Applying old Wanted stats", true);
+                CurrentPlayer.CurrentPoliceResponse.SetWantedLevel(CriminalHistory.ObservedMaxWantedLevel, "Applying old Wanted stats", true);
             }
             CriminalHistoryList.Remove(CriminalHistory);
-            Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes = CriminalHistory;
+            CurrentPlayer.CurrentPoliceResponse.CurrentCrimes = CriminalHistory;
 
             GameTimeLastAppliedWantedStats = Game.GameTime;
-            Debug.Instance.WriteToLog("WantedLevelStats Replace", Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.DebugPrintCrimes());
+            Debug.Instance.WriteToLog("WantedLevelStats Replace", CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.DebugPrintCrimes());
         }
         private CriminalHistory GetLastWantedStats()
         {

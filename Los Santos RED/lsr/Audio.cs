@@ -7,17 +7,8 @@ using System;
 
 public class Audio : IAudioPlayer
 {
-    //private static readonly Lazy<Audio> lazy =
-    //new Lazy<Audio>(() => new Audio());
-
-    //public static Audio Instance { get { return lazy.Value; } }
-
-    //private Audio()
-    //{
-    //}
     private WaveOutEvent outputDevice;
     private AudioFileReader audioFile;
-    public bool IsMobileRadioEnabled { get; private set; }
     public bool CancelAudio { get; set; }
     public bool IsAudioPlaying
     {
@@ -36,24 +27,7 @@ public class Audio : IAudioPlayer
         {
             NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
         }
-        if (Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.IsEngineOn && Mod.Player.Instance.CurrentVehicle.Vehicle.IsPoliceVehicle)
-        {
-            if (!IsMobileRadioEnabled)
-            {
-                IsMobileRadioEnabled = true;
-                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
-                Debug.Instance.WriteToLog("Audio", "Mobile Radio Enabled");
-            }
-        }
-        else
-        {
-            if (IsMobileRadioEnabled)
-            {
-                IsMobileRadioEnabled = false;
-                NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-                Debug.Instance.WriteToLog("Audio", "Mobile Radio Disabled");
-            }
-        }
+
         if (CancelAudio && outputDevice == null)
         {
             CancelAudio = false;

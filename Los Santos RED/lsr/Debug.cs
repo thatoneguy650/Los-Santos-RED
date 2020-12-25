@@ -42,34 +42,34 @@ public class Debug
         {
             DebugNumpad1();
         }
-        if (Game.IsKeyDown(Keys.NumPad2))
-        {
-            DebugNumpad2();
-        }
-        if (Game.IsKeyDown(Keys.NumPad3))
-        {
-            DebugNumpad3();
-        }
-        if (Game.IsKeyDown(Keys.NumPad4))
-        {
-            DebugNumpad4();
-        }
-        if (Game.IsKeyDown(Keys.NumPad5))
-        {
-            DebugNumpad5();
-        }
-        if (Game.IsKeyDown(Keys.NumPad6))
-        {
-            DebugNumpad6();
-        }
-        if (Game.IsKeyDown(Keys.NumPad7))
-        {
-            DebugNumpad7();
-        }
-        if (Game.IsKeyDown(Keys.NumPad8))
-        {
-            DebugNumpad8();
-        }
+        //if (Game.IsKeyDown(Keys.NumPad2))
+        //{
+        //    DebugNumpad2();
+        //}
+        //if (Game.IsKeyDown(Keys.NumPad3))
+        //{
+        //    DebugNumpad3();
+        //}
+        //if (Game.IsKeyDown(Keys.NumPad4))
+        //{
+        //    DebugNumpad4();
+        //}
+        //if (Game.IsKeyDown(Keys.NumPad5))
+        //{
+        //    DebugNumpad5();
+        //}
+        //if (Game.IsKeyDown(Keys.NumPad6))
+        //{
+        //    DebugNumpad6();
+        //}
+        //if (Game.IsKeyDown(Keys.NumPad7))
+        //{
+        //    DebugNumpad7();
+        //}
+        //if (Game.IsKeyDown(Keys.NumPad8))
+        //{
+        //    DebugNumpad8();
+        //}
         if (Game.IsKeyDown(Keys.NumPad9))
         {
             DebugNumpad9();
@@ -132,282 +132,282 @@ public class Debug
     {
         DebugInvincible();
     }
-    private void DebugNumpad2()
-    {
-        int Toassign = Mod.Player.Instance.WantedLevel;
-        if (Toassign == 7)
-            return;
-        Toassign++;
-        Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(Toassign, "Debug", true);
+    //private void DebugNumpad2()
+    //{
+    //    int Toassign = Mod.Player.Instance.WantedLevel;
+    //    if (Toassign == 7)
+    //        return;
+    //    Toassign++;
+    //    Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(Toassign, "Debug", true);
 
-    }
-    private void DebugNumpad3()
-    {
-        Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(0, "Debug", true);
-    }
-    private void DebugNumpad4()
-    {
-        string GET_PLAYER_RADIO_STATION_NAME = "";
-        unsafe
-        {
-            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
-            GET_PLAYER_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
-        }
-
-
-        int GET_PLAYER_RADIO_STATION_INDEX = NativeFunction.CallByName<int>("GET_PLAYER_RADIO_STATION_INDEX");
+    //}
+    //private void DebugNumpad3()
+    //{
+    //    Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(0, "Debug", true);
+    //}
+    //private void DebugNumpad4()
+    //{
+    //    string GET_PLAYER_RADIO_STATION_NAME = "";
+    //    unsafe
+    //    {
+    //        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
+    //        GET_PLAYER_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
+    //    }
 
 
-        WriteToLog("Debugging", string.Format("GET_PLAYER_RADIO_STATION_NAME: {0}, GET_PLAYER_RADIO_STATION_INDEX: {1}", GET_PLAYER_RADIO_STATION_NAME, GET_PLAYER_RADIO_STATION_INDEX));
-        NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_NAME", "RADIO_19_USER");
-    }
-    private void DebugNumpad5()
-    {
-        //if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null)
-        //{
-        //    int Group = NativeFunction.CallByName<int>("GET_WEAPONTYPE_GROUP", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-        //    int Slot = NativeFunction.CallByName<int>("GET_WEAPONTYPE_SLOT", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-        //    WriteToLog("Debugging", string.Format("Hash: {0} GET_WEAPONTYPE_GROUP: {1} GET_WEAPONTYPE_SLOT: {2}", Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Group, Slot));
-        //}
-        //string GET_RADIO_STATION_NAME = "";
-        //unsafe
-        //{
-        //    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_RADIO_STATION_NAME");
-        //    GET_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
-        //}
+    //    int GET_PLAYER_RADIO_STATION_INDEX = NativeFunction.CallByName<int>("GET_PLAYER_RADIO_STATION_INDEX");
 
 
-        //NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_INDEX", 1);
-        //WriteToLog("Debugging", string.Format("GET_RADIO_STATION_NAME: {0}", GET_RADIO_STATION_NAME));
+    //    WriteToLog("Debugging", string.Format("GET_PLAYER_RADIO_STATION_NAME: {0}, GET_PLAYER_RADIO_STATION_INDEX: {1}", GET_PLAYER_RADIO_STATION_NAME, GET_PLAYER_RADIO_STATION_INDEX));
+    //    NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_NAME", "RADIO_19_USER");
+    //}
+    //private void DebugNumpad5()
+    //{
+    //    //if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null)
+    //    //{
+    //    //    int Group = NativeFunction.CallByName<int>("GET_WEAPONTYPE_GROUP", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+    //    //    int Slot = NativeFunction.CallByName<int>("GET_WEAPONTYPE_SLOT", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+    //    //    WriteToLog("Debugging", string.Format("Hash: {0} GET_WEAPONTYPE_GROUP: {1} GET_WEAPONTYPE_SLOT: {2}", Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Group, Slot));
+    //    //}
+    //    //string GET_RADIO_STATION_NAME = "";
+    //    //unsafe
+    //    //{
+    //    //    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_RADIO_STATION_NAME");
+    //    //    GET_RADIO_STATION_NAME = Marshal.PtrToStringAnsi(ptr);
+    //    //}
 
 
-        //WriteToLog("Debugging", string.Format("GET_TIMECYCLE_MODIFIER_INDEX: {0}", NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX")));
-        ////722 drunk
-
-        ////Vehicle[] Vehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
-        //WriteToLog("Debugging", string.Format("PED_FLAG_DRUNK: {0}", NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1)));
-
-        //WriteToLog("Debugging", string.Format("Mod.World.Instance.Pedestrians.Civilians.Any(x => x.CanSeePlayer))): {0}", Mod.World.Instance.Pedestrians.Civilians.Any(x => x.CanSeePlayer)));
-        //WriteToLog("Debugging", string.Format("Game.LocalPlayer.Character.GetBoneOrientation(0): {0}", Game.LocalPlayer.Character.GetBoneOrientation(0)));
+    //    //NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_INDEX", 1);
+    //    //WriteToLog("Debugging", string.Format("GET_RADIO_STATION_NAME: {0}", GET_RADIO_STATION_NAME));
 
 
-        ////Errors
-        //Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
-        //while (myPed.Exists() && myPed.IsAlive)
-        //{
-        //    GameFiber.Yield();
-        //}
-        //if (myPed.Exists() && myPed.IsDead)
-        //{
-        //    Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(myPed);
-        //    Game.Console.Print(string.Format("Killer Handle {0}", killer.Handle));
-        //}
+    //    //WriteToLog("Debugging", string.Format("GET_TIMECYCLE_MODIFIER_INDEX: {0}", NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX")));
+    //    ////722 drunk
 
-        ////Errors
-        //Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
-        //while (myPed.Exists() && myPed.IsAlive)
-        //{
-        //    GameFiber.Yield();
-        //}
-        //if (myPed.Exists() && myPed.IsDead)
-        //{
-        //    Entity killer = NativeFunction.Natives.GET_PED_SOURCE_OF_DEATH<Entity>(myPed);
-        //    Game.Console.Print(string.Format("Killer Handle {0}", killer.Handle));
-        //}
+    //    ////Vehicle[] Vehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
+    //    //WriteToLog("Debugging", string.Format("PED_FLAG_DRUNK: {0}", NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1)));
 
-        // Works for Player, not Vehicle
-        Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
-        myPed.BlockPermanentEvents = true;
-        while (myPed.Exists() && myPed.IsAlive)
-        {
-            GameFiber.Yield();
-        }
-        if (myPed.Exists() && myPed.IsDead)
-        {
-            uint killer = NativeFunction.Natives.GetPedSourceOfDeath<uint>(myPed);
-            Game.Console.Print(string.Format("Killer Handle {0}, Player Handle {1}, Player Killed {2}", killer, Game.LocalPlayer.Character.Handle, Game.LocalPlayer.Character.Handle == killer));
-            myPed.Delete();
-        }
+    //    //WriteToLog("Debugging", string.Format("Mod.World.Instance.Pedestrians.Civilians.Any(x => x.CanSeePlayer))): {0}", Mod.World.Instance.Pedestrians.Civilians.Any(x => x.CanSeePlayer)));
+    //    //WriteToLog("Debugging", string.Format("Game.LocalPlayer.Character.GetBoneOrientation(0): {0}", Game.LocalPlayer.Character.GetBoneOrientation(0)));
 
 
+    //    ////Errors
+    //    //Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
+    //    //while (myPed.Exists() && myPed.IsAlive)
+    //    //{
+    //    //    GameFiber.Yield();
+    //    //}
+    //    //if (myPed.Exists() && myPed.IsDead)
+    //    //{
+    //    //    Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(myPed);
+    //    //    Game.Console.Print(string.Format("Killer Handle {0}", killer.Handle));
+    //    //}
+
+    //    ////Errors
+    //    //Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
+    //    //while (myPed.Exists() && myPed.IsAlive)
+    //    //{
+    //    //    GameFiber.Yield();
+    //    //}
+    //    //if (myPed.Exists() && myPed.IsDead)
+    //    //{
+    //    //    Entity killer = NativeFunction.Natives.GET_PED_SOURCE_OF_DEATH<Entity>(myPed);
+    //    //    Game.Console.Print(string.Format("Killer Handle {0}", killer.Handle));
+    //    //}
+
+    //    // Works for Player, not Vehicle
+    //    Ped myPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
+    //    myPed.BlockPermanentEvents = true;
+    //    while (myPed.Exists() && myPed.IsAlive)
+    //    {
+    //        GameFiber.Yield();
+    //    }
+    //    if (myPed.Exists() && myPed.IsDead)
+    //    {
+    //        uint killer = NativeFunction.Natives.GetPedSourceOfDeath<uint>(myPed);
+    //        Game.Console.Print(string.Format("Killer Handle {0}, Player Handle {1}, Player Killed {2}", killer, Game.LocalPlayer.Character.Handle, Game.LocalPlayer.Character.Handle == killer));
+    //        myPed.Delete();
+    //    }
 
 
-        //Ped PedToKill = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
-        //PedToKill.BlockPermanentEvents = true;
-        //while (PedToKill.Exists() && PedToKill.IsAlive)
-        //{
-        //    GameFiber.Yield();
-        //}
-        //if (PedToKill.Exists() && PedToKill.IsDead)
-        //{
-        //    Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(PedToKill);
-        //    Game.Console.Print(string.Format("Killer Handle {0}, Player Handle {1}, Player Killed {2}", killer.Handle, Game.LocalPlayer.Character.Handle, Game.LocalPlayer.Character.Handle == killer.Handle));
-        //    PedToKill.Delete();
-        //}
-
-    }
-    private void DebugNumpad6()
-    {
-        //if (Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.Exists())
-        //{
-        //    Colorbullshit();
-        //    Colorbullshit2();
-        //}
 
 
-        //AnimationDictionary Dict = new AnimationDictionary("get_up@directional@transition@prone_to_knees@injured");//"back"
-        //AnimationDictionary Dict2 = new AnimationDictionary("get_up@directional@movement@from_knees@injured");//"getup_l_-180"
-        //AnimationDictionary Dict3 = new AnimationDictionary("anim@gangops@morgue@table@");//"ko_back"
-        ////NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "get_up@directional@transition@prone_to_knees@injured", "back", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
-        //Game.LocalPlayer.Character.IsRagdoll = true;
-        //GameFiber.Sleep(1500);
-        //Game.LocalPlayer.Character.IsRagdoll = false;
-        //unsafe
-        //{
-        //    int lol = 0;
-        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-        //    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "anim@gangops@morgue@table@", "ko_back", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
-        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "get_up@directional@transition@prone_to_knees@injured", "back", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
-        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "get_up@directional@movement@from_knees@injured", "getup_r_180", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
-        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Game.LocalPlayer.Character, lol);
-        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-        //}
+    //    //Ped PedToKill = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f));
+    //    //PedToKill.BlockPermanentEvents = true;
+    //    //while (PedToKill.Exists() && PedToKill.IsAlive)
+    //    //{
+    //    //    GameFiber.Yield();
+    //    //}
+    //    //if (PedToKill.Exists() && PedToKill.IsDead)
+    //    //{
+    //    //    Entity killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(PedToKill);
+    //    //    Game.Console.Print(string.Format("Killer Handle {0}, Player Handle {1}, Player Killed {2}", killer.Handle, Game.LocalPlayer.Character.Handle, Game.LocalPlayer.Character.Handle == killer.Handle));
+    //    //    PedToKill.Delete();
+    //    //}
 
-        WriteToLog("Position", $"Vector3 {Game.LocalPlayer.Character.Position} Heading {Game.LocalPlayer.Character.Heading}");
-
-    }
-    private void Colorbullshit()
-    {
-        //Color Color1 = Extensions.GetBaseColor1(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
-        //Color Color2 = Extensions.GetBaseColor2(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
-        //Color Color3 = Extensions.GetBaseColor3(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
-        //WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
-    }
-    private void Colorbullshit2()
-    {
-        Color c = Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor;
-        float targetHue = c.GetHue();
-        float targetSat = c.GetSaturation();
-        float targetBri = c.GetBrightness();
-
-        Color closestColor = Color.Red;
-        double smallestDiff = double.MaxValue;
-
-        List<Color> BaseColorList = new List<Color>
-        {
-            Color.Red,
-            Color.Aqua,
-            Color.Beige,
-            Color.Black,
-            Color.Blue,
-            Color.Brown,
-            Color.DarkBlue,
-            Color.DarkGreen,
-            Color.DarkGray,
-            Color.DarkOrange,
-            Color.DarkRed,
-            Color.Gold,
-            Color.Green,
-            Color.Gray,
-            Color.LightBlue,
-            Color.Maroon,
-            Color.Orange,
-            Color.Pink,
-            Color.Purple,
-            Color.Silver,
-            Color.White,
-            Color.Yellow
-        };
+    //}
+    //private void DebugNumpad6()
+    //{
+    //    //if (Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.Exists())
+    //    //{
+    //    //    Colorbullshit();
+    //    //    Colorbullshit2();
+    //    //}
 
 
-        foreach (Color currentColor in BaseColorList)
-        {
+    //    //AnimationDictionary Dict = new AnimationDictionary("get_up@directional@transition@prone_to_knees@injured");//"back"
+    //    //AnimationDictionary Dict2 = new AnimationDictionary("get_up@directional@movement@from_knees@injured");//"getup_l_-180"
+    //    //AnimationDictionary Dict3 = new AnimationDictionary("anim@gangops@morgue@table@");//"ko_back"
+    //    ////NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "get_up@directional@transition@prone_to_knees@injured", "back", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+    //    //Game.LocalPlayer.Character.IsRagdoll = true;
+    //    //GameFiber.Sleep(1500);
+    //    //Game.LocalPlayer.Character.IsRagdoll = false;
+    //    //unsafe
+    //    //{
+    //    //    int lol = 0;
+    //    //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+    //    //    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "anim@gangops@morgue@table@", "ko_back", 2.0f, -2.0f, 1000, 0, 0, false, false, false);
+    //    //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "get_up@directional@transition@prone_to_knees@injured", "back", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+    //    //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "get_up@directional@movement@from_knees@injured", "getup_r_180", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
+    //    //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+    //    //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+    //    //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Game.LocalPlayer.Character, lol);
+    //    //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+    //    //}
 
-            float currentHue = currentColor.GetHue();
-            float currentSat = currentColor.GetSaturation();
-            float currentBri = currentColor.GetBrightness();
+    //    WriteToLog("Position", $"Vector3 {Game.LocalPlayer.Character.Position} Heading {Game.LocalPlayer.Character.Heading}");
 
-            double currentDiff = Math.Pow(targetHue - currentHue, 2) + Math.Pow(targetSat - currentSat, 2) + Math.Pow(targetBri - currentBri, 2);
+    //}
+    //private void Colorbullshit()
+    //{
+    //    //Color Color1 = Extensions.GetBaseColor1(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
+    //    //Color Color2 = Extensions.GetBaseColor2(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
+    //    //Color Color3 = Extensions.GetBaseColor3(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
+    //    //WriteToLog("Debugging", string.Format("ColorBS: {0} Match1: {1} Match2: {2} Match3: {3}", Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor.ToString(), Color1.ToString(), Color2.ToString(), Color3.ToString()));
+    //}
+    //private void Colorbullshit2()
+    //{
+    //    Color c = Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor;
+    //    float targetHue = c.GetHue();
+    //    float targetSat = c.GetSaturation();
+    //    float targetBri = c.GetBrightness();
 
-            if (currentDiff < smallestDiff)
-            {
-                smallestDiff = currentDiff;
-                closestColor = currentColor;
-            }
-        }
-        WriteToLog("Debugging", string.Format("ColorBS2: {0} ", closestColor.ToString()));
-    }
-    private void DebugNumpad7()
-    {
-        WriteToLog("Debugging", Mod.World.Instance.CurrentTime);
+    //    Color closestColor = Color.Red;
+    //    double smallestDiff = double.MaxValue;
 
-        if (Mod.Player.Instance.CurrentVehicle != null)
-        {
-            WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", Mod.Player.Instance.CurrentVehicle.IsStolen, Mod.Player.Instance.CurrentVehicle.WasReportedStolen, Mod.Player.Instance.CurrentVehicle.NeedsToBeReportedStolen));
-            WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.Instance.CurrentVehicle.CarPlate.IsWanted, Mod.Player.Instance.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.Instance.CurrentVehicle.ColorMatchesDescription, Mod.Player.Instance.CurrentVehicle.CopsRecognizeAsStolen));
-        }
-
-        Mod.World.Instance.PrintTasksDEBUG();
-    }
-    public void DebugNumpad8()
-    {
-
-        try
-        {
-            //CameraManager.DebugAbort();
-
-            WriteToLog("Debugging", "--------------------------------");
-            WriteToLog("Debugging", "--------Police Status-----------");
-
-            foreach (Cop Cop in Mod.World.Instance.PoliceList.Where(x => x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
-            {
-
-                WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}",
-                    Cop.Pedestrian.Handle
-                    , Cop.Pedestrian.Model.Name
-                    , Cop.AssignedAgency.Initials
-                    , Cop.DistanceToPlayer
-                    , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Cop.Pedestrian, Game.LocalPlayer.Character)
-                    , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Game.LocalPlayer.Character, Cop.Pedestrian)
-
-
-                    ));
+    //    List<Color> BaseColorList = new List<Color>
+    //    {
+    //        Color.Red,
+    //        Color.Aqua,
+    //        Color.Beige,
+    //        Color.Black,
+    //        Color.Blue,
+    //        Color.Brown,
+    //        Color.DarkBlue,
+    //        Color.DarkGreen,
+    //        Color.DarkGray,
+    //        Color.DarkOrange,
+    //        Color.DarkRed,
+    //        Color.Gold,
+    //        Color.Green,
+    //        Color.Gray,
+    //        Color.LightBlue,
+    //        Color.Maroon,
+    //        Color.Orange,
+    //        Color.Pink,
+    //        Color.Purple,
+    //        Color.Silver,
+    //        Color.White,
+    //        Color.Yellow
+    //    };
 
 
-            }
-            WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Instance.Investigations.IsActive));
-            WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Instance.Investigations.Position));
-            WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Instance.Investigations.Distance));
-            WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.Instance.ActiveDistance));
-            WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Instance.PoliceList.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Instance.Investigations.Position) <= Mod.Player.Instance.Investigations.Distance)));
-            WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentPoliceStateString));
-            WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsAliveAndFree: {0}", Mod.Player.Instance.IsAliveAndFree));
-            WriteToLog("Debugging", string.Format("Mod.Player.Instance.Character.Handle: {0}", Mod.Player.Instance.Character.Handle));
-            WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsConsideredArmed: {0}", Mod.Player.Instance.IsConsideredArmed));
-            WriteToLog("Debugging", string.Format("Mod.Player.Instance.CheckIsArmed(): {0}", Mod.Player.Instance.CheckIsArmed()));
-            WriteToLog("Debugging", string.Format("Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted: {0}", Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted));
+    //    foreach (Color currentColor in BaseColorList)
+    //    {
 
-            WriteToLog("Debugging", "==============PLAYER===================");
-            WriteToLog("Debugging", string.Format("CrimesObserved: {0}", Mod.Player.Instance.CurrentPoliceResponse.CrimesObservedJoined));
-            WriteToLog("Debugging", string.Format("HasActiveArrestWarrant: {0}", Mod.Player.Instance.HasActiveArrestWarrant));
-            WriteToLog("Debugging", string.Format("LethalForceAuthorized: {0}", Mod.Player.Instance.LethalForceAuthorized));
-            WriteToLog("Debugging", string.Format("MaxWantedLastLife: {0}", Mod.Player.Instance.MaxWantedLastLife));
-            WriteToLog("Debugging", string.Format("MaxWantedLevel: {0}", Mod.Player.Instance.MaxWantedLevel));
-            WriteToLog("Debugging", string.Format("CurrentCrimes.ObservedMaxWantedLevel: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.ObservedMaxWantedLevel));
-            WriteToLog("Debugging", string.Format("RecentlyAppliedWantedStats: {0}", Mod.Player.Instance.RecentlyAppliedWantedStats));
-            WriteToLog("Debugging", string.Format("RecentlyRespawned: {0}", Mod.Player.Instance.RecentlyRespawned));
-            WriteToLog("Debugging", string.Format("TimesDied: {0}", Mod.Player.Instance.TimesDied));
-            WriteToLog("Debugging", string.Format("WantedLevel: {0}", Mod.Player.Instance.WantedLevel));
-            WriteToLog("Debugging", "==============PLAYER===================");
+    //        float currentHue = currentColor.GetHue();
+    //        float currentSat = currentColor.GetSaturation();
+    //        float currentBri = currentColor.GetBrightness();
 
-        }
-        catch (Exception e)
-        {
-            WriteToLog("Debugging error", e.Message + e.StackTrace);
-        }
-    }
+    //        double currentDiff = Math.Pow(targetHue - currentHue, 2) + Math.Pow(targetSat - currentSat, 2) + Math.Pow(targetBri - currentBri, 2);
+
+    //        if (currentDiff < smallestDiff)
+    //        {
+    //            smallestDiff = currentDiff;
+    //            closestColor = currentColor;
+    //        }
+    //    }
+    //    WriteToLog("Debugging", string.Format("ColorBS2: {0} ", closestColor.ToString()));
+    //}
+    //private void DebugNumpad7()
+    //{
+    //    WriteToLog("Debugging", Mod.World.Instance.CurrentTime);
+
+    //    if (Mod.Player.Instance.CurrentVehicle != null)
+    //    {
+    //        WriteToLog("Debugging", string.Format("CurrentVehicle  IsStolen:{0} WasReportedStolen:{1} NeedsToBeReportedStolen:{2}", Mod.Player.Instance.CurrentVehicle.IsStolen, Mod.Player.Instance.CurrentVehicle.WasReportedStolen, Mod.Player.Instance.CurrentVehicle.NeedsToBeReportedStolen));
+    //        WriteToLog("Debugging", string.Format("CurrentVehicle  CarPlate.IsWanted:{0} OriginalLicensePlate.IsWanted: {1} ColorMatchesDescription:{2} CopsRecognizeAsStolen: {3}", Mod.Player.Instance.CurrentVehicle.CarPlate.IsWanted, Mod.Player.Instance.CurrentVehicle.OriginalLicensePlate.IsWanted, Mod.Player.Instance.CurrentVehicle.ColorMatchesDescription, Mod.Player.Instance.CurrentVehicle.CopsRecognizeAsStolen));
+    //    }
+
+    //    Mod.World.Instance.PrintTasksDEBUG();
+    //}
+    //public void DebugNumpad8()
+    //{
+
+    //    try
+    //    {
+    //        //CameraManager.DebugAbort();
+
+    //        WriteToLog("Debugging", "--------------------------------");
+    //        WriteToLog("Debugging", "--------Police Status-----------");
+
+    //        foreach (Cop Cop in Mod.World.Instance.PoliceList.Where(x => x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
+    //        {
+
+    //            WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}",
+    //                Cop.Pedestrian.Handle
+    //                , Cop.Pedestrian.Model.Name
+    //                , Cop.AssignedAgency.Initials
+    //                , Cop.DistanceToPlayer
+    //                , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Cop.Pedestrian, Game.LocalPlayer.Character)
+    //                , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Game.LocalPlayer.Character, Cop.Pedestrian)
+
+
+    //                ));
+
+
+    //        }
+    //        WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Instance.Investigations.IsActive));
+    //        WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Instance.Investigations.Position));
+    //        WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Instance.Investigations.Distance));
+    //        WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.Instance.ActiveDistance));
+    //        WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Instance.PoliceList.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Instance.Investigations.Position) <= Mod.Player.Instance.Investigations.Distance)));
+    //        WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentPoliceStateString));
+    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsAliveAndFree: {0}", Mod.Player.Instance.IsAliveAndFree));
+    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.Character.Handle: {0}", Mod.Player.Instance.Character.Handle));
+    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsConsideredArmed: {0}", Mod.Player.Instance.IsConsideredArmed));
+    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.CheckIsArmed(): {0}", Mod.Player.Instance.CheckIsArmed()));
+    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted: {0}", Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted));
+
+    //        WriteToLog("Debugging", "==============PLAYER===================");
+    //        WriteToLog("Debugging", string.Format("CrimesObserved: {0}", Mod.Player.Instance.CurrentPoliceResponse.CrimesObservedJoined));
+    //        WriteToLog("Debugging", string.Format("HasActiveArrestWarrant: {0}", Mod.Player.Instance.HasActiveArrestWarrant));
+    //        WriteToLog("Debugging", string.Format("LethalForceAuthorized: {0}", Mod.Player.Instance.LethalForceAuthorized));
+    //        WriteToLog("Debugging", string.Format("MaxWantedLastLife: {0}", Mod.Player.Instance.MaxWantedLastLife));
+    //        WriteToLog("Debugging", string.Format("MaxWantedLevel: {0}", Mod.Player.Instance.MaxWantedLevel));
+    //        WriteToLog("Debugging", string.Format("CurrentCrimes.ObservedMaxWantedLevel: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.ObservedMaxWantedLevel));
+    //        WriteToLog("Debugging", string.Format("RecentlyAppliedWantedStats: {0}", Mod.Player.Instance.RecentlyAppliedWantedStats));
+    //        WriteToLog("Debugging", string.Format("RecentlyRespawned: {0}", Mod.Player.Instance.RecentlyRespawned));
+    //        WriteToLog("Debugging", string.Format("TimesDied: {0}", Mod.Player.Instance.TimesDied));
+    //        WriteToLog("Debugging", string.Format("WantedLevel: {0}", Mod.Player.Instance.WantedLevel));
+    //        WriteToLog("Debugging", "==============PLAYER===================");
+
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        WriteToLog("Debugging error", e.Message + e.StackTrace);
+    //    }
+    //}
     private void DebugNumpad9()
     {
 

@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -17,7 +18,6 @@ public class HealthState
     private int Health;
     private bool HurtByPed;
     private bool HurtByVehicle;
-    private bool IsBleeding;
     
     public HealthState()
     {
@@ -55,7 +55,7 @@ public class HealthState
                 return false;
         }
     }
-    public void Update()
+    public void Update(IPlayer CurrentPlayer)
     {
         if (NeedDamageCheck && MyPed.Pedestrian.Exists() && !HasLoggedDeath)
         {
@@ -69,30 +69,34 @@ public class HealthState
             }
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
-                FlagDamage();
+                FlagDamage(CurrentPlayer);
                 ModifyDamage();
                 Health = CurrentHealth;
                 Armor = CurrentArmor;
             }
-            if (IsBleeding && MyPed.Pedestrian.IsAlive && ShouldBleed)
-            {
-                MyPed.Pedestrian.Health -= 2;
-                CurrentHealth = MyPed.Pedestrian.Health;
-                CurrentArmor = MyPed.Pedestrian.Armor;
-                GameTimeLastBled = Game.GameTime;
-                Debug.Instance.WriteToLog("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
-            }
+            //if (IsBleeding && MyPed.Pedestrian.IsAlive && ShouldBleed)
+            //{
+            //    MyPed.Pedestrian.Health -= 2;
+            //    CurrentHealth = MyPed.Pedestrian.Health;
+            //    CurrentArmor = MyPed.Pedestrian.Armor;
+            //    GameTimeLastBled = Game.GameTime;
+            //    Debug.Instance.WriteToLog("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
+            //}
         }
     }
-    private void FlagDamage()
+    private void FlagDamage(IPlayer CurrentPlayer)
     {
+        if(CurrentPlayer == null)//only flag the player we want to have the damage
+        {
+            return;
+        }
         if (MyPed.Pedestrian.IsDead && MyPed.KilledBy(Game.LocalPlayer.Character))
         {
-            Mod.Player.Instance.Killed(MyPed);
+            CurrentPlayer.Killed(MyPed);
         }
         else if (MyPed.Pedestrian.IsAlive && MyPed.HurtBy(Game.LocalPlayer.Character))
         {
-            Mod.Player.Instance.Injured(MyPed);
+            CurrentPlayer.Injured(MyPed);
         }
     }
     private BodyLocation GetDamageLocation(Ped Pedestrian)

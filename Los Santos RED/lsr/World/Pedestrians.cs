@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -14,8 +15,11 @@ public class Pedestrians
     private int MinCivilianHealth = 70;
     private int MinCopArmor = 0;
     private int MinCopHealth = 85;
-    public Pedestrians()
+    private IWorldLogger World;
+
+    public Pedestrians(IWorldLogger world)
     {
+        World = world;
     }
     public string AgenciesChasingPlayer
     {
@@ -36,6 +40,13 @@ public class Pedestrians
         get
         {
             return Police.Any(x => x.DistanceToPlayer <= 150f);
+        }
+    }
+    public bool AnyHumansNearPlayer
+    {
+        get
+        {
+            return Police.Any(x => x.DistanceToPlayer <= 10f) || Civilians.Any(x => x.DistanceToPlayer <= 10f);
         }
     }
     public bool AnyHelicopterUnitsSpawned
@@ -103,7 +114,7 @@ public class Pedestrians
         Civilians.RemoveAll(x => x.CanRemove);
         foreach (Cop Cop in Police.Where(x => x.Pedestrian.IsDead))
         {
-            Mod.World.Instance.MarkNonPersistent(Cop);
+            Cop.Pedestrian.IsPersistent = false;
         }
         Police.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
@@ -158,7 +169,7 @@ public class Pedestrians
     }
     private void AddCop(Ped Pedestrian)
     {
-        Agency AssignedAgency = DataMart.Instance.Agencies.GetAgency(Pedestrian);
+        Agency AssignedAgency = DataMart.Instance.Agencies.GetAgency(Pedestrian,0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
             Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
@@ -167,11 +178,10 @@ public class Pedestrians
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.AgencyColor;
                 myBlip.Scale = 0.6f;
-                Mod.World.Instance.AddBlip(myBlip);
+                World.AddBlip(myBlip);
             }
             SetCopStats(Pedestrian);
             Pedestrian.Inventory.Weapons.Clear();
-            myCop.Loadout.IssueWeapons();
             Police.Add(myCop);
         }
     }

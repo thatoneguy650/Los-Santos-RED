@@ -1,15 +1,24 @@
 ﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System.Drawing;
 
 public class Investigations
 {
+    private IWorld World;
+    private IPlayer CurrentPlayer;
     private bool PrevIsActive;
     private Vector3 PrevPosition;
     private uint GameTimeStartedInvestigation;
     private uint GameTimeLastInvestigationExpired;
     private Blip blip;
+
+    public Investigations(IPlayer currentPlayer, IWorld world)
+    {
+        World = world;
+        CurrentPlayer = currentPlayer;
+    }
     public float Distance { get; private set; } = 800f;
     public Vector3 Position { get; set; }
     public float NearInvestigationDistance { get; private set; } = 250f;
@@ -107,7 +116,7 @@ public class Investigations
     }
     private void InvestigationTick()
     {
-        if (Mod.Player.Instance.IsWanted)
+        if (CurrentPlayer.IsWanted)
         {
             IsActive = false;
         }
@@ -115,9 +124,9 @@ public class Investigations
         {
             IsActive = false;
         }
-        else if (!IsActive && Mod.Player.Instance.CurrentPoliceResponse.HasReportedCrimes)
+        else if (!IsActive && CurrentPlayer.CurrentPoliceResponse.HasReportedCrimes)
         {
-            StartInvestigation(Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime, Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.PoliceHaveDescription);
+            StartInvestigation(CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime, CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.PoliceHaveDescription);
         }
 
         if (PrevPosition != Position)
@@ -128,9 +137,9 @@ public class Investigations
         {
             PoliceInInvestigationModeChanged();
         }
-        if (Mod.Player.Instance.IsNotWanted && IsActive && NearInvestigationPosition && HaveDescription && Mod.World.Instance.AnyPoliceCanRecognizePlayer && Mod.Player.Instance.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
+        if (CurrentPlayer.IsNotWanted && IsActive && NearInvestigationPosition && HaveDescription && CurrentPlayer.AnyPoliceCanRecognizePlayer && CurrentPlayer.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
         {
-            Mod.Player.Instance.CurrentPoliceResponse.ApplyReportedCrimes();
+            CurrentPlayer.CurrentPoliceResponse.ApplyReportedCrimes();
         }
     }
     private void InvestigationPositionChanged()
@@ -152,7 +161,7 @@ public class Investigations
             {
                 blip.Delete();
             }
-            if (Mod.Player.Instance.IsNotWanted)
+            if (CurrentPlayer.IsNotWanted)
             {
                 HaveDescription = false;
             }
@@ -165,7 +174,7 @@ public class Investigations
     private void UpdateInvestigationUI()
     {
         UpdateInvestigationPosition();
-        AddUpdateInvestigationBlip(Position, NearInvestigationDistance);
+        //AddUpdateInvestigationBlip(Position, NearInvestigationDistance);
     }
     private void UpdateInvestigationPosition()
     {
@@ -175,39 +184,39 @@ public class Investigations
             Position = SpawnLocation;
         }
     }
-    private void AddUpdateInvestigationBlip(Vector3 Position, float Size)
-    {
-        if (Position == Vector3.Zero)
-        {
-            if (blip.Exists())
-            {
-                blip.Delete();
-            }
-            return;
-        }
-        if (!IsActive)
-        {
-            if (blip.Exists())
-            {
-                blip.Delete();
-            }
-            return;
-        }
-        if (!blip.Exists())
-        {
-            blip = new Blip(Position, Size)
-            {
-                Name = "Investigation Center",
-                Color = Color.Orange,
-                Alpha = 0.25f
-            };
-            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)blip.Handle, true);
-            Mod.World.Instance.AddBlip(blip);
-        }
-        if (blip.Exists())
-        {
-            blip.Position = Position;
-        }
-    }
+    //private void AddUpdateInvestigationBlip(Vector3 Position, float Size)
+    //{
+    //    if (Position == Vector3.Zero)
+    //    {
+    //        if (blip.Exists())
+    //        {
+    //            blip.Delete();
+    //        }
+    //        return;
+    //    }
+    //    if (!IsActive)
+    //    {
+    //        if (blip.Exists())
+    //        {
+    //            blip.Delete();
+    //        }
+    //        return;
+    //    }
+    //    if (!blip.Exists())
+    //    {
+    //        blip = new Blip(Position, Size)
+    //        {
+    //            Name = "Investigation Center",
+    //            Color = Color.Orange,
+    //            Alpha = 0.25f
+    //        };
+    //        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)blip.Handle, true);
+    //        World.AddBlip(blip);
+    //    }
+    //    if (blip.Exists())
+    //    {
+    //        blip.Position = Position;
+    //    }
+    //}
 }
 

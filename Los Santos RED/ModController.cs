@@ -13,20 +13,47 @@ namespace LosSantosRED.lsr
         private string LastRanTask;
         private List<ModTask> MyTickTasks;
         private Audio Audio;
-
+        private PedSwap PedSwap;
+        private Mod.Player Player;
+        private Mod.World World;
+        private Scanner Scanner;
+        private Input Input;
+        private Menu Menu;
+        private Police Police;
+        private Civilians Civilians;
+        private Respawning Respawning;
+        private UI UI;
+        private Dispatcher Dispatcher;
+        private SearchMode SearchMode;
+        private Spawner Spawner;
+        private Tasking Tasking;
         public ModController()
         {
             Audio = new Audio();
+            World = new Mod.World();  
+            Player = new Mod.Player(World);
+            Input = new Input(Player);
+            Police = new Police(World, Player);
+            Civilians = new Civilians(World, Player);
+            Spawner = new Spawner(World);
+            Dispatcher = new Dispatcher(World, Player, Police, Spawner);
+            Respawning = new Respawning(World, Player);
+            PedSwap = new PedSwap(World, Player);
+            SearchMode = new SearchMode(World, Player, Police);
+            Tasking = new Tasking(World, Player, Police);
+            UI = new UI(World, Player, SearchMode);
+            Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode);
+            Menu = new Menu(World, Player, PedSwap, Respawning);
         }
-
         public bool IsRunning { get; private set; }
         public void NewPlayer(string ModelName, bool Male)
         {
-            Mod.Player.Instance.Reset(true, true, true);
-            Mod.Player.Instance.GiveName(ModelName, Male);
+            Player.Reset(true, true, true);
+            Scanner.Reset();
+            Player.GiveName(ModelName, Male);
             if (DataMart.Instance.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
             {
-                Mod.Player.Instance.SetMoney(RandomItems.MyRand.Next(DataMart.Instance.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, DataMart.Instance.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
+                Player.SetMoney(RandomItems.MyRand.Next(DataMart.Instance.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, DataMart.Instance.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
             }
         }
         public void Start()
@@ -37,19 +64,11 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
             }
             DataMart.Instance.ReadConfig();
-            Mod.Player.Instance.GiveName();
-            Mod.Player.Instance.AddSpareLicensePlate();
+            Player.GiveName();
+            Player.AddSpareLicensePlate();
 
-            Mod.World.Instance.AddBlipsToMap();
-
-
-
-            Mod.World.Instance.AudioPlayer = Audio;
-            Mod.World.Instance.Start();
-
-
-            PedSwap.Instance.StoreInitialVariation();
-
+            World.AddBlipsToMap();
+            PedSwap.StoreInitialVariation();
             SetupModTasks();
             StartGameLogic();
             StartMenuLogic();
@@ -60,45 +79,45 @@ namespace LosSantosRED.lsr
         {
             IsRunning = false;
             GameFiber.Sleep(500);
-            Mod.Player.Instance.Dispose();
-            Mod.World.Instance.Dispose();
-            PedSwap.Instance.Dispose();
-            if (DataMart.Instance.Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.Instance.OriginalMoney > 0)
+            Player.Dispose();
+            World.Dispose();
+            PedSwap.Dispose();
+            if (DataMart.Instance.Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
             {
-                Mod.Player.Instance.SetMoney(PedSwap.Instance.OriginalMoney);
+                Player.SetMoney(PedSwap.OriginalMoney);
             }
         }
         private void SetupModTasks()
         {
             MyTickTasks = new List<ModTask>()
             {
-               new ModTask(0, "World.UpdateTime", Mod.World.Instance.UpdateTime, 0,0),
-                new ModTask(0, "Input.Tick", Input.Instance.Update, 1,0),
-                new ModTask(25, "Player.Update", Mod.Player.Instance.Update, 2,0),
-                new ModTask(100, "World.Police.Tick", Mod.World.Instance.UpdatePolice, 2,1),//25
-                new ModTask(200, "Player.Violations.Update", Mod.Player.Instance.ViolationsUpdate, 3,0),//50
-                new ModTask(200, "Player.CurrentPoliceResponse.Update", Mod.Player.Instance.CurrentPoliceResponse.Update, 3,1),//50
-                new ModTask(150, "Player.Investigations.Tick", Mod.Player.Instance.Investigations.Update, 4,0),
-                new ModTask(500, "World.Civilians.Tick", Mod.World.Instance.UpdateCivilians, 4,1),//150
-                new ModTask(250, "Player.MuggingTick", Mod.Player.Instance.MuggingUpdate, 5,1),
-                new ModTask(250, "World.Pedestrians.Prune", Mod.World.Instance.PrunePedestrians, 6,0),
-                new ModTask(1000, "World.Pedestrians.Scan", Mod.World.Instance.ScaneForPedestrians, 6,1),
-                new ModTask(250, "World.Vehicles.CleanLists", Mod.World.Instance.PruneVehicles, 6,2),
-                new ModTask(1000, "World.Vehicles.Scan", Mod.World.Instance.ScanForVehicles, 6,3),
-                new ModTask(500, "Player.Violations.TrafficUpdate", Mod.Player.Instance.TrafficViolationsUpdate, 8,0),
-                new ModTask(500, "Player.CurrentLocation.Update", Mod.Player.Instance.LocationUpdate, 8,1),
-                new ModTask(500, "Player.ArrestWarrant.Update", Mod.Player.Instance.ArrestWarrantUpdate, 8,2),
-                new ModTask(500, "World.Vehicles.Tick", Mod.World.Instance.VehiclesTick, 9,1),
-                new ModTask(150, "Player.SearchMode.UpdateWanted", Mod.Player.Instance.SearchModeUpdate, 11,0),
-                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Mod.Player.Instance.StopVanillaSearchMode, 11,1),
-                new ModTask(500, "World.Scanner.Tick", Mod.World.Instance.UpdateScanner, 12,0),
+               new ModTask(0, "World.UpdateTime", World.UpdateTime, 0,0),
+                new ModTask(0, "Input.Tick", Input.Update, 1,0),
+                new ModTask(25, "Player.Update", Player.Update, 2,0),
+                new ModTask(100, "World.Police.Tick", Police.Update, 2,1),//25
+                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 3,0),//50
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.CurrentPoliceResponse.Update, 3,1),//50
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigations.Update, 4,0),
+                new ModTask(500, "World.Civilians.Tick", Civilians.Update, 4,1),//150
+                new ModTask(250, "Player.MuggingTick", Player.MuggingUpdate, 5,1),
+                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 6,0),
+                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 6,1),
+                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 6,2),
+                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 6,3),
+                new ModTask(500, "Player.Violations.TrafficUpdate", Player.TrafficViolationsUpdate, 8,0),
+                new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
+                new ModTask(500, "Player.ArrestWarrant.Update",Player.ArrestWarrantUpdate, 8,2),
+                new ModTask(500, "World.Vehicles.Tick", World.VehiclesTick, 9,1),
+                new ModTask(150, "Player.SearchMode.UpdateWanted", SearchMode.UpdateWanted, 11,0),
+                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", SearchMode.StopVanilla, 11,1),
+                new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(100, "Audio.Tick",Audio.Update,13,0),
-                new ModTask(1000, "World.Vehicles.UpdatePlates", Mod.World.Instance.UpdateVehiclePlates, 13,1),
-                new ModTask(500, "World.Tasking.UpdatePeds", Mod.World.Instance.AddTaskablePeds, 14,0),
-                new ModTask(500, "World.Tasking.Tick", Mod.World.Instance.TaskCops, 14,1),
-                new ModTask(750, "World.Tasking.Tick", Mod.World.Instance.TaskCivilians, 14,2),//temp off for testing other stuff, dont need them calling the cops
-                new ModTask(500, "World.Dispatch.DeleteChecking", Mod.World.Instance.Recall, 15,0),
-                new ModTask(500, "World.Dispatch.SpawnChecking", Mod.World.Instance.Dispatch, 15,1),
+                new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,1),
+                new ModTask(500, "World.Tasking.UpdatePeds", Tasking.AddTaskablePeds, 14,0),
+                new ModTask(500, "World.Tasking.Tick", Tasking.TaskCops, 14,1),
+                new ModTask(750, "World.Tasking.Tick", Tasking.TaskCivilians, 14,2),
+                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
+                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
             };
         }
         private void StartDebugLogic()
@@ -172,8 +191,8 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        Menu.Instance.Update();
-                        UI.Instance.Update();
+                        Menu.Update();
+                        UI.Update();
                         GameFiber.Yield();
                     }
                 }

@@ -5,14 +5,18 @@ using RAGENativeUI.Elements;
 using System;
 using System.Drawing;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 
 public class UI
 {
-    private static readonly Lazy<UI> lazy =
-    new Lazy<UI>(() => new UI());
-    public static UI Instance { get { return lazy.Value; } }
-    private UI()
+    private IPlayer CurrentPlayer;
+    private IWorld World;
+    private ISearchMode SearchMode;
+    public UI(IWorld world, IPlayer currentPlayer, ISearchMode searchMode)
     {
+        World = world;
+        CurrentPlayer = currentPlayer;
+        SearchMode = searchMode;
         BigMessage = new BigMessageThread(true);
     }
     private BigMessageThread BigMessage;
@@ -84,7 +88,7 @@ public class UI
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
-        if (DataMart.Instance.Settings.SettingsManager.UI.Enabled && !Mod.Player.Instance.IsBusted && !Mod.Player.Instance.IsDead)
+        if (DataMart.Instance.Settings.SettingsManager.UI.Enabled && !CurrentPlayer.IsBusted && !CurrentPlayer.IsDead)
         {
             ShowUI();
         }
@@ -115,20 +119,20 @@ public class UI
     //private string GetPlayerStatusDisplay()
     //{
     //    string PlayerStatusLine = "";
-    //    if (Mod.Player.Instance.IsPersonOfInterest)
+    //    if (CurrentPlayer.IsPersonOfInterest)
     //    {
-    //        if (Mod.Player.Instance.IsWanted)
+    //        if (CurrentPlayer.IsWanted)
     //        {
     //            PlayerStatusLine = "~r~Wanted~s~";
     //        }
-    //        else if (Mod.Player.Instance.CurrentPoliceResponse.HasBeenNotWantedFor <= 45000)
+    //        else if (CurrentPlayer.CurrentPoliceResponse.HasBeenNotWantedFor <= 45000)
     //        {
     //            PlayerStatusLine = "~o~Wanted~s~";
     //        }
     //        else
     //            PlayerStatusLine = "~y~Wanted~s~";
     //    }
-    //    if (Mod.Player.Instance.IsWanted)
+    //    if (CurrentPlayer.IsWanted)
     //    {
     //        string AgenciesChasingPlayer = Mod.World.Instance.AgenciesChasingPlayer;
     //        if (AgenciesChasingPlayer != "")
@@ -141,22 +145,22 @@ public class UI
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (Mod.Player.Instance.CurrentStreet != null && Mod.Player.Instance.CurrentCrossStreet != null)
+        if (CurrentPlayer.CurrentStreet != null && CurrentPlayer.CurrentCrossStreet != null)
         {
-            StreetDisplay = string.Format(" {0} at {1} ", Mod.Player.Instance.CurrentStreet.Name, Mod.Player.Instance.CurrentCrossStreet.Name);
+            StreetDisplay = string.Format(" {0} at {1} ", CurrentPlayer.CurrentStreet.Name, CurrentPlayer.CurrentCrossStreet.Name);
         }
-        else if (Mod.Player.Instance.CurrentStreet != null)
+        else if (CurrentPlayer.CurrentStreet != null)
         {
-            StreetDisplay = string.Format(" {0} ", Mod.Player.Instance.CurrentStreet.Name);
+            StreetDisplay = string.Format(" {0} ", CurrentPlayer.CurrentStreet.Name);
         }
         return StreetDisplay;
     }
     private string GetVehicleStatusDisplay()
     {
         string PlayerSpeedLine = "";
-        if (Mod.Player.Instance.CurrentVehicle != null && Game.LocalPlayer.Character.IsInAnyVehicle(false))//was game.localpalyer.character.isinanyvehicle(false)
+        if (CurrentPlayer.CurrentVehicle != null && Game.LocalPlayer.Character.IsInAnyVehicle(false))//was game.localpalyer.character.isinanyvehicle(false)
         {
-            float VehicleSpeedMPH = Mod.Player.Instance.CurrentVehicle.Vehicle.Speed * 2.23694f;
+            float VehicleSpeedMPH = CurrentPlayer.CurrentVehicle.Vehicle.Speed * 2.23694f;
             if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
             {
                 PlayerSpeedLine = "ENGINE OFF";
@@ -164,38 +168,38 @@ public class UI
             else
             {
                 string ColorPrefx = "~s~";
-                if (Mod.Player.Instance.IsSpeeding)
+                if (CurrentPlayer.IsSpeeding)
                 {
                     ColorPrefx = "~r~";
                 }
 
-                if (Mod.Player.Instance.CurrentStreet != null)
+                if (CurrentPlayer.CurrentStreet != null)
                 {
-                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Mod.Player.Instance.CurrentStreet.SpeedLimit);
+                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), CurrentPlayer.CurrentStreet.SpeedLimit);
                 }
             }
 
-            if (Mod.Player.Instance.IsViolatingAnyTrafficLaws)
+            if (CurrentPlayer.IsViolatingAnyTrafficLaws)
             {
                 PlayerSpeedLine += " !";
             }
 
-            PlayerSpeedLine += "~n~" + Mod.Player.Instance.CurrentVehicle.FuelTank.UIText;
+            PlayerSpeedLine += "~n~" + CurrentPlayer.CurrentVehicle.FuelTank.UIText;
         }
         return PlayerSpeedLine;
     }
     private string GetZoneDisplay()
     {
-        if (Mod.Player.Instance.CurrentZone == null)
+        if (CurrentPlayer.CurrentZone == null)
         {
             return "";
         }
         string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = DataMart.Instance.Zones.GetName(Mod.Player.Instance.CurrentZone, true);
-        if (Mod.Player.Instance.CurrentZone != null)
+        ZoneDisplay = DataMart.Instance.Zones.GetName(CurrentPlayer.CurrentZone, true);
+        if (CurrentPlayer.CurrentZone != null)
         {
-            Agency MainZoneAgency = DataMart.Instance.ZoneJurisdiction.GetMainAgency(Mod.Player.Instance.CurrentZone.InternalGameName);
+            Agency MainZoneAgency = DataMart.Instance.ZoneJurisdiction.GetMainAgency(CurrentPlayer.CurrentZone.InternalGameName);
             if (MainZoneAgency != null)
             {
                 CopZoneName = MainZoneAgency.ColoredInitials;
@@ -220,7 +224,7 @@ public class UI
     }
     private void ScreenEffectsUpdate()
     {
-        if (Mod.Player.Instance.IsDead)
+        if (CurrentPlayer.IsDead)
         {
             if (!StartedDeathEffect)
             {
@@ -231,7 +235,7 @@ public class UI
                 StartedDeathEffect = true;
             }
         }
-        else if (Mod.Player.Instance.IsBusted)
+        else if (CurrentPlayer.IsBusted)
         {
             if (!StartedBustedEffect)
             {
@@ -276,25 +280,25 @@ public class UI
 
         // Lines++;
 
-        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", Mod.Player.Instance.Investigations.IsActive, Mod.Player.Instance.Investigations.HaveDescription, Mod.Player.Instance.IsStationary, Mod.Player.Instance.Investigations.IsSuspicious);
+        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", CurrentPlayer.Investigations.IsActive, CurrentPlayer.Investigations.HaveDescription, CurrentPlayer.IsStationary, CurrentPlayer.Investigations.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine1 = string.Format("IsDrunk {0}", Mod.Player.Instance.IsDrunk);
+        string DebugLine1 = string.Format("IsDrunk {0}", CurrentPlayer.IsDrunk);
         DisplayTextOnScreen(DebugLine1, 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine2 = string.Format("{0}", Mod.Player.Instance.SearchModeDebug);
+        string DebugLine2 = string.Format("{0}", SearchMode.SearchModeDebug);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine3 = string.Format("AnyRcntlySeen {0}, AreStarsGreyedOut {1}, LastSeen {2}", Mod.World.Instance.AnyPoliceRecentlySeenPlayer, Mod.Player.Instance.AreStarsGreyedOut, Mod.World.Instance.PlacePoliceLastSeenPlayer);
+        string DebugLine3 = string.Format("","");
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine4 = string.Format("CrimesObs {0}", Mod.Player.Instance.CurrentPoliceResponse.CrimesObservedJoined);
+        string DebugLine4 = string.Format("CrimesObs {0}", CurrentPlayer.CurrentPoliceResponse.CrimesObservedJoined);
         DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine5 = string.Format("CrimesRep {0}", Mod.Player.Instance.CurrentPoliceResponse.CrimesReportedJoined);
+        string DebugLine5 = string.Format("CrimesRep {0}", CurrentPlayer.CurrentPoliceResponse.CrimesReportedJoined);
         DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine6 = string.Format("{0}", Mod.Player.Instance.LawsViolatingDisplay);
+        string DebugLine6 = string.Format("{0}", CurrentPlayer.LawsViolatingDisplay);
         DisplayTextOnScreen(DebugLine6, 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         //float Between = 0.01f;

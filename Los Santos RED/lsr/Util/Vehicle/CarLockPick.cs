@@ -10,9 +10,12 @@ using LSR.Vehicles;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using Mod;
+using LosSantosRED.lsr.Interface;
 
 public class CarLockPick
 {
+    private IWorld World;
+    private IPlayer Player;
     private string Animation = "std_force_entry_ds";
     private int DoorIndex = 0;
     private int WaitTime = 1750;
@@ -21,8 +24,10 @@ public class CarLockPick
     private Vehicle TargetVehicle;
     private int SeatTryingToEnter;
 
-    public CarLockPick(Vehicle targetVehicle, int seatTryingToEnter)
+    public CarLockPick(IWorld world, IPlayer player, Vehicle targetVehicle, int seatTryingToEnter)
     {
+        World = world;
+        Player = player;
         TargetVehicle = targetVehicle;
         SeatTryingToEnter = seatTryingToEnter;
     }
@@ -46,7 +51,7 @@ public class CarLockPick
 
     public void PickLock()
     {
-        if (!Input.Instance.IsHoldingEnter || !CanLockPick)
+        if (!CanLockPick)
             return;
         try
         {
@@ -71,7 +76,7 @@ public class CarLockPick
         }
         catch (Exception e)
         {
-            Mod.Player.Instance.IsLockPicking = false;
+            Player.IsLockPicking = false;
             Debug.Instance.WriteToLog("PickLock", e.Message);
         }
     }
@@ -79,7 +84,7 @@ public class CarLockPick
     {
         OriginalLockStatus = TargetVehicle.LockStatus;
         TargetVehicle.SetLock((VehicleLockStatus)3);//Attempt to lock most car doors
-        Mod.Player.Instance.SetUnarmed();
+        Player.SetUnarmed();
 
         TargetVehicle.MustBeHotwired = true;
         uint GameTimeStartedStealing = Game.GameTime;
@@ -87,7 +92,7 @@ public class CarLockPick
 
         while (Game.LocalPlayer.Character.IsGettingIntoVehicle && Game.GameTime - GameTimeStartedStealing <= 3500)
         {
-            if (Input.Instance.IsMoveControlPressed)
+            if (EntryPoint.IsMoveControlPressed)
             {
                 StartAnimation = false;
                 break;
@@ -125,7 +130,7 @@ public class CarLockPick
     }   
     private bool LockPickAnimation()
     {
-        Mod.Player.Instance.IsLockPicking = true;
+        Player.IsLockPicking = true;
         bool Continue = true;
 
         Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
@@ -137,7 +142,7 @@ public class CarLockPick
         while (Game.GameTime - GameTimeStarted <= WaitTime)
         {
             GameFiber.Yield();
-            if (Input.Instance.IsMoveControlPressed)
+            if (EntryPoint.IsMoveControlPressed)
             {
                 Continue = false;
                 break;
@@ -149,7 +154,7 @@ public class CarLockPick
             Game.LocalPlayer.Character.Tasks.Clear();
             if (Screwdriver != null && Screwdriver.Exists())
                 Screwdriver.Delete();
-            Mod.Player.Instance.IsLockPicking = false;
+            Player.IsLockPicking = false;
             TargetVehicle.LockStatus = OriginalLockStatus;
             return false;
         }
@@ -202,7 +207,7 @@ public class CarLockPick
         if (Screwdriver != null && Screwdriver.Exists())
             Screwdriver.Delete();
 
-        Mod.Player.Instance.IsLockPicking = false;
+        Player.IsLockPicking = false;
 
         return true;
     }

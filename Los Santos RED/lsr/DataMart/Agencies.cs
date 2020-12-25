@@ -34,23 +34,23 @@ public class Agencies
             Serialization.SerializeParams(AgenciesList, ConfigFileName);
         }
     }
-    public List<Agency> GetAgencies(Vector3 Position)
+    public List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
     {
         List<Agency> ToReturn = new List<Agency>();
         Street StreetAtPosition = DataMart.Instance.Streets.GetStreet(Position);
         if (StreetAtPosition != null && DataMart.Instance.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
         {
-            ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn && x.SpawnsOnHighway));
+            ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn(WantedLevel) && x.SpawnsOnHighway));
         }
         Zone CurrentZone = DataMart.Instance.Zones.GetZone(Position);
 
-        Agency ZoneAgency1 = DataMart.Instance.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName);
+        Agency ZoneAgency1 = DataMart.Instance.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName,WantedLevel);
         if (ZoneAgency1 != null)
         {
             ToReturn.Add(ZoneAgency1); //Zone Jurisdiciton Random
         }
 
-        Agency CountyAgency1 = DataMart.Instance.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName);
+        Agency CountyAgency1 = DataMart.Instance.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel);
         if (CountyAgency1 != null)
         {
             ToReturn.Add(CountyAgency1); //Zone Jurisdiciton Random
@@ -58,7 +58,7 @@ public class Agencies
 
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))
         {
-            ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn && x.CanSpawnAnywhere));
+            ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn(WantedLevel) && x.CanSpawnAnywhere));
         }
         foreach (Agency ag in ToReturn)
         {
@@ -66,7 +66,7 @@ public class Agencies
         }
         return ToReturn;
     }
-    public Agency GetAgency(Ped Cop)
+    public Agency GetAgency(Ped Cop, int WantedLevel)
     {
         if (!Cop.IsPoliceArmy())
         {
@@ -85,7 +85,7 @@ public class Agencies
                 Zone ZoneFound = DataMart.Instance.Zones.GetZone(Cop.Position);
                 if (ZoneFound != null)
                 {
-                    foreach (Agency ZoneAgency in DataMart.Instance.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName))
+                    foreach (Agency ZoneAgency in DataMart.Instance.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
                     {
                         if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                             return ZoneAgency;
@@ -105,7 +105,7 @@ public class Agencies
             return null;
         }
     }
-    public Agency GetAgency(Vehicle CopCar)
+    public Agency GetAgency(Vehicle CopCar, int WantedLevel)
     {
         Agency ToReturn;
         List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
@@ -114,10 +114,12 @@ public class Agencies
             Zone ZoneFound = DataMart.Instance.Zones.GetZone(CopCar.Position);
             if (ZoneFound != null)
             {
-                foreach (Agency ZoneAgency in DataMart.Instance.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName))
+                foreach (Agency ZoneAgency in DataMart.Instance.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
                 {
                     if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                    {
                         return ZoneAgency;
+                    }
                 }
             }
         }

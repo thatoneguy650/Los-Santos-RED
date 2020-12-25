@@ -9,10 +9,14 @@ using ExtensionsMethods;
 using LSR.Vehicles;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 
 //lots more refactoring please
 public class CarJack 
 {
+
+    private IWorld World;
+    private IPlayer Player;
     private int PlayerScene;
     private int VictimScene;
     private PedExt Victim;
@@ -43,18 +47,22 @@ public class CarJack
             return true;
         }
     }
-    public CarJack(Vehicle VehicleToEnter, Ped DriverPed, int EntrySeat)
+
+
+    public CarJack(IWorld world, IPlayer player, Vehicle VehicleToEnter, Ped DriverPed, int EntrySeat)
     {
+        World = world;
+        Player = player;
         TargetVehicle = VehicleToEnter;
         Driver = DriverPed;
         SeatTryingToEnter = EntrySeat;
     }
     public void StartCarJack()
     {
-        Victim = Mod.World.Instance.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
+        Victim = World.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
         Weapon = DataMart.Instance.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
 
-        if (CanArmedCarJack && Input.Instance.IsHoldingEnter && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
+        if (CanArmedCarJack && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
         {
             ArmedCarJack();
         }
@@ -95,13 +103,13 @@ public class CarJack
         }
         catch (Exception e)
         {
-            Mod.Player.Instance.SetCarJacking(false);
+            Player.SetCarJacking(false);
             Debug.Instance.WriteToLog("UnlockCarDoor", e.Message);
         }
     }
     private bool SetupCarJack()
     {
-        Mod.Player.Instance.SetPlayerToLastWeapon();
+        Player.SetPlayerToLastWeapon();
         NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
         Driver.BlockPermanentEvents = true;
 
@@ -121,7 +129,7 @@ public class CarJack
         }
 
         AnimationDictionary AnimDictionary = new AnimationDictionary(Dictionary);
-        Mod.Player.Instance.SetPlayerToLastWeapon();
+        Player.SetPlayerToLastWeapon();
 
         if (!Driver.IsInAnyVehicle(false))
             Driver.WarpIntoVehicle(TargetVehicle, -1);
@@ -144,7 +152,7 @@ public class CarJack
     private bool CarJackAnimation()
     {
 
-        Mod.Player.Instance.SetCarJacking(true);
+        Player.SetCarJacking(true);
         bool locOpenDoor = false;
         WantToCancel = false;
         Vector3 OriginalCarPosition = TargetVehicle.Position;
@@ -156,7 +164,7 @@ public class CarJack
         {
             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
             GameFiber.Yield();
-            if (ScenePhase <= 0.4f && Input.Instance.IsMoveControlPressed)
+            if (ScenePhase <= 0.4f && EntryPoint.IsMoveControlPressed)
             {
                 WantToCancel = true;
                 break;
@@ -182,11 +190,11 @@ public class CarJack
                 WantToCancel = true;
                 break;
             }
-            if (Mod.Player.Instance.IsConsideredArmed && Game.IsControlPressed(2, GameControl.Attack))//Game.LocalPlayer.Character.IsConsideredArmed()
+            if (Player.IsConsideredArmed && Game.IsControlPressed(2, GameControl.Attack))//Game.LocalPlayer.Character.IsConsideredArmed()
             {
                 Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                 NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
-                Mod.Player.Instance.SetShot();
+                Player.SetShot();
 
                 if (ScenePhase <= 0.35f)
                 {
@@ -196,7 +204,7 @@ public class CarJack
                     break;
                 }
             }
-            if (Mod.Player.Instance.IsConsideredArmed && Game.IsControlJustPressed(2, GameControl.Aim))//Game.LocalPlayer.Character.IsConsideredArmed()
+            if (Player.IsConsideredArmed && Game.IsControlJustPressed(2, GameControl.Aim))//Game.LocalPlayer.Character.IsConsideredArmed()
             {
                 if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) <= 0.4f)
                 {
@@ -210,7 +218,7 @@ public class CarJack
             {
                 //CameraManager.RestoreGameplayerCamera();
             }
-            if(Mod.Player.Instance.IsBusted || Mod.Player.Instance.IsDead)
+            if(Player.IsBusted || Player.IsDead)
             {
                 WantToCancel = true;
                 break;
@@ -220,9 +228,9 @@ public class CarJack
 
         //CameraManager.RestoreGameplayerCamera();
 
-        if (Mod.Player.Instance.IsDead)
+        if (Player.IsDead)
         {
-            Mod.Player.Instance.SetCarJacking(false);
+            Player.SetCarJacking(false);
             if (Victim != null)
             {
                 Victim.CanBeTasked = true;
@@ -258,7 +266,7 @@ public class CarJack
 
 
 
-                VehicleExt MyCar = Mod.World.Instance.GetVehicle(TargetVehicle);
+                VehicleExt MyCar = World.GetVehicle(TargetVehicle);
                 if (MyCar != null && MyCar.Vehicle.Exists())
                 {
                     MyCar.Vehicle.IsEngineOn = true;
@@ -279,7 +287,7 @@ public class CarJack
 
         if (WantToCancel)
         {
-            Mod.Player.Instance.SetCarJacking(false);
+            Player.SetCarJacking(false);
             return false;
         }
 
@@ -304,14 +312,14 @@ public class CarJack
             }
         }
         GameFiber.Sleep(5000);
-        Mod.Player.Instance.SetCarJacking(false);
+        Player.SetCarJacking(false);
         return true;
     }
     private void UnarmedCarJack()
     {
         GameFiber CarJackPed = GameFiber.StartNew(delegate
         {
-            //Mod.Player.Instance.IsCarJacking = true;
+            //Player.IsCarJacking = true;
 
             if (Victim != null)
                 Victim.CanBeTasked = false;
@@ -321,7 +329,7 @@ public class CarJack
                 Victim.CanBeTasked = true;
 
             GameFiber.Sleep(4000);
-            //Mod.Player.Instance.IsCarJacking = false;
+            //Player.IsCarJacking = false;
         }, "CarJackPed");
         Debug.Instance.GameFibers.Add(CarJackPed);
     }

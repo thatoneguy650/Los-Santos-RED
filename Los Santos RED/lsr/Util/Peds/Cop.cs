@@ -1,6 +1,7 @@
 ﻿
 using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System.Collections.Generic;
@@ -71,16 +72,14 @@ public class Cop : PedExt
             }
         }
     }
+    public float DistanceToLastSeen { get; private set; } = 99f;
     public bool WasModSpawned { get; private set; }
     public bool WasSpawnedAsDriver { get; set; }
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public Agency AssignedAgency { get; set; } = new Agency();
-    public float DistanceToInvestigationPosition
+    public float DistanceToInvestigationPosition(Vector3 Position)
     {
-        get
-        {
-            return Pedestrian.DistanceTo2D(Mod.Player.Instance.Investigations.Position);
-        }
+        return Pedestrian.DistanceTo2D(Position);
     }
     public uint HasBeenSpawnedFor
     {
@@ -93,20 +92,13 @@ public class Cop : PedExt
     {
         get
         {
-            if (Mod.Player.Instance.IsBustable)
+            if (DistanceToPlayer < 0.1f) //weird cases where they are my same position
             {
-                if (DistanceToPlayer < 0.1f) //weird cases where they are my same position
-                {
-                    return false;
-                }
-                else if (Mod.Player.Instance.HandsAreUp && DistanceToPlayer <= 5f)
-                {
-                    return true;
-                }
-                else if (Mod.Player.Instance.IsIncapacitated && DistanceToPlayer <= 3f)
-                {
-                    return true;
-                }
+                return false;
+            }
+            else if (DistanceToPlayer <= 5f)
+            {
+                return true;
             }
             return false;
         }
@@ -118,7 +110,7 @@ public class Cop : PedExt
         Health = health;
         AssignedAgency = agency;
         WasModSpawned = wasModSpawned;
-        if(WasModSpawned)
+        if (WasModSpawned)
         {
             GameTimeSpawned = Game.GameTime;
         }
@@ -131,32 +123,32 @@ public class Cop : PedExt
 
         Loadout = new Loadout(this);
     }
-    public void CheckSpeech()
+    public void CheckSpeech(IPlayer currentPlayer)
     {
-        Speak();
-        RadioIn();
+        Speak(currentPlayer);
+        RadioIn(currentPlayer);
     }
-    public void Speak()
+    public void Speak(IPlayer currentPlayer)
     {
         if (CanSpeak)
         {
-            if (Mod.Player.Instance.IsBusted && DistanceToPlayer <= 20f)
+            if (!currentPlayer.IsBusted && DistanceToPlayer <= 20f)
             {
                 Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
             }
-            else if (Mod.Player.Instance.RecentlyKilledCop)
+            else if (currentPlayer.RecentlyKilledCop)
             {
                 Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
             }
-            else if (Mod.Player.Instance.IsWanted && !Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
+            else if (currentPlayer.IsWanted && !currentPlayer.CurrentPoliceResponse.IsDeadlyChase)
             {
                 Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
             }
-            else if (Mod.Player.Instance.IsNotWanted && Mod.Player.Instance.RecentlyBribedPolice)
+            else if (currentPlayer.IsNotWanted && currentPlayer.IsBusted)
             {
                 Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom());
             }
-            else if (Mod.Player.Instance.CurrentPoliceResponse.IsDeadlyChase)
+            else if (currentPlayer.CurrentPoliceResponse.IsDeadlyChase)
             {
                 Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom());
             }
@@ -170,7 +162,7 @@ public class Cop : PedExt
             GameTimeLastSpoke = Game.GameTime;
         }
     }
-    public void RadioIn()
+    public void RadioIn(IPlayer currentPlayer)
     {
         if (CanRadioIn)
         {
@@ -179,7 +171,7 @@ public class Cop : PedExt
             if (CurrentGun != null && CurrentGun.IsOneHanded)
                 AnimationToPlay = "radio_enter";
 
-            Speak();
+            Speak(currentPlayer);
 
             AnimationDictionary AnimDictionary = new AnimationDictionary("random@arrests");
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);

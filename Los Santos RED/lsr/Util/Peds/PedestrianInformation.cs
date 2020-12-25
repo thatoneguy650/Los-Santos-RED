@@ -13,36 +13,44 @@ public class PedestrianInformation
     public int MinWantedLevelSpawn { get; set; } = 0;
     public int MaxWantedLevelSpawn { get; set; } = 5;
     public PedVariation RequiredVariation { get; set; }
-    public bool CanCurrentlySpawn
+    public bool CanCurrentlySpawn(int WantedLevel)
     {
-        get
+        if (WantedLevel > 0)
         {
-            if (Mod.Player.Instance.IsWanted)
+            if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
             {
-                if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
-                    return WantedSpawnChance > 0;
-                else
-                    return false;
+                return WantedSpawnChance > 0;
             }
             else
-                return AmbientSpawnChance > 0;
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return AmbientSpawnChance > 0;
         }
     }
-    public int CurrentSpawnChance
+    public int CurrentSpawnChance(int WantedLevel)
     {
-        get
+        if (!CanCurrentlySpawn(WantedLevel))
         {
-            if (!CanCurrentlySpawn)
-                return 0;
-            if (Mod.Player.Instance.IsWanted)
+            return 0;
+        }
+        if (WantedLevel > 0)
+        {
+            if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
             {
-                if (Mod.Player.Instance.WantedLevel >= MinWantedLevelSpawn && Mod.Player.Instance.WantedLevel <= MaxWantedLevelSpawn)
-                    return WantedSpawnChance;
-                else
-                    return 0;
+                return WantedSpawnChance;
             }
             else
-                return AmbientSpawnChance;
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            return AmbientSpawnChance;
         }
     }
     public bool CanSpawnWanted
@@ -50,9 +58,13 @@ public class PedestrianInformation
         get
         {
             if (WantedSpawnChance > 0)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
     public bool CanSpawnAmbient
@@ -60,9 +72,13 @@ public class PedestrianInformation
         get
         {
             if (AmbientSpawnChance > 0)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
     }
     public PedestrianInformation()

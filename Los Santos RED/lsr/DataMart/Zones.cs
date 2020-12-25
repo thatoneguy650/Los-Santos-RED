@@ -194,4 +194,9 @@ public class Zones
     };
         
     }
+
+    internal Zone GetZone(object currentPosition)
+    {
+        throw new NotImplementedException();
+    }
 }

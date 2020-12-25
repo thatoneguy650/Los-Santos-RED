@@ -20,24 +20,26 @@ public class CountyJurisdiction
             return DataMart.Instance.Agencies.GetAgency(AgencyInitials);
         }
     }
-    public bool CanCurrentlySpawn
+    public bool CanCurrentlySpawn(int WantedLevel)
     {
-        get
+        if (WantedLevel > 0)
         {
-            if (Mod.Player.Instance.IsWanted)
-                return WantedSpawnChance > 0;
-            else
-                return AmbientSpawnChance > 0;
+            return WantedSpawnChance > 0;
+        }
+        else
+        {
+            return AmbientSpawnChance > 0;
         }
     }
-    public int CurrentSpawnChance
+    public int CurrentSpawnChance(int WantedLevel)
     {
-        get
+        if (WantedLevel > 0)
         {
-            if (Mod.Player.Instance.IsWanted)
-                return WantedSpawnChance;
-            else
-                return AmbientSpawnChance;
+            return WantedSpawnChance;
+        }
+        else
+        {
+            return AmbientSpawnChance;
         }
     }
     public CountyJurisdiction()

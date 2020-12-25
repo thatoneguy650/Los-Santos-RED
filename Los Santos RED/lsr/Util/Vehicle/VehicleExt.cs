@@ -367,7 +367,7 @@ namespace LSR.Vehicles
         }
         public void UpdateCopCarLivery()
         {
-            Agency AssignedAgency = DataMart.Instance.Agencies.GetAgency(Vehicle);
+            Agency AssignedAgency = DataMart.Instance.Agencies.GetAgency(Vehicle,0);//might need to real wanted level here
             UpdateCopCarLivery(AssignedAgency);
         }
         public void SetDriverWindow(bool RollDown)

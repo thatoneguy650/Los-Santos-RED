@@ -43,16 +43,16 @@ public class ZoneJurisdictions
         }
         return null;
     }
-    public Agency GetRandomAgency(string ZoneName)
+    public Agency GetRandomAgency(string ZoneName, int WantedLevel)
     {
         if (ZoneJurisdictionsList.Any())
         {
-            List<ZoneJurisdiction> ToPickFrom = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn).ToList();
-            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance);
+            List<ZoneJurisdiction> ToPickFrom = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn(WantedLevel)).ToList();
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
             int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (ZoneJurisdiction MyJurisdiction in ToPickFrom)
             {
-                int SpawnChance = MyJurisdiction.CurrentSpawnChance;
+                int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
                 if (RandomPick < SpawnChance)
                 {
                     return MyJurisdiction.GameAgency;
@@ -62,11 +62,11 @@ public class ZoneJurisdictions
         }
         return null;
     }
-    public List<Agency> GetAgencies(string ZoneName)
+    public List<Agency> GetAgencies(string ZoneName,int WantedLevel)
     {
         if (ZoneJurisdictionsList.Any())
         {
-            return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn).OrderBy(k => k.CurrentSpawnChance).Select(y => y.GameAgency).ToList();
+            return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn(WantedLevel)).OrderBy(k => k.CurrentSpawnChance(WantedLevel)).Select(y => y.GameAgency).ToList();
         }
         else
         {

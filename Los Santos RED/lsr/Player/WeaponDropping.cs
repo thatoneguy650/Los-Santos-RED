@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -11,14 +12,16 @@ using System.Threading.Tasks;
 
 public class WeaponDropping
 {
+    private IPlayer CurrentPlayer;
     private List<DroppedWeapon> DroppedWeapons = new List<DroppedWeapon>();
     private bool DroppingWeapon;
     private int PrevCountWeapons = 1;
     private int WeaponCount = 1;
     private int CurrentWeaponAmmo;
 
-    public WeaponDropping()
+    public WeaponDropping(IPlayer currentPlayer)
     {
+        CurrentPlayer = currentPlayer;
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
         PrevCountWeapons = WeaponCount;
     }
@@ -27,7 +30,7 @@ public class WeaponDropping
     {
         get
         {
-            if (!DroppingWeapon && !Mod.Player.Instance.IsInVehicle && Mod.Player.Instance.IsConsideredArmed)//was player one
+            if (!DroppingWeapon && !CurrentPlayer.IsInVehicle && CurrentPlayer.IsConsideredArmed)//was player one
                 return true;
             else
                 return false;
