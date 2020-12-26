@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +10,14 @@ using System.Threading.Tasks;
 
 public class ZoneJurisdictions
 {
-    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\ZoneJurisdiction.xml"; 
+    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\ZoneJurisdiction.xml";
     private List<ZoneJurisdiction> ZoneJurisdictionsList = new List<ZoneJurisdiction>();
     private bool UseVanillaConfig = true;
+    private IDataMart DataMart;
+    public ZoneJurisdictions(IDataMart dataMart)
+    {
+        DataMart = dataMart;
+    }
     public void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
@@ -38,7 +44,8 @@ public class ZoneJurisdictions
             ZoneJurisdiction cool = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(y => y.Priority).FirstOrDefault();
             if (cool != null)
             {
-                return cool.GameAgency;
+                return DataMart.Agencies.GetAgency(cool.AgencyInitials);
+                //return cool.GameAgency;
             }
         }
         return null;
@@ -47,7 +54,16 @@ public class ZoneJurisdictions
     {
         if (ZoneJurisdictionsList.Any())
         {
-            List<ZoneJurisdiction> ToPickFrom = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn(WantedLevel)).ToList();
+            List<ZoneJurisdiction> ToPickFrom = new List<ZoneJurisdiction>();
+            foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()))
+            {
+                Agency Agency = DataMart.Agencies.GetAgency(zoneJurisdiction.AgencyInitials);
+                if (Agency != null && Agency.CanSpawn(WantedLevel))
+                {
+                    ToPickFrom.Add(zoneJurisdiction);
+                }
+            }
+            //List<ZoneJurisdiction> ToPickFrom = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && DataMart.Agencies.GetAgency(x.AgencyInitials) != null && DataMart.Agencies.GetAgency(x.AgencyInitials).CanSpawn(WantedLevel)).ToList();
             int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
             int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (ZoneJurisdiction MyJurisdiction in ToPickFrom)
@@ -55,18 +71,33 @@ public class ZoneJurisdictions
                 int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
                 if (RandomPick < SpawnChance)
                 {
-                    return MyJurisdiction.GameAgency;
+                    return DataMart.Agencies.GetAgency(MyJurisdiction.AgencyInitials);
+                    //return MyJurisdiction.GameAgency;
                 }
                 RandomPick -= SpawnChance;
             }
         }
         return null;
     }
-    public List<Agency> GetAgencies(string ZoneName,int WantedLevel)
+    public List<Agency> GetAgencies(string ZoneName, int WantedLevel)
     {
         if (ZoneJurisdictionsList.Any())
         {
-            return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && x.GameAgency != null && x.GameAgency.CanSpawn(WantedLevel)).OrderBy(k => k.CurrentSpawnChance(WantedLevel)).Select(y => y.GameAgency).ToList();
+            List<Agency> ToReturn = new List<Agency>();
+            foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(k => k.CurrentSpawnChance(WantedLevel)))
+            {
+                Agency Agency = DataMart.Agencies.GetAgency(zoneJurisdiction.AgencyInitials);
+                if(Agency != null && Agency.CanSpawn(WantedLevel))
+                {
+                    ToReturn.Add(Agency);
+                }
+
+            }
+            if(!ToReturn.Any())
+            {
+                return null;
+            }
+            return ToReturn;
         }
         else
         {
@@ -553,5 +584,5 @@ public class ZoneJurisdictions
     }
 }
 
-    
+
 

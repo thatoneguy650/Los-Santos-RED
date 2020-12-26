@@ -144,7 +144,7 @@ public class Surrendering
                 Vehicle oldVehicle = PedToArrest.CurrentVehicle;
                 if (PedToArrest.Exists() && oldVehicle.Exists())
                 {
-                    Debug.Instance.WriteToLog("SetArrestedAnimation", "Tasked to leave the vehicle");
+                    Game.Console.Print("SetArrestedAnimation! Tasked to leave the vehicle");
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
                     GameFiber.Wait(2500);
                 }
@@ -154,14 +154,14 @@ public class Surrendering
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
                 {
                     NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-                    Debug.Instance.WriteToLog("SetArrestedAnimation", "Standing Animation");
+                    Game.Console.Print("SetArrestedAnimation! Standing Animation");
                 }
             }
             else
             {
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
                 {
-                    Debug.Instance.WriteToLog("SetArrestedAnimation", "Kneel Animation");
+                    Game.Console.Print("SetArrestedAnimation! Kneel Animation");
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(6000);
 
@@ -180,7 +180,6 @@ public class Surrendering
                 PedToArrest.IsPersistent = false;
             }
         }, "SetArrestedAnimation");
-        Debug.Instance.GameFibers.Add(SetArrestedAnimation);
 
     }
     public void UnSetArrestedAnimation(Ped PedToArrest)
@@ -202,7 +201,6 @@ public class Surrendering
                 PedToArrest.Tasks.Clear();
             }
         }, "UnSetArrestedAnimation");
-        Debug.Instance.GameFibers.Add(UnSetArrestedAnimationGF);
     }
     public void CommitSuicide(Ped PedToSuicide)
     {
@@ -231,54 +229,54 @@ public class Surrendering
                 //    CurrentGun = WeaponManager.WeaponsList.Where(x => (WeaponHash)x.Hash == PedToSuicide.Inventory.EquippedWeapon.Hash && x.CanPistolSuicide).FirstOrDefault();
                 //}
 
-                if (DataMart.Instance.Weapons.CanPlayerWeaponSuicide(PedToSuicide))
-                {
-                    if (PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
-                    {
-                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToSuicide, "mp_suicide", "pistol", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-                        GameFiber.Wait(750);
-                        Vector3 HeadCoordinated = PedToSuicide.GetBonePosition(PedBoneId.Head);
-                        NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", PedToSuicide, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
-                    }
-                    else
-                    {
-                        Vector3 SuicidePosition = PedToSuicide.Position;
+                //if (DataMart.Instance.Weapons.CanPlayerWeaponSuicide(PedToSuicide))
+                //{
+                //    if (PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
+                //    {
+                //        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToSuicide, "mp_suicide", "pistol", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                //        GameFiber.Wait(750);
+                //        Vector3 HeadCoordinated = PedToSuicide.GetBonePosition(PedBoneId.Head);
+                //        NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", PedToSuicide, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
+                //    }
+                //    else
+                //    {
+                //        Vector3 SuicidePosition = PedToSuicide.Position;
 
-                        int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", SuicidePosition.X, SuicidePosition.Y, SuicidePosition.Z, 0.0f, 0.0f, PedToSuicide.Heading, 2);//270f //old
-                        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
-                        NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", PedToSuicide, Scene1, "mp_suicide", "pistol", 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
-                        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene1, 0.0f);
+                //        int Scene1 = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", SuicidePosition.X, SuicidePosition.Y, SuicidePosition.Z, 0.0f, 0.0f, PedToSuicide.Heading, 2);//270f //old
+                //        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", Scene1, false);
+                //        NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", PedToSuicide, Scene1, "mp_suicide", "pistol", 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+                //        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", Scene1, 0.0f);
 
-                        uint GameTimeStartedSuicide = Game.GameTime;
-                        while (Game.GameTime - GameTimeStartedSuicide <= 20000)
-                        {
-                            float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                            if (EntryPoint.IsMoveControlPressed)
-                            {
-                                break;
-                            }
-                            if (Game.LocalPlayer.Character.IsDead)
-                            {
-                                break;
-                            }
-                            if (ScenePhase >= 0.3f)
-                            {
-                                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", Scene1, 0f);
-                                if (Game.IsControlJustPressed(2, GameControl.Attack))
-                                {
-                                    Vector3 HeadCoordinated = PedToSuicide.GetBonePosition(PedBoneId.Head);
-                                    NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", PedToSuicide, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
-                                    Game.LocalPlayer.Character.Kill();
-                                    break;
-                                }
-                            }
-                            GameFiber.Yield();
-                        }
-                        PedToSuicide.Tasks.Clear();
-                    }
-                }
-                else
-                {
+                //        uint GameTimeStartedSuicide = Game.GameTime;
+                //        while (Game.GameTime - GameTimeStartedSuicide <= 20000)
+                //        {
+                //            float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
+                //            if (EntryPoint.IsMoveControlPressed)
+                //            {
+                //                break;
+                //            }
+                //            if (Game.LocalPlayer.Character.IsDead)
+                //            {
+                //                break;
+                //            }
+                //            if (ScenePhase >= 0.3f)
+                //            {
+                //                NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", Scene1, 0f);
+                //                if (Game.IsControlJustPressed(2, GameControl.Attack))
+                //                {
+                //                    Vector3 HeadCoordinated = PedToSuicide.GetBonePosition(PedBoneId.Head);
+                //                    NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", PedToSuicide, HeadCoordinated.X, HeadCoordinated.Y, HeadCoordinated.Z, true);
+                //                    Game.LocalPlayer.Character.Kill();
+                //                    break;
+                //                }
+                //            }
+                //            GameFiber.Yield();
+                //        }
+                //        PedToSuicide.Tasks.Clear();
+                //    }
+                //}
+                //else
+                //{
                     NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", PedToSuicide, (uint)2725352035, true);
 
                     if (PedToSuicide.Handle != Game.LocalPlayer.Character.Handle)
@@ -331,11 +329,10 @@ public class Surrendering
                         else
                             PedToSuicide.Tasks.Clear();
                     }
-                }
+               // }
                 IsCommitingSuicide = false;
             }
         }, "Suicide");
-        Debug.Instance.GameFibers.Add(Suicide);
     }
 }
 

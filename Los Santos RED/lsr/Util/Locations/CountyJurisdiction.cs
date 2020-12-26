@@ -13,13 +13,6 @@ public class CountyJurisdiction
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;
     public bool CanSpawnPedestrianOfficers { get; set; } = false;
-    public Agency GameAgency
-    {
-        get
-        {
-            return DataMart.Instance.Agencies.GetAgency(AgencyInitials);
-        }
-    }
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)

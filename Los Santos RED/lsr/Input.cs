@@ -24,9 +24,11 @@ namespace LosSantosRED.lsr
     public class Input
     {
         private IPlayer CurrentPlayer;
-        public Input(IPlayer currentPlayer)
+        private IDataMart DataMart;
+        public Input(IPlayer currentPlayer, IDataMart dataMart)
         {
             CurrentPlayer = currentPlayer;
+            DataMart = dataMart;
         }
         private uint GameTimeStartedHoldingEnter;
         private bool IsHoldingEnter
@@ -44,7 +46,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(DataMart.Instance.Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(DataMart.Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -58,7 +60,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(DataMart.Instance.Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                if (Game.IsKeyDownRightNow(DataMart.Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 {
                     return true;
                 }
@@ -72,7 +74,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(DataMart.Instance.Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(DataMart.Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -86,7 +88,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(DataMart.Instance.Settings.SettingsManager.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(DataMart.Settings.SettingsManager.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }

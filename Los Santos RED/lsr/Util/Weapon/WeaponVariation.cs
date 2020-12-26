@@ -32,21 +32,23 @@ public class WeaponVariation
         Tint = _Tint;
         Components = _Components;
     }
-    public void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash)
-    {
-        NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, Tint);
-        WeaponInformation LookupGun = DataMart.Instance.Weapons.GetWeapon(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
-        if (LookupGun == null)
-            return;
-        foreach (WeaponComponent ToRemove in LookupGun.PossibleComponents)
-        {
-            NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, WeaponHash, ToRemove.Hash);
-        }
-        foreach (string ToAdd in Components)
-        {
-            WeaponComponent MyComponent = LookupGun.PossibleComponents.Where(x => x.Name == ToAdd).FirstOrDefault();
-            if (MyComponent != null)
-                NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, MyComponent.Hash);
-        }
-    }
+    //public void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, WeaponInformation LookupGun)
+    //{
+    //    NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, Tint);
+    //    //WeaponInformation LookupGun = DataMart.Instance.Weapons.GetWeapon(WeaponHash);//Weapons.Where(x => x.Hash == WeaponHash).FirstOrDefault();
+    //    if (LookupGun == null)
+    //    {
+    //        return;
+    //    }
+    //    foreach (WeaponComponent ToRemove in LookupGun.PossibleComponents)
+    //    {
+    //        NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, WeaponHash, ToRemove.Hash);
+    //    }
+    //    foreach (string ToAdd in Components)
+    //    {
+    //        WeaponComponent MyComponent = LookupGun.PossibleComponents.Where(x => x.Name == ToAdd).FirstOrDefault();
+    //        if (MyComponent != null)
+    //            NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, MyComponent.Hash);
+    //    }
+    //}
 }

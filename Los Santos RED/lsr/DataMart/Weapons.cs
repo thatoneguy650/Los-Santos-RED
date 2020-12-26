@@ -51,15 +51,23 @@ public class Weapons
             }
         }
         if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 1))
+        {
             return new WeaponInformation("Generic Melee", 0, WeaponCategory.Melee, 0, 0, false, false, false);
+        }
 
         if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 2))
+        {
             return new WeaponInformation("Generic Weapon", 0, WeaponCategory.Melee, 0, 0, false, false, false);
+        }
 
         if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian))
+        {
             return new WeaponInformation("Vehicle Injury", 0, WeaponCategory.Vehicle, 0, 0, false, false, false);
+        }
         else
+        {
             return new WeaponInformation("Unknown", 0, WeaponCategory.Unknown, 0, 0, false, false, false);
+        }
     }
     public WeaponInformation GetWeapon(ulong WeaponHash)
     {

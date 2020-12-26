@@ -59,25 +59,24 @@ public class CarLockPick
             {
                 if (!SetupLockPick())
                 {
-                    Debug.Instance.WriteToLog("PickLock", "Setup Failed");
+                    Game.Console.Print("PickLock Setup Failed");
                     return;
                 }
 
                 if (!LockPickAnimation())
                 {
-                    Debug.Instance.WriteToLog("PickLock", "Animation Failed");
+                    Game.Console.Print("PickLock Animation Failed");
                     return;
                 }
 
                 FinishLockPick();
 
             }, "PickLock");
-            Debug.Instance.GameFibers.Add(UnlockCarDoor);
         }
         catch (Exception e)
         {
             Player.IsLockPicking = false;
-            Debug.Instance.WriteToLog("PickLock", e.Message);
+            Game.Console.Print("PickLock" + e.Message + e.StackTrace);
         }
     }
     private bool SetupLockPick()

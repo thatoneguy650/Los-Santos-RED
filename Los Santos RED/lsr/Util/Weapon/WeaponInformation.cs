@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Rage;
+using Rage.Native;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [Serializable()]
 public class WeaponInformation
@@ -44,6 +47,20 @@ public class WeaponInformation
             {
                 return false;
             }
+        }
+    }
+    public void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, WeaponVariation weaponVariation)
+    {
+        NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, weaponVariation.Tint);
+        foreach (WeaponComponent ToRemove in PossibleComponents)
+        {
+            NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, WeaponHash, ToRemove.Hash);
+        }
+        foreach (string ToAdd in weaponVariation.Components)
+        {
+            WeaponComponent MyComponent = PossibleComponents.Where(x => x.Name == ToAdd).FirstOrDefault();
+            if (MyComponent != null)
+                NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, MyComponent.Hash);
         }
     }
 }

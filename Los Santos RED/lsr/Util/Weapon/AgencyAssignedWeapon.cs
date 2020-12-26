@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class IssuedWeapon
+public class AgencyAssignedWeapon
 {
     public string ModelName { get; set; }
     public bool IsPistol { get; set; }
-    public WeaponVariation MyVariation { get; set; } = new WeaponVariation();
-    public IssuedWeapon()
+    public WeaponVariation Variation { get; set; } = new WeaponVariation();
+    public AgencyAssignedWeapon()
     {
 
     }
-    public IssuedWeapon(string _ModelName, bool _IsPistol, WeaponVariation _MyVariation)
+    public AgencyAssignedWeapon(string _ModelName, bool _IsPistol, WeaponVariation _MyVariation)
     {
         ModelName = _ModelName;
         IsPistol = _IsPistol;
-        MyVariation = _MyVariation;
+        Variation = _MyVariation;
     }
 
 }

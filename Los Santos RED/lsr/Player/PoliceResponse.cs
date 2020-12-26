@@ -301,7 +301,7 @@ namespace LosSantosRED.lsr
             if (Game.LocalPlayer.WantedLevel < WantedLevel || WantedLevel == 0)
             {
                 NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevel);
-                Debug.Instance.WriteToLog("SetWantedLevel", string.Format("Current Wanted: {0}, Desired Wanted: {1}, {2}", Game.LocalPlayer.WantedLevel, WantedLevel, Reason));
+                Game.Console.Print(string.Format("SetWantedLevel! Current Wanted: {0}, Desired Wanted: {1}, {2}", Game.LocalPlayer.WantedLevel, WantedLevel, Reason));
                 Game.LocalPlayer.WantedLevel = WantedLevel;
                 WantedLevelLastset = WantedLevel;
             }
@@ -386,7 +386,7 @@ namespace LosSantosRED.lsr
         }
         private void PoliceStateChanged()
         {
-            Debug.Instance.WriteToLog("ValueChecker", string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
+            Game.Console.Print(string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
             GameTimePoliceStateStart = Game.GameTime;
             PrevPoliceState = CurrentPoliceState;
         }
@@ -416,7 +416,7 @@ namespace LosSantosRED.lsr
                         CurrentCrimes.PlayerSeenDuringWanted = true;
                     }
 
-                    if (DataMart.Instance.Settings.SettingsManager.Police.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > DataMart.Instance.Settings.SettingsManager.Police.WantedLevelIncreaseTime && CurrentPlayer.AnyPoliceCanSeePlayer && CurrentPlayer.WantedLevel <= DataMart.Instance.Settings.SettingsManager.Police.WantedLevelInceaseOverTimeLimit)
+                    if (HasBeenAtCurrentWantedLevelFor > 240000 && CurrentPlayer.AnyPoliceCanSeePlayer && CurrentPlayer.WantedLevel <= 4)
                     {
                         GameTimeLastRequestedBackup = Game.GameTime;
                         SetWantedLevel(CurrentPlayer.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
@@ -428,12 +428,12 @@ namespace LosSantosRED.lsr
                     int PoliceKilled = CurrentCrimes.InstancesOfCrime("KillingPolice");
                     if (PoliceKilled > 0)
                     {
-                        if (PoliceKilled >= 2 * DataMart.Instance.Settings.SettingsManager.Police.PoliceKilledSurrenderLimit && CurrentPlayer.WantedLevel < 5)
+                        if (PoliceKilled >= 4 && CurrentPlayer.WantedLevel < 5)
                         {
                             SetWantedLevel(5, "You killed too many cops 5 Stars", true);
                             IsWeaponsFree = true;
                         }
-                        else if (PoliceKilled >= DataMart.Instance.Settings.SettingsManager.Police.PoliceKilledSurrenderLimit && CurrentPlayer.WantedLevel < 4)
+                        else if (PoliceKilled >= 2 && CurrentPlayer.WantedLevel < 4)
                         {
                             SetWantedLevel(4, "You killed too many cops 4 Stars", true);
                             IsWeaponsFree = true;
@@ -454,7 +454,7 @@ namespace LosSantosRED.lsr
             }
             //CurrentCrimes.MaxWantedLevel = CurrentPlayer.WantedLevel;
             GameTimeWantedLevelStarted = Game.GameTime;
-            Debug.Instance.WriteToLog("WantedLevel", string.Format("Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel, RecentlySetWanted));
+            Game.Console.Print(string.Format("WantedLevel! Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel, RecentlySetWanted));
             PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
         private void WantedLevelAdded()

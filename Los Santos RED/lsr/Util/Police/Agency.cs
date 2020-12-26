@@ -24,7 +24,7 @@ public class Agency
     public uint MinWantedLevelSpawn { get; set; } = 0;
     public uint MaxWantedLevelSpawn { get; set; } = 5;
     public int SpawnLimit { get; set; } = 99;
-    public List<IssuedWeapon> IssuedWeapons { get; set; } = new List<IssuedWeapon>();
+    public List<AgencyAssignedWeapon> IssuedWeapons { get; set; } = new List<AgencyAssignedWeapon>();
     public bool CanSpawn(int WantedLevel)
     {
         if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
@@ -129,7 +129,7 @@ public class Agency
     {
 
     }
-    public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<PedestrianInformation> _CopModels, List<VehicleInformation> _Vehicles, string _LicensePlatePrefix, List<IssuedWeapon> _IssuedWeapons)
+    public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<PedestrianInformation> _CopModels, List<VehicleInformation> _Vehicles, string _LicensePlatePrefix, List<AgencyAssignedWeapon> _IssuedWeapons)
     {
         ColorPrefix = _ColorPrefix;
         Initials = _Initials;

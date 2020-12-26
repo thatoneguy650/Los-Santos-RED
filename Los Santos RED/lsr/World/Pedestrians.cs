@@ -16,10 +16,12 @@ public class Pedestrians
     private int MinCopArmor = 0;
     private int MinCopHealth = 85;
     private IWorldLogger World;
+    private IDataMart DataMart;
 
-    public Pedestrians(IWorldLogger world)
+    public Pedestrians(IWorldLogger world, IDataMart dataMart)
     {
         World = world;
+        DataMart = dataMart;
     }
     public string AgenciesChasingPlayer
     {
@@ -169,11 +171,11 @@ public class Pedestrians
     }
     private void AddCop(Ped Pedestrian)
     {
-        Agency AssignedAgency = DataMart.Instance.Agencies.GetAgency(Pedestrian,0);//maybe need the actual wanted level here?
+        Agency AssignedAgency = DataMart.Agencies.GetAgency(Pedestrian,0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
             Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
-            if (DataMart.Instance.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+            if (DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.AgencyColor;
@@ -187,9 +189,9 @@ public class Pedestrians
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
-        if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        if (DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
         int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;
         Pedestrian.MaxHealth = DesiredHealth;
@@ -200,9 +202,9 @@ public class Pedestrians
     }
     private void SetCopStats(Ped Pedestrian)
     {
-        if (DataMart.Instance.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        if (DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = DataMart.Instance.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
         int DesiredHealth = RandomItems.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(MinCopArmor, MaxCopArmor);

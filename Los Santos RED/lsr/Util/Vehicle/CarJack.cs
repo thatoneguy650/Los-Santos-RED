@@ -49,18 +49,19 @@ public class CarJack
     }
 
 
-    public CarJack(IWorld world, IPlayer player, Vehicle VehicleToEnter, Ped DriverPed, int EntrySeat)
+    public CarJack(IWorld world, IPlayer player, Vehicle VehicleToEnter, Ped DriverPed, int EntrySeat, WeaponInformation weapon)
     {
         World = world;
         Player = player;
         TargetVehicle = VehicleToEnter;
         Driver = DriverPed;
         SeatTryingToEnter = EntrySeat;
+        Weapon = weapon;
     }
     public void StartCarJack()
     {
         Victim = World.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == Driver.Handle);
-        Weapon = DataMart.Instance.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
+       // Weapon = DataMart.Instance.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
 
         if (CanArmedCarJack && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
         {
@@ -99,12 +100,11 @@ public class CarJack
                 //CameraManager.RestoreGameplayerCamera();
 
             }, "CarJackPedWithWeapon");
-            Debug.Instance.GameFibers.Add(CarJackPedWithWeapon);
         }
         catch (Exception e)
         {
             Player.SetCarJacking(false);
-            Debug.Instance.WriteToLog("UnlockCarDoor", e.Message);
+            Game.Console.Print("UnlockCarDoor" + e.Message + e.StackTrace);
         }
     }
     private bool SetupCarJack()
@@ -298,11 +298,11 @@ public class CarJack
 
         if (Driver.IsInAnyVehicle(false))
         {
-            Debug.Instance.WriteToLog("CarjackAnimation", "Driver In Vehicle");
+            Game.Console.Print("CarjackAnimation Driver In Vehicle");
         }
         else
         {
-            Debug.Instance.WriteToLog("CarjackAnimation", "Driver Out of Vehicle");
+            Game.Console.Print("CarjackAnimation Driver Out of Vehicle");
             if (Driver.IsAlive)
             {
                 Driver.Tasks.ClearImmediately();
@@ -331,7 +331,6 @@ public class CarJack
             GameFiber.Sleep(4000);
             //Player.IsCarJacking = false;
         }, "CarJackPed");
-        Debug.Instance.GameFibers.Add(CarJackPed);
     }
     private bool GetCarjackingAnimations()
     {
@@ -350,7 +349,7 @@ public class CarJack
         if (GroundZ == null)
             GroundZ = 0f;
         float DriverDistanceToGround = DriverSeatCoordinates.Z - (float)GroundZ;
-        Debug.Instance.WriteToLog("GetCarjackingAnimations", string.Format("VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
+        Game.Console.Print(string.Format("GetCarjackingAnimations VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
         if (VehicleClass == VehicleClass.Van && DriverDistanceToGround > 1.5f)
         {
             if (Weapon.IsTwoHanded)

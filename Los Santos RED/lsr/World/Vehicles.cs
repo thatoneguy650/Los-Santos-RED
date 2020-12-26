@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -14,6 +15,13 @@ public class Vehicles
     private readonly float DistanceToScan = 450f;
     private readonly List<VehicleExt> PoliceVehicles = new List<VehicleExt>();
     private readonly List<VehicleExt> CivilianVehicles = new List<VehicleExt>();
+    private IDataMart DataMart;
+
+    public Vehicles(IDataMart dataMart)
+    {
+        DataMart = dataMart;
+    }
+
     public int PoliceHelicoptersCount
     {
         get
@@ -53,7 +61,8 @@ public class Vehicles
         int VehiclesUpdated = 0;
         foreach (VehicleExt MyCar in CivilianVehicles.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType))
         {
-            MyCar.UpdatePlate();
+            UpdatePlate(MyCar);
+            //MyCar.UpdatePlate();
             VehiclesUpdated++;
             if (VehiclesUpdated > 5)
             {
@@ -116,7 +125,7 @@ public class Vehicles
                 if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
                 {
                     VehicleExt Car = new VehicleExt(Veh);
-                    Car.UpdateCopCarLivery();
+                    SetVehicleAgency(Car);
                     Car.UpgradeCopCarPerformance();
                     PoliceVehicles.Add(Car);
                 }
@@ -139,7 +148,7 @@ public class Vehicles
             {
                 if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Car.Vehicle.Handle))
                 {
-                    Car.UpdateCopCarLivery();
+                    SetVehicleAgency(Car);
                     Car.UpgradeCopCarPerformance();
                     PoliceVehicles.Add(Car);
                 }
@@ -153,4 +162,67 @@ public class Vehicles
             }
         }
     }
+
+    public void SetVehicleAgency(VehicleExt Car)
+    {
+        Agency AssignedAgency = DataMart.Agencies.GetAgency(Car.Vehicle, 0);//might need to real wanted level here
+        Car.UpdateCopCarLivery(AssignedAgency);
+    }
+    public void UpdatePlate(VehicleExt Car)//this might need to come out of here.... along with the two bools
+    {
+        Car.HasUpdatedPlateType = true;
+        PlateType CurrentType = DataMart.PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle));
+        string CurrentPlateNumber = Car.Vehicle.LicensePlate;
+        Zone CurrentZone = DataMart.Zones.GetZone(Car.Vehicle.Position);
+
+
+        /*
+         * 
+         *TEMP HERE UNTIL I DECIDE
+         * 
+         * 
+         * */
+        if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
+        {
+            PlateType NewType = DataMart.PlateTypes.GetPlateType(CurrentZone.State);
+            if (NewType != null)
+            {
+                string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                if (NewPlateNumber != "")
+                {
+                    Car.Vehicle.LicensePlate = NewPlateNumber;
+                    Car.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                    Car.CarPlate.PlateNumber = NewPlateNumber;
+                }
+                NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index);
+                Car.OriginalLicensePlate.PlateType = NewType.Index;
+                Car.CarPlate.PlateType = NewType.Index;
+                // Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+            }
+        }
+        else
+        {
+            if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && Car.CanUpdatePlate)
+            {
+                PlateType NewType = DataMart.PlateTypes.GetRandomPlateType();
+                if (NewType != null)
+                {
+                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                    if (NewPlateNumber != "")
+                    {
+                        Car.Vehicle.LicensePlate = NewPlateNumber;
+                        Car.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                        Car.CarPlate.PlateNumber = NewPlateNumber;
+                    }
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index);
+                    Car.OriginalLicensePlate.PlateType = NewType.Index;
+                    Car.CarPlate.PlateType = NewType.Index;
+                    // Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                }
+            }
+        }
+
+    }
+
+
 }

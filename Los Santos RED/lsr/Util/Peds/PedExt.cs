@@ -330,7 +330,7 @@ public class PedExt
         }
         catch (Exception ex)
         {
-            Debug.Instance.WriteToLog("KilledBy Error", $"Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
+            Game.Console.Print($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
             return HurtBy(ToCheck);
         }
 
@@ -378,7 +378,7 @@ public class PedExt
             PositionLastSeenCrime = PositionToReport;
             GameTimeLastSeenCrime = Game.GameTime;
             HasSeenPlayerCommitCrime = true;
-            Debug.Instance.WriteToLog("AddCrime", string.Format(" Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
+            Game.Console.Print(string.Format("AddCrime Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
         }
     }
     private float GetDotVectorResult(Entity source, Entity target)
@@ -422,7 +422,7 @@ public class PedExt
             CrimesWitnessed.Clear();
             GameTimeLastReportedCrime = Game.GameTime;
             Pedestrian.IsPersistent = false;
-            Debug.Instance.WriteToLog("WillCallPolice && ShouldReportCrime", string.Format(" {0} to WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
+            Game.Console.Print(string.Format("Handle {0} WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
         }
     }
     private void SetDrivingFlags()

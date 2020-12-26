@@ -11,10 +11,12 @@ public class PedSwap : IPedSwap
 {
     private IWorld World;
     private IPlayer Player;
-    public PedSwap(IWorld world, IPlayer player)
+    private IDataMart DataMart;
+    public PedSwap(IWorld world, IPlayer player, IDataMart dataMart)
     {
         World = world;
         Player = player;
+        DataMart = dataMart;
     }
     private Ped CurrentPed;
     private Vector3 CurrentPedPosition;
@@ -40,7 +42,7 @@ public class PedSwap : IPedSwap
         {
             SeatIndex = Game.LocalPlayer.Character.SeatIndex;
         }
-        ChangeModel(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAliasModelName);
+        ChangeModel(DataMart.Settings.SettingsManager.General.MainCharacterToAliasModelName);
         VanillaVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
         if(Car.Exists() && WasInCar)
         {
@@ -79,7 +81,7 @@ public class PedSwap : IPedSwap
         }
         catch (Exception e3)
         {
-            Debug.Instance.WriteToLog("TakeoverPed", "TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
+            Game.Console.Print("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
     private void ActivatePreviousScenarios()
@@ -95,7 +97,6 @@ public class PedSwap : IPedSwap
                 }
                 Game.LocalPlayer.Character.Tasks.Clear();
             }, "ScenarioWatcher");
-            Debug.Instance.GameFibers.Add(ScenarioWatcher);
         }
     }
     private void AddPedToTakenOverPeds(TakenOverPed MyPed)
@@ -142,7 +143,7 @@ public class PedSwap : IPedSwap
             PedToReturn = closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         if (PedToReturn == null)
         {
-            Debug.Instance.WriteToLog("Ped Takeover", "No Peds Found");
+            Game.Console.Print("Ped Takeover! No Peds Found");
             return null;
         }
         else if (PedToReturn.IsInAnyVehicle(false))
@@ -185,7 +186,7 @@ public class PedSwap : IPedSwap
         }
         catch (Exception e)
         {
-            Debug.Instance.WriteToLog("CopyPedComponentVariation", "CopyPedComponentVariation Error; " + e.Message);
+            Game.Console.Print("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message);
             return null;
         }
     }
@@ -226,7 +227,7 @@ public class PedSwap : IPedSwap
         if (!TargetPedAlreadyTakenOver)
         {
             SetPlayerOffset();
-            ChangeModel(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAliasModelName);
+            ChangeModel(DataMart.Settings.SettingsManager.General.MainCharacterToAliasModelName);
             ChangeModel(ModelToChange);
         }
 
@@ -288,15 +289,15 @@ public class PedSwap : IPedSwap
         UInt64 Second = GTA.Read<UInt64>(Player + SECOND_OFFSET);
         UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
 
-        if (DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias == "Michael")
+        if (DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Michael")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
         }
-        else if (DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias == "Franklin")
+        else if (DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Franklin")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
         }
-        else if (DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias == "Trevor")
+        else if (DataMart.Settings.SettingsManager.General.MainCharacterToAlias == "Trevor")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
         }

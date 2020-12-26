@@ -110,6 +110,7 @@
     <Compile Include="lsr\Helper\Serialization.cs" />
     <Compile Include="lsr\Interface\IAudioPlayer.cs" />
     <Compile Include="lsr\Interface\ICivilians.cs" />
+    <Compile Include="lsr\Interface\IDataMart.cs" />
     <Compile Include="lsr\Interface\IInput.cs" />
     <Compile Include="lsr\Interface\IPedSwap.cs" />
     <Compile Include="lsr\Interface\IPlayer.cs" />
@@ -141,7 +142,7 @@
     <Compile Include="lsr\Util\Peds\PedName.cs" />
     <Compile Include="lsr\Util\Police\Agency.cs" />
     <Compile Include="lsr\Util\Police\Classification.cs" />
-    <Compile Include="lsr\Util\Weapon\IssuedWeapon.cs" />
+    <Compile Include="lsr\Util\Weapon\AgencyAssignedWeapon.cs" />
     <Compile Include="lsr\Util\Peds\PedestrianInformation.cs" />
     <Compile Include="lsr\Util\Vehicle\VehicleInformation.cs" />
     <Compile Include="lsr\Util\Locations\CountyJurisdiction.cs" />

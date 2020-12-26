@@ -72,11 +72,11 @@ namespace LosSantosRED.lsr
             {
                 if (LastWantedMaxLevel > 0)
                 {
-                    return LastWantedMaxLevel * DataMart.Instance.Settings.SettingsManager.Police.LastWantedCenterSize;
+                    return LastWantedMaxLevel * 400f;
                 }
                 else
                 {
-                    return DataMart.Instance.Settings.SettingsManager.Police.LastWantedCenterSize;
+                    return 400f;
                 }
             }
         }
@@ -106,13 +106,13 @@ namespace LosSantosRED.lsr
         public void StoreCriminalHistory(CriminalHistory rapSheet)
         {
             CriminalHistoryList.Add(rapSheet);
-            Debug.Instance.WriteToLog("Arrest Warrant", "Stored Criminal History");
+            Game.Console.Print("Arrest Warrant! Stored Criminal History");
         }
         public void Reset()
         {
             IsActive = false;
             CriminalHistoryList.Clear();
-            Debug.Instance.WriteToLog("Arrest Warrant", "History Cleared");
+            Game.Console.Print("Arrest Warrant! History Cleared");
         }
         private void CheckCurrentVehicle()
         {
@@ -178,7 +178,7 @@ namespace LosSantosRED.lsr
             CurrentPlayer.CurrentPoliceResponse.CurrentCrimes = CriminalHistory;
 
             GameTimeLastAppliedWantedStats = Game.GameTime;
-            Debug.Instance.WriteToLog("WantedLevelStats Replace", CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.DebugPrintCrimes());
+            Game.Console.Print("WantedLevelStats Replace" + CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.DebugPrintCrimes());
         }
         private CriminalHistory GetLastWantedStats()
         {

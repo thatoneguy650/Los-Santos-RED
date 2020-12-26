@@ -42,17 +42,19 @@ namespace Mod
         private Violations Violations;
         private WeaponDropping WeaponDropping;
         private IWorld World;
-        public Player(IWorld world)
+        private IDataMart DataMart;
+        public Player(IWorld world, IDataMart datamart)
         {
             World = world;
+            DataMart = datamart;
             CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
             Mugging = new Mugging(this, world);
             Violations = new Violations(this, world);
             Surrendering = new Surrendering(this);
-            WeaponDropping = new WeaponDropping(this);
-            Investigations = new Investigations(this, world);
+            WeaponDropping = new WeaponDropping(this, DataMart);
+            Investigations = new Investigations(this, world, DataMart);
             ArrestWarrant = new ArrestWarrant(this);
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character);
+            CurrentLocation = new LocationData(Game.LocalPlayer.Character, DataMart);
             CurrentPoliceResponse = new PoliceResponse(this, world, ArrestWarrant);
             CurrentPoliceResponse.SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
@@ -239,7 +241,7 @@ namespace Mod
                 int CurrentCash;
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", Natives.CashHash(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
+                    NativeFunction.CallByName<int>("STAT_GET_INT", Natives.CashHash(DataMart.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
                 }
                 return CurrentCash;
             }
@@ -358,7 +360,7 @@ namespace Mod
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = Natives.CashHash(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias);
+            uint PlayerCashHash = Natives.CashHash(DataMart.Settings.SettingsManager.General.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -408,7 +410,7 @@ namespace Mod
             }
             else
             {
-                SuspectsName = DataMart.Instance.Names.GetRandomName(isMale);
+                SuspectsName = DataMart.Names.GetRandomName(isMale);
             }
         }
         public void Injured(PedExt MyPed)
@@ -421,7 +423,7 @@ namespace Mod
             {
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
-            Debug.Instance.WriteToLog("PedWoundSystem", string.Format("Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+            Game.Console.Print(string.Format("PedWoundSystem! Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
         }
         public void Killed(PedExt MyPed)
         {
@@ -437,7 +439,7 @@ namespace Mod
                 GameTimeLastKilledCivilian = Game.GameTime;
                 GameTimeLastHurtCivilian = Game.GameTime;
             }
-            Debug.Instance.WriteToLog("PedWoundSystem", string.Format("Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+            Game.Console.Print(string.Format("PedWoundSystem! Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
         }
         public void LocationUpdate()
         {
@@ -530,14 +532,14 @@ namespace Mod
         }
         public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(DataMart.Instance.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(DataMart.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
         }
         public void SetPlayerToLastWeapon()
         {
             if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeaponHash != 0)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash, true);
-                Debug.Instance.WriteToLog("SetPlayerToLastWeapon", LastWeaponHash.ToString());
+                Game.Console.Print("SetPlayerToLastWeapon" + LastWeaponHash.ToString());
             }
         }
         public void SetShot()
@@ -626,7 +628,7 @@ namespace Mod
             {
                 CurrentVehicle.SetDriverWindow(false);
             }
-            Debug.Instance.WriteToLog("ValueChecker", string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
+            Game.Console.Print(string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
         }
         private void IsGettingIntoVehicleChanged()
         {
@@ -658,14 +660,14 @@ namespace Mod
                     MyCar.AttemptToLock();
                     if (IsHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
                     {
-                        //Debug.Instance.WriteToLog("IsGettingIntoVehicleChanged", string.Format("1 Handle: {0} LockPick", EnteringVehicle.Handle));
+                        //Game.Console.Print("IsGettingIntoVehicleChanged", string.Format("1 Handle: {0} LockPick", EnteringVehicle.Handle));
                         CarLockPick MyLockPick = new CarLockPick(World, this, VehicleTryingToEnter, SeatTryingToEnter);
                         MyLockPick.PickLock();
                     }
                     else if (IsHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
                     {
-                        //Debug.Instance.WriteToLog("IsGettingIntoVehicleChanged", string.Format("2 Handle: {0} CarJack", EnteringVehicle.Handle));
-                        CarJack MyJack = new CarJack(World, this, VehicleTryingToEnter, VehicleTryingToEnter.Driver, SeatTryingToEnter);
+                        //Game.Console.Print("IsGettingIntoVehicleChanged", string.Format("2 Handle: {0} CarJack", EnteringVehicle.Handle));
+                        CarJack MyJack = new CarJack(World, this, VehicleTryingToEnter, VehicleTryingToEnter.Driver, SeatTryingToEnter, CurrentWeapon);
                         MyJack.StartCarJack();
                     }
 
@@ -675,12 +677,12 @@ namespace Mod
                     }
                     //else
                     //{
-                    //    //Debug.Instance.WriteToLog("IsGettingIntoVehicleChanged", string.Format("3 Handle: {0}, LockStatus: {1}, MustBeHotwired: {2}", EnteringVehicle.Handle, EnteringVehicle.LockStatus, EnteringVehicle.MustBeHotwired));
+                    //    //Game.Console.Print("IsGettingIntoVehicleChanged", string.Format("3 Handle: {0}, LockStatus: {1}, MustBeHotwired: {2}", EnteringVehicle.Handle, EnteringVehicle.LockStatus, EnteringVehicle.MustBeHotwired));
                     //}
                 }
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
-            Debug.Instance.WriteToLog("IsGettingIntoVehicleChanged", string.Format(" to {0}", IsGettingIntoAVehicle));
+            Game.Console.Print(string.Format("IsGettingIntoVehicleChanged to {0}", IsGettingIntoAVehicle));
         }
         private void IsInVehicleChanged()
         {
@@ -690,7 +692,7 @@ namespace Mod
             else
             {
             }
-            Debug.Instance.WriteToLog("ValueChecker", string.Format("IsInVehicle Changed: {0}", IsInVehicle));
+            Game.Console.Print(string.Format("IsInVehicle Changed: {0}", IsInVehicle));
         }
         private void TerminateVanillaHealthRecharge()
         {
@@ -816,7 +818,7 @@ namespace Mod
                     {
                         IsMobileRadioEnabled = true;
                         NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", true);
-                        Debug.Instance.WriteToLog("Audio", "Mobile Radio Enabled");
+                        Game.Console.Print("Audio! Mobile Radio Enabled");
                     }
                 }
                 else
@@ -825,7 +827,7 @@ namespace Mod
                     {
                         IsMobileRadioEnabled = false;
                         NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-                        Debug.Instance.WriteToLog("Audio", "Mobile Radio Disabled");
+                        Game.Console.Print("Audio! Mobile Radio Disabled");
                     }
                 }
 
@@ -873,7 +875,7 @@ namespace Mod
                 IsCarJacking = Game.LocalPlayer.Character.IsJacking;
             }
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
-            CurrentWeapon = DataMart.Instance.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
+            CurrentWeapon = DataMart.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
 
             if (PlayerCurrentWeapon != null)
             {

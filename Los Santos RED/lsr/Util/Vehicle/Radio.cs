@@ -70,7 +70,7 @@ public class Radio
     {
         if (VehicleToMonitor != null && VehicleToMonitor.Vehicle.IsEngineOn && VehicleToMonitor.Vehicle.Exists())
         {
-            Debug.Instance.WriteToLog("RadioTuning", string.Format("Tuned: {0} Desired: {1}", CurrentRadioStationName, StationName));
+            Game.Console.Print(string.Format("RadioTuning Tuned: {0} Desired: {1}", CurrentRadioStationName, StationName));
             //if(Audio.Instance.IsMobileRadioEnabled)
             //{
             //    NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_INDEX", 1);//just do this to wake it up for now, eventually get the index from the station?

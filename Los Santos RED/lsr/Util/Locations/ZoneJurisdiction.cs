@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr;
+using LosSantosRED.lsr.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,26 +8,27 @@ using System.Threading.Tasks;
 
 public class ZoneJurisdiction
 {
+    private IDataMart DataMart;
     public string AgencyInitials { get; set; } = "";
     public string ZoneInternalGameName { get; set; } = "";
     public int Priority { get; set; } = 99;
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;
     public bool CanSpawnPedestrianOfficers { get; set; } = false;
-    public Zone GameZone
-    {
-        get
-        {
-            return DataMart.Instance.Zones.GetZone(ZoneInternalGameName);
-        }
-    }
-    public Agency GameAgency
-    {
-        get
-        {
-            return DataMart.Instance.Agencies.GetAgency(AgencyInitials);
-        }
-    }
+    //public Zone GameZone
+    //{
+    //    get
+    //    {
+    //        return DataMart.Zones.GetZone(ZoneInternalGameName);
+    //    }
+    //}
+    //public Agency GameAgency
+    //{
+    //    get
+    //    {
+    //        return DataMart.Agencies.GetAgency(AgencyInitials);
+    //    }
+    //}
     public ZoneJurisdiction()
     {
 

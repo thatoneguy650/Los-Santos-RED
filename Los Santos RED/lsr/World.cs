@@ -18,12 +18,14 @@ namespace Mod
         private Pedestrians Pedestrians;
         private Time Time;
         private Vehicles Vehicles;
+        private IDataMart DataMart;
 
-        public World()
+        public World(IDataMart dataMart)
         {
-            Pedestrians = new Pedestrians(this);
+            DataMart = dataMart;
+            Pedestrians = new Pedestrians(this, DataMart);
             Time = new Time();
-            Vehicles = new Vehicles();
+            Vehicles = new Vehicles(DataMart);
         }
         public IPlayer CurrentPlayer { get; private set; }
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
@@ -67,7 +69,7 @@ namespace Mod
         public void AddBlipsToMap()
         {
             CreatedBlips = new List<Blip>();
-            foreach (GameLocation MyLocation in DataMart.Instance.Places.GetAllPlaces())
+            foreach (GameLocation MyLocation in DataMart.Places.GetAllPlaces())
             {
                 MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
                 myBlip.AddToMap();

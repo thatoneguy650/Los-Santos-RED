@@ -12,11 +12,13 @@ public class UI
     private IPlayer CurrentPlayer;
     private IWorld World;
     private ISearchMode SearchMode;
-    public UI(IWorld world, IPlayer currentPlayer, ISearchMode searchMode)
+    private IDataMart DataMart;
+    public UI(IWorld world, IPlayer currentPlayer, ISearchMode searchMode, IDataMart dataMart)
     {
         World = world;
         CurrentPlayer = currentPlayer;
         SearchMode = searchMode;
+        DataMart = dataMart;
         BigMessage = new BigMessageThread(true);
     }
     private BigMessageThread BigMessage;
@@ -68,15 +70,15 @@ public class UI
     };
     public void Update()
     {
-        if (DataMart.Instance.Settings.SettingsManager.General.AlwaysShowHUD)
+        if (DataMart.Settings.SettingsManager.General.AlwaysShowHUD)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
-        if (DataMart.Instance.Settings.SettingsManager.General.AlwaysShowRadar)
+        if (DataMart.Settings.SettingsManager.General.AlwaysShowRadar)
         {
             NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
         }
-        if (DataMart.Instance.Settings.SettingsManager.Police.ShowPoliceRadarBlips)
+        if (DataMart.Settings.SettingsManager.Police.ShowPoliceRadarBlips)
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
         }
@@ -84,11 +86,11 @@ public class UI
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
-        if (DataMart.Instance.Settings.SettingsManager.General.AlwaysShowCash)
+        if (DataMart.Settings.SettingsManager.General.AlwaysShowCash)
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
-        if (DataMart.Instance.Settings.SettingsManager.UI.Enabled && !CurrentPlayer.IsBusted && !CurrentPlayer.IsDead)
+        if (DataMart.Settings.SettingsManager.UI.Enabled && !CurrentPlayer.IsBusted && !CurrentPlayer.IsDead)
         {
             ShowUI();
         }
@@ -196,10 +198,10 @@ public class UI
         }
         string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = DataMart.Instance.Zones.GetName(CurrentPlayer.CurrentZone, true);
+        ZoneDisplay = DataMart.Zones.GetName(CurrentPlayer.CurrentZone, true);
         if (CurrentPlayer.CurrentZone != null)
         {
-            Agency MainZoneAgency = DataMart.Instance.ZoneJurisdiction.GetMainAgency(CurrentPlayer.CurrentZone.InternalGameName);
+            Agency MainZoneAgency = DataMart.ZoneJurisdiction.GetMainAgency(CurrentPlayer.CurrentZone.InternalGameName);
             if (MainZoneAgency != null)
             {
                 CopZoneName = MainZoneAgency.ColoredInitials;
@@ -315,8 +317,8 @@ public class UI
         HideVanillaUI();
 
         //DisplayTextOnScreen(GetPlayerStatusDisplay(), DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusPositionX, DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusPositionY, DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusJustificationID);
-        DisplayTextOnScreen(GetVehicleStatusDisplay(), DataMart.Instance.Settings.SettingsManager.UI.VehicleStatusPositionX, DataMart.Instance.Settings.SettingsManager.UI.VehicleStatusPositionY, DataMart.Instance.Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)DataMart.Instance.Settings.SettingsManager.UI.VehicleStatusJustificationID);
-        DisplayTextOnScreen(GetZoneDisplay(), DataMart.Instance.Settings.SettingsManager.UI.ZonePositionX, DataMart.Instance.Settings.SettingsManager.UI.ZonePositionY, DataMart.Instance.Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)DataMart.Instance.Settings.SettingsManager.UI.ZoneJustificationID);
-        DisplayTextOnScreen(GetStreetDisplay(), DataMart.Instance.Settings.SettingsManager.UI.StreetPositionX, DataMart.Instance.Settings.SettingsManager.UI.StreetPositionY, DataMart.Instance.Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)DataMart.Instance.Settings.SettingsManager.UI.StreetJustificationID);
+        DisplayTextOnScreen(GetVehicleStatusDisplay(), DataMart.Settings.SettingsManager.UI.VehicleStatusPositionX, DataMart.Settings.SettingsManager.UI.VehicleStatusPositionY, DataMart.Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)DataMart.Settings.SettingsManager.UI.VehicleStatusJustificationID);
+        DisplayTextOnScreen(GetZoneDisplay(), DataMart.Settings.SettingsManager.UI.ZonePositionX, DataMart.Settings.SettingsManager.UI.ZonePositionY, DataMart.Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)DataMart.Settings.SettingsManager.UI.ZoneJustificationID);
+        DisplayTextOnScreen(GetStreetDisplay(), DataMart.Settings.SettingsManager.UI.StreetPositionX, DataMart.Settings.SettingsManager.UI.StreetPositionY, DataMart.Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)DataMart.Settings.SettingsManager.UI.StreetJustificationID);
     }
 }

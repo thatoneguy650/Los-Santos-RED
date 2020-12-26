@@ -8,16 +8,18 @@ public class Investigations
 {
     private IWorld World;
     private IPlayer CurrentPlayer;
+    private IDataMart DataMart;
     private bool PrevIsActive;
     private Vector3 PrevPosition;
     private uint GameTimeStartedInvestigation;
     private uint GameTimeLastInvestigationExpired;
     private Blip blip;
 
-    public Investigations(IPlayer currentPlayer, IWorld world)
+    public Investigations(IPlayer currentPlayer, IWorld world, IDataMart dataMart)
     {
         World = world;
         CurrentPlayer = currentPlayer;
+        DataMart = dataMart;
     }
     public float Distance { get; private set; } = 800f;
     public Vector3 Position { get; set; }
@@ -145,7 +147,7 @@ public class Investigations
     private void InvestigationPositionChanged()
     {
         UpdateInvestigationUI();
-        Debug.Instance.WriteToLog("ValueChecker", string.Format("InvestigationPosition Changed to: {0}", Position));
+        Game.Console.Print(string.Format("InvestigationPosition Changed to: {0}", Position));
         PrevPosition = Position;
     }
     private void PoliceInInvestigationModeChanged()
@@ -168,7 +170,7 @@ public class Investigations
             GameTimeStartedInvestigation = 0;
             GameTimeLastInvestigationExpired = Game.GameTime;
         }
-        Debug.Instance.WriteToLog("ValueChecker", string.Format("PoliceInInvestigationMode Changed to: {0}", IsActive));
+        Game.Console.Print(string.Format("PoliceInInvestigationMode Changed to: {0}", IsActive));
         PrevIsActive = IsActive;
     }
     private void UpdateInvestigationUI()
@@ -178,7 +180,7 @@ public class Investigations
     }
     private void UpdateInvestigationPosition()
     {
-        DataMart.Instance.Streets.GetStreetPositionandHeading(Position, out Vector3 SpawnLocation, out float Heading, false);
+        DataMart.Streets.GetStreetPositionandHeading(Position, out Vector3 SpawnLocation, out float Heading, false);
         if (SpawnLocation != Vector3.Zero)
         {
             Position = SpawnLocation;

@@ -13,7 +13,7 @@ public class Spawner : ISpawner
 {
     private IWorldLogger World;
     private readonly List<Entity> CreatedEntities = new List<Entity>();
-    public Spawner(IWorldLogger world)
+    public Spawner(IWorldLogger world, IDataMart dataMart)
     {
         World = world;
     }
@@ -33,16 +33,16 @@ public class Spawner : ISpawner
         }
         CreatedEntities.Clear();
     }
-    public void SpawnCop(Agency agency, Vector3 position, float heading, VehicleInformation vehicleInfo, int WantedLevel)
+    public void SpawnCop(Agency agency, Vector3 position, float heading, VehicleInformation vehicleInfo, int WantedLevel, bool WithBlip)
     {
         try
         {
-            DesiredSpawn DS = new DesiredSpawn(agency, position, heading, vehicleInfo, World, WantedLevel);
+            DesiredSpawn DS = new DesiredSpawn(agency, position, heading, vehicleInfo, World, WantedLevel, WithBlip);
             DS.SpawnCops();
         }
         catch(Exception ex)
         {
-            Debug.Instance.WriteToLog("SpawnCop", ex.Message + " : " + ex.StackTrace);
+            Game.Console.Print("SpawnCop" + ex.Message + " : " + ex.StackTrace);
         }
     }
     public void DeleteCop(Cop Cop)
@@ -74,7 +74,7 @@ public class Spawner : ISpawner
 
         if (Cop.Pedestrian.Exists())
         {
-            Debug.Instance.WriteToLog("PoliceSpawning", string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
+            Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
             Cop.Pedestrian.Delete();
         }
         Cop.WasMarkedNonPersistent = false;
@@ -137,7 +137,8 @@ public class Spawner : ISpawner
         private float Heading;
         private VehicleInformation VehicleInformation;
         private int WantedLevel;
-        public DesiredSpawn(Agency agency, Vector3 spawnLocation, float heading, VehicleInformation vehicleInformation, IWorldLogger world, int wantedLevel)
+        private bool HasBlip;
+        public DesiredSpawn(Agency agency, Vector3 spawnLocation, float heading, VehicleInformation vehicleInformation, IWorldLogger world, int wantedLevel,bool hasBlip)
         {
             Agency = agency;
             SpawnLocation = spawnLocation;
@@ -145,6 +146,7 @@ public class Spawner : ISpawner
             VehicleInformation = vehicleInformation;
             World = world;
             WantedLevel = wantedLevel;
+            HasBlip = hasBlip;
         }
         public void SpawnCops()
         {
@@ -173,7 +175,7 @@ public class Spawner : ISpawner
             MyNewCop.WasMarkedNonPersistent = true;
             MyNewCop.WasSpawnedAsDriver = true;
             
-            if (DataMart.Instance.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Cop.Exists())
+            if (HasBlip && Cop.Exists())
             {
                 Blip myBlip = Cop.AttachBlip();
                 myBlip.Color = Agency.AgencyColor;
@@ -183,7 +185,7 @@ public class Spawner : ISpawner
 
 
             World.AddCop(MyNewCop);
-            //Debug.Instance.WriteToLog("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.Vehicle.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
+            //Game.Console.Print("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.Vehicle.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
             if (VehicleInformation != null)
             {
                 int OccupantsToAdd = RandomItems.MyRand.Next(VehicleInformation.MinOccupants, VehicleInformation.MaxOccupants + 1) - 1;
@@ -207,7 +209,7 @@ public class Spawner : ISpawner
                             PartnerCop.IsPersistent = true;
                             Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, Agency, true);
                             MyNewPartnerCop.WasMarkedNonPersistent = true;
-                            if (DataMart.Instance.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && PartnerCop.Exists())
+                            if (HasBlip && PartnerCop.Exists())
                             {
                                 Blip myBlip = PartnerCop.AttachBlip();
                                 myBlip.Color = Agency.AgencyColor;
@@ -215,7 +217,7 @@ public class Spawner : ISpawner
                                 World.AddBlip(myBlip);
                             }
                             World.AddCop(MyNewPartnerCop);
-                            //Debug.Instance.WriteToLog("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.Vehicle.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
+                            //Game.Console.Print("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.Vehicle.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
                         }
                     }
                 }

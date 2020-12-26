@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +10,16 @@ using System.Threading.Tasks;
 
 public class CountyJurisdictions
 {
+    private IDataMart DataMart;
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\CountyJurisdiction.xml";
     private List<CountyJurisdiction> CountyJurisdictionList = new List<CountyJurisdiction>();
     private bool UseVanillaConfig = true;
+
+    public CountyJurisdictions(IDataMart dataMart)
+    {
+        DataMart = dataMart;
+    }
+
     public void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
@@ -33,10 +41,19 @@ public class CountyJurisdictions
     }
     public Agency GetRandomAgency(string ZoneName, int WantedLevel)
     {
-        Zone MyZone = DataMart.Instance.Zones.GetZone(ZoneName);
+        Zone MyZone = DataMart.Zones.GetZone(ZoneName);
         if (MyZone != null)
         {
-            List<CountyJurisdiction> ToPickFrom = CountyJurisdictionList.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn(WantedLevel)).ToList();
+            List<CountyJurisdiction> ToPickFrom = new List<CountyJurisdiction>();
+            foreach (CountyJurisdiction countyJurisdiction in CountyJurisdictionList.Where(x => x.County == MyZone.ZoneCounty))
+            {
+                Agency Agency = DataMart.Agencies.GetAgency(countyJurisdiction.AgencyInitials);
+                if (Agency != null && Agency.CanSpawn(WantedLevel))
+                {
+                    ToPickFrom.Add(countyJurisdiction);
+                }
+            }
+            //List<CountyJurisdiction> ToPickFrom = CountyJurisdictionList.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn(WantedLevel)).ToList();
             int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
             int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (CountyJurisdiction MyJurisdiction in ToPickFrom)
@@ -44,7 +61,8 @@ public class CountyJurisdictions
                 int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
                 if (RandomPick < SpawnChance)
                 {
-                    return MyJurisdiction.GameAgency;
+                    return DataMart.Agencies.GetAgency(MyJurisdiction.AgencyInitials);
+                    //return MyJurisdiction.GameAgency;
                 }
                 RandomPick -= SpawnChance;
             }

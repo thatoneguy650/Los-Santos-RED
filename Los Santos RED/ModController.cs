@@ -12,10 +12,12 @@ namespace LosSantosRED.lsr
         private readonly Stopwatch TickStopWatch = new Stopwatch();
         private string LastRanTask;
         private List<ModTask> MyTickTasks;
+        private DataMart DataMart;
+        private Mod.World World;
         private Audio Audio;
         private PedSwap PedSwap;
         private Mod.Player Player;
-        private Mod.World World;
+        private Debug Debug;
         private Scanner Scanner;
         private Input Input;
         private Menu Menu;
@@ -27,23 +29,25 @@ namespace LosSantosRED.lsr
         private SearchMode SearchMode;
         private Spawner Spawner;
         private Tasking Tasking;
+        
         public ModController()
         {
-            Audio = new Audio();
-            World = new Mod.World();  
-            Player = new Mod.Player(World);
-            Input = new Input(Player);
-            Police = new Police(World, Player);
-            Civilians = new Civilians(World, Player);
-            Spawner = new Spawner(World);
-            Dispatcher = new Dispatcher(World, Player, Police, Spawner);
-            Respawning = new Respawning(World, Player);
-            PedSwap = new PedSwap(World, Player);
-            SearchMode = new SearchMode(World, Player, Police);
-            Tasking = new Tasking(World, Player, Police);
-            UI = new UI(World, Player, SearchMode);
-            Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode);
-            Menu = new Menu(World, Player, PedSwap, Respawning);
+            //DataMart = new DataMart();
+            //Audio = new Audio(DataMart);
+            //World = new Mod.World(DataMart);  
+            //Player = new Mod.Player(World,DataMart);
+            //Input = new Input(Player,DataMart);
+            //Police = new Police(World, Player, DataMart);
+            //Civilians = new Civilians(World, Player);
+            //Spawner = new Spawner(World, DataMart);
+            //Dispatcher = new Dispatcher(World, Player, Police, Spawner, DataMart);
+            //Respawning = new Respawning(World, Player, DataMart);
+            //PedSwap = new PedSwap(World, Player, DataMart);
+            //SearchMode = new SearchMode(World, Player, Police);
+            //Tasking = new Tasking(World, Player, Police);
+            //UI = new UI(World, Player, SearchMode, DataMart);
+            //Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode, DataMart);
+            //Menu = new Menu(World, Player, PedSwap, Respawning, DataMart);
         }
         public bool IsRunning { get; private set; }
         public void NewPlayer(string ModelName, bool Male)
@@ -51,19 +55,38 @@ namespace LosSantosRED.lsr
             Player.Reset(true, true, true);
             Scanner.Reset();
             Player.GiveName(ModelName, Male);
-            if (DataMart.Instance.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
+            if (DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
             {
-                Player.SetMoney(RandomItems.MyRand.Next(DataMart.Instance.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, DataMart.Instance.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
+                Player.SetMoney(RandomItems.MyRand.Next(DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
             }
         }
         public void Start()
         {
             IsRunning = true;
+            
+            DataMart = new DataMart();
+            DataMart.ReadConfig();
             while (Game.IsLoading)
             {
                 GameFiber.Yield();
             }
-            DataMart.Instance.ReadConfig();
+            Audio = new Audio(DataMart);
+            World = new Mod.World(DataMart);
+            Player = new Mod.Player(World, DataMart);
+            Input = new Input(Player, DataMart);
+            Police = new Police(World, Player, DataMart);
+            Civilians = new Civilians(World, Player);
+            Spawner = new Spawner(World, DataMart);
+            Dispatcher = new Dispatcher(World, Player, Police, Spawner, DataMart);
+            Respawning = new Respawning(World, Player, DataMart);
+            PedSwap = new PedSwap(World, Player, DataMart);
+            SearchMode = new SearchMode(World, Player, Police);
+            Tasking = new Tasking(World, Player, Police);
+            UI = new UI(World, Player, SearchMode, DataMart);
+            Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode, DataMart);
+            Menu = new Menu(World, Player, PedSwap, Respawning, DataMart);
+            Debug = new Debug();
+
             Player.GiveName();
             Player.AddSpareLicensePlate();
 
@@ -82,7 +105,7 @@ namespace LosSantosRED.lsr
             Player.Dispose();
             World.Dispose();
             PedSwap.Dispose();
-            if (DataMart.Instance.Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
+            if (DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
             {
                 Player.SetMoney(PedSwap.OriginalMoney);
             }
@@ -128,14 +151,15 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        Debug.Instance.Update();
+                        Debug.Update();
                         GameFiber.Yield();
                     }
                 }
                 catch (Exception e)
                 {
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
                     Stop();
-                    Debug.Instance.WriteToLog("Error", e.Message + " : " + e.StackTrace);
                 }
             }, "Run Debug Logic");
         }
@@ -153,7 +177,7 @@ namespace LosSantosRED.lsr
                         {
                             if (RunGroup >= 4 && TickStopWatch.ElapsedMilliseconds >= 16)//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
                             {
-                                Debug.Instance.WriteToLog("GameLogic", string.Format("Tick took > 16 ms ({0} ms), aborting, Last Ran {1}", TickStopWatch.ElapsedMilliseconds, LastRanTask));
+                                Game.Console.Print(string.Format("GameLogic Tick took > 16 ms ({0} ms), aborting, Last Ran {1}", TickStopWatch.ElapsedMilliseconds, LastRanTask));
                                 break;
                             }
 
@@ -177,8 +201,9 @@ namespace LosSantosRED.lsr
                 }
                 catch (Exception e)
                 {
+                    Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
                     Stop();
-                    Debug.Instance.WriteToLog("Error", e.Message + " : " + e.StackTrace);
                 }
             }, "Run Game Logic");
             GameFiber.Yield();
@@ -198,8 +223,9 @@ namespace LosSantosRED.lsr
                 }
                 catch (Exception e)
                 {
-                    Stop();
-                    Debug.Instance.WriteToLog("Error", e.Message + " : " + e.StackTrace);
+                    Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Stop(); 
                 }
             }, "Run Menu/UI Logic");
         }

@@ -46,7 +46,7 @@ using System.Threading.Tasks;
         }
         catch (Exception e)
         {
-            Debug.Instance.WriteToLog("ReplacePedComponentVariation", "ReplacePedComponentVariation Error; " + e.Message);
+            Game.Console.Print("ReplacePedComponentVariation Error; " + e.Message);
         }
     }
 }

@@ -2,13 +2,21 @@
 using LosSantosRED.lsr.Interface;
 using LSR;
 using NAudio.Wave;
+using Rage;
 using Rage.Native;
 using System;
 
 public class Audio : IAudioPlayer
 {
+    private IDataMart DataMart;
     private WaveOutEvent outputDevice;
     private AudioFileReader audioFile;
+
+    public Audio(IDataMart dataMart)
+    {
+        DataMart = dataMart;
+    }
+
     public bool CancelAudio { get; set; }
     public bool IsAudioPlaying
     {
@@ -19,11 +27,11 @@ public class Audio : IAudioPlayer
     }
     public void Update()
     {
-        if (DataMart.Instance.Settings.SettingsManager.Police.DisableAmbientScanner)
+        if (DataMart.Settings.SettingsManager.Police.DisableAmbientScanner)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
         }
-        if (DataMart.Instance.Settings.SettingsManager.Police.WantedMusicDisable)
+        if (DataMart.Settings.SettingsManager.Police.WantedMusicDisable)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
         }
@@ -50,7 +58,7 @@ public class Audio : IAudioPlayer
             {
                 audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName))
                 {
-                    Volume = DataMart.Instance.Settings.SettingsManager.Police.DispatchAudioVolume
+                    Volume = DataMart.Settings.SettingsManager.Police.DispatchAudioVolume
                 };
                 outputDevice.Init(audioFile);
             }
@@ -62,7 +70,7 @@ public class Audio : IAudioPlayer
         }
         catch (Exception e)
         {
-            Debug.Instance.WriteToLog("Audio", e.Message);
+            Game.Console.Print("Audio" + e.StackTrace + e.Message);
         }
     }
     public void Abort()

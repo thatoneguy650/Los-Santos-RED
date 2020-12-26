@@ -111,7 +111,7 @@ public class CriminalHistory
                 }
                 else
                 {
-                    Debug.Instance.WriteToLog("Crimes", string.Format("Crime Reported: {0}", CrimeInstance.Name));
+                    Game.Console.Print(string.Format("Crime Reported: {0}", CrimeInstance.Name));
                     CrimesReported.Add(new CrimeEvent(CrimeInstance, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances }));
                 }
             }

@@ -30,7 +30,7 @@ namespace LSR.Vehicles
         public bool IsStolen { get; set; }
         public bool OwnedByPlayer { get; set; }
         public bool WasReportedStolen { get; set; }
-        public bool HasUpdatedPlateType { get; private set; }
+        public bool HasUpdatedPlateType { get; set; }
         private bool CanToggleEngine
         {
             get
@@ -263,61 +263,6 @@ namespace LSR.Vehicles
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
             return ClassInt;
         }
-        public void UpdatePlate()//this might need to come out of here.... along with the two bools
-        {
-            HasUpdatedPlateType = true;
-            PlateType CurrentType = DataMart.Instance.PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle));
-            string CurrentPlateNumber = Vehicle.LicensePlate;
-            Zone CurrentZone = DataMart.Instance.Zones.GetZone(Vehicle.Position);
-
-
-            /*
-             * 
-             *TEMP HERE UNTIL I DECIDE
-             * 
-             * 
-             * */
-            if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
-            {
-                PlateType NewType = DataMart.Instance.PlateTypes.GetPlateType(CurrentZone.State);
-                if (NewType != null)
-                {
-                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                    if (NewPlateNumber != "")
-                    {
-                        Vehicle.LicensePlate = NewPlateNumber;
-                        OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                        CarPlate.PlateNumber = NewPlateNumber;
-                    }
-                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle, NewType.Index);
-                    OriginalLicensePlate.PlateType = NewType.Index;
-                    CarPlate.PlateType = NewType.Index;
-                    // Debug.Instance.WriteToLog("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
-                }
-            }
-            else
-            {
-                if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
-                {
-                    PlateType NewType = DataMart.Instance.PlateTypes.GetRandomPlateType();
-                    if (NewType != null)
-                    {
-                        string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                        if (NewPlateNumber != "")
-                        {
-                            Vehicle.LicensePlate = NewPlateNumber;
-                            OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                            CarPlate.PlateNumber = NewPlateNumber;
-                        }
-                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle, NewType.Index);
-                        OriginalLicensePlate.PlateType = NewType.Index;
-                        CarPlate.PlateType = NewType.Index;
-                        // Debug.Instance.WriteToLog("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
-                    }
-                }
-            }
-            
-        }
         public void Update()
         {
             if (IsCar)
@@ -350,14 +295,14 @@ namespace LSR.Vehicles
 
             if (!HasAttemptedToLock)
             {
-                Debug.Instance.WriteToLog("AttemptToLock", $"Vehicle: {Vehicle.Handle}");
+                Game.Console.Print($"AttemptToLock Vehicle: {Vehicle.Handle}");
                 if (!Vehicle.HasOccupants)
                 {
                     if (Vehicle.SetLock((VehicleLockStatus)7) && !Vehicle.IsEngineOn)
                     {
                         HasAttemptedToLock = true;
                         Vehicle.MustBeHotwired = true;
-                        Debug.Instance.WriteToLog("AttemptToLock", $"Locked & Hotwired Vehicle: {Vehicle.Handle}");
+                        Game.Console.Print($"AttemptToLock! Locked & Hotwired Vehicle: {Vehicle.Handle}");
                     }
                 }
             }
@@ -384,7 +329,7 @@ namespace LSR.Vehicles
             {
                 if (Vehicle.Exists())
                 {
-                    Debug.Instance.WriteToLog("ChangeLivery", string.Format("No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
+                    Game.Console.Print(string.Format("ChangeLivery! No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
                     Vehicle.Delete();
                 }
                 return;
@@ -395,11 +340,6 @@ namespace LSR.Vehicles
                 NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, NewLiveryNumber);
             }
             Vehicle.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
-        }
-        public void UpdateCopCarLivery()
-        {
-            Agency AssignedAgency = DataMart.Instance.Agencies.GetAgency(Vehicle,0);//might need to real wanted level here
-            UpdateCopCarLivery(AssignedAgency);
         }
         public void SetDriverWindow(bool RollDown)
         {
@@ -425,19 +365,6 @@ namespace LSR.Vehicles
                 }
             }
         }
-        //public void ToggleEngine()
-        //{
-        //    ToggleEngine(!Vehicle.IsEngineOn);
-        //}
-        //public void ToggleEngine(bool DesiredStatus)
-        //{
-        //    Debug.Instance.WriteToLog("ToggleEngine", string.Format("Start {0}", Vehicle.IsEngineOn));
-        //    if (CanToggleEngine)
-        //    {
-        //        Vehicle.IsEngineOn = DesiredStatus;
-        //    }
-        //    Debug.Instance.WriteToLog("ToggleEngine", string.Format("End {0}", Vehicle.IsEngineOn));
-        //}
         public bool IsCar
         {
             get

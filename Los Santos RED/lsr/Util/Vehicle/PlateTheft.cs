@@ -136,10 +136,9 @@ public class PlateTheft
                 LicensePlateModel = null;
                 ScrewdriverModel = null;
                 Player.IsChangingLicensePlates = false;
-                Debug.Instance.WriteToLog("ChangeLicensePlate", e.StackTrace);
+                Game.Console.Print("ChangeLicensePlate" + e.Message + e.StackTrace);
             }
         }, "PlayDispatchQueue");
-        Debug.Instance.GameFibers.Add(ChangeLicensePlateAnimation);
     }
     private void UpdateModelPlates(bool IsChanging)
     {

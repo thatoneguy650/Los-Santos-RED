@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System.Collections.Generic;
 using System.IO;
@@ -8,12 +9,14 @@ using System.Linq;
 
 public class Agencies
 {
+    private IDataMart DataMart;
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Agencies.xml";
     private bool UseVanillaConfig = true;
     private readonly int LikelyHoodOfAnySpawn = 5;
     private List<Agency> AgenciesList;
-    public Agencies()
+    public Agencies(IDataMart dataMart)
     {
+        DataMart = dataMart;
     }
     public void ReadConfig()
     {
@@ -37,20 +40,20 @@ public class Agencies
     public List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
     {
         List<Agency> ToReturn = new List<Agency>();
-        Street StreetAtPosition = DataMart.Instance.Streets.GetStreet(Position);
-        if (StreetAtPosition != null && DataMart.Instance.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
+        Street StreetAtPosition = DataMart.Streets.GetStreet(Position);
+        if (StreetAtPosition != null && DataMart.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
         {
             ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn(WantedLevel) && x.SpawnsOnHighway));
         }
-        Zone CurrentZone = DataMart.Instance.Zones.GetZone(Position);
+        Zone CurrentZone = DataMart.Zones.GetZone(Position);
 
-        Agency ZoneAgency1 = DataMart.Instance.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName,WantedLevel);
+        Agency ZoneAgency1 = DataMart.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName,WantedLevel);
         if (ZoneAgency1 != null)
         {
             ToReturn.Add(ZoneAgency1); //Zone Jurisdiciton Random
         }
 
-        Agency CountyAgency1 = DataMart.Instance.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel);
+        Agency CountyAgency1 = DataMart.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel);
         if (CountyAgency1 != null)
         {
             ToReturn.Add(CountyAgency1); //Zone Jurisdiciton Random
@@ -62,7 +65,7 @@ public class Agencies
         }
         foreach (Agency ag in ToReturn)
         {
-            Debug.Instance.WriteToLog("Debugging", string.Format("Agencies At Pos: {0}", ag.Initials));
+            Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
     }
@@ -82,10 +85,10 @@ public class Agencies
             List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
             if (ModelMatchAgencies.Count > 1)
             {
-                Zone ZoneFound = DataMart.Instance.Zones.GetZone(Cop.Position);
+                Zone ZoneFound = DataMart.Zones.GetZone(Cop.Position);
                 if (ZoneFound != null)
                 {
-                    foreach (Agency ZoneAgency in DataMart.Instance.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
+                    foreach (Agency ZoneAgency in DataMart.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
                     {
                         if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                             return ZoneAgency;
@@ -95,7 +98,7 @@ public class Agencies
             ToReturn = ModelMatchAgencies.FirstOrDefault();
             if (ToReturn == null)
             {
-                Debug.Instance.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} ped deleting", Cop.Model.Name));
+                Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
                 Cop.Delete();
             }
             return ToReturn;
@@ -111,10 +114,10 @@ public class Agencies
         List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
         if (ModelMatchAgencies.Count > 1)
         {
-            Zone ZoneFound = DataMart.Instance.Zones.GetZone(CopCar.Position);
+            Zone ZoneFound = DataMart.Zones.GetZone(CopCar.Position);
             if (ZoneFound != null)
             {
-                foreach (Agency ZoneAgency in DataMart.Instance.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
+                foreach (Agency ZoneAgency in DataMart.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
                 {
                     if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                     {
@@ -126,7 +129,7 @@ public class Agencies
         ToReturn = ModelMatchAgencies.FirstOrDefault();
         if (ToReturn == null)
         {
-            Debug.Instance.WriteToLog("GetAgencyFromPed", string.Format("Couldnt get agency from {0} car deleting", CopCar.Model.Name));
+            Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
             CopCar.Delete();
         }
         return ToReturn;
@@ -268,73 +271,73 @@ public class Agencies
         };
 
         //Weapon
-        List<IssuedWeapon> AllWeapons = new List<IssuedWeapon>()
+        List<AgencyAssignedWeapon> AllWeapons = new List<AgencyAssignedWeapon>()
         {
             // Pistols
-            new IssuedWeapon("weapon_pistol", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_pistol", true, new WeaponVariation(0, new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_pistol", true, new WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pistol", true, new WeaponVariation(0, new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol", true, new WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
 
-            new IssuedWeapon("weapon_pistol_mk2", true ,new WeaponVariation()),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true ,new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
 
-            new IssuedWeapon("weapon_combatpistol", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_combatpistol", true, new WeaponVariation(0, new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_combatpistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_combatpistol", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_combatpistol", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_combatpistol", true, new WeaponVariation(0, new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_combatpistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_combatpistol", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
 
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Etched Wood Grip Finish" })),
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Etched Wood Grip Finish" })),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
 
             // Shotguns
-            new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
 
-            new IssuedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight" })),
-            new IssuedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Flashlight","Holographic Sight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Flashlight","Holographic Sight" })),
 
             // ARs
-            new IssuedWeapon("weapon_carbinerifle", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_carbinerifle", false, new WeaponVariation(0,new List<string> { "Grip","Flashlight" })),
-            new IssuedWeapon("weapon_carbinerifle", false, new WeaponVariation(0, new List<string> { "Scope", "Grip","Flashlight" })),
-            new IssuedWeapon("weapon_carbinerifle", false, new WeaponVariation(0,new List<string> { "Scope", "Grip","Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_carbinerifle", false, new WeaponVariation(0,new List<string> { "Grip","Flashlight" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle", false, new WeaponVariation(0, new List<string> { "Scope", "Grip","Flashlight" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle", false, new WeaponVariation(0,new List<string> { "Scope", "Grip","Flashlight","Extended Clip" })),
 
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
-        List<IssuedWeapon> BestWeapons = new List<IssuedWeapon>()
+        List<AgencyAssignedWeapon> BestWeapons = new List<AgencyAssignedWeapon>()
         {
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
-        List<IssuedWeapon> HeliWeapons = new List<IssuedWeapon>()
+        List<AgencyAssignedWeapon> HeliWeapons = new List<AgencyAssignedWeapon>()
         {
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
-            new IssuedWeapon("weapon_marksmanrifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Suppressor", "Tracer Rounds" })),
-            new IssuedWeapon("weapon_marksmanrifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope","Tracer Rounds" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_marksmanrifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Suppressor", "Tracer Rounds" })),
+            new AgencyAssignedWeapon("weapon_marksmanrifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope","Tracer Rounds" })),
         };
-        List<IssuedWeapon> LimitedWeapons = new List<IssuedWeapon>()
+        List<AgencyAssignedWeapon> LimitedWeapons = new List<AgencyAssignedWeapon>()
         {
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_revolver", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_revolver", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
         };
 
         AgenciesList = new List<Agency>
@@ -558,73 +561,73 @@ public class Agencies
         };
 
         //Weapon
-        List<IssuedWeapon> AllWeapons = new List<IssuedWeapon>()
+        List<AgencyAssignedWeapon> AllWeapons = new List<AgencyAssignedWeapon>()
         {
             // Pistols
-            new IssuedWeapon("weapon_pistol", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_pistol", true, new WeaponVariation(0, new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_pistol", true, new WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pistol", true, new WeaponVariation(0, new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol", true, new WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
 
-            new IssuedWeapon("weapon_pistol_mk2", true ,new WeaponVariation()),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true ,new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
 
-            new IssuedWeapon("weapon_combatpistol", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_combatpistol", true, new WeaponVariation(0, new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_combatpistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_combatpistol", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_combatpistol", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_combatpistol", true, new WeaponVariation(0, new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_combatpistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_combatpistol", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
 
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Etched Wood Grip Finish" })),
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Etched Wood Grip Finish" })),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
 
             // Shotguns
-            new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
 
-            new IssuedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight" })),
-            new IssuedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Flashlight","Holographic Sight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun_mk2", false, new WeaponVariation(0, new List<string> { "Flashlight","Holographic Sight" })),
 
             // ARs
-            new IssuedWeapon("weapon_carbinerifle", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_carbinerifle", false, new WeaponVariation(0,new List<string> { "Grip","Flashlight" })),
-            new IssuedWeapon("weapon_carbinerifle", false, new WeaponVariation(0, new List<string> { "Scope", "Grip","Flashlight" })),
-            new IssuedWeapon("weapon_carbinerifle", false, new WeaponVariation(0,new List<string> { "Scope", "Grip","Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_carbinerifle", false, new WeaponVariation(0,new List<string> { "Grip","Flashlight" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle", false, new WeaponVariation(0, new List<string> { "Scope", "Grip","Flashlight" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle", false, new WeaponVariation(0,new List<string> { "Scope", "Grip","Flashlight","Extended Clip" })),
 
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
-        List<IssuedWeapon> BestWeapons = new List<IssuedWeapon>()
+        List<AgencyAssignedWeapon> BestWeapons = new List<AgencyAssignedWeapon>()
         {
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
-            new IssuedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight","Grip","Flashlight" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Holographic Sight", "Grip","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_carbinerifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Grip","Flashlight","Extended Clip" })),
         };
-        List<IssuedWeapon> HeliWeapons = new List<IssuedWeapon>()
+        List<AgencyAssignedWeapon> HeliWeapons = new List<AgencyAssignedWeapon>()
         {
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
-            new IssuedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
-            new IssuedWeapon("weapon_marksmanrifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Suppressor", "Tracer Rounds" })),
-            new IssuedWeapon("weapon_marksmanrifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope","Tracer Rounds" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0,new List<string> { "Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_pistol_mk2", true, new WeaponVariation(0, new List<string> { "Flashlight","Extended Clip" })),
+            new AgencyAssignedWeapon("weapon_marksmanrifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope", "Suppressor", "Tracer Rounds" })),
+            new AgencyAssignedWeapon("weapon_marksmanrifle_mk2", false, new WeaponVariation(0, new List<string> { "Large Scope","Tracer Rounds" })),
         };
-        List<IssuedWeapon> LimitedWeapons = new List<IssuedWeapon>()
+        List<AgencyAssignedWeapon> LimitedWeapons = new List<AgencyAssignedWeapon>()
         {
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_revolver", true, new WeaponVariation()),
-            new IssuedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
-            new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
-            new IssuedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_revolver", true, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_heavypistol", true, new WeaponVariation(0,new List<string> { "Flashlight" })),
+            new AgencyAssignedWeapon("weapon_pumpshotgun", false, new WeaponVariation()),
+            new AgencyAssignedWeapon("weapon_pumpshotgun", false, new WeaponVariation(0,new List<string> { "Flashlight" })),
         };
 
         AgenciesList = new List<Agency>

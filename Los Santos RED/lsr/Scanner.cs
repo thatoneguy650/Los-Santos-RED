@@ -19,6 +19,7 @@ namespace LosSantosRED.lsr
         private IPolice Police;
         private ISearchMode SearchMode;
         private IRespawning Respawning;
+        private IDataMart DataMart;
         private Dispatch AnnounceStolenVehicle;
         private Dispatch AssaultingOfficer;
         private Dispatch AttemptingSuicide;
@@ -84,12 +85,13 @@ namespace LosSantosRED.lsr
         private Dispatch VehicleHitAndRun;
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
-        public Scanner(IWorld world, IPlayer currentPlayer, IPolice police, IAudioPlayer audioPlayer, IRespawning respawning, ISearchMode searchMode)
+        public Scanner(IWorld world, IPlayer currentPlayer, IPolice police, IAudioPlayer audioPlayer, IRespawning respawning, ISearchMode searchMode, IDataMart dataMart)
         {
             AudioPlayer = audioPlayer;
             CurrentPlayer = currentPlayer;
             World = world;
             Police = police;
+            DataMart = dataMart;
             Respawning = respawning;
             SearchMode = searchMode;
             DefaultConfig(); 
@@ -206,6 +208,7 @@ namespace LosSantosRED.lsr
         }
         public void Reset()
         {
+            DispatchQueue.Clear();
             ReportedLethalForceAuthorized = false;
             ReportedWeaponsFree = false;
             ReportedRequestAirSupport = false;
@@ -217,10 +220,11 @@ namespace LosSantosRED.lsr
                 ToReset.LatestInformation = new PoliceScannerCallIn();
                 ToReset.TimesPlayed = 0;
             }
+            DispatchQueue.Clear();
         }
         public void Tick()
         {
-            if (DataMart.Instance.Settings.SettingsManager.Police.DispatchAudio)
+            if (DataMart.Settings.SettingsManager.Police.DispatchAudio)
             {
                 CheckDispatch();
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
@@ -251,7 +255,6 @@ namespace LosSantosRED.lsr
                         }
                         ExecutingQueue = false;
                     }, "PlayDispatchQueue");
-                    Debug.Instance.GameFibers.Add(PlayDispatchQueue);
                 }
             }
         }
@@ -407,7 +410,7 @@ namespace LosSantosRED.lsr
             Street MyStreet = CurrentPlayer.CurrentStreet;
             if (MyStreet != null)
             {
-                string StreetAudio = DataMart.Instance.StreetScannerAudio.GetAudio(MyStreet.Name);
+                string StreetAudio = DataMart.StreetScannerAudio.GetAudio(MyStreet.Name);
                 if (StreetAudio != "")
                 {
                     dispatchEvent.SoundsToPlay.Add(new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }.PickRandom());
@@ -421,7 +424,7 @@ namespace LosSantosRED.lsr
                         Street MyCrossStreet = CurrentPlayer.CurrentCrossStreet;
                         if (MyCrossStreet != null)
                         {
-                            string CrossStreetAudio = DataMart.Instance.StreetScannerAudio.GetAudio(MyCrossStreet.Name);
+                            string CrossStreetAudio = DataMart.StreetScannerAudio.GetAudio(MyCrossStreet.Name);
                             if (CrossStreetAudio != "")
                             {
                                 dispatchEvent.SoundsToPlay.Add(new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }.PickRandom());
@@ -444,7 +447,7 @@ namespace LosSantosRED.lsr
             else
             {
                 ToAdd.LatestInformation = ToCallIn;
-                Debug.Instance.WriteToLog("ScannerScript", ToAdd.Name);
+                Game.Console.Print("ScannerScript " + ToAdd.Name);
                 DispatchQueue.Add(ToAdd);
             }
         }
@@ -454,7 +457,7 @@ namespace LosSantosRED.lsr
             if (Existing == null)
             {
                 DispatchQueue.Add(ToAdd);
-                Debug.Instance.WriteToLog("ScannerScript", ToAdd.Name);
+                Game.Console.Print("ScannerScript " + ToAdd.Name);
             }
         }
         private void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate)
@@ -477,13 +480,13 @@ namespace LosSantosRED.lsr
                 Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
                 string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
                 int ClassInt = VehicleToDescribe.ClassInt();// Vehicles.VehicleManager.ClassInt(VehicleToDescribe);
-                string ClassName = DataMart.Instance.VehicleScannerAudio.ClassName(ClassInt);
+                string ClassName = DataMart.VehicleScannerAudio.ClassName(ClassInt);
                 string ModelName = VehicleToDescribe.ModelName();// Vehicles.VehicleManager.ModelName(VehicleToDescribe);
 
-                string ColorAudio = DataMart.Instance.VehicleScannerAudio.GetColorAudio(CarColor);
-                string MakeAudio = DataMart.Instance.VehicleScannerAudio.GetMakeAudio(MakeName);
-                string ClassAudio = DataMart.Instance.VehicleScannerAudio.GetClassAudio(ClassInt);
-                string ModelAudio = DataMart.Instance.VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
+                string ColorAudio = DataMart.VehicleScannerAudio.GetColorAudio(CarColor);
+                string MakeAudio = DataMart.VehicleScannerAudio.GetMakeAudio(MakeName);
+                string ClassAudio = DataMart.VehicleScannerAudio.GetClassAudio(ClassInt);
+                string ModelAudio = DataMart.VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
 
                 if (ColorAudio != "")
                 {
@@ -515,12 +518,12 @@ namespace LosSantosRED.lsr
                 {
                     AddAudioSet(dispatchEvent, LicensePlateSet.PickRandom());
                     string LicensePlateText = VehicleToDescribe.OriginalLicensePlate.PlateNumber;
-                    dispatchEvent.SoundsToPlay.AddRange(DataMart.Instance.VehicleScannerAudio.GetPlateAudio(LicensePlateText));
+                    dispatchEvent.SoundsToPlay.AddRange(DataMart.VehicleScannerAudio.GetPlateAudio(LicensePlateText));
                     dispatchEvent.Subtitles += " ~s~" + LicensePlateText + "~s~";
                     dispatchEvent.NotificationText += " ~s~Plate: " + LicensePlateText + "~s~";
                 }
 
-                Debug.Instance.WriteToLog("ScannerScript", string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.Vehicle.Model.Name));
+                Game.Console.Print(string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.Vehicle.Model.Name));
             }
 
         }
@@ -666,10 +669,10 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Zone MyZone = DataMart.Instance.Zones.GetZone(CurrentPlayer.CurrentPosition);
+            Zone MyZone = DataMart.Zones.GetZone(CurrentPlayer.CurrentPosition);
             if (MyZone != null)
             {
-                string ScannerAudio = DataMart.Instance.ZoneScannerAudio.GetAudio(MyZone.InternalGameName);
+                string ScannerAudio = DataMart.ZoneScannerAudio.GetAudio(MyZone.InternalGameName);
                 if (ScannerAudio != "")
                 {
                     dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
@@ -746,11 +749,11 @@ namespace LosSantosRED.lsr
                 if (DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.PlateNumber == DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.PlateNumber)
                 {
                     DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.IsWanted = true;
-                    Debug.Instance.WriteToLog("ScannerScript", "MarkedAsStolen Current Plate");
+                    Game.Console.Print("ScannerScript MarkedAsStolen Current Plate");
                 }
                 else
                 {
-                    Debug.Instance.WriteToLog("ScannerScript", "MarkedAsStolen");
+                    Game.Console.Print("ScannerScript MarkedAsStolen");
                 }
 
             }
@@ -1041,7 +1044,7 @@ namespace LosSantosRED.lsr
             bool AbortedAudio = false;
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-                Debug.Instance.WriteToLog("ScannerScript", string.Format("Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
+                Game.Console.Print(string.Format("ScannerScript! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
                 AudioPlayer.Abort();
                 AbortedAudio = true;
             }
@@ -1058,13 +1061,13 @@ namespace LosSantosRED.lsr
                     GameFiber.Yield();
                 }
 
-                if (MyAudioEvent.NotificationTitle != "" && DataMart.Instance.Settings.SettingsManager.Police.DispatchNotifications)
+                if (MyAudioEvent.NotificationTitle != "" && DataMart.Settings.SettingsManager.Police.DispatchNotifications)
                 {
                     RemoveAllNotifications();
                     NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
                 }
 
-                Debug.Instance.WriteToLog("ScannerScript", string.Format("Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
+                Game.Console.Print(string.Format("ScannerScript! Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
                 CurrentlyPlaying = MyAudioEvent;
 
 
@@ -1074,7 +1077,7 @@ namespace LosSantosRED.lsr
 
                     while (AudioPlayer.IsAudioPlaying)
                     {
-                        if (MyAudioEvent.Subtitles != "" && DataMart.Instance.Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                        if (MyAudioEvent.Subtitles != "" && DataMart.Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                         {
                             Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
                             GameTimeLastDisplayedSubtitle = Game.GameTime;
@@ -1093,7 +1096,7 @@ namespace LosSantosRED.lsr
                     if (AudioPlayer.CancelAudio)
                     {
                         AudioPlayer.CancelAudio = false;
-                        Debug.Instance.WriteToLog("ScannerScript", "CancelAudio Set to False");
+                        Game.Console.Print("ScannerScript! CancelAudio Set to False");
                         break;
                     }
                 }
@@ -1103,7 +1106,6 @@ namespace LosSantosRED.lsr
                     MyDispatch.VehicleSeen.HasBeenDescribedByDispatch = true;
                 }
             }, "PlayAudioList");
-            Debug.Instance.GameFibers.Add(PlayAudioList);
         }
         private void RemoveAllNotifications()
         {

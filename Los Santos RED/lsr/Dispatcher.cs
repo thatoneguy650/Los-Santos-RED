@@ -8,6 +8,7 @@ using System.Linq;
 
 public class Dispatcher
 {
+    
     private PoliceSpawn CurrentSpawn;
     private uint GameTimeCheckedSpawn;
     private uint GameTimeCheckedDeleted;
@@ -17,12 +18,14 @@ public class Dispatcher
     private IWorld World;
     private IPolice Police;
     private ISpawner Spawner;
-    public Dispatcher(IWorld world, IPlayer currentPlayer, IPolice police, ISpawner spawner)
+    private IDataMart DataMart;
+    public Dispatcher(IWorld world, IPlayer currentPlayer, IPolice police, ISpawner spawner, IDataMart dataMart)
     {
         CurrentPlayer = currentPlayer;
         World = world;
         Police = police;
         Spawner = spawner;
+        DataMart = dataMart;
     }
 
     private int SpawnedCopLimit
@@ -245,7 +248,7 @@ public class Dispatcher
     {
         if (CanDispatch)
         {
-            CurrentSpawn = new PoliceSpawn(MinDistanceToSpawn, MaxDistanceToSpawn, ClosestSpawnToOtherPoliceAllowed, ClosestSpawnToSuspectAllowed, CurrentPlayer, World);
+            CurrentSpawn = new PoliceSpawn(MinDistanceToSpawn, MaxDistanceToSpawn, ClosestSpawnToOtherPoliceAllowed, ClosestSpawnToSuspectAllowed, CurrentPlayer, World, DataMart);
             CurrentSpawn.GetPosition();
             //CurrentSpawn.Update();
             if (NeedToSpawn && CurrentSpawn.HasSpawns)
@@ -253,32 +256,32 @@ public class Dispatcher
                 CurrentSpawn.GetAgency();
                 if (!CurrentSpawn.HasAgency)
                 {
-                    Debug.Instance.WriteToLog("Dispatch", string.Format("Could not find Agencies To Spawn {0}", 1));
+                    Game.Console.Print(string.Format("Dispatch! Could not find Agencies To Spawn {0}", 1));
                     return;
                 }
 
                 VehicleInformation AgencyVehicle = CurrentSpawn.AgencyToSpawn.GetRandomVehicle(CurrentPlayer.WantedLevel);
                 if (AgencyVehicle == null)
                 {
-                    Debug.Instance.WriteToLog("Dispatch", string.Format("Could not find Auto for {0}", CurrentSpawn.AgencyToSpawn.Initials));
+                    Game.Console.Print(string.Format("Dispatch! Could not find Auto for {0}", CurrentSpawn.AgencyToSpawn.Initials));
                     return;
                 }
 
                 if (AgencyVehicle.IsHelicopter)
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.Position + new Vector3(0f, 0f, 250f);
-                    Debug.Instance.WriteToLog("Dispatch", string.Format("Helicopter: {0}", AgencyVehicle.ModelName));
+                    Game.Console.Print(string.Format("Dispatch! Helicopter: {0}", AgencyVehicle.ModelName));
                 }
                 else if (AgencyVehicle.IsBoat)
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.Position;
-                    Debug.Instance.WriteToLog("Dispatch", string.Format("Boat: {0} isWater {1} WaterHieght {2}", AgencyVehicle.ModelName, CurrentSpawn.IsWater, CurrentSpawn.WaterHeight));
+                    Game.Console.Print(string.Format("Dispatch! Boat: {0} isWater {1} WaterHieght {2}", AgencyVehicle.ModelName, CurrentSpawn.IsWater, CurrentSpawn.WaterHeight));
                 }
                 else
                 {
                     CurrentSpawn.FinalSpawnPosition = CurrentSpawn.StreetPosition;
                 }
-                Spawner.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle,CurrentPlayer.WantedLevel);
+                Spawner.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, AgencyVehicle,CurrentPlayer.WantedLevel,DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             }
             GameTimeCheckedSpawn = Game.GameTime;
         }
@@ -343,6 +346,7 @@ public class Dispatcher
         private float ClosestSpawnToSuspectAllowed;
         private IPlayer CurrentPlayer;
         private IWorld World;
+        private IDataMart DataMart;
         public Vector3 Position { get; set; } = Vector3.Zero;
         public Vector3 StreetPosition { get; set; } = Vector3.Zero;
         public Vector3 SidewalkPosition { get; set; } = Vector3.Zero;
@@ -417,7 +421,7 @@ public class Dispatcher
                 }
             }
         }
-        public PoliceSpawn(float minDistanceToSpawn,float maxDistanceToSpawn, float closestSpawnToOtherPoliceAllowed, float closestSpawnToSuspectAllowed, IPlayer currentPlayer, IWorld world)
+        public PoliceSpawn(float minDistanceToSpawn,float maxDistanceToSpawn, float closestSpawnToOtherPoliceAllowed, float closestSpawnToSuspectAllowed, IPlayer currentPlayer, IWorld world, IDataMart dataMart)
         {
             MinDistanceToSpawn = minDistanceToSpawn;
             MaxDistanceToSpawn = maxDistanceToSpawn;
@@ -425,6 +429,7 @@ public class Dispatcher
             ClosestSpawnToSuspectAllowed = closestSpawnToSuspectAllowed;
             CurrentPlayer = currentPlayer;
             World = world;
+            DataMart = dataMart;
         }
         public void GetPosition()
         {
@@ -442,7 +447,7 @@ public class Dispatcher
         public void GetAgency()
         {
             AgencyToSpawn = null;
-            List<Agency> PossibleAgencies = DataMart.Instance.Agencies.GetAgencies(StreetPosition, CurrentPlayer.WantedLevel);
+            List<Agency> PossibleAgencies = DataMart.Agencies.GetAgencies(StreetPosition, CurrentPlayer.WantedLevel);
             if (RandomItems.RandomPercent(50))//Favor Helicopter Spawns
             {
                 AgencyToSpawn = PossibleAgencies.Where(x => x.HasSpawnableHelicopters(CurrentPlayer.WantedLevel)).PickRandom();
@@ -453,7 +458,7 @@ public class Dispatcher
             }
             if (AgencyToSpawn == null)
             {
-                AgencyToSpawn = DataMart.Instance.Agencies.GetAgencies(Position, CurrentPlayer.WantedLevel).PickRandom();
+                AgencyToSpawn = DataMart.Agencies.GetAgencies(Position, CurrentPlayer.WantedLevel).PickRandom();
             }
         }
         private void GetInitialPosition()
@@ -480,7 +485,7 @@ public class Dispatcher
         {
             Vector3 streetPos;
             float heading;
-            DataMart.Instance.Streets.GetStreetPositionandHeading(Position, out streetPos, out heading, true);
+            DataMart.Streets.GetStreetPositionandHeading(Position, out streetPos, out heading, true);
             StreetPosition = streetPos;
             Heading = heading;
 
@@ -495,7 +500,7 @@ public class Dispatcher
             if (StreetPosition != Vector3.Zero)
             {
                 Vector3 sidewalkPosition;
-                DataMart.Instance.Streets.GetSidewalkPositionAndHeading(StreetPosition, out sidewalkPosition);
+                DataMart.Streets.GetSidewalkPositionAndHeading(StreetPosition, out sidewalkPosition);
                 SidewalkPosition = sidewalkPosition;
             }
         }

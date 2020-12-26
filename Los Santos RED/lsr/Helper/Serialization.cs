@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace LosSantosRED.lsr.Helper
             serializer.Serialize(writer, paramList);
             writer.Close();
             File.WriteAllText(FileName, doc.ToString());
-            Debug.Instance.WriteToLog("Settings ReadConfig", string.Format("Using Default Data {0}", FileName));
+            Game.Console.Print(string.Format("SerializeParams Using Default Data {0}", FileName));
         }
         public static List<T> DeserializeParams<T>(string FileName)
         {
@@ -29,7 +30,7 @@ namespace LosSantosRED.lsr.Helper
             XmlReader reader = doc.CreateReader();
             List<T> result = (List<T>)serializer.Deserialize(reader);
             reader.Close();
-            Debug.Instance.WriteToLog("Settings ReadConfig", string.Format("Using Saved Data {0}", FileName));
+            Game.Console.Print(string.Format("DeserializeParams Using Saved Data {0}", FileName));
             return result;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,11 @@ namespace LosSantosRED.lsr.Locations
         private uint GameTimeGotOnFreeway;
         private uint GameTimeGotOffFreeway;
         private Vector3 ClosestNode;
-        public LocationData(Ped character)
+        private IDataMart DataMart;
+        public LocationData(Ped character, IDataMart dataMart)
         {
             CharacterToLocate = character;
+            DataMart = dataMart;
         }
         public Ped CharacterToLocate { get; set; }
         public Street CurrentStreet { get; private set; }
@@ -60,7 +63,10 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetZone()
         {
-            CurrentZone = DataMart.Instance.Zones.GetZone(CharacterToLocate.Position);
+            if(DataMart != null)
+            {
+                CurrentZone = DataMart.Zones.GetZone(CharacterToLocate.Position);
+            } 
         }
         private void GetNode()
         {
@@ -122,12 +128,15 @@ namespace LosSantosRED.lsr.Locations
                 CurrentCrossStreetName = "";
             }
 
+            if(DataMart != null)
+            {
+                CurrentStreet = DataMart.Streets.GetStreet(CurrentStreetName);
+                CurrentCrossStreet = DataMart.Streets.GetStreet(CurrentCrossStreetName);
+            }
 
-            CurrentStreet = DataMart.Instance.Streets.GetStreet(CurrentStreetName);
-            CurrentCrossStreet = DataMart.Instance.Streets.GetStreet(CurrentCrossStreetName);
             if (CurrentStreet == null)
             {
-                CurrentStreet = new Street(DataMart.Instance.Streets.GetStreet(CharacterToLocate.Position) + "?", 60f);
+                CurrentStreet = new Street("?", 60f);
                 if (CurrentStreet.IsHighway)
                 {
                     if (!IsOnFreeway)
