@@ -51,6 +51,10 @@ public class WeaponInformation
     }
     public void ApplyWeaponVariation(Ped WeaponOwner, uint WeaponHash, WeaponVariation weaponVariation)
     {
+        if (weaponVariation == null)
+        {
+            return;
+        }    
         NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, weaponVariation.Tint);
         foreach (WeaponComponent ToRemove in PossibleComponents)
         {

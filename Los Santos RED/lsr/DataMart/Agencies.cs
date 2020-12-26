@@ -9,14 +9,14 @@ using System.Linq;
 
 public class Agencies
 {
-    private IDataMart DataMart;
+    private IJurisdictionStreetZoneProvider JurisdictionStreetZoneProvider;
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Agencies.xml";
     private bool UseVanillaConfig = true;
     private readonly int LikelyHoodOfAnySpawn = 5;
     private List<Agency> AgenciesList;
-    public Agencies(IDataMart dataMart)
+    public Agencies(IJurisdictionStreetZoneProvider dataMart)
     {
-        DataMart = dataMart;
+        JurisdictionStreetZoneProvider = dataMart;
     }
     public void ReadConfig()
     {
@@ -40,20 +40,20 @@ public class Agencies
     public List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
     {
         List<Agency> ToReturn = new List<Agency>();
-        Street StreetAtPosition = DataMart.Streets.GetStreet(Position);
-        if (StreetAtPosition != null && DataMart.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
+        Street StreetAtPosition = JurisdictionStreetZoneProvider.Streets.GetStreet(Position);
+        if (StreetAtPosition != null && JurisdictionStreetZoneProvider.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
         {
             ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn(WantedLevel) && x.SpawnsOnHighway));
         }
-        Zone CurrentZone = DataMart.Zones.GetZone(Position);
+        Zone CurrentZone = JurisdictionStreetZoneProvider.Zones.GetZone(Position);
 
-        Agency ZoneAgency1 = DataMart.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName,WantedLevel);
+        Agency ZoneAgency1 = JurisdictionStreetZoneProvider.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName,WantedLevel);
         if (ZoneAgency1 != null)
         {
             ToReturn.Add(ZoneAgency1); //Zone Jurisdiciton Random
         }
 
-        Agency CountyAgency1 = DataMart.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel);
+        Agency CountyAgency1 = JurisdictionStreetZoneProvider.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel);
         if (CountyAgency1 != null)
         {
             ToReturn.Add(CountyAgency1); //Zone Jurisdiciton Random
@@ -68,6 +68,10 @@ public class Agencies
             Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
+    }
+    public Agency GetAgency(Ped Cop)
+    {
+        return GetAgency(Cop, 0);
     }
     public Agency GetAgency(Ped Cop, int WantedLevel)
     {
@@ -85,10 +89,10 @@ public class Agencies
             List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
             if (ModelMatchAgencies.Count > 1)
             {
-                Zone ZoneFound = DataMart.Zones.GetZone(Cop.Position);
+                Zone ZoneFound = JurisdictionStreetZoneProvider.Zones.GetZone(Cop.Position);
                 if (ZoneFound != null)
                 {
-                    foreach (Agency ZoneAgency in DataMart.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
+                    foreach (Agency ZoneAgency in JurisdictionStreetZoneProvider.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
                     {
                         if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                             return ZoneAgency;
@@ -114,10 +118,10 @@ public class Agencies
         List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
         if (ModelMatchAgencies.Count > 1)
         {
-            Zone ZoneFound = DataMart.Zones.GetZone(CopCar.Position);
+            Zone ZoneFound = JurisdictionStreetZoneProvider.Zones.GetZone(CopCar.Position);
             if (ZoneFound != null)
             {
-                foreach (Agency ZoneAgency in DataMart.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
+                foreach (Agency ZoneAgency in JurisdictionStreetZoneProvider.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
                 {
                     if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
                     {

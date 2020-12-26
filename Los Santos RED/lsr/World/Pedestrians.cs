@@ -44,13 +44,6 @@ public class Pedestrians
             return Police.Any(x => x.DistanceToPlayer <= 150f);
         }
     }
-    public bool AnyHumansNearPlayer
-    {
-        get
-        {
-            return Police.Any(x => x.DistanceToPlayer <= 10f) || Civilians.Any(x => x.DistanceToPlayer <= 10f);
-        }
-    }
     public bool AnyHelicopterUnitsSpawned
     {
         get
@@ -171,10 +164,12 @@ public class Pedestrians
     }
     private void AddCop(Ped Pedestrian)
     {
-        Agency AssignedAgency = DataMart.Agencies.GetAgency(Pedestrian,0);//maybe need the actual wanted level here?
+        Agency AssignedAgency = DataMart.Agencies.GetAgency(Pedestrian);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
-            Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
+            AgencyAssignedWeapon AssignedPistolType = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
+            AgencyAssignedWeapon AssignedHeavyType = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
+            Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false, DataMart.Weapons.GetWeapon(AssignedPistolType.ModelName), AssignedPistolType.Variation, DataMart.Weapons.GetWeapon(AssignedHeavyType.ModelName), AssignedHeavyType.Variation);
             if (DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
@@ -183,7 +178,6 @@ public class Pedestrians
                 World.AddBlip(myBlip);
             }
             SetCopStats(Pedestrian);
-            Pedestrian.Inventory.Weapons.Clear();
             Police.Add(myCop);
         }
     }

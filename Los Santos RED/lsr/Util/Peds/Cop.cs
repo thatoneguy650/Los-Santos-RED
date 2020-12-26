@@ -20,8 +20,6 @@ public class Cop : PedExt
     private uint GameTimeLastSpoke;
     private uint GameTimeLastRadioed;
     private uint GameTimeSpawned;
-
-
     private bool IsSetLessLethal;
     private bool IsSetUnarmed;
     private bool IsSetDeadly;
@@ -30,9 +28,6 @@ public class Cop : PedExt
     private WeaponInformation IssuedHeavy;
     private WeaponVariation IssuedPistolVariation;
     private WeaponVariation IssuedHeavyVariation;
-
-
-
     public bool NeedsWeaponCheck
     {
         get
@@ -77,7 +72,6 @@ public class Cop : PedExt
             }
         }
     }
-
     public bool IsSpeechTimedOut
     {
         get
@@ -160,7 +154,7 @@ public class Cop : PedExt
             return false;
         }
     }
-    public Cop(Ped pedestrian, int health, Agency agency, bool wasModSpawned) : base(pedestrian)
+    public Cop(Ped pedestrian, int health, Agency agency, bool wasModSpawned, WeaponInformation pistolToIssue, WeaponVariation pistolVariation, WeaponInformation heavyToIssue, WeaponVariation heavyVaritaion) : base(pedestrian)
     {
         IsCop = true;
         Health = health;
@@ -172,6 +166,10 @@ public class Cop : PedExt
         }
         Pedestrian.VisionRange = 90f;//55F
         Pedestrian.HearingRange = 55;//25
+        IssuedPistol = pistolToIssue;
+        IssuedPistolVariation = pistolVariation;
+        IssuedHeavy = heavyToIssue;
+        IssuedHeavyVariation = heavyVaritaion;
     }
     public void UpdateSpeech(IPlayer currentPlayer)
     {
@@ -229,9 +227,8 @@ public class Cop : PedExt
         }
 
     }
-    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel, IDataMart dataMart)
+    public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel)
     {
-        IssueWeapons(IsDeadlyChase, dataMart);
         if (ShouldAutoSetWeaponState)
         {
             if (IsDeadlyChase)
@@ -255,63 +252,16 @@ public class Cop : PedExt
                 {
                     SetUnarmed();
                 }
-                else
+                else if (WantedLevel == 0)
                 {
                     NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);//for idle, 
                 }
+                else
+                {
+                    SetUnarmed();
+                }
             }
         }
-    }
-    private void IssueWeapons(bool IsDeadlyChase, IDataMart dataMart)
-    {
-        if (!HasPistol)
-        {
-            IssuePistol(dataMart);
-        }
-        if (!HasHeavyWeapon && IsDeadlyChase && IsInVehicle)//DataMart.Instance.Settings.SettingsManager.Police.IssuePoliceHeavyWeapons && !HasHeavyWeapon && IsDeadlyChase)
-        {
-            IssueHeavyWeapon(dataMart);
-        }
-    }
-    private void IssuePistol(IDataMart dataMart)
-    {
-        AgencyAssignedWeapon agencyAssignedWeapon = new AgencyAssignedWeapon("weapon_pistol", true, null);
-        if (AssignedAgency != null)
-        {
-            agencyAssignedWeapon = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
-        }
-        IssuedPistol = dataMart.Weapons.GetWeapon(agencyAssignedWeapon.ModelName);//need the lookup for components to do the variations
-        if (IssuedPistol == null)
-        {
-            IssuedPistol = new WeaponInformation("weapon_pistol", 60, WeaponCategory.Pistol, 1, 453432689, true, false, true);
-        }
-        IssuedPistolVariation = agencyAssignedWeapon.Variation;
-        Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.ModelName, IssuedPistol.AmmoAmount, false);
-        if (IssuedPistolVariation != null)
-        {
-            IssuedPistol.ApplyWeaponVariation(Pedestrian, (uint)IssuedPistol.Hash, IssuedPistolVariation);
-        }
-        Game.Console.Print($"Issued Pistol: {IssuedPistol.ModelName} to {Pedestrian.Handle}");
-    }
-    private void IssueHeavyWeapon(IDataMart dataMart)
-    {
-        AgencyAssignedWeapon agencyAssignedWeapon = new AgencyAssignedWeapon("weapon_shotgun", true, null);
-        if (AssignedAgency != null)
-        {
-            agencyAssignedWeapon = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
-        }
-        IssuedHeavy = dataMart.Weapons.GetWeapon(agencyAssignedWeapon.ModelName);
-        if (IssuedHeavy == null)
-        {
-            IssuedHeavy = new WeaponInformation("weapon_pumpshotgun", 32, WeaponCategory.Shotgun, 2, 487013001, false, true, true);
-        }
-        IssuedHeavyVariation = agencyAssignedWeapon.Variation;
-        Pedestrian.Inventory.GiveNewWeapon(IssuedHeavy.ModelName, IssuedHeavy.AmmoAmount, true);
-        if (IssuedHeavyVariation != null)
-        {
-            IssuedHeavy.ApplyWeaponVariation(Pedestrian, (uint)IssuedHeavy.Hash, IssuedHeavyVariation);
-        }
-        Game.Console.Print($"Issued Heavy: {IssuedHeavy.ModelName} to {Pedestrian.Handle}");
     }
     private void SetUnarmed()
     {
@@ -378,5 +328,6 @@ public class Cop : PedExt
             GameTimeLastWeaponCheck = Game.GameTime;
         }
     }
+
 }
 

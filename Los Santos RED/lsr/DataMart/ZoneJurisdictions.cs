@@ -13,8 +13,8 @@ public class ZoneJurisdictions
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\ZoneJurisdiction.xml";
     private List<ZoneJurisdiction> ZoneJurisdictionsList = new List<ZoneJurisdiction>();
     private bool UseVanillaConfig = true;
-    private IDataMart DataMart;
-    public ZoneJurisdictions(IDataMart dataMart)
+    private IAgencyProvider DataMart;
+    public ZoneJurisdictions(IAgencyProvider dataMart)
     {
         DataMart = dataMart;
     }

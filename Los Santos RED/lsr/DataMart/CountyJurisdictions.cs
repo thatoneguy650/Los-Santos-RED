@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 public class CountyJurisdictions
 {
-    private IDataMart DataMart;
+    private IZoneAgencyProvider DataMart;
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\CountyJurisdiction.xml";
     private List<CountyJurisdiction> CountyJurisdictionList = new List<CountyJurisdiction>();
     private bool UseVanillaConfig = true;
 
-    public CountyJurisdictions(IDataMart dataMart)
+    public CountyJurisdictions(IZoneAgencyProvider dataMart)
     {
         DataMart = dataMart;
     }

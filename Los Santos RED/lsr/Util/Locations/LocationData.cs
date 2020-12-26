@@ -15,8 +15,8 @@ namespace LosSantosRED.lsr.Locations
         private uint GameTimeGotOnFreeway;
         private uint GameTimeGotOffFreeway;
         private Vector3 ClosestNode;
-        private IDataMart DataMart;
-        public LocationData(Ped character, IDataMart dataMart)
+        private IStreetZoneProvider DataMart;
+        public LocationData(Ped character, IStreetZoneProvider dataMart)
         {
             CharacterToLocate = character;
             DataMart = dataMart;

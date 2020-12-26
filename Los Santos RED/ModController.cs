@@ -28,8 +28,7 @@ namespace LosSantosRED.lsr
         private Dispatcher Dispatcher;
         private SearchMode SearchMode;
         private Spawner Spawner;
-        private Tasking Tasking;
-        
+        private Tasking Tasking;  
         public ModController()
         {
             //DataMart = new DataMart();
@@ -54,7 +53,7 @@ namespace LosSantosRED.lsr
         {
             Player.Reset(true, true, true);
             Scanner.Reset();
-            Player.GiveName(ModelName, Male);
+            Player.GiveName(ModelName, Male, DataMart.Names.GetRandomName(Male));
             if (DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
             {
                 Player.SetMoney(RandomItems.MyRand.Next(DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
@@ -70,13 +69,13 @@ namespace LosSantosRED.lsr
             {
                 GameFiber.Yield();
             }
-            Audio = new Audio(DataMart);
+            Audio = new Audio();
             World = new Mod.World(DataMart);
             Player = new Mod.Player(World, DataMart);
             Input = new Input(Player, DataMart);
-            Police = new Police(World, Player, DataMart);
+            Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
-            Spawner = new Spawner(World, DataMart);
+            Spawner = new Spawner(World);
             Dispatcher = new Dispatcher(World, Player, Police, Spawner, DataMart);
             Respawning = new Respawning(World, Player, DataMart);
             PedSwap = new PedSwap(World, Player, DataMart);
@@ -134,8 +133,7 @@ namespace LosSantosRED.lsr
                 new ModTask(150, "Player.SearchMode.UpdateWanted", SearchMode.UpdateWanted, 11,0),
                 new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", SearchMode.StopVanilla, 11,1),
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
-                new ModTask(100, "Audio.Tick",Audio.Update,13,0),
-                new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,1),
+                new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
                 new ModTask(500, "World.Tasking.UpdatePeds", Tasking.AddTaskablePeds, 14,0),
                 new ModTask(500, "World.Tasking.Tick", Tasking.TaskCops, 14,1),
                 new ModTask(750, "World.Tasking.Tick", Tasking.TaskCivilians, 14,2),

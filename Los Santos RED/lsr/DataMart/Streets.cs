@@ -36,59 +36,55 @@ public class Streets
         string StreetName = GetStreetName(Position);
         return StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
     }
-    public void GetStreetPositionandHeading(Vector3 PositionNear, out Vector3 SpawnPosition, out float Heading, bool MainRoadsOnly)
-    {
-        Vector3 pos = PositionNear;
-        SpawnPosition = Vector3.Zero;
-        Heading = 0f;
+    //public void GetStreetPositionandHeading(Vector3 PositionNear, out Vector3 SpawnPosition, out float Heading, bool MainRoadsOnly)
+    //{
+    //    Vector3 pos = PositionNear;
+    //    SpawnPosition = Vector3.Zero;
+    //    Heading = 0f;
 
-        Vector3 outPos;
-        float heading;
-        float val;
+    //    Vector3 outPos;
+    //    float heading;
+    //    float val;
 
-        if (MainRoadsOnly)
-        {
-            unsafe
-            {
-                NativeFunction.CallByName<bool>("GET_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, &outPos, &heading, 0, 3, 0);
-            }
+    //    if (MainRoadsOnly)
+    //    {
+    //        unsafe
+    //        {
+    //            NativeFunction.CallByName<bool>("GET_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, &outPos, &heading, 0, 3, 0);
+    //        }
 
-            SpawnPosition = outPos;
-            Heading = heading;
-        }
-        else
-        {
-            for (int i = 1; i < 40; i++)
-            {
-                unsafe
-                {
-                    NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, i, &outPos, &heading, &val, 1, 0x40400000, 0);
-                }
-                if (!NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
-                {
-                    SpawnPosition = outPos;
-                    Heading = heading;
-                    break;
-                }
-            }
-        }
-    }
-    public void GetSidewalkPositionAndHeading(Vector3 PositionNear, out Vector3 SpawnPosition)
-    {
-        Vector3 pos = PositionNear;
-        SpawnPosition = Vector3.Zero;
+    //        SpawnPosition = outPos;
+    //        Heading = heading;
+    //    }
+    //    else
+    //    {
+    //        for (int i = 1; i < 40; i++)
+    //        {
+    //            unsafe
+    //            {
+    //                NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, i, &outPos, &heading, &val, 1, 0x40400000, 0);
+    //            }
+    //            if (!NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
+    //            {
+    //                SpawnPosition = outPos;
+    //                Heading = heading;
+    //                break;
+    //            }
+    //        }
+    //    }
+    //}
+    //public void GetSidewalkPositionAndHeading(Vector3 PositionNear, out Vector3 SpawnPosition)
+    //{
+    //    Vector3 pos = PositionNear;
+    //    SpawnPosition = Vector3.Zero;
+    //    Vector3 outPos;
+    //    unsafe
+    //    {
+    //        NativeFunction.CallByName<bool>("GET_SAFE_COORD_FOR_PED", pos.X, pos.Y, pos.Z, true, &outPos, 16);
+    //    }
 
-        Vector3 outPos;
-
-        unsafe
-        {
-            NativeFunction.CallByName<bool>("GET_SAFE_COORD_FOR_PED", pos.X, pos.Y, pos.Z, true, &outPos, 16);
-        }
-
-        SpawnPosition = outPos;
-
-        //
-    }
+    //    SpawnPosition = outPos;
+    //}
     private string GetStreetName(Vector3 Position)
     {
         int StreetHash = 0;

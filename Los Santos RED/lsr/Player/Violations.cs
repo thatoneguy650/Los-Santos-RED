@@ -16,7 +16,7 @@ namespace LosSantosRED.lsr
         private IWorld World;
         private IPlayer CurrentPlayer;
         private readonly List<Crime> CrimeList = new List<Crime>();
-        private readonly Crime KillingPolice = new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false) { IsAlwaysFlagged = true };
+        private readonly Crime KillingPolice = new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false) { CanViolateWithoutPerception = true };
         private readonly Crime FiringWeaponNearPolice = new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, 1, false) { CanReportBySound = true };
         private readonly Crime TerroristActivity = new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, 1) { CanReportBySound = true };
         private readonly Crime BrandishingHeavyWeapon = new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, 1, false, true, true);
@@ -34,7 +34,7 @@ namespace LosSantosRED.lsr
         private readonly Crime BrandishingCloseCombatWeapon = new Crime("BrandishingCloseCombatWeapon", "Brandishing Close Combat Weapon", 1, false, 20, 4, true, true, true);
         private readonly Crime HurtingCivilians = new Crime("HurtingCivilians", "Assaulting Civilians", 2, false, 14, 3, true, true, true);
         private readonly Crime ChangingPlates = new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, 4, true, true, false);
-        private readonly Crime ResistingArrest = new Crime("ResistingArrest", "Resisting Arrest", 2, false, 19, 4, false);
+        private readonly Crime ResistingArrest = new Crime("ResistingArrest", "Resisting Arrest", 2, false, 19, 4, false) { CanViolateWithoutPerception = true };
         private readonly Crime SuspiciousActivity = new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, 5, false);
         private readonly Crime DrunkDriving = new Crime("DrunkDriving", "Drunk Driving", 2, false, 30, 4, false, false, false);
         private readonly Crime DrivingAgainstTraffic = new Crime("DrivingAgainstTraffic", "Driving Against Traffic", 1, false, 32, 4, false, false, false) { IsTrafficViolation = true };
@@ -247,7 +247,7 @@ namespace LosSantosRED.lsr
             {
                 SuspiciousActivity.IsCurrentlyViolating = false;
             }
-            if (CurrentPlayer.IsWanted && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && !CurrentPlayer.IsInSearchMode && CurrentPlayer.Character.Speed >= 2.0f && !CurrentPlayer.HandsAreUp && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor >= 20000)
+            if (CurrentPlayer.IsWanted && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && CurrentPlayer.Character.Speed >= 2.0f && !CurrentPlayer.HandsAreUp && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor >= 20000)
             {
                 ResistingArrest.IsCurrentlyViolating = true;
             }
@@ -417,7 +417,7 @@ namespace LosSantosRED.lsr
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (RecentlyHitPed && (CurrentPlayer.RecentlyHurtCivilian || CurrentPlayer.RecentlyHurtCop) && (World.AnyHumansNearPlayer))//needed for non humans that are returned from this native
+            if (RecentlyHitPed && (CurrentPlayer.RecentlyHurtCivilian || CurrentPlayer.RecentlyHurtCop) && (CurrentPlayer.AnyHumansNear))//needed for non humans that are returned from this native
             {
                 HitPedWithCar.IsCurrentlyViolating = true;
             }
@@ -560,7 +560,7 @@ namespace LosSantosRED.lsr
         {
             foreach (Crime Violating in CrimeList.Where(x => x.IsCurrentlyViolating))
             {
-                if (CurrentPlayer.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && CurrentPlayer.AnyPoliceCanHearPlayer) || Violating.IsAlwaysFlagged)
+                if (CurrentPlayer.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && CurrentPlayer.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
                 {
                     CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.AddCrime(Violating, true, CurrentPlayer.CurrentPosition, CurrentPlayer.CurrentSeenVehicle, CurrentPlayer.CurrentSeenWeapon,true);
                 }

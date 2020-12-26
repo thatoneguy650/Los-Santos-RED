@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 public class WeaponDropping
 {
     private IPlayer CurrentPlayer;
-    private IDataMart DataMart;
+    private IWeaponProvider DataMart;
     private List<DroppedWeapon> DroppedWeapons = new List<DroppedWeapon>();
     private bool DroppingWeapon;
     private int PrevCountWeapons = 1;
     private int WeaponCount = 1;
     private int CurrentWeaponAmmo;
 
-    public WeaponDropping(IPlayer currentPlayer, IDataMart dataMart)
+    public WeaponDropping(IPlayer currentPlayer, IWeaponProvider dataMart)
     {
         CurrentPlayer = currentPlayer;
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
