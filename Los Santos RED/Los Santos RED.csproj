@@ -164,7 +164,7 @@
     <Compile Include="lsr\Util\Crimes\Crime.cs" />
     <Compile Include="lsr\Util\Crimes\CrimeEvent.cs" />
     <Compile Include="lsr\Util\Scanner\AudioSet.cs" />
-    <Compile Include="lsr\Util\Police\CountyJurisdictions.cs" />
+    <Compile Include="lsr\DataMart\CountyJurisdictions.cs" />
     <Compile Include="lsr\Util\Crimes\CriminalHistory.cs" />
     <Compile Include="lsr\Dispatcher.cs" />
     <Compile Include="lsr\Player\Investigations.cs" />

@@ -245,7 +245,7 @@ public class Dispatcher
     {
         if (CanDispatch)
         {
-            CurrentSpawn = new PoliceSpawn(MinDistanceToSpawn, MaxDistanceToSpawn, ClosestSpawnToOtherPoliceAllowed, ClosestSpawnToSuspectAllowed, CurrentPlayer.WantedLevel);
+            CurrentSpawn = new PoliceSpawn(MinDistanceToSpawn, MaxDistanceToSpawn, ClosestSpawnToOtherPoliceAllowed, ClosestSpawnToSuspectAllowed, CurrentPlayer, World);
             CurrentSpawn.GetPosition();
             //CurrentSpawn.Update();
             if (NeedToSpawn && CurrentSpawn.HasSpawns)
@@ -341,7 +341,8 @@ public class Dispatcher
         private float MaxDistanceToSpawn;
         private float ClosestSpawnToOtherPoliceAllowed;
         private float ClosestSpawnToSuspectAllowed;
-        private int WantedLevel;
+        private IPlayer CurrentPlayer;
+        private IWorld World;
         public Vector3 Position { get; set; } = Vector3.Zero;
         public Vector3 StreetPosition { get; set; } = Vector3.Zero;
         public Vector3 SidewalkPosition { get; set; } = Vector3.Zero;
@@ -416,13 +417,14 @@ public class Dispatcher
                 }
             }
         }
-        public PoliceSpawn(float minDistanceToSpawn,float maxDistanceToSpawn, float closestSpawnToOtherPoliceAllowed, float closestSpawnToSuspectAllowed, int wantedLevel)
+        public PoliceSpawn(float minDistanceToSpawn,float maxDistanceToSpawn, float closestSpawnToOtherPoliceAllowed, float closestSpawnToSuspectAllowed, IPlayer currentPlayer, IWorld world)
         {
             MinDistanceToSpawn = minDistanceToSpawn;
             MaxDistanceToSpawn = maxDistanceToSpawn;
             ClosestSpawnToOtherPoliceAllowed = closestSpawnToOtherPoliceAllowed;
             ClosestSpawnToSuspectAllowed = closestSpawnToSuspectAllowed;
-            WantedLevel = wantedLevel;
+            CurrentPlayer = currentPlayer;
+            World = world;
         }
         public void GetPosition()
         {
@@ -440,10 +442,10 @@ public class Dispatcher
         public void GetAgency()
         {
             AgencyToSpawn = null;
-            List<Agency> PossibleAgencies = DataMart.Instance.Agencies.GetAgencies(StreetPosition, WantedLevel);
+            List<Agency> PossibleAgencies = DataMart.Instance.Agencies.GetAgencies(StreetPosition, CurrentPlayer.WantedLevel);
             if (RandomItems.RandomPercent(50))//Favor Helicopter Spawns
             {
-                AgencyToSpawn = PossibleAgencies.Where(x => x.HasSpawnableHelicopters(WantedLevel)).PickRandom();
+                AgencyToSpawn = PossibleAgencies.Where(x => x.HasSpawnableHelicopters(CurrentPlayer.WantedLevel)).PickRandom();
             }
             if (AgencyToSpawn == null)
             {
@@ -451,30 +453,28 @@ public class Dispatcher
             }
             if (AgencyToSpawn == null)
             {
-                AgencyToSpawn = DataMart.Instance.Agencies.GetAgencies(Position, WantedLevel).PickRandom();
+                AgencyToSpawn = DataMart.Instance.Agencies.GetAgencies(Position, CurrentPlayer.WantedLevel).PickRandom();
             }
         }
         private void GetInitialPosition()
         {
-            if (WantedLevel > 0 && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+            if (CurrentPlayer.WantedLevel > 0 && Game.LocalPlayer.Character.IsInAnyVehicle(false))
             {
                 Position = Game.LocalPlayer.Character.GetOffsetPositionFront(350f);
             }
-            //else if (CurrentPlayer.Investigations.IsActive)
-            //{
-            //    Position = CurrentPlayer.Investigations.Position;
-            //}
+            else if (CurrentPlayer.Investigations.IsActive)
+            {
+                Position = CurrentPlayer.Investigations.Position;
+            }
             else
             {
                 Position = Game.LocalPlayer.Character.Position;
             }
-
             Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
-
-            //if (!CurrentPlayer.Investigations.IsActive && World.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
-            //{
-            //    Position = Vector3.Zero;
-            //}
+            if (!CurrentPlayer.Investigations.IsActive && World.AnyCopsNearPosition(Position, ClosestSpawnToOtherPoliceAllowed))
+            {
+                Position = Vector3.Zero;
+            }
         }
         private void GetStreetPosition()
         {
@@ -488,13 +488,11 @@ public class Dispatcher
             {
                 StreetPosition = Vector3.Zero;
             }
-
-            //if (World.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
-            //{
-            //    StreetPosition = Vector3.Zero;
-            //}
-
-            if(StreetPosition != Vector3.Zero)
+            if (World.AnyCopsNearPosition(StreetPosition, ClosestSpawnToOtherPoliceAllowed))
+            {
+                StreetPosition = Vector3.Zero;
+            }
+            if (StreetPosition != Vector3.Zero)
             {
                 Vector3 sidewalkPosition;
                 DataMart.Instance.Streets.GetSidewalkPositionAndHeading(StreetPosition, out sidewalkPosition);

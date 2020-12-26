@@ -11,4 +11,5 @@ public enum County
     BlaineCounty = 2,
     PacificOcean = 3,
     Unknown = 4,
+    Crook = 5,
 }

@@ -14,7 +14,6 @@ using LosSantosRED.lsr.Interface;
 public class PlateTheft
 {
     private IPlayer Player;
-    private IInput Input;
     private Rage.Object ScrewdriverModel;
     private Rage.Object LicensePlateModel;
     private float DistanceToCheckCars = 10f;
@@ -36,12 +35,11 @@ public class PlateTheft
             }
         }
     }
-    public PlateTheft(IPlayer player, IInput input)
+    public PlateTheft(IPlayer player)
     {
         Player = player;
-        Input = input;
     }
-    public PlateTheft(IPlayer player, IInput input, LicensePlate plateToChange) : this(player,input)
+    public PlateTheft(IPlayer player, LicensePlate plateToChange) : this(player)
     {
         PlateToAdd = plateToChange;
     }

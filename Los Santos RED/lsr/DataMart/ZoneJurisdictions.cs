@@ -310,6 +310,8 @@ public class ZoneJurisdictions
             new ZoneJurisdiction("LSSD","ZQ_UAR", 1, 15, 5)
 
         };
+
+        ZoneJurisdictionsList.Add(new ZoneJurisdiction("APD", "CHI1", 0, 100, 100));
     }
     private void CustomConfig()
     {

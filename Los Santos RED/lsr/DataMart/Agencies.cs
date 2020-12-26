@@ -357,7 +357,15 @@ public class Agencies
             new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, FIBPeds, FIBVehicles, "FIB ",BestWeapons) {MaxWantedLevelSpawn = 4, SpawnLimit = 6,CanSpawnAnywhere = true },
             new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Classification.Federal, DOAPeds, UnmarkedVehicles, "DOA ",AllWeapons)  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true },
 
-            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = true },
+
+
+
+            // TEMP TURNED OFF FOR CHICAGO TESTING
+            new Agency("~y~", "SAHP", "San Andreas Highway Patrol", "Yellow", Classification.State, SAHPPeds, SAHPVehicles, "HP ",LimitedWeapons) { MaxWantedLevelSpawn = 3, SpawnsOnHighway = false },//SPAWN ON HIGHWAY SHOUL DBE TRUE
+            // TEMP TURNED OFF FOR CHICAGO TESTING
+
+
+
             new Agency("~o~", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, PrisonPeds, PrisonVehicles, "SASPA ",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 2 },
             new Agency("~g~", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, ParkRangers, ParkRangerVehicles, "",AllWeapons) { MaxWantedLevelSpawn = 3, SpawnLimit = 3 },
             new Agency("~o~", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, CoastGuardPeds, CoastGuardVehicles, "SACG ",LimitedWeapons){ MaxWantedLevelSpawn = 3,SpawnLimit = 3 },
@@ -371,9 +379,17 @@ public class Agencies
 
             new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
         };
+
+
+
+
+        AgenciesList.Add(new Agency("~b~", "APD", "Acadia Police Department", "Blue", Classification.Police, StandardCops, UnmarkedVehicles, "APD ", AllWeapons) { MaxWantedLevelSpawn = 5 });
+        AgenciesList.Add(new Agency("~b~", "APD-ASD", "Acadia Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ", HeliWeapons) { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 4, SpawnLimit = 3 });
     }
     private void CustomConfig()
     {
+
+        //cpd1 - cd12
         //Custom Vehicles
 
         //Bravado Buffao S

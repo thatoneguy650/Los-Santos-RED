@@ -114,7 +114,7 @@ namespace LosSantosRED.lsr
 
             if (AnyCanSeePlayer && CurrentPlayer.IsWanted && !CurrentPlayer.IsInSearchMode)
             {
-                if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentPlayer.CurrentSeenVehicle.Vehicle.Handle && !CurrentPlayer.CurrentSeenVehicle.HasBeenDescribedByDispatch)
+                if (CurrentPlayer.CurrentSeenVehicle != null && CurrentPlayer.CurrentSeenVehicle.Vehicle.Exists() && PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentPlayer.CurrentSeenVehicle.Vehicle.Handle && !CurrentPlayer.CurrentSeenVehicle.HasBeenDescribedByDispatch)
                 {
                     GameTimePoliceNoticedVehicleChange = Game.GameTime;
                     Debug.Instance.WriteToLog("PlayerState", string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));

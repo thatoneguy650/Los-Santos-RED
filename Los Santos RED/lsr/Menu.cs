@@ -18,7 +18,6 @@ public class Menu
     private IWorld World;
     private IPedSwap PedSwap;
     private IRespawning Respawning;
-    private IInput Input;
     public Menu(IWorld world, IPlayer currentPlayer, IPedSwap pedSwap, IRespawning respawning)
     {
         CurrentPlayer = currentPlayer;
@@ -460,7 +459,8 @@ public class Menu
     {
         menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
         menuActionSmoking = new UIMenuItem("Smoking", "Start smoking.");
-        //off cuz the middle thing is throwing an error?//menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", CurrentPlayer.SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
+        //off cuz the middle thing is throwing an error?//
+        menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", CurrentPlayer.SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
 
@@ -686,12 +686,12 @@ public class Menu
         }
         else if (selectedItem == menuMainChangeLicensePlate)
         {
-            PlateTheft plateTheft = new PlateTheft(CurrentPlayer,Input);
+            PlateTheft plateTheft = new PlateTheft(CurrentPlayer);
             plateTheft.ChangePlate(CurrentPlayer.SpareLicensePlates[SelectedPlateIndex]);
         }
         else if (selectedItem == menuMainRemoveLicensePlate)
         {
-            PlateTheft plateTheft = new PlateTheft(CurrentPlayer, Input);
+            PlateTheft plateTheft = new PlateTheft(CurrentPlayer);
             plateTheft.RemovePlate();
         }
     }

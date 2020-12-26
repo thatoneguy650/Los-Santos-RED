@@ -59,6 +59,9 @@ public class CountyJurisdictions
             new CountyJurisdiction("LSSD-ASD",County.BlaineCounty, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
         };
+
+        CountyJurisdictionList.Add(new CountyJurisdiction("APD-ASD", County.Crook, 0, 100, 100));
+
     }
     private void CustomConfig()
     {

@@ -15,9 +15,7 @@ public class Debug
 {
     private static readonly Lazy<Debug> lazy =
     new Lazy<Debug>(() => new Debug());
-
     public static Debug Instance { get { return lazy.Value; } }
-
     private Debug()
     {
     }
@@ -42,34 +40,34 @@ public class Debug
         {
             DebugNumpad1();
         }
-        //if (Game.IsKeyDown(Keys.NumPad2))
-        //{
-        //    DebugNumpad2();
-        //}
-        //if (Game.IsKeyDown(Keys.NumPad3))
-        //{
-        //    DebugNumpad3();
-        //}
-        //if (Game.IsKeyDown(Keys.NumPad4))
-        //{
-        //    DebugNumpad4();
-        //}
-        //if (Game.IsKeyDown(Keys.NumPad5))
-        //{
-        //    DebugNumpad5();
-        //}
-        //if (Game.IsKeyDown(Keys.NumPad6))
-        //{
-        //    DebugNumpad6();
-        //}
-        //if (Game.IsKeyDown(Keys.NumPad7))
-        //{
-        //    DebugNumpad7();
-        //}
-        //if (Game.IsKeyDown(Keys.NumPad8))
-        //{
-        //    DebugNumpad8();
-        //}
+        if (Game.IsKeyDown(Keys.NumPad2))
+        {
+            DebugNumpad2();
+        }
+        if (Game.IsKeyDown(Keys.NumPad3))
+        {
+            DebugNumpad3();
+        }
+        if (Game.IsKeyDown(Keys.NumPad4))
+        {
+            DebugNumpad4();
+        }
+        if (Game.IsKeyDown(Keys.NumPad5))
+        {
+            DebugNumpad5();
+        }
+        if (Game.IsKeyDown(Keys.NumPad6))
+        {
+            DebugNumpad6();
+        }
+        if (Game.IsKeyDown(Keys.NumPad7))
+        {
+            DebugNumpad7();
+        }
+        if (Game.IsKeyDown(Keys.NumPad8))
+        {
+            DebugNumpad8();
+        }
         if (Game.IsKeyDown(Keys.NumPad9))
         {
             DebugNumpad9();
@@ -132,21 +130,21 @@ public class Debug
     {
         DebugInvincible();
     }
-    //private void DebugNumpad2()
-    //{
+    private void DebugNumpad2()
+   {
     //    int Toassign = Mod.Player.Instance.WantedLevel;
     //    if (Toassign == 7)
     //        return;
     //    Toassign++;
     //    Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(Toassign, "Debug", true);
 
-    //}
-    //private void DebugNumpad3()
-    //{
+    }
+    private void DebugNumpad3()
+    {
     //    Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(0, "Debug", true);
-    //}
-    //private void DebugNumpad4()
-    //{
+    }
+    private void DebugNumpad4()
+    {
     //    string GET_PLAYER_RADIO_STATION_NAME = "";
     //    unsafe
     //    {
@@ -160,9 +158,9 @@ public class Debug
 
     //    WriteToLog("Debugging", string.Format("GET_PLAYER_RADIO_STATION_NAME: {0}, GET_PLAYER_RADIO_STATION_INDEX: {1}", GET_PLAYER_RADIO_STATION_NAME, GET_PLAYER_RADIO_STATION_INDEX));
     //    NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_NAME", "RADIO_19_USER");
-    //}
-    //private void DebugNumpad5()
-    //{
+    }
+    private void DebugNumpad5()
+    {
     //    //if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null)
     //    //{
     //    //    int Group = NativeFunction.CallByName<int>("GET_WEAPONTYPE_GROUP", (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
@@ -245,9 +243,9 @@ public class Debug
     //    //    PedToKill.Delete();
     //    //}
 
-    //}
-    //private void DebugNumpad6()
-    //{
+    }
+    private void DebugNumpad6()
+    {
     //    //if (Mod.Player.Instance.CurrentVehicle != null && Mod.Player.Instance.CurrentVehicle.Vehicle.Exists())
     //    //{
     //    //    Colorbullshit();
@@ -277,7 +275,7 @@ public class Debug
 
     //    WriteToLog("Position", $"Vector3 {Game.LocalPlayer.Character.Position} Heading {Game.LocalPlayer.Character.Heading}");
 
-    //}
+    }
     //private void Colorbullshit()
     //{
     //    //Color Color1 = Extensions.GetBaseColor1(Mod.Player.Instance.CurrentVehicle.Vehicle.PrimaryColor);
@@ -339,8 +337,8 @@ public class Debug
     //    }
     //    WriteToLog("Debugging", string.Format("ColorBS2: {0} ", closestColor.ToString()));
     //}
-    //private void DebugNumpad7()
-    //{
+    private void DebugNumpad7()
+    {
     //    WriteToLog("Debugging", Mod.World.Instance.CurrentTime);
 
     //    if (Mod.Player.Instance.CurrentVehicle != null)
@@ -350,64 +348,155 @@ public class Debug
     //    }
 
     //    Mod.World.Instance.PrintTasksDEBUG();
-    //}
-    //public void DebugNumpad8()
-    //{
+    }
+    public void DebugNumpad8()
+    {
 
-    //    try
-    //    {
-    //        //CameraManager.DebugAbort();
+        Agency agency = DataMart.Instance.Agencies.GetAgencies(Game.LocalPlayer.Character.Position, 0).FirstOrDefault();
+        Zone zone = DataMart.Instance.Zones.GetZone(Game.LocalPlayer.Character.Position);
 
-    //        WriteToLog("Debugging", "--------------------------------");
-    //        WriteToLog("Debugging", "--------Police Status-----------");
-
-    //        foreach (Cop Cop in Mod.World.Instance.PoliceList.Where(x => x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
-    //        {
-
-    //            WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}",
-    //                Cop.Pedestrian.Handle
-    //                , Cop.Pedestrian.Model.Name
-    //                , Cop.AssignedAgency.Initials
-    //                , Cop.DistanceToPlayer
-    //                , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Cop.Pedestrian, Game.LocalPlayer.Character)
-    //                , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Game.LocalPlayer.Character, Cop.Pedestrian)
+        Vector3 streetPos;
+        float heading;
+        DataMart.Instance.Streets.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out streetPos, out heading, true);
 
 
-    //                ));
+        
+
+        WriteToLog("Debugging", "==============PLAYER===================");
+
+        if (agency != null)
+        {
+            WriteToLog("Debugging", string.Format("Agency Here: {0}", agency.FullName));
+        }
+        if (zone != null)
+        {
+            WriteToLog("Debugging", string.Format("Zone Here: {0}", zone.DisplayName));
+        }
+        WriteToLog("Debugging", string.Format("Closest Street: {0}, Distance From Player: {1}", streetPos,Game.LocalPlayer.Character.DistanceTo(streetPos)));
+
+        WriteToLog("Debugging", string.Format("InChicago: {0}", CheckInternalZones(Game.LocalPlayer.Character.Position)));
+        WriteToLog("Debugging", string.Format("Street Name: {0}", GetStreetName(Game.LocalPlayer.Character.Position)));
+        
+
+        WriteToLog("Debugging", "==============PLAYER===================");
 
 
-    //        }
-    //        WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Instance.Investigations.IsActive));
-    //        WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Instance.Investigations.Position));
-    //        WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Instance.Investigations.Distance));
-    //        WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.Instance.ActiveDistance));
-    //        WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Instance.PoliceList.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Instance.Investigations.Position) <= Mod.Player.Instance.Investigations.Distance)));
-    //        WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentPoliceStateString));
-    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsAliveAndFree: {0}", Mod.Player.Instance.IsAliveAndFree));
-    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.Character.Handle: {0}", Mod.Player.Instance.Character.Handle));
-    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsConsideredArmed: {0}", Mod.Player.Instance.IsConsideredArmed));
-    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.CheckIsArmed(): {0}", Mod.Player.Instance.CheckIsArmed()));
-    //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted: {0}", Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted));
+        //    try
+        //    {
+        //        //CameraManager.DebugAbort();
 
-    //        WriteToLog("Debugging", "==============PLAYER===================");
-    //        WriteToLog("Debugging", string.Format("CrimesObserved: {0}", Mod.Player.Instance.CurrentPoliceResponse.CrimesObservedJoined));
-    //        WriteToLog("Debugging", string.Format("HasActiveArrestWarrant: {0}", Mod.Player.Instance.HasActiveArrestWarrant));
-    //        WriteToLog("Debugging", string.Format("LethalForceAuthorized: {0}", Mod.Player.Instance.LethalForceAuthorized));
-    //        WriteToLog("Debugging", string.Format("MaxWantedLastLife: {0}", Mod.Player.Instance.MaxWantedLastLife));
-    //        WriteToLog("Debugging", string.Format("MaxWantedLevel: {0}", Mod.Player.Instance.MaxWantedLevel));
-    //        WriteToLog("Debugging", string.Format("CurrentCrimes.ObservedMaxWantedLevel: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.ObservedMaxWantedLevel));
-    //        WriteToLog("Debugging", string.Format("RecentlyAppliedWantedStats: {0}", Mod.Player.Instance.RecentlyAppliedWantedStats));
-    //        WriteToLog("Debugging", string.Format("RecentlyRespawned: {0}", Mod.Player.Instance.RecentlyRespawned));
-    //        WriteToLog("Debugging", string.Format("TimesDied: {0}", Mod.Player.Instance.TimesDied));
-    //        WriteToLog("Debugging", string.Format("WantedLevel: {0}", Mod.Player.Instance.WantedLevel));
-    //        WriteToLog("Debugging", "==============PLAYER===================");
+        //        WriteToLog("Debugging", "--------------------------------");
+        //        WriteToLog("Debugging", "--------Police Status-----------");
 
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        WriteToLog("Debugging error", e.Message + e.StackTrace);
-    //    }
-    //}
+        //        foreach (Cop Cop in Mod.World.Instance.PoliceList.Where(x => x.Pedestrian.IsAlive && x.AssignedAgency != null).OrderBy(x => x.DistanceToPlayer))
+        //        {
+
+        //            WriteToLog("Debugging", string.Format("Cop {0,-20},  Model {1,-20}, Agency {2,-20},Distance {3,-20},Relationship1 {4,-20},Relationship2 {5,-20}",
+        //                Cop.Pedestrian.Handle
+        //                , Cop.Pedestrian.Model.Name
+        //                , Cop.AssignedAgency.Initials
+        //                , Cop.DistanceToPlayer
+        //                , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Cop.Pedestrian, Game.LocalPlayer.Character)
+        //                , NativeFunction.CallByName<int>("GET_RELATIONSHIP_BETWEEN_PEDS", Game.LocalPlayer.Character, Cop.Pedestrian)
+
+
+        //                ));
+
+
+        //        }
+        //        WriteToLog("Debugging", string.Format("PoliceInInvestigationMode: {0}", Mod.Player.Instance.Investigations.IsActive));
+        //        WriteToLog("Debugging", string.Format("InvestigationPosition: {0}", Mod.Player.Instance.Investigations.Position));
+        //        WriteToLog("Debugging", string.Format("InvestigationDistance: {0}", Mod.Player.Instance.Investigations.Distance));
+        //        WriteToLog("Debugging", string.Format("ActiveDistance: {0}", Mod.World.Instance.ActiveDistance));
+        //        WriteToLog("Debugging", string.Format("AnyNear Investigation Position: {0}", Mod.World.Instance.PoliceList.Any(x => x.Pedestrian.DistanceTo2D(Mod.Player.Instance.Investigations.Position) <= Mod.Player.Instance.Investigations.Distance)));
+        //        WriteToLog("Debugging", string.Format("CurrentPoliceStateString: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentPoliceStateString));
+        //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsAliveAndFree: {0}", Mod.Player.Instance.IsAliveAndFree));
+        //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.Character.Handle: {0}", Mod.Player.Instance.Character.Handle));
+        //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.IsConsideredArmed: {0}", Mod.Player.Instance.IsConsideredArmed));
+        //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.CheckIsArmed(): {0}", Mod.Player.Instance.CheckIsArmed()));
+        //        WriteToLog("Debugging", string.Format("Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted: {0}", Mod.Player.Instance.CurrentPoliceResponse.RecentlySetWanted));
+
+        //        WriteToLog("Debugging", "==============PLAYER===================");
+        //        WriteToLog("Debugging", string.Format("CrimesObserved: {0}", Mod.Player.Instance.CurrentPoliceResponse.CrimesObservedJoined));
+        //        WriteToLog("Debugging", string.Format("HasActiveArrestWarrant: {0}", Mod.Player.Instance.HasActiveArrestWarrant));
+        //        WriteToLog("Debugging", string.Format("LethalForceAuthorized: {0}", Mod.Player.Instance.LethalForceAuthorized));
+        //        WriteToLog("Debugging", string.Format("MaxWantedLastLife: {0}", Mod.Player.Instance.MaxWantedLastLife));
+        //        WriteToLog("Debugging", string.Format("MaxWantedLevel: {0}", Mod.Player.Instance.MaxWantedLevel));
+        //        WriteToLog("Debugging", string.Format("CurrentCrimes.ObservedMaxWantedLevel: {0}", Mod.Player.Instance.CurrentPoliceResponse.CurrentCrimes.ObservedMaxWantedLevel));
+        //        WriteToLog("Debugging", string.Format("RecentlyAppliedWantedStats: {0}", Mod.Player.Instance.RecentlyAppliedWantedStats));
+        //        WriteToLog("Debugging", string.Format("RecentlyRespawned: {0}", Mod.Player.Instance.RecentlyRespawned));
+        //        WriteToLog("Debugging", string.Format("TimesDied: {0}", Mod.Player.Instance.TimesDied));
+        //        WriteToLog("Debugging", string.Format("WantedLevel: {0}", Mod.Player.Instance.WantedLevel));
+        //        WriteToLog("Debugging", "==============PLAYER===================");
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        WriteToLog("Debugging error", e.Message + e.StackTrace);
+        //    }
+    }
+    private string GetStreetName(Vector3 Position)
+    {
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        unsafe
+        {
+            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", Position.X, Position.Y, Position.Z, &StreetHash, &CrossingHash);
+        }
+        string StreetName = string.Empty;
+        string CrossStreetName = string.Empty;
+        if (StreetHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+
+                StreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+        }
+        return StreetName;
+    }
+    private bool CheckInternalZones(Vector3 ZonePosition)
+    {
+
+        /*Lower Left: X:4830.579 Y:1982.126 Z:16.02949
+Lower Right: X:7898.494 Y:3093.242 Z:66.55659
+Top Right: X:5845.111 Y:8616.287 Z:34.15254
+Top Left: X:1748.942 Y:8188.261 Z:82.17494 ( janky)*/
+        Vector2[] pts = new Vector2[] { new Vector2 { X = 4830.579f, Y = 1982.126f },
+                                        new Vector2 { X = 7898.494f, Y = 3093.242f },
+                                        new Vector2 { X = 5845.111f, Y = 8616.287f },
+                                        new Vector2 { X = 1748.942f, Y = 8188.261f } };
+
+        return IsPointInPolygon(new Vector2(ZonePosition.X,ZonePosition.Y), pts);
+
+    }
+    public bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
+    {
+        int polygonLength = polygon.Length, i = 0;
+        bool inside = false;
+        // x, y for tested point.
+        float pointX = point.X, pointY = point.Y;
+        // start / end point for the current polygon segment.
+        float startX, startY, endX, endY;
+        Vector2 endPoint = polygon[polygonLength - 1];
+        endX = endPoint.X;
+        endY = endPoint.Y;
+        while (i < polygonLength)
+        {
+            startX = endX; startY = endY;
+            endPoint = polygon[i++];
+            endX = endPoint.X; endY = endPoint.Y;
+            //
+            inside ^= (endY > pointY ^ startY > pointY) /* ? pointY inside [startY;endY] segment ? */
+                      && /* if so, test if it is under the segment */
+                      ((pointX - endX) < (pointY - endY) * (startX - endX) / (startY - endY));
+        }
+        return inside;
+    }
+
+
+
     private void DebugNumpad9()
     {
 

@@ -72,7 +72,6 @@ public class Cop : PedExt
             }
         }
     }
-    public float DistanceToLastSeen { get; private set; } = 99f;
     public bool WasModSpawned { get; private set; }
     public bool WasSpawnedAsDriver { get; set; }
     public bool ShouldAutoSetWeaponState { get; set; } = true;

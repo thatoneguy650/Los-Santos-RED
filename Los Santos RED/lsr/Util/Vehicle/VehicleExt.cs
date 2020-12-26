@@ -268,9 +268,18 @@ namespace LSR.Vehicles
             HasUpdatedPlateType = true;
             PlateType CurrentType = DataMart.Instance.PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle));
             string CurrentPlateNumber = Vehicle.LicensePlate;
-            if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
+            Zone CurrentZone = DataMart.Instance.Zones.GetZone(Vehicle.Position);
+
+
+            /*
+             * 
+             *TEMP HERE UNTIL I DECIDE
+             * 
+             * 
+             * */
+            if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
             {
-                PlateType NewType = DataMart.Instance.PlateTypes.GetRandomPlateType();
+                PlateType NewType = DataMart.Instance.PlateTypes.GetPlateType(CurrentZone.State);
                 if (NewType != null)
                 {
                     string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
@@ -283,9 +292,31 @@ namespace LSR.Vehicles
                     NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle, NewType.Index);
                     OriginalLicensePlate.PlateType = NewType.Index;
                     CarPlate.PlateType = NewType.Index;
-                   // Debug.Instance.WriteToLog("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                    // Debug.Instance.WriteToLog("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }
+            else
+            {
+                if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
+                {
+                    PlateType NewType = DataMart.Instance.PlateTypes.GetRandomPlateType();
+                    if (NewType != null)
+                    {
+                        string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                        if (NewPlateNumber != "")
+                        {
+                            Vehicle.LicensePlate = NewPlateNumber;
+                            OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                            CarPlate.PlateNumber = NewPlateNumber;
+                        }
+                        NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle, NewType.Index);
+                        OriginalLicensePlate.PlateType = NewType.Index;
+                        CarPlate.PlateType = NewType.Index;
+                        // Debug.Instance.WriteToLog("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                    }
+                }
+            }
+            
         }
         public void Update()
         {

@@ -38,6 +38,7 @@ namespace LosSantosRED.lsr.Interface
         void PauseTime();
         void UnPauseTime();
         int CountNearbyCops(Ped pedestrian);
+        bool AnyCopsNearPosition(Vector3 position, float closestSpawnToOtherPoliceAllowed);
 
         //void Delete(Cop outOfRangeCop);
         //void SpawnCop(Agency agencyToSpawn, Vector3 finalSpawnPosition, float heading, VehicleInformation agencyVehicle);
