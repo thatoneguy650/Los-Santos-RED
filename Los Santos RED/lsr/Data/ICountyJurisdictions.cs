@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IAgencyWeaponSettingsProvider : IAgencyProvider, IWeaponProvider, ISettingsProvider
+    public interface ICountyJurisdictions
     {
+        Agency GetRandomAgency(County county, int wantedLevel);
     }
 }

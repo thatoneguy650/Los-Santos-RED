@@ -3,12 +3,14 @@ using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 public class Dispatcher
 {
-    
+
     private PoliceSpawn CurrentSpawn;
     private uint GameTimeCheckedSpawn;
     private uint GameTimeCheckedDeleted;
@@ -18,14 +20,27 @@ public class Dispatcher
     private IWorld World;
     private IPoliceSight Police;
     private ISpawner Spawner;
-    private IAgencyWeaponSettingsProvider DataMart;
-    public Dispatcher(IWorld world, IPlayer currentPlayer, IPoliceSight police, ISpawner spawner, IAgencyWeaponSettingsProvider dataMart)
+    private IAgencies Agencies;
+    private IWeapons Weapons;
+    private ISettings Settings;
+    private IStreets Streets;
+    private ICountyJurisdictions CountyJurisdictions;
+    private IZoneJurisdictions ZoneJurisdictions;
+    private IZones Zones;
+    private readonly int LikelyHoodOfAnySpawn = 5;
+    public Dispatcher(IWorld world, IPlayer currentPlayer, IPoliceSight police, ISpawner spawner, IAgencies agencies, IWeapons weapons, ISettings settings, IStreets streets, IZones zones, ICountyJurisdictions countyJurisdictions, IZoneJurisdictions zoneJurisdictions)
     {
         CurrentPlayer = currentPlayer;
         World = world;
         Police = police;
         Spawner = spawner;
-        DataMart = dataMart;
+        Agencies = agencies;
+        Weapons = weapons;
+        Settings = settings;
+        Streets = streets;
+        Zones = zones;
+        CountyJurisdictions = countyJurisdictions;
+        ZoneJurisdictions = zoneJurisdictions;
     }
     private int SpawnedCopLimit
     {
@@ -247,7 +262,7 @@ public class Dispatcher
     {
         if (CanDispatch && NeedToSpawn)
         {
-            CurrentSpawn = new PoliceSpawn(GetInitialPosition(),MinDistanceToSpawn, MaxDistanceToSpawn, ClosestSpawnToSuspectAllowed);
+            CurrentSpawn = new PoliceSpawn(GetInitialPosition(), MinDistanceToSpawn, MaxDistanceToSpawn, ClosestSpawnToSuspectAllowed);
             int TimesTried = 0;
             while (!CurrentSpawn.HasSpawns && TimesTried < 10)
             {
@@ -264,7 +279,7 @@ public class Dispatcher
             }
             GameTimeCheckedSpawn = Game.GameTime;
         }
-        SetVanilla(false);      
+        SetVanilla(false);
     }
     private void AttemptSpawn()
     {
@@ -274,7 +289,17 @@ public class Dispatcher
             Game.Console.Print("Dispatcher could not find Agency To Spawn");
             return;
         }
-        CurrentSpawn.VehicleToSpawn = CurrentSpawn.AgencyToSpawn.GetRandomVehicle(CurrentPlayer.WantedLevel);
+        bool IncludeHelicopters = false;
+        if(World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit)
+        {
+            IncludeHelicopters = true;
+        }
+        bool IncludeBoats = false;
+        if (World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit)
+        {
+            IncludeBoats = true;
+        }
+        CurrentSpawn.VehicleToSpawn = CurrentSpawn.AgencyToSpawn.GetRandomVehicle(CurrentPlayer.WantedLevel, IncludeHelicopters, IncludeBoats);
         if (CurrentSpawn.VehicleToSpawn == null)
         {
             Game.Console.Print(string.Format("Dispatcher could not find vehicle to spawn for {0}", CurrentSpawn.AgencyToSpawn.Initials));
@@ -283,15 +308,15 @@ public class Dispatcher
         GetFinalPosition();
         AgencyAssignedWeapon AssignedPistolType = CurrentSpawn.AgencyToSpawn.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
         AgencyAssignedWeapon AssignedHeavyType = CurrentSpawn.AgencyToSpawn.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
-        Spawner.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, CurrentSpawn.VehicleToSpawn, CurrentPlayer.WantedLevel, DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip, DataMart.Weapons.GetWeapon(AssignedPistolType.ModelName), AssignedPistolType.Variation, DataMart.Weapons.GetWeapon(AssignedHeavyType.ModelName), AssignedHeavyType.Variation);
+        Spawner.SpawnCop(CurrentSpawn.AgencyToSpawn, CurrentSpawn.FinalSpawnPosition, CurrentSpawn.Heading, CurrentSpawn.VehicleToSpawn, CurrentPlayer.WantedLevel, Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip, Weapons.GetWeapon(AssignedPistolType.ModelName), AssignedPistolType.Variation, Weapons.GetWeapon(AssignedHeavyType.ModelName), AssignedHeavyType.Variation);
     }
     private void DetermineAgency()
     {
-        List<Agency> PossibleAgencies = DataMart.Agencies.GetAgencies(CurrentSpawn.StreetPosition, CurrentPlayer.WantedLevel);
+        List<Agency> PossibleAgencies = GetAgencies(CurrentSpawn.StreetPosition, CurrentPlayer.WantedLevel);
         CurrentSpawn.AgencyToSpawn = PossibleAgencies.PickRandom();
         if (CurrentSpawn.AgencyToSpawn == null)
         {
-            CurrentSpawn.AgencyToSpawn = DataMart.Agencies.GetAgencies(CurrentSpawn.Position, CurrentPlayer.WantedLevel).PickRandom();
+            CurrentSpawn.AgencyToSpawn = GetAgencies(CurrentSpawn.Position, CurrentPlayer.WantedLevel).PickRandom();
         }
     }
     private Vector3 GetInitialPosition()
@@ -333,11 +358,43 @@ public class Dispatcher
             CurrentSpawn.FinalSpawnPosition = CurrentSpawn.StreetPosition;
         }
     }
+    private List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
+    {
+        List<Agency> ToReturn = new List<Agency>();
+        Street StreetAtPosition = Streets.GetStreet(Position);
+        if (StreetAtPosition != null && StreetAtPosition.IsHighway) //Highway Patrol Jurisdiction
+        {
+            ToReturn.AddRange(Agencies.GetSpawnableHighwayAgencies(WantedLevel));
+        }
+        Zone CurrentZone = Zones.GetZone(Position);
+        Agency ZoneAgency = ZoneJurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel);
+        if (ZoneAgency != null)
+        {
+            ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
+        }
+        if (ZoneAgency == null || RandomItems.RandomPercent(10))
+        {
+            Agency CountyAgency = CountyJurisdictions.GetRandomAgency(CurrentZone.ZoneCounty, WantedLevel);
+            if (CountyAgency != null)//randomly spawn the county agency
+            {
+                ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
+            }
+        }
+        if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
+        {
+            ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel));
+        }
+        foreach (Agency ag in ToReturn)
+        {
+            Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
+        }
+        return ToReturn;
+    }
     public void Recall()
     {
         if (CanRecall)
         {
-            foreach(Cop OutOfRangeCop in World.PoliceList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime)) 
+            foreach (Cop OutOfRangeCop in World.PoliceList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime))
             {
                 bool ShouldDelete = false;
                 if (!OutOfRangeCop.AssignedAgency.CanSpawn(CurrentPlayer.WantedLevel))
@@ -360,11 +417,11 @@ public class Dispatcher
                 {
                     ShouldDelete = true;
                 }
-                else if(!OutOfRangeCop.AssignedAgency.CanSpawn(CurrentPlayer.WantedLevel))
+                else if (!OutOfRangeCop.AssignedAgency.CanSpawn(CurrentPlayer.WantedLevel))
                 {
                     ShouldDelete = true;
                 }
-                if(ShouldDelete)
+                if (ShouldDelete)
                 {
                     Spawner.DeleteCop(OutOfRangeCop);
                 }
@@ -394,7 +451,7 @@ public class Dispatcher
         public Vector3 FinalSpawnPosition { get; set; } = Vector3.Zero;
         public float Heading { get; set; }
         public Agency AgencyToSpawn { get; set; }
-        public VehicleInformation VehicleToSpawn { get; set;}
+        public VehicleInformation VehicleToSpawn { get; set; }
         public bool IsWater
         {
             get
@@ -449,7 +506,7 @@ public class Dispatcher
                 }
             }
         }
-        public PoliceSpawn(Vector3 initialPosition, float minDistanceToSpawn,float maxDistanceToSpawn, float closestSpawnToSuspectAllowed)
+        public PoliceSpawn(Vector3 initialPosition, float minDistanceToSpawn, float maxDistanceToSpawn, float closestSpawnToSuspectAllowed)
         {
             Position = initialPosition;
             StreetPosition = Vector3.Zero;

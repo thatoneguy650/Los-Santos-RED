@@ -24,11 +24,11 @@ namespace LosSantosRED.lsr
     public class Input
     {
         private IPlayer Player;
-        private ISettingsProvider SettingsProvider;
-        public Input(IPlayer currentPlayer, ISettingsProvider dataMart)
+        private ISettings Settings;
+        public Input(IPlayer currentPlayer, ISettings settings)
         {
             Player = currentPlayer;
-            SettingsProvider = dataMart;
+            Settings = settings;
         }
         private uint GameTimeStartedHoldingEnter;
         private bool IsHoldingEnter
@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(SettingsProvider.Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -60,7 +60,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(SettingsProvider.Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                if (Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
                 {
                     return true;
                 }
@@ -74,7 +74,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(SettingsProvider.Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }
@@ -88,7 +88,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(SettingsProvider.Settings.SettingsManager.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
+                if (Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
                 {
                     return true;
                 }

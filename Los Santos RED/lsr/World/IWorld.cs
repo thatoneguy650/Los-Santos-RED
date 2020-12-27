@@ -18,6 +18,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsNight { get; }
         List<Cop> PoliceList { get; }
         int TotalSpawnedCops { get; }
+        int PoliceHelicoptersCount { get; }
+        int PoliceBoatsCount { get; }
+
         void AddBlip(Blip currentWantedCenterBlip);
         void ClearPolice();
         PedExt GetCivilian(uint handle);

@@ -13,21 +13,19 @@ using System.Threading.Tasks;
 public class WeaponDropping
 {
     private IPlayer CurrentPlayer;
-    private IWeaponProvider DataMart;
+    private IWeapons Weapons;
     private List<DroppedWeapon> DroppedWeapons = new List<DroppedWeapon>();
     private bool DroppingWeapon;
     private int PrevCountWeapons = 1;
     private int WeaponCount = 1;
     private int CurrentWeaponAmmo;
-
-    public WeaponDropping(IPlayer currentPlayer, IWeaponProvider dataMart)
+    public WeaponDropping(IPlayer currentPlayer, IWeapons weapons)
     {
         CurrentPlayer = currentPlayer;
+        Weapons = weapons;
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
         PrevCountWeapons = WeaponCount;
-        DataMart = dataMart;
     }
-
     public bool CanDropWeapon
     {
         get
@@ -67,7 +65,7 @@ public class WeaponDropping
             DropWeaponAnimation();
             NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
 
-            WeaponVariation DroppedGunVariation = DataMart.Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+            WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
             DroppedWeapons.Add(new DroppedWeapon(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
 
             NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
@@ -90,7 +88,7 @@ public class WeaponDropping
             {
                 if (PlayerWeapons.Contains(MyOldGuns.Weapon.Hash) && Game.LocalPlayer.Character.Position.DistanceTo2D(MyOldGuns.CoordinatedDropped) <= 2f)
                 {
-                    WeaponInformation Gun2 = DataMart.Weapons.GetWeapon((uint)MyOldGuns.Weapon.Hash);
+                    WeaponInformation Gun2 = Weapons.GetWeapon((uint)MyOldGuns.Weapon.Hash);
                     if(Gun2 != null)
                     {
                         Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.Weapon.Hash, MyOldGuns.Variation);

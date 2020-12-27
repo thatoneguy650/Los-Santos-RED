@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +11,9 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-public class Settings
+public class Settings : ISettings
 {
+    internal readonly object General;
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
     public SettingsManager SettingsManager { get; private set; }
     public void ReadConfig()

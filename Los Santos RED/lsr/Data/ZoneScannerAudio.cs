@@ -5,26 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using static DispatchScannerFiles;
 
-namespace LosSantosRED.lsr.Data
-{
-    public class ZoneScannerAudio
-    {
-        private List<ZoneLookup> ZoneList = new List<ZoneLookup>();
-        public void ReadConfig()
-        {
-            DefaultConfig();
-        }
-        public string GetAudio(string ZoneName)
-        {
-            ZoneLookup Returned = ZoneList.Where(x => x.InternalGameName == ZoneName).FirstOrDefault();
-            if (Returned == null)
-                return "";
-            return Returned.ScannerValue;
-        }
-        private void DefaultConfig()
-        {
 
-            ZoneList = new List<ZoneLookup>
+public class ZoneScannerAudio
+{
+    private List<ZoneLookup> ZoneList = new List<ZoneLookup>();
+    public void ReadConfig()
+    {
+        DefaultConfig();
+    }
+    public string GetAudio(string ZoneName)
+    {
+        ZoneLookup Returned = ZoneList.Where(x => x.InternalGameName == ZoneName).FirstOrDefault();
+        if (Returned == null)
+            return "";
+        return Returned.ScannerValue;
+    }
+    private void DefaultConfig()
+    {
+
+        ZoneList = new List<ZoneLookup>
             {
             //One Off
             new ZoneLookup("OCEANA", areas.TheOcean.FileName),
@@ -142,21 +141,21 @@ namespace LosSantosRED.lsr.Data
             new ZoneLookup("WINDF", areas.RonAlternatesWindFarm.FileName),
     };
 
-        }
-        private class ZoneLookup
-        {
-            public string InternalGameName { get; set; }
-            public string ScannerValue { get; set; }
-            public ZoneLookup()
-            {
-
-            }
-            public ZoneLookup(string _GameName, string _ScannerValue)
-            {
-                InternalGameName = _GameName;
-                ScannerValue = _ScannerValue;
-            }
-        }
-
     }
+    private class ZoneLookup
+    {
+        public string InternalGameName { get; set; }
+        public string ScannerValue { get; set; }
+        public ZoneLookup()
+        {
+
+        }
+        public ZoneLookup(string _GameName, string _ScannerValue)
+        {
+            InternalGameName = _GameName;
+            ScannerValue = _ScannerValue;
+        }
+    }
+
 }
+

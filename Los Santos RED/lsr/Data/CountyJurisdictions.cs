@@ -8,18 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class CountyJurisdictions
+public class CountyJurisdictions : ICountyJurisdictions
 {
-    private IZoneAgencyProvider DataMart;
+    private IAgencies AgencyProvider;
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\CountyJurisdiction.xml";
     private List<CountyJurisdiction> CountyJurisdictionList = new List<CountyJurisdiction>();
     private bool UseVanillaConfig = true;
 
-    public CountyJurisdictions(IZoneAgencyProvider dataMart)
+    public CountyJurisdictions(IAgencies agencyProvider)
     {
-        DataMart = dataMart;
+        AgencyProvider = agencyProvider;
     }
-
     public void ReadConfig()
     {
         if (File.Exists(ConfigFileName))
@@ -39,33 +38,27 @@ public class CountyJurisdictions
             Serialization.SerializeParams(CountyJurisdictionList, ConfigFileName);
         }
     }
-    public Agency GetRandomAgency(string ZoneName, int WantedLevel)
+    public Agency GetRandomAgency(County county, int WantedLevel)//was zone, instead take county
     {
-        Zone MyZone = DataMart.Zones.GetZone(ZoneName);
-        if (MyZone != null)
+        List<CountyJurisdiction> ToPickFrom = new List<CountyJurisdiction>();
+        foreach (CountyJurisdiction countyJurisdiction in CountyJurisdictionList.Where(x => x.County == county))
         {
-            List<CountyJurisdiction> ToPickFrom = new List<CountyJurisdiction>();
-            foreach (CountyJurisdiction countyJurisdiction in CountyJurisdictionList.Where(x => x.County == MyZone.ZoneCounty))
+            Agency Agency = AgencyProvider.GetAgency(countyJurisdiction.AgencyInitials);
+            if (Agency != null && Agency.CanSpawn(WantedLevel))
             {
-                Agency Agency = DataMart.Agencies.GetAgency(countyJurisdiction.AgencyInitials);
-                if (Agency != null && Agency.CanSpawn(WantedLevel))
-                {
-                    ToPickFrom.Add(countyJurisdiction);
-                }
+                ToPickFrom.Add(countyJurisdiction);
             }
-            //List<CountyJurisdiction> ToPickFrom = CountyJurisdictionList.Where(x => x.County == MyZone.ZoneCounty && x.GameAgency.CanSpawn(WantedLevel)).ToList();
-            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
-            int RandomPick = RandomItems.MyRand.Next(0, Total);
-            foreach (CountyJurisdiction MyJurisdiction in ToPickFrom)
+        }
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (CountyJurisdiction MyJurisdiction in ToPickFrom)
+        {
+            int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
+            if (RandomPick < SpawnChance)
             {
-                int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
-                if (RandomPick < SpawnChance)
-                {
-                    return DataMart.Agencies.GetAgency(MyJurisdiction.AgencyInitials);
-                    //return MyJurisdiction.GameAgency;
-                }
-                RandomPick -= SpawnChance;
+                return AgencyProvider.GetAgency(MyJurisdiction.AgencyInitials);
             }
+            RandomPick -= SpawnChance;
         }
         return null;
     }
@@ -76,10 +69,9 @@ public class CountyJurisdictions
             new CountyJurisdiction("LSPD-ASD",County.CityOfLosSantos, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",County.BlaineCounty, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
+            new CountyJurisdiction("APD-ASD", County.Crook, 0, 100, 100),
+            new CountyJurisdiction("NYSP", County.NorthYankton, 0, 100, 100)
         };
-
-        CountyJurisdictionList.Add(new CountyJurisdiction("APD-ASD", County.Crook, 0, 100, 100));
-
     }
     private void CustomConfig()
     {

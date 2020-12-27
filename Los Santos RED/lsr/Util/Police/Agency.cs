@@ -81,23 +81,30 @@ public class Agency
     {
         return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
     }
-    public VehicleInformation GetRandomVehicle(int WantedLevel)
+    public VehicleInformation GetRandomVehicle(int WantedLevel, bool includeHelicopters, bool includeBoats)
     {
-        if (Vehicles == null || !Vehicles.Any())
-            return null;
-
-        List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel)).ToList();
-        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
-        // Mod.Debugging.WriteToLog("GetRandomVehicle", string.Format("Total Chance {0}, Items {1}", Total, string.Join(",",ToPickFrom.Select( x => x.ModelName + " " + x.CanCurrentlySpawn + "  " + x.CurrentSpawnChance))));
-        int RandomPick = RandomItems.MyRand.Next(0, Total);
-        foreach (VehicleInformation Vehicle in ToPickFrom)
+        if (Vehicles != null && Vehicles.Any())
         {
-            int SpawnChance = Vehicle.CurrentSpawnChance(WantedLevel);
-            if (RandomPick < SpawnChance)
+            List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && !x.IsHelicopter && !x.IsBoat).ToList();
+            if(includeBoats)
             {
-                return Vehicle;
+                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && x.IsBoat).ToList());
             }
-            RandomPick -= SpawnChance;
+            if (includeHelicopters)
+            {
+                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && x.IsHelicopter).ToList());
+            }
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
+            int RandomPick = RandomItems.MyRand.Next(0, Total);
+            foreach (VehicleInformation Vehicle in ToPickFrom)
+            {
+                int SpawnChance = Vehicle.CurrentSpawnChance(WantedLevel);
+                if (RandomPick < SpawnChance)
+                {
+                    return Vehicle;
+                }
+                RandomPick -= SpawnChance;
+            }
         }
         return null;
     }

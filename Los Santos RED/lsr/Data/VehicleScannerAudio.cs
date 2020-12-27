@@ -7,76 +7,75 @@ using System.Text;
 using System.Threading.Tasks;
 using static DispatchScannerFiles;
 
-namespace LosSantosRED.lsr.Data
+
+public class VehicleScannerAudio
 {
-    public class VehicleScannerAudio
+    private List<LetterLookup> LettersAndNumbersLookup = new List<LetterLookup>();
+    private List<ColorLookup> ColorLookups = new List<ColorLookup>();
+    private List<VehicleModelLookup> VehicleModelLookups = new List<VehicleModelLookup>();
+    private List<VehicleClassLookup> VehicleClassLookups = new List<VehicleClassLookup>();
+    private List<VehicleMakeLookup> VehicleMakeLookups = new List<VehicleMakeLookup>();
+    public void ReadConfig()
     {
-        private List<LetterLookup> LettersAndNumbersLookup = new List<LetterLookup>();
-        private List<ColorLookup> ColorLookups = new List<ColorLookup>();
-        private List<VehicleModelLookup> VehicleModelLookups = new List<VehicleModelLookup>();
-        private List<VehicleClassLookup> VehicleClassLookups = new List<VehicleClassLookup>();
-        private List<VehicleMakeLookup> VehicleMakeLookups = new List<VehicleMakeLookup>();
-        public void ReadConfig()
+        DefaultConfig();
+    }
+    public string GetColorAudio(Color ToLookup)
+    {
+        ColorLookup VehicleColor = ColorLookups.FirstOrDefault(x => x.BaseColor == ToLookup);
+        if (VehicleColor == null)
+            return "";
+        else
+            return VehicleColor.ScannerFile;
+    }
+    public string GetMakeAudio(string MakeName)
+    {
+        VehicleMakeLookup VehicleMake = VehicleMakeLookups.FirstOrDefault(x => x.MakeName == MakeName);
+        if (VehicleMake == null)
+            return "";
+        else
+            return VehicleMake.ScannerFile;
+    }
+    public string GetModelAudio(uint VehicleHash)
+    {
+        VehicleModelLookup VehicleModel = VehicleModelLookups.FirstOrDefault(x => x.Hash == VehicleHash);
+        if (VehicleModel == null)
+            return "";
+        else
+            return VehicleModel.ScannerFile;
+    }
+    public string GetClassAudio(int GameClass)
+    {
+        VehicleClassLookup VehicleClass = VehicleClassLookups.FirstOrDefault(x => x.GameClass == GameClass);
+        if (VehicleClass == null)
+            return "";
+        else
+            return VehicleClass.ScannerFile;
+    }
+    public List<string> GetPlateAudio(string LicensePlate)
+    {
+        List<string> AudioFiles = new List<string>();
+        foreach (char c in LicensePlate)
         {
-            DefaultConfig();
-        }
-        public string GetColorAudio(Color ToLookup)
-        {
-            ColorLookup VehicleColor = ColorLookups.FirstOrDefault(x => x.BaseColor == ToLookup);
-            if (VehicleColor == null)
-                return "";
-            else
-                return VehicleColor.ScannerFile;
-        }
-        public string GetMakeAudio(string MakeName)
-        {
-            VehicleMakeLookup VehicleMake = VehicleMakeLookups.FirstOrDefault(x => x.MakeName == MakeName);
-            if (VehicleMake == null)
-                return "";
-            else
-                return VehicleMake.ScannerFile;
-        }
-        public string GetModelAudio(uint VehicleHash)
-        {
-            VehicleModelLookup VehicleModel = VehicleModelLookups.FirstOrDefault(x => x.Hash == VehicleHash);
-            if (VehicleModel == null)
-                return "";
-            else
-                return VehicleModel.ScannerFile;
-        }
-        public string GetClassAudio(int GameClass)
-        {
-            VehicleClassLookup VehicleClass = VehicleClassLookups.FirstOrDefault(x => x.GameClass == GameClass);
-            if (VehicleClass == null)
-                return "";
-            else
-                return VehicleClass.ScannerFile;
-        }
-        public List<string> GetPlateAudio(string LicensePlate)
-        {
-            List<string> AudioFiles = new List<string>();
-            foreach (char c in LicensePlate)
+            List<LetterLookup> Possible = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).ToList();
+            if (Possible.Any())
             {
-                List<LetterLookup> Possible = LettersAndNumbersLookup.Where(x => x.AlphaNumeric == c).ToList();
-                if(Possible.Any())
-                {
-                    string DispatchFileName = Possible.PickRandom().ScannerFile;
-                    AudioFiles.Add(DispatchFileName);
-                }
+                string DispatchFileName = Possible.PickRandom().ScannerFile;
+                AudioFiles.Add(DispatchFileName);
             }
-            return AudioFiles;
         }
-        public string ClassName(int GameClass)
-        {
-            VehicleClassLookup VehicleClass = VehicleClassLookups.FirstOrDefault(x => x.GameClass == GameClass);
-            if (VehicleClass == null)
-                return "";
-            else
-                return VehicleClass.Name;
-        }
-        private void DefaultConfig()
-        {
-            LettersAndNumbersLookup = new List<LetterLookup>()
+        return AudioFiles;
+    }
+    public string ClassName(int GameClass)
+    {
+        VehicleClassLookup VehicleClass = VehicleClassLookups.FirstOrDefault(x => x.GameClass == GameClass);
+        if (VehicleClass == null)
+            return "";
+        else
+            return VehicleClass.Name;
+    }
+    private void DefaultConfig()
+    {
+        LettersAndNumbersLookup = new List<LetterLookup>()
         {
             new LetterLookup('A', lp_letters_high.Adam.FileName),
             new LetterLookup('B', lp_letters_high.Boy.FileName),
@@ -160,7 +159,7 @@ namespace LosSantosRED.lsr.Data
             new LetterLookup('9', lp_numbers.Niner2.FileName),
             new LetterLookup('0', lp_numbers.Zero2.FileName),
         };
-            ColorLookups = new List<ColorLookup>()
+        ColorLookups = new List<ColorLookup>()
         {
             new ColorLookup(colour.COLORRED01.FileName, Color.Red),
             new ColorLookup(colour.COLORAQUA01.FileName, Color.Aqua),
@@ -187,7 +186,7 @@ namespace LosSantosRED.lsr.Data
             new ColorLookup(colour.COLORWHITE01.FileName, Color.White),
             new ColorLookup(colour.COLORYELLOW01.FileName, Color.Yellow),
          };
-            VehicleModelLookups = new List<VehicleModelLookup>
+        VehicleModelLookups = new List<VehicleModelLookup>
         {
             new VehicleModelLookup("airtug", 0x5D0AAC8F, model.AIRTUG01.FileName),
             new VehicleModelLookup("akuma", 0x63ABADE7, model.AKUMA01.FileName),
@@ -405,7 +404,7 @@ namespace LosSantosRED.lsr.Data
             new VehicleModelLookup("ruiner3", 0x2E5AFD37, model.RUINER01.FileName),
             new VehicleModelLookup("adder", 0xB779A091, model.ADDER01.FileName),
         };
-            VehicleClassLookups = new List<VehicleClassLookup>()
+        VehicleClassLookups = new List<VehicleClassLookup>()
         {
             new VehicleClassLookup("Compact",0,vehicle_category.TwoDoor01.FileName),
             new VehicleClassLookup("Sedan",1,vehicle_category.Sedan.FileName),
@@ -430,7 +429,7 @@ namespace LosSantosRED.lsr.Data
             new VehicleClassLookup("Commercial",20,vehicle_category.UtilityVehicle01.FileName),
             new VehicleClassLookup("Train",21,vehicle_category.Train01.FileName),
         };
-            VehicleMakeLookups = new List<VehicleMakeLookup>()
+        VehicleMakeLookups = new List<VehicleMakeLookup>()
         {
             new VehicleMakeLookup("Albany",manufacturer.ALBANY01.FileName),
             new VehicleMakeLookup("Annis",manufacturer.ANNIS01.FileName),
@@ -495,63 +494,62 @@ namespace LosSantosRED.lsr.Data
             new VehicleMakeLookup("Willard",""),
             new VehicleMakeLookup("Zirconium",manufacturer.ZIRCONIUM01.FileName),
         };
-        }
-        private class ColorLookup
+    }
+    private class ColorLookup
+    {
+        public Color BaseColor { get; set; }
+        public string ScannerFile { get; set; }
+        public ColorLookup(string _ScannerFile, Color _BaseColor)
         {
-            public Color BaseColor { get; set; }
-            public string ScannerFile { get; set; }
-            public ColorLookup(string _ScannerFile, Color _BaseColor)
-            {
-                BaseColor = _BaseColor;
-                ScannerFile = _ScannerFile;
-            }
-
-        }
-        private class LetterLookup
-        {
-            public char AlphaNumeric { get; set; }
-            public string ScannerFile { get; set; }
-            public LetterLookup(char _AlphaNumeric, string _ScannerFile)
-            {
-                AlphaNumeric = _AlphaNumeric;
-                ScannerFile = _ScannerFile;
-            }
-
-        }
-        private class VehicleModelLookup
-        {
-            public string Name { get; set; }
-            public uint Hash { get; set; }
-            public string ScannerFile { get; set; } = "";
-            public VehicleModelLookup(string _Name, uint _Hash, string _ScannerFile)
-            {
-                Name = _Name;
-                Hash = _Hash;
-                ScannerFile = _ScannerFile;
-            }
-        }
-        private class VehicleMakeLookup
-        {
-            public string MakeName { get; set; }
-            public string ScannerFile { get; set; } = "";
-            public VehicleMakeLookup(string makeName, string scannerFile)
-            {
-                MakeName = makeName;
-                ScannerFile = scannerFile;
-            }
-        }
-        private class VehicleClassLookup
-        {
-            public string Name { get; set; }
-            public int GameClass { get; set; }
-            public string ScannerFile { get; set; } = "";
-            public VehicleClassLookup(string name, int gameClass, string scannerFile)
-            {
-                Name = name;
-                GameClass = gameClass;
-                ScannerFile = scannerFile;
-            }
+            BaseColor = _BaseColor;
+            ScannerFile = _ScannerFile;
         }
 
     }
+    private class LetterLookup
+    {
+        public char AlphaNumeric { get; set; }
+        public string ScannerFile { get; set; }
+        public LetterLookup(char _AlphaNumeric, string _ScannerFile)
+        {
+            AlphaNumeric = _AlphaNumeric;
+            ScannerFile = _ScannerFile;
+        }
+
+    }
+    private class VehicleModelLookup
+    {
+        public string Name { get; set; }
+        public uint Hash { get; set; }
+        public string ScannerFile { get; set; } = "";
+        public VehicleModelLookup(string _Name, uint _Hash, string _ScannerFile)
+        {
+            Name = _Name;
+            Hash = _Hash;
+            ScannerFile = _ScannerFile;
+        }
+    }
+    private class VehicleMakeLookup
+    {
+        public string MakeName { get; set; }
+        public string ScannerFile { get; set; } = "";
+        public VehicleMakeLookup(string makeName, string scannerFile)
+        {
+            MakeName = makeName;
+            ScannerFile = scannerFile;
+        }
+    }
+    private class VehicleClassLookup
+    {
+        public string Name { get; set; }
+        public int GameClass { get; set; }
+        public string ScannerFile { get; set; } = "";
+        public VehicleClassLookup(string name, int gameClass, string scannerFile)
+        {
+            Name = name;
+            GameClass = gameClass;
+            ScannerFile = scannerFile;
+        }
+    }
+
 }

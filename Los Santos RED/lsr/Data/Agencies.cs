@@ -7,16 +7,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-public class Agencies
+public class Agencies : IAgencies
 {
-    private IJurisdictionStreetZoneProvider JurisdictionStreetZoneProvider;
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Agencies.xml";
     private bool UseVanillaConfig = true;
-    private readonly int LikelyHoodOfAnySpawn = 5;
     private List<Agency> AgenciesList;
-    public Agencies(IJurisdictionStreetZoneProvider dataMart)
+    public Agencies()
     {
-        JurisdictionStreetZoneProvider = dataMart;
+
     }
     public void ReadConfig()
     {
@@ -37,110 +35,29 @@ public class Agencies
             Serialization.SerializeParams(AgenciesList, ConfigFileName);
         }
     }
-    public List<Agency> GetAgencies(Vector3 Position, int WantedLevel)
-    {
-        List<Agency> ToReturn = new List<Agency>();
-        Street StreetAtPosition = JurisdictionStreetZoneProvider.Streets.GetStreet(Position);
-        if (StreetAtPosition != null && JurisdictionStreetZoneProvider.Streets.GetStreet(Position).IsHighway) //Highway Patrol Jurisdiction
-        {
-            ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn(WantedLevel) && x.SpawnsOnHighway));
-        }
-        Zone CurrentZone = JurisdictionStreetZoneProvider.Zones.GetZone(Position);
-
-        Agency ZoneAgency1 = JurisdictionStreetZoneProvider.ZoneJurisdiction.GetRandomAgency(CurrentZone.InternalGameName,WantedLevel);
-        if (ZoneAgency1 != null)
-        {
-            ToReturn.Add(ZoneAgency1); //Zone Jurisdiciton Random
-        }
-
-        Agency CountyAgency1 = JurisdictionStreetZoneProvider.CountyJurisdictions.GetRandomAgency(CurrentZone.InternalGameName, WantedLevel);
-        if (CountyAgency1 != null)
-        {
-            ToReturn.Add(CountyAgency1); //Zone Jurisdiciton Random
-        }
-
-        if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))
-        {
-            ToReturn.AddRange(AgenciesList.Where(x => x.CanSpawn(WantedLevel) && x.CanSpawnAnywhere));
-        }
-        foreach (Agency ag in ToReturn)
-        {
-            Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
-        }
-        return ToReturn;
-    }
-    public Agency GetAgency(Ped Cop)
-    {
-        return GetAgency(Cop, 0);
-    }
-    public Agency GetAgency(Ped Cop, int WantedLevel)
-    {
-        if (!Cop.IsPoliceArmy())
-        {
-            return null;
-        }
-        if (Cop.IsArmy())
-        {
-            return AgenciesList.Where(x => x.AgencyClassification == Classification.Military).FirstOrDefault();
-        }
-        else if (Cop.IsPolice())
-        {
-            Agency ToReturn;
-            List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
-            if (ModelMatchAgencies.Count > 1)
-            {
-                Zone ZoneFound = JurisdictionStreetZoneProvider.Zones.GetZone(Cop.Position);
-                if (ZoneFound != null)
-                {
-                    foreach (Agency ZoneAgency in JurisdictionStreetZoneProvider.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
-                    {
-                        if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
-                            return ZoneAgency;
-                    }
-                }
-            }
-            ToReturn = ModelMatchAgencies.FirstOrDefault();
-            if (ToReturn == null)
-            {
-                Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
-                Cop.Delete();
-            }
-            return ToReturn;
-        }
-        else
-        {
-            return null;
-        }
-    }
-    public Agency GetAgency(Vehicle CopCar, int WantedLevel)
-    {
-        Agency ToReturn;
-        List<Agency> ModelMatchAgencies = AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
-        if (ModelMatchAgencies.Count > 1)
-        {
-            Zone ZoneFound = JurisdictionStreetZoneProvider.Zones.GetZone(CopCar.Position);
-            if (ZoneFound != null)
-            {
-                foreach (Agency ZoneAgency in JurisdictionStreetZoneProvider.ZoneJurisdiction.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
-                {
-                    if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
-                    {
-                        return ZoneAgency;
-                    }
-                }
-            }
-        }
-        ToReturn = ModelMatchAgencies.FirstOrDefault();
-        if (ToReturn == null)
-        {
-            Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
-            CopCar.Delete();
-        }
-        return ToReturn;
-    }
     public Agency GetAgency(string AgencyInitials)
     {
         return AgenciesList.Where(x => x.Initials.ToLower() == AgencyInitials.ToLower()).FirstOrDefault();
+    }
+    public Agency GetMilitaryAgency()
+    {
+        return AgenciesList.Where(x => x.AgencyClassification == Classification.Military).FirstOrDefault();
+    }
+    public List<Agency> GetAgencies(Ped Cop)
+    {
+        return AgenciesList.Where(x => x.CopModels != null && x.CopModels.Any(b => b.ModelName.ToLower() == Cop.Model.Name.ToLower())).ToList();
+    }
+    public List<Agency> GetAgencies(Vehicle CopCar)
+    {
+        return AgenciesList.Where(x => x.Vehicles != null && x.Vehicles.Any(b => b.ModelName.ToLower() == CopCar.Model.Name.ToLower())).ToList();
+    }
+    public List<Agency> GetSpawnableAgencies(int WantedLevel)
+    {
+        return AgenciesList.Where(x => x.CanSpawnAnywhere && x.CanSpawn(WantedLevel)).ToList();
+    }
+    public List<Agency> GetSpawnableHighwayAgencies(int WantedLevel)
+    {
+        return AgenciesList.Where(x => x.SpawnsOnHighway && x.CanSpawn(WantedLevel)).ToList();
     }
     private void DefaultConfig()
     {
@@ -197,6 +114,12 @@ public class Agencies
             new PedestrianInformation("s_m_y_uscg_01",100,100) };
         List<PedestrianInformation> NOOSEPeds = new List<PedestrianInformation>() {
             new PedestrianInformation("s_m_y_swat_01", 100,100) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(10, 0, 0,0) },new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) }) } };
+        List<PedestrianInformation> NYSPPeds = new List<PedestrianInformation>() {
+            new PedestrianInformation("s_m_m_snowcop_01",100,100) };
+
+
+
+        
 
         //Vehicles
         List<VehicleInformation> UnmarkedVehicles = new List<VehicleInformation>() {
@@ -273,6 +196,11 @@ public class Agencies
             new VehicleInformation("valkyrie", 0,50) { Liveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
             new VehicleInformation("valkyrie2", 0,50) { Liveries = new List<int>() { 0 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 4 },
         };
+
+        List<VehicleInformation> OldSnowyVehicles = new List<VehicleInformation>() {
+            new VehicleInformation("policeold1", 50, 50),
+            new VehicleInformation("policeold2", 50, 50) };
+
 
         //Weapon
         List<AgencyAssignedWeapon> AllWeapons = new List<AgencyAssignedWeapon>()
@@ -384,14 +312,19 @@ public class Agencies
 
             new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, MilitaryPeds, ArmyVehicles, "",BestWeapons) { MinWantedLevelSpawn = 5,CanSpawnAnywhere = true },
 
+
             new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null) { MaxWantedLevelSpawn = 0 },
-        };
 
 
+            //Custom
+            new Agency("~b~", "APD", "Acadia Police Department", "Blue", Classification.Police, StandardCops, UnmarkedVehicles, "APD ", AllWeapons) { MaxWantedLevelSpawn = 5 },
+            new Agency("~b~", "APD-ASD", "Acadia Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ", HeliWeapons) { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
 
 
-        AgenciesList.Add(new Agency("~b~", "APD", "Acadia Police Department", "Blue", Classification.Police, StandardCops, UnmarkedVehicles, "APD ", AllWeapons) { MaxWantedLevelSpawn = 5 });
-        AgenciesList.Add(new Agency("~b~", "APD-ASD", "Acadia Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ", HeliWeapons) { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 4, SpawnLimit = 3 });
+            new Agency("~b~", "NYSP", "North Yankton State Police", "Blue", Classification.Police, NYSPPeds, OldSnowyVehicles, "NYSP ", LimitedWeapons) { MaxWantedLevelSpawn = 5 },
+
+    };
+
     }
     private void CustomConfig()
     {

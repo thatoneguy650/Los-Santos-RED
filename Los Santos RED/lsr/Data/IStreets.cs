@@ -1,4 +1,4 @@
-﻿using LosSantosRED.lsr.Data;
+﻿using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IWeaponProvider
+    public interface IStreets
     {
-        Weapons Weapons { get; }
+        Street GetStreet(string currentCrossStreetName);
+        Street GetStreet(Vector3 position);
     }
 }

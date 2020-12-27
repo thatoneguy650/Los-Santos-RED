@@ -6,9 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class ZoneJurisdiction
+public class ZoneJurisdiction 
 {
-    private IDataMart DataMart;
     public string AgencyInitials { get; set; } = "";
     public string ZoneInternalGameName { get; set; } = "";
     public int Priority { get; set; } = 99;

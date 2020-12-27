@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IStreetProvider
+    public interface ISettings
     {
-        Streets Streets { get; }
+        SettingsManager SettingsManager { get; }
+
+        void SerializeAllSettings();
     }
 }

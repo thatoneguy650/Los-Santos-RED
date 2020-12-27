@@ -12,7 +12,6 @@ namespace LosSantosRED.lsr
         private readonly Stopwatch TickStopWatch = new Stopwatch();
         private string LastRanTask;
         private List<ModTask> MyTickTasks;
-        private DataMart DataMart;
         private Mod.World World;
         private Audio Audio;
         private PedSwap PedSwap;
@@ -28,7 +27,21 @@ namespace LosSantosRED.lsr
         private Dispatcher Dispatcher;
         private SearchMode SearchMode;
         private Spawner Spawner;
-        private Tasking Tasking;  
+        private Tasking Tasking;
+        private PlacesOfInterest PlacesOfInterest;
+        private Agencies Agencies;
+        private CountyJurisdictions CountyJurisdictions;
+        private ZoneJurisdictions ZoneJurisdictions;
+        private Zones Zones;
+        private PlateTypes PlateTypes;
+        private Settings Settings;
+        private Streets Streets;
+        private Weapons Weapons;
+        private Names Names;
+        private VehicleScannerAudio VehicleScannerAudio;
+        private ZoneScannerAudio ZoneScannerAudio;
+        private StreetScannerAudio StreetScannerAudio;
+
         public ModController()
         {
             //DataMart = new DataMart();
@@ -53,37 +66,35 @@ namespace LosSantosRED.lsr
         {
             Player.Reset(true, true, true);
             Scanner.Reset();
-            Player.GiveName(ModelName, Male, DataMart.Names.GetRandomName(Male));
-            if (DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
+            Player.GiveName(ModelName, Male, Names.GetRandomName(Male));
+            if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
             {
-                Player.SetMoney(RandomItems.MyRand.Next(DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, DataMart.Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
+                Player.SetMoney(RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
             }
         }
         public void Start()
         {
             IsRunning = true;
-            
-            DataMart = new DataMart();
-            DataMart.ReadConfig();
             while (Game.IsLoading)
             {
                 GameFiber.Yield();
             }
+            ReadDataFiles();
             Audio = new Audio();
-            World = new Mod.World(DataMart);
-            Player = new Mod.Player(World, DataMart);
-            Input = new Input(Player, DataMart);
+            World = new Mod.World(Agencies, ZoneJurisdictions, Settings, Weapons, PlacesOfInterest, Zones, PlateTypes);
+            Player = new Mod.Player(World, Streets, Zones, Settings, Weapons);
+            Input = new Input(Player, Settings);
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
             Spawner = new Spawner(World);
-            Dispatcher = new Dispatcher(World, Player, Police, Spawner, DataMart);
-            Respawning = new Respawning(World, Player, DataMart);
-            PedSwap = new PedSwap(World, Player, DataMart);
+            Respawning = new Respawning(World, Player, Weapons, PlacesOfInterest, Settings);
+            PedSwap = new PedSwap(World, Player, Settings);
             SearchMode = new SearchMode(World, Player, Police);
             Tasking = new Tasking(World, Player, Police);
-            UI = new UI(World, Player, SearchMode, DataMart);
-            Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode, DataMart);
-            Menu = new Menu(World, Player, PedSwap, Respawning, DataMart);
+            UI = new UI(World, Player, SearchMode, Settings, ZoneJurisdictions);
+            Dispatcher = new Dispatcher(World, Player, Police, Spawner, Agencies, Weapons, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
+            Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode, Settings);
+            Menu = new Menu(World, Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
             Debug = new Debug();
 
             Player.GiveName();
@@ -97,6 +108,36 @@ namespace LosSantosRED.lsr
             StartDebugLogic();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
         }
+
+        private void ReadDataFiles()
+        {
+            Settings = new Settings();
+            Settings.ReadConfig();
+            Zones = new Zones();
+            Zones.ReadConfig();
+            PlateTypes = new PlateTypes();
+            PlateTypes.ReadConfig();
+            Streets = new Streets();
+            Streets.ReadConfig();
+            Weapons = new Weapons();
+            Weapons.ReadConfig();
+            Names = new Names();
+            Names.ReadConfig();
+            PlacesOfInterest = new PlacesOfInterest();
+            PlacesOfInterest.ReadConfig();
+            VehicleScannerAudio = new VehicleScannerAudio();
+            VehicleScannerAudio.ReadConfig();
+            ZoneScannerAudio = new ZoneScannerAudio();
+            ZoneScannerAudio.ReadConfig();
+            StreetScannerAudio = new StreetScannerAudio();
+            StreetScannerAudio.ReadConfig();
+            Agencies = new Agencies();
+            Agencies.ReadConfig();
+            CountyJurisdictions = new CountyJurisdictions(Agencies);
+            CountyJurisdictions.ReadConfig();
+            ZoneJurisdictions = new ZoneJurisdictions(Agencies);
+            ZoneJurisdictions.ReadConfig();
+        }
         public void Stop()
         {
             IsRunning = false;
@@ -104,7 +145,7 @@ namespace LosSantosRED.lsr
             Player.Dispose();
             World.Dispose();
             PedSwap.Dispose();
-            if (DataMart.Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
+            if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
             {
                 Player.SetMoney(PedSwap.OriginalMoney);
             }
@@ -223,7 +264,7 @@ namespace LosSantosRED.lsr
                 {
                     Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
-                    Stop(); 
+                    Stop();
                 }
             }, "Run Menu/UI Logic");
         }

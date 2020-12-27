@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -11,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Places
+public class PlacesOfInterest : IPlacesOfInterest
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Locations.xml";
     private List<GameLocation> LocationsList;

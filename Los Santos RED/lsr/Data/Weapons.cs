@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -13,7 +14,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-public class Weapons
+public class Weapons : IWeapons
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Weapons.xml";
     private List<WeaponInformation> WeaponsList;

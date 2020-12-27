@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-public class Zones
+public class Zones : IZones
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Zones.xml";
     private List<Zone> ZoneList = new List<Zone>();
@@ -46,28 +47,6 @@ public class Zones
     public Zone GetZone(string InternalGameName)
     {
         return ZoneList.Where(x => x.InternalGameName.ToLower() == InternalGameName.ToLower()).FirstOrDefault();
-    }
-    public string GetName(Zone MyZone, bool WithCounty)
-    {
-        if (WithCounty)
-        {
-            string CountyName = "San Andreas";
-            if (MyZone.ZoneCounty == County.BlaineCounty)
-                CountyName = "Blaine County";
-            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
-                CountyName = "City of Los Santos";
-            else if (MyZone.ZoneCounty == County.LosSantosCounty)
-                CountyName = "Los Santos County";
-            else if (MyZone.ZoneCounty == County.Crook)
-                CountyName = "Crook County";
-
-            return MyZone.DisplayName + ", " + CountyName;
-        }
-        else
-        {
-            return MyZone.DisplayName;
-        }
-
     }
     private string GetInternalZoneString(Vector3 ZonePosition)
     {
@@ -199,18 +178,18 @@ public class Zones
             new Zone("SANAND", "San Andreas", County.LosSantosCounty, "San Andreas"),
             new Zone("TATAMO", "Tataviam Mountains", County.LosSantosCounty, "San Andreas"),
             new Zone("WINDF", "Ron Alternates Wind Farm", County.LosSantosCounty, "San Andreas"),
-    };
 
-        LincolnConfig();
+            //Other
+            new Zone("LUDEN", "Ludendorff", County.NorthYankton, new Vector2[] { new Vector2 { X = 2545.142f, Y = -5124.292f },
+                                        new Vector2 { X = 2648.361f, Y = -4091.664f },
+                                        new Vector2 { X = 5647.14f, Y = -4131.478f },
+                                        new Vector2 { X = 5922.999f, Y = -5640.681f } }, "North Yankton"),
 
-
-    }
-    private void LincolnConfig()
-    {
-        ZoneList.Add(new Zone("CHI1", "Acadia", County.Crook, new Vector2[] { new Vector2 { X = 4830.579f, Y = 1982.126f },
+            new Zone("CHI1", "Acadia", County.Crook, new Vector2[] { new Vector2 { X = 4830.579f, Y = 1982.126f },
                                         new Vector2 { X = 7898.494f, Y = 3093.242f },
                                         new Vector2 { X = 5845.111f, Y = 8616.287f },
-                                        new Vector2 { X = 1748.942f, Y = 8188.261f } }, "Lincoln"));
+                                        new Vector2 { X = 1748.942f, Y = 8188.261f } }, "Lincoln")
+            };
     }
     private bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
     {

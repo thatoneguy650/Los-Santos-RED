@@ -42,24 +42,32 @@ namespace Mod
         private Violations Violations;
         private WeaponDropping WeaponDropping;
         private IWorld World;
-        private IStreetZoneWeaponSettingsProvider StreetZoneWeaponSettingsProvider;
-        public Player(IWorld world, IStreetZoneWeaponSettingsProvider datamart)
+        private IStreets Streets;
+        private IZones Zones;
+        private ISettings Settings;
+        private IWeapons Weapons;
+
+        public Player(IWorld world, IStreets streets, IZones zones, ISettings settings, IWeapons weapons)
         {
             World = world;
-            StreetZoneWeaponSettingsProvider = datamart;
+            Streets = streets;
+            Zones = zones;
+            Settings = settings;
+            Weapons = weapons;
             CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
             Mugging = new Mugging(this, world);
             Violations = new Violations(this, world);
             Surrendering = new Surrendering(this);
-            WeaponDropping = new WeaponDropping(this, StreetZoneWeaponSettingsProvider);
+            WeaponDropping = new WeaponDropping(this, Weapons);
             Investigations = new Investigations(this, world);
             ArrestWarrant = new ArrestWarrant(this);
-            CurrentLocation = new LocationData(Game.LocalPlayer.Character, StreetZoneWeaponSettingsProvider);
+            CurrentLocation = new LocationData(Game.LocalPlayer.Character, Streets, Zones);
             CurrentPoliceResponse = new PoliceResponse(this, world, ArrestWarrant);
             CurrentPoliceResponse.SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
             GameTimeStartedPlaying = Game.GameTime;
         }
+
         public bool AnyPoliceCanHearPlayer { get; set; }
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
@@ -248,7 +256,7 @@ namespace Mod
                 int CurrentCash;
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", Natives.CashHash(StreetZoneWeaponSettingsProvider.Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
+                    NativeFunction.CallByName<int>("STAT_GET_INT", Natives.CashHash(Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
                 }
                 return CurrentCash;
             }
@@ -367,7 +375,7 @@ namespace Mod
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = Natives.CashHash(StreetZoneWeaponSettingsProvider.Settings.SettingsManager.General.MainCharacterToAlias);
+            uint PlayerCashHash = Natives.CashHash(Settings.SettingsManager.General.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -539,7 +547,7 @@ namespace Mod
         }
         public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(StreetZoneWeaponSettingsProvider.Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
         }
         public void SetPlayerToLastWeapon()
         {
@@ -595,11 +603,11 @@ namespace Mod
         }
         private void TerminateVanillaAudio()
         {
-            if (StreetZoneWeaponSettingsProvider.Settings.SettingsManager.Police.DisableAmbientScanner)
+            if (Settings.SettingsManager.Police.DisableAmbientScanner)
             {
                 NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
             }
-            if (StreetZoneWeaponSettingsProvider.Settings.SettingsManager.Police.WantedMusicDisable)
+            if (Settings.SettingsManager.Police.WantedMusicDisable)
             {
                 NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
             }
@@ -905,7 +913,7 @@ namespace Mod
                 IsCarJacking = Game.LocalPlayer.Character.IsJacking;
             }
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
-            CurrentWeapon = StreetZoneWeaponSettingsProvider.Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
+            CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
 
             if (PlayerCurrentWeapon != null)
             {
@@ -956,5 +964,6 @@ namespace Mod
                 MaxWantedLastLife = WantedLevel;
             }
         }
+
     }
 }

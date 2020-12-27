@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Data;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IJurisdictionProvider
-    {    
-        CountyJurisdictions CountyJurisdictions { get; }
-        ZoneJurisdictions ZoneJurisdiction { get; }
+    public interface IZones
+    {
+        Zone GetZone(Vector3 ZonePosition);
+        Zone GetZone(string InternalGameName);
     }
 }

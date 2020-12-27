@@ -18,14 +18,18 @@ public class Menu
     private IWorld World;
     private IPedSwap PedSwap;
     private IRespawning Respawning;
-    private IDataMart DataMart;
-    public Menu(IWorld world, IPlayer currentPlayer, IPedSwap pedSwap, IRespawning respawning, IDataMart dataMart)
+    private ISettings Settings;
+    private IWeapons Weapons;
+    private IPlacesOfInterest PlacesOfInterest;
+    public Menu(IWorld world, IPlayer currentPlayer, IPedSwap pedSwap, IRespawning respawning, ISettings settings, IWeapons weapons, IPlacesOfInterest placesOfInterest)
     {
         CurrentPlayer = currentPlayer;
         World = world;
         PedSwap = pedSwap;
         Respawning = respawning;
-        DataMart = dataMart;
+        Settings = settings;
+        Weapons = weapons;
+        PlacesOfInterest = placesOfInterest;
         menuPool = new MenuPool();
         mainMenu = new UIMenu("Los Santos RED", "Select an Option");
         menuPool.Add(mainMenu);
@@ -231,7 +235,7 @@ public class Menu
     public string CurrentScreenEffect { get; set; }
     public void Update()
     {
-        if (Game.IsKeyDown(DataMart.Settings.SettingsManager.KeyBinding.MenuKey)) // Our menu on/off switch.
+        if (Game.IsKeyDown(Settings.SettingsManager.KeyBinding.MenuKey)) // Our menu on/off switch.
         {
             if (CurrentPlayer.IsDead)
             {
@@ -267,7 +271,7 @@ public class Menu
                     mainMenu.Visible = false;
             }
         }
-        else if (Game.IsKeyDown(DataMart.Settings.SettingsManager.KeyBinding.DebugMenuKey)) // Our menu on/off switch.
+        else if (Game.IsKeyDown(Settings.SettingsManager.KeyBinding.DebugMenuKey)) // Our menu on/off switch.
         {
             if (!debugMenu.Visible)
                 ShowDebugMenu();
@@ -369,7 +373,7 @@ public class Menu
         menuDeathUndie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
         menuDeathHospitalRespawn = new UIMenuListItem("Give Up",
             "Respawn at the nearest hospital. Lose a hospital fee and your guns.",
-            DataMart.Places.GetLocations(LocationType.Hospital));
+            PlacesOfInterest.GetLocations(LocationType.Hospital));
         menuDeathTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
             "Takes over a random pedestrian around the player.",
             new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
@@ -380,7 +384,7 @@ public class Menu
         deathMenu.AddItem(menuDeathHospitalRespawn);
         deathMenu.AddItem(menuDeathTakeoverRandomPed);
 
-        if (DataMart.Settings.SettingsManager.General.UndieLimit == 0 || CurrentPlayer.TimesDied < DataMart.Settings.SettingsManager.General.UndieLimit)
+        if (Settings.SettingsManager.General.UndieLimit == 0 || CurrentPlayer.TimesDied < Settings.SettingsManager.General.UndieLimit)
             menuDeathUndie.Enabled = true;
         else
             menuDeathUndie.Enabled = false;
@@ -392,7 +396,7 @@ public class Menu
         menuBustedBribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
         menuBustedSurrender = new UIMenuListItem("Surrender",
             "Surrender and get out on bail. Lose bail money and your guns.",
-            DataMart.Places.GetLocations(LocationType.Police));
+            PlacesOfInterest.GetLocations(LocationType.Police));
         menuBustedTakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian",
             "Takes over a random pedestrian around the player.",
             new List<dynamic> { "Closest", "20 M", "40 M", "60 M", "100 M", "500 M" });
@@ -421,11 +425,11 @@ public class Menu
         settingsMenuKeySettings = menuPool.AddSubMenu(optionsMenu, "Key Settings");
         settingsMenuTrafficViolations = menuPool.AddSubMenu(optionsMenu, "Traffic Violations Settings");
 
-        CreateSettingSubMenu(typeof(GeneralSettings).GetFields(), DataMart.Settings.SettingsManager.General, settingsMenuGeneral);
-        CreateSettingSubMenu(typeof(PoliceSettings).GetFields(), DataMart.Settings.SettingsManager.Police, settingsMenuPolice);
-        CreateSettingSubMenu(typeof(UISettings).GetFields(), DataMart.Settings.SettingsManager.UI, settingsMenuUISettings);
-        CreateSettingSubMenu(typeof(KeySettings).GetFields(), DataMart.Settings.SettingsManager.KeyBinding, settingsMenuKeySettings);
-        CreateSettingSubMenu(typeof(TrafficSettings).GetFields(), DataMart.Settings.SettingsManager.TrafficViolations,
+        CreateSettingSubMenu(typeof(GeneralSettings).GetFields(), Settings.SettingsManager.General, settingsMenuGeneral);
+        CreateSettingSubMenu(typeof(PoliceSettings).GetFields(), Settings.SettingsManager.Police, settingsMenuPolice);
+        CreateSettingSubMenu(typeof(UISettings).GetFields(), Settings.SettingsManager.UI, settingsMenuUISettings);
+        CreateSettingSubMenu(typeof(KeySettings).GetFields(), Settings.SettingsManager.KeyBinding, settingsMenuKeySettings);
+        CreateSettingSubMenu(typeof(TrafficSettings).GetFields(), Settings.SettingsManager.TrafficViolations,
             settingsMenuTrafficViolations);
 
         optionsMenu.OnItemSelect += OptionsMenuSelect;
@@ -514,11 +518,11 @@ public class Menu
     }
     private void UpdateClosestHospitalIndex()
     {
-        menuDeathHospitalRespawn.Index = DataMart.Places.GetLocations(LocationType.Hospital).IndexOf(DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital));
+        menuDeathHospitalRespawn.Index = PlacesOfInterest.GetLocations(LocationType.Hospital).IndexOf(PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital));
     }
     private void UpdateClosestPoliceStationIndex()
     {
-        menuBustedSurrender.Index = DataMart.Places.GetLocations(LocationType.Police).IndexOf(DataMart.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police));
+        menuBustedSurrender.Index = PlacesOfInterest.GetLocations(LocationType.Police).IndexOf(PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police));
     }
     private void MainMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -618,7 +622,7 @@ public class Menu
     {
         string MySettingName = selectedItem.Text.Split(':')[0];
         FieldInfo[] MyFields = typeof(GeneralSettings).GetFields();
-        object ToSet = DataMart.Settings.SettingsManager.General;
+        object ToSet = Settings.SettingsManager.General;
 
         if (sender == settingsMenuGeneral)
         {
@@ -626,22 +630,22 @@ public class Menu
         }
         else if (sender == settingsMenuPolice)
         {
-            ToSet = DataMart.Settings.SettingsManager.Police;
+            ToSet = Settings.SettingsManager.Police;
             MyFields = typeof(PoliceSettings).GetFields();
         }
         else if (sender == settingsMenuKeySettings)
         {
-            ToSet = DataMart.Settings.SettingsManager.KeyBinding;
+            ToSet = Settings.SettingsManager.KeyBinding;
             MyFields = typeof(KeySettings).GetFields();
         }
         else if (sender == settingsMenuUISettings)
         {
-            ToSet = DataMart.Settings.SettingsManager.UI;
+            ToSet = Settings.SettingsManager.UI;
             MyFields = typeof(UISettings).GetFields();
         }
         else if (sender == settingsMenuTrafficViolations)
         {
-            ToSet = DataMart.Settings.SettingsManager.TrafficViolations;
+            ToSet = Settings.SettingsManager.TrafficViolations;
             MyFields = typeof(TrafficSettings).GetFields();
         }
 
@@ -676,7 +680,7 @@ public class Menu
             selectedItem.Text = $"{MySettingName}: {Value}";
         }
 
-        DataMart.Settings.SerializeAllSettings();
+        Settings.SerializeAllSettings();
     }
     private void ActionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -707,7 +711,7 @@ public class Menu
         if (selectedItem == menuDebugKillPlayer) Game.LocalPlayer.Character.Kill();
         if (selectedItem == menuDebugRandomWeapon)
         {
-            WeaponInformation myGun = DataMart.Weapons.GetRandomRegularWeapon((WeaponCategory)RandomWeaponCategory);
+            WeaponInformation myGun = Weapons.GetRandomRegularWeapon((WeaponCategory)RandomWeaponCategory);
             if (myGun != null)
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
         }
@@ -772,7 +776,7 @@ public class Menu
         {
             if (list == menuDeathHospitalRespawn)
             {
-                CurrentSelectedHospitalLocation = DataMart.Places.GetLocations(LocationType.Hospital)[index];
+                CurrentSelectedHospitalLocation = PlacesOfInterest.GetLocations(LocationType.Hospital)[index];
                 Game.Console.Print(string.Format("menuDeathHospitalRespawn Changed! Location: {0}", CurrentSelectedHospitalLocation));
             }
         }
@@ -780,7 +784,7 @@ public class Menu
         {
             if (list == menuBustedSurrender)
             {
-                CurrentSelectedSurrenderLocation = DataMart.Places.GetLocations(LocationType.Police)[index];
+                CurrentSelectedSurrenderLocation = PlacesOfInterest.GetLocations(LocationType.Police)[index];
                 Game.Console.Print(string.Format("menuBustedSurrender Changed! Location: {0}", CurrentSelectedSurrenderLocation));
             }
         }

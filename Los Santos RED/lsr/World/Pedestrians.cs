@@ -6,6 +6,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 public class Pedestrians
 {
@@ -15,14 +16,21 @@ public class Pedestrians
     private int MinCivilianHealth = 70;
     private int MinCopArmor = 0;
     private int MinCopHealth = 85;
-    private IWorldLogger World;
-    private IDataMart DataMart;
+    private IWorldLogger WorldLogger;
+    private IAgencies Agencies;
+    private IZoneJurisdictions ZoneJurisdictions;
+    private ISettings Settings;
+    private IWeapons Weapons;
 
-    public Pedestrians(IWorldLogger world, IDataMart dataMart)
+    public Pedestrians(IWorldLogger worldLogger, IAgencies agencies, IZoneJurisdictions zoneJurisdictions, IWeapons weapons, ISettings settings)
     {
-        World = world;
-        DataMart = dataMart;
+        WorldLogger = worldLogger;
+        Agencies = agencies;
+        ZoneJurisdictions = zoneJurisdictions;
+        Weapons = weapons;
+        Settings = settings;
     }
+
     public string AgenciesChasingPlayer
     {
         get
@@ -164,28 +172,67 @@ public class Pedestrians
     }
     private void AddCop(Ped Pedestrian)
     {
-        Agency AssignedAgency = DataMart.Agencies.GetAgency(Pedestrian);//maybe need the actual wanted level here?
+        Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
             AgencyAssignedWeapon AssignedPistolType = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
             AgencyAssignedWeapon AssignedHeavyType = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
-            Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false, DataMart.Weapons.GetWeapon(AssignedPistolType.ModelName), AssignedPistolType.Variation, DataMart.Weapons.GetWeapon(AssignedHeavyType.ModelName), AssignedHeavyType.Variation);
-            if (DataMart.Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+            Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false, Weapons.GetWeapon(AssignedPistolType.ModelName), AssignedPistolType.Variation, Weapons.GetWeapon(AssignedHeavyType.ModelName), AssignedHeavyType.Variation);
+            if (Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.AgencyColor;
                 myBlip.Scale = 0.6f;
-                World.AddBlip(myBlip);
+                WorldLogger.AddBlip(myBlip);
             }
             SetCopStats(Pedestrian);
             Police.Add(myCop);
         }
     }
+    public Agency GetAgency(Ped Cop, int WantedLevel)
+    {
+        if (!Cop.IsPoliceArmy())
+        {
+            return null;
+        }
+        if (Cop.IsArmy())
+        {
+            return Agencies.GetMilitaryAgency();//return AgenciesList.Where(x => x.AgencyClassification == Classification.Military).FirstOrDefault();
+        }
+        else if (Cop.IsPolice())
+        {
+            Agency ToReturn;
+            List<Agency> ModelMatchAgencies = Agencies.GetAgencies(Cop);
+            if (ModelMatchAgencies.Count > 1)
+            {
+                string ZoneName = GetInternalZoneString(Cop.Position);
+                if (ZoneName != "")
+                {
+                    foreach (Agency ZoneAgency in ZoneJurisdictions.GetAgencies(ZoneName, WantedLevel))
+                    {
+                        if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                            return ZoneAgency;
+                    }
+                }
+            }
+            ToReturn = ModelMatchAgencies.FirstOrDefault();
+            if (ToReturn == null)
+            {
+                Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
+                Cop.Delete();
+            }
+            return ToReturn;
+        }
+        else
+        {
+            return null;
+        }
+    }
     private void SetCivilianStats(Ped Pedestrian)
     {
-        if (DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        if (Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
         int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;
         Pedestrian.MaxHealth = DesiredHealth;
@@ -196,9 +243,9 @@ public class Pedestrians
     }
     private void SetCopStats(Ped Pedestrian)
     {
-        if (DataMart.Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        if (Settings.SettingsManager.Police.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = DataMart.Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = Settings.SettingsManager.Police.PoliceGeneralAccuracy;
         }
         int DesiredHealth = RandomItems.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(MinCopArmor, MaxCopArmor);
@@ -208,5 +255,16 @@ public class Pedestrians
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
         NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 7, false);//No commandeering//https://gtaforums.com/topic/833391-researchguide-combat-behaviour-flags/
+    }
+    private string GetInternalZoneString(Vector3 ZonePosition)
+    {
+        string zoneName;
+        unsafe
+        {
+            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
+
+            zoneName = Marshal.PtrToStringAnsi(ptr);
+        }
+        return zoneName;
     }
 }

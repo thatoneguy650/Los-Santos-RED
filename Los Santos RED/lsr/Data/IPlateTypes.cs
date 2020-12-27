@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IPlacesProvider
+    public interface IPlateTypes
     {
-        Places Places { get; }
+        PlateType GetRandomPlateType();
+        PlateType GetPlateType(int v);
+        PlateType GetPlateType(string State);
     }
 }

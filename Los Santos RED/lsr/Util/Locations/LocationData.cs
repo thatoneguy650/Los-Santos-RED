@@ -15,12 +15,16 @@ namespace LosSantosRED.lsr.Locations
         private uint GameTimeGotOnFreeway;
         private uint GameTimeGotOffFreeway;
         private Vector3 ClosestNode;
-        private IStreetZoneProvider DataMart;
-        public LocationData(Ped character, IStreetZoneProvider dataMart)
+        private IStreets Streets;
+        private IZones Zones;
+
+        public LocationData(Ped characterToLocate, IStreets streets, IZones zones)
         {
-            CharacterToLocate = character;
-            DataMart = dataMart;
+            Streets = streets;
+            Zones = zones;
+            CharacterToLocate = characterToLocate;
         }
+
         public Ped CharacterToLocate { get; set; }
         public Street CurrentStreet { get; private set; }
         public Street CurrentCrossStreet { get; private set; }
@@ -63,15 +67,12 @@ namespace LosSantosRED.lsr.Locations
         }
         private void GetZone()
         {
-            if(DataMart != null)
-            {
-                CurrentZone = DataMart.Zones.GetZone(CharacterToLocate.Position);
-            } 
+            CurrentZone = Zones.GetZone(CharacterToLocate.Position);
         }
         private void GetNode()
         {
             ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);
-            if (ClosestNode.DistanceTo2D(CharacterToLocate) >= 10f)//was 15f
+            if (ClosestNode.DistanceTo2D(CharacterToLocate) >= 15f)//was 15f
             {
                 IsOffroad = true;
             }
@@ -109,7 +110,7 @@ namespace LosSantosRED.lsr.Locations
                 CurrentStreetName = StreetName;
             }
             else
-                {
+            {
                 CurrentStreetName = "";
             }
 
@@ -128,11 +129,8 @@ namespace LosSantosRED.lsr.Locations
                 CurrentCrossStreetName = "";
             }
 
-            if(DataMart != null)
-            {
-                CurrentStreet = DataMart.Streets.GetStreet(CurrentStreetName);
-                CurrentCrossStreet = DataMart.Streets.GetStreet(CurrentCrossStreetName);
-            }
+            CurrentStreet = Streets.GetStreet(CurrentStreetName);
+            CurrentCrossStreet = Streets.GetStreet(CurrentCrossStreetName);
 
             if (CurrentStreet == null)
             {
@@ -149,7 +147,7 @@ namespace LosSantosRED.lsr.Locations
                 else
                 {
                     if (IsOnFreeway)
-                        {
+                    {
                         GameTimeGotOffFreeway = Game.GameTime;
                     }
 

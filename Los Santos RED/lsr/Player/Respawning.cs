@@ -15,7 +15,10 @@ public class Respawning : IRespawning
 {
     private IPlayer CurrentPlayer;
     private IWorld World;
-    private IWeaponPlacesSettingsProvider WeaponSettingsProvider;
+    private IWeapons Weapons;
+    private ISettings Settings;
+    private IPlacesOfInterest PlacesOfInterest;
+
     private int BailFee;
     private int BailFeePastDue;
     private uint GameTimeLastBribedPolice;
@@ -26,11 +29,13 @@ public class Respawning : IRespawning
     private uint GameTimeLastUndied;
     private int HospitalBillPastDue;
 
-    public Respawning(IWorld world, IPlayer currentPlayer, IWeaponPlacesSettingsProvider weaponSettingsProvider)
+    public Respawning(IWorld world, IPlayer currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettings settings)
     {
-        CurrentPlayer = currentPlayer;
         World = world;
-        WeaponSettingsProvider = weaponSettingsProvider;
+        CurrentPlayer = currentPlayer;
+        Weapons = weapons;
+        PlacesOfInterest = placesOfInterest;
+        Settings = settings;
     }
 
     public bool RecentlyBribedPolice
@@ -111,7 +116,7 @@ public class Respawning : IRespawning
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
         }
-        else if (Amount < (CurrentPlayer.WantedLevel * WeaponSettingsProvider.Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
+        else if (Amount < (CurrentPlayer.WantedLevel * Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
             CurrentPlayer.GiveMoney(-1 * Amount);
@@ -133,7 +138,7 @@ public class Respawning : IRespawning
     {
         FadeOut();
         Respawn(true, true, true, true);
-        GameLocation PlaceToSpawn = WeaponSettingsProvider.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
+        GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
         SetPlayerAtLocation(PlaceToSpawn);     
         World.ClearPolice();
         Game.LocalPlayer.Character.IsRagdoll = true;
@@ -147,7 +152,7 @@ public class Respawning : IRespawning
         Respawn(true, true, true, true);
         if (PlaceToSpawn == null)
         {
-            PlaceToSpawn = WeaponSettingsProvider.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
+            PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
         }
         SetPlayerAtLocation(PlaceToSpawn);   
         World.ClearPolice(); 
@@ -174,12 +179,12 @@ public class Respawning : IRespawning
     {
         FadeOut();
         CheckWeapons();
-        BailFee = CurrentPlayer.MaxWantedLastLife * WeaponSettingsProvider.Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        BailFee = CurrentPlayer.MaxWantedLastLife * Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         CurrentPlayer.RaiseHands();
         ResetPlayer(true, true,false,true);
         if (PoliceStation == null)
         {
-            PoliceStation = WeaponSettingsProvider.Places.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
+            PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
         }
         SetPlayerAtLocation(PoliceStation);
         World.ClearPolice();
@@ -216,7 +221,7 @@ public class Respawning : IRespawning
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
-            WeaponVariation DroppedGunVariation = WeaponSettingsProvider.Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
+            WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
             DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation, Weapon.Ammo);
             MyOldGuns.Add(MyGun);
         }
@@ -225,7 +230,7 @@ public class Respawning : IRespawning
         //Add out guns back with variations
         foreach (DroppedWeapon MyNewGun in MyOldGuns)
         {
-            WeaponInformation MyGTANewGun = WeaponSettingsProvider.Weapons.GetWeapon((ulong)MyNewGun.Weapon.Hash);
+            WeaponInformation MyGTANewGun = Weapons.GetWeapon((ulong)MyNewGun.Weapon.Hash);
             if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.Weapon.Hash, (short)MyNewGun.Ammo, false);
@@ -292,7 +297,7 @@ public class Respawning : IRespawning
     }
     private void SetHospitalFee(string HospitalName)
     {
-        int HospitalFee = WeaponSettingsProvider.Settings.SettingsManager.Police.HospitalFee * (1 + CurrentPlayer.MaxWantedLastLife);
+        int HospitalFee = Settings.SettingsManager.Police.HospitalFee * (1 + CurrentPlayer.MaxWantedLastLife);
         int CurrentCash = CurrentPlayer.Money;
         int TodaysPayment = 0;
 

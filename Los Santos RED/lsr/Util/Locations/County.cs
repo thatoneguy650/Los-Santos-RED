@@ -12,4 +12,5 @@ public enum County
     PacificOcean = 3,
     Unknown = 4,
     Crook = 5,
+    NorthYankton = 6,
 }

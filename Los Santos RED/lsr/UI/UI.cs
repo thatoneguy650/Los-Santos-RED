@@ -12,13 +12,15 @@ public class UI
     private IPlayer CurrentPlayer;
     private IWorld World;
     private ISearchMode SearchMode;
-    private IDataMart DataMart;
-    public UI(IWorld world, IPlayer currentPlayer, ISearchMode searchMode, IDataMart dataMart)
+    private ISettings Settings;
+    private IZoneJurisdictions ZoneJurisdictions;
+    public UI(IWorld world, IPlayer currentPlayer, ISearchMode searchMode, ISettings settings, IZoneJurisdictions zoneJurisdictions)
     {
         World = world;
         CurrentPlayer = currentPlayer;
         SearchMode = searchMode;
-        DataMart = dataMart;
+        Settings = settings;
+        ZoneJurisdictions = zoneJurisdictions;
         BigMessage = new BigMessageThread(true);
     }
     private BigMessageThread BigMessage;
@@ -70,15 +72,15 @@ public class UI
     };
     public void Update()
     {
-        if (DataMart.Settings.SettingsManager.General.AlwaysShowHUD)
+        if (Settings.SettingsManager.General.AlwaysShowHUD)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
-        if (DataMart.Settings.SettingsManager.General.AlwaysShowRadar)
+        if (Settings.SettingsManager.General.AlwaysShowRadar)
         {
             NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
         }
-        if (DataMart.Settings.SettingsManager.Police.ShowPoliceRadarBlips)
+        if (Settings.SettingsManager.Police.ShowPoliceRadarBlips)
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
         }
@@ -86,11 +88,11 @@ public class UI
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
-        if (DataMart.Settings.SettingsManager.General.AlwaysShowCash)
+        if (Settings.SettingsManager.General.AlwaysShowCash)
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
-        if (DataMart.Settings.SettingsManager.UI.Enabled && !CurrentPlayer.IsBusted && !CurrentPlayer.IsDead)
+        if (Settings.SettingsManager.UI.Enabled && !CurrentPlayer.IsBusted && !CurrentPlayer.IsDead)
         {
             ShowUI();
         }
@@ -198,23 +200,41 @@ public class UI
         }
         string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = DataMart.Zones.GetName(CurrentPlayer.CurrentZone, true);
+        ZoneDisplay = GetName(CurrentPlayer.CurrentZone, true);
         if (CurrentPlayer.CurrentZone != null)
         {
-            Agency MainZoneAgency = DataMart.ZoneJurisdiction.GetMainAgency(CurrentPlayer.CurrentZone.InternalGameName);
+            Agency MainZoneAgency = ZoneJurisdictions.GetMainAgency(CurrentPlayer.CurrentZone.InternalGameName);
             if (MainZoneAgency != null)
             {
                 CopZoneName = MainZoneAgency.ColoredInitials;
             }
         }
-        //if(PlayerLocation.PlayerCurrentStreet != null && PlayerLocation.PlayerCurrentStreet.IsHighway)
-        //{
-        //    Agency HighwayPatrol = Agencies.RandomHighwayAgency;
-        //    if(HighwayPatrol != null)
-        //    CopZoneName += "~s~ / " + HighwayPatrol.ColoredInitials;
-        //}
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
+    }
+    public string GetName(Zone MyZone, bool WithCounty)
+    {
+        if (WithCounty)
+        {
+            string CountyName = "San Andreas";
+            if (MyZone.ZoneCounty == County.BlaineCounty)
+                CountyName = "Blaine County";
+            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
+                CountyName = "City of Los Santos";
+            else if (MyZone.ZoneCounty == County.LosSantosCounty)
+                CountyName = "Los Santos County";
+            else if (MyZone.ZoneCounty == County.Crook)
+                CountyName = "Crook County";
+            else if (MyZone.ZoneCounty == County.NorthYankton)
+                CountyName = "North Yankton";
+
+            return MyZone.DisplayName + ", " + CountyName;
+        }
+        else
+        {
+            return MyZone.DisplayName;
+        }
+
     }
     private void HideVanillaUI()
     {
@@ -317,8 +337,8 @@ public class UI
         HideVanillaUI();
 
         //DisplayTextOnScreen(GetPlayerStatusDisplay(), DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusPositionX, DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusPositionY, DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusJustificationID);
-        DisplayTextOnScreen(GetVehicleStatusDisplay(), DataMart.Settings.SettingsManager.UI.VehicleStatusPositionX, DataMart.Settings.SettingsManager.UI.VehicleStatusPositionY, DataMart.Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)DataMart.Settings.SettingsManager.UI.VehicleStatusJustificationID);
-        DisplayTextOnScreen(GetZoneDisplay(), DataMart.Settings.SettingsManager.UI.ZonePositionX, DataMart.Settings.SettingsManager.UI.ZonePositionY, DataMart.Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)DataMart.Settings.SettingsManager.UI.ZoneJustificationID);
-        DisplayTextOnScreen(GetStreetDisplay(), DataMart.Settings.SettingsManager.UI.StreetPositionX, DataMart.Settings.SettingsManager.UI.StreetPositionY, DataMart.Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)DataMart.Settings.SettingsManager.UI.StreetJustificationID);
+        DisplayTextOnScreen(GetVehicleStatusDisplay(), Settings.SettingsManager.UI.VehicleStatusPositionX, Settings.SettingsManager.UI.VehicleStatusPositionY, Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UI.VehicleStatusJustificationID);
+        DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UI.ZonePositionX, Settings.SettingsManager.UI.ZonePositionY, Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.ZoneJustificationID);
+        DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UI.StreetPositionX, Settings.SettingsManager.UI.StreetPositionY, Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.StreetJustificationID);
     }
 }

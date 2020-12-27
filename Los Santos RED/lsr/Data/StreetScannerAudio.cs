@@ -5,26 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using static DispatchScannerFiles;
 
-namespace LosSantosRED.lsr.Data
-{
-    public class StreetScannerAudio
-    {
-        private List<StreetLookup> StreetsList = new List<StreetLookup>();
 
-        public void ReadConfig()
-        {
-            DefaultConfig();
-        }
-        public string GetAudio(string StreetName)
-        {
-            StreetLookup Returned = StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
-            if (Returned == null)
-                return "";
-            return Returned.DispatchFile;
-        }
-        private void DefaultConfig()
-        {
-            StreetsList = new List<StreetLookup>
+public class StreetScannerAudio
+{
+    private List<StreetLookup> StreetsList = new List<StreetLookup>();
+
+    public void ReadConfig()
+    {
+        DefaultConfig();
+    }
+    public string GetAudio(string StreetName)
+    {
+        StreetLookup Returned = StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
+        if (Returned == null)
+            return "";
+        return Returned.DispatchFile;
+    }
+    private void DefaultConfig()
+    {
+        StreetsList = new List<StreetLookup>
         {
             new StreetLookup("Joshua Rd", streets.JoshuaRoad.FileName),
             new StreetLookup("East Joshua Road", streets.EastJoshuaRoad.FileName),
@@ -247,24 +246,24 @@ namespace LosSantosRED.lsr.Data
 
             new StreetLookup("Mt Haan Dr", streets.MtHaanDrive.FileName)
         };
-        }
-        private class StreetLookup
+    }
+    private class StreetLookup
+    {
+        public string Name { get; set; } = "";
+        public string DispatchFile { get; set; } = "";
+        public StreetLookup()
         {
-            public string Name { get; set; } = "";
-            public string DispatchFile { get; set; } = "";
-            public StreetLookup()
-            {
 
-            }
-            public StreetLookup(string _Name)
-            {
-                Name = _Name;
-            }
-            public StreetLookup(string _Name, string _DispatchFile)
-            {
-                Name = _Name;
-                DispatchFile = _DispatchFile;
-            }
+        }
+        public StreetLookup(string _Name)
+        {
+            Name = _Name;
+        }
+        public StreetLookup(string _Name, string _DispatchFile)
+        {
+            Name = _Name;
+            DispatchFile = _DispatchFile;
         }
     }
 }
+

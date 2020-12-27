@@ -19,7 +19,10 @@ namespace LosSantosRED.lsr
         private IPoliceSight Police;
         private ISearchMode SearchMode;
         private IRespawning Respawning;
-        private IDataMart DataMart;
+        private ISettings Settings;
+        private VehicleScannerAudio VehicleScannerAudio;
+        private StreetScannerAudio StreetScannerAudio;
+        private ZoneScannerAudio ZoneScannerAudio;
         private Dispatch AnnounceStolenVehicle;
         private Dispatch AssaultingOfficer;
         private Dispatch AttemptingSuicide;
@@ -85,15 +88,22 @@ namespace LosSantosRED.lsr
         private Dispatch VehicleHitAndRun;
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
-        public Scanner(IWorld world, IPlayer currentPlayer, IPoliceSight police, IAudio audioPlayer, IRespawning respawning, ISearchMode searchMode, IDataMart dataMart)
+        public Scanner(IWorld world, IPlayer currentPlayer, IPoliceSight police, IAudio audioPlayer, IRespawning respawning, ISearchMode searchMode, ISettings settings)
         {
             AudioPlayer = audioPlayer;
             CurrentPlayer = currentPlayer;
             World = world;
             Police = police;
-            DataMart = dataMart;
+            Settings = settings;
             Respawning = respawning;
             SearchMode = searchMode;
+            VehicleScannerAudio = new VehicleScannerAudio();
+            VehicleScannerAudio.ReadConfig();
+            StreetScannerAudio = new StreetScannerAudio();
+            StreetScannerAudio.ReadConfig();
+            ZoneScannerAudio = new ZoneScannerAudio();
+            ZoneScannerAudio.ReadConfig();
+
             DefaultConfig(); 
         }
         private enum LocationSpecificity
@@ -224,7 +234,7 @@ namespace LosSantosRED.lsr
         }
         public void Tick()
         {
-            if (DataMart.Settings.SettingsManager.Police.DispatchAudio)
+            if (Settings.SettingsManager.Police.DispatchAudio)
             {
                 CheckDispatch();
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
@@ -410,7 +420,7 @@ namespace LosSantosRED.lsr
             Street MyStreet = CurrentPlayer.CurrentStreet;
             if (MyStreet != null)
             {
-                string StreetAudio = DataMart.StreetScannerAudio.GetAudio(MyStreet.Name);
+                string StreetAudio = StreetScannerAudio.GetAudio(MyStreet.Name);
                 if (StreetAudio != "")
                 {
                     dispatchEvent.SoundsToPlay.Add(new List<string>() { conjunctives.On.FileName, conjunctives.On1.FileName, conjunctives.On2.FileName, conjunctives.On3.FileName, conjunctives.On4.FileName }.PickRandom());
@@ -424,7 +434,7 @@ namespace LosSantosRED.lsr
                         Street MyCrossStreet = CurrentPlayer.CurrentCrossStreet;
                         if (MyCrossStreet != null)
                         {
-                            string CrossStreetAudio = DataMart.StreetScannerAudio.GetAudio(MyCrossStreet.Name);
+                            string CrossStreetAudio = StreetScannerAudio.GetAudio(MyCrossStreet.Name);
                             if (CrossStreetAudio != "")
                             {
                                 dispatchEvent.SoundsToPlay.Add(new List<string>() { conjunctives.AT01.FileName, conjunctives.AT02.FileName }.PickRandom());
@@ -480,13 +490,13 @@ namespace LosSantosRED.lsr
                 Color CarColor = VehicleToDescribe.VehicleColor(); //Vehicles.VehicleManager.VehicleColor(VehicleToDescribe);
                 string MakeName = VehicleToDescribe.MakeName();// Vehicles.VehicleManager.MakeName(VehicleToDescribe);
                 int ClassInt = VehicleToDescribe.ClassInt();// Vehicles.VehicleManager.ClassInt(VehicleToDescribe);
-                string ClassName = DataMart.VehicleScannerAudio.ClassName(ClassInt);
+                string ClassName = VehicleScannerAudio.ClassName(ClassInt);
                 string ModelName = VehicleToDescribe.ModelName();// Vehicles.VehicleManager.ModelName(VehicleToDescribe);
 
-                string ColorAudio = DataMart.VehicleScannerAudio.GetColorAudio(CarColor);
-                string MakeAudio = DataMart.VehicleScannerAudio.GetMakeAudio(MakeName);
-                string ClassAudio = DataMart.VehicleScannerAudio.GetClassAudio(ClassInt);
-                string ModelAudio = DataMart.VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
+                string ColorAudio = VehicleScannerAudio.GetColorAudio(CarColor);
+                string MakeAudio = VehicleScannerAudio.GetMakeAudio(MakeName);
+                string ClassAudio = VehicleScannerAudio.GetClassAudio(ClassInt);
+                string ModelAudio = VehicleScannerAudio.GetModelAudio(VehicleToDescribe.Vehicle.Model.Hash);
 
                 if (ColorAudio != "")
                 {
@@ -518,7 +528,7 @@ namespace LosSantosRED.lsr
                 {
                     AddAudioSet(dispatchEvent, LicensePlateSet.PickRandom());
                     string LicensePlateText = VehicleToDescribe.OriginalLicensePlate.PlateNumber;
-                    dispatchEvent.SoundsToPlay.AddRange(DataMart.VehicleScannerAudio.GetPlateAudio(LicensePlateText));
+                    dispatchEvent.SoundsToPlay.AddRange(VehicleScannerAudio.GetPlateAudio(LicensePlateText));
                     dispatchEvent.Subtitles += " ~s~" + LicensePlateText + "~s~";
                     dispatchEvent.NotificationText += " ~s~Plate: " + LicensePlateText + "~s~";
                 }
@@ -669,10 +679,10 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Zone MyZone = DataMart.Zones.GetZone(CurrentPlayer.CurrentPosition);
+            Zone MyZone = CurrentPlayer.CurrentZone;
             if (MyZone != null)
             {
-                string ScannerAudio = DataMart.ZoneScannerAudio.GetAudio(MyZone.InternalGameName);
+                string ScannerAudio = ZoneScannerAudio.GetAudio(MyZone.InternalGameName);
                 if (ScannerAudio != "")
                 {
                     dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
@@ -1060,7 +1070,7 @@ namespace LosSantosRED.lsr
             {
                 if (AbortedAudio)
                 {
-                    AudioPlayer.Play(RadioEnd.PickRandom(), DataMart.Settings.SettingsManager.Police.DispatchAudioVolume);
+                    AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.Police.DispatchAudioVolume);
                     GameFiber.Sleep(1000);
                 }
 
@@ -1069,7 +1079,7 @@ namespace LosSantosRED.lsr
                     GameFiber.Yield();
                 }
 
-                if (MyAudioEvent.NotificationTitle != "" && DataMart.Settings.SettingsManager.Police.DispatchNotifications)
+                if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.Police.DispatchNotifications)
                 {
                     RemoveAllNotifications();
                     NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
@@ -1081,11 +1091,11 @@ namespace LosSantosRED.lsr
 
                 foreach (string audioname in MyAudioEvent.SoundsToPlay)
                 {
-                    AudioPlayer.Play(audioname, DataMart.Settings.SettingsManager.Police.DispatchAudioVolume);
+                    AudioPlayer.Play(audioname, Settings.SettingsManager.Police.DispatchAudioVolume);
 
                     while (AudioPlayer.IsAudioPlaying)
                     {
-                        if (MyAudioEvent.Subtitles != "" && DataMart.Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                        if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                         {
                             Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
                             GameTimeLastDisplayedSubtitle = Game.GameTime;

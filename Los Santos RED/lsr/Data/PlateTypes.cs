@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -11,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class PlateTypes
+public class PlateTypes : IPlateTypes
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\PlateTypes.xml";
     private List<PlateType> PlateTypeList = new List<PlateType>();

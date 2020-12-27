@@ -143,6 +143,10 @@ public class Cop : PedExt
     {
         get
         {
+            if(IsInHelicopter || IsInVehicle)
+            {
+                return false;
+            }
             if (DistanceToPlayer < 0.1f) //weird cases where they are my same position
             {
                 return false;

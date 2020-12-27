@@ -18,15 +18,28 @@ namespace Mod
         private Pedestrians Pedestrians;
         private Time Time;
         private Vehicles Vehicles;
-        private IDataMart DataMart;
+        private IAgencies Agencies;
+        private IZoneJurisdictions ZoneJurisdictions;
+        private ISettings Settings;
+        private IWeapons Weapons;
+        private IPlacesOfInterest PlacesOfInterest;
+        private IZones Zones;
+        private IPlateTypes PlateTypes;
 
-        public World(IDataMart dataMart)
+        public World(IAgencies agencies, IZoneJurisdictions zoneJurisdictions, ISettings settings, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IPlateTypes plateTypes)
         {
-            DataMart = dataMart;
-            Pedestrians = new Pedestrians(this, DataMart);
+            Agencies = agencies;
+            ZoneJurisdictions = zoneJurisdictions;
+            Settings = settings;
+            Weapons = weapons;
+            PlacesOfInterest = placesOfInterest;
+            Zones = zones;
+            PlateTypes = plateTypes;
             Time = new Time();
-            Vehicles = new Vehicles(DataMart);
+            Pedestrians = new Pedestrians(this, Agencies, ZoneJurisdictions, Weapons, Settings);
+            Vehicles = new Vehicles(Zones, Agencies, PlateTypes, ZoneJurisdictions);
         }
+
         public IPlayer CurrentPlayer { get; private set; }
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
         public bool AnyCopsNearPlayer => Pedestrians.AnyCopsNearPlayer;
@@ -68,7 +81,7 @@ namespace Mod
         public void AddBlipsToMap()
         {
             CreatedBlips = new List<Blip>();
-            foreach (GameLocation MyLocation in DataMart.Places.GetAllPlaces())
+            foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
             {
                 MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
                 myBlip.AddToMap();

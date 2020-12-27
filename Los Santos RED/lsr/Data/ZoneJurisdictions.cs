@@ -8,15 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class ZoneJurisdictions
+public class ZoneJurisdictions : IZoneJurisdictions
 {
+    private IAgencies AgencyProvider;
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\ZoneJurisdiction.xml";
     private List<ZoneJurisdiction> ZoneJurisdictionsList = new List<ZoneJurisdiction>();
     private bool UseVanillaConfig = true;
-    private IAgencyProvider DataMart;
-    public ZoneJurisdictions(IAgencyProvider dataMart)
+
+    public ZoneJurisdictions(IAgencies agencyProvider)
     {
-        DataMart = dataMart;
+        AgencyProvider = agencyProvider;
     }
     public void ReadConfig()
     {
@@ -44,8 +45,7 @@ public class ZoneJurisdictions
             ZoneJurisdiction cool = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(y => y.Priority).FirstOrDefault();
             if (cool != null)
             {
-                return DataMart.Agencies.GetAgency(cool.AgencyInitials);
-                //return cool.GameAgency;
+                return AgencyProvider.GetAgency(cool.AgencyInitials);
             }
         }
         return null;
@@ -57,13 +57,12 @@ public class ZoneJurisdictions
             List<ZoneJurisdiction> ToPickFrom = new List<ZoneJurisdiction>();
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()))
             {
-                Agency Agency = DataMart.Agencies.GetAgency(zoneJurisdiction.AgencyInitials);
+                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
                 if (Agency != null && Agency.CanSpawn(WantedLevel))
                 {
                     ToPickFrom.Add(zoneJurisdiction);
                 }
             }
-            //List<ZoneJurisdiction> ToPickFrom = ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower() && DataMart.Agencies.GetAgency(x.AgencyInitials) != null && DataMart.Agencies.GetAgency(x.AgencyInitials).CanSpawn(WantedLevel)).ToList();
             int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
             int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (ZoneJurisdiction MyJurisdiction in ToPickFrom)
@@ -71,8 +70,7 @@ public class ZoneJurisdictions
                 int SpawnChance = MyJurisdiction.CurrentSpawnChance(WantedLevel);
                 if (RandomPick < SpawnChance)
                 {
-                    return DataMart.Agencies.GetAgency(MyJurisdiction.AgencyInitials);
-                    //return MyJurisdiction.GameAgency;
+                    return AgencyProvider.GetAgency(MyJurisdiction.AgencyInitials);
                 }
                 RandomPick -= SpawnChance;
             }
@@ -86,12 +84,11 @@ public class ZoneJurisdictions
             List<Agency> ToReturn = new List<Agency>();
             foreach (ZoneJurisdiction zoneJurisdiction in ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == ZoneName.ToLower()).OrderBy(k => k.CurrentSpawnChance(WantedLevel)))
             {
-                Agency Agency = DataMart.Agencies.GetAgency(zoneJurisdiction.AgencyInitials);
+                Agency Agency = AgencyProvider.GetAgency(zoneJurisdiction.AgencyInitials);
                 if(Agency != null && Agency.CanSpawn(WantedLevel))
                 {
                     ToReturn.Add(Agency);
                 }
-
             }
             if(!ToReturn.Any())
             {
@@ -338,11 +335,14 @@ public class ZoneJurisdictions
             new ZoneJurisdiction("LSPD","ZP_ORT", 1, 5, 5),
 
             new ZoneJurisdiction("LSSD-BC","ZQ_UAR", 0, 85, 75),
-            new ZoneJurisdiction("LSSD","ZQ_UAR", 1, 15, 5)
+            new ZoneJurisdiction("LSSD","ZQ_UAR", 1, 15, 5),
 
+            //Custom
+            new ZoneJurisdiction("APD", "CHI1", 0, 100, 100),
+            new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100)
         };
 
-        ZoneJurisdictionsList.Add(new ZoneJurisdiction("APD", "CHI1", 0, 100, 100));
+
     }
     private void CustomConfig()
     {
