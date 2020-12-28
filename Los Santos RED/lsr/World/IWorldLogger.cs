@@ -10,9 +10,8 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IWorldLogger
     {
-      //  void AddToList(PedExt toAdd);
-        void AddToList(VehicleExt toAdd);
-        void AddBlip(Blip myBlip);
-        void AddCop(Cop myNewCop);
+        void AddEntity(VehicleExt vehicle);
+        void AddEntity(Blip blip);
+        void AddEntity(Cop cop);
     }
 }

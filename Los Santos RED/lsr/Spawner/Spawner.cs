@@ -8,100 +8,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-//Needs some refactoring
-public class Spawner : ISpawner, IDisposable
+public class Spawner : ISpawner
 {
     private IWorldLogger World;
-    private readonly List<Entity> CreatedEntities = new List<Entity>();
     public Spawner(IWorldLogger world)
     {
         World = world;
     }
-    public void Dispose()
+    public void Delete(Cop Cop)
     {
-        foreach (Entity ent in CreatedEntities)
+        if (Cop != null && Cop.Pedestrian.Exists())
         {
-            if (ent.Exists())
+            if (Cop.Pedestrian.IsInAnyVehicle(false))
             {
-                Blip myBlip = ent.GetAttachedBlip();
-                if (myBlip.Exists())
+                if (Cop.Pedestrian.CurrentVehicle.HasPassengers)
                 {
-                    myBlip.Delete();
+                    foreach (Ped Passenger in Cop.Pedestrian.CurrentVehicle.Passengers)
+                    {
+                        RemoveBlip(Passenger);
+                        Passenger.Delete();
+                    }
                 }
-                ent.Delete();
+                if (Cop.Pedestrian.Exists() && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle != null)
+                {
+                    Cop.Pedestrian.CurrentVehicle.Delete();
+                }
+            }
+            RemoveBlip(Cop.Pedestrian);
+            if (Cop.Pedestrian.Exists())
+            {
+                Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
+                Cop.Pedestrian.Delete();
             }
         }
-        CreatedEntities.Clear();
     }
-    public void SpawnCop(Agency agency, Vector3 position, float heading, VehicleInformation vehicleInfo, int WantedLevel, bool WithBlip, WeaponInformation pistolToIssue, WeaponVariation pistolVariation, WeaponInformation heavyToIssue, WeaponVariation heavyVaritaion)
+    public void Spawn(PoliceSpawn policeSpawn)
     {
         try
         {
-            DesiredSpawn DS = new DesiredSpawn(agency, position, heading, vehicleInfo, World, WantedLevel, WithBlip, pistolToIssue, pistolVariation, heavyToIssue, heavyVaritaion);
-            DS.SpawnCops();
+            SpawnTask spawnTask = new SpawnTask(policeSpawn.Agency, policeSpawn.InitialPosition, policeSpawn.StreetPosition, policeSpawn.Heading, policeSpawn.WantedLevel, policeSpawn.CanSpawnHelicopter, policeSpawn.CanSpawnBoat, policeSpawn.AddBlip);
+            spawnTask.AttemptSpawn();
+            spawnTask.CreatedCops.ForEach(x => World.AddEntity(x));
+            spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            Game.Console.Print("SpawnCop" + ex.Message + " : " + ex.StackTrace);
+            Game.Console.Print("SpawnCop " + ex.Message + " : " + ex.StackTrace);
         }
-    }
-    public void DeleteCop(Cop Cop)
-    {
-        if (Cop == null)
-        {
-            return;
-        }
-        if (!Cop.Pedestrian.Exists())
-        {
-            return;
-        }
-        if (Cop.Pedestrian.IsInAnyVehicle(false))
-        {
-            if (Cop.Pedestrian.CurrentVehicle.HasPassengers)
-            {
-                foreach (Ped Passenger in Cop.Pedestrian.CurrentVehicle.Passengers)
-                {
-                    RemoveBlip(Passenger);
-                    Passenger.Delete();
-                }
-            }
-            if (Cop.Pedestrian.Exists() && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle != null)
-            {
-                Cop.Pedestrian.CurrentVehicle.Delete();
-            }
-        }
-        RemoveBlip(Cop.Pedestrian);
-
-        if (Cop.Pedestrian.Exists())
-        {
-            Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
-            Cop.Pedestrian.Delete();
-        }
-        Cop.WasMarkedNonPersistent = false;
-    }
-    public void MarkNonPersistent(Cop Cop)
-    {
-        if (!Cop.Pedestrian.Exists())
-        {
-            return;
-        }
-        RemoveBlip(Cop.Pedestrian);
-        if (Cop.Pedestrian.IsInAnyVehicle(false))
-        {
-            if (Cop.Pedestrian.CurrentVehicle.HasPassengers)
-            {
-                foreach (Ped Passenger in Cop.Pedestrian.CurrentVehicle.Passengers)
-                {
-                    if (Passenger.Exists())
-                    {
-                        Passenger.IsPersistent = false;
-                    }
-                }
-            }
-            Cop.Pedestrian.CurrentVehicle.IsPersistent = false;
-        }
-        Cop.Pedestrian.IsPersistent = false;
-        Cop.WasMarkedNonPersistent = false;
     }
     private void RemoveBlip(Ped MyPed)
     {
@@ -115,186 +68,131 @@ public class Spawner : ISpawner, IDisposable
             MyBlip.Delete();
         }
     }
-    private class SpawnLocation
+    private class SpawnTask
     {
-        public Vector3 Position;
-        public float Heading;
-        public Zone ZoneAtLocation;
-        public Street StreetAtSpawn;
-        public SpawnLocation(Vector3 _SpawnLocation, float _Heading, Zone _ZoneAtLocation, Street _StreetAtSpawn)
-        {
-            Position = _SpawnLocation;
-            ZoneAtLocation = _ZoneAtLocation;
-            StreetAtSpawn = _StreetAtSpawn;
-            Heading = _Heading;
-        }
-    }
-    private class DesiredSpawn//shit name w/e
-    {
-        private IWorldLogger World;
+        private DispatchableOfficer OfficerType;
         private Agency Agency;
-        private Vector3 SpawnLocation;
-        private float Heading;
-        private VehicleInformation VehicleInformation;
         private int WantedLevel;
-        private bool HasBlip;
-        private WeaponInformation IssuedPistol;
-        private WeaponInformation IssuedHeavy;
-        private WeaponVariation IssuedPistolVariation;
-        private WeaponVariation IssuedHeavyVariation;
-        public DesiredSpawn(Agency agency, Vector3 spawnLocation, float heading, VehicleInformation vehicleInformation, IWorldLogger world, int wantedLevel,bool hasBlip, WeaponInformation pistolToIssue, WeaponVariation pistolVariation, WeaponInformation heavyToIssue, WeaponVariation heavyVaritaion)
+        private bool CanSpawnHeli;
+        private bool CanSpawnBoat;
+        private bool AddBlip;
+        private Vector3 InitialPosition;
+        private Vector3 StreetPosition;
+        private float Heading;
+        private VehicleExt Vehicle;
+        private DispatchableVehicle VehicleType;
+        public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, int wantedLevel, bool canSpawnHeli, bool canSpawnBoat, bool addBlip)
         {
             Agency = agency;
-            SpawnLocation = spawnLocation;
-            Heading = heading;
-            VehicleInformation = vehicleInformation;
-            World = world;
             WantedLevel = wantedLevel;
-            HasBlip = hasBlip;
-            IssuedPistol = pistolToIssue;
-            IssuedPistolVariation = pistolVariation;
-            IssuedHeavy = heavyToIssue;
-            IssuedHeavyVariation = heavyVaritaion;
+            CanSpawnHeli = canSpawnHeli;
+            CanSpawnBoat = canSpawnBoat;
+            AddBlip = addBlip;
+            InitialPosition = initialPosition;
+            StreetPosition = streetPosition;
+            Heading = heading;
         }
-        public void SpawnCops()
+        public List<Cop> CreatedCops { get; private set; } = new List<Cop>();
+        public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
+        private Vector3 Position
         {
-            if (Agency == null)// || !Agency.CanSpawn)
+            get
             {
-                return;
-            }
-            VehicleExt CopCar = SpawnCopVehicle();
-            GameFiber.Yield();
-            if (CopCar == null || !CopCar.Vehicle.Exists())
-            {
-                return;
-            }
-            World.AddToList(CopCar);
-            Ped Cop = SpawnCopPed(WantedLevel);
-            GameFiber.Yield();
-            if (Cop == null || !Cop.Exists() || !CopCar.Vehicle.Exists())
-            {
-                return;
-            }
-            Cop.WarpIntoVehicle(CopCar.Vehicle, -1);
-            Cop.IsPersistent = true;
-            CopCar.Vehicle.IsPersistent = true;
-            Cop.Tasks.CruiseWithVehicle(Cop.CurrentVehicle, 15f, VehicleDrivingFlags.Normal);
-            Cop MyNewCop = new Cop(Cop, Cop.Health, Agency, true, IssuedPistol,IssuedPistolVariation,IssuedHeavy,IssuedHeavyVariation);
-
-            MyNewCop.WasMarkedNonPersistent = true;
-            MyNewCop.WasSpawnedAsDriver = true;
-            
-            if (HasBlip && Cop.Exists())
-            {
-                Blip myBlip = Cop.AttachBlip();
-                myBlip.Color = Agency.AgencyColor;
-                myBlip.Scale = 0.6f;
-                World.AddBlip(myBlip);
-            }
-
-
-            World.AddCop(MyNewCop);
-            //Game.Console.Print("PoliceSpawning", string.Format("Attempting to Spawn: {0}, Vehicle: {1}, PedModel: {2}, PedHandle: {3}, Color: {4}", _Agency.Initials, CopCar.Vehicle.Model.Name, Cop.Model.Name, Cop.Handle, _Agency.AgencyColor));
-            if (VehicleInformation != null)
-            {
-                int OccupantsToAdd = RandomItems.MyRand.Next(VehicleInformation.MinOccupants, VehicleInformation.MaxOccupants + 1) - 1;
-                for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+                if (VehicleType.IsHelicopter)
                 {
-                    Ped PartnerCop = SpawnCopPed(WantedLevel);
-                    GameFiber.Yield();
-                    if (PartnerCop != null)
-                    {
-                        //CreatedEntities.Add(PartnerCop);
-                        if (!CopCar.Vehicle.Exists())
-                        {
-                            if (PartnerCop.Exists())
-                            {
-                                PartnerCop.Delete();
-                            }
-                        }
-                        else
-                        {
-                            PartnerCop.WarpIntoVehicle(CopCar.Vehicle, OccupantIndex - 1);
-                            PartnerCop.IsPersistent = true;
-                            Cop MyNewPartnerCop = new Cop(PartnerCop, PartnerCop.Health, Agency, true, IssuedPistol, IssuedPistolVariation, IssuedHeavy, IssuedHeavyVariation);
-                            MyNewPartnerCop.WasMarkedNonPersistent = true;
-                            if (HasBlip && PartnerCop.Exists())
-                            {
-                                Blip myBlip = PartnerCop.AttachBlip();
-                                myBlip.Color = Agency.AgencyColor;
-                                myBlip.Scale = 0.6f;
-                                World.AddBlip(myBlip);
-                            }
-                            World.AddCop(MyNewPartnerCop);
-                            //Game.Console.Print("PoliceSpawning", string.Format("        Attempting to Spawn Partner{0}: Agency: {1}, Vehicle: {2}, PedModel: {3}, PedHandle: {4}", OccupantIndex, _Agency.Initials, CopCar.Vehicle.Model.Name, PartnerCop.Model.Name, PartnerCop.Handle));
-                        }
-                    }
+                    return InitialPosition + new Vector3(0f, 0f, 250f);
                 }
-
-            }
-        }
-        private Ped SpawnCopPed(int WantedLevel)
-        {
-            if (Agency == null)
-            {
-                return null;
-            }
-            List<string> RequiredModels = new List<string>();
-            if (VehicleInformation != null && VehicleInformation.AllowedPedModels.Any())
-            {
-                RequiredModels = VehicleInformation.AllowedPedModels;
-            }
-            PedestrianInformation MyInfo = Agency.GetRandomPed(RequiredModels, WantedLevel);
-            if (MyInfo == null)
-            {
-                return null;
-            }
-            Vector3 SafeSpawnLocation = new Vector3(SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z + 1f);//+5f
-            Ped Cop = new Ped(MyInfo.ModelName, SafeSpawnLocation, 0f);
-            if (!Cop.Exists())
-            {
-                return null;
-            }
-            NativeFunction.CallByName<bool>("SET_PED_AS_COP", Cop, true);
-            Cop.RandomizeVariation();
-            if (VehicleInformation.IsMotorcycle)
-            {
-                Cop.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
-                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 4, 0, 0, 0);
-            }
-            else
-            {
-                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", Cop, 4, 1, 0, 0);
-            }
-            if (MyInfo.RequiredVariation != null)
-            {
-                MyInfo.RequiredVariation.ReplacePedComponentVariation(Cop);
-            }
-            return Cop;
-        }
-        private VehicleExt SpawnCopVehicle()
-        {
-            Vehicle CopCar = new Vehicle(VehicleInformation.ModelName, SpawnLocation, Heading);
-            GameFiber.Yield();
-            if (CopCar.Exists())
-            {
-                VehicleExt ToReturn = new VehicleExt(CopCar, true);
-                if (CopCar.Exists())
+                else if (VehicleType.IsBoat)
                 {
-                    ToReturn.UpdateCopCarLivery(Agency);
-                    ToReturn.UpgradeCopCarPerformance();
-                    World.AddToList(ToReturn);
-                    return ToReturn;
+                    return InitialPosition;
                 }
                 else
                 {
-                    return null;
+                    return StreetPosition;
                 }
             }
-            else
+        }
+        public void AttemptSpawn()
+        {
+            if (Agency != null)
             {
-                return null;
+                VehicleType = Agency.GetRandomVehicle(WantedLevel, CanSpawnHeli, CanSpawnBoat);
+                OfficerType = Agency.GetRandomPed(WantedLevel, VehicleType.RequiredPassengerModels);
+                Vehicle = CreateVehicle();
+                if (Vehicle != null && Vehicle.Vehicle.Exists())
+                {
+                    Cop Cop = CreateCop();
+                    if (Cop != null && Cop.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                    {
+                        Cop.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
+                        int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+                        for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+                        {
+                            Cop PassengerCop = CreateCop();
+                            if (PassengerCop != null && PassengerCop.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                            {
+                                PassengerCop.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, OccupantIndex - 1);
+                            }
+                        }
+                    }
+                }
             }
+        }
+        private Cop CreateCop()
+        {
+            Ped CopPed = new Ped(OfficerType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), Heading);
+            GameFiber.Yield();
+            if (CopPed.Exists())
+            {
+                NativeFunction.CallByName<bool>("SET_PED_AS_COP", CopPed, true);
+                CopPed.RandomizeVariation();
+                if (VehicleType.IsMotorcycle)
+                {
+                    CopPed.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
+                    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", CopPed, 4, 0, 0, 0);
+                }
+                else
+                {
+                    NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", CopPed, 4, 1, 0, 0);
+                }
+                if (OfficerType.RequiredVariation != null)
+                {
+                    OfficerType.RequiredVariation.ReplacePedComponentVariation(CopPed);
+                }
+                GameFiber.Yield();
+                CopPed.IsPersistent = true;
+                Cop PrimaryCop = new Cop(CopPed, CopPed.Health, Agency, true);
+                PrimaryCop.IssueWeapons();
+                CopPed.IsPersistent = true;
+                if (AddBlip && CopPed.Exists())
+                {
+                    Blip myBlip = CopPed.AttachBlip();
+                    myBlip.Color = Agency.AgencyColor;
+                    myBlip.Scale = 0.6f;
+                }
+                CreatedCops.Add(PrimaryCop);
+                return PrimaryCop;
+            }
+            return null;
+        }
+        private VehicleExt CreateVehicle()
+        {
+            Vehicle copcar = new Vehicle(VehicleType.ModelName, Position, Heading);
+            GameFiber.Yield();
+            if (copcar.Exists())
+            {
+                VehicleExt CopVehicle = new VehicleExt(copcar, true);
+                if (copcar.Exists())
+                {
+                    copcar.IsPersistent = true;
+                    CopVehicle.UpdateCopCarLivery(Agency);
+                    CopVehicle.UpgradeCopCarPerformance();
+                    CreatedVehicles.Add(CopVehicle);
+                    GameFiber.Yield();
+                    return CopVehicle;
+                }
+            }
+            return null;
         }
     }
 }

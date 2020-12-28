@@ -113,6 +113,10 @@
     <Compile Include="lsr\Data\StreetScannerAudio.cs" />
     <Compile Include="lsr\Data\VehicleScannerAudio.cs" />
     <Compile Include="lsr\Data\ZoneScannerAudio.cs" />
+    <Compile Include="lsr\Dispatcher\IssuableWeapon.cs" />
+    <Compile Include="lsr\Dispatcher\PoliceSpawn.cs" />
+    <Compile Include="lsr\Dispatcher\WeaponTypeGroup.cs" />
+    <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
     <Compile Include="lsr\Helper\ModTask.cs" />
     <Compile Include="lsr\Helper\Natives.cs" />
     <Compile Include="lsr\Helper\Serialization.cs" />
@@ -151,9 +155,9 @@
     <Compile Include="lsr\Util\Peds\PedName.cs" />
     <Compile Include="lsr\Util\Police\Agency.cs" />
     <Compile Include="lsr\Util\Police\Classification.cs" />
-    <Compile Include="lsr\Util\Weapon\AgencyAssignedWeapon.cs" />
-    <Compile Include="lsr\Util\Peds\PedestrianInformation.cs" />
-    <Compile Include="lsr\Util\Vehicle\VehicleInformation.cs" />
+    <Compile Include="lsr\Dispatcher\AgencyAssignedWeapon.cs" />
+    <Compile Include="lsr\Dispatcher\DispatchableOfficer.cs" />
+    <Compile Include="lsr\Dispatcher\DispatchableVehicle.cs" />
     <Compile Include="lsr\Util\Locations\CountyJurisdiction.cs" />
     <Compile Include="lsr\Util\Locations\GameLocation.cs" />
     <Compile Include="lsr\Util\Locations\LocationType.cs" />
@@ -194,10 +198,10 @@
     <Compile Include="lsr\Util\Vehicle\PlateType.cs" />
     <Compile Include="lsr\World\Vehicles.cs" />
     <Compile Include="lsr\Util\Weapon\WeaponCategory.cs" />
-    <Compile Include="lsr\Util\Weapon\WeaponInformation.cs" />
+    <Compile Include="lsr\Dispatcher\WeaponInformation.cs" />
     <Compile Include="lsr\Util\Peds\PedExt.cs" />
-    <Compile Include="lsr\Util\Weapon\WeaponComponent.cs" />
-    <Compile Include="lsr\Util\Weapon\WeaponVariation.cs" />
+    <Compile Include="lsr\Dispatcher\WeaponComponent.cs" />
+    <Compile Include="lsr\Dispatcher\WeaponVariation.cs" />
     <Compile Include="lsr\Util\Locations\Zone.cs" />
     <Compile Include="lsr\Data\Agencies.cs" />
     <Compile Include="lsr\Data\ZoneJurisdictions.cs" />

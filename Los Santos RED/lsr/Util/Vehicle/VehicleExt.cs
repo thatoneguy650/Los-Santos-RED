@@ -320,7 +320,7 @@ namespace LSR.Vehicles
         }
         public void UpdateCopCarLivery(Agency AssignedAgency)
         {
-            VehicleInformation MyVehicle = null;
+            DispatchableVehicle MyVehicle = null;
             if (AssignedAgency != null && AssignedAgency.Vehicles != null && Vehicle.Exists())
             {
                 MyVehicle = AssignedAgency.Vehicles.Where(x => x.ModelName.ToLower() == Vehicle.Model.Name.ToLower()).FirstOrDefault();

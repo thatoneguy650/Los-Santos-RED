@@ -5,9 +5,7 @@ using LosSantosRED.lsr.Locations;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -15,7 +13,6 @@ namespace Mod
 {
     public class Player : IPlayer
     {
-
         private HealthState CurrentHealth;
         private LocationData CurrentLocation;
         private uint GameTimeLastBusted;
@@ -37,16 +34,15 @@ namespace Mod
         private Mugging Mugging;
         private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
         private List<PedExt> PlayerKilledCops = new List<PedExt>();
+        private ISettings Settings;
+        private IStreets Streets;
         private Surrendering Surrendering;
         private bool VanillaRespawn = true;
         private Violations Violations;
         private WeaponDropping WeaponDropping;
-        private IWorld World;
-        private IStreets Streets;
-        private IZones Zones;
-        private ISettings Settings;
         private IWeapons Weapons;
-
+        private IWorld World;
+        private IZones Zones;
         public Player(IWorld world, IStreets streets, IZones zones, ISettings settings, IWeapons weapons)
         {
             World = world;
@@ -68,12 +64,6 @@ namespace Mod
             GameTimeStartedPlaying = Game.GameTime;
         }
 
-        public bool AnyPoliceCanHearPlayer { get; set; }
-        public bool AnyPoliceCanRecognizePlayer { get; set; }
-        public bool AnyPoliceCanSeePlayer { get; set; }
-        public bool AnyPoliceRecentlySeenPlayer { get; set; }
-        public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
-        public bool AreStarsGreyedOut { get; set; }
         public bool AnyHumansNear
         {
             get
@@ -81,6 +71,12 @@ namespace Mod
                 return World.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || World.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
             }
         }
+        public bool AnyPoliceCanHearPlayer { get; set; }
+        public bool AnyPoliceCanRecognizePlayer { get; set; }
+        public bool AnyPoliceCanSeePlayer { get; set; }
+        public bool AnyPoliceRecentlySeenPlayer { get; set; }
+        public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
+        public bool AreStarsGreyedOut { get; set; }
         public ArrestWarrant ArrestWarrant { get; private set; }
         public bool BeingArrested { get; private set; }
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
@@ -213,6 +209,7 @@ namespace Mod
                 }
             }
         }
+        public bool IsHoldingEnter { get; set; }
         public bool IsHotWiring { get; private set; }
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
@@ -232,8 +229,8 @@ namespace Mod
         }
         public bool IsLockPicking { get; set; }
         public bool IsMobileRadioEnabled { get; private set; }
-        public bool IsMugging => Mugging.IsMugging;
         public bool IsMoveControlPressed { get; set; }
+        public bool IsMugging => Mugging.IsMugging;
         public bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
         public bool IsOffroad => CurrentLocation.IsOffroad;
         public bool IsOnMotorcycle { get; private set; }
@@ -261,7 +258,6 @@ namespace Mod
                 return CurrentCash;
             }
         }
-        public bool IsHoldingEnter { get; set; }
         public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 9f);
         public bool NearCopMurderVictim => PlayerKilledCops.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 15f);
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
@@ -409,7 +405,7 @@ namespace Mod
                 SuspectsName = "John Doe";
             }
         }
-        public void GiveName(string modelBeforeSpoof, bool isMale, string defaultName)
+        public void GiveName(string modelBeforeSpoof, string defaultName)
         {
             if (modelBeforeSpoof.ToLower() == "player_zero")
             {
@@ -500,23 +496,11 @@ namespace Mod
             CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
             if (resetWanted)
             {
-
-
-
                 ///ArrestWarrant.Reset();
-
-
-
-
-
-
 
                 CurrentPoliceResponse.Reset();
                 Investigations.Reset();
                 ResetInjuries();
-
-
-
 
                 ///  World.ResetWitnessedCrimes();
 
@@ -599,18 +583,6 @@ namespace Mod
             TrackedVehiclesTick();
             CurrentHealth.Update(null);
             WeaponDropping.Tick();
-
-        }
-        private void TerminateVanillaAudio()
-        {
-            if (Settings.SettingsManager.Police.DisableAmbientScanner)
-            {
-                NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
-            }
-            if (Settings.SettingsManager.Police.WantedMusicDisable)
-            {
-                NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
-            }
         }
         public void ViolationsUpdate()
         {
@@ -710,7 +682,6 @@ namespace Mod
             }
             else
             {
-
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
             Game.Console.Print(string.Format("IsGettingIntoVehicleChanged to {0}", IsGettingIntoAVehicle));
@@ -719,23 +690,31 @@ namespace Mod
         {
             if (IsInVehicle)
             {
-
             }
             else
             {
-                if(CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
+                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
                     CurrentVehicle.Vehicle.IsEngineOn = LeftEngineOn;
                     //Game.Console.Print(string.Format("IsInVehicle Changed: Current Engine Status: {0}", CurrentVehicle.Vehicle.IsEngineOn));
                 }
                 else
                 {
-                   // Game.Console.Print("IsInVehicle Changed: No Current Vehicle Already");
+                    // Game.Console.Print("IsInVehicle Changed: No Current Vehicle Already");
                 }
-                
-
             }
             Game.Console.Print(string.Format("IsInVehicle Changed: {0}", IsInVehicle));
+        }
+        private void TerminateVanillaAudio()
+        {
+            if (Settings.SettingsManager.Police.DisableAmbientScanner)
+            {
+                NativeFunction.Natives.xB9EFD5C25018725A("PoliceScannerDisabled", true);
+            }
+            if (Settings.SettingsManager.Police.WantedMusicDisable)
+            {
+                NativeFunction.Natives.xB9EFD5C25018725A("WantedMusicDisabled", true);
+            }
         }
         private void TerminateVanillaHealthRecharge()
         {
@@ -765,8 +744,6 @@ namespace Mod
                 {
                     return;
                 }
-
-
             }
         }
         private void TransitionToSlowMo()
@@ -937,7 +914,6 @@ namespace Mod
             {
                 IsDrunk = false;
             }
-            
         }
         private void UpdateState()
         {
@@ -945,7 +921,6 @@ namespace Mod
             {
                 DeathEvent();
             }
-
             if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 0))
             {
                 BeingArrested = true;
@@ -964,6 +939,5 @@ namespace Mod
                 MaxWantedLastLife = WantedLevel;
             }
         }
-
     }
 }

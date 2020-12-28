@@ -69,18 +69,12 @@ public class CountyJurisdictions : ICountyJurisdictions
             new CountyJurisdiction("LSPD-ASD",County.CityOfLosSantos, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",County.BlaineCounty, 0, 100, 100),
             new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
-            new CountyJurisdiction("APD-ASD", County.Crook, 0, 100, 100),
-            new CountyJurisdiction("NYSP", County.NorthYankton, 0, 100, 100)
+            new CountyJurisdiction("NYSP", County.NorthYankton, 0, 100, 100),
         };
     }
     private void CustomConfig()
     {
-        CountyJurisdictionList = new List<CountyJurisdiction>()
-        {
-            new CountyJurisdiction("LSPD-ASD",County.CityOfLosSantos, 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD",County.BlaineCounty, 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD",County.LosSantosCounty, 0, 100, 100),
-        };
+        DefaultConfig();
     }
 }
 

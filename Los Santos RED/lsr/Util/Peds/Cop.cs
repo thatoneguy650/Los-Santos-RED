@@ -24,10 +24,8 @@ public class Cop : PedExt
     private bool IsSetUnarmed;
     private bool IsSetDeadly;
     private uint GameTimeLastWeaponCheck;
-    private WeaponInformation IssuedPistol;
-    private WeaponInformation IssuedHeavy;
-    private WeaponVariation IssuedPistolVariation;
-    private WeaponVariation IssuedHeavyVariation;
+    private IssuableWeapon Sidearm;
+    private IssuableWeapon LongGun;
     public bool NeedsWeaponCheck
     {
         get
@@ -48,7 +46,7 @@ public class Cop : PedExt
     {
         get
         {
-            if (IssuedPistol != null)
+            if (Sidearm != null)
             {
                 return true;
             }
@@ -62,7 +60,7 @@ public class Cop : PedExt
     {
         get
         {
-            if (IssuedHeavy != null)
+            if (LongGun != null)
             {
                 return true;
             }
@@ -125,7 +123,6 @@ public class Cop : PedExt
         }
     }
     public bool WasModSpawned { get; private set; }
-    public bool WasSpawnedAsDriver { get; set; }
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public Agency AssignedAgency { get; set; } = new Agency();
     public float DistanceToInvestigationPosition(Vector3 Position)
@@ -158,7 +155,7 @@ public class Cop : PedExt
             return false;
         }
     }
-    public Cop(Ped pedestrian, int health, Agency agency, bool wasModSpawned, WeaponInformation pistolToIssue, WeaponVariation pistolVariation, WeaponInformation heavyToIssue, WeaponVariation heavyVaritaion) : base(pedestrian)
+    public Cop(Ped pedestrian, int health, Agency agency, bool wasModSpawned) : base(pedestrian)
     {
         IsCop = true;
         Health = health;
@@ -170,10 +167,11 @@ public class Cop : PedExt
         }
         Pedestrian.VisionRange = 90f;//55F
         Pedestrian.HearingRange = 55;//25
-        IssuedPistol = pistolToIssue;
-        IssuedPistolVariation = pistolVariation;
-        IssuedHeavy = heavyToIssue;
-        IssuedHeavyVariation = heavyVaritaion;
+    }
+    public void IssueWeapons()
+    {
+        Sidearm = AssignedAgency.GetRandomWeapon(true);
+        LongGun = AssignedAgency.GetRandomWeapon(false);
     }
     public void UpdateSpeech(IPlayer currentPlayer)
     {
@@ -289,19 +287,19 @@ public class Cop : PedExt
         if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetDeadly || NeedsWeaponCheck))
         {
             Pedestrian.Accuracy = 10;
-            if (!Pedestrian.Inventory.Weapons.Contains(IssuedPistol.ModelName))
+            if (!Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
             {
-                Pedestrian.Inventory.GiveNewWeapon(IssuedPistol.ModelName, -1, true);
-                IssuedPistol.ApplyWeaponVariation(Pedestrian, (uint)IssuedPistol.Hash, IssuedPistolVariation);
+                Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, true);
+                Sidearm.ApplyVariation(Pedestrian);
             }
             NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 50);//30
-            if (IssuedHeavy != null)
+            if (LongGun != null)
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, IssuedHeavy.Hash, true);
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.ModelHash, true);
             }
             else
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, IssuedPistol.Hash, true);
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.ModelHash, true);
             }
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, true);//can do drivebys
             IsSetLessLethal = false;

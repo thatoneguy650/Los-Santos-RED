@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mod;
 
-public class VehicleInformation
+public class DispatchableVehicle
 {
     public string ModelName { get; set; }
     public int AmbientSpawnChance { get; set; } = 0;
@@ -17,7 +17,7 @@ public class VehicleInformation
     public int MaxOccupants { get; set; } = 2;
     public int MinWantedLevelSpawn { get; set; } = 0;
     public int MaxWantedLevelSpawn { get; set; } = 5;
-    public List<string> AllowedPedModels { get; set; } = new List<string>();//only ped models can spawn in this, if emptyt any ambient spawn can
+    public List<string> RequiredPassengerModels { get; set; } = new List<string>();//only ped models can spawn in this, if emptyt any ambient spawn can
     public List<int> Liveries { get; set; } = new List<int>();
     public bool IsCar
     {
@@ -73,14 +73,6 @@ public class VehicleInformation
     }
     public bool CanCurrentlySpawn(int WantedLevel)
     {
-        //if (IsHelicopter && Mod.World.Instance.PoliceHelicoptersCount >= DataMart.Instance.Settings.SettingsManager.Police.HelicopterLimit)
-        //{
-        //    return false;
-        //}
-        //else if (IsBoat && Mod.World.Instance.PoliceBoatsCount >= DataMart.Instance.Settings.SettingsManager.Police.BoatLimit)
-        //{
-        //    return false;
-        //}
         if (WantedLevel > 0)
         {
             if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
@@ -119,11 +111,11 @@ public class VehicleInformation
             return AmbientSpawnChance;
         }
     }
-    public VehicleInformation()
+    public DispatchableVehicle()
     {
 
     }
-    public VehicleInformation(string modelName, int ambientSpawnChance, int wantedSpawnChance)
+    public DispatchableVehicle(string modelName, int ambientSpawnChance, int wantedSpawnChance)
     {
         ModelName = modelName;
         AmbientSpawnChance = ambientSpawnChance;

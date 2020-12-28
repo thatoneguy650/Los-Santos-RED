@@ -1,11 +1,4 @@
-﻿using LosSantosRED.lsr;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public class PedestrianInformation
+﻿public class DispatchableOfficer
 {
     public string ModelName { get; set; }
     public int AmbientSpawnChance { get; set; } = 0;
@@ -81,11 +74,10 @@ public class PedestrianInformation
             }
         }
     }
-    public PedestrianInformation()
+    public DispatchableOfficer()
     {
-
     }
-    public PedestrianInformation(string _ModelName, int ambientSpawnChance, int wantedSpawnChance)
+    public DispatchableOfficer(string _ModelName, int ambientSpawnChance, int wantedSpawnChance)
     {
         ModelName = _ModelName;
         AmbientSpawnChance = ambientSpawnChance;

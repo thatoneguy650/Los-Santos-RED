@@ -259,7 +259,6 @@ public class PedExt
         }
     }
     public VehicleExt VehicleLastSeenPlayerIn { get; set; }
-    public bool WasMarkedNonPersistent { get; set; } = false;
     public WeaponInformation WeaponLastSeenPlayerWith { get; set; }
     public bool WillCallPolice { get; private set; } = true;
     public bool WillFight { get; private set; } = false;

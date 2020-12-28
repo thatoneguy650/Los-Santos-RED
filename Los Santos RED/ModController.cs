@@ -66,7 +66,7 @@ namespace LosSantosRED.lsr
         {
             Player.Reset(true, true, true);
             Scanner.Reset();
-            Player.GiveName(ModelName, Male, Names.GetRandomName(Male));
+            Player.GiveName(ModelName, Names.GetRandomName(Male));
             if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
             {
                 Player.SetMoney(RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
@@ -108,7 +108,6 @@ namespace LosSantosRED.lsr
             StartDebugLogic();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
         }
-
         private void ReadDataFiles()
         {
             Settings = new Settings();
@@ -138,13 +137,14 @@ namespace LosSantosRED.lsr
             ZoneJurisdictions = new ZoneJurisdictions(Agencies);
             ZoneJurisdictions.ReadConfig();
         }
-        public void Stop()
+        public void Dispose()
         {
             IsRunning = false;
             GameFiber.Sleep(500);
             Player.Dispose();
             World.Dispose();
             PedSwap.Dispose();
+            Dispatcher.Dispose();
             if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
             {
                 Player.SetMoney(PedSwap.OriginalMoney);
@@ -198,7 +198,7 @@ namespace LosSantosRED.lsr
                 {
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
                     Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
-                    Stop();
+                    Dispose();
                 }
             }, "Run Debug Logic");
         }
@@ -242,7 +242,7 @@ namespace LosSantosRED.lsr
                 {
                     Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
-                    Stop();
+                    Dispose();
                 }
             }, "Run Game Logic");
             GameFiber.Yield();
@@ -264,7 +264,7 @@ namespace LosSantosRED.lsr
                 {
                     Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
-                    Stop();
+                    Dispose();
                 }
             }, "Run Menu/UI Logic");
         }

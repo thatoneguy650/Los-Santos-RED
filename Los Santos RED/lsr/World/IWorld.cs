@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr.Interface
         int PoliceHelicoptersCount { get; }
         int PoliceBoatsCount { get; }
 
-        void AddBlip(Blip currentWantedCenterBlip);
+        void AddEntity(Blip currentWantedCenterBlip);
         void ClearPolice();
         PedExt GetCivilian(uint handle);
         VehicleExt GetVehicle(Vehicle vehicleTryingToEnter);

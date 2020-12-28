@@ -6,7 +6,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IAgencies
     {
         Agency GetAgency(string agencyInitials);
-        Agency GetMilitaryAgency();
+        Agency GetRandomMilitaryAgency();
         List<Agency> GetAgencies(Ped cop);
         List<Agency> GetAgencies(Vehicle CopCar);
         List<Agency> GetSpawnableAgencies(int WantedLevel);

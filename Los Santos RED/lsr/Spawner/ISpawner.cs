@@ -9,7 +9,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ISpawner
     {
-        void DeleteCop(Cop toDelete);
-        void SpawnCop(Agency agencyToSpawn, Vector3 finalSpawnPosition, float heading, VehicleInformation vehicleToSpawn, int wantedLevel, bool spawnedAmbientPoliceHaveBlip, WeaponInformation weaponInformation1, WeaponVariation variation1, WeaponInformation weaponInformation2, WeaponVariation variation2);
+        void Delete(Cop toDelete);
+        void Spawn(PoliceSpawn policeSpawn);
     }
 }

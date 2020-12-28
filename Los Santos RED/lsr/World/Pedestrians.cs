@@ -175,15 +175,14 @@ public class Pedestrians
         Agency AssignedAgency = GetAgency(Pedestrian, 0);//maybe need the actual wanted level here?
         if (AssignedAgency != null && Pedestrian.Exists())
         {
-            AgencyAssignedWeapon AssignedPistolType = AssignedAgency.IssuedWeapons.Where(x => x.IsPistol).PickRandom();
-            AgencyAssignedWeapon AssignedHeavyType = AssignedAgency.IssuedWeapons.Where(x => !x.IsPistol).PickRandom();
-            Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false, Weapons.GetWeapon(AssignedPistolType.ModelName), AssignedPistolType.Variation, Weapons.GetWeapon(AssignedHeavyType.ModelName), AssignedHeavyType.Variation);
+            Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
+            myCop.IssueWeapons();
             if (Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.AgencyColor;
                 myBlip.Scale = 0.6f;
-                WorldLogger.AddBlip(myBlip);
+                WorldLogger.AddEntity(myBlip);
             }
             SetCopStats(Pedestrian);
             Police.Add(myCop);
@@ -197,7 +196,7 @@ public class Pedestrians
         }
         if (Cop.IsArmy())
         {
-            return Agencies.GetMilitaryAgency();//return AgenciesList.Where(x => x.AgencyClassification == Classification.Military).FirstOrDefault();
+            return Agencies.GetRandomMilitaryAgency();//return AgenciesList.Where(x => x.AgencyClassification == Classification.Military).FirstOrDefault();
         }
         else if (Cop.IsPolice())
         {

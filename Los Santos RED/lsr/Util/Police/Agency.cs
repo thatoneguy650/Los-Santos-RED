@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using Rage;
 using Rage.Native;
 using System;
@@ -11,43 +12,24 @@ using System.Threading.Tasks;
 [Serializable()]
 public class Agency
 {
-    public string ColorPrefix { get; set; } = "~s~";
-    public string Initials { get; set; } = "UNK";
-    public string FullName { get; set; } = "Unknown";
-    public List<PedestrianInformation> CopModels { get; set; } = new List<PedestrianInformation>();
-    public List<VehicleInformation> Vehicles { get; set; } = new List<VehicleInformation>();
-    public string AgencyColorString { get; set; } = "White";
-    public Classification AgencyClassification { get; set; } = Classification.Other;
-    public string LicensePlatePrefix { get; set; } = "";
-    public bool SpawnsOnHighway { get; set; } = false;
-    public bool CanSpawnAnywhere { get; set; } = false;
-    public uint MinWantedLevelSpawn { get; set; } = 0;
-    public uint MaxWantedLevelSpawn { get; set; } = 5;
-    public int SpawnLimit { get; set; } = 99;
-    public List<AgencyAssignedWeapon> IssuedWeapons { get; set; } = new List<AgencyAssignedWeapon>();
-    public bool CanSpawn(int WantedLevel)
+    public Agency()
     {
-        if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
 
     }
-    public bool HasMotorcycles
+    public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<DispatchableOfficer> _CopModels, List<DispatchableVehicle> _Vehicles, string _LicensePlatePrefix, List<IssuableWeapon> sideArms, List<IssuableWeapon> longGuns)
     {
-        get
-        {
-            return Vehicles.Any(x => x.IsMotorcycle);
-        }
+        ColorPrefix = _ColorPrefix;
+        Initials = _Initials;
+        FullName = _FullName;
+        CopModels = _CopModels;
+        AgencyColorString = _AgencyColorString;
+        Vehicles = _Vehicles;
+        AgencyClassification = _AgencyClassification;
+        LicensePlatePrefix = _LicensePlatePrefix;
+        SideArms = sideArms;
+        LongGuns = longGuns;
     }
-    public bool HasSpawnableHelicopters(int WantedLevel)
-    {
-        return Vehicles.Any(x => x.IsHelicopter && x.CanCurrentlySpawn(WantedLevel));
-    }
+    public Classification AgencyClassification { get; set; } = Classification.Other;
     public Color AgencyColor
     {
         get
@@ -55,13 +37,7 @@ public class Agency
             return Color.FromName(AgencyColorString);
         }
     }
-    public string ColoredInitials
-    {
-        get
-        {
-            return ColorPrefix + Initials;
-        }
-    }
+    public string AgencyColorString { get; set; } = "White";
     public bool CanCheckTrafficViolations
     {
         get
@@ -76,17 +52,75 @@ public class Agency
             }
         }
     }
-
-    public VehicleInformation GetVehicleInfo(Vehicle CopCar)
+    public bool CanSpawnAnywhere { get; set; } = false;
+    public string ColoredInitials
     {
-        return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
+        get
+        {
+            return ColorPrefix + Initials;
+        }
     }
-    public VehicleInformation GetRandomVehicle(int WantedLevel, bool includeHelicopters, bool includeBoats)
+    public string ColorPrefix { get; set; } = "~s~";
+    public List<DispatchableOfficer> CopModels { get; set; } = new List<DispatchableOfficer>();
+    public string FullName { get; set; } = "Unknown";
+    public bool HasMotorcycles
+    {
+        get
+        {
+            return Vehicles.Any(x => x.IsMotorcycle);
+        }
+    }
+    public string Initials { get; set; } = "UNK";
+    public string LicensePlatePrefix { get; set; } = "";
+    public uint MaxWantedLevelSpawn { get; set; } = 5;
+    public uint MinWantedLevelSpawn { get; set; } = 0;
+    public int SpawnLimit { get; set; } = 99;
+    public bool SpawnsOnHighway { get; set; } = false;
+    public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
+    public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
+    public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
+    public bool CanSpawn(int WantedLevel)
+    {
+        if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+    public DispatchableOfficer GetRandomPed(int WantedLevel, List<string> RequiredModels)
+    {
+        if (CopModels == null || !CopModels.Any())
+            return null;
+
+        List<DispatchableOfficer> ToPickFrom = CopModels.Where(x => WantedLevel >= x.MinWantedLevelSpawn && WantedLevel <= x.MaxWantedLevelSpawn).ToList();
+        if (RequiredModels != null && RequiredModels.Any())
+        {
+            ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
+        }
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
+        //Mod.Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (DispatchableOfficer Cop in ToPickFrom)
+        {
+            int SpawnChance = Cop.CurrentSpawnChance(WantedLevel);
+            if (RandomPick < SpawnChance)
+            {
+                return Cop;
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
+    }
+    public DispatchableVehicle GetRandomVehicle(int WantedLevel, bool includeHelicopters, bool includeBoats)
     {
         if (Vehicles != null && Vehicles.Any())
         {
-            List<VehicleInformation> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && !x.IsHelicopter && !x.IsBoat).ToList();
-            if(includeBoats)
+            List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && !x.IsHelicopter && !x.IsBoat).ToList();
+            if (includeBoats)
             {
                 ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && x.IsBoat).ToList());
             }
@@ -96,7 +130,7 @@ public class Agency
             }
             int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
             int RandomPick = RandomItems.MyRand.Next(0, Total);
-            foreach (VehicleInformation Vehicle in ToPickFrom)
+            foreach (DispatchableVehicle Vehicle in ToPickFrom)
             {
                 int SpawnChance = Vehicle.CurrentSpawnChance(WantedLevel);
                 if (RandomPick < SpawnChance)
@@ -108,45 +142,26 @@ public class Agency
         }
         return null;
     }
-    public PedestrianInformation GetRandomPed(List<string> RequiredModels, int WantedLevel)
+    public IssuableWeapon GetRandomWeapon(bool isSidearm)
     {
-        if (CopModels == null || !CopModels.Any())
-            return null;
-
-        List<PedestrianInformation> ToPickFrom = CopModels.Where(x => WantedLevel >= x.MinWantedLevelSpawn && WantedLevel <= x.MaxWantedLevelSpawn).ToList();
-        if (RequiredModels != null && RequiredModels.Any())
+        IssuableWeapon weaponToIssue;
+        if (isSidearm)
         {
-            ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
+            weaponToIssue = SideArms.PickRandom();
         }
-        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
-        //Mod.Debugging.WriteToLog("GetRandomPed", string.Format("Total Chance {0}, Total Items {1}", Total, ToPickFrom.Count()));
-        int RandomPick = RandomItems.MyRand.Next(0, Total);
-        foreach (PedestrianInformation Cop in ToPickFrom)
+        else
         {
-            int SpawnChance = Cop.CurrentSpawnChance(WantedLevel);
-            if (RandomPick < SpawnChance)
-            {
-                return Cop;
-            }
-            RandomPick -= SpawnChance;
+            weaponToIssue = LongGuns.PickRandom();
         }
-        return null;
+        weaponToIssue.SetIssued(Game.GetHashKey(weaponToIssue.ModelName), null);
+        return weaponToIssue;
     }
-    public Agency()
+    public DispatchableVehicle GetVehicleInfo(Vehicle CopCar)
     {
-
+        return Vehicles.Where(x => x.ModelName.ToLower() == CopCar.Model.Name.ToLower()).FirstOrDefault();
     }
-    public Agency(string _ColorPrefix, string _Initials, string _FullName, string _AgencyColorString, Classification _AgencyClassification, List<PedestrianInformation> _CopModels, List<VehicleInformation> _Vehicles, string _LicensePlatePrefix, List<AgencyAssignedWeapon> _IssuedWeapons)
+    public bool HasSpawnableHelicopters(int WantedLevel)
     {
-        ColorPrefix = _ColorPrefix;
-        Initials = _Initials;
-        FullName = _FullName;
-        CopModels = _CopModels;
-        AgencyColorString = _AgencyColorString;
-        Vehicles = _Vehicles;
-        AgencyClassification = _AgencyClassification;
-        LicensePlatePrefix = _LicensePlatePrefix;
-        IssuedWeapons = _IssuedWeapons;
+        return Vehicles.Any(x => x.IsHelicopter && x.CanCurrentlySpawn(WantedLevel));
     }
-
 }

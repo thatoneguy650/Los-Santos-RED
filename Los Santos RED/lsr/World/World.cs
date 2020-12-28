@@ -53,17 +53,17 @@ namespace Mod
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
         public bool ShouldBustPlayer => Pedestrians.ShouldBustPlayer;
         public int TotalSpawnedCops => Pedestrians.TotalSpawnedCops;
-        public void AddBlip(Blip myBlip)
+        public void AddEntity(Blip myBlip)
         {
             CreatedBlips.Add(myBlip);
         }
-        public void AddCop(Cop myNewCop)
+        public void AddEntity(Cop cop)
         {
-            Pedestrians.Police.Add(myNewCop);
+            Pedestrians.Police.Add(cop);
         }
-        public void AddToList(VehicleExt toReturn)
+        public void AddEntity(VehicleExt vehicle)
         {
-            Vehicles.AddToList(toReturn);
+            Vehicles.AddToList(vehicle);
         }
         public bool AnyCopsNearPosition(Vector3 position, float radius)
         {
