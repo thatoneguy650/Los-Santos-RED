@@ -1,21 +1,18 @@
 ﻿using LSR.Vehicles;
 using Rage;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
     public interface IPlayer
     {
+        bool AnyHumansNear { get; }
         bool AnyPoliceCanHearPlayer { get; set; }
         bool AnyPoliceCanRecognizePlayer { get; set; }
         bool AnyPoliceCanSeePlayer { get; set; }
         bool AnyPoliceRecentlySeenPlayer { get; set; }
         bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
+        ArrestWarrant ArrestWarrant { get; }
         bool CanDropWeapon { get; }
         bool CanSurrender { get; }
         Ped Character { get; }
@@ -40,6 +37,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsBusted { get; }
         bool IsChangingLicensePlates { get; set; }
         bool IsCommitingSuicide { get; }
+
         bool IsConsideredArmed { get; }
         bool IsDead { get; }
         bool IsDrunk { get; }
@@ -78,9 +76,6 @@ namespace LosSantosRED.lsr.Interface
         int TimesDied { get; set; }
         List<VehicleExt> TrackedVehicles { get; }
         int WantedLevel { get; }
-        bool AnyHumansNear { get; }
-        ArrestWarrant ArrestWarrant { get; }
-
         void CommitSuicide();
         void DisplayPlayerNotification();
         void DropWeapon();
@@ -94,6 +89,7 @@ namespace LosSantosRED.lsr.Interface
         void SetCarJacking(bool v);
         void SetPlayerToLastWeapon();
         void SetShot();
+        void SetSmashedWindow();
         void SetUnarmed();
         void StartManualArrest();
         void UnSetArrestedAnimation(Ped character);

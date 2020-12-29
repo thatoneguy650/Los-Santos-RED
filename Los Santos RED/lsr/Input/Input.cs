@@ -204,11 +204,11 @@ namespace LosSantosRED.lsr
         {
             if (Player.CurrentVehicle != null)
             {
-                if (IsPressingEngineToggle)
-                {
-                    GameFiber.Sleep(200);
-                    Player.CurrentVehicle.Vehicle.IsEngineOn = !Player.CurrentVehicle.Vehicle.IsEngineOn;
-                }
+                //if (IsPressingEngineToggle)
+                //{
+                //    GameFiber.Sleep(200);
+                //    Player.CurrentVehicle.Vehicle.IsEngineOn = !Player.CurrentVehicle.Vehicle.IsEngineOn;
+                //}
                 //if (IsPressingRefuel &&  Mod.Player.Instance.GetCash() >= 1)
                 //{
                 //    Mod.Player.Instance.GiveCash(-1);

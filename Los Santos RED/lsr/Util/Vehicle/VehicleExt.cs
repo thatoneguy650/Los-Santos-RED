@@ -27,10 +27,11 @@ namespace LSR.Vehicles
         public bool ManuallyRolledDriverWindowDown { get; set; }
         public bool HasBeenDescribedByDispatch { get; set; }
         public bool WasAlarmed { get; set; }
-        public bool IsStolen { get; set; }
+        public bool IsStolen { get; set; } = true;
         public bool OwnedByPlayer { get; set; }
         public bool WasReportedStolen { get; set; }
         public bool HasUpdatedPlateType { get; set; }
+        public bool AreAllWindowsIntact { get; set; }
         private bool CanToggleEngine
         {
             get
@@ -96,15 +97,27 @@ namespace LSR.Vehicles
             get
             {
                 if (!IsStolen)
+                {
                     return false;
+                }
                 else
                 {
                     if (CarPlate.IsWanted)
+                    {
                         return true;
+                    }
                     else if (WasReportedStolen && ColorMatchesDescription)
+                    {
                         return true;
+                    }
+                    else if (Vehicle.IsAlarmSounding)
+                    {
+                        return true;
+                    }
                     else
+                    {
                         return false;
+                    }
                 }
             }
         }

@@ -545,6 +545,10 @@ namespace Mod
         {
             GameTimeLastShot = Game.GameTime;
         }
+        public void SetSmashedWindow()
+        {
+            GameTimeLastSmashedVehicleWindow = Game.GameTime;
+        }
         public void SetUnarmed()
         {
             if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
@@ -657,27 +661,25 @@ namespace Mod
                     //when you start going they auto lock and peds cannot carjack you as easily
 
                     MyCar.AttemptToLock();
+                    Game.Console.Print($"Vehicle {MyCar.Vehicle.Handle} Lock Status: {MyCar.Vehicle.LockStatus}");
                     if (IsHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
                     {
-                        //Game.Console.Print("IsGettingIntoVehicleChanged", string.Format("1 Handle: {0} LockPick", EnteringVehicle.Handle));
+                        Game.Console.Print($"Vehicle {MyCar.Vehicle.Handle} Start LockPick");
                         CarLockPick MyLockPick = new CarLockPick(World, this, VehicleTryingToEnter, SeatTryingToEnter);
                         MyLockPick.PickLock();
                     }
                     else if (IsHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
                     {
-                        //Game.Console.Print("IsGettingIntoVehicleChanged", string.Format("2 Handle: {0} CarJack", EnteringVehicle.Handle));
+                        Game.Console.Print($"Vehicle {MyCar.Vehicle.Handle} Start CarJack");
                         CarJack MyJack = new CarJack(World, this, VehicleTryingToEnter, VehicleTryingToEnter.Driver, SeatTryingToEnter, CurrentWeapon);
                         MyJack.StartCarJack();
                     }
-
-                    if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7)
+                    else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7)
                     {
-                        GameTimeLastSmashedVehicleWindow = Game.GameTime;
+                        Game.Console.Print($"Vehicle {MyCar.Vehicle.Handle} Start Regular Smash");
+                        CarBreakIn MyBreakIn = new CarBreakIn(World, this, VehicleTryingToEnter, SeatTryingToEnter);
+                        MyBreakIn.BreakIn();
                     }
-                    //else
-                    //{
-                    //    //Game.Console.Print("IsGettingIntoVehicleChanged", string.Format("3 Handle: {0}, LockStatus: {1}, MustBeHotwired: {2}", EnteringVehicle.Handle, EnteringVehicle.LockStatus, EnteringVehicle.MustBeHotwired));
-                    //}
                 }
             }
             else
@@ -765,12 +767,14 @@ namespace Mod
         }
         private VehicleExt UpdateCurrentVehicle()
         {
-            if (!Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.Character.IsGettingIntoVehicle)
+            bool IsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
+            bool IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+            if (!IsInVehicle && !IsGettingIntoVehicle)
             {
                 return null;
             }
             Vehicle CurrVehicle = null;
-            if (Game.LocalPlayer.Character.IsGettingIntoVehicle)
+            if (IsGettingIntoVehicle)
             {
                 CurrVehicle = Game.LocalPlayer.Character.VehicleTryingToEnter;
             }
@@ -789,12 +793,66 @@ namespace Mod
                 TrackedVehicles.Add(MyNewCar);
                 return MyNewCar;
             }
-            ToReturn.SetAsEntered();
+            if (IsInVehicle)
+            {
+                ToReturn.SetAsEntered();
+            }
             ToReturn.Update();
             LeftEngineOn = ToReturn.Vehicle.IsEngineOn;
             return ToReturn;
         }
         private void UpdateData()
+        {
+            UpdateVehicleData();
+            UpdateWeaponData();
+            UpdateMiscData();
+        }
+        private void UpdateMiscData()
+        {
+            if (CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                CurrentLocation.CharacterToLocate = Game.LocalPlayer.Character;
+            }
+            if (CurrentHealth.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                CurrentHealth.MyPed = new PedExt(Game.LocalPlayer.Character);
+            }
+            IsStunned = Game.LocalPlayer.Character.IsStunned;
+            IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
+            if (NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1) || NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX") == 722)
+            {
+                IsDrunk = true;
+            }
+            else
+            {
+                IsDrunk = false;
+            }
+        }
+        private void UpdateState()
+        {
+            if (Game.LocalPlayer.Character.IsDead && !IsDead)
+            {
+                DeathEvent();
+            }
+            if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 0))
+            {
+                BeingArrested = true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 1))
+            {
+                BeingArrested = true;
+                Game.LocalPlayer.Character.Tasks.Clear();
+            }
+            if (BeingArrested && !IsBusted)
+            {
+                BustedEvent();
+            }
+            if (IsAliveAndFree && !Game.LocalPlayer.Character.IsDead)
+            {
+                MaxWantedLastLife = WantedLevel;
+            }
+        }
+        private void UpdateVehicleData()
         {
             IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
@@ -862,24 +920,6 @@ namespace Mod
                 }
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
             }
-            if (CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
-            {
-                CurrentLocation.CharacterToLocate = Game.LocalPlayer.Character;
-            }
-            if (CurrentHealth.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
-            {
-                CurrentHealth.MyPed = new PedExt(Game.LocalPlayer.Character);
-            }
-
-            if (Game.LocalPlayer.Character.IsShooting)
-            {
-                GameTimeLastShot = Game.GameTime;
-            }
-
-            IsConsideredArmed = CheckIsArmed();
-            IsAimingInVehicle = IsInVehicle && Game.LocalPlayer.IsFreeAiming;
-            IsStunned = Game.LocalPlayer.Character.IsStunned;
-            IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
 
             if (isCarJacking)//is manually set
             {
@@ -889,9 +929,17 @@ namespace Mod
             {
                 IsCarJacking = Game.LocalPlayer.Character.IsJacking;
             }
+        }
+        private void UpdateWeaponData()
+        {
+            if (Game.LocalPlayer.Character.IsShooting)
+            {
+                GameTimeLastShot = Game.GameTime;
+            }
+            IsAimingInVehicle = IsInVehicle && Game.LocalPlayer.IsFreeAiming;
+            IsConsideredArmed = CheckIsArmed();
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
             CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
-
             if (PlayerCurrentWeapon != null)
             {
                 CurrentWeaponHash = PlayerCurrentWeapon.Hash;
@@ -904,39 +952,6 @@ namespace Mod
             if (CurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeaponHash)
             {
                 LastWeaponHash = PlayerCurrentWeapon.Hash;
-            }
-
-            if (NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1) || NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX") == 722)
-            {
-                IsDrunk = true;
-            }
-            else
-            {
-                IsDrunk = false;
-            }
-        }
-        private void UpdateState()
-        {
-            if (Game.LocalPlayer.Character.IsDead && !IsDead)
-            {
-                DeathEvent();
-            }
-            if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 0))
-            {
-                BeingArrested = true;
-            }
-            if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 1))
-            {
-                BeingArrested = true;
-                Game.LocalPlayer.Character.Tasks.Clear();
-            }
-            if (BeingArrested && !IsBusted)
-            {
-                BustedEvent();
-            }
-            if (IsAliveAndFree && !Game.LocalPlayer.Character.IsDead)
-            {
-                MaxWantedLastLife = WantedLevel;
             }
         }
     }

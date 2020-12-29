@@ -371,19 +371,19 @@ public class Tasking
         }
         private void Investigate()
         {
-            //if (CopToTask.IsInVehicle || CopToTask.DistanceToInvestigationPosition <= OnFootTaskDistance)
-            //{
-            //    if (CurrentTaskLoop != "Investigation")
-            //    {
-            //        Investigate_Start();
-            //    }
-            //    else
-            //    {
-            //        Investigate_Normal();
-            //    }
-            //    GameTimeLastTasked = Game.GameTime;
-            //}
-            //CurrentTaskLoop = "Investigation";
+            if (CopToTask.IsInVehicle || CopToTask.DistanceToLastSeen <= OnFootTaskDistance)//was investigation place
+            {
+                if (CurrentTaskLoop != "Investigation")
+                {
+                    Investigate_Start();
+                }
+                else
+                {
+                    Investigate_Normal();
+                }
+                GameTimeLastTasked = Game.GameTime;
+            }
+            CurrentTaskLoop = "Investigation";
         }
         private void Investigate_Start()
         {
@@ -473,6 +473,7 @@ public class Tasking
         private void Kill_Start()
         {
             ClearTasks();
+            CopToTask.Pedestrian.Tasks.FightAgainstClosestHatedTarget(70f);
             CurrentTaskLoop = "Kill";
             GameTimeLastTasked = Game.GameTime;
             Game.Console.Print(string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", CopToTask.Pedestrian.Handle, CurrentTaskLoop));

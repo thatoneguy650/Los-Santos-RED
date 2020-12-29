@@ -177,7 +177,14 @@ public class HealthState
             }
             else if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", MyPed.Pedestrian, 0, 2))
             {
-                category = WeaponCategory.Pistol;
+                if(MyPed.Pedestrian.IsStunned)
+                {
+                    category = WeaponCategory.Melee;
+                }
+                else
+                {
+                    category = WeaponCategory.Pistol;
+                }
             }
             else if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", MyPed.Pedestrian))
             {

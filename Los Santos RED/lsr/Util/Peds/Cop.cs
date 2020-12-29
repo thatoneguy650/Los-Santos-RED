@@ -56,20 +56,7 @@ public class Cop : PedExt
             }
         }
     }
-    public bool HasHeavyWeapon
-    {
-        get
-        {
-            if (LongGun != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+    private bool HasHeavyWeaponOnPerson;
     public bool IsSpeechTimedOut
     {
         get
@@ -140,7 +127,7 @@ public class Cop : PedExt
     {
         get
         {
-            if(IsInHelicopter || IsInVehicle)
+            if (IsInHelicopter || IsInVehicle)
             {
                 return false;
             }
@@ -171,7 +158,9 @@ public class Cop : PedExt
     public void IssueWeapons()
     {
         Sidearm = AssignedAgency.GetRandomWeapon(true);
+        Game.Console.Print($"Issued: {Sidearm.ModelName} Variation: {string.Join(",", Sidearm.Variation.Components.Select(x => x.Name))}");
         LongGun = AssignedAgency.GetRandomWeapon(false);
+        Game.Console.Print($"Issued: {LongGun.ModelName} Variation: {string.Join(",", LongGun.Variation.Components.Select(x => x.Name))}");
     }
     public void UpdateSpeech(IPlayer currentPlayer)
     {
@@ -246,22 +235,30 @@ public class Cop : PedExt
             }
             else
             {
-                if (WantedLevel > 0)
+                if (WantedLevel != 0)
                 {
-                    SetLessLethal();
-                }
-                else if (IsInVehicle)
-                {
-                    SetUnarmed();
-                }
-                else if (WantedLevel == 0)
-                {
-                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);//for idle, 
+                    if (IsInVehicle)
+                    {
+                        SetUnarmed();
+                    }
+                    else
+                    {
+                        SetLessLethal();
+                    }
                 }
                 else
                 {
-                    SetUnarmed();
+                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);//for idle, 
+
                 }
+            }
+            if(IsInVehicle && WantedLevel > 0)
+            {
+                HasHeavyWeaponOnPerson = true;
+            }
+            else if(!IsInVehicle || WantedLevel == 0)
+            {
+                HasHeavyWeaponOnPerson = false;
             }
         }
     }
@@ -292,15 +289,21 @@ public class Cop : PedExt
                 Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, true);
                 Sidearm.ApplyVariation(Pedestrian);
             }
-            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 50);//30
-            if (LongGun != null)
+            if (!Pedestrian.Inventory.Weapons.Contains(LongGun.ModelName))
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.ModelHash, true);
+                Pedestrian.Inventory.GiveNewWeapon(LongGun.ModelName, -1, true);
+                LongGun.ApplyVariation(Pedestrian);
+            }
+            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 100);//30
+            if (LongGun != null)// && HasHeavyWeaponOnPerson)
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.GetHash(), true);
             }
             else
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.ModelHash, true);
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, Sidearm.GetHash(), true);
             }
+            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, true);//can do drivebys
             IsSetLessLethal = false;
             IsSetUnarmed = false;

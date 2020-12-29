@@ -114,7 +114,6 @@
     <Compile Include="lsr\Data\VehicleScannerAudio.cs" />
     <Compile Include="lsr\Data\ZoneScannerAudio.cs" />
     <Compile Include="lsr\Dispatcher\IssuableWeapon.cs" />
-    <Compile Include="lsr\Dispatcher\PoliceSpawn.cs" />
     <Compile Include="lsr\Dispatcher\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
     <Compile Include="lsr\Helper\ModTask.cs" />
@@ -131,7 +130,8 @@
     <Compile Include="lsr\Police\IPoliceTasking.cs" />
     <Compile Include="lsr\Scanner\IScanner.cs" />
     <Compile Include="lsr\SearchMode\ISearchMode.cs" />
-    <Compile Include="lsr\Spawner\ISpawner.cs" />
+    <Compile Include="lsr\Spawner\SpawnTask.cs" />
+    <Compile Include="lsr\Util\Vehicle\CarBreakIn.cs" />
     <Compile Include="lsr\World\IWorld.cs" />
     <Compile Include="lsr\World\IWorldLogger.cs" />
     <Compile Include="lsr\Util\Peds\InjuryType.cs" />
@@ -185,7 +185,6 @@
     <Compile Include="lsr\Player\ArrestWarrant.cs" />
     <Compile Include="lsr\Scanner\Scanner.cs" />
     <Compile Include="lsr\Scanner\PoliceScannerCallIn.cs" />
-    <Compile Include="lsr\Spawner\Spawner.cs" />
     <Compile Include="lsr\SearchMode\SearchMode.cs" />
     <Compile Include="lsr\Player\PoliceResponse.cs" />
     <Compile Include="lsr\Util\Police\ResponsePriority.cs" />

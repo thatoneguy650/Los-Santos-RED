@@ -9,31 +9,41 @@ using System.Threading.Tasks;
 [Serializable]
 public class IssuableWeapon
 {
+    private uint ModelHash;
+    public IssuableWeapon()
+    {
+
+    }
     public IssuableWeapon(string name, WeaponVariation variation)
     {
         ModelName = name;
         Variation = variation;
     }
-    public uint ModelHash { get; private set; }
+
     public string ModelName { get; set; }
-    public List<WeaponComponent> PossibleComponents { get; private set; }
+    public List<WeaponComponent> PossibleComponents { get; private set; } = new List<WeaponComponent>();
     public WeaponVariation Variation { get; set; }
     public void ApplyVariation(Ped WeaponOwner)
     {
-        if (Variation == null)
+        if (Variation == null)//getting weird null errors here, 
         {
             return;
         }
         NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, ModelHash, Variation.Tint);
-        foreach (WeaponComponent ToRemove in PossibleComponents)
+        if (PossibleComponents != null)
         {
-            NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, ModelHash, ToRemove.Hash);
+            foreach (WeaponComponent ToRemove in PossibleComponents)
+            {
+                NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, ModelHash, ToRemove.GetHash());
+            }
         }
         foreach (WeaponComponent ToAdd in Variation.Components)
         {
-            WeaponComponent MyComponent = PossibleComponents.Where(x => x.Name == ToAdd.Name).FirstOrDefault();
+            WeaponComponent MyComponent = Variation.Components.Where(x => x.Name == ToAdd.Name).FirstOrDefault();
             if (MyComponent != null)
-                NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, ModelHash, MyComponent.Hash);
+            {
+                NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, ModelHash, MyComponent.GetHash());
+            }
         }
     }
     public void SetIssued(uint hash, List<WeaponComponent> possibleComponents)
@@ -44,6 +54,10 @@ public class IssuableWeapon
     public void SetIssued(uint hash)
     {
         ModelHash = hash;
+    }
+    public uint GetHash()
+    {
+        return ModelHash;
     }
 }
 

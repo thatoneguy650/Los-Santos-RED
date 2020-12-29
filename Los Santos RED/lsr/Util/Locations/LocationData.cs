@@ -12,8 +12,6 @@ namespace LosSantosRED.lsr.Locations
 {
     public class LocationData
     {
-        private uint GameTimeGotOnFreeway;
-        private uint GameTimeGotOffFreeway;
         private Vector3 ClosestNode;
         private IStreets Streets;
         private IZones Zones;
@@ -30,35 +28,6 @@ namespace LosSantosRED.lsr.Locations
         public Street CurrentCrossStreet { get; private set; }
         public Zone CurrentZone { get; private set; }
         public bool IsOffroad { get; private set; }
-        public bool IsOnFreeway { get; private set; }
-        public bool RecentlyGotOnFreeway
-        {
-            get
-            {
-                if (IsOnFreeway && Game.GameTime - GameTimeGotOnFreeway <= 10000)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        public bool RecentlyGotOffFreeway
-        {
-            get
-            {
-                if (!IsOnFreeway && Game.GameTime - GameTimeGotOffFreeway <= 10000)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
         public void Update()
         {
             GetZone();
@@ -87,7 +56,6 @@ namespace LosSantosRED.lsr.Locations
             {
                 CurrentStreet = null;
                 CurrentCrossStreet = null;
-                IsOnFreeway = false;
                 return;
             }
 
@@ -134,25 +102,7 @@ namespace LosSantosRED.lsr.Locations
 
             if (CurrentStreet == null)
             {
-                CurrentStreet = new Street("?", 60f);
-                if (CurrentStreet.IsHighway)
-                {
-                    if (!IsOnFreeway)
-                    {
-                        GameTimeGotOnFreeway = Game.GameTime;
-                    }
-
-                    IsOnFreeway = true;
-                }
-                else
-                {
-                    if (IsOnFreeway)
-                    {
-                        GameTimeGotOffFreeway = Game.GameTime;
-                    }
-
-                    IsOnFreeway = false;
-                }
+                CurrentStreet = new Street("Calle Sin Nombre", 60f);
             }
         }
     }

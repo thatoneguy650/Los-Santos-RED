@@ -26,7 +26,6 @@ namespace LosSantosRED.lsr
         private UI UI;
         private Dispatcher Dispatcher;
         private SearchMode SearchMode;
-        private Spawner Spawner;
         private Tasking Tasking;
         private PlacesOfInterest PlacesOfInterest;
         private Agencies Agencies;
@@ -44,22 +43,7 @@ namespace LosSantosRED.lsr
 
         public ModController()
         {
-            //DataMart = new DataMart();
-            //Audio = new Audio(DataMart);
-            //World = new Mod.World(DataMart);  
-            //Player = new Mod.Player(World,DataMart);
-            //Input = new Input(Player,DataMart);
-            //Police = new Police(World, Player, DataMart);
-            //Civilians = new Civilians(World, Player);
-            //Spawner = new Spawner(World, DataMart);
-            //Dispatcher = new Dispatcher(World, Player, Police, Spawner, DataMart);
-            //Respawning = new Respawning(World, Player, DataMart);
-            //PedSwap = new PedSwap(World, Player, DataMart);
-            //SearchMode = new SearchMode(World, Player, Police);
-            //Tasking = new Tasking(World, Player, Police);
-            //UI = new UI(World, Player, SearchMode, DataMart);
-            //Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode, DataMart);
-            //Menu = new Menu(World, Player, PedSwap, Respawning, DataMart);
+
         }
         public bool IsRunning { get; private set; }
         public void NewPlayer(string ModelName, bool Male)
@@ -86,20 +70,17 @@ namespace LosSantosRED.lsr
             Input = new Input(Player, Settings);
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
-            Spawner = new Spawner(World);
             Respawning = new Respawning(World, Player, Weapons, PlacesOfInterest, Settings);
             PedSwap = new PedSwap(World, Player, Settings);
             SearchMode = new SearchMode(World, Player, Police);
             Tasking = new Tasking(World, Player, Police);
             UI = new UI(World, Player, SearchMode, Settings, ZoneJurisdictions);
-            Dispatcher = new Dispatcher(World, Player, Police, Spawner, Agencies, Weapons, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
+            Dispatcher = new Dispatcher(World, Player, Police, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
             Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode, Settings);
             Menu = new Menu(World, Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
             Debug = new Debug();
-
             Player.GiveName();
             Player.AddSpareLicensePlate();
-
             World.AddBlipsToMap();
             PedSwap.StoreInitialVariation();
             SetupModTasks();
