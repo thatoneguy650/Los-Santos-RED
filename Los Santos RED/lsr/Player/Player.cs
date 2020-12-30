@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -11,8 +12,12 @@ using System.Runtime.InteropServices;
 
 namespace Mod
 {
-    public class Player : IPlayer
+    public class Player : IPlayer, IPlayerIntoxicationState
     {
+        private IntoxicatingActivity intoxicatingActivity;//temp here for UI debugging
+
+
+        private ArrestWarrant ArrestWarrant;
         private HealthState CurrentHealth;
         private LocationData CurrentLocation;
         private uint GameTimeLastBusted;
@@ -24,13 +29,6 @@ namespace Mod
         private uint GameTimeLastMoved;
         private uint GameTimeLastShot;
         private uint GameTimeLastSmashedVehicleWindow;
-        private uint GameTimeStartedSwerving;
-        private bool IsSwerveRight;
-        private uint GameTimeStartedDrinking;
-        private uint GameTimeStoppedDrinking;
-        private bool IsDrinking;
-        private float DrunkStrength;
-
         private uint GameTimeStartedPlaying;
         private bool isAimingInVehicle;
         private bool isCarJacking;
@@ -49,39 +47,6 @@ namespace Mod
         private IWeapons Weapons;
         private IWorld World;
         private IZones Zones;
-
-        public uint HasBeenDrinkingFor => GameTimeStartedDrinking == 0 ? 0 : Game.GameTime - GameTimeStartedDrinking;
-        public uint HasBeenNotDrinkingFor => GameTimeStoppedDrinking == 0 ? 0 : Game.GameTime - GameTimeStoppedDrinking;
-        public float DrunkIntensity
-        {
-            get
-            {
-                if (HasBeenDrinkingFor >= 60000)
-                {
-                    return 5.0f;
-                }
-                else if (HasBeenDrinkingFor >= 50000)
-                {
-                    return 4.0f;
-                }
-                else if (HasBeenDrinkingFor >= 40000)
-                {
-                    return 3.0f;
-                }
-                else if (HasBeenDrinkingFor >= 30000)
-                {
-                    return 2.0f;
-                }
-                else if(HasBeenDrinkingFor >= 15000)
-                {
-                    return 1.0f;
-                }
-                else
-                {
-                    return 0.0f;
-                }
-            }
-        }
         public Player(IWorld world, IStreets streets, IZones zones, ISettings settings, IWeapons weapons)
         {
             World = world;
@@ -109,13 +74,26 @@ namespace Mod
                 return World.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || World.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
             }
         }
+
+        public string DrunkDebug
+        {
+            get
+            {
+                if(intoxicatingActivity != null)
+                {
+                    return intoxicatingActivity.DebugString;
+                }
+                return "";
+            }
+        }
+
+
         public bool AnyPoliceCanHearPlayer { get; set; }
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         public bool AreStarsGreyedOut { get; set; }
-        public ArrestWarrant ArrestWarrant { get; private set; }
         public bool BeingArrested { get; private set; }
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
         public bool CanSurrender => Surrendering.CanSurrender;
@@ -234,7 +212,8 @@ namespace Mod
         public bool IsCommitingSuicide => Surrendering.IsCommitingSuicide;
         public bool IsConsideredArmed { get; private set; }
         public bool IsDead { get; private set; }
-        public bool IsDrunk { get; private set; }
+        public bool IsImbibing { get; set; }
+        public bool IsDrunk { get; set; }
         public bool IsGettingIntoAVehicle
         {
             get => isGettingIntoVehicle;
@@ -299,6 +278,7 @@ namespace Mod
         public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 9f);
         public bool NearCopMurderVictim => PlayerKilledCops.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 15f);
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
+        public bool RecentlyAppliedWantedStats => ArrestWarrant.RecentlyAppliedWantedStats;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyDied => GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied <= 5000;
         public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= 5000;
@@ -537,7 +517,6 @@ namespace Mod
                 CurrentPoliceResponse.Reset();
                 Investigations.Reset();
                 ResetInjuries();
-                SetSober(false);
                 NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
@@ -590,6 +569,33 @@ namespace Mod
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true); //Unequip weapon so you don't get shot
             }
         }
+        public void StartDrinking()
+        {
+            if (!IsImbibing)
+            {
+                IsImbibing = true;
+                intoxicatingActivity = new IntoxicatingActivity(this, "WORLD_HUMAN_DRINKING", 5.0f, 5000, 60000);
+                intoxicatingActivity.Start();
+            }
+        }
+        public void StartSmokingPot()
+        {
+            if (!IsImbibing)
+            {
+                IsImbibing = true;
+                intoxicatingActivity = new IntoxicatingActivity(this, "WORLD_HUMAN_SMOKING_POT", 2.0f, 10000, 60000);
+                intoxicatingActivity.Start();
+            }
+        }
+        public void StartSmoking()
+        {
+            if (!IsImbibing)
+            {
+                IsImbibing = true;
+                intoxicatingActivity = new IntoxicatingActivity(this, "WORLD_HUMAN_SMOKING", 1.0f, 10000,60000);
+                intoxicatingActivity.Start();
+            }
+        }
         public void StartManualArrest()
         {
             BeingArrested = true;
@@ -621,7 +627,6 @@ namespace Mod
             TrackedVehiclesTick();
             CurrentHealth.Update(null);
             WeaponDropping.Tick();
-            DrunkUpdate();
         }
         public void ViolationsUpdate()
         {
@@ -660,11 +665,17 @@ namespace Mod
         {
             if (IsAimingInVehicle)
             {
-                CurrentVehicle.SetDriverWindow(true);
+                if (CurrentVehicle != null)
+                {
+                    CurrentVehicle.SetDriverWindow(true);
+                }  
             }
             else
             {
-                CurrentVehicle.SetDriverWindow(false);
+                if(CurrentVehicle != null)
+                {
+                    CurrentVehicle.SetDriverWindow(false);
+                }
             }
             Game.Console.Print(string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
         }
@@ -855,7 +866,6 @@ namespace Mod
             IsStunned = Game.LocalPlayer.Character.IsStunned;
             IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
 
-
             if (NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1) || NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX") == 722)
             {
                 IsDrunk = true;
@@ -990,82 +1000,6 @@ namespace Mod
             {
                 LastWeaponHash = PlayerCurrentWeapon.Hash;
             }
-        }
-        public void StartDrinking()
-        {
-            if(!IsDrinking)
-            {
-                IsDrinking = true;
-                NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_DRINKING", 0, true);
-                GameTimeStartedDrinking = Game.GameTime;
-                GameTimeStoppedDrinking = 0;
-                GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
-                {
-                    while (!EntryPoint.IsMoveControlPressed)
-                    {
-                        GameFiber.Yield();
-                    }
-                    Game.LocalPlayer.Character.Tasks.Clear();
-                    IsDrinking = false;
-                    GameTimeStartedDrinking = 0;
-                    GameTimeStoppedDrinking = Game.GameTime;
-                }, "ScenarioWatcher");
-            }            
-        }
-        private void DrunkUpdate()
-        {
-            if(IsDrinking && HasBeenDrinkingFor >= 10000 && DrunkStrength != DrunkIntensity)
-            {
-                DrunkStrength = DrunkIntensity;
-                IsDrunk = true;
-                GameTimeStoppedDrinking = 0;
-                SetDrunk(DrunkIntensity);
-            }
-            else if(!IsDrinking && IsDrunk && HasBeenNotDrinkingFor >= 120000)
-            {
-                IsDrunk = false;
-                DrunkStrength = 0f;
-                GameTimeStartedDrinking = 0;
-                SetSober(true);
-            }
-        }
-        private void SetDrunk(float Strength)
-        {
-            string MovementClipset = "move_m@drunk@slightlydrunk";
-            if (Strength >= 3)
-            {
-                MovementClipset = "move_m@drunk@moderatedrunk";
-            }
-            else if(Strength >= 5)
-            {
-                MovementClipset = "move_m@drunk@verydrunk";
-            }
-            NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-            if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", MovementClipset))
-            {
-                NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", MovementClipset);
-            }
-            NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, MovementClipset, 0x3E800000);
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
-            NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", "Drunk");
-            NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", 1.0f);
-            NativeFunction.Natives.x80C8B1846639BB19(1);
-            NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", Strength);
-            Game.Console.Print($"Player Made Drunk. Strength: {Strength}");
-        }
-        private void SetSober(bool ResetClipset)
-        {
-            NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
-            if(ResetClipset)
-            {
-                NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
-            }
-            
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-            NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
-            NativeFunction.Natives.x80C8B1846639BB19(0);
-            NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
-            Game.Console.Print("Player Made Sober");
         }
     }
 }

@@ -305,7 +305,7 @@ public class UI
         string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", CurrentPlayer.Investigations.IsActive, CurrentPlayer.Investigations.HaveDescription, CurrentPlayer.IsStationary, CurrentPlayer.Investigations.IsSuspicious);
         DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine1 = string.Format($"IsDrunk {CurrentPlayer.IsDrunk} HasBeenDrinkingFor {CurrentPlayer.HasBeenDrinkingFor} HasBeenNotDrinkingFor {CurrentPlayer.HasBeenNotDrinkingFor} Intensity {CurrentPlayer.DrunkIntensity}");
+        string DebugLine1 = string.Format($"{CurrentPlayer.DrunkDebug}");
         DisplayTextOnScreen(DebugLine1, 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine2 = string.Format("{0}", SearchMode.SearchModeDebug);

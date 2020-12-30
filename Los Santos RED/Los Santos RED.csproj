@@ -123,7 +123,9 @@
     <Compile Include="lsr\Civilians\ICivilians.cs" />
     <Compile Include="lsr\Input\IInput.cs" />
     <Compile Include="lsr\PedSwap\IPedSwap.cs" />
+    <Compile Include="lsr\Player\IntoxicatingActivity.cs" />
     <Compile Include="lsr\Player\IPlayer.cs" />
+    <Compile Include="lsr\Player\IPlayerIntoxicationState.cs" />
     <Compile Include="lsr\Police\IPolice.cs" />
     <Compile Include="lsr\Player\IRespawning.cs" />
     <Compile Include="lsr\Police\IPoliceSight.cs" />

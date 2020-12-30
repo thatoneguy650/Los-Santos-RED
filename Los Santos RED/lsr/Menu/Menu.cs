@@ -64,6 +64,10 @@ public class Menu
     private UIMenuItem menuMainChangeLicensePlate;
     private UIMenuItem menuMainRemoveLicensePlate;
     private UIMenuItem menuActionDrink;
+    private UIMenuItem menuActionSmoke;
+    private UIMenuItem menuActionSmokePot;
+
+
     private UIMenuItem menuMainShowPlayerStatus;
     private UIMenuItem menuMainChangeHelmet;
     private UIMenuItem menuDebugKillPlayer;
@@ -469,7 +473,8 @@ public class Menu
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
         menuActionDrink = new UIMenuItem("Drink", "Start Drinking");
-
+        menuActionSmoke = new UIMenuItem("Smoke", "Start Smoking");
+        menuActionSmokePot = new UIMenuItem("Smoke Pot", "Start Smoking Pot");
         actionsMenu.AddItem(menuMainSuicide);
         actionsMenu.AddItem(menuActionSmoking);
         
@@ -478,6 +483,8 @@ public class Menu
             actionsMenu.AddItem(menuMainChangeLicensePlate);
             actionsMenu.AddItem(menuMainRemoveLicensePlate);
             actionsMenu.AddItem(menuActionDrink);
+            actionsMenu.AddItem(menuActionSmoke);
+            actionsMenu.AddItem(menuActionSmokePot);
         }
 
         actionsMenu.OnItemSelect += ActionsMenuSelect;
@@ -704,6 +711,14 @@ public class Menu
         else if(selectedItem == menuActionDrink)
         {
             CurrentPlayer.StartDrinking();
+        }
+        else if (selectedItem == menuActionSmoke)
+        {
+            CurrentPlayer.StartSmoking();
+        }
+        else if (selectedItem == menuActionSmokePot)
+        {
+            CurrentPlayer.StartSmokingPot();
         }
     }
     private void ScenarioMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)

@@ -868,26 +868,26 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
                 }
-                if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && CurrentPlayer.ArrestWarrant.RecentlyAppliedWantedStats)
+                if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && CurrentPlayer.RecentlyAppliedWantedStats)
                 {
                     AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
                 }
 
-                if (!CurrentPlayer.IsBusted && !CurrentPlayer.IsDead)
+                if (!CurrentPlayer.IsBusted && !CurrentPlayer.IsDead && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000)
                 {
-                    if (!LostVisual.HasRecentlyBeenPlayed && SearchMode.StarsRecentlyGreyedOut && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 45000 && !World.AnyCopsNearPlayer)
+                    if (!LostVisual.HasRecentlyBeenPlayed && SearchMode.StarsRecentlyGreyedOut)// 45000 && !World.AnyCopsNearPlayer)
                     {
                         AddToQueue(LostVisual, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && SearchMode.StarsRecentlyActive && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Police.AnyRecentlySeenPlayer)
+                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && SearchMode.StarsRecentlyActive && Police.AnyRecentlySeenPlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Police.AnyCanSeePlayer && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000)
+                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Police.AnyCanSeePlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Police.AnyRecentlySeenPlayer)
+                    if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Police.AnyRecentlySeenPlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -1866,12 +1866,31 @@ namespace LosSantosRED.lsr
                 {
                     uint TimeBetween = 25000;
                     if (TimesPlayed > 0)
+                    {
                         TimeBetween = 60000;
-
+                    }
                     if (Game.GameTime - GameTimeLastPlayed <= TimeBetween)
+                    {
                         return true;
+                    }
                     else
+                    {
                         return false;
+                    }
+                }
+            }
+            public bool HasVeryRecentlyBeenPlayed
+            {
+                get
+                {
+                    if (Game.GameTime - GameTimeLastPlayed <= 15000)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             public bool IncludeAttentionAllUnits { get; set; }

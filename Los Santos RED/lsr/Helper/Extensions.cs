@@ -52,6 +52,12 @@ namespace ExtensionsMethods
             PED_TYPE_ANIMAL,
             PED_TYPE_ARMY
         };
+        public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
+        {
+            if (val.CompareTo(min) < 0) return min;
+            else if (val.CompareTo(max) > 0) return max;
+            else return val;
+        }
         public static bool IsPoliceArmy(this Ped myPed)
         {
             string ModelName = myPed.Model.Name.ToLower();

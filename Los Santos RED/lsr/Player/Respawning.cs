@@ -249,6 +249,14 @@ public class Respawning : IRespawning
         Game.TimeScale = 1f;
         NativeFunction.Natives.xB4EDDC19532BFB85(); //_STOP_ALL_SCREEN_EFFECTS;
         NativeFunction.Natives.x80C8B1846639BB19(0);
+
+        //new for drunk stuff
+        NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+        NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
+        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+        NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
+        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
+
         if (resetHealth)
         {
             Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;

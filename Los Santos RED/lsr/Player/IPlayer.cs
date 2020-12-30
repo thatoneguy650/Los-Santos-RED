@@ -12,7 +12,6 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceCanSeePlayer { get; set; }
         bool AnyPoliceRecentlySeenPlayer { get; set; }
         bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
-        ArrestWarrant ArrestWarrant { get; }
         bool CanDropWeapon { get; }
         bool CanSurrender { get; }
         Ped Character { get; }
@@ -37,10 +36,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsBusted { get; }
         bool IsChangingLicensePlates { get; set; }
         bool IsCommitingSuicide { get; }
-
         bool IsConsideredArmed { get; }
         bool IsDead { get; }
-        bool IsDrunk { get; }
+        bool IsDrunk { get; set; }
         bool IsHoldingEnter { get; set; }
         bool IsInAirVehicle { get; }
         bool IsInAutomobile { get; }
@@ -64,6 +62,7 @@ namespace LosSantosRED.lsr.Interface
         int Money { get; }
         bool NearCivilianMurderVictim { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; set; }
+        bool RecentlyAppliedWantedStats { get; }
         bool RecentlyBusted { get; }
         bool RecentlyDied { get; }
         bool RecentlyHurtCivilian { get; }
@@ -76,9 +75,7 @@ namespace LosSantosRED.lsr.Interface
         int TimesDied { get; set; }
         List<VehicleExt> TrackedVehicles { get; }
         int WantedLevel { get; }
-        float DrunkIntensity { get; }
-        uint HasBeenNotDrinkingFor { get; }
-        uint HasBeenDrinkingFor { get; }
+        string DrunkDebug { get; }
 
         void CommitSuicide();
         void DisplayPlayerNotification();
@@ -95,8 +92,10 @@ namespace LosSantosRED.lsr.Interface
         void SetShot();
         void SetSmashedWindow();
         void SetUnarmed();
+        void StartSmoking();
         void StartManualArrest();
         void UnSetArrestedAnimation(Ped character);
+        void StartSmokingPot();
         void StartDrinking();
     }
 }

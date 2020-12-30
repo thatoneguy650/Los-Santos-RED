@@ -274,18 +274,18 @@ public class Dispatcher
         {
             ToReturn.Add(ZoneAgency); //Zone Jurisdiciton Random
         }
-        if (ZoneAgency == null || RandomItems.RandomPercent(10))
-        {
-            Agency CountyAgency = CountyJurisdictions.GetRandomAgency(CurrentZone.ZoneCounty, WantedLevel);
-            if (CountyAgency != null)//randomly spawn the county agency
-            {
-                ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
-            }
-        }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfAnySpawn))//fall back to anybody
         {
             ToReturn.AddRange(Agencies.GetSpawnableAgencies(WantedLevel));
         }
+        //if (ZoneAgency == null || RandomItems.RandomPercent(10))
+        //{
+        //    Agency CountyAgency = CountyJurisdictions.GetRandomAgency(CurrentZone.ZoneCounty, WantedLevel);
+        //    if (CountyAgency != null)//randomly spawn the county agency
+        //    {
+        //        ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
+        //    }
+        //}
         foreach (Agency ag in ToReturn)
         {
             Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
