@@ -114,33 +114,33 @@ public class Dispatcher
     {
         get
         {
-            //if (CurrentPlayer.Investigations.IsActive)
-            //{
-            //    return 6;//10
-            //}
+            if (Player.Investigations.IsActive)
+            {
+                return 9;//6
+            }
             if (Player.WantedLevel == 0)
             {
-                return 5;//10//5
+                return 8;//5
             }
             else if (Player.WantedLevel == 1)
             {
-                return 7;//10//8
+                return 10;//7
             }
             else if (Player.WantedLevel == 2)
             {
-                return 10;//12
+                return 12;//10
             }
             else if (Player.WantedLevel == 3)
             {
-                return 18;//20
+                return 18;//18
             }
             else if (Player.WantedLevel == 4)
             {
-                return 25;
+                return 25;//25
             }
             else if (Player.WantedLevel == 5)
             {
-                return 35;
+                return 35;//35
             }
             else
             {

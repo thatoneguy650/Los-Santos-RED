@@ -190,9 +190,10 @@ public class Vehicles
         if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
         {
             PlateType NewType = PlateTypes.GetPlateType(CurrentZone.State);
-            Game.Console.Print($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index+1}");
+            
             if (NewType != null)
             {
+                Game.Console.Print($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}");
                 string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                 if (NewPlateNumber != "")
                 {

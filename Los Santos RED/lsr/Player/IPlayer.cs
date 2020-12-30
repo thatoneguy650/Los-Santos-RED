@@ -76,6 +76,10 @@ namespace LosSantosRED.lsr.Interface
         int TimesDied { get; set; }
         List<VehicleExt> TrackedVehicles { get; }
         int WantedLevel { get; }
+        float DrunkIntensity { get; }
+        uint HasBeenNotDrinkingFor { get; }
+        uint HasBeenDrinkingFor { get; }
+
         void CommitSuicide();
         void DisplayPlayerNotification();
         void DropWeapon();
@@ -93,5 +97,6 @@ namespace LosSantosRED.lsr.Interface
         void SetUnarmed();
         void StartManualArrest();
         void UnSetArrestedAnimation(Ped character);
+        void StartDrinking();
     }
 }

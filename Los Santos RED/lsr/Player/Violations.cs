@@ -25,7 +25,12 @@ namespace LosSantosRED.lsr
         private readonly Crime TrespessingOnGovtProperty = new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, 2, false);
         private readonly Crime GotInAirVehicleDuringChase = new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8, 2);
         private readonly Crime FiringWeapon = new Crime("FiringWeapon", "Firing Weapon", 2, false, 9, 2, true, true, true) { CanReportBySound = true };
-        private readonly Crime KillingCivilians = new Crime("KillingCivilians", "Civilian Fatality", 2, false, 10, 2, true, true, true);
+
+
+        private readonly Crime Kidnapping = new Crime("Kidnapping", "Kidnapping", 2, false, 10, 2, false, false, false);
+
+
+        private readonly Crime KillingCivilians = new Crime("KillingCivilians", "Civilian Fatality", 2, false, 11, 2, true, true, true);
         private readonly Crime GrandTheftAuto = new Crime("GrandTheftAuto", "Grand Theft Auto", 2, false, 16, 3, true, true, true);
         private readonly Crime DrivingStolenVehicle = new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, 5, false);
         private readonly Crime Mugging = new Crime("Mugging", "Mugging", 2, false, 11, 2, true, true, true);
@@ -44,6 +49,9 @@ namespace LosSantosRED.lsr
         private readonly Crime RunningARedLight = new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, 5, false, false, false) { IsTrafficViolation = true };
         private readonly Crime HitPedWithCar = new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 15, 3, true, true, true) { IsTrafficViolation = true };
         private readonly Crime HitCarWithCar = new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, 4, true, true, true) { IsTrafficViolation = true };
+
+        private readonly Crime PublicIntoxication = new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, 4, true, false, false);
+
         private uint GameTimeStartedDrivingOnPavement;
         private uint GameTimeStartedDrivingAgainstTraffic;
         private int TimeSincePlayerHitPed;
@@ -59,7 +67,7 @@ namespace LosSantosRED.lsr
             CrimeList = new List<Crime>
                 {
                     BrandishingCloseCombatWeapon,TerroristActivity,BrandishingHeavyWeapon, FiringWeapon, Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice, TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon,
-                    ChangingPlates, GrandTheftAuto, DrivingStolenVehicle, HurtingCivilians, SuspiciousActivity,DrivingAgainstTraffic,DrivingOnPavement,NonRoadworthyVehicle,FelonySpeeding,RunningARedLight,HitPedWithCar,HitCarWithCar,DrunkDriving
+                    ChangingPlates, GrandTheftAuto, DrivingStolenVehicle, HurtingCivilians, SuspiciousActivity,DrivingAgainstTraffic,DrivingOnPavement,NonRoadworthyVehicle,FelonySpeeding,RunningARedLight,HitPedWithCar,HitCarWithCar,DrunkDriving,Kidnapping,PublicIntoxication
                 };
 
         }
@@ -256,7 +264,25 @@ namespace LosSantosRED.lsr
                 ResistingArrest.IsCurrentlyViolating = false;
             }
 
+            if (CurrentPlayer.IsInVehicle && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists() && CurrentPlayer.CurrentVehicle.Vehicle.HasPassengers && CurrentPlayer.CurrentVehicle.Vehicle.Passengers.Any(x => x.Group != Game.LocalPlayer.Character.Group)) 
+            {
+                Kidnapping.IsCurrentlyViolating = true;
+            }
+            else
+            {
+                Kidnapping.IsCurrentlyViolating = false;
+            }
+            if (CurrentPlayer.IsDrunk && !CurrentPlayer.IsInVehicle)
+            {
+                PublicIntoxication.IsCurrentlyViolating = true;
+            }
+            else
+            {
+                PublicIntoxication.IsCurrentlyViolating = false;
+            }
+
         }
+
         private void CheckTheftCrimes()
         {
             if (CurrentPlayer.IsWanted && CurrentPlayer.IsInVehicle && CurrentPlayer.IsInAirVehicle)
@@ -412,7 +438,9 @@ namespace LosSantosRED.lsr
                 return true;
             }
             else
+            {
                 return false;
+            }
         }
         private void CheckTrafficViolations()
         {

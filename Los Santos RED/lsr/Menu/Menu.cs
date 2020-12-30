@@ -63,6 +63,7 @@ public class Menu
     private UIMenuItem menuMainSuicide;
     private UIMenuItem menuMainChangeLicensePlate;
     private UIMenuItem menuMainRemoveLicensePlate;
+    private UIMenuItem menuActionDrink;
     private UIMenuItem menuMainShowPlayerStatus;
     private UIMenuItem menuMainChangeHelmet;
     private UIMenuItem menuDebugKillPlayer;
@@ -467,14 +468,16 @@ public class Menu
         menuMainChangeLicensePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.", CurrentPlayer.SpareLicensePlates); //new UIMenuItem("Change Plate", "Change your license plate if you have spares");
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         menuMainChangeHelmet = new UIMenuItem("Toggle Helmet", "Add/Removes your helmet");
+        menuActionDrink = new UIMenuItem("Drink", "Start Drinking");
 
         actionsMenu.AddItem(menuMainSuicide);
         actionsMenu.AddItem(menuActionSmoking);
-
+        
         if (!CurrentPlayer.IsInVehicle)
         {
             actionsMenu.AddItem(menuMainChangeLicensePlate);
             actionsMenu.AddItem(menuMainRemoveLicensePlate);
+            actionsMenu.AddItem(menuActionDrink);
         }
 
         actionsMenu.OnItemSelect += ActionsMenuSelect;
@@ -697,6 +700,10 @@ public class Menu
         {
             PlateTheft plateTheft = new PlateTheft(CurrentPlayer);
             plateTheft.RemovePlate();
+        }
+        else if(selectedItem == menuActionDrink)
+        {
+            CurrentPlayer.StartDrinking();
         }
     }
     private void ScenarioMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)

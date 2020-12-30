@@ -15,6 +15,13 @@ public static class RandomItems
         else
             return false;
     }
+    public static bool RandomLargePercent(float Percent)
+    {
+        if (MyRand.Next(1, 1001) <= Percent)
+            return true;
+        else
+            return false;
+    }
     public static string RandomString(int length)
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789";

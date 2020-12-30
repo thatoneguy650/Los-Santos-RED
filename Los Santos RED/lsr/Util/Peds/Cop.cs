@@ -266,7 +266,7 @@ public class Cop : PedExt
     {
         if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetUnarmed || NeedsWeaponCheck))
         {
-            if (Pedestrian.Inventory.EquippedWeapon != null)
+            if (Pedestrian.Inventory != null && Pedestrian.Inventory.EquippedWeapon != null)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, 2725352035, true); //Unequip weapon so you don't get shot
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
@@ -284,12 +284,12 @@ public class Cop : PedExt
         if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetDeadly || NeedsWeaponCheck))
         {
             Pedestrian.Accuracy = 10;
-            if (!Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
+            if (Pedestrian.Inventory != null && !Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
             {
                 Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, true);
                 Sidearm.ApplyVariation(Pedestrian);
             }
-            if (!Pedestrian.Inventory.Weapons.Contains(LongGun.ModelName))
+            if (Pedestrian.Inventory != null && !Pedestrian.Inventory.Weapons.Contains(LongGun.ModelName))
             {
                 Pedestrian.Inventory.GiveNewWeapon(LongGun.ModelName, -1, true);
                 LongGun.ApplyVariation(Pedestrian);
@@ -316,11 +316,11 @@ public class Cop : PedExt
         if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetLessLethal || NeedsWeaponCheck))
         {
             Pedestrian.Accuracy = 30;
-            if (!Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
+            if (Pedestrian.Inventory != null && !Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
                 Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, true);
             }
-            else if (Pedestrian.Inventory.EquippedWeapon != WeaponHash.StunGun)
+            else if (Pedestrian.Inventory != null && Pedestrian.Inventory.EquippedWeapon != WeaponHash.StunGun)
             {
                 Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;
             }

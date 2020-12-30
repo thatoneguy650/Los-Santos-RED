@@ -40,6 +40,8 @@ namespace LosSantosRED.lsr
         private List<Dispatch> DispatchQueue = new List<Dispatch>();
         private Dispatch DrivingAtStolenVehicle;
         private Dispatch DrunkDriving;
+        private Dispatch Kidnapping;
+        private Dispatch PublicIntoxication;
         private bool ExecutingQueue;
         private Dispatch FelonySpeeding;
         private uint GameTimeLastAnnouncedDispatch;
@@ -81,6 +83,7 @@ namespace LosSantosRED.lsr
         private Dispatch SuspectSpotted;
         private Dispatch SuspectWasted;
         private Dispatch SuspiciousActivity;
+        private Dispatch TamperingWithVehicle;
         private Dispatch SuspiciousVehicle;
         private Dispatch TerroristActivity;
         private Dispatch ThreateningOfficerWithFirearm;
@@ -921,7 +924,7 @@ namespace LosSantosRED.lsr
         {
             new CrimeDispatch("AttemptingSuicide",AttemptingSuicide),
             new CrimeDispatch("BrandishingWeapon",CarryingWeapon),
-            new CrimeDispatch("ChangingPlates",SuspiciousActivity),
+            new CrimeDispatch("ChangingPlates",TamperingWithVehicle),
             new CrimeDispatch("DrivingAgainstTraffic",RecklessDriving),
             new CrimeDispatch("DrivingOnPavement",RecklessDriving),
             new CrimeDispatch("FelonySpeeding",FelonySpeeding),
@@ -945,7 +948,12 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("BrandishingCloseCombatWeapon",CarryingWeapon),
             new CrimeDispatch("SuspiciousActivity",SuspiciousActivity),
             new CrimeDispatch("DrunkDriving",DrunkDriving),
+            new CrimeDispatch("Kidnapping",Kidnapping),
+            new CrimeDispatch("PublicIntoxication",PublicIntoxication),
 
+
+
+           
         };
             DispatchList = new List<Dispatch>
         {
@@ -991,6 +999,8 @@ namespace LosSantosRED.lsr
             ,LethalForceAuthorized
             ,RunningARedLight
             ,DrunkDriving
+            ,Kidnapping
+            ,PublicIntoxication
         };
 
         }
@@ -1364,9 +1374,23 @@ namespace LosSantosRED.lsr
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_suspicious_activity.Suspiciousactivity.FileName },"suspicious activity"),
-                new AudioSet(new List<string>() { crime_theft.Apossibletheft.FileName },"a possible theft"),
+                new AudioSet(new List<string>() { crime_9_25.Asuspiciousperson.FileName },"a suspicious person"),     
             },
             };
+
+            TamperingWithVehicle = new Dispatch()
+            {
+                Name = "Tampering With Vehicle",
+                LocationDescription = LocationSpecificity.StreetAndZone,
+                IncludeCarryingWeapon = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_5_04.Tamperingwithavehicle.FileName },"tampering with a vehicle"),
+            },
+            };
+
+            
+
             CriminalActivity = new Dispatch()
             {
                 Name = "Criminal Activity",
@@ -1526,6 +1550,32 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_5_02.A502DUI.FileName},"a 502 dui"),
             },
             };
+
+            Kidnapping = new Dispatch()
+            {
+                Name = "Kidnapping",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_2_07.Akidnapping.FileName},"a kidnapping"),
+                new AudioSet(new List<string>() { crime_2_07.Akidnapping1.FileName},"a kidnapping"),
+            },
+            };
+
+
+            PublicIntoxication = new Dispatch()
+            {
+                Name = "Public Intoxication",
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_3_90.Publicintoxication.FileName},"public intoxication"),
+            },
+            };
+
+            
 
             AnnounceStolenVehicle = new Dispatch()
             {
