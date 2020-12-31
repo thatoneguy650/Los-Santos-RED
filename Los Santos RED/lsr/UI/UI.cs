@@ -311,7 +311,7 @@ public class UI
         string DebugLine2 = string.Format("{0}", SearchMode.SearchModeDebug);
         DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine3 = string.Format("","");
+        string DebugLine3 = string.Format($"{CurrentPlayer.ModelName} {CurrentPlayer.IsMale}");
         DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine4 = string.Format("CrimesObs {0}", CurrentPlayer.CurrentPoliceResponse.CrimesObservedJoined);

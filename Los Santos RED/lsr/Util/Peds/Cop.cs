@@ -212,7 +212,7 @@ public class Cop : PedExt
 
             Speak(currentPlayer);
 
-            AnimationDictionary AnimDictionary = new AnimationDictionary("random@arrests");
+            AnimationDictionary.RequestAnimationDictionay("random@arrests");
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
             GameTimeLastRadioed = Game.GameTime;
         }

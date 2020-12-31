@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IPlayerIntoxicationState
+    public interface IConsumableIntoxicatable : IConsumeable, IIntoxicatable
     {
-        bool IsDrunk { get; set; }
-        bool IsImbibing { get; set; }
+        
     }
 }

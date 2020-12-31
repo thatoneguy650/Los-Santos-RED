@@ -85,7 +85,7 @@ public class Mugging
             uint GameTimeStartedMugging = Game.GameTime;
             MuggingTarget.Pedestrian.BlockPermanentEvents = true;
 
-            AnimationDictionary AnimDictionary = new AnimationDictionary("ped");
+            AnimationDictionary.RequestAnimationDictionay("ped");
 
             if (!Game.LocalPlayer.Character.IsAnySpeechPlaying)
             {

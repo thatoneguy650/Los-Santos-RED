@@ -92,7 +92,7 @@ public class PlateTheft
                     LicensePlateModel = AttachLicensePlateToPed(Game.LocalPlayer.Character);
                 }
 
-                AnimationDictionary AnimDictionary = new AnimationDictionary("mp_car_bomb");
+                AnimationDictionary.RequestAnimationDictionay("mp_car_bomb");
                 uint GameTimeStartedAnimation = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "mp_car_bomb", "car_bomb_mechanic", 2.0f, -2.0f, 5000, 0, 0, false, false, false);
                 bool Continue = true;

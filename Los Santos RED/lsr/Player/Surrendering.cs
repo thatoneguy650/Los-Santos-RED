@@ -53,8 +53,8 @@ public class Surrendering
         CurrentPlayer.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
-        AnimationDictionary AnimDictionary = new AnimationDictionary(sDict);
-        AnimationDictionary BustedDictionary = new AnimationDictionary("busted");
+        AnimationDictionary.RequestAnimationDictionay(sDict);
+        AnimationDictionary.RequestAnimationDictionay("busted");
         if (inVehicle)
         {
             NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, true, false, true);
@@ -118,9 +118,9 @@ public class Surrendering
     {
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
-            AnimationDictionary Busted_Std = new AnimationDictionary("veh@busted_std");
-            AnimationDictionary Busted = new AnimationDictionary("busted");
-            AnimationDictionary Ped = new AnimationDictionary("ped");
+            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+            AnimationDictionary.RequestAnimationDictionay("busted");
+            AnimationDictionary.RequestAnimationDictionay("ped");
 
             if (!PedToArrest.Exists())
             {
@@ -186,9 +186,9 @@ public class Surrendering
     {
         GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
         {
-            AnimationDictionary RandomArrests = new AnimationDictionary("random@arrests");
-            AnimationDictionary Busted = new AnimationDictionary("busted");
-            AnimationDictionary Ped = new AnimationDictionary("ped");
+            AnimationDictionary.RequestAnimationDictionay("random@arrests");
+            AnimationDictionary.RequestAnimationDictionay("busted");
+            AnimationDictionary.RequestAnimationDictionay("ped");
 
             if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) || NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3))
             {
@@ -221,7 +221,7 @@ public class Surrendering
             if (!PedToSuicide.IsInAnyVehicle(false))
             {
                 IsCommitingSuicide = true;
-                AnimationDictionary AnimDictionary = new AnimationDictionary("mp_suicide");
+                AnimationDictionary.RequestAnimationDictionay("mp_suicide");
 
                 //WeaponInformation CurrentGun = null;
                 //if (PedToSuicide.Inventory.EquippedWeapon != null)

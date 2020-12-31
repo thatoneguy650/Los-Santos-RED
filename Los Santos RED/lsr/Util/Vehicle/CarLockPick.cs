@@ -134,7 +134,7 @@ public class CarLockPick
 
         Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
 
-        AnimationDictionary AnimDictionary = new AnimationDictionary("veh@break_in@0h@p_m_one@");
+        AnimationDictionary.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "veh@break_in@0h@p_m_one@", Animation, 2.0f, -2.0f, -1, 0, 0, false, false, false);
 
         uint GameTimeStarted = Game.GameTime;

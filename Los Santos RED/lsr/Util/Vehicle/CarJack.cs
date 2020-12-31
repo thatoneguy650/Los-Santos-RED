@@ -128,7 +128,7 @@ public class CarJack
             return false;
         }
 
-        AnimationDictionary AnimDictionary = new AnimationDictionary(Dictionary);
+        AnimationDictionary.RequestAnimationDictionay(Dictionary);
         Player.SetPlayerToLastWeapon();
 
         if (!Driver.IsInAnyVehicle(false))

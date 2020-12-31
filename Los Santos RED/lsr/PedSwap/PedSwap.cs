@@ -259,6 +259,10 @@ public class PedSwap : IPedSwap
         //Mod.Player.Instance.CurrentPoliceResponse.Reset();
         // Mod.Player.Instance.ArrestWarrant.Reset();
 
+
+        NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+        NativeFunction.Natives.x80C8B1846639BB19(0);
+        NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
         Game.TimeScale = 1f;
@@ -267,7 +271,7 @@ public class PedSwap : IPedSwap
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
 
-
+        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         ActivatePreviousScenarios();
         Player.SetUnarmed();

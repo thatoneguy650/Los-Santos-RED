@@ -104,7 +104,7 @@ public class WeaponDropping
     {
         GameFiber DropWeaponAnimation = GameFiber.StartNew(delegate
         {
-            AnimationDictionary AnimDictionary = new AnimationDictionary("pickup_object");
+            AnimationDictionary.RequestAnimationDictionay("pickup_object");
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "pickup_object", "pickup_low", 8.0f, -8.0f, -1, 56, 0, false, false, false);
         }, "DropWeaponAnimation");
 

@@ -48,6 +48,8 @@ namespace LosSantosRED.lsr
         public bool IsRunning { get; private set; }
         public void NewPlayer(string ModelName, bool Male)
         {
+            Player.ModelName = ModelName;
+            Player.IsMale = Male;
             Player.Reset(true, true, true);
             Scanner.Reset();
             Player.GiveName(ModelName, Names.GetRandomName(Male));
@@ -157,10 +159,10 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
                 new ModTask(500, "World.Tasking.UpdatePeds", Tasking.AddTaskablePeds, 14,0),
-                new ModTask(500, "World.Tasking.Tick", Tasking.TaskCops, 14,1),
-                new ModTask(750, "World.Tasking.Tick", Tasking.TaskCivilians, 14,2),
-                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
-                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
+                //new ModTask(500, "World.Tasking.Tick", Tasking.TaskCops, 14,1),
+                //new ModTask(750, "World.Tasking.Tick", Tasking.TaskCivilians, 14,2),
+                //new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
+                //new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
             };
         }
         private void StartDebugLogic()

@@ -38,7 +38,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCommitingSuicide { get; }
         bool IsConsideredArmed { get; }
         bool IsDead { get; }
-        bool IsDrunk { get; set; }
+        bool IsIntoxicated { get; set; }
         bool IsHoldingEnter { get; set; }
         bool IsInAirVehicle { get; }
         bool IsInAutomobile { get; }
@@ -76,6 +76,8 @@ namespace LosSantosRED.lsr.Interface
         List<VehicleExt> TrackedVehicles { get; }
         int WantedLevel { get; }
         string DrunkDebug { get; }
+        string ModelName { get; }
+        bool IsMale { get; }
 
         void CommitSuicide();
         void DisplayPlayerNotification();

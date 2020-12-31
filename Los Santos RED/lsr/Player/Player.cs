@@ -12,10 +12,9 @@ using System.Runtime.InteropServices;
 
 namespace Mod
 {
-    public class Player : IPlayer, IPlayerIntoxicationState
+    public class Player : IPlayer, IConsumeable, IIntoxicatable, IConsumableIntoxicatable
     {
-        private IntoxicatingActivity intoxicatingActivity;//temp here for UI debugging
-
+        private ConsumeActivity CurrentConsumingActivity;//temp here for UI debugging
 
         private ArrestWarrant ArrestWarrant;
         private HealthState CurrentHealth;
@@ -66,6 +65,8 @@ namespace Mod
             CurrentPoliceResponse.SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
             GameTimeStartedPlaying = Game.GameTime;
+            ModelName = Game.LocalPlayer.Character.Model.Name;
+            IsMale = Game.LocalPlayer.Character.IsMale;
         }
         public bool AnyHumansNear
         {
@@ -79,15 +80,14 @@ namespace Mod
         {
             get
             {
-                if(intoxicatingActivity != null)
+                if (CurrentConsumingActivity != null)
                 {
-                    return intoxicatingActivity.DebugString;
+                    return CurrentConsumingActivity.DebugString;
                 }
                 return "";
             }
         }
-
-
+        public string ModelName { get; set; }
         public bool AnyPoliceCanHearPlayer { get; set; }
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
@@ -212,8 +212,9 @@ namespace Mod
         public bool IsCommitingSuicide => Surrendering.IsCommitingSuicide;
         public bool IsConsideredArmed { get; private set; }
         public bool IsDead { get; private set; }
-        public bool IsImbibing { get; set; }
-        public bool IsDrunk { get; set; }
+        public bool IsConsuming { get; set; }
+        public bool IsIntoxicated { get; set; }
+        public float IntoxicatedIntensity { get; set; }
         public bool IsGettingIntoAVehicle
         {
             get => isGettingIntoVehicle;
@@ -307,6 +308,7 @@ namespace Mod
                 }
             }
         }
+        public bool IsMale { get; set; }
         public void AddSpareLicensePlate()
         {
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
@@ -512,6 +514,7 @@ namespace Mod
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
             CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
+            IsConsuming = false;
             if (resetWanted)
             {
                 CurrentPoliceResponse.Reset();
@@ -571,29 +574,29 @@ namespace Mod
         }
         public void StartDrinking()
         {
-            if (!IsImbibing)
+            if (!IsConsuming)
             {
-                IsImbibing = true;
-                intoxicatingActivity = new IntoxicatingActivity(this, "WORLD_HUMAN_DRINKING", 5.0f, 5000, 60000);
-                intoxicatingActivity.Start();
+                IsConsuming = true;
+                CurrentConsumingActivity = new DrinkingActivity(this);
+                CurrentConsumingActivity.Start();
             }
         }
         public void StartSmokingPot()
         {
-            if (!IsImbibing)
+            if (!IsConsuming)
             {
-                IsImbibing = true;
-                intoxicatingActivity = new IntoxicatingActivity(this, "WORLD_HUMAN_SMOKING_POT", 2.0f, 10000, 60000);
-                intoxicatingActivity.Start();
+                IsConsuming = true;
+                CurrentConsumingActivity = new SmokingActivity(this,true);
+                CurrentConsumingActivity.Start();
             }
         }
         public void StartSmoking()
         {
-            if (!IsImbibing)
+            if (!IsConsuming)
             {
-                IsImbibing = true;
-                intoxicatingActivity = new IntoxicatingActivity(this, "WORLD_HUMAN_SMOKING", 1.0f, 10000,60000);
-                intoxicatingActivity.Start();
+                IsConsuming = true;
+                CurrentConsumingActivity = new SmokingActivity(this,false);
+                CurrentConsumingActivity.Start();
             }
         }
         public void StartManualArrest()
@@ -868,11 +871,11 @@ namespace Mod
 
             if (NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1) || NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX") == 722)
             {
-                IsDrunk = true;
+                IsIntoxicated = true;
             }
             else
             {
-                IsDrunk = false;
+                IsIntoxicated = false;
             }
         }
         private void UpdateState()
