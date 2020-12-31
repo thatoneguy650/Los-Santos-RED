@@ -301,27 +301,27 @@ public class UI
         //}
 
         // Lines++;
-
+        float StartingPoint = 0.1f;
         string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", CurrentPlayer.Investigations.IsActive, CurrentPlayer.Investigations.HaveDescription, CurrentPlayer.IsStationary, CurrentPlayer.Investigations.IsSuspicious);
-        DisplayTextOnScreen(DebugLine, 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen(DebugLine, StartingPoint + 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine1 = string.Format($"{CurrentPlayer.DrunkDebug}");
-        DisplayTextOnScreen(DebugLine1, 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen(DebugLine1, StartingPoint + 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine2 = string.Format("{0}", SearchMode.SearchModeDebug);
-        DisplayTextOnScreen(DebugLine2, 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen(DebugLine2, StartingPoint + 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine3 = string.Format($"{CurrentPlayer.ModelName} {CurrentPlayer.IsMale}");
-        DisplayTextOnScreen(DebugLine3, 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen(DebugLine3, StartingPoint + 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine4 = string.Format("CrimesObs {0}", CurrentPlayer.CurrentPoliceResponse.CrimesObservedJoined);
-        DisplayTextOnScreen(DebugLine4, 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen(DebugLine4, StartingPoint + 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine5 = string.Format("CrimesRep {0}", CurrentPlayer.CurrentPoliceResponse.CrimesReportedJoined);
-        DisplayTextOnScreen(DebugLine5, 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen(DebugLine5, StartingPoint + 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         string DebugLine6 = string.Format("{0}", CurrentPlayer.LawsViolatingDisplay);
-        DisplayTextOnScreen(DebugLine6, 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen(DebugLine6, StartingPoint + 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         //float Between = 0.01f;
         //float Start = 0.15f;

@@ -20,8 +20,8 @@ namespace LosSantosRED.lsr.Player
         private bool IsAttachedToMouth;
         private bool IsEmittingSmoke;
         private Rage.Object Joint;
-        private bool JointNearMouth;
-        private bool JointIsLit;
+        private bool IsNearMouth;
+        private bool IsLit;
         private IConsumableIntoxicatable Player;
         private LoopedParticle PotSmoke;
         private string AnimBaseDictionary;
@@ -38,7 +38,7 @@ namespace LosSantosRED.lsr.Player
         private int MouthBoneID;
         private Vector3 MouthOffset;
         private Rotator MouthRotator;
-        private string JointProp;
+        private string PropModelName;
         private float CurrentAnimationTime = 0.0f;
         private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
         public SmokingActivity(IConsumableIntoxicatable consumable, bool isPot) : base()
@@ -46,18 +46,18 @@ namespace LosSantosRED.lsr.Player
             Player = consumable;
             IsPot = isPot;
         }
-        public override string DebugString => $"IsIntoxicated {Player.IsIntoxicated} IsConsuming: {Player.IsConsuming} Intensity: {Player.IntoxicatedIntensity} Loop: {DebugLocation}, Emitting: {IsEmittingSmoke}, InMouth: {JointNearMouth}, HandByFace: {HandByFace}";// + IntoxicatingEffect != null ? IntoxicatingEffect.DebugString : "";
+        public override string DebugString => $"IsIntoxicated {Player.IsIntoxicated} IsConsuming: {Player.IsConsuming} Intensity: {Player.IntoxicatedIntensity} Loop: {DebugLocation}, Emitting: {IsEmittingSmoke}, InMouth: {IsNearMouth}, HandByFace: {HandByFace}";// + IntoxicatingEffect != null ? IntoxicatingEffect.DebugString : "";
         public override void Start()
         {
             Setup();
             if(IsPot)
             {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 2.5f, 10000, 60000);
+                IntoxicatingEffect = new IntoxicatingEffect(Player, 2.5f, 25000, 60000, "drug_wobbly");//2.5,25000
                 IntoxicatingEffect.Start();
             }
             else
             {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 1.1f, 10000, 60000);
+                IntoxicatingEffect = new IntoxicatingEffect(Player, 1.2f, 25000, 60000,"Bloom");//1.2,25000
                 IntoxicatingEffect.Start();
             }
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
@@ -120,11 +120,11 @@ namespace LosSantosRED.lsr.Player
             }
             if(IsPot)
             {
-                JointProp = "p_amb_joint_01";
+                PropModelName = "p_amb_joint_01";
             }
             else
             {
-                JointProp = "ng_proc_cigarette01a";
+                PropModelName = "ng_proc_cigarette01a";
             }
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
@@ -153,7 +153,7 @@ namespace LosSantosRED.lsr.Player
         {
             if (!Joint.Exists())
             {
-                Joint = new Rage.Object(JointProp, Player.Character.GetOffsetPositionUp(50f));
+                Joint = new Rage.Object(PropModelName, Player.Character.GetOffsetPositionUp(50f));
             }
         }
         private void LightJoint()
@@ -173,7 +173,7 @@ namespace LosSantosRED.lsr.Player
                 if (CurrentAnimationTime >= 0.55f)
                 {
                     IsActivelySmoking = true;
-                    JointIsLit = true;
+                    IsLit = true;
                 }
                 if (CurrentAnimationTime >= 0.72f)
                 {
@@ -204,7 +204,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
             }
-            if (JointNearMouth)
+            if (IsNearMouth)
             {
                 Idle();
             }
@@ -241,7 +241,7 @@ namespace LosSantosRED.lsr.Player
             DebugLocation = "Stop";
             HandByFace = false;
             IsActivelySmoking = false;
-            JointIsLit = false;
+            IsLit = false;
             IsAttachedToMouth = false;
             if (Joint.Exists())
             {
@@ -264,11 +264,11 @@ namespace LosSantosRED.lsr.Player
             }
             if (DistanceBetweenJointAndFace <= 0.17f && Joint.Exists())
             {
-                JointNearMouth = true;
+                IsNearMouth = true;
             }
             else
             {
-                JointNearMouth = false;
+                IsNearMouth = false;
             }
             if (DistanceBetweenHandAndFace <= 0.2f)
             {
@@ -281,16 +281,16 @@ namespace LosSantosRED.lsr.Player
         }
         private void UpdateSmoke()
         {
-            if (JointIsLit)
+            if (IsLit)
             {
                 if (IsActivelySmoking)
                 {
-                    if (JointNearMouth && JointIsLit && !IsEmittingSmoke)
+                    if (IsNearMouth && IsLit && !IsEmittingSmoke)
                     {
                         PotSmoke = new LoopedParticle("core", "ent_anim_cig_smoke", Joint, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
                         IsEmittingSmoke = true;
                     }
-                    if (!JointNearMouth && IsEmittingSmoke && PotSmoke != null)
+                    if (!IsNearMouth && IsEmittingSmoke && PotSmoke != null)
                     {
                         PotSmoke.Stop();
                         IsEmittingSmoke = false;

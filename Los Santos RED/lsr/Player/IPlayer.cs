@@ -39,6 +39,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsConsideredArmed { get; }
         bool IsDead { get; }
         bool IsIntoxicated { get; set; }
+        float IntoxicatedIntensity { get; set; }
         bool IsHoldingEnter { get; set; }
         bool IsInAirVehicle { get; }
         bool IsInAutomobile { get; }

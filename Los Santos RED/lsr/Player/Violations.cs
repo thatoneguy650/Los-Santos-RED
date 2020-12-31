@@ -272,7 +272,7 @@ namespace LosSantosRED.lsr
             {
                 Kidnapping.IsCurrentlyViolating = false;
             }
-            if (CurrentPlayer.IsIntoxicated && !CurrentPlayer.IsInVehicle)
+            if (CurrentPlayer.IsIntoxicated && CurrentPlayer.IntoxicatedIntensity >= 2.0f && !CurrentPlayer.IsInVehicle)
             {
                 PublicIntoxication.IsCurrentlyViolating = true;
             }
@@ -506,7 +506,7 @@ namespace LosSantosRED.lsr
                     RunningARedLight.IsCurrentlyViolating = false;
                 //}
             }
-            if (CurrentPlayer.IsIntoxicated && (DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
+            if (CurrentPlayer.IsIntoxicated && CurrentPlayer.IntoxicatedIntensity >= 2.0f && (DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
             {
                 DrunkDriving.IsCurrentlyViolating = true;
             }

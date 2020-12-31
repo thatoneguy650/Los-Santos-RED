@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -11,14 +12,8 @@ namespace LosSantosRED.lsr.Player
 {
     public class DrinkingActivity : ConsumeActivity
     {
-        private string AnimBaseDictionary;
-        private string AnimBase;
         private string AnimIdleDictionary;
         private string AnimIdle;
-        private string AnimEnterDictionary;
-        private string AnimEnter;
-        private string AnimExitDictionary;
-        private string AnimExit;
         private int HandBoneID;
         private Vector3 HandOffset;
         private Rotator HandRotator;
@@ -34,61 +29,32 @@ namespace LosSantosRED.lsr.Player
         {
             Player = consumable;
         }
-        public override string DebugString => $"IsIntoxicated {Player.IsIntoxicated} IsConsuming: {Player.IsConsuming} Intensity: {Player.IntoxicatedIntensity} Loop: {DebugLocation}";
+        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsConsuming} I: {Player.IntoxicatedIntensity} L: {DebugLocation} AT {Math.Round(CurrentAnimationTime,2)}";
         private void Setup()
         {
-            if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two")
+            if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
             {
-                AnimBaseDictionary = "amb@world_human_drinking@beer@male@base";
-                AnimBase = "base";
                 AnimIdleDictionary = "amb@world_human_drinking@beer@male@idle_a";
-                AnimIdle = "idle_b";
-                AnimEnterDictionary = "amb@world_human_drinking@beer@male@enter";
-                AnimEnter = "enter";
-                AnimExitDictionary = "amb@world_human_drinking@beer@male@exit";
-                AnimExit = "exit";
+                AnimIdle = new List<string>() { "idle_c", "Idle_a" }.PickRandom();
                 HandBoneID = 57005;
-                HandOffset = new Vector3(0.1f, -0.13f, -0.05f);
-                HandRotator = new Rotator(-83.07f, 9.0f, 0.0f);
-            }
-            else if (Player.IsMale)
-            {
-                AnimBaseDictionary = "amb@world_human_drinking@beer@male@base";
-                AnimBase = "base";
-                AnimIdleDictionary = "amb@world_human_drinking@beer@male@idle_a";
-                AnimIdle = "idle_b";
-                AnimEnterDictionary = "amb@world_human_drinking@beer@male@enter";
-                AnimEnter = "enter";
-                AnimExitDictionary = "amb@world_human_drinking@beer@male@exit";
-                AnimExit = "exit";
-                HandBoneID = 57005;
-                HandOffset = new Vector3(0.1f, -0.13f, -0.05f);
-                HandRotator = new Rotator(-83.07f, 9.0f, 0.0f);
+                HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
+                HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
             }
             else
             {
-                AnimBaseDictionary = "amb@world_human_drinking@beer@female@base";
-                AnimBase = "base";
                 AnimIdleDictionary = "amb@world_human_drinking@beer@female@idle_a";
-                AnimIdle = "idle_b";
-                AnimEnterDictionary = "amb@world_human_drinking@beer@female@enter";
-                AnimEnter = "enter";
-                AnimExitDictionary = "amb@world_human_drinking@beer@female@exit";
-                AnimExit = "exit";
+                AnimIdle = new List<string>() { "idle_c", "Idle_a" }.PickRandom();
                 HandBoneID = 57005;
-                HandOffset = new Vector3(0.1f, -0.13f, -0.05f);
-                HandRotator = new Rotator(-83.07f, 9.0f, 0.0f);
+                HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
+                HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
             }
-            PropModel = "prop_beer_bottle";
-            AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
+            PropModel = new List<string>() { "prop_cs_beer_bot_40oz", "prop_cs_beer_bot_40oz_02", "prop_cs_beer_bot_40oz_03" }.PickRandom(); ;
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
-            AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
-            AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
         }
         public override void Start()
         {
             Setup();
-            IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 5000, 60000);
+            IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 25000, 60000, "Drunk");//25000
             IntoxicatingEffect.Start();
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
@@ -117,25 +83,7 @@ namespace LosSantosRED.lsr.Player
             DebugLocation = "Drink";
             AttachBottleToHand();
             Player.IsConsuming = true;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 8.0f, -8.0f, -1, 50, 0, false, false, false);//-1
-            while (!IsCancelControlPressed)// && CurrentAnimationTime < 1.0f)
-            {
-                CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, AnimEnterDictionary, AnimEnter);
-                GameFiber.Yield();
-            }
-            if (IsCancelControlPressed)
-            {
-                Stop();
-            }
-            else
-            {
-                Idle();
-            }
-        }
-        private void Idle()
-        {
-            DebugLocation = "Idle";
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimBaseDictionary, AnimIdle, 8.0f, -8.0f, -1, 49, 0, false, false, false);//49
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimIdleDictionary, AnimIdle, 8.0f, -8.0f, -1, 49, 0, false, false, false);//-1
             while (!IsCancelControlPressed)
             {
                 GameFiber.Yield();
