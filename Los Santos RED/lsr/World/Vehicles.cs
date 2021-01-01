@@ -94,7 +94,7 @@ public class Vehicles
     {
         foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))
         {
-            if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth || PoliceCar.Vehicle.EngineHealth < 1000f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 75f)
+            if ((PoliceCar.Vehicle.Health < PoliceCar.Vehicle.MaxHealth || PoliceCar.Vehicle.EngineHealth < 1000f) && PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 25f && !PoliceCar.Vehicle.IsOnScreen)
             {
                 PoliceCar.Vehicle.Repair();
             }
@@ -201,7 +201,7 @@ public class Vehicles
                     Car.OriginalLicensePlate.PlateNumber = NewPlateNumber;
                     Car.CarPlate.PlateNumber = NewPlateNumber;
                 }
-                NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index+1);
+                NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index);
                 Car.OriginalLicensePlate.PlateType = NewType.Index;
                 Car.CarPlate.PlateType = NewType.Index;
                 // Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));

@@ -8,6 +8,8 @@ namespace LosSantosRED.lsr.Player
 {
     public class SmokingActivity : ConsumeActivity
     {
+        private uint GameTimeToStartSmoke;
+        private uint GameTimeToStopSmoke;
         private bool IsPot;
         private bool DoneIdleLoop;
         private string DebugLocation;
@@ -40,6 +42,8 @@ namespace LosSantosRED.lsr.Player
         private Rotator MouthRotator;
         private string PropModelName;
         private float CurrentAnimationTime = 0.0f;
+        
+
         private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
         public SmokingActivity(IConsumableIntoxicatable consumable, bool isPot) : base()
         {
@@ -50,14 +54,14 @@ namespace LosSantosRED.lsr.Player
         public override void Start()
         {
             Setup();
-            if(IsPot)
+            if (IsPot)
             {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 2.5f, 25000, 60000, "drug_wobbly");//2.5,25000
+                IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 25000, 60000, "drug_wobbly");//2.5,25000
                 IntoxicatingEffect.Start();
             }
             else
             {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 1.2f, 25000, 60000,"Bloom");//1.2,25000
+                IntoxicatingEffect = new IntoxicatingEffect(Player, 1.2f, 25000, 60000, "Bloom");//1.2,25000
                 IntoxicatingEffect.Start();
             }
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
@@ -118,7 +122,7 @@ namespace LosSantosRED.lsr.Player
                 MouthOffset = new Vector3(0.046f, 0.015f, 0.014f);
                 MouthRotator = new Rotator(0.0f, -180f, 0f);
             }
-            if(IsPot)
+            if (IsPot)
             {
                 PropModelName = "p_amb_joint_01";
             }
@@ -181,7 +185,11 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
             }
-            if (IsCancelControlPressed)
+            if(IsLit&& IsNearMouth)
+            {
+                Idle();
+            }
+            else if (IsCancelControlPressed)
             {
                 Stop();
             }
@@ -193,7 +201,7 @@ namespace LosSantosRED.lsr.Player
         private void Puff()
         {
             DebugLocation = "Puff";
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimBaseDictionary, AnimBase, 8.0f, -8.0f, -1, 49, 0, false, false, false);//49
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimBaseDictionary, AnimBase, 4.0f, -4.0f, -1, 49, 0, false, false, false);//49
             while (!IsCancelControlPressed)
             {
                 UpdatePosition();
@@ -218,15 +226,32 @@ namespace LosSantosRED.lsr.Player
             DebugLocation = "Idle";
             AttachJointToMouth();
             Player.Character.Tasks.Clear();
-            IsActivelySmoking = false;      
-            while (!Game.IsKeyDownRightNow(System.Windows.Forms.Keys.E) && !Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Q))
+            IsActivelySmoking = false;
+            bool Cancel = false;
+            while (!Cancel)
             {
                 UpdatePosition();
                 UpdateSmoke();
-                Game.DisplayHelp("Press E to stop smoking ~n~Press Q to continue smoking");
+                if (Player.CanPerformActivities)
+                {
+                    Game.DisplayHelp("Press E to stop smoking ~n~Press X to continue smoking");
+                    if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.X) || Game.IsKeyDownRightNow(System.Windows.Forms.Keys.E))
+                    {
+                        Cancel = true;
+                    }
+                }
+                else
+                {
+                    Game.DisplayHelp("Press E to stop smoking");
+                    if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.E))
+                    {
+                        Cancel = true;
+                    }
+                }
+
                 GameFiber.Yield();
             }
-            if(Game.IsKeyDownRightNow(System.Windows.Forms.Keys.Q))
+            if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.X) && Player.CanPerformActivities)
             {
                 IsActivelySmoking = true;
                 Puff();
@@ -298,16 +323,25 @@ namespace LosSantosRED.lsr.Player
                 }
                 else
                 {
-                    if (Game.GameTime - GameTimeLastEmittedSmoke >= 500 && IsEmittingSmoke)
+                    if(!IsEmittingSmoke)
                     {
-                        IsEmittingSmoke = false;
-                        PotSmoke.Stop();
+                        if(GameTimeToStopSmoke <= Game.GameTime && Game.GameTime >= GameTimeToStartSmoke)
+                        {
+                            IsEmittingSmoke = true;
+                            PotSmoke = new LoopedParticle("core", "ent_anim_cig_smoke", Joint, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
+                            GameTimeLastEmittedSmoke = Game.GameTime;
+                            GameTimeToStopSmoke = Game.GameTime + (uint)RandomItems.MyRand.Next(1200, 1500);
+                        }
                     }
-                    else if (Game.GameTime - GameTimeLastEmittedSmoke >= 1500 && !IsEmittingSmoke)
+                    else
                     {
-                        IsEmittingSmoke = true;
-                        PotSmoke = new LoopedParticle("core", "ent_anim_cig_smoke", Joint, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
-                        GameTimeLastEmittedSmoke = Game.GameTime;
+                        if(Game.GameTime >= GameTimeToStopSmoke)
+                        {
+                            IsEmittingSmoke = false;
+                            PotSmoke.Stop();
+                            GameTimeToStartSmoke = Game.GameTime + (uint)RandomItems.MyRand.Next(3500, 5000);
+                        }
+
                     }
                 }
             }

@@ -125,8 +125,8 @@ public class Agencies : IAgencies
         List<DispatchableVehicle> UnmarkedVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police4", 100, 100)};
         List<DispatchableVehicle> AllUnmarkedVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("fib", 33, 33),
-            new DispatchableVehicle("fib2", 33, 33),
+            new DispatchableVehicle("fbi", 33, 33),
+            new DispatchableVehicle("fbi2", 33, 33),
             new DispatchableVehicle("police4", 33, 33)};
         List<DispatchableVehicle> CoastGuardVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("predator", 75, 50),
@@ -303,7 +303,7 @@ public class Agencies : IAgencies
             new Agency("~b~", "APD-ASD", "Acadia Police Department - Air Support Division", "Blue", Classification.Police, PoliceAndSwat, PoliceHeliVehicles, "ASD ", HeliSidearms,HeliLongGuns) { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 4, SpawnLimit = 3 },
             new Agency("~b~", "NYSP", "North Yankton State Police", "Blue", Classification.Police, NYSPPeds, OldSnowyVehicles, "NYSP ", LimitedSidearms,LimitedLongGuns) { MaxWantedLevelSpawn = 5 },
             new Agency("~g~", "VCPD", "Vice City Police Department", "Green", Classification.Police, StandardCops, AllUnmarkedVehicles, "VCPD ", AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 5 },
-            new Agency("~b~", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, StandardCops, AllUnmarkedVehicles, "LC ",AllSidearms, AllLongGuns) { MaxWantedLevelSpawn = 3 },
+            new Agency("~b~", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, StandardCops, AllUnmarkedVehicles, "LC ",AllSidearms, AllLongGuns) { MaxWantedLevelSpawn = 5 },
             new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null,null) { MaxWantedLevelSpawn = 0 },
         };  
     }

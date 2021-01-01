@@ -87,6 +87,7 @@ namespace Mod
                 return "";
             }
         }
+        public bool CanPerformActivities => !IsInVehicle && IsStationary && !IsIncapacitated && !IsConsideredArmed;
         public string ModelName { get; set; }
         public bool AnyPoliceCanHearPlayer { get; set; }
         public bool AnyPoliceCanRecognizePlayer { get; set; }
@@ -574,7 +575,7 @@ namespace Mod
         }
         public void StartDrinking()
         {
-            if (!IsConsuming)
+            if (!IsConsuming && CanPerformActivities)
             {
                 IsConsuming = true;
                 CurrentConsumingActivity = new DrinkingActivity(this);
@@ -583,7 +584,7 @@ namespace Mod
         }
         public void StartSmokingPot()
         {
-            if (!IsConsuming)
+            if (!IsConsuming && CanPerformActivities)
             {
                 IsConsuming = true;
                 CurrentConsumingActivity = new SmokingActivity(this,true);
@@ -592,7 +593,7 @@ namespace Mod
         }
         public void StartSmoking()
         {
-            if (!IsConsuming)
+            if (!IsConsuming && CanPerformActivities)
             {
                 IsConsuming = true;
                 CurrentConsumingActivity = new SmokingActivity(this,false);

@@ -136,6 +136,8 @@ public class Tasking
         private bool NearWantedCenterThisWanted = false;
         private string CurrentTaskLoop;
         private string CurrentSubTaskLoop;
+        private bool ChasingVehicle;
+
         public bool IsInvestigating
         {
             get
@@ -488,14 +490,14 @@ public class Tasking
                     {
                         if (!CopToTask.IsInHelicopter)
                         {
-                            if (CopToTask.DistanceToPlayer <= 25f || CopToTask.CanSeePlayer)
-                            {
-                                CurrentTaskLoop = "None";
-                            }
-                            else
-                            {
+                            //if (CopToTask.DistanceToPlayer <= 25f || CopToTask.CanSeePlayer)
+                            //{
+                            //    CurrentTaskLoop = "None";
+                            //}
+                            //else
+                            //{
                                 VehicleChase();
-                            }
+                            //}
                         }
                         else
                         {
@@ -506,7 +508,7 @@ public class Tasking
                     {
                         //CurrentTaskLoop = "None";
                         //CarChase();?????
-                        if (CopToTask.DistanceToPlayer >= 30f)
+                        if (CopToTask.DistanceToPlayer >= 15F)
                         {
                             VehicleChase();
                         }
@@ -571,15 +573,20 @@ public class Tasking
         }
         private void VehicleChase_Start()
         {
-            CopToTask.Pedestrian.BlockPermanentEvents = false;
+            CopToTask.Pedestrian.BlockPermanentEvents = true;//was false
+            CopToTask.Pedestrian.KeepTasks = true;//wasnt here
             Vector3 WantedCenter = Police.PlaceLastSeenPlayer;//NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
             if (CurrentPlayer.IsInVehicle)
             {
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", CopToTask.Pedestrian, Game.LocalPlayer.Character); //NativeFunction.CallByName<bool>("TASK_VEHICLE_FOLLOW", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 22f, 4 | 16 | 32 | 262144, 8f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
+                ChasingVehicle = true;
+                //NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", CopToTask.Pedestrian, Game.LocalPlayer.Character); //NativeFunction.CallByName<bool>("TASK_VEHICLE_FOLLOW", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 22f, 4 | 16 | 32 | 262144, 8f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character.CurrentVehicle, 7, 100f, 0f, 0f, 0f, true);
             }
             else
             {
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
+                ChasingVehicle = false;
+                //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 7, 100f, 0f, 0f, 0f, true);
             }
             CurrentTaskedPosition = WantedCenter;
             CurrentTaskLoop = "VehicleChase";
@@ -587,18 +594,36 @@ public class Tasking
         }
         private void VehicleChase_Normal()
         {
-            Vector3 WantedCenter = Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
-            if (CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 10f)
+            //Vector3 WantedCenter = Police.PlaceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+            //if (CurrentTaskedPosition.DistanceTo2D(WantedCenter) >= 10f)
+            //{
+            //    if (!CurrentPlayer.IsInVehicle)
+            //    {
+            //        if (CopToTask.Pedestrian.CurrentVehicle.Exists())
+            //        {
+            //            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
+            //            Game.Console.Print(string.Format("     Updated VehicleChase: {0}", CopToTask.Pedestrian.Handle));
+            //        }
+            //    }
+            //    CurrentTaskedPosition = WantedCenter;
+            //}
+            if(CurrentPlayer.IsInVehicle)
             {
-                if (!CurrentPlayer.IsInVehicle)
+                if(!ChasingVehicle)
                 {
-                    if (CopToTask.Pedestrian.CurrentVehicle.Exists())
-                    {
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
-                        Game.Console.Print(string.Format("     Updated VehicleChase: {0}", CopToTask.Pedestrian.Handle));
-                    }
+                    ChasingVehicle = true;
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character.CurrentVehicle, 7, 100f, 0f, 0f, 0f, true);
+                    Game.Console.Print(string.Format("     Updated VehicleChase To VehicleTarget: {0}", CopToTask.Pedestrian.Handle));
                 }
-                CurrentTaskedPosition = WantedCenter;
+            }
+            else
+            {
+                if(ChasingVehicle)
+                {
+                    ChasingVehicle = false;
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", CopToTask.Pedestrian, CopToTask.Pedestrian.CurrentVehicle, Game.LocalPlayer.Character, 7, 100f, 0f, 0f, 0f, true);
+                    Game.Console.Print(string.Format("     Updated VehicleChase To Ped Target: {0}", CopToTask.Pedestrian.Handle));
+                }
             }
             if (CopToTask.Pedestrian.CurrentVehicle.Exists() && CopToTask.Pedestrian.CurrentVehicle.HasSiren && !CopToTask.Pedestrian.CurrentVehicle.IsSirenOn)
             {

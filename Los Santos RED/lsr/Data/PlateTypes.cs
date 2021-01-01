@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
@@ -42,7 +43,7 @@ public class PlateTypes : IPlateTypes
     }
     public PlateType GetPlateType(string State)
     {
-        return PlateTypeList.FirstOrDefault(x => x.State == State);
+        return PlateTypeList.Where(x => x.State == State).PickRandom();
     }
     public PlateType GetRandomPlateType()
     {
@@ -65,17 +66,18 @@ public class PlateTypes : IPlateTypes
     }
     private void DefaultConfig()
     {
-        PlateTypeList.Add(new PlateType(1, "Red on White California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(2, "Yellow on Black California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(3, "Yellow on Blue California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(4, "Classic California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(5, "Exempt California", "San Andreas", 0, "1ABC234") { CanOverwrite = false });
+        PlateTypeList.Add(new PlateType(0, "Standard CA", "San Andreas", 0, "12345A1"));
+        PlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "12345A1"));
+        PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "12345A1"));
+        PlateTypeList.Add(new PlateType(3, "Old California", "San Andreas", 0, "12345A1"));
+        PlateTypeList.Add(new PlateType(4, "SA Exempt", "San Andreas", 0, "12345A1"));
+        PlateTypeList.Add(new PlateType(5, "Yanton Default", "Yanton", 0, "1ABC234") { CanOverwrite = false });
     }
     private void CustomConfig()
     {
         DefaultConfig();
         PlateTypeList.Add(new PlateType(6, "New York 1", "Liberty", 0, "ABC-1234"));
-        PlateTypeList.Add(new PlateType(7, "Florida 1", "Vice City", 0, "123 4AB"));
+        PlateTypeList.Add(new PlateType(7, "Florida 1", "Florida", 0, "123 4AB"));
         PlateTypeList.Add(new PlateType(8, "New York 2", "Liberty", 0, "ABC-1234"));
         PlateTypeList.Add(new PlateType(9, "New York 3", "Liberty", 0, "ABC-1234"));
         PlateTypeList.Add(new PlateType(10, "Sprunk Logo", "None", 0, "1ABC234"));
@@ -86,42 +88,45 @@ public class PlateTypes : IPlateTypes
         PlateTypeList.Add(new PlateType(15, "New Jersey", "Alderney", 3, "D12-ABC"));
         PlateTypeList.Add(new PlateType(16, "Nevada", "Robada", 3, "123-A45"));
         PlateTypeList.Add(new PlateType(17, "Illinois", "Lincoln", 3, "AB 12345"));
-        PlateTypeList.Add(new PlateType(18, "Our Florida", "Miami", 3, "123 4AB"));
-        PlateTypeList.Add(new PlateType(19, "Florida 1", "Miami", 0, "123 4AB"));
-        PlateTypeList.Add(new PlateType(20, "Florida 2", "Miami", 0, "123 4AB"));
-        PlateTypeList.Add(new PlateType(21, "Arizona", "Hareona", 3));
-        PlateTypeList.Add(new PlateType(22, "North Dakota New", "North Yankton", 3, "123 ABC"));
-        PlateTypeList.Add(new PlateType(23, "South Dakota New", "South Yankton", 3, "0A1 234"));
-        PlateTypeList.Add(new PlateType(24, "South Carolina", "South Volucrina", 3, "ABC 123"));
-        PlateTypeList.Add(new PlateType(25, "Firefighter California", "San Andras", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(26, "Texas 1", "Alamo", 1, "ABC-1234"));
-        PlateTypeList.Add(new PlateType(27, "Texas 2", "Alamo", 1, "ABC-1234"));
-        PlateTypeList.Add(new PlateType(28, "Texas 3", "Alamo", 1, "ABC-1234"));
-        PlateTypeList.Add(new PlateType(29, "Idaho", "Cataldo", 3, "A 123456"));
-        PlateTypeList.Add(new PlateType(30, "Louisiana", "Maraisiana", 3, "123 ABC"));
-        PlateTypeList.Add(new PlateType(31, "Oregon", "Cascadia", 3, "123 ABC"));
-        PlateTypeList.Add(new PlateType(32, "Corvette Plate", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(33, "Nothing", "Liberty City", 0));
+        PlateTypeList.Add(new PlateType(18, "Epsilon", "None", 0, "123 4AB"));
+        PlateTypeList.Add(new PlateType(19, "Our Florida", "Florida", 3, "123 4AB"));
+        PlateTypeList.Add(new PlateType(20, "Florida 1", "Florida", 0, "123 4AB"));
+        PlateTypeList.Add(new PlateType(21, "Florida 2", "Florida", 0, "123 4AB"));
+        PlateTypeList.Add(new PlateType(22, "Arizona", "Hareona", 3));
+        PlateTypeList.Add(new PlateType(23, "North Dakota New", "North Yankton", 3, "123 ABC"));
+        PlateTypeList.Add(new PlateType(24, "South Dakota New", "South Yankton", 3, "0A1 234"));
+        PlateTypeList.Add(new PlateType(25, "South Carolina", "South Volucrina", 3, "ABC 123"));
+        PlateTypeList.Add(new PlateType(26, "Firefighter California", "San Andras", 0, "1ABC234"));
+        PlateTypeList.Add(new PlateType(27, "Texas 1", "Alamo", 1, "ABC-1234"));
+        PlateTypeList.Add(new PlateType(28, "Texas 2", "Alamo", 1, "ABC-1234"));
+        PlateTypeList.Add(new PlateType(29, "Texas 3", "Alamo", 1, "ABC-1234"));
+        PlateTypeList.Add(new PlateType(30, "Idaho", "Cataldo", 3, "A 123456"));
+        PlateTypeList.Add(new PlateType(31, "Louisiana", "Maraisiana", 3, "123 ABC"));
+        PlateTypeList.Add(new PlateType(32, "Oregon", "Cascadia", 3, "123 ABC"));
+        PlateTypeList.Add(new PlateType(33, "Corvette Plate", "San Andreas", 0, "1ABC234"));
         PlateTypeList.Add(new PlateType(34, "Nothing", "Liberty City", 0));
-        PlateTypeList.Add(new PlateType(35, "Nothing", "Liberty City", 0));
-        PlateTypeList.Add(new PlateType(36, "Montana", "Colina", 3, "0-12345A"));
-        PlateTypeList.Add(new PlateType(37, "Colorado", "Coloverdo", 3, "ABC-D12"));
-        PlateTypeList.Add(new PlateType(38, "Washington", "Jefferson", 3, "ABC1234"));
-        PlateTypeList.Add(new PlateType(39, "Washington DC", "Jefferson CD", 3, "AB-1234"));
-        PlateTypeList.Add(new PlateType(40, "Wisconsin", "Meskousin", 3, "ABC-1234"));
-        PlateTypeList.Add(new PlateType(41, "Black on Yellow California", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(42, "Nothing", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(43, "Minnesota", "Minnewa", 3, "123-ABC"));
-        PlateTypeList.Add(new PlateType(44, "Michigan", "Misquakewan", 3, "ABC 1234"));
-        PlateTypeList.Add(new PlateType(45, "Nothing", "Carcer City", 0));
-        PlateTypeList.Add(new PlateType(46, "Alaska", "Tanadux", 3, "ABC 123"));
-        PlateTypeList.Add(new PlateType(47, "Hawaii", "Haiateaa", 3, "ABC 123"));
-        PlateTypeList.Add(new PlateType(48, "Nothing", "San Andreas", 0, "1ABC234"));
-        PlateTypeList.Add(new PlateType(49, "Nothing", "None", 0));
-        PlateTypeList.Add(new PlateType(50, "Nothing", "None", 0));
+        PlateTypeList.Add(new PlateType(35, "Nothing", "San Andreas", 0));
+        PlateTypeList.Add(new PlateType(36, "Nothing", "San Andreas", 0));
+        PlateTypeList.Add(new PlateType(37, "Montana", "Colina", 3, "0-12345A"));
+        PlateTypeList.Add(new PlateType(38, "Colorado", "Coloverdo", 3, "ABC-D12"));
+        PlateTypeList.Add(new PlateType(39, "Washington", "Jefferson", 3, "ABC1234"));
+        PlateTypeList.Add(new PlateType(40, "Washington DC", "Jefferson CD", 3, "AB-1234"));
+        PlateTypeList.Add(new PlateType(41, "Wisconsin", "Meskousin", 3, "ABC-1234"));
+        PlateTypeList.Add(new PlateType(42, "Black on Yellow California", "San Andreas", 0, "1ABC234"));
+        PlateTypeList.Add(new PlateType(43, "Nothing", "San Andreas", 0, "1ABC234"));
+        PlateTypeList.Add(new PlateType(44, "Minnesota", "Minnewa", 3, "123-ABC"));
+       
+        PlateTypeList.Add(new PlateType(45, "Yankton Deafault", "Yankton", 3, "ABC 1234"));
+        PlateTypeList.Add(new PlateType(46, "Michigan", "Misquakewan", 3, "ABC 1234"));
+        PlateTypeList.Add(new PlateType(47, "Nothing", "Carcer City", 0));
+        PlateTypeList.Add(new PlateType(48, "Alaska", "Tanadux", 3, "ABC 123"));
+        PlateTypeList.Add(new PlateType(49, "Hawaii", "Haiateaa", 3, "ABC 123"));
+        PlateTypeList.Add(new PlateType(50, "Nothing", "San Andreas", 0, "1ABC234"));
         PlateTypeList.Add(new PlateType(51, "Nothing", "None", 0));
         PlateTypeList.Add(new PlateType(52, "Nothing", "None", 0));
         PlateTypeList.Add(new PlateType(53, "Nothing", "None", 0));
+        PlateTypeList.Add(new PlateType(54, "Nothing", "None", 0));
+        PlateTypeList.Add(new PlateType(55, "Nothing", "None", 0));
     }
 
     //private void DefaultConfig()

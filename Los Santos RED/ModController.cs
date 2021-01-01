@@ -80,7 +80,7 @@ namespace LosSantosRED.lsr
             Dispatcher = new Dispatcher(World, Player, Police, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
             Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode, Settings);
             Menu = new Menu(World, Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
-            Debug = new Debug();
+            Debug = new Debug(PlateTypes);
             Player.GiveName();
             Player.AddSpareLicensePlate();
             World.AddBlipsToMap();

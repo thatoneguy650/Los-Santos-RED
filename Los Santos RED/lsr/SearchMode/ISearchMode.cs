@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
         string SearchModeDebug { get; }
         bool StarsRecentlyGreyedOut { get; }
         bool StarsRecentlyActive { get; }
+        uint TimeInSearchMode { get; }
     }
 }

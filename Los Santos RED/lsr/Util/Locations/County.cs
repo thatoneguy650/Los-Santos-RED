@@ -13,4 +13,5 @@ public enum County
     Unknown = 4,
     Crook = 5,
     NorthYankton = 6,
+    Vice = 7,
 }

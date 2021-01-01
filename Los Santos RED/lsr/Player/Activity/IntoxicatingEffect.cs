@@ -30,9 +30,9 @@ namespace LosSantosRED.lsr.Player
         {
             get
             {
-                if (CurrentIntensity < 2)
+                if (CurrentIntensity < 1.5)
                 {
-                    return "move_m@drunk@slightlydrunk";
+                    return "NONE";
                 }
                 else if (CurrentIntensity >= 2)
                 {
@@ -84,11 +84,15 @@ namespace LosSantosRED.lsr.Player
             Player.IsIntoxicated = true;
             CurrentClipset = ClipsetAtCurrentIntensity;
             NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-            if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
+            if(CurrentClipset != "NONE")
             {
-                NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", CurrentClipset);
+                if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
+                {
+                    NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", CurrentClipset);
+                }
+                NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
             }
-            NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
+
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", OverLayEffect);
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
@@ -122,7 +126,7 @@ namespace LosSantosRED.lsr.Player
             }
             if (Player.IsIntoxicated)
             {
-                if (CurrentClipset != ClipsetAtCurrentIntensity)
+                if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE")
                 {
                     CurrentClipset = ClipsetAtCurrentIntensity;
                     if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
@@ -133,11 +137,11 @@ namespace LosSantosRED.lsr.Player
                 }
                 NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
 
-                if (Game.GameTime - GameTimeLastSetTimecycle >= 5000)
-                {
-                    GameTimeLastSetTimecycle = Game.GameTime;
+               // if (Game.GameTime - GameTimeLastSetTimecycle >= 5000)
+               // {
+                   // GameTimeLastSetTimecycle = Game.GameTime;
                     NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
-                }
+               // }
                 Player.IntoxicatedIntensity = CurrentIntensity;
             }
         }

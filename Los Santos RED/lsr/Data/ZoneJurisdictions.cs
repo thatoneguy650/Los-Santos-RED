@@ -339,7 +339,10 @@ public class ZoneJurisdictions : IZoneJurisdictions
 
             //Custom
             new ZoneJurisdiction("APD", "CHI1", 0, 100, 100),
-            new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100)
+            new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100),
+            new ZoneJurisdiction("VCPD", "VICE", 0, 100, 100),
+
+            
         };
 
 

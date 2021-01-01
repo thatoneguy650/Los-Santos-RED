@@ -188,7 +188,15 @@ public class Zones : IZones
             new Zone("CHI1", "Acadia", County.Crook, new Vector2[] { new Vector2 { X = 4830.579f, Y = 1982.126f },
                                         new Vector2 { X = 7898.494f, Y = 3093.242f },
                                         new Vector2 { X = 5845.111f, Y = 8616.287f },
-                                        new Vector2 { X = 1748.942f, Y = 8188.261f } }, "Lincoln")
+                                        new Vector2 { X = 1748.942f, Y = 8188.261f } }, "Lincoln"),
+
+
+            new Zone("VICE", "Vice City", County.Vice, new Vector2[] { new Vector2 { X = 4669.141f, Y = -1614.298f },
+                                        new Vector2 { X = 4920.789f, Y = 2035.281f },
+                                        new Vector2 { X = 7549.999f, Y = 2008.153f },
+                                        new Vector2 { X = 7770.286f, Y = -1657.735f } }, "Florida")
+
+
             };
     }
     private bool IsPointInPolygon(Vector2 point, Vector2[] polygon)

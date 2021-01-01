@@ -8,6 +8,6 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IConsumableIntoxicatable : IConsumeable, IIntoxicatable
     {
-        
+        bool CanPerformActivities { get; }
     }
 }

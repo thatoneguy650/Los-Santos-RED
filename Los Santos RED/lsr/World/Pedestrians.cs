@@ -207,10 +207,21 @@ public class Pedestrians
                 string ZoneName = GetInternalZoneString(Cop.Position);
                 if (ZoneName != "")
                 {
-                    foreach (Agency ZoneAgency in ZoneJurisdictions.GetAgencies(ZoneName, WantedLevel))
+                    Game.Console.Print(string.Format("GetAgencyFromPed! ZoneName {0}", ZoneName));
+                    if(ZoneJurisdictions == null)
                     {
-                        if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
-                            return ZoneAgency;
+                        Game.Console.Print("GetAgencyFromPed! ZoneJurisdictions is null!!!!!");
+                    }
+                    List<Agency> ZoneAgencies = ZoneJurisdictions.GetAgencies(ZoneName, WantedLevel);
+                    if (ZoneAgencies != null)
+                    {
+                        foreach (Agency ZoneAgency in ZoneAgencies)
+                        {
+                            if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                            {
+                                return ZoneAgency;
+                            }
+                        }
                     }
                 }
             }

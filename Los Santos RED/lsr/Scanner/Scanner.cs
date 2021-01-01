@@ -91,6 +91,7 @@ namespace LosSantosRED.lsr
         private Dispatch VehicleHitAndRun;
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
+        private Dispatch SearchingForSuspect;
         public Scanner(IWorld world, IPlayer currentPlayer, IPoliceSight police, IAudio audioPlayer, IRespawning respawning, ISearchMode searchMode, ISettings settings)
         {
             AudioPlayer = audioPlayer;
@@ -875,7 +876,11 @@ namespace LosSantosRED.lsr
 
                 if (!CurrentPlayer.IsBusted && !CurrentPlayer.IsDead && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000)
                 {
-                    if (!LostVisual.HasRecentlyBeenPlayed && SearchMode.StarsRecentlyGreyedOut)// 45000 && !World.AnyCopsNearPlayer)
+                    if(!SuspectEvaded.HasVeryRecentlyBeenPlayed && SearchMode.TimeInSearchMode >= 20000)
+                    {
+                        AddToQueue(SuspectEvaded, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                    }
+                    else if (!LostVisual.HasVeryRecentlyBeenPlayed && SearchMode.StarsRecentlyGreyedOut)// 45000 && !World.AnyCopsNearPlayer)
                     {
                         AddToQueue(LostVisual, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer));
                     }
@@ -887,7 +892,7 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Police.AnyRecentlySeenPlayer)
+                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Police.AnyRecentlySeenPlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -1001,6 +1006,7 @@ namespace LosSantosRED.lsr
             ,DrunkDriving
             ,Kidnapping
             ,PublicIntoxication
+            ,SearchingForSuspect
         };
 
         }
@@ -1716,6 +1722,26 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect1.FileName },"remain in the area, ATL-20 on suspect"),
             },
             };
+
+
+            SearchingForSuspect = new Dispatch()
+            {
+                Name = "Suspects Location Unknown",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Zone,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName },"all units ATL on suspects 20"),
+                new AudioSet(new List<string>() { attempt_to_find.Allunitsattempttoreacquire.FileName },"all units attempt to reacquire"),
+                new AudioSet(new List<string>() { attempt_to_find.Allunitsattempttoreacquirevisual.FileName },"all units attempt to reacquire visual"),
+                new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect.FileName },"remain in the area, ATL-20 on suspect"),
+                new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect1.FileName },"remain in the area, ATL-20 on suspect"),
+            },
+            };
+
+
+
             NoFurtherUnitsNeeded = new Dispatch()
             {
                 Name = "Officers On-Site, Code 4-ADAM",

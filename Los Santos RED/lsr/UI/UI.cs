@@ -227,6 +227,8 @@ public class UI
                 CountyName = "Crook County";
             else if (MyZone.ZoneCounty == County.NorthYankton)
                 CountyName = "North Yankton";
+            else if (MyZone.ZoneCounty == County.Vice)
+                CountyName = "Vice County";
 
             return MyZone.DisplayName + ", " + CountyName;
         }
