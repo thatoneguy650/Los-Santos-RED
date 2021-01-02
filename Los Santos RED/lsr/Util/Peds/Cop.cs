@@ -1,147 +1,27 @@
-﻿
-using ExtensionsMethods;
-using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System.Collections.Generic;
-using System.Linq;
-
 
 public class Cop : PedExt
 {
-    private readonly List<string> DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
-    private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
-    private readonly List<string> CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
     private readonly List<string> ArrestedWaitSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED", "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
+    private readonly List<string> CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
+    private readonly List<string> DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
     private readonly List<string> PlayerDeadSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
     private readonly List<string> SuspectBusted = new List<string> { "WON_DISPUTE" };
     private readonly List<string> SuspectDown = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE", "SUSPECT_KILLED_REPORT" };
-    private uint GameTimeLastSpoke;
+    private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
     private uint GameTimeLastRadioed;
+    private uint GameTimeLastSpoke;
+    private uint GameTimeLastWeaponCheck;
     private uint GameTimeSpawned;
+    private bool IsSetDeadly;
     private bool IsSetLessLethal;
     private bool IsSetUnarmed;
-    private bool IsSetDeadly;
-    private uint GameTimeLastWeaponCheck;
-    private IssuableWeapon Sidearm;
     private IssuableWeapon LongGun;
-    public bool NeedsWeaponCheck
-    {
-        get
-        {
-            if (GameTimeLastWeaponCheck == 0)
-            {
-                return true;
-            }
-            else if (Game.GameTime > GameTimeLastWeaponCheck + 750)//500
-            {
-                return true;
-            }
-            else
-                return false;
-        }
-    }
-    public bool HasPistol
-    {
-        get
-        {
-            if (Sidearm != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-    private bool HasHeavyWeaponOnPerson;
-    public bool IsSpeechTimedOut
-    {
-        get
-        {
-            if (GameTimeLastSpoke == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastSpoke >= 15000)
-                return false;
-            else
-                return true;
-        }
-    }
-    public bool CanSpeak
-    {
-        get
-        {
-            if (IsSpeechTimedOut)
-                return false;
-            else
-                return true;
-        }
-    }
-    public bool IsRadioTimedOut
-    {
-        get
-        {
-            if (GameTimeLastRadioed == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastRadioed >= 45000)
-                return false;
-            else
-                return true;
-        }
-    }
-    public bool CanRadioIn
-    {
-        get
-        {
-            if (IsRadioTimedOut)
-            {
-                return false;
-            }
-            else if (!IsInVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe && !Pedestrian.IsGettingIntoVehicle && !Pedestrian.IsInAnyVehicle(true) && !Pedestrian.IsInAnyVehicle(false))
-            {//simplify this, testing seems to make them be deleted?
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-    public bool WasModSpawned { get; private set; }
-    public bool ShouldAutoSetWeaponState { get; set; } = true;
-    public Agency AssignedAgency { get; set; } = new Agency();
-    public float DistanceToInvestigationPosition(Vector3 Position)
-    {
-        return Pedestrian.DistanceTo2D(Position);
-    }
-    public uint HasBeenSpawnedFor
-    {
-        get
-        {
-            return Game.GameTime - GameTimeSpawned;
-        }
-    }
-    public bool ShouldBustPlayer
-    {
-        get
-        {
-            if (IsInHelicopter || IsInVehicle)
-            {
-                return false;
-            }
-            if (DistanceToPlayer < 0.1f) //weird cases where they are my same position
-            {
-                return false;
-            }
-            else if (DistanceToPlayer <= 5f)
-            {
-                return true;
-            }
-            return false;
-        }
-    }
+    private IssuableWeapon Sidearm;
     public Cop(Ped pedestrian, int health, Agency agency, bool wasModSpawned) : base(pedestrian)
     {
         IsCop = true;
@@ -155,21 +35,64 @@ public class Cop : PedExt
         Pedestrian.VisionRange = 90f;//55F
         Pedestrian.HearingRange = 55;//25
     }
+    public Agency AssignedAgency { get; set; } = new Agency();
+    public bool CanRadioIn
+    {
+        get
+        {
+            if (IsRadioTimedOut)
+            {
+                return false;
+            }
+            else if (!IsInVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe && !Pedestrian.IsGettingIntoVehicle && !Pedestrian.IsInAnyVehicle(true) && !Pedestrian.IsInAnyVehicle(false))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool CanSpeak => !IsSpeechTimedOut;
+    public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
+    public bool HasPistol => Sidearm != null;
+    public bool IsRadioTimedOut => GameTimeLastRadioed != 0 && Game.GameTime - GameTimeLastRadioed < 60000;
+    public bool IsSpeechTimedOut => GameTimeLastSpoke != 0 && Game.GameTime - GameTimeLastSpoke < 25000;
+    public bool NeedsWeaponCheck => GameTimeLastWeaponCheck == 0 || Game.GameTime > GameTimeLastWeaponCheck + 750;
+    public bool ShouldAutoSetWeaponState { get; set; } = true;
+    public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= 5f;
+    public bool WasModSpawned { get; private set; }
+    public float DistanceToInvestigationPosition(Vector3 Position)
+    {
+        return Pedestrian.DistanceTo2D(Position);
+    }
     public void IssueWeapons()
     {
         Sidearm = AssignedAgency.GetRandomWeapon(true);
-        Game.Console.Print($"Issued: {Sidearm.ModelName} Variation: {string.Join(",", Sidearm.Variation.Components.Select(x => x.Name))}");
+        //Game.Console.Print($"Issued: {Sidearm.ModelName} Variation: {string.Join(",", Sidearm.Variation.Components.Select(x => x.Name))}");
         LongGun = AssignedAgency.GetRandomWeapon(false);
-        Game.Console.Print($"Issued: {LongGun.ModelName} Variation: {string.Join(",", LongGun.Variation.Components.Select(x => x.Name))}");
+        //Game.Console.Print($"Issued: {LongGun.ModelName} Variation: {string.Join(",", LongGun.Variation.Components.Select(x => x.Name))}");
     }
-    public void UpdateSpeech(IPlayer currentPlayer)
+    public void RadioIn(IPoliceRespondable currentPlayer)
     {
-        Speak(currentPlayer);
-        RadioIn(currentPlayer);
+        if (CanRadioIn && currentPlayer.IsWanted)
+        {
+            string AnimationToPlay = "generic_radio_enter";
+            //WeaponInformation CurrentGun = DataMart.Instance.Weapons.GetCurrentWeapon(Pedestrian);
+            //if (CurrentGun != null && CurrentGun.IsOneHanded)
+            //    AnimationToPlay = "radio_enter";
+
+            Speak(currentPlayer);
+
+            AnimationDictionary.RequestAnimationDictionay("random@arrests");
+            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
+            GameTimeLastRadioed = Game.GameTime;
+        }
     }
-    public void Speak(IPlayer currentPlayer)
+    public void Speak(IPoliceRespondable currentPlayer)
     {
-        if (CanSpeak)
+        if (CanSpeak && currentPlayer.IsWanted)
         {
             if (!currentPlayer.IsBusted && DistanceToPlayer <= 20f)
             {
@@ -201,23 +124,6 @@ public class Cop : PedExt
             GameTimeLastSpoke = Game.GameTime;
         }
     }
-    public void RadioIn(IPlayer currentPlayer)
-    {
-        if (CanRadioIn)
-        {
-            string AnimationToPlay = "generic_radio_enter";
-            //WeaponInformation CurrentGun = DataMart.Instance.Weapons.GetCurrentWeapon(Pedestrian);
-            //if (CurrentGun != null && CurrentGun.IsOneHanded)
-            //    AnimationToPlay = "radio_enter";
-
-            Speak(currentPlayer);
-
-            AnimationDictionary.RequestAnimationDictionay("random@arrests");
-            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
-            GameTimeLastRadioed = Game.GameTime;
-        }
-
-    }
     public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel)
     {
         if (ShouldAutoSetWeaponState)
@@ -248,36 +154,21 @@ public class Cop : PedExt
                 }
                 else
                 {
-                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);//for idle, 
+                    //this isnt normall here
+                    SetLessLethal();
 
+                    //temp off for testing!!!
+                    // NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);//for idle,
+
+                    ///temp off for testing!!!
                 }
-            }
-            if(IsInVehicle && WantedLevel > 0)
-            {
-                HasHeavyWeaponOnPerson = true;
-            }
-            else if(!IsInVehicle || WantedLevel == 0)
-            {
-                HasHeavyWeaponOnPerson = false;
             }
         }
     }
-    private void SetUnarmed()
+    public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
-        if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetUnarmed || NeedsWeaponCheck))
-        {
-            if (Pedestrian.Inventory != null && Pedestrian.Inventory.EquippedWeapon != null)
-            {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, 2725352035, true); //Unequip weapon so you don't get shot
-                NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
-            }
-            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 0);
-            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
-            IsSetLessLethal = false;
-            IsSetUnarmed = true;
-            IsSetDeadly = false;
-            GameTimeLastWeaponCheck = Game.GameTime;
-        }
+        Speak(currentPlayer);
+        RadioIn(currentPlayer);
     }
     private void SetDeadly()
     {
@@ -333,6 +224,21 @@ public class Cop : PedExt
             GameTimeLastWeaponCheck = Game.GameTime;
         }
     }
-
+    private void SetUnarmed()
+    {
+        if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetUnarmed || NeedsWeaponCheck))
+        {
+            if (Pedestrian.Inventory != null && Pedestrian.Inventory.EquippedWeapon != null)
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, 2725352035, true); //Unequip weapon so you don't get shot
+                NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
+            }
+            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 0);
+            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
+            IsSetLessLethal = false;
+            IsSetUnarmed = true;
+            IsSetDeadly = false;
+            GameTimeLastWeaponCheck = Game.GameTime;
+        }
+    }
 }
-

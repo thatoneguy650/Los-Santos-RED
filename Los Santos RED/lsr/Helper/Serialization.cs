@@ -21,7 +21,15 @@ namespace LosSantosRED.lsr.Helper
             serializer.Serialize(writer, paramList);
             writer.Close();
             File.WriteAllText(FileName, doc.ToString());
-            Game.Console.Print(string.Format("SerializeParams Using Default Data {0}", FileName));
+        }
+        public static void SerializeParam<T>(T param, string FileName)
+        {
+            XDocument doc = new XDocument();
+            XmlSerializer serializer = new XmlSerializer(param.GetType());
+            XmlWriter writer = doc.CreateWriter();
+            serializer.Serialize(writer, param);
+            writer.Close();
+            File.WriteAllText(FileName, doc.ToString());
         }
         public static List<T> DeserializeParams<T>(string FileName)
         {
@@ -30,7 +38,15 @@ namespace LosSantosRED.lsr.Helper
             XmlReader reader = doc.CreateReader();
             List<T> result = (List<T>)serializer.Deserialize(reader);
             reader.Close();
-            Game.Console.Print(string.Format("DeserializeParams Using Saved Data {0}", FileName));
+            return result;
+        }
+        public static T DeserializeParam<T>(string FileName)
+        {
+            XDocument doc = new XDocument(XDocument.Load(FileName));
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            XmlReader reader = doc.CreateReader();
+            T result = (T)serializer.Deserialize(reader);
+            reader.Close();
             return result;
         }
     }

@@ -12,47 +12,37 @@ using System.Linq;
 
 namespace Mod
 {
-    public class World : IWorld , IWorldLogger
+    public class World : ITaskableWorld_Old , IEntityLoggable, IEntityProvideable
     {
         private List<Blip> CreatedBlips;
         private Pedestrians Pedestrians;
-        private Time Time;
-        private Vehicles Vehicles;
-        private IAgencies Agencies;
-        private IZoneJurisdictions ZoneJurisdictions;
-        private ISettings Settings;
-        private IWeapons Weapons;
         private IPlacesOfInterest PlacesOfInterest;
-        private IZones Zones;
-        private IPlateTypes PlateTypes;
-
-        public World(IAgencies agencies, IZoneJurisdictions zoneJurisdictions, ISettings settings, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IPlateTypes plateTypes)
+        private Vehicles Vehicles;
+        public World(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes)
         {
-            Agencies = agencies;
-            ZoneJurisdictions = zoneJurisdictions;
-            Settings = settings;
-            Weapons = weapons;
             PlacesOfInterest = placesOfInterest;
-            Zones = zones;
-            PlateTypes = plateTypes;
-            Time = new Time();
-            Pedestrians = new Pedestrians(this, Agencies, ZoneJurisdictions, Weapons, Settings);
-            Vehicles = new Vehicles(Zones, Agencies, PlateTypes, ZoneJurisdictions);
+            Pedestrians = new Pedestrians(agencies, zones, zoneJurisdictions, settings);
+            Vehicles = new Vehicles(agencies, zones, zoneJurisdictions, settings, plateTypes);
         }
-
-        public IPlayer CurrentPlayer { get; private set; }
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
         public bool AnyCopsNearPlayer => Pedestrians.AnyCopsNearPlayer;
         public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
         public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
         public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
-        public string CurrentTime => Time.CurrentTime;
-        public bool IsNight => Time.IsNight;
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
         public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
         public bool ShouldBustPlayer => Pedestrians.ShouldBustPlayer;
         public int TotalSpawnedCops => Pedestrians.TotalSpawnedCops;
+        public void AddBlipsToMap()
+        {
+            CreatedBlips = new List<Blip>();
+            foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
+            {
+                MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
+                myBlip.AddToMap();
+            }
+        }
         public void AddEntity(Blip myBlip)
         {
             CreatedBlips.Add(myBlip);
@@ -78,18 +68,8 @@ namespace Mod
         {
             return Pedestrians.CountNearbyCops(pedestrian);
         }
-        public void AddBlipsToMap()
-        {
-            CreatedBlips = new List<Blip>();
-            foreach (GameLocation MyLocation in PlacesOfInterest.GetAllPlaces())
-            {
-                MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
-                myBlip.AddToMap();
-            }
-        }
         public void Dispose()
         {
-            Time.Dispose();
             RemoveBlips();
             ClearPolice();
         }
@@ -100,10 +80,6 @@ namespace Mod
         public VehicleExt GetVehicle(Vehicle vehicleTryingToEnter)
         {
             return Vehicles.GetVehicle(vehicleTryingToEnter);
-        }
-        public void PauseTime()
-        {
-            Time.PauseTime();
         }
         public void PrunePedestrians()
         {
@@ -128,14 +104,6 @@ namespace Mod
         public void ScanForVehicles()
         {
             Vehicles.Scan();
-        }
-        public void UnPauseTime()
-        {
-            Time.UnpauseTime();
-        }
-        public void UpdateTime()
-        {
-            Time.Tick();
         }
         public void UpdateVehiclePlates()
         {

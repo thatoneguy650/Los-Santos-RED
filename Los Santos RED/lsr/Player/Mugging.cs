@@ -13,21 +13,21 @@ using System.Threading.Tasks;
 //needs full refactor/rewrite
 public class Mugging
 {
-    private IWorld World;
-    private IPlayer CurrentPlayer;
-    public Mugging(IPlayer currentPlayer, IWorld world)
+    private IEntityProvideable World;
+    private IMuggable Player;
+    public Mugging(IMuggable player, IEntityProvideable world)
     {
         World = world;
-        CurrentPlayer = currentPlayer;
+        Player = player;
     }
     public bool IsMugging { get; private set; }
     public void Update()
     {
         if (!IsMugging)
         {
-            if (CurrentPlayer.IsConsideredArmed && !CurrentPlayer.IsInVehicle)
+            if (Player.IsConsideredArmed && !Player.IsInVehicle)
             {
-                if (Game.LocalPlayer.Character.IsAiming && CurrentPlayer.CurrentWeapon.Category != WeaponCategory.Melee)
+                if (Game.LocalPlayer.Character.IsAiming && Player.CurrentWeapon.Category != WeaponCategory.Melee)
                 {
                     CheckArmedMugging();
                 }

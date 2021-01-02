@@ -1,133 +1,90 @@
-﻿using ExtensionsMethods;
-using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System.Linq;
 
 namespace LosSantosRED.lsr
 {
-    public class Police : IPolice, IPoliceSight, IPoliceTasking
+    public class Police
     {
         private uint GameTimePoliceNoticedVehicleChange;
-        private IPlayer CurrentPlayer;
-        private IWorld World;
+        private IPoliceRespondable Player;
         private uint PoliceLastSeenVehicleHandle;
-        public Police(IWorld world, IPlayer currentPlayer)
+        private IEntityProvideable World;
+        public Police(IEntityProvideable world, IPoliceRespondable currentPlayer)
         {
             World = world;
-            CurrentPlayer = currentPlayer;
+            Player = currentPlayer;
         }
-        public float ActiveDistance
-        {
-            get
-            {
-                return 400f + (CurrentPlayer.WantedLevel * 200f);//500f
-            }
-        }
-        public bool AnyCanHearPlayer { get; private set; }
-        public bool AnyCanRecognizePlayer { get; private set; }
-        public bool AnyCanSeePlayer { get; private set; }
-        public bool AnyRecentlySeenPlayer { get; private set; }
-        public bool AnySeenPlayerCurrentWanted { get; private set; }
-        public Vector3 PlaceLastSeenPlayer { get; private set; }
-        public bool RecentlyNoticedVehicleChange => GameTimePoliceNoticedVehicleChange != 0 && Game.GameTime - GameTimePoliceNoticedVehicleChange <= 15000;
-        private float TimeToRecognizePlayer
-        {
-            get
-            {
-                float Time = 2000;
-                if (World.IsNight)
-                {
-                    Time += 3500;
-                }
-                else if (CurrentPlayer.IsInVehicle)
-                {
-                    Time += 750;
-                }
-                return Time;
-            }
-        }
-        public void Reset()
-        {
-            AnySeenPlayerCurrentWanted = false;
-        }
+        private bool RecentlyNoticedVehicleChange => GameTimePoliceNoticedVehicleChange != 0 && Game.GameTime - GameTimePoliceNoticedVehicleChange <= 15000;
         public void Update()
         {
             UpdateCops();
             UpdateRecognition();
-
-            if (CurrentPlayer.IsBustable && World.PoliceList.Any(x => x.ShouldBustPlayer))
+            if (Player.IsBustable && World.PoliceList.Any(x => x.ShouldBustPlayer))
             {
-                CurrentPlayer.StartManualArrest();
+                Player.Arrest();
             }
-
         }
         private void UpdateCops()
         {
             foreach (Cop Cop in World.PoliceList)
             {
-                Cop.Update(CurrentPlayer,PlaceLastSeenPlayer);
-                Cop.UpdateLoadout(CurrentPlayer.CurrentPoliceResponse.IsDeadlyChase, CurrentPlayer.WantedLevel);
-                Cop.UpdateSpeech(CurrentPlayer);
+                Cop.Update(Player, Player.PlacePoliceLastSeenPlayer);
+                Cop.UpdateLoadout(Player.CurrentPoliceResponse.IsDeadlyChase, Player.WantedLevel);
+                Cop.UpdateSpeech(Player);
             }
         }
-        private void UpdateRecognition()//most likely remove this and let these be proepties instead of cached values
+        private void UpdateRecognition()
         {
-            AnyCanSeePlayer = World.PoliceList.Any(x => x.CanSeePlayer);
-            AnyCanHearPlayer = World.PoliceList.Any(x => x.WithinWeaponsAudioRange);
-            if (AnyCanSeePlayer)
+            Player.AnyPoliceCanSeePlayer = World.PoliceList.Any(x => x.CanSeePlayer);
+            Player.AnyPoliceCanHearPlayer = World.PoliceList.Any(x => x.WithinWeaponsAudioRange);
+            if (Player.AnyPoliceCanSeePlayer)
             {
-                AnyRecentlySeenPlayer = true;
+                Player.AnyPoliceRecentlySeenPlayer = true;
             }
             else
             {
-                AnyRecentlySeenPlayer = World.PoliceList.Any(x => x.SeenPlayerFor(17000));
+                Player.AnyPoliceRecentlySeenPlayer = World.PoliceList.Any(x => x.SeenPlayerFor(17000));
             }
-            AnyCanRecognizePlayer = World.PoliceList.Any(x => x.TimeContinuoslySeenPlayer >= TimeToRecognizePlayer || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
-            if (!AnySeenPlayerCurrentWanted && AnyRecentlySeenPlayer && CurrentPlayer.IsWanted)
+            Player.AnyPoliceCanRecognizePlayer = World.PoliceList.Any(x => x.TimeContinuoslySeenPlayer >= Player.TimeToRecognize || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
+            if (!Player.AnyPoliceSeenPlayerCurrentWanted && Player.AnyPoliceRecentlySeenPlayer && Player.IsWanted)
             {
-                AnySeenPlayerCurrentWanted = true;
+                Player.AnyPoliceSeenPlayerCurrentWanted = true;
             }
-            if (AnyRecentlySeenPlayer)
+            if (Player.AnyPoliceRecentlySeenPlayer)
             {
-                if (!AnySeenPlayerCurrentWanted)
+                if (!Player.AnyPoliceSeenPlayerCurrentWanted)
                 {
-                    PlaceLastSeenPlayer = CurrentPlayer.CurrentPoliceResponse.PlaceWantedStarted;
+                    Player.PlacePoliceLastSeenPlayer = Player.CurrentPoliceResponse.PlaceWantedStarted;
                 }
-                else if (!CurrentPlayer.IsInSearchMode)
+                else if (!Player.IsInSearchMode)
                 {
-                    PlaceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+                    Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 }
             }
             else
             {
-                if (CurrentPlayer.IsInSearchMode && CurrentPlayer.CurrentPoliceResponse.HasReportedCrimes && CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime != Vector3.Zero)
+                if (Player.IsInSearchMode && Player.CurrentPoliceResponse.HasReportedCrimes && Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime != Vector3.Zero)
                 {
-                    PlaceLastSeenPlayer = CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime;
+                    Player.PlacePoliceLastSeenPlayer = Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime;
                 }
             }
-            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, PlaceLastSeenPlayer.X, PlaceLastSeenPlayer.Y, PlaceLastSeenPlayer.Z);
-
-            if (AnyCanSeePlayer && CurrentPlayer.IsWanted && !CurrentPlayer.IsInSearchMode && CurrentPlayer.CurrentSeenVehicle != null && CurrentPlayer.CurrentSeenVehicle.Vehicle.Exists())
+            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
+            if (Player.AnyPoliceCanSeePlayer && Player.IsWanted && !Player.IsInSearchMode && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
             {
-                if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != CurrentPlayer.CurrentSeenVehicle.Vehicle.Handle && !CurrentPlayer.CurrentSeenVehicle.HasBeenDescribedByDispatch)
+                if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)
                 {
                     GameTimePoliceNoticedVehicleChange = Game.GameTime;
-                    Game.Console.Print(string.Format("PoliceRecentlyNoticedVehicleChange {0}", GameTimePoliceNoticedVehicleChange));
                 }
-                PoliceLastSeenVehicleHandle = CurrentPlayer.CurrentSeenVehicle.Vehicle.Handle;
+                PoliceLastSeenVehicleHandle = Player.CurrentSeenVehicle.Vehicle.Handle;
             }
 
-            if (AnyCanRecognizePlayer && CurrentPlayer.IsWanted && !CurrentPlayer.IsInSearchMode && CurrentPlayer.CurrentVehicle != null)
+            if (Player.AnyPoliceCanRecognizePlayer && Player.IsWanted && !Player.IsInSearchMode && Player.CurrentVehicle != null)
             {
-                CurrentPlayer.CurrentVehicle.UpdateDescription();
+                Player.CurrentVehicle.UpdateDescription();
             }
-            CurrentPlayer.AnyPoliceCanSeePlayer = AnyCanSeePlayer;
-            CurrentPlayer.AnyPoliceRecentlySeenPlayer = AnyRecentlySeenPlayer;
-            CurrentPlayer.AnyPoliceCanHearPlayer = AnyCanHearPlayer;
-            CurrentPlayer.PlacePoliceLastSeenPlayer = PlaceLastSeenPlayer;
-            CurrentPlayer.AnyPoliceCanRecognizePlayer = AnyCanRecognizePlayer;
-            CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted = AnySeenPlayerCurrentWanted;
+            Player.PoliceRecentlyNoticedVehicleChange = RecentlyNoticedVehicleChange;
         }
     }
 }

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IAudio
+    public interface IPedswappable
     {
-        bool IsAudioPlaying { get; }
-        void Abort();
-        void Play(string fileName, float volume);
+        void TakeoverPed(float selectedTakeoverRadius, bool v1, bool v2, bool v3);
     }
 }

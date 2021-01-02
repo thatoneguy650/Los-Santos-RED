@@ -14,49 +14,38 @@ using LosSantosRED.lsr.Interface;
 
 public class CarBreakIn
 {
-    private IWorld World;
-    private IPlayer Player;
-    private string Animation = "std_force_entry_ds";
-    private int DoorIndex = 0;
-    private int WaitTime = 1750;
-    private VehicleLockStatus OriginalLockStatus;
-    private Rage.Object Screwdriver;
+    private ICarStealable Player;
     private Vehicle TargetVehicle;
-    private int SeatTryingToEnter;
     private bool WereWindowsIntact;
     private bool HasBrokenWindow;
-    public CarBreakIn(IWorld world, IPlayer player, Vehicle targetVehicle, int seatTryingToEnter)
-    {
-        World = world;
+    public CarBreakIn(ICarStealable player, Vehicle targetVehicle)
+    { 
         Player = player;
         TargetVehicle = targetVehicle;
-        SeatTryingToEnter = seatTryingToEnter;
     }
-
     public void BreakIn()
     {
         try
         {
+            Player.IsCarJacking = true;
             WereWindowsIntact = NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle);
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
-                while(Game.LocalPlayer.Character.IsGettingIntoVehicle && !HasBrokenWindow)
+                while(Game.LocalPlayer.Character.IsGettingIntoVehicle)
                 {
-                    if(WereWindowsIntact && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle))
+                    if(!HasBrokenWindow && WereWindowsIntact && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle))
                     {
-                        Player.SetSmashedWindow();
                         HasBrokenWindow = true;
                         TargetVehicle.AlarmTimeLeft = new TimeSpan(0, 0, 30);
-                        Game.Console.Print($"Vehicle {TargetVehicle.Handle} You Smashed the Windows");
                     }
                     GameFiber.Yield();
                 }
-
+                Player.IsCarJacking = false;
             }, "CarBreakIn");
         }
         catch (Exception e)
         {
-            Player.IsLockPicking = false;
+            Player.IsCarJacking = false;
             Game.Console.Print("CarBreakIn" + e.Message + e.StackTrace);
         }
     }

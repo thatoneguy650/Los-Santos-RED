@@ -11,15 +11,13 @@ using static DispatchScannerFiles;
 //Needs some refactoring
 namespace LosSantosRED.lsr
 {
-    public class Scanner : IScanner
+    public class Scanner
     {
-        private IAudio AudioPlayer;
-        private IPlayer CurrentPlayer;
-        private IWorld World;
-        private IPoliceSight Police;
-        private ISearchMode SearchMode;
+        private IAudioPlayable AudioPlayer;
+        private IPoliceRespondable CurrentPlayer;
+        private IEntityProvideable World;
         private IRespawning Respawning;
-        private ISettings Settings;
+        private ISettingsProvideable Settings;
         private VehicleScannerAudio VehicleScannerAudio;
         private StreetScannerAudio StreetScannerAudio;
         private ZoneScannerAudio ZoneScannerAudio;
@@ -92,15 +90,13 @@ namespace LosSantosRED.lsr
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
         private Dispatch SearchingForSuspect;
-        public Scanner(IWorld world, IPlayer currentPlayer, IPoliceSight police, IAudio audioPlayer, IRespawning respawning, ISearchMode searchMode, ISettings settings)
+        public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, IRespawning respawning, ISettingsProvideable settings)
         {
             AudioPlayer = audioPlayer;
             CurrentPlayer = currentPlayer;
             World = world;
-            Police = police;
             Settings = settings;
             Respawning = respawning;
-            SearchMode = searchMode;
             VehicleScannerAudio = new VehicleScannerAudio();
             VehicleScannerAudio.ReadConfig();
             StreetScannerAudio = new StreetScannerAudio();
@@ -461,7 +457,7 @@ namespace LosSantosRED.lsr
             else
             {
                 ToAdd.LatestInformation = ToCallIn;
-                Game.Console.Print("ScannerScript " + ToAdd.Name);
+                //Game.Console.Print("ScannerScript " + ToAdd.Name);
                 DispatchQueue.Add(ToAdd);
             }
         }
@@ -471,7 +467,7 @@ namespace LosSantosRED.lsr
             if (Existing == null)
             {
                 DispatchQueue.Add(ToAdd);
-                Game.Console.Print("ScannerScript " + ToAdd.Name);
+                //Game.Console.Print("ScannerScript " + ToAdd.Name);
             }
         }
         private void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate)
@@ -537,7 +533,7 @@ namespace LosSantosRED.lsr
                     dispatchEvent.NotificationText += " ~s~Plate: " + LicensePlateText + "~s~";
                 }
 
-                Game.Console.Print(string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.Vehicle.Model.Name));
+                //Game.Console.Print(string.Format("ScannerScript Color {0}, Make {1}, Class {2}, Model {3}, RawModel {4}", CarColor.Name, MakeName, ClassName, ModelName, VehicleToDescribe.Vehicle.Model.Name));
             }
 
         }
@@ -763,11 +759,11 @@ namespace LosSantosRED.lsr
                 if (DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.PlateNumber == DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.PlateNumber)
                 {
                     DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.IsWanted = true;
-                    Game.Console.Print("ScannerScript MarkedAsStolen Current Plate");
+                    //Game.Console.Print("ScannerScript MarkedAsStolen Current Plate");
                 }
                 else
                 {
-                    Game.Console.Print("ScannerScript MarkedAsStolen");
+                    //Game.Console.Print("ScannerScript MarkedAsStolen");
                 }
 
             }
@@ -835,11 +831,11 @@ namespace LosSantosRED.lsr
         }
         private void CheckStatusToAnnounce()
         {
-            if (CurrentPlayer.IsWanted && Police.AnySeenPlayerCurrentWanted && CurrentPlayer.IsAliveAndFree)
+            if (CurrentPlayer.IsWanted && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && CurrentPlayer.IsAliveAndFree)
             {
                 if (!RequestBackup.HasRecentlyBeenPlayed && CurrentPlayer.CurrentPoliceResponse.RecentlyRequestedBackup)
                 {
-                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                    AddToQueue(RequestBackup, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                 }
                 if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
                 {
@@ -861,38 +857,38 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(LethalForceAuthorized);
                 }
-                if (!SuspectArrested.HasRecentlyBeenPlayed && CurrentPlayer.RecentlyBusted && Police.AnyCanSeePlayer)
+                if (!SuspectArrested.HasRecentlyBeenPlayed && CurrentPlayer.RecentlyBusted && CurrentPlayer.AnyPoliceCanSeePlayer)
                 {
                     AddToQueue(SuspectArrested);
                 }
-                if (!ChangedVehicles.HasRecentlyBeenPlayed && Police.RecentlyNoticedVehicleChange && CurrentPlayer.CurrentVehicle != null && !CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch)
+                if (!ChangedVehicles.HasRecentlyBeenPlayed && CurrentPlayer.PoliceRecentlyNoticedVehicleChange && CurrentPlayer.CurrentVehicle != null && !CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch)
                 {
-                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
+                    AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
                 }
                 if (!WantedSuspectSpotted.HasRecentlyBeenPlayed && CurrentPlayer.RecentlyAppliedWantedStats)
                 {
-                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
+                    AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
                 }
 
                 if (!CurrentPlayer.IsBusted && !CurrentPlayer.IsDead && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000)
                 {
-                    if(!SuspectEvaded.HasVeryRecentlyBeenPlayed && SearchMode.TimeInSearchMode >= 20000)
+                    if(!SuspectEvaded.HasVeryRecentlyBeenPlayed && CurrentPlayer.TimeInSearchMode >= 20000)
                     {
-                        AddToQueue(SuspectEvaded, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                        AddToQueue(SuspectEvaded, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                     }
-                    else if (!LostVisual.HasVeryRecentlyBeenPlayed && SearchMode.StarsRecentlyGreyedOut)// 45000 && !World.AnyCopsNearPlayer)
+                    else if (!LostVisual.HasVeryRecentlyBeenPlayed && CurrentPlayer.StarsRecentlyGreyedOut)// 45000 && !World.AnyCopsNearPlayer)
                     {
-                        AddToQueue(LostVisual, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                        AddToQueue(LostVisual, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                     }
-                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && SearchMode.StarsRecentlyActive && Police.AnyRecentlySeenPlayer)
-                    {
-                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
-                    }
-                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Police.AnyCanSeePlayer)
+                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && CurrentPlayer.StarsRecentlyActive && CurrentPlayer.AnyPoliceRecentlySeenPlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000 && Police.AnyRecentlySeenPlayer)
+                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && CurrentPlayer.AnyPoliceCanSeePlayer)
+                    {
+                        AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                    }
+                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000 && CurrentPlayer.AnyPoliceRecentlySeenPlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -906,7 +902,7 @@ namespace LosSantosRED.lsr
                 }
                 if (!SuspectLost.HasRecentlyBeenPlayed && CurrentPlayer.CurrentPoliceResponse.RecentlyLostWanted && !Respawning.RecentlyRespawned && !Respawning.RecentlyBribedPolice && !Respawning.RecentlySurrenderedToPolice)
                 {
-                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer));
+                    AddToQueue(SuspectLost, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                 }
                 if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && CurrentPlayer.Investigations.LastInvestigationRecentlyExpired)
                 {
@@ -914,10 +910,10 @@ namespace LosSantosRED.lsr
                 }
                 foreach (VehicleExt StolenCar in CurrentPlayer.ReportedStolenVehicles)
                 {
-                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Police.PlaceLastSeenPlayer) { VehicleSeen = StolenCar });
+                    AddToQueue(AnnounceStolenVehicle, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = StolenCar });
                 }
             }
-            if (!SuspectWasted.HasRecentlyBeenPlayed && CurrentPlayer.RecentlyDied && Police.AnyRecentlySeenPlayer && CurrentPlayer.MaxWantedLastLife > 0)
+            if (!SuspectWasted.HasRecentlyBeenPlayed && CurrentPlayer.RecentlyDied && CurrentPlayer.AnyPoliceRecentlySeenPlayer && CurrentPlayer.MaxWantedLastLife > 0)
             {
                 AddToQueue(SuspectWasted);
             }
@@ -1078,7 +1074,7 @@ namespace LosSantosRED.lsr
             bool AbortedAudio = false;
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-                Game.Console.Print(string.Format("ScannerScript! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
+                //Game.Console.Print(string.Format("ScannerScript! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
                 AudioPlayer.Abort();
                 AbortedAudio = true;
             }
@@ -1101,7 +1097,7 @@ namespace LosSantosRED.lsr
                     NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
                 }
 
-                Game.Console.Print(string.Format("ScannerScript! Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
+                //Game.Console.Print(string.Format("ScannerScript! Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
                 CurrentlyPlaying = MyAudioEvent;
 
 

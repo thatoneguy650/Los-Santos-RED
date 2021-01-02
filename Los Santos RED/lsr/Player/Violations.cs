@@ -13,8 +13,8 @@ namespace LosSantosRED.lsr
 
     public class Violations
     {
-        private IWorld World;
-        private IPlayer CurrentPlayer;
+        private ITimeControllable World;
+        private IViolateable CurrentPlayer;
         private readonly List<Crime> CrimeList = new List<Crime>();
         private readonly Crime KillingPolice = new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false) { CanViolateWithoutPerception = true };
         private readonly Crime FiringWeaponNearPolice = new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, 1, false) { CanReportBySound = true };
@@ -60,7 +60,7 @@ namespace LosSantosRED.lsr
         private bool TreatAsCop;
         private float CurrentSpeed;
         private uint GameTimeStartedBrandishing;
-        public Violations(IPlayer currentPlayer, IWorld world)
+        public Violations(IViolateable currentPlayer, ITimeControllable world)
         {
             World = world;
             CurrentPlayer = currentPlayer;

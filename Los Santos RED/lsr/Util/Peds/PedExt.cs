@@ -12,9 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class PedExt
+public class PedExt : IComplexTaskable
 {
-    private IPlayer PlayerToCheck;
+    private IPoliceRespondable PlayerToCheck;
     private HealthState CurrentHealthState;
     private uint GameTimeBehindPlayer;
     private uint GameTimeContinuoslySeenPlayerSince;
@@ -25,6 +25,7 @@ public class PedExt
     private uint GameTimeLastSeenPlayer;
     private Entity Killer;
     private Entity LastHurtBy;
+    public ComplexTask CurrentTask { get; set; }
     public PedExt(Ped _Pedestrian)
     {
         Pedestrian = _Pedestrian;
@@ -162,6 +163,7 @@ public class PedExt
         }
 
     }
+    public bool IsStill { get; private set; }
     public Ped Pedestrian { get; private set; }
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
     public Vector3 PositionLastSeenPlayer { get; private set; }
@@ -329,7 +331,7 @@ public class PedExt
         }
         catch (Exception ex)
         {
-            Game.Console.Print($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
+            //Game.Console.Print($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
             return HurtBy(ToCheck);
         }
 
@@ -349,7 +351,7 @@ public class PedExt
             return false;
         }
     }
-    public void Update(IPlayer playerToCheck,Vector3 placeLastSeen)
+    public void Update(IPoliceRespondable playerToCheck,Vector3 placeLastSeen)
     {
         PlayerToCheck = playerToCheck;
         if (Pedestrian.IsAlive)
@@ -360,6 +362,11 @@ public class PedExt
                 UpdateDistance(placeLastSeen);
                 UpdateLineOfSight();
                 UpdateCrimes();
+
+            }
+            if (CurrentTask != null)
+            {
+                CurrentTask.Update();
             }
         }
         else
@@ -377,7 +384,7 @@ public class PedExt
             PositionLastSeenCrime = PositionToReport;
             GameTimeLastSeenCrime = Game.GameTime;
             HasSeenPlayerCommitCrime = true;
-            Game.Console.Print(string.Format("AddCrime Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
+            //Game.Console.Print(string.Format("AddCrime Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
         }
     }
     private float GetDotVectorResult(Entity source, Entity target)
@@ -421,7 +428,7 @@ public class PedExt
             CrimesWitnessed.Clear();
             GameTimeLastReportedCrime = Game.GameTime;
             Pedestrian.IsPersistent = false;
-            Game.Console.Print(string.Format("Handle {0} WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
+            //Game.Console.Print(string.Format("Handle {0} WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
         }
     }
     private void SetDrivingFlags()
@@ -430,15 +437,22 @@ public class PedExt
         {
             NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
             NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
-            if (!IsInHelicopter && PlayerToCheck.IsWanted)
+            if (!IsInHelicopter)// && PlayerToCheck.IsWanted)
             {
-                NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1.0f);
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);
+              //  NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1.0f);
+               // NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);
                 NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 4);
                 NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 8);
                 NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 16);
                 NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 32);
                 NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 512);
+
+
+                //new 
+                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 262144, true);
+
+
+
                 //if (PlayerToCheck.CurrentPoliceResponse.PoliceChasingRecklessly)
                 //{
                 //   //NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1.0f);
@@ -536,6 +550,14 @@ public class PedExt
         else
         {
             GameTimeBehindPlayer = 0;
+        }
+        if(Pedestrian.IsStill)
+        {
+            IsStill = true;
+        }
+        else
+        {
+            IsStill = false;
         }
         GameTimeLastDistanceCheck = Game.GameTime;
     }

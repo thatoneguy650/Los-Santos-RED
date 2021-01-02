@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IRespawning
+    public interface IRespawning//needs better name and to be moved
     {
         bool RecentlyBribedPolice { get; }
         bool RecentlyRespawned { get; }

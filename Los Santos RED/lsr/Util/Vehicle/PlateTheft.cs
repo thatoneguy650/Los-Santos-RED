@@ -13,7 +13,7 @@ using LosSantosRED.lsr.Interface;
 
 public class PlateTheft
 {
-    private IPlayer Player;
+    private IPlateChangeable Player;
     private Rage.Object ScrewdriverModel;
     private Rage.Object LicensePlateModel;
     private float DistanceToCheckCars = 10f;
@@ -35,11 +35,11 @@ public class PlateTheft
             }
         }
     }
-    public PlateTheft(IPlayer player)
+    public PlateTheft(IPlateChangeable player)
     {
         Player = player;
     }
-    public PlateTheft(IPlayer player, LicensePlate plateToChange) : this(player)
+    public PlateTheft(IPlateChangeable player, LicensePlate plateToChange) : this(player)
     {
         PlateToAdd = plateToChange;
     }
@@ -136,7 +136,7 @@ public class PlateTheft
                 LicensePlateModel = null;
                 ScrewdriverModel = null;
                 Player.IsChangingLicensePlates = false;
-                Game.Console.Print("ChangeLicensePlate" + e.Message + e.StackTrace);
+                //Game.Console.Print("ChangeLicensePlate" + e.Message + e.StackTrace);
             }
         }, "PlayDispatchQueue");
     }

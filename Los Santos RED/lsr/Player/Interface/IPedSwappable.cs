@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IScanner
+    public interface IPedSwappable
     {
-        void Reset();
-        void Abort();
+        int Money { get; }
+
+        void SetUnarmed();
+        void DisplayPlayerNotification();
     }
 }

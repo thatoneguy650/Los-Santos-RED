@@ -16,18 +16,15 @@ public class Pedestrians
     private int MinCivilianHealth = 70;
     private int MinCopArmor = 0;
     private int MinCopHealth = 85;
-    private IWorldLogger WorldLogger;
     private IAgencies Agencies;
     private IZoneJurisdictions ZoneJurisdictions;
-    private ISettings Settings;
-    private IWeapons Weapons;
-
-    public Pedestrians(IWorldLogger worldLogger, IAgencies agencies, IZoneJurisdictions zoneJurisdictions, IWeapons weapons, ISettings settings)
+    private ISettingsProvideable Settings;
+    private IZones Zones;
+    public Pedestrians(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings)
     {
-        WorldLogger = worldLogger;
         Agencies = agencies;
+        Zones = zones;
         ZoneJurisdictions = zoneJurisdictions;
-        Weapons = weapons;
         Settings = settings;
     }
 
@@ -182,7 +179,7 @@ public class Pedestrians
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.AgencyColor;
                 myBlip.Scale = 0.6f;
-                WorldLogger.AddEntity(myBlip);
+                //WorldLogger.AddEntity(myBlip);
             }
             SetCopStats(Pedestrian);
             Police.Add(myCop);
@@ -207,10 +204,10 @@ public class Pedestrians
                 string ZoneName = GetInternalZoneString(Cop.Position);
                 if (ZoneName != "")
                 {
-                    Game.Console.Print(string.Format("GetAgencyFromPed! ZoneName {0}", ZoneName));
+                    //Game.Console.Print(string.Format("GetAgencyFromPed! ZoneName {0}", ZoneName));
                     if(ZoneJurisdictions == null)
                     {
-                        Game.Console.Print("GetAgencyFromPed! ZoneJurisdictions is null!!!!!");
+                        //Game.Console.Print("GetAgencyFromPed! ZoneJurisdictions is null!!!!!");
                     }
                     List<Agency> ZoneAgencies = ZoneJurisdictions.GetAgencies(ZoneName, WantedLevel);
                     if (ZoneAgencies != null)
@@ -228,7 +225,7 @@ public class Pedestrians
             ToReturn = ModelMatchAgencies.FirstOrDefault();
             if (ToReturn == null)
             {
-                Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
+                //Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
                 Cop.Delete();
             }
             return ToReturn;

@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Civilians : ICivilians
+public class Civilians
 {
-    private IWorld World;
-    private IPlayer CurrentPlayer;
+    private IEntityProvideable World;
+    private IPoliceRespondable Player;
 
-    public Civilians(IWorld world, IPlayer currentPlayer)
+    public Civilians(IEntityProvideable world, IPoliceRespondable currentPlayer)
     {
         World = world;
-        CurrentPlayer = currentPlayer;
+        Player = currentPlayer;
     }
     public int PersistentCount
     {
@@ -33,7 +33,7 @@ public class Civilians : ICivilians
         int PedsUpdated = 0;
         foreach (PedExt ped in World.CivilianList.OrderBy(x => x.Pedestrian.DistanceTo(Game.LocalPlayer.Character)))
         {
-            ped.Update(CurrentPlayer,Vector3.Zero);
+            ped.Update(Player,Vector3.Zero);
             PedsUpdated++;
             if(PedsUpdated > 10)//25
             {

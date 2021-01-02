@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IWorldLogger
+    public interface IEntityLoggable
     {
         void AddEntity(VehicleExt vehicle);
         void AddEntity(Blip blip);

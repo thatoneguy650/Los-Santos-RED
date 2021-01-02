@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IPedSwap
+    public interface IMuggable
     {
-        void TakeoverPed(float selectedTakeoverRadius, bool v1, bool v2, bool v3);
+        bool IsConsideredArmed { get; }
+        bool IsInVehicle { get; }
+        WeaponInformation CurrentWeapon { get; }
     }
 }

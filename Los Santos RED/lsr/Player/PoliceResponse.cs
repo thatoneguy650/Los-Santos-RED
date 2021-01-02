@@ -14,8 +14,7 @@ namespace LosSantosRED.lsr
 {
     public class PoliceResponse
     {
-        private IPlayer CurrentPlayer;
-        private IWorld World;
+        private IPoliceRespondable Player;
         private ArrestWarrant ArrestWarrant;
         private PoliceState PrevPoliceState;
         private uint GameTimePoliceStateStart;
@@ -29,11 +28,10 @@ namespace LosSantosRED.lsr
         private int PreviousWantedLevel;
         private PoliceState CurrentPoliceState;
 
-        public PoliceResponse(IPlayer currentPlayer, IWorld world, ArrestWarrant arrestWarrant)
+        public PoliceResponse(IPoliceRespondable player, ArrestWarrant arrestWarrant)
         {
-            CurrentPlayer = currentPlayer;
-            World = world;
-            CurrentCrimes = new CriminalHistory(currentPlayer);
+            Player = player;
+            CurrentCrimes = new CriminalHistory(player);
             ArrestWarrant = arrestWarrant;
         }
 
@@ -227,7 +225,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (CurrentPoliceState == PoliceState.DeadlyChase && (CurrentCrimes.InstancesOfCrime("KillingPolice") >= 1 || CurrentCrimes.InstancesOfCrime("KillingCivilians") >= 2 || CurrentPlayer.WantedLevel >= 4))
+                if (CurrentPoliceState == PoliceState.DeadlyChase && (CurrentCrimes.InstancesOfCrime("KillingPolice") >= 1 || CurrentCrimes.InstancesOfCrime("KillingCivilians") >= 2 || Player.WantedLevel >= 4))
                 {
                     return true;
                 }
@@ -239,9 +237,9 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (CurrentPlayer.IsNotWanted)
+                if (Player.IsNotWanted)
                 {
-                    if (CurrentPlayer.Investigations.IsActive)
+                    if (Player.Investigations.IsActive)
                     {
                         if (CurrentCrimes.CrimesReported.Any(x => x.AssociatedCrime.Priority <= 8))
                         {
@@ -259,11 +257,11 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
-                    if (CurrentPlayer.WantedLevel > 4)
+                    if (Player.WantedLevel > 4)
                     {
                         return ResponsePriority.Full;
                     }
-                    else if (CurrentPlayer.WantedLevel >= 2)
+                    else if (Player.WantedLevel >= 2)
                     {
                         return ResponsePriority.High;
                     }
@@ -282,7 +280,7 @@ namespace LosSantosRED.lsr
         public void Reset()
         {
             SetWantedLevel(0, "Police Response Reset", true);
-            CurrentCrimes = new CriminalHistory(CurrentPlayer);
+            CurrentCrimes = new CriminalHistory(Player);
             IsWeaponsFree = false;
             CurrentPoliceState = PoliceState.Normal;
             GameTimeWantedLevelStarted = 0;
@@ -301,7 +299,7 @@ namespace LosSantosRED.lsr
             if (Game.LocalPlayer.WantedLevel < WantedLevel || WantedLevel == 0)
             {
                 NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevel);
-                Game.Console.Print(string.Format("SetWantedLevel! Current Wanted: {0}, Desired Wanted: {1}, {2}", Game.LocalPlayer.WantedLevel, WantedLevel, Reason));
+                //Game.Console.Print(string.Format("SetWantedLevel! Current Wanted: {0}, Desired Wanted: {1}, {2}", Game.LocalPlayer.WantedLevel, WantedLevel, Reason));
                 Game.LocalPlayer.WantedLevel = WantedLevel;
                 WantedLevelLastset = WantedLevel;
             }
@@ -315,7 +313,7 @@ namespace LosSantosRED.lsr
                     CrimeEvent PreviousViolation = CurrentCrimes.CrimesObserved.FirstOrDefault(x => x.AssociatedCrime == MyCrimes.AssociatedCrime);
                     if (PreviousViolation == null)
                     {
-                        CurrentCrimes.CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position, true)));
+                        CurrentCrimes.CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime, new PoliceScannerCallIn(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true)));
                     }
                     else if (PreviousViolation.CanAddInstance)
                     {
@@ -341,12 +339,12 @@ namespace LosSantosRED.lsr
         }
         private void GetPoliceState()
         {
-            if (CurrentPlayer.WantedLevel == 0)
+            if (Player.WantedLevel == 0)
             {
                 CurrentPoliceState = PoliceState.Normal;//Default state
             }
 
-            if (CurrentPlayer.IsBusted)
+            if (Player.IsBusted)
             {
                 CurrentPoliceState = PoliceState.ArrestedWait;
             }
@@ -356,15 +354,15 @@ namespace LosSantosRED.lsr
                 return;
             }
 
-            if (CurrentPlayer.WantedLevel >= 1 && CurrentPlayer.WantedLevel <= 3 && CurrentPlayer.AnyPoliceCanSeePlayer)
+            if (Player.WantedLevel >= 1 && Player.WantedLevel <= 3 && Player.AnyPoliceCanSeePlayer)
             {
-                if (CurrentPlayer.AnyPoliceCanSeePlayer)
+                if (Player.AnyPoliceCanSeePlayer)
                 {
                     if (CurrentCrimes.LethalForceAuthorized)
                     {
                         CurrentPoliceState = PoliceState.DeadlyChase;
                     }
-                    else if (CurrentPlayer.IsConsideredArmed)
+                    else if (Player.IsConsideredArmed)
                     {
                         CurrentPoliceState = PoliceState.CautiousChase;
                     }
@@ -378,7 +376,7 @@ namespace LosSantosRED.lsr
                     CurrentPoliceState = PoliceState.UnarmedChase;
                 }
             }
-            else if (CurrentPlayer.WantedLevel >= 4)
+            else if (Player.WantedLevel >= 4)
             {
                 CurrentPoliceState = PoliceState.DeadlyChase;
             }
@@ -386,7 +384,7 @@ namespace LosSantosRED.lsr
         }
         private void PoliceStateChanged()
         {
-            Game.Console.Print(string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
+            //Game.Console.Print(string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
             GameTimePoliceStateStart = Game.GameTime;
             PrevPoliceState = CurrentPoliceState;
         }
@@ -400,40 +398,40 @@ namespace LosSantosRED.lsr
             {
                 PoliceStateChanged();
             }
-            if (CurrentPlayer.IsWanted)
+            if (Player.IsWanted)
             {
-                if (!CurrentPlayer.IsDead && !CurrentPlayer.IsBusted)
+                if (!Player.IsDead && !Player.IsBusted)
                 {
-                    Vector3 CurrentWantedCenter = CurrentPlayer.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                    Vector3 CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
                     if (CurrentWantedCenter != Vector3.Zero)
                     {
                         LastWantedCenterPosition = CurrentWantedCenter;
                     }
 
-                    if (CurrentPlayer.AnyPoliceCanSeePlayer)
+                    if (Player.AnyPoliceCanSeePlayer)
                     {
                         PlayerSeenDuringCurrentWanted = true;
                         CurrentCrimes.PlayerSeenDuringWanted = true;
                     }
 
-                    if (HasBeenAtCurrentWantedLevelFor > 240000 && CurrentPlayer.AnyPoliceCanSeePlayer && CurrentPlayer.WantedLevel <= 4)
+                    if (HasBeenAtCurrentWantedLevelFor > 240000 && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 4)
                     {
                         GameTimeLastRequestedBackup = Game.GameTime;
-                        SetWantedLevel(CurrentPlayer.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
+                        SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
                     }
-                    if (CurrentPoliceState == PoliceState.DeadlyChase && CurrentPlayer.WantedLevel < 3)
+                    if (CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
                     {
                         SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
                     }
                     int PoliceKilled = CurrentCrimes.InstancesOfCrime("KillingPolice");
                     if (PoliceKilled > 0)
                     {
-                        if (PoliceKilled >= 4 && CurrentPlayer.WantedLevel < 5)
+                        if (PoliceKilled >= 4 && Player.WantedLevel < 5)
                         {
                             SetWantedLevel(5, "You killed too many cops 5 Stars", true);
                             IsWeaponsFree = true;
                         }
-                        else if (PoliceKilled >= 2 && CurrentPlayer.WantedLevel < 4)
+                        else if (PoliceKilled >= 2 && Player.WantedLevel < 4)
                         {
                             SetWantedLevel(4, "You killed too many cops 4 Stars", true);
                             IsWeaponsFree = true;
@@ -454,20 +452,20 @@ namespace LosSantosRED.lsr
             }
             //CurrentCrimes.MaxWantedLevel = CurrentPlayer.WantedLevel;
             GameTimeWantedLevelStarted = Game.GameTime;
-            Game.Console.Print(string.Format("WantedLevel! Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel, RecentlySetWanted));
+            //Game.Console.Print(string.Format("WantedLevel! Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel, RecentlySetWanted));
             PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
         private void WantedLevelAdded()
         {
             if (!RecentlySetWanted)//randomly set by the game
             {
-                if (CurrentPlayer.WantedLevel <= 2)//let some level 3 and 4 wanted override and be set
+                if (Player.WantedLevel <= 2)//let some level 3 and 4 wanted override and be set
                 {
                     SetWantedLevel(0, "Resetting Unknown Wanted", false);
                     return;
                 }
             }
-            CurrentPlayer.Investigations.Reset();
+            Player.Investigations.Reset();
             CurrentCrimes.GameTimeWantedStarted = Game.GameTime;
             //CurrentCrimes.MaxWantedLevel = CurrentPlayer.WantedLevel;
             PlaceWantedStarted = Game.LocalPlayer.Character.Position;
@@ -475,7 +473,7 @@ namespace LosSantosRED.lsr
         }
         private void WantedLevelRemoved()
         {
-            if (!CurrentPlayer.IsDead)// && !CurrentPlayer.RecentlyRespawned)//they might choose the respawn as the same character, so do not replace it yet?
+            if (!Player.IsDead)// && !CurrentPlayer.RecentlyRespawned)//they might choose the respawn as the same character, so do not replace it yet?
             {
                 CurrentCrimes.GameTimeWantedEnded = Game.GameTime;
                 //CurrentCrimes.MaxWantedLevel = CurrentPlayer.MaxWantedLastLife;

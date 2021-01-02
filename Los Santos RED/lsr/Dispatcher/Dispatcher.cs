@@ -10,23 +10,21 @@ public class Dispatcher
 {
     private readonly IAgencies Agencies;
     private readonly ICountyJurisdictions CountyJurisdictions;
-    private readonly IPlayer Player;
+    private readonly IPoliceRespondable Player;
     private readonly int LikelyHoodOfAnySpawn = 5;
     private readonly float MinimumDeleteDistance = 200f;
     private readonly uint MinimumExistingTime = 20000;
-    private readonly IPoliceSight Police;
-    private readonly ISettings Settings;
+    private readonly ISettingsProvideable Settings;
     private readonly IStreets Streets;
-    private readonly IWorld World;
+    private readonly IEntityProvideable World;
     private readonly IZoneJurisdictions ZoneJurisdictions;
     private readonly IZones Zones;
     private uint GameTimeAttemptedDispatch;
     private uint GameTimeAttemptedRecall;
-    public Dispatcher(IWorld world, IPlayer currentPlayer, IPoliceSight police, IAgencies agencies, ISettings settings, IStreets streets, IZones zones, ICountyJurisdictions countyJurisdictions, IZoneJurisdictions zoneJurisdictions)
+    public Dispatcher(IEntityProvideable world, IPoliceRespondable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, ICountyJurisdictions countyJurisdictions, IZoneJurisdictions zoneJurisdictions)
     {
-        Player = currentPlayer;
+        Player = player;
         World = world;
-        Police = police;
         Agencies = agencies;
         Settings = settings;
         Streets = streets;
@@ -66,7 +64,7 @@ public class Dispatcher
         {
             if (Player.IsWanted)
             {
-                if (!Police.AnyRecentlySeenPlayer)
+                if (!Player.AnyPoliceRecentlySeenPlayer)
                 {
                     return 350f;
                 }
@@ -91,7 +89,7 @@ public class Dispatcher
         {
             if (Player.IsWanted)
             {
-                if (!Police.AnyRecentlySeenPlayer)
+                if (!Player.AnyPoliceRecentlySeenPlayer)
                 {
                     return 250f - (Player.WantedLevel * -40);
                 }
@@ -152,7 +150,7 @@ public class Dispatcher
     {
         get
         {
-            if (!Police.AnyRecentlySeenPlayer)
+            if (!Player.AnyPoliceRecentlySeenPlayer)
             {
                 return 3000;
             }
@@ -193,7 +191,7 @@ public class Dispatcher
                         }
                         catch (Exception ex)
                         {
-                            Game.Console.Print("SpawnCop " + ex.Message + " : " + ex.StackTrace);
+                            //Game.Console.Print("SpawnCop " + ex.Message + " : " + ex.StackTrace);
                         }
                     }
                 }
@@ -243,7 +241,7 @@ public class Dispatcher
             RemoveBlip(Cop.Pedestrian);
             if (Cop.Pedestrian.Exists())
             {
-                Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
+                //Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
                 Cop.Pedestrian.Delete();
             }
         }
@@ -288,7 +286,7 @@ public class Dispatcher
         //}
         foreach (Agency ag in ToReturn)
         {
-            Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
+            //Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
     }
@@ -321,7 +319,7 @@ public class Dispatcher
         }
         if (agency == null)
         {
-            Game.Console.Print("Dispatcher could not find Agency To Spawn");
+            //Game.Console.Print("Dispatcher could not find Agency To Spawn");
         }
         return agency;
     }

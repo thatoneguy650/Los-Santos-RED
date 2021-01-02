@@ -7,12 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PedSwap : IPedSwap
+public class PedSwap : IPedswappable
 {
-    private IWorld World;
-    private IPlayer Player;
-    private ISettings Settings;
-    public PedSwap(IWorld world, IPlayer player, ISettings settings)
+    private ITimeControllable World;
+    private IPedSwappable Player;
+    private ISettingsProvideable Settings;
+    public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings)
     {
         World = world;
         Player = player;
@@ -62,10 +62,10 @@ public class PedSwap : IPedSwap
             {
                 return;
             }
-            if (ClearNearPolice)
-            {
-                World.ClearPolice();
-            }
+            //if (ClearNearPolice)//might want this back
+            //{
+            //    World.ClearPolice();
+            //}
             StoreTargetPedData(TargetPed);
             NativeFunction.CallByName<uint>("CHANGE_PLAYER_PED", Game.LocalPlayer, TargetPed, false, false);
             CurrentPed.IsPersistent = false;
@@ -81,7 +81,7 @@ public class PedSwap : IPedSwap
         }
         catch (Exception e3)
         {
-            Game.Console.Print("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
+            //Game.Console.Print("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
     private void ActivatePreviousScenarios()
@@ -143,7 +143,7 @@ public class PedSwap : IPedSwap
             PedToReturn = closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         if (PedToReturn == null)
         {
-            Game.Console.Print("Ped Takeover! No Peds Found");
+            //Game.Console.Print("Ped Takeover! No Peds Found");
             return null;
         }
         else if (PedToReturn.IsInAnyVehicle(false))
@@ -186,7 +186,7 @@ public class PedSwap : IPedSwap
         }
         catch (Exception e)
         {
-            Game.Console.Print("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message);
+            //Game.Console.Print("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message);
             return null;
         }
     }
@@ -281,7 +281,7 @@ public class PedSwap : IPedSwap
     }
     private void SetPlayerOffset()
     {
-        //i have no idea how this works
+        ////i have no idea how this works
         const int WORLD_OFFSET = 8;
         const int SECOND_OFFSET = 0x20;
         const int THIRD_OFFSET = 0x18;
@@ -305,6 +305,14 @@ public class PedSwap : IPedSwap
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
         }
+
+        //bigbruh in discord, supplied the below, seems to work just fine
+        //unsafe
+        //{
+        //    var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
+        //    ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
+        //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
+        //}
     }
     private void StoreTargetPedData(Ped TargetPed)
     {

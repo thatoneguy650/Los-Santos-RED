@@ -308,14 +308,14 @@ namespace LSR.Vehicles
 
             if (!HasAttemptedToLock)
             {
-                Game.Console.Print($"AttemptToLock Vehicle: {Vehicle.Handle}");
+                //Game.Console.Print($"AttemptToLock Vehicle: {Vehicle.Handle}");
                 if (!Vehicle.HasOccupants)
                 {
                     if (Vehicle.SetLock((VehicleLockStatus)7) && !Vehicle.IsEngineOn)
                     {
                         HasAttemptedToLock = true;
                         Vehicle.MustBeHotwired = true;
-                        Game.Console.Print($"AttemptToLock! Locked & Hotwired Vehicle: {Vehicle.Handle}");
+                        //Game.Console.Print($"AttemptToLock! Locked & Hotwired Vehicle: {Vehicle.Handle}");
                     }
                 }
             }
@@ -342,7 +342,7 @@ namespace LSR.Vehicles
             {
                 if (Vehicle.Exists())
                 {
-                    Game.Console.Print(string.Format("ChangeLivery! No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
+                    //Game.Console.Print(string.Format("ChangeLivery! No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
                     Vehicle.Delete();
                 }
                 return;

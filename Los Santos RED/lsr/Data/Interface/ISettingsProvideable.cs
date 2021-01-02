@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IInput
+    public interface ISettingsProvideable
     {
-        bool IsHoldingEnter { get; }
+        SettingsManager SettingsManager { get; }
+
+        void SerializeAllSettings();
     }
 }

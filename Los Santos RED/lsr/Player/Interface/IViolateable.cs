@@ -1,0 +1,46 @@
+﻿using LSR.Vehicles;
+using Rage;
+
+namespace LosSantosRED.lsr.Interface
+{
+    public interface IViolateable
+    {
+        bool AnyHumansNear { get; }
+        bool AnyPoliceCanHearPlayer { get; }
+        bool AnyPoliceCanSeePlayer { get; }
+        bool AnyPoliceRecentlySeenPlayer { get; }
+        bool AnyPoliceSeenPlayerCurrentWanted { get; }
+        Ped Character { get; }
+        PoliceResponse CurrentPoliceResponse { get; }
+        Vector3 CurrentPosition { get; }
+        VehicleExt CurrentSeenVehicle { get; }
+        WeaponInformation CurrentSeenWeapon { get; }
+        Street CurrentStreet { get; }
+        VehicleExt CurrentVehicle { get; }
+        WeaponInformation CurrentWeapon { get; }
+        WeaponCategory CurrentWeaponCategory { get; }
+        Zone CurrentZone { get; }
+        bool HandsAreUp { get; }
+        float IntoxicatedIntensity { get; }
+        Investigations Investigations { get; }
+        bool IsAliveAndFree { get; }
+        bool IsBreakingIntoCar { get; }
+        bool IsChangingLicensePlates { get; }
+        bool IsCommitingSuicide { get; }
+        bool IsConsideredArmed { get; }
+        bool IsInAirVehicle { get; }
+        bool IsInAutomobile { get; }
+        bool IsIntoxicated { get; }
+        bool IsInVehicle { get; }
+        bool IsMugging { get; }
+        bool IsOnMotorcycle { get; }
+        bool IsWanted { get; }
+        bool NearCivilianMurderVictim { get; }
+        bool RecentlyHurtCivilian { get; }
+        bool RecentlyHurtCop { get; }
+        bool RecentlyKilledCivilian { get; }
+        bool RecentlyKilledCop { get; }
+        bool RecentlyStartedPlaying { get; }
+        bool RecentlyShot(int v);
+    }
+}

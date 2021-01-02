@@ -13,10 +13,10 @@ using LosSantosRED.lsr.Interface;
 //needs rewrite to change the ped to the character
 public class Surrendering
 {
-    private IPlayer CurrentPlayer;
-    public Surrendering(IPlayer currentPlayer)
+    private IInputable Player;
+    public Surrendering(IInputable currentPlayer)
     {
-        CurrentPlayer = currentPlayer;
+        Player = currentPlayer;
     }
 
     public bool IsCommitingSuicide { get; set; }
@@ -39,18 +39,18 @@ public class Surrendering
         if (Game.LocalPlayer.Character.IsWearingHelmet)
             Game.LocalPlayer.Character.RemoveHelmet(true);
 
-        if (CurrentPlayer.HandsAreUp)
+        if (Player.HandsAreUp)
             return;
 
         //if (Mod.Player.Instance.CurrentVehicle == null || Mod.Player.Instance.CurrentVehicle.FuelTank.CanPump)//usees the same key, might need to change
         //    return;
 
-        CurrentPlayer.SetUnarmed();
+        Player.SetUnarmed();
         //if (Mod.Player.Instance.CurrentVehicle != null)
         //{
         //    Mod.Player.Instance.CurrentVehicle.ToggleEngine(false);
         //}
-        CurrentPlayer.HandsAreUp = true;
+        Player.HandsAreUp = true;
         bool inVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
         var sDict = (inVehicle) ? "veh@busted_std" : "ped";
         AnimationDictionary.RequestAnimationDictionay(sDict);
@@ -109,7 +109,7 @@ public class Surrendering
     }
     public void LowerHands()
     {
-        CurrentPlayer.HandsAreUp = false; // You put your hands down
+        Player.HandsAreUp = false; // You put your hands down
         Game.LocalPlayer.Character.Tasks.Clear();
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
             Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
@@ -137,14 +137,14 @@ public class Surrendering
                 return;
             }
 
-            CurrentPlayer.SetUnarmed();
+            Player.SetUnarmed();
 
             if (PedToArrest.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = PedToArrest.CurrentVehicle;
                 if (PedToArrest.Exists() && oldVehicle.Exists())
                 {
-                    Game.Console.Print("SetArrestedAnimation! Tasked to leave the vehicle");
+                    //Game.Console.Print("SetArrestedAnimation! Tasked to leave the vehicle");
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
                     GameFiber.Wait(2500);
                 }
@@ -154,18 +154,18 @@ public class Surrendering
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
                 {
                     NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-                    Game.Console.Print("SetArrestedAnimation! Standing Animation");
+                    //Game.Console.Print("SetArrestedAnimation! Standing Animation");
                 }
             }
             else
             {
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
                 {
-                    Game.Console.Print("SetArrestedAnimation! Kneel Animation");
+                    //Game.Console.Print("SetArrestedAnimation! Kneel Animation");
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(6000);
 
-                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !CurrentPlayer.IsBusted))
+                    if (!PedToArrest.Exists() || (PedToArrest == Game.LocalPlayer.Character && !Player.IsBusted))
                     {
                         return;
                     }
@@ -207,7 +207,7 @@ public class Surrendering
         if (IsCommitingSuicide)
             return;
 
-        if (CurrentPlayer.HandsAreUp)
+        if (Player.HandsAreUp)
             return;
 
         if (PedToSuicide.IsInAnyVehicle(false) || PedToSuicide.IsRagdoll || PedToSuicide.IsSwimming || PedToSuicide.IsInCover)
@@ -299,7 +299,7 @@ public class Surrendering
                         while (Game.GameTime - GameTimeStartedSuicide <= 20000 && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1) < 1.0f)
                         {
                             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", Scene1);
-                            if (CurrentPlayer.IsMoveControlPressed)
+                            if (Player.IsMoveControlPressed)
                             {
                                 break;
                             }

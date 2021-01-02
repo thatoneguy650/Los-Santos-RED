@@ -9,16 +9,12 @@ using LosSantosRED.lsr.Interface;
 
 public class UI
 {
-    private IPlayer CurrentPlayer;
-    private IWorld World;
-    private ISearchMode SearchMode;
-    private ISettings Settings;
+    private IDisplayable Player;
+    private ISettingsProvideable Settings;
     private IZoneJurisdictions ZoneJurisdictions;
-    public UI(IWorld world, IPlayer currentPlayer, ISearchMode searchMode, ISettings settings, IZoneJurisdictions zoneJurisdictions)
+    public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IZoneJurisdictions zoneJurisdictions)
     {
-        World = world;
-        CurrentPlayer = currentPlayer;
-        SearchMode = searchMode;
+        Player = currentPlayer;
         Settings = settings;
         ZoneJurisdictions = zoneJurisdictions;
         BigMessage = new BigMessageThread(true);
@@ -92,7 +88,7 @@ public class UI
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
-        if (Settings.SettingsManager.UI.Enabled && !CurrentPlayer.IsBusted && !CurrentPlayer.IsDead)
+        if (Settings.SettingsManager.UI.Enabled && !Player.IsBusted && !Player.IsDead)
         {
             ShowUI();
         }
@@ -149,22 +145,22 @@ public class UI
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (CurrentPlayer.CurrentStreet != null && CurrentPlayer.CurrentCrossStreet != null)
+        if (Player.CurrentStreet != null && Player.CurrentCrossStreet != null)
         {
-            StreetDisplay = string.Format(" {0} at {1} ", CurrentPlayer.CurrentStreet.Name, CurrentPlayer.CurrentCrossStreet.Name);
+            StreetDisplay = string.Format(" {0} at {1} ", Player.CurrentStreet.Name, Player.CurrentCrossStreet.Name);
         }
-        else if (CurrentPlayer.CurrentStreet != null)
+        else if (Player.CurrentStreet != null)
         {
-            StreetDisplay = string.Format(" {0} ", CurrentPlayer.CurrentStreet.Name);
+            StreetDisplay = string.Format(" {0} ", Player.CurrentStreet.Name);
         }
         return StreetDisplay;
     }
     private string GetVehicleStatusDisplay()
     {
         string PlayerSpeedLine = "";
-        if (CurrentPlayer.CurrentVehicle != null && Game.LocalPlayer.Character.IsInAnyVehicle(false))//was game.localpalyer.character.isinanyvehicle(false)
+        if (Player.CurrentVehicle != null && Game.LocalPlayer.Character.IsInAnyVehicle(false))//was game.localpalyer.character.isinanyvehicle(false)
         {
-            float VehicleSpeedMPH = CurrentPlayer.CurrentVehicle.Vehicle.Speed * 2.23694f;
+            float VehicleSpeedMPH = Player.CurrentVehicle.Vehicle.Speed * 2.23694f;
             if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
             {
                 PlayerSpeedLine = "ENGINE OFF";
@@ -172,38 +168,38 @@ public class UI
             else
             {
                 string ColorPrefx = "~s~";
-                if (CurrentPlayer.IsSpeeding)
+                if (Player.IsSpeeding)
                 {
                     ColorPrefx = "~r~";
                 }
 
-                if (CurrentPlayer.CurrentStreet != null)
+                if (Player.CurrentStreet != null)
                 {
-                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), CurrentPlayer.CurrentStreet.SpeedLimit);
+                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Player.CurrentStreet.SpeedLimit);
                 }
             }
 
-            if (CurrentPlayer.IsViolatingAnyTrafficLaws)
+            if (Player.IsViolatingAnyTrafficLaws)
             {
                 PlayerSpeedLine += " !";
             }
 
-            PlayerSpeedLine += "~n~" + CurrentPlayer.CurrentVehicle.FuelTank.UIText;
+            PlayerSpeedLine += "~n~" + Player.CurrentVehicle.FuelTank.UIText;
         }
         return PlayerSpeedLine;
     }
     private string GetZoneDisplay()
     {
-        if (CurrentPlayer.CurrentZone == null)
+        if (Player.CurrentZone == null)
         {
             return "";
         }
         string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = GetName(CurrentPlayer.CurrentZone, true);
-        if (CurrentPlayer.CurrentZone != null)
+        ZoneDisplay = GetName(Player.CurrentZone, true);
+        if (Player.CurrentZone != null)
         {
-            Agency MainZoneAgency = ZoneJurisdictions.GetMainAgency(CurrentPlayer.CurrentZone.InternalGameName);
+            Agency MainZoneAgency = ZoneJurisdictions.GetMainAgency(Player.CurrentZone.InternalGameName);
             if (MainZoneAgency != null)
             {
                 CopZoneName = MainZoneAgency.ColoredInitials;
@@ -248,7 +244,7 @@ public class UI
     }
     private void ScreenEffectsUpdate()
     {
-        if (CurrentPlayer.IsDead)
+        if (Player.IsDead)
         {
             if (!StartedDeathEffect)
             {
@@ -259,7 +255,7 @@ public class UI
                 StartedDeathEffect = true;
             }
         }
-        else if (CurrentPlayer.IsBusted)
+        else if (Player.IsBusted)
         {
             if (!StartedBustedEffect)
             {
@@ -304,25 +300,25 @@ public class UI
 
         // Lines++;
         float StartingPoint = 0.1f;
-        string DebugLine = string.Format("InvestMode {0} HaveDesc {1}, IsStationary {2}, IsSuspicious {3}", CurrentPlayer.Investigations.IsActive, CurrentPlayer.Investigations.HaveDescription, CurrentPlayer.IsStationary, CurrentPlayer.Investigations.IsSuspicious);
+        string DebugLine = $"{Player.DebugString_State}";
         DisplayTextOnScreen(DebugLine, StartingPoint + 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine1 = string.Format($"{CurrentPlayer.DrunkDebug}");
+        string DebugLine1 = string.Format($"{Player.DebugString_Drunk}");
         DisplayTextOnScreen(DebugLine1, StartingPoint + 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine2 = string.Format("{0}", SearchMode.SearchModeDebug);
+        string DebugLine2 = string.Format("{0}", Player.DebugString_SearchMode);
         DisplayTextOnScreen(DebugLine2, StartingPoint + 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine3 = string.Format($"{CurrentPlayer.ModelName} {CurrentPlayer.IsMale}");
+        string DebugLine3 = string.Format($"{Player.DebugString_ModelInfo}");
         DisplayTextOnScreen(DebugLine3, StartingPoint + 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine4 = string.Format("CrimesObs {0}", CurrentPlayer.CurrentPoliceResponse.CrimesObservedJoined);
+        string DebugLine4 = string.Format("CrimesObs {0}", Player.DebugString_ObservedCrimes);
         DisplayTextOnScreen(DebugLine4, StartingPoint + 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine5 = string.Format("CrimesRep {0}", CurrentPlayer.CurrentPoliceResponse.CrimesReportedJoined);
+        string DebugLine5 = string.Format("CrimesRep {0}", Player.DebugString_ReportedCrimes);
         DisplayTextOnScreen(DebugLine5, StartingPoint + 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
-        string DebugLine6 = string.Format("{0}", CurrentPlayer.LawsViolatingDisplay);
+        string DebugLine6 = string.Format("{0}", Player.LawsViolatingDisplay);
         DisplayTextOnScreen(DebugLine6, StartingPoint + 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
 
         //float Between = 0.01f;

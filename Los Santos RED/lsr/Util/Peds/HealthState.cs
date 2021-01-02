@@ -55,7 +55,7 @@ public class HealthState
                 return false;
         }
     }
-    public void Update(IPlayer CurrentPlayer)
+    public void Update(IPoliceRespondable CurrentPlayer)
     {
         if (NeedDamageCheck && MyPed.Pedestrian.Exists() && !HasLoggedDeath)
         {
@@ -80,11 +80,11 @@ public class HealthState
             //    CurrentHealth = MyPed.Pedestrian.Health;
             //    CurrentArmor = MyPed.Pedestrian.Armor;
             //    GameTimeLastBled = Game.GameTime;
-            //    Game.Console.Print("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
+            //    //Game.Console.Print("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
             //}
         }
     }
-    private void FlagDamage(IPlayer CurrentPlayer)
+    private void FlagDamage(IPoliceRespondable CurrentPlayer)
     {
         if(CurrentPlayer == null)//only flag the player we want to have the damage
         {
@@ -259,7 +259,7 @@ public class HealthState
                 DisplayString = string.Format("  Ped: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
                   MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
             }
-            Game.Console.Print("PedWoundSystem" + DisplayString);
+            //Game.Console.Print("PedWoundSystem" + DisplayString);
         }
         if (Health != CurrentHealth)
         {

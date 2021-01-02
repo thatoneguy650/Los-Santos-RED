@@ -10,42 +10,54 @@ namespace LosSantosRED.lsr
     public class ModController
     {
         private readonly Stopwatch TickStopWatch = new Stopwatch();
-        private string LastRanTask;
-        private List<ModTask> MyTickTasks;
-        private Mod.World World;
-        private Audio Audio;
-        private PedSwap PedSwap;
-        private Mod.Player Player;
-        private Debug Debug;
-        private Scanner Scanner;
-        private Input Input;
-        private Menu Menu;
-        private Police Police;
-        private Civilians Civilians;
-        private Respawning Respawning;
-        private UI UI;
-        private Dispatcher Dispatcher;
-        private SearchMode SearchMode;
-        private Tasking Tasking;
-        private PlacesOfInterest PlacesOfInterest;
         private Agencies Agencies;
+        private Audio Audio;
+        private Civilians Civilians;
         private CountyJurisdictions CountyJurisdictions;
-        private ZoneJurisdictions ZoneJurisdictions;
-        private Zones Zones;
+        private Debug Debug;
+        private Dispatcher Dispatcher;
+        private Input Input;
+        private string LastRanTask;
+        private Menu Menu;
+        private List<ModTask> MyTickTasks;
+        private Names Names;
+        private PedSwap PedSwap;
+        private PlacesOfInterest PlacesOfInterest;
         private PlateTypes PlateTypes;
+        private Mod.Player Player;
+        private Police Police;
+        private Respawning Respawning;
+        private Scanner Scanner;
         private Settings Settings;
         private Streets Streets;
-        private Weapons Weapons;
-        private Names Names;
-        private VehicleScannerAudio VehicleScannerAudio;
-        private ZoneScannerAudio ZoneScannerAudio;
         private StreetScannerAudio StreetScannerAudio;
-
+        private Tasker Tasker;
+        private Tasking_Old Tasking_Old;
+        private Mod.Time Time;
+        private UI UI;
+        private VehicleScannerAudio VehicleScannerAudio;
+        private Weapons Weapons;
+        private Mod.World World;
+        private ZoneJurisdictions ZoneJurisdictions;
+        private Zones Zones;
+        private ZoneScannerAudio ZoneScannerAudio;
         public ModController()
         {
-
         }
         public bool IsRunning { get; private set; }
+        public void Dispose()
+        {
+            IsRunning = false;
+            GameFiber.Sleep(500);
+            Player.Dispose();
+            World.Dispose();
+            PedSwap.Dispose();
+            Dispatcher.Dispose();
+            if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
+            {
+                Player.SetMoney(PedSwap.OriginalMoney);
+            }
+        }
         public void NewPlayer(string ModelName, bool Male)
         {
             Player.ModelName = ModelName;
@@ -67,20 +79,21 @@ namespace LosSantosRED.lsr
             }
             ReadDataFiles();
             Audio = new Audio();
-            World = new Mod.World(Agencies, ZoneJurisdictions, Settings, Weapons, PlacesOfInterest, Zones, PlateTypes);
-            Player = new Mod.Player(World, Streets, Zones, Settings, Weapons);
+            Time = new Mod.Time();
+            World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes);
+            Player = new Mod.Player(World, Time, Streets, Zones, Settings, Weapons);
             Input = new Input(Player, Settings);
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
-            Respawning = new Respawning(World, Player, Weapons, PlacesOfInterest, Settings);
-            PedSwap = new PedSwap(World, Player, Settings);
-            SearchMode = new SearchMode(World, Player, Police);
-            Tasking = new Tasking(World, Player, Police);
-            UI = new UI(World, Player, SearchMode, Settings, ZoneJurisdictions);
-            Dispatcher = new Dispatcher(World, Player, Police, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
-            Scanner = new Scanner(World, Player, Police, Audio, Respawning, SearchMode, Settings);
-            Menu = new Menu(World, Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
-            Debug = new Debug(PlateTypes);
+            Respawning = new Respawning(Time, World, Player, Weapons, PlacesOfInterest, Settings);
+            PedSwap = new PedSwap(Time, Player, Settings);
+            Tasking_Old = new Tasking_Old(World, Player, Player);
+            Tasker = new Tasker(World, Player);
+            UI = new UI(Player, Settings, ZoneJurisdictions);
+            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
+            Scanner = new Scanner(World, Player, Audio, Respawning, Settings);
+            Menu = new Menu(Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
+            Debug = new Debug(PlateTypes, World, Player);
             Player.GiveName();
             Player.AddSpareLicensePlate();
             World.AddBlipsToMap();
@@ -120,24 +133,11 @@ namespace LosSantosRED.lsr
             ZoneJurisdictions = new ZoneJurisdictions(Agencies);
             ZoneJurisdictions.ReadConfig();
         }
-        public void Dispose()
-        {
-            IsRunning = false;
-            GameFiber.Sleep(500);
-            Player.Dispose();
-            World.Dispose();
-            PedSwap.Dispose();
-            Dispatcher.Dispose();
-            if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
-            {
-                Player.SetMoney(PedSwap.OriginalMoney);
-            }
-        }
         private void SetupModTasks()
         {
             MyTickTasks = new List<ModTask>()
             {
-               new ModTask(0, "World.UpdateTime", World.UpdateTime, 0,0),
+               new ModTask(0, "Time.Tick", Time.Tick, 0,0),
                 new ModTask(0, "Input.Tick", Input.Update, 1,0),
                 new ModTask(25, "Player.Update", Player.Update, 2,0),
                 new ModTask(100, "World.Police.Tick", Police.Update, 2,1),//25
@@ -154,15 +154,21 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
                 new ModTask(500, "Player.ArrestWarrant.Update",Player.ArrestWarrantUpdate, 8,2),
                 new ModTask(500, "World.Vehicles.Tick", World.VehiclesTick, 9,1),
-                new ModTask(150, "Player.SearchMode.UpdateWanted", SearchMode.UpdateWanted, 11,0),
-                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", SearchMode.StopVanilla, 11,1),
+                new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchModeUpdate, 11,0),
+                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.StopVanillaSearchMode, 11,1),
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
-                new ModTask(500, "World.Tasking.UpdatePeds", Tasking.AddTaskablePeds, 14,0),
-                new ModTask(500, "World.Tasking.Tick", Tasking.TaskCops, 14,1),
-                new ModTask(750, "World.Tasking.Tick", Tasking.TaskCivilians, 14,2),
+
                 new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
                 new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
+
+                //Old Tasking
+                //new ModTask(500, "World.Tasking.UpdatePeds", OldTasking.AddTaskablePeds, 14,0),
+                //new ModTask(500, "World.Tasking.Tick", OldTasking.TaskCops, 14,1),
+                //new ModTask(750, "World.Tasking.Tick", OldTasking.TaskCivilians, 14,2),
+
+                //New Tasking
+                //new ModTask(500, "NewTasking.Update", Tasker.Update, 16,0),
             };
         }
         private void StartDebugLogic()
@@ -250,6 +256,87 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Menu/UI Logic");
+        }
+        private class ModTask
+        {
+            public string DebugName;
+            public uint GameTimeLastRan = 0;
+            public uint Interval = 500;
+            public uint IntervalMissLength;
+            public bool RanThisTick = false;
+            public int RunGroup;
+            public int RunOrder;
+            public Action TickToRun;
+            public ModTask(uint _Interval, string _DebugName, Action _TickToRun, int _RunGroup, int _RunOrder)
+            {
+                GameTimeLastRan = 0;
+                Interval = _Interval;
+                IntervalMissLength = Interval * 2;
+                DebugName = _DebugName;
+                TickToRun = _TickToRun;
+                RunGroup = _RunGroup;
+                RunOrder = _RunOrder;
+            }
+            public bool MissedInterval
+            {
+                get
+                {
+                    if (Interval == 0)
+                    {
+                        return false;
+                    }
+                    else if (Game.GameTime - GameTimeLastRan >= IntervalMissLength)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            public bool RunningBehind
+            {
+                get
+                {
+                    if (Interval == 0)
+                    {
+                        return false;
+                    }
+                    else if (Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            public bool ShouldRun
+            {
+                get
+                {
+                    if (GameTimeLastRan == 0)
+                    {
+                        return true;
+                    }
+                    else if (Game.GameTime - GameTimeLastRan > Interval)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            public void Run()
+            {
+                TickToRun();
+                GameTimeLastRan = Game.GameTime;
+                RanThisTick = true;
+            }
         }
     }
 }

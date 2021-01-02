@@ -6,18 +6,16 @@ using System.Drawing;
 
 public class Investigations
 {
-    private IWorld World;
-    private IPlayer CurrentPlayer;
+    private IPoliceRespondable Player;
     private bool PrevIsActive;
     private Vector3 PrevPosition;
     private uint GameTimeStartedInvestigation;
     private uint GameTimeLastInvestigationExpired;
     private Blip blip;
 
-    public Investigations(IPlayer currentPlayer, IWorld world)
+    public Investigations(IPoliceRespondable player)
     {
-        World = world;
-        CurrentPlayer = currentPlayer;
+        Player = player;
     }
     public float Distance { get; private set; } = 800f;
     public Vector3 Position { get; set; }
@@ -116,7 +114,7 @@ public class Investigations
     }
     private void InvestigationTick()
     {
-        if (CurrentPlayer.IsWanted)
+        if (Player.IsWanted)
         {
             IsActive = false;
         }
@@ -124,9 +122,9 @@ public class Investigations
         {
             IsActive = false;
         }
-        else if (!IsActive && CurrentPlayer.CurrentPoliceResponse.HasReportedCrimes)
+        else if (!IsActive && Player.CurrentPoliceResponse.HasReportedCrimes)
         {
-            StartInvestigation(CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime, CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.PoliceHaveDescription);
+            StartInvestigation(Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime, Player.CurrentPoliceResponse.CurrentCrimes.PoliceHaveDescription);
         }
 
         if (PrevPosition != Position)
@@ -137,15 +135,15 @@ public class Investigations
         {
             PoliceInInvestigationModeChanged();
         }
-        if (CurrentPlayer.IsNotWanted && IsActive && NearInvestigationPosition && HaveDescription && CurrentPlayer.AnyPoliceCanRecognizePlayer && CurrentPlayer.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
+        if (Player.IsNotWanted && IsActive && NearInvestigationPosition && HaveDescription && Player.AnyPoliceCanRecognizePlayer && Player.CurrentPoliceResponse.HasBeenNotWantedFor >= 5000)
         {
-            CurrentPlayer.CurrentPoliceResponse.ApplyReportedCrimes();
+            Player.CurrentPoliceResponse.ApplyReportedCrimes();
         }
     }
     private void InvestigationPositionChanged()
     {
         UpdateInvestigationUI();
-        Game.Console.Print(string.Format("InvestigationPosition Changed to: {0}", Position));
+        //Game.Console.Print(string.Format("InvestigationPosition Changed to: {0}", Position));
         PrevPosition = Position;
     }
     private void PoliceInInvestigationModeChanged()
@@ -161,14 +159,14 @@ public class Investigations
             {
                 blip.Delete();
             }
-            if (CurrentPlayer.IsNotWanted)
+            if (Player.IsNotWanted)
             {
                 HaveDescription = false;
             }
             GameTimeStartedInvestigation = 0;
             GameTimeLastInvestigationExpired = Game.GameTime;
         }
-        Game.Console.Print(string.Format("PoliceInInvestigationMode Changed to: {0}", IsActive));
+        //Game.Console.Print(string.Format("PoliceInInvestigationMode Changed to: {0}", IsActive));
         PrevIsActive = IsActive;
     }
     private void UpdateInvestigationUI()

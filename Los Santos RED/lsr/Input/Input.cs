@@ -23,11 +23,11 @@ namespace LosSantosRED.lsr
 {
     public class Input
     {
-        private IPlayer Player;
-        private ISettings Settings;
-        public Input(IPlayer currentPlayer, ISettings settings)
+        private IInputable Player;
+        private ISettingsProvideable Settings;
+        public Input(IInputable player, ISettingsProvideable settings)
         {
-            Player = currentPlayer;
+            Player = player;
             Settings = settings;
         }
         private uint GameTimeStartedHoldingEnter;

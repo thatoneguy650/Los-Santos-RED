@@ -14,8 +14,7 @@ using LosSantosRED.lsr.Interface;
 
 public class CarLockPick
 {
-    private IWorld World;
-    private IPlayer Player;
+    private ICarStealable Player;
     private string Animation = "std_force_entry_ds";
     private int DoorIndex = 0;
     private int WaitTime = 1750;
@@ -24,9 +23,8 @@ public class CarLockPick
     private Vehicle TargetVehicle;
     private int SeatTryingToEnter;
 
-    public CarLockPick(IWorld world, IPlayer player, Vehicle targetVehicle, int seatTryingToEnter)
+    public CarLockPick(ICarStealable player, Vehicle targetVehicle, int seatTryingToEnter)
     {
-        World = world;
         Player = player;
         TargetVehicle = targetVehicle;
         SeatTryingToEnter = seatTryingToEnter;
@@ -37,15 +35,23 @@ public class CarLockPick
         get
         {
             if (!TargetVehicle.Exists())
+            {
                 return false;
+            }
             int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
             VehicleClass VehicleClass = (VehicleClass)intVehicleClass;
-            if (VehicleClass == VehicleClass.Boat || VehicleClass == VehicleClass.Cycle || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycle|| VehicleClass == VehicleClass.Plane || VehicleClass == VehicleClass.Service || VehicleClass == VehicleClass.Helicopter)
+            if (VehicleClass == VehicleClass.Boat || VehicleClass == VehicleClass.Cycle || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Plane || VehicleClass == VehicleClass.Service || VehicleClass == VehicleClass.Helicopter)
+            {
                 return false;//maybe add utility?
+            }
             else if (!TargetVehicle.Doors[0].IsValid() || !TargetVehicle.Doors[1].IsValid())
+            {
                 return false;
+            }
             else
+            {
                 return true;
+            }
         }
     }
 
@@ -62,15 +68,12 @@ public class CarLockPick
                     Game.Console.Print("PickLock Setup Failed");
                     return;
                 }
-
                 if (!LockPickAnimation())
                 {
                     Game.Console.Print("PickLock Animation Failed");
                     return;
                 }
-
                 FinishLockPick();
-
             }, "PickLock");
         }
         catch (Exception e)
@@ -178,31 +181,7 @@ public class CarLockPick
     }
     private bool FinishLockPick()
     {
-       // uint GameTimeStarted = Game.GameTime;
         Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
-
-        //while (!Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 10000)
-        //{
-        //    GameFiber.Yield();
-        //    if (Extensions.IsMoveControlPressed())
-        //    {
-        //        break;
-        //    }
-        //}
-
-        //if (TargetVehicle.Doors[DoorIndex].IsValid())
-        //{
-        //    NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, DoorIndex, 4, 0f);
-        //}
-
-        //if (DoorIndex == 0)//Driver side
-        //{
-        //    GameFiber.Sleep(5000);
-        //}
-        //else
-        //{
-        //    GameFiber.Sleep(8000);//Passenger takes longer
-        //}
         if (Screwdriver != null && Screwdriver.Exists())
             Screwdriver.Delete();
 

@@ -8,25 +8,24 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IWorld
+    public interface ITaskableWorld_Old
     {
         bool AnyArmyUnitsSpawned { get; }
         bool AnyCopsNearPlayer { get; }
         bool AnyHelicopterUnitsSpawned { get; }
         bool AnyNooseUnitsSpawned { get; }
         List<PedExt> CivilianList { get; }
-        bool IsNight { get; }
+     //   bool IsNight { get; }
         List<Cop> PoliceList { get; }
         int TotalSpawnedCops { get; }
         int PoliceHelicoptersCount { get; }
         int PoliceBoatsCount { get; }
-
         void AddEntity(Blip currentWantedCenterBlip);
         void ClearPolice();
         PedExt GetCivilian(uint handle);
         VehicleExt GetVehicle(Vehicle vehicleTryingToEnter);
-        void PauseTime();
-        void UnPauseTime();
+      //  void PauseTime();
+      //  void UnPauseTime();
         int CountNearbyCops(Ped pedestrian);
         bool AnyCopsNearPosition(Vector3 position, float closestSpawnToOtherPoliceAllowed);
         void AddEntity(Cop x);

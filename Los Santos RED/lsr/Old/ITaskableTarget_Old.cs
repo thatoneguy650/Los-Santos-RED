@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IPlayer
+    public interface ITaskableTarget_Old
     {
         bool AnyHumansNear { get; }
         bool AnyPoliceCanHearPlayer { get; set; }
@@ -26,8 +26,10 @@ namespace LosSantosRED.lsr.Interface
         WeaponInformation CurrentWeapon { get; }
         WeaponCategory CurrentWeaponCategory { get; }
         Zone CurrentZone { get; }
+        string DebugString_Drunk { get; }
         bool DiedInVehicle { get; }
         bool HandsAreUp { get; set; }
+        float IntoxicatedIntensity { get; set; }
         Investigations Investigations { get; }
         bool IsAliveAndFree { get; }
         bool IsAttemptingToSurrender { get; }
@@ -38,21 +40,23 @@ namespace LosSantosRED.lsr.Interface
         bool IsCommitingSuicide { get; }
         bool IsConsideredArmed { get; }
         bool IsDead { get; }
-        bool IsIntoxicated { get; set; }
-        float IntoxicatedIntensity { get; set; }
         bool IsHoldingEnter { get; set; }
         bool IsInAirVehicle { get; }
         bool IsInAutomobile { get; }
         bool IsInSearchMode { get; set; }
+        bool IsIntoxicated { get; set; }
         bool IsInVehicle { get; }
         bool IsLockPicking { get; set; }
+        bool IsMale { get; }
         bool IsMoveControlPressed { get; set; }
+        bool IsMoving { get; }
+        bool IsMovingFast { get; }
         bool IsMugging { get; }
         bool IsNotWanted { get; }
         bool IsOffroad { get; }
         bool IsOnMotorcycle { get; }
         bool IsSpeeding { get; }
-        bool IsStationary { get; }
+        bool IsStill { get; }
         bool IsViolatingAnyAudioBasedCivilianReportableCrime { get; }
         bool IsViolatingAnyCivilianReportableCrime { get; }
         bool IsViolatingAnyTrafficLaws { get; }
@@ -60,6 +64,7 @@ namespace LosSantosRED.lsr.Interface
         bool KilledAnyCops { get; }
         string LawsViolatingDisplay { get; }
         int MaxWantedLastLife { get; }
+        string ModelName { get; }
         int Money { get; }
         bool NearCivilianMurderVictim { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; set; }
@@ -76,29 +81,21 @@ namespace LosSantosRED.lsr.Interface
         int TimesDied { get; set; }
         List<VehicleExt> TrackedVehicles { get; }
         int WantedLevel { get; }
-        string DrunkDebug { get; }
-        string ModelName { get; }
-        bool IsMale { get; }
-
+        void Arrest();
         void CommitSuicide();
         void DisplayPlayerNotification();
+        void DrinkBeer();
         void DropWeapon();
         void GiveMoney(int v);
         void Injured(PedExt myPed);
         void Killed(PedExt myPed);
         void LowerHands();
         void RaiseHands();
-        bool RecentlyShot(int v);
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons);
-        void SetCarJacking(bool v);
         void SetPlayerToLastWeapon();
-        void SetShot();
-        void SetSmashedWindow();
         void SetUnarmed();
         void StartSmoking();
-        void StartManualArrest();
-        void UnSetArrestedAnimation(Ped character);
         void StartSmokingPot();
-        void StartDrinking();
+        void UnSetArrestedAnimation(Ped character);
     }
 }

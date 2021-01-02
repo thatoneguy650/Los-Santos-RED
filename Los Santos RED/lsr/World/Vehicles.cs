@@ -19,15 +19,16 @@ public class Vehicles
     private IAgencies Agencies;
     private IPlateTypes PlateTypes;
     private IZoneJurisdictions ZoneJurisdictions;
+    private ISettingsProvideable Settings;
 
-    public Vehicles(IZones zones, IAgencies agencies, IPlateTypes plateTypes, IZoneJurisdictions zoneJurisdictions)
+    public Vehicles(IAgencies agencies,IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
         Zones = zones;
         Agencies = agencies;
         PlateTypes = plateTypes;
         ZoneJurisdictions = zoneJurisdictions;
+        Settings = settings;
     }
-
     public int PoliceHelicoptersCount
     {
         get
@@ -123,8 +124,7 @@ public class Vehicles
     public void AddToList(Vehicle Veh)
     {
         if (Veh.Exists())
-        {
-            
+        { 
             if (Veh.IsPoliceVehicle)
             {
                 if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
@@ -193,7 +193,7 @@ public class Vehicles
             
             if (NewType != null)
             {
-                Game.Console.Print($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}");
+                //Game.Console.Print($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}");
                 string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                 if (NewPlateNumber != "")
                 {
@@ -204,7 +204,7 @@ public class Vehicles
                 NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index);
                 Car.OriginalLicensePlate.PlateType = NewType.Index;
                 Car.CarPlate.PlateType = NewType.Index;
-                // Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                // //Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
             }
         }
         else
@@ -224,7 +224,7 @@ public class Vehicles
                     NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index+1);
                     Car.OriginalLicensePlate.PlateType = NewType.Index;
                     Car.CarPlate.PlateType = NewType.Index;
-                    // Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                    // //Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }
         }
@@ -251,7 +251,7 @@ public class Vehicles
         ToReturn = ModelMatchAgencies.FirstOrDefault();
         if (ToReturn == null)
         {
-            Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
+            //Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
             CopCar.Delete();
         }
         return ToReturn;

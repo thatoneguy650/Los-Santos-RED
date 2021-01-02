@@ -11,11 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 namespace LosSantosRED.lsr
 {
-    public class SearchMode : ISearchMode
+    public class SearchMode
     {
-        private IWorld World;
-        private IPlayer CurrentPlayer;
-        private IPoliceSight Police;
+        private IPoliceRespondable Player;
         private bool areStarsGreyedOut;
         private bool PrevIsInSearchMode;
         private bool PrevIsInActiveMode;
@@ -25,11 +23,9 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastStarsNotGreyedOut;
         private StopVanillaSeachMode StopSearchMode = new StopVanillaSeachMode();
 
-        public SearchMode(IWorld world, IPlayer currentPlayer, IPoliceSight police)
+        public SearchMode(IPoliceRespondable currentPlayer)
         {
-            World = world;
-            CurrentPlayer = currentPlayer;
-            Police = police;
+            Player = currentPlayer;
         }
         public bool AreStarsGreyedOut
         {
@@ -118,14 +114,14 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                return (uint)CurrentPlayer.WantedLevel * 30000;//30 seconds each
+                return (uint)Player.WantedLevel * 30000;//30 seconds each
             }
         }
         public uint CurrentActiveTime
         {
             get
             {
-                return (uint)CurrentPlayer.WantedLevel * 30000;//30 seconds each
+                return (uint)Player.WantedLevel * 30000;//30 seconds each
             }
         }
         public string SearchModeDebug => string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", IsInSearchMode, IsInActiveMode, TimeInSearchMode, TimeInActiveMode);
@@ -146,18 +142,17 @@ namespace LosSantosRED.lsr
         {  
             DetermineMode();
             ToggleModes();
-            CurrentPlayer.IsInSearchMode = IsInSearchMode;
-            //HandleFlashing();
+            Player.IsInSearchMode = IsInSearchMode;
         }
         public void StopVanilla()
         {
-            StopSearchMode.Tick(CurrentPlayer.IsWanted,CurrentPlayer.IsInVehicle);
+            StopSearchMode.Tick(Player.IsWanted,Player.IsInVehicle);
         }
         private void DetermineMode()
         {
-            if (CurrentPlayer.IsWanted)
+            if (Player.IsWanted)
             {
-                if (Police.AnyRecentlySeenPlayer)
+                if (Player.AnyPoliceRecentlySeenPlayer)
                 {
                     IsInActiveMode = true;
                     IsInSearchMode = false;
@@ -211,7 +206,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = Game.GameTime;
             GameTimeStartedActiveMode = 0;
-            Game.Console.Print("SearchMode Start Search Mode");
+            //Game.Console.Print("SearchMode Start Search Mode");
         }
         private void StartActiveMode()
         {
@@ -221,7 +216,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedActiveMode = Game.GameTime;
             GameTimeStartedSearchMode = 0;
-            Game.Console.Print("SearchMode Start Active Mode");
+            //Game.Console.Print("SearchMode Start Active Mode");
         }
         private void EndSearchMode()
         {
@@ -231,8 +226,8 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
-            CurrentPlayer.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
-            Game.Console.Print("SearchMode Stop Search Mode");
+            Player.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
+            //Game.Console.Print("SearchMode Stop Search Mode");
 
         }
         private void AreStarsGreyedOutChanged()
@@ -245,7 +240,7 @@ namespace LosSantosRED.lsr
             {
                 GameTimeLastStarsNotGreyedOut = Game.GameTime;
             }
-            Game.Console.Print(string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
+            //Game.Console.Print(string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
         private class StopVanillaSeachMode
         {
@@ -329,7 +324,7 @@ namespace LosSantosRED.lsr
 
                                                         }.PickRandom();
                         }
-                        Game.Console.Print(string.Format("MoveGhostCopToPosition! CurrentOffset {0}", CurrentOffset));
+                        //Game.Console.Print(string.Format("MoveGhostCopToPosition! CurrentOffset {0}", CurrentOffset));
                     }
                     Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
                     PositionSet = DesiredPosition;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IPoliceTasking
+    public interface IPoliceTasking_Old
     {
         Vector3 PlaceLastSeenPlayer { get; }//tasking scanner
         bool AnyRecentlySeenPlayer { get; }//dispatcher scanner, search mode, tasking

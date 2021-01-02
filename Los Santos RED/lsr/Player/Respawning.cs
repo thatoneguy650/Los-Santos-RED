@@ -13,10 +13,11 @@ using System.Threading.Tasks;
 
 public class Respawning : IRespawning
 {
-    private IPlayer CurrentPlayer;
-    private IWorld World;
+    private IRespawnable CurrentPlayer;
+    private ITimeControllable Time;
+    private IEntityProvideable World;
     private IWeapons Weapons;
-    private ISettings Settings;
+    private ISettingsProvideable Settings;
     private IPlacesOfInterest PlacesOfInterest;
 
     private int BailFee;
@@ -29,8 +30,9 @@ public class Respawning : IRespawning
     private uint GameTimeLastUndied;
     private int HospitalBillPastDue;
 
-    public Respawning(IWorld world, IPlayer currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettings settings)
+    public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
+        Time = time;
         World = world;
         CurrentPlayer = currentPlayer;
         Weapons = weapons;
@@ -154,7 +156,7 @@ public class Respawning : IRespawning
         {
             PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
         }
-        SetPlayerAtLocation(PlaceToSpawn);   
+        SetPlayerAtLocation(PlaceToSpawn);
         World.ClearPolice(); 
         FadeIn();
         SetHospitalFee(PlaceToSpawn.Name);
@@ -274,12 +276,12 @@ public class Respawning : IRespawning
             ResurrectPlayer(resetTimesDied);
             ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons);    
             Game.HandleRespawn();
-            World.UnPauseTime();
+            Time.UnPauseTime();
             GameTimeLastRespawned = Game.GameTime;
         }
         catch (Exception e)
         {
-            Game.Console.Print("RespawnInPlace" + e.Message + e.StackTrace);
+            //Game.Console.Print("RespawnInPlace" + e.Message + e.StackTrace);
         }
     }
     private void ResurrectPlayer(bool resetTimesDied)
