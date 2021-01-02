@@ -13,15 +13,9 @@ using System.Threading.Tasks;
 
 public class Respawning : IRespawning
 {
-    private IRespawnable CurrentPlayer;
-    private ITimeControllable Time;
-    private IEntityProvideable World;
-    private IWeapons Weapons;
-    private ISettingsProvideable Settings;
-    private IPlacesOfInterest PlacesOfInterest;
-
     private int BailFee;
     private int BailFeePastDue;
+    private IRespawnable CurrentPlayer;
     private uint GameTimeLastBribedPolice;
     private uint GameTimeLastDischargedFromHospital;
     private uint GameTimeLastResistedArrest;
@@ -29,7 +23,11 @@ public class Respawning : IRespawning
     private uint GameTimeLastSurrenderedToPolice;
     private uint GameTimeLastUndied;
     private int HospitalBillPastDue;
-
+    private IPlacesOfInterest PlacesOfInterest;
+    private ISettingsProvideable Settings;
+    private ITimeControllable Time;
+    private IWeapons Weapons;
+    private IEntityProvideable World;
     public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         Time = time;
@@ -39,79 +37,9 @@ public class Respawning : IRespawning
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
     }
-
-    public bool RecentlyBribedPolice
-    {
-        get
-        {
-            if (GameTimeLastBribedPolice == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastBribedPolice <= 10000)
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool RecentlyDischargedFromHospital
-    {
-        get
-        {
-            if (GameTimeLastDischargedFromHospital == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastDischargedFromHospital <= 5000)
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool RecentlyResistedArrest
-    {
-        get
-        {
-            if (GameTimeLastResistedArrest == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastResistedArrest <= 5000)
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool RecentlyRespawned
-    {
-        get
-        {
-            if (GameTimeLastRespawned == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastRespawned <= 1000)
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool RecentlySurrenderedToPolice
-    {
-        get
-        {
-            if (GameTimeLastSurrenderedToPolice == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastSurrenderedToPolice <= 5000)
-                return true;
-            else
-                return false;
-        }
-    }
-    public bool RecentlyUndied
-    {
-        get
-        {
-            if (GameTimeLastUndied == 0)
-                return false;
-            else if (Game.GameTime - GameTimeLastUndied <= 5000)
-                return true;
-            else
-                return false;
-        }
-    }
+    public bool RecentlyBribedPolice => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastBribedPolice <= 10000;
+    public bool RecentlyRespawned => GameTimeLastRespawned != 0 && Game.GameTime - GameTimeLastRespawned <= 1000;
+    public bool RecentlySurrenderedToPolice => GameTimeLastSurrenderedToPolice != 0 && Game.GameTime - GameTimeLastSurrenderedToPolice <= 5000;
     public void BribePolice(int Amount)
     {
         if (CurrentPlayer.Money < Amount)
@@ -124,7 +52,7 @@ public class Respawning : IRespawning
             CurrentPlayer.GiveMoney(-1 * Amount);
         }
         else
-        {       
+        {
             ResetPlayer(true, false, false, false);
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
             CurrentPlayer.GiveMoney(-1 * Amount);
@@ -136,12 +64,30 @@ public class Respawning : IRespawning
         ResetPlayer(false, false, false, false);
         GameTimeLastResistedArrest = Game.GameTime;
     }
+    public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted)
+    {
+        if (CurrentPlayer.CanUndie)
+        {
+            Respawn(resetWanted, true, false, false);
+            CurrentPlayer.CurrentPoliceResponse.SetWantedLevel(CurrentPlayer.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
+            if (withInvicibility)
+            {
+                Game.LocalPlayer.Character.IsInvincible = true;
+                GameFiber.StartNew(delegate
+                {
+                    GameFiber.Sleep(5000);
+                    Game.LocalPlayer.Character.IsInvincible = false;
+                });
+            }
+            GameTimeLastUndied = Game.GameTime;
+        }
+    }
     public void RespawnAtGrave()
     {
         FadeOut();
         Respawn(true, true, true, true);
         GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
-        SetPlayerAtLocation(PlaceToSpawn);     
+        SetPlayerAtLocation(PlaceToSpawn);
         World.ClearPolice();
         Game.LocalPlayer.Character.IsRagdoll = true;
         FadeIn();
@@ -157,25 +103,10 @@ public class Respawning : IRespawning
             PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
         }
         SetPlayerAtLocation(PlaceToSpawn);
-        World.ClearPolice(); 
+        World.ClearPolice();
         FadeIn();
         SetHospitalFee(PlaceToSpawn.Name);
         GameTimeLastDischargedFromHospital = Game.GameTime;
-    }
-    public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted)
-    {
-        Respawn(resetWanted, true, false, false);
-        CurrentPlayer.CurrentPoliceResponse.SetWantedLevel(CurrentPlayer.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
-        if (withInvicibility)
-        {
-            Game.LocalPlayer.Character.IsInvincible = true;
-            GameFiber.StartNew(delegate
-            {
-                GameFiber.Sleep(5000);
-                Game.LocalPlayer.Character.IsInvincible = false;
-            });
-        }
-        GameTimeLastUndied = Game.GameTime;
     }
     public void SurrenderToPolice(GameLocation PoliceStation)
     {
@@ -183,7 +114,7 @@ public class Respawning : IRespawning
         CheckWeapons();
         BailFee = CurrentPlayer.MaxWantedLastLife * Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         CurrentPlayer.RaiseHands();
-        ResetPlayer(true, true,false,true);
+        ResetPlayer(true, true, false, true);
         if (PoliceStation == null)
         {
             PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
@@ -267,21 +198,20 @@ public class Respawning : IRespawning
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
-        //Audio.Instance.Abort();//moved into the scanner abort function
     }
     private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons)
     {
         try
         {
             ResurrectPlayer(resetTimesDied);
-            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons);    
+            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons);
             Game.HandleRespawn();
             Time.UnPauseTime();
             GameTimeLastRespawned = Game.GameTime;
         }
         catch (Exception e)
         {
-            //Game.Console.Print("RespawnInPlace" + e.Message + e.StackTrace);
+            Game.Console.Print("RespawnInPlace" + e.Message + e.StackTrace);
         }
     }
     private void ResurrectPlayer(bool resetTimesDied)
@@ -309,10 +239,8 @@ public class Respawning : IRespawning
     {
         int HospitalFee = Settings.SettingsManager.Police.HospitalFee * (1 + CurrentPlayer.MaxWantedLastLife);
         int CurrentCash = CurrentPlayer.Money;
-        int TodaysPayment = 0;
-
         int TotalNeededPayment = HospitalFee + HospitalBillPastDue;
-
+        int TodaysPayment;
         if (TotalNeededPayment > CurrentCash)
         {
             HospitalBillPastDue = TotalNeededPayment - CurrentCash;
@@ -323,9 +251,7 @@ public class Respawning : IRespawning
             HospitalBillPastDue = 0;
             TodaysPayment = TotalNeededPayment;
         }
-
         Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}", HospitalFee, TodaysPayment, HospitalBillPastDue));
-
         CurrentPlayer.GiveMoney(-1 * TodaysPayment);
     }
     private void SetPlayerAtLocation(GameLocation ToSet)
@@ -341,10 +267,8 @@ public class Respawning : IRespawning
     private void SetPoliceFee(string PoliceStationName, int BailFee)
     {
         int CurrentCash = CurrentPlayer.Money;
-        int TodaysPayment = 0;
-
         int TotalNeededPayment = BailFee + BailFeePastDue;
-
+        int TodaysPayment;
         if (TotalNeededPayment > CurrentCash)
         {
             BailFeePastDue = TotalNeededPayment - CurrentCash;
@@ -355,7 +279,6 @@ public class Respawning : IRespawning
             BailFeePastDue = 0;
             TodaysPayment = TotalNeededPayment;
         }
-
         bool LesterHelp = RandomItems.RandomPercent(20);
         if (!LesterHelp)
         {

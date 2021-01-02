@@ -16,6 +16,7 @@ namespace LosSantosRED.lsr.Interface
         bool KilledAnyCops { get; }
         int TimesDied { get; set; }
         bool DiedInVehicle { get; }
+        bool CanUndie { get; }
 
         void GiveMoney(int v);
         void UnSetArrestedAnimation(Ped character);

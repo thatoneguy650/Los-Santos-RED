@@ -1,16 +1,19 @@
-﻿using LosSantosRED.lsr;
+﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using RAGENativeUI.Elements;
 using System;
 using System.Drawing;
-using LosSantosRED.lsr;
-using LosSantosRED.lsr.Interface;
 
 public class UI
 {
+    private BigMessageThread BigMessage;
+    private uint GameTimeLastDisplayedBleedingHelp;
     private IDisplayable Player;
     private ISettingsProvideable Settings;
+    private bool StartedBandagingEffect = false;
+    private bool StartedBustedEffect = false;
+    private bool StartedDeathEffect = false;
     private IZoneJurisdictions ZoneJurisdictions;
     public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IZoneJurisdictions zoneJurisdictions)
     {
@@ -19,11 +22,6 @@ public class UI
         ZoneJurisdictions = zoneJurisdictions;
         BigMessage = new BigMessageThread(true);
     }
-    private BigMessageThread BigMessage;
-    private uint GameTimeLastDisplayedBleedingHelp;
-    private bool StartedBandagingEffect = false;
-    private bool StartedBustedEffect = false;
-    private bool StartedDeathEffect = false;
     private enum GTAFont
     {
         FontChaletLondon = 0,
@@ -66,6 +64,31 @@ public class UI
         Left = 1,
         Right = 2,
     };
+    public string GetName(Zone MyZone, bool WithCounty)
+    {
+        if (WithCounty)
+        {
+            string CountyName = "San Andreas";
+            if (MyZone.ZoneCounty == County.BlaineCounty)
+                CountyName = "Blaine County";
+            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
+                CountyName = "City of Los Santos";
+            else if (MyZone.ZoneCounty == County.LosSantosCounty)
+                CountyName = "Los Santos County";
+            else if (MyZone.ZoneCounty == County.Crook)
+                CountyName = "Crook County";
+            else if (MyZone.ZoneCounty == County.NorthYankton)
+                CountyName = "North Yankton";
+            else if (MyZone.ZoneCounty == County.Vice)
+                CountyName = "Vice County";
+
+            return MyZone.DisplayName + ", " + CountyName;
+        }
+        else
+        {
+            return MyZone.DisplayName;
+        }
+    }
     public void Update()
     {
         if (Settings.SettingsManager.General.AlwaysShowHUD)
@@ -88,7 +111,7 @@ public class UI
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
-        if (Settings.SettingsManager.UI.Enabled && !Player.IsBusted && !Player.IsDead)
+        if (Settings.SettingsManager.UI.Enabled && Player.IsAliveAndFree)
         {
             ShowUI();
         }
@@ -108,40 +131,15 @@ public class UI
             NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, Y);
         }
         else
+        {
             NativeFunction.CallByName<bool>("SET_TEXT_WRAP", 0f, 1f);
-
+        }
         NativeFunction.CallByHash<uint>(0x25fbb336df1804cb, "STRING");
         NativeFunction.CallByHash<uint>(0x25FBB336DF1804CB, TextToShow);
         NativeFunction.CallByHash<uint>(0x6C188BE134E074AA, TextToShow);
         NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
         return;
     }
-    //private string GetPlayerStatusDisplay()
-    //{
-    //    string PlayerStatusLine = "";
-    //    if (CurrentPlayer.IsPersonOfInterest)
-    //    {
-    //        if (CurrentPlayer.IsWanted)
-    //        {
-    //            PlayerStatusLine = "~r~Wanted~s~";
-    //        }
-    //        else if (CurrentPlayer.CurrentPoliceResponse.HasBeenNotWantedFor <= 45000)
-    //        {
-    //            PlayerStatusLine = "~o~Wanted~s~";
-    //        }
-    //        else
-    //            PlayerStatusLine = "~y~Wanted~s~";
-    //    }
-    //    if (CurrentPlayer.IsWanted)
-    //    {
-    //        string AgenciesChasingPlayer = Mod.World.Instance.AgenciesChasingPlayer;
-    //        if (AgenciesChasingPlayer != "")
-    //        {
-    //            PlayerStatusLine += " (" + AgenciesChasingPlayer + "~s~)";
-    //        }
-    //    }
-    //    return PlayerStatusLine;
-    //}
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
@@ -172,18 +170,15 @@ public class UI
                 {
                     ColorPrefx = "~r~";
                 }
-
                 if (Player.CurrentStreet != null)
                 {
                     PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Player.CurrentStreet.SpeedLimit);
                 }
             }
-
             if (Player.IsViolatingAnyTrafficLaws)
             {
                 PlayerSpeedLine += " !";
             }
-
             PlayerSpeedLine += "~n~" + Player.CurrentVehicle.FuelTank.UIText;
         }
         return PlayerSpeedLine;
@@ -194,9 +189,8 @@ public class UI
         {
             return "";
         }
-        string ZoneDisplay = "";
         string CopZoneName = "";
-        ZoneDisplay = GetName(Player.CurrentZone, true);
+        string ZoneDisplay = GetName(Player.CurrentZone, true);
         if (Player.CurrentZone != null)
         {
             Agency MainZoneAgency = ZoneJurisdictions.GetMainAgency(Player.CurrentZone.InternalGameName);
@@ -207,32 +201,6 @@ public class UI
         }
         ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
         return ZoneDisplay;
-    }
-    public string GetName(Zone MyZone, bool WithCounty)
-    {
-        if (WithCounty)
-        {
-            string CountyName = "San Andreas";
-            if (MyZone.ZoneCounty == County.BlaineCounty)
-                CountyName = "Blaine County";
-            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
-                CountyName = "City of Los Santos";
-            else if (MyZone.ZoneCounty == County.LosSantosCounty)
-                CountyName = "Los Santos County";
-            else if (MyZone.ZoneCounty == County.Crook)
-                CountyName = "Crook County";
-            else if (MyZone.ZoneCounty == County.NorthYankton)
-                CountyName = "North Yankton";
-            else if (MyZone.ZoneCounty == County.Vice)
-                CountyName = "Vice County";
-
-            return MyZone.DisplayName + ", " + CountyName;
-        }
-        else
-        {
-            return MyZone.DisplayName;
-        }
-
     }
     private void HideVanillaUI()
     {
@@ -266,24 +234,9 @@ public class UI
                 StartedBustedEffect = true;
             }
         }
-        //else if (Mod.World.Instance.Wounds.IsPlayerBleeding)
-        //{
-        //    if (!StartedBandagingEffect)
-        //    {
-        //        NativeFunction.Natives.x80C8B1846639BB19(1);
-        //        NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingIn", 0, false);
-        //        BigMessage.MessageInstance.ShowColoredShard("BLEEDING", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 1500);
-        //        StartedBandagingEffect = true;
-        //    }
-        //}
         else
         {
-            if (StartedBandagingEffect)
-            {
-                NativeFunction.Natives.x2206BF9A37B7F724("DrugsDrivingOut", 0, false);
-            }
             StartedBustedEffect = false;
-            StartedBandagingEffect = false;
             StartedDeathEffect = false;
             NativeFunction.Natives.xB4EDDC19532BFB85();
             NativeFunction.Natives.x80C8B1846639BB19(0);
@@ -291,50 +244,19 @@ public class UI
     }
     private void ShowDebugUI()
     {
-        //int Lines = 0;
-        //foreach(string LogMessage in Debugging.LogMessages)
-        //{
-        //    DisplayTextOnScreen(LogMessage, Lines * 0.02f, 0.0f, 0.23f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        //    Lines++;
-        //}
-
-        // Lines++;
         float StartingPoint = 0.1f;
-        string DebugLine = $"{Player.DebugString_State}";
-        DisplayTextOnScreen(DebugLine, StartingPoint + 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine1 = string.Format($"{Player.DebugString_Drunk}");
-        DisplayTextOnScreen(DebugLine1, StartingPoint + 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine2 = string.Format("{0}", Player.DebugString_SearchMode);
-        DisplayTextOnScreen(DebugLine2, StartingPoint + 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine3 = string.Format($"{Player.DebugString_ModelInfo}");
-        DisplayTextOnScreen(DebugLine3, StartingPoint + 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine4 = string.Format("CrimesObs {0}", Player.DebugString_ObservedCrimes);
-        DisplayTextOnScreen(DebugLine4, StartingPoint + 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine5 = string.Format("CrimesRep {0}", Player.DebugString_ReportedCrimes);
-        DisplayTextOnScreen(DebugLine5, StartingPoint + 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        string DebugLine6 = string.Format("{0}", Player.LawsViolatingDisplay);
-        DisplayTextOnScreen(DebugLine6, StartingPoint + 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-
-        //float Between = 0.01f;
-        //float Start = 0.15f;
-        //foreach (string Line in Mod.PedDamageManager.AllPedDamageList)
-        //{
-        //    DisplayTextOnScreen(Line, Start, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
-        //    Start = Start + Between;
-        //}
+        DisplayTextOnScreen($"{Player.DebugString_State}", StartingPoint + 0.01f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"{Player.DebugString_Drunk}", StartingPoint + 0.02f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"{Player.DebugString_SearchMode}", StartingPoint + 0.03f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"{Player.DebugString_ModelInfo}", StartingPoint + 0.04f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"CrimesObs {Player.DebugString_ObservedCrimes}", StartingPoint + 0.05f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"CrimesRep {Player.DebugString_ReportedCrimes}", StartingPoint + 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"{Player.DebugString_LawsViolating}", StartingPoint + 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
     private void ShowUI()
     {
         ShowDebugUI();
         HideVanillaUI();
-
-        //DisplayTextOnScreen(GetPlayerStatusDisplay(), DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusPositionX, DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusPositionY, DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)DataMart.Instance.Settings.SettingsManager.UI.PlayerStatusJustificationID);
         DisplayTextOnScreen(GetVehicleStatusDisplay(), Settings.SettingsManager.UI.VehicleStatusPositionX, Settings.SettingsManager.UI.VehicleStatusPositionY, Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UI.VehicleStatusJustificationID);
         DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UI.ZonePositionX, Settings.SettingsManager.UI.ZonePositionY, Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.ZoneJustificationID);
         DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UI.StreetPositionX, Settings.SettingsManager.UI.StreetPositionY, Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.StreetJustificationID);

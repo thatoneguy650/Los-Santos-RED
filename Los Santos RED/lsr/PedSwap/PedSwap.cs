@@ -57,6 +57,11 @@ public class PedSwap : IPedswappable
     {
         try
         {
+            if(Player.IsWanted)
+            {
+                Game.DisplayNotification("Lose your wanted level first");
+                return;
+            }
             Ped TargetPed = FindPedToSwapWith(Radius, Nearest);
             if (TargetPed == null)
             {

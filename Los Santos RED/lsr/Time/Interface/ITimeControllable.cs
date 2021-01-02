@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface ITimeControllable//probably get right off, has smell
+    public interface ITimeControllable
     {
         bool IsNight { get; }
         void UnPauseTime();

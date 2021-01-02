@@ -11,20 +11,20 @@ namespace LosSantosRED.lsr.Interface
     {
         Street CurrentCrossStreet { get; }
         VehicleExt CurrentSeenVehicle { get; }
-        WeaponInformation CurrentSeenWeapon { get; }
         Street CurrentStreet { get; }
         VehicleExt CurrentVehicle { get; }
         Zone CurrentZone { get; }
+        string DebugString_Drunk { get; }
+        string DebugString_LawsViolating { get; }
         string DebugString_ModelInfo { get; }
         string DebugString_ObservedCrimes { get; }
         string DebugString_ReportedCrimes { get; }
         string DebugString_SearchMode { get; }
         string DebugString_State { get; }
-        string DebugString_Drunk { get; }
-        bool IsBusted { get; }
+        bool IsAliveAndFree { get; }
         bool IsDead { get; }
+        bool IsBusted { get; }
         bool IsSpeeding { get; }
         bool IsViolatingAnyTrafficLaws { get; }
-        string LawsViolatingDisplay { get; }
     }
 }

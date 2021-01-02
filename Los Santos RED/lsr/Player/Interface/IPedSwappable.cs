@@ -9,7 +9,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IPedSwappable
     {
         int Money { get; }
-
+        bool IsWanted { get; }
         void SetUnarmed();
         void DisplayPlayerNotification();
     }

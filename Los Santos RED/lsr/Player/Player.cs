@@ -18,6 +18,7 @@ namespace Mod
         private ConsumeActivity CurrentConsumingActivity;//temp here for UI debugging
         private HealthState CurrentHealth;
         private LocationData CurrentLocation;
+        private IEntityProvideable EntityProvider;
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
         private uint GameTimeLastHurtCivilian;
@@ -35,7 +36,6 @@ namespace Mod
         private Mugging Mugging;
         private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
         private List<PedExt> PlayerKilledCops = new List<PedExt>();
-        private IEntityProvideable EntityProvider;
         private SearchMode SearchMode;
         private ISettingsProvideable Settings;
         private IStreets Streets;
@@ -96,6 +96,7 @@ namespace Mod
         public WeaponHash CurrentWeaponHash { get; set; }
         public Zone CurrentZone => CurrentLocation.CurrentZone;
         public string DebugString_Drunk => CurrentConsumingActivity != null ? CurrentConsumingActivity.DebugString : "";
+        public string DebugString_LawsViolating => Violations.LawsViolatingDisplay;
         public string DebugString_ModelInfo => $"{ModelName} {IsMale}";
         public string DebugString_ObservedCrimes => CurrentPoliceResponse.CrimesObservedJoined;
         public string DebugString_ReportedCrimes => CurrentPoliceResponse.CrimesReportedJoined;
@@ -159,6 +160,7 @@ namespace Mod
                 }
             }
         }
+        public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit;
         public bool IsLockPicking { get; set; }
         public bool IsMale { get; set; }
         public bool IsMobileRadioEnabled { get; private set; }
@@ -179,7 +181,6 @@ namespace Mod
         public bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
         public bool KilledAnyCops => PlayerKilledCops.Any();
         public WeaponHash LastWeaponHash { get; set; }
-        public string LawsViolatingDisplay => Violations.LawsViolatingDisplay;
         public int MaxWantedLastLife { get; set; }
         public string ModelName { get; set; }
         public int Money
@@ -292,6 +293,16 @@ namespace Mod
                 CurrentConsumingActivity = new DrinkingActivity(this);
                 CurrentConsumingActivity.Start();
             }
+        }
+        public void ChangePlate()
+        {
+            PlateTheft plateTheft = new PlateTheft(this);
+            plateTheft.ChangePlate(SpareLicensePlates[0]);//this isnt gonna work
+        }
+        public void RemovePlate()
+        {
+            PlateTheft plateTheft = new PlateTheft(this);
+            plateTheft.RemovePlate();
         }
         public void DropWeapon()
         {

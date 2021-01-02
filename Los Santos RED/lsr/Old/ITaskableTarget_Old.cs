@@ -62,7 +62,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsViolatingAnyTrafficLaws { get; }
         bool IsWanted { get; }
         bool KilledAnyCops { get; }
-        string LawsViolatingDisplay { get; }
+        string DebugString_LawsViolating { get; }
         int MaxWantedLastLife { get; }
         string ModelName { get; }
         int Money { get; }
