@@ -10,7 +10,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IRespawnable
     {
         int Money { get; }
-        PoliceResponse CurrentPoliceResponse { get; }
+        PoliceResponse PoliceResponse { get; }
         int MaxWantedLastLife { get; set; }
         int WantedLevel { get; }
         bool KilledAnyCops { get; }

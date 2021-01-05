@@ -1,5 +1,6 @@
 ﻿using LSR.Vehicles;
 using Rage;
+using System;
 using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Interface
@@ -12,7 +13,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceRecentlySeenPlayer { get; set; }
         bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         Street CurrentCrossStreet { get; }
-        PoliceResponse CurrentPoliceResponse { get; }
+        PoliceResponse PoliceResponse { get; set; }//should not be
         VehicleExt CurrentSeenVehicle { get; }
         WeaponInformation CurrentSeenWeapon { get; }
         Street CurrentStreet { get; }
@@ -20,7 +21,7 @@ namespace LosSantosRED.lsr.Interface
         WeaponInformation CurrentWeapon { get; }
         WeaponCategory CurrentWeaponCategory { get; }
         Zone CurrentZone { get; }
-        Investigations Investigations { get; }
+        Investigation Investigation { get; }
         bool IsAliveAndFree { get; }
         bool IsBustable { get; }
         bool IsBusted { get; }
@@ -44,8 +45,15 @@ namespace LosSantosRED.lsr.Interface
         uint TimeInSearchMode { get; }
         bool StarsRecentlyGreyedOut { get; }
         bool StarsRecentlyActive { get; }
+        event EventHandler CitizenReportedCrime;
+
+        event EventHandler BecameWanted;
+        event EventHandler LostWanted;
+        event EventHandler WantedLevelIncreased;
         void Injured(PedExt myPed);
-        void Killed(PedExt myPed);
+        void Murdered(PedExt myPed);
         void Arrest();
+        void StoreCriminalHistory();
+        void AddCrime(Crime crime, bool v1, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool v2);
     }
 }

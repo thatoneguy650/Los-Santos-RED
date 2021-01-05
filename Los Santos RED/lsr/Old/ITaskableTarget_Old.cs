@@ -17,7 +17,7 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         List<Crime> CivilianReportableCrimesViolating { get; }
         Street CurrentCrossStreet { get; }
-        PoliceResponse CurrentPoliceResponse { get; }
+        PoliceResponse PoliceResponse { get; }
         Vector3 CurrentPosition { get; }
         VehicleExt CurrentSeenVehicle { get; }
         WeaponInformation CurrentSeenWeapon { get; }
@@ -30,7 +30,7 @@ namespace LosSantosRED.lsr.Interface
         bool DiedInVehicle { get; }
         bool HandsAreUp { get; set; }
         float IntoxicatedIntensity { get; set; }
-        Investigations Investigations { get; }
+        Investigation Investigation { get; }
         bool IsAliveAndFree { get; }
         bool IsAttemptingToSurrender { get; }
         bool IsBreakingIntoCar { get; }
@@ -88,7 +88,7 @@ namespace LosSantosRED.lsr.Interface
         void DropWeapon();
         void GiveMoney(int v);
         void Injured(PedExt myPed);
-        void Killed(PedExt myPed);
+        void Murdered(PedExt myPed);
         void LowerHands();
         void RaiseHands();
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons);

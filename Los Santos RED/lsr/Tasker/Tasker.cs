@@ -30,7 +30,7 @@ public class Tasker
                 {
                     if (Cop.DistanceToPlayer <= 200f)
                     {
-                        if (Player.CurrentPoliceResponse.IsDeadlyChase)
+                        if (Player.PoliceResponse.IsDeadlyChase)
                         {
                             //Kill?
                         }

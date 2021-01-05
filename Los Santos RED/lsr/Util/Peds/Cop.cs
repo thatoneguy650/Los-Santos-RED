@@ -102,7 +102,7 @@ public class Cop : PedExt
             {
                 Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
             }
-            else if (currentPlayer.IsWanted && !currentPlayer.CurrentPoliceResponse.IsDeadlyChase)
+            else if (currentPlayer.IsWanted && !currentPlayer.PoliceResponse.IsDeadlyChase)
             {
                 Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
             }
@@ -110,7 +110,7 @@ public class Cop : PedExt
             {
                 Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom());
             }
-            else if (currentPlayer.CurrentPoliceResponse.IsDeadlyChase)
+            else if (currentPlayer.PoliceResponse.IsDeadlyChase)
             {
                 Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom());
             }

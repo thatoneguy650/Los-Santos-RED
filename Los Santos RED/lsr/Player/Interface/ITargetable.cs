@@ -19,7 +19,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsStill { get; }
         bool IsMovingFast { get; }
         bool IsWanted { get; }
-        PoliceResponse CurrentPoliceResponse { get; }
+        PoliceResponse PoliceResponse { get; }
         bool IsInSearchMode { get; }
         float ActiveDistance { get; }
     }

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface ITimeControllable : ITimeReportable
+    public interface ITimeReportable
     {
         bool IsNight { get; }
-        void UnPauseTime();
-        void PauseTime();
     }
 }

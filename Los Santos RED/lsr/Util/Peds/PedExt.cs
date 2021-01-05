@@ -424,7 +424,7 @@ public class PedExt : IComplexTaskable
     {
         if (Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsRagdoll)
         {
-            PlayerToCheck.CurrentPoliceResponse.CurrentCrimes.AddCrime(CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 20f);
+            PlayerToCheck.AddCrime(CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 20f);
             CrimesWitnessed.Clear();
             GameTimeLastReportedCrime = Game.GameTime;
             Pedestrian.IsPersistent = false;

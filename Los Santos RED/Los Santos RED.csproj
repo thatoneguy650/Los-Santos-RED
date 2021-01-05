@@ -116,6 +116,7 @@
     <Compile Include="lsr\Dispatcher\IssuableWeapon.cs" />
     <Compile Include="lsr\Dispatcher\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
+    <Compile Include="lsr\Time\Interface\ITimeReportable.cs" />
     <Compile Include="lsr\Util\ModTask.cs" />
     <Compile Include="lsr\Helper\Natives.cs" />
     <Compile Include="lsr\Helper\Serialization.cs" />
@@ -200,10 +201,9 @@
     <Compile Include="lsr\Util\Crimes\CrimeEvent.cs" />
     <Compile Include="lsr\Scanner\AudioSet.cs" />
     <Compile Include="lsr\Data\CountyJurisdictions.cs" />
-    <Compile Include="lsr\Util\Crimes\CriminalHistory.cs" />
     <Compile Include="lsr\Dispatcher\Dispatcher.cs" />
-    <Compile Include="lsr\Player\Investigations.cs" />
-    <Compile Include="lsr\Player\ArrestWarrant.cs" />
+    <Compile Include="lsr\Player\Investigation.cs" />
+    <Compile Include="lsr\Player\CriminalHistory.cs" />
     <Compile Include="lsr\Scanner\Scanner.cs" />
     <Compile Include="lsr\Scanner\PoliceScannerCallIn.cs" />
     <Compile Include="lsr\Player\SearchMode.cs" />

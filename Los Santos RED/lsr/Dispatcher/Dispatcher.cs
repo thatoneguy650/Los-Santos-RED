@@ -73,9 +73,9 @@ public class Dispatcher
                     return 550f;
                 }
             }
-            else if (Player.Investigations.IsActive)
+            else if (Player.Investigation.IsActive)
             {
-                return Player.Investigations.Distance;
+                return Player.Investigation.Distance;
             }
             else
             {
@@ -98,9 +98,9 @@ public class Dispatcher
                     return 400f - (Player.WantedLevel * -40);
                 }
             }
-            else if (Player.Investigations.IsActive)
+            else if (Player.Investigation.IsActive)
             {
-                return Player.Investigations.Distance / 2;
+                return Player.Investigation.Distance / 2;
             }
             else
             {
@@ -112,7 +112,7 @@ public class Dispatcher
     {
         get
         {
-            if (Player.Investigations.IsActive)
+            if (Player.Investigation.IsActive)
             {
                 return 9;//6
             }
@@ -297,9 +297,9 @@ public class Dispatcher
         {
             Position = Game.LocalPlayer.Character.GetOffsetPositionFront(250f);//350f
         }
-        else if (Player.Investigations.IsActive)
+        else if (Player.Investigation.IsActive)
         {
-            Position = Player.Investigations.Position;
+            Position = Player.Investigation.Position;
         }
         else
         {

@@ -69,8 +69,6 @@ public class Menu
     private UIMenu settingsMenuPolice;
     private UIMenu settingsMenuTrafficViolations;
     private UIMenu settingsMenuUISettings;
-    private bool ShownBustedMenuThisBust;
-    private bool ShownDeathMenuThisDeath;
     private IWeapons Weapons;
     public Menu(IActionable player, IPedswappable pedSwap, IRespawning respawning, ISettingsProvideable settings, IWeapons weapons, IPlacesOfInterest placesOfInterest)
     {
@@ -102,6 +100,24 @@ public class Menu
         debugMenu.OnItemSelect += DebugMenuSelect;
         debugMenu.OnListChange += OnListChange;
         debugMenu.OnCheckboxChange += OnCheckboxChange;
+        Player.Busted += OnBusted;
+        Player.Killed += OnDeath;
+    }
+    private void OnDeath(object sender, EventArgs e)
+    {
+        GameFiber Transition = GameFiber.StartNew(delegate
+        {
+            GameFiber.Sleep(2000);
+            ShowDeathMenu();
+        }, "TransitionIn");
+    }
+    private void OnBusted(object sender, EventArgs e)
+    {
+        GameFiber Transition = GameFiber.StartNew(delegate
+        {
+            GameFiber.Sleep(2000);
+            ShowBustedMenu();
+        }, "TransitionIn");
     }
     public string CurrentScreenEffect { get; set; }
     public int SelectedPlateIndex { get; set; }
@@ -209,29 +225,6 @@ public class Menu
             }
         }
         menuPool.ProcessMenus();
-        if (Player.IsBusted && !ShownBustedMenuThisBust)
-        {
-            ShownBustedMenuThisBust = true;
-            var HandleBusted = GameFiber.StartNew(delegate
-            {
-                GameFiber.Wait(1000);
-                ShowBustedMenu();
-            }, "HandleBusted");
-        }
-        if (Player.IsDead && !ShownDeathMenuThisDeath)
-        {
-            ShownDeathMenuThisDeath = true;
-            var HandleDeath = GameFiber.StartNew(delegate
-            {
-                GameFiber.Wait(1000);
-                ShowDeathMenu();
-            }, "HandleDeath");
-        }
-        if (!Player.IsDead && !Player.IsBusted)
-        {
-            ShownBustedMenuThisBust = false;
-            ShownDeathMenuThisDeath = false;
-        }
     }
     private void ActionsMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

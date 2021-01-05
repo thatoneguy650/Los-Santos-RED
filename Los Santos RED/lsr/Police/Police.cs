@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr
             foreach (Cop Cop in World.PoliceList)
             {
                 Cop.Update(Player, Player.PlacePoliceLastSeenPlayer);
-                Cop.UpdateLoadout(Player.CurrentPoliceResponse.IsDeadlyChase, Player.WantedLevel);
+                Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
                 Cop.UpdateSpeech(Player);
             }
         }
@@ -56,7 +56,7 @@ namespace LosSantosRED.lsr
             {
                 if (!Player.AnyPoliceSeenPlayerCurrentWanted)
                 {
-                    Player.PlacePoliceLastSeenPlayer = Player.CurrentPoliceResponse.PlaceWantedStarted;
+                    Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceWantedStarted;
                 }
                 else if (!Player.IsInSearchMode)
                 {
@@ -65,9 +65,9 @@ namespace LosSantosRED.lsr
             }
             else
             {
-                if (Player.IsInSearchMode && Player.CurrentPoliceResponse.HasReportedCrimes && Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime != Vector3.Zero)
+                if (Player.IsInSearchMode && Player.PoliceResponse.HasReportedCrimes && Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero)
                 {
-                    Player.PlacePoliceLastSeenPlayer = Player.CurrentPoliceResponse.CurrentCrimes.PlaceLastReportedCrime;
+                    Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
                 }
             }
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);

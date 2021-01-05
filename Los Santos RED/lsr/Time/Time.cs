@@ -13,7 +13,7 @@ namespace Mod
 {
 
 
-    public class Time : ITimeControllable
+    public class Time : ITimeControllable, ITimeReportable
     {
         private int ClockMultiplier = 1;
         private uint GameTimeLastSetClock;

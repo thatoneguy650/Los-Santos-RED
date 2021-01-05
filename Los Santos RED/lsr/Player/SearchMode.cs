@@ -39,42 +39,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public Color BlipColor
-        {
-            get
-            {
-                if (IsInActiveMode)
-                {
-                    return Color.Red;
-                }
-                else
-                {
-                    return Color.Orange;
-                }
-            }
-        }
-        public float BlipSize//probably gonna remove these both and have a static size or do something else.
-        {
-            get
-            {
-                if (IsInActiveMode)
-                {
-                    return 100f;
-                }
-                else
-                {
-                    if (CurrentSearchTime == 0)
-                    {
-                        return 100f;
-                    }
-                    //else
-                    //{
-                    //    return ArrestWarrant.SearchRadius * SearchMode.TimeInSearchMode / SearchMode.CurrentSearchTime;
-                    //}
-                }
-                return 100f;
-            }
-        }
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
         public uint TimeInSearchMode
@@ -226,7 +190,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
-            Player.CurrentPoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
+            Player.PoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
             //Game.Console.Print("SearchMode Stop Search Mode");
 
         }

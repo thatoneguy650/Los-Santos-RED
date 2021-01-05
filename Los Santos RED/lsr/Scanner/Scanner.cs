@@ -333,7 +333,7 @@ namespace LosSantosRED.lsr
         }
         private void AddRapSheet(DispatchEvent dispatchEvent)
         {
-            dispatchEvent.NotificationText = "Wanted For:" + CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.PrintCrimes();
+            dispatchEvent.NotificationText = "Wanted For:" + CurrentPlayer.PoliceResponse.PrintCrimes();
         }
         private void AddRequestAirSupport(DispatchEvent dispatchEvent)
         {
@@ -775,7 +775,7 @@ namespace LosSantosRED.lsr
             {
                 AddLethalForce(EventToPlay);
             }
-            if (CurrentPlayer.CurrentPoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
+            if (CurrentPlayer.PoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
             {
                 AddWeaponsFree(EventToPlay);
             }
@@ -791,7 +791,7 @@ namespace LosSantosRED.lsr
             {
                 AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
             }
-            if (CurrentPlayer.Investigations.HaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
+            if (CurrentPlayer.Investigation.HaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
             {
                 AddHaveDescription(EventToPlay);
             }
@@ -820,11 +820,11 @@ namespace LosSantosRED.lsr
         }
         private void CheckCrimesToAnnounce()
         {
-            foreach (CrimeEvent CE in CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.CrimesObserved.Where(x => x.RecentlyOccurred(10000)))
+            foreach (CrimeEvent CE in CurrentPlayer.PoliceResponse.RecentlyOccuredCrimes)
             {
                 AnnounceCrime(CE.AssociatedCrime, CE.CurrentInformation);
             }
-            foreach (CrimeEvent CE in CurrentPlayer.CurrentPoliceResponse.CurrentCrimes.CrimesReported.Where(x => x.RecentlyOccurred(15000)))
+            foreach (CrimeEvent CE in CurrentPlayer.PoliceResponse.RecentlyReportedCrimes)
             {
                 AnnounceCrime(CE.AssociatedCrime, CE.CurrentInformation);
             }
@@ -833,7 +833,7 @@ namespace LosSantosRED.lsr
         {
             if (CurrentPlayer.IsWanted && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && CurrentPlayer.IsAliveAndFree)
             {
-                if (!RequestBackup.HasRecentlyBeenPlayed && CurrentPlayer.CurrentPoliceResponse.RecentlyRequestedBackup)
+                if (!RequestBackup.HasRecentlyBeenPlayed && CurrentPlayer.PoliceResponse.RecentlyRequestedBackup)
                 {
                     AddToQueue(RequestBackup, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                 }
@@ -845,7 +845,7 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(RequestNOOSEUnits);
                 }
-                if (!ReportedWeaponsFree & !WeaponsFree.HasBeenPlayedThisWanted && CurrentPlayer.CurrentPoliceResponse.IsWeaponsFree)
+                if (!ReportedWeaponsFree & !WeaponsFree.HasBeenPlayedThisWanted && CurrentPlayer.PoliceResponse.IsWeaponsFree)
                 {
                     AddToQueue(WeaponsFree);
                 }
@@ -853,7 +853,7 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(RequestAirSupport);
                 }
-                if (!ReportedLethalForceAuthorized && !LethalForceAuthorized.HasBeenPlayedThisWanted && CurrentPlayer.CurrentPoliceResponse.IsDeadlyChase)
+                if (!ReportedLethalForceAuthorized && !LethalForceAuthorized.HasBeenPlayedThisWanted && CurrentPlayer.PoliceResponse.IsDeadlyChase)
                 {
                     AddToQueue(LethalForceAuthorized);
                 }
@@ -870,7 +870,7 @@ namespace LosSantosRED.lsr
                     AddToQueue(WantedSuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
                 }
 
-                if (!CurrentPlayer.IsBusted && !CurrentPlayer.IsDead && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000)
+                if (!CurrentPlayer.IsBusted && !CurrentPlayer.IsDead && CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000)
                 {
                     if(!SuspectEvaded.HasVeryRecentlyBeenPlayed && CurrentPlayer.TimeInSearchMode >= 20000)
                     {
@@ -888,7 +888,7 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.CurrentPoliceResponse.HasBeenWantedFor > 25000 && CurrentPlayer.AnyPoliceRecentlySeenPlayer)
+                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000 && CurrentPlayer.AnyPoliceRecentlySeenPlayer)
                     {
                         AddToQueue(SuspectSpotted, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -900,11 +900,11 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(ResumePatrol);
                 }
-                if (!SuspectLost.HasRecentlyBeenPlayed && CurrentPlayer.CurrentPoliceResponse.RecentlyLostWanted && !Respawning.RecentlyRespawned && !Respawning.RecentlyBribedPolice && !Respawning.RecentlySurrenderedToPolice)
+                if (!SuspectLost.HasRecentlyBeenPlayed && CurrentPlayer.PoliceResponse.RecentlyLostWanted && !Respawning.RecentlyRespawned && !Respawning.RecentlyBribedPolice && !Respawning.RecentlySurrenderedToPolice)
                 {
                     AddToQueue(SuspectLost, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                 }
-                if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && CurrentPlayer.Investigations.LastInvestigationRecentlyExpired)
+                if (!NoFurtherUnitsNeeded.HasRecentlyBeenPlayed && CurrentPlayer.Investigation.LastInvestigationRecentlyExpired)
                 {
                     AddToQueue(NoFurtherUnitsNeeded);
                 }

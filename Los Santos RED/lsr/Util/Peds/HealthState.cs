@@ -92,7 +92,7 @@ public class HealthState
         }
         if (MyPed.Pedestrian.IsDead && MyPed.KilledBy(Game.LocalPlayer.Character))
         {
-            CurrentPlayer.Killed(MyPed);
+            CurrentPlayer.Murdered(MyPed);
         }
         else if (MyPed.Pedestrian.IsAlive && MyPed.HurtBy(Game.LocalPlayer.Character))
         {

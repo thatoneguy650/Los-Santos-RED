@@ -11,7 +11,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceRecentlySeenPlayer { get; }
         bool AnyPoliceSeenPlayerCurrentWanted { get; }
         Ped Character { get; }
-        PoliceResponse CurrentPoliceResponse { get; }
+        PoliceResponse PoliceResponse { get; }
         Vector3 CurrentPosition { get; }
         VehicleExt CurrentSeenVehicle { get; }
         WeaponInformation CurrentSeenWeapon { get; }
@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr.Interface
         Zone CurrentZone { get; }
         bool HandsAreUp { get; }
         float IntoxicatedIntensity { get; }
-        Investigations Investigations { get; }
+        Investigation Investigation { get; }
         bool IsAliveAndFree { get; }
         bool IsBreakingIntoCar { get; }
         bool IsChangingLicensePlates { get; }
@@ -42,5 +42,6 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyKilledCop { get; }
         bool RecentlyStartedPlaying { get; }
         bool RecentlyShot(int v);
+        void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2);
     }
 }

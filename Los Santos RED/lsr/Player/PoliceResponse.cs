@@ -1,40 +1,33 @@
-﻿using ExtensionsMethods;
-using LosSantosRED.lsr;
-using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 namespace LosSantosRED.lsr
 {
     public class PoliceResponse
     {
-        private IPoliceRespondable Player;
-        private ArrestWarrant ArrestWarrant;
-        private PoliceState PrevPoliceState;
-        private uint GameTimePoliceStateStart;
-        private uint GameTimeLastSetWanted;
-        private uint GameTimeWantedStarted;
-        private uint GameTimeWantedLevelStarted;
-        private uint GameTimeLastWantedEnded;
-        private uint GameTimeLastRequestedBackup;
-        private Blip CurrentWantedCenterBlip;
-        private Blip LastWantedCenterBlip;
-        private int PreviousWantedLevel;
+        public List<CrimeEvent> CrimesObserved = new List<CrimeEvent>();
+        public List<CrimeEvent> CrimesReported = new List<CrimeEvent>();
+        public uint GameTimeWantedEnded;
+        public List<LicensePlate> WantedPlates = new List<LicensePlate>();
         private PoliceState CurrentPoliceState;
-
-        public PoliceResponse(IPoliceRespondable player, ArrestWarrant arrestWarrant)
+        private uint GameTimeLastRequestedBackup;
+        private uint GameTimeLastSetWanted;
+        private uint GameTimeLastWantedEnded;
+        private uint GameTimePoliceStateStart;
+        private uint GameTimeWantedLevelStarted;
+        private IPoliceRespondable Player;
+        private PoliceState PrevPoliceState;
+        public PoliceResponse(IPoliceRespondable player)
         {
             Player = player;
-            CurrentCrimes = new CriminalHistory(player);
-            ArrestWarrant = arrestWarrant;
+            Player.BecameWanted += OnBecameWanted;
+            Player.LostWanted += OnLostWanted;
+            Player.WantedLevelIncreased += OnWantedLevelIncreased;
         }
-
         private enum PoliceState
         {
             Normal = 0,
@@ -43,205 +36,43 @@ namespace LosSantosRED.lsr
             DeadlyChase = 3,
             ArrestedWait = 4,
         }
-        public int WantedLevelLastset { get; set; }
-        public float LastWantedSearchRadius { get; set; }
-        public bool PlayerSeenDuringCurrentWanted { get; set; }
+        public string CrimesObservedJoined => string.Join(",", CrimesObserved.Select(x => x.AssociatedCrime.Name));
+        public string CrimesReportedJoined => string.Join(",", CrimesReported.Select(x => x.AssociatedCrime.Name));
+        public uint GameTimeWantedStarted { get; private set; }
+        public uint HasBeenAtCurrentPoliceStateFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimePoliceStateStart;
+        public uint HasBeenAtCurrentWantedLevelFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedLevelStarted;
+        public uint HasBeenNotWantedFor => Player.WantedLevel != 0 || GameTimeLastWantedEnded == 0 ? 0 : Game.GameTime - GameTimeLastWantedEnded;
+        public uint HasBeenWantedFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedStarted;
+        public bool HasObservedCrimes => CrimesObserved.Any();
+        public bool HasReportedCrimes => CrimesReported.Any();
+        public bool IsDeadlyChase => CurrentPoliceState == PoliceState.DeadlyChase;
         public bool IsWeaponsFree { get; set; }
-        public CriminalHistory CurrentCrimes { get; set; }
         public Vector3 LastWantedCenterPosition { get; set; }
+        public float LastWantedSearchRadius { get; set; }
+        public bool LethalForceAuthorized => CrimesObserved.Any(x => x.AssociatedCrime.ResultsInLethalForce);
+        public int ObservedMaxWantedLevel => CrimesObserved.Max(x => x.AssociatedCrime.ResultingWantedLevel);
+        public Vector3 PlaceLastReportedCrime { get; private set; }
         public Vector3 PlaceWantedStarted { get; private set; }
-        public uint HasBeenNotWantedFor
-        {
-            get
-            {
-                if (Game.LocalPlayer.WantedLevel != 0)
-                {
-                    return 0;
-                }
-                if (GameTimeLastWantedEnded == 0)
-                {
-                    return 0;
-                }
-                else
-                    return Game.GameTime - GameTimeLastWantedEnded;
-            }
-        }
-        public uint HasBeenWantedFor
-        {
-            get
-            {
-                if (Game.LocalPlayer.WantedLevel == 0)
-                {
-                    return 0;
-                }
-                else
-                    return Game.GameTime - GameTimeWantedStarted;
-            }
-        }
-        public uint HasBeenAtCurrentWantedLevelFor
-        {
-            get
-            {
-                if (Game.LocalPlayer.WantedLevel == 0)
-                {
-                    return 0;
-                }
-                else
-                    return Game.GameTime - GameTimeWantedLevelStarted;
-            }
-        }
-        public uint HasBeenAtCurrentPoliceStateFor
-        {
-            get
-            {
-                return Game.GameTime - GameTimePoliceStateStart;
-            }
-        }
-        public bool IsDeadlyChase
-        {
-            get
-            {
-                if (CurrentPoliceState == PoliceState.DeadlyChase)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        public string CurrentPoliceStateString
-        {
-            get
-            {
-                return CurrentPoliceState.ToString();
-            }
-        }
-        public string CrimesObservedJoined
-        {
-            get
-            {
-                return string.Join(",", CurrentCrimes.CrimesObserved.Select(x => x.AssociatedCrime.Name));
-            }
-        }
-        public string CrimesReportedJoined
-        {
-            get
-            {
-                return string.Join(",", CurrentCrimes.CrimesReported.Select(x => x.AssociatedCrime.Name));
-            }
-        }
-        public bool HasReportedCrimes
-        {
-            get
-            {
-                return CurrentCrimes.CrimesReported.Any();
-            }
-        }
-        public bool RecentlySetWanted
-        {
-            get
-            {
-                if (GameTimeLastSetWanted == 0)
-                {
-                    return false;
-                }
-                else if (Game.GameTime - GameTimeLastSetWanted <= 5000)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        public bool RecentlyRequestedBackup
-        {
-            get
-            {
-                if (GameTimeLastRequestedBackup == 0)
-                {
-                    return false;
-                }
-                else if (Game.GameTime - GameTimeLastRequestedBackup <= 5000)
-                {
-                    return true;
-                }
-                else
-                    return false;
-            }
-        }
-        public bool RecentlyLostWanted
-        {
-            get
-            {
-                if (GameTimeLastWantedEnded == 0)
-                {
-                    return false;
-                }
-                else if (Game.GameTime - GameTimeLastWantedEnded <= 5000)
-                {
-                    return true;
-                }
-                else
-                    return false;
-            }
-        }
-        public bool ShouldSirenBeOn
-        {
-            get
-            {
-                if (CurrentResponse == ResponsePriority.Low || CurrentResponse == ResponsePriority.None)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
-        public float ResponseDrivingSpeed
-        {
-            get
-            {
-                if (CurrentResponse == ResponsePriority.High)
-                {
-                    return 25f; //55 mph
-                }
-                else if (CurrentResponse == ResponsePriority.Medium)
-                {
-                    return 25f; //55 mph
-                }
-                else
-                {
-                    return 20f; //40 mph
-                }
-            }
-        }
-        public bool PoliceChasingRecklessly
-        {
-            get
-            {
-                if (CurrentPoliceState == PoliceState.DeadlyChase && (CurrentCrimes.InstancesOfCrime("KillingPolice") >= 1 || CurrentCrimes.InstancesOfCrime("KillingCivilians") >= 2 || Player.WantedLevel >= 4))
-                {
-                    return true;
-                }
-                else
-                    return false;
-            }
-        }
-        public ResponsePriority CurrentResponse
+        public bool PlayerSeenDuringCurrentWanted { get; set; }
+        public bool PlayerSeenDuringWanted { get; set; } = false;
+        public bool PoliceChasingRecklessly => CurrentPoliceState == PoliceState.DeadlyChase && (InstancesOfCrime("KillingPolice") >= 1 || InstancesOfCrime("KillingCivilians") >= 2 || Player.WantedLevel >= 4);
+        public bool PoliceHaveDescription { get; private set; }
+        public bool RecentlyLostWanted => GameTimeLastWantedEnded != 0 && Game.GameTime - GameTimeLastWantedEnded <= 5000;
+        public List<CrimeEvent> RecentlyOccuredCrimes => CrimesObserved.Where(x => x.RecentlyOccurred(10000)).ToList();
+        public List<CrimeEvent> RecentlyReportedCrimes => CrimesReported.Where(x => x.RecentlyOccurred(10000)).ToList();
+        public bool RecentlyRequestedBackup => GameTimeLastRequestedBackup != 0 && Game.GameTime - GameTimeLastRequestedBackup <= 5000;
+        public bool RecentlySetWanted => GameTimeLastSetWanted != 0 && Game.GameTime - GameTimeLastSetWanted <= 5000;
+        public float ResponseDrivingSpeed => CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium ? 25f : 20f;
+        public bool ShouldSirenBeOn => CurrentResponse == ResponsePriority.Full || CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium;
+        private ResponsePriority CurrentResponse
         {
             get
             {
                 if (Player.IsNotWanted)
                 {
-                    if (Player.Investigations.IsActive)
+                    if (Player.Investigation.IsActive)
                     {
-                        if (CurrentCrimes.CrimesReported.Any(x => x.AssociatedCrime.Priority <= 8))
+                        if (CrimesReported.Any(x => x.AssociatedCrime.Priority <= 8))
                         {
                             return ResponsePriority.Medium;
                         }
@@ -272,22 +103,110 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public void Update()
+        public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
-            GetPoliceState();
-            WantedLevelTick();
+            if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
+            {
+                if (HaveDescription)
+                {
+                    PoliceHaveDescription = HaveDescription;
+                }
+                PlaceLastReportedCrime = Location;
+                CrimeEvent PreviousViolation;
+                if (ByPolice)
+                {
+                    PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime.Name == CrimeInstance.Name);
+                }
+                else
+                {
+                    PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.Name == CrimeInstance.Name);
+                }
+
+                int CurrentInstances = 1;
+                if (PreviousViolation != null)
+                {
+                    PreviousViolation.AddInstance();
+                    CurrentInstances = PreviousViolation.Instances;
+                }
+                else
+                {
+                    if (ByPolice)
+                    {
+                        CrimesObserved.Add(new CrimeEvent(CrimeInstance, new PoliceScannerCallIn(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances }));
+                    }
+                    else
+                    {
+                        CrimesReported.Add(new CrimeEvent(CrimeInstance, new PoliceScannerCallIn(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances }));
+                    }
+                }
+                if (ByPolice && Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
+                {
+                    SetWantedLevel(CrimeInstance.ResultingWantedLevel, CrimeInstance.Name, true);
+                }
+            }
+        }
+        public void ApplyReportedCrimes()
+        {
+            if (CrimesReported.Any())
+            {
+                foreach (CrimeEvent MyCrimes in CrimesReported)
+                {
+                    CrimeEvent PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime == MyCrimes.AssociatedCrime);
+                    if (PreviousViolation == null)
+                    {
+                        CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime, new PoliceScannerCallIn(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true)));
+                    }
+                    else if (PreviousViolation.CanAddInstance)
+                    {
+                        PreviousViolation.AddInstance();
+                    }
+                }
+                CrimeEvent WorstObserved = CrimesObserved.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
+                if (WorstObserved != null)
+                {
+                    SetWantedLevel(WorstObserved.AssociatedCrime.ResultingWantedLevel, "you are a suspect!", true);
+                }
+            }
+        }
+        public int InstancesOfCrime(string CrimeID)
+        {
+            CrimeEvent MyStuff = CrimesObserved.Where(x => x.AssociatedCrime.ID == CrimeID).FirstOrDefault();
+            if (MyStuff == null)
+                return 0;
+            else
+                return MyStuff.Instances;
+        }
+        public int InstancesOfCrime(Crime ToCheck)
+        {
+            CrimeEvent MyStuff = CrimesObserved.Where(x => x.AssociatedCrime.ID == ToCheck.ID).FirstOrDefault();
+            if (MyStuff == null)
+                return 0;
+            else
+                return MyStuff.Instances;
+        }
+        public bool NearLastWanted(float DistanceTo)
+        {
+            return LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= DistanceTo;
+        }
+        public string PrintCrimes()
+        {
+            string CrimeString = "";
+            foreach (CrimeEvent MyCrime in CrimesObserved.Where(x => x.Instances > 0).OrderBy(x => x.AssociatedCrime.Priority).Take(3))
+            {
+                CrimeString += string.Format("~n~{0} ({1})~s~", MyCrime.AssociatedCrime.Name, MyCrime.Instances);
+            }
+            return CrimeString;
         }
         public void Reset()
         {
             SetWantedLevel(0, "Police Response Reset", true);
-            CurrentCrimes = new CriminalHistory(Player);
             IsWeaponsFree = false;
+            PlayerSeenDuringWanted = false;
+            PlaceLastReportedCrime = Vector3.Zero;
+            PoliceHaveDescription = false;
             CurrentPoliceState = PoliceState.Normal;
             GameTimeWantedLevelStarted = 0;
-
-
-            //World.ResetPolice();
-            //World.ResetScanner();
+            GameTimeWantedEnded = 0;
         }
         public void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
         {
@@ -296,46 +215,16 @@ namespace LosSantosRED.lsr
                 GameTimeLastSetWanted = Game.GameTime;
             }
 
-            if (Game.LocalPlayer.WantedLevel < WantedLevel || WantedLevel == 0)
+            if (Player.WantedLevel < WantedLevel || WantedLevel == 0)
             {
                 NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevel);
-                //Game.Console.Print(string.Format("SetWantedLevel! Current Wanted: {0}, Desired Wanted: {1}, {2}", Game.LocalPlayer.WantedLevel, WantedLevel, Reason));
                 Game.LocalPlayer.WantedLevel = WantedLevel;
-                WantedLevelLastset = WantedLevel;
             }
         }
-        public void ApplyReportedCrimes()
+        public void Update()
         {
-            if (CurrentCrimes.CrimesReported.Any())
-            {
-                foreach (CrimeEvent MyCrimes in CurrentCrimes.CrimesReported)
-                {
-                    CrimeEvent PreviousViolation = CurrentCrimes.CrimesObserved.FirstOrDefault(x => x.AssociatedCrime == MyCrimes.AssociatedCrime);
-                    if (PreviousViolation == null)
-                    {
-                        CurrentCrimes.CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime, new PoliceScannerCallIn(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true)));
-                    }
-                    else if (PreviousViolation.CanAddInstance)
-                    {
-                        PreviousViolation.AddInstance();
-                    }
-
-                }
-                CrimeEvent WorstObserved = CurrentCrimes.CrimesObserved.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
-                if (WorstObserved != null)
-                {
-                    SetWantedLevel(WorstObserved.AssociatedCrime.ResultingWantedLevel, "you are a suspect!", true);
-                }
-            }
-        }
-        public void RefreshPoliceState()
-        {
-            CurrentPoliceState = PoliceState.Normal;
             GetPoliceState();
-        }
-        public bool NearLastWanted(float DistanceTo)
-        {
-            return LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= DistanceTo;
+            WantedLevelTick();
         }
         private void GetPoliceState()
         {
@@ -343,22 +232,19 @@ namespace LosSantosRED.lsr
             {
                 CurrentPoliceState = PoliceState.Normal;//Default state
             }
-
             if (Player.IsBusted)
             {
                 CurrentPoliceState = PoliceState.ArrestedWait;
             }
-
             if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
             {
                 return;
             }
-
             if (Player.WantedLevel >= 1 && Player.WantedLevel <= 3 && Player.AnyPoliceCanSeePlayer)
             {
                 if (Player.AnyPoliceCanSeePlayer)
                 {
-                    if (CurrentCrimes.LethalForceAuthorized)
+                    if (LethalForceAuthorized)
                     {
                         CurrentPoliceState = PoliceState.DeadlyChase;
                     }
@@ -380,7 +266,28 @@ namespace LosSantosRED.lsr
             {
                 CurrentPoliceState = PoliceState.DeadlyChase;
             }
-
+        }
+        private void OnBecameWanted(object sender, EventArgs e)
+        {
+            if (!RecentlySetWanted && Player.WantedLevel <= 2)//randomly set by the game
+            {
+                SetWantedLevel(0, "Resetting Unknown Wanted", false);
+                return;
+            }
+            GameTimeWantedStarted = Game.GameTime;
+            PlaceWantedStarted = Game.LocalPlayer.Character.Position;
+        }
+        private void OnLostWanted(object sender, EventArgs e)
+        {
+            if (!Player.IsDead)
+            {
+                GameTimeWantedEnded = Game.GameTime;
+            }
+            GameTimeLastWantedEnded = Game.GameTime;
+        }
+        private void OnWantedLevelIncreased(object sender, EventArgs e)
+        {
+            GameTimeWantedLevelStarted = Game.GameTime;
         }
         private void PoliceStateChanged()
         {
@@ -390,10 +297,6 @@ namespace LosSantosRED.lsr
         }
         private void WantedLevelTick()
         {
-            if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
-            {
-                WantedLevelChanged();
-            }
             if (PrevPoliceState != CurrentPoliceState)
             {
                 PoliceStateChanged();
@@ -402,18 +305,16 @@ namespace LosSantosRED.lsr
             {
                 if (!Player.IsDead && !Player.IsBusted)
                 {
-                    Vector3 CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer; //NativeFunction.CallByName<Vector3>("GET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer);
+                    Vector3 CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer;
                     if (CurrentWantedCenter != Vector3.Zero)
                     {
                         LastWantedCenterPosition = CurrentWantedCenter;
                     }
-
                     if (Player.AnyPoliceCanSeePlayer)
                     {
                         PlayerSeenDuringCurrentWanted = true;
-                        CurrentCrimes.PlayerSeenDuringWanted = true;
+                        PlayerSeenDuringWanted = true;
                     }
-
                     if (HasBeenAtCurrentWantedLevelFor > 240000 && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 4)
                     {
                         GameTimeLastRequestedBackup = Game.GameTime;
@@ -423,7 +324,7 @@ namespace LosSantosRED.lsr
                     {
                         SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
                     }
-                    int PoliceKilled = CurrentCrimes.InstancesOfCrime("KillingPolice");
+                    int PoliceKilled = InstancesOfCrime("KillingPolice");
                     if (PoliceKilled > 0)
                     {
                         if (PoliceKilled >= 4 && Player.WantedLevel < 5)
@@ -439,52 +340,6 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
-        }
-        private void WantedLevelChanged()
-        {
-            if (Game.LocalPlayer.WantedLevel == 0)
-            {
-                WantedLevelRemoved();
-            }
-            else if (PreviousWantedLevel == 0 && Game.LocalPlayer.WantedLevel > 0)
-            {
-                WantedLevelAdded();
-            }
-            //CurrentCrimes.MaxWantedLevel = CurrentPlayer.WantedLevel;
-            GameTimeWantedLevelStarted = Game.GameTime;
-            //Game.Console.Print(string.Format("WantedLevel! Changed to: {0}, Recently Set: {1}", Game.LocalPlayer.WantedLevel, RecentlySetWanted));
-            PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
-        }
-        private void WantedLevelAdded()
-        {
-            if (!RecentlySetWanted)//randomly set by the game
-            {
-                if (Player.WantedLevel <= 2)//let some level 3 and 4 wanted override and be set
-                {
-                    SetWantedLevel(0, "Resetting Unknown Wanted", false);
-                    return;
-                }
-            }
-            Player.Investigations.Reset();
-            CurrentCrimes.GameTimeWantedStarted = Game.GameTime;
-            //CurrentCrimes.MaxWantedLevel = CurrentPlayer.WantedLevel;
-            PlaceWantedStarted = Game.LocalPlayer.Character.Position;
-            GameTimeWantedStarted = Game.GameTime;
-        }
-        private void WantedLevelRemoved()
-        {
-            if (!Player.IsDead)// && !CurrentPlayer.RecentlyRespawned)//they might choose the respawn as the same character, so do not replace it yet?
-            {
-                CurrentCrimes.GameTimeWantedEnded = Game.GameTime;
-                //CurrentCrimes.MaxWantedLevel = CurrentPlayer.MaxWantedLastLife;
-                if (CurrentCrimes.PlayerSeenDuringWanted && PreviousWantedLevel != 0)// && !RecentlySetWanted)//i didnt make it go to zero, the chase was lost organically
-                {
-                    ArrestWarrant.StoreCriminalHistory(CurrentCrimes);
-                }
-                Reset();
-            }
-            GameTimeLastWantedEnded = Game.GameTime;
-            PlayerSeenDuringCurrentWanted = false;
         }
     }
 }

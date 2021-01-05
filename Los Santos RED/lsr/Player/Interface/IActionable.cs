@@ -11,6 +11,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDead { get; }
         bool IsBusted { get; }
         bool IsInVehicle { get; }
+        event EventHandler Killed;
+        event EventHandler Busted;
         void StartSmokingPot();
         void StartSmoking();
         void DrinkBeer();

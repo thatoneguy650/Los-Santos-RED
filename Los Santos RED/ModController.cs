@@ -142,8 +142,8 @@ namespace LosSantosRED.lsr
                 new ModTask(25, "Player.Update", Player.Update, 2,0),
                 new ModTask(100, "World.Police.Tick", Police.Update, 2,1),//25
                 new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 3,0),//50
-                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.CurrentPoliceResponse.Update, 3,1),//50
-                new ModTask(150, "Player.Investigations.Tick", Player.Investigations.Update, 4,0),
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 3,1),//50
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 4,0),
                 new ModTask(500, "World.Civilians.Tick", Civilians.Update, 4,1),//150
                 new ModTask(250, "Player.MuggingTick", Player.MuggingUpdate, 5,1),
                 new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 6,0),
