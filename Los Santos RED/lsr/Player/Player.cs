@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace Mod
 {
-    public class Player : IConsumeable, IIntoxicatable, IConsumableIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, ITaskableTarget_Old
+    public class Player : IConsumeable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, ITaskableTarget_Old
     {
         private ArrestWarrant ArrestWarrant;
         private ConsumeActivity CurrentConsumingActivity;//temp here for UI debugging
@@ -82,6 +82,7 @@ namespace Mod
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
         public bool CanPerformActivities => !IsInVehicle && IsStill && !IsIncapacitated && !IsConsideredArmed;
         public bool CanSurrender => Surrendering.CanSurrender;
+        public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit;
         public Ped Character => Game.LocalPlayer.Character;
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
         public Street CurrentCrossStreet => CurrentLocation.CurrentCrossStreet;
@@ -160,7 +161,6 @@ namespace Mod
                 }
             }
         }
-        public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit;
         public bool IsLockPicking { get; set; }
         public bool IsMale { get; set; }
         public bool IsMobileRadioEnabled { get; private set; }
@@ -248,6 +248,11 @@ namespace Mod
         {
             ArrestWarrant.Update();
         }
+        public void ChangePlate()
+        {
+            PlateTheft plateTheft = new PlateTheft(this);
+            plateTheft.ChangePlate(SpareLicensePlates[0]);//this isnt gonna work
+        }
         public void CommitSuicide()
         {
             Surrendering.CommitSuicide(Game.LocalPlayer.Character);
@@ -293,16 +298,6 @@ namespace Mod
                 CurrentConsumingActivity = new DrinkingActivity(this);
                 CurrentConsumingActivity.Start();
             }
-        }
-        public void ChangePlate()
-        {
-            PlateTheft plateTheft = new PlateTheft(this);
-            plateTheft.ChangePlate(SpareLicensePlates[0]);//this isnt gonna work
-        }
-        public void RemovePlate()
-        {
-            PlateTheft plateTheft = new PlateTheft(this);
-            plateTheft.RemovePlate();
         }
         public void DropWeapon()
         {
@@ -426,6 +421,11 @@ namespace Mod
             {
                 return false;
             }
+        }
+        public void RemovePlate()
+        {
+            PlateTheft plateTheft = new PlateTheft(this);
+            plateTheft.RemovePlate();
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons)
         {

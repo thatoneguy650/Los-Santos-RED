@@ -13,10 +13,10 @@ namespace LosSantosRED.lsr.Player
         private uint GameTimeStoppedIntoxicating;
         private uint IntoxicatingIntervalTime;
         private float MaxEffectAllowed;
-        private IConsumableIntoxicatable Player;
+        private IIntoxicatable Player;
         private uint SoberingIntervalTime;
         private string OverLayEffect;
-        public IntoxicatingEffect(IConsumableIntoxicatable player, float maxEffectAllowed, uint intoxicatingIntervalTime, uint soberingIntervalTime, string overlay)
+        public IntoxicatingEffect(IIntoxicatable player, float maxEffectAllowed, uint intoxicatingIntervalTime, uint soberingIntervalTime, string overlay)
         {
             Player = player;
             MaxEffectAllowed = maxEffectAllowed;

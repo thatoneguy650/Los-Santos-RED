@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IIntoxicatable
+    public interface IIntoxicatable : IConsumeable
     {
         bool IsIntoxicated { get; set; }
         float IntoxicatedIntensity { get; set; }

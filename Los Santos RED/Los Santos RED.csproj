@@ -123,7 +123,6 @@
     <Compile Include="lsr\PedSwap\Interface\IPedswappable.cs" />
     <Compile Include="lsr\Player\Activity\ConsumeActivity.cs" />
     <Compile Include="lsr\Player\Activity\Interface\IConsumeable.cs" />
-    <Compile Include="lsr\Player\Activity\Interface\IConsumableIntoxicatable.cs" />
     <Compile Include="lsr\Player\Activity\Interface\IIntoxicatable.cs" />
     <Compile Include="lsr\Player\Activity\DrinkingActivity.cs" />
     <Compile Include="lsr\Player\Activity\LoopedParticle.cs" />

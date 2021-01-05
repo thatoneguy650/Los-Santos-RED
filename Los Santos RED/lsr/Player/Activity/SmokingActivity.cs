@@ -24,7 +24,7 @@ namespace LosSantosRED.lsr.Player
         private Rage.Object Joint;
         private bool IsNearMouth;
         private bool IsLit;
-        private IConsumableIntoxicatable Player;
+        private IIntoxicatable Player;
         private LoopedParticle PotSmoke;
         private string AnimBaseDictionary;
         private string AnimBase;
@@ -45,7 +45,7 @@ namespace LosSantosRED.lsr.Player
         
 
         private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
-        public SmokingActivity(IConsumableIntoxicatable consumable, bool isPot) : base()
+        public SmokingActivity(IIntoxicatable consumable, bool isPot) : base()
         {
             Player = consumable;
             IsPot = isPot;

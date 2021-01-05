@@ -19,13 +19,13 @@ namespace LosSantosRED.lsr.Player
         private Rotator HandRotator;
         private Rage.Object Bottle;
         private bool IsAttachedToHand;
-        private IConsumableIntoxicatable Player;
+        private IIntoxicatable Player;
         private IntoxicatingEffect IntoxicatingEffect;
         private string PropModel;
         private float CurrentAnimationTime;
         private string DebugLocation;
         private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
-        public DrinkingActivity(IConsumableIntoxicatable consumable) : base()
+        public DrinkingActivity(IIntoxicatable consumable) : base()
         {
             Player = consumable;
         }

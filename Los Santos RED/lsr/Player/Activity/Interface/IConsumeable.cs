@@ -13,5 +13,6 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         string ModelName { get; }
         bool IsMale { get; }
+        bool CanPerformActivities { get; }
     }
 }

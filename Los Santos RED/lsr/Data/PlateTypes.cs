@@ -70,8 +70,8 @@ public class PlateTypes : IPlateTypes
         PlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "12345A1"));
         PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "12345A1"));
         PlateTypeList.Add(new PlateType(3, "Old California", "San Andreas", 0, "12345A1"));
-        PlateTypeList.Add(new PlateType(4, "SA Exempt", "San Andreas", 0, "12345A1"));
-        PlateTypeList.Add(new PlateType(5, "Yanton Default", "Yanton", 0, "1ABC234") { CanOverwrite = false });
+        PlateTypeList.Add(new PlateType(4, "SA Exempt", "San Andreas", 0, "12345A1") { CanOverwrite = false });
+        PlateTypeList.Add(new PlateType(5, "Yanton Default", "Yanton", 0, "1ABC234"));
     }
     private void CustomConfig()
     {
