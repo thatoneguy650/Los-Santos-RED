@@ -127,14 +127,14 @@ public class Respawning : IRespawning
     }
     private void CheckWeapons()
     {
-        if (!CurrentPlayer.KilledAnyCops)
-        {
-            RemoveIllegalWeapons();
-        }
-        else
-        {
+        //if (!CurrentPlayer.KilledAnyCops)//need to add something like this back
+        //{
+        //    RemoveIllegalWeapons();
+        //}
+        //else
+        //{
             Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-        }
+        //}
     }
     private void FadeIn()
     {

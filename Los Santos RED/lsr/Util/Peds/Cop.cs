@@ -98,10 +98,10 @@ public class Cop : PedExt
             {
                 Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
             }
-            else if (currentPlayer.RecentlyKilledCop)
-            {
-                Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
-            }
+            //else if (currentPlayer.RecentlyKilledCop)
+            //{
+            //    Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
+            //}
             else if (currentPlayer.IsWanted && !currentPlayer.PoliceResponse.IsDeadlyChase)
             {
                 Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());

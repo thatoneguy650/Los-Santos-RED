@@ -15,18 +15,13 @@ namespace Mod
 {
     public class Player : IConsumeable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, ITaskableTarget_Old
     {
-        private int PreviousWantedLevel;
         private CriminalHistory CriminalHistory;
-        private ConsumeActivity CurrentConsumingActivity;//temp here for UI debugging
+        private ConsumeActivity CurrentConsumingActivity;
         private HealthState CurrentHealth;
         private LocationData CurrentLocation;
         private IEntityProvideable EntityProvider;
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
-        private uint GameTimeLastHurtCivilian;
-        private uint GameTimeLastHurtCop;
-        private uint GameTimeLastKilledCivilian;
-        private uint GameTimeLastKilledCop;
         private uint GameTimeLastMoved;
         private uint GameTimeLastMovedFast;
         private uint GameTimeLastShot;
@@ -34,16 +29,15 @@ namespace Mod
         private bool isAimingInVehicle;
         private bool isGettingIntoVehicle;
         private bool isInVehicle;
+        private bool IsVanillaRespawnActive = true;
         private bool LeftEngineOn;
         private Mugging Mugging;
-        private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
-        private List<PedExt> PlayerKilledCops = new List<PedExt>();
+        private int PreviousWantedLevel;
         private SearchMode SearchMode;
         private ISettingsProvideable Settings;
         private IStreets Streets;
         private Surrendering Surrendering;
         private ITimeControllable TimeControllable;
-        private bool VanillaRespawn = true;
         private Violations Violations;
         private WeaponDropping WeaponDropping;
         private IWeapons Weapons;
@@ -72,17 +66,16 @@ namespace Mod
             GameTimeStartedPlaying = Game.GameTime;
             ModelName = Game.LocalPlayer.Character.Model.Name;
             IsMale = Game.LocalPlayer.Character.IsMale;
-            
         }
         public event EventHandler AimingInVehicle;
+        public event EventHandler BecameWanted;
         public event EventHandler Busted;
+        public event EventHandler CitizenReportedCrime;
         public event EventHandler GettingIntoAVehicle;
         public event EventHandler InVehicle;
         public event EventHandler Killed;
-        public event EventHandler PoliceObservedCrime;
-        public event EventHandler CitizenReportedCrime;
-        public event EventHandler BecameWanted;
         public event EventHandler LostWanted;
+        public event EventHandler PoliceObservedCrime;
         public event EventHandler WantedLevelIncreased;
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 400f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
@@ -192,7 +185,6 @@ namespace Mod
         public bool IsViolatingAnyCivilianReportableCrime => Violations.IsViolatingAnyCivilianReportableCrime;
         public bool IsViolatingAnyTrafficLaws => Violations.IsViolatingAnyTrafficLaws;
         public bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
-        public bool KilledAnyCops => PlayerKilledCops.Any();
         public WeaponHash LastWeaponHash { get; set; }
         public int MaxWantedLastLife { get; set; }
         public string ModelName { get; set; }
@@ -208,17 +200,12 @@ namespace Mod
                 return CurrentCash;
             }
         }
-        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 9f);
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public bool PoliceRecentlyNoticedVehicleChange { get; set; }
         public PoliceResponse PoliceResponse { get; set; }
         public bool RecentlyAppliedWantedStats => CriminalHistory.RecentlyAppliedWantedStats;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyDied => GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied <= 5000;
-        public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= 5000;
-        public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= 5000;
-        public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= 5000;
-        public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= 5000;
         public bool RecentlyStartedPlaying => Game.GameTime - GameTimeStartedPlaying <= 15000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
@@ -249,7 +236,7 @@ namespace Mod
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
             PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
-            if(ByPolice)
+            if (ByPolice)
             {
                 PoliceObservedCrime?.Invoke(this, null);
             }
@@ -387,15 +374,7 @@ namespace Mod
         }
         public void Injured(PedExt MyPed)
         {
-            if (MyPed.IsCop)
-            {
-                GameTimeLastHurtCop = Game.GameTime;
-            }
-            else
-            {
-                GameTimeLastHurtCivilian = Game.GameTime;
-            }
-            //Game.Console.Print(string.Format("PedWoundSystem! Player Hurt {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+            Violations.AddInjured(MyPed);
         }
         public void LocationUpdate()
         {
@@ -411,19 +390,7 @@ namespace Mod
         }
         public void Murdered(PedExt MyPed)
         {
-            if (MyPed.IsCop)
-            {
-                PlayerKilledCops.Add(MyPed);
-                GameTimeLastKilledCop = Game.GameTime;
-                GameTimeLastHurtCop = Game.GameTime;
-            }
-            else
-            {
-                PlayerKilledCivilians.Add(MyPed);
-                GameTimeLastKilledCivilian = Game.GameTime;
-                GameTimeLastHurtCivilian = Game.GameTime;
-            }
-            //Game.Console.Print(string.Format("PedWoundSystem! Player Killed {0}, IsCop: {1}", MyPed.Pedestrian.Handle, MyPed.IsCop));
+            Violations.AddKilled(MyPed);
         }
         public void RaiseHands()
         {
@@ -463,9 +430,12 @@ namespace Mod
             IsConsuming = false;
             if (resetWanted)
             {
-                PoliceResponse.Reset();
+                Game.LocalPlayer.WantedLevel = 0;
+                PoliceResponse = new PoliceResponse(this);
+                //PoliceResponse.Reset();
                 Investigation.Reset();
-                ResetInjuries();
+                Violations = new Violations(this, TimeControllable);
+                //Violations.Reset();
                 NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
@@ -479,13 +449,6 @@ namespace Mod
             {
                 Game.LocalPlayer.Character.Inventory.Weapons.Clear();
             }
-        }
-        public void ResetInjuries()
-        {
-            GameTimeLastHurtCivilian = 0;
-            GameTimeLastKilledCivilian = 0;
-            GameTimeLastHurtCop = 0;
-            GameTimeLastKilledCop = 0;
         }
         public void SearchModeUpdate()
         {
@@ -551,8 +514,7 @@ namespace Mod
         }
         public void Update()
         {
-            
-            if (VanillaRespawn)
+            if (IsVanillaRespawnActive)
             {
                 TerminateVanillaRespawnController();
             }
@@ -566,7 +528,6 @@ namespace Mod
             CurrentHealth.Update(null);
             WeaponDropping.Tick();
 
-
             UpdateWantedLevel();
         }
         public void ViolationsUpdate()
@@ -579,7 +540,7 @@ namespace Mod
             Marshal.WriteInt32(MyPtr, 0); //setting it to 0 turns it on somehow?
             Game.StartNewScript("respawn_controller");
             Game.StartNewScript("selector");
-            VanillaRespawn = true;
+            IsVanillaRespawnActive = true;
         }
         private void BustedEvent()
         {
@@ -741,7 +702,7 @@ namespace Mod
             var MyPtr = Game.GetScriptGlobalVariableAddress(4); //the script id for respawn_controller
             Marshal.WriteInt32(MyPtr, 1); //setting it to 1 turns it off somehow?
             Game.TerminateAllScriptsWithName("respawn_controller");
-            VanillaRespawn = false;
+            IsVanillaRespawnActive = false;
         }
         private void TerminateVanillaRespawnScripts()
         {
@@ -946,6 +907,13 @@ namespace Mod
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
             }
         }
+        private void UpdateWantedLevel()
+        {
+            if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
+            {
+                WantedLevelChanged();
+            }
+        }
         private void UpdateWeaponData()
         {
             if (Game.LocalPlayer.Character.IsShooting)
@@ -970,16 +938,9 @@ namespace Mod
                 LastWeaponHash = PlayerCurrentWeapon.Hash;
             }
         }
-        private void UpdateWantedLevel()
-        {
-            if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
-            {
-                WantedLevelChanged();
-            }
-        }
         private void WantedLevelChanged()
         {
-            if (Game.LocalPlayer.WantedLevel == 0)//removed
+            if (IsNotWanted)//removed
             {
                 if (!IsDead)
                 {
@@ -991,15 +952,22 @@ namespace Mod
                 }
                 LostWanted?.Invoke(this, null);
             }
-            else if (PreviousWantedLevel == 0 && Game.LocalPlayer.WantedLevel > 0)//added
+            else if (IsWanted && PreviousWantedLevel == 0)//added
             {
-                BecameWanted?.Invoke(this, null);
+                if(!PoliceResponse.RecentlySetWanted)//only allow my process to set the wanted level
+                {
+                    Game.LocalPlayer.WantedLevel = 0;
+                }
+                else
+                {
+                    BecameWanted?.Invoke(this, null);
+                }  
             }
             else
-            {       
-                PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
+            {
                 WantedLevelIncreased?.Invoke(this, null);
             }
+            PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
     }
 }

@@ -36,7 +36,6 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyAppliedWantedStats { get; }
         bool RecentlyBusted { get; }
         bool RecentlyDied { get; }
-        bool RecentlyKilledCop { get; }
         bool RecentlyStartedPlaying { get; }
         List<VehicleExt> ReportedStolenVehicles { get; }
         int WantedLevel { get; }

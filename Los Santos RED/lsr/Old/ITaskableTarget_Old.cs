@@ -61,20 +61,14 @@ namespace LosSantosRED.lsr.Interface
         bool IsViolatingAnyCivilianReportableCrime { get; }
         bool IsViolatingAnyTrafficLaws { get; }
         bool IsWanted { get; }
-        bool KilledAnyCops { get; }
         string DebugString_LawsViolating { get; }
         int MaxWantedLastLife { get; }
         string ModelName { get; }
         int Money { get; }
-        bool NearCivilianMurderVictim { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; set; }
         bool RecentlyAppliedWantedStats { get; }
         bool RecentlyBusted { get; }
         bool RecentlyDied { get; }
-        bool RecentlyHurtCivilian { get; }
-        bool RecentlyHurtCop { get; }
-        bool RecentlyKilledCivilian { get; }
-        bool RecentlyKilledCop { get; }
         bool RecentlyStartedPlaying { get; }
         List<VehicleExt> ReportedStolenVehicles { get; }
         List<LicensePlate> SpareLicensePlates { get; }

@@ -13,7 +13,6 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         int MaxWantedLastLife { get; set; }
         int WantedLevel { get; }
-        bool KilledAnyCops { get; }
         int TimesDied { get; set; }
         bool DiedInVehicle { get; }
         bool CanUndie { get; }

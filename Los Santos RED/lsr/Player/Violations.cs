@@ -55,6 +55,22 @@ namespace LosSantosRED.lsr
         private bool TreatAsCop;
         private bool VehicleIsSuspicious;
         private ITimeReportable TimeReporter;
+
+        private uint GameTimeLastHurtCivilian;
+        private uint GameTimeLastHurtCop;
+        private uint GameTimeLastKilledCivilian;
+        private uint GameTimeLastKilledCop;
+
+        public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= 5000;
+        public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= 5000;
+        public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= 5000;
+        public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= 5000;
+
+
+        private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
+        private List<PedExt> PlayerKilledCops = new List<PedExt>();
+        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 9f);
+        public bool KilledAnyCops => PlayerKilledCops.Any();
         public Violations(IViolateable currentPlayer, ITimeReportable timeReporter)
         {
             TimeReporter = timeReporter;
@@ -184,7 +200,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckPedDamageCrimes()
         {
-            if (CurrentPlayer.RecentlyKilledCop)
+            if (RecentlyKilledCop)
             {
                 KillingPolice.IsCurrentlyViolating = true;
             }
@@ -193,7 +209,7 @@ namespace LosSantosRED.lsr
                 KillingPolice.IsCurrentlyViolating = false;
             }
 
-            if (CurrentPlayer.RecentlyHurtCop)
+            if (RecentlyHurtCop)
             {
                 HurtingPolice.IsCurrentlyViolating = true;
             }
@@ -202,7 +218,7 @@ namespace LosSantosRED.lsr
                 HurtingPolice.IsCurrentlyViolating = false;
             }
 
-            if (CurrentPlayer.RecentlyKilledCivilian || CurrentPlayer.NearCivilianMurderVictim)
+            if (RecentlyKilledCivilian || NearCivilianMurderVictim)
             {
                 KillingCivilians.IsCurrentlyViolating = true;
             }
@@ -211,7 +227,7 @@ namespace LosSantosRED.lsr
                 KillingCivilians.IsCurrentlyViolating = false;
             }
 
-            if (CurrentPlayer.RecentlyHurtCivilian)
+            if (RecentlyHurtCivilian)
             {
                 HurtingCivilians.IsCurrentlyViolating = true;
             }
@@ -267,7 +283,7 @@ namespace LosSantosRED.lsr
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (RecentlyHitPed && (CurrentPlayer.RecentlyHurtCivilian || CurrentPlayer.RecentlyHurtCop) && (CurrentPlayer.AnyHumansNear))//needed for non humans that are returned from this native
+            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && (CurrentPlayer.AnyHumansNear))//needed for non humans that are returned from this native
             {
                 HitPedWithCar.IsCurrentlyViolating = true;
             }
@@ -398,6 +414,43 @@ namespace LosSantosRED.lsr
                 BrandishingHeavyWeapon.IsCurrentlyViolating = false;
             }
         }
+
+        public void AddKilled(PedExt myPed)
+        {
+            if (myPed.IsCop)
+            {
+                PlayerKilledCops.Add(myPed);
+                GameTimeLastKilledCop = Game.GameTime;
+                GameTimeLastHurtCop = Game.GameTime;
+            }
+            else
+            {
+                PlayerKilledCivilians.Add(myPed);
+                GameTimeLastKilledCivilian = Game.GameTime;
+                GameTimeLastHurtCivilian = Game.GameTime;
+            }
+        }
+
+        public void AddInjured(PedExt myPed)
+        {
+            if (myPed.IsCop)
+            {
+                GameTimeLastHurtCop = Game.GameTime;
+            }
+            else
+            {
+                GameTimeLastHurtCivilian = Game.GameTime;
+            }
+        }
+
+        public void Reset()
+        {
+            GameTimeLastHurtCivilian = 0;
+            GameTimeLastKilledCivilian = 0;
+            GameTimeLastHurtCop = 0;
+            GameTimeLastKilledCop = 0;
+        }
+
         private void FlagViolations()
         {
             foreach (Crime Violating in CrimeList.Where(x => x.IsCurrentlyViolating))

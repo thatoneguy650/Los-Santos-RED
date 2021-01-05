@@ -21,6 +21,14 @@ namespace LosSantosRED.lsr
         private uint GameTimeWantedLevelStarted;
         private IPoliceRespondable Player;
         private PoliceState PrevPoliceState;
+
+
+
+
+
+
+
+
         public PoliceResponse(IPoliceRespondable player)
         {
             Player = player;
@@ -269,11 +277,6 @@ namespace LosSantosRED.lsr
         }
         private void OnBecameWanted(object sender, EventArgs e)
         {
-            if (!RecentlySetWanted && Player.WantedLevel <= 2)//randomly set by the game
-            {
-                SetWantedLevel(0, "Resetting Unknown Wanted", false);
-                return;
-            }
             GameTimeWantedStarted = Game.GameTime;
             PlaceWantedStarted = Game.LocalPlayer.Character.Position;
         }
