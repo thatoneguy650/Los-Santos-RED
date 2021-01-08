@@ -26,7 +26,7 @@ namespace LosSantosRED.lsr.Interface
         WeaponInformation CurrentWeapon { get; }
         WeaponCategory CurrentWeaponCategory { get; }
         Zone CurrentZone { get; }
-        string DebugString_Drunk { get; }
+        string DebugLine2 { get; }
         bool DiedInVehicle { get; }
         bool HandsAreUp { get; set; }
         float IntoxicatedIntensity { get; set; }
@@ -61,7 +61,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsViolatingAnyCivilianReportableCrime { get; }
         bool IsViolatingAnyTrafficLaws { get; }
         bool IsWanted { get; }
-        string DebugString_LawsViolating { get; }
+        string DebugLine7 { get; }
         int MaxWantedLastLife { get; }
         string ModelName { get; }
         int Money { get; }

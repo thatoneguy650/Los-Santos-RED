@@ -237,13 +237,19 @@ public class Vehicles
         if (ModelMatchAgencies.Count > 1)
         {
             Zone ZoneFound = Zones.GetZone(CopCar.Position);
-            if (ZoneFound != null)
+            if (ZoneFound != null && ZoneFound.InternalGameName != "UNK")
             {
-                foreach (Agency ZoneAgency in ZoneJurisdictions.GetAgencies(ZoneFound.InternalGameName, WantedLevel))
+                Game.Console.Print(string.Format("GetAgency ZoneFound.InternalGameName {0}", ZoneFound.InternalGameName));
+                List<Agency> ToGoThru = ZoneJurisdictions.GetAgencies(ZoneFound.InternalGameName, WantedLevel);
+                if (ToGoThru != null)
                 {
-                    if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                    Game.Console.Print(string.Format("GetAgency Count {0}", ToGoThru.Count));
+                    foreach (Agency ZoneAgency in ToGoThru)
                     {
-                        return ZoneAgency;
+                        if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                        {
+                            return ZoneAgency;
+                        }
                     }
                 }
             }

@@ -100,8 +100,8 @@ public class Menu
         debugMenu.OnItemSelect += DebugMenuSelect;
         debugMenu.OnListChange += OnListChange;
         debugMenu.OnCheckboxChange += OnCheckboxChange;
-        Player.Busted += OnBusted;
-        Player.Killed += OnDeath;
+        //Player.Busted += OnBusted;
+        //Player.Killed += OnDeath;
     }
     private void OnDeath(object sender, EventArgs e)
     {

@@ -14,13 +14,13 @@ namespace LosSantosRED.lsr.Interface
         Street CurrentStreet { get; }
         VehicleExt CurrentVehicle { get; }
         Zone CurrentZone { get; }
-        string DebugString_Drunk { get; }
-        string DebugString_LawsViolating { get; }
-        string DebugString_ModelInfo { get; }
-        string DebugString_ObservedCrimes { get; }
-        string DebugString_ReportedCrimes { get; }
-        string DebugString_SearchMode { get; }
-        string DebugString_State { get; }
+        string DebugLine2 { get; }
+        string DebugLine7 { get; }
+        string DebugLine4 { get; }
+        string DebugLine5 { get; }
+        string DebugLine6 { get; }
+        string DebugLine3 { get; }
+        string DebugLine1 { get; }
         bool IsAliveAndFree { get; }
         bool IsDead { get; }
         bool IsBusted { get; }

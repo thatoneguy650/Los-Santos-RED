@@ -191,7 +191,7 @@ public class Dispatcher
                         }
                         catch (Exception ex)
                         {
-                            //Game.Console.Print("SpawnCop " + ex.Message + " : " + ex.StackTrace);
+                            Game.Console.Print("SpawnCop " + ex.Message + " : " + ex.StackTrace);
                         }
                     }
                 }
@@ -241,7 +241,7 @@ public class Dispatcher
             RemoveBlip(Cop.Pedestrian);
             if (Cop.Pedestrian.Exists())
             {
-                //Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
+                Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
                 Cop.Pedestrian.Delete();
             }
         }
@@ -286,7 +286,7 @@ public class Dispatcher
         //}
         foreach (Agency ag in ToReturn)
         {
-            //Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
+            Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
     }
@@ -319,7 +319,7 @@ public class Dispatcher
         }
         if (agency == null)
         {
-            //Game.Console.Print("Dispatcher could not find Agency To Spawn");
+            Game.Console.Print("Dispatcher could not find Agency To Spawn");
         }
         return agency;
     }

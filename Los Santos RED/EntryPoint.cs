@@ -13,15 +13,23 @@ public static class EntryPoint
             GameFiber.Yield();
         }
 
-        ModController = new ModController();
-        ModController.Start();
-
+        //ModController = new ModController();
+        //ModController.Start();
+        Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Press F10 to Start");
         while (true)
         {
-            if (!ModController.IsRunning && Game.IsKeyDown(Keys.F10))
+            if(Game.IsKeyDown(Keys.F10))
             {
-                ModController = new ModController();
-                ModController.Start();
+                if(ModController == null)
+                {
+                    ModController = new ModController();
+                    ModController.Start();
+                }
+                else if (!ModController.IsRunning)
+                {
+                    ModController = new ModController();
+                    ModController.Start();
+                }
             }
             GameFiber.Yield();
         }

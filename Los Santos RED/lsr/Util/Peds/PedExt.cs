@@ -26,6 +26,7 @@ public class PedExt : IComplexTaskable
     private Entity Killer;
     private Entity LastHurtBy;
     public ComplexTask CurrentTask { get; set; }
+    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} Task: {CurrentTask?.Name}";
     public PedExt(Ped _Pedestrian)
     {
         Pedestrian = _Pedestrian;
@@ -165,6 +166,7 @@ public class PedExt : IComplexTaskable
     }
     public bool IsStill { get; private set; }
     public Ped Pedestrian { get; private set; }
+
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
     public Vector3 PositionLastSeenPlayer { get; private set; }
     public Vector3 PositionToReportToPolice
@@ -362,11 +364,6 @@ public class PedExt : IComplexTaskable
                 UpdateDistance(placeLastSeen);
                 UpdateLineOfSight();
                 UpdateCrimes();
-
-            }
-            if (CurrentTask != null)
-            {
-                CurrentTask.Update();
             }
         }
         else
@@ -375,6 +372,13 @@ public class PedExt : IComplexTaskable
             GameTimeContinuoslySeenPlayerSince = 0;
         }
         CurrentHealthState.Update(playerToCheck);
+    }
+    public void UpdateTask()
+    {
+        if (CurrentTask != null)
+        {
+            CurrentTask.Update();
+        }
     }
     public void WitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {
@@ -437,19 +441,20 @@ public class PedExt : IComplexTaskable
         {
             NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
             NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
-            if (!IsInHelicopter)// && PlayerToCheck.IsWanted)
+            
+            if (!IsInHelicopter && PlayerToCheck.IsWanted)// && PlayerToCheck.IsWanted)
             {
               //  NativeFunction.CallByName<bool>("SET_DRIVER_AGGRESSIVENESS", Pedestrian, 1.0f);
-               // NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);
-                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 4);
-                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 8);
-                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 16);
-                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 32);
-                NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 512);
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);
+                //NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 4);
+                //NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 8);
+                //NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 16);
+                //NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 32);
+                //NativeFunction.CallByName<bool>("SET_DRIVE_TASK_DRIVING_STYLE", Pedestrian, 512);
 
 
-                //new 
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 262144, true);
+                ////new 
+                //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 262144, true);
 
 
 

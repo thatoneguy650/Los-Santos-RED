@@ -22,19 +22,9 @@ namespace LosSantosRED.lsr
         private IPoliceRespondable Player;
         private PoliceState PrevPoliceState;
 
-
-
-
-
-
-
-
         public PoliceResponse(IPoliceRespondable player)
         {
             Player = player;
-            Player.BecameWanted += OnBecameWanted;
-            Player.LostWanted += OnLostWanted;
-            Player.WantedLevelIncreased += OnWantedLevelIncreased;
         }
         private enum PoliceState
         {
@@ -44,8 +34,6 @@ namespace LosSantosRED.lsr
             DeadlyChase = 3,
             ArrestedWait = 4,
         }
-        public string CrimesObservedJoined => string.Join(",", CrimesObserved.Select(x => x.AssociatedCrime.Name));
-        public string CrimesReportedJoined => string.Join(",", CrimesReported.Select(x => x.AssociatedCrime.Name));
         public uint GameTimeWantedStarted { get; private set; }
         public uint HasBeenAtCurrentPoliceStateFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimePoliceStateStart;
         public uint HasBeenAtCurrentWantedLevelFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedLevelStarted;
@@ -58,6 +46,7 @@ namespace LosSantosRED.lsr
         public Vector3 LastWantedCenterPosition { get; set; }
         public float LastWantedSearchRadius { get; set; }
         public bool LethalForceAuthorized => CrimesObserved.Any(x => x.AssociatedCrime.ResultsInLethalForce);
+        public string ObservedCrimesDisplay => string.Join(",", CrimesObserved.Select(x => x.AssociatedCrime.Name));
         public int ObservedMaxWantedLevel => CrimesObserved.Max(x => x.AssociatedCrime.ResultingWantedLevel);
         public Vector3 PlaceLastReportedCrime { get; private set; }
         public Vector3 PlaceWantedStarted { get; private set; }
@@ -70,6 +59,7 @@ namespace LosSantosRED.lsr
         public List<CrimeEvent> RecentlyReportedCrimes => CrimesReported.Where(x => x.RecentlyOccurred(10000)).ToList();
         public bool RecentlyRequestedBackup => GameTimeLastRequestedBackup != 0 && Game.GameTime - GameTimeLastRequestedBackup <= 5000;
         public bool RecentlySetWanted => GameTimeLastSetWanted != 0 && Game.GameTime - GameTimeLastSetWanted <= 5000;
+        public string ReportedCrimesDisplay => string.Join(",", CrimesReported.Select(x => x.AssociatedCrime.Name));
         public float ResponseDrivingSpeed => CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium ? 25f : 20f;
         public bool ShouldSirenBeOn => CurrentResponse == ResponsePriority.Full || CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium;
         private ResponsePriority CurrentResponse
@@ -111,6 +101,9 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+
+    //    public Vector3 PlacePoliceLastSeenPlayer { get; internal set; }
+
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
             if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
@@ -196,6 +189,23 @@ namespace LosSantosRED.lsr
         {
             return LastWantedCenterPosition != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(LastWantedCenterPosition) <= DistanceTo;
         }
+        public void OnBecameWanted()
+        {
+            GameTimeWantedStarted = Game.GameTime;
+            PlaceWantedStarted = Game.LocalPlayer.Character.Position;
+        }
+        public void OnLostWanted()
+        {
+            if (!Player.IsDead)
+            {
+                GameTimeWantedEnded = Game.GameTime;
+            }
+            GameTimeLastWantedEnded = Game.GameTime;
+        }
+        public void OnWantedLevelIncreased()
+        {
+            GameTimeWantedLevelStarted = Game.GameTime;
+        }
         public string PrintCrimes()
         {
             string CrimeString = "";
@@ -274,23 +284,6 @@ namespace LosSantosRED.lsr
             {
                 CurrentPoliceState = PoliceState.DeadlyChase;
             }
-        }
-        private void OnBecameWanted(object sender, EventArgs e)
-        {
-            GameTimeWantedStarted = Game.GameTime;
-            PlaceWantedStarted = Game.LocalPlayer.Character.Position;
-        }
-        private void OnLostWanted(object sender, EventArgs e)
-        {
-            if (!Player.IsDead)
-            {
-                GameTimeWantedEnded = Game.GameTime;
-            }
-            GameTimeLastWantedEnded = Game.GameTime;
-        }
-        private void OnWantedLevelIncreased(object sender, EventArgs e)
-        {
-            GameTimeWantedLevelStarted = Game.GameTime;
         }
         private void PoliceStateChanged()
         {

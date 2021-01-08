@@ -29,15 +29,16 @@ public class Zones : IZones
     public Zone GetZone(Vector3 ZonePosition)
     {
         Zone ListResult = null;
+        string zoneName = "UNK";
         ListResult = ZoneList.Where(x => x.Boundaries != null && IsPointInPolygon(new Vector2(ZonePosition.X, ZonePosition.Y), x.Boundaries)).FirstOrDefault();
         if (ListResult == null)
         {
-            string zoneName = GetInternalZoneString(ZonePosition);
+            zoneName = GetInternalZoneString(ZonePosition);
             ListResult = ZoneList.Where(x => x.InternalGameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
         }
         if (ListResult == null)
         {
-            return new Zone("UNK", "Unknown", County.Unknown, "Unknown");
+            return new Zone(zoneName, "Unknown", County.Unknown, "Unknown");
         }
         else
         {
@@ -156,6 +157,7 @@ public class Zones : IZones
 
             //Vinewood Hills
             new Zone("CHIL", "Vinewood Hills", County.LosSantosCounty, "San Andreas"),
+            
             new Zone("GREATC", "Great Chaparral", County.LosSantosCounty, "San Andreas"),
             new Zone("BAYTRE", "Baytree Canyon", County.LosSantosCounty, "San Andreas"),
             new Zone("RGLEN", "Richman Glen", County.LosSantosCounty, "San Andreas"),
@@ -178,6 +180,11 @@ public class Zones : IZones
             new Zone("SANAND", "San Andreas", County.LosSantosCounty, "San Andreas"),
             new Zone("TATAMO", "Tataviam Mountains", County.LosSantosCounty, "San Andreas"),
             new Zone("WINDF", "Ron Alternates Wind Farm", County.LosSantosCounty, "San Andreas"),
+
+
+
+            //UNKNWON 
+            new Zone("GALLI", "Galilee", County.BlaineCounty, "San Andreas"),
 
             //Other
             new Zone("LUDEN", "Ludendorff", County.NorthYankton, new Vector2[] { new Vector2 { X = 2545.142f, Y = -5124.292f },

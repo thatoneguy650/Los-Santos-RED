@@ -44,11 +44,6 @@ namespace LosSantosRED.lsr.Interface
         uint TimeInSearchMode { get; }
         bool StarsRecentlyGreyedOut { get; }
         bool StarsRecentlyActive { get; }
-        event EventHandler CitizenReportedCrime;
-
-        event EventHandler BecameWanted;
-        event EventHandler LostWanted;
-        event EventHandler WantedLevelIncreased;
         void Injured(PedExt myPed);
         void Murdered(PedExt myPed);
         void Arrest();

@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,15 @@ using System.Threading.Tasks;
 
 public abstract class ComplexTask
 {
-    protected ITargetable Player;
     protected IComplexTaskable Cop;
-    protected ComplexTask(ITargetable player, IComplexTaskable cop)
+    protected ITargetable Player;
+    private uint RunInterval;
+    protected ComplexTask(ITargetable player, IComplexTaskable cop, uint runInterval)
     {
         Player = player;
         Cop = cop;
+        RunInterval = runInterval;
     }
-    public string Name { get; set; }
     public AIDynamic CurrentDynamic
     {
         get
@@ -44,9 +46,11 @@ public abstract class ComplexTask
             }
         }
     }
+    public uint GameTimeLastRan { get; set; }
+    public string Name { get; set; }
+    public bool ShouldUpdate => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan >= RunInterval;
     public abstract void Start();
-    public abstract void Update();
     public abstract void Stop();
-
+    public abstract void Update();
 }
 

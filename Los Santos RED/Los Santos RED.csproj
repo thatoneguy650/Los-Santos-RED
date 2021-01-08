@@ -116,6 +116,9 @@
     <Compile Include="lsr\Dispatcher\IssuableWeapon.cs" />
     <Compile Include="lsr\Dispatcher\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
+    <Compile Include="lsr\Tasker\Idle.cs" />
+    <Compile Include="lsr\Tasker\Investigate.cs" />
+    <Compile Include="lsr\Tasker\Locate.cs" />
     <Compile Include="lsr\Time\Interface\ITimeReportable.cs" />
     <Compile Include="lsr\Util\ModTask.cs" />
     <Compile Include="lsr\Helper\Natives.cs" />

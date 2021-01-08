@@ -67,16 +67,6 @@ namespace Mod
             ModelName = Game.LocalPlayer.Character.Model.Name;
             IsMale = Game.LocalPlayer.Character.IsMale;
         }
-        public event EventHandler AimingInVehicle;
-        public event EventHandler BecameWanted;
-        public event EventHandler Busted;
-        public event EventHandler CitizenReportedCrime;
-        public event EventHandler GettingIntoAVehicle;
-        public event EventHandler InVehicle;
-        public event EventHandler Killed;
-        public event EventHandler LostWanted;
-        public event EventHandler PoliceObservedCrime;
-        public event EventHandler WantedLevelIncreased;
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 400f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
         public bool AnyPoliceCanHearPlayer { get; set; }
@@ -102,13 +92,13 @@ namespace Mod
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
         public WeaponHash CurrentWeaponHash { get; set; }
         public Zone CurrentZone => CurrentLocation.CurrentZone;
-        public string DebugString_Drunk => CurrentConsumingActivity != null ? CurrentConsumingActivity.DebugString : "";
-        public string DebugString_LawsViolating => Violations.LawsViolatingDisplay;
-        public string DebugString_ModelInfo => $"{ModelName} {IsMale}";
-        public string DebugString_ObservedCrimes => PoliceResponse.CrimesObservedJoined;
-        public string DebugString_ReportedCrimes => PoliceResponse.CrimesReportedJoined;
-        public string DebugString_SearchMode => SearchMode.SearchModeDebug;
-        public string DebugString_State => $"IsStill {IsStill}, IsMoving {IsMoving}, IsMovingFast {IsMovingFast}";
+        public string DebugLine1 => $"IsStill: {IsStill} IsMoving: {IsMoving} IsMovingFast: {IsMovingFast}";
+        public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";//CurrentConsumingActivity != null ? CurrentConsumingActivity.DebugString : "";
+        public string DebugLine3 => SearchMode.SearchModeDebug;
+        public string DebugLine4 => $"Current Model: {ModelName} IsMale: {IsMale}";
+        public string DebugLine5 => $"Obs {PoliceResponse.ObservedCrimesDisplay}";
+        public string DebugLine6 => $"Rep {PoliceResponse.ReportedCrimesDisplay}";
+        public string DebugLine7 => $"Vio {Violations.LawsViolatingDisplay}";
         public bool DiedInVehicle { get; private set; }
         public bool HandsAreUp { get; set; }
         public float IntoxicatedIntensity { get; set; }
@@ -127,7 +117,7 @@ namespace Mod
         }
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
-        public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring;
+        public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking;
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !IsInVehicle;
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
@@ -236,14 +226,11 @@ namespace Mod
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
             PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
-            if (ByPolice)
+            if (!ByPolice)
             {
-                PoliceObservedCrime?.Invoke(this, null);
+                Investigation.Start();
             }
-            else
-            {
-                CitizenReportedCrime?.Invoke(this, null);
-            }
+            
         }
         public void AddSpareLicensePlate()
         {
@@ -551,7 +538,6 @@ namespace Mod
             HandsAreUp = false;
             Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);
             Game.LocalPlayer.HasControl = false;
-            Busted?.Invoke(this, null);
         }
         private void DeathEvent()
         {
@@ -563,7 +549,6 @@ namespace Mod
             Game.LocalPlayer.Character.Health = 0;
             Game.LocalPlayer.Character.IsInvincible = true;
             TransitionToSlowMo();
-            Killed?.Invoke(this, null);
         }
         private void IsAimingInVehicleChanged()
         {
@@ -581,7 +566,6 @@ namespace Mod
                     CurrentVehicle.SetDriverWindow(false);
                 }
             }
-            AimingInVehicle?.Invoke(this, null);
             //Game.Console.Print(string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
         }
         private bool IsArmed()
@@ -663,7 +647,6 @@ namespace Mod
             {
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
-            GettingIntoAVehicle?.Invoke(this, null);
             //Game.Console.Print(string.Format("IsGettingIntoVehicleChanged to {0}", IsGettingIntoAVehicle));
         }
         private void IsInVehicleChanged()
@@ -679,7 +662,6 @@ namespace Mod
                     ////Game.Console.Print(string.Format("IsInVehicle Changed: Current Engine Status: {0}", CurrentVehicle.Vehicle.IsEngineOn));
                 }
             }
-            InVehicle?.Invoke(this, null);
             //Game.Console.Print(string.Format("IsInVehicle Changed: {0}", IsInVehicle));
         }
         private void TerminateVanillaAudio()
@@ -950,7 +932,7 @@ namespace Mod
                     }
                     PoliceResponse = new PoliceResponse(this);
                 }
-                LostWanted?.Invoke(this, null);
+                PoliceResponse.OnLostWanted();
             }
             else if (IsWanted && PreviousWantedLevel == 0)//added
             {
@@ -960,12 +942,13 @@ namespace Mod
                 }
                 else
                 {
-                    BecameWanted?.Invoke(this, null);
+                    Investigation.Reset();
+                    PoliceResponse.OnBecameWanted();
                 }  
             }
             else
             {
-                WantedLevelIncreased?.Invoke(this, null);
+                PoliceResponse.OnWantedLevelIncreased();
             }
             PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }

@@ -35,16 +35,16 @@ public class Tasking_Old
     }
     public void AddTaskablePeds()
     {
-        World.PoliceList.RemoveAll(x => !x.Pedestrian.Exists());
+        //World.PoliceList.RemoveAll(x => !x.Pedestrian.Exists());
 
-        TaskableCops.RemoveAll(x => !x.CopToTask.Pedestrian.Exists());
-        foreach (Cop Cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
-        {
-            if (!TaskableCops.Any(x => x.CopToTask.Pedestrian.Handle == Cop.Pedestrian.Handle))
-            {
-                TaskableCops.Add(new TaskableCop(World, CurrentPlayer, Cop));
-            }
-        }
+        //TaskableCops.RemoveAll(x => !x.CopToTask.Pedestrian.Exists());
+        //foreach (Cop Cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
+        //{
+        //    if (!TaskableCops.Any(x => x.CopToTask.Pedestrian.Handle == Cop.Pedestrian.Handle))
+        //    {
+        //        TaskableCops.Add(new TaskableCop(World, CurrentPlayer, Cop));
+        //    }
+        //}
 
         TaskableCivilians.RemoveAll(x => !x.CivilianToTask.Pedestrian.Exists());
         foreach (PedExt Civilian in World.CivilianList.Where(x => x.Pedestrian.Exists()))

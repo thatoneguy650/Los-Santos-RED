@@ -63,7 +63,7 @@ public class Cop : PedExt
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= 5f;
     public bool WasModSpawned { get; private set; }
-    public float DistanceToInvestigationPosition(Vector3 Position)
+    public float DistanceToInvestigationPosition(Vector3 Position)//whut lol
     {
         return Pedestrian.DistanceTo2D(Position);
     }
@@ -123,6 +123,11 @@ public class Cop : PedExt
             }
             GameTimeLastSpoke = Game.GameTime;
         }
+    }
+    public void UpdateDrivingFlags() 
+    {
+        NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
+        NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
     }
     public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel)
     {

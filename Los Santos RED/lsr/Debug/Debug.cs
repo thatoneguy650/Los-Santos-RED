@@ -25,7 +25,6 @@ public class Debug
         World = world;
         Player = targetable;
     }
-
     public void Update()
     {
         if (Game.IsKeyDown(Keys.NumPad0))
@@ -68,39 +67,175 @@ public class Debug
         {
             DebugNumpad9();
         }
-
-
-        //Vector3 Position = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 31086));
-        //Rage.Debug.DrawArrowDebug(Position, Vector3.Zero, Rotator.Zero, 1f, Color.White);
-        //Vector3 Position2 = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
-        //Rage.Debug.DrawArrowDebug(Position2, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-
-
     }
     private void DebugNumpad0()
     {
-        DebugNonInvincible();
-    }
-    private void DebugNonInvincible()
-    {
-        Game.LocalPlayer.Character.IsInvincible = false;
-        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-        //Game.Console.Print("KeyDown: You are NOT invicible");
+        MakeNonInvincible();
     }
     private void DebugNumpad1()
     {
-        DebugInvincible();
-    }
-    private void DebugInvincible()
-    {
-        Game.LocalPlayer.Character.IsInvincible = true;
-        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-        //Game.Console.Print("KeyDown: You are invicible");
+        MakeInvincible();
     }
     private void DebugNumpad2()
     {
         PlateIndex--;
         SetIndex();
+    }
+    private void DebugNumpad3()
+    {
+        PlateIndex++;
+        SetIndex();
+    }
+    private void DebugNumpad4()
+    {
+        foreach (Cop cop in World.PoliceList)
+        {
+            cop.CurrentTask = new Idle(cop, Player);
+            cop.CurrentTask.Start();
+        }
+    }
+    private void DebugNumpad5()
+    {
+        foreach (Cop cop in World.PoliceList)
+        {
+            Player.AddCrime(new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, 4, true, false, false), false, Game.LocalPlayer.Character.Position, null, null, false);
+            cop.CurrentTask = new Investigate(cop, Player);
+            cop.CurrentTask.Start();
+        }
+    }
+    private void DebugNumpad6()
+    {
+        foreach (Cop cop in World.PoliceList)
+        {
+            Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+            if(cop.CurrentTask == null || cop.CurrentTask.Name != "Locate")
+            {
+                cop.CurrentTask = new Locate(cop, Player);
+                cop.CurrentTask.Start();
+            }
+
+        }
+    }
+    private void DebugNumpad7()
+    {
+        foreach (Cop cop in World.PoliceList)
+        {
+            cop.CurrentTask = new Chase(cop, Player);
+            cop.CurrentTask.Start();
+        }
+    }
+    public void DebugNumpad8()
+    {
+        foreach (Cop cop in World.PoliceList)
+        {
+            Game.Console.Print(cop.DebugString);
+        }
+    }
+    private void DebugNumpad9()
+    {
+        TerminateMod();
+    }
+    private void TerminateMod()
+    {
+        EntryPoint.ModController.Dispose();
+        Game.LocalPlayer.WantedLevel = 0;
+        Game.TimeScale = 1f;
+        NativeFunction.Natives.xB4EDDC19532BFB85();
+        Game.DisplayNotification("Instant Action Deactivated");
+    }
+    private void DrawDebugArrowsOnPeds()
+    {
+        Vector3 Position = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 31086));
+        Rage.Debug.DrawArrowDebug(Position, Vector3.Zero, Rotator.Zero, 1f, Color.White);
+        Vector3 Position2 = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
+        Rage.Debug.DrawArrowDebug(Position2, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+    }
+    private void SpawnInteractiveChaser()
+    {
+        Ped newped = new Ped("s_m_y_cop_01", Game.LocalPlayer.Character.GetOffsetPositionFront(2f), Game.LocalPlayer.Character.Heading);
+        Vehicle car = new Vehicle("police", Game.LocalPlayer.Character.GetOffsetPositionFront(-8f), Game.LocalPlayer.Character.Heading);
+        if (newped.Exists() && car.Exists())
+        {
+            newped.WarpIntoVehicle(car, -1);
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (newped.Exists() && newped.IsAlive && !Game.IsKeyDownRightNow(Keys.E))
+                    {
+                        Game.DisplayHelp("Press E to delete chaser ~n~Press R to Repair");
+                        if (Game.IsKeyDownRightNow(Keys.R) && car.Exists())
+                        {
+                            car.Repair();
+                            newped.Health = newped.MaxHealth;
+                        }
+                        GameFiber.Yield();
+                    }
+                    if (newped.Exists())
+                    {
+                        newped.Delete();
+                    }
+                    if (car.Exists())
+                    {
+                        car.Delete();
+                    }
+                }
+                catch (Exception e)
+                {
+                    if (newped.Exists())
+                    {
+                        newped.Delete();
+                    }
+                    if (car.Exists())
+                    {
+                        car.Delete();
+                    }
+                    //Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
+                }
+            }, "DebugLoop2");
+
+        }
+    }
+    private void MakeNonInvincible()
+    {
+        Game.LocalPlayer.Character.IsInvincible = false;
+        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+        Game.Console.Print("KeyDown: You are NOT invicible");
+        Game.DisplaySubtitle("Invincibility Off");
+    }
+    private void MakeInvincible()
+    {
+        Game.LocalPlayer.Character.IsInvincible = true;
+        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+        Game.Console.Print("KeyDown: You are invicible");
+        Game.DisplaySubtitle("Invincibility On");
+    }
+    private void MakeDrunk()
+    {
+        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
+        if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", "move_m@drunk@verydrunk"))
+        {
+            NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", "move_m@drunk@verydrunk");
+        }
+        NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, "move_m@drunk@verydrunk", 0x3E800000);
+        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
+        NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", "Drunk");
+        NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", 1.1f);
+        NativeFunction.Natives.x80C8B1846639BB19(1);
+        NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", 5.0f);
+        //Game.Console.Print("Player Made Drunk");
+    }
+    private void MakeSober()
+    {
+        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
+        NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
+        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+        NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+        NativeFunction.Natives.x80C8B1846639BB19(0);
+
+        NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
+
+        //Game.Console.Print("Player Made Sober");
     }
     public void LoadNorthYankton()
     {
@@ -168,12 +303,6 @@ public class Debug
         NativeFunction.CallByName<bool>("REQUEST_IPL", "prologuerd");
         NativeFunction.CallByName<bool>("REQUEST_IPL", "prologuerdb");
         NativeFunction.CallByName<bool>("REQUEST_IPL", "prologuerd_lod");
-    }
-
-    private void DebugNumpad3()
-    {
-        PlateIndex++;
-        SetIndex();
     }
     public void UnLoadNorthYankton()
     {
@@ -267,118 +396,6 @@ public class Debug
                 Game.DisplaySubtitle($" PlateIndex: {PlateIndex} None Found");
             }
         }
-    }
-    private void DebugNumpad4()
-    {
-        //Game.Console.Print($"Position {Game.LocalPlayer.Character.Position}");
-        //Game.Console.Print($"Zone {GetInternalZoneString(Game.LocalPlayer.Character.Position)}");
-    }
-
-    private string GetInternalZoneString(Vector3 ZonePosition)
-    {
-        string zoneName;
-        unsafe
-        {
-            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
-
-            zoneName = Marshal.PtrToStringAnsi(ptr);
-        }
-        return zoneName;
-    }
-    private void DebugNumpad5()
-    {
-        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-        if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", "move_m@drunk@verydrunk"))
-        {
-            NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", "move_m@drunk@verydrunk");
-        }
-        NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, "move_m@drunk@verydrunk", 0x3E800000);
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
-        NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", "Drunk");
-        NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", 1.1f);
-        NativeFunction.Natives.x80C8B1846639BB19(1);
-        NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", 5.0f);
-        //Game.Console.Print("Player Made Drunk");
-    }
-    private void DebugNumpad6()
-    {
-        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
-        NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
-        NativeFunction.Natives.x80C8B1846639BB19(0);
-
-        NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
-
-        //Game.Console.Print("Player Made Sober");
-    }
-    private void DebugNumpad7()
-    {
-        foreach(Cop cop in World.PoliceList)
-        {
-            cop.CurrentTask = new Chase(cop, Player);
-        }
-
-
-    }
-    public void DebugNumpad8()
-    {
-        Ped newped = new Ped("s_m_y_cop_01", Game.LocalPlayer.Character.GetOffsetPositionFront(2f), Game.LocalPlayer.Character.Heading);
-        Vehicle car = new Vehicle("police", Game.LocalPlayer.Character.GetOffsetPositionFront(-8f), Game.LocalPlayer.Character.Heading);
-        if (newped.Exists() && car.Exists())
-        {
-            newped.WarpIntoVehicle(car, -1);
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    while (newped.Exists() && newped.IsAlive && !Game.IsKeyDownRightNow(Keys.E))
-                    {
-                        Game.DisplayHelp("Press E to delete chaser ~n~Press R to Repair");
-                        if (Game.IsKeyDownRightNow(Keys.R) && car.Exists())
-                        {
-                            car.Repair();
-                            newped.Health = newped.MaxHealth;
-                        }
-                        GameFiber.Yield();
-                    }
-                    if (newped.Exists())
-                    {
-                        newped.Delete();
-                    }
-                    if (car.Exists())
-                    {
-                        car.Delete();
-                    }
-                }
-                catch (Exception e)
-                {
-                    if (newped.Exists())
-                    {
-                        newped.Delete();
-                    }
-                    if (car.Exists())
-                    {
-                        car.Delete();
-                    }
-                    //Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
-                }
-            }, "DebugLoop2");
-
-        }
-    }
-    private void DebugNumpad9()
-    {
-        //Game.Console.Print("Debugging: Pressed Num9");
-        EntryPoint.ModController.Dispose();
-        Game.LocalPlayer.WantedLevel = 0;
-        Game.TimeScale = 1f;
-        NativeFunction.Natives.xB4EDDC19532BFB85();
-        Game.DisplayNotification("Instant Action Deactivated");
-
-
-       
-
     }
 
 }

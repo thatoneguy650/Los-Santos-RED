@@ -78,6 +78,7 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
             }
             ReadDataFiles();
+            GameFiber.Sleep(500);
             Audio = new Audio();
             Time = new Mod.Time();
             World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes);
@@ -163,12 +164,12 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
 
                 //Old Tasking
-                //new ModTask(500, "World.Tasking.UpdatePeds", OldTasking.AddTaskablePeds, 14,0),
+                new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
                 //new ModTask(500, "World.Tasking.Tick", OldTasking.TaskCops, 14,1),
-                //new ModTask(750, "World.Tasking.Tick", OldTasking.TaskCivilians, 14,2),
+                new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
 
                 //New Tasking
-                //new ModTask(500, "NewTasking.Update", Tasker.Update, 16,0),
+                new ModTask(500, "NewTasking.Update", Tasker.Update, 16,0),
             };
         }
         private void StartDebugLogic()

@@ -22,5 +22,7 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         bool IsInSearchMode { get; }
         float ActiveDistance { get; }
+        Investigation Investigation { get; }
+        Vector3 PlacePoliceLastSeenPlayer { get; }
     }
 }

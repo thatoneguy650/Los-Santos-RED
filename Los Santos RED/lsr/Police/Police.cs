@@ -31,6 +31,7 @@ namespace LosSantosRED.lsr
             foreach (Cop Cop in World.PoliceList)
             {
                 Cop.Update(Player, Player.PlacePoliceLastSeenPlayer);
+                Cop.UpdateDrivingFlags();
                 Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
                 Cop.UpdateSpeech(Player);
             }

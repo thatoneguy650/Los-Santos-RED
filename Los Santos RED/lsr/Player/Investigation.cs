@@ -15,8 +15,6 @@ public class Investigation
     public Investigation(IPoliceRespondable player)
     {
         Player = player;
-        Player.CitizenReportedCrime += OnCitizenReportedCrime;
-        Player.BecameWanted += OnBecameWanted;
     }
     public float Distance { get; private set; } = 800f;
     public float DistanceToInvestigationPosition => !IsActive || Position == Vector3.Zero ? 9999f : Game.LocalPlayer.Character.DistanceTo2D(Position);
@@ -33,6 +31,18 @@ public class Investigation
         HaveDescription = false;
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = 0;
+    }
+    public void Start()
+    {
+        if (Player.IsNotWanted && !IsActive)
+        {
+            SetActive();
+        }
+        else if (IsActive)
+        {
+            Position = Natives.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
+            HaveDescription = Player.PoliceResponse.PoliceHaveDescription;
+        }
     }
     public void Update()
     {
@@ -55,23 +65,7 @@ public class Investigation
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = Game.GameTime;
     }
-    private void OnBecameWanted(object sender, EventArgs e)
-    {
-        Reset();
-    }
-    private void OnCitizenReportedCrime(object sender, EventArgs e)
-    {
-        if (Player.IsNotWanted && !IsActive)
-        {
-            Start();
-        }
-        else if (IsActive)
-        {
-            Position = Natives.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
-            HaveDescription = Player.PoliceResponse.PoliceHaveDescription;
-        }
-    }
-    private void Start()
+    private void SetActive()
     {
         IsActive = true;
         Position = Natives.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);

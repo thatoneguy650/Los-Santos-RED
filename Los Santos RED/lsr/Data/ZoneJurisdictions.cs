@@ -337,6 +337,10 @@ public class ZoneJurisdictions : IZoneJurisdictions
             new ZoneJurisdiction("LSSD-BC","ZQ_UAR", 0, 85, 75),
             new ZoneJurisdiction("LSSD","ZQ_UAR", 1, 15, 5),
 
+
+            new ZoneJurisdiction("LSSD-BC","GALLI", 0, 100, 100),
+
+
             //Custom
             new ZoneJurisdiction("APD", "CHI1", 0, 100, 100),
             new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100),
@@ -581,7 +585,9 @@ public class ZoneJurisdictions : IZoneJurisdictions
             new ZoneJurisdiction("LSPD","ZP_ORT", 1, 5, 5),
 
             new ZoneJurisdiction("BCSO","ZQ_UAR", 0, 85, 75),
-            new ZoneJurisdiction("LSSD","ZQ_UAR", 1, 15, 5)
+            new ZoneJurisdiction("LSSD","ZQ_UAR", 1, 15, 5),
+
+            new ZoneJurisdiction("LSSD-BC","GALLI", 0, 100, 100),
 
         };
     }

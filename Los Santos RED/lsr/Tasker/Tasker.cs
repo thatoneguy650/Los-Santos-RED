@@ -16,42 +16,81 @@ public class Tasker
         PedProvider = pedProvider;
         Player = player;
     }
+    public void RunTasks()
+    {
+        int PedsUpdated = 0;
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x=> x.CurrentTask != null).OrderBy(x=> x.CurrentTask.GameTimeLastRan))
+        {
+            if(PedsUpdated > 3)
+            {
+                return;
+            }
+            else
+            {
+                Cop.UpdateTask();
+                PedsUpdated++;
+            }
+        }
+    }
     public void Update()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000))
         {
-            if (Player.IsWanted && WithinTaskDistance(Cop))
+            if (WithinTaskDistance(Cop))
             {
-                if (Player.IsInSearchMode)
+                if (Player.IsWanted)
                 {
-                    //GoToLast Seen?
-                }
-                else
-                {
-                    if (Cop.DistanceToPlayer <= 200f)
+                    if (Player.IsInSearchMode)
                     {
-                        if (Player.PoliceResponse.IsDeadlyChase)
+                        if (Cop.CurrentTask?.Name != "Locate")
                         {
-                            //Kill?
+                            Cop.CurrentTask = new Locate(Cop, Player);
+                            Cop.CurrentTask.Start();
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (Cop.DistanceToPlayer <= 200f)
                         {
-                            if(Cop.CurrentTask.Name != "Chase")
+                            if (Player.PoliceResponse.IsDeadlyChase)
                             {
-                                Cop.CurrentTask = new Chase(Cop, Player);
+                                //Kill?
+                            }
+                            else
+                            {
+                                if (Cop.CurrentTask?.Name != "Chase")
+                                {
+                                    Cop.CurrentTask = new Chase(Cop, Player);
+                                    Cop.CurrentTask.Start();
+                                }
+                            }
+                        }
+                        else if (Cop.DistanceToPlayer <= 1000f)
+                        {
+                            if (Cop.CurrentTask?.Name != "Locate")
+                            {
+                                Cop.CurrentTask = new Locate(Cop, Player);
                                 Cop.CurrentTask.Start();
                             }
                         }
                     }
-                    else if (Cop.DistanceToPlayer <= 1000f)
+                }
+                if (Player.Investigation.IsActive)
+                {
+                    if(Cop.CurrentTask?.Name != "Investigate")
                     {
-                        //GoToLast Seen?
+                        Cop.CurrentTask = new Investigate(Cop, Player);
+                        Cop.CurrentTask.Start();
                     }
                 }
             }
             else
             {
-                //idle?
+                if (Cop.CurrentTask?.Name != "Idle")
+                {
+                    Cop.CurrentTask = new Idle(Cop, Player);
+                    Cop.CurrentTask.Start();
+                }
             }
         }
     }
