@@ -10,6 +10,6 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsAudioPlaying { get; }
         void Abort();
-        void Play(string fileName, float volume);
+        void Play(string fileName, int volume);
     }
 }

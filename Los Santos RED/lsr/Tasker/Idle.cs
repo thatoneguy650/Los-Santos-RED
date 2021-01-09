@@ -35,6 +35,7 @@ public class Idle : ComplexTask
     public Idle(IComplexTaskable cop, ITargetable player) : base(player, cop, 1000)
     {
         Name = "Idle";
+        SubTaskName = "";
     }
     public override void Start()
     {
@@ -62,10 +63,12 @@ public class Idle : ComplexTask
     {
         if (CurrentTask == Task.Wander)
         {
+            SubTaskName = "Wander";
             Wander();
         }
         else if (CurrentTask == Task.GetInCar)
         {
+            SubTaskName = "GetInCar";
             GetInCar();
         }
         GameTimeLastRan = Game.GameTime;

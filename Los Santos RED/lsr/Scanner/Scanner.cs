@@ -1071,12 +1071,14 @@ namespace LosSantosRED.lsr
         }
         private void PlayDispatch(DispatchEvent MyAudioEvent, PoliceScannerCallIn MyDispatch)
         {
+            Game.Console.Print($"Scanner Playing {string.Join(",",MyAudioEvent.SoundsToPlay)}");
             bool AbortedAudio = false;
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-                //Game.Console.Print(string.Format("ScannerScript! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
-                AudioPlayer.Abort();
+                Game.Console.Print(string.Format("ScannerScript! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
+                //AudioPlayer.Abort();
                 AbortedAudio = true;
+                Abort();
             }
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
@@ -1103,6 +1105,7 @@ namespace LosSantosRED.lsr
 
                 foreach (string audioname in MyAudioEvent.SoundsToPlay)
                 {
+                    Game.Console.Print($"Scanner Playing {audioname}");
                     AudioPlayer.Play(audioname, Settings.SettingsManager.Police.DispatchAudioVolume);
 
                     while (AudioPlayer.IsAudioPlaying)
@@ -1122,7 +1125,21 @@ namespace LosSantosRED.lsr
                             GameTimeLastMentionedZone = Game.GameTime;
                         }
                         GameFiber.Yield();
+                        if(AbortedAudio)
+                        {
+                            Game.Console.Print($"AbortedAudio1");
+                            break;
+                        }
                     }
+                    if (AbortedAudio)
+                    {
+                        Game.Console.Print($"AbortedAudio2");
+                        break;
+                    }
+                }
+                if (AbortedAudio)
+                {
+                    AbortedAudio = false;
                 }
                 CurrentlyPlaying = null;
                 if (MyDispatch.VehicleSeen != null)

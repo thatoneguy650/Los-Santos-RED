@@ -22,6 +22,7 @@ public class Cop : PedExt
     private bool IsSetUnarmed;
     private IssuableWeapon LongGun;
     private IssuableWeapon Sidearm;
+    private bool HasHeavyWeaponOnPerson;
     public Cop(Ped pedestrian, int health, Agency agency, bool wasModSpawned) : base(pedestrian)
     {
         IsCop = true;
@@ -44,7 +45,7 @@ public class Cop : PedExt
             {
                 return false;
             }
-            else if (!IsInVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe && !Pedestrian.IsGettingIntoVehicle && !Pedestrian.IsInAnyVehicle(true) && !Pedestrian.IsInAnyVehicle(false))
+            else if (!IsInVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe && !Pedestrian.IsGettingIntoVehicle && !Pedestrian.IsInAnyVehicle(true) && !Pedestrian.IsInAnyVehicle(false) && !Pedestrian.IsGettingIntoVehicle)
             {
                 return true;
             }
@@ -63,10 +64,6 @@ public class Cop : PedExt
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && DistanceToPlayer <= 5f;
     public bool WasModSpawned { get; private set; }
-    public float DistanceToInvestigationPosition(Vector3 Position)//whut lol
-    {
-        return Pedestrian.DistanceTo2D(Position);
-    }
     public void IssueWeapons()
     {
         Sidearm = AssignedAgency.GetRandomWeapon(true);
@@ -128,11 +125,16 @@ public class Cop : PedExt
     {
         NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
         NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
+        NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Pedestrian, 32, true);
     }
     public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel)
     {
         if (ShouldAutoSetWeaponState)
         {
+            if(IsInVehicle && IsDeadlyChase)
+            {
+                HasHeavyWeaponOnPerson = true;
+            }
             if (IsDeadlyChase)
             {
                 if (IsInVehicle && WantedLevel < 4)
@@ -191,7 +193,7 @@ public class Cop : PedExt
                 LongGun.ApplyVariation(Pedestrian);
             }
             NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 100);//30
-            if (LongGun != null)// && HasHeavyWeaponOnPerson)
+            if (LongGun != null && HasHeavyWeaponOnPerson)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.GetHash(), true);
             }

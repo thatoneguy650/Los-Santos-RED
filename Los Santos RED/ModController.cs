@@ -11,7 +11,8 @@ namespace LosSantosRED.lsr
     {
         private readonly Stopwatch TickStopWatch = new Stopwatch();
         private Agencies Agencies;
-        private Audio Audio;
+        //private Audio Audio;
+        private AudioNew Audio;
         private Civilians Civilians;
         private CountyJurisdictions CountyJurisdictions;
         private Debug Debug;
@@ -79,7 +80,11 @@ namespace LosSantosRED.lsr
             }
             ReadDataFiles();
             GameFiber.Sleep(500);
-            Audio = new Audio();
+           // Audio = new Audio();
+
+            Audio = new AudioNew();
+
+
             Time = new Mod.Time();
             World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes);
             Player = new Mod.Player(World, Time, Streets, Zones, Settings, Weapons);
@@ -94,7 +99,7 @@ namespace LosSantosRED.lsr
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
             Scanner = new Scanner(World, Player, Audio, Respawning, Settings);
             Menu = new Menu(Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
-            Debug = new Debug(PlateTypes, World, Player);
+            Debug = new Debug(PlateTypes, World, Player, Scanner);
             Player.GiveName();
             Player.AddSpareLicensePlate();
             World.AddBlipsToMap();
@@ -169,7 +174,10 @@ namespace LosSantosRED.lsr
                 new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
 
                 //New Tasking
-                new ModTask(500, "NewTasking.Update", Tasker.Update, 16,0),
+
+
+                new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
+                new ModTask(500, "NewTasking.Update", Tasker.Update, 16,1),
             };
         }
         private void StartDebugLogic()

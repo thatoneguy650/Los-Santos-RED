@@ -166,7 +166,7 @@ public class Tasking_Old
         {
             get
             {
-                if (CopToTask.DistanceToInvestigationPosition(CurrentPlayer.Investigation.Position) <= CurrentPlayer.Investigation.Distance)
+                if (CopToTask.Pedestrian.DistanceTo2D(CurrentPlayer.Investigation.Position) <= CurrentPlayer.Investigation.Distance)
                     return true;
                 else
                     return false;
@@ -435,7 +435,7 @@ public class Tasking_Old
                         CopToTask.Pedestrian.CurrentVehicle.IsSirenSilent = false;
                     }
                 }
-                if (CopToTask.DistanceToInvestigationPosition(CurrentPlayer.Investigation.Position) <= 15f)
+                if (CopToTask.Pedestrian.DistanceTo2D(CurrentPlayer.Investigation.Position) <= 15f)
                 {
                     AtInvesstigationPositionThisInvestigation = true;
                     if (CopToTask.Pedestrian.Exists())

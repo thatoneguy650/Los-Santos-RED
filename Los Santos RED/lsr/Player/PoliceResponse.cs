@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 namespace LosSantosRED.lsr
 {
@@ -21,6 +22,7 @@ namespace LosSantosRED.lsr
         private uint GameTimeWantedLevelStarted;
         private IPoliceRespondable Player;
         private PoliceState PrevPoliceState;
+        private Blip LastSeenLocationBlip;
 
         public PoliceResponse(IPoliceRespondable player)
         {
@@ -101,9 +103,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-
-    //    public Vector3 PlacePoliceLastSeenPlayer { get; internal set; }
-
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
             if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
@@ -167,6 +166,13 @@ namespace LosSantosRED.lsr
                 {
                     SetWantedLevel(WorstObserved.AssociatedCrime.ResultingWantedLevel, "you are a suspect!", true);
                 }
+            }
+        }
+        public void Dispose()
+        {
+            if(LastSeenLocationBlip.Exists())
+            {
+                LastSeenLocationBlip.Delete();
             }
         }
         public int InstancesOfCrime(string CrimeID)
@@ -243,6 +249,7 @@ namespace LosSantosRED.lsr
         {
             GetPoliceState();
             WantedLevelTick();
+           
         }
         private void GetPoliceState()
         {
@@ -336,6 +343,35 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
+            UpdateBlip();
+        }
+        private void UpdateBlip()
+        {
+            if(Player.IsWanted)
+            {
+                if(!LastSeenLocationBlip.Exists())
+                {
+                    LastSeenLocationBlip = new Blip(Player.PlacePoliceLastSeenPlayer, 200f)
+                    {
+                        Name = "Wanted Center",
+                        Color = Color.Red,
+                        Alpha = 0.25f
+                    };
+                    NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastSeenLocationBlip.Handle, true);
+                }
+                else
+                {
+                    LastSeenLocationBlip.Position = Player.PlacePoliceLastSeenPlayer;
+                }
+            }
+            else
+            {
+                if(LastSeenLocationBlip.Exists())
+                {
+                    LastSeenLocationBlip.Delete();
+                }
+            }
         }
     }
+
 }

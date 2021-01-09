@@ -19,11 +19,13 @@ public class Debug
     private PlateTypes PlateTypes;
     private Mod.World World;
     private Mod.Player Player;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable)
+    private Scanner Scanner;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, Scanner scanner)
     {
         PlateTypes = plateTypes;
         World = world;
         Player = targetable;
+        Scanner = scanner;
     }
     public void Update()
     {
@@ -78,13 +80,11 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        PlateIndex--;
-        SetIndex();
+        Scanner.Abort();
     }
     private void DebugNumpad3()
     {
-        PlateIndex++;
-        SetIndex();
+        Scanner.AnnounceCrime(new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false), new PoliceScannerCallIn(false,true,Game.LocalPlayer.Character.Position));
     }
     private void DebugNumpad4()
     {
@@ -126,13 +126,16 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        foreach (Cop cop in World.PoliceList)
+        Game.Console.Print("===================================");
+        foreach (Cop cop in World.PoliceList.OrderBy(x=>x.DistanceToPlayer))
         {
             Game.Console.Print(cop.DebugString);
         }
+        Game.Console.Print("===================================");
     }
     private void DebugNumpad9()
     {
+        MakeSober();
         TerminateMod();
     }
     private void TerminateMod()

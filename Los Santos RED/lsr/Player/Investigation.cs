@@ -12,6 +12,7 @@ public class Investigation
     private uint GameTimeStartedInvestigation;
     private float NearInvestigationDistance = 250f;
     private IPoliceRespondable Player;
+    private Blip InvestigationBlip;
     public Investigation(IPoliceRespondable player)
     {
         Player = player;
@@ -31,6 +32,17 @@ public class Investigation
         HaveDescription = false;
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = 0;
+        if (InvestigationBlip.Exists())
+        {
+            InvestigationBlip.Delete();
+        }
+    }
+    public void Dispose()
+    {
+        if (InvestigationBlip.Exists())
+        {
+            InvestigationBlip.Delete();
+        }
     }
     public void Start()
     {
@@ -64,6 +76,10 @@ public class Investigation
         HaveDescription = false;
         GameTimeStartedInvestigation = 0;
         GameTimeLastInvestigationExpired = Game.GameTime;
+        if (InvestigationBlip.Exists())
+        {
+            InvestigationBlip.Delete();
+        }
     }
     private void SetActive()
     {
@@ -71,6 +87,13 @@ public class Investigation
         Position = Natives.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
         HaveDescription = Player.PoliceResponse.PoliceHaveDescription;
         GameTimeStartedInvestigation = Game.GameTime;
+        InvestigationBlip = new Blip(Position, 250f)
+        {
+            Name = "Investigation Center",
+            Color = Color.Yellow,
+            Alpha = 0.25f
+        };
+        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)InvestigationBlip.Handle, true);
     }
 }
 

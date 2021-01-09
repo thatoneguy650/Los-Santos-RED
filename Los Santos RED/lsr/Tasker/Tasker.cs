@@ -21,7 +21,7 @@ public class Tasker
         int PedsUpdated = 0;
         foreach (Cop Cop in PedProvider.PoliceList.Where(x=> x.CurrentTask != null).OrderBy(x=> x.CurrentTask.GameTimeLastRan))
         {
-            if(PedsUpdated > 3)
+            if(PedsUpdated > 2)
             {
                 return;
             }
@@ -36,7 +36,7 @@ public class Tasker
     {
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000))
         {
-            if (WithinTaskDistance(Cop))
+            if (WithinTaskDistance(Cop) && !Cop.IsInHelicopter)//heli, dogs, boats come next?
             {
                 if (Player.IsWanted)
                 {
@@ -54,7 +54,11 @@ public class Tasker
                         {
                             if (Player.PoliceResponse.IsDeadlyChase)
                             {
-                                //Kill?
+                                if (Cop.CurrentTask?.Name != "Kill")
+                                {
+                                    Cop.CurrentTask = new Kill(Cop, Player);
+                                    Cop.CurrentTask.Start();
+                                }
                             }
                             else
                             {

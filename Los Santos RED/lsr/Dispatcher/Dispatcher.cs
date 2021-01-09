@@ -173,7 +173,7 @@ public class Dispatcher
                 timesTried++;
             }
             while (!spawnLocation.HasSpawns && !IsValidSpawn(spawnLocation) && timesTried < 10);
-            if (spawnLocation.HasSpawns)
+            if (spawnLocation.HasSpawns && IsValidSpawn(spawnLocation))
             {
                 Agency agency = GetRandomAgency(spawnLocation);
                 DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
@@ -195,7 +195,6 @@ public class Dispatcher
                         }
                     }
                 }
-
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }

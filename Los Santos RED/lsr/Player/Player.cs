@@ -8,6 +8,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -79,7 +80,7 @@ namespace Mod
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
         public bool CanPerformActivities => !IsInVehicle && IsStill && !IsIncapacitated && !IsConsideredArmed;
         public bool CanSurrender => Surrendering.CanSurrender;
-        public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit;
+        public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit || Settings.SettingsManager.General.UndieLimit == 0;
         public Ped Character => Game.LocalPlayer.Character;
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
         public Street CurrentCrossStreet => CurrentLocation.CurrentCrossStreet;
@@ -287,6 +288,8 @@ namespace Mod
         }
         public void Dispose()
         {
+            Investigation.Dispose(); //remove blip
+            PoliceResponse.Dispose(); //same ^
             ActivateVanillaRespawn();
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
         }
@@ -514,7 +517,6 @@ namespace Mod
             TrackedVehiclesTick();
             CurrentHealth.Update(null);
             WeaponDropping.Tick();
-
             UpdateWantedLevel();
         }
         public void ViolationsUpdate()

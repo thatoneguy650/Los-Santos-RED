@@ -29,7 +29,7 @@ public class PoliceSettings
     public bool AllowPoliceWeaponVariations = true;
     public bool DispatchAudio = true;
     public bool DispatchAudioOnlyHighPriority = false;
-    public float DispatchAudioVolume = 0.4f;
+    public int DispatchAudioVolume = 5;
     public bool DispatchSubtitles = false;
     public bool DispatchNotifications = true;
     public bool DisableAmbientScanner = true;

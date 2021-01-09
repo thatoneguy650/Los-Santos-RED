@@ -37,6 +37,7 @@ public class Locate : ComplexTask
     public Locate(IComplexTaskable cop, ITargetable player) : base(player, cop, 1000)
     {
         Name = "Locate";
+        SubTaskName = "";
     }
     public override void Start()
     {
@@ -64,10 +65,12 @@ public class Locate : ComplexTask
     {
         if (CurrentTask == Task.Wander)
         {
+            SubTaskName = "Wander";
             Wander();
         }
         else if (CurrentTask == Task.GoTo)
         {
+            SubTaskName = "GoTo";
             GoTo();
         }
         GameTimeLastRan = Game.GameTime;
@@ -91,7 +94,7 @@ public class Locate : ComplexTask
     private void GoTo()
     {
         NeedsUpdates = true;
-        if (CurrentTaskedPosition.DistanceTo2D(Player.PlacePoliceLastSeenPlayer) >= 5f)
+        if (CurrentTaskedPosition.DistanceTo2D(Player.PlacePoliceLastSeenPlayer) >= 5f && !HasReachedReportedPosition)
         {
             HasReachedReportedPosition = false;
             CurrentTaskedPosition = Player.PlacePoliceLastSeenPlayer;
@@ -106,9 +109,9 @@ public class Locate : ComplexTask
             {
                 Cop.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
             }
-            Game.Console.Print(string.Format("Locate Position Updated: {0}", Cop.Pedestrian.Handle));
+            //Game.Console.Print(string.Format("Locate Position Updated: {0}", Cop.Pedestrian.Handle));
         }
-        if (Cop.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 20f)
+        if (Cop.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
         {
             HasReachedReportedPosition = true;
         }

@@ -64,13 +64,13 @@ namespace LosSantosRED.lsr
                     Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 }
             }
-            else
-            {
-                if (Player.IsInSearchMode && Player.PoliceResponse.HasReportedCrimes && Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero)
-                {
-                    Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
-                }
-            }
+            //else
+            //{
+            //    if (Player.IsInSearchMode && Player.PoliceResponse.HasReportedCrimes && Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero)
+            //    {
+            //        Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
+            //    }
+            //}
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
             if (Player.AnyPoliceCanSeePlayer && Player.IsWanted && !Player.IsInSearchMode && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
             {
