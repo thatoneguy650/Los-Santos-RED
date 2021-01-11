@@ -38,6 +38,7 @@ public class PedExt : IComplexTaskable
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
     }
+    public bool HasBeenInsultedByPlayer { get; set; }
     public bool IsConversing { get; set; }
     public bool CanBeTasked { get; set; } = true;
     public bool CanRecognizePlayer
@@ -296,6 +297,7 @@ public class PedExt : IComplexTaskable
             }
         }
     }
+    public bool CanConverse => !Pedestrian.IsFleeing && !Pedestrian.IsRunning && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool HurtBy(Ped ToCheck)
     {
         if (LastHurtBy == ToCheck)

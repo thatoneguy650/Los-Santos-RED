@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Player;
+using LSR.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,11 @@ namespace LosSantosRED.lsr.Interface
         bool IsBusted { get; }
         bool IsSpeeding { get; }
         bool IsViolatingAnyTrafficLaws { get; }
+        bool IsConversing { get; }
+        bool IsConsuming { get; }
+        string ConversationPrompt { get; }
+        string ConsumingActivityPrompt { get; }
+        bool CanConverse { get; }
+        string ConversationStartPrompt { get; }
     }
 }

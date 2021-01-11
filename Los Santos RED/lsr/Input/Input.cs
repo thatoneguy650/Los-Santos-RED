@@ -211,8 +211,7 @@ namespace LosSantosRED.lsr
         private void ConversationCheck()
         {
             if (Player.CanConverse)
-            {
-                Game.DisplayHelp("Press H to Talk");
+            {         
                 if (IsPressingConversation)
                 {
                     Player.StartConversation();

@@ -2,7 +2,9 @@
 using LosSantosRED.lsr.Player.Activity;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
 using System;
+using System.Windows.Forms;
 
 namespace LosSantosRED.lsr.Player
 {
@@ -42,14 +44,15 @@ namespace LosSantosRED.lsr.Player
         private Rotator MouthRotator;
         private string PropModelName;
         private float CurrentAnimationTime = 0.0f;
-        
 
+        private string promptString;
         private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
         public SmokingActivity(IIntoxicatable consumable, bool isPot) : base()
         {
             Player = consumable;
             IsPot = isPot;
         }
+        public override string Prompt => promptString; 
         public override string DebugString => $"IsIntoxicated {Player.IsIntoxicated} IsConsuming: {Player.IsConsuming} Intensity: {Player.IntoxicatedIntensity} Loop: {DebugLocation}, Emitting: {IsEmittingSmoke}, InMouth: {IsNearMouth}, HandByFace: {HandByFace}";// + IntoxicatingEffect != null ? IntoxicatingEffect.DebugString : "";
         public override void Start()
         {
@@ -61,7 +64,7 @@ namespace LosSantosRED.lsr.Player
             }
             else
             {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 1.2f, 25000, 60000, "Bloom");//1.2,25000
+                IntoxicatingEffect = new IntoxicatingEffect(Player, 0.5f, 25000, 60000, "Bloom");//1.2,25000
                 IntoxicatingEffect.Start();
             }
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
@@ -228,31 +231,31 @@ namespace LosSantosRED.lsr.Player
             Player.Character.Tasks.Clear();
             IsActivelySmoking = false;
             bool Cancel = false;
+            promptString = "";
             while (!Cancel)
             {
                 UpdatePosition();
                 UpdateSmoke();
                 if (Player.CanPerformActivities)
                 {
-                    Game.DisplayHelp("Press E to stop smoking ~n~Press X to continue smoking");
-                    if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.X) || Game.IsKeyDownRightNow(System.Windows.Forms.Keys.E))
+                    promptString = $"Press ~{Keys.E.GetInstructionalId()}~ to Stop Smoking~n~Press ~{Keys.X.GetInstructionalId()}~ to Continue Smoking";
+                    if (Game.IsKeyDownRightNow(Keys.X) || Game.IsKeyDownRightNow(Keys.E))
                     {
                         Cancel = true;
                     }
                 }
                 else
                 {
-
-                    Game.DisplayHelp("Press E to stop smoking");
-                    if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.E))
+                    promptString = $"Press ~{Keys.E.GetInstructionalId()}~ to Stop Smoking";
+                    if (Game.IsKeyDownRightNow(Keys.E))
                     {
                         Cancel = true;
                     }
                 }
-
                 GameFiber.Yield();
             }
-            if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.X) && Player.CanPerformActivities)
+            promptString = "";
+            if (Game.IsKeyDownRightNow(Keys.X) && Player.CanPerformActivities)
             {
                 IsActivelySmoking = true;
                 Puff();

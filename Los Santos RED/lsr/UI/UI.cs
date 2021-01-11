@@ -1,9 +1,11 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 public class UI
 {
@@ -15,6 +17,7 @@ public class UI
     private bool StartedBustedEffect = false;
     private bool StartedDeathEffect = false;
     private IZoneJurisdictions ZoneJurisdictions;
+    private Mod.Player PlayerIntellisense;
     public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IZoneJurisdictions zoneJurisdictions)
     {
         Player = currentPlayer;
@@ -116,7 +119,40 @@ public class UI
             ShowUI();
         }
         ScreenEffectsUpdate();
+
+
+        DisplayButtonPrompts();
     }
+
+    private void DisplayButtonPrompts()
+    {
+        string FinalPrompt = "";
+        if(Player.ConsumingActivityPrompt != "")
+        {
+            FinalPrompt += Player.ConsumingActivityPrompt;
+        }
+        if(Player.ConversationStartPrompt != "")
+        {
+            if (FinalPrompt != "")
+            {
+                FinalPrompt += "~n~";
+            }
+            FinalPrompt += Player.ConversationStartPrompt;
+        }
+        else if(Player.ConversationPrompt != "")
+        {
+            if (FinalPrompt != "")
+            {
+                FinalPrompt += "~n~";
+            }
+            FinalPrompt += Player.ConversationPrompt;
+        }
+        if(FinalPrompt != "")
+        {
+            Game.DisplayHelp(FinalPrompt);
+        }
+    }
+
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
     {
         NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
@@ -219,7 +255,7 @@ public class UI
                 NativeFunction.Natives.x80C8B1846639BB19(1);
                 NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);
                 NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "Bed", "WastedSounds", true);
-                BigMessage.MessageInstance.ShowColoredShard("WASTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_REDDARK, 2000);
+                BigMessage.MessageInstance.ShowColoredShard("WASTED", "", HudColor.Black, HudColor.RedDark, 2000);
                 StartedDeathEffect = true;
             }
         }
@@ -230,7 +266,7 @@ public class UI
                 NativeFunction.Natives.x80C8B1846639BB19(1);
                 NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);
                 NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "TextHit", "WastedSounds", true);
-                BigMessage.MessageInstance.ShowColoredShard("BUSTED", "", HudColor.HUD_COLOUR_BLACK, HudColor.HUD_COLOUR_BLUE, 2000);
+                BigMessage.MessageInstance.ShowColoredShard("BUSTED", "", HudColor.Black, HudColor.Blue, 2000);
                 StartedBustedEffect = true;
             }
         }

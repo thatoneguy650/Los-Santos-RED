@@ -6,11 +6,13 @@ using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Mod
 {
@@ -74,6 +76,10 @@ namespace Mod
             PoliceResponse.SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         }
+        public string ConversationStartPrompt => CanConverse && !IsConversing ? $"Press ~{Keys.H.GetInstructionalId()}~ to Start Talking" : "";
+        public string ConversationPrompt => CurrentConversation == null ? "" : CurrentConversation.Prompt;
+        public string ConsumingActivityPrompt => CurrentConsumingActivity == null ? "" : CurrentConsumingActivity.Prompt;
+        public bool IsSmoking { get; set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 400f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
         public bool AnyPoliceCanHearPlayer { get; set; }
@@ -83,7 +89,7 @@ namespace Mod
         public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         public bool AreStarsGreyedOut { get; set; }
         public bool BeingArrested { get; private set; }
-        public bool CanConverse => CurrentLookedAtPed != null && !IsConversing;
+        public bool CanConverse => CurrentLookedAtPed != null && !CurrentLookedAtPed.HasBeenInsultedByPlayer && CurrentLookedAtPed.CanConverse && !IsConversing && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && !IsVisiblyArmed && !IsWanted;
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
         public bool CanPerformActivities => !IsInVehicle && IsStill && !IsIncapacitated && !IsVisiblyArmed;
         public bool CanSurrender => Surrendering.CanSurrender;

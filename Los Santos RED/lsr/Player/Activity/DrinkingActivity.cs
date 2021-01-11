@@ -29,6 +29,7 @@ namespace LosSantosRED.lsr.Player
         {
             Player = consumable;
         }
+        public override string Prompt => "";
         public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsConsuming} I: {Player.IntoxicatedIntensity} L: {DebugLocation} AT {Math.Round(CurrentAnimationTime,2)}";
         private void Setup()
         {
