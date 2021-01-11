@@ -125,7 +125,7 @@ namespace LosSantosRED.lsr
         }
         private bool CheckBrandishing()
         {
-            if (CurrentPlayer.IsConsideredArmed)
+            if (CurrentPlayer.IsVisiblyArmed)
             {
                 if (GameTimeStartedBrandishing == 0)
                 {

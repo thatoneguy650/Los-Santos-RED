@@ -8,7 +8,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IMuggable
     {
-        bool IsConsideredArmed { get; }
+        bool IsVisiblyArmed { get; }
         bool IsInVehicle { get; }
         WeaponInformation CurrentWeapon { get; }
     }

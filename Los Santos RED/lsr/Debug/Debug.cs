@@ -88,11 +88,7 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        foreach (Cop cop in World.PoliceList)
-        {
-            cop.CurrentTask = new Idle(cop, Player);
-            cop.CurrentTask.Start();
-        }
+        SpawnInteractiveChaser();
     }
     private void DebugNumpad5()
     {

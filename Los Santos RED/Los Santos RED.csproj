@@ -118,6 +118,7 @@
     <Compile Include="lsr\Dispatcher\IssuableWeapon.cs" />
     <Compile Include="lsr\Dispatcher\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
+    <Compile Include="lsr\Player\Conversation.cs" />
     <Compile Include="lsr\Tasker\Idle.cs" />
     <Compile Include="lsr\Tasker\Investigate.cs" />
     <Compile Include="lsr\Tasker\Kill.cs" />

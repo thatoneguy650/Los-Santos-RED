@@ -10,7 +10,7 @@ namespace LosSantosRED.lsr.Interface
     public interface ICarStealable
     {
         bool IsLockPicking { get; set; }
-        bool IsConsideredArmed { get; }
+        bool IsVisiblyArmed { get; }
         bool IsBusted { get; }
         bool IsDead { get; }
         void SetPlayerToLastWeapon();

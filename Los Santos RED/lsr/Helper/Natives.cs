@@ -33,7 +33,9 @@ namespace LosSantosRED.lsr.Helper
                 Found = NativeFunction.CallByName<bool>("GET_PLAYER_TARGET_ENTITY", Game.LocalPlayer, &TargetEntity);
             }
             if (!Found)
+            {
                 return 0;
+            }
 
             uint Handle = TargetEntity;
             return Handle;

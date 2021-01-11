@@ -38,6 +38,7 @@ public class PedExt : IComplexTaskable
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
     }
+    public bool IsConversing { get; set; }
     public bool CanBeTasked { get; set; } = true;
     public bool CanRecognizePlayer
     {

@@ -9,6 +9,6 @@ namespace LosSantosRED.lsr.Interface
     public interface IWeaponDroppable
     {
         bool IsInVehicle { get; }
-        bool IsConsideredArmed { get; }
+        bool IsVisiblyArmed { get; }
     }
 }

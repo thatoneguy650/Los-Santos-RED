@@ -88,6 +88,10 @@ namespace LosSantosRED.lsr
             Time = new Mod.Time();
             World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes);
             Player = new Mod.Player(World, Time, Streets, Zones, Settings, Weapons);
+            Player.Setup();
+
+
+
             Input = new Input(Player, Settings);
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
@@ -114,30 +118,43 @@ namespace LosSantosRED.lsr
         {
             Settings = new Settings();
             Settings.ReadConfig();
+            GameFiber.Yield();
             Zones = new Zones();
             Zones.ReadConfig();
+            GameFiber.Yield();
             PlateTypes = new PlateTypes();
             PlateTypes.ReadConfig();
+            GameFiber.Yield();
             Streets = new Streets();
             Streets.ReadConfig();
+            GameFiber.Yield();
             Weapons = new Weapons();
             Weapons.ReadConfig();
+            GameFiber.Yield();
             Names = new Names();
             Names.ReadConfig();
+            GameFiber.Yield();
             PlacesOfInterest = new PlacesOfInterest();
             PlacesOfInterest.ReadConfig();
+            GameFiber.Yield();
             VehicleScannerAudio = new VehicleScannerAudio();
             VehicleScannerAudio.ReadConfig();
+            GameFiber.Yield();
             ZoneScannerAudio = new ZoneScannerAudio();
             ZoneScannerAudio.ReadConfig();
+            GameFiber.Yield();
             StreetScannerAudio = new StreetScannerAudio();
             StreetScannerAudio.ReadConfig();
+            GameFiber.Yield();
             Agencies = new Agencies();
             Agencies.ReadConfig();
+            GameFiber.Yield();
             CountyJurisdictions = new CountyJurisdictions(Agencies);
             CountyJurisdictions.ReadConfig();
+            GameFiber.Yield();
             ZoneJurisdictions = new ZoneJurisdictions(Agencies);
             ZoneJurisdictions.ReadConfig();
+            GameFiber.Yield();
         }
         private void SetupModTasks()
         {
@@ -165,19 +182,19 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
 
-                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
-                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
+                //new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
+                //new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
 
                 //Old Tasking
-                new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
-                //new ModTask(500, "World.Tasking.Tick", OldTasking.TaskCops, 14,1),
-                new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
+                //new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
+                ////new ModTask(500, "World.Tasking.Tick", OldTasking.TaskCops, 14,1),
+                //new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
 
                 //New Tasking
 
 
-                new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
-                new ModTask(500, "NewTasking.Update", Tasker.Update, 16,1),
+                //new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
+                //new ModTask(500, "NewTasking.Update", Tasker.Update, 16,1),
             };
         }
         private void StartDebugLogic()

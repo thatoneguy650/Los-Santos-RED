@@ -180,7 +180,7 @@ public class CarJack
                 WantToCancel = true;
                 break;
             }
-            if (Player.IsConsideredArmed && Game.IsControlPressed(2, GameControl.Attack))//Game.LocalPlayer.Character.IsConsideredArmed()
+            if (Player.IsVisiblyArmed && Game.IsControlPressed(2, GameControl.Attack))//Game.LocalPlayer.Character.IsConsideredArmed()
             {
                 Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
                 Player.ShootAt(TargetCoordinate);
@@ -193,7 +193,7 @@ public class CarJack
                     break;
                 }
             }
-            if (Player.IsConsideredArmed && Game.IsControlJustPressed(2, GameControl.Aim))//Game.LocalPlayer.Character.IsConsideredArmed()
+            if (Player.IsVisiblyArmed && Game.IsControlJustPressed(2, GameControl.Aim))//Game.LocalPlayer.Character.IsConsideredArmed()
             {
                 if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) <= 0.4f)
                 {

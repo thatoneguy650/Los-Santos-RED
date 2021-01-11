@@ -273,7 +273,7 @@ namespace LosSantosRED.lsr
                     {
                         CurrentPoliceState = PoliceState.DeadlyChase;
                     }
-                    else if (Player.IsConsideredArmed)
+                    else if (Player.IsVisiblyArmed)
                     {
                         CurrentPoliceState = PoliceState.CautiousChase;
                     }

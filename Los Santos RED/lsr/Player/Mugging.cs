@@ -13,64 +13,64 @@ using System.Threading.Tasks;
 //needs full refactor/rewrite
 public class Mugging
 {
-    private IEntityProvideable World;
-    private IMuggable Player;
+    //private IEntityProvideable World;
+    //private IMuggable Player;
     public Mugging(IMuggable player, IEntityProvideable world)
     {
-        World = world;
-        Player = player;
+        //World = world;
+        //Player = player;
     }
     public bool IsMugging { get; private set; }
     public void Update()
     {
-        if (!IsMugging)
-        {
-            if (Player.IsConsideredArmed && !Player.IsInVehicle)
-            {
-                if (Game.LocalPlayer.Character.IsAiming && Player.CurrentWeapon.Category != WeaponCategory.Melee)
-                {
-                    CheckArmedMugging();
-                }
-                else
-                {
-                    CheckUnarmedMugging();
-                }
-            }
-        }
+        //if (!IsMugging)
+        //{
+        //    if (Player.IsVisiblyArmed && !Player.IsInVehicle)
+        //    {
+        //        if (Game.LocalPlayer.Character.IsAiming && Player.CurrentWeapon.Category != WeaponCategory.Melee)
+        //        {
+        //            CheckArmedMugging();
+        //        }
+        //        else
+        //        {
+        //            CheckUnarmedMugging();
+        //        }
+        //    }
+        //}
     }
-    private void CheckArmedMugging()
-    {
-        Entity ArmedMuggingTargetPed = Game.LocalPlayer.GetFreeAimingTarget();
-        if (ArmedMuggingTargetPed.Exists() && ArmedMuggingTargetPed is Ped)
-        {
-            PedExt GTAPedTarget = World.GetCivilian(ArmedMuggingTargetPed.Handle);
-            if (GTAPedTarget != null)
-            {
-                if (!GTAPedTarget.HasBeenMugged && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && GTAPedTarget.Pedestrian.IsAlive)
-                {
-                    if (GTAPedTarget.DistanceToPlayer <= 7f)
-                    {
-                        MugTarget(GTAPedTarget, false);
-                    }
-                    else if (GTAPedTarget.DistanceToPlayer <= 15f && GTAPedTarget.CanSeePlayer)
-                    {
-                        MugTarget(GTAPedTarget, false);
-                    }
-                }
-            }
-        }
-    }
-    private void CheckUnarmedMugging()
-    {
-        PedExt GTAPedTarget = World.GetCivilian(Natives.GetTargettingHandle());
-        if (GTAPedTarget != null)
-        {
-            if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.Pedestrian.IsAlive)
-            {
-                MugTarget(GTAPedTarget, true);
-            }
-        }
-    }
+    //private void CheckArmedMugging()
+    //{
+    //    Entity ArmedMuggingTargetPed = Game.LocalPlayer.GetFreeAimingTarget();
+    //    if (ArmedMuggingTargetPed.Exists() && ArmedMuggingTargetPed is Ped)
+    //    {
+    //        PedExt GTAPedTarget = World.GetCivilian(ArmedMuggingTargetPed.Handle);
+    //        if (GTAPedTarget != null)
+    //        {
+    //            if (!GTAPedTarget.HasBeenMugged && !GTAPedTarget.Pedestrian.IsInAnyVehicle(false) && GTAPedTarget.Pedestrian.IsAlive)
+    //            {
+    //                if (GTAPedTarget.DistanceToPlayer <= 7f)
+    //                {
+    //                    MugTarget(GTAPedTarget, false);
+    //                }
+    //                else if (GTAPedTarget.DistanceToPlayer <= 15f && GTAPedTarget.CanSeePlayer)
+    //                {
+    //                    MugTarget(GTAPedTarget, false);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+    //private void CheckUnarmedMugging()
+    //{
+    //    PedExt GTAPedTarget = World.GetCivilian(Natives.GetTargettingHandle());
+    //    if (GTAPedTarget != null)
+    //    {
+    //        if (!GTAPedTarget.HasBeenMugged && GTAPedTarget.Pedestrian.IsAlive)
+    //        {
+    //            MugTarget(GTAPedTarget, true);
+    //        }
+    //    }
+    //}
     private void MugTarget(PedExt MuggingTarget, bool IsMelee)
     {
         if (!MuggingTarget.CanBeTasked)

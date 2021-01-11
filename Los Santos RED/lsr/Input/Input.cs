@@ -56,6 +56,20 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        private bool IsPressingConversation
+        {
+            get
+            {
+                if (Game.IsKeyDownRightNow(Keys.H))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
         private bool IsPressingRefuel
         {
             get
@@ -161,6 +175,7 @@ namespace LosSantosRED.lsr
             WeaponDropCheck();
             VehicleCheck();
             HoldingEnterCheck();
+            ConversationCheck();
 
             Player.IsHoldingEnter = IsHoldingEnter;
         }
@@ -190,6 +205,17 @@ namespace LosSantosRED.lsr
                 if (Player.HandsAreUp && !Player.IsBusted)
                 {
                     Player.LowerHands();
+                }
+            }
+        }
+        private void ConversationCheck()
+        {
+            if (Player.CanConverse)
+            {
+                Game.DisplayHelp("Press H to Talk");
+                if (IsPressingConversation)
+                {
+                    Player.StartConversation();
                 }
             }
         }

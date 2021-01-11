@@ -18,6 +18,7 @@ namespace Mod
     {
         private CriminalHistory CriminalHistory;
         private ConsumeActivity CurrentConsumingActivity;
+        private Conversation CurrentConversation;
         private HealthState CurrentHealth;
         private LocationData CurrentLocation;
         private IEntityProvideable EntityProvider;
@@ -27,6 +28,7 @@ namespace Mod
         private uint GameTimeLastMovedFast;
         private uint GameTimeLastShot;
         private uint GameTimeStartedPlaying;
+        private bool isAiming;
         private bool isAimingInVehicle;
         private bool isGettingIntoVehicle;
         private bool isInVehicle;
@@ -38,6 +40,7 @@ namespace Mod
         private ISettingsProvideable Settings;
         private IStreets Streets;
         private Surrendering Surrendering;
+        private uint targettingHandle;
         private ITimeControllable TimeControllable;
         private Violations Violations;
         private WeaponDropping WeaponDropping;
@@ -62,11 +65,14 @@ namespace Mod
             CriminalHistory = new CriminalHistory(this);
             PoliceResponse = new PoliceResponse(this);
             SearchMode = new SearchMode(this);
-            PoliceResponse.SetWantedLevel(0, "Initial", true);
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
             GameTimeStartedPlaying = Game.GameTime;
             ModelName = Game.LocalPlayer.Character.Model.Name;
             IsMale = Game.LocalPlayer.Character.IsMale;
+        }
+        public void Setup()
+        {
+            PoliceResponse.SetWantedLevel(0, "Initial", true);
+            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 400f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
@@ -77,26 +83,30 @@ namespace Mod
         public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         public bool AreStarsGreyedOut { get; set; }
         public bool BeingArrested { get; private set; }
+        public bool CanConverse => CurrentLookedAtPed != null && !IsConversing;
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
-        public bool CanPerformActivities => !IsInVehicle && IsStill && !IsIncapacitated && !IsConsideredArmed;
+        public bool CanPerformActivities => !IsInVehicle && IsStill && !IsIncapacitated && !IsVisiblyArmed;
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit || Settings.SettingsManager.General.UndieLimit == 0;
         public Ped Character => Game.LocalPlayer.Character;
         public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
         public Street CurrentCrossStreet => CurrentLocation.CurrentCrossStreet;
+        public PedExt CurrentLookedAtPed { get; private set; }
         public Vector3 CurrentPosition => Game.LocalPlayer.Character.Position;
         public VehicleExt CurrentSeenVehicle => CurrentVehicle == null ? VehicleGettingInto : CurrentVehicle;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public Street CurrentStreet => CurrentLocation.CurrentStreet;
+        public PedExt CurrentTargetedPed { get; private set; }
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
         public WeaponHash CurrentWeaponHash { get; set; }
         public Zone CurrentZone => CurrentLocation.CurrentZone;
-        public string DebugLine1 => $"IsStill: {IsStill} IsMoving: {IsMoving} IsMovingFast: {IsMovingFast}";
-        public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";//CurrentConsumingActivity != null ? CurrentConsumingActivity.DebugString : "";
+        public string DebugLine1 => $"IsStill: {IsStill} IsMoving: {IsMoving} IsMovingFast: {IsMovingFast} IsConversing {IsConversing}";
+        public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
+        //CurrentConsumingActivity != null ? CurrentConsumingActivity.DebugString : "";
         public string DebugLine3 => SearchMode.SearchModeDebug;
-        public string DebugLine4 => $"Current Model: {ModelName} IsMale: {IsMale}";
+        public string DebugLine4 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} Target: {CurrentTargetedPed?.Pedestrian?.Handle} LookAt: {CurrentLookedAtPed?.Pedestrian?.Handle}";
         public string DebugLine5 => $"Obs {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine6 => $"Rep {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine7 => $"Vio {Violations.LawsViolatingDisplay}";
@@ -104,6 +114,18 @@ namespace Mod
         public bool HandsAreUp { get; set; }
         public float IntoxicatedIntensity { get; set; }
         public Investigation Investigation { get; private set; }
+        public bool IsAiming
+        {
+            get => isAiming;
+            private set
+            {
+                if (isAiming != value)
+                {
+                    isAiming = value;
+                    IsAimingChanged();
+                }
+            }
+        }
         public bool IsAimingInVehicle
         {
             get => isAimingInVehicle;
@@ -124,8 +146,8 @@ namespace Mod
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCommitingSuicide => Surrendering.IsCommitingSuicide;
-        public bool IsConsideredArmed { get; private set; }
         public bool IsConsuming { get; set; }
+        public bool IsConversing { get; set; }
         public bool IsDead { get; private set; }
         public bool IsGettingIntoAVehicle
         {
@@ -175,6 +197,7 @@ namespace Mod
         public bool IsViolatingAnyAudioBasedCivilianReportableCrime => Violations.IsViolatingAnyAudioBasedCivilianReportableCrime;
         public bool IsViolatingAnyCivilianReportableCrime => Violations.IsViolatingAnyCivilianReportableCrime;
         public bool IsViolatingAnyTrafficLaws => Violations.IsViolatingAnyTrafficLaws;
+        public bool IsVisiblyArmed { get; private set; }
         public bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
         public WeaponHash LastWeaponHash { get; set; }
         public int MaxWantedLastLife { get; set; }
@@ -203,6 +226,18 @@ namespace Mod
         public bool StarsRecentlyActive => SearchMode.StarsRecentlyActive;
         public bool StarsRecentlyGreyedOut => SearchMode.StarsRecentlyGreyedOut;
         public string SuspectsName { get; private set; }
+        public uint TargettingHandle
+        {
+            get => targettingHandle;
+            private set
+            {
+                if (targettingHandle != value)
+                {
+                    targettingHandle = value;
+                    TargettingHandleChanged();
+                }
+            }
+        }
         public uint TimeInSearchMode => SearchMode.TimeInSearchMode;
         public int TimesDied { get; set; }
         public uint TimeToRecognize
@@ -231,7 +266,7 @@ namespace Mod
             {
                 Investigation.Start();
             }
-            
+
         }
         public void AddSpareLicensePlate()
         {
@@ -290,6 +325,7 @@ namespace Mod
         {
             Investigation.Dispose(); //remove blip
             PoliceResponse.Dispose(); //same ^
+            CurrentConversation?.Dispose();
             ActivateVanillaRespawn();
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
         }
@@ -468,6 +504,14 @@ namespace Mod
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
             GameTimeLastShot = Game.GameTime;
         }
+        public void StartConversation()
+        {
+            if(!IsConversing && CanConverse)
+            {
+                CurrentConversation = new Conversation(this, CurrentLookedAtPed);
+                CurrentConversation.Start();
+            }
+        }
         public void StartSmoking()
         {
             if (!IsConsuming && CanPerformActivities)
@@ -511,7 +555,6 @@ namespace Mod
             TerminateVanillaRespawnScripts();
             TerminateVanillaHealthRecharge();
             TerminateVanillaAudio();
-
             UpdateData();
             UpdateState();
             TrackedVehiclesTick();
@@ -540,6 +583,7 @@ namespace Mod
             HandsAreUp = false;
             Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);
             Game.LocalPlayer.HasControl = false;
+            Game.Console.Print($"PLAYER EVENT: IsBusted Changed to: {IsBusted}");
         }
         private void DeathEvent()
         {
@@ -551,6 +595,19 @@ namespace Mod
             Game.LocalPlayer.Character.Health = 0;
             Game.LocalPlayer.Character.IsInvincible = true;
             TransitionToSlowMo();
+            Game.Console.Print($"PLAYER EVENT: IsDead Changed to: {IsDead}");
+        }
+        private void IsAimingChanged()
+        {
+            if (IsAiming)
+            {
+
+            }
+            else
+            {
+
+            }
+            Game.Console.Print($"PLAYER EVENT: IsAiming Changed to: {IsAiming}");
         }
         private void IsAimingInVehicleChanged()
         {
@@ -568,9 +625,9 @@ namespace Mod
                     CurrentVehicle.SetDriverWindow(false);
                 }
             }
-            //Game.Console.Print(string.Format("IsAimingInVehicle Changed to: {0}", IsAimingInVehicle));
+            Game.Console.Print($"PLAYER EVENT: IsAimingInVehicle Changed to: {IsAimingInVehicle}");
         }
-        private bool IsArmed()
+        private bool IsConsideredArmed()
         {
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && !Game.LocalPlayer.IsFreeAiming)
             {
@@ -647,24 +704,45 @@ namespace Mod
             }
             else
             {
+
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
-            //Game.Console.Print(string.Format("IsGettingIntoVehicleChanged to {0}", IsGettingIntoAVehicle));
+            Game.Console.Print($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}");
         }
         private void IsInVehicleChanged()
         {
             if (IsInVehicle)
             {
+
             }
             else
             {
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
                     CurrentVehicle.Vehicle.IsEngineOn = LeftEngineOn;
-                    ////Game.Console.Print(string.Format("IsInVehicle Changed: Current Engine Status: {0}", CurrentVehicle.Vehicle.IsEngineOn));
                 }
             }
-            //Game.Console.Print(string.Format("IsInVehicle Changed: {0}", IsInVehicle));
+            Game.Console.Print($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
+        }
+        private void LookedAtPedChanged()
+        {
+            //if (CurrentLookedAtPed != null && !CurrentLookedAtPed.IsConversing)
+            //{
+            //    Conversation Conversation = new Conversation(this, CurrentLookedAtPed);
+            //}
+            Game.Console.Print($"PLAYER EVENT: CurrentLookedAtPed to {CurrentLookedAtPed?.Pedestrian?.Handle}");
+        }
+        private void TargettingHandleChanged()
+        {
+            if(TargettingHandle != 0)
+            {
+                CurrentTargetedPed = EntityProvider.GetCivilian(TargettingHandle);
+            }
+            else
+            {
+                CurrentTargetedPed = null;
+            }
+            Game.Console.Print($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle}");
         }
         private void TerminateVanillaAudio()
         {
@@ -766,6 +844,26 @@ namespace Mod
             UpdateWeaponData();
             UpdateMiscData();
         }
+        private void UpdatedLookedAtPed()
+        {
+            //Scipthook dot net adaptation stuff i dont understand
+            Vector3 rayStart = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+            Vector3 rot = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            double rotX = rot.X / 57.295779513082320876798154814105;
+            double rotZ = rot.Z / 57.295779513082320876798154814105;
+            double multXY = System.Math.Abs(System.Math.Cos(rotX));
+            Vector3 Direction = new Vector3((float)(-System.Math.Sin(rotZ) * multXY), (float)(System.Math.Cos(rotZ) * multXY), (float)System.Math.Sin(rotX));
+            Vector3 rayEnd = rayStart + Direction * 20.0f;
+            HitResult result = Rage.World.TraceCapsule(rayStart, rayEnd, 1f, TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);
+            if (result.Hit)
+            {
+                CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
+            }
+            else
+            {
+                CurrentLookedAtPed = null;
+            }
+        }
         private void UpdateMiscData()
         {
             if (CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
@@ -778,7 +876,6 @@ namespace Mod
             }
             IsStunned = Game.LocalPlayer.Character.IsStunned;
             IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
-
             if (NativeFunction.CallByName<bool>("GET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, 1) || NativeFunction.CallByName<int>("GET_TIMECYCLE_MODIFIER_INDEX") == 722)
             {
                 IsIntoxicated = true;
@@ -810,6 +907,25 @@ namespace Mod
             if (IsAliveAndFree && !Game.LocalPlayer.Character.IsDead)
             {
                 MaxWantedLastLife = WantedLevel;
+            }
+        }
+        private void UpdateTargetedPed()
+        {
+            if (IsAiming)
+            {
+                Entity AimingAt = Game.LocalPlayer.GetFreeAimingTarget();
+                if (AimingAt.Exists())
+                {
+                    TargettingHandle = AimingAt.Handle;
+                }
+                else
+                {
+                    TargettingHandle = 0;
+                }
+            }
+            else
+            {
+                TargettingHandle = Natives.GetTargettingHandle();
             }
         }
         private void UpdateVehicleData()
@@ -904,8 +1020,13 @@ namespace Mod
             {
                 GameTimeLastShot = Game.GameTime;
             }
-            IsAimingInVehicle = IsInVehicle && Game.LocalPlayer.IsFreeAiming;
-            IsConsideredArmed = IsArmed();
+            IsAiming = Game.LocalPlayer.IsFreeAiming;
+            IsAimingInVehicle = IsInVehicle && IsAiming;
+            IsVisiblyArmed = IsConsideredArmed();
+            UpdateTargetedPed();
+            UpdatedLookedAtPed();
+
+
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
             CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
             if (PlayerCurrentWeapon != null)
@@ -916,7 +1037,6 @@ namespace Mod
             {
                 CurrentWeaponHash = 0;
             }
-
             if (CurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeaponHash)
             {
                 LastWeaponHash = PlayerCurrentWeapon.Hash;

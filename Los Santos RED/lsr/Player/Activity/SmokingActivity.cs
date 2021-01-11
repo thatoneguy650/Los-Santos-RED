@@ -242,6 +242,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 else
                 {
+
                     Game.DisplayHelp("Press E to stop smoking");
                     if (Game.IsKeyDownRightNow(System.Windows.Forms.Keys.E))
                     {

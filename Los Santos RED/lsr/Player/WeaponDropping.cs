@@ -36,7 +36,7 @@ public class WeaponDropping
     {
         get
         {
-            if (!DroppingWeapon && !Player.IsInVehicle && Player.IsConsideredArmed)//was player one
+            if (!DroppingWeapon && !Player.IsInVehicle && Player.IsVisiblyArmed)//was player one
                 return true;
             else
                 return false;

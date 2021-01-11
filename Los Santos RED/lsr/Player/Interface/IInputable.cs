@@ -17,10 +17,12 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         bool IsInVehicle { get; }
         bool IsMoveControlPressed { get; }
+        bool CanConverse { get; }
 
         void RaiseHands();
         void LowerHands();
         void DropWeapon();
         void SetUnarmed();
+        void StartConversation();
     }
 }
