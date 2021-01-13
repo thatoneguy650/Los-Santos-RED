@@ -16,12 +16,10 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IConsumeable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, ITaskableTarget_Old
+    public class Player : IConsumeable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, ITaskableTarget_Old
     {
+        private ConsumeActivity ConsumingActivity;
         private CriminalHistory CriminalHistory;
-        private ConsumeActivity CurrentConsumingActivity;
-        private Conversation CurrentConversation;
-        private HealthState CurrentHealth;
         private LocationData CurrentLocation;
         private IEntityProvideable EntityProvider;
         private uint GameTimeLastBusted;
@@ -30,13 +28,14 @@ namespace Mod
         private uint GameTimeLastMovedFast;
         private uint GameTimeLastShot;
         private uint GameTimeStartedPlaying;
+        private HealthState HealthState;
+        private Interaction Interaction;
         private bool isAiming;
         private bool isAimingInVehicle;
         private bool isGettingIntoVehicle;
         private bool isInVehicle;
         private bool IsVanillaRespawnActive = true;
         private bool LeftEngineOn;
-        private Mugging Mugging;
         private int PreviousWantedLevel;
         private SearchMode SearchMode;
         private ISettingsProvideable Settings;
@@ -56,10 +55,10 @@ namespace Mod
             Zones = zones;
             Settings = settings;
             Weapons = weapons;
-            CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character));
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, Streets, Zones);
             WeaponDropping = new WeaponDropping(this, Weapons);
-            Mugging = new Mugging(this, EntityProvider);
+            //Mugging = new Mugging(this, EntityProvider);
             Surrendering = new Surrendering(this);
 
             Violations = new Violations(this, TimeControllable);
@@ -71,15 +70,6 @@ namespace Mod
             ModelName = Game.LocalPlayer.Character.Model.Name;
             IsMale = Game.LocalPlayer.Character.IsMale;
         }
-        public void Setup()
-        {
-            PoliceResponse.SetWantedLevel(0, "Initial", true);
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-        }
-        public string ConversationStartPrompt => CanConverse && !IsConversing ? $"Press ~{Keys.H.GetInstructionalId()}~ to Start Talking" : "";
-        public string ConversationPrompt => CurrentConversation == null ? "" : CurrentConversation.Prompt;
-        public string ConsumingActivityPrompt => CurrentConsumingActivity == null ? "" : CurrentConsumingActivity.Prompt;
-        public bool IsSmoking { get; set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 400f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
         public bool AnyPoliceCanHearPlayer { get; set; }
@@ -89,7 +79,8 @@ namespace Mod
         public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         public bool AreStarsGreyedOut { get; set; }
         public bool BeingArrested { get; private set; }
-        public bool CanConverse => CurrentLookedAtPed != null && !CurrentLookedAtPed.HasBeenInsultedByPlayer && CurrentLookedAtPed.CanConverse && !IsConversing && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && !IsVisiblyArmed && !IsWanted;
+        public bool CanConverse => CurrentLookedAtPed != null && CurrentTargetedPed == null && !CurrentLookedAtPed.HasBeenInsultedByPlayer && CurrentLookedAtPed.CanConverse && !IsConversing && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && !IsVisiblyArmed && !IsWanted;
+        public bool CanMug => CurrentTargetedPed != null && !CurrentTargetedPed.HasBeenMugged && CurrentTargetedPed.CanBeMugged && !IsMugging && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll;
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
         public bool CanPerformActivities => !IsInVehicle && IsStill && !IsIncapacitated && !IsVisiblyArmed;
         public bool CanSurrender => Surrendering.CanSurrender;
@@ -110,7 +101,6 @@ namespace Mod
         public Zone CurrentZone => CurrentLocation.CurrentZone;
         public string DebugLine1 => $"IsStill: {IsStill} IsMoving: {IsMoving} IsMovingFast: {IsMovingFast} IsConversing {IsConversing}";
         public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
-        //CurrentConsumingActivity != null ? CurrentConsumingActivity.DebugString : "";
         public string DebugLine3 => SearchMode.SearchModeDebug;
         public string DebugLine4 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} Target: {CurrentTargetedPed?.Pedestrian?.Handle} LookAt: {CurrentLookedAtPed?.Pedestrian?.Handle}";
         public string DebugLine5 => $"Obs {PoliceResponse.ObservedCrimesDisplay}";
@@ -192,11 +182,12 @@ namespace Mod
         public bool IsMoveControlPressed { get; set; }
         public bool IsMoving => GameTimeLastMoved != 0 && Game.GameTime - GameTimeLastMoved <= 2000;
         public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
-        public bool IsMugging => Mugging.IsMugging;
+        public bool IsMugging { get; set; }
         public bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
         public bool IsOffroad => CurrentLocation.IsOffroad;
         public bool IsOnMotorcycle { get; private set; }
         public bool IsRagdoll { get; private set; }
+        public bool IsSmoking { get; set; }
         public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
@@ -223,6 +214,49 @@ namespace Mod
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public bool PoliceRecentlyNoticedVehicleChange { get; set; }
         public PoliceResponse PoliceResponse { get; set; }
+        public bool IsInteracting => IsConversing || IsMugging;
+        public string ButtonPrompt
+        {
+            get
+            {
+                string FinalPrompt = "";
+                if (IsConsuming)
+                {
+                    FinalPrompt += ConsumingActivity.Prompt;
+                }
+                if(IsInteracting)
+                {
+                    if (Interaction.Prompt != "")
+                    {
+                        if (FinalPrompt != "")
+                        {
+                            FinalPrompt += "~n~";
+                        }
+                        FinalPrompt += Interaction.Prompt;
+                    }
+                }
+                else
+                {
+                    if (CanConverse && !IsConversing)
+                    {
+                        if (FinalPrompt != "")
+                        {
+                            FinalPrompt += "~n~";
+                        }
+                        FinalPrompt += $"Press ~{Keys.E.GetInstructionalId()}~ to Start Talking";
+                    }
+                    else if (CanMug && !IsMugging)
+                    {
+                        if (FinalPrompt != "")
+                        {
+                            FinalPrompt += "~n~";
+                        }
+                        FinalPrompt += $"Press ~{Keys.E.GetInstructionalId()}~ to Mug";
+                    }
+                }           
+                return FinalPrompt;
+            }
+        }
         public bool RecentlyAppliedWantedStats => CriminalHistory.RecentlyAppliedWantedStats;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyDied => GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied <= 5000;
@@ -331,7 +365,7 @@ namespace Mod
         {
             Investigation.Dispose(); //remove blip
             PoliceResponse.Dispose(); //same ^
-            CurrentConversation?.Dispose();
+            Interaction?.Dispose();
             ActivateVanillaRespawn();
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
         }
@@ -340,8 +374,8 @@ namespace Mod
             if (!IsConsuming && CanPerformActivities)
             {
                 IsConsuming = true;
-                CurrentConsumingActivity = new DrinkingActivity(this);
-                CurrentConsumingActivity.Start();
+                ConsumingActivity = new DrinkingActivity(this);
+                ConsumingActivity.Start();
             }
         }
         public void DropWeapon()
@@ -416,10 +450,6 @@ namespace Mod
         {
             Surrendering.LowerHands();
         }
-        public void MuggingUpdate()
-        {
-            Mugging.Update();
-        }
         public void Murdered(PedExt MyPed)
         {
             Violations.AddKilled(MyPed);
@@ -458,7 +488,7 @@ namespace Mod
             IsBusted = false;
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
-            CurrentHealth = new HealthState(new PedExt(Game.LocalPlayer.Character));
+            HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character));
             IsConsuming = false;
             if (resetWanted)
             {
@@ -505,6 +535,11 @@ namespace Mod
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true); //Unequip weapon so you don't get shot
             }
         }
+        public void Setup()
+        {
+            PoliceResponse.SetWantedLevel(0, "Initial", true);
+            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+        }
         public void ShootAt(Vector3 TargetCoordinate)
         {
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
@@ -512,19 +547,30 @@ namespace Mod
         }
         public void StartConversation()
         {
-            if(!IsConversing && CanConverse)
+            if(!IsInteracting && CanConverse)
             {
-                CurrentConversation = new Conversation(this, CurrentLookedAtPed);
-                CurrentConversation.Start();
+                IsConversing = true;
+                Interaction = new Conversation(this, CurrentLookedAtPed);
+                Interaction.Start();
             }
         }
+        public void StartMugging()
+        {
+            if (!IsInteracting && CanMug)
+            {
+                IsMugging = true;
+                Interaction = new Robbery(this, CurrentTargetedPed);
+                Interaction.Start();
+            }
+        }
+        
         public void StartSmoking()
         {
             if (!IsConsuming && CanPerformActivities)
             {
                 IsConsuming = true;
-                CurrentConsumingActivity = new SmokingActivity(this, false);
-                CurrentConsumingActivity.Start();
+                ConsumingActivity = new SmokingActivity(this, false);
+                ConsumingActivity.Start();
             }
         }
         public void StartSmokingPot()
@@ -532,8 +578,8 @@ namespace Mod
             if (!IsConsuming && CanPerformActivities)
             {
                 IsConsuming = true;
-                CurrentConsumingActivity = new SmokingActivity(this, true);
-                CurrentConsumingActivity.Start();
+                ConsumingActivity = new SmokingActivity(this, true);
+                ConsumingActivity.Start();
             }
         }
         public void StopVanillaSearchMode()
@@ -564,7 +610,7 @@ namespace Mod
             UpdateData();
             UpdateState();
             TrackedVehiclesTick();
-            CurrentHealth.Update(null);
+            HealthState.Update(null);
             WeaponDropping.Tick();
             UpdateWantedLevel();
         }
@@ -876,9 +922,9 @@ namespace Mod
             {
                 CurrentLocation.CharacterToLocate = Game.LocalPlayer.Character;
             }
-            if (CurrentHealth.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            if (HealthState.MyPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
-                CurrentHealth.MyPed = new PedExt(Game.LocalPlayer.Character);
+                HealthState.MyPed = new PedExt(Game.LocalPlayer.Character);
             }
             IsStunned = Game.LocalPlayer.Character.IsStunned;
             IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;

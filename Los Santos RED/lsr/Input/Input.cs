@@ -60,7 +60,7 @@ namespace LosSantosRED.lsr
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Keys.H))
+                if (Game.IsKeyDownRightNow(Keys.E))
                 {
                     return true;
                 }
@@ -70,11 +70,11 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private bool IsPressingRefuel
+        private bool IsPressingMug
         {
             get
             {
-                if (Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && !Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+                if (Game.IsKeyDownRightNow(Keys.E))
                 {
                     return true;
                 }
@@ -98,21 +98,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private bool IsPressingEngineToggle
-        {
-            get
-            {
-                if (Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.VehicleKey) && !Game.IsControlKeyDownRightNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
         private bool IsPressingRightIndicator
         {
             get
@@ -176,7 +161,7 @@ namespace LosSantosRED.lsr
             VehicleCheck();
             HoldingEnterCheck();
             ConversationCheck();
-
+            MuggingCheck();
             Player.IsHoldingEnter = IsHoldingEnter;
         }
         private void HoldingEnterCheck()
@@ -211,11 +196,35 @@ namespace LosSantosRED.lsr
         private void ConversationCheck()
         {
             if (Player.CanConverse)
-            {         
+            {
+                Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
+                Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
                 if (IsPressingConversation)
                 {
                     Player.StartConversation();
                 }
+            }
+            else
+            {
+                Game.DisableControlAction(0, GameControl.Talk, false);
+                Game.DisableControlAction(0, GameControl.Context, false);
+            }
+        }
+        private void MuggingCheck()
+        {
+            if (Player.CanMug)
+            {
+                Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
+                Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
+                if (IsPressingMug)
+                {
+                    Player.StartMugging();
+                }
+            }
+            else
+            {
+                Game.DisableControlAction(0, GameControl.Talk, false);
+                Game.DisableControlAction(0, GameControl.Context, false);
             }
         }
         private void WeaponDropCheck()
@@ -262,52 +271,5 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void ToggleEngineAnimation()
-        {
-            GameFiber.StartNew(delegate
-            {
-                var sDict = "veh@van@ds@base";
-                NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
-                while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
-                    GameFiber.Yield();
-                NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
-
-                uint GameTimeStartedAnimation = Game.GameTime;
-                while (Game.GameTime - GameTimeStartedAnimation <= 1000)
-                {
-                    if (Game.IsControlJustPressed(0, GameControl.VehicleExit) || !Player.IsInVehicle)
-                    {
-                        NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
-                    }
-                    GameFiber.Sleep(200);
-                }
-            });
-        }
-        //private void ChangeStationAnimation(string StationName)
-        //{
-        //    GameFiber.StartNew(delegate
-        //    {
-        //        var sDict = "veh@van@ds@base";
-        //        NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
-        //        while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
-        //            GameFiber.Yield();
-        //        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, sDict, "start_engine", 2.0f, -2.0f, -1, 48, 0, true, false, true);
-
-        //        bool Cancel = false;
-        //        uint GameTimeStartedAnimation = Game.GameTime;
-        //        while (Game.GameTime - GameTimeStartedAnimation <= 1000)
-        //        {
-        //            if (Game.IsControlJustPressed(0, GameControl.VehicleExit))
-        //            {
-        //                NativeFunction.CallByName<bool>("STOP_ANIM_TASK", Game.LocalPlayer.Character, sDict, "start_engine", 8.0f);
-        //                Cancel = true;
-        //            }
-        //            GameFiber.Sleep(200);
-        //        }
-        //        if (!Cancel)
-        //            SetRadioStation(StationName);
-
-        //    });
-        //}
     }
 }

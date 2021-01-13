@@ -118,7 +118,10 @@
     <Compile Include="lsr\Dispatcher\IssuableWeapon.cs" />
     <Compile Include="lsr\Dispatcher\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
-    <Compile Include="lsr\Player\Conversation.cs" />
+    <Compile Include="lsr\Player\Interaction\Conversation.cs" />
+    <Compile Include="lsr\Player\Interaction\Interaction.cs" />
+    <Compile Include="lsr\Player\Interaction\Interface\IInteractionable.cs" />
+    <Compile Include="lsr\Player\Interaction\Robbery.cs" />
     <Compile Include="lsr\Tasker\Idle.cs" />
     <Compile Include="lsr\Tasker\Investigate.cs" />
     <Compile Include="lsr\Tasker\Kill.cs" />
@@ -175,7 +178,6 @@
     <Compile Include="lsr\Util\Tasking\Activity.cs" />
     <Compile Include="ModController.cs" />
     <Compile Include="lsr\Player\Player.cs" />
-    <Compile Include="lsr\Util\Peds\Loadout.cs" />
     <Compile Include="lsr\Util\Peds\PedConfigFlags.cs" />
     <Compile Include="lsr\Police\Police.cs" />
     <Compile Include="lsr\Util\Locations\County.cs" />
@@ -196,7 +198,7 @@
     <Compile Include="lsr\Menu\Menu.cs" />
     <Compile Include="lsr\UI\UI.cs" />
     <Compile Include="lsr\Civilians\Civilians.cs" />
-    <Compile Include="lsr\Player\Mugging.cs" />
+    <Compile Include="lsr\Old\Mugging.cs" />
     <Compile Include="lsr\Old\Tasking_Old.cs" />
     <Compile Include="lsr\World\Pedestrians.cs" />
     <Compile Include="lsr\Time\Time.cs" />

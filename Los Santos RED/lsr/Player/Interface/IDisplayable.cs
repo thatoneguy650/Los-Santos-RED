@@ -29,9 +29,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsViolatingAnyTrafficLaws { get; }
         bool IsConversing { get; }
         bool IsConsuming { get; }
-        string ConversationPrompt { get; }
-        string ConsumingActivityPrompt { get; }
         bool CanConverse { get; }
-        string ConversationStartPrompt { get; }
+        string ButtonPrompt { get; }
     }
 }

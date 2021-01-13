@@ -168,7 +168,6 @@ namespace LosSantosRED.lsr
                 new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 3,1),//50
                 new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 4,0),
                 new ModTask(500, "World.Civilians.Tick", Civilians.Update, 4,1),//150
-                new ModTask(250, "Player.MuggingTick", Player.MuggingUpdate, 5,1),
                 new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 6,0),
                 new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 6,1),
                 new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 6,2),

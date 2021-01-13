@@ -126,27 +126,7 @@ public class UI
 
     private void DisplayButtonPrompts()
     {
-        string FinalPrompt = "";
-        if(Player.ConsumingActivityPrompt != "")
-        {
-            FinalPrompt += Player.ConsumingActivityPrompt;
-        }
-        if(Player.ConversationStartPrompt != "")
-        {
-            if (FinalPrompt != "")
-            {
-                FinalPrompt += "~n~";
-            }
-            FinalPrompt += Player.ConversationStartPrompt;
-        }
-        else if(Player.ConversationPrompt != "")
-        {
-            if (FinalPrompt != "")
-            {
-                FinalPrompt += "~n~";
-            }
-            FinalPrompt += Player.ConversationPrompt;
-        }
+        string FinalPrompt = Player.ButtonPrompt;
         if(FinalPrompt != "")
         {
             Game.DisplayHelp(FinalPrompt);

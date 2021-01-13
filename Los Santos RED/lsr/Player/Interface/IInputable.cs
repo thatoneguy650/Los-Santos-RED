@@ -18,11 +18,13 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool IsMoveControlPressed { get; }
         bool CanConverse { get; }
+        bool CanMug { get; }
 
         void RaiseHands();
         void LowerHands();
         void DropWeapon();
         void SetUnarmed();
         void StartConversation();
+        void StartMugging();
     }
 }
