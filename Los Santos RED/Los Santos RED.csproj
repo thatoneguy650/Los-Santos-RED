@@ -105,6 +105,7 @@
     <Compile Include="lsr\Data\Bones.cs" />
     <Compile Include="lsr\Data\Interface\IAgencies.cs" />
     <Compile Include="lsr\Data\Interface\ICountyJurisdictions.cs" />
+    <Compile Include="lsr\Data\Interface\INameProvideable.cs" />
     <Compile Include="lsr\Data\Interface\IPlateTypes.cs" />
     <Compile Include="lsr\Data\Interface\IZoneJurisdictions.cs" />
     <Compile Include="lsr\Data\Interface\IPlacesOfInterest.cs" />
@@ -121,7 +122,7 @@
     <Compile Include="lsr\Player\Interaction\Conversation.cs" />
     <Compile Include="lsr\Player\Interaction\Interaction.cs" />
     <Compile Include="lsr\Player\Interaction\Interface\IInteractionable.cs" />
-    <Compile Include="lsr\Player\Interaction\Robbery.cs" />
+    <Compile Include="lsr\Player\Interaction\HoldUp.cs" />
     <Compile Include="lsr\Tasker\Idle.cs" />
     <Compile Include="lsr\Tasker\Investigate.cs" />
     <Compile Include="lsr\Tasker\Kill.cs" />

@@ -79,8 +79,8 @@ namespace Mod
         public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         public bool AreStarsGreyedOut { get; set; }
         public bool BeingArrested { get; private set; }
-        public bool CanConverse => CurrentLookedAtPed != null && CurrentTargetedPed == null && !CurrentLookedAtPed.HasBeenInsultedByPlayer && CurrentLookedAtPed.CanConverse && !IsConversing && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && !IsVisiblyArmed && !IsWanted;
-        public bool CanMug => CurrentTargetedPed != null && !CurrentTargetedPed.HasBeenMugged && CurrentTargetedPed.CanBeMugged && !IsMugging && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll;
+        public bool CanConverse => CurrentLookedAtPed != null && CurrentTargetedPed == null && !CurrentLookedAtPed.IsFedUpWithPlayer && CurrentLookedAtPed.CanConverse && !IsConversing && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && !IsVisiblyArmed && !IsWanted;
+        public bool CanMug => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsMugging && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll;
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
         public bool CanPerformActivities => !IsInVehicle && IsStill && !IsIncapacitated && !IsVisiblyArmed;
         public bool CanSurrender => Surrendering.CanSurrender;
@@ -243,7 +243,7 @@ namespace Mod
                         {
                             FinalPrompt += "~n~";
                         }
-                        FinalPrompt += $"Press ~{Keys.E.GetInstructionalId()}~ to Start Talking";
+                        FinalPrompt += $"Press ~{Keys.E.GetInstructionalId()}~ to Talk to {CurrentLookedAtPed.FormattedName}";
                     }
                     else if (CanMug && !IsMugging)
                     {
@@ -251,7 +251,7 @@ namespace Mod
                         {
                             FinalPrompt += "~n~";
                         }
-                        FinalPrompt += $"Press ~{Keys.E.GetInstructionalId()}~ to Mug";
+                        FinalPrompt += $"Press ~{Keys.E.GetInstructionalId()}~ to Hold-Up {CurrentTargetedPed.FormattedName}";
                     }
                 }           
                 return FinalPrompt;
@@ -559,7 +559,7 @@ namespace Mod
             if (!IsInteracting && CanMug)
             {
                 IsMugging = true;
-                Interaction = new Robbery(this, CurrentTargetedPed);
+                Interaction = new HoldUp(this, CurrentTargetedPed);
                 Interaction.Start();
             }
         }
@@ -571,6 +571,10 @@ namespace Mod
                 IsConsuming = true;
                 ConsumingActivity = new SmokingActivity(this, false);
                 ConsumingActivity.Start();
+            }
+            else if (IsConsuming && CanPerformActivities)
+            {
+                ConsumingActivity.Continue();
             }
         }
         public void StartSmokingPot()
@@ -898,23 +902,32 @@ namespace Mod
         }
         private void UpdatedLookedAtPed()
         {
-            //Scipthook dot net adaptation stuff i dont understand
-            Vector3 rayStart = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
-            Vector3 rot = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-            double rotX = rot.X / 57.295779513082320876798154814105;
-            double rotZ = rot.Z / 57.295779513082320876798154814105;
-            double multXY = System.Math.Abs(System.Math.Cos(rotX));
-            Vector3 Direction = new Vector3((float)(-System.Math.Sin(rotZ) * multXY), (float)(System.Math.Cos(rotZ) * multXY), (float)System.Math.Sin(rotX));
-            Vector3 rayEnd = rayStart + Direction * 20.0f;
-            HitResult result = Rage.World.TraceCapsule(rayStart, rayEnd, 1f, TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);
-            if (result.Hit)
+            Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
+            Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 3.0f;
+            HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
+
+            //Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
+            //Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
+            if (result.Hit && result.HitEntity is Ped)
             {
+               // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
                 CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
+
+
             }
             else
             {
                 CurrentLookedAtPed = null;
             }
+        }
+        private Vector3 GetGameplayCameraDirection()
+        {
+            //Scripthook dot net adaptation stuff i dont understand. I forgot most of my math.....
+            Vector3 CameraRotation = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            double rotX = CameraRotation.X / 57.295779513082320876798154814105;
+            double rotZ = CameraRotation.Z / 57.295779513082320876798154814105;
+            double multXY = Math.Abs(Math.Cos(rotX));
+            return new Vector3((float)(-Math.Sin(rotZ) * multXY), (float)(Math.Cos(rotZ) * multXY), (float)Math.Sin(rotX));
         }
         private void UpdateMiscData()
         {
@@ -1125,6 +1138,13 @@ namespace Mod
                 PoliceResponse.OnWantedLevelIncreased();
             }
             PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
+        }
+        public void StopConsumingActivity()
+        {
+            if(IsConsuming)
+            {
+                ConsumingActivity?.Cancel();
+            }
         }
     }
 }

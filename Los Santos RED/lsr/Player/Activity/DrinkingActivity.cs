@@ -12,6 +12,7 @@ namespace LosSantosRED.lsr.Player
 {
     public class DrinkingActivity : ConsumeActivity
     {
+        private bool IsCancelled;
         private string AnimIdleDictionary;
         private string AnimIdle;
         private int HandBoneID;
@@ -62,6 +63,14 @@ namespace LosSantosRED.lsr.Player
                 Drink();
             }, "DrinkingWatcher");
         }
+        public override void Continue()
+        {
+
+        }
+        public override void Cancel()
+        {
+            IsCancelled = true;
+        }
         private void AttachBottleToHand()
         {
             CreateBottle();
@@ -85,7 +94,7 @@ namespace LosSantosRED.lsr.Player
             AttachBottleToHand();
             Player.IsConsuming = true;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimIdleDictionary, AnimIdle, 8.0f, -8.0f, -1, 49, 0, false, false, false);//-1
-            while (!IsCancelControlPressed)
+            while (!IsCancelControlPressed && !IsCancelled)
             {
                 GameFiber.Yield();
             }

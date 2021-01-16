@@ -33,13 +33,37 @@ public class PedExt : IComplexTaskable
         Health = Pedestrian.Health;
         CurrentHealthState = new HealthState(this);
     }
-    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice) : this(_Pedestrian)
+    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice, int _InsultLimit, string _Name) : this(_Pedestrian)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
+        InsultLimit = _InsultLimit;
+        Name = _Name;
     }
-    public bool HasBeenInsultedByPlayer { get; set; }
+    public string FormattedName => ColorPrefix + (HasSpokenWithPlayer ?  Name : "Unknown");
+    private string ColorPrefix
+    {
+        get
+        {
+            if (TimesInsultedByPlayer == 1)
+            {
+                return "~o~";
+            }
+            else if (TimesInsultedByPlayer >= 2)
+            {
+                return "~r~";
+            }
+            else
+            {
+                return "";
+            }
+        }
+    }
+    public bool IsFedUpWithPlayer { get; set; }
+    public int TimesInsultedByPlayer { get; set; }
+    public int InsultLimit { get; set; }
     public bool IsConversing { get; set; }
+    public bool HasSpokenWithPlayer { get; set; }
     public bool CanBeTasked { get; set; } = true;
     public bool CanRecognizePlayer
     {
@@ -88,6 +112,7 @@ public class PedExt : IComplexTaskable
             return false;
         }
     }
+    public string Name { get; set; }
     public bool CanSeePlayer { get; private set; } = false;
     public float ClosestDistanceToPlayer { get; private set; } = 2000f;
     public List<Crime> CrimesWitnessed { get; private set; } = new List<Crime>();
@@ -168,7 +193,6 @@ public class PedExt : IComplexTaskable
     }
     public bool IsStill { get; private set; }
     public Ped Pedestrian { get; private set; }
-
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
     public Vector3 PositionLastSeenPlayer { get; private set; }
     public Vector3 PositionToReportToPolice

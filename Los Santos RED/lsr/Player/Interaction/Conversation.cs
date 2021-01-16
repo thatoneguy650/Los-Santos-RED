@@ -23,7 +23,25 @@ public class Conversation : Interaction
         Player = player;
         Ped = ped;
     }
-    public override string Prompt => CanContinueConversation && !IsActivelyConversing ? $"Press ~{Keys.O.GetInstructionalId()}~ for Positive Response~n~Press ~{Keys.L.GetInstructionalId()}~ for Negative Response" : "";
+    public override string Prompt
+    {
+        get
+        {
+            if(CanContinueConversation && !IsActivelyConversing)
+            {
+                if(Ped.TimesInsultedByPlayer <= 0)
+                {
+                    return $"Press ~{Keys.O.GetInstructionalId()}~ to Chat~n~Press ~{Keys.L.GetInstructionalId()}~ to Insult";
+                }
+                else
+                {
+                    return $"Press ~{Keys.O.GetInstructionalId()}~ to Apologize~n~Press ~{Keys.L.GetInstructionalId()}~ to Antagonize";
+                }        
+            }
+            return "";
+        }
+    }
+
     private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 7f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive;
     public override void Dispose()
     {
@@ -66,21 +84,43 @@ public class Conversation : Interaction
     private void Negative()
     {
         IsActivelyConversing = true;
-        SayInsult(Player.Character, true);
-        SayInsult(Ped.Pedestrian, true);
-        Ped.HasBeenInsultedByPlayer = true;
-        if (Ped.HasBeenInsultedByPlayer)
+
+
+        SayInsult(Player.Character);
+        SayInsult(Ped.Pedestrian);
+
+        Ped.TimesInsultedByPlayer++;
+        if(Ped.TimesInsultedByPlayer >= Ped.InsultLimit)
         {
+            Ped.IsFedUpWithPlayer = true;
             TargetCancelledConversation = true;
         }
+
+
         GameFiber.Sleep(1000);
         IsActivelyConversing = false;
     }
     private void Positive()
     {
         IsActivelyConversing = true;
-        SaySmallTalk(Player.Character, false);
-        SaySmallTalk(Ped.Pedestrian, true);
+
+        if(Ped.TimesInsultedByPlayer >= 1)
+        {
+            SayApology(Player.Character, false);
+            SayApology(Ped.Pedestrian, true);
+        }
+        else
+        {
+            SaySmallTalk(Player.Character, false);
+            SaySmallTalk(Ped.Pedestrian, true);
+        }
+
+
+        if (Ped.TimesInsultedByPlayer >= 1)
+        {
+            Ped.TimesInsultedByPlayer--;
+        }
+
         GameFiber.Sleep(1000);
         IsActivelyConversing = false;
     }
@@ -109,15 +149,19 @@ public class Conversation : Interaction
         }
         return Spoke;
     }
-    private void SayInsult(Ped ToReply, bool IsSevere)
+    private void SayInsult(Ped ToReply)
     {
-        if (IsSevere)
+        if(Ped.TimesInsultedByPlayer <= 0)
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH"}, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, true);
+        }
+        else if (Ped.TimesInsultedByPlayer <= 2)
+        {
+            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_MED" }, true);
         }
         else
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_MED" }, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH" }, true);
         }
         //GENERIC_INSULT_MED works on player
         //GENERIC_INSULT_MED works on peds?
@@ -133,10 +177,40 @@ public class Conversation : Interaction
         //CHAT_RESP On Main and Character mostly say whatever?
         //GENERIC_WHATEVER main is basically and insult
     }
+    private void SayApology(Ped ToReply, bool IsReply)
+    {
+        if(IsReply)
+        {
+            if (Ped.TimesInsultedByPlayer >= 3)
+            {
+                //say nothing
+            }
+            else if (Ped.TimesInsultedByPlayer >= 2)
+            {
+                SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_WHATEVER" }, true);
+            }
+            else
+            {
+                SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_THANKS" }, true);
+            }
+        }
+        else
+        {
+            SayAvailableAmbient(ToReply, new List<string>() { "APOLOGY_NO_TROUBLE", "GENERIC_HOWS_IT_GOING" }, true);
+
+        }
+    }
     private void Setup()
     {
-        SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
-        GameFiber.Sleep(500);
+        if(Ped.TimesInsultedByPlayer <= 0)
+        {
+            SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
+        }
+        else
+        {
+            SayAvailableAmbient(Player.Character, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, false);
+        }
+        GameFiber.Sleep(1000);
         if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
         {
             IsTasked = false;
@@ -170,7 +244,16 @@ public class Conversation : Interaction
         }
         GameTimeStartedConversing = Game.GameTime;
         GameFiber.Sleep(500);
-        SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true);
+        if(Ped.TimesInsultedByPlayer <= 0)
+        {
+            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true);
+        }
+        else
+        {
+            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true);
+        }
+        Ped.HasSpokenWithPlayer = true;
+        
     }
     private void Tick()
     {
@@ -180,7 +263,6 @@ public class Conversation : Interaction
             if(TargetCancelledConversation)
             {
                 Dispose();
-                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_INSULT_MED", "GENERIC_WHATEVER" }, true);
                 break;
             }
             GameFiber.Yield();

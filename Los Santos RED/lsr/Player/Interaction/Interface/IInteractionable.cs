@@ -13,5 +13,6 @@ namespace LosSantosRED.lsr.Interface
         WeaponCategory CurrentWeaponCategory { get; }
         bool IsConversing { get; set; }
         Ped Character { get; }
+        PedExt CurrentTargetedPed { get; }
     }
 }

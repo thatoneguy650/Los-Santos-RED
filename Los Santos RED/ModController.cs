@@ -86,7 +86,7 @@ namespace LosSantosRED.lsr
 
 
             Time = new Mod.Time();
-            World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes);
+            World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes, Names);
             Player = new Mod.Player(World, Time, Streets, Zones, Settings, Weapons);
             Player.Setup();
 

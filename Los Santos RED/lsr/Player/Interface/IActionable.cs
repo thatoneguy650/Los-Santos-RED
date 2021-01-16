@@ -11,6 +11,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDead { get; }
         bool IsBusted { get; }
         bool IsInVehicle { get; }
+        bool IsConsuming { get; }
+
         void StartSmokingPot();
         void StartSmoking();
         void DrinkBeer();
@@ -19,5 +21,6 @@ namespace LosSantosRED.lsr.Interface
         void GiveMoney(int v);
         void RemovePlate();
         void ChangePlate();
+        void StopConsumingActivity();
     }
 }

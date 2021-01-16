@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Names
+public class Names : INameProvideable
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Names.xml";
     private List<PedName> NameList;

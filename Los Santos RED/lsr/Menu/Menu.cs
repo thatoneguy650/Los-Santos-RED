@@ -31,6 +31,7 @@ public class Menu
     private UIMenuItem menuActionDrink;
     private UIMenuItem menuActionSmoke;
     private UIMenuItem menuActionSmokePot;
+    private UIMenuItem menuActionStopConsumingActivity;
     private UIMenuItem menuActionSmoking;
     private UIMenuListItem menuAutoSetRadioStation;
     private UIMenuItem menuBustedBribe;
@@ -252,6 +253,10 @@ public class Menu
         {
             Player.StartSmokingPot();
         }
+        else if (selectedItem == menuActionStopConsumingActivity)
+        {
+            Player.StopConsumingActivity();
+        }
     }
     private void BustedMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -286,14 +291,16 @@ public class Menu
     private void CreateActionsMenu()
     {
         menuMainSuicide = new UIMenuItem("Suicide", "Commit Suicide");
-        menuActionSmoking = new UIMenuItem("Smoking", "Start smoking.");
         menuMainChangeLicensePlate = new UIMenuItem("Change Plate", "Change your license plate if you have spares.");
         menuMainRemoveLicensePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         menuActionDrink = new UIMenuItem("Drink", "Start Drinking");
         menuActionSmoke = new UIMenuItem("Smoke", "Start Smoking");
         menuActionSmokePot = new UIMenuItem("Smoke Pot", "Start Smoking Pot");
+
+
+        menuActionStopConsumingActivity = new UIMenuItem("Stop", "Stop Consuming Activity");
+
         actionsMenu.AddItem(menuMainSuicide);
-        actionsMenu.AddItem(menuActionSmoking);
         if (!Player.IsInVehicle)
         {
             actionsMenu.AddItem(menuMainChangeLicensePlate);
@@ -301,6 +308,10 @@ public class Menu
             actionsMenu.AddItem(menuActionDrink);
             actionsMenu.AddItem(menuActionSmoke);
             actionsMenu.AddItem(menuActionSmokePot);
+            if (Player.IsConsuming)
+            {
+                actionsMenu.AddItem(menuActionStopConsumingActivity);
+            }
         }
         actionsMenu.OnItemSelect += ActionsMenuSelect;
         actionsMenu.OnListChange += OnListChange;

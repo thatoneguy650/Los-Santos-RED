@@ -10,50 +10,62 @@ namespace LosSantosRED.lsr.Player
 {
     public class SmokingActivity : ConsumeActivity
     {
-        private uint GameTimeToStartSmoke;
-        private uint GameTimeToStopSmoke;
-        private bool IsPot;
-        private bool DoneIdleLoop;
+        private bool IsCancelled;
+        private bool ShouldContinue;
+        private string AnimBase;
+        private string AnimBaseDictionary;
+        private string AnimEnter;
+        private string AnimEnterDictionary;
+        private string AnimExit;
+        private string AnimExitDictionary;
+        private string AnimIdle;
+        private string AnimIdleDictionary;
+        private float CurrentAnimationTime = 0.0f;
         private string DebugLocation;
         private float DistanceBetweenHandAndFace;
-        private float DistanceBetweenJointAndFace;
+        private float DistanceBetweenSmokedItemAndFace;
+        private bool DoneIdleLoop;
         private uint GameTimeLastEmittedSmoke;
+        private uint GameTimeToStartSmoke;
+        private uint GameTimeToStopSmoke;
+        private int HandBoneID;
         private bool HandByFace;
+        private Vector3 HandOffset;
+        private Rotator HandRotator;
         private IntoxicatingEffect IntoxicatingEffect;
         private bool IsActivelySmoking;
         private bool IsAttachedToMouth;
         private bool IsEmittingSmoke;
-        private Rage.Object Joint;
-        private bool IsNearMouth;
         private bool IsLit;
-        private IIntoxicatable Player;
-        private LoopedParticle PotSmoke;
-        private string AnimBaseDictionary;
-        private string AnimBase;
-        private string AnimIdleDictionary;
-        private string AnimIdle;
-        private string AnimEnterDictionary;
-        private string AnimEnter;
-        private string AnimExitDictionary;
-        private string AnimExit;
-        private int HandBoneID;
-        private Vector3 HandOffset;
-        private Rotator HandRotator;
+        private bool IsNearMouth;
+        private bool IsPot;
         private int MouthBoneID;
         private Vector3 MouthOffset;
         private Rotator MouthRotator;
-        private string PropModelName;
-        private float CurrentAnimationTime = 0.0f;
-
+        private IIntoxicatable Player;
         private string promptString;
-        private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
+        private string PropModelName;
+        private LoopedParticle Smoke;
+        private Rage.Object SmokedItem;
         public SmokingActivity(IIntoxicatable consumable, bool isPot) : base()
         {
             Player = consumable;
             IsPot = isPot;
         }
-        public override string Prompt => promptString; 
-        public override string DebugString => $"IsIntoxicated {Player.IsIntoxicated} IsConsuming: {Player.IsConsuming} Intensity: {Player.IntoxicatedIntensity} Loop: {DebugLocation}, Emitting: {IsEmittingSmoke}, InMouth: {IsNearMouth}, HandByFace: {HandByFace}";// + IntoxicatingEffect != null ? IntoxicatingEffect.DebugString : "";
+        public override string DebugString => $"IsIntoxicated {Player.IsIntoxicated} IsConsuming: {Player.IsConsuming} Intensity: {Player.IntoxicatedIntensity} Loop: {DebugLocation}, Emitting: {IsEmittingSmoke}, InMouth: {IsNearMouth}, HandByFace: {HandByFace}";
+        public override string Prompt => promptString;
+        private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
+        public override void Cancel()
+        {
+            IsCancelled = true;
+        }
+        public override void Continue()
+        {
+            if (Player.CanPerformActivities)
+            {
+                ShouldContinue = true;
+            }
+        }
         public override void Start()
         {
             Setup();
@@ -62,15 +74,128 @@ namespace LosSantosRED.lsr.Player
                 IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 25000, 60000, "drug_wobbly");//2.5,25000
                 IntoxicatingEffect.Start();
             }
-            else
-            {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 0.5f, 25000, 60000, "Bloom");//1.2,25000
-                IntoxicatingEffect.Start();
-            }
+            //else
+            //{
+            //    IntoxicatingEffect = new IntoxicatingEffect(Player, 0.5f, 25000, 60000, "Bloom");//1.2,25000
+            //    IntoxicatingEffect.Start();
+            //}
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
             {
-                LightJoint();
+                LightUp();
             }, "SmokingWatcher");
+        }
+        private void AttachJointToHand()
+        {
+            CreateJoint();
+            if (SmokedItem.Exists() && IsAttachedToMouth)
+            {
+                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, HandBoneID), HandOffset, HandRotator);
+                IsAttachedToMouth = false;
+            }
+        }
+        private void AttachJointToMouth()
+        {
+            CreateJoint();
+            if (SmokedItem.Exists() && !IsAttachedToMouth)
+            {
+                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, MouthBoneID), MouthOffset, MouthRotator);
+                IsAttachedToMouth = true;
+            }
+        }
+        private void CreateJoint()
+        {
+            if (!SmokedItem.Exists())
+            {
+                SmokedItem = new Rage.Object(PropModelName, Player.Character.GetOffsetPositionUp(50f));
+            }
+        }
+        private void Idle()
+        {
+            DebugLocation = "Idle";
+            AttachJointToMouth();
+            Player.Character.Tasks.Clear();
+            IsActivelySmoking = false;
+            promptString = "";
+            uint GameTimeStartedIdle = Game.GameTime;
+            while (!IsCancelled && !ShouldContinue && Game.GameTime - GameTimeStartedIdle <= 120000)//two minutes and your ciggy burns out
+            {
+                UpdatePosition();
+                UpdateSmoke();
+                GameFiber.Yield();
+            }
+            promptString = "";
+            if(ShouldContinue && !IsCancelled)
+            {
+                ShouldContinue = false;
+                IsActivelySmoking = true;
+                Puff();
+            }
+            else
+            {
+                Stop();
+            }
+            
+        }
+        private void LightUp()
+        {
+            DebugLocation = "Light";
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 8.0f, -8.0f, -1, 50, 0, false, false, false);//-1
+            while (!IsCancelControlPressed && CurrentAnimationTime < 1.0f)
+            {
+                UpdatePosition();
+                UpdateSmoke();
+                CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, AnimEnterDictionary, AnimEnter);
+                if (CurrentAnimationTime >= 0.18f)
+                {
+                    Player.IsConsuming = true;
+                    AttachJointToMouth();
+                }
+                if (CurrentAnimationTime >= 0.55f)
+                {
+                    IsActivelySmoking = true;
+                    IsLit = true;
+                }
+                if (CurrentAnimationTime >= 0.72f)
+                {
+                    AttachJointToHand();
+                }
+                GameFiber.Yield();
+            }
+            if (IsLit && IsNearMouth)
+            {
+                Idle();
+            }
+            else if (IsCancelControlPressed)
+            {
+                Stop();
+            }
+            else
+            {
+                Puff();
+            }
+        }
+        private void Puff()
+        {
+            DebugLocation = "Puff";
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimIdleDictionary, AnimIdle, 1.0f, -1.0f, -1, 49, 0, false, false, false);//49//NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimBaseDictionary, AnimBase, 4.0f, -4.0f, -1, 49, 0, false, false, false);//49AnimBase
+            while (!IsCancelControlPressed)
+            {
+                UpdatePosition();
+                UpdateSmoke();
+                if (HandByFace)
+                {
+                    AttachJointToHand();
+                }
+                GameFiber.Yield();
+            }
+            if (IsNearMouth)
+            {
+                Idle();
+            }
+            else
+            {
+                Stop();
+            }
         }
         private void Setup()
         {
@@ -138,133 +263,6 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
         }
-        private void AttachJointToHand()
-        {
-            CreateJoint();
-            if (Joint.Exists() && IsAttachedToMouth)
-            {
-                Joint.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, HandBoneID), HandOffset, HandRotator);
-                IsAttachedToMouth = false;
-            }
-        }
-        private void AttachJointToMouth()
-        {
-            CreateJoint();
-            if (Joint.Exists() && !IsAttachedToMouth)
-            {
-                Joint.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, MouthBoneID), MouthOffset, MouthRotator);
-                IsAttachedToMouth = true;
-            }
-        }
-        private void CreateJoint()
-        {
-            if (!Joint.Exists())
-            {
-                Joint = new Rage.Object(PropModelName, Player.Character.GetOffsetPositionUp(50f));
-            }
-        }
-        private void LightJoint()
-        {
-            DebugLocation = "Light";
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 8.0f, -8.0f, -1, 50, 0, false, false, false);//-1
-            while (!IsCancelControlPressed && CurrentAnimationTime < 1.0f)
-            {
-                UpdatePosition();
-                UpdateSmoke();
-                CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, AnimEnterDictionary, AnimEnter);
-                if (CurrentAnimationTime >= 0.18f)
-                {
-                    Player.IsConsuming = true;
-                    AttachJointToMouth();
-                }
-                if (CurrentAnimationTime >= 0.55f)
-                {
-                    IsActivelySmoking = true;
-                    IsLit = true;
-                }
-                if (CurrentAnimationTime >= 0.72f)
-                {
-                    AttachJointToHand();
-                }
-                GameFiber.Yield();
-            }
-            if(IsLit&& IsNearMouth)
-            {
-                Idle();
-            }
-            else if (IsCancelControlPressed)
-            {
-                Stop();
-            }
-            else
-            {
-                Puff();
-            }
-        }
-        private void Puff()
-        {
-            DebugLocation = "Puff";
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimBaseDictionary, AnimBase, 4.0f, -4.0f, -1, 49, 0, false, false, false);//49
-            while (!IsCancelControlPressed)
-            {
-                UpdatePosition();
-                UpdateSmoke();
-                if (HandByFace)
-                {
-                    AttachJointToHand();
-                }
-                GameFiber.Yield();
-            }
-            if (IsNearMouth)
-            {
-                Idle();
-            }
-            else
-            {
-                Stop();
-            }
-        }
-        private void Idle()
-        {
-            DebugLocation = "Idle";
-            AttachJointToMouth();
-            Player.Character.Tasks.Clear();
-            IsActivelySmoking = false;
-            bool Cancel = false;
-            promptString = "";
-            while (!Cancel)
-            {
-                UpdatePosition();
-                UpdateSmoke();
-                if (Player.CanPerformActivities)
-                {
-                    promptString = $"Press ~{Keys.E.GetInstructionalId()}~ to Stop Smoking~n~Press ~{Keys.X.GetInstructionalId()}~ to Continue Smoking";
-                    if (Game.IsKeyDownRightNow(Keys.X) || Game.IsKeyDownRightNow(Keys.E))
-                    {
-                        Cancel = true;
-                    }
-                }
-                else
-                {
-                    promptString = $"Press ~{Keys.E.GetInstructionalId()}~ to Stop Smoking";
-                    if (Game.IsKeyDownRightNow(Keys.E))
-                    {
-                        Cancel = true;
-                    }
-                }
-                GameFiber.Yield();
-            }
-            promptString = "";
-            if (Game.IsKeyDownRightNow(Keys.X) && Player.CanPerformActivities)
-            {
-                IsActivelySmoking = true;
-                Puff();
-            }
-            else
-            {
-                Stop();
-            }
-        }
         private void Stop()
         {
             DebugLocation = "Stop";
@@ -272,26 +270,30 @@ namespace LosSantosRED.lsr.Player
             IsActivelySmoking = false;
             IsLit = false;
             IsAttachedToMouth = false;
-            if (Joint.Exists())
+            if (SmokedItem.Exists())
             {
-                Joint.Detach();
+                SmokedItem.Detach();
             }
             Player.Character.Tasks.Clear();
             Player.IsConsuming = false;
             GameFiber.Sleep(5000);
-            if (Joint.Exists())
+            if (SmokedItem.Exists())
             {
-                Joint.Delete();
+                SmokedItem.Delete();
+            }
+            if (IsPot)
+            {
+                Game.LocalPlayer.Character.PlayAmbientSpeech("POST_STONED");
             }
         }
         private void UpdatePosition()
         {
-            if (Joint.Exists())
+            if (SmokedItem.Exists())
             {
-                DistanceBetweenJointAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, MouthBoneID)).DistanceTo2D(Joint);
+                DistanceBetweenSmokedItemAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, MouthBoneID)).DistanceTo2D(SmokedItem);
                 DistanceBetweenHandAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, HandBoneID)).DistanceTo2D(NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, MouthBoneID)));
             }
-            if (DistanceBetweenJointAndFace <= 0.17f && Joint.Exists())
+            if (DistanceBetweenSmokedItemAndFace <= 0.17f && SmokedItem.Exists())
             {
                 IsNearMouth = true;
             }
@@ -316,12 +318,12 @@ namespace LosSantosRED.lsr.Player
                 {
                     if (IsNearMouth && IsLit && !IsEmittingSmoke)
                     {
-                        PotSmoke = new LoopedParticle("core", "ent_anim_cig_smoke", Joint, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
+                        Smoke = new LoopedParticle("core", "ent_anim_cig_smoke", SmokedItem, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
                         IsEmittingSmoke = true;
                     }
-                    if (!IsNearMouth && IsEmittingSmoke && PotSmoke != null)
+                    if (!IsNearMouth && IsEmittingSmoke && Smoke != null)
                     {
-                        PotSmoke.Stop();
+                        Smoke.Stop();
                         IsEmittingSmoke = false;
                     }
                 }
@@ -332,7 +334,7 @@ namespace LosSantosRED.lsr.Player
                         if(GameTimeToStopSmoke <= Game.GameTime && Game.GameTime >= GameTimeToStartSmoke)
                         {
                             IsEmittingSmoke = true;
-                            PotSmoke = new LoopedParticle("core", "ent_anim_cig_smoke", Joint, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
+                            Smoke = new LoopedParticle("core", "ent_anim_cig_smoke", SmokedItem, new Vector3(-0.07f, 0.0f, 0f), Rotator.Zero, 1.5f);
                             GameTimeLastEmittedSmoke = Game.GameTime;
                             GameTimeToStopSmoke = Game.GameTime + (uint)RandomItems.MyRand.Next(1200, 1500);
                         }
@@ -342,7 +344,7 @@ namespace LosSantosRED.lsr.Player
                         if(Game.GameTime >= GameTimeToStopSmoke)
                         {
                             IsEmittingSmoke = false;
-                            PotSmoke.Stop();
+                            Smoke.Stop();
                             GameTimeToStartSmoke = Game.GameTime + (uint)RandomItems.MyRand.Next(3500, 5000);
                         }
 

@@ -18,10 +18,10 @@ namespace Mod
         private Pedestrians Pedestrians;
         private IPlacesOfInterest PlacesOfInterest;
         private Vehicles Vehicles;
-        public World(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes)
+        public World(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names)
         {
             PlacesOfInterest = placesOfInterest;
-            Pedestrians = new Pedestrians(agencies, zones, zoneJurisdictions, settings);
+            Pedestrians = new Pedestrians(agencies, zones, zoneJurisdictions, settings, names);
             Vehicles = new Vehicles(agencies, zones, zoneJurisdictions, settings, plateTypes);
         }
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;
@@ -32,7 +32,7 @@ namespace Mod
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
         public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
-        public bool ShouldBustPlayer => Pedestrians.ShouldBustPlayer;
+        public bool ShouldBustPlayer => Pedestrians.AnyPoliceShouldBustPlayer;
         public int TotalSpawnedCops => Pedestrians.TotalSpawnedCops;
         public void AddBlipsToMap()
         {

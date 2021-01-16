@@ -20,20 +20,14 @@ public class Pedestrians
     private IZoneJurisdictions ZoneJurisdictions;
     private ISettingsProvideable Settings;
     private IZones Zones;
-    public Pedestrians(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings)
+    private INameProvideable Names;
+    public Pedestrians(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, INameProvideable names)
     {
         Agencies = agencies;
         Zones = zones;
         ZoneJurisdictions = zoneJurisdictions;
         Settings = settings;
-    }
-
-    public string AgenciesChasingPlayer
-    {
-        get
-        {
-            return string.Join(" ", Police.Where(x => (x.SeenPlayerFor(10000) || (x.DistanceToPlayer <= 25f && x.DistanceToPlayer >= 1f)) && x.AssignedAgency != null).Select(x => x.AssignedAgency.ColoredInitials).Distinct().ToArray());
-        }
+        Names = names;
     }
     public bool AnyArmyUnitsSpawned
     {
@@ -65,7 +59,7 @@ public class Pedestrians
     }
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
-    public bool ShouldBustPlayer
+    public bool AnyPoliceShouldBustPlayer
     {
         get
         {
@@ -104,9 +98,13 @@ public class Pedestrians
     public PedExt GetCivilian(uint Handle)
     {
         if (Police.Any(x => x.Pedestrian.Handle == Handle))
+        {
             return null;
+        }
         else
+        {
             return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        }
     }
     public void Prune()
     {
@@ -152,20 +150,23 @@ public class Pedestrians
         SetCivilianStats(Pedestrian);
         bool WillFight = RandomItems.RandomPercent(5);
         bool WillCallPolice = RandomItems.RandomPercent(80);
+        int InsultLimit = 3;
         if (Pedestrian.Exists())
         {
             if (Pedestrian.IsGangMember())
             {
                 WillFight = RandomItems.RandomPercent(95);
                 WillCallPolice = false;
+                InsultLimit = 1;
             }
             else if (Pedestrian.IsSecurity())
             {
                 WillFight = true;
                 WillCallPolice = false;
+                InsultLimit = 1;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice));
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, InsultLimit, Names.GetRandomName(Pedestrian.IsMale)));
     }
     private void AddCop(Ped Pedestrian)
     {

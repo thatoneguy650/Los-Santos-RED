@@ -16,5 +16,7 @@ namespace LosSantosRED.lsr.Player
         public abstract string DebugString { get; }
         public abstract string Prompt { get; }
         public abstract void Start();
+        public abstract void Continue();
+        public abstract void Cancel();
     }
 }
