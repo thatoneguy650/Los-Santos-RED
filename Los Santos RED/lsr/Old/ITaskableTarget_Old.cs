@@ -51,7 +51,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsMoveControlPressed { get; set; }
         bool IsMoving { get; }
         bool IsMovingFast { get; }
-        bool IsMugging { get; }
+        bool IsHoldingUp { get; }
         bool IsNotWanted { get; }
         bool IsOffroad { get; }
         bool IsOnMotorcycle { get; }

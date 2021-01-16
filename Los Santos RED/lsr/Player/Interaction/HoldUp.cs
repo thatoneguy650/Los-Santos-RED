@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Data;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -8,7 +9,7 @@ using System.Windows.Forms;
 
 public class HoldUp : Interaction
 {
-    private uint GameTimeStartedMugging;
+    private uint GameTimeStartedHoldingUp;
     private IInteractionable Player;
     private PedExt Target;
     private uint GameTimeStartedIntimidating;
@@ -20,13 +21,14 @@ public class HoldUp : Interaction
         Player = player;
         Target = target;
     }
+    public override string DebugString => $"HoldingUp {Target.Pedestrian.Handle} IsIntimidated {IsTargetIntimidated} TargetMugged {Target.HasBeenMugged}";
     public override string Prompt
     {
         get
         {
             if (IsTargetting && IsTargetIntimidated && !Target.HasBeenMugged)
             {
-                return $"Press ~{Keys.O.GetInstructionalId()}~ to Demand Cash";
+                return $"Press ~{Keys.E.GetInstructionalId()}~ to Demand Cash";
             }
             else
             {
@@ -54,7 +56,7 @@ public class HoldUp : Interaction
         GameTimeStoppedTargetting = 0;
         int TimeToWait = RandomItems.MyRand.Next(1500, 2500);
         IsTargetting = true;
-        while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait) && Target.DistanceToPlayer <= 10f)
+        while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait) && Target.DistanceToPlayer <= 10f && Target.Pedestrian.IsAlive && !Target.Pedestrian.IsRagdoll && !Target.Pedestrian.IsStunned && Player.IsAliveAndFree && !Player.Character.IsStunned && !Player.Character.IsRagdoll && NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
         {
             if (Player.CurrentTargetedPed?.Pedestrian.Handle == Target.Pedestrian.Handle)//!Game.LocalPlayer.IsFreeAiming && !NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING", Game.LocalPlayer))
             {
@@ -64,10 +66,9 @@ public class HoldUp : Interaction
                     GameTimeStartedIntimidating = Game.GameTime;
                     GameTimeStoppedTargetting = 0;
                 }
-                if (Game.IsKeyDown(Keys.O) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
+                if (Game.IsKeyDown(Keys.E) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
                 {
                     Target.HasBeenMugged = true;
-                    
                     CreateMoneyDrop();
                 }
             }
@@ -111,10 +112,21 @@ public class HoldUp : Interaction
     }
     private void CleanUp()
     {
-        Target.Pedestrian.BlockPermanentEvents = false;
-        Target.Pedestrian.Tasks.Flee(Player.Character, 100f, -1);
-        Target.CanBeTasked = true;
-        Player.IsMugging = false;
+        if (Target != null && Target.Pedestrian.Exists())
+        {
+            Target.Pedestrian.BlockPermanentEvents = false;
+            if(Target.WillFight)
+            {
+                Target.Pedestrian.Inventory.GiveNewWeapon("weapon_pistol", 60, true);
+                Target.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
+            }
+            else
+            {
+                Target.Pedestrian.Tasks.Flee(Player.Character, 100f, -1);
+            }
+            Target.CanBeTasked = true;
+        }
+        Player.IsHoldingUp = false;
     }
     private void CreateMoneyDrop()
     {
@@ -134,29 +146,39 @@ public class HoldUp : Interaction
     }
     private void EnterHandsUp()
     {
-
         SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN" }, false);
-        GameFiber.Sleep(750);
-        NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Target.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-        SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG" }, true);
-        while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1) && Game.GameTime - GameTimeStartedMugging <= 2500)
+        GameFiber.Sleep(500);
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 1250);
+            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", 0, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Target.Pedestrian, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        }
+        while (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1) && Game.GameTime - GameTimeStartedHoldingUp <= 7000)
         {
             GameFiber.Sleep(100);
-        }
+            
+        }       
         if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
         {
             CleanUp();
         }
         else
         {
+            SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GENERIC_FRIGHTENED_HIGH", "GENERIC_FRIGHTENED_MED" }, true);
             CheckIntimidation();
         }
     }
     private void Setup()
     {
-        Player.IsMugging = true;
+        Player.IsHoldingUp = true;
         Target.CanBeTasked = false;
-        GameTimeStartedMugging = Game.GameTime;
+        GameTimeStartedHoldingUp = Game.GameTime;
         Target.HasSpokenWithPlayer = true;
         Target.IsFedUpWithPlayer = true;
         Target.Pedestrian.BlockPermanentEvents = true;

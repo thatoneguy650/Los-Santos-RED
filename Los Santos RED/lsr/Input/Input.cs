@@ -161,7 +161,6 @@ namespace LosSantosRED.lsr
             VehicleCheck();
             HoldingEnterCheck();
             ConversationCheck();
-            MuggingCheck();
             Player.IsHoldingEnter = IsHoldingEnter;
         }
         private void HoldingEnterCheck()
@@ -199,35 +198,11 @@ namespace LosSantosRED.lsr
             Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
             if (Player.CanConverse)
             {
-                //Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
-                //Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
                 if (IsPressingConversation)
                 {
                     Player.StartConversation();
                 }
             }
-            //else
-            //{
-            //    Game.DisableControlAction(0, GameControl.Talk, false);
-            //    Game.DisableControlAction(0, GameControl.Context, false);
-            //}
-        }
-        private void MuggingCheck()
-        {
-            if (Player.CanMug)
-            {
-                //Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
-                //Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
-                if (IsPressingMug)
-                {
-                    Player.StartMugging();
-                }
-            }
-            //else
-            //{
-            //    Game.DisableControlAction(0, GameControl.Talk, false);
-            //    Game.DisableControlAction(0, GameControl.Context, false);
-            //}
         }
         private void WeaponDropCheck()
         {

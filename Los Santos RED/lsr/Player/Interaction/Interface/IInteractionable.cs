@@ -9,10 +9,11 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IInteractionable
     {
-        bool IsMugging { get; set; }
+        bool IsHoldingUp { get; set; }
         WeaponCategory CurrentWeaponCategory { get; }
         bool IsConversing { get; set; }
         Ped Character { get; }
         PedExt CurrentTargetedPed { get; }
+        bool IsAliveAndFree { get; }
     }
 }

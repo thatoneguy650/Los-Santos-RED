@@ -44,6 +44,8 @@ namespace LosSantosRED.lsr.Interface
         uint TimeInSearchMode { get; }
         bool StarsRecentlyGreyedOut { get; }
         bool StarsRecentlyActive { get; }
+        Violations Violations { get; }//not good comrade
+
         void Injured(PedExt myPed);
         void Murdered(PedExt myPed);
         void Arrest();

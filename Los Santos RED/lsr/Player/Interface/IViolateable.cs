@@ -32,7 +32,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInAutomobile { get; }
         bool IsIntoxicated { get; }
         bool IsInVehicle { get; }
-        bool IsMugging { get; }
+        bool IsHoldingUp { get; }
         bool IsOnMotorcycle { get; }
         bool IsWanted { get; }
         bool RecentlyStartedPlaying { get; }

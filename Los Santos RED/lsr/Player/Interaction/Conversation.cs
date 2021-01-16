@@ -18,11 +18,14 @@ public class Conversation : Interaction
     private bool IsTasked;
     private PedExt Ped;
     private IInteractionable Player;
+    //private Relationship PedFeelingTowardsPlayer;
+    //private Relationship PlayerFeelingTowardsPed;
     public Conversation(IInteractionable player, PedExt ped)
     {
         Player = player;
         Ped = ped;
     }
+    public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override string Prompt
     {
         get
@@ -42,7 +45,7 @@ public class Conversation : Interaction
         }
     }
 
-    private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 7f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive;
+    private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 7f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsInCombat && !Player.Character.IsInCombat;
     public override void Dispose()
     {
         Player.IsConversing = false;
@@ -157,11 +160,11 @@ public class Conversation : Interaction
         }
         else if (Ped.TimesInsultedByPlayer <= 2)
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_MED" }, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_MED","GENERIC_CURSE_MED" }, true);
         }
         else
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH" }, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH", "GENERIC_CURSE_HIGH" }, true);
         }
         //GENERIC_INSULT_MED works on player
         //GENERIC_INSULT_MED works on peds?
@@ -196,13 +199,15 @@ public class Conversation : Interaction
         }
         else
         {
-            SayAvailableAmbient(ToReply, new List<string>() { "APOLOGY_NO_TROUBLE", "GENERIC_HOWS_IT_GOING" }, true);
+            SayAvailableAmbient(ToReply, new List<string>() { "APOLOGY_NO_TROUBLE", "GENERIC_HOWS_IT_GOING", "GETTING_OLD", "LISTEN_TO_RADIO" }, true);
 
         }
     }
     private void Setup()
     {
-        if(Ped.TimesInsultedByPlayer <= 0)
+        GameTimeStartedConversing = Game.GameTime;
+        IsActivelyConversing = true;
+        if (Ped.TimesInsultedByPlayer <= 0)
         {
             SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, false);
         }
@@ -242,7 +247,6 @@ public class Conversation : Interaction
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
-        GameTimeStartedConversing = Game.GameTime;
         GameFiber.Sleep(500);
         if(Ped.TimesInsultedByPlayer <= 0)
         {
@@ -253,13 +257,15 @@ public class Conversation : Interaction
             SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true);
         }
         Ped.HasSpokenWithPlayer = true;
-        
+        IsActivelyConversing = false;
+
     }
     private void Tick()
     {
         while (CanContinueConversation)
         {
             CheckInput();
+            //CheckRelationship();
             if(TargetCancelledConversation)
             {
                 Dispose();
@@ -269,5 +275,10 @@ public class Conversation : Interaction
         }
         GameFiber.Sleep(1000);
     }
+    //private void CheckRelationship()
+    //{
+    //    PedFeelingTowardsPlayer = (Relationship)NativeFunction.Natives.GetRelationshipBetweenPeds<int>(Ped.Pedestrian, Player.Character);
+    //    PlayerFeelingTowardsPed = (Relationship)NativeFunction.Natives.GetRelationshipBetweenPeds<int>(Player.Character, Ped.Pedestrian);
+    //}
 }
 
