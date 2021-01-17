@@ -10,5 +10,6 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsIntoxicated { get; set; }
         float IntoxicatedIntensity { get; set; }
+        bool ShouldCancelActivities { get; }
     }
 }

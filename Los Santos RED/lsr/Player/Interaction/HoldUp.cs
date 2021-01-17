@@ -1,5 +1,4 @@
-﻿using LosSantosRED.lsr.Data;
-using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -10,32 +9,18 @@ using System.Windows.Forms;
 public class HoldUp : Interaction
 {
     private uint GameTimeStartedHoldingUp;
-    private IInteractionable Player;
-    private PedExt Target;
     private uint GameTimeStartedIntimidating;
     private uint GameTimeStoppedTargetting;
     private bool IsTargetting;
-    private bool IsTargetIntimidated => GameTimeStartedIntimidating != 0 && Game.GameTime - GameTimeStartedIntimidating >= 1500;
+    private IInteractionable Player;
+    private PedExt Target;
     public HoldUp(IInteractionable player, PedExt target)
     {
         Player = player;
         Target = target;
     }
     public override string DebugString => $"HoldingUp {Target.Pedestrian.Handle} IsIntimidated {IsTargetIntimidated} TargetMugged {Target.HasBeenMugged}";
-    public override string Prompt
-    {
-        get
-        {
-            if (IsTargetting && IsTargetIntimidated && !Target.HasBeenMugged)
-            {
-                return $"Press ~{Keys.E.GetInstructionalId()}~ to Demand Cash";
-            }
-            else
-            {
-                return $"";
-            }
-        }
-    }
+    private bool IsTargetIntimidated => GameTimeStartedIntimidating != 0 && Game.GameTime - GameTimeStartedIntimidating >= 1500;
     public override void Dispose()
     {
         CleanUp();
@@ -58,7 +43,7 @@ public class HoldUp : Interaction
         IsTargetting = true;
         while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait) && Target.DistanceToPlayer <= 10f && Target.Pedestrian.IsAlive && !Target.Pedestrian.IsRagdoll && !Target.Pedestrian.IsStunned && Player.IsAliveAndFree && !Player.Character.IsStunned && !Player.Character.IsRagdoll && NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
         {
-            if (Player.CurrentTargetedPed?.Pedestrian.Handle == Target.Pedestrian.Handle)//!Game.LocalPlayer.IsFreeAiming && !NativeFunction.CallByName<bool>("IS_PLAYER_TARGETTING_ANYTHING", Game.LocalPlayer))
+            if (Player.CurrentTargetedPed?.Pedestrian.Handle == Target.Pedestrian.Handle)
             {
                 if (!IsTargetting)
                 {
@@ -66,7 +51,18 @@ public class HoldUp : Interaction
                     GameTimeStartedIntimidating = Game.GameTime;
                     GameTimeStoppedTargetting = 0;
                 }
-                if (Game.IsKeyDown(Keys.E) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
+                if (IsTargetting && IsTargetIntimidated && !Target.HasBeenMugged)
+                {
+                    if (!Player.ButtonPrompts.Any(x => x.Name == "Demand"))
+                    {
+                        Player.ButtonPrompts.Add(new ButtonPrompt($"Press ~{Keys.E.GetInstructionalId()}~ to Demand Cash", Keys.E, "Demand","HoldUp"));
+                    }
+                }
+                else
+                {
+                    Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
+                }
+                if (Player.ButtonPrompts.Any(x => x.Name == "Demand" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
                 {
                     Target.HasBeenMugged = true;
                     CreateMoneyDrop();
@@ -85,37 +81,13 @@ public class HoldUp : Interaction
         }
         CleanUp();
     }
-    private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
-    {
-        bool Spoke = false;
-        foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
-        {
-            ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
-            GameFiber.Sleep(100);
-            if (ToSpeak.IsAnySpeechPlaying)
-            {
-                Spoke = true;
-            }
-            Game.Console.Print($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
-            if (Spoke)
-            {
-                break;
-            }
-        }
-        GameFiber.Sleep(100);
-        while (ToSpeak.IsAnySpeechPlaying && WaitForComplete)
-        {
-            Spoke = true;
-            GameFiber.Yield();
-        }
-        return Spoke;
-    }
     private void CleanUp()
     {
+        Player.ButtonPrompts.RemoveAll(x => x.Name == "Demand");
         if (Target != null && Target.Pedestrian.Exists())
         {
             Target.Pedestrian.BlockPermanentEvents = false;
-            if(Target.WillFight)
+            if (Target.WillFight)
             {
                 Target.Pedestrian.Inventory.GiveNewWeapon("weapon_pistol", 60, true);
                 Target.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
@@ -142,7 +114,6 @@ public class HoldUp : Interaction
         Vector3 MoneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
         NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, RandomItems.MyRand.Next(15, 100), 1, false, true);
         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Target.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-        
     }
     private void EnterHandsUp()
     {
@@ -162,8 +133,7 @@ public class HoldUp : Interaction
         while (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1) && Game.GameTime - GameTimeStartedHoldingUp <= 7000)
         {
             GameFiber.Sleep(100);
-            
-        }       
+        }
         if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
         {
             CleanUp();
@@ -173,6 +143,31 @@ public class HoldUp : Interaction
             SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GENERIC_FRIGHTENED_HIGH", "GENERIC_FRIGHTENED_MED" }, true);
             CheckIntimidation();
         }
+    }
+    private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
+    {
+        bool Spoke = false;
+        foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
+        {
+            ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+            GameFiber.Sleep(100);
+            if (ToSpeak.IsAnySpeechPlaying)
+            {
+                Spoke = true;
+            }
+            Game.Console.Print($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
+            if (Spoke)
+            {
+                break;
+            }
+        }
+        GameFiber.Sleep(100);
+        while (ToSpeak.IsAnySpeechPlaying && WaitForComplete)
+        {
+            Spoke = true;
+            GameFiber.Yield();
+        }
+        return Spoke;
     }
     private void Setup()
     {

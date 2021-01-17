@@ -12,46 +12,32 @@ namespace LosSantosRED.lsr.Player
 {
     public class DrinkingActivity : ConsumeActivity
     {
-        private bool IsCancelled;
-        private string AnimIdleDictionary;
         private string AnimIdle;
+        private string AnimIdleDictionary;
+        private Rage.Object Bottle;
+        private float CurrentAnimationTime;
+        private string DebugLocation;
         private int HandBoneID;
         private Vector3 HandOffset;
         private Rotator HandRotator;
-        private Rage.Object Bottle;
-        private bool IsAttachedToHand;
-        private IIntoxicatable Player;
         private IntoxicatingEffect IntoxicatingEffect;
+        private bool IsAttachedToHand;
+        private bool IsCancelled;
+        private IIntoxicatable Player;
         private string PropModel;
-        private float CurrentAnimationTime;
-        private string DebugLocation;
-        private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
         public DrinkingActivity(IIntoxicatable consumable) : base()
         {
             Player = consumable;
         }
-        public override string Prompt => "";
-        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsConsuming} I: {Player.IntoxicatedIntensity} L: {DebugLocation} AT {Math.Round(CurrentAnimationTime,2)}";
-        private void Setup()
+        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsConsuming} I: {Player.IntoxicatedIntensity} L: {DebugLocation} AT {Math.Round(CurrentAnimationTime, 2)}";
+        private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
+        public override void Cancel()
         {
-            if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
-            {
-                AnimIdleDictionary = "amb@world_human_drinking@beer@male@idle_a";
-                AnimIdle = new List<string>() { "idle_c", "Idle_a" }.PickRandom();
-                HandBoneID = 57005;
-                HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
-                HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
-            }
-            else
-            {
-                AnimIdleDictionary = "amb@world_human_drinking@beer@female@idle_a";
-                AnimIdle = new List<string>() { "idle_c", "Idle_a" }.PickRandom();
-                HandBoneID = 57005;
-                HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
-                HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
-            }
-            PropModel = new List<string>() { "prop_cs_beer_bot_40oz", "prop_cs_beer_bot_40oz_02", "prop_cs_beer_bot_40oz_03" }.PickRandom(); ;
-            AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
+            IsCancelled = true;
+        }
+        public override void Continue()
+        {
+
         }
         public override void Start()
         {
@@ -62,14 +48,6 @@ namespace LosSantosRED.lsr.Player
             {
                 Drink();
             }, "DrinkingWatcher");
-        }
-        public override void Continue()
-        {
-
-        }
-        public override void Cancel()
-        {
-            IsCancelled = true;
         }
         private void AttachBottleToHand()
         {
@@ -99,6 +77,27 @@ namespace LosSantosRED.lsr.Player
                 GameFiber.Yield();
             }
             Stop();
+        }
+        private void Setup()
+        {
+            if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
+            {
+                AnimIdleDictionary = "amb@world_human_drinking@beer@male@idle_a";
+                AnimIdle = new List<string>() { "idle_c", "Idle_a" }.PickRandom();
+                HandBoneID = 57005;
+                HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
+                HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
+            }
+            else
+            {
+                AnimIdleDictionary = "amb@world_human_drinking@beer@female@idle_a";
+                AnimIdle = new List<string>() { "idle_c", "Idle_a" }.PickRandom();
+                HandBoneID = 57005;
+                HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
+                HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
+            }
+            PropModel = new List<string>() { "prop_cs_beer_bot_40oz", "prop_cs_beer_bot_40oz_02", "prop_cs_beer_bot_40oz_03" }.PickRandom(); ;
+            AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
         }
         private void Stop()
         {

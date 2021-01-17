@@ -101,16 +101,23 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        foreach (Cop cop in World.PoliceList)
-        {
-            Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
-            if(cop.CurrentTask == null || cop.CurrentTask.Name != "Locate")
-            {
-                cop.CurrentTask = new Locate(cop, Player);
-                cop.CurrentTask.Start();
-            }
+        //foreach (Cop cop in World.PoliceList)
+        //{
+        //    Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+        //    if(cop.CurrentTask == null || cop.CurrentTask.Name != "Locate")
+        //    {
+        //        cop.CurrentTask = new Locate(cop, Player);
+        //        cop.CurrentTask.Start();
+        //    }
 
+        //}
+
+
+        foreach (ButtonPrompt bp in Player.ButtonPrompts)
+        {
+            Game.Console.Print($"{bp.Name}, {bp.Key}, {bp.IsPressedNow}, {bp.Text}");
         }
+
     }
     private void DebugNumpad7()
     {

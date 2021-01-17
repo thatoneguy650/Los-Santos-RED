@@ -119,14 +119,20 @@ public class UI
             ShowUI();
         }
         ScreenEffectsUpdate();
-
-
         DisplayButtonPrompts();
     }
 
     private void DisplayButtonPrompts()
     {
-        string FinalPrompt = Player.ButtonPrompt;
+        string FinalPrompt = "";
+        foreach (ButtonPrompt bp in Player.ButtonPrompts)
+        {
+            if (FinalPrompt != "")
+            {
+                FinalPrompt += "~n~";
+            }
+            FinalPrompt += bp.Text;
+        }
         if(FinalPrompt != "")
         {
             Game.DisplayHelp(FinalPrompt);

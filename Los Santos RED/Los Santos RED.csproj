@@ -119,6 +119,7 @@
     <Compile Include="lsr\Dispatcher\IssuableWeapon.cs" />
     <Compile Include="lsr\Dispatcher\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
+    <Compile Include="lsr\Player\ButtonPrompt.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation.cs" />
     <Compile Include="lsr\Player\Interaction\Interaction.cs" />
     <Compile Include="lsr\Player\Interaction\Interface\IInteractionable.cs" />

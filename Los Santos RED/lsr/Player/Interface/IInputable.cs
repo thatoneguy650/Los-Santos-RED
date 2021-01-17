@@ -19,12 +19,12 @@ namespace LosSantosRED.lsr.Interface
         bool IsMoveControlPressed { get; }
         bool CanConverse { get; }
         bool CanHoldUp { get; }
+        bool IsConversing { get; }
+        List<ButtonPrompt> ButtonPrompts { get; }
 
         void RaiseHands();
         void LowerHands();
         void DropWeapon();
         void SetUnarmed();
-        void StartConversation();
-        void StartHoldUp();
     }
 }

@@ -30,6 +30,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsConversing { get; }
         bool IsConsuming { get; }
         bool CanConverse { get; }
-        string ButtonPrompt { get; }
+        List<ButtonPrompt> ButtonPrompts { get; }
     }
 }

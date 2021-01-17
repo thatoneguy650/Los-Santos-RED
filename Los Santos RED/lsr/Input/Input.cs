@@ -31,136 +31,19 @@ namespace LosSantosRED.lsr
             Settings = settings;
         }
         private uint GameTimeStartedHoldingEnter;
-        private bool IsHoldingEnter
-        {
-            get
-            {
-                if (GameTimeStartedHoldingEnter == 0)
-                    return false;
-                if (Game.GameTime - GameTimeStartedHoldingEnter >= 75)
-                    return true;
-                return false;
-            }
-        }
-        private bool IsPressingSurrender
-        {
-            get
-            {
-                if (Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        private bool IsPressingConversation
-        {
-            get
-            {
-                if (Game.IsKeyDownRightNow(Keys.E))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        private bool IsPressingMug
-        {
-            get
-            {
-                if (Game.IsKeyDownRightNow(Keys.E))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        private bool IsPressingDropWeapon
-        {
-            get
-            {
-                if (Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        private bool IsPressingRightIndicator
-        {
-            get
-            {
-                if (Game.IsKeyDown(Keys.E) && Game.IsShiftKeyDownRightNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        private bool IsPressingLeftIndicator
-        {
-            get
-            {
-                if (Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        private bool IsPressingHazards
-        {
-            get
-            {
-                if (Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        private bool IsPressingNextTrack
-        {
-            get
-            {
-                if (Game.IsKeyDown(Keys.O) && !Game.IsShiftKeyDownRightNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+        private bool IsHoldingEnter => GameTimeStartedHoldingEnter != 0 && Game.GameTime - GameTimeStartedHoldingEnter >= 75;
+        private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow;
+        private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
+        private bool IsPressingRightIndicator => Game.IsKeyDown(Keys.E) && Game.IsShiftKeyDownRightNow;
+        private bool IsPressingLeftIndicator => Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow;
+        private bool IsPressingHazards => Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow;
         public void Update()
         {
             SurrenderCheck();
             WeaponDropCheck();
             VehicleCheck();
             HoldingEnterCheck();
-            ConversationCheck();
+            ButtonPromptCheck();
             Player.IsHoldingEnter = IsHoldingEnter;
         }
         private void HoldingEnterCheck()
@@ -168,7 +51,9 @@ namespace LosSantosRED.lsr
             if (Game.IsControlPressed(2, GameControl.Enter))
             {
                 if (GameTimeStartedHoldingEnter == 0)
+                {
                     GameTimeStartedHoldingEnter = Game.GameTime;
+                }
             }
             else
             {
@@ -192,15 +77,19 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void ConversationCheck()
+        private void ButtonPromptCheck()
         {
             Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
             Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
-            if (Player.CanConverse)
+            foreach (ButtonPrompt bp in Player.ButtonPrompts)
             {
-                if (IsPressingConversation)
+                if (Game.IsKeyDownRightNow(bp.Key) && !bp.IsPressedNow)
                 {
-                    Player.StartConversation();
+                    bp.IsPressedNow = true;
+                }
+                else
+                {
+                    bp.IsPressedNow = false;
                 }
             }
         }
@@ -215,22 +104,6 @@ namespace LosSantosRED.lsr
         {
             if (Player.CurrentVehicle != null)
             {
-                //if (IsPressingEngineToggle)
-                //{
-                //    GameFiber.Sleep(200);
-                //    Player.CurrentVehicle.Vehicle.IsEngineOn = !Player.CurrentVehicle.Vehicle.IsEngineOn;
-                //}
-                //if (IsPressingRefuel &&  Mod.Player.Instance.GetCash() >= 1)
-                //{
-                //    Mod.Player.Instance.GiveCash(-1);
-                //    Mod.Player.Instance.CurrentVehicle.FuelTank.PumpFuel();
-                //    GameFiber.Sleep(100);
-                //}
-                if (IsPressingNextTrack)
-                {
-                    Player.CurrentVehicle.Radio.SetNextTrack();
-                    GameFiber.Sleep(100);
-                }
                 if (IsPressingHazards)
                 {
                     Player.CurrentVehicle.Indicators.ToggleHazards();

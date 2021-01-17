@@ -11,7 +11,6 @@ public abstract class Interaction
     {
 
     }
-    public abstract string Prompt { get; }
     public abstract string DebugString { get; }
     public abstract void Start();
     public abstract void Dispose();
