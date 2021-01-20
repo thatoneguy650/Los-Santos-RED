@@ -104,6 +104,22 @@ namespace LosSantosRED.lsr
         {
             if (Player.CurrentVehicle != null)
             {
+
+                if(Game.IsKeyDown(Keys.Left))
+                {
+                    NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 0, (int)GameControl.VehicleHotwireLeft, 1.0f);
+                }
+                else if (Game.IsKeyDown(Keys.Right))
+                {
+                    NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 0, (int)GameControl.VehicleHotwireRight, 1.0f);
+                }
+
+
+
+
+
+
+
                 if (IsPressingHazards)
                 {
                     Player.CurrentVehicle.Indicators.ToggleHazards();

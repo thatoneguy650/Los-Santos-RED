@@ -45,6 +45,8 @@ namespace Mod
         private WeaponDropping WeaponDropping;
         private IWeapons Weapons;
         private IZones Zones;
+        private bool isHotwiring;
+        private uint GameTimeStartedHotwiring;
         public Player(IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons)
         {
             EntityProvider = provider;
@@ -598,7 +600,7 @@ namespace Mod
             {
                 if (!ButtonPrompts.Any(x => x.Name == "Talk"))
                 {
-                    ButtonPrompts.Add(new ButtonPrompt($"Press ~{Keys.E.GetInstructionalId()}~ to Talk to {CurrentLookedAtPed.FormattedName}", Keys.E, "Talk", "Talk"));
+                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", Keys.E, "Talk", "Talk"));
                 }
             }
             else
@@ -734,6 +736,7 @@ namespace Mod
                     {
                         CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter);
                         MyBreakIn.BreakIn();
+                        
                     }
                 }
             }
@@ -776,6 +779,10 @@ namespace Mod
         {
             if (CanHoldUp)
             {
+                if(Interaction != null)
+                {
+                    Interaction.Dispose();
+                }
                 IsHoldingUp = true;
                 Interaction = new HoldUp(this, CurrentTargetedPed);
                 Interaction.Start();
@@ -905,25 +912,22 @@ namespace Mod
         }
         private void UpdatedLookedAtPed()
         {
-            Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
-            Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 3.0f;
-            HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
-
+            //Works fine just going simpler
+            //Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
+            //Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 3.0f;
+            // HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
             //Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
             //Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
-            if (result.Hit && result.HitEntity is Ped)
-            {
-                // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
-                CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
-
-
-
-
-            }
-            else
-            {
-                CurrentLookedAtPed = null;
-            }
+            //if (result.Hit && result.HitEntity is Ped)
+            //{
+            //    // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
+            //    CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
+            //}
+            //else
+            //{
+            //    CurrentLookedAtPed = null;
+            //}
+            CurrentLookedAtPed = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 4f && !x.IsBehindPlayer).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         }
         private void UpdateMiscData()
         {
@@ -1021,6 +1025,21 @@ namespace Mod
                 else
                 {
                     IsHotWiring = false;
+                }
+
+                if(isHotwiring != IsHotWiring)
+                {
+                    if(IsHotWiring)
+                    {
+                        GameTimeStartedHotwiring = Game.GameTime;
+                    }
+                    else
+                    {
+                        Game.Console.Print($"PLAYER EVENT: HotWiring Took {Game.GameTime- GameTimeStartedHotwiring}");
+                        GameTimeStartedHotwiring = 0;
+                    }
+                    Game.Console.Print($"PLAYER EVENT: IsHotWiring Changed to {IsHotWiring}");
+                    isHotwiring = IsHotWiring;
                 }
 
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)

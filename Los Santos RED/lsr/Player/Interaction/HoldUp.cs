@@ -55,7 +55,7 @@ public class HoldUp : Interaction
                 {
                     if (!Player.ButtonPrompts.Any(x => x.Name == "Demand"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt($"Press ~{Keys.E.GetInstructionalId()}~ to Demand Cash", Keys.E, "Demand","HoldUp"));
+                        Player.ButtonPrompts.Add(new ButtonPrompt($"Demand Cash", Keys.E, "Demand","HoldUp"));
                     }
                 }
                 else

@@ -4,7 +4,9 @@ using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 public class UI
@@ -18,6 +20,8 @@ public class UI
     private bool StartedDeathEffect = false;
     private IZoneJurisdictions ZoneJurisdictions;
     private Mod.Player PlayerIntellisense;
+    private InstructionalButtons instructional = new InstructionalButtons();
+    private List<ButtonPrompt> displayedButtonPrompts = new List<ButtonPrompt>();
     public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IZoneJurisdictions zoneJurisdictions)
     {
         Player = currentPlayer;
@@ -124,19 +128,35 @@ public class UI
 
     private void DisplayButtonPrompts()
     {
-        string FinalPrompt = "";
-        foreach (ButtonPrompt bp in Player.ButtonPrompts)
+        if(displayedButtonPrompts.Count() != Player.ButtonPrompts.Count())
         {
-            if (FinalPrompt != "")
+            instructional.Buttons.Clear();
+            if (Player.ButtonPrompts.Any())
             {
-                FinalPrompt += "~n~";
+                foreach (ButtonPrompt buttonPrompt in Player.ButtonPrompts)
+                {
+                    instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
+                }
             }
-            FinalPrompt += bp.Text;
+            instructional.Update();
+            Game.Console.Print($"Button Prompts Changed {Player.ButtonPrompts.Count}");
+            displayedButtonPrompts.Clear();
+            displayedButtonPrompts.AddRange(Player.ButtonPrompts);
         }
-        if(FinalPrompt != "")
-        {
-            Game.DisplayHelp(FinalPrompt);
-        }
+        instructional.Draw();
+        //string FinalPrompt = "";
+        //foreach (ButtonPrompt bp in Player.ButtonPrompts)
+        //{
+        //    if (FinalPrompt != "")
+        //    {
+        //        FinalPrompt += "~n~";
+        //    }
+        //    FinalPrompt += bp.Text;
+        //}
+        //if (FinalPrompt != "")
+        //{
+        //    Game.DisplayHelp(FinalPrompt);
+        //}
     }
 
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
@@ -279,8 +299,12 @@ public class UI
     {
         ShowDebugUI();
         HideVanillaUI();
-        DisplayTextOnScreen(GetVehicleStatusDisplay(), Settings.SettingsManager.UI.VehicleStatusPositionX, Settings.SettingsManager.UI.VehicleStatusPositionY, Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UI.VehicleStatusJustificationID);
-        DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UI.ZonePositionX, Settings.SettingsManager.UI.ZonePositionY, Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.ZoneJustificationID);
-        DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UI.StreetPositionX, Settings.SettingsManager.UI.StreetPositionY, Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.StreetJustificationID);
+        if(!Player.ButtonPrompts.Any())
+        {
+            DisplayTextOnScreen(GetVehicleStatusDisplay(), Settings.SettingsManager.UI.VehicleStatusPositionX, Settings.SettingsManager.UI.VehicleStatusPositionY, Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UI.VehicleStatusJustificationID);
+            DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UI.ZonePositionX, Settings.SettingsManager.UI.ZonePositionY, Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.ZoneJustificationID);
+            DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UI.StreetPositionX, Settings.SettingsManager.UI.StreetPositionY, Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.StreetJustificationID);
+        }
+        
     }
 }

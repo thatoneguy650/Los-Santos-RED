@@ -45,18 +45,19 @@ public class PedExt : IComplexTaskable
     {
         get
         {
-            if (TimesInsultedByPlayer == 1)
-            {
-                return "~o~";
-            }
-            else if (TimesInsultedByPlayer >= 2)
-            {
-                return "~r~";
-            }
-            else
-            {
-                return "";
-            }
+            //if (TimesInsultedByPlayer == 1)
+            //{
+            //    return "~o~";
+            //}
+            //else if (TimesInsultedByPlayer >= 2)
+            //{
+            //    return "~r~";
+            //}
+            //else
+            //{
+            //    return "";
+            //}
+            return "";//off for now
         }
     }
     public bool IsFedUpWithPlayer { get; set; }
@@ -274,6 +275,7 @@ public class PedExt : IComplexTaskable
                 return (Game.GameTime - GameTimeBehindPlayer);
         }
     }
+    public bool IsBehindPlayer => TimeBehindPlayer != 0;
     public uint TimeContinuoslySeenPlayer
     {
         get

@@ -59,22 +59,22 @@ public class Conversation : Interaction
                 {
                     if (!Player.ButtonPrompts.Any(x => x.Name == "Reply Positive"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt($"Press ~{Keys.E.GetInstructionalId()}~ to Chat", Keys.E, "Reply Positive","Conversation"));
+                        Player.ButtonPrompts.Add(new ButtonPrompt($"Chat", Keys.E, "Reply Positive", "Conversation"));
                     }
                     if (!Player.ButtonPrompts.Any(x => x.Name == "Reply Negative"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt($"Press ~{Keys.L.GetInstructionalId()}~ to Insult", Keys.L, "Reply Negative", "Conversation"));
+                        Player.ButtonPrompts.Add(new ButtonPrompt($"Insult", Keys.L, "Reply Negative", "Conversation"));
                     }
                 }
                 else
                 {
                     if (!Player.ButtonPrompts.Any(x => x.Name == "Reply Positive"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt($"Press ~{Keys.E.GetInstructionalId()}~ to Apologize", Keys.E, "Reply Positive", "Conversation"));
+                        Player.ButtonPrompts.Add(new ButtonPrompt($"Apologize", Keys.E, "Reply Positive", "Conversation"));
                     }
                     if (!Player.ButtonPrompts.Any(x => x.Name == "Reply Negative"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt($"Press ~{Keys.L.GetInstructionalId()}~ to Antagonize", Keys.L, "Reply Negative", "Conversation"));
+                        Player.ButtonPrompts.Add(new ButtonPrompt($"Antagonize", Keys.L, "Reply Negative", "Conversation"));
                     }
                 }
             }
@@ -242,17 +242,23 @@ public class Conversation : Interaction
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
-
-        unsafe
+        if (Player.IsInVehicle)
         {
-            int lol = 0;
-            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Ped.Pedestrian, 2000);
-            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Ped.Pedestrian, -1, 0, 2);
-            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Player.Character, Ped.Pedestrian, -1, 0, 2);
+        }
+        else
+        {
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Ped.Pedestrian, 2000);
+                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Ped.Pedestrian, -1, 0, 2);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
         }
         GameFiber.Sleep(500);
         if (Ped.TimesInsultedByPlayer <= 0)

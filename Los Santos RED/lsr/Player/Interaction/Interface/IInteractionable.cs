@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         PedExt CurrentTargetedPed { get; }
         bool IsAliveAndFree { get; }
         List<ButtonPrompt> ButtonPrompts { get; }
+        bool IsInVehicle { get; }
     }
 }
