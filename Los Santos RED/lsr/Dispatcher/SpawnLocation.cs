@@ -64,10 +64,7 @@ public class SpawnLocation
     {
         Vector3 streetPosition;
         float streetHeading;
-        unsafe
-        {
-            NativeFunction.CallByName<bool>("GET_CLOSEST_VEHICLE_NODE_WITH_HEADING", InitialPosition.X, InitialPosition.Y, InitialPosition.Z, &streetPosition, &streetHeading, 0, 3, 0);
-        }
+        NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out streetPosition, out streetHeading, 0, 3, 0);
         StreetPosition = streetPosition;
         Heading = streetHeading;
     }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-public class Conversation : Interaction
+public class Transaction : Interaction
 {
     private uint GameTimeStartedConversing;
     private bool IsActivelyConversing;
@@ -15,15 +15,17 @@ public class Conversation : Interaction
     private bool TargetCancelledConversation;
     private Keys PositiveReplyKey = Keys.E;
     private Keys NegativeReplyKey = Keys.L;
-    public Conversation(IInteractionable player, PedExt ped)
+    private bool HasBought;
+    private bool CancelConversation;
+    public Transaction(IInteractionable player, PedExt ped)
     {
         Player = player;
         Ped = ped;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
-    private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 7f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsInCombat && !Player.Character.IsInCombat;
-    private string NegativePrompt => Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize";
-    private string PositivePrompt => Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize";
+    private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 7f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsInCombat && !Player.Character.IsInCombat && !CancelConversation;
+    private string NegativePrompt => "Decline";
+    private string PositivePrompt => "Buy Weed $40";
     public override void Dispose()
     {
         Player.ButtonPrompts.RemoveAll(x => x.Group == "Conversation");
@@ -72,47 +74,15 @@ public class Conversation : Interaction
         }
         else if (Player.ButtonPrompts.Any(x => x.Key == NegativeReplyKey && x.IsPressedNow))
         {
-            Negative();
+            CancelConversation = true;
         }
-    }
-    private void Negative()
-    {
-        IsActivelyConversing = true;
-        Player.ButtonPrompts.Clear();
-
-        SayInsult(Player.Character);
-        SayInsult(Ped.Pedestrian);
-
-        Ped.TimesInsultedByPlayer++;
-        if (Ped.TimesInsultedByPlayer >= Ped.InsultLimit)
-        {
-            Ped.IsFedUpWithPlayer = true;
-            TargetCancelledConversation = true;
-        }
-
-        GameFiber.Sleep(1000);
-        IsActivelyConversing = false;
     }
     private void Positive()
     {
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
-        if (Ped.TimesInsultedByPlayer >= 1)
-        {
-            SayApology(Player.Character, false);
-            SayApology(Ped.Pedestrian, true);
-        }
-        else
-        {
-            SaySmallTalk(Player.Character, false);
-            SaySmallTalk(Ped.Pedestrian, true);
-        }
-
-        if (Ped.TimesInsultedByPlayer >= 1)
-        {
-            Ped.TimesInsultedByPlayer--;
-        }
-
+        SaySmallTalk(Player.Character, false);
+        SaySmallTalk(Ped.Pedestrian, true);
         GameFiber.Sleep(1000);
         IsActivelyConversing = false;
     }
@@ -162,23 +132,6 @@ public class Conversation : Interaction
             GameFiber.Yield();
         }
         return Spoke;
-    }
-    private void SayInsult(Ped ToReply)
-    {
-        if (Ped.TimesInsultedByPlayer <= 0)
-        {
-            SayAvailableAmbient(ToReply, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, true);
-        }
-        else if (Ped.TimesInsultedByPlayer <= 2)
-        {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_MED", "GENERIC_CURSE_MED" }, true);
-        }
-        else
-        {
-            SayAvailableAmbient(ToReply, new List<string>() { "GENERIC_INSULT_HIGH", "GENERIC_CURSE_HIGH" }, true);
-        }
-        //GENERIC_INSULT_MED works on player
-        //GENERIC_INSULT_MED works on peds?
     }
     private void SaySmallTalk(Ped ToReply, bool IsReply)
     {

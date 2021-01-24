@@ -61,7 +61,7 @@ namespace ExtensionsMethods
         public static bool IsPoliceArmy(this Ped myPed)
         {
             string ModelName = myPed.Model.Name.ToLower();
-            int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
             if (PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_ARMY || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01")//if ((PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_ARMY || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01" || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
             {
                 return true;
@@ -74,7 +74,7 @@ namespace ExtensionsMethods
         public static bool IsPolice(this Ped myPed)
         {
             string ModelName = myPed.Model.Name.ToLower();
-            int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
             if (PedType == (int)ePedType.PED_TYPE_COP || PedType == (int)ePedType.PED_TYPE_SWAT || ModelName == "s_m_m_prisguard_01")// || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
             {
                 return true;
@@ -86,7 +86,7 @@ namespace ExtensionsMethods
         }
         public static bool IsArmy(this Ped myPed)
         {
-            if (NativeFunction.CallByName<int>("GET_PED_TYPE", myPed) == (int)ePedType.PED_TYPE_ARMY)
+            if (NativeFunction.Natives.GET_PED_TYPE<int>(myPed) == (int)ePedType.PED_TYPE_ARMY)
             {
                 return true;
             }
@@ -125,7 +125,7 @@ namespace ExtensionsMethods
             {
                 return false;
             }
-            int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
             if (PedType == (int)ePedType.PED_TYPE_CIVMALE || PedType == (int)ePedType.PED_TYPE_CIVFEMALE || PedType == (int)ePedType.PED_TYPE_CIVFEMALE || PedType == (int)ePedType.PED_TYPE_MISSION)// || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
             {
                 string ModelName = myPed.Model.Name.ToLower();
@@ -145,7 +145,7 @@ namespace ExtensionsMethods
         }
         public static bool IsConsideredMainCharacter(this Ped myPed)
         {
-            int PedType = NativeFunction.CallByName<int>("GET_PED_TYPE", myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
             if (PedType == 0 || PedType == 1 || PedType == 2)
             {
                 return true;
@@ -168,7 +168,7 @@ namespace ExtensionsMethods
                     return false;//invalid doors make the car not locked
                 }
             }
-            if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", ToLock))
+            if (!NativeFunction.Natives.ARE_ALL_VEHICLE_WINDOWS_INTACT<bool>(ToLock))
             {
                 return false;//broken windows == not locked
             }

@@ -51,14 +51,8 @@ public class Zones : IZones
     }
     private string GetInternalZoneString(Vector3 ZonePosition)
     {
-        string zoneName;
-        unsafe
-        {
-            IntPtr ptr = Rage.Native.NativeFunction.CallByName<IntPtr>("GET_NAME_OF_ZONE", ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
-
-            zoneName = Marshal.PtrToStringAnsi(ptr);
-        }
-        return zoneName;
+        IntPtr ptr = Rage.Native.NativeFunction.Natives.GET_NAME_OF_ZONE<IntPtr>(ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
+        return Marshal.PtrToStringAnsi(ptr);
     }
     private void DefaultConfig()
     {
@@ -87,13 +81,13 @@ public class Zones : IZones
             //Blaine
             new Zone("ALAMO", "Alamo Sea", County.BlaineCounty, "San Andreas"),
             new Zone("ARMYB", "Fort Zancudo", County.BlaineCounty, "San Andreas"),
-            new Zone("CANNY", "Raton Canyon", County.BlaineCounty, "San Andreas"), 
+            new Zone("CANNY", "Raton Canyon", County.BlaineCounty, "San Andreas"),
             new Zone("DESRT", "Grand Senora Desert", County.BlaineCounty, "San Andreas"),
             new Zone("HUMLAB", "Humane Labs and Research", County.BlaineCounty, "San Andreas"),
             new Zone("JAIL", "Bolingbroke Penitentiary", County.BlaineCounty, "San Andreas") { IsRestrictedDuringWanted = true },
             new Zone("LAGO", "Lago Zancudo", County.BlaineCounty, "San Andreas"),
             new Zone("MTJOSE", "Mount Josiah", County.BlaineCounty, "San Andreas"),
-            new Zone("NCHU", "North Chumash", County.BlaineCounty, "San Andreas"),  
+            new Zone("NCHU", "North Chumash", County.BlaineCounty, "San Andreas"),
             new Zone("SANCHIA", "San Chianski Mountain Range", County.BlaineCounty, "San Andreas"),
             new Zone("SANDY", "Sandy Shores", County.BlaineCounty, "San Andreas"),
             new Zone("SLAB", "Slab City", County.BlaineCounty, "San Andreas"),
@@ -157,7 +151,7 @@ public class Zones : IZones
 
             //Vinewood Hills
             new Zone("CHIL", "Vinewood Hills", County.LosSantosCounty, "San Andreas"),
-            
+
             new Zone("GREATC", "Great Chaparral", County.LosSantosCounty, "San Andreas"),
             new Zone("BAYTRE", "Baytree Canyon", County.LosSantosCounty, "San Andreas"),
             new Zone("RGLEN", "Richman Glen", County.LosSantosCounty, "San Andreas"),

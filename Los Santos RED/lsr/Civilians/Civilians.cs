@@ -31,7 +31,7 @@ public class Civilians
     public void Update()
     {
         int PedsUpdated = 0;
-        foreach (PedExt ped in World.CivilianList.OrderBy(x => x.Pedestrian.DistanceTo(Game.LocalPlayer.Character)))
+        foreach (PedExt ped in World.CivilianList.OrderBy(x => x.GameTimeLastUpdated))
         {
             ped.Update(Player,Vector3.Zero);
             PedsUpdated++;

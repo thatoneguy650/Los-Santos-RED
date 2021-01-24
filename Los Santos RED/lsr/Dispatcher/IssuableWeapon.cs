@@ -29,12 +29,12 @@ public class IssuableWeapon
         {
             return;
         }
-        NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, ModelHash, Variation.Tint);
+        NativeFunction.Natives.SET_PED_WEAPON_TINT_INDEX<bool>(WeaponOwner, ModelHash, Variation.Tint);
         if (PossibleComponents != null)
         {
             foreach (WeaponComponent ToRemove in PossibleComponents)
             {
-                NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, ModelHash, ToRemove.GetHash());
+                NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED<bool>(WeaponOwner, ModelHash, ToRemove.GetHash());
             }
         }
         foreach (WeaponComponent ToAdd in Variation.Components)
@@ -42,7 +42,7 @@ public class IssuableWeapon
             WeaponComponent MyComponent = Variation.Components.Where(x => x.Name == ToAdd.Name).FirstOrDefault();
             if (MyComponent != null)
             {
-                NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, ModelHash, MyComponent.GetHash());
+                NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_PED<bool>(WeaponOwner, ModelHash, MyComponent.GetHash());
             }
         }
     }

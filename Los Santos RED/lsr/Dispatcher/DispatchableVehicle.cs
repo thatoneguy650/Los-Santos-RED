@@ -23,28 +23,28 @@ public class DispatchableVehicle
     {
         get
         {
-            return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Game.GetHashKey(ModelName));
+            return NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
         }
     }
     public bool IsMotorcycle
     {
         get
         {
-            return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BIKE", Game.GetHashKey(ModelName));
+            return NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
         }
     }
     public bool IsHelicopter
     {
         get
         {
-            return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_HELI", Game.GetHashKey(ModelName));
+            return NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
         }
     }
     public bool IsBoat
     {
         get
         {
-            return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_BOAT", Game.GetHashKey(ModelName));
+            return NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
         }
     }
     public bool CanSpawnWanted

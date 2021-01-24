@@ -25,19 +25,20 @@ public class PedExt : IComplexTaskable
     private uint GameTimeLastSeenPlayer;
     private Entity Killer;
     private Entity LastHurtBy;
+    public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
-    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} Task: {CurrentTask?.Name}, {CurrentTask?.SubTaskName}";
+    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} Md: {Pedestrian.Model.Name} RG: {Pedestrian.RelationshipGroup.Name}";
     public PedExt(Ped _Pedestrian)
     {
         Pedestrian = _Pedestrian;
         Health = Pedestrian.Health;
         CurrentHealthState = new HealthState(this);
     }
-    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice, int _InsultLimit, string _Name) : this(_Pedestrian)
+    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name) : this(_Pedestrian)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
-        InsultLimit = _InsultLimit;
+        IsGangMember = _IsGangMember;
         Name = _Name;
     }
     public string FormattedName => ColorPrefix + (HasSpokenWithPlayer ?  Name : "Unknown");
@@ -62,7 +63,7 @@ public class PedExt : IComplexTaskable
     }
     public bool IsFedUpWithPlayer { get; set; }
     public int TimesInsultedByPlayer { get; set; }
-    public int InsultLimit { get; set; }
+    public int InsultLimit => IsGangMember || IsCop ? 1 : 3;
     public bool IsConversing { get; set; }
     public bool HasSpokenWithPlayer { get; set; }
     public bool CanBeTasked { get; set; } = true;
@@ -136,6 +137,7 @@ public class PedExt : IComplexTaskable
     public bool HasSeenPlayerCommitCrime { get; private set; } = false;
     public int Health { get; set; }
     public bool IsCop { get; set; } = false;
+    public bool IsGangMember { get; set; } = false;
     public bool IsDriver { get; private set; } = false;
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
@@ -149,7 +151,7 @@ public class PedExt : IComplexTaskable
             {
                 return true;
             }
-            else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate + RandomItems.MyRand.Next(100))
+            else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate)
             {
                 return true;
             }
@@ -394,6 +396,7 @@ public class PedExt : IComplexTaskable
                 UpdateDistance(placeLastSeen);
                 UpdateLineOfSight();
                 UpdateCrimes();
+                GameTimeLastUpdated = Game.GameTime;
             }
         }
         else

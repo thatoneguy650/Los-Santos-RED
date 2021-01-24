@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IConsumeable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, ITaskableTarget_Old
+    public class Player : IConsumeable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, ITaskableTarget_Old, IInventoryable
     {
         private ConsumeActivity ConsumingActivity;
         private CriminalHistory CriminalHistory;
@@ -47,6 +47,7 @@ namespace Mod
         private IZones Zones;
         private bool isHotwiring;
         private uint GameTimeStartedHotwiring;
+        private Inventory Inventory;
         public Player(IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons)
         {
             EntityProvider = provider;
@@ -67,6 +68,8 @@ namespace Mod
             GameTimeStartedPlaying = Game.GameTime;
             ModelName = Game.LocalPlayer.Character.Model.Name;
             IsMale = Game.LocalPlayer.Character.IsMale;
+            Inventory = new Inventory(this);
+
         }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 400f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
@@ -598,18 +601,26 @@ namespace Mod
         {
             if (CanConverse)
             {
-                if (!ButtonPrompts.Any(x => x.Name == "Talk"))
+                if (!ButtonPrompts.Any(x => x.Group == "Talk"))
                 {
-                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", Keys.E, "Talk", "Talk"));
+                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", Keys.E, "Talk"));
+                    if(CurrentLookedAtPed.IsGangMember)
+                    {
+                        ButtonPrompts.Add(new ButtonPrompt($"Talk Business with {CurrentLookedAtPed.FormattedName}", Keys.L, "Talk"));
+                    }         
                 }
             }
             else
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "Talk");
             }
-            if (CanConverse && ButtonPrompts.Any(x => x.Name == "Talk" && x.IsPressedNow))//string for now...
+            if (CanConverse && ButtonPrompts.Any(x => x.Key == Keys.E && x.IsPressedNow))//string for now...
             {
                 StartConversation();
+            }
+            else if (CanConverse && ButtonPrompts.Any(x => x.Key == Keys.L && x.IsPressedNow))//string for now...
+            {
+                StartTransaction();
             }
 
         }
@@ -775,6 +786,15 @@ namespace Mod
                 Interaction.Start();
             }
         }
+        private void StartTransaction()
+        {
+            if (!IsInteracting && CanConverse)
+            {
+                IsConversing = true;
+                Interaction = new Transaction(this, CurrentLookedAtPed);
+                Interaction.Start();
+            }
+        }
         private void StartHoldUp()
         {
             if (CanHoldUp)
@@ -913,21 +933,21 @@ namespace Mod
         private void UpdatedLookedAtPed()
         {
             //Works fine just going simpler
-            //Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
-            //Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 3.0f;
-            // HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
-            //Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
-            //Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
-            //if (result.Hit && result.HitEntity is Ped)
-            //{
-            //    // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
-            //    CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
-            //}
-            //else
-            //{
-            //    CurrentLookedAtPed = null;
-            //}
-            CurrentLookedAtPed = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 4f && !x.IsBehindPlayer).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+            Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
+            Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 5.0f;
+            HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
+           // Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
+           // Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
+            if (result.Hit && result.HitEntity is Ped)
+            {
+                // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
+                CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
+            }
+            else
+            {
+                CurrentLookedAtPed = null;
+            }
+            // CurrentLookedAtPed = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 4f && !x.IsBehindPlayer).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         }
         private void UpdateMiscData()
         {

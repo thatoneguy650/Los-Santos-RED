@@ -54,16 +54,16 @@ public class WeaponInformation
         {
             return;
         }    
-        NativeFunction.CallByName<bool>("SET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash, weaponVariation.Tint);
+        NativeFunction.Natives.SET_PED_WEAPON_TINT_INDEX<bool>(WeaponOwner, WeaponHash, weaponVariation.Tint);
         foreach (WeaponComponent ToRemove in PossibleComponents)
         {
-            NativeFunction.CallByName<bool>("REMOVE_WEAPON_COMPONENT_FROM_PED", WeaponOwner, WeaponHash, ToRemove.GetHash());
+            NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_PED<bool>(WeaponOwner, WeaponHash, ToRemove.GetHash());
         }
         foreach (WeaponComponent ToAdd in weaponVariation.Components)
         {
             WeaponComponent MyComponent = PossibleComponents.Where(x => x.Name == ToAdd.Name).FirstOrDefault();
             if (MyComponent != null)
-                NativeFunction.CallByName<bool>("GIVE_WEAPON_COMPONENT_TO_PED", WeaponOwner, WeaponHash, MyComponent.GetHash());
+                NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_PED<bool>(WeaponOwner, WeaponHash, MyComponent.GetHash());
         }
     }
 }

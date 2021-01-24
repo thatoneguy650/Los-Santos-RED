@@ -115,17 +115,24 @@ public class Debug
 
         foreach (ButtonPrompt bp in Player.ButtonPrompts)
         {
-            Game.Console.Print($"{bp.Name}, {bp.Key}, {bp.IsPressedNow}, {bp.Text}");
+            Game.Console.Print($"{bp.Text}, {bp.Key}, {bp.IsPressedNow}, {bp.Text}");
         }
 
     }
     private void DebugNumpad7()
     {
-        foreach (Cop cop in World.PoliceList)
+        //foreach (Cop cop in World.PoliceList)
+        //{
+        //    cop.CurrentTask = new Chase(cop, Player);
+        //    cop.CurrentTask.Start();
+        //}
+        Game.Console.Print("===================================");
+        foreach (PedExt ped in World.CivilianList.OrderBy(x => x.DistanceToPlayer))
         {
-            cop.CurrentTask = new Chase(cop, Player);
-            cop.CurrentTask.Start();
+            Game.Console.Print(ped.DebugString);
         }
+        Game.Console.Print("===================================");
+
     }
     public void DebugNumpad8()
     {
@@ -151,9 +158,9 @@ public class Debug
     }
     private void DrawDebugArrowsOnPeds()
     {
-        Vector3 Position = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 31086));
+        Vector3 Position = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 31086));
         Rage.Debug.DrawArrowDebug(Position, Vector3.Zero, Rotator.Zero, 1f, Color.White);
-        Vector3 Position2 = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
+        Vector3 Position2 = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
         Rage.Debug.DrawArrowDebug(Position2, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
     }
     private void SpawnInteractiveChaser()
@@ -218,29 +225,27 @@ public class Debug
     }
     private void MakeDrunk()
     {
-        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-        if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", "move_m@drunk@verydrunk"))
+        NativeFunction.Natives.SET_PED_IS_DRUNK<bool>( Game.LocalPlayer.Character, true);
+        if (!NativeFunction.Natives.HAS_ANIM_SET_LOADED<bool>("move_m@drunk@verydrunk"))
         {
-            NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", "move_m@drunk@verydrunk");
+            NativeFunction.Natives.REQUEST_ANIM_SET<bool>("move_m@drunk@verydrunk");
         }
-        NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, "move_m@drunk@verydrunk", 0x3E800000);
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
-        NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", "Drunk");
-        NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", 1.1f);
+        NativeFunction.Natives.SET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character, "move_m@drunk@verydrunk", 0x3E800000);
+        NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
+        NativeFunction.Natives.SET_TIMECYCLE_MODIFIER<int>("Drunk");
+        NativeFunction.Natives.SET_TIMECYCLE_MODIFIER_STRENGTH<int>(1.1f);
         NativeFunction.Natives.x80C8B1846639BB19(1);
-        NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", 5.0f);
+        NativeFunction.Natives.SHAKE_GAMEPLAY_CAM<int>("DRUNK_SHAKE", 5.0f);
         //Game.Console.Print("Player Made Drunk");
     }
     private void MakeSober()
     {
-        NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
-        NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+        NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
+        NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
+        NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+        NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
         NativeFunction.Natives.x80C8B1846639BB19(0);
-
-        NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
-
+        NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
         //Game.Console.Print("Player Made Sober");
     }
     public void LoadNorthYankton()

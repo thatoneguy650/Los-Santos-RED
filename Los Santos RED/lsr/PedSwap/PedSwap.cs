@@ -73,7 +73,7 @@ public class PedSwap : IPedswappable
             //    World.ClearPolice();
             //}
             StoreTargetPedData(TargetPed);
-            NativeFunction.CallByName<uint>("CHANGE_PLAYER_PED", Game.LocalPlayer, TargetPed, false, false);
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
             CurrentPed.IsPersistent = false;
             if (DeleteOld)
             {
@@ -94,7 +94,7 @@ public class PedSwap : IPedswappable
     {
         if (TargetPedUsingScenario)
         {
-            NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
+            NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP<bool>(Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
                 while (!EntryPoint.IsMoveControlPressed)
@@ -187,11 +187,11 @@ public class PedSwap : IPedswappable
             };
             for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
             {
-                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.CallByName<int>("GET_PED_DRAWABLE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_TEXTURE_VARIATION", myPed, ComponentNumber), NativeFunction.CallByName<int>("GET_PED_PALETTE_VARIATION", myPed, ComponentNumber)));
+                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_TEXTURE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_PALETTE_VARIATION<int>(myPed, ComponentNumber)));
             }
             for (int PropNumber = 0; PropNumber < 8; PropNumber++)
             {
-                myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.CallByName<int>("GET_PED_PROP_INDEX", myPed, PropNumber), NativeFunction.CallByName<int>("GET_PED_PROP_TEXTURE_INDEX", myPed, PropNumber)));
+                myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
             }
             return myPedVariation;
         }
@@ -250,7 +250,7 @@ public class PedSwap : IPedswappable
         if (TargetPedInVehicle)
         {
             Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
-            NativeFunction.CallByName<bool>("SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER", Game.LocalPlayer.Character.CurrentVehicle, true);
+            NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
             //if (OwnedCar != null && OwnedCar.Exists())
             //    OwnedCar.IsPersistent = false;
             //OwnedCar = TargetPedVehicle;
@@ -271,19 +271,19 @@ public class PedSwap : IPedswappable
         // Mod.Player.Instance.ArrestWarrant.Reset();
 
 
-        NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
+        NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
         NativeFunction.Natives.x80C8B1846639BB19(0);
-        NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
+        NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
         Game.TimeScale = 1f;
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.HandleRespawn();
-        NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
+        NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
 
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         ActivatePreviousScenarios();
         Player.SetUnarmed();
         World.UnPauseTime();
@@ -368,7 +368,7 @@ public class PedSwap : IPedswappable
         {
             TargetPedVehicle = TargetPed.CurrentVehicle;
         }
-        TargetPedUsingScenario = NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", TargetPed);//bool Scenario = false;
+        TargetPedUsingScenario = NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(TargetPed);//bool Scenario = false;
         if (Game.LocalPlayer.Character.LastVehicle.Exists())
         {
             Game.LocalPlayer.Character.LastVehicle.Delete();
@@ -394,7 +394,7 @@ public class PedSwap : IPedswappable
         {
             FormerPlayer.Tasks.CruiseWithVehicle(FormerPlayer.CurrentVehicle, 30f, VehicleDrivingFlags.Normal); //normal driving style
         }
-        if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", FormerPlayer))
+        if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
         {
             return;
         }

@@ -28,15 +28,11 @@ namespace LosSantosRED.lsr.Helper
         {
             uint TargetEntity;
             bool Found;
-            unsafe
-            {
-                Found = NativeFunction.CallByName<bool>("GET_PLAYER_TARGET_ENTITY", Game.LocalPlayer, &TargetEntity);
-            }
+            Found = NativeFunction.Natives.GET_PLAYER_TARGET_ENTITY<bool>(Game.LocalPlayer, out TargetEntity);
             if (!Found)
             {
                 return 0;
             }
-
             uint Handle = TargetEntity;
             return Handle;
         }
@@ -45,18 +41,12 @@ namespace LosSantosRED.lsr.Helper
             Vector3 pos = PositionNear;
             SpawnPosition = Vector3.Zero;
             Heading = 0f;
-
             Vector3 outPos;
             float heading;
             float val;
-
             if (MainRoadsOnly)
             {
-                unsafe
-                {
-                    NativeFunction.CallByName<bool>("GET_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, &outPos, &heading, 0, 3, 0);
-                }
-
+                NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(pos.X, pos.Y, pos.Z, out outPos, out heading, 0, 3, 0);
                 SpawnPosition = outPos;
                 Heading = heading;
             }
@@ -64,11 +54,8 @@ namespace LosSantosRED.lsr.Helper
             {
                 for (int i = 1; i < 40; i++)
                 {
-                    unsafe
-                    {
-                        NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, i, &outPos, &heading, &val, 1, 0x40400000, 0);
-                    }
-                    if (!NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
+                    NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(pos.X, pos.Y, pos.Z, i, out outPos, out heading, out val, 1, 0x40400000, 0);
+                    if (!NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
                     {
                         SpawnPosition = outPos;
                         Heading = heading;
@@ -81,25 +68,19 @@ namespace LosSantosRED.lsr.Helper
         {
             Vector3 pos = PositionNear;
             Vector3 SpawnPosition = Vector3.Zero;
-
             Vector3 outPos;
             float heading;
             float val;
-
-
             for (int i = 1; i < 40; i++)
             {
-                unsafe
-                {
-                    NativeFunction.CallByName<bool>("GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING", pos.X, pos.Y, pos.Z, i, &outPos, &heading, &val, 1, 0x40400000, 0);
-                }
-                if (!NativeFunction.CallByName<bool>("IS_POINT_OBSCURED_BY_A_MISSION_ENTITY", outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
+                NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(pos.X, pos.Y, pos.Z, i, out outPos, out heading, out val, 1, 0x40400000, 0);
+                if (!NativeFunction.Natives.IS_POINT_OBSCURED_BY_A_MISSION_ENTITY<bool>(outPos.X, outPos.Y, outPos.Z, 5.0f, 5.0f, 5.0f, 0))
                 {
                     SpawnPosition = outPos;
                     break;
                 }
             }
-            if(SpawnPosition == Vector3.Zero)
+            if (SpawnPosition == Vector3.Zero)
             {
                 return PositionNear;
             }

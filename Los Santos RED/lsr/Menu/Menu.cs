@@ -480,13 +480,13 @@ public class Menu
     }
     private string GetKeyboardInput(string DefaultText)
     {
-        NativeFunction.CallByName<bool>("DISPLAY_ONSCREEN_KEYBOARD", true, "FMMC_KEY_TIP8", "", DefaultText, "", "", "", 255 + 1);
-        while (NativeFunction.CallByName<int>("UPDATE_ONSCREEN_KEYBOARD") == 0)
+        NativeFunction.Natives.DISPLAY_ONSCREEN_KEYBOARD<bool>(true, "FMMC_KEY_TIP8", "", DefaultText, "", "", "", 255 + 1);
+        while (NativeFunction.Natives.UPDATE_ONSCREEN_KEYBOARD<int>() == 0)
         {
             GameFiber.Sleep(500);
         }
         string Value;
-        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_ONSCREEN_KEYBOARD_RESULT");
+        IntPtr ptr = NativeFunction.Natives.GET_ONSCREEN_KEYBOARD_RESULT<IntPtr>();
         Value = Marshal.PtrToStringAnsi(ptr);
         return Value;
     }

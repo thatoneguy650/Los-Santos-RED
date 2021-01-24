@@ -45,23 +45,23 @@ public class Weapons : IWeapons
     {
         foreach (WeaponInformation MyWeapon in WeaponsList)
         {
-            if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, MyWeapon.Hash, 0))
+            if (NativeFunction.Natives.HAS_PED_BEEN_DAMAGED_BY_WEAPON<bool>(Pedestrian, MyWeapon.Hash, 0))
             {
-                NativeFunction.CallByName<bool>("CLEAR_PED_LAST_WEAPON_DAMAGE", Pedestrian);
+                NativeFunction.Natives.CLEAR_PED_LAST_WEAPON_DAMAGE<bool>(Pedestrian);
                 return MyWeapon;
             }
         }
-        if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 1))
+        if (NativeFunction.Natives.HAS_PED_BEEN_DAMAGED_BY_WEAPON<bool>(Pedestrian, 0, 1))
         {
             return new WeaponInformation("Generic Melee", 0, WeaponCategory.Melee, 0, 0, false, false, false);
         }
 
-        if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", Pedestrian, 0, 2))
+        if (NativeFunction.Natives.HAS_PED_BEEN_DAMAGED_BY_WEAPON<bool>(Pedestrian, 0, 2))
         {
             return new WeaponInformation("Generic Weapon", 0, WeaponCategory.Melee, 0, 0, false, false, false);
         }
 
-        if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", Pedestrian))
+        if (NativeFunction.Natives.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE<bool>(Pedestrian))
         {
             return new WeaponInformation("Vehicle Injury", 0, WeaponCategory.Vehicle, 0, 0, false, false, false);
         }
@@ -99,7 +99,7 @@ public class Weapons : IWeapons
     }
     public WeaponVariation GetWeaponVariation(Ped WeaponOwner, uint WeaponHash)
     {
-        int Tint = NativeFunction.CallByName<int>("GET_PED_WEAPON_TINT_INDEX", WeaponOwner, WeaponHash);
+        int Tint = NativeFunction.Natives.GET_PED_WEAPON_TINT_INDEX<int>(WeaponOwner, WeaponHash);
         WeaponInformation MyGun = GetWeapon(WeaponHash);
         if (MyGun == null)
             return new WeaponVariation(Tint);
@@ -108,7 +108,7 @@ public class Weapons : IWeapons
 
         foreach (WeaponComponent PossibleComponent in MyGun.PossibleComponents)
         {
-            if (NativeFunction.CallByName<bool>("HAS_PED_GOT_WEAPON_COMPONENT", WeaponOwner, WeaponHash, PossibleComponent.GetHash()))
+            if (NativeFunction.Natives.HAS_PED_GOT_WEAPON_COMPONENT<bool>(WeaponOwner, WeaponHash, PossibleComponent.GetHash()))
             {
                 ComponentsOnGun.Add(PossibleComponent);
             }

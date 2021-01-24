@@ -125,6 +125,9 @@
     <Compile Include="lsr\Player\Interaction\Interaction.cs" />
     <Compile Include="lsr\Player\Interaction\Interface\IInteractionable.cs" />
     <Compile Include="lsr\Player\Interaction\HoldUp.cs" />
+    <Compile Include="lsr\Player\Interaction\Transaction.cs" />
+    <Compile Include="lsr\Player\Interface\IInventoryable.cs" />
+    <Compile Include="lsr\Player\Inventory.cs" />
     <Compile Include="lsr\Tasker\Idle.cs" />
     <Compile Include="lsr\Tasker\Investigate.cs" />
     <Compile Include="lsr\Tasker\Kill.cs" />
@@ -164,6 +167,7 @@
     <Compile Include="lsr\Player\Interface\IComplexTaskable.cs" />
     <Compile Include="lsr\Player\Interface\ITargetable.cs" />
     <Compile Include="lsr\Tasker\Tasker.cs" />
+    <Compile Include="lsr\Util\Peds\Consumeable.cs" />
     <Compile Include="lsr\Util\Vehicle\CarBreakIn.cs" />
     <Compile Include="lsr\World\Interface\IEntityProvideable.cs" />
     <Compile Include="lsr\Time\Interface\ITimeControllable.cs" />

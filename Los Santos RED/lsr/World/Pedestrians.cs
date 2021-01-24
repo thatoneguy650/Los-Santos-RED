@@ -150,23 +150,22 @@ public class Pedestrians
         SetCivilianStats(Pedestrian);
         bool WillFight = RandomItems.RandomPercent(5);
         bool WillCallPolice = RandomItems.RandomPercent(80);
-        int InsultLimit = 3;
+        bool IsGangMember = false;
         if (Pedestrian.Exists())
         {
             if (Pedestrian.IsGangMember())
             {
+                IsGangMember = true;
                 WillFight = RandomItems.RandomPercent(95);
                 WillCallPolice = false;
-                InsultLimit = 1;
             }
             else if (Pedestrian.IsSecurity())
             {
                 WillFight = true;
                 WillCallPolice = false;
-                InsultLimit = 1;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, InsultLimit, Names.GetRandomName(Pedestrian.IsMale)));
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale)));
     }
     private void AddCop(Ped Pedestrian)
     {

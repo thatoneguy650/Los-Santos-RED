@@ -41,20 +41,13 @@ public class Streets : IStreets
     {
         int StreetHash = 0;
         int CrossingHash = 0;
-        unsafe
-        {
-            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", Position.X, Position.Y, Position.Z, &StreetHash, &CrossingHash);
-        }
+        NativeFunction.Natives.GET_STREET_NAME_AT_COORD<uint>(Position.X, Position.Y, Position.Z, out StreetHash, out CrossingHash);
         string StreetName = string.Empty;
         string CrossStreetName = string.Empty;
         if (StreetHash != 0)
         {
-            unsafe
-            {
-                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
-
-                StreetName = Marshal.PtrToStringAnsi(ptr);
-            }
+            IntPtr ptr = NativeFunction.Natives.GET_STREET_NAME_FROM_HASH_KEY<IntPtr>(StreetHash);
+            StreetName = Marshal.PtrToStringAnsi(ptr);
         }
         return StreetName;
     }

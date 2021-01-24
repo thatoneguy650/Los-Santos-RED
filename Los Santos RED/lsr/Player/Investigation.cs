@@ -93,7 +93,7 @@ public class Investigation
             Color = Color.Yellow,
             Alpha = 0.25f
         };
-        NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)InvestigationBlip.Handle, true);
+        NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
     }
 }
 

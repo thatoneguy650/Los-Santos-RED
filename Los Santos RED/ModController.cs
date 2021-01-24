@@ -108,10 +108,15 @@ namespace LosSantosRED.lsr
             Player.AddSpareLicensePlate();
             World.AddBlipsToMap();
             PedSwap.StoreInitialVariation();
+            GameFiber.Yield();
             SetupModTasks();
+            GameFiber.Yield();
             StartGameLogic();
+            GameFiber.Yield();
             StartMenuLogic();
+            GameFiber.Yield();
             StartDebugLogic();
+            GameFiber.Yield();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
         }
         private void ReadDataFiles()
@@ -181,13 +186,13 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
 
-                //new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
-                //new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
+                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
+                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
 
-                //Old Tasking
-                //new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
-                ////new ModTask(500, "World.Tasking.Tick", OldTasking.TaskCops, 14,1),
-                //new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
+               // Old Tasking
+                new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
+                new ModTask(500, "World.Tasking.Tick", Tasking_Old.TaskCops, 14,1),
+                new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
 
                 //New Tasking
 

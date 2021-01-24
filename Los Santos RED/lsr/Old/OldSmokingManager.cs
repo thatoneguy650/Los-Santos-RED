@@ -102,7 +102,7 @@ public static class OldSmokingManager
                 {
                     if (CurrentSmokingAnimation != null)
                     {
-                        float CurrentTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Game.LocalPlayer.Character, CurrentSmokingAnimation.EnterAnimationDictionary, CurrentSmokingAnimation.EnterAnimation);
+                        float CurrentTime = NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Game.LocalPlayer.Character, CurrentSmokingAnimation.EnterAnimationDictionary, CurrentSmokingAnimation.EnterAnimation);
                         string Animation = string.Format("Anim: {0}, Time: {1}", CurrentSmokingAnimation.EnterAnimation, CurrentTime);
                         // UI.Text(Animation, 0.82f, 0.16f, 0.35f, false, Color.White, UI.EFont.FontChaletComprimeCologne);
                     }

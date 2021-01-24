@@ -14,6 +14,7 @@ public class HoldUp : Interaction
     private bool IsTargetting;
     private IInteractionable Player;
     private PedExt Target;
+    private Keys DemandKey = Keys.E;
     public HoldUp(IInteractionable player, PedExt target)
     {
         Player = player;
@@ -53,16 +54,16 @@ public class HoldUp : Interaction
                 }
                 if (IsTargetting && IsTargetIntimidated && !Target.HasBeenMugged)
                 {
-                    if (!Player.ButtonPrompts.Any(x => x.Name == "Demand"))
+                    if (!Player.ButtonPrompts.Any(x => x.Group == "HoldUp"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt($"Demand Cash", Keys.E, "Demand","HoldUp"));
+                        Player.ButtonPrompts.Add(new ButtonPrompt($"Demand Cash", DemandKey, "HoldUp"));
                     }
                 }
                 else
                 {
                     Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
                 }
-                if (Player.ButtonPrompts.Any(x => x.Name == "Demand" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
+                if (Player.ButtonPrompts.Any(x => x.Key == DemandKey && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
                 {
                     Target.HasBeenMugged = true;
                     CreateMoneyDrop();
@@ -83,7 +84,7 @@ public class HoldUp : Interaction
     }
     private void CleanUp()
     {
-        Player.ButtonPrompts.RemoveAll(x => x.Name == "Demand");
+        Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
         if (Target != null && Target.Pedestrian.Exists())
         {
             Target.Pedestrian.BlockPermanentEvents = false;
