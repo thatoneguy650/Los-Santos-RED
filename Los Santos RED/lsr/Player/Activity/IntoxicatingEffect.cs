@@ -142,8 +142,23 @@ namespace LosSantosRED.lsr.Player
                    // GameTimeLastSetTimecycle = Game.GameTime;
                     NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
                // }
+
+
+
+
+
+
+
+
+
                 Player.IntoxicatedIntensity = CurrentIntensity;
             }
+
+
+            //if intoxicated add swerving here?
+            //TASK_VEHICLE_TEMP_ACTION
+
+
         }
     }
 }

@@ -25,6 +25,7 @@ public class PedSwap : IPedswappable
     private string LastModelHash;
     private string ModelBeforeTakeOver;
     private Model OriginalModel;
+    private RelationshipGroup OriginalRelationshipGroup;
     private List<TakenOverPed> TakenOverPeds = new List<TakenOverPed>();
     private bool TargetPedAlreadyTakenOver;
     private bool TargetPedInVehicle;
@@ -113,9 +114,14 @@ public class PedSwap : IPedswappable
     }
     private void AllyClosePedsToPlayer(Ped[] PedList)
     {
+
+        Game.LocalPlayer.Character.RelationshipGroup = OriginalRelationshipGroup;
+
+
+        //turned off below and added above
         foreach (Ped PedToAlly in PedList)
         {
-            NativeFunction.CallByName<bool>("SET_PED_AS_GROUP_MEMBER", PedToAlly, Game.LocalPlayer.Character.Group);
+            //NativeFunction.CallByName<bool>("SET_PED_AS_GROUP_MEMBER", PedToAlly, Game.LocalPlayer.Character.Group);
             PedToAlly.StaysInVehiclesWhenJacked = true;
         }
     }
@@ -327,6 +333,7 @@ public class PedSwap : IPedswappable
         CurrentPedVariation = GetPedVariation(TargetPed);
         TargetPedPosition = TargetPed.Position;
         CurrentPedPosition = Game.LocalPlayer.Character.Position;
+        OriginalRelationshipGroup = TargetPed.RelationshipGroup;
         World.PauseTime();
         if (Game.LocalPlayer.Character.IsDead)
         {
