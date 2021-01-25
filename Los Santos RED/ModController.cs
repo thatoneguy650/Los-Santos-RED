@@ -19,7 +19,8 @@ namespace LosSantosRED.lsr
         private Dispatcher Dispatcher;
         private Input Input;
         private string LastRanTask;
-        private Menu Menu;
+        //private Menu_Old Menu_Old;
+       // private MenuManager Menu;
         private List<ModTask> MyTickTasks;
         private Names Names;
         private PedSwap PedSwap;
@@ -42,6 +43,7 @@ namespace LosSantosRED.lsr
         private ZoneJurisdictions ZoneJurisdictions;
         private Zones Zones;
         private ZoneScannerAudio ZoneScannerAudio;
+        private RadioStations RadioStations;
         public ModController()
         {
         }
@@ -86,8 +88,12 @@ namespace LosSantosRED.lsr
 
 
             Time = new Mod.Time();
+
+
             World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes, Names);
-            Player = new Mod.Player(World, Time, Streets, Zones, Settings, Weapons);
+            World.Setup();
+
+            Player = new Mod.Player(World, Time, Streets, Zones, Settings, Weapons, RadioStations);
             Player.Setup();
 
 
@@ -99,10 +105,11 @@ namespace LosSantosRED.lsr
             PedSwap = new PedSwap(Time, Player, Settings);
             Tasking_Old = new Tasking_Old(World, Player, Player);
             Tasker = new Tasker(World, Player);
-            UI = new UI(Player, Settings, ZoneJurisdictions);
+            UI = new UI(Player, Settings, ZoneJurisdictions, PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
             Scanner = new Scanner(World, Player, Audio, Respawning, Settings);
-            Menu = new Menu(Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
+            //Menu_Old = new Menu_Old(Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
+            //Menu = new MenuManager(PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
             Debug = new Debug(PlateTypes, World, Player, Scanner);
             Player.GiveName();
             Player.AddSpareLicensePlate();
@@ -160,6 +167,9 @@ namespace LosSantosRED.lsr
             ZoneJurisdictions = new ZoneJurisdictions(Agencies);
             ZoneJurisdictions.ReadConfig();
             GameFiber.Yield();
+            RadioStations = new RadioStations();
+            RadioStations.ReadConfig();
+            GameFiber.Yield();
         }
         private void SetupModTasks()
         {
@@ -186,13 +196,13 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
 
-                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
-                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
+               // new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
+               // new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
 
-               // Old Tasking
-                new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
-                new ModTask(500, "World.Tasking.Tick", Tasking_Old.TaskCops, 14,1),
-                new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
+               //// Old Tasking
+               // new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
+               // new ModTask(500, "World.Tasking.Tick", Tasking_Old.TaskCops, 14,1),
+               // new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
 
                 //New Tasking
 
@@ -274,7 +284,8 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        Menu.Update();
+                       // Menu.Update(Player.IsDead,Player.IsBusted);
+                        //Menu_Old.Update();
                         UI.Update();
                         GameFiber.Yield();
                     }

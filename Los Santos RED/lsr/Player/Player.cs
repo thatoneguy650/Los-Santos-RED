@@ -48,7 +48,8 @@ namespace Mod
         private bool isHotwiring;
         private uint GameTimeStartedHotwiring;
         private Inventory Inventory;
-        public Player(IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons)
+        private IRadioStations RadioStations;
+        public Player(IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations)
         {
             EntityProvider = provider;
             TimeControllable = timeControllable;
@@ -56,6 +57,7 @@ namespace Mod
             Zones = zones;
             Settings = settings;
             Weapons = weapons;
+            RadioStations = radioStations;
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character));
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, Streets, Zones);
             WeaponDropping = new WeaponDropping(this, Weapons);
@@ -84,7 +86,7 @@ namespace Mod
         public bool CanConverse => CurrentLookedAtPed != null && CurrentTargetedPed == null && !CurrentLookedAtPed.IsFedUpWithPlayer && CurrentLookedAtPed.CanConverse && !IsConversing && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && !IsVisiblyArmed && !IsWanted;
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
         public bool CanHoldUp => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsHoldingUp && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree;
-        public bool CanPerformActivities => !IsInVehicle && IsStill && !IsIncapacitated && !IsVisiblyArmed;
+        public bool CanPerformActivities => IsStill && !IsIncapacitated && !IsVisiblyArmed && !IsInVehicle;//somewhat works in vehicle, needs more testing/work
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit || Settings.SettingsManager.General.UndieLimit == 0;
         public Ped Character => Game.LocalPlayer.Character;
@@ -96,6 +98,7 @@ namespace Mod
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public Street CurrentStreet => CurrentLocation.CurrentStreet;
         public PedExt CurrentTargetedPed { get; private set; }
+        public string CurrentSpeedDisplay { get; private set; }
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
@@ -113,6 +116,7 @@ namespace Mod
         public Interaction Interaction { get; private set; }
         public float IntoxicatedIntensity { get; set; }
         public Investigation Investigation { get; private set; }
+        public string AutoTuneStation { get; set; } = "NONE";
         public bool IsAiming
         {
             get => isAiming;
@@ -502,6 +506,19 @@ namespace Mod
         {
             PoliceResponse.SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+
+            try
+            {
+                foreach (RadioStation radiostation in RadioStations.RadioStationList)
+                {
+                    NativeFunction.Natives.x477D9DB48F889591(radiostation.InternalName, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Game.Console.Print("ERROR!!!");
+            }
+           
         }
         public void ShootAt(Vector3 TargetCoordinate)
         {
@@ -603,24 +620,16 @@ namespace Mod
             {
                 if (!ButtonPrompts.Any(x => x.Group == "Talk"))
                 {
-                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", Keys.E, "Talk"));
-                    if(CurrentLookedAtPed.IsGangMember)
-                    {
-                        ButtonPrompts.Add(new ButtonPrompt($"Talk Business with {CurrentLookedAtPed.FormattedName}", Keys.L, "Talk"));
-                    }         
+                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "Talk", "Talk", Keys.E,1));       
                 }
             }
             else
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "Talk");
             }
-            if (CanConverse && ButtonPrompts.Any(x => x.Key == Keys.E && x.IsPressedNow))//string for now...
+            if (CanConverse && ButtonPrompts.Any(x => x.Identifier == "Talk" && x.IsPressedNow))//string for now...
             {
                 StartConversation();
-            }
-            else if (CanConverse && ButtonPrompts.Any(x => x.Key == Keys.L && x.IsPressedNow))//string for now...
-            {
-                StartTransaction();
             }
 
         }
@@ -656,6 +665,10 @@ namespace Mod
 
             }
             Game.Console.Print($"PLAYER EVENT: IsAiming Changed to: {IsAiming}");
+        }
+        public void DEBUGSETBUSTED()
+        {
+            BeingArrested = true;
         }
         private void IsAimingInVehicleChanged()
         {
@@ -914,7 +927,7 @@ namespace Mod
             {
                 ToReturn.SetAsEntered();
             }
-            ToReturn.Update();
+            ToReturn.Update(AutoTuneStation);
             LeftEngineOn = ToReturn.Vehicle.IsEngineOn;
             return ToReturn;
         }
@@ -1047,7 +1060,36 @@ namespace Mod
                     IsHotWiring = false;
                 }
 
-                if(isHotwiring != IsHotWiring)
+                float CurrentVehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
+
+
+                if (CurrentVehicle != null)//was game.localpalyer.character.isinanyvehicle(false)
+                {
+                    CurrentSpeedDisplay = "";
+                    float VehicleSpeedMPH = CurrentVehicleSpeed * 2.23694f;
+                    if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+                    {
+                        CurrentSpeedDisplay = "ENGINE OFF";
+                    }
+                    else
+                    {
+                        string ColorPrefx = "~s~";
+                        if (IsSpeeding)
+                        {
+                            ColorPrefx = "~r~";
+                        }
+                        if (CurrentStreet != null)
+                        {
+                            CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH ({CurrentStreet.SpeedLimit})";
+                        }
+                    }
+                    if (IsViolatingAnyTrafficLaws)
+                    {
+                        CurrentSpeedDisplay += " !";
+                    }
+                    CurrentSpeedDisplay += "~n~" + CurrentVehicle.FuelTank.UIText;
+                }
+                if (isHotwiring != IsHotWiring)
                 {
                     if(IsHotWiring)
                     {
@@ -1080,26 +1122,28 @@ namespace Mod
                         //Game.Console.Print("Audio! Mobile Radio Disabled");
                     }
                 }
-                if (Game.LocalPlayer.Character.CurrentVehicle.Speed >= 0.1f)
+                if (CurrentVehicleSpeed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;
                 }
-                if (Game.LocalPlayer.Character.CurrentVehicle.Speed >= 2.0f)
+                if (CurrentVehicleSpeed >= 2.0f)
                 {
                     GameTimeLastMovedFast = Game.GameTime;
                 }
-                IsStill = Game.LocalPlayer.Character.CurrentVehicle.Speed <= 0.1f;
+                IsStill = CurrentVehicleSpeed <= 0.1f;
             }
             else
             {
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;
                 CurrentVehicle = null;
-                if (Game.LocalPlayer.Character.Speed >= 0.1f)
+                CurrentSpeedDisplay = "";
+                float PlayerSpeed = Game.LocalPlayer.Character.Speed;
+                if (PlayerSpeed >= 0.1f)
                 {
                     GameTimeLastMoved = Game.GameTime;
                 }
-                if (Game.LocalPlayer.Character.Speed >= 7.0f)
+                if (PlayerSpeed >= 7.0f)
                 {
                     GameTimeLastMovedFast = Game.GameTime;
                 }

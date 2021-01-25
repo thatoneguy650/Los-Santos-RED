@@ -11,23 +11,38 @@ using System.Windows.Forms;
 
 public class UI
 {
+
     private BigMessageThread BigMessage;
+    private BustedMenu BustedMenu;
+    private DeathMenu DeathMenu;
+    private DebugMenu DebugMenu;
+    private List<ButtonPrompt> displayedButtonPrompts = new List<ButtonPrompt>();
     private uint GameTimeLastDisplayedBleedingHelp;
+    private InstructionalButtons instructional = new InstructionalButtons();
+    private MainMenu MainMenu;
+    private List<Menu> MenuList;
+    private MenuPool menuPool;
     private IDisplayable Player;
+    private Mod.Player PlayerIntellisense;
     private ISettingsProvideable Settings;
     private bool StartedBandagingEffect = false;
     private bool StartedBustedEffect = false;
     private bool StartedDeathEffect = false;
     private IZoneJurisdictions ZoneJurisdictions;
-    private Mod.Player PlayerIntellisense;
-    private InstructionalButtons instructional = new InstructionalButtons();
-    private List<ButtonPrompt> displayedButtonPrompts = new List<ButtonPrompt>();
-    public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IZoneJurisdictions zoneJurisdictions)
+    private uint GameTimeLastBusted;
+    private uint GameTimeLastDied;
+    public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IZoneJurisdictions zoneJurisdictions, IPedswappable pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable player, IWeapons weapons, RadioStations radioStations)
     {
         Player = currentPlayer;
         Settings = settings;
         ZoneJurisdictions = zoneJurisdictions;
         BigMessage = new BigMessageThread(true);
+        menuPool = new MenuPool();
+        DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest);
+        BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest);
+        MainMenu = new MainMenu(menuPool, pedSwap, player);
+        DebugMenu = new DebugMenu(menuPool, player, weapons, radioStations);
+        MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
     }
     private enum GTAFont
     {
@@ -71,71 +86,32 @@ public class UI
         Left = 1,
         Right = 2,
     };
-    public string GetName(Zone MyZone, bool WithCounty)
-    {
-        if (WithCounty)
-        {
-            string CountyName = "San Andreas";
-            if (MyZone.ZoneCounty == County.BlaineCounty)
-                CountyName = "Blaine County";
-            else if (MyZone.ZoneCounty == County.CityOfLosSantos)
-                CountyName = "City of Los Santos";
-            else if (MyZone.ZoneCounty == County.LosSantosCounty)
-                CountyName = "Los Santos County";
-            else if (MyZone.ZoneCounty == County.Crook)
-                CountyName = "Crook County";
-            else if (MyZone.ZoneCounty == County.NorthYankton)
-                CountyName = "North Yankton";
-            else if (MyZone.ZoneCounty == County.Vice)
-                CountyName = "Vice County";
-
-            return MyZone.DisplayName + ", " + CountyName;
-        }
-        else
-        {
-            return MyZone.DisplayName;
-        }
-    }
     public void Update()
     {
-        if (Settings.SettingsManager.General.AlwaysShowHUD)
-        {
-            NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
-        }
-        if (Settings.SettingsManager.General.AlwaysShowRadar)
-        {
-            NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
-        }
-        if (Settings.SettingsManager.Police.ShowPoliceRadarBlips)
-        {
-            NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
-        }
-        else
-        {
-            NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
-        }
-        if (Settings.SettingsManager.General.AlwaysShowCash)
-        {
-            NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
-        }
-        if (Settings.SettingsManager.UI.Enabled && Player.IsAliveAndFree)
-        {
-            ShowUI();
-        }
+        ForceVanillaUI();
+        DrawUI();
         ScreenEffectsUpdate();
         DisplayButtonPrompts();
+        MenuUpdate();
     }
-
     private void DisplayButtonPrompts()
     {
-        if(displayedButtonPrompts.Count() != Player.ButtonPrompts.Count())
+        if (displayedButtonPrompts.Count() != Player.ButtonPrompts.Count())
         {
             instructional.Buttons.Clear();
             if (Player.ButtonPrompts.Any())
             {
-                foreach (ButtonPrompt buttonPrompt in Player.ButtonPrompts)
+                foreach (ButtonPrompt buttonPrompt in Player.ButtonPrompts.OrderByDescending(x=> x.Order))
                 {
-                    instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
+                    if(buttonPrompt.Modifier != Keys.None)
+                    {
+                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, buttonPrompt.Key.GetInstructionalKey()));
+                    }
+                    else
+                    {
+                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
+                    }
+                    
                 }
             }
             instructional.Update();
@@ -143,22 +119,11 @@ public class UI
             displayedButtonPrompts.Clear();
             displayedButtonPrompts.AddRange(Player.ButtonPrompts);
         }
-        instructional.Draw();
-        //string FinalPrompt = "";
-        //foreach (ButtonPrompt bp in Player.ButtonPrompts)
-        //{
-        //    if (FinalPrompt != "")
-        //    {
-        //        FinalPrompt += "~n~";
-        //    }
-        //    FinalPrompt += bp.Text;
-        //}
-        //if (FinalPrompt != "")
-        //{
-        //    Game.DisplayHelp(FinalPrompt);
-        //}
+        if (Player.ButtonPrompts.Any())
+        {
+            instructional.Draw();
+        }
     }
-
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification)
     {
         NativeFunction.CallByName<bool>("SET_TEXT_FONT", (int)Font);
@@ -182,48 +147,59 @@ public class UI
         NativeFunction.CallByHash<uint>(0xCD015E5BB0D96A57, Y, X);
         return;
     }
+    private void DrawUI()
+    {
+        if (Settings.SettingsManager.UI.Enabled && Player.IsAliveAndFree)
+        {
+            ShowDebugUI();
+            HideVanillaUI();
+            DisplayTextOnScreen(Player.CurrentSpeedDisplay, Settings.SettingsManager.UI.VehicleStatusPositionX, Settings.SettingsManager.UI.VehicleStatusPositionY, Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UI.VehicleStatusJustificationID);
+            DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UI.ZonePositionX, Settings.SettingsManager.UI.ZonePositionY, Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.ZoneJustificationID);
+            DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UI.StreetPositionX, Settings.SettingsManager.UI.StreetPositionY, Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.StreetJustificationID);
+        }
+    }
+    private void ForceVanillaUI()
+    {
+        if (Settings.SettingsManager.General.AlwaysShowHUD)
+        {
+            NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
+        }
+
+        if (Settings.SettingsManager.General.AlwaysShowRadar)
+        {
+            NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
+        }
+
+        if (Settings.SettingsManager.Police.ShowPoliceRadarBlips)
+        {
+            NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
+        }
+        else
+        {
+            NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
+        }
+
+        if (Settings.SettingsManager.General.AlwaysShowCash)
+        {
+            NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
+        }
+    }
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (Player.CurrentStreet != null && Player.CurrentCrossStreet != null)
+        if (Player.CurrentStreet != null)
         {
-            StreetDisplay = string.Format(" {0} at {1} ", Player.CurrentStreet.Name, Player.CurrentCrossStreet.Name);
+            if(Player.CurrentStreet.IsHighway)
+            {
+                StreetDisplay += "~y~";
+            }
+            StreetDisplay += $" {Player.CurrentStreet.Name}~s~";
         }
-        else if (Player.CurrentStreet != null)
+        if (Player.CurrentCrossStreet != null)
         {
-            StreetDisplay = string.Format(" {0} ", Player.CurrentStreet.Name);
+            StreetDisplay += $" at {Player.CurrentCrossStreet.Name} ~s~";
         }
         return StreetDisplay;
-    }
-    private string GetVehicleStatusDisplay()
-    {
-        string PlayerSpeedLine = "";
-        if (Player.CurrentVehicle != null && Game.LocalPlayer.Character.IsInAnyVehicle(false))//was game.localpalyer.character.isinanyvehicle(false)
-        {
-            float VehicleSpeedMPH = Player.CurrentVehicle.Vehicle.Speed * 2.23694f;
-            if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
-            {
-                PlayerSpeedLine = "ENGINE OFF";
-            }
-            else
-            {
-                string ColorPrefx = "~s~";
-                if (Player.IsSpeeding)
-                {
-                    ColorPrefx = "~r~";
-                }
-                if (Player.CurrentStreet != null)
-                {
-                    PlayerSpeedLine = string.Format("{0}{1} ~s~MPH ({2})", ColorPrefx, Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero), Player.CurrentStreet.SpeedLimit);
-                }
-            }
-            if (Player.IsViolatingAnyTrafficLaws)
-            {
-                PlayerSpeedLine += " !";
-            }
-            PlayerSpeedLine += "~n~" + Player.CurrentVehicle.FuelTank.UIText;
-        }
-        return PlayerSpeedLine;
     }
     private string GetZoneDisplay()
     {
@@ -231,18 +207,7 @@ public class UI
         {
             return "";
         }
-        string CopZoneName = "";
-        string ZoneDisplay = GetName(Player.CurrentZone, true);
-        if (Player.CurrentZone != null)
-        {
-            Agency MainZoneAgency = ZoneJurisdictions.GetMainAgency(Player.CurrentZone.InternalGameName);
-            if (MainZoneAgency != null)
-            {
-                CopZoneName = MainZoneAgency.ColoredInitials;
-            }
-        }
-        ZoneDisplay = ZoneDisplay + " ~s~- " + CopZoneName;
-        return ZoneDisplay;
+        return Player.CurrentZone.FullDisplayName + " ~s~- " + Player.CurrentZone.AssignedAgencyInitials;
     }
     private void HideVanillaUI()
     {
@@ -252,32 +217,69 @@ public class UI
         NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_STREET_NAME);
         NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
     }
+    private void MenuUpdate()
+    {
+        if (Game.IsKeyDown(Keys.F10))
+        {
+            if (Player.IsDead)
+            {
+                Toggle(DeathMenu);
+            }
+            else if (Player.IsBusted)
+            {
+                Toggle(BustedMenu);
+            }
+            else
+            {
+                Toggle(MainMenu);
+            }
+        }
+        else if (Game.IsKeyDown(Keys.F11))
+        {
+            Toggle(DebugMenu);
+        }
+        menuPool.ProcessMenus();
+    }
     private void ScreenEffectsUpdate()
     {
         if (Player.IsDead)
         {
             if (!StartedDeathEffect)
             {
+                GameTimeLastDied = Game.GameTime;
                 NativeFunction.Natives.x80C8B1846639BB19(1);
                 NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);
                 NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "Bed", "WastedSounds", true);
                 BigMessage.MessageInstance.ShowColoredShard("WASTED", "", HudColor.Black, HudColor.RedDark, 2000);
                 StartedDeathEffect = true;
             }
+            if (GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied >= 2000)
+            {
+                GameTimeLastDied = 0;
+                Show(DeathMenu);
+            }
         }
         else if (Player.IsBusted)
         {
             if (!StartedBustedEffect)
             {
+                GameTimeLastBusted = Game.GameTime;
                 NativeFunction.Natives.x80C8B1846639BB19(1);
                 NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);
                 NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "TextHit", "WastedSounds", true);
                 BigMessage.MessageInstance.ShowColoredShard("BUSTED", "", HudColor.Black, HudColor.Blue, 2000);
                 StartedBustedEffect = true;
             }
+            if (GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted >= 2000)
+            {
+                GameTimeLastBusted = 0;
+                Show(BustedMenu);
+            }
         }
         else
         {
+            GameTimeLastDied = 0;
+            GameTimeLastBusted = 0;
             StartedBustedEffect = false;
             StartedDeathEffect = false;
             NativeFunction.Natives.xB4EDDC19532BFB85();
@@ -295,16 +297,26 @@ public class UI
         DisplayTextOnScreen($"{Player.DebugLine6}", StartingPoint + 0.06f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         DisplayTextOnScreen($"{Player.DebugLine7}", StartingPoint + 0.07f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
-    private void ShowUI()
+    private void Toggle(Menu toToggle)
     {
-        ShowDebugUI();
-        HideVanillaUI();
-        if(!Player.ButtonPrompts.Any())
+        foreach (Menu menu in MenuList)
         {
-            DisplayTextOnScreen(GetVehicleStatusDisplay(), Settings.SettingsManager.UI.VehicleStatusPositionX, Settings.SettingsManager.UI.VehicleStatusPositionY, Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UI.VehicleStatusJustificationID);
-            DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UI.ZonePositionX, Settings.SettingsManager.UI.ZonePositionY, Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.ZoneJustificationID);
-            DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UI.StreetPositionX, Settings.SettingsManager.UI.StreetPositionY, Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.StreetJustificationID);
+            if (menu != toToggle)
+            {
+                menu.Hide();
+            }
         }
-        
+        toToggle.Toggle();
+    }
+    private void Show(Menu toShow)
+    {
+        foreach (Menu menu in MenuList)
+        {
+            if (menu != toShow)
+            {
+                menu.Hide();
+            }
+        }
+        toShow.Show();
     }
 }

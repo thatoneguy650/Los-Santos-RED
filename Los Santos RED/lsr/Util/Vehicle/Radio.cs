@@ -18,14 +18,11 @@ public class Radio
     {
         VehicleToMonitor = vehicleToMonitor;
     }
-
-    public bool AutoTune { get; set; } = false;
-    public string AutoTuneStation { get; set; } = "RADIO_19_USER";
     public bool CanChangeStation
     {
         get
         {
-            if(Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
+            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
             {
                 return true;
             }
@@ -35,52 +32,34 @@ public class Radio
             }
         }
     }
-    public void Update()
+    public void Update(string DesiredStation)
     {
-        if (AutoTune)
+        if (DesiredStation != "NONE")
         {
             unsafe
             {
                 IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_PLAYER_RADIO_STATION_NAME");
                 CurrentRadioStationName = Marshal.PtrToStringAnsi(ptr);
             }
-            //int GET_PLAYER_RADIO_STATION_INDEX = NativeFunction.CallByName<int>("GET_PLAYER_RADIO_STATION_INDEX");//why are there two? mobile and regular?
-            if (CurrentRadioStationName != AutoTuneStation)
+            if (CurrentRadioStationName != DesiredStation)
             {
-                SetRadioStation(AutoTuneStation);
+                SetRadioStation(DesiredStation);
             }
         }
     }
     public void SetNextTrack()
     {
-        if(CanChangeStation)
+        if (CanChangeStation)
         {
             NativeFunction.CallByName<bool>("SKIP_RADIO_FORWARD");
         }
-        
-    }
-    public void ChangeStation(string StationName)
-    {
-        if (CanChangeStation)
-        {
-            SetRadioStation(StationName);
-        }
+
     }
     private void SetRadioStation(string StationName)
     {
         if (VehicleToMonitor != null && VehicleToMonitor.Vehicle.IsEngineOn && VehicleToMonitor.Vehicle.Exists())
         {
-            //Game.Console.Print(string.Format("RadioTuning Tuned: {0} Desired: {1}", CurrentRadioStationName, StationName));
-            //if(Audio.Instance.IsMobileRadioEnabled)
-            //{
-            //    NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_INDEX", 1);//just do this to wake it up for now, eventually get the index from the station?
-            //    NativeFunction.CallByName<bool>("SET_RADIO_TO_STATION_NAME", StationName);
-            //}
-            //else
-            //{
-                NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", VehicleToMonitor.Vehicle, StationName);
-            //}
-            
+            NativeFunction.CallByName<bool>("SET_VEH_RADIO_STATION", VehicleToMonitor.Vehicle, StationName);
         }
     }
 }

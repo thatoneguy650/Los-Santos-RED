@@ -15,6 +15,7 @@ public class Conversation : Interaction
     private bool TargetCancelledConversation;
     private Keys PositiveReplyKey = Keys.E;
     private Keys NegativeReplyKey = Keys.L;
+    private Keys CancelKey = Keys.K;
     public Conversation(IInteractionable player, PedExt ped)
     {
         Player = player;
@@ -24,6 +25,7 @@ public class Conversation : Interaction
     private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 7f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsInCombat && !Player.Character.IsInCombat;
     private string NegativePrompt => Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize";
     private string PositivePrompt => Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize";
+    private string CancelPrompt => "Cancel";
     public override void Dispose()
     {
         Player.ButtonPrompts.RemoveAll(x => x.Group == "Conversation");
@@ -62,15 +64,20 @@ public class Conversation : Interaction
         {
             if (!Player.ButtonPrompts.Any(x => x.Group == "Conversation"))
             {
-                Player.ButtonPrompts.Add(new ButtonPrompt(PositivePrompt, PositiveReplyKey, "Conversation"));
-                Player.ButtonPrompts.Add(new ButtonPrompt(NegativePrompt, NegativeReplyKey, "Conversation"));
+                Player.ButtonPrompts.Add(new ButtonPrompt(PositivePrompt, "Conversation","PositiveReply", PositiveReplyKey, 1));
+                Player.ButtonPrompts.Add(new ButtonPrompt(NegativePrompt, "Conversation","NegativeReply", NegativeReplyKey, 2));
+                Player.ButtonPrompts.Add(new ButtonPrompt(CancelPrompt, "Conversation", "Cancel", CancelKey, 3) );
             }
         }
-        if (Player.ButtonPrompts.Any(x => x.Key == PositiveReplyKey && x.IsPressedNow))
+        if (Player.ButtonPrompts.Any(x => x.Identifier == "Cancel" && x.IsPressedNow))
+        {
+            Dispose();
+        }
+        else if (Player.ButtonPrompts.Any(x => x.Identifier == "PositiveReply" && x.IsPressedNow))
         {
             Positive();
         }
-        else if (Player.ButtonPrompts.Any(x => x.Key == NegativeReplyKey && x.IsPressedNow))
+        else if (Player.ButtonPrompts.Any(x => x.Identifier == "NegativeReply" && x.IsPressedNow))
         {
             Negative();
         }
@@ -88,8 +95,11 @@ public class Conversation : Interaction
         {
             Ped.IsFedUpWithPlayer = true;
             TargetCancelledConversation = true;
+            if(Ped.IsGangMember)
+            {
+                Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
+            }
         }
-
         GameFiber.Sleep(1000);
         IsActivelyConversing = false;
     }

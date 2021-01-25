@@ -64,8 +64,8 @@ public class Transaction : Interaction
         {
             if (!Player.ButtonPrompts.Any(x => x.Group == "Conversation"))
             {
-                Player.ButtonPrompts.Add(new ButtonPrompt(PositivePrompt, PositiveReplyKey, "Conversation"));
-                Player.ButtonPrompts.Add(new ButtonPrompt(NegativePrompt, NegativeReplyKey, "Conversation"));
+                Player.ButtonPrompts.Add(new ButtonPrompt(PositivePrompt, "Conversation","PositiveReply", PositiveReplyKey, 1));
+                Player.ButtonPrompts.Add(new ButtonPrompt(NegativePrompt, "Conversation","NegativeReply",NegativeReplyKey, 2));
             }
         }
         if (Player.ButtonPrompts.Any(x => x.Key == PositiveReplyKey && x.IsPressedNow))

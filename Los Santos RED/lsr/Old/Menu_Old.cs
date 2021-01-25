@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 //basically need to redo this entire class, it is a dumpster fire, indeed
-public class Menu
+public class Menu_Old
 {
     private readonly List<string> strRadioStations = new List<string>
     {
@@ -71,7 +71,7 @@ public class Menu
     private UIMenu settingsMenuTrafficViolations;
     private UIMenu settingsMenuUISettings;
     private IWeapons Weapons;
-    public Menu(IActionable player, IPedswappable pedSwap, IRespawning respawning, ISettingsProvideable settings, IWeapons weapons, IPlacesOfInterest placesOfInterest)
+    public Menu_Old(IActionable player, IPedswappable pedSwap, IRespawning respawning, ISettingsProvideable settings, IWeapons weapons, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         PedSwap = pedSwap;

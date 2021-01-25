@@ -35,5 +35,26 @@ public class Zone
     public bool IsRestrictedDuringWanted { get; set; } = false;
     public Vector2[] Boundaries { get; set; }
     public string State { get; set; }
+    public string FullDisplayName//move this somewhere else....
+    {
+        get
+        {
+            string CountyName = "San Andreas";
+            if (ZoneCounty == County.BlaineCounty)
+                CountyName = "Blaine County";
+            else if (ZoneCounty == County.CityOfLosSantos)
+                CountyName = "City of Los Santos";
+            else if (ZoneCounty == County.LosSantosCounty)
+                CountyName = "Los Santos County";
+            else if (ZoneCounty == County.Crook)
+                CountyName = "Crook County";
+            else if (ZoneCounty == County.NorthYankton)
+                CountyName = "North Yankton";
+            else if (ZoneCounty == County.Vice)
+                CountyName = "Vice County";
+            return DisplayName + ", " + CountyName;
+        }
+    }
+    public string AssignedAgencyInitials { get; set; }
 
 }

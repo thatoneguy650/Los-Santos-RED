@@ -31,5 +31,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsConsuming { get; }
         bool CanConverse { get; }
         List<ButtonPrompt> ButtonPrompts { get; }
+        string CurrentSpeedDisplay { get; }
     }
 }

@@ -56,14 +56,14 @@ public class HoldUp : Interaction
                 {
                     if (!Player.ButtonPrompts.Any(x => x.Group == "HoldUp"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt($"Demand Cash", DemandKey, "HoldUp"));
+                        Player.ButtonPrompts.Add(new ButtonPrompt($"Demand Cash","HoldUp","DemandCash", DemandKey, 1));
                     }
                 }
                 else
                 {
                     Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
                 }
-                if (Player.ButtonPrompts.Any(x => x.Key == DemandKey && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
+                if (Player.ButtonPrompts.Any(x => x.Identifier == "DemandCash" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
                 {
                     Target.HasBeenMugged = true;
                     CreateMoneyDrop();

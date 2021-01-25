@@ -80,11 +80,13 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        Scanner.Abort();
+        Player.DEBUGSETBUSTED();
+       // Scanner.Abort();
     }
     private void DebugNumpad3()
     {
-        Scanner.AnnounceCrime(new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false), new PoliceScannerCallIn(false,true,Game.LocalPlayer.Character.Position));
+       
+       // Scanner.AnnounceCrime(new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false), new PoliceScannerCallIn(false,true,Game.LocalPlayer.Character.Position));
     }
     private void DebugNumpad4()
     {

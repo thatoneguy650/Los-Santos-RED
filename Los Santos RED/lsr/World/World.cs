@@ -18,9 +18,13 @@ namespace Mod
         private Pedestrians Pedestrians;
         private IPlacesOfInterest PlacesOfInterest;
         private Vehicles Vehicles;
+        private IZones Zones;
+        private IZoneJurisdictions ZoneJurisdictions;
         public World(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names)
         {
             PlacesOfInterest = placesOfInterest;
+            Zones = zones;
+            ZoneJurisdictions = zoneJurisdictions;
             Pedestrians = new Pedestrians(agencies, zones, zoneJurisdictions, settings, names);
             Vehicles = new Vehicles(agencies, zones, zoneJurisdictions, settings, plateTypes);
         }
@@ -34,6 +38,13 @@ namespace Mod
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
         public bool ShouldBustPlayer => Pedestrians.AnyPoliceShouldBustPlayer;
         public int TotalSpawnedCops => Pedestrians.TotalSpawnedCops;
+        public void Setup()
+        {
+            foreach(Zone zone in Zones.ZoneList)
+            {
+                zone.AssignedAgencyInitials = ZoneJurisdictions.GetMainAgency(zone.InternalGameName)?.ColoredInitials;
+            }
+        }
         public void AddBlipsToMap()
         {
             CreatedBlips = new List<Blip>();

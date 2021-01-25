@@ -119,7 +119,8 @@ public class Pedestrians
     }
     public void Scan()
     {
-        Ped[] GamePeds = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 450f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250
+        int PedsCreated = 0;
+        Ped[] GamePeds = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250//450
         foreach (Ped Pedestrian in GamePeds.Where(s => s.Exists() && !s.IsDead && s.IsVisible && s.IsHuman))
         {
             if (Pedestrian.IsPoliceArmy())
@@ -133,6 +134,7 @@ public class Pedestrians
 
                 if (!Police.Any(x => x.Pedestrian == Pedestrian))
                 {
+                    PedsCreated++;
                     AddCop(Pedestrian);
                 }
             }
@@ -140,8 +142,13 @@ public class Pedestrians
             {
                 if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
                 {
+                    PedsCreated++;
                     AddCivilian(Pedestrian);
                 }
+            }
+            if(PedsCreated >= 10)
+            {
+                return;
             }
         }
     }
@@ -165,7 +172,7 @@ public class Pedestrians
                 WillCallPolice = false;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale)));
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.RelationshipGroup.Name));
     }
     private void AddCop(Ped Pedestrian)
     {

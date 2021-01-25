@@ -12,6 +12,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsBusted { get; }
         bool IsInVehicle { get; }
         bool IsConsuming { get; }
+        string AutoTuneStation { get; set; }
+        bool CanPerformActivities { get; }
 
         void StartSmokingPot();
         void StartSmoking();

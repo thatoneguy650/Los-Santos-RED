@@ -276,11 +276,11 @@ namespace LSR.Vehicles
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
             return ClassInt;
         }
-        public void Update()
+        public void Update(string DesiredStation)
         {
             if (IsCar)
             {
-                Radio.Update();
+                Radio.Update(DesiredStation);
                 Indicators.Update();
                 FuelTank.Update();
             }

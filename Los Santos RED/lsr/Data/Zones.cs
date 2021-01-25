@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 public class Zones : IZones
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Zones.xml";
-    private List<Zone> ZoneList = new List<Zone>();
+    public List<Zone> ZoneList { get; private set; } = new List<Zone>();
     public void ReadConfig()
     {
         if (File.Exists(ConfigFileName))

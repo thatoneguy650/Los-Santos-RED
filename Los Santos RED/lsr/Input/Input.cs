@@ -83,7 +83,7 @@ namespace LosSantosRED.lsr
             Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
             foreach (ButtonPrompt bp in Player.ButtonPrompts)
             {
-                if (Game.IsKeyDownRightNow(bp.Key) && !bp.IsPressedNow)
+                if (Game.IsKeyDownRightNow(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDownRightNow(bp.Modifier)) && !bp.IsPressedNow)
                 {
                     bp.IsPressedNow = true;
                 }
