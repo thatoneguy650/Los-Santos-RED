@@ -21,13 +21,15 @@ public class Pedestrians
     private ISettingsProvideable Settings;
     private IZones Zones;
     private INameProvideable Names;
-    public Pedestrians(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, INameProvideable names)
+    private IRelationshipGroups RelationshipGroups;
+    public Pedestrians(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, INameProvideable names, IRelationshipGroups relationshipGroups)
     {
         Agencies = agencies;
         Zones = zones;
         ZoneJurisdictions = zoneJurisdictions;
         Settings = settings;
         Names = names;
+        RelationshipGroups = relationshipGroups;
     }
     public bool AnyArmyUnitsSpawned
     {
@@ -97,9 +99,10 @@ public class Pedestrians
     }
     public PedExt GetCivilian(uint Handle)
     {
-        if (Police.Any(x => x.Pedestrian.Handle == Handle))
+        PedExt CopPed = Police.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        if (CopPed != null)
         {
-            return null;
+            return CopPed;
         }
         else
         {
@@ -172,7 +175,7 @@ public class Pedestrians
                 WillCallPolice = false;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.RelationshipGroup.Name));
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetRelationshipGroupExt(Pedestrian.RelationshipGroup.Name)));
     }
     private void AddCop(Ped Pedestrian)
     {

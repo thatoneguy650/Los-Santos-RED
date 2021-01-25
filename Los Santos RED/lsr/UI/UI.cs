@@ -96,7 +96,8 @@ public class UI
     }
     private void DisplayButtonPrompts()
     {
-        if (displayedButtonPrompts.Count() != Player.ButtonPrompts.Count())
+        if (displayedButtonPrompts != Player.ButtonPrompts)
+        //if (displayedButtonPrompts.Count() != Player.ButtonPrompts.Count())
         {
             instructional.Buttons.Clear();
             if (Player.ButtonPrompts.Any())

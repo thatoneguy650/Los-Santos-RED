@@ -20,12 +20,12 @@ namespace Mod
         private Vehicles Vehicles;
         private IZones Zones;
         private IZoneJurisdictions ZoneJurisdictions;
-        public World(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names)
+        public World(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IRelationshipGroups relationshipGroups)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;
             ZoneJurisdictions = zoneJurisdictions;
-            Pedestrians = new Pedestrians(agencies, zones, zoneJurisdictions, settings, names);
+            Pedestrians = new Pedestrians(agencies, zones, zoneJurisdictions, settings, names, relationshipGroups);
             Vehicles = new Vehicles(agencies, zones, zoneJurisdictions, settings, plateTypes);
         }
         public bool AnyArmyUnitsSpawned => Pedestrians.AnyArmyUnitsSpawned;

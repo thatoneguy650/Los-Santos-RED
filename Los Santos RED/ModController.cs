@@ -44,6 +44,7 @@ namespace LosSantosRED.lsr
         private Zones Zones;
         private ZoneScannerAudio ZoneScannerAudio;
         private RadioStations RadioStations;
+        private RelationshipGroups RelationshipGroups;
         public ModController()
         {
         }
@@ -90,7 +91,7 @@ namespace LosSantosRED.lsr
             Time = new Mod.Time();
 
 
-            World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes, Names);
+            World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups);
             World.Setup();
 
             Player = new Mod.Player(World, Time, Streets, Zones, Settings, Weapons, RadioStations);
@@ -169,6 +170,9 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             RadioStations = new RadioStations();
             RadioStations.ReadConfig();
+            GameFiber.Yield();
+            RelationshipGroups = new RelationshipGroups();
+            RelationshipGroups.ReadConfig();
             GameFiber.Yield();
         }
         private void SetupModTasks()

@@ -22,10 +22,7 @@ public class Conversation : Interaction
         Ped = ped;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
-    private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 7f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsInCombat && !Player.Character.IsInCombat;
-    private string NegativePrompt => Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize";
-    private string PositivePrompt => Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize";
-    private string CancelPrompt => "Cancel";
+    private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsInCombat && !Player.Character.IsInCombat;
     public override void Dispose()
     {
         Player.ButtonPrompts.RemoveAll(x => x.Group == "Conversation");
@@ -34,12 +31,13 @@ public class Conversation : Interaction
         {
             Ped.Pedestrian.Tasks.Clear();
         }
-        NativeFunction.CallByName<bool>("STOP_GAMEPLAY_HINT", true);
+        NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
+        //NativeFunction.Natives.RENDER_SCRIPT_CAMS(false,true,2000,false,false,false);
     }
     public override void Start()
     {
         Player.IsConversing = true;
-        NativeFunction.CallByName<bool>("SET_GAMEPLAY_PED_HINT", Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+        NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
         Game.Console.Print($"Conversation Started");
         GameFiber.StartNew(delegate
         {
@@ -64,9 +62,9 @@ public class Conversation : Interaction
         {
             if (!Player.ButtonPrompts.Any(x => x.Group == "Conversation"))
             {
-                Player.ButtonPrompts.Add(new ButtonPrompt(PositivePrompt, "Conversation","PositiveReply", PositiveReplyKey, 1));
-                Player.ButtonPrompts.Add(new ButtonPrompt(NegativePrompt, "Conversation","NegativeReply", NegativeReplyKey, 2));
-                Player.ButtonPrompts.Add(new ButtonPrompt(CancelPrompt, "Conversation", "Cancel", CancelKey, 3) );
+                Player.ButtonPrompts.Add(new ButtonPrompt(Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize", "Conversation","PositiveReply", PositiveReplyKey, 1));
+                Player.ButtonPrompts.Add(new ButtonPrompt(Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize", "Conversation","NegativeReply", NegativeReplyKey, 2));
+                Player.ButtonPrompts.Add(new ButtonPrompt("Cancel", "Conversation", "Cancel", CancelKey, 3) );
             }
         }
         if (Player.ButtonPrompts.Any(x => x.Identifier == "Cancel" && x.IsPressedNow))
@@ -97,7 +95,17 @@ public class Conversation : Interaction
             TargetCancelledConversation = true;
             if(Ped.IsGangMember)
             {
-                Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
+                Relationship PlayerToPed = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Player.Character, Ped.Pedestrian);
+                Relationship PedToPlayer = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Ped.Pedestrian, Player.Character);
+                Game.Console.Print($"CONVERSATION PRE PedGrp: {Ped.Pedestrian.RelationshipGroup.Name} PlayerToPed {PlayerToPed} PedToPlayer* {PedToPlayer}");
+                Player.AddRelationshipSnapshot(new RelationshipSnapshot(Ped.Pedestrian.RelationshipGroup, Player.Character.RelationshipGroup, PedToPlayer, PlayerToPed));
+                if ((Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Ped.Pedestrian, Player.Character) != Relationship.Hate)
+                {
+                    Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(Player.Character.RelationshipGroup, Relationship.Dislike);
+                }
+                PlayerToPed = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Player.Character, Ped.Pedestrian);
+                PedToPlayer = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Ped.Pedestrian, Player.Character);
+                Game.Console.Print($"CONVERSATION POST PedGrp: {Ped.Pedestrian.RelationshipGroup.Name} PlayerToPed {PlayerToPed} PedToPlayer* {PedToPlayer}");
             }
         }
         GameFiber.Sleep(1000);

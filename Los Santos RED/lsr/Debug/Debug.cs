@@ -113,13 +113,13 @@ public class Debug
         //    }
 
         //}
-
-
-        foreach (ButtonPrompt bp in Player.ButtonPrompts)
-        {
-            Game.Console.Print($"{bp.Text}, {bp.Key}, {bp.IsPressedNow}, {bp.Text}");
-        }
-
+        Player.Character.RelationshipGroup.SetRelationshipWith(RelationshipGroup.AmbientGangFamily, (Relationship)255);
+        RelationshipGroup.AmbientGangFamily.SetRelationshipWith(RelationshipGroup.Player, (Relationship)255);
+        //foreach (ButtonPrompt bp in Player.ButtonPrompts)
+        //{
+        //    Game.Console.Print($"{bp.Text}, {bp.Key}, {bp.IsPressedNow}, {bp.Text}");
+        //}
+        NativeFunction.CallByName<bool>("STOP_GAMEPLAY_HINT", true);
     }
     private void DebugNumpad7()
     {
@@ -131,7 +131,9 @@ public class Debug
         Game.Console.Print("===================================");
         foreach (PedExt ped in World.CivilianList.OrderBy(x => x.DistanceToPlayer))
         {
-            Game.Console.Print(ped.DebugString);
+            Relationship PlayerToPed = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Player.Character, ped.Pedestrian);
+            Relationship PedToPlayer = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(ped.Pedestrian, Player.Character);
+            Game.Console.Print(ped.DebugString + $" PlayerToPed {PlayerToPed} PedToPlayer {PedToPlayer}");
         }
         Game.Console.Print("===================================");
 

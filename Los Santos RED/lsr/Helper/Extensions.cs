@@ -110,7 +110,7 @@ namespace ExtensionsMethods
         public static bool IsSecurity(this Ped myPed)
         {
             string Nameo = myPed.RelationshipGroup.Name;
-            if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo) && Nameo.ToLower().Contains("securitygurad"))
+            if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo) && Nameo.ToLower().Contains("securityguard"))
             {
                 return true;
             }

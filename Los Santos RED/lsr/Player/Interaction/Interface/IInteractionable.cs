@@ -17,5 +17,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsAliveAndFree { get; }
         List<ButtonPrompt> ButtonPrompts { get; }
         bool IsInVehicle { get; }
+
+        void AddRelationshipSnapshot(RelationshipSnapshot relationshipSnapshot);
     }
 }

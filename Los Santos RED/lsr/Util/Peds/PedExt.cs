@@ -25,93 +25,25 @@ public class PedExt : IComplexTaskable
     private uint GameTimeLastSeenPlayer;
     private Entity Killer;
     private Entity LastHurtBy;
-    private string GameGroup;
     public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
-    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} Md: {Pedestrian.Model.Name} RG: {Pedestrian.RelationshipGroup.Name}";
+    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} Md: {Pedestrian.Model.Name} RG1: {Pedestrian.RelationshipGroup.Name} RG2: {PedGroup?.Name}";
     public PedExt(Ped _Pedestrian)
     {
         Pedestrian = _Pedestrian;
         Health = Pedestrian.Health;
         CurrentHealthState = new HealthState(this);
     }
-    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, string gameGroup) : this(_Pedestrian)
+    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, RelationshipGroupExt gameGroup) : this(_Pedestrian)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
         IsGangMember = _IsGangMember;
         Name = _Name;
-        GameGroup = gameGroup;
+        PedGroup = gameGroup;
     }
-    public string Group
-    {
-        get
-        {
-            if(GameGroup == "SECURITY_GUARD")
-            {
-                return "Security Guard";
-            }
-            else if (GameGroup == "PRIVATE_SECURITY")
-            {
-                return "Private Security";
-            }
-            else if (GameGroup == "FIREMAN")
-            {
-                return "Firefighter";
-            }
-            else if (GameGroup == "MEDIC")
-            {
-                return "EMT";
-            }
-            else if (GameGroup == "AMBIENT_GANG_LOST")
-            {
-                return "LOST Member";
-            }
-            else if (GameGroup == "AMBIENT_GANG_MEXICAN")
-            {
-                return "Vagos Member";
-            }
-            else if (GameGroup == "AMBIENT_GANG_FAMILY")
-            {
-                return "The Families Member";
-            }
-            else if (GameGroup == "AMBIENT_GANG_BALLAS")
-            {
-                return "Ballas";
-            }
-            else if (GameGroup == "AMBIENT_GANG_MARABUNTE")
-            {
-                return "Marabunta Grande Member";
-            }
-            else if (GameGroup == "AMBIENT_GANG_CULT")
-            {
-                return "Altruist Cult Member";
-            }
-            else if (GameGroup == "AMBIENT_GANG_SALVA")
-            {
-                return "Varrios Los Aztecas Member";
-            }
-            else if (GameGroup == "AMBIENT_GANG_WEICHENG")
-            {
-                return "Triads Member";
-            }
-            else if (GameGroup == "AMBIENT_GANG_HILLBILLY")
-            {
-                return "Redneck";
-            }
-            else if (GameGroup == "ARMY")
-            {
-                return "Army";
-            }
-            else if (GameGroup == "COP")
-            {
-                return "Cop";
-            }
-            return "Unknown"; //+ many more, but will redo this as proper data in the future
-        }
-    }
-    public string FormattedName => (HasSpokenWithPlayer ?  Name : Group);
-
+    public RelationshipGroupExt PedGroup { get; private set; }
+    public string FormattedName => (HasSpokenWithPlayer ?  Name : PedGroup.MemberName);
     public bool IsFedUpWithPlayer { get; set; }
     public int TimesInsultedByPlayer { get; set; }
     public int InsultLimit => IsGangMember || IsCop ? 1 : 3;

@@ -114,8 +114,8 @@ public class PedSwap : IPedswappable
     }
     private void AllyClosePedsToPlayer(Ped[] PedList)
     {
-
-        Game.LocalPlayer.Character.RelationshipGroup = OriginalRelationshipGroup;
+        Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(OriginalRelationshipGroup, Relationship.Like);
+        //Game.LocalPlayer.Character.RelationshipGroup = OriginalRelationshipGroup;
 
 
         //turned off below and added above

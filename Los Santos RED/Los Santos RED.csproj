@@ -108,6 +108,7 @@
     <Compile Include="lsr\Data\Interface\INameProvideable.cs" />
     <Compile Include="lsr\Data\Interface\IPlateTypes.cs" />
     <Compile Include="lsr\Data\Interface\IRadioStations.cs" />
+    <Compile Include="lsr\Data\Interface\IRelationshipGroups.cs" />
     <Compile Include="lsr\Data\Interface\IZoneJurisdictions.cs" />
     <Compile Include="lsr\Data\Interface\IPlacesOfInterest.cs" />
     <Compile Include="lsr\Data\Interface\IStreets.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="lsr\Data\Interface\ISettingsProvideable.cs" />
     <Compile Include="lsr\Data\Interface\IWeapons.cs" />
     <Compile Include="lsr\Data\RadioStations.cs" />
+    <Compile Include="lsr\Data\RelationshipGroups.cs" />
     <Compile Include="lsr\Data\StreetScannerAudio.cs" />
     <Compile Include="lsr\Data\VehicleScannerAudio.cs" />
     <Compile Include="lsr\Data\ZoneScannerAudio.cs" />
@@ -177,6 +179,8 @@
     <Compile Include="lsr\Player\Interface\ITargetable.cs" />
     <Compile Include="lsr\Tasker\Tasker.cs" />
     <Compile Include="lsr\Util\Peds\Consumeable.cs" />
+    <Compile Include="lsr\Util\Peds\RelationshipGroupExt.cs" />
+    <Compile Include="lsr\Util\Peds\RelationshipSnapshot.cs" />
     <Compile Include="lsr\Util\Vehicle\CarBreakIn.cs" />
     <Compile Include="lsr\Util\Vehicle\RadioStation.cs" />
     <Compile Include="lsr\World\Interface\IEntityProvideable.cs" />

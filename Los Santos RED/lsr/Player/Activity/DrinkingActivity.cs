@@ -71,7 +71,7 @@ namespace LosSantosRED.lsr.Player
             DebugLocation = "Drink";
             AttachBottleToHand();
             Player.IsConsuming = true;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimIdleDictionary, AnimIdle, 8.0f, -8.0f, -1, 49, 0, false, false, false);//-1
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimIdleDictionary, AnimIdle, 1.0f, -1.0f, -1, 49, 0, false, false, false);//-1
             while (!IsCancelControlPressed && !IsCancelled)
             {
                 GameFiber.Yield();
