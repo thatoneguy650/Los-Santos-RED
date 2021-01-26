@@ -83,7 +83,7 @@ namespace Mod
         public string AutoTuneStation { get; set; } = "NONE";
         public bool BeingArrested { get; private set; }
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
-        public bool CanConverse => CurrentLookedAtPed != null && CurrentTargetedPed == null && !CurrentLookedAtPed.IsFedUpWithPlayer && CurrentLookedAtPed.CanConverse && !IsConversing && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && !IsVisiblyArmed && !IsWanted && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;
+        public bool CanConverse => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && !IsConversing && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && !IsVisiblyArmed && !IsWanted && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;
         public bool CanDropWeapon => WeaponDropping.CanDropWeapon;
         public bool CanHoldUp => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsHoldingUp && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree;
         public bool CanPerformActivities => IsStill && !IsIncapacitated && !IsVisiblyArmed && !IsInVehicle;//somewhat works in vehicle, needs more testing/work
@@ -226,7 +226,7 @@ namespace Mod
         public bool RecentlyDied => GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied <= 5000;
         public bool RecentlyStartedPlaying => Game.GameTime - GameTimeStartedPlaying <= 15000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
-        public bool ShouldCancelActivities => IsInVehicle || IsIncapacitated || IsVisiblyArmed;
+        public bool ShouldCancelActivities => IsInVehicle || IsIncapacitated || IsVisiblyArmed || IsGettingIntoAVehicle || Game.LocalPlayer.Character.IsInCover || Game.LocalPlayer.Character.IsInCombat;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public bool StarsRecentlyActive => SearchMode.StarsRecentlyActive;
         public bool StarsRecentlyGreyedOut => SearchMode.StarsRecentlyGreyedOut;
@@ -781,11 +781,11 @@ namespace Mod
             }
             Game.Console.Print($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
         }
-        private void LookedAtPedChanged()
-        {
-            //ButtonPrompts.RemoveAll(x => x.Group == "Talk");
-            Game.Console.Print($"PLAYER EVENT: CurrentLookedAtPed to {CurrentLookedAtPed?.Pedestrian?.Handle}");
-        }
+        //private void LookedAtPedChanged()
+        //{
+        //    //ButtonPrompts.RemoveAll(x => x.Group == "Talk");
+        //    Game.Console.Print($"PLAYER EVENT: CurrentLookedAtPed to {CurrentLookedAtPed?.Pedestrian?.Handle}");
+        //}
         private void ResetRelationships()
         {
             foreach (RelationshipSnapshot relationshipSnapshot in RelationshipSnapshots)
@@ -815,15 +815,15 @@ namespace Mod
                 Interaction.Start();
             }
         }
-        private void StartTransaction()
-        {
-            if (!IsInteracting && CanConverse)
-            {
-                IsConversing = true;
-                Interaction = new Transaction(this, CurrentLookedAtPed);
-                Interaction.Start();
-            }
-        }
+        //private void StartTransaction()
+        //{
+        //    if (!IsInteracting && CanConverse)
+        //    {
+        //        IsConversing = true;
+        //        Interaction = new Transaction(this, CurrentLookedAtPed);
+        //        Interaction.Start();
+        //    }
+        //}
         private void TargettingHandleChanged()
         {
             if (TargettingHandle != 0)
@@ -946,14 +946,16 @@ namespace Mod
         private void UpdatedLookedAtPed()
         {
             //Works fine just going simpler
+            // Vector3 RayStart = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+            // Vector3 RayEnd = RayStart + GetGameplayCameraDirection() * 10.0f;
             Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
             Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 5.0f;
-            HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
-                                                                                                                                                                              //    Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
-                                                                                                                                                                               //   Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
+            HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 2f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
+                                                                                                                                                                                 // Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
+                                                                                                                                                                                 // Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
             if (result.Hit && result.HitEntity is Ped)
             {
-                // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
+                //  Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
                 CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
 
             }
@@ -961,7 +963,8 @@ namespace Mod
             {
                 CurrentLookedAtPed = null;
             }
-            // CurrentLookedAtPed = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 4f && !x.IsBehindPlayer).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+
+            CurrentLookedAtPed = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 4f && !x.IsBehindPlayer).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         }
         private void UpdateMiscData()
         {

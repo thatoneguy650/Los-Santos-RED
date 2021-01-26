@@ -125,23 +125,24 @@ namespace ExtensionsMethods
             {
                 return false;
             }
-            int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
-            if (PedType == (int)ePedType.PED_TYPE_CIVMALE || PedType == (int)ePedType.PED_TYPE_CIVFEMALE || PedType == (int)ePedType.PED_TYPE_CIVFEMALE || PedType == (int)ePedType.PED_TYPE_MISSION)// || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
-            {
-                string ModelName = myPed.Model.Name.ToLower();
-                if (ShopPeds.Contains(ModelName))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            return true;
+            //int PedType = NativeFunction.Natives.GET_PED_TYPE<int>(myPed);//Function.Call<int>(Hash.GET_PED_TYPE, myPed);
+            //if (PedType == (int)ePedType.PED_TYPE_CIVMALE || PedType == (int)ePedType.PED_TYPE_CIVFEMALE || PedType == (int)ePedType.PED_TYPE_CIVFEMALE || PedType == (int)ePedType.PED_TYPE_MISSION)// || ModelName == "s_m_m_security_01") && ModelName != "Shepherd")
+            //{
+            //    string ModelName = myPed.Model.Name.ToLower();
+            //    if (ShopPeds.Contains(ModelName))
+            //    {
+            //        return false;
+            //    }
+            //    else
+            //    {
+            //        return true;
+            //    }
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
         public static bool IsConsideredMainCharacter(this Ped myPed)
         {

@@ -20,7 +20,7 @@ namespace Mod
         private Vehicles Vehicles;
         private IZones Zones;
         private IZoneJurisdictions ZoneJurisdictions;
-        public World(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IRelationshipGroups relationshipGroups)
+        public World(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups)
         {
             PlacesOfInterest = placesOfInterest;
             Zones = zones;

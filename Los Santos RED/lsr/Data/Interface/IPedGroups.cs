@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IRelationshipGroups
+    public interface IPedGroups
     {
-        RelationshipGroupExt GetRelationshipGroupExt(string name);
+        PedGroup GetPedGroup(string name);
     }
 }

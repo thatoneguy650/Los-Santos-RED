@@ -7,12 +7,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ExtensionsMethods;
 
 namespace LosSantosRED.lsr.Player
 {
     public class DrinkingActivity : ConsumeActivity
     {
-        private string AnimIdle;
+        private List<string> AnimIdle;
+        private string AnimEnter;
+        private string AnimEnterDictionary;
+        private string AnimExit;
+        private string AnimExitDictionary;
         private string AnimIdleDictionary;
         private Rage.Object Bottle;
         private float CurrentAnimationTime;
@@ -25,6 +30,8 @@ namespace LosSantosRED.lsr.Player
         private bool IsCancelled;
         private IIntoxicatable Player;
         private string PropModel;
+        private string CurrentAnim;
+        private string CurrentDict;
         public DrinkingActivity(IIntoxicatable consumable) : base()
         {
             Player = consumable;
@@ -63,7 +70,14 @@ namespace LosSantosRED.lsr.Player
             if (!Bottle.Exists())
             {
                 Bottle = new Rage.Object(PropModel, Player.Character.GetOffsetPositionUp(50f));
-                Bottle.IsGravityDisabled = false;
+                if(!Bottle.Exists())
+                {
+                    IsCancelled = true;
+                }
+                else
+                {
+                    Bottle.IsGravityDisabled = false;
+                }
             }
         }
         private void Drink()
@@ -71,9 +85,18 @@ namespace LosSantosRED.lsr.Player
             DebugLocation = "Drink";
             AttachBottleToHand();
             Player.IsConsuming = true;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimIdleDictionary, AnimIdle, 1.0f, -1.0f, -1, 49, 0, false, false, false);//-1
-            while (!IsCancelControlPressed && !IsCancelled)
+            CurrentDict = AnimEnterDictionary;
+            CurrentAnim = AnimEnter;
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
+            while (!IsCancelControlPressed && !Player.ShouldCancelActivities && !IsCancelled)
             {
+                if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, CurrentDict, CurrentAnim) >= 1.0f)
+                {
+                    CurrentDict = AnimIdleDictionary;
+                    CurrentAnim = AnimIdle.PickRandom();
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, CurrentDict, CurrentAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+                    Game.Console.Print($"New Smoking Idle {CurrentAnim}");
+                }
                 GameFiber.Yield();
             }
             Stop();
@@ -82,22 +105,32 @@ namespace LosSantosRED.lsr.Player
         {
             if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
             {
+                AnimEnterDictionary = "amb@world_human_drinking@beer@male@enter";
+                AnimEnter = "enter";
+                AnimExitDictionary = "amb@world_human_drinking@beer@male@exit";
+                AnimExit = "exit";
                 AnimIdleDictionary = "amb@world_human_drinking@beer@male@idle_a";
-                AnimIdle = new List<string>() { "idle_c", "Idle_a" }.PickRandom();
+                AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
                 HandBoneID = 57005;
                 HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
                 HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
             }
             else
             {
+                AnimEnterDictionary = "amb@world_human_drinking@beer@female@enter";
+                AnimEnter = "enter";
+                AnimExitDictionary = "amb@world_human_drinking@beer@female@exit";
+                AnimExit = "exit";
                 AnimIdleDictionary = "amb@world_human_drinking@beer@female@idle_a";
-                AnimIdle = new List<string>() { "idle_c", "Idle_a" }.PickRandom();
+                AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
                 HandBoneID = 57005;
                 HandOffset = new Vector3(0.12f, 0.0f, -0.06f);
                 HandRotator = new Rotator(-77.0f, 23.0f, 0.0f);
             }
             PropModel = new List<string>() { "prop_cs_beer_bot_40oz", "prop_cs_beer_bot_40oz_02", "prop_cs_beer_bot_40oz_03" }.PickRandom(); ;
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
+            AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
+            AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
         }
         private void Stop()
         {

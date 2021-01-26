@@ -21,8 +21,8 @@ public class Pedestrians
     private ISettingsProvideable Settings;
     private IZones Zones;
     private INameProvideable Names;
-    private IRelationshipGroups RelationshipGroups;
-    public Pedestrians(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, INameProvideable names, IRelationshipGroups relationshipGroups)
+    private IPedGroups RelationshipGroups;
+    public Pedestrians(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups)
     {
         Agencies = agencies;
         Zones = zones;
@@ -175,7 +175,7 @@ public class Pedestrians
                 WillCallPolice = false;
             }
         }
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetRelationshipGroupExt(Pedestrian.RelationshipGroup.Name)));
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
     }
     private void AddCop(Ped Pedestrian)
     {

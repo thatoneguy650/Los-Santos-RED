@@ -15,6 +15,10 @@ public class HoldUp : Interaction
     private IInteractionable Player;
     private PedExt Target;
     private Keys DemandKey = Keys.E;
+    private Keys ForceDown = Keys.L;
+    private Keys Kidnap = Keys.K;
+    private bool ForcedCower;
+    private bool IsActivelyOrdering;
     public HoldUp(IInteractionable player, PedExt target)
     {
         Player = player;
@@ -38,11 +42,13 @@ public class HoldUp : Interaction
     }
     private void CheckIntimidation()
     {
+        Target.IsFedUpWithPlayer = true;
+        Target.TimesInsultedByPlayer += 5;
         GameTimeStartedIntimidating = Game.GameTime;
         GameTimeStoppedTargetting = 0;
         int TimeToWait = RandomItems.MyRand.Next(1500, 2500);
         IsTargetting = true;
-        while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait) && Target.DistanceToPlayer <= 10f && Target.Pedestrian.IsAlive && !Target.Pedestrian.IsRagdoll && !Target.Pedestrian.IsStunned && Player.IsAliveAndFree && !Player.Character.IsStunned && !Player.Character.IsRagdoll && NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
+        while ((IsTargetting || Game.GameTime - GameTimeStoppedTargetting <= TimeToWait) && !ForcedCower && Target.DistanceToPlayer <= 10f && Target.Pedestrian.IsAlive && !Target.Pedestrian.IsRagdoll && !Target.Pedestrian.IsStunned && Player.IsAliveAndFree && !Player.Character.IsStunned && !Player.Character.IsRagdoll && NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "ped", "handsup_enter", 1))
         {
             if (Player.CurrentTargetedPed?.Pedestrian.Handle == Target.Pedestrian.Handle)
             {
@@ -52,11 +58,15 @@ public class HoldUp : Interaction
                     GameTimeStartedIntimidating = Game.GameTime;
                     GameTimeStoppedTargetting = 0;
                 }
-                if (IsTargetting && IsTargetIntimidated && !Target.HasBeenMugged)
+                if (IsTargetting && IsTargetIntimidated)
                 {
-                    if (!Player.ButtonPrompts.Any(x => x.Group == "HoldUp"))
+                    if (!Target.HasBeenMugged && !Player.ButtonPrompts.Any(x => x.Identifier == "DemandCash"))
                     {
-                        Player.ButtonPrompts.Add(new ButtonPrompt($"Demand Cash","HoldUp","DemandCash", DemandKey, 1));
+                        Player.ButtonPrompts.Add(new ButtonPrompt("Demand Cash", "HoldUp", "DemandCash", DemandKey, 1));
+                    }
+                    if (!Player.ButtonPrompts.Any(x => x.Identifier == "ForceDown"))
+                    {
+                        Player.ButtonPrompts.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", ForceDown, 2));
                     }
                 }
                 else
@@ -66,7 +76,14 @@ public class HoldUp : Interaction
                 if (Player.ButtonPrompts.Any(x => x.Identifier == "DemandCash" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
                 {
                     Target.HasBeenMugged = true;
+                    Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
                     CreateMoneyDrop();
+                }
+                if (Player.ButtonPrompts.Any(x => x.Identifier == "ForceDown" && x.IsPressedNow) && IsTargetIntimidated && !ForcedCower)//demand cash?
+                {
+                    ForcedCower = true;
+                    Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
+                    ForceCower();
                 }
             }
             else
@@ -93,7 +110,7 @@ public class HoldUp : Interaction
                 Target.Pedestrian.Inventory.GiveNewWeapon("weapon_pistol", 60, true);
                 Target.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
             }
-            else
+            else if (!ForcedCower)
             {
                 Target.Pedestrian.Tasks.Flee(Player.Character, 100f, -1);
             }
@@ -103,18 +120,25 @@ public class HoldUp : Interaction
     }
     private void CreateMoneyDrop()
     {
+        IsActivelyOrdering = true;
         SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY" }, true);
         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Target.Pedestrian, "mp_safehousevagos@", "package_dropoff", 4.0f, -4.0f, 2000, 0, 0, false, false, false);
         SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG" }, false);
         GameFiber.Sleep(2000);
-        //while (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Target.Pedestrian, "mp_safehousevagos@", "package_dropoff", 3))
-        //{
-        //    GameFiber.Yield();
-        //}
         NativeFunction.CallByName<bool>("SET_PED_MONEY", Target.Pedestrian, 0);
         Vector3 MoneyPos = Target.Pedestrian.Position.Around2D(0.5f, 1.5f);
         NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", Game.GetHashKey("PICKUP_MONEY_VARIABLE"), MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, RandomItems.MyRand.Next(15, 100), 1, false, true);
         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Target.Pedestrian, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+        IsActivelyOrdering = false;
+    }
+    private void ForceCower()
+    {
+        IsActivelyOrdering = true;
+        SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN" }, true);
+        Target.Pedestrian.Tasks.Cower(-1);
+        SayAvailableAmbient(Target.Pedestrian, new List<string>() { "GUN_BEG" }, false);
+        GameFiber.Sleep(2000);
+        IsActivelyOrdering = false;
     }
     private void EnterHandsUp()
     {

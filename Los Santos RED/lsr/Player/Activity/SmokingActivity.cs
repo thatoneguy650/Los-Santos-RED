@@ -227,18 +227,16 @@ namespace LosSantosRED.lsr.Player
                     AnimExitDictionary = "amb@world_human_smoking@male@male_b@exit";
                     HandOffset = new Vector3(0.141f, 0.03f, -0.033f);
                     HandRotator = new Rotator(0.0f, -168f, -84f);
-                    Game.Console.Print($"Smoking Activity Started  Type B");
                 }
                 else
                 {
                     AnimBaseDictionary = "amb@world_human_smoking@male@male_a@base";
                     AnimIdleDictionary = "amb@world_human_smoking@male@male_a@idle_a";
-                    AnimIdle = new List<string> {"idle_b", "idle_c" };
+                    AnimIdle = new List<string> { "idle_a", "idle_b", "idle_c" };
                     AnimEnterDictionary = "amb@world_human_smoking@male@male_a@enter";
                     AnimExitDictionary = "amb@world_human_smoking@male@male_a@exit"; 
                     HandOffset = new Vector3(0.1640f, 0.019f, 0.0f);
                     HandRotator = new Rotator(0.49f, 79f, 79f);
-                    Game.Console.Print($"Smoking Activity Started  Type A");
                 }
                 AnimBase = "base";
                 AnimEnter = "enter";
@@ -283,9 +281,9 @@ namespace LosSantosRED.lsr.Player
             else
             {
                 AnimBaseDictionary = "amb@world_human_smoking@female@idle_a";
-                AnimBase = "idle_c";
+                AnimBase = "base";
                 AnimIdleDictionary = "amb@world_human_smoking@female@idle_a";
-                AnimIdle = new List<string> { "idle_c" };
+                AnimIdle = new List<string> { "idle_a", "idle_b","idle_c" };
                 AnimEnterDictionary = "amb@world_human_smoking@female@enter";
                 AnimEnter = "enter";
                 AnimExitDictionary = "amb@world_human_smoking@female@exit";

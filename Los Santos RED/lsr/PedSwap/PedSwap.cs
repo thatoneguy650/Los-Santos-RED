@@ -10,13 +10,15 @@ using System.Linq;
 public class PedSwap : IPedswappable
 {
     private ITimeControllable World;
+    private IEntityProvideable Entities;
     private IPedSwappable Player;
     private ISettingsProvideable Settings;
-    public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings)
+    public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities)
     {
         World = world;
         Player = player;
         Settings = settings;
+        Entities = entities;
     }
     private Ped CurrentPed;
     private Vector3 CurrentPedPosition;
@@ -121,13 +123,13 @@ public class PedSwap : IPedswappable
         //turned off below and added above
         foreach (Ped PedToAlly in PedList)
         {
-            //NativeFunction.CallByName<bool>("SET_PED_AS_GROUP_MEMBER", PedToAlly, Game.LocalPlayer.Character.Group);
+            NativeFunction.CallByName<bool>("SET_PED_AS_GROUP_MEMBER", PedToAlly, Game.LocalPlayer.Character.Group);
             PedToAlly.StaysInVehiclesWhenJacked = true;
         }
     }
     private bool CanTakeoverPed(Ped myPed)
     {
-        if (myPed.Exists() && myPed.Handle != Game.LocalPlayer.Character.Handle && myPed.IsAlive && myPed.IsHuman && myPed.IsNormalPerson() && !myPed.IsPoliceArmy() && !InSameCar(myPed, Game.LocalPlayer.Character) && !IsBelowWorld(myPed))
+        if (myPed.Exists() && myPed.Handle != Game.LocalPlayer.Character.Handle && myPed.IsAlive && myPed.IsHuman && myPed.IsNormalPerson() && !InSameCar(myPed, Game.LocalPlayer.Character))// && !IsBelowWorld(myPed))
         {
             return true;
         }
@@ -147,11 +149,15 @@ public class PedSwap : IPedswappable
     private Ped FindPedToSwapWith(float Radius, bool Nearest)
     {
         Ped PedToReturn = null;
-        Ped[] closestPed = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, Radius, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAllPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
+        //Ped[] closestPed = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, Radius, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAllPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
         if (Nearest)
-            PedToReturn = closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
+        {
+            PedToReturn = Entities.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
+        }
         else
-            PedToReturn = closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
+        {
+            PedToReturn = Entities.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian) && x.DistanceToPlayer <= Radius).PickRandom()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
+        }
         if (PedToReturn == null)
         {
             //Game.Console.Print("Ped Takeover! No Peds Found");
@@ -377,7 +383,7 @@ public class PedSwap : IPedswappable
         if (TargetPed.IsInAnyVehicle(false))
         {
             Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
-            AllyClosePedsToPlayer(TargetPed.CurrentVehicle.Passengers);
+            AllyClosePedsToPlayer(TargetPedVehicle.Passengers);
         }
         else
         {

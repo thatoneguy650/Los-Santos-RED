@@ -1,20 +1,22 @@
 ﻿using System;
 
 [Serializable]
-public class RelationshipGroupExt
+public class PedGroup
 {
-    public RelationshipGroupExt()
+    public PedGroup()
     {
     }
 
-    public RelationshipGroupExt(string name, string internalName, string memberName)
+    public PedGroup(string name, string internalName, string memberName, bool canChangeRelationship)
     {
         Name = name;
         InternalName = internalName;
         MemberName = memberName;
+        CanChangeRelationship = canChangeRelationship;
     }
 
     public string Name { get; set; }
     public string InternalName { get; set; }
     public string MemberName { get; set; }
+    public bool CanChangeRelationship { get; set; }
 }

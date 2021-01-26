@@ -32,7 +32,6 @@ public class Conversation : Interaction
             Ped.Pedestrian.Tasks.Clear();
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(true);
-        //NativeFunction.Natives.RENDER_SCRIPT_CAMS(false,true,2000,false,false,false);
     }
     public override void Start()
     {
@@ -41,7 +40,7 @@ public class Conversation : Interaction
         Game.Console.Print($"Conversation Started");
         GameFiber.StartNew(delegate
         {
-            Setup();
+            Greet();
             Tick();
             Dispose();
         }, "Conversation");
@@ -92,23 +91,8 @@ public class Conversation : Interaction
         if (Ped.TimesInsultedByPlayer >= Ped.InsultLimit)
         {
             Ped.IsFedUpWithPlayer = true;
-            TargetCancelledConversation = true;
-            if(Ped.IsGangMember)
-            {
-                Relationship PlayerToPed = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Player.Character, Ped.Pedestrian);
-                Relationship PedToPlayer = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Ped.Pedestrian, Player.Character);
-                Game.Console.Print($"CONVERSATION PRE PedGrp: {Ped.Pedestrian.RelationshipGroup.Name} PlayerToPed {PlayerToPed} PedToPlayer* {PedToPlayer}");
-                Player.AddRelationshipSnapshot(new RelationshipSnapshot(Ped.Pedestrian.RelationshipGroup, Player.Character.RelationshipGroup, PedToPlayer, PlayerToPed));
-                if ((Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Ped.Pedestrian, Player.Character) != Relationship.Hate)
-                {
-                    Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(Player.Character.RelationshipGroup, Relationship.Dislike);
-                }
-                PlayerToPed = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Player.Character, Ped.Pedestrian);
-                PedToPlayer = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Ped.Pedestrian, Player.Character);
-                Game.Console.Print($"CONVERSATION POST PedGrp: {Ped.Pedestrian.RelationshipGroup.Name} PlayerToPed {PlayerToPed} PedToPlayer* {PedToPlayer}");
-            }
         }
-        GameFiber.Sleep(1000);
+        GameFiber.Sleep(200);
         IsActivelyConversing = false;
     }
     private void Positive()
@@ -118,20 +102,25 @@ public class Conversation : Interaction
         if (Ped.TimesInsultedByPlayer >= 1)
         {
             SayApology(Player.Character, false);
-            SayApology(Ped.Pedestrian, true);
+            if(!Ped.IsFedUpWithPlayer)
+            {
+                SayApology(Ped.Pedestrian, true);
+            }
         }
         else
         {
             SaySmallTalk(Player.Character, false);
             SaySmallTalk(Ped.Pedestrian, true);
         }
-
-        if (Ped.TimesInsultedByPlayer >= 1)
+        if (Ped.TimesInsultedByPlayer > 0)
         {
             Ped.TimesInsultedByPlayer--;
         }
-
-        GameFiber.Sleep(1000);
+        if(Ped.TimesInsultedByPlayer < Ped.InsultLimit)
+        {
+            Ped.IsFedUpWithPlayer = false;
+        }
+        GameFiber.Sleep(200);
         IsActivelyConversing = false;
     }
     private void SayApology(Ped ToReply, bool IsReply)
@@ -179,6 +168,10 @@ public class Conversation : Interaction
             Spoke = true;
             GameFiber.Yield();
         }
+        if(!Spoke)
+        {
+            Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
+        }
         return Spoke;
     }
     private void SayInsult(Ped ToReply)
@@ -209,7 +202,7 @@ public class Conversation : Interaction
         //CHAT_RESP On Main and Character mostly say whatever?
         //GENERIC_WHATEVER main is basically and insult
     }
-    private void Setup()
+    private void Greet()
     {
         GameTimeStartedConversing = Game.GameTime;
         IsActivelyConversing = true;
@@ -221,54 +214,73 @@ public class Conversation : Interaction
         {
             SayAvailableAmbient(Player.Character, new List<string>() { "PROVOKE_GENERIC", "GENERIC_WHATEVER" }, false);
         }
-        GameFiber.Sleep(1000);
-        if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
+        while(CanContinueConversation && Game.GameTime - GameTimeStartedConversing <= 1000)
         {
-            IsTasked = false;
+            GameFiber.Yield();
         }
-        else
+        if(!CanContinueConversation)
         {
-            IsTasked = true;
-            unsafe
+            return;
+        }
+
+        if(!Ped.IsFedUpWithPlayer)
+        {
+            if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))
             {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
-                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                IsTasked = false;
             }
-        }
-        if (Player.IsInVehicle)
-        {
-            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Player.Character, Ped.Pedestrian, -1, 0, 2);
-        }
-        else
-        {
-            unsafe
+            else
             {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Ped.Pedestrian, 2000);
-                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Ped.Pedestrian, -1, 0, 2);
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                IsTasked = true;
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Player.Character, 2000);
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Player.Character, -1, 0, 2);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
             }
+            if (Player.IsInVehicle)
+            {
+                NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Player.Character, Ped.Pedestrian, -1, 0, 2);
+            }
+            else
+            {
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, Ped.Pedestrian, 2000);
+                    NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, Ped.Pedestrian, -1, 0, 2);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
+            }
+            uint GameTimeStartedFacing = Game.GameTime;
+            while (CanContinueConversation && Game.GameTime - GameTimeStartedFacing <= 500)
+            {
+                GameFiber.Yield();
+            }
+            if (!CanContinueConversation)
+            {
+                return;
+            }
+            if (Ped.TimesInsultedByPlayer <= 0)
+            {
+                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true);
+            }
+            else
+            {
+                SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true);
+            }
+            Ped.HasSpokenWithPlayer = true;
         }
-        GameFiber.Sleep(500);
-        if (Ped.TimesInsultedByPlayer <= 0)
-        {
-            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" }, true);
-        }
-        else
-        {
-            SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true);
-        }
-        Ped.HasSpokenWithPlayer = true;
         IsActivelyConversing = false;
     }
     private void Tick()

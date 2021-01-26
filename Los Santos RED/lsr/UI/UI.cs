@@ -96,9 +96,9 @@ public class UI
     }
     private void DisplayButtonPrompts()
     {
-        if (displayedButtonPrompts != Player.ButtonPrompts)
-        //if (displayedButtonPrompts.Count() != Player.ButtonPrompts.Count())
-        {
+        //if (displayedButtonPrompts != Player.ButtonPrompts)
+        ////if (displayedButtonPrompts.Count() != Player.ButtonPrompts.Count())
+        //{
             instructional.Buttons.Clear();
             if (Player.ButtonPrompts.Any())
             {
@@ -116,10 +116,10 @@ public class UI
                 }
             }
             instructional.Update();
-            Game.Console.Print($"Button Prompts Changed {Player.ButtonPrompts.Count}");
-            displayedButtonPrompts.Clear();
-            displayedButtonPrompts.AddRange(Player.ButtonPrompts);
-        }
+        //    Game.Console.Print($"Button Prompts Changed {Player.ButtonPrompts.Count}");
+        //    displayedButtonPrompts.Clear();
+        //    displayedButtonPrompts.AddRange(Player.ButtonPrompts);
+        //}
         if (Player.ButtonPrompts.Any())
         {
             instructional.Draw();

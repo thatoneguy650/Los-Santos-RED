@@ -44,7 +44,7 @@ namespace LosSantosRED.lsr
         private Zones Zones;
         private ZoneScannerAudio ZoneScannerAudio;
         private RadioStations RadioStations;
-        private RelationshipGroups RelationshipGroups;
+        private PedGroups RelationshipGroups;
         public ModController()
         {
         }
@@ -103,7 +103,7 @@ namespace LosSantosRED.lsr
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
             Respawning = new Respawning(Time, World, Player, Weapons, PlacesOfInterest, Settings);
-            PedSwap = new PedSwap(Time, Player, Settings);
+            PedSwap = new PedSwap(Time, Player, Settings, World);
             Tasking_Old = new Tasking_Old(World, Player, Player);
             Tasker = new Tasker(World, Player);
             UI = new UI(Player, Settings, ZoneJurisdictions, PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
@@ -171,7 +171,7 @@ namespace LosSantosRED.lsr
             RadioStations = new RadioStations();
             RadioStations.ReadConfig();
             GameFiber.Yield();
-            RelationshipGroups = new RelationshipGroups();
+            RelationshipGroups = new PedGroups();
             RelationshipGroups.ReadConfig();
             GameFiber.Yield();
         }

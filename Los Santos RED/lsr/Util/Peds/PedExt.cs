@@ -34,7 +34,7 @@ public class PedExt : IComplexTaskable
         Health = Pedestrian.Health;
         CurrentHealthState = new HealthState(this);
     }
-    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, RelationshipGroupExt gameGroup) : this(_Pedestrian)
+    public PedExt(Ped _Pedestrian, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, PedGroup gameGroup) : this(_Pedestrian)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
@@ -42,7 +42,7 @@ public class PedExt : IComplexTaskable
         Name = _Name;
         PedGroup = gameGroup;
     }
-    public RelationshipGroupExt PedGroup { get; private set; }
+    public PedGroup PedGroup { get; private set; }
     public string FormattedName => (HasSpokenWithPlayer ?  Name : PedGroup.MemberName);
     public bool IsFedUpWithPlayer { get; set; }
     public int TimesInsultedByPlayer { get; set; }
@@ -632,7 +632,7 @@ public class PedExt : IComplexTaskable
     private void UpdateVehicleState()
     {
         IsInVehicle = Pedestrian.IsInAnyVehicle(false);
-        if (IsInVehicle)
+        if (IsInVehicle && Pedestrian.CurrentVehicle.Exists())
         {
             IsDriver = Pedestrian.SeatIndex == -1;
             LastSeatIndex = Pedestrian.SeatIndex;
