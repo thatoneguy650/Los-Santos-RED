@@ -19,9 +19,9 @@ public class Tasker
     public void RunTasks()
     {
         int PedsUpdated = 0;
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x=> x.CurrentTask != null).OrderBy(x=> x.CurrentTask.GameTimeLastRan))
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
-            if(PedsUpdated > 2)
+            if (PedsUpdated > 2)
             {
                 return;
             }
@@ -79,11 +79,19 @@ public class Tasker
                         }
                     }
                 }
-                if (Player.Investigation.IsActive)
+                else if (Player.Investigation.IsActive)
                 {
-                    if(Cop.CurrentTask?.Name != "Investigate")
+                    if (Cop.CurrentTask?.Name != "Investigate")
                     {
                         Cop.CurrentTask = new Investigate(Cop, Player);
+                        Cop.CurrentTask.Start();
+                    }
+                }
+                else
+                {
+                    if (Cop.CurrentTask?.Name != "Idle")
+                    {
+                        Cop.CurrentTask = new Idle(Cop, Player);
                         Cop.CurrentTask.Start();
                     }
                 }

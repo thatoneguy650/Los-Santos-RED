@@ -85,8 +85,17 @@ public class Debug
     }
     private void DebugNumpad3()
     {
-       
-       // Scanner.AnnounceCrime(new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false), new PoliceScannerCallIn(false,true,Game.LocalPlayer.Character.Position));
+
+
+        Game.LocalPlayer.Model = "mp_m_claude_01";
+        //bigbruh in discord, supplied the below, seems to work just fine
+        unsafe
+        {
+            var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
+            ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
+            *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
+        }
+        // Scanner.AnnounceCrime(new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false), new PoliceScannerCallIn(false,true,Game.LocalPlayer.Character.Position));
     }
     private void DebugNumpad4()
     {

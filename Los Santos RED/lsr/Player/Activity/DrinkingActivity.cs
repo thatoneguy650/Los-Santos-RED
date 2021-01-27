@@ -1,50 +1,33 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Player.Activity;
 using Rage;
 using Rage.Native;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExtensionsMethods;
 
 namespace LosSantosRED.lsr.Player
 {
     public class DrinkingActivity : ConsumeActivity
     {
-        private List<string> AnimIdle;
-        private string AnimEnter;
-        private string AnimEnterDictionary;
-        private string AnimExit;
-        private string AnimExitDictionary;
-        private string AnimIdleDictionary;
         private Rage.Object Bottle;
-        private float CurrentAnimationTime;
-        private string DebugLocation;
-        private int HandBoneID;
-        private Vector3 HandOffset;
-        private Rotator HandRotator;
+        private string PlayingAnim;
+        private string PlayingDict;
+        private DrinkingData Data;
         private IntoxicatingEffect IntoxicatingEffect;
         private bool IsAttachedToHand;
         private bool IsCancelled;
         private IIntoxicatable Player;
-        private string PropModel;
-        private string CurrentAnim;
-        private string CurrentDict;
         public DrinkingActivity(IIntoxicatable consumable) : base()
         {
             Player = consumable;
         }
-        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsConsuming} I: {Player.IntoxicatedIntensity} L: {DebugLocation} AT {Math.Round(CurrentAnimationTime, 2)}";
-        private bool IsCancelControlPressed => Game.IsControlPressed(0, GameControl.Sprint) || Game.IsControlPressed(0, GameControl.Jump);// || Game.IsControlPressed(0, GameControl.VehicleExit);
+        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsConsuming} I: {Player.IntoxicatedIntensity}";
         public override void Cancel()
         {
             IsCancelled = true;
         }
         public override void Continue()
         {
-
         }
         public override void Start()
         {
@@ -53,7 +36,7 @@ namespace LosSantosRED.lsr.Player
             IntoxicatingEffect.Start();
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
-                Drink();
+                Enter();
             }, "DrinkingWatcher");
         }
         private void AttachBottleToHand()
@@ -61,7 +44,7 @@ namespace LosSantosRED.lsr.Player
             CreateBottle();
             if (Bottle.Exists() && !IsAttachedToHand)
             {
-                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, HandBoneID), HandOffset, HandRotator);
+                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
             }
         }
@@ -69,8 +52,8 @@ namespace LosSantosRED.lsr.Player
         {
             if (!Bottle.Exists())
             {
-                Bottle = new Rage.Object(PropModel, Player.Character.GetOffsetPositionUp(50f));
-                if(!Bottle.Exists())
+                Bottle = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                if (!Bottle.Exists())
                 {
                     IsCancelled = true;
                 }
@@ -80,29 +63,56 @@ namespace LosSantosRED.lsr.Player
                 }
             }
         }
-        private void Drink()
+        private void Enter()
         {
-            DebugLocation = "Drink";
             AttachBottleToHand();
             Player.IsConsuming = true;
-            CurrentDict = AnimEnterDictionary;
-            CurrentAnim = AnimEnter;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
-            while (!IsCancelControlPressed && !Player.ShouldCancelActivities && !IsCancelled)
+            PlayingDict = Data.AnimEnterDictionary;
+            PlayingAnim = Data.AnimEnter;
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
+            Idle();
+        }
+        private void Exit()
+        {
+            if (Bottle.Exists())
             {
-                if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, CurrentDict, CurrentAnim) >= 1.0f)
+                Bottle.Detach();
+            }
+            Player.Character.Tasks.Clear();
+            Player.IsConsuming = false;
+            GameFiber.Sleep(5000);
+            if (Bottle.Exists())
+            {
+                Bottle.Delete();
+            }
+        }
+        private void Idle()
+        {
+            while (!Player.ShouldCancelActivities && !IsCancelled)
+            {
+                if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
-                    CurrentDict = AnimIdleDictionary;
-                    CurrentAnim = AnimIdle.PickRandom();
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, CurrentDict, CurrentAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-                    Game.Console.Print($"New Smoking Idle {CurrentAnim}");
+                    PlayingDict = Data.AnimIdleDictionary;
+                    PlayingAnim = Data.AnimIdle.PickRandom();
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+                    Game.Console.Print($"New Drinking Idle {PlayingAnim}");
                 }
                 GameFiber.Yield();
             }
-            Stop();
+            Exit();
         }
         private void Setup()
         {
+            List<string> AnimIdle;
+            string AnimEnter;
+            string AnimEnterDictionary;
+            string AnimExit;
+            string AnimExitDictionary;
+            string AnimIdleDictionary;
+            int HandBoneID;
+            Vector3 HandOffset;
+            Rotator HandRotator;
+            string PropModel;
             if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
             {
                 AnimEnterDictionary = "amb@world_human_drinking@beer@male@enter";
@@ -131,21 +141,7 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
-        }
-        private void Stop()
-        {
-            DebugLocation = "Stop";
-            if (Bottle.Exists())
-            {
-                Bottle.Detach();
-            }
-            Player.Character.Tasks.Clear();
-            Player.IsConsuming = false;
-            GameFiber.Sleep(5000);
-            if (Bottle.Exists())
-            {
-                Bottle.Delete();
-            }
+            Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
         }
     }
 }

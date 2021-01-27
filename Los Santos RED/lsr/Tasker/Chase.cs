@@ -35,7 +35,7 @@ public class Chase : ComplexTask
     private bool ShouldChaseVehicleInVehicle => Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
     private bool ShouldChasePedInVehicle => Cop.DistanceToPlayer >= 25f;
     private bool ShouldGetBackInCar => CopsVehicle.Exists() && Cop.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
-    private bool ShouldCarJackPlayer => Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
+    private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
     private bool ShouldExitPoliceVehicle => Cop.DistanceToPlayer < 25f && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle.Speed <= 2.0f && !Player.IsMovingFast;
     private bool ShouldShoot => !Player.IsBusted && !Player.IsAttemptingToSurrender;
     private Task CurrentTaskDynamic

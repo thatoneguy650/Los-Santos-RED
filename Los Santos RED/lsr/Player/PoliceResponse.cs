@@ -243,6 +243,7 @@ namespace LosSantosRED.lsr
             {
                 NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", WantedLevel);
                 Game.LocalPlayer.WantedLevel = WantedLevel;
+                Game.Console.Print($"Increase Wanted: {Reason}");
             }
         }
         public void Update()

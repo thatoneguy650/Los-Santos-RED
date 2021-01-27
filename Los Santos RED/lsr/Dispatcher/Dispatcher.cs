@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 public class Dispatcher
@@ -12,7 +13,7 @@ public class Dispatcher
     private readonly ICountyJurisdictions CountyJurisdictions;
     private readonly IPoliceRespondable Player;
     private readonly int LikelyHoodOfAnySpawn = 5;
-    private readonly float MinimumDeleteDistance = 200f;
+    private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
     private readonly ISettingsProvideable Settings;
     private readonly IStreets Streets;
@@ -21,6 +22,9 @@ public class Dispatcher
     private readonly IZones Zones;
     private uint GameTimeAttemptedDispatch;
     private uint GameTimeAttemptedRecall;
+    private Blip Blip1;
+    private Blip Blip2;
+    private Blip Blip3;
     public Dispatcher(IEntityProvideable world, IPoliceRespondable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, ICountyJurisdictions countyJurisdictions, IZoneJurisdictions zoneJurisdictions)
     {
         Player = player;
@@ -31,6 +35,15 @@ public class Dispatcher
         Zones = zones;
         CountyJurisdictions = countyJurisdictions;
         ZoneJurisdictions = zoneJurisdictions;
+
+
+        Blip1 = new Blip(Vector3.Zero, 1f);
+        Blip1.Color = Color.Red;
+        Blip2 = new Blip(Vector3.Zero, 1f);
+        Blip1.Color = Color.Green;
+
+
+
     }
     private enum VanillaDispatchType //Only for disabling
     {
@@ -164,19 +177,23 @@ public class Dispatcher
     {
         if (IsTimeToDispatch && HasNeedToDispatch)
         {
+
+            Game.Console.Print($"DISPATCHER: Attempting Spawn");
             int timesTried = 0;
             SpawnLocation spawnLocation = new SpawnLocation();
             do
             {
                 spawnLocation.InitialPosition = GetPositionAroundPlayer();
                 spawnLocation.GetClosestStreet();
+                Blip1.Position = spawnLocation.StreetPosition;
+                Blip2.Position = spawnLocation.InitialPosition;
                 timesTried++;
             }
             while (!spawnLocation.HasSpawns && !IsValidSpawn(spawnLocation) && timesTried < 10);
             if (spawnLocation.HasSpawns && IsValidSpawn(spawnLocation))
             {
                 Agency agency = GetRandomAgency(spawnLocation);
-                DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
                 if(VehicleType != null)
                 {
                     DispatchableOfficer OfficerType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
@@ -191,10 +208,14 @@ public class Dispatcher
                         }
                         catch (Exception ex)
                         {
-                            Game.Console.Print("SpawnCop " + ex.Message + " : " + ex.StackTrace);
+                            Game.Console.Print($"DISPATCHER: SpawnCop {ex.Message} : {ex.StackTrace}");
                         }
                     }
                 }
+            }
+            else
+            {
+                Game.Console.Print($"DISPATCHER: Attempting to Spawn Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {IsValidSpawn(spawnLocation)}");
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -202,17 +223,29 @@ public class Dispatcher
     }
     public void Dispose()
     {
+
+        if (Blip1.Exists())
+        {
+            Blip1.Delete();
+        }
+        if (Blip2.Exists())
+        {
+            Blip2.Delete();
+        }
+
         SetVanilla(true);
     }
     public void Recall()
     {
         if (IsTimeToRecall)
         {
+            Game.Console.Print($"DISPATCHER: Attempting Recall");
             foreach (Cop DeleteableCop in DeletableCops)
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
                     Delete(DeleteableCop);
+                    Game.Console.Print($"DISPATCHER: Recalling Cop");
                 }
             }
             GameTimeAttemptedRecall = Game.GameTime;

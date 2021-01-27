@@ -200,8 +200,8 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
 
-               // new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
-               // new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
+                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
+                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
 
                //// Old Tasking
                // new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
@@ -211,8 +211,8 @@ namespace LosSantosRED.lsr
                 //New Tasking
 
 
-                //new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
-                //new ModTask(500, "NewTasking.Update", Tasker.Update, 16,1),
+                new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
+                new ModTask(500, "NewTasking.Update", Tasker.Update, 16,1),
             };
         }
         private void StartDebugLogic()

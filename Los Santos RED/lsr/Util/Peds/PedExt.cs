@@ -27,7 +27,7 @@ public class PedExt : IComplexTaskable
     private Entity LastHurtBy;
     public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
-    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} Md: {Pedestrian.Model.Name} RG1: {Pedestrian.RelationshipGroup.Name} RG2: {PedGroup?.Name}";
+    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName}";
     public PedExt(Ped _Pedestrian)
     {
         Pedestrian = _Pedestrian;

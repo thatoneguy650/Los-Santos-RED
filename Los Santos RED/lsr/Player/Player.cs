@@ -79,7 +79,6 @@ namespace Mod
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
-        public bool AreStarsGreyedOut { get; set; }
         public string AutoTuneStation { get; set; } = "NONE";
         public bool BeingArrested { get; private set; }
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
@@ -194,7 +193,6 @@ namespace Mod
         public bool IsOffroad => CurrentLocation.IsOffroad;
         public bool IsOnMotorcycle { get; private set; }
         public bool IsRagdoll { get; private set; }
-        public bool IsSmoking { get; set; }
         public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
@@ -226,7 +224,7 @@ namespace Mod
         public bool RecentlyDied => GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied <= 5000;
         public bool RecentlyStartedPlaying => Game.GameTime - GameTimeStartedPlaying <= 15000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
-        public bool ShouldCancelActivities => IsInVehicle || IsIncapacitated || IsVisiblyArmed || IsGettingIntoAVehicle || Game.LocalPlayer.Character.IsInCover || Game.LocalPlayer.Character.IsInCombat;
+        public bool ShouldCancelActivities => IsInVehicle || IsIncapacitated || IsVisiblyArmed || IsGettingIntoAVehicle || Game.LocalPlayer.Character.IsInCover || Game.LocalPlayer.Character.IsInCombat || Game.LocalPlayer.Character.IsJumping || Game.LocalPlayer.Character.IsRunning;
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public bool StarsRecentlyActive => SearchMode.StarsRecentlyActive;
         public bool StarsRecentlyGreyedOut => SearchMode.StarsRecentlyGreyedOut;
@@ -513,19 +511,19 @@ namespace Mod
         public void Setup()
         {
             PoliceResponse.SetWantedLevel(0, "Initial", true);
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+           // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
 
-            try
-            {
-                foreach (RadioStation radiostation in RadioStations.RadioStationList)
-                {
-                    NativeFunction.Natives.x477D9DB48F889591(radiostation.InternalName, false);
-                }
-            }
-            catch (Exception ex)
-            {
-                Game.Console.Print("ERROR!!!");
-            }
+            //try
+            //{
+            //    foreach (RadioStation radiostation in RadioStations.RadioStationList)
+            //    {
+            //        NativeFunction.Natives.x477D9DB48F889591(radiostation.InternalName, false);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Game.Console.Print("ERROR!!!");
+            //}
         }
         public void ShootAt(Vector3 TargetCoordinate)
         {

@@ -22,7 +22,7 @@ public class Idle : ComplexTask
     {
         get
         {
-            if (Cop.DistanceToPlayer <= 75f && Cop.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask && !Cop.Pedestrian.IsInAnyVehicle(false) && Cop.Pedestrian.LastVehicle.Exists() && Cop.Pedestrian.LastVehicle.IsDriveable && Cop.Pedestrian.LastVehicle.FreeSeatsCount > 0)
+            if (Cop.DistanceToPlayer <= 75f && Cop.Pedestrian.Tasks.CurrentTaskStatus != Rage.TaskStatus.InProgress && !Cop.Pedestrian.IsInAnyVehicle(false) && Cop.Pedestrian.LastVehicle.Exists() && Cop.Pedestrian.LastVehicle.IsDriveable && Cop.Pedestrian.LastVehicle.FreeSeatsCount > 0)
             {
                 return Task.GetInCar;
             }
@@ -40,6 +40,7 @@ public class Idle : ComplexTask
     public override void Start()
     {
         Cop.Pedestrian.BlockPermanentEvents = false;
+        Cop.Pedestrian.Tasks.Clear();
         Update();
     }
     public override void Update()
@@ -107,7 +108,7 @@ public class Idle : ComplexTask
     }
     private void SetSiren()
     {
-        if (Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle.HasSiren && !Cop.Pedestrian.CurrentVehicle.IsSirenOn)
+        if (Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle.HasSiren && Cop.Pedestrian.CurrentVehicle.IsSirenOn)
         {
             Cop.Pedestrian.CurrentVehicle.IsSirenOn = false;
             Cop.Pedestrian.CurrentVehicle.IsSirenSilent = false;
