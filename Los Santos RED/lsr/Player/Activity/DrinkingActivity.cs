@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class DrinkingActivity : ConsumeActivity
+    public class DrinkingActivity : DynamicActivity
     {
         private Rage.Object Bottle;
         private string PlayingAnim;
@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr.Player
         {
             Player = consumable;
         }
-        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsConsuming} I: {Player.IntoxicatedIntensity}";
+        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
         public override void Cancel()
         {
             IsCancelled = true;
@@ -32,8 +32,6 @@ namespace LosSantosRED.lsr.Player
         public override void Start()
         {
             Setup();
-            IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 25000, 60000, "Drunk");//25000
-            IntoxicatingEffect.Start();
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
                 Enter();
@@ -66,7 +64,7 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             AttachBottleToHand();
-            Player.IsConsuming = true;
+            Player.IsPerformingActivity = true;
             PlayingDict = Data.AnimEnterDictionary;
             PlayingAnim = Data.AnimEnter;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
@@ -79,7 +77,7 @@ namespace LosSantosRED.lsr.Player
                 Bottle.Detach();
             }
             Player.Character.Tasks.Clear();
-            Player.IsConsuming = false;
+            Player.IsPerformingActivity = false;
             GameFiber.Sleep(5000);
             if (Bottle.Exists())
             {
@@ -88,7 +86,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            while (!Player.ShouldCancelActivities && !IsCancelled)
+            while (Player.CanPerformActivities && !IsCancelled)
             {
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
@@ -142,6 +140,9 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
+
+            IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 25000, 60000, "Drunk");//25000
+            IntoxicatingEffect.Start();
         }
     }
 }

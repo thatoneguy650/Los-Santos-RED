@@ -80,7 +80,7 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        Player.DEBUGSETBUSTED();
+       // Player.DEBUGSETBUSTED();
        // Scanner.Abort();
     }
     private void DebugNumpad3()

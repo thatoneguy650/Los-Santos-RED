@@ -28,8 +28,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsSpeeding { get; }
         bool IsViolatingAnyTrafficLaws { get; }
         bool IsConversing { get; }
-        bool IsConsuming { get; }
-        bool CanConverse { get; }
+        bool IsPerformingActivity { get; }
+        bool CanConverseWithLookedAtPed { get; }
         List<ButtonPrompt> ButtonPrompts { get; }
         string CurrentSpeedDisplay { get; }
     }

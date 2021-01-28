@@ -44,7 +44,15 @@ namespace LosSantosRED.lsr
             VehicleCheck();
             HoldingEnterCheck();
             ButtonPromptCheck();
+            ConversationCheck();
             Player.IsHoldingEnter = IsHoldingEnter;
+        }
+        private void ConversationCheck()
+        {
+            if (Player.ButtonPrompts.Any(x => x.Group == "StartConversation" && x.IsPressedNow))//string for now...
+            {
+                Player.StartConversation();
+            }
         }
         private void HoldingEnterCheck()
         {
@@ -83,7 +91,12 @@ namespace LosSantosRED.lsr
             Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
             foreach (ButtonPrompt bp in Player.ButtonPrompts)
             {
-                if (Game.IsKeyDownRightNow(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDownRightNow(bp.Modifier)) && !bp.IsPressedNow)
+                if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)
+                {
+                    Game.Console.Print($"INPUT! Control :{bp.Text}: Down");
+                    bp.IsPressedNow = true;
+                }
+                else if (Game.IsControlJustPressed(2, bp.GameControl) && !bp.IsPressedNow)
                 {
                     bp.IsPressedNow = true;
                 }

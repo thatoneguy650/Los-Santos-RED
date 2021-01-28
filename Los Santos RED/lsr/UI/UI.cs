@@ -99,12 +99,14 @@ public class UI
         //if (displayedButtonPrompts != Player.ButtonPrompts)
         ////if (displayedButtonPrompts.Count() != Player.ButtonPrompts.Count())
         //{
-            instructional.Buttons.Clear();
-            if (Player.ButtonPrompts.Any())
+        instructional.Buttons.Clear();
+        if (Player.ButtonPrompts.Any())
+        {
+            foreach (ButtonPrompt buttonPrompt in Player.ButtonPrompts.OrderByDescending(x => x.Order))
             {
-                foreach (ButtonPrompt buttonPrompt in Player.ButtonPrompts.OrderByDescending(x=> x.Order))
+                if (buttonPrompt.Key != Keys.None)
                 {
-                    if(buttonPrompt.Modifier != Keys.None)
+                    if (buttonPrompt.Modifier != Keys.None)
                     {
                         instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, buttonPrompt.Key.GetInstructionalKey()));
                     }
@@ -112,10 +114,23 @@ public class UI
                     {
                         instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
                     }
-                    
                 }
+                else
+                {
+                    if (buttonPrompt.Modifier != Keys.None)
+                    {
+                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, InstructionalKey.MouseLeft));
+                    }
+                    else
+                    {
+                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, InstructionalKey.MouseLeft));
+                    }
+                }
+
+
             }
-            instructional.Update();
+        }
+        instructional.Update();
         //    Game.Console.Print($"Button Prompts Changed {Player.ButtonPrompts.Count}");
         //    displayedButtonPrompts.Clear();
         //    displayedButtonPrompts.AddRange(Player.ButtonPrompts);
@@ -190,7 +205,7 @@ public class UI
         string StreetDisplay = "";
         if (Player.CurrentStreet != null)
         {
-            if(Player.CurrentStreet.IsHighway)
+            if (Player.CurrentStreet.IsHighway)
             {
                 StreetDisplay += "~y~";
             }

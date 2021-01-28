@@ -25,7 +25,7 @@ namespace LosSantosRED.lsr.Player
             OverLayEffect = overlay;
         }
         public float CurrentIntensity => (float)((float)TotalTimeIntoxicated / IntoxicatingIntervalTime - (float)TotalTimeSober / SoberingIntervalTime).Clamp(0.0f, MaxEffectAllowed);
-        public string DebugString => $"IsIntox {Player.IsIntoxicated} IsBeingIntoxicated {Player.IsConsuming} I {CurrentIntensity} HBDF {HasBeenIntoxicatedFor} HBNDF {HasBeenNoIntoxicatedFor} TTD {TotalTimeIntoxicated} TTS {TotalTimeSober}";
+        public string DebugString => $"IsIntox {Player.IsIntoxicated} IsBeingIntoxicated {Player.IsPerformingActivity} I {CurrentIntensity} HBDF {HasBeenIntoxicatedFor} HBNDF {HasBeenNoIntoxicatedFor} TTD {TotalTimeIntoxicated} TTS {TotalTimeSober}";
         private string ClipsetAtCurrentIntensity
         {
             get
@@ -48,10 +48,10 @@ namespace LosSantosRED.lsr.Player
                 }
             }
         }
-        private uint HasBeenIntoxicatedFor => !Player.IsConsuming ? 0 : Game.GameTime - GameTimeStartedIntoxicating;
-        private uint HasBeenNoIntoxicatedFor => Player.IsConsuming ? 0 : Game.GameTime - GameTimeStoppedIntoxicating;
-        private uint TotalTimeIntoxicated => Player.IsConsuming ? HasBeenIntoxicatedFor : GameTimeStoppedIntoxicating - GameTimeStartedIntoxicating;
-        private uint TotalTimeSober => Player.IsConsuming ? 0 : HasBeenNoIntoxicatedFor;
+        private uint HasBeenIntoxicatedFor => !Player.IsPerformingActivity ? 0 : Game.GameTime - GameTimeStartedIntoxicating;
+        private uint HasBeenNoIntoxicatedFor => Player.IsPerformingActivity ? 0 : Game.GameTime - GameTimeStoppedIntoxicating;
+        private uint TotalTimeIntoxicated => Player.IsPerformingActivity ? HasBeenIntoxicatedFor : GameTimeStoppedIntoxicating - GameTimeStartedIntoxicating;
+        private uint TotalTimeSober => Player.IsPerformingActivity ? 0 : HasBeenNoIntoxicatedFor;
         public void Start()
         {
             GameTimeStartedIntoxicating = Game.GameTime;
@@ -71,12 +71,12 @@ namespace LosSantosRED.lsr.Player
         }
         private void ContinueIntoxication()
         {
-            while (Player.IsConsuming)
+            while (Player.IsPerformingActivity)
             {
                 UpdateDrunkStatus();
                 GameFiber.Yield();
             }
-            Player.IsConsuming = false;
+            Player.IsPerformingActivity = false;
             GameTimeStoppedIntoxicating = Game.GameTime;
         }
         private void SetIntoxicated()

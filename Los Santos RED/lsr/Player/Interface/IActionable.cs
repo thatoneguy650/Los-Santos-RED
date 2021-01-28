@@ -11,7 +11,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsDead { get; }
         bool IsBusted { get; }
         bool IsInVehicle { get; }
-        bool IsConsuming { get; }
+        bool IsPerformingActivity { get; }
         string AutoTuneStation { get; set; }
         bool CanPerformActivities { get; }
 
@@ -23,6 +23,6 @@ namespace LosSantosRED.lsr.Interface
         void GiveMoney(int v);
         void RemovePlate();
         void ChangePlate();
-        void StopConsumingActivity();
+        void StopDynamicActivity();
     }
 }

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class SmokingActivity : ConsumeActivity
+    public class SmokingActivity : DynamicActivity
     {
         private string PlayingAnim;
         private string PlayingDict;
@@ -53,11 +53,6 @@ namespace LosSantosRED.lsr.Player
         public override void Start()
         {
             Setup();
-            if (IsPot)
-            {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 60000, 60000, "drug_wobbly");//2.5,25000//smoking was new IntoxicatingEffect(Player, 0.5f, 25000, 60000, "Bloom");//1.2,25000
-                IntoxicatingEffect.Start();
-            }
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
             {
                 Enter();
@@ -90,9 +85,10 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
+            Player.IsPerformingActivity = true;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
             GameFiber.Sleep(500);
-            while (!Player.ShouldCancelActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
+            while (Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
             {
                 UpdatePosition();
                 UpdateSmoke();
@@ -102,8 +98,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         if (!IsSmokedItemAttachedToMouth && !IsSmokedItemLit)
                         {
-                            Game.Console.Print($"IsAttachedToMouth {IsSmokedItemAttachedToMouth} IsLit {IsSmokedItemLit} HandByFace {IsHandByFace} {DistanceBetweenHandAndFace}");
-                            Player.IsConsuming = true;
+                            Game.Console.Print($"IsAttachedToMouth {IsSmokedItemAttachedToMouth} IsLit {IsSmokedItemLit} HandByFace {IsHandByFace} {DistanceBetweenHandAndFace}"); 
                             AttachSmokedItemToMouth();
                         }
                         else if (IsSmokedItemAttachedToMouth && !IsSmokedItemLit)
@@ -122,7 +117,7 @@ namespace LosSantosRED.lsr.Player
                 GameFiber.Yield();
             }
             GameFiber.Sleep(100);
-            if (Player.ShouldCancelActivities)
+            if (!Player.CanPerformActivities)
             {
                 if (IsSmokedItemLit && IsSmokedItemNearMouth)
                 {
@@ -140,11 +135,11 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-            if (IsActivelySmoking && !Player.ShouldCancelActivities)
+            if (IsActivelySmoking && Player.CanPerformActivities)
             {
                 Game.Console.Print($"Stop with Animation");
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-                while (!Player.ShouldCancelActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
+                while (Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
                 {
                     if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) >= 0.8f && SmokedItem.Exists())
                     {
@@ -158,7 +153,7 @@ namespace LosSantosRED.lsr.Player
                 SmokedItem.Detach();
             }
             Player.Character.Tasks.Clear();
-            Player.IsConsuming = false;
+            Player.IsPerformingActivity = false;
             GameFiber.Sleep(5000);
             if (SmokedItem.Exists())
             {
@@ -170,7 +165,7 @@ namespace LosSantosRED.lsr.Player
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-            while (!Player.ShouldCancelActivities && !IsCancelled)
+            while (Player.CanPerformActivities && !IsCancelled)
             {
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
@@ -325,6 +320,12 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new SmokingData(AnimBase, AnimBaseDictionary, AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, MouthBoneID, MouthOffset, MouthRotator, PropModelName);
+
+            if (IsPot)
+            {
+                IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 60000, 60000, "drug_wobbly");//2.5,25000//smoking was new IntoxicatingEffect(Player, 0.5f, 25000, 60000, "Bloom");//1.2,25000
+                IntoxicatingEffect.Start();
+            }
         }
         private void UpdatePosition()
         {

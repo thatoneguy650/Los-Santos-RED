@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IIntoxicatable : IConsumeable
+    public interface IIntoxicatable : IActivityPerformable
     {
         bool IsIntoxicated { get; set; }
         float IntoxicatedIntensity { get; set; }
-        bool ShouldCancelActivities { get; }
+       // bool ShouldCancelActivities { get; }
     }
 }

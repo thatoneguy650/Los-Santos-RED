@@ -255,7 +255,7 @@ public class Menu_Old
         }
         else if (selectedItem == menuActionStopConsumingActivity)
         {
-            Player.StopConsumingActivity();
+            Player.StopDynamicActivity();
         }
     }
     private void BustedMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -308,7 +308,7 @@ public class Menu_Old
             actionsMenu.AddItem(menuActionDrink);
             actionsMenu.AddItem(menuActionSmoke);
             actionsMenu.AddItem(menuActionSmokePot);
-            if (Player.IsConsuming)
+            if (Player.IsPerformingActivity)
             {
                 actionsMenu.AddItem(menuActionStopConsumingActivity);
             }

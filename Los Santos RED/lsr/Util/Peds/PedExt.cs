@@ -308,8 +308,8 @@ public class PedExt : IComplexTaskable
             }
         }
     }
-    public bool CanConverse => !Pedestrian.IsFleeing && !Pedestrian.IsRunning && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
-    public bool CanBeMugged => !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
+    public bool CanConverse => Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
+    public bool CanBeMugged => Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool HurtBy(Ped ToCheck)
     {
         if (LastHurtBy == ToCheck)

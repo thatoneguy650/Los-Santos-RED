@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player
 {
-    public abstract class ConsumeActivity
+    public abstract class DynamicActivity
     {
-        public ConsumeActivity() 
+        public DynamicActivity() 
         {
 
         }

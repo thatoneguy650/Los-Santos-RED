@@ -4,7 +4,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System.Collections.Generic;
 
-public class ActionMenu
+public class ActionMenu : Menu
 {
     private UIMenu Actions;
     private UIMenuItem ChangePlate;
@@ -22,27 +22,48 @@ public class ActionMenu
         CreateActionsMenu();
     }
     public int SelectedPlateIndex { get; set; }
+
+    public override void Hide()
+    {
+        Actions.Visible = false;
+    }
+
+    public override void Show()
+    {
+        Actions.Visible = true;
+    }
+    public override void Toggle()
+    {
+        if (!Actions.Visible)
+        {
+            Actions.Visible = true;
+        }
+        else
+        {
+            Actions.Visible = false;
+        }
+    }
     public void Update()
     {
         if (Player.CanPerformActivities)
         {
+            Suicide.Enabled = true;
             ChangePlate.Enabled = true;
             RemovePlate.Enabled = true;
             Drink.Enabled = true;
             Smoke.Enabled = true;
             SmokePot.Enabled = true;
-
-
         }
         else
         {
+            Suicide.Enabled = false;
             ChangePlate.Enabled = false;
             RemovePlate.Enabled = false;
             Drink.Enabled = false;
             Smoke.Enabled = false;
             SmokePot.Enabled = false;
         }
-        if (Player.IsConsuming)
+        if (Player.IsPerformingActivity)
         {
             StopConsuming.Enabled = true;
         }
@@ -100,7 +121,7 @@ public class ActionMenu
         }
         else if (selectedItem == StopConsuming)
         {
-            Player.StopConsumingActivity();
+            Player.StopDynamicActivity();
         }
         Actions.Visible = false;
     }

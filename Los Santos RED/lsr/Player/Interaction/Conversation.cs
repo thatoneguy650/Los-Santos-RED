@@ -22,7 +22,7 @@ public class Conversation : Interaction
         Ped = ped;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
-    private bool CanContinueConversation => Player.IsConversing && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && !Ped.Pedestrian.IsFleeing && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsInCombat && !Player.Character.IsInCombat;
+    private bool CanContinueConversation => Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
     public override void Dispose()
     {
         Player.ButtonPrompts.RemoveAll(x => x.Group == "Conversation");
@@ -146,31 +146,34 @@ public class Conversation : Interaction
         }
     }
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete)
-    {
+    {   
         bool Spoke = false;
-        foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
+        if (CanContinueConversation)
         {
-            ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+            foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
+            {
+                ToSpeak.PlayAmbientSpeech(null, AmbientSpeech, 0, SpeechModifier.Force);
+                GameFiber.Sleep(100);
+                if (ToSpeak.IsAnySpeechPlaying)
+                {
+                    Spoke = true;
+                }
+                Game.Console.Print($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
+                if (Spoke)
+                {
+                    break;
+                }
+            }
             GameFiber.Sleep(100);
-            if (ToSpeak.IsAnySpeechPlaying)
+            while (ToSpeak.IsAnySpeechPlaying && WaitForComplete && CanContinueConversation)
             {
                 Spoke = true;
+                GameFiber.Yield();
             }
-            Game.Console.Print($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
-            if (Spoke)
+            if (!Spoke)
             {
-                break;
+                Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
             }
-        }
-        GameFiber.Sleep(100);
-        while (ToSpeak.IsAnySpeechPlaying && WaitForComplete)
-        {
-            Spoke = true;
-            GameFiber.Yield();
-        }
-        if(!Spoke)
-        {
-            Game.DisplayNotification($"\"{Possibilities.FirstOrDefault()}\"");
         }
         return Spoke;
     }
@@ -295,6 +298,7 @@ public class Conversation : Interaction
             }
             GameFiber.Yield();
         }
+        Dispose();
         GameFiber.Sleep(1000);
     }
 }

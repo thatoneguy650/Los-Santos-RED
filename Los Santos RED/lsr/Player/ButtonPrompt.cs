@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,15 @@ public class ButtonPrompt
         Group = group;
         Order = order;
     }
+    public ButtonPrompt(string text, string group, string identifier, GameControl gameControl, int order)
+    {
+        Text = text;
+        GameControl = gameControl;
+        Identifier = identifier;
+        Group = group;
+        Order = order;
+    }
+    public GameControl GameControl { get; set; }
     public string Identifier { get; set; }
     public string Text { get; set; }
     public Keys Key { get; set; }

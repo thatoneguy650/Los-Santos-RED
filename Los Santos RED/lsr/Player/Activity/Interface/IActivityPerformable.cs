@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IConsumeable
+    public interface IActivityPerformable
     {
-        bool IsConsuming { get; set; }
+        bool IsPerformingActivity { get; set; }
         Ped Character { get; }
         string ModelName { get; }
         bool IsMale { get; }

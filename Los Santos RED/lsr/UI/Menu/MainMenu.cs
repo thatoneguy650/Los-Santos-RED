@@ -26,6 +26,7 @@ public class MainMenu : Menu
     public override void Hide()
     {
         Main.Visible = false;
+        ActionMenu.Hide();
     }
     public override void Show()
     {
@@ -33,6 +34,7 @@ public class MainMenu : Menu
         {
             ActionMenu.Update();
             Main.Visible = true;
+            ActionMenu.Hide();
         }
     }
     public override void Toggle()
@@ -41,10 +43,12 @@ public class MainMenu : Menu
         {
             ActionMenu.Update();
             Main.Visible = true;
+            ActionMenu.Hide();
         }
         else
         {
             Main.Visible = false;
+            ActionMenu.Hide();
         }
     }
     private void CreateMainMenu()

@@ -123,6 +123,7 @@
     <Compile Include="lsr\Dispatcher\IssuableWeapon.cs" />
     <Compile Include="lsr\Dispatcher\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
+    <Compile Include="lsr\Player\Activity\SuicideActivity.cs" />
     <Compile Include="lsr\Player\Activity\Util\DrinkingData.cs" />
     <Compile Include="lsr\Player\Activity\Util\SmokingData.cs" />
     <Compile Include="lsr\UI\Menu\ActionMenu.cs" />
@@ -151,8 +152,8 @@
     <Compile Include="lsr\Helper\Serialization.cs" />
     <Compile Include="lsr\Audio\Interface\IAudioPlayable.cs" />
     <Compile Include="lsr\PedSwap\Interface\IPedswappable.cs" />
-    <Compile Include="lsr\Player\Activity\ConsumeActivity.cs" />
-    <Compile Include="lsr\Player\Activity\Interface\IConsumeable.cs" />
+    <Compile Include="lsr\Player\Activity\DynamicActivity.cs" />
+    <Compile Include="lsr\Player\Activity\Interface\IActivityPerformable.cs" />
     <Compile Include="lsr\Player\Activity\Interface\IIntoxicatable.cs" />
     <Compile Include="lsr\Player\Activity\DrinkingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Util\LoopedParticle.cs" />
