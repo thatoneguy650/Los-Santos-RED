@@ -43,7 +43,7 @@ public class PedExt : IComplexTaskable
         PedGroup = gameGroup;
     }
     public PedGroup PedGroup { get; private set; }
-    public string FormattedName => (HasSpokenWithPlayer ?  Name : PedGroup.MemberName);
+    public string FormattedName => (HasSpokenWithPlayer ?  Name : IsCop ? "Cop" : PedGroup?.MemberName);
     public bool IsFedUpWithPlayer { get; set; }
     public int TimesInsultedByPlayer { get; set; }
     public int InsultLimit => IsGangMember || IsCop ? 1 : 3;
@@ -309,7 +309,7 @@ public class PedExt : IComplexTaskable
         }
     }
     public bool CanConverse => Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
-    public bool CanBeMugged => Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
+    public bool CanBeMugged => !IsCop && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool HurtBy(Ped ToCheck)
     {
         if (LastHurtBy == ToCheck)

@@ -216,14 +216,14 @@ public static class OldSmokingManager
             NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_SMOKING", 0, true);
 
             uint GameTimeStartedSmoking = Game.GameTime;
-            while (!EntryPoint.IsMoveControlPressed)
-            {
-                if (Game.GameTime - GameTimeStartedSmoking >= 5000)
-                {
-                  //  ClockManager.OverrideToFastest = true;//make this transition nicely!
-                }
-                GameFiber.Sleep(100);
-            }
+            //while (!Player.IsMoveControlPressed)
+            //{
+            //    if (Game.GameTime - GameTimeStartedSmoking >= 5000)
+            //    {
+            //      //  ClockManager.OverrideToFastest = true;//make this transition nicely!
+            //    }
+            //    GameFiber.Sleep(100);
+            //}
             Game.LocalPlayer.Character.Tasks.Clear();
            // ClockManager.OverrideToFastest = false;
         }, "SmokeParticles");

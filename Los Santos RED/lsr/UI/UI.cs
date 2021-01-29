@@ -203,27 +203,27 @@ public class UI
     private string GetStreetDisplay()
     {
         string StreetDisplay = "";
-        if (Player.CurrentStreet != null)
+        if (Player.CurrentLocation.CurrentStreet != null)
         {
-            if (Player.CurrentStreet.IsHighway)
+            if (Player.CurrentLocation.CurrentStreet.IsHighway)
             {
                 StreetDisplay += "~y~";
             }
-            StreetDisplay += $" {Player.CurrentStreet.Name}~s~";
+            StreetDisplay += $" {Player.CurrentLocation.CurrentStreet.Name}~s~";
         }
-        if (Player.CurrentCrossStreet != null)
+        if (Player.CurrentLocation.CurrentCrossStreet != null)
         {
-            StreetDisplay += $" at {Player.CurrentCrossStreet.Name} ~s~";
+            StreetDisplay += $" at {Player.CurrentLocation.CurrentCrossStreet.Name} ~s~";
         }
         return StreetDisplay;
     }
     private string GetZoneDisplay()
     {
-        if (Player.CurrentZone == null)
+        if (Player.CurrentLocation.CurrentZone == null)
         {
             return "";
         }
-        return Player.CurrentZone.FullDisplayName + " ~s~- " + Player.CurrentZone.AssignedAgencyInitials;
+        return Player.CurrentLocation.CurrentZone.FullDisplayName + " ~s~- " + Player.CurrentLocation.CurrentZone.AssignedAgencyInitials;
     }
     private void HideVanillaUI()
     {

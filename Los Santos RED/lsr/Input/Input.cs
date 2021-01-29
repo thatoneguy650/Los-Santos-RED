@@ -31,6 +31,7 @@ namespace LosSantosRED.lsr
             Settings = settings;
         }
         private uint GameTimeStartedHoldingEnter;
+        private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsHoldingEnter => GameTimeStartedHoldingEnter != 0 && Game.GameTime - GameTimeStartedHoldingEnter >= 75;
         private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow;
         private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
@@ -46,6 +47,7 @@ namespace LosSantosRED.lsr
             ButtonPromptCheck();
             ConversationCheck();
             Player.IsHoldingEnter = IsHoldingEnter;
+            Player.IsMoveControlPressed = IsMoveControlPressed;
         }
         private void ConversationCheck()
         {
@@ -127,12 +129,6 @@ namespace LosSantosRED.lsr
                     NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 0, (int)GameControl.VehicleHotwireRight, 1.0f);
                 }
 
-
-
-
-
-
-
                 if (IsPressingHazards)
                 {
                     Player.CurrentVehicle.Indicators.ToggleHazards();
@@ -150,5 +146,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        
+
     }
 }

@@ -34,7 +34,7 @@ namespace LosSantosRED.lsr
         private Streets Streets;
         private StreetScannerAudio StreetScannerAudio;
         private Tasker Tasker;
-        private Tasking_Old Tasking_Old;
+        //private Tasking_Old Tasking_Old;
         private Mod.Time Time;
         private UI UI;
         private VehicleScannerAudio VehicleScannerAudio;
@@ -45,6 +45,7 @@ namespace LosSantosRED.lsr
         private ZoneScannerAudio ZoneScannerAudio;
         private RadioStations RadioStations;
         private PedGroups RelationshipGroups;
+        private VanillaManager VanillaManager;
         public ModController()
         {
         }
@@ -57,22 +58,17 @@ namespace LosSantosRED.lsr
             World.Dispose();
             PedSwap.Dispose();
             Dispatcher.Dispose();
+            VanillaManager.Dispose();
             if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
             {
                 Player.SetMoney(PedSwap.OriginalMoney);
             }
         }
-        public void NewPlayer(string ModelName, bool Male)
+        public void NewPlayer(string modelName, bool isMale)
         {
-            Player.ModelName = ModelName;
-            Player.IsMale = Male;
             Player.Reset(true, true, true);
+            Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
             Scanner.Reset();
-            Player.GiveName(ModelName, Names.GetRandomName(Male));
-            if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney)
-            {
-                Player.SetMoney(RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
-            }
         }
         public void Start()
         {
@@ -83,37 +79,25 @@ namespace LosSantosRED.lsr
             }
             ReadDataFiles();
             GameFiber.Sleep(500);
-           // Audio = new Audio();
-
             Audio = new AudioNew();
-
-
             Time = new Mod.Time();
-
-
             World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups);
             World.Setup();
 
-            Player = new Mod.Player(World, Time, Streets, Zones, Settings, Weapons, RadioStations);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name,Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations);
             Player.Setup();
-
-
 
             Input = new Input(Player, Settings);
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
             Respawning = new Respawning(Time, World, Player, Weapons, PlacesOfInterest, Settings);
             PedSwap = new PedSwap(Time, Player, Settings, World);
-            Tasking_Old = new Tasking_Old(World, Player, Player);
             Tasker = new Tasker(World, Player);
             UI = new UI(Player, Settings, ZoneJurisdictions, PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
             Scanner = new Scanner(World, Player, Audio, Respawning, Settings);
-            //Menu_Old = new Menu_Old(Player, PedSwap, Respawning, Settings, Weapons, PlacesOfInterest);
-            //Menu = new MenuManager(PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
+            VanillaManager = new VanillaManager();
             Debug = new Debug(PlateTypes, World, Player, Scanner);
-            Player.GiveName();
-            Player.AddSpareLicensePlate();
             World.AddBlipsToMap();
             PedSwap.StoreInitialVariation();
             GameFiber.Yield();
@@ -179,14 +163,19 @@ namespace LosSantosRED.lsr
         {
             MyTickTasks = new List<ModTask>()
             {
-               new ModTask(0, "Time.Tick", Time.Tick, 0,0),
+                new ModTask(0, "Time.Tick", Time.Tick, 0,0),
                 new ModTask(0, "Input.Tick", Input.Update, 1,0),
-                new ModTask(25, "Player.Update", Player.Update, 2,0),
-                new ModTask(100, "World.Police.Tick", Police.Update, 2,1),//25
-                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 3,0),//50
-                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 3,1),//50
-                new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 4,0),
-                new ModTask(500, "World.Civilians.Tick", Civilians.Update, 4,1),//150
+
+
+                new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//new 
+
+
+                new ModTask(25, "Player.Update", Player.Update, 3,0),
+                new ModTask(100, "World.Police.Tick", Police.Update, 3,1),//25
+                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 4,0),//50
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 4,1),//50
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 5,0),
+                new ModTask(500, "World.Civilians.Tick", Civilians.Update, 5,1),//150
                 new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 6,0),
                 new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 6,1),
                 new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 6,2),
@@ -301,6 +290,25 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Menu/UI Logic");
+        }
+        private string GetName(string modelBeforeSpoof, string defaultName)
+        {
+            if (modelBeforeSpoof.ToLower() == "player_zero")
+            {
+                return "Michael De Santa";
+            }
+            else if (modelBeforeSpoof.ToLower() == "player_one")
+            {
+                return "Franklin Clinton";
+            }
+            else if (modelBeforeSpoof.ToLower() == "player_two")
+            {
+                return "Trevor Philips";
+            }
+            else
+            {
+                return defaultName;
+            }
         }
         private class ModTask
         {

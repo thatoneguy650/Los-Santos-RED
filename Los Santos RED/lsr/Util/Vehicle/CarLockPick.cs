@@ -94,7 +94,7 @@ public class CarLockPick
 
         while (Game.LocalPlayer.Character.IsGettingIntoVehicle && Game.GameTime - GameTimeStartedStealing <= 3500)
         {
-            if (EntryPoint.IsMoveControlPressed)
+            if (Player.IsMoveControlPressed)
             {
                 StartAnimation = false;
                 break;
@@ -144,7 +144,7 @@ public class CarLockPick
         while (Game.GameTime - GameTimeStarted <= WaitTime)
         {
             GameFiber.Yield();
-            if (EntryPoint.IsMoveControlPressed)
+            if (Player.IsMoveControlPressed)
             {
                 Continue = false;
                 break;

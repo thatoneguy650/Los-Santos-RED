@@ -99,7 +99,7 @@ public class PedSwap : IPedswappable
             NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP<bool>(Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
-                while (!EntryPoint.IsMoveControlPressed)
+                while (!Player.IsMoveControlPressed)
                 {
                     GameFiber.Yield();
                 }

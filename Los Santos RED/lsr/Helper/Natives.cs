@@ -24,6 +24,15 @@ namespace LosSantosRED.lsr.Helper
                     return Game.GetHashKey("SP0_TOTAL_CASH");
             }
         }
+        public static Vector3 GetGameplayCameraDirection()
+        {
+            //Scripthook dot net adaptation stuff i dont understand. I forgot most of my math.....
+            Vector3 CameraRotation = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+            double rotX = CameraRotation.X / 57.295779513082320876798154814105;
+            double rotZ = CameraRotation.Z / 57.295779513082320876798154814105;
+            double multXY = Math.Abs(Math.Cos(rotX));
+            return new Vector3((float)(-Math.Sin(rotZ) * multXY), (float)(Math.Cos(rotZ) * multXY), (float)Math.Sin(rotX));
+        }
         public static uint GetTargettingHandle()
         {
             uint TargetEntity;

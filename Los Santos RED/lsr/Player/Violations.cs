@@ -158,7 +158,7 @@ namespace LosSantosRED.lsr
             {
                 AttemptingSuicide.IsCurrentlyViolating = false;
             }
-            if (CurrentPlayer.IsWanted && CurrentPlayer.CurrentZone.IsRestrictedDuringWanted)
+            if (CurrentPlayer.IsWanted && CurrentPlayer.CurrentLocation.CurrentZone.IsRestrictedDuringWanted)
             {
                 TrespessingOnGovtProperty.IsCurrentlyViolating = true;
             }
@@ -455,7 +455,7 @@ namespace LosSantosRED.lsr
             {
                 if (CurrentPlayer.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && CurrentPlayer.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
                 {
-                    CurrentPlayer.AddCrime(Violating, true, CurrentPlayer.CurrentPosition, CurrentPlayer.CurrentSeenVehicle, CurrentPlayer.CurrentSeenWeapon, true);
+                    CurrentPlayer.AddCrime(Violating, true, CurrentPlayer.Position, CurrentPlayer.CurrentSeenVehicle, CurrentPlayer.CurrentSeenWeapon, true);
                 }
             }
         }
@@ -608,9 +608,9 @@ namespace LosSantosRED.lsr
                 TimeSincePlayerHitPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
                 TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
                 float SpeedLimit = 60f;
-                if (CurrentPlayer.CurrentStreet != null)
+                if (CurrentPlayer.CurrentLocation.CurrentStreet != null)
                 {
-                    SpeedLimit = CurrentPlayer.CurrentStreet.SpeedLimit;
+                    SpeedLimit = CurrentPlayer.CurrentLocation.CurrentStreet.SpeedLimit;
                 }
                 IsSpeeding = CurrentSpeed > SpeedLimit + 25f;
             }

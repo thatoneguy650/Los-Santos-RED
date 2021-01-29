@@ -16,7 +16,7 @@ namespace LosSantosRED.lsr.Interface
         bool CanDropWeapon { get; }
         VehicleExt CurrentVehicle { get; }
         bool IsInVehicle { get; }
-        bool IsMoveControlPressed { get; }
+        bool IsMoveControlPressed { get; set; }
         bool CanConverseWithLookedAtPed { get; }
         bool CanHoldUpTargettedPed { get; }
         bool IsConversing { get; }

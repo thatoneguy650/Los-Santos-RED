@@ -1,4 +1,5 @@
 ﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace LosSantosRED.lsr.Interface
         List<VehicleExt> TrackedVehicles { get; }
         bool IsChangingLicensePlates { get; set; }
         List<LicensePlate> SpareLicensePlates { get; }
+        Ped Character { get; }
+        bool IsMoveControlPressed { get; }
 
         void SetUnarmed();
     }

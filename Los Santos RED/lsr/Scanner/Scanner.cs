@@ -418,7 +418,7 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Street MyStreet = CurrentPlayer.CurrentStreet;
+            Street MyStreet = CurrentPlayer.CurrentLocation.CurrentStreet;
             if (MyStreet != null)
             {
                 string StreetAudio = StreetScannerAudio.GetAudio(MyStreet.Name);
@@ -430,9 +430,9 @@ namespace LosSantosRED.lsr
                     dispatchEvent.NotificationText += "~n~~HUD_COLOUR_YELLOWLIGHT~" + MyStreet.Name + "~s~";
                     dispatchEvent.HasStreetAudio = true;
 
-                    if (CurrentPlayer.CurrentCrossStreet != null)
+                    if (CurrentPlayer.CurrentLocation.CurrentCrossStreet != null)
                     {
-                        Street MyCrossStreet = CurrentPlayer.CurrentCrossStreet;
+                        Street MyCrossStreet = CurrentPlayer.CurrentLocation.CurrentCrossStreet;
                         if (MyCrossStreet != null)
                         {
                             string CrossStreetAudio = StreetScannerAudio.GetAudio(MyCrossStreet.Name);
@@ -680,7 +680,7 @@ namespace LosSantosRED.lsr
             {
                 return;
             }
-            Zone MyZone = CurrentPlayer.CurrentZone;
+            Zone MyZone = CurrentPlayer.CurrentLocation.CurrentZone;
             if (MyZone != null)
             {
                 string ScannerAudio = ZoneScannerAudio.GetAudio(MyZone.InternalGameName);

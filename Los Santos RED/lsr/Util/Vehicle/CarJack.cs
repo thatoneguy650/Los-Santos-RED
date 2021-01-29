@@ -154,7 +154,7 @@ public class CarJack
         {
             float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
             GameFiber.Yield();
-            if (ScenePhase <= 0.4f && EntryPoint.IsMoveControlPressed)
+            if (ScenePhase <= 0.4f && Player.IsMoveControlPressed)
             {
                 WantToCancel = true;
                 break;

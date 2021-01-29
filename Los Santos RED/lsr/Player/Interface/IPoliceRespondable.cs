@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Locations;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,16 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceCanSeePlayer { get; set; }
         bool AnyPoliceRecentlySeenPlayer { get; set; }
         bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
-        Street CurrentCrossStreet { get; }
+        LocationData CurrentLocation { get; set; }
+       // Street CurrentCrossStreet { get; }
         PoliceResponse PoliceResponse { get; set; }//should not be
         VehicleExt CurrentSeenVehicle { get; }
         WeaponInformation CurrentSeenWeapon { get; }
-        Street CurrentStreet { get; }
+      //  Street CurrentStreet { get; }
         VehicleExt CurrentVehicle { get; }
         WeaponInformation CurrentWeapon { get; }
         WeaponCategory CurrentWeaponCategory { get; }
-        Zone CurrentZone { get; }
+     //   Zone CurrentZone { get; }
         Investigation Investigation { get; }
         bool IsAliveAndFree { get; }
         bool IsBustable { get; }

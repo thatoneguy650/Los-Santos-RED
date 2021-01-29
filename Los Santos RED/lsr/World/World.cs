@@ -9,11 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Mod
 {
-    public class World : ITaskableWorld_Old , IEntityLoggable, IEntityProvideable
+    public class World : IEntityLoggable, IEntityProvideable
     {
+
         private List<Blip> CreatedBlips;
         private Pedestrians Pedestrians;
         private IPlacesOfInterest PlacesOfInterest;
@@ -40,7 +42,7 @@ namespace Mod
         public int TotalSpawnedCops => Pedestrians.TotalSpawnedCops;
         public void Setup()
         {
-            foreach(Zone zone in Zones.ZoneList)
+            foreach (Zone zone in Zones.ZoneList)
             {
                 zone.AssignedAgencyInitials = ZoneJurisdictions.GetMainAgency(zone.InternalGameName)?.ColoredInitials;
             }
@@ -83,6 +85,7 @@ namespace Mod
         {
             RemoveBlips();
             ClearPolice();
+
         }
         public PedExt GetCivilian(uint handle)
         {
@@ -124,6 +127,6 @@ namespace Mod
         {
             Vehicles.Tick();
         }
-       
+
     }
 }

@@ -10,6 +10,8 @@ namespace LosSantosRED.lsr.Interface
     {
         int Money { get; }
         bool IsWanted { get; }
+        bool IsMoveControlPressed { get; }
+
         void SetUnarmed();
         void DisplayPlayerNotification();
     }

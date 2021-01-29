@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Player;
+﻿using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,15 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IDisplayable
     {
-        Street CurrentCrossStreet { get; }
+       // Street CurrentCrossStreet { get; }
         VehicleExt CurrentSeenVehicle { get; }
-        Street CurrentStreet { get; }
+       // Street CurrentStreet { get; }
         VehicleExt CurrentVehicle { get; }
-        Zone CurrentZone { get; }
+        //Zone CurrentZone { get; }
+
+
+
+        LocationData CurrentLocation { get; set; }
         string DebugLine2 { get; }
         string DebugLine7 { get; }
         string DebugLine4 { get; }

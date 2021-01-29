@@ -19,6 +19,5 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool CanConverse { get; }
 
-        void AddRelationshipSnapshot(RelationshipSnapshot relationshipSnapshot);
     }
 }

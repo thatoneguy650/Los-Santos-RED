@@ -62,7 +62,6 @@ public class HealthState
             GameTimeLastCheckedDamage = Game.GameTime;
             CurrentHealth = MyPed.Pedestrian.Health;
             CurrentArmor = MyPed.Pedestrian.Armor;
-
             if(CurrentHealth == 0)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
@@ -74,14 +73,25 @@ public class HealthState
                 Health = CurrentHealth;
                 Armor = CurrentArmor;
             }
-            //if (IsBleeding && MyPed.Pedestrian.IsAlive && ShouldBleed)
-            //{
-            //    MyPed.Pedestrian.Health -= 2;
-            //    CurrentHealth = MyPed.Pedestrian.Health;
-            //    CurrentArmor = MyPed.Pedestrian.Armor;
-            //    GameTimeLastBled = Game.GameTime;
-            //    //Game.Console.Print("PedWoundSystem", string.Format("Bleeding {0} {1}", MyPed.Pedestrian.Handle, CurrentHealth));
-            //}
+        }
+    }
+    public void Update()
+    {
+        if (NeedDamageCheck && MyPed.Pedestrian.Exists() && !HasLoggedDeath)
+        {
+            GameTimeLastCheckedDamage = Game.GameTime;
+            CurrentHealth = MyPed.Pedestrian.Health;
+            CurrentArmor = MyPed.Pedestrian.Armor;
+            if (CurrentHealth == 0)
+            {
+                HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
+            }
+            if (CurrentHealth < Health || CurrentArmor < Armor)
+            {
+                ModifyDamage();
+                Health = CurrentHealth;
+                Armor = CurrentArmor;
+            }
         }
     }
     private void FlagDamage(IPoliceRespondable CurrentPlayer)

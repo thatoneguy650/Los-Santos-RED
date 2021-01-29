@@ -61,7 +61,7 @@ public class WeaponDropping
             DroppingWeapon = false;
         }, "DropWeapon");
     }
-    public void Tick()
+    public void Update()
     {
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
         if (PrevCountWeapons != WeaponCount)
