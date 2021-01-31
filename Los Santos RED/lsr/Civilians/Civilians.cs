@@ -35,7 +35,7 @@ public class Civilians
         {
             ped.Update(Player,Vector3.Zero);
             PedsUpdated++;
-            if(PedsUpdated > 10)//25
+            if(PedsUpdated > 3)//10//25
             {
                 break;
             }

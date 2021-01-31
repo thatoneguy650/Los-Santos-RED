@@ -123,8 +123,13 @@ public class Pedestrians
     public void Scan()
     {
         int PedsCreated = 0;
-        Ped[] GamePeds = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250//450
-        foreach (Ped Pedestrian in GamePeds.Where(s => s.Exists() && !s.IsDead && s.IsVisible && s.IsHuman))
+
+        List<Entity> WorldPeds = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 125f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
+       // Ped[] GamePeds = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250f//250//450
+
+
+        //Ped[] GamePeds = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250f//250//450
+        foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.IsVisible))
         {
             if (Pedestrian.IsPoliceArmy())
             {

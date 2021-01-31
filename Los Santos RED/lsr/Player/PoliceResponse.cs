@@ -266,10 +266,10 @@ namespace LosSantosRED.lsr
             {
                 CurrentPoliceState = PoliceState.ArrestedWait;
             }
-            if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
-            {
-                return;
-            }
+            //if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
+            //{
+            //    return;
+            //}
             if (Player.WantedLevel >= 1 && Player.WantedLevel <= 3 && Player.AnyPoliceCanSeePlayer)
             {
                 if (Player.AnyPoliceCanSeePlayer)

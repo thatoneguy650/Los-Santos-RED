@@ -163,23 +163,32 @@ namespace LosSantosRED.lsr
         {
             MyTickTasks = new List<ModTask>()
             {
+
+                //Required Run
                 new ModTask(0, "Time.Tick", Time.Tick, 0,0),
                 new ModTask(0, "Input.Tick", Input.Update, 1,0),
-
-
                 new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//new 
-
-
                 new ModTask(25, "Player.Update", Player.Update, 3,0),
                 new ModTask(100, "World.Police.Tick", Police.Update, 3,1),//25
                 new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 4,0),//50
                 new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 4,1),//50
+
+
+
+                //Can TimeOut
                 new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 5,0),
-                new ModTask(500, "World.Civilians.Tick", Civilians.Update, 5,1),//150
-                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 6,0),
-                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 6,1),
-                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 6,2),
-                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 6,3),
+
+
+
+
+                new ModTask(250, "World.Civilians.Tick", Civilians.Update, 6,0),//150
+                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 6,1),
+                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 6,2),
+                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 6,3),
+                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 6,4),
+
+
+
                 new ModTask(500, "Player.Violations.TrafficUpdate", Player.TrafficViolationsUpdate, 8,0),
                 new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
                 new ModTask(500, "Player.ArrestWarrant.Update",Player.ArrestWarrantUpdate, 8,2),
@@ -189,8 +198,8 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
 
-                //new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
-                //new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
+                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
+                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
 
                //// Old Tasking
                // new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
@@ -236,9 +245,9 @@ namespace LosSantosRED.lsr
 
                         foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                         {
-                            if (RunGroup >= 4 && TickStopWatch.ElapsedMilliseconds >= 16)//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            if (RunGroup >= 4 && TickStopWatch.ElapsedMilliseconds >= 5)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
                             {
-                                Game.Console.Print(string.Format("GameLogic Tick took > 16 ms ({0} ms), aborting, Last Ran {1}", TickStopWatch.ElapsedMilliseconds, LastRanTask));
+                                Game.Console.Print(string.Format("GameLogic Tick took > 5 ms ({0} ms), aborting, Last Ran {1}", TickStopWatch.ElapsedMilliseconds, LastRanTask));
                                 break;
                             }
 

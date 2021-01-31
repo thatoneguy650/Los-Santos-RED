@@ -126,6 +126,7 @@
     <Compile Include="lsr\Player\Activity\SuicideActivity.cs" />
     <Compile Include="lsr\Player\Activity\Util\DrinkingData.cs" />
     <Compile Include="lsr\Player\Activity\Util\SmokingData.cs" />
+    <Compile Include="lsr\Tasker\eDrivingStyles.cs" />
     <Compile Include="lsr\UI\Menu\ActionMenu.cs" />
     <Compile Include="lsr\UI\Menu\BustedMenu.cs" />
     <Compile Include="lsr\UI\Menu\DeathMenu.cs" />

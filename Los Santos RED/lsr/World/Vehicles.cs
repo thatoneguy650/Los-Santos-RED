@@ -43,6 +43,7 @@ public class Vehicles
             return PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
         }
     }
+    public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
     public void Scan()
     {
         CleanLists();

@@ -181,7 +181,7 @@ public class Cop : PedExt
     {
         if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetDeadly || NeedsWeaponCheck))
         {
-            Pedestrian.Accuracy = 10;
+            //Pedestrian.Accuracy = 10;
             if (Pedestrian.Inventory != null && !Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
             {
                 Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, true);
@@ -192,7 +192,7 @@ public class Cop : PedExt
                 Pedestrian.Inventory.GiveNewWeapon(LongGun.ModelName, -1, true);
                 LongGun.ApplyVariation(Pedestrian);
             }
-            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 100);//30
+           // NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 100);//30
             if (LongGun != null && HasHeavyWeaponOnPerson)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.GetHash(), true);

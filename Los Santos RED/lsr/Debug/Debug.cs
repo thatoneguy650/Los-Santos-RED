@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -105,10 +106,18 @@ public class Debug
     {
         foreach (Cop cop in World.PoliceList)
         {
-            Player.AddCrime(new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, 4, true, false, false), false, Game.LocalPlayer.Character.Position, null, null, false);
-            cop.CurrentTask = new Investigate(cop, Player);
+            cop.CurrentTask = new Chase(cop, Player);
             cop.CurrentTask.Start();
         }
+
+
+
+        //foreach (Cop cop in World.PoliceList)
+        //{
+        //    Player.AddCrime(new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, 4, true, false, false), false, Game.LocalPlayer.Character.Position, null, null, false);
+        //    cop.CurrentTask = new Investigate(cop, Player);
+        //    cop.CurrentTask.Start();
+        //}
     }
     private void DebugNumpad6()
     {
@@ -140,9 +149,7 @@ public class Debug
         Game.Console.Print("===================================");
         foreach (PedExt ped in World.CivilianList.OrderBy(x => x.DistanceToPlayer))
         {
-            Relationship PlayerToPed = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Player.Character, ped.Pedestrian);
-            Relationship PedToPlayer = (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(ped.Pedestrian, Player.Character);
-            Game.Console.Print(ped.DebugString + $" PlayerToPed {PlayerToPed} PedToPlayer {PedToPlayer}");
+            Game.Console.Print(ped.DebugString);
         }
         Game.Console.Print("===================================");
 
@@ -178,24 +185,86 @@ public class Debug
     }
     private void SpawnInteractiveChaser()
     {
-        Ped newped = new Ped("s_m_y_cop_01", Game.LocalPlayer.Character.GetOffsetPositionFront(2f), Game.LocalPlayer.Character.Heading);
+        Ped newped = new Ped("a_f_m_business_02", Game.LocalPlayer.Character.GetOffsetPositionFront(2f), Game.LocalPlayer.Character.Heading);
         Vehicle car = new Vehicle("police", Game.LocalPlayer.Character.GetOffsetPositionFront(-8f), Game.LocalPlayer.Character.Heading);
         if (newped.Exists() && car.Exists())
         {
+
+           car.IsCollisionProof = true;
+            //  car.IsCollisionEnabled = false;
+
+          //  NativeFunction.Natives.SET_ENTITY_COLLISION(car, false, false);
+         
             newped.WarpIntoVehicle(car, -1);
             GameFiber.StartNew(delegate
             {
                 try
                 {
+                    
+                    PedExt Coolio = new PedExt(newped, false, false, false, "Test1", null);
+                    Coolio.Update(Player,Player.Position);
+                    Coolio.CurrentTask = new Chase(Coolio, Player);
+                    Coolio.CurrentTask.Start();
+
+                        //NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", newped, 100f);
+                        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", newped, 8f);
+                    car.AttachBlip();
+
+                    uint GameTimeColliisonCheck = Game.GameTime;
                     while (newped.Exists() && newped.IsAlive && !Game.IsKeyDownRightNow(Keys.E))
                     {
-                        Game.DisplayHelp("Press E to delete chaser ~n~Press R to Repair");
-                        if (Game.IsKeyDownRightNow(Keys.R) && car.Exists())
+                        Game.DisplayHelp("Press E to delete chaser");
+
+
+
+                        if(Coolio.DistanceToPlayer <= 20f)
                         {
-                            car.Repair();
-                            newped.Health = newped.MaxHealth;
+                            car.IsCollisionProof = false;
                         }
-                        GameFiber.Yield();
+                        else
+                        {
+                            car.IsCollisionProof = true;
+                        }
+
+
+                        Game.DisplayNotification($"{Coolio.CurrentTask?.Name} AND {Coolio.CurrentTask?.SubTaskName}");
+
+                        //if (Game.GameTime - GameTimeColliisonCheck >= 1000)
+                        //{
+
+
+                        //    VehicleExt ClosestCar = World.CivilianVehicleList.Where(x => x.Vehicle.Handle != car.Handle).OrderBy(x => car.DistanceTo2D(x.Vehicle)).FirstOrDefault();
+                        //    if (ClosestCar != null && ClosestCar.Vehicle.Exists())
+                        //    {
+                        //        car.CollisionIgnoredEntity = ClosestCar.Vehicle;
+                        //    }
+                        //}
+
+
+                        //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 4, true);
+                        //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 8, true);
+                        //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 16, true);
+                        //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 32, true);
+                        //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 4194304, true);
+
+                        //262144 - Take shortest path (Removes most pathing limits, the driver even goes on dirtroads)
+                        //4194304 - Ignore roads (Uses local pathing, only works within 200~ meters around the player)
+
+                        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", newped, 4, true);
+                        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", newped, 8, true);
+                        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", newped, 16, true);
+                        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", newped, 32, true);
+                        //  NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", newped, 512, true);
+                        //  NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", newped, 262144, true);
+
+                        //  NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", newped, 4194304, true);
+
+
+
+                        Coolio.CurrentTask.Update();
+                        //GameFiber.Sleep(250);
+                        GameFiber.Sleep(25);
+                        //GameFiber.Yield();
                     }
                     if (newped.Exists())
                     {

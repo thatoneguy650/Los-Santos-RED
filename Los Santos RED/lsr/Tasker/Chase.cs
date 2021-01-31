@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LosSantosRED.lsr.Helper;
 
 
 public class Chase : ComplexTask
@@ -15,6 +16,10 @@ public class Chase : ComplexTask
     private Task CurrentTask = Task.Nothing;
     private Vehicle CopsVehicle;
     private bool IsGoingFast;
+    private bool IsStuck;
+    private Vector3 LastPosition;
+    private bool IsFirstRun;
+    private uint GameTimeGotStuck;
 
     private enum Task
     {
@@ -26,6 +31,26 @@ public class Chase : ComplexTask
         FootChase,
         Nothing,
     }
+    private enum eVehicleMissionType
+    {
+        Cruise = 1,
+        Ram = 2,
+        Block = 3,
+        GoTo = 4,
+        Stop = 5,
+        Attack = 6,
+        Follow = 7,
+        Flee = 8,
+        Circle = 9,
+        Escort = 12,
+        FollowRecording = 15,
+        PoliceBehaviour = 16,
+        Land = 19,
+        Land2 = 20,
+        Crash = 21,
+        PullOver = 22,
+        HeliProtect = 23
+    };
     private enum SubTask
     {
         Shoot,
@@ -38,77 +63,74 @@ public class Chase : ComplexTask
     private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
     private bool ShouldExitPoliceVehicle => Cop.DistanceToPlayer < 25f && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle.Speed <= 2.0f && !Player.IsMovingFast;
     private bool ShouldShoot => !Player.IsBusted && !Player.IsAttemptingToSurrender;
-    private Task CurrentTaskDynamic
+    private Task GetCurrentTaskDynamic()
     {
-        get
+        if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
         {
-            if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
+            if (ShouldExitPoliceVehicle)
             {
-                if (ShouldExitPoliceVehicle)
-                {
-                    return Task.ExitVehicle;
-                }
-                else if (ShouldChaseVehicleInVehicle)
-                {
-                    return Task.VehicleChase;
-                }
-                else
-                {
-                    return Task.Nothing;
-                }
+                return Task.ExitVehicle;
             }
-            else if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_OnFoot)
+            else if (ShouldChaseVehicleInVehicle)
             {
-                if (Cop.IsDriver)
-                {
-                    if (ShouldChasePedInVehicle)
-                    {
-                        return Task.VehicleChasePed;
-                    }
-                    else if (ShouldExitPoliceVehicle)
-                    {
-                        return Task.ExitVehicle;
-                    }
-                    else
-                    {
-                        return Task.Nothing;
-                    }
-                }
-                else
-                {
-                    if (ShouldExitPoliceVehicle)
-                    {
-                        return Task.ExitVehicle;
-                    }
-                    else
-                    {
-                        return Task.Nothing;
-                    }
-                }
-            }
-            else if (CurrentDynamic == AIDynamic.Cop_OnFoot_Player_InVehicle)
-            {
-                if (ShouldCarJackPlayer)
-                {
-                    return Task.CarJack;
-                }
-                else if (ShouldGetBackInCar)
-                {
-                    return Task.EnterVehicle;
-                }
-                else
-                {
-                    return Task.Nothing;
-                }
-            }
-            else if (CurrentDynamic == AIDynamic.Cop_OnFoot_Player_OnFoot)
-            {
-                return Task.FootChase;
+                return Task.VehicleChase;
             }
             else
             {
                 return Task.Nothing;
             }
+        }
+        else if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_OnFoot)
+        {
+            if (Cop.IsDriver)
+            {
+                if (ShouldChasePedInVehicle)
+                {
+                    return Task.VehicleChasePed;
+                }
+                else if (ShouldExitPoliceVehicle)
+                {
+                    return Task.ExitVehicle;
+                }
+                else
+                {
+                    return Task.Nothing;
+                }
+            }
+            else
+            {
+                if (ShouldExitPoliceVehicle)
+                {
+                    return Task.ExitVehicle;
+                }
+                else
+                {
+                    return Task.Nothing;
+                }
+            }
+        }
+        else if (CurrentDynamic == AIDynamic.Cop_OnFoot_Player_InVehicle)
+        {
+            if (ShouldCarJackPlayer)
+            {
+                return Task.CarJack;
+            }
+            else if (ShouldGetBackInCar)
+            {
+                return Task.EnterVehicle;
+            }
+            else
+            {
+                return Task.Nothing;
+            }
+        }
+        else if (CurrentDynamic == AIDynamic.Cop_OnFoot_Player_OnFoot)
+        {
+            return Task.FootChase;
+        }
+        else
+        {
+            return Task.Nothing;
         }
     }
 
@@ -133,15 +155,16 @@ public class Chase : ComplexTask
             {
                 CopsVehicle = Cop.Pedestrian.CurrentVehicle;
             }
-            if (CurrentTask != CurrentTaskDynamic)
+            Task UpdatedTask = GetCurrentTaskDynamic();
+            if (CurrentTask != UpdatedTask)
             {
-                CurrentTask = CurrentTaskDynamic;
+                IsFirstRun = true;
+                CurrentTask = UpdatedTask;
                 Game.Console.Print($"      Chase SubTask Changed: {Cop.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
                 ExecuteCurrentSubTask();
             }
             else if (NeedsUpdates)
             {
-                SubTaskName = "CarJack";
                 ExecuteCurrentSubTask();
             }
             if (CurrentTask == Task.VehicleChase || CurrentTask == Task.VehicleChasePed)
@@ -196,8 +219,8 @@ public class Chase : ComplexTask
             int lol = 0;
             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.CurrentVehicle.Vehicle, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-            NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", 0, Player.CurrentVehicle.Vehicle, -1, -1, 7f); //Original and works ok
-            //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, 9);
+          //  NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", 0, Player.CurrentVehicle.Vehicle, -1, -1, 7f); //Original and works ok
+            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, 9);
             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.Pedestrian, lol);
@@ -294,52 +317,72 @@ public class Chase : ComplexTask
     private void VehicleChase()
     {
         NeedsUpdates = true;
-        if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Speed >= 30f)
+        if(IsFirstRun)
         {
-            if(!IsGoingFast)
+            NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.Pedestrian, 100f);
+            NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.Pedestrian, 8f);
+            Cop.Pedestrian.BlockPermanentEvents = true;
+            Cop.Pedestrian.KeepTasks = true;
+            int DesiredStyle;
+            DesiredStyle = (int)eDrivingStyles.AvoidVehicles | (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
+            unsafe
             {
-                Cop.Pedestrian.BlockPermanentEvents = true;
-                Cop.Pedestrian.KeepTasks = true;
-                unsafe
-                {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Cop.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, 7, 50f, 4 | 8 | 16 | 32 | 512 | 262144, 8f, 0f, true);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.Pedestrian, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                }
-                IsGoingFast = true;
-                Game.Console.Print($"VehicleChase Vehicle Target (Fast): {Cop.Pedestrian.Handle}");
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Cop.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, (int)eVehicleMissionType.Follow, 50f, DesiredStyle, 8f, 0f, true);//7
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
-            
+            Game.Console.Print($"VehicleChase Vehicle Target: {Cop.Pedestrian.Handle}");
+            IsFirstRun = false;
         }
         else
         {
-            if(IsGoingFast)
+            if (Cop.DistanceToPlayer <= 20f)
             {
-                Cop.Pedestrian.BlockPermanentEvents = true;
-                Cop.Pedestrian.KeepTasks = true;
-                unsafe
+                Cop.Pedestrian.CurrentVehicle.IsCollisionProof = false;
+            }
+            else
+            {
+                Cop.Pedestrian.CurrentVehicle.IsCollisionProof = true;
+            }
+            Vector3 CurrentPosition = Cop.Pedestrian.Position;
+            IsStuck = LastPosition.DistanceTo2D(CurrentPosition) <= 1.0f;
+            if (IsStuck)
+            {
+                if (GameTimeGotStuck == 0)
                 {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Cop.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, 7, 27f, 4 | 8 | 16 | 32 | 512 | 262144, 8f, 0f, true);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.Pedestrian, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    GameTimeGotStuck = Game.GameTime;
                 }
-                IsGoingFast = false;
-                Game.Console.Print($"VehicleChase Vehicle Target (Regular): {Cop.Pedestrian.Handle}");
-            }      
+            }
+            else
+            {
+                GameTimeGotStuck = 0;
+            }
+            if (IsStuck && Game.GameTime - GameTimeGotStuck >= 3000)
+            {
+                Game.Console.Print($"VehicleChase Vehicle Target I AM STUCK!!: {Cop.Pedestrian.Handle}");
+            }
+            LastPosition = CurrentPosition;
         }
-        //NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, 7, 45f, 4 | 8 | 16 | 32 | 512 | 262144, 0f, 0f, true);     
+
+
+
     }
     private void VehicleChasePed()
     {
-        NeedsUpdates = false;
+        if(Cop.Pedestrian.CurrentVehicle.Exists())
+        {
+            NeedsUpdates = false;
+        }
+        else
+        {
+            NeedsUpdates = true;
+            return;
+        }
+
         Cop.Pedestrian.BlockPermanentEvents = true;
         Cop.Pedestrian.KeepTasks = true;
         unsafe

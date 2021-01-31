@@ -506,6 +506,7 @@ namespace Mod
             //{
             //    Game.Console.Print("ERROR!!!");
             //}
+            SetUnarmed();
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
         }
         public void ShootAt(Vector3 TargetCoordinate)

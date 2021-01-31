@@ -18,7 +18,13 @@ public class Kill : ComplexTask
     public override void Start()
     {
         ClearTasks();
-        Cop.Pedestrian.Tasks.FightAgainstClosestHatedTarget(70f);
+        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 100);//30
+        NativeFunction.Natives.SET_PED_ALERTNESS(Cop.Pedestrian, 3);//very altert
+        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Cop.Pedestrian, 2);//professional
+        NativeFunction.Natives.SET_PED_COMBAT_RANGE(Cop.Pedestrian, 2);//far
+        NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Cop.Pedestrian, 2);//offensinve
+        Cop.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
+        Game.Console.Print(string.Format("TASKER Set to KILLLLLLL!!!!!!!!!: {0}", Cop.Pedestrian.Handle));
     }
     public override void Update()
     {
@@ -38,27 +44,13 @@ public class Kill : ComplexTask
                 seatIndex = Cop.Pedestrian.SeatIndex;
             }
             Cop.Pedestrian.Tasks.Clear();
-
             Cop.Pedestrian.BlockPermanentEvents = false;
             Cop.Pedestrian.KeepTasks = false;
             Cop.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
             if (WasInVehicle && !Cop.Pedestrian.IsInAnyVehicle(false) && CurrentVehicle != null)
             {
                 Cop.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
-            }
-            if (Cop.IsDriver && Cop.Pedestrian.CurrentVehicle != null && Cop.Pedestrian.CurrentVehicle.HasSiren)
-            {
-                Cop.Pedestrian.CurrentVehicle.IsSirenOn = false;
-                Cop.Pedestrian.CurrentVehicle.IsSirenSilent = false;
-            }
-            if (Player.IsWanted)
-            {
-                NativeFunction.CallByName<bool>("SET_PED_ALERTNESS", Cop.Pedestrian, 3);
-                if (Player.PoliceResponse.IsDeadlyChase)
-                {
-                    Cop.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
-                }
-            }
+            }            
             Game.Console.Print(string.Format("     ClearedTasks: {0}", Cop.Pedestrian.Handle));
         }
     }
