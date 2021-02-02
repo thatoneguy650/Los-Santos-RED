@@ -162,10 +162,10 @@ public class Cop : PedExt
                 else
                 {
                     //this isnt normall here
-                    SetLessLethal();
+                 //   SetLessLethal();
 
                     //temp off for testing!!!
-                    // NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);//for idle,
+                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);//for idle,
 
                     ///temp off for testing!!!
                 }
@@ -193,7 +193,7 @@ public class Cop : PedExt
                 LongGun.ApplyVariation(Pedestrian);
             }
            // NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 100);//30
-            if (LongGun != null && HasHeavyWeaponOnPerson)
+            if (LongGun != null && HasHeavyWeaponOnPerson && !IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.GetHash(), true);
             }
@@ -202,7 +202,9 @@ public class Cop : PedExt
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, Sidearm.GetHash(), true);
             }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
+            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 1, true);
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, true);//can do drivebys
+            
             IsSetLessLethal = false;
             IsSetUnarmed = false;
             IsSetDeadly = true;

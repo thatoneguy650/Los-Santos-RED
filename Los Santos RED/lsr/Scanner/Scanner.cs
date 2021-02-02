@@ -14,6 +14,7 @@ namespace LosSantosRED.lsr
 {
     public class Scanner
     {
+        private bool AbortedAudio;
         private IAudioPlayable AudioPlayer;
         private IPoliceRespondable CurrentPlayer;
         private IEntityProvideable World;
@@ -190,7 +191,7 @@ namespace LosSantosRED.lsr
         public void Abort()
         {
             AudioPlayer.Abort();
-            DispatchQueue.Clear();
+           // DispatchQueue.Clear();
             RemoveAllNotifications();
         }
         public void AnnounceCrime(Crime crimeAssociated, PoliceScannerCallIn reportInformation)
@@ -231,6 +232,12 @@ namespace LosSantosRED.lsr
                 ToReset.LatestInformation = new PoliceScannerCallIn();
                 ToReset.TimesPlayed = 0;
             }
+            //newish
+            GameTimeLastAnnouncedDispatch = 0;
+            GameTimeLastDisplayedSubtitle = 0;
+            GameTimeLastMentionedStreet = 0;
+            GameTimeLastMentionedZone = 0;
+            //end newish
             DispatchQueue.Clear();
         }
         public void Tick()
@@ -1072,20 +1079,23 @@ namespace LosSantosRED.lsr
         }
         private void PlayDispatch(DispatchEvent MyAudioEvent, PoliceScannerCallIn MyDispatch)
         {
-            Game.Console.Print($"Scanner Playing {string.Join(",",MyAudioEvent.SoundsToPlay)}");
-            bool AbortedAudio = false;
+            Game.Console.Print($"Scanner Start. Playing: {string.Join(",",MyAudioEvent.SoundsToPlay)}");
+            // AbortedAudio = false;
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-                Game.Console.Print(string.Format("ScannerScript! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
+                Game.Console.Print(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
                 //AudioPlayer.Abort();
                 AbortedAudio = true;
                 Abort();
+                
             }
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
                 if (AbortedAudio)
                 {
+                    Game.Console.Print($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
                     AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.Police.DispatchAudioVolume);
+                    AbortedAudio = false;
                     GameFiber.Sleep(1000);
                 }
 
@@ -1106,7 +1116,7 @@ namespace LosSantosRED.lsr
 
                 foreach (string audioname in MyAudioEvent.SoundsToPlay)
                 {
-                    Game.Console.Print($"Scanner Playing {audioname}");
+                    Game.Console.Print($"Scanner Playing. ToAudioPlayer: {audioname}");
                     AudioPlayer.Play(audioname, Settings.SettingsManager.Police.DispatchAudioVolume);
 
                     while (AudioPlayer.IsAudioPlaying)

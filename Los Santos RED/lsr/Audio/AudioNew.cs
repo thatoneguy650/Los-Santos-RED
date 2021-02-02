@@ -63,9 +63,8 @@ public class AudioNew : IAudioPlayable
     {
         if (IsAudioPlaying)
         {
-            AudioDevice.Stop();
             CancelAudio = true;
-            AudioDevice.Stop();
+            AudioDevice.Stop();    
         }
     }
     private int GetVolume()
