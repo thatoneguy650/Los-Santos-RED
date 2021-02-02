@@ -41,6 +41,7 @@ public class Investigate : ComplexTask
     }
     public override void Start()
     {
+        Game.Console.Print($"TASKER: Investigate Start: {Cop.Pedestrian.Handle}");
         Cop.Pedestrian.BlockPermanentEvents = false;
         Update();
     }

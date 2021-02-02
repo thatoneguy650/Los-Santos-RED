@@ -41,6 +41,7 @@ public class Locate : ComplexTask
     }
     public override void Start()
     {
+        Game.Console.Print($"TASKER: Locate Start: {Cop.Pedestrian.Handle}");
         Cop.Pedestrian.BlockPermanentEvents = false;
         Update();
     }
@@ -109,7 +110,7 @@ public class Locate : ComplexTask
             {
                 Cop.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
             }
-            //Game.Console.Print(string.Format("Locate Position Updated: {0}", Cop.Pedestrian.Handle));
+            Game.Console.Print(string.Format("Locate Position Updated: {0}", Cop.Pedestrian.Handle));
         }
         if (Cop.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
         {

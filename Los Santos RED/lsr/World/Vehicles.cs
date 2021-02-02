@@ -87,6 +87,7 @@ public class Vehicles
             {
                 if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                 {
+                    Game.Console.Print($"Abandoned DELETE {PoliceCar.Vehicle.Handle}");
                     PoliceCar.Vehicle.Delete();
                 }
             }
@@ -108,6 +109,7 @@ public class Vehicles
         {
             if (Veh.Vehicle.Exists())
             {
+                Game.Console.Print($"ClearPolice DELETE {Veh.Vehicle.Handle}");
                 Veh.Vehicle.Delete();
             }
         }
@@ -259,6 +261,7 @@ public class Vehicles
         if (ToReturn == null)
         {
             //Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
+            Game.Console.Print($"NoAgency DELETE {CopCar.Handle}");
             CopCar.Delete();
         }
         return ToReturn;

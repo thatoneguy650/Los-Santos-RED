@@ -17,6 +17,7 @@ public class Kill : ComplexTask
     }
     public override void Start()
     {
+        Game.Console.Print($"TASKER: Kill Start: {Cop.Pedestrian.Handle}");
         ClearTasks();
         NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 100);//30
         NativeFunction.Natives.SET_PED_ALERTNESS(Cop.Pedestrian, 3);//very altert

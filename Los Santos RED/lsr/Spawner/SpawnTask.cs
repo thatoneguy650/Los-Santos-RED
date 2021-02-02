@@ -118,7 +118,7 @@ public class SpawnTask
     }
     private VehicleExt CreateVehicle()
     {
-        //Game.Console.Print($"Attempting to spawn {VehicleType.ModelName}");
+        Game.Console.Print($"Attempting to spawn {VehicleType.ModelName}");
         Vehicle copcar = new Vehicle(VehicleType.ModelName, Position, Heading);
         GameFiber.Yield();
         if (copcar.Exists())

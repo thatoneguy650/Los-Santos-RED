@@ -6,13 +6,14 @@ using System.Collections.Generic;
 
 public class Cop : PedExt
 {
-    private readonly List<string> ArrestedWaitSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED", "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
-    private readonly List<string> CautiousChaseSpeech = new List<string> { "DRAW_GUN", "GET_HIM", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL" };
-    private readonly List<string> DeadlyChaseSpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_INSULT", "GENERIC_WAR_CRY", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
-    private readonly List<string> PlayerDeadSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
-    private readonly List<string> SuspectBusted = new List<string> { "WON_DISPUTE" };
-    private readonly List<string> SuspectDown = new List<string> { "SUSPECT_KILLED", "WON_DISPUTE", "SUSPECT_KILLED_REPORT" };
-    private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "GET_HIM", "SUSPECT_SPOTTED" };
+
+    private readonly List<string> DeadlyChaseSpeech = new List<string> { "DRAW_GUN", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };
+    private readonly List<string> SuspectBusted = new List<string> { "WON_DISPUTE", "ARREST_PLAYER" };
+    private readonly List<string> SuspectDown = new List<string> { "SUSPECT_KILLED", "SUSPECT_KILLED_REPORT" };
+    private readonly List<string> UnarmedChaseSpeech = new List<string> { "FOOT_CHASE", "FOOT_CHASE_AGGRESIVE", "FOOT_CHASE_LOSING", "FOOT_CHASE_RESPONSE", "SUSPECT_SPOTTED" };
+    private readonly List<string> IdleSpeech = new List<string> { "CHAT_STATE", "CHAT_RESP" };
+    private readonly List<string> AngrySpeech = new List<string> { "CHALLENGE_THREATEN", "COMBAT_TAUNT", "FIGHT", "GENERIC_SHOCKED_HIGH", "GENERIC_WAR_CRY", "PINNED_DOWN", "GENERIC_INSULT_HIGH", "GET_HIM" };
+
     private uint GameTimeLastRadioed;
     private uint GameTimeLastSpoke;
     private uint GameTimeLastWeaponCheck;
@@ -37,25 +38,8 @@ public class Cop : PedExt
         Pedestrian.HearingRange = 55;//25
     }
     public Agency AssignedAgency { get; set; } = new Agency();
-    public bool CanRadioIn
-    {
-        get
-        {
-            if (IsRadioTimedOut)
-            {
-                return false;
-            }
-            else if (!IsInVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe && !Pedestrian.IsGettingIntoVehicle && !Pedestrian.IsInAnyVehicle(true) && !Pedestrian.IsInAnyVehicle(false) && !Pedestrian.IsGettingIntoVehicle)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-    public bool CanSpeak => !IsSpeechTimedOut;
+    public bool CanRadioIn => !IsRadioTimedOut && DistanceToPlayer <= 50f && !IsInVehicle && !RecentlyGotOutOfVehicle && !Pedestrian.IsSwimming && !Pedestrian.IsInCover && !Pedestrian.IsGoingIntoCover && !Pedestrian.IsShooting && !Pedestrian.IsInWrithe && !Pedestrian.IsGettingIntoVehicle && !Pedestrian.IsInAnyVehicle(true) && !Pedestrian.IsInAnyVehicle(false);
+    public bool CanSpeak => !IsSpeechTimedOut && DistanceToPlayer <= 50f;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool HasPistol => Sidearm != null;
     public bool IsRadioTimedOut => GameTimeLastRadioed != 0 && Game.GameTime - GameTimeLastRadioed < 60000;
@@ -73,55 +57,61 @@ public class Cop : PedExt
     }
     public void RadioIn(IPoliceRespondable currentPlayer)
     {
-        if (CanRadioIn && currentPlayer.IsWanted)
-        {
-            string AnimationToPlay = "generic_radio_enter";
-            //WeaponInformation CurrentGun = DataMart.Instance.Weapons.GetCurrentWeapon(Pedestrian);
-            //if (CurrentGun != null && CurrentGun.IsOneHanded)
-            //    AnimationToPlay = "radio_enter";
+        //if (CanRadioIn && currentPlayer.IsWanted)
+        //{
+        //    string AnimationToPlay = "generic_radio_enter";
+        //    //WeaponInformation CurrentGun = DataMart.Instance.Weapons.GetCurrentWeapon(Pedestrian);
+        //    //if (CurrentGun != null && CurrentGun.IsOneHanded)
+        //    //    AnimationToPlay = "radio_enter";
 
-            Speak(currentPlayer);
+        //    Speak(currentPlayer);
 
-            AnimationDictionary.RequestAnimationDictionay("random@arrests");
-            NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
-            GameTimeLastRadioed = Game.GameTime;
-        }
+        //    AnimationDictionary.RequestAnimationDictionay("random@arrests");
+        //    NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Pedestrian, "random@arrests", AnimationToPlay, 2.0f, -2.0f, -1, 52, 0, false, false, false);
+        //    GameTimeLastRadioed = Game.GameTime;
+        //}
     }
     public void Speak(IPoliceRespondable currentPlayer)
     {
-        if (CanSpeak && currentPlayer.IsWanted)
-        {
-            if (!currentPlayer.IsBusted && DistanceToPlayer <= 20f)
-            {
-                Pedestrian.PlayAmbientSpeech("ARREST_PLAYER");
-            }
-            //else if (currentPlayer.RecentlyKilledCop)
-            //{
-            //    Pedestrian.PlayAmbientSpeech("OFFICER_DOWN");
-            //}
-            else if (currentPlayer.IsWanted && !currentPlayer.PoliceResponse.IsDeadlyChase)
-            {
-                Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
-            }
-            else if (currentPlayer.IsNotWanted && currentPlayer.IsBusted)
-            {
-                Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom());
-            }
-            else if (currentPlayer.PoliceResponse.IsDeadlyChase)
-            {
-                Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom());
-            }
-            else //Normal State
-            {
-                if (DistanceToPlayer <= 4f)
-                {
-                    Pedestrian.PlayAmbientSpeech("CRIMINAL_WARNING");
-                }
-            }
-            GameTimeLastSpoke = Game.GameTime;
-        }
+        //if (CanSpeak)
+        //{
+        //    if (currentPlayer.IsWanted)
+        //    {
+        //        if (currentPlayer.IsBusted)
+        //        {
+        //            Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom());
+        //        }
+        //        else if (currentPlayer.IsDead)
+        //        {
+        //            Pedestrian.PlayAmbientSpeech(SuspectDown.PickRandom());
+        //        }
+        //        else
+        //        {
+        //            if (currentPlayer.PoliceResponse.IsDeadlyChase)
+        //            {
+        //                if (currentPlayer.PoliceResponse.IsWeaponsFree)
+        //                {
+        //                    Pedestrian.PlayAmbientSpeech(AngrySpeech.PickRandom());
+        //                }
+        //                else
+        //                {
+        //                    Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom());
+        //                }
+        //            }
+        //            else
+        //            {
+        //                Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Pedestrian.PlayAmbientSpeech(IdleSpeech.PickRandom());
+        //    }
+        //    GameTimeLastSpoke = Game.GameTime;
+        //}
     }
-    public void UpdateDrivingFlags() 
+    public void UpdateDrivingFlags()
     {
         NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Pedestrian, 100f);
         NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Pedestrian, 8f);
@@ -131,7 +121,7 @@ public class Cop : PedExt
     {
         if (ShouldAutoSetWeaponState)
         {
-            if(IsInVehicle && IsDeadlyChase)
+            if (IsInVehicle && IsDeadlyChase)
             {
                 HasHeavyWeaponOnPerson = true;
             }
@@ -161,13 +151,7 @@ public class Cop : PedExt
                 }
                 else
                 {
-                    //this isnt normall here
-                 //   SetLessLethal();
-
-                    //temp off for testing!!!
                     NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, true);//for idle,
-
-                    ///temp off for testing!!!
                 }
             }
         }
@@ -181,7 +165,6 @@ public class Cop : PedExt
     {
         if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetDeadly || NeedsWeaponCheck))
         {
-            //Pedestrian.Accuracy = 10;
             if (Pedestrian.Inventory != null && !Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
             {
                 Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, true);
@@ -192,7 +175,6 @@ public class Cop : PedExt
                 Pedestrian.Inventory.GiveNewWeapon(LongGun.ModelName, -1, true);
                 LongGun.ApplyVariation(Pedestrian);
             }
-           // NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 100);//30
             if (LongGun != null && HasHeavyWeaponOnPerson && !IsInVehicle)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, LongGun.GetHash(), true);
@@ -202,9 +184,8 @@ public class Cop : PedExt
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, Sidearm.GetHash(), true);
             }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
-            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 1, true);
-            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, true);//can do drivebys
-            
+            //NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 1, true);//can use vehicle in combat
+            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, true);//can do drivebys       
             IsSetLessLethal = false;
             IsSetUnarmed = false;
             IsSetDeadly = true;
@@ -215,7 +196,6 @@ public class Cop : PedExt
     {
         if (Pedestrian.Exists() && Pedestrian.IsAlive && (!IsSetLessLethal || NeedsWeaponCheck))
         {
-            Pedestrian.Accuracy = 30;
             if (Pedestrian.Inventory != null && !Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
                 Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, true);
@@ -224,8 +204,8 @@ public class Cop : PedExt
             {
                 Pedestrian.Inventory.EquippedWeapon = WeaponHash.StunGun;
             }
-            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 100);
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
+            //NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 1, false);//cant use vehicle in combat
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
             IsSetLessLethal = true;
             IsSetUnarmed = false;
@@ -239,10 +219,10 @@ public class Cop : PedExt
         {
             if (Pedestrian.Inventory != null && Pedestrian.Inventory.EquippedWeapon != null)
             {
-                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, 2725352035, true); //Unequip weapon so you don't get shot
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Pedestrian, 2725352035, true);
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Pedestrian, false);
             }
-            NativeFunction.CallByName<bool>("SET_PED_SHOOT_RATE", Pedestrian, 0);
+           // NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 1, false);//cant use vehicle in combat
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Pedestrian, 2, false);//cant do drivebys
             IsSetLessLethal = false;
             IsSetUnarmed = true;

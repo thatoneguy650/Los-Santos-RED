@@ -269,7 +269,7 @@ public class UI
                 BigMessage.MessageInstance.ShowColoredShard("WASTED", "", HudColor.Black, HudColor.RedDark, 2000);
                 StartedDeathEffect = true;
             }
-            if (GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied >= 2000)
+            if (GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied >= 1000)
             {
                 GameTimeLastDied = 0;
                 Show(DeathMenu);

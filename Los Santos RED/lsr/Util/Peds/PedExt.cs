@@ -25,9 +25,11 @@ public class PedExt : IComplexTaskable
     private uint GameTimeLastSeenPlayer;
     private Entity Killer;
     private Entity LastHurtBy;
+    private uint GameTimeLastExitedVehicle;
+
     public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
-    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} See {CanSeePlayer} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName}";
+    public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} See {CanSeePlayer} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName} InVeh {IsInVehicle}";
     public PedExt(Ped _Pedestrian)
     {
         Pedestrian = _Pedestrian;
@@ -224,6 +226,8 @@ public class PedExt : IComplexTaskable
         }
 
     }
+    public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 5000;
+
     public bool ShouldReportCrime
     {
         get
@@ -442,7 +446,7 @@ public class PedExt : IComplexTaskable
     }
     private void ReportCrime()
     {
-        if (Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsRagdoll)
+        if (Pedestrian.Exists() && !IsCop && Pedestrian.IsAlive && !Pedestrian.IsRagdoll)
         {
             PlayerToCheck.AddCrime(CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 20f);
             CrimesWitnessed.Clear();
@@ -529,7 +533,7 @@ public class PedExt : IComplexTaskable
         {
             ReportCrime();
         }
-        if (!HasSeenPlayerCommitCrime && Pedestrian.IsPersistent)
+        if (!HasSeenPlayerCommitCrime && Pedestrian.IsPersistent && !IsCop)
         {
             Pedestrian.IsPersistent = false;
         }
@@ -631,7 +635,20 @@ public class PedExt : IComplexTaskable
     }
     private void UpdateVehicleState()
     {
+        bool wasInVehicle = IsInVehicle;
         IsInVehicle = Pedestrian.IsInAnyVehicle(false);
+
+        if(wasInVehicle != IsInVehicle)
+        {
+            if(IsInVehicle)//got in
+            {
+
+            }
+            else//got out
+            {
+                GameTimeLastExitedVehicle = Game.GameTime;
+            }
+        }
         if (IsInVehicle && Pedestrian.CurrentVehicle.Exists())
         {
             IsDriver = Pedestrian.SeatIndex == -1;

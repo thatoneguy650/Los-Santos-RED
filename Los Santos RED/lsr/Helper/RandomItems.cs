@@ -45,5 +45,13 @@ public static class RandomItems
         char let = Convert.ToChar(RandomNumberString(1));
         return let;
     }
+    public static double GetRandomNumber(double minimum, double maximum)
+    {
+        return MyRand.NextDouble() * (maximum - minimum) + minimum;
+    }
+    public static float GetRandomNumber(float minimum, float maximum)
+    {
+        return (float)(MyRand.NextDouble() * (maximum - minimum) + minimum);
+    }
 }
 

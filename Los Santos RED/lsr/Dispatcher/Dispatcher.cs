@@ -244,8 +244,9 @@ public class Dispatcher
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
+                    
                     Delete(DeleteableCop);
-                    Game.Console.Print($"DISPATCHER: Recalling Cop");
+                    
                 }
             }
             GameTimeAttemptedRecall = Game.GameTime;
@@ -255,6 +256,7 @@ public class Dispatcher
     {
         if (Cop != null && Cop.Pedestrian.Exists())
         {
+            Game.Console.Print($"Attempting to Delete {Cop.Pedestrian.Handle}");
             if (Cop.Pedestrian.IsInAnyVehicle(false))
             {
                 if (Cop.Pedestrian.CurrentVehicle.HasPassengers)
@@ -383,22 +385,27 @@ public class Dispatcher
     {
         if (!cop.AssignedAgency.CanSpawn(Player.WantedLevel))
         {
+            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Agency Can Not Spawn");
             return true;
         }
         else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
         {
+            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Vehicle)");
             return true;
         }
         else if (!cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
         {
+            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Foot)");
             return true;
         }
         else if (cop.ClosestDistanceToPlayer <= 15f) //Got Close and Then got away
         {
+            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close");
             return true;
         }
         else if (World.CountNearbyCops(cop.Pedestrian) >= 3 && cop.TimeBehindPlayer >= 15000) //Got Close and Then got away
         {
+            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Behind Player Around Others");
             return true;
         }
         return false;

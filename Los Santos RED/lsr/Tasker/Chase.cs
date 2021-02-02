@@ -20,6 +20,8 @@ public class Chase : ComplexTask
     private Vector3 LastPosition;
     private bool IsFirstRun;
     private uint GameTimeGotStuck;
+    private uint GameTimeVehicleStoppedMoving;
+    private uint GameTimeChaseStarted;
 
     private enum Task
     {
@@ -61,7 +63,9 @@ public class Chase : ComplexTask
     private bool ShouldChasePedInVehicle => Cop.DistanceToPlayer >= 25f;
     private bool ShouldGetBackInCar => CopsVehicle.Exists() && Cop.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
     private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
-    private bool ShouldExitPoliceVehicle => Cop.DistanceToPlayer < 25f && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle.Speed <= 2.0f && !Player.IsMovingFast;
+    private bool ShouldExitPoliceVehicle => Cop.DistanceToPlayer < 25f && Cop.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !Player.IsMovingFast && !ChaseRecentlyStarted;
+    private bool ChaseRecentlyStarted => GameTimeChaseStarted != 0 &&  Game.GameTime - GameTimeChaseStarted <= 3000;
+    private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 2000;
     private bool ShouldShoot => !Player.IsBusted && !Player.IsAttemptingToSurrender;
     private Task GetCurrentTaskDynamic()
     {
@@ -134,13 +138,15 @@ public class Chase : ComplexTask
         }
     }
 
-    public Chase(IComplexTaskable cop, ITargetable player) : base(player, cop, 500)
+    public Chase(IComplexTaskable cop, ITargetable player) : base(player, cop, 150)//was 500
     {
         Name = "Chase";
         SubTaskName = "";
     }
     public override void Start()
     {
+        Game.Console.Print($"TASKER: Chase Start: {Cop.Pedestrian.Handle} InVeh: {Cop.IsInVehicle} InVeh2: {Cop.Pedestrian.IsInAnyVehicle(false)}");
+        GameTimeChaseStarted = Game.GameTime;
         NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_CLIMBOVERS", Cop.Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_LADDERS", Cop.Pedestrian, true);
         NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_DROP_FROM_HEIGHT", Cop.Pedestrian, true);
@@ -160,7 +166,7 @@ public class Chase : ComplexTask
             {
                 IsFirstRun = true;
                 CurrentTask = UpdatedTask;
-                Game.Console.Print($"      Chase SubTask Changed: {Cop.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
+                Game.Console.Print($"TASKER: Chase SubTask Changed: {Cop.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
                 ExecuteCurrentSubTask();
             }
             else if (NeedsUpdates)
@@ -171,10 +177,28 @@ public class Chase : ComplexTask
             {
                 NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Cop.Pedestrian, 32, true);
                 SetSiren();
+                if (Cop.IsInVehicle)
+                {
+                    if (Cop.Pedestrian.CurrentVehicle.Speed == 0f)
+                    {
+                        if (GameTimeVehicleStoppedMoving == 0)
+                        {
+                            GameTimeVehicleStoppedMoving = Game.GameTime;
+                        }
+
+                    }
+                    else
+                    {
+                        GameTimeVehicleStoppedMoving = 0;
+                    }
+                }
+
+
+
             }
             GameTimeLastRan = Game.GameTime;
         }
-
+        Game.Console.Print($"TASKER: Chase UpdateEnd: {Cop.Pedestrian.Handle} InVeh: {Cop.IsInVehicle} InVeh2: {Cop.Pedestrian.IsInAnyVehicle(false)}");
     }
     private void ExecuteCurrentSubTask()
     {
@@ -208,6 +232,11 @@ public class Chase : ComplexTask
             SubTaskName = "VehicleChasePed";
             VehicleChasePed();
         }
+        else if (CurrentTask == Task.Nothing)
+        {
+            SubTaskName = "Nothing";
+            VehicleChasePed();
+        }
         GameTimeLastRan = Game.GameTime;
     }
 
@@ -219,8 +248,8 @@ public class Chase : ComplexTask
             int lol = 0;
             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
             NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.CurrentVehicle.Vehicle, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-          //  NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", 0, Player.CurrentVehicle.Vehicle, -1, -1, 7f); //Original and works ok
-            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, 9);
+            NativeFunction.CallByName<bool>("TASK_OPEN_VEHICLE_DOOR", 0, Player.CurrentVehicle.Vehicle, -1, -1, 7f); //doesnt really work
+          //  NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, 9);//caused them to get confused about getting back in thier car
             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
             NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.Pedestrian, lol);
@@ -320,7 +349,7 @@ public class Chase : ComplexTask
         if(IsFirstRun)
         {
             NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Cop.Pedestrian, 100f);
-            NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.Pedestrian, 8f);
+            NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Cop.Pedestrian, RandomItems.GetRandomNumber(3f,10f));
             Cop.Pedestrian.BlockPermanentEvents = true;
             Cop.Pedestrian.KeepTasks = true;
             int DesiredStyle;
@@ -340,14 +369,23 @@ public class Chase : ComplexTask
         }
         else
         {
-            if (Cop.DistanceToPlayer <= 20f)
-            {
-                Cop.Pedestrian.CurrentVehicle.IsCollisionProof = false;
-            }
-            else
-            {
+            //if (Cop.DistanceToPlayer <= 20f)
+            //{
+            //    Cop.Pedestrian.CurrentVehicle.IsCollisionProof = false;
+            //}
+            //else
+            //{
+                Entity Closest = Rage.World.GetClosestEntity(Cop.Pedestrian.CurrentVehicle.GetOffsetPositionFront(10f), 10f, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars);
+                if (Closest != null && Closest.Handle != Cop.Pedestrian.CurrentVehicle.Handle)
+                {
+                    Cop.Pedestrian.CurrentVehicle.CollisionIgnoredEntity = Closest;
+                }
+                else
+                {
+                    Cop.Pedestrian.CurrentVehicle.CollisionIgnoredEntity = null;
+                }
                 Cop.Pedestrian.CurrentVehicle.IsCollisionProof = true;
-            }
+          //  }
             Vector3 CurrentPosition = Cop.Pedestrian.Position;
             IsStuck = LastPosition.DistanceTo2D(CurrentPosition) <= 1.0f;
             if (IsStuck)
@@ -367,9 +405,6 @@ public class Chase : ComplexTask
             }
             LastPosition = CurrentPosition;
         }
-
-
-
     }
     private void VehicleChasePed()
     {
@@ -397,6 +432,12 @@ public class Chase : ComplexTask
         }
         //NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_PED_TARGET", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Player.Character, 7, 30f, 4 | 8 | 16 | 32 | 512 | 262144, 0f, 0f, true);
         Game.Console.Print($"VehicleChase Ped Target: {Cop.Pedestrian.Handle}");
+    }
+    private void Nothing()
+    {
+        NeedsUpdates = true;
+        Cop.Pedestrian.BlockPermanentEvents = true;
+        Game.Console.Print($"Nothing Ped Target: {Cop.Pedestrian.Handle}");
     }
     private void SetSiren()
     {

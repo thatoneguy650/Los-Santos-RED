@@ -94,14 +94,16 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        foreach (Cop cop in World.PoliceList)
+        //foreach (Cop cop in World.PoliceList)
+        //{
+        //    cop.CurrentTask = new Chase(cop, Player);
+        //    cop.CurrentTask.Start();
+        //}
+
+        foreach (ButtonPrompt bp in Player.ButtonPrompts)
         {
-            cop.CurrentTask = new Chase(cop, Player);
-            cop.CurrentTask.Start();
+            Game.Console.Print($"{bp.Text}, {bp.Key}, {bp.IsPressedNow}, {bp.Text}");
         }
-
-
-
         //foreach (Cop cop in World.PoliceList)
         //{
         //    Player.AddCrime(new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, 4, true, false, false), false, Game.LocalPlayer.Character.Position, null, null, false);
@@ -229,7 +231,7 @@ public class Debug
                         //        car.CollisionIgnoredEntity = ClosestCar.Vehicle;
                         //    }
                         //}
-
+                       // Rage.World.GetClosestEntity(car.Position, 10f, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
 
                         //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 4, true);
                         //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 8, true);

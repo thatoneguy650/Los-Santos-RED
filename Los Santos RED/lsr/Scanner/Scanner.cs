@@ -250,7 +250,7 @@ namespace LosSantosRED.lsr
                     ExecutingQueue = true;
                     GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
                     {
-                        //GameFiber.Sleep(RandomItems.MyRand.Next(1500, 2500));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
+                        GameFiber.Sleep(RandomItems.MyRand.Next(1500, 2500));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
                         if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
                         {
                             DispatchQueue.RemoveAll(x => !x.LatestInformation.SeenByOfficers);

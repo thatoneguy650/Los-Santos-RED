@@ -39,9 +39,33 @@ public class Idle : ComplexTask
     }
     public override void Start()
     {
-        Cop.Pedestrian.BlockPermanentEvents = false;
-        Cop.Pedestrian.Tasks.Clear();
+        Game.Console.Print($"TASKER: Idle Start: {Cop.Pedestrian.Handle}");
+        ClearTasks();
         Update();
+    }
+    private void ClearTasks()//temp public
+    {
+        if (Cop.Pedestrian.Exists())
+        {
+            int seatIndex = 0;
+            Vehicle CurrentVehicle = null;
+            bool WasInVehicle = false;
+            if (Cop.Pedestrian.IsInAnyVehicle(false))
+            {
+                WasInVehicle = true;
+                CurrentVehicle = Cop.Pedestrian.CurrentVehicle;
+                seatIndex = Cop.Pedestrian.SeatIndex;
+            }
+            Cop.Pedestrian.Tasks.Clear();
+            Cop.Pedestrian.BlockPermanentEvents = false;
+            Cop.Pedestrian.KeepTasks = false;
+            //Cop.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+            if (WasInVehicle && !Cop.Pedestrian.IsInAnyVehicle(false) && CurrentVehicle != null)
+            {
+                Cop.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
+            }
+            Game.Console.Print(string.Format("     ClearedTasks: {0}", Cop.Pedestrian.Handle));
+        }
     }
     public override void Update()
     {
@@ -79,9 +103,12 @@ public class Idle : ComplexTask
         NeedsUpdates = false;
         if (Cop.Pedestrian.Exists())
         {
-            if (Cop.Pedestrian.IsInAnyVehicle(false) && Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists())
+            if (Cop.Pedestrian.IsInAnyVehicle(false))
             {
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);
+                if (Cop.IsDriver && Cop.Pedestrian.CurrentVehicle.Exists())
+                {
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);
+                }
             }
             else
             {
