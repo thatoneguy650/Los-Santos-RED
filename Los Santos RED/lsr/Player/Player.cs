@@ -43,12 +43,13 @@ namespace Mod
         private ITimeControllable TimeControllable;
         private WeaponDropping WeaponDropping;
         private IWeapons Weapons;
+        private bool IsDisposed;
         public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations)
         {
             ModelName = modelName;
             IsMale = isMale;
             SuspectsName = suspectsName;
-            if(currentMoney != 0)
+            if (currentMoney != 0)
             {
                 SetMoney(currentMoney);
             }
@@ -84,7 +85,7 @@ namespace Mod
         public bool CanConverse => !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically;
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
-        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree;
+        public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f;
         public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsInVehicle && !IsGettingIntoAVehicle && !IsAttemptingToSurrender && !IsMovingDynamically;
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit || Settings.SettingsManager.General.UndieLimit == 0;
@@ -139,7 +140,7 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking;
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !IsInVehicle;
+        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !IsInVehicle && !PoliceResponse.IsWeaponsFree;
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
@@ -221,7 +222,7 @@ namespace Mod
         public bool RecentlyAppliedWantedStats => CriminalHistory.RecentlyAppliedWantedStats;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyDied => GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied <= 5000;
-        public bool RecentlyStartedPlaying => Game.GameTime - GameTimeStartedPlaying <= 15000;
+        public bool RecentlyStartedPlaying => Game.GameTime - GameTimeStartedPlaying <= 10000;//15000
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public bool StarsRecentlyActive => SearchMode.StarsRecentlyActive;
@@ -270,7 +271,7 @@ namespace Mod
                 Investigation.Start();
             }
         }
- 
+
         public void Arrest()
         {
             BeingArrested = true;
@@ -342,7 +343,8 @@ namespace Mod
             Investigation.Dispose(); //remove blip
             PoliceResponse.Dispose(); //same ^
             Interaction?.Dispose();
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
+            IsDisposed = true;
+            // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
         }
         public void DrinkBeer()
         {
@@ -378,8 +380,7 @@ namespace Mod
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
             }
         }
-
-        public void Injured(PedExt MyPed)
+        public void CheckInjured(PedExt MyPed)
         {
             Violations.AddInjured(MyPed);
         }
@@ -391,7 +392,7 @@ namespace Mod
         {
             Surrendering.LowerHands();
         }
-        public void Murdered(PedExt MyPed)
+        public void CheckMurdered(PedExt MyPed)
         {
             Violations.AddKilled(MyPed);
         }
@@ -494,20 +495,25 @@ namespace Mod
         {
             PoliceResponse.SetWantedLevel(0, "Initial", true);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-
-            //try
-            //{
-            //    foreach (RadioStation radiostation in RadioStations.RadioStationList)
-            //    {
-            //        NativeFunction.Natives.x477D9DB48F889591(radiostation.InternalName, false);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Game.Console.Print("ERROR!!!");
-            //}
             SetUnarmed();
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
+
+            //this temp bullshit
+            GameFiber.StartNew(delegate
+            {
+                while (!IsDisposed)
+                {
+                    if (Game.LocalPlayer.Character.IsShooting)
+                    {
+                        GameTimeLastShot = Game.GameTime;
+                    }
+
+                    GameFiber.Yield();
+                }
+
+            }, "IsShootingChecker");
+
+
         }
         public void ShootAt(Vector3 TargetCoordinate)
         {

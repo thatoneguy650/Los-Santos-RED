@@ -48,8 +48,8 @@ namespace LosSantosRED.lsr.Interface
         bool StarsRecentlyActive { get; }
         Violations Violations { get; }//not good comrade
 
-        void Injured(PedExt myPed);
-        void Murdered(PedExt myPed);
+        void CheckInjured(PedExt myPed);
+        void CheckMurdered(PedExt myPed);
         void Arrest();
         void StoreCriminalHistory();
         void AddCrime(Crime crime, bool v1, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool v2);

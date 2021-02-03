@@ -42,7 +42,6 @@ public class HoldUp : Interaction
     }
     private void CheckIntimidation()
     {
-        Target.IsFedUpWithPlayer = true;
         Target.TimesInsultedByPlayer += 5;
         GameTimeStartedIntimidating = Game.GameTime;
         GameTimeStoppedTargetting = 0;
@@ -200,7 +199,6 @@ public class HoldUp : Interaction
         Target.CanBeTasked = false;
         GameTimeStartedHoldingUp = Game.GameTime;
         Target.HasSpokenWithPlayer = true;
-        Target.IsFedUpWithPlayer = true;
         Target.Pedestrian.BlockPermanentEvents = true;
         AnimationDictionary.RequestAnimationDictionay("ped");
         AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");

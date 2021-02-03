@@ -10,11 +10,13 @@ public class Tasker
 {
     private IEntityProvideable PedProvider;
     private ITargetable Player;
+    private IWeapons Weapons;
     private Mod.Player PlayerIntellisense;//only for intellisense for the interface (see what i have and how i named it)
-    public Tasker(IEntityProvideable pedProvider, ITargetable player)
+    public Tasker(IEntityProvideable pedProvider, ITargetable player, IWeapons weapons)
     {
         PedProvider = pedProvider;
         Player = player;
+        Weapons = weapons;
     }
     public void RunTasks()
     {
@@ -31,8 +33,26 @@ public class Tasker
                 PedsUpdated++;
             }
         }
+        int CivlianPedsUpdated = 0;
+        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan))
+        {
+            if (CivlianPedsUpdated > 2)
+            {
+                return;
+            }
+            else
+            {
+                Ped.UpdateTask();
+                CivlianPedsUpdated++;
+            }
+        }
     }
     public void Update()
+    {
+        UpdatePolice();
+        UpdateCivilians();
+    }
+    private void UpdatePolice()
     {
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000))
         {
@@ -102,6 +122,32 @@ public class Tasker
                 {
                     Cop.CurrentTask = new Idle(Cop, Player);
                     Cop.CurrentTask.Start();
+                }
+            }
+        }
+    }
+    private void UpdateCivilians()
+    {
+        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists()))
+        {
+            if (Civilian.DistanceToPlayer <= 50f)
+            {
+                if (Civilian.HasSeenPlayerCommitCrime && Civilian.WillCallPolice)
+                {
+                    if (Civilian.CurrentTask?.Name != "CallIn")
+                    {
+                        Civilian.CurrentTask = new CallIn(Civilian, Player); ;
+                        Civilian.CurrentTask.Start();
+                    }
+                }
+                else if ((Civilian.CrimesWitnessed.Any(x=> x.AngersCivilians) || Civilian.IsFedUpWithPlayer) && Civilian.WillFight)
+                {
+                    if (Civilian.CurrentTask?.Name != "Fight")
+                    {
+                        WeaponInformation ToIssue = Civilian.IsGangMember ? Weapons.GetRandomRegularWeapon(WeaponCategory.Pistol) : Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);
+                        Civilian.CurrentTask = new Fight(Civilian, Player, ToIssue); ;
+                        Civilian.CurrentTask.Start();
+                    }
                 }
             }
         }

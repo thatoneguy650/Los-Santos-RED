@@ -54,7 +54,7 @@ public class DeathMenu : Menu
     }
     private void CreateDeathMenu()
     {
-        Hospitals = PlacesOfInterest.GetLocations(LocationType.Police);
+        Hospitals = PlacesOfInterest.GetLocations(LocationType.Hospital);
         Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
         Undie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
         HospitalRespawn = new UIMenuListItem("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", Hospitals);
@@ -72,7 +72,7 @@ public class DeathMenu : Menu
         }
         if (selectedItem == HospitalRespawn)
         {
-            if (RandomItems.RandomPercent(0))//turned off for testing
+            if (RandomItems.RandomPercent(90))//turned off for testing
             {
                 Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
             }

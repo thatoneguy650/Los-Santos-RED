@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 public abstract class ComplexTask
 {
-    protected IComplexTaskable Cop;
+    protected IComplexTaskable Ped;
     protected ITargetable Player;
     private uint RunInterval;
-    protected ComplexTask(ITargetable player, IComplexTaskable cop, uint runInterval)
+    protected ComplexTask(ITargetable player, IComplexTaskable ped, uint runInterval)
     {
         Player = player;
-        Cop = cop;
+        Ped = ped;
         RunInterval = runInterval;
     }
     public AIDynamic CurrentDynamic
@@ -24,7 +24,7 @@ public abstract class ComplexTask
         {
             if (Player.IsInVehicle)
             {
-                if (Cop.IsInVehicle)
+                if (Ped.IsInVehicle)
                 {
                     return AIDynamic.Cop_InVehicle_Player_InVehicle;
                 }
@@ -35,7 +35,7 @@ public abstract class ComplexTask
             }
             else
             {
-                if (Cop.IsInVehicle)
+                if (Ped.IsInVehicle)
                 {
                     return AIDynamic.Cop_InVehicle_Player_OnFoot;
                 }

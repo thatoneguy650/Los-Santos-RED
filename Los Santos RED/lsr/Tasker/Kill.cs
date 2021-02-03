@@ -17,15 +17,17 @@ public class Kill : ComplexTask
     }
     public override void Start()
     {
-        Game.Console.Print($"TASKER: Kill Start: {Cop.Pedestrian.Handle}");
+        Game.Console.Print($"TASKER: Kill Start: {Ped.Pedestrian.Handle}");
         ClearTasks();
-        NativeFunction.Natives.SET_PED_SHOOT_RATE(Cop.Pedestrian, 100);//30
-        NativeFunction.Natives.SET_PED_ALERTNESS(Cop.Pedestrian, 3);//very altert
-        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Cop.Pedestrian, 2);//professional
-        NativeFunction.Natives.SET_PED_COMBAT_RANGE(Cop.Pedestrian, 2);//far
-        NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Cop.Pedestrian, 2);//offensinve
-        Cop.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
-        Game.Console.Print(string.Format("TASKER Set to KILLLLLLL!!!!!!!!!: {0}", Cop.Pedestrian.Handle));
+        NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
+        NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
+        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Ped.Pedestrian, 2);//professional
+        NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far
+        NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Ped.Pedestrian, 2);//offensinve
+        NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
+        Ped.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
+        Game.Console.Print(string.Format("TASKER Set to KILLLLLLL!!!!!!!!!: {0}", Ped.Pedestrian.Handle));
+        
     }
     public override void Update()
     {
@@ -33,26 +35,26 @@ public class Kill : ComplexTask
     }
     public void ClearTasks()//temp public
     {
-        if (Cop.Pedestrian.Exists())
+        if (Ped.Pedestrian.Exists())
         {
             int seatIndex = 0;
             Vehicle CurrentVehicle = null;
             bool WasInVehicle = false;
-            if (Cop.Pedestrian.IsInAnyVehicle(false))
+            if (Ped.Pedestrian.IsInAnyVehicle(false))
             {
                 WasInVehicle = true;
-                CurrentVehicle = Cop.Pedestrian.CurrentVehicle;
-                seatIndex = Cop.Pedestrian.SeatIndex;
+                CurrentVehicle = Ped.Pedestrian.CurrentVehicle;
+                seatIndex = Ped.Pedestrian.SeatIndex;
             }
-            Cop.Pedestrian.Tasks.Clear();
-            Cop.Pedestrian.BlockPermanentEvents = false;
-            Cop.Pedestrian.KeepTasks = false;
-            Cop.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
-            if (WasInVehicle && !Cop.Pedestrian.IsInAnyVehicle(false) && CurrentVehicle != null)
+            Ped.Pedestrian.Tasks.Clear();
+            Ped.Pedestrian.BlockPermanentEvents = false;
+            Ped.Pedestrian.KeepTasks = false;
+            Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+            if (WasInVehicle && !Ped.Pedestrian.IsInAnyVehicle(false) && CurrentVehicle != null)
             {
-                Cop.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
+                Ped.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
             }            
-            Game.Console.Print(string.Format("     ClearedTasks: {0}", Cop.Pedestrian.Handle));
+            Game.Console.Print(string.Format("     ClearedTasks: {0}", Ped.Pedestrian.Handle));
         }
     }
     public override void Stop()

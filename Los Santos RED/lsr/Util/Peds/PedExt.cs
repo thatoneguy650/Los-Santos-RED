@@ -46,7 +46,7 @@ public class PedExt : IComplexTaskable
     }
     public PedGroup PedGroup { get; private set; }
     public string FormattedName => (HasSpokenWithPlayer ?  Name : IsCop ? "Cop" : PedGroup?.MemberName);
-    public bool IsFedUpWithPlayer { get; set; }
+    public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
     public int TimesInsultedByPlayer { get; set; }
     public int InsultLimit => IsGangMember || IsCop ? 1 : 3;
     public bool IsConversing { get; set; }
@@ -102,7 +102,6 @@ public class PedExt : IComplexTaskable
     public string Name { get; set; }
     public bool CanSeePlayer { get; private set; } = false;
     public float ClosestDistanceToPlayer { get; private set; } = 2000f;
-    public List<Crime> CrimesWitnessed { get; private set; } = new List<Crime>();
     public float DistanceToPlayer { get; private set; } = 999f;
     public float DistanceToLastSeen { get; private set; } = 999f;
     public bool EverSeenPlayer
@@ -119,7 +118,7 @@ public class PedExt : IComplexTaskable
     }
     public bool HasBeenMugged { get; set; } = false;
     public bool HasReactedToCrimes { get; set; } = false;
-    public bool HasSeenPlayerCommitCrime { get; private set; } = false;
+    public bool HasSeenPlayerCommitCrime => CrimesWitnessed.Any();
     public int Health { get; set; }
     public bool IsCop { get; set; } = false;
     public bool IsGangMember { get; set; } = false;
@@ -227,33 +226,6 @@ public class PedExt : IComplexTaskable
 
     }
     public bool RecentlyGotOutOfVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle <= 5000;
-
-    public bool ShouldReportCrime
-    {
-        get
-        {
-            if (GameTimeLastSeenCrime == 0)
-            {
-                return false;
-            }
-            else if (Game.GameTime - GameTimeLastSeenCrime < 10000)
-            {
-                return false;
-            }
-            else if (!CrimesWitnessed.Any())
-            {
-                return false;
-            }
-            //else if (Mod.Player.Instance.RecentlyBribedPolice)
-            //{
-            //    return false;
-            //}
-            else
-            {
-                return true;
-            }
-        }
-    }
     public uint TimeBehindPlayer
     {
         get
@@ -314,7 +286,7 @@ public class PedExt : IComplexTaskable
     }
     public bool CanConverse => Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool CanBeMugged => !IsCop && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
-    public bool HurtBy(Ped ToCheck)
+    public bool CheckHurtBy(Ped ToCheck)
     {
         if (LastHurtBy == ToCheck)
         {
@@ -336,7 +308,7 @@ public class PedExt : IComplexTaskable
         }
         return false;
     }
-    public bool KilledBy(Ped ToCheck)
+    public bool CheckKilledBy(Ped ToCheck)
     {
         try
         {
@@ -353,7 +325,7 @@ public class PedExt : IComplexTaskable
         catch (Exception ex)
         {
             //Game.Console.Print($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
-            return HurtBy(ToCheck);
+            return CheckHurtBy(ToCheck);
         }
 
     }
@@ -382,7 +354,9 @@ public class PedExt : IComplexTaskable
                 UpdateVehicleState();
                 UpdateDistance(placeLastSeen);
                 UpdateLineOfSight();
-                UpdateCrimes();
+
+                UpdateCrimes(playerToCheck);
+
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
@@ -398,17 +372,6 @@ public class PedExt : IComplexTaskable
         if (CurrentTask != null)
         {
             CurrentTask.Update();
-        }
-    }
-    public void WitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
-    {
-        if (!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
-        {
-            CrimesWitnessed.Add(CrimeToAdd);
-            PositionLastSeenCrime = PositionToReport;
-            GameTimeLastSeenCrime = Game.GameTime;
-            HasSeenPlayerCommitCrime = true;
-            //Game.Console.Print(string.Format("AddCrime Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
         }
     }
     private float GetDotVectorResult(Entity source, Entity target)
@@ -442,17 +405,6 @@ public class PedExt : IComplexTaskable
         else
         {
             return false;
-        }
-    }
-    private void ReportCrime()
-    {
-        if (Pedestrian.Exists() && !IsCop && Pedestrian.IsAlive && !Pedestrian.IsRagdoll)
-        {
-            PlayerToCheck.AddCrime(CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 20f);
-            CrimesWitnessed.Clear();
-            GameTimeLastReportedCrime = Game.GameTime;
-            Pedestrian.IsPersistent = false;
-            //Game.Console.Print(string.Format("Handle {0} WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
         }
     }
     private void SetDrivingFlags()
@@ -527,17 +479,6 @@ public class PedExt : IComplexTaskable
         GameTimeContinuoslySeenPlayerSince = 0;
         CanSeePlayer = false;
     }
-    private void UpdateCrimes()
-    {
-        if (WillCallPolice && ShouldReportCrime)
-        {
-            ReportCrime();
-        }
-        if (!HasSeenPlayerCommitCrime && Pedestrian.IsPersistent && !IsCop)
-        {
-            Pedestrian.IsPersistent = false;
-        }
-    }
     private void UpdateDistance(Vector3 placeLastSeen)
     {
         if (!NeedsDistanceCheck)
@@ -545,7 +486,7 @@ public class PedExt : IComplexTaskable
             return;
         }
         DistanceToPlayer = Pedestrian.DistanceTo2D(Game.LocalPlayer.Character.Position);
-        if(IsCop)
+        if (IsCop)
         {
             DistanceToLastSeen = Pedestrian.DistanceTo2D(placeLastSeen);
         }
@@ -576,7 +517,7 @@ public class PedExt : IComplexTaskable
         {
             GameTimeBehindPlayer = 0;
         }
-        if(Pedestrian.IsStill)
+        if (Pedestrian.IsStill)
         {
             IsStill = true;
         }
@@ -638,9 +579,9 @@ public class PedExt : IComplexTaskable
         bool wasInVehicle = IsInVehicle;
         IsInVehicle = Pedestrian.IsInAnyVehicle(false);
 
-        if(wasInVehicle != IsInVehicle)
+        if (wasInVehicle != IsInVehicle)
         {
-            if(IsInVehicle)//got in
+            if (IsInVehicle)//got in
             {
 
             }
@@ -667,5 +608,96 @@ public class PedExt : IComplexTaskable
             IsDriver = false;
         }
     }
+
+
+
+
+    public List<Crime> CrimesWitnessed { get; private set; } = new List<Crime>();
+    //public bool ShouldReportCrime
+    //{
+    //    get
+    //    {
+    //        if (GameTimeLastSeenCrime == 0)
+    //        {
+    //            return false;
+    //        }
+    //        else if (Game.GameTime - GameTimeLastSeenCrime < 10000)
+    //        {
+    //            return false;
+    //        }
+    //        else if (!CrimesWitnessed.Any())
+    //        {
+    //            return false;
+    //        }
+    //        //else if (Mod.Player.Instance.RecentlyBribedPolice)
+    //        //{
+    //        //    return false;
+    //        //}
+    //        else
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //}
+
+
+    //public void WitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
+    //{
+    //    if (!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
+    //    {
+    //        CrimesWitnessed.Add(CrimeToAdd);
+    //        PositionLastSeenCrime = PositionToReport;
+    //        GameTimeLastSeenCrime = Game.GameTime;
+    //        HasSeenPlayerCommitCrime = true;
+    //        //Game.Console.Print(string.Format("AddCrime Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
+    //    }
+    //}
+    //private void ReportCrime()
+    //{
+    //    if (Pedestrian.Exists() && !IsCop && Pedestrian.IsAlive && !Pedestrian.IsRagdoll)
+    //    {
+    //        PlayerToCheck.AddCrime(CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault(), false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 20f);
+    //        CrimesWitnessed.Clear();
+    //        GameTimeLastReportedCrime = Game.GameTime;
+    //        Pedestrian.IsPersistent = false;
+    //        //Game.Console.Print(string.Format("Handle {0} WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
+    //    }
+    //}
+    private void UpdateCrimes(IPoliceRespondable playerToCheck)
+    {
+        foreach(Crime committing in playerToCheck.Violations.CivilianReportableCrimesViolating)
+        {
+            if(CanSeePlayer && !committing.CanReportBySound)
+            {
+                AddWitnessedCrime(committing, Pedestrian.Position);
+            }
+            else if(WithinWeaponsAudioRange && committing.CanReportBySound)
+            {
+                AddWitnessedCrime(committing, Pedestrian.Position);
+            }
+        }
+
+
+        //if (WillCallPolice && ShouldReportCrime)
+        //{
+        //    ReportCrime();
+        //}
+        //if (!HasSeenPlayerCommitCrime && Pedestrian.IsPersistent && !IsCop)
+        //{
+        //    Pedestrian.IsPersistent = false;
+        //}
+    }
+    public void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
+    {
+        if (!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
+        {
+            CrimesWitnessed.Add(CrimeToAdd);
+            PositionLastSeenCrime = PositionToReport;
+            GameTimeLastSeenCrime = Game.GameTime;
+            Game.Console.Print($"AddCrime Handle {Pedestrian.Handle} GameTimeLastReactedToCrime {GameTimeLastSeenCrime}, CrimeToAdd.Name {CrimeToAdd.Name}");
+        }
+    }
+
+
 }
 

@@ -41,6 +41,12 @@ namespace LosSantosRED.lsr
         public uint HasBeenAtCurrentWantedLevelFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedLevelStarted;
         public uint HasBeenNotWantedFor => Player.WantedLevel != 0 || GameTimeLastWantedEnded == 0 ? 0 : Game.GameTime - GameTimeLastWantedEnded;
         public uint HasBeenWantedFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedStarted;
+
+        internal void AddCrime(object p1, bool v, object positionLastSeenCrime, object vehicleLastSeenPlayerIn, object weaponLastSeenPlayerWith, object p2)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool HasObservedCrimes => CrimesObserved.Any();
         public bool HasReportedCrimes => CrimesReported.Any();
         public bool IsDeadlyChase => CurrentPoliceState == PoliceState.DeadlyChase;
@@ -115,11 +121,11 @@ namespace LosSantosRED.lsr
                 CrimeEvent PreviousViolation;
                 if (ByPolice)
                 {
-                    PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime.Name == CrimeInstance.Name);
+                    PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
                 }
                 else
                 {
-                    PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.Name == CrimeInstance.Name);
+                    PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
                 }
 
                 int CurrentInstances = 1;

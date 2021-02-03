@@ -171,7 +171,7 @@ public class Pedestrians
             if (Pedestrian.IsGangMember())
             {
                 IsGangMember = true;
-                WillFight = RandomItems.RandomPercent(95);
+                WillFight = true;
                 WillCallPolice = false;
             }
             else if (Pedestrian.IsSecurity())
@@ -180,6 +180,12 @@ public class Pedestrians
                 WillCallPolice = false;
             }
         }
+
+
+        ////TEMP!!!
+        //WillFight = true;
+        //WillCallPolice = false;
+        ////TEMP!
         Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
     }
     private void AddCop(Ped Pedestrian)

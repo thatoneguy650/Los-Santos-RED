@@ -60,11 +60,11 @@ public class PedSwap : IPedswappable
     {
         try
         {
-            if(Player.IsWanted)
-            {
-                Game.DisplayNotification("Lose your wanted level first");
-                return;
-            }
+            //if(Player.IsWanted)
+            //{
+            //    Game.DisplayNotification("Lose your wanted level first");
+            //    return;
+            //}
             Ped TargetPed = FindPedToSwapWith(Radius, Nearest);
             if (TargetPed == null)
             {
@@ -289,7 +289,7 @@ public class PedSwap : IPedswappable
         NativeFunction.Natives.xC0AA53F866B3134D();
 
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+       // NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         ActivatePreviousScenarios();
         Player.SetUnarmed();
         World.UnPauseTime();

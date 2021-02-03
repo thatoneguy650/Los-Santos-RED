@@ -92,7 +92,7 @@ namespace LosSantosRED.lsr
             Civilians = new Civilians(World, Player);
             Respawning = new Respawning(Time, World, Player, Weapons, PlacesOfInterest, Settings);
             PedSwap = new PedSwap(Time, Player, Settings, World);
-            Tasker = new Tasker(World, Player);
+            Tasker = new Tasker(World, Player, Weapons);
             UI = new UI(Player, Settings, ZoneJurisdictions, PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
             Scanner = new Scanner(World, Player, Audio, Respawning, Settings);

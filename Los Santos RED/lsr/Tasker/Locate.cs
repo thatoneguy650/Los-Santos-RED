@@ -41,18 +41,18 @@ public class Locate : ComplexTask
     }
     public override void Start()
     {
-        Game.Console.Print($"TASKER: Locate Start: {Cop.Pedestrian.Handle}");
-        Cop.Pedestrian.BlockPermanentEvents = false;
+        Game.Console.Print($"TASKER: Locate Start: {Ped.Pedestrian.Handle}");
+        Ped.Pedestrian.BlockPermanentEvents = false;
         Update();
     }
     public override void Update()
     {
-        if (Cop.Pedestrian.Exists() && ShouldUpdate)
+        if (Ped.Pedestrian.Exists() && ShouldUpdate)
         {
             if (CurrentTask != CurrentTaskDynamic)
             {
                 CurrentTask = CurrentTaskDynamic;
-                Game.Console.Print($"      Locate SubTask Changed: {Cop.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
+                Game.Console.Print($"      Locate SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
                 ExecuteCurrentSubTask();
             }
             else if (NeedsUpdates)
@@ -79,17 +79,17 @@ public class Locate : ComplexTask
     private void Wander()
     {
         NeedsUpdates = false;
-        if (Cop.Pedestrian.Exists())
+        if (Ped.Pedestrian.Exists())
         {
-            if (Cop.Pedestrian.IsInAnyVehicle(false) && Cop.Pedestrian.CurrentVehicle.Exists())
+            if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
             {
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, 30f, (int)VehicleDrivingFlags.Emergency, 10f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 30f, (int)VehicleDrivingFlags.Emergency, 10f);
             }
             else
             {
-                Cop.Pedestrian.Tasks.Wander();
+                Ped.Pedestrian.Tasks.Wander();
             }
-            Game.Console.Print(string.Format("Locate Began SearchingPosition: {0}", Cop.Pedestrian.Handle));
+            Game.Console.Print(string.Format("Locate Began SearchingPosition: {0}", Ped.Pedestrian.Handle));
         }
     }
     private void GoTo()
@@ -99,30 +99,30 @@ public class Locate : ComplexTask
         {
             HasReachedReportedPosition = false;
             CurrentTaskedPosition = Player.PlacePoliceLastSeenPlayer;
-            if (Cop.Pedestrian.IsInAnyVehicle(false))
+            if (Ped.Pedestrian.IsInAnyVehicle(false))
             {
-                if (Cop.IsDriver)
+                if (Ped.IsDriver)
                 {
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 30f, (int)VehicleDrivingFlags.Emergency, 10f);
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 30f, (int)VehicleDrivingFlags.Emergency, 10f);
                 }
             }
             else
             {
-                Cop.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
+                Ped.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
             }
-            Game.Console.Print(string.Format("Locate Position Updated: {0}", Cop.Pedestrian.Handle));
+            Game.Console.Print(string.Format("Locate Position Updated: {0}", Ped.Pedestrian.Handle));
         }
-        if (Cop.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
+        if (Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
         {
             HasReachedReportedPosition = true;
         }
     }
     private void SetSiren()
     {
-        if (Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle.HasSiren && !Cop.Pedestrian.CurrentVehicle.IsSirenOn)
+        if (Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
         {
-            Cop.Pedestrian.CurrentVehicle.IsSirenOn = true;
-            Cop.Pedestrian.CurrentVehicle.IsSirenSilent = false;
+            Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
+            Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
         }
     }
     public override void Stop()

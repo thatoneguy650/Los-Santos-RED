@@ -12,7 +12,7 @@ public class Conversation : Interaction
     private bool IsTasked;
     private PedExt Ped;
     private IInteractionable Player;
-    private bool TargetCancelledConversation;
+    private bool CancelledConversation;
     private Keys PositiveReplyKey = Keys.E;
     private Keys NegativeReplyKey = Keys.L;
     private Keys CancelKey = Keys.K;
@@ -68,7 +68,8 @@ public class Conversation : Interaction
         }
         if (Player.ButtonPrompts.Any(x => x.Identifier == "Cancel" && x.IsPressedNow))
         {
-            Dispose();
+            CancelledConversation = true;
+            //Dispose();
         }
         else if (Player.ButtonPrompts.Any(x => x.Identifier == "PositiveReply" && x.IsPressedNow))
         {
@@ -88,10 +89,6 @@ public class Conversation : Interaction
         SayInsult(Ped.Pedestrian);
 
         Ped.TimesInsultedByPlayer++;
-        if (Ped.TimesInsultedByPlayer >= Ped.InsultLimit)
-        {
-            Ped.IsFedUpWithPlayer = true;
-        }
         GameFiber.Sleep(200);
         IsActivelyConversing = false;
     }
@@ -115,10 +112,6 @@ public class Conversation : Interaction
         if (Ped.TimesInsultedByPlayer > 0)
         {
             Ped.TimesInsultedByPlayer--;
-        }
-        if(Ped.TimesInsultedByPlayer < Ped.InsultLimit)
-        {
-            Ped.IsFedUpWithPlayer = false;
         }
         GameFiber.Sleep(200);
         IsActivelyConversing = false;
@@ -291,7 +284,7 @@ public class Conversation : Interaction
         while (CanContinueConversation)
         {
             CheckInput();
-            if (TargetCancelledConversation)
+            if (CancelledConversation)
             {
                 Dispose();
                 break;
