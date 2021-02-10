@@ -207,6 +207,11 @@ namespace LosSantosRED.lsr
             if (!Player.IsDead)
             {
                 GameTimeWantedEnded = Game.GameTime;
+                if (PlayerSeenDuringWanted)
+                {
+                    Player.StoreCriminalHistory();//not good being here
+                    Reset();
+                }
             }
             GameTimeLastWantedEnded = Game.GameTime;
         }
@@ -234,8 +239,7 @@ namespace LosSantosRED.lsr
             GameTimeWantedLevelStarted = 0;
             GameTimeWantedEnded = 0;
             CrimesObserved.Clear();
-            CrimesReported.Clear();
-            
+            CrimesReported.Clear();   
         }
         public void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
         {
@@ -258,8 +262,7 @@ namespace LosSantosRED.lsr
         public void Update()
         {
             CurrentPoliceState = GetPoliceState();
-            WantedLevelTick();
-           
+            WantedLevelTick();       
         }
         private PoliceState GetPoliceState()
         {

@@ -1092,17 +1092,18 @@ namespace Mod
         }
         private void WantedLevelChanged()
         {
-            if (IsNotWanted)//removed
+            if (IsNotWanted && PreviousWantedLevel != 0)//removed
             {
-                if (!IsDead)
-                {
-                    if (PoliceResponse.PlayerSeenDuringWanted && PreviousWantedLevel != 0)
-                    {
-                        StoreCriminalHistory();
-                    }
-                    PoliceResponse.Reset();//PoliceResponse = new PoliceResponse(this);
-                }
                 PoliceResponse.OnLostWanted();
+                //if (!IsDead)
+                //{
+                //    if (PoliceResponse.PlayerSeenDuringWanted && PreviousWantedLevel != 0)
+                //    {
+                //        StoreCriminalHistory();
+                //    }
+                //    PoliceResponse.Reset();//PoliceResponse = new PoliceResponse(this);
+                //}
+                //PoliceResponse.OnLostWanted();
             }
             else if (IsWanted && PreviousWantedLevel == 0)//added
             {
