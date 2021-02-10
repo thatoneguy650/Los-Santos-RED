@@ -65,7 +65,7 @@ public class Chase : ComplexTask
     private bool ShouldCarJackPlayer => Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;// && !Cop.Pedestrian.IsGettingIntoVehicle;
     private bool ShouldExitPoliceVehicle => Ped.DistanceToPlayer < 25f && Ped.Pedestrian.CurrentVehicle.Exists() && VehicleIsStopped && !Player.IsMovingFast && !ChaseRecentlyStarted;
     private bool ChaseRecentlyStarted => GameTimeChaseStarted != 0 &&  Game.GameTime - GameTimeChaseStarted <= 3000;
-    private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 2000;
+    private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 500;//20000
     private bool ShouldShoot => !Player.IsBusted && !Player.IsAttemptingToSurrender;
     private Task GetCurrentTaskDynamic()
     {
@@ -146,9 +146,9 @@ public class Chase : ComplexTask
     {
         Game.Console.Print($"TASKER: Chase Start: {Ped.Pedestrian.Handle} InVeh: {Ped.IsInVehicle} InVeh2: {Ped.Pedestrian.IsInAnyVehicle(false)}");
         GameTimeChaseStarted = Game.GameTime;
-        NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_CLIMBOVERS", Ped.Pedestrian, true);
-        NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_USE_LADDERS", Ped.Pedestrian, true);
-        NativeFunction.CallByName<bool>("SET_PED_PATH_CAN_DROP_FROM_HEIGHT", Ped.Pedestrian, true);
+        NativeFunction.Natives.SET_PED_PATH_CAN_USE_CLIMBOVERS(Ped.Pedestrian, true);
+        NativeFunction.Natives.SET_PED_PATH_CAN_USE_LADDERS(Ped.Pedestrian, true);
+        NativeFunction.Natives.SET_PED_PATH_CAN_DROP_FROM_HEIGHT(Ped.Pedestrian, true);
         Update();
     }
     public override void Update()
@@ -174,7 +174,7 @@ public class Chase : ComplexTask
             }
             if (CurrentTask == Task.VehicleChase || CurrentTask == Task.VehicleChasePed)
             {
-                NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG", Ped.Pedestrian, 32, true);
+                NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
                 SetSiren();
                 if (Ped.IsInVehicle)
                 {
@@ -191,9 +191,6 @@ public class Chase : ComplexTask
                         GameTimeVehicleStoppedMoving = 0;
                     }
                 }
-
-
-
             }
             GameTimeLastRan = Game.GameTime;
         }
@@ -346,12 +343,11 @@ public class Chase : ComplexTask
         NeedsUpdates = true;
         if(IsFirstRun)
         {
-            NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", Ped.Pedestrian, 100f);
-            NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", Ped.Pedestrian, RandomItems.GetRandomNumber(3f,10f));
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 5f);// RandomItems.GetRandomNumber(3f,10f));
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
-            int DesiredStyle;
-            DesiredStyle = (int)eDrivingStyles.AvoidVehicles | (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
+            int DesiredStyle = (int)eDrivingStyles.AvoidVehicles | (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
             unsafe
             {
                 int lol = 0;
@@ -367,6 +363,7 @@ public class Chase : ComplexTask
         }
         else
         {
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
             Vector3 CurrentPosition = Ped.Pedestrian.Position;
             IsStuck = LastPosition.DistanceTo2D(CurrentPosition) <= 1.0f;
             if (IsStuck)

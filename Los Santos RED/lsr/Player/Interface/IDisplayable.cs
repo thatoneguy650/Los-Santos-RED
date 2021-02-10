@@ -37,5 +37,8 @@ namespace LosSantosRED.lsr.Interface
         bool CanConverseWithLookedAtPed { get; }
         List<ButtonPrompt> ButtonPrompts { get; }
         string CurrentSpeedDisplay { get; }
+        string DebugLine8 { get; }
+        string DebugLine9 { get; }
+        string DebugLine10 { get; }
     }
 }

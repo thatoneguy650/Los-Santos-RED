@@ -18,7 +18,18 @@ namespace Mod
     {
         private CriminalHistory CriminalHistory;
         private DynamicActivity DynamicActivity;
+        private SearchMode SearchMode;
+        private Surrendering Surrendering;
+        private WeaponDropping WeaponDropping;
+        private HealthState HealthState;
+        private Inventory Inventory;
+
+        private IRadioStations RadioStations;
+        private ISettingsProvideable Settings;
+        private ITimeControllable TimeControllable;
         private IEntityProvideable EntityProvider;
+        private IWeapons Weapons;
+
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
         private uint GameTimeLastMoved;
@@ -26,24 +37,17 @@ namespace Mod
         private uint GameTimeLastShot;
         private uint GameTimeStartedHotwiring;
         private uint GameTimeStartedPlaying;
-        private HealthState HealthState;
-        private Inventory Inventory;
         private bool isAiming;
         private bool isAimingInVehicle;
         private bool isGettingIntoVehicle;
         private bool isHotwiring;
         private bool isInVehicle;
-        private bool LeftEngineOn;
+        private bool isCurrentVehicleEngineOn;
         private int PreviousWantedLevel;
-        private IRadioStations RadioStations;
-        private SearchMode SearchMode;
-        private ISettingsProvideable Settings;
-        private Surrendering Surrendering;
         private uint targettingHandle;
-        private ITimeControllable TimeControllable;
-        private WeaponDropping WeaponDropping;
-        private IWeapons Weapons;
-        private bool IsDisposed;
+        private bool isActive = true;
+        private uint GameTimeLastUpdatedLookedAtPed;
+
         public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations)
         {
             ModelName = modelName;
@@ -108,6 +112,9 @@ namespace Mod
         public string DebugLine5 => $"Obs {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine6 => $"Rep {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine7 => $"Vio {Violations.LawsViolatingDisplay}";
+        public string DebugLine8 => PoliceResponse.DebugText;
+        public string DebugLine9 => Investigation.DebugText;
+        public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically}";
         public bool DiedInVehicle { get; private set; }
         public bool HandsAreUp { get; set; }
         public Interaction Interaction { get; private set; }
@@ -265,9 +272,11 @@ namespace Mod
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
-            PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
+            Game.Console.Print($"PLAYER EVENT: ADD CRIME ByPolice {ByPolice}");
+            PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);   
             if (!ByPolice)
             {
+                Game.Console.Print($"PLAYER EVENT: INVESTIGATION START");
                 Investigation.Start();
             }
         }
@@ -343,7 +352,7 @@ namespace Mod
             Investigation.Dispose(); //remove blip
             PoliceResponse.Dispose(); //same ^
             Interaction?.Dispose();
-            IsDisposed = true;
+            isActive = false;
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
         }
         public void DrinkBeer()
@@ -432,7 +441,7 @@ namespace Mod
                 DynamicActivity.Start();
             }
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory)
         {
             IsDead = false;
             IsBusted = false;
@@ -443,14 +452,15 @@ namespace Mod
             if (resetWanted)
             {
                 Game.LocalPlayer.WantedLevel = 0;
-                PoliceResponse = new PoliceResponse(this);
+                
+                PoliceResponse.Reset();//PoliceResponse = new PoliceResponse(this);
                 Investigation.Reset();
                 Violations = new Violations(this, TimeControllable);
                 NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
                 Update();
-                PoliceResponse.Reset();
+                //PoliceResponse.Reset();
             }
             if (resetTimesDied)
             {
@@ -459,6 +469,10 @@ namespace Mod
             if (clearWeapons)
             {
                 Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+            }
+            if(clearCriminalHistory)
+            {
+                CriminalHistory.Clear();
             }
         }
         public void SetDemographics(string modelName, bool isMale, string suspectsName, int money)
@@ -501,7 +515,7 @@ namespace Mod
             //this temp bullshit
             GameFiber.StartNew(delegate
             {
-                while (!IsDisposed)
+                while (isActive)
                 {
                     if (Game.LocalPlayer.Character.IsShooting)
                     {
@@ -710,7 +724,7 @@ namespace Mod
             {
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
-                    CurrentVehicle.Vehicle.IsEngineOn = LeftEngineOn;
+                    CurrentVehicle.Vehicle.IsEngineOn = isCurrentVehicleEngineOn;
                 }
             }
             Game.Console.Print($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
@@ -793,7 +807,7 @@ namespace Mod
                 ToReturn.SetAsEntered();
             }
             ToReturn.Update(AutoTuneStation);
-            LeftEngineOn = ToReturn.Vehicle.IsEngineOn;
+            isCurrentVehicleEngineOn = ToReturn.Vehicle.IsEngineOn;
             CurrentVehicle = ToReturn;
         }
         private void UpdateData()
@@ -804,26 +818,32 @@ namespace Mod
         }
         private void UpdateLookedAtPed()
         {
-            //Works fine just going simpler
-            Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
-            // Vector3 RayStart = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
-            Vector3 RayEnd = RayStart + Natives.GetGameplayCameraDirection() * 6.0f;
-            //Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
-            //Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 5.0f;
-            HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
-                                                                                                                                                                                 //  Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
-                                                                                                                                                                                 //  Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
-            if (result.Hit && result.HitEntity is Ped)
+            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 750)
             {
-                // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
-                CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
-            }
-            else
-            {
-                CurrentLookedAtPed = null;
-            }
 
-            //CurrentLookedAtPed = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 4f && !x.IsBehindPlayer).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+
+                //Works fine just going simpler
+                Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
+                // Vector3 RayStart = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+                Vector3 RayEnd = RayStart + Natives.GetGameplayCameraDirection() * 6.0f;
+                //Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
+                //Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 5.0f;
+                HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
+                                                                                                                                                                                     //  Rage.Debug.DrawArrowDebug(RayStart, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.White);
+                                                                                                                                                                                     //  Rage.Debug.DrawArrowDebug(RayEnd, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Red);
+                if (result.Hit && result.HitEntity is Ped)
+                {
+                    // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
+                    CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
+                }
+                else
+                {
+                    CurrentLookedAtPed = null;
+                }
+
+                //CurrentLookedAtPed = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 4f && !x.IsBehindPlayer).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+                GameTimeLastUpdatedLookedAtPed = Game.GameTime;
+            }
         }
         private void UpdateSpeedDispay()
         {
@@ -970,9 +990,17 @@ namespace Mod
                 {
                     GameTimeLastMoved = Game.GameTime;
                 }
+                else
+                {
+                    GameTimeLastMoved = 0;
+                }
                 if (VehicleSpeed >= 2.0f)
                 {
                     GameTimeLastMovedFast = Game.GameTime;
+                }
+                else
+                {
+                    GameTimeLastMovedFast = 0;
                 }
                 IsStill = VehicleSpeed <= 0.1f;
             }
@@ -987,9 +1015,17 @@ namespace Mod
                 {
                     GameTimeLastMoved = Game.GameTime;
                 }
+                else
+                {
+                    GameTimeLastMoved = 0;
+                }
                 if (PlayerSpeed >= 7.0f)
                 {
                     GameTimeLastMovedFast = Game.GameTime;
+                }
+                else
+                {
+                    GameTimeLastMovedFast = 0;
                 }
                 IsStill = Game.LocalPlayer.Character.IsStill;
                 NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
@@ -1064,7 +1100,7 @@ namespace Mod
                     {
                         StoreCriminalHistory();
                     }
-                    PoliceResponse = new PoliceResponse(this);
+                    PoliceResponse.Reset();//PoliceResponse = new PoliceResponse(this);
                 }
                 PoliceResponse.OnLostWanted();
             }

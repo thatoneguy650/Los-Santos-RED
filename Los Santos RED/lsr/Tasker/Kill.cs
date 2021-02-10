@@ -25,13 +25,16 @@ public class Kill : ComplexTask
         NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far
         NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Ped.Pedestrian, 2);//offensinve
         NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
+        int DesiredStyle = (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
+        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, DesiredStyle);
+        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
         Ped.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
         Game.Console.Print(string.Format("TASKER Set to KILLLLLLL!!!!!!!!!: {0}", Ped.Pedestrian.Handle));
         
     }
     public override void Update()
     {
-
+        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
     }
     public void ClearTasks()//temp public
     {

@@ -68,7 +68,7 @@ public class DeathMenu : Menu
     {
         if (selectedItem == Undie)
         {
-            Respawning.RespawnAtCurrentLocation(true, false);
+            Respawning.RespawnAtCurrentLocation(true, false, false);
         }
         if (selectedItem == HospitalRespawn)
         {

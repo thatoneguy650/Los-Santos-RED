@@ -19,6 +19,7 @@ namespace LosSantosRED.lsr
         private Dispatcher Dispatcher;
         private Input Input;
         private string LastRanTask;
+        private string LastRanTaskLocation;
         //private Menu_Old Menu_Old;
        // private MenuManager Menu;
         private List<ModTask> MyTickTasks;
@@ -66,7 +67,7 @@ namespace LosSantosRED.lsr
         }
         public void NewPlayer(string modelName, bool isMale)
         {
-            Player.Reset(true, true, true);
+            Player.Reset(true, true, true, true);
             Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
             Scanner.Reset();
         }
@@ -170,23 +171,23 @@ namespace LosSantosRED.lsr
                 new ModTask(0, "Input.Tick", Input.Update, 1,0),
                 new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//new 
                 new ModTask(25, "Player.Update", Player.Update, 3,0),
-                new ModTask(100, "World.Police.Tick", Police.Update, 3,1),//25
-                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 4,0),//50
-                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 4,1),//50
+                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),//25
+                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),//50
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),//50
 
 
 
                 //Can TimeOut
-                new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 5,0),
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 6,0),
 
 
 
 
-                new ModTask(250, "World.Civilians.Tick", Civilians.Update, 6,0),//150
-                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 6,1),
-                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 6,2),
-                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 6,3),
-                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 6,4),
+                new ModTask(250, "World.Civilians.Tick", Civilians.Update, 7,0),//150
+                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 7,1),
+                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 7,2),
+                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 7,3),
+                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 7,4),
 
 
 
@@ -211,7 +212,8 @@ namespace LosSantosRED.lsr
 
 
                 new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
-                new ModTask(500, "NewTasking.Update", Tasker.Update, 16,1),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdatePolice, 16,1),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilians, 16,2),
             };
         }
         private void StartDebugLogic()
@@ -246,9 +248,9 @@ namespace LosSantosRED.lsr
 
                         foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                         {
-                            if (RunGroup >= 4 && TickStopWatch.ElapsedMilliseconds >= 5)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            if (RunGroup >= 3 && TickStopWatch.ElapsedMilliseconds >= 5)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
                             {
-                                Game.Console.Print(string.Format("GameLogic Tick took > 5 ms ({0} ms), aborting, Last Ran {1}", TickStopWatch.ElapsedMilliseconds, LastRanTask));
+                                Game.Console.Print($"GameLogic Tick took > 5 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation}");
                                 break;
                             }
 
@@ -257,15 +259,16 @@ namespace LosSantosRED.lsr
                             {
                                 ToRun.Run();
                                 LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "Regular";
                             }
                             foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                             {
                                 RunningBehind.Run();
                                 LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "RunningBehind";
                             }
                         }
                         MyTickTasks.ForEach(x => x.RanThisTick = false);
-
                         TickStopWatch.Reset();
                         GameFiber.Yield();
                     }

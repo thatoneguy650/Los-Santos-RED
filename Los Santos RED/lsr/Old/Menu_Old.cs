@@ -426,11 +426,11 @@ public class Menu_Old
     {
         if (selectedItem == menuDeathUndie)
         {
-            Respawning.RespawnAtCurrentLocation(true, false);
+            Respawning.RespawnAtCurrentLocation(true, false, false);
         }
         if (selectedItem == menuDeathHospitalRespawn)
         {
-            if (RandomItems.RandomPercent(0))//turned off for testing
+            if (RandomItems.RandomPercent(95))
             {
                 Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
             }

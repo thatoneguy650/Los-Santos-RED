@@ -36,16 +36,12 @@ namespace LosSantosRED.lsr
             DeadlyChase = 3,
             ArrestedWait = 4,
         }
+        public string DebugText => $"Have Desc {PoliceHaveDescription} CurrentPoliceState {CurrentPoliceState} IsWeaponsFree {IsWeaponsFree}";
         public uint GameTimeWantedStarted { get; private set; }
         public uint HasBeenAtCurrentPoliceStateFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimePoliceStateStart;
         public uint HasBeenAtCurrentWantedLevelFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedLevelStarted;
         public uint HasBeenNotWantedFor => Player.WantedLevel != 0 || GameTimeLastWantedEnded == 0 ? 0 : Game.GameTime - GameTimeLastWantedEnded;
         public uint HasBeenWantedFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedStarted;
-
-        internal void AddCrime(object p1, bool v, object positionLastSeenCrime, object vehicleLastSeenPlayerIn, object weaponLastSeenPlayerWith, object p2)
-        {
-            throw new NotImplementedException();
-        }
 
         public bool HasObservedCrimes => CrimesObserved.Any();
         public bool HasReportedCrimes => CrimesReported.Any();
@@ -237,6 +233,9 @@ namespace LosSantosRED.lsr
             CurrentPoliceState = PoliceState.Normal;
             GameTimeWantedLevelStarted = 0;
             GameTimeWantedEnded = 0;
+            CrimesObserved.Clear();
+            CrimesReported.Clear();
+            
         }
         public void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
         {
@@ -258,49 +257,37 @@ namespace LosSantosRED.lsr
         }
         public void Update()
         {
-            GetPoliceState();
+            CurrentPoliceState = GetPoliceState();
             WantedLevelTick();
            
         }
-        private void GetPoliceState()
+        private PoliceState GetPoliceState()
         {
-            if (Player.WantedLevel == 0)
-            {
-                CurrentPoliceState = PoliceState.Normal;//Default state
-            }
             if (Player.IsBusted)
             {
-                CurrentPoliceState = PoliceState.ArrestedWait;
+                return PoliceState.ArrestedWait;
             }
-            //if (CurrentPoliceState == PoliceState.ArrestedWait || CurrentPoliceState == PoliceState.DeadlyChase)
-            //{
-            //    return;
-            //}
-            if (Player.WantedLevel >= 1 && Player.WantedLevel <= 3 && Player.AnyPoliceCanSeePlayer)
+            if (Player.IsNotWanted)
             {
-                if (Player.AnyPoliceCanSeePlayer)
+                return PoliceState.Normal;//Default state
+            }
+            else
+            {
+                if (Player.WantedLevel <= 3)
                 {
                     if (LethalForceAuthorized)
                     {
-                        CurrentPoliceState = PoliceState.DeadlyChase;
-                    }
-                    else if (Player.IsVisiblyArmed)
-                    {
-                        CurrentPoliceState = PoliceState.CautiousChase;
+                        return PoliceState.DeadlyChase;
                     }
                     else
                     {
-                        CurrentPoliceState = PoliceState.UnarmedChase;
+                        return PoliceState.UnarmedChase;
                     }
                 }
                 else
                 {
-                    CurrentPoliceState = PoliceState.UnarmedChase;
+                    return PoliceState.DeadlyChase;
                 }
-            }
-            else if (Player.WantedLevel >= 4)
-            {
-                CurrentPoliceState = PoliceState.DeadlyChase;
             }
         }
         private void PoliceStateChanged()

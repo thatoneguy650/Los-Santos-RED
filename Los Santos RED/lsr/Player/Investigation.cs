@@ -17,6 +17,7 @@ public class Investigation
     {
         Player = player;
     }
+    public string DebugText => $"Invest: IsActive {IsActive} IsSus {IsSuspicious} Distance {Distance} Position {Position}";
     public float Distance { get; private set; } = 800f;
     public float DistanceToInvestigationPosition => !IsActive || Position == Vector3.Zero ? 9999f : Game.LocalPlayer.Character.DistanceTo2D(Position);
     public bool HaveDescription { get; private set; }

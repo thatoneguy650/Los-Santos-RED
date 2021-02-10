@@ -154,10 +154,10 @@ public class Pedestrians
                     AddCivilian(Pedestrian);
                 }
             }
-            if(PedsCreated >= 10)
-            {
-                return;
-            }
+            //if(PedsCreated >= 10)
+            //{
+            //    return;
+            //}
         }
     }
     private void AddCivilian(Ped Pedestrian)
@@ -186,7 +186,7 @@ public class Pedestrians
         //WillFight = true;
         //WillCallPolice = false;
         ////TEMP!
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, "None"/*Names.GetRandomName(Pedestrian.IsMale)*/, RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
     }
     private void AddCop(Ped Pedestrian)
     {
@@ -258,10 +258,6 @@ public class Pedestrians
     }
     private void SetCivilianStats(Ped Pedestrian)
     {
-        if (Settings.SettingsManager.Police.OverridePoliceAccuracy)
-        {
-            Pedestrian.Accuracy = Settings.SettingsManager.Police.PoliceGeneralAccuracy;
-        }
         int DesiredHealth = RandomItems.MyRand.Next(MinCivilianHealth, MaxCivilianHealth) + 100;
         Pedestrian.MaxHealth = DesiredHealth;
         Pedestrian.Health = DesiredHealth;

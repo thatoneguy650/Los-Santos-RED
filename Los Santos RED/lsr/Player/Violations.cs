@@ -45,6 +45,7 @@ namespace LosSantosRED.lsr
         public readonly Crime SuspiciousActivity = new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, 5, false);
         public readonly Crime TerroristActivity = new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, 1) { CanReportBySound = true };
         public readonly Crime TrespessingOnGovtProperty = new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, 2, false);
+        public readonly Crime InsultingOfficer = new Crime("InsultingOfficer", "Insulting a Police Officer", 1, false, 40, 5);
         private IViolateable CurrentPlayer;
         private float CurrentSpeed;
         private uint GameTimeStartedBrandishing;
@@ -80,7 +81,7 @@ namespace LosSantosRED.lsr
                 {
                     BrandishingCloseCombatWeapon,TerroristActivity,BrandishingHeavyWeapon, FiringWeapon, Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice,
                 TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon,ChangingPlates, GrandTheftAuto, DrivingStolenVehicle, HurtingCivilians, SuspiciousActivity,DrivingAgainstTraffic,
-                DrivingOnPavement,NonRoadworthyVehicle,FelonySpeeding,RunningARedLight,HitPedWithCar,HitCarWithCar,DrunkDriving,Kidnapping,PublicIntoxication
+                DrivingOnPavement,NonRoadworthyVehicle,FelonySpeeding,RunningARedLight,HitPedWithCar,HitCarWithCar,DrunkDriving,Kidnapping,PublicIntoxication,InsultingOfficer
                 };
 
         }
@@ -364,7 +365,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckWeaponCrimes()
         {
-            if (CurrentPlayer.RecentlyShot(5000) || Game.LocalPlayer.Character.IsShooting)
+            if (CurrentPlayer.RecentlyShot(3000) || Game.LocalPlayer.Character.IsShooting)
             {
                 if (!(CurrentPlayer.Character.IsCurrentWeaponSilenced || CurrentPlayer.CurrentWeaponCategory == WeaponCategory.Melee))
                 {

@@ -52,6 +52,10 @@ namespace LosSantosRED.lsr
                 CrimesList.RemoveAll(x => x.HasBeenNotWantedFor >= 120000);
             }
         }
+        public void Clear()
+        {
+            CrimesList.Clear();
+        }
         private void ApplyLastWantedStats()
         {
             ApplyWantedStats(LastResponse);

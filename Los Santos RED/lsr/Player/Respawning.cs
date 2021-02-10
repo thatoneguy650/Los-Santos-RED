@@ -53,7 +53,7 @@ public class Respawning : IRespawning
         }
         else
         {
-            ResetPlayer(true, false, false, false);
+            ResetPlayer(true, false, false, false, true);
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
             CurrentPlayer.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
@@ -61,14 +61,14 @@ public class Respawning : IRespawning
     }
     public void ResistArrest()
     {
-        ResetPlayer(false, false, false, false);
+        ResetPlayer(false, false, false, false, false);
         GameTimeLastResistedArrest = Game.GameTime;
     }
-    public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted)
+    public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory)
     {
         if (CurrentPlayer.CanUndie)
         {
-            Respawn(resetWanted, true, false, false);
+            Respawn(resetWanted, true, false, false, clearCriminalHistory);
             CurrentPlayer.PoliceResponse.SetWantedLevel(CurrentPlayer.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
             if (withInvicibility)
             {
@@ -85,7 +85,7 @@ public class Respawning : IRespawning
     public void RespawnAtGrave()
     {
         FadeOut();
-        Respawn(true, true, true, true);
+        Respawn(true, true, true, true, true);
         GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
         SetPlayerAtLocation(PlaceToSpawn);
         World.ClearPolice();
@@ -97,7 +97,7 @@ public class Respawning : IRespawning
     public void RespawnAtHospital(GameLocation PlaceToSpawn)
     {
         FadeOut();
-        Respawn(true, true, true, true);
+        Respawn(true, true, true, true, true);
         if (PlaceToSpawn == null)
         {
             PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
@@ -114,7 +114,7 @@ public class Respawning : IRespawning
         CheckWeapons();
         BailFee = CurrentPlayer.MaxWantedLastLife * Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         CurrentPlayer.RaiseHands();
-        ResetPlayer(true, true, false, true);
+        ResetPlayer(true, true, false, true, true);
         if (PoliceStation == null)
         {
             PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
@@ -172,9 +172,9 @@ public class Respawning : IRespawning
             }
         }
     }
-    private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons)
+    private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory)
     {
-        CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons);
+        CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory);
         CurrentPlayer.UnSetArrestedAnimation(Game.LocalPlayer.Character);
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
@@ -199,12 +199,12 @@ public class Respawning : IRespawning
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
     }
-    private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons)
+    private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory)
     {
         try
         {
             ResurrectPlayer(resetTimesDied);
-            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons);
+            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons, clearCriminalHistory);
             Game.HandleRespawn();
             Time.UnPauseTime();
             GameTimeLastRespawned = Game.GameTime;

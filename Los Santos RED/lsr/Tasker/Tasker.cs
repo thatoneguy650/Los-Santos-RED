@@ -20,6 +20,12 @@ public class Tasker
     }
     public void RunTasks()
     {
+        RunCopTasks();
+        RunCiviliansTasks();
+
+    }
+    private void RunCopTasks()
+    {
         int PedsUpdated = 0;
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
@@ -33,6 +39,9 @@ public class Tasker
                 PedsUpdated++;
             }
         }
+    }
+    private void RunCiviliansTasks()
+    {
         int CivlianPedsUpdated = 0;
         foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
@@ -43,16 +52,11 @@ public class Tasker
             else
             {
                 Ped.UpdateTask();
-                CivlianPedsUpdated++;
+            CivlianPedsUpdated++;
             }
         }
     }
-    public void Update()
-    {
-        UpdatePolice();
-        UpdateCivilians();
-    }
-    private void UpdatePolice()
+    public void UpdatePolice()
     {
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000))
         {
@@ -126,7 +130,7 @@ public class Tasker
             }
         }
     }
-    private void UpdateCivilians()
+    public void UpdateCivilians()
     {
         foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists()))
         {

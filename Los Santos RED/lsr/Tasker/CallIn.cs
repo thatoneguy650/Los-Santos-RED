@@ -19,6 +19,7 @@ public class CallIn : ComplexTask
     }
     public override void Start()
     {
+        
         Game.Console.Print($"TASKER: CallIn Start: {Ped.Pedestrian.Handle}");
         unsafe
         {
@@ -32,14 +33,16 @@ public class CallIn : ComplexTask
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
+        GameTimeLastRan = Game.GameTime;
     }
     public override void Update()
     {
         Game.Console.Print($"TASKER: CallIn Update: {Ped.Pedestrian.Handle}");
-        if(Game.GameTime - GameTimeStartedCallIn >= 10000 && Ped.CrimesWitnessed.Any())
+        if(Game.GameTime - GameTimeStartedCallIn >= 4000 && Ped.CrimesWitnessed.Any())
         {
             ReportCrime();
         }
+        GameTimeLastRan = Game.GameTime;
     }
     public override void Stop()
     {
@@ -58,7 +61,9 @@ public class CallIn : ComplexTask
             else
             {
                 Game.Console.Print($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} Crime {ToReport.ID}");
-                Player.PoliceResponse.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
+                //Player.PoliceResponse.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
+
+                Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
             }
 
             Ped.CrimesWitnessed.Clear();      

@@ -14,7 +14,7 @@ namespace LosSantosRED.lsr.Interface
 
         void RespawnAtGrave();
         void RespawnAtHospital(GameLocation currentSelectedHospitalLocation);
-        void RespawnAtCurrentLocation(bool v1, bool v2);
+        void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory);
         void SurrenderToPolice(GameLocation currentSelectedSurrenderLocation);
         void BribePolice(int bribeAmount);
         void ResistArrest();
