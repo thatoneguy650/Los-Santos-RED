@@ -39,7 +39,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsOnMotorcycle { get; }
         bool IsWanted { get; }
         bool RecentlyStartedPlaying { get; }
-        bool RecentlyShot(int v);
+        bool RecentlyShot { get; }
         void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2);
     }
 }

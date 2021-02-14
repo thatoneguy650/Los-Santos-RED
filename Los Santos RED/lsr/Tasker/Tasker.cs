@@ -52,7 +52,7 @@ public class Tasker
             else
             {
                 Ped.UpdateTask();
-            CivlianPedsUpdated++;
+                CivlianPedsUpdated++;
             }
         }
     }
@@ -60,7 +60,7 @@ public class Tasker
     {
         foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000))
         {
-            if (WithinTaskDistance(Cop) && !Cop.IsInHelicopter)//heli, dogs, boats come next?
+            if (Cop.DistanceToPlayer <= Player.ActiveDistance && !Cop.IsInHelicopter)//heli, dogs, boats come next?
             {
                 if (Player.IsWanted)
                 {
@@ -74,9 +74,9 @@ public class Tasker
                     }
                     else
                     {
-                        if (Cop.DistanceToPlayer <= 200f)
+                        if (Cop.DistanceToPlayer <= 150f)//200f
                         {
-                            if (Player.PoliceResponse.IsDeadlyChase)
+                            if (Player.PoliceResponse.IsDeadlyChase && (Player.PoliceResponse.IsWeaponsFree || !Player.IsAttemptingToSurrender))
                             {
                                 if (Cop.CurrentTask?.Name != "Kill")
                                 {
@@ -93,7 +93,7 @@ public class Tasker
                                 }
                             }
                         }
-                        else if (Cop.DistanceToPlayer <= 1000f)
+                        else// if (Cop.DistanceToPlayer <= Player.ActiveDistance)//1000f
                         {
                             if (Cop.CurrentTask?.Name != "Locate")
                             {
@@ -144,7 +144,7 @@ public class Tasker
                         Civilian.CurrentTask.Start();
                     }
                 }
-                else if ((Civilian.CrimesWitnessed.Any(x=> x.AngersCivilians) || Civilian.IsFedUpWithPlayer) && Civilian.WillFight)
+                else if ((Civilian.CrimesWitnessed.Any(x => x.AngersCivilians) || Civilian.IsFedUpWithPlayer) && Civilian.WillFight)
                 {
                     if (Civilian.CurrentTask?.Name != "Fight")
                     {
@@ -155,10 +155,6 @@ public class Tasker
                 }
             }
         }
-    }
-    private bool WithinTaskDistance(Cop cop)
-    {
-        return cop.DistanceToPlayer <= Player.ActiveDistance;
     }
 }
 

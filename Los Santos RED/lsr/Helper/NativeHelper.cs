@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Helper
 {
-    public static class Natives
+    public static class NativeHelper
     {
         public static uint CashHash(string PlayerName)
         {
@@ -94,6 +94,39 @@ namespace LosSantosRED.lsr.Helper
                 return PositionNear;
             }
             return SpawnPosition;
+        }
+        public static PedVariation GetPedVariation(Ped myPed)
+        {
+            try
+            {
+                PedVariation myPedVariation = new PedVariation
+                {
+                    MyPedComponents = new List<PedComponent>(),
+                    MyPedProps = new List<PedPropComponent>()
+                };
+                for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
+                {
+                    myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_TEXTURE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_PALETTE_VARIATION<int>(myPed, ComponentNumber)));
+                }
+                for (int PropNumber = 0; PropNumber < 8; PropNumber++)
+                {
+                    myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
+                }
+                return myPedVariation;
+            }
+            catch (Exception e)
+            {
+                Game.Console.Print("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message);
+                return null;
+            }
+        }
+        public static void ChangeModel(string ModelRequested)
+        {
+            Model characterModel = new Model(ModelRequested);
+            characterModel.LoadAndWait();
+            characterModel.LoadCollisionAndWait();
+            Game.LocalPlayer.Model = characterModel;
+            Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace LosSantosRED.lsr
 {
     public class CriminalHistory
     {
-        private List<PoliceResponse> CrimesList = new List<PoliceResponse>();
+        private List<PoliceResponse> RapSheetList = new List<PoliceResponse>();
         private uint GameTimeLastAppliedWantedStats;
         private IPoliceRespondable Player;
         public CriminalHistory(IPoliceRespondable currentPlayer)
@@ -24,11 +24,11 @@ namespace LosSantosRED.lsr
         public int LastWantedMaxLevel => LastResponse == null ? 0 : LastResponse.ObservedMaxWantedLevel;
         public bool RecentlyAppliedWantedStats => GameTimeLastAppliedWantedStats != 0 && Game.GameTime - GameTimeLastAppliedWantedStats <= 5000;
         public float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * 400f : 400f;
-        private bool HasHistory => CrimesList.Any();
-        private PoliceResponse LastResponse => CrimesList.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
+        private bool HasHistory => RapSheetList.Any();
+        private PoliceResponse LastResponse => RapSheetList.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
         public void StoreCriminalHistory(PoliceResponse rapSheet)
         {
-            CrimesList.Add(rapSheet);
+            RapSheetList.Add(rapSheet);
         }
         public void Update()
         {
@@ -49,12 +49,12 @@ namespace LosSantosRED.lsr
                         ApplyWantedStatsForPlate(Player.CurrentVehicle.CarPlate.PlateNumber);
                     }
                 }
-                CrimesList.RemoveAll(x => x.HasBeenNotWantedFor >= 120000);
+                RapSheetList.RemoveAll(x => x.HasBeenNotWantedFor >= 120000);
             }
         }
         public void Clear()
         {
-            CrimesList.Clear();
+            RapSheetList.Clear();
         }
         private void ApplyLastWantedStats()
         {
@@ -64,18 +64,23 @@ namespace LosSantosRED.lsr
         {
             if (CriminalHistory != null)
             {
-                if (Player.WantedLevel < CriminalHistory.ObservedMaxWantedLevel)
+                //if (Player.WantedLevel < CriminalHistory.ObservedMaxWantedLevel)
+                //{
+                //    Player.PoliceResponse.SetWantedLevel(CriminalHistory.ObservedMaxWantedLevel, "Applying old Wanted stats", true);
+                //}
+                RapSheetList.Remove(CriminalHistory);
+                foreach(CrimeEvent crime in CriminalHistory.CrimesObserved)
                 {
-                    Player.PoliceResponse.SetWantedLevel(CriminalHistory.ObservedMaxWantedLevel, "Applying old Wanted stats", true);
+                    Player.AddCrime(crime.AssociatedCrime, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true);
                 }
-                CrimesList.Remove(CriminalHistory);
-                Player.PoliceResponse = CriminalHistory;
+                //Player.PoliceResponse = CriminalHistory;
                 GameTimeLastAppliedWantedStats = Game.GameTime;
+                Game.Console.Print($"PLAYER EVENT: APPLYING WANTED STATS");
             }
         }
         private void ApplyWantedStatsForPlate(string PlateNumber)
         {
-            ApplyWantedStats(CrimesList.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault());
+            ApplyWantedStats(RapSheetList.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault());
         }
     }
 }

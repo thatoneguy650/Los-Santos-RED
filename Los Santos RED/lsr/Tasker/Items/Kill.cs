@@ -17,7 +17,7 @@ public class Kill : ComplexTask
     }
     public override void Start()
     {
-        Game.Console.Print($"TASKER: Kill Start: {Ped.Pedestrian.Handle}");
+        //Game.Console.Print($"TASKER: Kill Start: {Ped.Pedestrian.Handle}");
         ClearTasks();
         NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
         NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
@@ -29,7 +29,7 @@ public class Kill : ComplexTask
         NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, DesiredStyle);
         NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
         Ped.Pedestrian.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
-        Game.Console.Print(string.Format("TASKER Set to KILLLLLLL!!!!!!!!!: {0}", Ped.Pedestrian.Handle));
+        //Game.Console.Print(string.Format("TASKER Set to KILLLLLLL!!!!!!!!!: {0}", Ped.Pedestrian.Handle));
         
     }
     public override void Update()
@@ -57,7 +57,7 @@ public class Kill : ComplexTask
             {
                 Ped.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
             }            
-            Game.Console.Print(string.Format("     ClearedTasks: {0}", Ped.Pedestrian.Handle));
+            //Game.Console.Print(string.Format("     ClearedTasks: {0}", Ped.Pedestrian.Handle));
         }
     }
     public override void Stop()

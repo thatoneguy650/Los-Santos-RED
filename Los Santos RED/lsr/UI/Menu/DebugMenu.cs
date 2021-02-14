@@ -101,7 +101,7 @@ public class DebugMenu : Menu
         if (list == AutoSetRadioStation)
         {
             Player.AutoTuneStation = RadioStations.RadioStationList[index].InternalName;
-            Game.Console.Print($"Debug AutoTune Station {Player.AutoTuneStation}");
+            //Game.Console.Print($"Debug AutoTune Station {Player.AutoTuneStation}");
         }
     }
 }

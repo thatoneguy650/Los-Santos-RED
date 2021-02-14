@@ -1078,7 +1078,7 @@ namespace LosSantosRED.lsr
         }
         private void PlayDispatch(DispatchEvent MyAudioEvent, PoliceScannerCallIn MyDispatch)
         {
-            Game.Console.Print($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
+            //Game.Console.Print($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
                 Game.Console.Print(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText));
@@ -1097,7 +1097,7 @@ namespace LosSantosRED.lsr
             {
                 if (AbortedAudio)
                 {
-                    Game.Console.Print($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
+                    //Game.Console.Print($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
                     AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.Police.DispatchAudioVolume);
                     AbortedAudio = false;
                     GameFiber.Sleep(1000);
@@ -1120,7 +1120,7 @@ namespace LosSantosRED.lsr
 
                 foreach (string audioname in MyAudioEvent.SoundsToPlay)
                 {
-                    Game.Console.Print($"Scanner Playing. ToAudioPlayer: {audioname}");
+                    //Game.Console.Print($"Scanner Playing. ToAudioPlayer: {audioname}");
                     AudioPlayer.Play(audioname, Settings.SettingsManager.Police.DispatchAudioVolume);
 
                     while (AudioPlayer.IsAudioPlaying)

@@ -365,7 +365,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckWeaponCrimes()
         {
-            if (CurrentPlayer.RecentlyShot(3000) || Game.LocalPlayer.Character.IsShooting)
+            if (CurrentPlayer.RecentlyShot)
             {
                 if (!(CurrentPlayer.Character.IsCurrentWeaponSilenced || CurrentPlayer.CurrentWeaponCategory == WeaponCategory.Melee))
                 {
@@ -449,6 +449,13 @@ namespace LosSantosRED.lsr
             GameTimeLastKilledCivilian = 0;
             GameTimeLastHurtCop = 0;
             GameTimeLastKilledCop = 0;
+            IsSpeeding = false;
+            PlayerKilledCops.Clear();
+            PlayerKilledCivilians.Clear();
+            VehicleIsSuspicious = false;
+            IsRunningRedLight = false;
+            TimeSincePlayerHitPed = 0;
+            TimeSincePlayerHitVehicle = 0;
         }
         private void FlagViolations()
         {

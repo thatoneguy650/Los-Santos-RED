@@ -101,12 +101,12 @@ public class DeathMenu : Menu
             if (list == HospitalRespawn)
             {
                 CurrentSelectedHospitalLocation = Hospitals[index];
-                Game.Console.Print($"Current Death Respawn Location {CurrentSelectedHospitalLocation.Name}");
+                //Game.Console.Print($"Current Death Respawn Location {CurrentSelectedHospitalLocation.Name}");
             }
             else if (list == TakeoverRandomPed)
             {
                 SelectedTakeoverRadius = Distances[index].Distance;
-                Game.Console.Print($"Current Death Takeover Distance {SelectedTakeoverRadius}");
+                //Game.Console.Print($"Current Death Takeover Distance {SelectedTakeoverRadius}");
             }
         }
     }

@@ -14,15 +14,12 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceRecentlySeenPlayer { get; set; }
         bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         LocationData CurrentLocation { get; set; }
-       // Street CurrentCrossStreet { get; }
-        PoliceResponse PoliceResponse { get; set; }//should not be
+        PoliceResponse PoliceResponse { get;  }//should not be
         VehicleExt CurrentSeenVehicle { get; }
         WeaponInformation CurrentSeenWeapon { get; }
-      //  Street CurrentStreet { get; }
         VehicleExt CurrentVehicle { get; }
         WeaponInformation CurrentWeapon { get; }
         WeaponCategory CurrentWeaponCategory { get; }
-     //   Zone CurrentZone { get; }
         Investigation Investigation { get; }
         bool IsAliveAndFree { get; }
         bool IsBustable { get; }
@@ -47,11 +44,11 @@ namespace LosSantosRED.lsr.Interface
         bool StarsRecentlyGreyedOut { get; }
         bool StarsRecentlyActive { get; }
         Violations Violations { get; }//not good comrade
-
+        Vector3 Position { get; }
         void CheckInjured(PedExt myPed);
         void CheckMurdered(PedExt myPed);
         void Arrest();
         void StoreCriminalHistory();
-        void AddCrime(Crime crime, bool v1, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool v2);
+        void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription);
     }
 }

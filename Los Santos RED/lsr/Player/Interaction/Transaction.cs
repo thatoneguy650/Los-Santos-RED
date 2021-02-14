@@ -40,7 +40,7 @@ public class Transaction : Interaction
     {
         Player.IsConversing = true;
         NativeFunction.CallByName<bool>("SET_GAMEPLAY_PED_HINT", Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
-        Game.Console.Print($"Conversation Started");
+        //Game.Console.Print($"Conversation Started");
         GameFiber.StartNew(delegate
         {
             Setup();
@@ -51,7 +51,7 @@ public class Transaction : Interaction
     private bool CanSay(Ped ToSpeak, string Speech)
     {
         bool CanSay = NativeFunction.CallByHash<bool>(0x49B99BF3FDA89A7A, ToSpeak, Speech, 0);
-        Game.Console.Print($"CONVERSATION Can {ToSpeak.Handle} Say {Speech}? {CanSay}");
+        //Game.Console.Print($"CONVERSATION Can {ToSpeak.Handle} Say {Speech}? {CanSay}");
         return CanSay;
     }
     private void CheckInput()
@@ -119,7 +119,7 @@ public class Transaction : Interaction
             {
                 Spoke = true;
             }
-            Game.Console.Print($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
+            //Game.Console.Print($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
             if (Spoke)
             {
                 break;

@@ -47,7 +47,6 @@ namespace Mod
         private uint targettingHandle;
         private bool isActive = true;
         private uint GameTimeLastUpdatedLookedAtPed;
-
         public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations)
         {
             ModelName = modelName;
@@ -76,6 +75,10 @@ namespace Mod
             SearchMode = new SearchMode(this);
             Inventory = new Inventory(this);
         }
+        public Investigation Investigation { get; private set; }
+        public Interaction Interaction { get; private set; }
+        public PoliceResponse PoliceResponse { get; private set; }
+        public Violations Violations { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 400f + (WantedLevel * 200f);
         public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
         public bool AnyPoliceCanHearPlayer { get; set; }
@@ -105,21 +108,11 @@ namespace Mod
         public WeaponInformation CurrentWeapon { get; private set; }
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
         public WeaponHash CurrentWeaponHash { get; set; }
-        public string DebugLine1 => $"{Interaction?.DebugString}";
-        public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
-        public string DebugLine3 => DynamicActivity?.DebugString;
-        public string DebugLine4 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} Target: {CurrentTargetedPed?.Pedestrian?.Handle} LookAt: {CurrentLookedAtPed?.Pedestrian?.Handle}";
-        public string DebugLine5 => $"Obs {PoliceResponse.ObservedCrimesDisplay}";
-        public string DebugLine6 => $"Rep {PoliceResponse.ReportedCrimesDisplay}";
-        public string DebugLine7 => $"Vio {Violations.LawsViolatingDisplay}";
-        public string DebugLine8 => PoliceResponse.DebugText;
-        public string DebugLine9 => Investigation.DebugText;
-        public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically}";
+        public string CurrentModelName { get; set; }
+        public PedVariation CurrentModelVariation { get; set; }
         public bool DiedInVehicle { get; private set; }
         public bool HandsAreUp { get; set; }
-        public Interaction Interaction { get; private set; }
         public float IntoxicatedIntensity { get; set; }
-        public Investigation Investigation { get; private set; }
         public bool IsAiming
         {
             get => isAiming;
@@ -147,7 +140,7 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking;
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !IsInVehicle && !PoliceResponse.IsWeaponsFree;
+        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !IsInVehicle && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
@@ -217,18 +210,18 @@ namespace Mod
                 int CurrentCash;
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", Natives.CashHash(Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
+                    NativeFunction.CallByName<int>("STAT_GET_INT", NativeHelper.CashHash(Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
                 }
                 return CurrentCash;
             }
         }
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public bool PoliceRecentlyNoticedVehicleChange { get; set; }
-        public PoliceResponse PoliceResponse { get; set; }
         public Vector3 Position => Game.LocalPlayer.Character.Position;
         public bool RecentlyAppliedWantedStats => CriminalHistory.RecentlyAppliedWantedStats;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyDied => GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied <= 5000;
+        public bool RecentlyShot => GameTimeLastShot != 0 && RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => Game.GameTime - GameTimeStartedPlaying <= 10000;//15000
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
@@ -268,55 +261,36 @@ namespace Mod
         public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
         public VehicleExt VehicleGettingInto { get; private set; }
         public float VehicleSpeed { get; private set; }
-        public Violations Violations { get; private set; }
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
+        public string DebugLine1 => $"{Interaction?.DebugString}";
+        public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
+        public string DebugLine3 => DynamicActivity?.DebugString;
+        public string DebugLine4 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} Target: {CurrentTargetedPed?.Pedestrian?.Handle} LookAt: {CurrentLookedAtPed?.Pedestrian?.Handle}";
+        public string DebugLine5 => $"Obs {PoliceResponse.ObservedCrimesDisplay}";
+        public string DebugLine6 => $"Rep {PoliceResponse.ReportedCrimesDisplay}";
+        public string DebugLine7 => $"Vio {Violations.LawsViolatingDisplay}";
+        public string DebugLine8 => PoliceResponse.DebugText;
+        public string DebugLine9 => Investigation.DebugText;
+        public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically}";
+
+        public bool IsNearScenario { get; private set; }
+
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
             Game.Console.Print($"PLAYER EVENT: ADD CRIME ByPolice {ByPolice}");
-            PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);   
+            PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
             if (!ByPolice)
             {
                 Game.Console.Print($"PLAYER EVENT: INVESTIGATION START");
                 Investigation.Start();
             }
         }
-
         public void Arrest()
         {
             BeingArrested = true;
             if (!IsBusted)
             {
                 IsBustedChanged();
-            }
-        }
-        public void ArrestWarrantUpdate()
-        {
-            CriminalHistory.Update();
-        }
-        public void ChangePlate()
-        {
-            if (!IsPerformingActivity && CanPerformActivities)
-            {
-                if (DynamicActivity != null)
-                {
-                    DynamicActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, SpareLicensePlates[0]);
-                DynamicActivity.Start();
-            }
-        }
-        public void CommitSuicide()
-        {
-            if (!IsPerformingActivity && CanPerformActivities)
-            {
-                if (DynamicActivity != null)
-                {
-                    DynamicActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                DynamicActivity = new SuicideActivity(this);
-                DynamicActivity.Start();
             }
         }
         public void DisplayPlayerNotification()
@@ -355,27 +329,10 @@ namespace Mod
             isActive = false;
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
         }
-        public void DrinkBeer()
-        {
-            if (!IsPerformingActivity && CanPerformActivities)
-            {
-                if (DynamicActivity != null)
-                {
-                    DynamicActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                DynamicActivity = new DrinkingActivity(this);
-                DynamicActivity.Start();
-            }
-        }
-        public void DropWeapon()
-        {
-            WeaponDropping.DropWeapon();
-        }
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = Natives.CashHash(Settings.SettingsManager.General.MainCharacterToAlias);
+            uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.General.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -388,59 +345,7 @@ namespace Mod
             {
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
             }
-        }
-        public void CheckInjured(PedExt MyPed)
-        {
-            Violations.AddInjured(MyPed);
-        }
-        public void LocationUpdate()
-        {
-            CurrentLocation.Update();
-        }
-        public void LowerHands()
-        {
-            Surrendering.LowerHands();
-        }
-        public void CheckMurdered(PedExt MyPed)
-        {
-            Violations.AddKilled(MyPed);
-        }
-        public void RaiseHands()
-        {
-            Surrendering.RaiseHands();
-        }
-        public bool RecentlyShot(int duration)
-        {
-            if (GameTimeLastShot == 0)
-            {
-                return false;
-            }
-            else if (RecentlyStartedPlaying)
-            {
-                return false;
-            }
-            else if (Game.GameTime - GameTimeLastShot <= duration) //15000
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public void RemovePlate()
-        {
-            if (!IsPerformingActivity && CanPerformActivities)
-            {
-                if (DynamicActivity != null)
-                {
-                    DynamicActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this);
-                DynamicActivity.Start();
-            }
-        }
+        }  
         public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory)
         {
             IsDead = false;
@@ -451,16 +356,16 @@ namespace Mod
             IsPerformingActivity = false;
             if (resetWanted)
             {
-                Game.LocalPlayer.WantedLevel = 0;
-                
-                PoliceResponse.Reset();//PoliceResponse = new PoliceResponse(this);
+                PoliceResponse.Reset();
                 Investigation.Reset();
-                Violations = new Violations(this, TimeControllable);
-                NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
+                Violations.Reset();
+                //NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
+
+               // ResetModel();
+
                 Update();
-                //PoliceResponse.Reset();
             }
             if (resetTimesDied)
             {
@@ -482,13 +387,9 @@ namespace Mod
             IsMale = IsMale;
             SetMoney(money);
         }
-        public void SearchModeUpdate()
-        {
-            SearchMode.UpdateWanted();
-        }
         public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", Natives.CashHash(Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
         }
         public void SetPlayerToLastWeapon()
         {
@@ -512,6 +413,10 @@ namespace Mod
             SetUnarmed();
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
 
+            CurrentModelName = Game.LocalPlayer.Character.Model.Name;
+            CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+
+
             //this temp bullshit
             GameFiber.StartNew(delegate
             {
@@ -534,6 +439,12 @@ namespace Mod
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
             GameTimeLastShot = Game.GameTime;
         }
+        public void Update()
+        {
+            UpdateData();
+            UpdateButtonPrompts();
+        }
+        //Interactions
         public void StartConversation()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)
@@ -545,6 +456,85 @@ namespace Mod
                 IsConversing = true;
                 Interaction = new Conversation(this, CurrentLookedAtPed);
                 Interaction.Start();
+            }
+        }
+        public void StartHoldUp()
+        {
+            if (!IsInteracting && CanHoldUpTargettedPed)
+            {
+                if (Interaction != null)
+                {
+                    Interaction.Dispose();
+                }
+                IsHoldingUp = true;
+                Interaction = new HoldUp(this, CurrentTargetedPed);
+                Interaction.Start();
+            }
+        }
+        //Dynamic Activities
+        public void ChangePlate()
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new PlateTheft(this, SpareLicensePlates[0]);
+                DynamicActivity.Start();
+            }
+        }
+        public void CommitSuicide()
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new SuicideActivity(this);
+                DynamicActivity.Start();
+            }
+        }
+        public void DrinkBeer()
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new DrinkingActivity(this);
+                DynamicActivity.Start();
+            }
+        }
+        public void RemovePlate()
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new PlateTheft(this);
+                DynamicActivity.Start();
+            }
+        }
+        public void StartScenario()
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new ScenarioActivity(this);
+                DynamicActivity.Start();
             }
         }
         public void StartSmoking()
@@ -588,31 +578,20 @@ namespace Mod
                 DynamicActivity?.Cancel();
             }
         }
-        public void StopVanillaSearchMode()
-        {
-            SearchMode.StopVanilla();
-        }
-        public void StoreCriminalHistory()
-        {
-            CriminalHistory.StoreCriminalHistory(PoliceResponse);
-        }
-        public void TrafficViolationsUpdate()
-        {
-            Violations.TrafficUpdate();
-        }
-        public void UnSetArrestedAnimation(Ped character)
-        {
-            Surrendering.UnSetArrestedAnimation(character);
-        }
-        public void Update()
-        {
-            UpdateData();
-            UpdateButtonPrompts();
-        }
-        public void ViolationsUpdate()
-        {
-            Violations.Update();
-        }
+        //Delegates
+        public void ArrestWarrantUpdate() => CriminalHistory.Update();
+        public void CheckInjured(PedExt MyPed) => Violations.AddInjured(MyPed);
+        public void CheckMurdered(PedExt MyPed) => Violations.AddKilled(MyPed);
+        public void DropWeapon() => WeaponDropping.DropWeapon();
+        public void LocationUpdate() => CurrentLocation.Update();
+        public void LowerHands() => Surrendering.LowerHands();
+        public void RaiseHands() => Surrendering.RaiseHands();
+        public void SearchModeUpdate() => SearchMode.UpdateWanted();
+        public void StopVanillaSearchMode() => SearchMode.StopVanilla();
+        public void StoreCriminalHistory() => CriminalHistory.StoreCriminalHistory(PoliceResponse);
+        public void TrafficViolationsUpdate() => Violations.TrafficUpdate();
+        public void UnSetArrestedAnimation(Ped character) => Surrendering.UnSetArrestedAnimation(character);
+        public void ViolationsUpdate() => Violations.Update();
         private void IsAimingChanged()
         {
             if (IsAiming)
@@ -729,19 +708,12 @@ namespace Mod
             }
             Game.Console.Print($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
         }
-        private void StartHoldUp()
-        {
-            if (!IsInteracting && CanHoldUpTargettedPed)
-            {
-                if (Interaction != null)
-                {
-                    Interaction.Dispose();
-                }
-                IsHoldingUp = true;
-                Interaction = new HoldUp(this, CurrentTargetedPed);
-                Interaction.Start();
-            }
-        }
+        //public void ResetModel()
+        //{
+        //    PedVariation MyVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+        //    NativeHelper.ChangeModel(Game.LocalPlayer.Character.Model.Name);
+        //    MyVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
+        //}
         private void TargettingHandleChanged()
         {
             if (TargettingHandle != 0)
@@ -772,6 +744,21 @@ namespace Mod
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
             }
+            if(CanPerformActivities && IsNearScenario)
+            {
+                if (!ButtonPrompts.Any(x => x.Identifier == $"StartScenario"))
+                {
+                    ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
+                    ButtonPrompts.Add(new ButtonPrompt($"Start Scenario", "StartScenario", $"StartScenario", Keys.L, 2));
+                }
+            }
+            else
+            {
+                ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
+            }
+
+
+
         }
         private void UpdateCurrentVehicle()
         {
@@ -825,7 +812,7 @@ namespace Mod
                 //Works fine just going simpler
                 Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
                 // Vector3 RayStart = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
-                Vector3 RayEnd = RayStart + Natives.GetGameplayCameraDirection() * 6.0f;
+                Vector3 RayEnd = RayStart + NativeHelper.GetGameplayCameraDirection() * 6.0f;
                 //Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
                 //Vector3 RayEnd = RayStart + Game.LocalPlayer.Character.Direction * 5.0f;
                 HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPedsSimpleCollision, Game.LocalPlayer.Character);//2 meter wide cylinder out 10 meters that ignores the player charater going from the head in the players direction
@@ -922,6 +909,8 @@ namespace Mod
             {
                 IsIntoxicated = false;
             }
+
+            IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 3f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 3f, true); ;
         }
         private void UpdateTargetedPed()
         {
@@ -939,7 +928,7 @@ namespace Mod
             }
             else
             {
-                TargettingHandle = Natives.GetTargettingHandle();
+                TargettingHandle = NativeHelper.GetTargettingHandle();
             }
         }
         private void UpdateVehicleData()
@@ -1095,20 +1084,12 @@ namespace Mod
             if (IsNotWanted && PreviousWantedLevel != 0)//removed
             {
                 PoliceResponse.OnLostWanted();
-                //if (!IsDead)
-                //{
-                //    if (PoliceResponse.PlayerSeenDuringWanted && PreviousWantedLevel != 0)
-                //    {
-                //        StoreCriminalHistory();
-                //    }
-                //    PoliceResponse.Reset();//PoliceResponse = new PoliceResponse(this);
-                //}
-                //PoliceResponse.OnLostWanted();
             }
             else if (IsWanted && PreviousWantedLevel == 0)//added
             {
                 if (!PoliceResponse.RecentlySetWanted)//only allow my process to set the wanted level
                 {
+                    Game.Console.Print($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING");
                     Game.LocalPlayer.WantedLevel = 0;
                 }
                 else

@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr
             HoldingEnterCheck();
             ButtonPromptCheck();
             ConversationCheck();
+            ScenarioCheck();
             Player.IsHoldingEnter = IsHoldingEnter;
             Player.IsMoveControlPressed = IsMoveControlPressed;
         }
@@ -54,6 +55,13 @@ namespace LosSantosRED.lsr
             if (Player.ButtonPrompts.Any(x => x.Group == "StartConversation" && x.IsPressedNow))//string for now...
             {
                 Player.StartConversation();
+            }
+        }
+        private void ScenarioCheck()
+        {
+            if (Player.ButtonPrompts.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
+            {
+                Player.StartScenario();
             }
         }
         private void HoldingEnterCheck()
@@ -95,7 +103,7 @@ namespace LosSantosRED.lsr
             {
                 if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)
                 {
-                    Game.Console.Print($"INPUT! Control :{bp.Text}: Down");
+                    //Game.Console.Print($"INPUT! Control :{bp.Text}: Down");
                     bp.IsPressedNow = true;
                 }
                 else if (Game.IsControlJustPressed(2, bp.GameControl) && !bp.IsPressedNow)

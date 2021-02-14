@@ -19,7 +19,7 @@ public class Fight : ComplexTask
     }
     public override void Start()
     {
-        Game.Console.Print($"TASKER: Fight Start: {Ped.Pedestrian.Handle}");
+        //Game.Console.Print($"TASKER: Fight Start: {Ped.Pedestrian.Handle}");
         Ped.Pedestrian.Inventory.GiveNewWeapon(ToIssue.Hash, ToIssue.AmmoAmount, true);
         Ped.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
         GameTimeLastRan = Game.GameTime;

@@ -21,6 +21,7 @@ public class Debug
     private Mod.World World;
     private Mod.Player Player;
     private Scanner Scanner;
+    private Ped Cop;
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, Scanner scanner)
     {
         PlateTypes = plateTypes;
@@ -70,6 +71,11 @@ public class Debug
         {
             DebugNumpad9();
         }
+
+        foreach(Cop cop in World.PoliceList.Where(x=> x.Pedestrian.Exists()))
+        {
+            DrawColoredArrow(cop);
+        }
     }
     private void DebugNumpad0()
     {
@@ -81,77 +87,49 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        Scanner.Reset();
-        Scanner.AnnounceCrime(new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, 5, false, false, false), new PoliceScannerCallIn(false, true, Game.LocalPlayer.Character.Position));
+        Player.PoliceResponse.SetWantedLevel(0, "RESETTING DEBUG!", true);
     }
     private void DebugNumpad3()
     {
-        Scanner.AnnounceCrime(new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false), new PoliceScannerCallIn(false, true, Game.LocalPlayer.Character.Position));
+        Player.PoliceResponse.SetWantedLevel(2, "SETTING DEBUG!", true);
     }
     private void DebugNumpad4()
     {
-        SpawnInteractiveChaser();
+        if (Cop.Exists())
+        {
+            Cop.Delete();
+        }
+        Vector3 Pos = Game.LocalPlayer.Character.GetOffsetPositionFront(3f);
+        //Cop = new Ped("s_m_y_cop_01", Game.LocalPlayer.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading);
+        Cop = NativeFunction.Natives.CREATE_PED<Ped>(6, Game.GetHashKey("s_m_y_cop_01"), Pos.X, Pos.Y, Pos.Z, Game.LocalPlayer.Character.Heading, false, false);
+        Cop.RelationshipGroup = RelationshipGroup.Cop;
     }
     private void DebugNumpad5()
     {
-        //foreach (Cop cop in World.PoliceList)
-        //{
-        //    cop.CurrentTask = new Chase(cop, Player);
-        //    cop.CurrentTask.Start();
-        //}
-
-        foreach (ButtonPrompt bp in Player.ButtonPrompts)
-        {
-            Game.Console.Print($"{bp.Text}, {bp.Key}, {bp.IsPressedNow}, {bp.Text}");
-        }
-        //foreach (Cop cop in World.PoliceList)
-        //{
-        //    Player.AddCrime(new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, 4, true, false, false), false, Game.LocalPlayer.Character.Position, null, null, false);
-        //    cop.CurrentTask = new Investigate(cop, Player);
-        //    cop.CurrentTask.Start();
-        //}
+        Game.Console.Print("HandleRespawn RUN");
+        Game.HandleRespawn();
     }
     private void DebugNumpad6()
     {
-        //foreach (Cop cop in World.PoliceList)
-        //{
-        //    Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
-        //    if(cop.CurrentTask == null || cop.CurrentTask.Name != "Locate")
-        //    {
-        //        cop.CurrentTask = new Locate(cop, Player);
-        //        cop.CurrentTask.Start();
-        //    }
-
-        //}
-        Player.Character.RelationshipGroup.SetRelationshipWith(RelationshipGroup.AmbientGangFamily, (Relationship)255);
-        RelationshipGroup.AmbientGangFamily.SetRelationshipWith(RelationshipGroup.Player, (Relationship)255);
-        //foreach (ButtonPrompt bp in Player.ButtonPrompts)
-        //{
-        //    Game.Console.Print($"{bp.Text}, {bp.Key}, {bp.IsPressedNow}, {bp.Text}");
-        //}
-        NativeFunction.CallByName<bool>("STOP_GAMEPLAY_HINT", true);
+        Game.Console.Print("RESET_PLAYER_ARREST_STATE RUN");
+        NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
     }
     private void DebugNumpad7()
     {
-        //foreach (Cop cop in World.PoliceList)
-        //{
-        //    cop.CurrentTask = new Chase(cop, Player);
-        //    cop.CurrentTask.Start();
-        //}
-        Game.Console.Print("===================================");
-        foreach (PedExt ped in World.CivilianList.OrderBy(x => x.DistanceToPlayer))
+        Game.Console.Print("Tasks.Clear RUN");
+        if (Cop.Exists())
         {
-            Game.Console.Print(ped.DebugString);
+            Cop.Tasks.Clear();
         }
-        Game.Console.Print("===================================");
-
     }
     public void DebugNumpad8()
     {
         Game.Console.Print("===================================");
         foreach (Cop cop in World.PoliceList.OrderBy(x=>x.DistanceToPlayer))
         {
-            Game.Console.Print(cop.DebugString);
+            int rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Game.LocalPlayer.Character, cop.Pedestrian);
+            int rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(cop.Pedestrian, Game.LocalPlayer.Character);
+            Game.Console.Print(cop.DebugString + $"Rel1 {rel1} Rel2 {rel2}");
         }
         Game.Console.Print("===================================");
     }
@@ -162,6 +140,10 @@ public class Debug
     }
     private void TerminateMod()
     {
+        if (Cop.Exists())
+        {
+            Cop.Delete();
+        }
         EntryPoint.ModController.Dispose();
         Game.LocalPlayer.WantedLevel = 0;
         Game.TimeScale = 1f;
@@ -174,6 +156,37 @@ public class Debug
         Rage.Debug.DrawArrowDebug(Position, Vector3.Zero, Rotator.Zero, 1f, Color.White);
         Vector3 Position2 = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
         Rage.Debug.DrawArrowDebug(Position2, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+    }
+    private void DrawColoredArrow(PedExt PedToDraw)
+    {
+        Color Color = Color.White;
+        TaskStatus taskStatus = PedToDraw.Pedestrian.Tasks.CurrentTaskStatus;
+        if(taskStatus == TaskStatus.InProgress)
+        {
+            Color = Color.Green;
+        }
+        else if (taskStatus == TaskStatus.Interrupted)
+        {
+            Color = Color.Red;
+        }
+        else if (taskStatus == TaskStatus.None)
+        {
+            Color = Color.White;
+        }
+        else if (taskStatus == TaskStatus.NoTask)
+        {
+            Color = Color.Blue;
+        }
+        else if (taskStatus == TaskStatus.Preparing)
+        {
+            Color = Color.Purple;
+        }
+        else if (taskStatus == TaskStatus.Unknown)
+        {
+            Color = Color.Yellow;
+        }
+
+        Rage.Debug.DrawArrowDebug(PedToDraw.Pedestrian.Position, Vector3.Zero, Rotator.Zero, 1f, Color);
     }
     private void SpawnInteractiveChaser()
     {

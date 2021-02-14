@@ -20,7 +20,7 @@ public class CallIn : ComplexTask
     public override void Start()
     {
         
-        Game.Console.Print($"TASKER: CallIn Start: {Ped.Pedestrian.Handle}");
+        //Game.Console.Print($"TASKER: CallIn Start: {Ped.Pedestrian.Handle}");
         unsafe
         {
             int lol = 0;
@@ -37,7 +37,7 @@ public class CallIn : ComplexTask
     }
     public override void Update()
     {
-        Game.Console.Print($"TASKER: CallIn Update: {Ped.Pedestrian.Handle}");
+        //Game.Console.Print($"TASKER: CallIn Update: {Ped.Pedestrian.Handle}");
         if(Game.GameTime - GameTimeStartedCallIn >= 4000 && Ped.CrimesWitnessed.Any())
         {
             ReportCrime();
@@ -50,17 +50,17 @@ public class CallIn : ComplexTask
     }
     private void ReportCrime()
     {
-        Game.Console.Print($"TASKER: CallIn ReportCrime: {Ped.Pedestrian.Handle}");
+        //Game.Console.Print($"TASKER: CallIn ReportCrime: {Ped.Pedestrian.Handle}");
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsRagdoll)
         {
             Crime ToReport = Ped.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
             if(ToReport == null)
             {
-                Game.Console.Print($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} NULL CRIME!!!!");
+                //Game.Console.Print($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} NULL CRIME!!!!");
             }
             else
             {
-                Game.Console.Print($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} Crime {ToReport.ID}");
+                //Game.Console.Print($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} Crime {ToReport.ID}");
                 //Player.PoliceResponse.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
 
                 Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);

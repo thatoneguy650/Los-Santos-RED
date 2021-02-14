@@ -178,7 +178,7 @@ public class Dispatcher
         if (IsTimeToDispatch && HasNeedToDispatch)
         {
 
-            Game.Console.Print($"DISPATCHER: Attempting Spawn");
+            //Game.Console.Print($"DISPATCHER: Attempting Spawn");
             int timesTried = 0;
             SpawnLocation spawnLocation = new SpawnLocation();
             do
@@ -215,7 +215,7 @@ public class Dispatcher
             }
             else
             {
-                Game.Console.Print($"DISPATCHER: Attempting to Spawn Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {IsValidSpawn(spawnLocation)}");
+                //Game.Console.Print($"DISPATCHER: Attempting to Spawn Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {IsValidSpawn(spawnLocation)}");
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -239,7 +239,7 @@ public class Dispatcher
     {
         if (IsTimeToRecall)
         {
-            Game.Console.Print($"DISPATCHER: Attempting Recall");
+            //Game.Console.Print($"DISPATCHER: Attempting Recall");
             foreach (Cop DeleteableCop in DeletableCops)
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
@@ -256,7 +256,7 @@ public class Dispatcher
     {
         if (Cop != null && Cop.Pedestrian.Exists())
         {
-            Game.Console.Print($"Attempting to Delete {Cop.Pedestrian.Handle}");
+            //Game.Console.Print($"Attempting to Delete {Cop.Pedestrian.Handle}");
             if (Cop.Pedestrian.IsInAnyVehicle(false))
             {
                 if (Cop.Pedestrian.CurrentVehicle.HasPassengers)
@@ -275,7 +275,7 @@ public class Dispatcher
             RemoveBlip(Cop.Pedestrian);
             if (Cop.Pedestrian.Exists())
             {
-                Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
+                //Game.Console.Print(string.Format("Delete Cop Handle: {0}, {1}, {2}", Cop.Pedestrian.Handle, Cop.DistanceToPlayer, Cop.AssignedAgency.Initials));
                 Cop.Pedestrian.Delete();
             }
         }
@@ -320,7 +320,7 @@ public class Dispatcher
         //}
         foreach (Agency ag in ToReturn)
         {
-            Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
+            //Game.Console.Print(string.Format("Debugging: Agencies At Pos: {0}", ag.Initials));
         }
         return ToReturn;
     }
@@ -353,7 +353,7 @@ public class Dispatcher
         }
         if (agency == null)
         {
-            Game.Console.Print("Dispatcher could not find Agency To Spawn");
+            //Game.Console.Print("Dispatcher could not find Agency To Spawn");
         }
         return agency;
     }
@@ -385,27 +385,27 @@ public class Dispatcher
     {
         if (!cop.AssignedAgency.CanSpawn(Player.WantedLevel))
         {
-            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Agency Can Not Spawn");
+            //Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Agency Can Not Spawn");
             return true;
         }
         else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
         {
-            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Vehicle)");
+            //Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Vehicle)");
             return true;
         }
         else if (!cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
         {
-            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Foot)");
+            //Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Beyond Distance (Foot)");
             return true;
         }
         else if (cop.ClosestDistanceToPlayer <= 15f) //Got Close and Then got away
         {
-            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close");
+            //Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close");
             return true;
         }
         else if (World.CountNearbyCops(cop.Pedestrian) >= 3 && cop.TimeBehindPlayer >= 15000) //Got Close and Then got away
         {
-            Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Behind Player Around Others");
+            //Game.Console.Print($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Behind Player Around Others");
             return true;
         }
         return false;

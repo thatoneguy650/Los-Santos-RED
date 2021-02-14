@@ -27,5 +27,6 @@ namespace LosSantosRED.lsr.Interface
         void DropWeapon();
         void SetUnarmed();
         void StartConversation();
+        void StartScenario();
     }
 }

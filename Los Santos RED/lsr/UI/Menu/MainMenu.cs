@@ -85,7 +85,7 @@ public class MainMenu : Menu
         if (list == TakeoverRandomPed)
         {
             SelectedTakeoverRadius = Distances[index].Distance;
-            Game.Console.Print($"Current Main Takeover Distance {SelectedTakeoverRadius}");
+            //Game.Console.Print($"Current Main Takeover Distance {SelectedTakeoverRadius}");
         }
     }
 }

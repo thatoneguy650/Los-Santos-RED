@@ -87,7 +87,7 @@ public class Vehicles
             {
                 if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                 {
-                    Game.Console.Print($"Abandoned DELETE {PoliceCar.Vehicle.Handle}");
+                    //Game.Console.Print($"Abandoned DELETE {PoliceCar.Vehicle.Handle}");
                     PoliceCar.Vehicle.Delete();
                 }
             }
@@ -109,7 +109,7 @@ public class Vehicles
         {
             if (Veh.Vehicle.Exists())
             {
-                Game.Console.Print($"ClearPolice DELETE {Veh.Vehicle.Handle}");
+                //Game.Console.Print($"ClearPolice DELETE {Veh.Vehicle.Handle}");
                 Veh.Vehicle.Delete();
             }
         }
@@ -242,11 +242,11 @@ public class Vehicles
             Zone ZoneFound = Zones.GetZone(CopCar.Position);
             if (ZoneFound != null && ZoneFound.InternalGameName != "UNK")
             {
-                Game.Console.Print(string.Format("GetAgency ZoneFound.InternalGameName {0}", ZoneFound.InternalGameName));
+                //Game.Console.Print(string.Format("GetAgency ZoneFound.InternalGameName {0}", ZoneFound.InternalGameName));
                 List<Agency> ToGoThru = ZoneJurisdictions.GetAgencies(ZoneFound.InternalGameName, WantedLevel);
                 if (ToGoThru != null)
                 {
-                    Game.Console.Print(string.Format("GetAgency Count {0}", ToGoThru.Count));
+                    //Game.Console.Print(string.Format("GetAgency Count {0}", ToGoThru.Count));
                     foreach (Agency ZoneAgency in ToGoThru)
                     {
                         if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
@@ -261,7 +261,7 @@ public class Vehicles
         if (ToReturn == null)
         {
             //Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
-            Game.Console.Print($"NoAgency DELETE {CopCar.Handle}");
+            //Game.Console.Print($"NoAgency DELETE {CopCar.Handle}");
             CopCar.Delete();
         }
         return ToReturn;

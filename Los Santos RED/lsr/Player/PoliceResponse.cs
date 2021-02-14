@@ -42,13 +42,10 @@ namespace LosSantosRED.lsr
         public uint HasBeenAtCurrentWantedLevelFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedLevelStarted;
         public uint HasBeenNotWantedFor => Player.WantedLevel != 0 || GameTimeLastWantedEnded == 0 ? 0 : Game.GameTime - GameTimeLastWantedEnded;
         public uint HasBeenWantedFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedStarted;
-
         public bool HasObservedCrimes => CrimesObserved.Any();
-        public bool HasReportedCrimes => CrimesReported.Any();
         public bool IsDeadlyChase => CurrentPoliceState == PoliceState.DeadlyChase;
         public bool IsWeaponsFree { get; set; }
         public Vector3 LastWantedCenterPosition { get; set; }
-        public float LastWantedSearchRadius { get; set; }
         public bool LethalForceAuthorized => CrimesObserved.Any(x => x.AssociatedCrime.ResultsInLethalForce);
         public string ObservedCrimesDisplay => string.Join(",", CrimesObserved.Select(x => x.AssociatedCrime.Name));
         public int ObservedMaxWantedLevel => CrimesObserved.Max(x => x.AssociatedCrime.ResultingWantedLevel);
@@ -56,7 +53,6 @@ namespace LosSantosRED.lsr
         public Vector3 PlaceWantedStarted { get; private set; }
         public bool PlayerSeenDuringCurrentWanted { get; set; }
         public bool PlayerSeenDuringWanted { get; set; } = false;
-        public bool PoliceChasingRecklessly => CurrentPoliceState == PoliceState.DeadlyChase && (InstancesOfCrime("KillingPolice") >= 1 || InstancesOfCrime("KillingCivilians") >= 2 || Player.WantedLevel >= 4);
         public bool PoliceHaveDescription { get; private set; }
         public bool RecentlyLostWanted => GameTimeLastWantedEnded != 0 && Game.GameTime - GameTimeLastWantedEnded <= 5000;
         public List<CrimeEvent> RecentlyOccuredCrimes => CrimesObserved.Where(x => x.RecentlyOccurred(10000)).ToList();
@@ -262,45 +258,6 @@ namespace LosSantosRED.lsr
         public void Update()
         {
             CurrentPoliceState = GetPoliceState();
-            WantedLevelTick();       
-        }
-        private PoliceState GetPoliceState()
-        {
-            if (Player.IsBusted)
-            {
-                return PoliceState.ArrestedWait;
-            }
-            if (Player.IsNotWanted)
-            {
-                return PoliceState.Normal;//Default state
-            }
-            else
-            {
-                if (Player.WantedLevel <= 3)
-                {
-                    if (LethalForceAuthorized)
-                    {
-                        return PoliceState.DeadlyChase;
-                    }
-                    else
-                    {
-                        return PoliceState.UnarmedChase;
-                    }
-                }
-                else
-                {
-                    return PoliceState.DeadlyChase;
-                }
-            }
-        }
-        private void PoliceStateChanged()
-        {
-            //Game.Console.Print(string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
-            GameTimePoliceStateStart = Game.GameTime;
-            PrevPoliceState = CurrentPoliceState;
-        }
-        private void WantedLevelTick()
-        {
             if (PrevPoliceState != CurrentPoliceState)
             {
                 PoliceStateChanged();
@@ -345,6 +302,41 @@ namespace LosSantosRED.lsr
                 }
             }
             UpdateBlip();
+        }
+        private PoliceState GetPoliceState()
+        {
+            if (Player.IsBusted)
+            {
+                return PoliceState.ArrestedWait;
+            }
+            if (Player.IsNotWanted)
+            {
+                return PoliceState.Normal;//Default state
+            }
+            else
+            {
+                if (Player.WantedLevel <= 3)
+                {
+                    if (LethalForceAuthorized)
+                    {
+                        return PoliceState.DeadlyChase;
+                    }
+                    else
+                    {
+                        return PoliceState.UnarmedChase;
+                    }
+                }
+                else
+                {
+                    return PoliceState.DeadlyChase;
+                }
+            }
+        }
+        private void PoliceStateChanged()
+        {
+            //Game.Console.Print(string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
+            GameTimePoliceStateStart = Game.GameTime;
+            PrevPoliceState = CurrentPoliceState;
         }
         private void UpdateBlip()
         {

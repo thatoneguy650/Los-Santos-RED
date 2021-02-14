@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsIntoxicated { get; set; }
         float IntoxicatedIntensity { get; set; }
+        Vector3 Position { get; }
+        bool IsMoveControlPressed { get; }
 
         void SetUnarmed();
         // bool ShouldCancelActivities { get; }

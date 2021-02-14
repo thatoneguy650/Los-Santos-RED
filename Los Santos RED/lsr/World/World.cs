@@ -38,8 +38,6 @@ namespace Mod
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
         public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
-        public List<VehicleExt> CivilianVehicleList => Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists()).ToList();
-        public bool ShouldBustPlayer => Pedestrians.AnyPoliceShouldBustPlayer;
         public int TotalSpawnedCops => Pedestrians.TotalSpawnedCops;
         public void Setup()
         {
@@ -57,53 +55,26 @@ namespace Mod
                 myBlip.AddToMap();
             }
         }
-        public void AddEntity(Blip myBlip)
-        {
-            CreatedBlips.Add(myBlip);
-        }
-        public void AddEntity(Cop cop)
-        {
-            Pedestrians.Police.Add(cop);
-        }
-        public void AddEntity(VehicleExt vehicle)
-        {
-            Vehicles.AddToList(vehicle);
-        }
-        public bool AnyCopsNearPosition(Vector3 position, float radius)
-        {
-            return Pedestrians.AnyCopsNearPosition(position, radius);
-        }
+        public void AddEntity(Blip myBlip) => CreatedBlips.Add(myBlip);
+        public void AddEntity(Cop cop) => Pedestrians.Police.Add(cop);
+        public void AddEntity(VehicleExt vehicle) => Vehicles.AddToList(vehicle);
+        public bool AnyCopsNearPosition(Vector3 position, float radius) => Pedestrians.AnyCopsNearPosition(position, radius);
         public void ClearPolice()
         {
             Pedestrians.ClearPolice();
             Vehicles.ClearPolice();
         }
-        public int CountNearbyCops(Ped pedestrian)
-        {
-            return Pedestrians.CountNearbyCops(pedestrian);
-        }
+        public int CountNearbyCops(Ped pedestrian) => Pedestrians.CountNearbyCops(pedestrian);
         public void Dispose()
         {
             RemoveBlips();
             ClearPolice();
 
         }
-        public PedExt GetCivilian(uint handle)
-        {
-            return Pedestrians.GetCivilian(handle);
-        }
-        public VehicleExt GetVehicle(Vehicle vehicleTryingToEnter)
-        {
-            return Vehicles.GetVehicle(vehicleTryingToEnter);
-        }
-        public void PrunePedestrians()
-        {
-            Pedestrians.Prune();
-        }
-        public void PruneVehicles()
-        {
-            Vehicles.CleanLists();
-        }
+        public PedExt GetCivilian(uint handle) => Pedestrians.GetCivilian(handle);
+        public VehicleExt GetVehicle(Vehicle vehicleTryingToEnter) => Vehicles.GetVehicle(vehicleTryingToEnter);
+        public void PrunePedestrians() => Pedestrians.Prune();
+        public void PruneVehicles() => Vehicles.CleanLists();
         public void RemoveBlips()
         {
             foreach (Blip MyBlip in CreatedBlips)
@@ -112,22 +83,10 @@ namespace Mod
                     MyBlip.Delete();
             }
         }
-        public void ScaneForPedestrians()
-        {
-            Pedestrians.Scan();
-        }
-        public void ScanForVehicles()
-        {
-            Vehicles.Scan();
-        }
-        public void UpdateVehiclePlates()
-        {
-            Vehicles.UpdatePlates();
-        }
-        public void VehiclesTick()
-        {
-            Vehicles.Tick();
-        }
-
+        public void ScaneForPedestrians() => Pedestrians.Scan();
+        public void CreateNewPedestrians() => Pedestrians.CreateNew();
+        public void ScanForVehicles() => Vehicles.Scan();
+        public void UpdateVehiclePlates() => Vehicles.UpdatePlates();
+        public void VehiclesTick() => Vehicles.Tick();
     }
 }

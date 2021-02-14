@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -22,58 +23,35 @@ public class PedSwap : IPedswappable
     }
     private Ped CurrentPed;
     private Vector3 CurrentPedPosition;
-    private PedVariation CurrentPedVariation;
-    private bool IsMaleBeforeTakeover;
+    private PedVariation TargetPedVariation;
+    private bool TargetPedIsMale;
     private string LastModelHash;
-    private string ModelBeforeTakeOver;
-    private Model OriginalModel;
-    private RelationshipGroup OriginalRelationshipGroup;
-    private List<TakenOverPed> TakenOverPeds = new List<TakenOverPed>();
+    private string TargetPedModelName;
+    private Model TargetPedModel;
+    private RelationshipGroup TargetPedRelationshipGroup;
     private bool TargetPedAlreadyTakenOver;
+    private uint TargetPedHash;
     private bool TargetPedInVehicle;
     private Vector3 TargetPedPosition;
     private bool TargetPedUsingScenario;
     private Vehicle TargetPedVehicle;
-    private PedVariation VanillaVariation;
-    public int OriginalMoney { get; private set; }
-    public void Dispose()
+    private PedVariation InitialVariation;
+    private Model InitialModel;
+    public int CurrentPedMoney { get; private set; }
+    public void Setup()
     {
-        Vehicle Car = Game.LocalPlayer.Character.CurrentVehicle;
-        bool WasInCar = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-        int SeatIndex = 0;
-        if (WasInCar)
-        {
-            SeatIndex = Game.LocalPlayer.Character.SeatIndex;
-        }
-        ChangeModel(Settings.SettingsManager.General.MainCharacterToAliasModelName);
-        VanillaVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-        if(Car.Exists() && WasInCar)
-        {
-            Game.LocalPlayer.Character.WarpIntoVehicle(Car, SeatIndex);
-        }
-    }
-    public void StoreInitialVariation()
-    {
-        VanillaVariation = GetPedVariation(Game.LocalPlayer.Character);
+        InitialModel = Game.LocalPlayer.Character.Model;
+        InitialVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
     }
     public void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice)
     {
         try
         {
-            //if(Player.IsWanted)
-            //{
-            //    Game.DisplayNotification("Lose your wanted level first");
-            //    return;
-            //}
             Ped TargetPed = FindPedToSwapWith(Radius, Nearest);
             if (TargetPed == null)
             {
                 return;
             }
-            //if (ClearNearPolice)//might want this back
-            //{
-            //    World.ClearPolice();
-            //}
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
             CurrentPed.IsPersistent = false;
@@ -89,67 +67,29 @@ public class PedSwap : IPedswappable
         }
         catch (Exception e3)
         {
-            //Game.Console.Print("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
+            Game.Console.Print("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
         }
     }
-    private void ActivatePreviousScenarios()
+    public void Dispose()
     {
-        if (TargetPedUsingScenario)
+        Vehicle Car = Game.LocalPlayer.Character.CurrentVehicle;
+        bool WasInCar = Game.LocalPlayer.Character.IsInAnyVehicle(false);
+        int SeatIndex = 0;
+        if (WasInCar)
         {
-            NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP<bool>(Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
-            GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
-            {
-                while (!Player.IsMoveControlPressed)
-                {
-                    GameFiber.Yield();
-                }
-                Game.LocalPlayer.Character.Tasks.Clear();
-            }, "ScenarioWatcher");
+            SeatIndex = Game.LocalPlayer.Character.SeatIndex;
         }
-    }
-    private void AddPedToTakenOverPeds(TakenOverPed MyPed)
-    {
-        if (!TakenOverPeds.Any(x => x.OriginalHandle == MyPed.Pedestrian.Handle))
+        NativeHelper.ChangeModel(InitialModel.Name);
+        InitialVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
+        SetPlayerOffset(InitialModel.Hash);
+        if (Car.Exists() && WasInCar)
         {
-            TakenOverPeds.Add(MyPed);
+            Game.LocalPlayer.Character.WarpIntoVehicle(Car, SeatIndex);
         }
-    }
-    private void AllyClosePedsToPlayer(Ped[] PedList)
-    {
-        Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(OriginalRelationshipGroup, Relationship.Like);
-        //Game.LocalPlayer.Character.RelationshipGroup = OriginalRelationshipGroup;
-
-
-        //turned off below and added above
-        foreach (Ped PedToAlly in PedList)
-        {
-            NativeFunction.CallByName<bool>("SET_PED_AS_GROUP_MEMBER", PedToAlly, Game.LocalPlayer.Character.Group);
-            PedToAlly.StaysInVehiclesWhenJacked = true;
-        }
-    }
-    private bool CanTakeoverPed(Ped myPed)
-    {
-        if (myPed.Exists() && myPed.Handle != Game.LocalPlayer.Character.Handle && myPed.IsAlive && myPed.IsHuman && myPed.IsNormalPerson() && !InSameCar(myPed, Game.LocalPlayer.Character))// && !IsBelowWorld(myPed))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    private void ChangeModel(string ModelRequested)
-    {
-        Model characterModel = new Model(ModelRequested);
-        characterModel.LoadAndWait();
-        characterModel.LoadCollisionAndWait();
-        Game.LocalPlayer.Model = characterModel;
-        Game.LocalPlayer.Character.IsCollisionEnabled = true;
     }
     private Ped FindPedToSwapWith(float Radius, bool Nearest)
     {
         Ped PedToReturn = null;
-        //Ped[] closestPed = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, Radius, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed | GetEntitiesFlags.ConsiderAllPeds).Where(x => x is Ped).ToArray(), (x => (Ped)x));
         if (Nearest)
         {
             PedToReturn = Entities.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian)).OrderBy(x => x.DistanceToPlayer).FirstOrDefault()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => Vector3.Distance(Game.LocalPlayer.Character.Position, s.Position)).FirstOrDefault();
@@ -182,29 +122,159 @@ public class PedSwap : IPedswappable
             return PedToReturn;
         }
     }
-    private PedVariation GetPedVariation(Ped myPed)
+    private void StoreTargetPedData(Ped TargetPed)
     {
-        try
+        CurrentPedMoney = Player.Money;
+        CurrentPedPosition = Player.Position;
+        TargetPedModel = TargetPed.Model;
+        TargetPedModelName = TargetPed.Model.Name;
+        TargetPedIsMale = TargetPed.IsMale;
+        TargetPedVariation = NativeHelper.GetPedVariation(TargetPed);
+        TargetPedPosition = TargetPed.Position;
+        TargetPedRelationshipGroup = TargetPed.RelationshipGroup;
+        TargetPedAlreadyTakenOver = false;
+        TargetPedHash = TargetPed.Model.Hash;
+
+        World.PauseTime();
+        if (Game.LocalPlayer.Character.IsDead)
         {
-            PedVariation myPedVariation = new PedVariation
-            {
-                MyPedComponents = new List<PedComponent>(),
-                MyPedProps = new List<PedPropComponent>()
-            };
-            for (int ComponentNumber = 0; ComponentNumber < 12; ComponentNumber++)
-            {
-                myPedVariation.MyPedComponents.Add(new PedComponent(ComponentNumber, NativeFunction.Natives.GET_PED_DRAWABLE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_TEXTURE_VARIATION<int>(myPed, ComponentNumber), NativeFunction.Natives.GET_PED_PALETTE_VARIATION<int>(myPed, ComponentNumber)));
-            }
-            for (int PropNumber = 0; PropNumber < 8; PropNumber++)
-            {
-                myPedVariation.MyPedProps.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
-            }
-            return myPedVariation;
+            NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
+            NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
+            Game.HandleRespawn();
         }
-        catch (Exception e)
+        if (TargetPedHash == 225514697 || TargetPedHash == 2602752943 || TargetPedHash == 2608926626)
         {
-            //Game.Console.Print("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message);
-            return null;
+            TargetPedAlreadyTakenOver = true;
+            NativeHelper.ChangeModel(TargetPedModel.Name);
+            if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
+            {
+                TargetPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
+            }
+        }
+        if (!TargetPedAlreadyTakenOver)
+        {
+            LastModelHash = TargetPed.Model.Name;
+        }
+        TargetPedInVehicle = TargetPed.IsInAnyVehicle(false);//bool wasInVehicle = TargetPed.IsInAnyVehicle(false);
+        if (TargetPedInVehicle)
+        {
+            TargetPedVehicle = TargetPed.CurrentVehicle;
+        }
+        TargetPedUsingScenario = NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(TargetPed);//bool Scenario = false;
+        if (Game.LocalPlayer.Character.LastVehicle.Exists())
+        {
+            Game.LocalPlayer.Character.LastVehicle.Delete();
+        }
+        CurrentPed = Game.LocalPlayer.Character;
+        if (TargetPed.IsInAnyVehicle(false))
+        {
+            Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
+            MakeAllies(TargetPedVehicle.Passengers);
+        }
+        else
+        {
+            MakeAllies(Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 5f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x)));
+        }
+    }
+    private void TaskFormerPed(Ped FormerPlayer)
+    {
+        if (FormerPlayer.IsDead)
+        {
+            return;
+        }
+        if (FormerPlayer.IsInAnyVehicle(false))
+        {
+            FormerPlayer.Tasks.CruiseWithVehicle(FormerPlayer.CurrentVehicle, 30f, VehicleDrivingFlags.Normal); //normal driving style
+        }
+        if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
+        {
+            return;
+        }
+        else
+        {
+            FormerPlayer.Tasks.ClearImmediately();
+            FormerPlayer.Tasks.Wander();
+        }
+    }
+    private void PostTakeover(string ModelToChange)
+    {
+        NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
+        if (!TargetPedAlreadyTakenOver)
+        {
+            SetPlayerOffset();
+            NativeHelper.ChangeModel(Settings.SettingsManager.General.MainCharacterToAliasModelName);
+            NativeHelper.ChangeModel(ModelToChange);
+        }
+
+        if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
+        {
+            TargetPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
+        }
+
+        if (TargetPedInVehicle)
+        {
+            Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
+            NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
+        }
+        else
+        {
+            Game.LocalPlayer.Character.IsCollisionEnabled = true;
+        }
+
+        EntryPoint.ModController.NewPlayer(TargetPedModelName, TargetPedIsMale);
+        Player.CurrentModelName = TargetPedModel.Name;
+        Player.CurrentModelVariation = TargetPedVariation;
+        NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
+        NativeFunction.Natives.x80C8B1846639BB19(0);
+        NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
+        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
+        Game.TimeScale = 1f;
+        NativeFunction.Natives.xB4EDDC19532BFB85();
+        Game.HandleRespawn();
+        NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
+        NativeFunction.Natives.xC0AA53F866B3134D();
+        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+        // NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+        ActivatePreviousScenarios();
+        Player.SetUnarmed();
+        World.UnPauseTime();
+        GameFiber.Wait(50);
+        Player.DisplayPlayerNotification();
+    }
+    private void ActivatePreviousScenarios()
+    {
+        if (TargetPedUsingScenario)
+        {
+            NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP<bool>(Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
+            GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
+            {
+                while (!Player.IsMoveControlPressed)
+                {
+                    GameFiber.Yield();
+                }
+                Game.LocalPlayer.Character.Tasks.Clear();
+            }, "ScenarioWatcher");
+        }
+    }
+    private void MakeAllies(Ped[] PedList)
+    {
+        Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(TargetPedRelationshipGroup, Relationship.Like);
+        foreach (Ped PedToAlly in PedList)
+        {
+            NativeFunction.CallByName<bool>("SET_PED_AS_GROUP_MEMBER", PedToAlly, Game.LocalPlayer.Character.Group);
+            PedToAlly.StaysInVehiclesWhenJacked = true;
+        }
+    }
+    private bool CanTakeoverPed(Ped myPed)
+    {
+        if (myPed.Exists() && myPed.Handle != Game.LocalPlayer.Character.Handle && myPed.IsAlive && myPed.IsHuman && myPed.IsNormalPerson() && !InSameCar(myPed, Game.LocalPlayer.Character) && !IsBelowWorld(myPed))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
     private bool InSameCar(Ped myPed, Ped PedToCompare)
@@ -238,63 +308,15 @@ public class PedSwap : IPedswappable
             return false;
         }
     }
-    private void PostTakeover(string ModelToChange)
+    private void SetPlayerOffset(ulong ModelHash)
     {
-        NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
-        if (!TargetPedAlreadyTakenOver)
+        //bigbruh in discord, supplied the below, seems to work just fine
+        unsafe
         {
-            SetPlayerOffset();
-            ChangeModel(Settings.SettingsManager.General.MainCharacterToAliasModelName);
-            ChangeModel(ModelToChange);
+            var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
+            ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
+            *((ulong*)(SkinPtr + 0x18)) = ModelHash;
         }
-
-        if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
-        {
-            CurrentPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-        }
-
-        if (TargetPedInVehicle)
-        {
-            Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
-            NativeFunction.Natives.SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER<bool>(Game.LocalPlayer.Character.CurrentVehicle, true);
-            //if (OwnedCar != null && OwnedCar.Exists())
-            //    OwnedCar.IsPersistent = false;
-            //OwnedCar = TargetPedVehicle;
-            //OwnedCar.IsPersistent = true;
-        }
-        else
-        {
-            Game.LocalPlayer.Character.IsCollisionEnabled = true;
-        }
-
-        //Mod.NewPlayer(ModelBeforeTakeOver, IsMaleBeforeTakeover);
-        EntryPoint.ModController.NewPlayer(ModelBeforeTakeOver, IsMaleBeforeTakeover);
-
-
-        //Mod.Player.Instance.ResetState(true);
-        //Mod.Player.Instance.CurrentPoliceResponse.SetWantedLevel(0, "Reset After Takeover as a precaution", false);
-        //Mod.Player.Instance.CurrentPoliceResponse.Reset();
-        // Mod.Player.Instance.ArrestWarrant.Reset();
-
-
-        NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
-        NativeFunction.Natives.x80C8B1846639BB19(0);
-        NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
-        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(2725352035, 0, true);
-        Game.TimeScale = 1f;
-        NativeFunction.Natives.xB4EDDC19532BFB85();
-        Game.HandleRespawn();
-        NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
-        NativeFunction.Natives.xC0AA53F866B3134D();
-
-        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-       // NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-        ActivatePreviousScenarios();
-        Player.SetUnarmed();
-        World.UnPauseTime();
-        GameFiber.Wait(50);
-        Player.DisplayPlayerNotification();
     }
     private void SetPlayerOffset()
     {
@@ -330,85 +352,6 @@ public class PedSwap : IPedswappable
         //    ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
         //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
         //}
-    }
-    private void StoreTargetPedData(Ped TargetPed)
-    {
-        OriginalMoney = Player.Money;
-        ModelBeforeTakeOver = TargetPed.Model.Name;
-        IsMaleBeforeTakeover = TargetPed.IsMale;
-        CurrentPedVariation = GetPedVariation(TargetPed);
-        TargetPedPosition = TargetPed.Position;
-        CurrentPedPosition = Game.LocalPlayer.Character.Position;
-        OriginalRelationshipGroup = TargetPed.RelationshipGroup;
-        World.PauseTime();
-        if (Game.LocalPlayer.Character.IsDead)
-        {
-            //Player.RespawnHere(false,true);
-            NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
-            NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
-            Game.HandleRespawn();
-        }
-        Vector3 PlayerOriginalPedPosition = Game.LocalPlayer.Character.Position;
-        TargetPedAlreadyTakenOver = false;
-        if (TakenOverPeds.Count > 0)
-        {
-            uint TargetModelHash = TargetPed.Model.Hash;
-            if (TargetModelHash == 225514697 || TargetModelHash == 2602752943 || TargetModelHash == 2608926626)
-            {
-                TargetPedAlreadyTakenOver = true;
-                ChangeModel(OriginalModel.Name);
-                if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
-                {
-                    CurrentPedVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-                }
-            }
-        }
-        OriginalModel = TargetPed.Model;
-        AddPedToTakenOverPeds(new TakenOverPed(TargetPed, TargetPed.Handle, GetPedVariation(TargetPed), TargetPed.Model, Game.GameTime));
-        if (!TargetPedAlreadyTakenOver)
-        {
-            LastModelHash = TargetPed.Model.Name;
-        }
-        TargetPedInVehicle = TargetPed.IsInAnyVehicle(false);//bool wasInVehicle = TargetPed.IsInAnyVehicle(false);
-        if (TargetPedInVehicle)
-        {
-            TargetPedVehicle = TargetPed.CurrentVehicle;
-        }
-        TargetPedUsingScenario = NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(TargetPed);//bool Scenario = false;
-        if (Game.LocalPlayer.Character.LastVehicle.Exists())
-        {
-            Game.LocalPlayer.Character.LastVehicle.Delete();
-        }
-        CurrentPed = Game.LocalPlayer.Character;
-        if (TargetPed.IsInAnyVehicle(false))
-        {
-            Game.LocalPlayer.Character.WarpIntoVehicle(TargetPedVehicle, -1);
-            AllyClosePedsToPlayer(TargetPedVehicle.Passengers);
-        }
-        else
-        {
-            AllyClosePedsToPlayer(Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 5f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x)));
-        }
-    }
-    private void TaskFormerPed(Ped FormerPlayer)
-    {
-        if (FormerPlayer.IsDead)
-        {
-            return;
-        }
-        if (FormerPlayer.IsInAnyVehicle(false))
-        {
-            FormerPlayer.Tasks.CruiseWithVehicle(FormerPlayer.CurrentVehicle, 30f, VehicleDrivingFlags.Normal); //normal driving style
-        }
-        if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
-        {
-            return;
-        }
-        else
-        {
-            FormerPlayer.Tasks.ClearImmediately();
-            FormerPlayer.Tasks.Wander();
-        }
     }
     private class TakenOverPed
     {

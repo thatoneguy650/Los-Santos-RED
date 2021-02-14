@@ -53,7 +53,7 @@ public class Investigation
         }
         else if (IsActive)
         {
-            Position = Natives.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
+            Position = NativeHelper.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
             HaveDescription = Player.PoliceResponse.PoliceHaveDescription;
         }
     }
@@ -85,7 +85,7 @@ public class Investigation
     private void SetActive()
     {
         IsActive = true;
-        Position = Natives.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
+        Position = NativeHelper.GetStreetPosition(Player.PoliceResponse.PlaceLastReportedCrime);
         HaveDescription = Player.PoliceResponse.PoliceHaveDescription;
         GameTimeStartedInvestigation = Game.GameTime;
         InvestigationBlip = new Blip(Position, 250f)

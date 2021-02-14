@@ -60,9 +60,9 @@ namespace LosSantosRED.lsr
             PedSwap.Dispose();
             Dispatcher.Dispose();
             VanillaManager.Dispose();
-            if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.OriginalMoney > 0)
+            if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && PedSwap.CurrentPedMoney > 0)
             {
-                Player.SetMoney(PedSwap.OriginalMoney);
+                Player.SetMoney(PedSwap.CurrentPedMoney);
             }
         }
         public void NewPlayer(string modelName, bool isMale)
@@ -100,10 +100,13 @@ namespace LosSantosRED.lsr
             VanillaManager = new VanillaManager();
             Debug = new Debug(PlateTypes, World, Player, Scanner);
             World.AddBlipsToMap();
-            PedSwap.StoreInitialVariation();
+            PedSwap.Setup();
             GameFiber.Yield();
 
-            SetupModTasks();
+            //SetupModTasks();
+
+            SetupModTasksAlt();
+
             GameFiber.Yield();
             StartGameLogic();
             GameFiber.Yield();
@@ -169,27 +172,23 @@ namespace LosSantosRED.lsr
                 //Required Run
                 new ModTask(0, "Time.Tick", Time.Tick, 0,0),
                 new ModTask(0, "Input.Tick", Input.Update, 1,0),
-                new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//new 
+                new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),
+
+
                 new ModTask(25, "Player.Update", Player.Update, 3,0),
-                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),//25
-                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),//50
-                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),//50
-
-
+                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),//
+                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),//
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),//
 
                 //Can TimeOut
                 new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 6,0),
 
-
-
-
                 new ModTask(250, "World.Civilians.Tick", Civilians.Update, 7,0),//150
                 new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 7,1),
                 new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 7,2),
-                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 7,3),
-                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 7,4),
-
-
+                new ModTask(1000, "World.Pedestrians.CreateNewPedestrians", World.CreateNewPedestrians, 7,3),
+                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 7,4),
+                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 7,5),
 
                 new ModTask(500, "Player.Violations.TrafficUpdate", Player.TrafficViolationsUpdate, 8,0),
                 new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
@@ -203,17 +202,55 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
                 new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
 
-               //// Old Tasking
-               // new ModTask(500, "Tasking_Old.AddTaskablePeds", Tasking_Old.AddTaskablePeds, 14,0),//cops turned off in this
-               // new ModTask(500, "World.Tasking.Tick", Tasking_Old.TaskCops, 14,1),
-               // new ModTask(750, "Tasking_Old.TaskCivilians", Tasking_Old.TaskCivilians, 14,2),
 
                 //New Tasking
-
-
                 new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
                 new ModTask(500, "NewTasking.Update", Tasker.UpdatePolice, 16,1),
                 new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilians, 16,2),
+            };
+        }
+        private void SetupModTasksAlt()
+        {
+            MyTickTasks = new List<ModTask>()
+            {
+
+                //Required Run
+                new ModTask(0, "Time.Tick", Time.Tick, 0,0),
+                new ModTask(0, "Input.Tick", Input.Update, 1,0),
+                new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),
+
+
+                new ModTask(25, "Player.Update", Player.Update, 3,0),
+                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),//
+                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),//
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),//
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 6,0),
+                new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchModeUpdate, 6,1),
+                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.StopVanillaSearchMode, 6,2),
+
+
+                new ModTask(250, "World.Civilians.Tick", Civilians.Update, 7,0),//150
+                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 7,1),
+                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 7,2),
+                new ModTask(1000, "World.Pedestrians.CreateNewPedestrians", World.CreateNewPedestrians, 7,3),
+                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 7,4),
+                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 7,5),
+
+                new ModTask(500, "Player.Violations.TrafficUpdate", Player.TrafficViolationsUpdate, 8,0),
+                new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
+                new ModTask(500, "Player.ArrestWarrant.Update",Player.ArrestWarrantUpdate, 8,2),
+                new ModTask(500, "World.Vehicles.Tick", World.VehiclesTick, 8,3),
+                new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 8,4),
+                new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 8,5),
+
+                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 8,6),
+                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 8,7),
+
+
+                //New Tasking
+                new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 9,0),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdatePolice, 9,1),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilians, 9,2),
             };
         }
         private void StartDebugLogic()
@@ -236,7 +273,7 @@ namespace LosSantosRED.lsr
                 }
             }, "Run Debug Logic");
         }
-        private void StartGameLogic()
+        private void StartGameLogicOLD()
         {
             GameFiber.StartNew(delegate
             {
@@ -263,6 +300,58 @@ namespace LosSantosRED.lsr
                             }
                             foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                             {
+
+                                //Game.Console.Print($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}");
+                                RunningBehind.Run();
+                                LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "RunningBehind";
+                            }
+                        }
+                        MyTickTasks.ForEach(x => x.RanThisTick = false);
+                        TickStopWatch.Reset();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Game Logic");
+            GameFiber.Yield();
+        }
+        private void StartGameLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        TickStopWatch.Start();
+
+                        foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
+                        {
+                            if (RunGroup >= 3 && TickStopWatch.ElapsedMilliseconds >= 5)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            {
+                                Game.Console.Print($"GameLogic Tick took > 5 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation}");
+                                break;
+                            }
+
+                            ModTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+                            if (ToRun != null)
+                            {
+                                ToRun.Run();
+                                LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "Regular";
+                            }
+
+                            ModTask RunningBehind = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();//should also check if something has barely ran or
+                            //foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
+                            if (RunningBehind != null)
+                            {    
+                                Game.Console.Print($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}");
                                 RunningBehind.Run();
                                 LastRanTask = ToRun.DebugName;
                                 LastRanTaskLocation = "RunningBehind";
@@ -343,60 +432,9 @@ namespace LosSantosRED.lsr
                 RunGroup = _RunGroup;
                 RunOrder = _RunOrder;
             }
-            public bool MissedInterval
-            {
-                get
-                {
-                    if (Interval == 0)
-                    {
-                        return false;
-                    }
-                    else if (Game.GameTime - GameTimeLastRan >= IntervalMissLength)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            public bool RunningBehind
-            {
-                get
-                {
-                    if (Interval == 0)
-                    {
-                        return false;
-                    }
-                    else if (Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            public bool ShouldRun
-            {
-                get
-                {
-                    if (GameTimeLastRan == 0)
-                    {
-                        return true;
-                    }
-                    else if (Game.GameTime - GameTimeLastRan > Interval)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
+            public bool MissedInterval => Interval != 0 && Game.GameTime - GameTimeLastRan >= IntervalMissLength;
+            public bool RunningBehind => Interval != 0 && Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2);
+            public bool ShouldRun => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan > Interval;
             public void Run()
             {
                 TickToRun();
