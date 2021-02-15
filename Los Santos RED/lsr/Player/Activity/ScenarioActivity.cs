@@ -36,7 +36,15 @@ namespace LosSantosRED.lsr.Player
         {
             Player.SetUnarmed();
             Player.IsPerformingActivity = true;
-            NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Player.Character, Player.Position.X, Player.Position.Y, Player.Position.Z, 3f, -1);
+
+            if (Player.ClosestScenario != null && Player.ClosestScenario.InternalName.ToUpper().Contains("SEAT"))
+            {
+                NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(Player.Character, Player.Position.X, Player.Position.Y, Player.Position.Z, 2f, -1);
+            }
+            else
+            {
+                NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Player.Character, Player.Position.X, Player.Position.Y, Player.Position.Z, 2f, -1);
+            }
             Idle();
         }
         private void Exit()

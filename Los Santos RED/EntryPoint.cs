@@ -26,12 +26,7 @@ public static class EntryPoint
         {
             if (Game.IsKeyDown(Keys.F10))
             {
-                if (ModController == null)
-                {
-                    ModController = new ModController();
-                    ModController.Start();
-                }
-                else if (!ModController.IsRunning)
+                if (ModController == null || !ModController.IsRunning)
                 {
                     ModController = new ModController();
                     ModController.Start();

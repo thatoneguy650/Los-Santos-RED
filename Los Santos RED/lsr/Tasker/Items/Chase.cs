@@ -22,6 +22,7 @@ public class Chase : ComplexTask
     private uint GameTimeGotStuck;
     private uint GameTimeVehicleStoppedMoving;
     private uint GameTimeChaseStarted;
+    private float ChaseDistance = 5f;
 
     private enum Task
     {
@@ -141,6 +142,12 @@ public class Chase : ComplexTask
     {
         Name = "Chase";
         SubTaskName = "";
+    }
+    public Chase(IComplexTaskable cop, ITargetable player, float chaseDistance) : base(player, cop, 500)//was 500
+    {
+        Name = "Chase";
+        SubTaskName = "";
+        ChaseDistance = chaseDistance;
     }
     public override void Start()
     {
@@ -344,7 +351,84 @@ public class Chase : ComplexTask
         if(IsFirstRun)
         {
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 5f);// RandomItems.GetRandomNumber(3f,10f));
+            // NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, ChaseDistance);//5f// RandomItems.GetRandomNumber(3f,10f));
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, false);
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.LowContact, false);
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.MediumContact, false);
+           // NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.PIT, true);
+          //  NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            int DesiredStyle = 0;//(int)eDrivingStyles.AvoidVehicles | (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
+            //unsafe
+            //{
+            //    int lol = 0;
+            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+
+            //   // NativeFunction.CallByName<bool>("TASK_VEHICLE_CHASE", 0, Player.CurrentVehicle.Vehicle);
+
+
+            //    NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, (int)eVehicleMissionType.Follow, 50f, DesiredStyle, ChaseDistance, ChaseDistance, true);//8f
+            //    //pullover, they drive , not the best seem to stop
+            //    //follow, follow you like chase, but will hit each other
+            //    //police behavior = do nothing
+            //    //GoTo, they drive m not the best
+            //    //escort, they get right on the bumper, drive pretty well
+            //    //ram, does as expected
+            //    //block, latches onto bumper and tries to speed off
+            //    //attack same as block, but seems to only go once?
+            //    //crash, freaks out the car
+            //    //Circle, nothing
+            //    //cruise, wander
+            //    //stop, nothing
+            //    //followrecording, nothing
+            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //}
+
+             NativeFunction.Natives.TASK_VEHICLE_CHASE(Ped.Pedestrian, Player.Character);
+
+            //Game.Console.Print($"VehicleChase Vehicle Target: {Ped.Pedestrian.Handle}");
+            IsFirstRun = false;
+        }
+        else
+        {
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+            //  NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, ChaseDistance);//5f// RandomItems.GetRandomNumber(3f,10f));
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, false);
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.LowContact, false);
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.MediumContact, false);
+            //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.PIT, true);
+           // NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
+            Vector3 CurrentPosition = Ped.Pedestrian.Position;
+            IsStuck = LastPosition.DistanceTo2D(CurrentPosition) <= 1.0f;
+            if (IsStuck)
+            {
+                if (GameTimeGotStuck == 0)
+                {
+                    GameTimeGotStuck = Game.GameTime;
+                }
+            }
+            else
+            {
+                GameTimeGotStuck = 0;
+            }
+            if (IsStuck && Game.GameTime - GameTimeGotStuck >= 3000)
+            {
+                Game.Console.Print($"VehicleChase Vehicle Target I AM STUCK!!: {Ped.Pedestrian.Handle}");
+            }
+            LastPosition = CurrentPosition;
+        }
+    }
+    private void VehicleChaseOLD()
+    {
+        NeedsUpdates = true;
+        if (IsFirstRun)
+        {
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+            NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, ChaseDistance);//5f// RandomItems.GetRandomNumber(3f,10f));
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             int DesiredStyle = (int)eDrivingStyles.AvoidVehicles | (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
@@ -352,7 +436,7 @@ public class Chase : ComplexTask
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, (int)eVehicleMissionType.Follow, 50f, DesiredStyle, 8f, 0f, true);//7
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION", 0, Ped.Pedestrian.CurrentVehicle, Player.CurrentVehicle.Vehicle, (int)eVehicleMissionType.Follow, 50f, DesiredStyle, ChaseDistance, 0f, true);//8f
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -379,7 +463,7 @@ public class Chase : ComplexTask
             }
             if (IsStuck && Game.GameTime - GameTimeGotStuck >= 3000)
             {
-                //Game.Console.Print($"VehicleChase Vehicle Target I AM STUCK!!: {Ped.Pedestrian.Handle}");
+                Game.Console.Print($"VehicleChase Vehicle Target I AM STUCK!!: {Ped.Pedestrian.Handle}");
             }
             LastPosition = CurrentPosition;
         }

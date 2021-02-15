@@ -47,6 +47,7 @@ namespace LosSantosRED.lsr
         private RadioStations RadioStations;
         private PedGroups RelationshipGroups;
         private VanillaManager VanillaManager;
+        private Scenarios Scenarios;
         public ModController()
         {
         }
@@ -85,7 +86,7 @@ namespace LosSantosRED.lsr
             World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups);
             World.Setup();
             
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios);
             Player.Setup();
 
             Input = new Input(Player, Settings);
@@ -163,6 +164,9 @@ namespace LosSantosRED.lsr
             RelationshipGroups = new PedGroups();
             RelationshipGroups.ReadConfig();
             GameFiber.Yield();
+
+            Scenarios = new Scenarios();
+            GameFiber.Yield();
         }
         private void SetupModTasks()
         {
@@ -185,7 +189,7 @@ namespace LosSantosRED.lsr
 
                 new ModTask(250, "World.Civilians.Tick", Civilians.Update, 7,0),//150
                 new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 7,1),
-                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 7,2),
+                new ModTask(1000, "World.Pedestrians.Scan", World.ScanForPedestrians, 7,2),
                 new ModTask(1000, "World.Pedestrians.CreateNewPedestrians", World.CreateNewPedestrians, 7,3),
                 new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 7,4),
                 new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 7,5),
@@ -193,20 +197,21 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.Violations.TrafficUpdate", Player.TrafficViolationsUpdate, 8,0),
                 new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
                 new ModTask(500, "Player.ArrestWarrant.Update",Player.ArrestWarrantUpdate, 8,2),
-                new ModTask(500, "World.Vehicles.Tick", World.VehiclesTick, 9,1),
+                new ModTask(500, "World.Vehicles.Tick", World.CleanUpVehicles, 9,1),
                 new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchModeUpdate, 11,0),
                 new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.StopVanillaSearchMode, 11,1),
                 new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
                 new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
 
+                //VEHICLE STUFF HAS BEEN UPDATED SINCE< NEED TO ADD IT!!!! IF USE THIS AGAIN!!!
                 new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
                 new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
 
 
                 //New Tasking
                 new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
-                new ModTask(500, "NewTasking.Update", Tasker.UpdatePolice, 16,1),
-                new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilians, 16,2),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdatePoliceTasks, 16,1),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilianTasks, 16,2),
             };
         }
         private void SetupModTasksAlt()
@@ -219,38 +224,39 @@ namespace LosSantosRED.lsr
                 new ModTask(0, "Input.Tick", Input.Update, 1,0),
                 new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),
 
-
                 new ModTask(25, "Player.Update", Player.Update, 3,0),
-                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),//
-                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),//
-                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),//
-                new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 6,0),
-                new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchModeUpdate, 6,1),
-                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.StopVanillaSearchMode, 6,2),
 
+                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),
 
-                new ModTask(250, "World.Civilians.Tick", Civilians.Update, 7,0),//150
-                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 7,1),
-                new ModTask(1000, "World.Pedestrians.Scan", World.ScaneForPedestrians, 7,2),
-                new ModTask(1000, "World.Pedestrians.CreateNewPedestrians", World.CreateNewPedestrians, 7,3),
-                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 7,4),
-                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 7,5),
+                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),
 
-                new ModTask(500, "Player.Violations.TrafficUpdate", Player.TrafficViolationsUpdate, 8,0),
-                new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
-                new ModTask(500, "Player.ArrestWarrant.Update",Player.ArrestWarrantUpdate, 8,2),
-                new ModTask(500, "World.Vehicles.Tick", World.VehiclesTick, 8,3),
-                new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 8,4),
-                new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 8,5),
+                new ModTask(150, "Player.Investigation.Update", Player.Investigation.Update, 6,0),
+                new ModTask(150, "Player.SearchModeUpdate", Player.SearchModeUpdate, 6,1),
+                new ModTask(150, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 6,2),
+                new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 6,3),
+                new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6,4),
+                new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 6,5),
 
-                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 8,6),
-                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 8,7),
+                new ModTask(250, "Civilians.Update", Civilians.Update, 7,0),
+                new ModTask(250, "World.PrunePedestrians", World.PrunePedestrians, 7,1),
+                new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 7,2),
+                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 7,3),
 
+                new ModTask(250, "World.PruneVehicles", World.PruneVehicles, 7,4),
+                new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 7,5),
+                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 7,6),
+                new ModTask(500, "World.CleanUpVehicles", World.CleanUpVehicles, 7,7),
+                new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7,8),
+
+                new ModTask(500, "Scanner.Tick", Scanner.Tick, 8,3),
+                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 8,4),
+                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 8,5),
 
                 //New Tasking
-                new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 9,0),
-                new ModTask(500, "NewTasking.Update", Tasker.UpdatePolice, 9,1),
-                new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilians, 9,2),
+                new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 9,0),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 9,1),
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 9,2),
             };
         }
         private void StartDebugLogic()
@@ -301,7 +307,7 @@ namespace LosSantosRED.lsr
                             foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                             {
 
-                                //Game.Console.Print($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}");
+                                Game.Console.Print($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length {RunningBehind.IntervalMissLength}");
                                 RunningBehind.Run();
                                 LastRanTask = ToRun.DebugName;
                                 LastRanTaskLocation = "RunningBehind";
@@ -333,9 +339,9 @@ namespace LosSantosRED.lsr
 
                         foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                         {
-                            if (RunGroup >= 3 && TickStopWatch.ElapsedMilliseconds >= 5)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            if (RunGroup >= 3 && TickStopWatch.ElapsedMilliseconds >= 3)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
                             {
-                                Game.Console.Print($"GameLogic Tick took > 5 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation}");
+                                Game.Console.Print($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation}");
                                 break;
                             }
 

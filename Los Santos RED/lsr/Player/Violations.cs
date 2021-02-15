@@ -456,6 +456,7 @@ namespace LosSantosRED.lsr
             IsRunningRedLight = false;
             TimeSincePlayerHitPed = 0;
             TimeSincePlayerHitVehicle = 0;
+            GameTimeStartedBrandishing = 0;
         }
         private void FlagViolations()
         {

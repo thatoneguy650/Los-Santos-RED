@@ -109,6 +109,7 @@
     <Compile Include="lsr\Data\Interface\IPlateTypes.cs" />
     <Compile Include="lsr\Data\Interface\IRadioStations.cs" />
     <Compile Include="lsr\Data\Interface\IPedGroups.cs" />
+    <Compile Include="lsr\Data\Interface\IScenarios.cs" />
     <Compile Include="lsr\Data\Interface\IZoneJurisdictions.cs" />
     <Compile Include="lsr\Data\Interface\IPlacesOfInterest.cs" />
     <Compile Include="lsr\Data\Interface\IStreets.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="lsr\Data\Interface\IWeapons.cs" />
     <Compile Include="lsr\Data\RadioStations.cs" />
     <Compile Include="lsr\Data\PedGroups.cs" />
+    <Compile Include="lsr\Data\Scenarios.cs" />
     <Compile Include="lsr\Data\StreetScannerAudio.cs" />
     <Compile Include="lsr\Data\VehicleScannerAudio.cs" />
     <Compile Include="lsr\Data\ZoneScannerAudio.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="lsr\Tasker\Items\CallIn.cs" />
     <Compile Include="lsr\Tasker\Items\eChaseBehaviorFlag.cs" />
     <Compile Include="lsr\Tasker\Items\Fight.cs" />
+    <Compile Include="lsr\Util\Peds\Scenario.cs" />
     <Compile Include="lsr\Util\Weapon\IssuableWeapon.cs" />
     <Compile Include="lsr\Util\Weapon\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />

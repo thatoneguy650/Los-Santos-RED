@@ -123,27 +123,20 @@ public class Pedestrians
     }
     public void Scan()
     {
-        WorldPeds = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 125f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
-       // Ped[] GamePeds = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250f//250//450
-        //Ped[] GamePeds = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 250f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).Where(x => x is Ped).ToArray(), (x => (Ped)x));//250f//250//450     
+        WorldPeds = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 125f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();    
     }
     public void CreateNew()
     {
-        int PedsCreated = 0;
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.IsVisible))
         {
             if (Pedestrian.IsPoliceArmy())
             {
-                //if (Mod.Player.Instance.SearchMode.IsSpotterCop(Pedestrian.Handle))
-                //    continue;
                 if (!Pedestrian.IsVisible)//trying to remove that call with this
                 {
                     continue;
                 }
-
                 if (!Police.Any(x => x.Pedestrian == Pedestrian))
                 {
-                    PedsCreated++;
                     AddCop(Pedestrian);
                 }
             }
@@ -151,14 +144,9 @@ public class Pedestrians
             {
                 if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
                 {
-                    PedsCreated++;
                     AddCivilian(Pedestrian);
                 }
             }
-            //if(PedsCreated >= 10)
-            //{
-            //    return;
-            //}
         }
     }
     private void AddCivilian(Ped Pedestrian)

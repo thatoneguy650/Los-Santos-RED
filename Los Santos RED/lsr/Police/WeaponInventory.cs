@@ -67,9 +67,32 @@ public class WeaponInventory
                 }
                 else
                 {
-                    NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//for idle,
+                    SetPistol();
+                    //NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//for idle,
                 }
             }
+        }
+    }
+    private void SetPistol()
+    {
+        if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && NeedsWeaponCheck)
+        {
+            if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
+            {
+                Cop.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, false);
+            }
+            if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
+            {
+                Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, false);
+                Sidearm.ApplyVariation(Cop.Pedestrian);
+            }
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, Sidearm.GetHash(), true);
+            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
+            NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys       
+            IsSetLessLethal = false;
+            IsSetUnarmed = false;
+            IsSetDeadly = false;
+            GameTimeLastWeaponCheck = Game.GameTime;
         }
     }
     private void SetDeadly()

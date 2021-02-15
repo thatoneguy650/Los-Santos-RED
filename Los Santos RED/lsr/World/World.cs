@@ -74,7 +74,7 @@ namespace Mod
         public PedExt GetCivilian(uint handle) => Pedestrians.GetCivilian(handle);
         public VehicleExt GetVehicle(Vehicle vehicleTryingToEnter) => Vehicles.GetVehicle(vehicleTryingToEnter);
         public void PrunePedestrians() => Pedestrians.Prune();
-        public void PruneVehicles() => Vehicles.CleanLists();
+        public void PruneVehicles() => Vehicles.Prune();
         public void RemoveBlips()
         {
             foreach (Blip MyBlip in CreatedBlips)
@@ -83,10 +83,14 @@ namespace Mod
                     MyBlip.Delete();
             }
         }
-        public void ScaneForPedestrians() => Pedestrians.Scan();
+        public void ScanForPedestrians() => Pedestrians.Scan();
         public void CreateNewPedestrians() => Pedestrians.CreateNew();
         public void ScanForVehicles() => Vehicles.Scan();
+
+        public void CreateNewVehicles() => Vehicles.CreateNew();
+
         public void UpdateVehiclePlates() => Vehicles.UpdatePlates();
-        public void VehiclesTick() => Vehicles.Tick();
+
+        public void CleanUpVehicles() => Vehicles.CleanUp();
     }
 }

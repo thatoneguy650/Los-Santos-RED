@@ -128,6 +128,7 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
+                    Game.Console.Print($"PLAYER EVENT: ADD CRIME ByPolice {ByPolice} {CrimeInstance.Name}");
                     if (ByPolice)
                     {
                         CrimesObserved.Add(new CrimeEvent(CrimeInstance, new PoliceScannerCallIn(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances }));

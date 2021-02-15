@@ -12,6 +12,8 @@ public class Idle : ComplexTask
 {
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Nothing;
+    private uint GameTimeClearedIdle;
+
     private enum Task
     {
         GetInCar,
@@ -22,7 +24,11 @@ public class Idle : ComplexTask
     {
         get
         {
-            if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.Tasks.CurrentTaskStatus != Rage.TaskStatus.InProgress && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
+            if(NativeFunction.Natives.GET_PED_ALERTNESS<int>(Ped.Pedestrian) > 0)
+            {
+                return Task.Nothing;
+            }
+            else if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.Tasks.CurrentTaskStatus != Rage.TaskStatus.InProgress && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
             {
                 return Task.GetInCar;
             }
@@ -32,7 +38,7 @@ public class Idle : ComplexTask
             }
         }
     }
-    public Idle(IComplexTaskable cop, ITargetable player) : base(player, cop, 1000)
+    public Idle(IComplexTaskable cop, ITargetable player) : base(player, cop, 1500)
     {
         Name = "Idle";
         SubTaskName = "";
@@ -40,10 +46,10 @@ public class Idle : ComplexTask
     public override void Start()
     {
         Game.Console.Print($"TASKER: Idle Start: {Ped.Pedestrian.Handle}");
-        ClearTasks();
+        ClearTasks(true);
         Update();
     }
-    private void ClearTasks()//temp public
+    private void ClearTasks(bool resetAlertness)//temp public
     {
         if (Ped.Pedestrian.Exists())
         {
@@ -58,10 +64,13 @@ public class Idle : ComplexTask
             }
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
-            Ped.Pedestrian.Tasks.Wander();
             Ped.Pedestrian.Tasks.Clear();
-
-           // Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+            if(resetAlertness)
+            {
+                NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
+            }
+            
+            // Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
             if (WasInVehicle && !Ped.Pedestrian.IsInAnyVehicle(false) && CurrentVehicle != null)
             {
                 Ped.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
@@ -101,88 +110,84 @@ public class Idle : ComplexTask
             SubTaskName = "GetInCar";
             GetInCar(IsFirstRun);
         }
+        else if (CurrentTask == Task.Nothing)
+        {
+            SubTaskName = "Nothing";
+            Nothing(IsFirstRun);
+        }
         GameTimeLastRan = Game.GameTime;
     }
     private void Wander(bool IsFirstRun)
     {
-        if(IsFirstRun)
+        if (IsFirstRun)
         {
-            NeedsUpdates = false;
-            if (Ped.Pedestrian.Exists())
+            NeedsUpdates = true;
+            WanderTask();
+        }
+        else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+        {
+            WanderTask();
+        }
+
+    }
+    private void WanderTask()
+    {
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.KeepTasks = true;
+        if (Ped.Pedestrian.Exists())
+        {
+            if (Ped.Pedestrian.IsInAnyVehicle(false))
             {
-                if (Ped.Pedestrian.IsInAnyVehicle(false))
+                if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())
                 {
-                    if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())
-                    {
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);
-                    }
+                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);
                 }
-                else
-                {
-                    Ped.Pedestrian.Tasks.Wander();
-                }
-                //Game.Console.Print(string.Format("Idle Began Wander: {0}", Ped.Pedestrian.Handle));
+            }
+            else
+            {
+                Ped.Pedestrian.Tasks.Wander();
             }
         }
-        //else
-        //{
-        //    if(Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
-        //    {
-        //        if (Ped.Pedestrian.Exists())
-        //        {
-        //            if (Ped.Pedestrian.IsInAnyVehicle(false))
-        //            {
-        //                if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())
-        //                {
-        //                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                Ped.Pedestrian.Tasks.Wander();
-        //            }
-        //            Game.Console.Print(string.Format("Idle Interrupted Wander: {0}", Ped.Pedestrian.Handle));
-        //        }
-        //    }
-        //}
-
     }
     private void GetInCar(bool IsFirstRun)
     {
         if (IsFirstRun)
         {
-            NeedsUpdates = false;
-            unsafe
-            {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Ped.Pedestrian.LastVehicle, -1, Ped.LastSeatIndex, 1f, 9);
-                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            }
-            //Game.Console.Print(string.Format("Idle Began GetInCar: {0}", Ped.Pedestrian.Handle));
+            NeedsUpdates = true;
+            GetInCarTask();
         }
-        //else
-        //{
-        //    if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.Interrupted)
-        //    {
-        //        unsafe
-        //        {
-        //            int lol = 0;
-        //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-        //            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Ped.Pedestrian.LastVehicle, -1, Ped.LastSeatIndex, 1f, 9);
-        //            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-        //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-        //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-        //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-        //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-        //        }
-        //        Game.Console.Print(string.Format("Idle Interrupted GetInCar: {0}", Ped.Pedestrian.Handle));
-        //    }
-        //}
+        else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)
+        {
+            GetInCarTask();
+        }
+    }
+    private void GetInCarTask()
+    {
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.KeepTasks = true;
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, Ped.Pedestrian.LastVehicle, -1, Ped.LastSeatIndex, 1f, 9);
+            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        }
+    }
+    private void Nothing(bool IsFirstRun)
+    {
+        if(IsFirstRun)
+        {
+            ClearTasks(false);
+            GameTimeClearedIdle = Game.GameTime;
+        }
+        else if (Game.GameTime - GameTimeClearedIdle >= 10000)
+        {
+            NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
+        }
     }
     private void SetSiren()
     {

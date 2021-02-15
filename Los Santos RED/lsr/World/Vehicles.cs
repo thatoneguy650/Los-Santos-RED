@@ -12,7 +12,7 @@ using System.Linq;
 
 public class Vehicles
 {
-    private readonly float DistanceToScan = 450f;
+    private readonly float DistanceToScan = 200f;//450f
     private readonly List<VehicleExt> PoliceVehicles = new List<VehicleExt>();
     private readonly List<VehicleExt> CivilianVehicles = new List<VehicleExt>();
     private IZones Zones;
@@ -20,6 +20,7 @@ public class Vehicles
     private IPlateTypes PlateTypes;
     private IZoneJurisdictions ZoneJurisdictions;
     private ISettingsProvideable Settings;
+    private Vehicle[] RageVehicles;
 
     public Vehicles(IAgencies agencies,IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
@@ -44,25 +45,26 @@ public class Vehicles
         }
     }
     public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
-    public void Scan()
-    {
-        CleanLists();
-        Vehicle[] RageVehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
-        foreach (Vehicle Veh in RageVehicles.Where(x=> x.Exists()))
-        {
-            AddToList(Veh);
-        }
-
-    }
-    public void Tick()
-    {
-        RemoveAbandonedPoliceVehicles();
-        FixDamagedPoliceVehicles();
-    }
-    public void CleanLists()
+    public void Prune()
     {
         CivilianVehicles.RemoveAll(x => !x.Vehicle.Exists());
         PoliceVehicles.RemoveAll(x => !x.Vehicle.Exists());
+    }
+    public void Scan()
+    {
+        RageVehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
+    }
+    public void CreateNew()
+    {
+        foreach (Vehicle Veh in RageVehicles.Where(x => x.Exists()))
+        {
+            AddToList(Veh);
+        }
+    }
+    public void CleanUp()
+    {
+        RemoveAbandonedPoliceVehicles();
+        FixDamagedPoliceVehicles();
     }
     public void UpdatePlates()
     {
@@ -77,8 +79,6 @@ public class Vehicles
             }
         }
     }
-
-
     private void RemoveAbandonedPoliceVehicles()
     {
         foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))
@@ -170,7 +170,6 @@ public class Vehicles
             }
         }
     }
-
     public void SetVehicleAgency(VehicleExt Car)
     {
         Agency AssignedAgency = GetAgency(Car.Vehicle, 0);//might need to real wanted level here
@@ -266,6 +265,4 @@ public class Vehicles
         }
         return ToReturn;
     }
-
-
 }

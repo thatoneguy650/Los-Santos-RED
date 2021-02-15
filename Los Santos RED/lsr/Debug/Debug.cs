@@ -21,7 +21,7 @@ public class Debug
     private Mod.World World;
     private Mod.Player Player;
     private Scanner Scanner;
-    private Ped Cop;
+    private Ped DebugPed;
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, Scanner scanner)
     {
         PlateTypes = plateTypes;
@@ -74,7 +74,8 @@ public class Debug
 
         foreach(Cop cop in World.PoliceList.Where(x=> x.Pedestrian.Exists()))
         {
-            DrawColoredArrow(cop);
+            DrawColoredArrowTaskStatus(cop);
+            DrawColoredArrowAlertness(cop);
         }
     }
     private void DebugNumpad0()
@@ -95,43 +96,52 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-        if (Cop.Exists())
+        if (DebugPed.Exists())
         {
-            Cop.Delete();
+            DebugPed.Delete();
         }
-        Vector3 Pos = Game.LocalPlayer.Character.GetOffsetPositionFront(3f);
-        //Cop = new Ped("s_m_y_cop_01", Game.LocalPlayer.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading);
-        Cop = NativeFunction.Natives.CREATE_PED<Ped>(6, Game.GetHashKey("s_m_y_cop_01"), Pos.X, Pos.Y, Pos.Z, Game.LocalPlayer.Character.Heading, false, false);
-        Cop.RelationshipGroup = RelationshipGroup.Cop;
+        //Vector3 Pos = Game.LocalPlayer.Character.GetOffsetPositionFront(3f);
+        ////Cop = new Ped("s_m_y_cop_01", Game.LocalPlayer.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading);
+        //Cop = NativeFunction.Natives.CREATE_PED<Ped>(6, Game.GetHashKey("s_m_y_cop_01"), Pos.X, Pos.Y, Pos.Z, Game.LocalPlayer.Character.Heading, false, false);
+        //Cop.RelationshipGroup = RelationshipGroup.Cop;
     }
     private void DebugNumpad5()
     {
-        Game.Console.Print("HandleRespawn RUN");
-        Game.HandleRespawn();
+
+        DebugPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading);
+        DebugPed.Inventory.GiveNewWeapon(new WeaponAsset("weapon_pistol"), 60, true);
+        DebugPed.Tasks.FightAgainst(Game.LocalPlayer.Character);
+
+
+        //Game.Console.Print("HandleRespawn RUN");
+        //Game.HandleRespawn();
     }
     private void DebugNumpad6()
     {
-        Game.Console.Print("RESET_PLAYER_ARREST_STATE RUN");
-        NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
+        if (DebugPed.Exists())
+        {
+            DebugPed.Delete();
+        }
+        //Game.Console.Print("RESET_PLAYER_ARREST_STATE RUN");
+        //NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
     }
     private void DebugNumpad7()
     {
-        Game.Console.Print("Tasks.Clear RUN");
-        if (Cop.Exists())
-        {
-            Cop.Tasks.Clear();
-        }
+        SpawnInteractiveChaser(1f) ;
     }
     public void DebugNumpad8()
     {
-        Game.Console.Print("===================================");
-        foreach (Cop cop in World.PoliceList.OrderBy(x=>x.DistanceToPlayer))
-        {
-            int rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Game.LocalPlayer.Character, cop.Pedestrian);
-            int rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(cop.Pedestrian, Game.LocalPlayer.Character);
-            Game.Console.Print(cop.DebugString + $"Rel1 {rel1} Rel2 {rel2}");
-        }
-        Game.Console.Print("===================================");
+        SpawnInteractiveChaser(5f);
+
+
+        //Game.Console.Print("===================================");
+        //foreach (Cop cop in World.PoliceList.OrderBy(x=>x.DistanceToPlayer))
+        //{
+        //    int rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Game.LocalPlayer.Character, cop.Pedestrian);
+        //    int rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(cop.Pedestrian, Game.LocalPlayer.Character);
+        //    Game.Console.Print(cop.DebugString + $"Rel1 {rel1} Rel2 {rel2}");
+        //}
+        //Game.Console.Print("===================================");
     }
     private void DebugNumpad9()
     {
@@ -140,9 +150,9 @@ public class Debug
     }
     private void TerminateMod()
     {
-        if (Cop.Exists())
+        if (DebugPed.Exists())
         {
-            Cop.Delete();
+            DebugPed.Delete();
         }
         EntryPoint.ModController.Dispose();
         Game.LocalPlayer.WantedLevel = 0;
@@ -157,7 +167,7 @@ public class Debug
         Vector3 Position2 = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
         Rage.Debug.DrawArrowDebug(Position2, Vector3.Zero, Rotator.Zero, 1f, Color.Red);
     }
-    private void DrawColoredArrow(PedExt PedToDraw)
+    private void DrawColoredArrowTaskStatus(PedExt PedToDraw)
     {
         Color Color = Color.White;
         TaskStatus taskStatus = PedToDraw.Pedestrian.Tasks.CurrentTaskStatus;
@@ -188,7 +198,33 @@ public class Debug
 
         Rage.Debug.DrawArrowDebug(PedToDraw.Pedestrian.Position, Vector3.Zero, Rotator.Zero, 1f, Color);
     }
-    private void SpawnInteractiveChaser()
+    private void DrawColoredArrowAlertness(PedExt PedToDraw)
+    {
+        Color Color = Color.White;
+        int Alertness = NativeFunction.Natives.GET_PED_ALERTNESS<int>(PedToDraw.Pedestrian);
+        if (Alertness == 0)
+        {
+            Color = Color.Green;
+        }
+        else if (Alertness == 1)
+        {
+            Color = Color.Red;
+        }
+        else if (Alertness == 2)
+        {
+            Color = Color.White;
+        }
+        else if (Alertness == 3)
+        {
+            Color = Color.Blue;
+        }
+        else 
+        {
+            Color = Color.Yellow;
+        }
+        Rage.Debug.DrawArrowDebug(new Vector3(PedToDraw.Pedestrian.Position.X, PedToDraw.Pedestrian.Position.Y, PedToDraw.Pedestrian.Position.Z + 1f), Vector3.Zero, Rotator.Zero, 1f, Color);
+    }
+    private void SpawnInteractiveChaser(float Distance)
     {
         Ped newped = new Ped("a_f_m_business_02", Game.LocalPlayer.Character.GetOffsetPositionFront(2f), Game.LocalPlayer.Character.Heading);
         Vehicle car = new Vehicle("police", Game.LocalPlayer.Character.GetOffsetPositionFront(-8f), Game.LocalPlayer.Character.Heading);
@@ -208,7 +244,7 @@ public class Debug
                     
                     PedExt Coolio = new PedExt(newped, false, false, false, "Test1", null);
                     Coolio.Update(Player,Player.Position);
-                    Coolio.CurrentTask = new Chase(Coolio, Player);
+                    Coolio.CurrentTask = new Chase(Coolio, Player, Distance);
                     Coolio.CurrentTask.Start();
 
                         //NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", newped, 100f);

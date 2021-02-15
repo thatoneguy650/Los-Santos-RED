@@ -13,8 +13,8 @@ namespace LosSantosRED.lsr.Interface
         float IntoxicatedIntensity { get; set; }
         Vector3 Position { get; }
         bool IsMoveControlPressed { get; }
+        Scenario ClosestScenario { get; }
 
         void SetUnarmed();
-        // bool ShouldCancelActivities { get; }
     }
 }

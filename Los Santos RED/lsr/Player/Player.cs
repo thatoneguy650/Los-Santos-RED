@@ -29,6 +29,7 @@ namespace Mod
         private ITimeControllable TimeControllable;
         private IEntityProvideable EntityProvider;
         private IWeapons Weapons;
+        private IScenarios Scenarios;
 
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
@@ -47,7 +48,7 @@ namespace Mod
         private uint targettingHandle;
         private bool isActive = true;
         private uint GameTimeLastUpdatedLookedAtPed;
-        public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations)
+        public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -61,6 +62,7 @@ namespace Mod
             Settings = settings;
             Weapons = weapons;
             RadioStations = radioStations;
+            Scenarios = scenarios;
 
             GameTimeStartedPlaying = Game.GameTime;
 
@@ -187,6 +189,10 @@ namespace Mod
         public bool IsMoving => GameTimeLastMoved != 0 && Game.GameTime - GameTimeLastMoved <= 2000;
         public bool IsMovingDynamically { get; private set; }
         public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
+        public bool IsNearScenario { get; private set; }
+
+        public Scenario ClosestScenario { get; private set; }
+
         public bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
         public bool IsOffroad => CurrentLocation.IsOffroad;
         public bool IsOnMotorcycle { get; private set; }
@@ -265,19 +271,16 @@ namespace Mod
         public string DebugLine1 => $"{Interaction?.DebugString}";
         public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
         public string DebugLine3 => DynamicActivity?.DebugString;
-        public string DebugLine4 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} Target: {CurrentTargetedPed?.Pedestrian?.Handle} LookAt: {CurrentLookedAtPed?.Pedestrian?.Handle}";
+        public string DebugLine4 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} Target: {CurrentTargetedPed?.Pedestrian?.Handle} LookAt: {CurrentLookedAtPed?.Pedestrian?.Handle} NearScen {IsNearScenario}";
         public string DebugLine5 => $"Obs {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine6 => $"Rep {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine7 => $"Vio {Violations.LawsViolatingDisplay}";
         public string DebugLine8 => PoliceResponse.DebugText;
         public string DebugLine9 => Investigation.DebugText;
         public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically}";
-
-        public bool IsNearScenario { get; private set; }
-
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
-            Game.Console.Print($"PLAYER EVENT: ADD CRIME ByPolice {ByPolice}");
+
             PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
             if (!ByPolice)
             {
@@ -345,7 +348,7 @@ namespace Mod
             {
                 NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
             }
-        }  
+        }
         public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory)
         {
             IsDead = false;
@@ -363,7 +366,7 @@ namespace Mod
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
 
-               // ResetModel();
+                // ResetModel();
 
                 Update();
             }
@@ -375,7 +378,7 @@ namespace Mod
             {
                 Game.LocalPlayer.Character.Inventory.Weapons.Clear();
             }
-            if(clearCriminalHistory)
+            if (clearCriminalHistory)
             {
                 CriminalHistory.Clear();
             }
@@ -708,12 +711,6 @@ namespace Mod
             }
             Game.Console.Print($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
         }
-        //public void ResetModel()
-        //{
-        //    PedVariation MyVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
-        //    NativeHelper.ChangeModel(Game.LocalPlayer.Character.Model.Name);
-        //    MyVariation.ReplacePedComponentVariation(Game.LocalPlayer.Character);
-        //}
         private void TargettingHandleChanged()
         {
             if (TargettingHandle != 0)
@@ -744,12 +741,12 @@ namespace Mod
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
             }
-            if(CanPerformActivities && IsNearScenario)
+            if (CanPerformActivities && IsNearScenario)
             {
                 if (!ButtonPrompts.Any(x => x.Identifier == $"StartScenario"))
                 {
                     ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
-                    ButtonPrompts.Add(new ButtonPrompt($"Start Scenario", "StartScenario", $"StartScenario", Keys.L, 2));
+                    ButtonPrompts.Add(new ButtonPrompt($"{ClosestScenario?.Name}", "StartScenario", $"StartScenario", Keys.P, 2));
                 }
             }
             else
@@ -909,8 +906,27 @@ namespace Mod
             {
                 IsIntoxicated = false;
             }
+            if (IsNotWanted && !IsInVehicle)//meh only on not wanted for now, well see
+            {
+                IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 2f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 2f, true);
+                ClosestScenario = new Scenario("", "Unknown");
+                if (IsNearScenario)
+                {
+                    foreach (Scenario scenario in Scenarios.ScenarioList)
+                    {
+                        if (NativeFunction.Natives.DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, scenario.InternalName, 2f, true))
+                        {
+                            ClosestScenario = scenario;
+                            break;
+                        }
+                    }
 
-            IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 3f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 3f, true); ;
+                }
+            }
+            else
+            {
+                IsNearScenario = false;
+            }
         }
         private void UpdateTargetedPed()
         {
