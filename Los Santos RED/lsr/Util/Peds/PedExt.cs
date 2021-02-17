@@ -354,9 +354,7 @@ public class PedExt : IComplexTaskable
                 UpdateVehicleState();
                 UpdateDistance(placeLastSeen);
                 UpdateLineOfSight();
-
                 UpdateCrimes(playerToCheck);
-
                 GameTimeLastUpdated = Game.GameTime;
             }
         }

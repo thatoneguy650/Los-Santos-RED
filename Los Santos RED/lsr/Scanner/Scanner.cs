@@ -866,7 +866,7 @@ namespace LosSantosRED.lsr
                 {
                     AddToQueue(SuspectArrested);
                 }
-                if (!ChangedVehicles.HasRecentlyBeenPlayed && CurrentPlayer.PoliceRecentlyNoticedVehicleChange && CurrentPlayer.CurrentVehicle != null && !CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch)
+                if (!GrandTheftAuto.HasRecentlyBeenPlayed && !ChangedVehicles.HasRecentlyBeenPlayed && CurrentPlayer.PoliceRecentlyNoticedVehicleChange && CurrentPlayer.CurrentVehicle != null && !CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch)
                 {
                     AddToQueue(ChangedVehicles, new PoliceScannerCallIn(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = CurrentPlayer.CurrentVehicle });
                 }
@@ -957,11 +957,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch(CurrentPlayer.Violations.Kidnapping,Kidnapping),
             new CrimeDispatch(CurrentPlayer.Violations.PublicIntoxication,PublicIntoxication),
 
-
             new CrimeDispatch(CurrentPlayer.Violations.InsultingOfficer,OfficerNeedsAssistance),
-
-
-
         };
             DispatchList = new List<Dispatch>
         {

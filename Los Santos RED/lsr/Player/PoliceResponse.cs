@@ -121,14 +121,16 @@ namespace LosSantosRED.lsr
                 }
 
                 int CurrentInstances = 1;
+                bool AddCrime = true;
                 if (PreviousViolation != null)
                 {
                     PreviousViolation.AddInstance();
                     CurrentInstances = PreviousViolation.Instances;
+                    AddCrime = PreviousViolation.CanAddInstance;
                 }
-                else
+                if (AddCrime)
                 {
-                    Game.Console.Print($"PLAYER EVENT: ADD CRIME ByPolice {ByPolice} {CrimeInstance.Name}");
+                    Game.Console.Print($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {ByPolice} Instances {CurrentInstances}");
                     if (ByPolice)
                     {
                         CrimesObserved.Add(new CrimeEvent(CrimeInstance, new PoliceScannerCallIn(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances }));

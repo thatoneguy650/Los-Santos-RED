@@ -180,7 +180,7 @@ namespace LosSantosRED.lsr
 
 
                 new ModTask(25, "Player.Update", Player.Update, 3,0),
-                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),//
+                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),//is a big problem, need to fix performance, maybe split up?
                 new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),//
                 new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),//
 
@@ -339,9 +339,9 @@ namespace LosSantosRED.lsr
 
                         foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                         {
-                            if (RunGroup >= 3 && TickStopWatch.ElapsedMilliseconds >= 3)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            if (RunGroup >= 3 && TickStopWatch.ElapsedMilliseconds >= 5)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
                             {
-                                Game.Console.Print($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation}");
+                                Game.Console.Print($"GameLogic Tick took > 5 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation}");
                                 break;
                             }
 

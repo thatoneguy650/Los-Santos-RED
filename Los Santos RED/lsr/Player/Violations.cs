@@ -14,13 +14,13 @@ namespace LosSantosRED.lsr
 
     public class Violations
     {
+        public readonly List<Crime> CrimeList = new List<Crime>();
         public readonly Crime AimingWeaponAtPolice = new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, false, 4, 1, false);
         public readonly Crime AttemptingSuicide = new Crime("AttemptingSuicide", "Attempting Suicide", 2, false, 12, 3);
         public readonly Crime BrandishingCloseCombatWeapon = new Crime("BrandishingCloseCombatWeapon", "Brandishing Close Combat Weapon", 1, false, 20, 4, true, true, true);
         public readonly Crime BrandishingHeavyWeapon = new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, 1, false, true, true);
         public readonly Crime BrandishingWeapon = new Crime("BrandishingWeapon", "Brandishing Weapon", 2, false, 18, 3, true, true, true);
-        public readonly Crime ChangingPlates = new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, 4, true, true, false);
-        public readonly List<Crime> CrimeList = new List<Crime>();
+        public readonly Crime ChangingPlates = new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, 4, true, true, false);       
         public readonly Crime DrivingAgainstTraffic = new Crime("DrivingAgainstTraffic", "Driving Against Traffic", 1, false, 32, 4, false, false, false) { IsTrafficViolation = true };
         public readonly Crime DrivingOnPavement = new Crime("DrivingOnPavement", "Driving On Pavement", 1, false, 33, 4, false, false, false) { IsTrafficViolation = true };
         public readonly Crime DrivingStolenVehicle = new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, 5, false);
@@ -30,10 +30,12 @@ namespace LosSantosRED.lsr
         public readonly Crime FiringWeaponNearPolice = new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, 1, false) { CanReportBySound = true };
         public readonly Crime GotInAirVehicleDuringChase = new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8, 2);
         public readonly Crime GrandTheftAuto = new Crime("GrandTheftAuto", "Grand Theft Auto", 2, false, 16, 3, true, true, true);
+        public readonly Crime Harassment = new Crime("Harassment", "Harassment", 1, false, 41, 5, false);
         public readonly Crime HitCarWithCar = new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, 4, true, true, true) { IsTrafficViolation = true };
         public readonly Crime HitPedWithCar = new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 15, 3, true, true, true) { IsTrafficViolation = true };
         public readonly Crime HurtingCivilians = new Crime("HurtingCivilians", "Assaulting Civilians", 2, false, 14, 3, true, true, true);
         public readonly Crime HurtingPolice = new Crime("HurtingPolice", "Assaulting Police", 3, false, 5, 1);
+        public readonly Crime InsultingOfficer = new Crime("InsultingOfficer", "Insulting a Police Officer", 1, false, 40, 5);
         public readonly Crime Kidnapping = new Crime("Kidnapping", "Kidnapping", 2, false, 10, 2, false, false, false);
         public readonly Crime KillingCivilians = new Crime("KillingCivilians", "Civilian Fatality", 2, false, 11, 2, true, true, true);
         public readonly Crime KillingPolice = new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false) { CanViolateWithoutPerception = true };
@@ -45,34 +47,23 @@ namespace LosSantosRED.lsr
         public readonly Crime SuspiciousActivity = new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, 5, false);
         public readonly Crime TerroristActivity = new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, 1) { CanReportBySound = true };
         public readonly Crime TrespessingOnGovtProperty = new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, 2, false);
-        public readonly Crime InsultingOfficer = new Crime("InsultingOfficer", "Insulting a Police Officer", 1, false, 40, 5);
         private IViolateable CurrentPlayer;
         private float CurrentSpeed;
-        private uint GameTimeStartedBrandishing;
-        private uint GameTimeStartedDrivingAgainstTraffic;
-        private uint GameTimeStartedDrivingOnPavement;
-        private bool IsRunningRedLight;
-        private int TimeSincePlayerHitPed;
-        private int TimeSincePlayerHitVehicle;
-        private bool TreatAsCop;
-        private bool VehicleIsSuspicious;
-        private ITimeReportable TimeReporter;
-
         private uint GameTimeLastHurtCivilian;
         private uint GameTimeLastHurtCop;
         private uint GameTimeLastKilledCivilian;
         private uint GameTimeLastKilledCop;
-
-        public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= 5000;
-        public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= 5000;
-        public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= 5000;
-        public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= 5000;
-
-
+        private uint GameTimeStartedBrandishing;
+        private uint GameTimeStartedDrivingAgainstTraffic;
+        private uint GameTimeStartedDrivingOnPavement;
+        private bool IsRunningRedLight;
         private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
         private List<PedExt> PlayerKilledCops = new List<PedExt>();
-        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 9f);
-        public bool KilledAnyCops => PlayerKilledCops.Any();
+        private ITimeReportable TimeReporter;
+        private int TimeSincePlayerHitPed;
+        private int TimeSincePlayerHitVehicle;
+        private bool TreatAsCop;
+        private bool VehicleIsSuspicious;
         public Violations(IViolateable currentPlayer, ITimeReportable timeReporter)
         {
             TimeReporter = timeReporter;
@@ -87,15 +78,59 @@ namespace LosSantosRED.lsr
         }
         public List<Crime> CivilianReportableCrimesViolating => CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
         public bool IsSpeeding { get; set; }
-        public bool IsViolatingAnyAudioBasedCivilianReportableCrime => CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians && x.CanReportBySound);
-        public bool IsViolatingAnyCivilianReportableCrime => CrimeList.Any(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians);
         public bool IsViolatingAnyTrafficLaws => HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || IsSpeeding || VehicleIsSuspicious;
         public string LawsViolatingDisplay => string.Join(",", CrimeList.Where(x => x.IsCurrentlyViolating).Select(x => x.Name));
+        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 9f);
+        public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= 5000;
+        public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= 5000;
+        public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= 5000;
+        public bool RecentlyKilledCop => GameTimeLastKilledCop != 0 && Game.GameTime - GameTimeLastKilledCop <= 5000;
         private bool HasBeenDrivingAgainstTraffic => GameTimeStartedDrivingAgainstTraffic != 0 && Game.GameTime - GameTimeStartedDrivingAgainstTraffic >= 1000;
         private bool HasBeenDrivingOnPavement => GameTimeStartedDrivingOnPavement != 0 && Game.GameTime - GameTimeStartedDrivingOnPavement >= 1000;
         private bool RecentlyHitPed => TimeSincePlayerHitPed > -1 && TimeSincePlayerHitPed <= 1000;
         private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > -1 && TimeSincePlayerHitVehicle <= 1000;
         private bool ShouldCheckTrafficViolations => CurrentPlayer.IsInVehicle && (CurrentPlayer.IsInAutomobile || CurrentPlayer.IsOnMotorcycle) && !CurrentPlayer.RecentlyStartedPlaying;
+        public void AddInjured(PedExt myPed)
+        {
+            if (myPed.IsCop)
+            {
+                GameTimeLastHurtCop = Game.GameTime;
+            }
+            else
+            {
+                GameTimeLastHurtCivilian = Game.GameTime;
+            }
+        }
+        public void AddKilled(PedExt myPed)
+        {
+            if (myPed.IsCop)
+            {
+                PlayerKilledCops.Add(myPed);
+                GameTimeLastKilledCop = Game.GameTime;
+                GameTimeLastHurtCop = Game.GameTime;
+            }
+            else
+            {
+                PlayerKilledCivilians.Add(myPed);
+                GameTimeLastKilledCivilian = Game.GameTime;
+                GameTimeLastHurtCivilian = Game.GameTime;
+            }
+        }
+        public void Reset()
+        {
+            GameTimeLastHurtCivilian = 0;
+            GameTimeLastKilledCivilian = 0;
+            GameTimeLastHurtCop = 0;
+            GameTimeLastKilledCop = 0;
+            IsSpeeding = false;
+            PlayerKilledCops.Clear();
+            PlayerKilledCivilians.Clear();
+            VehicleIsSuspicious = false;
+            IsRunningRedLight = false;
+            TimeSincePlayerHitPed = 0;
+            TimeSincePlayerHitVehicle = 0;
+            GameTimeStartedBrandishing = 0;
+        }
         public void TrafficUpdate()
         {
             if (CurrentPlayer.IsAliveAndFree && ShouldCheckTrafficViolations)
@@ -286,7 +321,7 @@ namespace LosSantosRED.lsr
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && (CurrentPlayer.AnyHumansNear))//needed for non humans that are returned from this native
+            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && CurrentPlayer.AnyHumansNear)//needed for non humans that are returned from this native
             {
                 HitPedWithCar.IsCurrentlyViolating = true;
             }
@@ -416,47 +451,6 @@ namespace LosSantosRED.lsr
                 TerroristActivity.IsCurrentlyViolating = false;
                 BrandishingHeavyWeapon.IsCurrentlyViolating = false;
             }
-        }
-        public void AddKilled(PedExt myPed)
-        {
-            if (myPed.IsCop)
-            {
-                PlayerKilledCops.Add(myPed);
-                GameTimeLastKilledCop = Game.GameTime;
-                GameTimeLastHurtCop = Game.GameTime;
-            }
-            else
-            {
-                PlayerKilledCivilians.Add(myPed);
-                GameTimeLastKilledCivilian = Game.GameTime;
-                GameTimeLastHurtCivilian = Game.GameTime;
-            }
-        }
-        public void AddInjured(PedExt myPed)
-        {
-            if (myPed.IsCop)
-            {
-                GameTimeLastHurtCop = Game.GameTime;
-            }
-            else
-            {
-                GameTimeLastHurtCivilian = Game.GameTime;
-            }
-        }
-        public void Reset()
-        {
-            GameTimeLastHurtCivilian = 0;
-            GameTimeLastKilledCivilian = 0;
-            GameTimeLastHurtCop = 0;
-            GameTimeLastKilledCop = 0;
-            IsSpeeding = false;
-            PlayerKilledCops.Clear();
-            PlayerKilledCivilians.Clear();
-            VehicleIsSuspicious = false;
-            IsRunningRedLight = false;
-            TimeSincePlayerHitPed = 0;
-            TimeSincePlayerHitVehicle = 0;
-            GameTimeStartedBrandishing = 0;
         }
         private void FlagViolations()
         {

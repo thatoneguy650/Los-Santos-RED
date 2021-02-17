@@ -23,14 +23,12 @@ namespace Mod
         private WeaponDropping WeaponDropping;
         private HealthState HealthState;
         private Inventory Inventory;
-
         private IRadioStations RadioStations;
         private ISettingsProvideable Settings;
         private ITimeControllable TimeControllable;
         private IEntityProvideable EntityProvider;
         private IWeapons Weapons;
         private IScenarios Scenarios;
-
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
         private uint GameTimeLastMoved;
@@ -81,9 +79,10 @@ namespace Mod
         public Interaction Interaction { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
         public Violations Violations { get; private set; }
-        public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 400f + (WantedLevel * 200f);
-        public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);
-        public bool AnyPoliceCanHearPlayer { get; set; }
+        public Scenario ClosestScenario { get; private set; }
+        public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
+        public bool AnyHumansNear => EntityProvider.PoliceList.Any(x => x.DistanceToPlayer <= 10f) || EntityProvider.CivilianList.Any(x => x.DistanceToPlayer <= 10f);//move or delete?
+        public bool AnyPoliceCanHearPlayer { get; set; }//all this perception stuff gets moved out?
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
@@ -99,19 +98,18 @@ namespace Mod
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit || Settings.SettingsManager.General.UndieLimit == 0;
         public Ped Character => Game.LocalPlayer.Character;
-        public List<Crime> CivilianReportableCrimesViolating => Violations.CivilianReportableCrimesViolating;
         public LocationData CurrentLocation { get; set; }
         public PedExt CurrentLookedAtPed { get; private set; }
-        public VehicleExt CurrentSeenVehicle => CurrentVehicle == null ? VehicleGettingInto : CurrentVehicle;
+        public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
         public string CurrentSpeedDisplay { get; private set; }
         public PedExt CurrentTargetedPed { get; private set; }
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
-        public WeaponHash CurrentWeaponHash { get; set; }
-        public string CurrentModelName { get; set; }
-        public PedVariation CurrentModelVariation { get; set; }
+        public WeaponHash CurrentWeaponHash { get; set; }//move or delete?
+        public string CurrentModelName { get; set; }//should be private but needed?
+        public PedVariation CurrentModelVariation { get; set; }//should be private but needed?
         public bool DiedInVehicle { get; private set; }
         public bool HandsAreUp { get; set; }
         public float IntoxicatedIntensity { get; set; }
@@ -190,19 +188,13 @@ namespace Mod
         public bool IsMovingDynamically { get; private set; }
         public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
         public bool IsNearScenario { get; private set; }
-
-        public Scenario ClosestScenario { get; private set; }
-
         public bool IsNotWanted => Game.LocalPlayer.WantedLevel == 0;
-        public bool IsOffroad => CurrentLocation.IsOffroad;
         public bool IsOnMotorcycle { get; private set; }
         public bool IsPerformingActivity { get; set; }
         public bool IsRagdoll { get; private set; }
         public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
-        public bool IsViolatingAnyAudioBasedCivilianReportableCrime => Violations.IsViolatingAnyAudioBasedCivilianReportableCrime;
-        public bool IsViolatingAnyCivilianReportableCrime => Violations.IsViolatingAnyCivilianReportableCrime;
         public bool IsViolatingAnyTrafficLaws => Violations.IsViolatingAnyTrafficLaws;
         public bool IsVisiblyArmed { get; private set; }
         public bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
@@ -227,8 +219,8 @@ namespace Mod
         public bool RecentlyAppliedWantedStats => CriminalHistory.RecentlyAppliedWantedStats;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyDied => GameTimeLastDied != 0 && Game.GameTime - GameTimeLastDied <= 5000;
-        public bool RecentlyShot => GameTimeLastShot != 0 && RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
-        public bool RecentlyStartedPlaying => Game.GameTime - GameTimeStartedPlaying <= 10000;//15000
+        public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
+        public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;//10000
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public bool StarsRecentlyActive => SearchMode.StarsRecentlyActive;
@@ -245,7 +237,7 @@ namespace Mod
                     TargettingHandleChanged();
                 }
             }
-        }
+        }//move or delete?
         public uint TimeInSearchMode => SearchMode.TimeInSearchMode;
         public int TimesDied { get; set; }
         public uint TimeToRecognize
@@ -263,10 +255,10 @@ namespace Mod
                 }
                 return Time;
             }
-        }
+        }//move or delete?
         public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
         public VehicleExt VehicleGettingInto { get; private set; }
-        public float VehicleSpeed { get; private set; }
+        public float VehicleSpeed { get; private set; }//move or delete?
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
         public string DebugLine1 => $"{Interaction?.DebugString}";
         public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
@@ -277,7 +269,7 @@ namespace Mod
         public string DebugLine7 => $"Vio {Violations.LawsViolatingDisplay}";
         public string DebugLine8 => PoliceResponse.DebugText;
         public string DebugLine9 => Investigation.DebugText;
-        public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically}";
+        public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
 
@@ -418,8 +410,6 @@ namespace Mod
 
             CurrentModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
-
-
             //this temp bullshit
             GameFiber.StartNew(delegate
             {
@@ -428,8 +418,7 @@ namespace Mod
                     if (Game.LocalPlayer.Character.IsShooting)
                     {
                         GameTimeLastShot = Game.GameTime;
-                    }
-
+                    }   
                     GameFiber.Yield();
                 }
 
@@ -660,19 +649,6 @@ namespace Mod
                 if (MyCar != null)
                 {
                     VehicleGettingInto = MyCar;
-
-                    //MyCar.
-                    //Maybe Call MyCar.EnterEvent(Character)
-                    //that will check if you are the owner and just unlock the doors
-                    //alos how to check if the car is owned by ped by the game
-
-                    //also need in tasking when you are idle set them in, use the same function iwtht he ped passed in
-                    //will need to have a list of owners or occupants?
-                    //maybe check relationship group of the ped driver and if they are friendly set it unlocked
-
-                    //add auto door locks to the cars
-                    //when you start going they auto lock and peds cannot carjack you as easily
-
                     MyCar.AttemptToLock();
                     if (IsHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
                     {
@@ -741,7 +717,7 @@ namespace Mod
             {
                 ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
             }
-            if (CanPerformActivities && IsNearScenario)
+            if (CanPerformActivities && IsNearScenario)//currently isnearscenario is turned off
             {
                 if (!ButtonPrompts.Any(x => x.Identifier == $"StartScenario"))
                 {
@@ -906,27 +882,28 @@ namespace Mod
             {
                 IsIntoxicated = false;
             }
-            if (IsNotWanted && !IsInVehicle)//meh only on not wanted for now, well see
-            {
-                IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 2f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 2f, true);
-                ClosestScenario = new Scenario("", "Unknown");
-                if (IsNearScenario)
-                {
-                    foreach (Scenario scenario in Scenarios.ScenarioList)
-                    {
-                        if (NativeFunction.Natives.DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, scenario.InternalName, 2f, true))
-                        {
-                            ClosestScenario = scenario;
-                            break;
-                        }
-                    }
+            //works fine, just turned off for now
+            //if (IsNotWanted && !IsInVehicle)//meh only on not wanted for now, well see
+            //{
+            //    IsNearScenario = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, 2f, true) && !NativeFunction.Natives.IS_SCENARIO_OCCUPIED<bool>(Position.X, Position.Y, Position.Z, 2f, true);
+            //    ClosestScenario = new Scenario("", "Unknown");
+            //    if (IsNearScenario)
+            //    {
+            //        foreach (Scenario scenario in Scenarios.ScenarioList)
+            //        {
+            //            if (NativeFunction.Natives.DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA<bool>(Position.X, Position.Y, Position.Z, scenario.InternalName, 2f, true))
+            //            {
+            //                ClosestScenario = scenario;
+            //                break;
+            //            }
+            //        }
 
-                }
-            }
-            else
-            {
-                IsNearScenario = false;
-            }
+            //    }
+            //}
+            //else
+            //{
+            //    IsNearScenario = false;
+            //}
         }
         private void UpdateTargetedPed()
         {

@@ -28,10 +28,9 @@ namespace LosSantosRED.lsr
         }
         private void UpdateCops()
         {
-            foreach (Cop Cop in World.PoliceList)
+            foreach (Cop Cop in World.PoliceList.OrderBy(x=> x.GameTimeLastUpdated).Take(10))//THIS TAKE 10 and order by is new, maybe dont need to updated to cops so frequently? maybe i do well see
             {
                 Cop.Update(Player, Player.PlacePoliceLastSeenPlayer);
-               // Cop.UpdateDrivingFlags();
                 Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
                 Cop.UpdateSpeech(Player);
                 Cop.UpdateAssists(Player.IsWanted);
