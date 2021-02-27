@@ -144,7 +144,7 @@ public class Surrendering
                 Vehicle oldVehicle = PedToArrest.CurrentVehicle;
                 if (PedToArrest.Exists() && oldVehicle.Exists())
                 {
-                    //Game.Console.Print("SetArrestedAnimation! Tasked to leave the vehicle");
+                    //EntryPoint.WriteToConsole("SetArrestedAnimation! Tasked to leave the vehicle");
                     NativeFunction.CallByName<uint>("TASK_LEAVE_VEHICLE", PedToArrest, oldVehicle, 256);
                     GameFiber.Wait(2500);
                 }
@@ -154,14 +154,14 @@ public class Surrendering
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3))
                 {
                     NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Game.LocalPlayer.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-                    //Game.Console.Print("SetArrestedAnimation! Standing Animation");
+                    //EntryPoint.WriteToConsole("SetArrestedAnimation! Standing Animation");
                 }
             }
             else
             {
                 if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3))
                 {
-                    //Game.Console.Print("SetArrestedAnimation! Kneel Animation");
+                    //EntryPoint.WriteToConsole("SetArrestedAnimation! Kneel Animation");
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
                     GameFiber.Wait(6000);
 

@@ -269,7 +269,7 @@ public class HealthState
                 DisplayString = string.Format("  Ped: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
                   MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
             }
-            //Game.Console.Print("PedWoundSystem" + DisplayString);
+            //EntryPoint.WriteToConsole("PedWoundSystem" + DisplayString);
         }
         if (Health != CurrentHealth)
         {

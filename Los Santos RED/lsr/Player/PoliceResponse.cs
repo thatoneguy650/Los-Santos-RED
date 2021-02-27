@@ -103,6 +103,9 @@ namespace LosSantosRED.lsr
         }
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
+            //this is a fucking mess of references and isnt working properly at all
+            //instances still dont work, need to rethink this entire approach, maybe store the latest info separate from the crime?
+            //dont really care that it was assocaited with THIS crime, just if im going to report the crime and what the info IS
             if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
             {
                 if (HaveDescription)
@@ -119,25 +122,23 @@ namespace LosSantosRED.lsr
                 {
                     PreviousViolation = CrimesReported.FirstOrDefault(x => x.AssociatedCrime.ID == CrimeInstance.ID);
                 }
-
-                int CurrentInstances = 1;
-                bool AddCrime = true;
+                CrimeSceneDescription CrimeSceneDescription = new CrimeSceneDescription(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
                 if (PreviousViolation != null)
                 {
                     PreviousViolation.AddInstance();
-                    CurrentInstances = PreviousViolation.Instances;
-                    AddCrime = PreviousViolation.CanAddInstance;
+                    CrimeSceneDescription.InstancesObserved = PreviousViolation.Instances;
+                    PreviousViolation.CurrentInformation = CrimeSceneDescription;
                 }
-                if (AddCrime)
+                else
                 {
-                    Game.Console.Print($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {ByPolice} Instances {CurrentInstances}");
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {ByPolice} Instances {CrimeSceneDescription.InstancesObserved}", 3);
                     if (ByPolice)
                     {
-                        CrimesObserved.Add(new CrimeEvent(CrimeInstance, new PoliceScannerCallIn(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances }));
+                        CrimesObserved.Add(new CrimeEvent(CrimeInstance, CrimeSceneDescription));
                     }
                     else
                     {
-                        CrimesReported.Add(new CrimeEvent(CrimeInstance, new PoliceScannerCallIn(!Player.IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed, InstancesObserved = CurrentInstances }));
+                        CrimesReported.Add(new CrimeEvent(CrimeInstance, CrimeSceneDescription));
                     }
                 }
                 if (ByPolice && Player.WantedLevel != CrimeInstance.ResultingWantedLevel)
@@ -155,7 +156,7 @@ namespace LosSantosRED.lsr
                     CrimeEvent PreviousViolation = CrimesObserved.FirstOrDefault(x => x.AssociatedCrime == MyCrimes.AssociatedCrime);
                     if (PreviousViolation == null)
                     {
-                        CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime, new PoliceScannerCallIn(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true)));
+                        CrimesObserved.Add(new CrimeEvent(MyCrimes.AssociatedCrime, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true)));
                     }
                     else if (PreviousViolation.CanAddInstance)
                     {
@@ -255,7 +256,7 @@ namespace LosSantosRED.lsr
                 {
                     GameTimeWantedLevelStarted = Game.GameTime;
                 }
-                Game.Console.Print($"Increase Wanted: {Reason}");
+                EntryPoint.WriteToConsole($"Increase Wanted: {Reason}",3);
             }
         }
         public void Update()
@@ -337,7 +338,7 @@ namespace LosSantosRED.lsr
         }
         private void PoliceStateChanged()
         {
-            //Game.Console.Print(string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
+            //EntryPoint.WriteToConsole(string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
             GameTimePoliceStateStart = Game.GameTime;
             PrevPoliceState = CurrentPoliceState;
         }

@@ -29,9 +29,9 @@ public class WeaponInventory
     public void IssueWeapons()
     {
         Sidearm = Cop.AssignedAgency.GetRandomWeapon(true);
-        //Game.Console.Print($"Issued: {Sidearm.ModelName} Variation: {string.Join(",", Sidearm.Variation.Components.Select(x => x.Name))}");
+        //EntryPoint.WriteToConsole($"Issued: {Sidearm.ModelName} Variation: {string.Join(",", Sidearm.Variation.Components.Select(x => x.Name))}");
         LongGun = Cop.AssignedAgency.GetRandomWeapon(false);
-        //Game.Console.Print($"Issued: {LongGun.ModelName} Variation: {string.Join(",", LongGun.Variation.Components.Select(x => x.Name))}");
+        //EntryPoint.WriteToConsole($"Issued: {LongGun.ModelName} Variation: {string.Join(",", LongGun.Variation.Components.Select(x => x.Name))}");
     }
     public void UpdateLoadout(bool IsDeadlyChase, int WantedLevel)
     {

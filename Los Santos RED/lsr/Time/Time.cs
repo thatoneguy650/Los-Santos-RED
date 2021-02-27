@@ -57,7 +57,7 @@ namespace Mod
         }
         public void UnPauseTime()
         {
-            //Game.Console.Print(string.Format("Unpaused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
+            //EntryPoint.WriteToConsole(string.Format("Unpaused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
             IsPaused = false;
 
 
@@ -134,7 +134,7 @@ namespace Mod
             StoredClockSeconds = NativeFunction.CallByName<int>("GET_CLOCK_SECONDS");
             StoredClockMinutes = NativeFunction.CallByName<int>("GET_CLOCK_MINUTES");
             StoredClockHours = NativeFunction.CallByName<int>("GET_CLOCK_HOURS");
-            //Game.Console.Print(string.Format("Paused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
+            //EntryPoint.WriteToConsole(string.Format("Paused Time At: {0}:{1}:{2}", StoredClockHours, StoredClockMinutes, StoredClockSeconds));
         }
     }
 }

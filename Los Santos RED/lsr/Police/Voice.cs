@@ -55,11 +55,11 @@ public class Voice
             {
                 if (currentPlayer.IsBusted)
                 {
-                    Cop.Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom());
+                    Cop.Pedestrian.PlayAmbientSpeech(SuspectBusted.PickRandom(),Cop.IsInVehicle);
                 }
                 else if (currentPlayer.IsDead)
                 {
-                    Cop.Pedestrian.PlayAmbientSpeech(SuspectDown.PickRandom());
+                    Cop.Pedestrian.PlayAmbientSpeech(SuspectDown.PickRandom(), Cop.IsInVehicle);
                 }
                 else
                 {
@@ -67,22 +67,22 @@ public class Voice
                     {
                         if (currentPlayer.PoliceResponse.IsWeaponsFree)
                         {
-                            Cop.Pedestrian.PlayAmbientSpeech(AngrySpeech.PickRandom());
+                            Cop.Pedestrian.PlayAmbientSpeech(AngrySpeech.PickRandom(), Cop.IsInVehicle);
                         }
                         else
                         {
-                            Cop.Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom());
+                            Cop.Pedestrian.PlayAmbientSpeech(DeadlyChaseSpeech.PickRandom(), Cop.IsInVehicle);
                         }
                     }
                     else
                     {
-                        Cop.Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom());
+                        Cop.Pedestrian.PlayAmbientSpeech(UnarmedChaseSpeech.PickRandom(), Cop.IsInVehicle);
                     }
                 }
             }
             else
             {
-                Cop.Pedestrian.PlayAmbientSpeech(IdleSpeech.PickRandom());
+                Cop.Pedestrian.PlayAmbientSpeech(IdleSpeech.PickRandom(), Cop.IsInVehicle);
             }
             GameTimeLastSpoke = Game.GameTime;
         }

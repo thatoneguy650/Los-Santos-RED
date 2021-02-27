@@ -214,10 +214,10 @@ public class Pedestrians
                 string ZoneName = GetInternalZoneString(Cop.Position);
                 if (ZoneName != "")
                 {
-                    //Game.Console.Print(string.Format("GetAgencyFromPed! ZoneName {0}", ZoneName));
+                    //EntryPoint.WriteToConsole(string.Format("GetAgencyFromPed! ZoneName {0}", ZoneName));
                     if(ZoneJurisdictions == null)
                     {
-                        //Game.Console.Print("GetAgencyFromPed! ZoneJurisdictions is null!!!!!");
+                        //EntryPoint.WriteToConsole("GetAgencyFromPed! ZoneJurisdictions is null!!!!!");
                     }
                     List<Agency> ZoneAgencies = ZoneJurisdictions.GetAgencies(ZoneName, WantedLevel);
                     if (ZoneAgencies != null)
@@ -235,7 +235,7 @@ public class Pedestrians
             ToReturn = ModelMatchAgencies.FirstOrDefault();
             if (ToReturn == null)
             {
-                //Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
+                //EntryPoint.WriteToConsole(string.Format("GetAgencyFromPed! Couldnt get agency from {0} ped deleting", Cop.Model.Name));
                 Cop.Delete();
             }
             return ToReturn;

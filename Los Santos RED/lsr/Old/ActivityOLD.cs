@@ -70,7 +70,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //            CurrentTaskLoop = "None";
     //            CurrentSubTaskLoop = "";
 
-    //            //Game.Console.Print("Tasking", string.Format("     ClearedTasks: {0}", Cop.Pedestrian.Handle));
+    //            //EntryPoint.WriteToConsole("Tasking", string.Format("     ClearedTasks: {0}", Cop.Pedestrian.Handle));
     //        }
 
     //    }
@@ -116,7 +116,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //        {
     //            NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Cop.Pedestrian, Mod.Player.Instance.Investigations.Position.X, Mod.Player.Instance.Investigations.Position.Y, Mod.Player.Instance.Investigations.Position.Z, 500f, -1, 0f, 2f);
     //        }
-    //        //Game.Console.Print("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", Cop.Pedestrian.Handle, Mod.Player.Instance.CurrentPoliceResponse.CurrentResponse, Mod.Player.Instance.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.Instance.CurrentPoliceResponse.ShouldSirenBeOn));
+    //        //EntryPoint.WriteToConsole("Tasking", string.Format("     Reset Investigate: {0}, CurrentResponse {1}, DrivingSpeed {2}, NeedSirenOn {3}", Cop.Pedestrian.Handle, Mod.Player.Instance.CurrentPoliceResponse.CurrentResponse, Mod.Player.Instance.CurrentPoliceResponse.ResponseDrivingSpeed, Mod.Player.Instance.CurrentPoliceResponse.ShouldSirenBeOn));
     //    }
     //    private void SetSiren()
     //    {
@@ -144,7 +144,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //                {
     //                    Cop.Pedestrian.Tasks.Wander();
     //                }
-    //                //Game.Console.Print("Tasking", string.Format("     Started Investigation Wander: {0}", Cop.Pedestrian.Handle));
+    //                //EntryPoint.WriteToConsole("Tasking", string.Format("     Started Investigation Wander: {0}", Cop.Pedestrian.Handle));
     //            }
     //        }
     //    }
@@ -302,7 +302,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //        }
     //        CurrentTaskedPosition = WantedCenter;
     //        CurrentTaskLoop = "VehicleChase";
-    //        //Game.Console.Print("Tasking", string.Format("     Started VehicleChase: {0}", Cop.Pedestrian.Handle));
+    //        //EntryPoint.WriteToConsole("Tasking", string.Format("     Started VehicleChase: {0}", Cop.Pedestrian.Handle));
     //    }
     //    private void VehicleChase_Normal()
     //    {
@@ -314,7 +314,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //                if (Cop.Pedestrian.CurrentVehicle.Exists())
     //                {
     //                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, WantedCenter.X, WantedCenter.Y, WantedCenter.Z, 20f, 4 | 16 | 32 | 262144, 20f);
-    //                    //Game.Console.Print("Tasking", string.Format("     Updated VehicleChase: {0}", Cop.Pedestrian.Handle));
+    //                    //EntryPoint.WriteToConsole("Tasking", string.Format("     Updated VehicleChase: {0}", Cop.Pedestrian.Handle));
     //                }
     //            }
     //            CurrentTaskedPosition = WantedCenter;
@@ -335,7 +335,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //            NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, Game.LocalPlayer.Character, -50f, 50f, 60f);
     //            CurrentTaskLoop = "HeliChase";
     //            GameTimeLastTasked = Game.GameTime;
-    //            //Game.Console.Print("Tasking", string.Format("     Started HeliChase: {0}", Cop.Pedestrian.Handle));
+    //            //EntryPoint.WriteToConsole("Tasking", string.Format("     Started HeliChase: {0}", Cop.Pedestrian.Handle));
     //        }
     //    }
     //    private void CarJack()
@@ -348,7 +348,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //                {
     //                    NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Cop.Pedestrian, Game.LocalPlayer.Character.CurrentVehicle, -1, -1, 2f, 9);
     //                }
-    //                //Game.Console.Print("Tasking", string.Format("     Started CarJack: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
+    //                //EntryPoint.WriteToConsole("Tasking", string.Format("     Started CarJack: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
     //            }
     //        }
     //        CurrentTaskLoop = "CarJack";
@@ -381,7 +381,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //            NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", Cop.Pedestrian, MoveRate);
     //        CurrentTaskLoop = "FootChase";
     //        CurrentSubTaskLoop = "";
-    //        //Game.Console.Print("Tasking", string.Format("     Started FootChase: {0}", Cop.Pedestrian.Handle));
+    //        //EntryPoint.WriteToConsole("Tasking", string.Format("     Started FootChase: {0}", Cop.Pedestrian.Handle));
     //        FootChase_Normal();
     //    }
     //    private void FootChase_Normal()
@@ -399,7 +399,7 @@ namespace LosSantosRED.lsr.Util.Tasking
 
     //        if (CurrentSubTaskLoop != "Shoot" && (!Mod.Player.Instance.IsBusted && !Mod.Player.Instance.IsAttemptingToSurrender) && Cop.DistanceToPlayer <= 7f)
     //        {
-    //            //Game.Console.Print("Tasking", string.Format("     FootChase Shoot: {0}", Cop.Pedestrian.Handle));
+    //            //EntryPoint.WriteToConsole("Tasking", string.Format("     FootChase Shoot: {0}", Cop.Pedestrian.Handle));
     //            CurrentSubTaskLoop = "Shoot";
     //            unsafe
     //            {
@@ -414,7 +414,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //        }
     //        else if (CurrentSubTaskLoop != "Aim" && (Mod.Player.Instance.IsBusted || Mod.Player.Instance.IsAttemptingToSurrender) && Cop.DistanceToPlayer <= 7f)
     //        {
-    //            //Game.Console.Print("Tasking", string.Format("     FootChase Aim: {0}", Cop.Pedestrian.Handle));
+    //            //EntryPoint.WriteToConsole("Tasking", string.Format("     FootChase Aim: {0}", Cop.Pedestrian.Handle));
     //            CurrentSubTaskLoop = "Aim";
     //            unsafe
     //            {
@@ -429,7 +429,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //        }
     //        else if (CurrentSubTaskLoop != "GoTo" && Cop.DistanceToPlayer >= 15f)
     //        {
-    //            //Game.Console.Print("Tasking", string.Format("     FootChase GoTo: {0}", Cop.Pedestrian.Handle));
+    //            //EntryPoint.WriteToConsole("Tasking", string.Format("     FootChase GoTo: {0}", Cop.Pedestrian.Handle));
     //            CurrentSubTaskLoop = "GoTo";
     //            unsafe
     //            {
@@ -472,7 +472,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //        CurrentTaskedPosition = WantedCenter;
     //        NearWantedCenterThisWanted = false;
     //        CurrentTaskLoop = "GoToLastSeen";
-    //        //Game.Console.Print("Tasking", string.Format("     Started GoToLastSeen: {0}", Cop.Pedestrian.Handle));
+    //        //EntryPoint.WriteToConsole("Tasking", string.Format("     Started GoToLastSeen: {0}", Cop.Pedestrian.Handle));
     //    }
     //    private void GoToLastSeen_Normal()
     //    {
@@ -491,7 +491,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //                }
     //                CurrentTaskedPosition = WantedCenter;
     //                CurrentTaskLoop = "GoToLastSeen";
-    //                //Game.Console.Print("Tasking", string.Format("     Updated GoToLastSeen: {0}", Cop.Pedestrian.Handle));
+    //                //EntryPoint.WriteToConsole("Tasking", string.Format("     Updated GoToLastSeen: {0}", Cop.Pedestrian.Handle));
     //            }
     //            if (Cop.DistanceToLastSeen <= 25f)
     //            {
@@ -504,7 +504,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //                {
     //                    Cop.Pedestrian.Tasks.Wander();
     //                }
-    //                //Game.Console.Print("Tasking", string.Format("     Post GoToLastSeen: {0}", Cop.Pedestrian.Handle));
+    //                //EntryPoint.WriteToConsole("Tasking", string.Format("     Post GoToLastSeen: {0}", Cop.Pedestrian.Handle));
     //            }
     //        }
     //    }
@@ -528,7 +528,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //        if (ClosestCop == null)
     //            return;
     //        NativeFunction.CallByName<bool>("TASK_HELI_CHASE", Cop.Pedestrian, ClosestCop.Pedestrian, -50f, 50f, 60f);
-    //        //Game.Console.Print("Tasking", string.Format("     Heli Lost you following closest cop: {0}", Cop.Pedestrian.Handle));
+    //        //EntryPoint.WriteToConsole("Tasking", string.Format("     Heli Lost you following closest cop: {0}", Cop.Pedestrian.Handle));
     //        NearWantedCenterThisWanted = false;
     //        CurrentTaskLoop = "HeliGoToLastSeen";
     //    }
@@ -552,7 +552,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //        ClearTasks();
     //        CurrentTaskLoop = "Kill";
     //        GameTimeLastTasked = Game.GameTime;
-    //        //Game.Console.Print("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
+    //        //EntryPoint.WriteToConsole("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
     //    }
     //}
     //public class Kill : Activity
@@ -577,7 +577,7 @@ namespace LosSantosRED.lsr.Util.Tasking
     //        ClearTasks();
     //        CurrentTaskLoop = "Kill";
     //        GameTimeLastTasked = Game.GameTime;
-    //        //Game.Console.Print("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
+    //        //EntryPoint.WriteToConsole("Tasking", string.Format("     Started Kill: {0} Old CurrentTaskLoop: {1}", Cop.Pedestrian.Handle, CurrentTaskLoop));
     //    }
     //}
 }

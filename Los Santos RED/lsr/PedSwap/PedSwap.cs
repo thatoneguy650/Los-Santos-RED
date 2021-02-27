@@ -67,7 +67,7 @@ public class PedSwap : IPedswappable
         }
         catch (Exception e3)
         {
-            Game.Console.Print("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace);
+            EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace,0);
         }
     }
     public void Dispose()
@@ -100,7 +100,7 @@ public class PedSwap : IPedswappable
         }
         if (PedToReturn == null)
         {
-            //Game.Console.Print("Ped Takeover! No Peds Found");
+            //EntryPoint.WriteToConsole("Ped Takeover! No Peds Found");
             return null;
         }
         else if (PedToReturn.IsInAnyVehicle(false))

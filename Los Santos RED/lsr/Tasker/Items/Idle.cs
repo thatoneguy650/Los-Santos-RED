@@ -45,7 +45,7 @@ public class Idle : ComplexTask
     }
     public override void Start()
     {
-        Game.Console.Print($"TASKER: Idle Start: {Ped.Pedestrian.Handle}");
+        EntryPoint.WriteToConsole($"TASKER: Idle Start: {Ped.Pedestrian.Handle}",5);
         ClearTasks(true);
         Update();
     }
@@ -75,7 +75,7 @@ public class Idle : ComplexTask
             {
                 Ped.Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
             }
-            //Game.Console.Print(string.Format("     ClearedTasks: {0}", Ped.Pedestrian.Handle));
+            //EntryPoint.WriteToConsole(string.Format("     ClearedTasks: {0}", Ped.Pedestrian.Handle));
         }
     }
     public override void Update()
@@ -85,7 +85,7 @@ public class Idle : ComplexTask
             if (CurrentTask != CurrentTaskDynamic)
             {
                 CurrentTask = CurrentTaskDynamic;
-                //Game.Console.Print($"      Idle SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
+                //EntryPoint.WriteToConsole($"      Idle SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
                 ExecuteCurrentSubTask(true);
             }
             else if (NeedsUpdates)

@@ -6,19 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class PoliceScannerCallIn
+public class CrimeSceneDescription
 {
-    public PoliceScannerCallIn()
+    public CrimeSceneDescription()
     {
 
     }
-    public PoliceScannerCallIn(bool seenOnFoot, bool seenByOfficers, Vector3 placeSeen)
+    public CrimeSceneDescription(bool seenOnFoot, bool seenByOfficers, Vector3 placeSeen)
     {
         SeenOnFoot = seenOnFoot;
         SeenByOfficers = seenByOfficers;
         PlaceSeen = placeSeen;
     }
-    public PoliceScannerCallIn(bool seenOnFoot, bool seenByOfficers, Vector3 placeSeen, bool haveDescription)
+    public CrimeSceneDescription(bool seenOnFoot, bool seenByOfficers, Vector3 placeSeen, bool haveDescription)
     {
         SeenOnFoot = seenOnFoot;
         SeenByOfficers = seenByOfficers;
@@ -30,7 +30,7 @@ public class PoliceScannerCallIn
     public VehicleExt VehicleSeen { get; set; }
     public bool SeenOnFoot { get; set; } = true;
     public bool SeenByOfficers { get; set; } = false;
-    public int InstancesObserved { get; set; }
+    public int InstancesObserved { get; set; } = 1;
     public Vector3 PlaceSeen { get; set; }
     public bool HaveDescription { get; set; }
 }

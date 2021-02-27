@@ -116,7 +116,7 @@ namespace LosSantosRED.lsr.Helper
             }
             catch (Exception e)
             {
-                Game.Console.Print("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message);
+                EntryPoint.WriteToConsole("CopyPedComponentVariation! CopyPedComponentVariation Error; " + e.Message, 0);
                 return null;
             }
         }
@@ -128,5 +128,6 @@ namespace LosSantosRED.lsr.Helper
             Game.LocalPlayer.Model = characterModel;
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
+
     }
 }

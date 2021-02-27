@@ -71,7 +71,7 @@ public class Tasker
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?
     {
-        if (Cop.DistanceToPlayer <= Player.ActiveDistance && !Cop.IsInHelicopter)//heli, dogs, boats come next?
+        if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
             if (Player.IsWanted)
             {

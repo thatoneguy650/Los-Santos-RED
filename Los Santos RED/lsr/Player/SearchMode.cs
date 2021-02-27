@@ -170,7 +170,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = Game.GameTime;
             GameTimeStartedActiveMode = 0;
-            //Game.Console.Print("SearchMode Start Search Mode");
+            //EntryPoint.WriteToConsole("SearchMode Start Search Mode");
         }
         private void StartActiveMode()
         {
@@ -180,7 +180,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedActiveMode = Game.GameTime;
             GameTimeStartedSearchMode = 0;
-            //Game.Console.Print("SearchMode Start Active Mode");
+            //EntryPoint.WriteToConsole("SearchMode Start Active Mode");
         }
         private void EndSearchMode()
         {
@@ -191,7 +191,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
             Player.PoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
-            //Game.Console.Print("SearchMode Stop Search Mode");
+            //EntryPoint.WriteToConsole("SearchMode Stop Search Mode");
 
         }
         private void AreStarsGreyedOutChanged()
@@ -204,7 +204,7 @@ namespace LosSantosRED.lsr
             {
                 GameTimeLastStarsNotGreyedOut = Game.GameTime;
             }
-            //Game.Console.Print(string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
+            //EntryPoint.WriteToConsole(string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
         private class StopVanillaSeachMode
         {
@@ -288,7 +288,7 @@ namespace LosSantosRED.lsr
 
                                                         }.PickRandom();
                         }
-                        //Game.Console.Print(string.Format("MoveGhostCopToPosition! CurrentOffset {0}", CurrentOffset));
+                        //EntryPoint.WriteToConsole(string.Format("MoveGhostCopToPosition! CurrentOffset {0}", CurrentOffset));
                     }
                     Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
                     PositionSet = DesiredPosition;

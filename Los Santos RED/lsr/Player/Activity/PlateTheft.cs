@@ -216,7 +216,7 @@ public class PlateTheft : DynamicActivity
             LicensePlateModel = null;
             ScrewdriverModel = null;
             Player.IsChangingLicensePlates = false;
-            //Game.Console.Print("ChangeLicensePlate" + e.Message + e.StackTrace);
+            //EntryPoint.WriteToConsole("ChangeLicensePlate" + e.Message + e.StackTrace);
         }
 
     }

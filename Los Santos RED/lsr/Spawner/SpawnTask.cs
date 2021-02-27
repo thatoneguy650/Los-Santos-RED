@@ -73,7 +73,7 @@ public class SpawnTask
                     if(Vehicle != null && Vehicle.Vehicle.Exists())
                     {
                         Vehicle.Vehicle.Delete();
-                        //Game.Console.Print("Failed to complete spawn, deleting");
+                        //EntryPoint.WriteToConsole("Failed to complete spawn, deleting");
                     }
                 }
             }
@@ -118,7 +118,7 @@ public class SpawnTask
     }
     private VehicleExt CreateVehicle()
     {
-        Game.Console.Print($"Attempting to spawn {VehicleType.ModelName}");
+        EntryPoint.WriteToConsole($"Attempting to spawn {VehicleType.ModelName}",5);
         Vehicle copcar = new Vehicle(VehicleType.ModelName, Position, Heading);
         GameFiber.Yield();
         if (copcar.Exists())

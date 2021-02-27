@@ -41,7 +41,7 @@ public class Investigate : ComplexTask
     }
     public override void Start()
     {
-        //Game.Console.Print($"TASKER: Investigate Start: {Ped.Pedestrian.Handle}");
+        //EntryPoint.WriteToConsole($"TASKER: Investigate Start: {Ped.Pedestrian.Handle}");
         Ped.Pedestrian.BlockPermanentEvents = false;
         Update();
     }
@@ -52,7 +52,7 @@ public class Investigate : ComplexTask
             if (CurrentTask != CurrentTaskDynamic)
             {
                 CurrentTask = CurrentTaskDynamic;
-                //Game.Console.Print($"      Investigate SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask}");
+                //EntryPoint.WriteToConsole($"      Investigate SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask}");
                 ExecuteCurrentSubTask();
             }
             else if (NeedsUpdates)
@@ -89,7 +89,7 @@ public class Investigate : ComplexTask
             {
                 Ped.Pedestrian.Tasks.Wander();
             }
-            //Game.Console.Print(string.Format("Investigation Began SearchingPosition: {0}", Ped.Pedestrian.Handle));
+            //EntryPoint.WriteToConsole(string.Format("Investigation Began SearchingPosition: {0}", Ped.Pedestrian.Handle));
         }
     }
     private void GoTo()
@@ -110,14 +110,14 @@ public class Investigate : ComplexTask
             {
                 NativeFunction.CallByName<bool>("TASK_GO_STRAIGHT_TO_COORD", Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 500f, -1, 0f, 2f);
             }
-            //Game.Console.Print(string.Format("Investigation Position Updated: {0}", Ped.Pedestrian.Handle));
+            //EntryPoint.WriteToConsole(string.Format("Investigation Position Updated: {0}", Ped.Pedestrian.Handle));
         }
         if(Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
         {
             HasReachedReportedPosition = true;
-            //Game.Console.Print(string.Format("Investigation Position Reached: {0}", Ped.Pedestrian.Handle));
+            //EntryPoint.WriteToConsole(string.Format("Investigation Position Reached: {0}", Ped.Pedestrian.Handle));
         }
-        //Game.Console.Print(string.Format("Investigation Updated No Change: {0}", Ped.Pedestrian.Handle));
+        //EntryPoint.WriteToConsole(string.Format("Investigation Updated No Change: {0}", Ped.Pedestrian.Handle));
     }
     private void SetSiren()
     {

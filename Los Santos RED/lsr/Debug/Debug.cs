@@ -109,13 +109,13 @@ public class Debug
     private void DebugNumpad5()
     {
         VehicleMissionFlag++;
-        Game.Console.Print($"VehicleMissionFlag {VehicleMissionFlag}");
+        EntryPoint.WriteToConsole($"VehicleMissionFlag {VehicleMissionFlag}",4);
         //DebugPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading);
         //DebugPed.Inventory.GiveNewWeapon(new WeaponAsset("weapon_pistol"), 60, true);
         //DebugPed.Tasks.FightAgainst(Game.LocalPlayer.Character);
 
 
-        //Game.Console.Print("HandleRespawn RUN");
+        //EntryPoint.WriteToConsole("HandleRespawn RUN");
         //Game.HandleRespawn();
     }
     private void DebugNumpad6()
@@ -124,7 +124,7 @@ public class Debug
         {
             VehicleMissionFlag--;
         }
-        Game.Console.Print($"VehicleMissionFlag {VehicleMissionFlag}");
+        EntryPoint.WriteToConsole($"VehicleMissionFlag {VehicleMissionFlag}", 4);
     }
     private void DebugNumpad7()
     {
@@ -135,7 +135,7 @@ public class Debug
         //SpawnInteractiveChaser(5f);
 
 
-        Game.Console.Print("===================================");
+        EntryPoint.WriteToConsole("===================================", 4);
         foreach (Cop cop in World.PoliceList.OrderBy(x => x.DistanceToPlayer))
         {
             //int rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Game.LocalPlayer.Character, cop.Pedestrian);
@@ -144,12 +144,12 @@ public class Debug
             if(cop.Pedestrian.CurrentVehicle.Exists())
             {
                 int MissionType = NativeFunction.Natives.GET_ACTIVE_VEHICLE_MISSION_TYPE<int>(cop.Pedestrian.CurrentVehicle);
-                Game.Console.Print(cop.DebugString + $"MissionType {MissionType}");
+                EntryPoint.WriteToConsole(cop.DebugString + $"MissionType {MissionType}", 4);
             }
 
             
         }
-        Game.Console.Print("===================================");
+        EntryPoint.WriteToConsole("===================================", 4);
     }
     private void DebugNumpad9()
     {
@@ -334,7 +334,7 @@ public class Debug
                     {
                         car.Delete();
                     }
-                    //Game.Console.Print("Error" + e.Message + " : " + e.StackTrace);
+                    //EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace);
                 }
             }, "DebugLoop2");
 
@@ -344,14 +344,14 @@ public class Debug
     {
         Game.LocalPlayer.Character.IsInvincible = false;
         Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-        Game.Console.Print("KeyDown: You are NOT invicible");
+        EntryPoint.WriteToConsole("KeyDown: You are NOT invicible", 4);
         Game.DisplaySubtitle("Invincibility Off");
     }
     private void MakeInvincible()
     {
         Game.LocalPlayer.Character.IsInvincible = true;
         Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-        Game.Console.Print("KeyDown: You are invicible");
+        EntryPoint.WriteToConsole("KeyDown: You are invicible", 4);
         Game.DisplaySubtitle("Invincibility On");
     }
     private void MakeDrunk()
@@ -367,7 +367,7 @@ public class Debug
         NativeFunction.Natives.SET_TIMECYCLE_MODIFIER_STRENGTH<int>(1.1f);
         NativeFunction.Natives.x80C8B1846639BB19(1);
         NativeFunction.Natives.SHAKE_GAMEPLAY_CAM<int>("DRUNK_SHAKE", 5.0f);
-        //Game.Console.Print("Player Made Drunk");
+        //EntryPoint.WriteToConsole("Player Made Drunk");
     }
     private void MakeSober()
     {
@@ -377,7 +377,7 @@ public class Debug
         NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
         NativeFunction.Natives.x80C8B1846639BB19(0);
         NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
-        //Game.Console.Print("Player Made Sober");
+        //EntryPoint.WriteToConsole("Player Made Sober");
     }
     public void LoadNorthYankton()
     {

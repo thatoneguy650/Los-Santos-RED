@@ -95,6 +95,7 @@ public class Investigation
             Alpha = 0.25f
         };
         NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
+        EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START", 3);
     }
 }
 

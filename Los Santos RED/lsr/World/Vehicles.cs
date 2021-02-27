@@ -87,7 +87,7 @@ public class Vehicles
             {
                 if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                 {
-                    //Game.Console.Print($"Abandoned DELETE {PoliceCar.Vehicle.Handle}");
+                    //EntryPoint.WriteToConsole($"Abandoned DELETE {PoliceCar.Vehicle.Handle}");
                     PoliceCar.Vehicle.Delete();
                 }
             }
@@ -109,7 +109,7 @@ public class Vehicles
         {
             if (Veh.Vehicle.Exists())
             {
-                //Game.Console.Print($"ClearPolice DELETE {Veh.Vehicle.Handle}");
+                //EntryPoint.WriteToConsole($"ClearPolice DELETE {Veh.Vehicle.Handle}");
                 Veh.Vehicle.Delete();
             }
         }
@@ -195,7 +195,7 @@ public class Vehicles
             
             if (NewType != null)
             {
-                //Game.Console.Print($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}");
+                //EntryPoint.WriteToConsole($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}");
                 string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                 if (NewPlateNumber != "")
                 {
@@ -206,7 +206,7 @@ public class Vehicles
                 NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index);
                 Car.OriginalLicensePlate.PlateType = NewType.Index;
                 Car.CarPlate.PlateType = NewType.Index;
-                // //Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
             }
         }
         else
@@ -226,7 +226,7 @@ public class Vehicles
                     NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index+1);
                     Car.OriginalLicensePlate.PlateType = NewType.Index;
                     Car.CarPlate.PlateType = NewType.Index;
-                    // //Game.Console.Print("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+                    // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }
         }
@@ -241,11 +241,11 @@ public class Vehicles
             Zone ZoneFound = Zones.GetZone(CopCar.Position);
             if (ZoneFound != null && ZoneFound.InternalGameName != "UNK")
             {
-                //Game.Console.Print(string.Format("GetAgency ZoneFound.InternalGameName {0}", ZoneFound.InternalGameName));
+                //EntryPoint.WriteToConsole(string.Format("GetAgency ZoneFound.InternalGameName {0}", ZoneFound.InternalGameName));
                 List<Agency> ToGoThru = ZoneJurisdictions.GetAgencies(ZoneFound.InternalGameName, WantedLevel);
                 if (ToGoThru != null)
                 {
-                    //Game.Console.Print(string.Format("GetAgency Count {0}", ToGoThru.Count));
+                    //EntryPoint.WriteToConsole(string.Format("GetAgency Count {0}", ToGoThru.Count));
                     foreach (Agency ZoneAgency in ToGoThru)
                     {
                         if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
@@ -259,8 +259,8 @@ public class Vehicles
         ToReturn = ModelMatchAgencies.FirstOrDefault();
         if (ToReturn == null)
         {
-            //Game.Console.Print(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
-            //Game.Console.Print($"NoAgency DELETE {CopCar.Handle}");
+            //EntryPoint.WriteToConsole(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
+            //EntryPoint.WriteToConsole($"NoAgency DELETE {CopCar.Handle}");
             CopCar.Delete();
         }
         return ToReturn;

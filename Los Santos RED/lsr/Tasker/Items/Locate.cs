@@ -41,7 +41,7 @@ public class Locate : ComplexTask
     }
     public override void Start()
     {
-        //Game.Console.Print($"TASKER: Locate Start: {Ped.Pedestrian.Handle}");
+        //EntryPoint.WriteToConsole($"TASKER: Locate Start: {Ped.Pedestrian.Handle}");
         Ped.Pedestrian.BlockPermanentEvents = false;
         Update();
     }
@@ -52,7 +52,7 @@ public class Locate : ComplexTask
             if (CurrentTask != CurrentTaskDynamic)
             {
                 CurrentTask = CurrentTaskDynamic;
-                //Game.Console.Print($"      Locate SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
+                //EntryPoint.WriteToConsole($"      Locate SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
                 ExecuteCurrentSubTask();
             }
             else if (NeedsUpdates)
@@ -89,7 +89,7 @@ public class Locate : ComplexTask
             {
                 Ped.Pedestrian.Tasks.Wander();
             }
-            //Game.Console.Print(string.Format("Locate Began SearchingPosition: {0}", Ped.Pedestrian.Handle));
+            EntryPoint.WriteToConsole(string.Format("Locate Began SearchingPosition: {0}", Ped.Pedestrian.Handle),5);
         }
     }
     private void GoTo()
@@ -101,16 +101,27 @@ public class Locate : ComplexTask
             CurrentTaskedPosition = Player.PlacePoliceLastSeenPlayer;
             if (Ped.Pedestrian.IsInAnyVehicle(false))
             {
-                if (Ped.IsDriver)
+                if (Ped.IsInHelicopter)
                 {
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 30f, (int)VehicleDrivingFlags.Emergency, 10f);
+                    NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 10f, 0f, -1, -1, -1, 0);
+                }
+                else if (Ped.IsInBoat)
+                {
+                    NativeFunction.Natives.TASK_BOAT_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, (int)VehicleDrivingFlags.Emergency, -1.0, 7);
+                }
+                else
+                {
+                    if (Ped.IsDriver)
+                    {
+                        NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 30f, (int)VehicleDrivingFlags.Emergency, 10f);
+                    }
                 }
             }
             else
             {
                 Ped.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
             }
-            //Game.Console.Print(string.Format("Locate Position Updated: {0}", Ped.Pedestrian.Handle));
+            EntryPoint.WriteToConsole(string.Format("Locate Position Updated: {0}", Ped.Pedestrian.Handle),5);
         }
         if (Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) <= 25f)
         {

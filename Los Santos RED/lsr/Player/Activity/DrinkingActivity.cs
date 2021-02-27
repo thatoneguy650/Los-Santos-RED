@@ -95,7 +95,7 @@ namespace LosSantosRED.lsr.Player
                     PlayingDict = Data.AnimIdleDictionary;
                     PlayingAnim = Data.AnimIdle.PickRandom();
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-                    Game.Console.Print($"New Drinking Idle {PlayingAnim}");
+                    EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim}",5);
                 }
                 GameFiber.Yield();
             }

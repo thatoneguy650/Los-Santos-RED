@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr
         public readonly Crime RunningARedLight = new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, 5, false, false, false) { IsTrafficViolation = true };
         public readonly Crime SuspiciousActivity = new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, 5, false);
         public readonly Crime TerroristActivity = new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, 1) { CanReportBySound = true };
-        public readonly Crime TrespessingOnGovtProperty = new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, 2, false);
+        public readonly Crime TrespessingOnGovtProperty = new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, 2, false) { CanViolateMultipleTimes = false };
         private IViolateable CurrentPlayer;
         private float CurrentSpeed;
         private uint GameTimeLastHurtCivilian;

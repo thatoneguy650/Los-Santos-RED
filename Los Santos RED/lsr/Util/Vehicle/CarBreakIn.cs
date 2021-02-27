@@ -46,7 +46,7 @@ public class CarBreakIn
         catch (Exception e)
         {
             Player.IsCarJacking = false;
-            Game.Console.Print("CarBreakIn" + e.Message + e.StackTrace);
+            EntryPoint.WriteToConsole("CarBreakIn" + e.Message + e.StackTrace, 0);
         }
     }
 }

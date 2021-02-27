@@ -103,7 +103,7 @@ namespace LosSantosRED.lsr
             {
                 if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)
                 {
-                    //Game.Console.Print($"INPUT! Control :{bp.Text}: Down");
+                    //EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down");
                     bp.IsPressedNow = true;
                 }
                 else if (Game.IsControlJustPressed(2, bp.GameControl) && !bp.IsPressedNow)

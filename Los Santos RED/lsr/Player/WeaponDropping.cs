@@ -3,6 +3,7 @@ using Rage;
 using Rage.Native;
 using System.Collections.Generic;
 
+//need some rethinking
 public class WeaponDropping
 {
     private int CurrentWeaponAmmo;

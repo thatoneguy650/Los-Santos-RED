@@ -124,6 +124,7 @@ public class PedExt : IComplexTaskable
     public bool IsGangMember { get; set; } = false;
     public bool IsDriver { get; private set; } = false;
     public bool IsInHelicopter { get; private set; } = false;
+    public bool IsInBoat { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
     public bool IsOnBike { get; private set; } = false;
     public int LastSeatIndex { get; private set; }
@@ -324,7 +325,7 @@ public class PedExt : IComplexTaskable
         }
         catch (Exception ex)
         {
-            //Game.Console.Print($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
+            //EntryPoint.WriteToConsole($"KilledBy Error! Ped To Check: {Pedestrian.Handle}, assumeing you killed them if you hurt them");
             return CheckHurtBy(ToCheck);
         }
 
@@ -593,7 +594,8 @@ public class PedExt : IComplexTaskable
             IsDriver = Pedestrian.SeatIndex == -1;
             LastSeatIndex = Pedestrian.SeatIndex;
             IsInHelicopter = Pedestrian.IsInHelicopter;
-            if (!IsInHelicopter)
+            IsInBoat = Pedestrian.IsInBoat;
+            if (!IsInHelicopter && !IsInBoat)
             {
                 IsOnBike = Pedestrian.IsOnBike;
                 SetDrivingFlags();
@@ -604,6 +606,7 @@ public class PedExt : IComplexTaskable
             IsInHelicopter = false;
             IsOnBike = false;
             IsDriver = false;
+            IsInBoat = false;
         }
     }
 
@@ -647,7 +650,7 @@ public class PedExt : IComplexTaskable
     //        PositionLastSeenCrime = PositionToReport;
     //        GameTimeLastSeenCrime = Game.GameTime;
     //        HasSeenPlayerCommitCrime = true;
-    //        //Game.Console.Print(string.Format("AddCrime Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
+    //        //EntryPoint.WriteToConsole(string.Format("AddCrime Handle {0} GameTimeLastReactedToCrime {1}, CrimeToAdd.Name {2}", Pedestrian.Handle, GameTimeLastSeenCrime, CrimeToAdd.Name));
     //    }
     //}
     //private void ReportCrime()
@@ -658,7 +661,7 @@ public class PedExt : IComplexTaskable
     //        CrimesWitnessed.Clear();
     //        GameTimeLastReportedCrime = Game.GameTime;
     //        Pedestrian.IsPersistent = false;
-    //        //Game.Console.Print(string.Format("Handle {0} WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
+    //        //EntryPoint.WriteToConsole(string.Format("Handle {0} WillCall {1} ShouldReportCrime {2}", Pedestrian.Handle, WillCallPolice, ShouldReportCrime));
     //    }
     //}
     private void UpdateCrimes(IPoliceRespondable playerToCheck)
@@ -692,7 +695,7 @@ public class PedExt : IComplexTaskable
             CrimesWitnessed.Add(CrimeToAdd);
             PositionLastSeenCrime = PositionToReport;
             GameTimeLastSeenCrime = Game.GameTime;
-            Game.Console.Print($"AddCrime Handle {Pedestrian.Handle} GameTimeLastReactedToCrime {GameTimeLastSeenCrime}, CrimeToAdd.Name {CrimeToAdd.Name}");
+            EntryPoint.WriteToConsole($"AddCrime Handle {Pedestrian.Handle} GameTimeLastReactedToCrime {GameTimeLastSeenCrime}, CrimeToAdd.Name {CrimeToAdd.Name}", 5);
         }
     }
 

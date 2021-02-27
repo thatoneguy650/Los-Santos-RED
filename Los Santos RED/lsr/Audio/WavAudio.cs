@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-public class AudioNew : IAudioPlayable
+public class WavAudio : IAudioPlayable
 {
     [DllImport("winmm.dll")]
     public static extern int waveOutGetVolume(IntPtr hwo, out uint dwVolume);

@@ -99,8 +99,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="lsr\Audio\Audio.cs" />
-    <Compile Include="lsr\Audio\AudioNew.cs" />
+    <Compile Include="lsr\Audio\NAudio.cs" />
+    <Compile Include="lsr\Audio\WavAudio.cs" />
     <Compile Include="lsr\Audio\SoundInfo.cs" />
     <Compile Include="lsr\Data\Bones.cs" />
     <Compile Include="lsr\Data\Interface\IAgencies.cs" />
@@ -247,7 +247,7 @@
     <Compile Include="lsr\Player\Investigation.cs" />
     <Compile Include="lsr\Player\CriminalHistory.cs" />
     <Compile Include="lsr\Scanner\Scanner.cs" />
-    <Compile Include="lsr\Scanner\PoliceScannerCallIn.cs" />
+    <Compile Include="lsr\Scanner\CrimeSceneDescription.cs" />
     <Compile Include="lsr\Player\SearchMode.cs" />
     <Compile Include="lsr\Player\PoliceResponse.cs" />
     <Compile Include="lsr\Police\Enums\ResponsePriority.cs" />

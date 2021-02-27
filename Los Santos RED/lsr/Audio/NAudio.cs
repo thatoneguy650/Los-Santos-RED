@@ -6,15 +6,14 @@ using Rage;
 using Rage.Native;
 using System;
 
-public class Audio 
+public class Audio : IAudioPlayable
 {
     private WaveOutEvent outputDevice;
     private AudioFileReader audioFile;
     public Audio()
     {
 
-    }
-    
+    } 
     public bool IsAudioPlaying
     {
         get
@@ -51,7 +50,7 @@ public class Audio
         }
         catch (Exception e)
         {
-            Game.Console.Print("Audio" + e.StackTrace + e.Message);
+            EntryPoint.WriteToConsole("Audio" + e.StackTrace + e.Message,0);
         }
     }
     public void Abort()
@@ -70,5 +69,10 @@ public class Audio
             audioFile.Dispose();
         }
         audioFile = null;
+    }
+
+    public void Play(string fileName, int volume)
+    {
+        Play(fileName, volume * 1.0f);
     }
 }

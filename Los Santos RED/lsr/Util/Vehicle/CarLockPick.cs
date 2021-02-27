@@ -65,12 +65,12 @@ public class CarLockPick
             {
                 if (!SetupLockPick())
                 {
-                    Game.Console.Print("PickLock Setup Failed");
+                    EntryPoint.WriteToConsole("PickLock Setup Failed",3);
                     return;
                 }
                 if (!LockPickAnimation())
                 {
-                    Game.Console.Print("PickLock Animation Failed");
+                    EntryPoint.WriteToConsole("PickLock Animation Failed",3);
                     return;
                 }
                 FinishLockPick();
@@ -79,7 +79,7 @@ public class CarLockPick
         catch (Exception e)
         {
             Player.IsLockPicking = false;
-            Game.Console.Print("PickLock" + e.Message + e.StackTrace);
+            EntryPoint.WriteToConsole("PickLock" + e.Message + e.StackTrace,0);
         }
     }
     private bool SetupLockPick()

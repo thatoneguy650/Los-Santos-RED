@@ -272,11 +272,9 @@ namespace Mod
         public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
-
             PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
-            if (!ByPolice)
+            if (!ByPolice && IsNotWanted)
             {
-                Game.Console.Print($"PLAYER EVENT: INVESTIGATION START");
                 Investigation.Start();
             }
         }
@@ -391,7 +389,7 @@ namespace Mod
             if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null && LastWeaponHash != 0)
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash, true);
-                //Game.Console.Print("SetPlayerToLastWeapon" + LastWeaponHash.ToString());
+                //EntryPoint.WriteToConsole("SetPlayerToLastWeapon" + LastWeaponHash.ToString());
             }
         }
         public void SetUnarmed()
@@ -592,7 +590,7 @@ namespace Mod
             else
             {
             }
-            Game.Console.Print($"PLAYER EVENT: IsAiming Changed to: {IsAiming}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsAiming Changed to: {IsAiming}",5);
         }
         private void IsAimingInVehicleChanged()
         {
@@ -610,7 +608,7 @@ namespace Mod
                     CurrentVehicle.SetDriverWindow(false);
                 }
             }
-            Game.Console.Print($"PLAYER EVENT: IsAimingInVehicle Changed to: {IsAimingInVehicle}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsAimingInVehicle Changed to: {IsAimingInVehicle}",5);
         }
         private void IsBustedChanged()
         {
@@ -621,7 +619,7 @@ namespace Mod
             HandsAreUp = false;
             Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);
             Game.LocalPlayer.HasControl = false;
-            Game.Console.Print($"PLAYER EVENT: IsBusted Changed to: {IsBusted}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}",3);
         }
         private void IsDeadChanged()
         {
@@ -633,7 +631,7 @@ namespace Mod
             Game.LocalPlayer.Character.Health = 0;
             Game.LocalPlayer.Character.IsInvincible = true;
             Game.TimeScale = 0.4f;
-            Game.Console.Print($"PLAYER EVENT: IsDead Changed to: {IsDead}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}",3);
         }
         private void IsGettingIntoVehicleChanged()
         {
@@ -671,7 +669,7 @@ namespace Mod
             {
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
-            Game.Console.Print($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}",3);
         }
         private void IsInVehicleChanged()
         {
@@ -685,7 +683,7 @@ namespace Mod
                     CurrentVehicle.Vehicle.IsEngineOn = isCurrentVehicleEngineOn;
                 }
             }
-            Game.Console.Print($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}",3);
         }
         private void TargettingHandleChanged()
         {
@@ -701,7 +699,7 @@ namespace Mod
             {
                 CurrentTargetedPed = null;
             }
-            Game.Console.Print($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle}",5);
         }
         private void UpdateButtonPrompts()
         {
@@ -945,10 +943,10 @@ namespace Mod
                     }
                     else
                     {
-                        Game.Console.Print($"PLAYER EVENT: HotWiring Took {Game.GameTime - GameTimeStartedHotwiring}");
+                        EntryPoint.WriteToConsole($"PLAYER EVENT: HotWiring Took {Game.GameTime - GameTimeStartedHotwiring}",3);
                         GameTimeStartedHotwiring = 0;
                     }
-                    Game.Console.Print($"PLAYER EVENT: IsHotWiring Changed to {IsHotWiring}");
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: IsHotWiring Changed to {IsHotWiring}",3);
                     isHotwiring = IsHotWiring;
                 }
 
@@ -1082,7 +1080,7 @@ namespace Mod
             {
                 if (!PoliceResponse.RecentlySetWanted)//only allow my process to set the wanted level
                 {
-                    Game.Console.Print($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING");
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING",5);
                     Game.LocalPlayer.WantedLevel = 0;
                 }
                 else

@@ -131,7 +131,7 @@ public class UI
             }
         }
         instructional.Update();
-        //    Game.Console.Print($"Button Prompts Changed {Player.ButtonPrompts.Count}");
+        //    EntryPoint.WriteToConsole($"Button Prompts Changed {Player.ButtonPrompts.Count}");
         //    displayedButtonPrompts.Clear();
         //    displayedButtonPrompts.AddRange(Player.ButtonPrompts);
         //}

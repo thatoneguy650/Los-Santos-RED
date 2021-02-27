@@ -75,7 +75,7 @@ namespace LosSantosRED.lsr
                 }
                 //Player.PoliceResponse = CriminalHistory;
                 GameTimeLastAppliedWantedStats = Game.GameTime;
-                Game.Console.Print($"PLAYER EVENT: APPLYING WANTED STATS");
+                EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS", 3);
             }
         }
         private void ApplyWantedStatsForPlate(string PlateNumber)

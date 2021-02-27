@@ -179,7 +179,7 @@ public class HoldUp : Interaction
             {
                 Spoke = true;
             }
-            //Game.Console.Print($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
+            //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
             if (Spoke)
             {
                 break;

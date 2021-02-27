@@ -213,7 +213,7 @@ public class Respawning : IRespawning
         }
         catch (Exception e)
         {
-            Game.Console.Print("RespawnInPlace" + e.Message + e.StackTrace);
+            EntryPoint.WriteToConsole("RespawnInPlace" + e.Message + e.StackTrace, 0);
         }
     }
     private void ResurrectPlayer(bool resetTimesDied)

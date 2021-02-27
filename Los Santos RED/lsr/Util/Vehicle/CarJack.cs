@@ -98,7 +98,7 @@ public class CarJack
         catch (Exception e)
         {
             Player.IsCarJacking = false;
-            //Game.Console.Print("UnlockCarDoor" + e.Message + e.StackTrace);
+            //EntryPoint.WriteToConsole("UnlockCarDoor" + e.Message + e.StackTrace);
         }
     }
     private bool SetupCarJack()
@@ -289,11 +289,11 @@ public class CarJack
 
         if (Driver.IsInAnyVehicle(false))
         {
-            //Game.Console.Print("CarjackAnimation Driver In Vehicle");
+            //EntryPoint.WriteToConsole("CarjackAnimation Driver In Vehicle");
         }
         else
         {
-            //Game.Console.Print("CarjackAnimation Driver Out of Vehicle");
+            //EntryPoint.WriteToConsole("CarjackAnimation Driver Out of Vehicle");
             if (Driver.IsAlive)
             {
                 Driver.Tasks.ClearImmediately();
@@ -340,7 +340,7 @@ public class CarJack
         if (GroundZ == null)
             GroundZ = 0f;
         float DriverDistanceToGround = DriverSeatCoordinates.Z - (float)GroundZ;
-        //Game.Console.Print(string.Format("GetCarjackingAnimations VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
+        //EntryPoint.WriteToConsole(string.Format("GetCarjackingAnimations VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
         if (VehicleClass == VehicleClass.Van && DriverDistanceToGround > 1.5f)
         {
             if (Weapon.IsTwoHanded)

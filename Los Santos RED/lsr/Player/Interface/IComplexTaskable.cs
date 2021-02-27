@@ -12,6 +12,7 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsInVehicle { get; }
         bool IsInHelicopter { get; }
+        bool IsInBoat { get; }
         float DistanceToPlayer { get; }
         bool IsDriver { get; }
         bool IsStill { get; }

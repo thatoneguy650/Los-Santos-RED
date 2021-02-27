@@ -17,6 +17,7 @@ public class Crime
     public bool ScaresCivilians { get; set; } = true;
     public bool IsCurrentlyViolating { get; set; } = false;
     public bool CanViolateWithoutPerception { get; set; } = false;
+    public bool CanViolateMultipleTimes { get; set; } = true;
     public int PriorityGroup { get; set; } = 99;
     public bool IsTrafficViolation { get; set; }
     public Crime(string _ID, string _Name, int _ResultingWantedLevel, bool _ResultsInLethalForce, int priority, int priorityGroup)

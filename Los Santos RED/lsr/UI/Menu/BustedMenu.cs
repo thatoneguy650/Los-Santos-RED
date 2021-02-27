@@ -120,12 +120,12 @@ public class BustedMenu : Menu
         if (list == Surrender)
         {
             CurrentSelectedSurrenderLocation = PoliceStations[index];
-            //Game.Console.Print($"Current Busted Surrender Location {CurrentSelectedSurrenderLocation.Name}");
+            //EntryPoint.WriteToConsole($"Current Busted Surrender Location {CurrentSelectedSurrenderLocation.Name}");
         }   
         else if (list == TakeoverRandomPed)
         {
             SelectedTakeoverRadius = Distances[index].Distance;
-            //Game.Console.Print($"Current Busted Takeover Distance {SelectedTakeoverRadius}");
+            //EntryPoint.WriteToConsole($"Current Busted Takeover Distance {SelectedTakeoverRadius}");
         }
     }
     private void UpdateClosestPoliceStationIndex()

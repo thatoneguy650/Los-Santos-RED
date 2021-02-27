@@ -98,7 +98,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
             NativeFunction.Natives.x80C8B1846639BB19(1);
             NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", CurrentIntensity);
-            //Game.Console.Print($"Player Made Drunk. Strength: {CurrentIntensity}");
+            //EntryPoint.WriteToConsole($"Player Made Drunk. Strength: {CurrentIntensity}");
         }
         private void SetSober(bool ResetClipset)
         {
@@ -112,7 +112,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
             NativeFunction.Natives.x80C8B1846639BB19(0);
             NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
-            //Game.Console.Print("Player Made Sober");
+            //EntryPoint.WriteToConsole("Player Made Sober");
         }
         private void UpdateDrunkStatus()
         {
