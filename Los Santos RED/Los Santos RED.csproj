@@ -124,6 +124,7 @@
     <Compile Include="lsr\Data\ZoneScannerAudio.cs" />
     <Compile Include="lsr\Player\Activity\ScenarioActivity.cs" />
     <Compile Include="lsr\Police\AssistManager.cs" />
+    <Compile Include="lsr\Police\Roadblock.cs" />
     <Compile Include="lsr\Police\Voice.cs" />
     <Compile Include="lsr\Tasker\Items\CallIn.cs" />
     <Compile Include="lsr\Tasker\Items\eChaseBehaviorFlag.cs" />

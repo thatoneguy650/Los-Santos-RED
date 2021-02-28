@@ -22,13 +22,15 @@ public class Debug
     private Mod.Player Player;
     private Scanner Scanner;
     private Ped DebugPed;
+    private IStreets Streets;
     private int VehicleMissionFlag = 1;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, Scanner scanner)
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, Scanner scanner, IStreets streets)
     {
         PlateTypes = plateTypes;
         World = world;
         Player = targetable;
         Scanner = scanner;
+        Streets = streets;
     }
     public void Update()
     {
@@ -73,11 +75,11 @@ public class Debug
             DebugNumpad9();
         }
 
-        foreach(Cop cop in World.PoliceList.Where(x=> x.Pedestrian.Exists()))
-        {
-            DrawColoredArrowTaskStatus(cop);
-            DrawColoredArrowAlertness(cop);
-        }
+        //foreach(Cop cop in World.PoliceList.Where(x=> x.Pedestrian.Exists()))
+        //{
+        //    DrawColoredArrowTaskStatus(cop);
+        //    DrawColoredArrowAlertness(cop);
+        //}
     }
     private void DebugNumpad0()
     {
@@ -108,8 +110,11 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        VehicleMissionFlag++;
-        EntryPoint.WriteToConsole($"VehicleMissionFlag {VehicleMissionFlag}",4);
+        SpawnRoadblock();
+
+
+        //VehicleMissionFlag++;
+        //EntryPoint.WriteToConsole($"VehicleMissionFlag {VehicleMissionFlag}",4);
         //DebugPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading);
         //DebugPed.Inventory.GiveNewWeapon(new WeaponAsset("weapon_pistol"), 60, true);
         //DebugPed.Tasks.FightAgainst(Game.LocalPlayer.Character);
@@ -120,15 +125,15 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        if(VehicleMissionFlag > 0)
-        {
-            VehicleMissionFlag--;
-        }
-        EntryPoint.WriteToConsole($"VehicleMissionFlag {VehicleMissionFlag}", 4);
+        //if(VehicleMissionFlag > 0)
+        //{
+        //    VehicleMissionFlag--;
+        //}
+        //EntryPoint.WriteToConsole($"VehicleMissionFlag {VehicleMissionFlag}", 4);
     }
     private void DebugNumpad7()
     {
-        SpawnInteractiveChaser(1f) ;
+        SpawnInteractiveChaser(1f);
     }
     public void DebugNumpad8()
     {
@@ -141,13 +146,13 @@ public class Debug
             //int rel1 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(Game.LocalPlayer.Character, cop.Pedestrian);
             //int rel2 = NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(cop.Pedestrian, Game.LocalPlayer.Character);
 
-            if(cop.Pedestrian.CurrentVehicle.Exists())
+            if (cop.Pedestrian.CurrentVehicle.Exists())
             {
                 int MissionType = NativeFunction.Natives.GET_ACTIVE_VEHICLE_MISSION_TYPE<int>(cop.Pedestrian.CurrentVehicle);
                 EntryPoint.WriteToConsole(cop.DebugString + $"MissionType {MissionType}", 4);
             }
 
-            
+
         }
         EntryPoint.WriteToConsole("===================================", 4);
     }
@@ -179,7 +184,7 @@ public class Debug
     {
         Color Color = Color.White;
         TaskStatus taskStatus = PedToDraw.Pedestrian.Tasks.CurrentTaskStatus;
-        if(taskStatus == TaskStatus.InProgress)
+        if (taskStatus == TaskStatus.InProgress)
         {
             Color = Color.Green;
         }
@@ -226,12 +231,114 @@ public class Debug
         {
             Color = Color.Blue;
         }
-        else 
+        else
         {
             Color = Color.Yellow;
         }
         Rage.Debug.DrawArrowDebug(new Vector3(PedToDraw.Pedestrian.Position.X, PedToDraw.Pedestrian.Position.Y, PedToDraw.Pedestrian.Position.Z + 1f), Vector3.Zero, Rotator.Zero, 1f, Color);
     }
+    private void SpawnRoadblock()
+    {
+
+
+        Vector3 Position = Player.Character.GetOffsetPositionFront(20f);
+        if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
+        {
+            float VehicleHeading = Heading - 90f;
+            EntryPoint.WriteToConsole($"ROADBLOCK: VehicleHeading {VehicleHeading}", 3);
+            Vector3 FrontVector = new Vector3((float)Math.Cos(Heading * Math.PI / 180), (float)Math.Sin(Heading * Math.PI / 180), 0);
+            Vector3 spawnpos = CenterPosition + FrontVector;
+            while (!Game.IsKeyDownRightNow(Keys.E))
+            {
+                Game.DisplayHelp("Press E to delete roadblock");
+
+                Rage.Debug.DrawArrowDebug(spawnpos, spawnpos, Rotator.Zero, 1f, Color.White);        
+                Rage.Debug.DrawArrowDebug(CenterPosition, spawnpos, Rotator.Zero, 1f, Color.Red);
+                GameFiber.Sleep(25);
+
+
+            }
+        }
+
+        //Vector3 Position = Player.Character.GetOffsetPositionFront(50f);
+        //Street ForwardStreet = Streets.GetStreet(Position);
+        //if(ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
+        //{
+        //    EntryPoint.WriteToConsole("ROADBLOCK: Street Matches",3);
+        //    if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
+        //    {
+        //        Roadblock rb = new Roadblock("policet", CenterPosition);
+        //        rb.SpawnRoadblock();
+        //        EntryPoint.WriteToConsole("ROADBLOCK: Spawned", 3);
+        //    }
+        //}
+        //else
+        //{
+        //    EntryPoint.WriteToConsole("ROADBLOCK: Street DOES NOT Matche", 3);
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Player.Position.X, Player.Position.Y, Player.Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
+        //{
+        //    string ModelName = "policet";          
+        //    Model Model = new Model(ModelName);
+        //    double DesiredHeading = Heading - 90f;
+        //    var angle = DesiredHeading * Math.PI / 180;
+        //    Vector3 FrontVector = new Vector3((float)Math.Sin(angle), (float)Math.Cos(angle), 0);
+
+        //    bool SpawnWorked = true;
+        //    while(SpawnWorked)
+        //    {
+        //        AddRoadblockCar();
+        //    }
+
+        //    Vector3 FrontPos = CenterPosition + (FrontVector * (Model.Dimensions.Length() + 2f));
+
+        //    List<Vector3> Positions = new List<Vector3>();
+
+        //    Positions.Add(CenterPosition);
+        //    Positions.Add(FrontPos);
+
+
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        try
+        //        {
+        //            while (!Game.IsKeyDownRightNow(Keys.E))
+        //            {
+        //                Game.DisplayHelp("Press E to delete roadblock");
+        //                foreach(Vector3 Position in Positions)
+        //                {
+        //                    Rage.Debug.DrawArrowDebug(new Vector3(Position.X, Position.Y, Position.Z + 1f), FrontVector, Rotator.Zero, 1f, Color.White);
+        //                }
+        //                GameFiber.Sleep(25);
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+        //        }
+        //    }, "DebugLoop2");
+
+        //}
+    }
+    //private Vector3 AddRoadblockCar(Vector3 InitialPosition, bool AddInFront)
+    //{
+    //    return Vector3.Zero;
+    //}
     private void SpawnInteractiveChaser(float Distance)
     {
         Ped newped = new Ped("a_f_m_business_02", Game.LocalPlayer.Character.GetOffsetPositionFront(2f), Game.LocalPlayer.Character.Heading);
@@ -239,24 +346,24 @@ public class Debug
         if (newped.Exists() && car.Exists())
         {
 
-           car.IsCollisionProof = true;
+            car.IsCollisionProof = true;
             //  car.IsCollisionEnabled = false;
 
-          //  NativeFunction.Natives.SET_ENTITY_COLLISION(car, false, false);
-         
+            //  NativeFunction.Natives.SET_ENTITY_COLLISION(car, false, false);
+
             newped.WarpIntoVehicle(car, -1);
             GameFiber.StartNew(delegate
             {
                 try
                 {
-                    
+
                     PedExt Coolio = new PedExt(newped, false, false, false, "Test1", null);
-                    Coolio.Update(Player,Player.Position);
+                    Coolio.Update(Player, Player.Position);
                     Coolio.CurrentTask = new Chase(Coolio, Player, Distance, VehicleMissionFlag);
                     Coolio.CurrentTask.Start();
 
-                        //NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", newped, 100f);
-                        //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", newped, 8f);
+                    //NativeFunction.CallByName<bool>("SET_DRIVER_ABILITY", newped, 100f);
+                    //NativeFunction.CallByName<bool>("SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE", newped, 8f);
                     car.AttachBlip();
 
                     uint GameTimeColliisonCheck = Game.GameTime;
@@ -266,7 +373,7 @@ public class Debug
 
 
 
-                        if(Coolio.DistanceToPlayer <= 20f)
+                        if (Coolio.DistanceToPlayer <= 20f)
                         {
                             car.IsCollisionProof = false;
                         }
@@ -288,7 +395,7 @@ public class Debug
                         //        car.CollisionIgnoredEntity = ClosestCar.Vehicle;
                         //    }
                         //}
-                       // Rage.World.GetClosestEntity(car.Position, 10f, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
+                        // Rage.World.GetClosestEntity(car.Position, 10f, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
 
                         //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 4, true);
                         //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(newped, 8, true);
@@ -337,7 +444,55 @@ public class Debug
                     //EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace);
                 }
             }, "DebugLoop2");
+            //List<Vehicle> CreatedCars = new List<Vehicle>();
+            //Vehicle MiddleCar = new Vehicle(ModelName, CenterPosition, Heading - 90f);
+            //GameFiber.Yield();
+            //CreatedCars.Add(MiddleCar);
+            //Vector3 FrontPos = MiddleCar.GetOffsetPositionFront(MiddleCar.Model.Dimensions.Length() + 2f);//car.ForwardVector * 3.0f;// (car.Model.Dimensions.Length() / 2) * car.ForwardVector;
+            //Vector3 RearPos = MiddleCar.GetOffsetPositionFront((-1.0f * MiddleCar.Model.Dimensions.Length()) + -2f);
+            //Vehicle FrontCar = new Vehicle(ModelName, FrontPos, Heading - 90f);
+            //GameFiber.Yield();
+            //CreatedCars.Add(FrontCar);
+            //Vehicle RearCar = new Vehicle(ModelName, RearPos, Heading - 90f);
+            //GameFiber.Yield();
+            //CreatedCars.Add(RearCar);
+            //if (MiddleCar.Exists())
+            //{
+            //    GameFiber.StartNew(delegate
+            //    {
+            //        try
+            //        {
+            //            uint GameTimeColliisonCheck = Game.GameTime;
+            //            while (MiddleCar.Exists() && !Game.IsKeyDownRightNow(Keys.E))
+            //            {
+            //                Game.DisplayHelp("Press E to delete roadblock");
 
+            //                Rage.Debug.DrawArrowDebug(new Vector3(RearPos.X, RearPos.Y, RearPos.Z + 1f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+
+            //                GameFiber.Sleep(25);
+            //            }
+            //            foreach (Vehicle car in CreatedCars)
+            //            {
+            //                if (car.Exists())
+            //                {
+            //                    car.Delete();
+            //                }
+            //            }
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            foreach (Vehicle car in CreatedCars)
+            //            {
+            //                if (car.Exists())
+            //                {
+            //                    car.Delete();
+            //                }
+            //            }
+            //            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+            //        }
+            //    }, "DebugLoop2");
+
+            //}
         }
     }
     private void MakeNonInvincible()
@@ -356,7 +511,7 @@ public class Debug
     }
     private void MakeDrunk()
     {
-        NativeFunction.Natives.SET_PED_IS_DRUNK<bool>( Game.LocalPlayer.Character, true);
+        NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, true);
         if (!NativeFunction.Natives.HAS_ANIM_SET_LOADED<bool>("move_m@drunk@verydrunk"))
         {
             NativeFunction.Natives.REQUEST_ANIM_SET<bool>("move_m@drunk@verydrunk");

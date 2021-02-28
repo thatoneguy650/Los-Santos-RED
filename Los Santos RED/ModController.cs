@@ -95,7 +95,7 @@ namespace LosSantosRED.lsr
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
             Scanner = new Scanner(World, Player, WavAudio, Respawning, Settings);
             VanillaManager = new VanillaManager();
-            Debug = new Debug(PlateTypes, World, Player, Scanner);
+            Debug = new Debug(PlateTypes, World, Player, Scanner, Streets);
             World.AddBlipsToMap();
             PedSwap.Setup();
             GameFiber.Yield();
@@ -242,14 +242,14 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.CleanUpVehicles", World.CleanUpVehicles, 7,7),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7,8),
 
-                new ModTask(500, "Scanner.Tick", Scanner.Tick, 8,3),
-                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 8,4),
-                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 8,5),
+                //new ModTask(500, "Scanner.Tick", Scanner.Tick, 8,3),
+                //new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 8,4),
+                //new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 8,5),
 
-                //New Tasking
-                new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 9,0),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 9,1),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 9,2),
+                ////New Tasking
+                //new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 9,0),
+                //new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 9,1),
+                //new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 9,2),
             };
         }
         private void StartDebugLogic()
@@ -333,8 +333,9 @@ namespace LosSantosRED.lsr
                         foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                         {
                             if (RunGroup >= 2 && TickStopWatch.ElapsedMilliseconds >= 3)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
-                            {
-                                EntryPoint.WriteToConsole($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation} FrameTime {Game.FrameTime}",5);
+                            {             
+                                EntryPoint.WriteToConsole($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation} FrameTime {Game.FrameTime}", 3);
+                                EntryPoint.WriteToConsole($"Ran: {string.Join(";", MyTickTasks.Where(x => x.RanThisTick == true).Select(x => x.DebugName).ToList())}",3);
                                 break;
                             }
 
@@ -350,7 +351,7 @@ namespace LosSantosRED.lsr
                             //foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                             if (RunningBehind != null)
                             {    
-                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}",5);
+                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}",3);
                                 RunningBehind.Run();
                                 LastRanTask = ToRun.DebugName;
                                 LastRanTaskLocation = "RunningBehind";
