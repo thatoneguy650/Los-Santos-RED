@@ -217,15 +217,15 @@ namespace LosSantosRED.lsr
                 new ModTask(0, "Input.Tick", Input.Update, 1,0),
                 new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),
 
-                new ModTask(25, "Player.Update", Player.Update, 3,0),
+                new ModTask(100, "Player.Update", Player.Update, 3,0),//25
 
-                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),
+                new ModTask(300, "World.Police.Tick", Police.Update, 3,1),//100
 
                 new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),
                 new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),
 
-                new ModTask(150, "Player.Investigation.Update", Player.Investigation.Update, 6,0),
-                new ModTask(150, "Player.SearchModeUpdate", Player.SearchModeUpdate, 6,1),
+                new ModTask(500, "Player.Investigation.Update", Player.Investigation.Update, 6,0),//150
+                new ModTask(250, "Player.SearchModeUpdate", Player.SearchModeUpdate, 6,1),//150
                 new ModTask(150, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 6,2),
                 new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 6,3),
                 new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6,4),
@@ -334,8 +334,8 @@ namespace LosSantosRED.lsr
                         {
                             if (RunGroup >= 2 && TickStopWatch.ElapsedMilliseconds >= 3)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
                             {             
-                                EntryPoint.WriteToConsole($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation} FrameTime {Game.FrameTime}", 3);
-                                EntryPoint.WriteToConsole($"Ran: {string.Join(";", MyTickTasks.Where(x => x.RanThisTick == true).Select(x => x.DebugName).ToList())}",3);
+                                EntryPoint.WriteToConsole($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation} FrameTime {Game.FrameTime}", 5);
+                                EntryPoint.WriteToConsole($"Ran: {string.Join(";", MyTickTasks.Where(x => x.RanThisTick == true && x.Interval > 0).Select(x => x.DebugName).ToList())}",5);
                                 break;
                             }
 
@@ -351,7 +351,7 @@ namespace LosSantosRED.lsr
                             //foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                             if (RunningBehind != null)
                             {    
-                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}",3);
+                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}",5);
                                 RunningBehind.Run();
                                 LastRanTask = ToRun.DebugName;
                                 LastRanTaskLocation = "RunningBehind";

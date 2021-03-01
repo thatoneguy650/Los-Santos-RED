@@ -54,27 +54,34 @@ public class SpawnTask
             Vehicle = CreateVehicle();
             if (Vehicle != null && Vehicle.Vehicle.Exists())
             {
-                Cop Cop = CreateCop();
-                if (Cop != null && Cop.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                if (OfficerType != null)
                 {
-                    Cop.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
-                    int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
-                    for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
+                    Cop Cop = CreateCop();
+                    if (Cop != null && Cop.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                     {
-                        Cop PassengerCop = CreateCop();
-                        if (PassengerCop != null && PassengerCop.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                        Cop.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
+                        int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
+                        for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                         {
-                            PassengerCop.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, OccupantIndex - 1);
+                            Cop PassengerCop = CreateCop();
+                            if (PassengerCop != null && PassengerCop.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                            {
+                                PassengerCop.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, OccupantIndex - 1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Vehicle != null && Vehicle.Vehicle.Exists())
+                        {
+                            Vehicle.Vehicle.Delete();
+                            //EntryPoint.WriteToConsole("Failed to complete spawn, deleting");
                         }
                     }
                 }
                 else
                 {
-                    if(Vehicle != null && Vehicle.Vehicle.Exists())
-                    {
-                        Vehicle.Vehicle.Delete();
-                        //EntryPoint.WriteToConsole("Failed to complete spawn, deleting");
-                    }
+                    Vehicle.WasSpawnedEmpty = true;
                 }
             }
         }

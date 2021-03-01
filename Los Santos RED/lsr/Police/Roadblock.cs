@@ -1,12 +1,12 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 public class Roadblock
@@ -14,25 +14,33 @@ public class Roadblock
     private Vector3 NodeCenter;
     private Vector3 NodeOffset;
     private float NodeHeading;
-    private float VehicleHeading;
-    private string VehicleName;
     private Model VehicleModel;
+    private DispatchableVehicle Vehicle;
     private string SpikeStripName = "p_ld_stinger_s";
     private Model SpikeStripModel;
-    private Vector3 FrontVector;
     private List<Vehicle> CreatedVehicles = new List<Vehicle>();
     private Vehicle MainVehicle;
     private Vector3 InitialPosition;
     private List<Vector3> SpawnPoints = new List<Vector3>();
     private List<Rage.Object> CreatedProps = new List<Rage.Object>();
     private IPoliceRespondable Player;
-    public Roadblock(IPoliceRespondable player, string vehicleModel, Vector3 initialPosition)
+    private IEntityProvideable World;
+    private Agency Agency;
+    private float RotatedNodeHeading => NodeHeading - 90f;
+    public Roadblock(IPoliceRespondable player, IEntityProvideable world,Agency agency, DispatchableVehicle vehicle, Vector3 initialPosition)
     {
         Player = player;
-        VehicleName = vehicleModel;
+        World = world;
+        Agency = agency;
+        Vehicle = vehicle;
         InitialPosition = initialPosition;
-        VehicleModel = new Model(VehicleName);
+        VehicleModel = new Model(Vehicle.ModelName);
         SpikeStripModel = new Model(SpikeStripName);
+    }
+    public Vector3 CenterPosition => NodeCenter;
+    public void Dispose()
+    {
+        RemoveItems();
     }
     public void SpawnRoadblock()
     {
@@ -56,63 +64,59 @@ public class Roadblock
     {
         return SpikeStripModel.Dimensions.Y + additionalSpacing;
     }
-    private void DeterminVehiclePositions()
-    {
-        VehicleHeading = NodeHeading - 90f;
-        FrontVector = new Vector3((float)Math.Cos(NodeHeading * Math.PI / 180), (float)Math.Sin(NodeHeading * Math.PI / 180), 0);
-    }
     private void DeterminSpikeStripPositions()
     {
-        float SpikeStripHeading = NodeHeading + 90f;
-        Vector3 SideVector = new Vector3((float)Math.Cos(SpikeStripHeading * Math.PI / 180), (float)Math.Sin(SpikeStripHeading * Math.PI / 180), 0);
-        float DistanceFromVehicles = 20f;
-        if (Player.Position.DistanceTo2D(NodeCenter + (DistanceFromVehicles * SideVector)) <= Player.Position.DistanceTo2D(NodeCenter + (-DistanceFromVehicles * SideVector)))
+        Vector3 LeftSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, 20f);
+        Vector3 RightSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, 20f);
+        if (Player.Position.DistanceTo2D(RightSide) <= Player.Position.DistanceTo2D(LeftSide))
         {
-            NodeOffset = NodeCenter + (DistanceFromVehicles * SideVector);
+            NodeOffset = RightSide;
         }
         else
         {
-            NodeOffset = NodeCenter + (-DistanceFromVehicles * SideVector);
+            NodeOffset = LeftSide;
         }
     }
     private void FillInBlockade()
     {
-        DeterminVehiclePositions();
         DeterminSpikeStripPositions();
         GameFiber.StartNew(delegate
         {
             try
             {
-                if(!CreateVehicle(NodeCenter))
+                if(!CreateVehicle(NodeCenter,RotatedNodeHeading))
                 {
                     return;
                 }
                 AddVehicles(true);
                 AddVehicles(false);
 
-                CreateSpikeStrip(NodeOffset);
+                CreateSpikeStrip(NodeOffset,RotatedNodeHeading);
                 AddSpikeStrips(true);
                 AddSpikeStrips(false);
-                GameFiber.Sleep(500);
-
-                foreach (Vehicle Car in CreatedVehicles)
+                GameFiber.Sleep(2000);
+                uint GameTimeStarted = Game.GameTime;
+                while (Game.GameTime - GameTimeStarted <= 3000)
                 {
-                    if (Car.Exists())
+                    foreach (Vehicle Car in CreatedVehicles)
                     {
-                        if (!NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Car, 5.0f) || !Car.IsOnAllWheels)
+                        if (Car.Exists())
                         {
-                            Car.Delete();
+                            if (!Car.IsOnAllWheels)
+                            {
+                                Car.Delete();
+                            }
                         }
                     }
+                    GameFiber.Sleep(250);
                 }
-
-                while (!Game.IsKeyDownRightNow(Keys.E))
-                {
-                    Game.DisplayHelp("Press E to delete roadblock");
-                    //Rage.Debug.DrawArrowDebug(new Vector3(NodeCenter.X, NodeCenter.Y, NodeCenter.Z + 1f), FrontVector, Rotator.Zero, 1f, Color.Red);
-                    GameFiber.Sleep(25);
-                }
-                RemoveItems();
+                //while (!Game.IsKeyDownRightNow(Keys.E))
+                //{
+                //    Game.DisplayHelp("Press E to delete roadblock");
+                //    //Rage.Debug.DrawArrowDebug(new Vector3(NodeCenter.X, NodeCenter.Y, NodeCenter.Z + 1f), FrontVector, Rotator.Zero, 1f, Color.Red);
+                //    GameFiber.Yield();
+                //}
+                //RemoveItems();
             }
             catch (Exception e)
             {
@@ -145,40 +149,60 @@ public class Roadblock
         bool Created;
         do
         {
-            Vector3 SpawnPosition = NodeCenter + (FrontVector * (InFront ? 1.0f : -1.0f) * CarsAdded * Spacing);
-            Created = CreateVehicle(SpawnPosition);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, (InFront ? 1.0f : -1.0f) * CarsAdded * Spacing);
+            Created = CreateVehicle(SpawnPosition, RotatedNodeHeading);
             if (Created)
             {
                 CarsAdded++;
             }
-        } while (Created && CarsAdded < 3);
+        } while (Created && CarsAdded < 5);
     }
-    private bool CreateVehicle(Vector3 SpawnPosition)
+    private bool CreateVehicle(Vector3 position, float heading)
     {
-        Vehicle Car = new Vehicle(VehicleName, SpawnPosition, VehicleHeading);
-        GameFiber.Yield();
-        if (Car.Exists() && NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Car, 5.0f) && Car.IsOnAllWheels)
-        {
-            SpawnPoints.Add(SpawnPosition);
-            CreatedVehicles.Add(Car);
-            if(MainVehicle == null)
-            {
-                MainVehicle = Car;
-            }
-            if (Car.HasSiren)
-            {
-                Car.IsSirenOn = true;
-            }
-            return true;
-        }
-        else
-        {
-            if (Car.Exists())
-            {
-                Car.Delete();
-            }
-            return false;
-        }
+
+        SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, true);
+        spawnTask.AttemptSpawn();
+        spawnTask.CreatedCops.ForEach(x => World.AddEntity(x));
+        spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
+        return spawnTask.CreatedVehicles.Any();
+
+
+
+
+
+        //Vehicle Car = new Vehicle(VehicleName, position, heading);
+        //GameFiber.Yield();
+        //if (Car.Exists() && NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Car, 5.0f) && Car.IsOnAllWheels)
+        //{
+        //    Car.IsPersistent = true;
+
+
+        //    Blip myBlip = Car.AttachBlip();
+        //    myBlip.Color = Color.Green;
+        //    myBlip.Scale = 0.6f;
+
+
+        //    World.AddEntity(new VehicleExt(Car, true));
+        //    SpawnPoints.Add(position);
+        //    CreatedVehicles.Add(Car);
+        //    if(MainVehicle == null)
+        //    {
+        //        MainVehicle = Car;
+        //    }
+        //    if (Car.HasSiren)
+        //    {
+        //        Car.IsSirenOn = true;
+        //    }
+        //    return true;
+        //}
+        //else
+        //{
+        //    if (Car.Exists())
+        //    {
+        //        Car.Delete();
+        //    }
+        //    return false;
+        //}
     }
     private void AddSpikeStrips(bool InFront)
     {
@@ -187,25 +211,25 @@ public class Roadblock
         bool Created;
         do
         {
-            Vector3 SpawnPosition = NodeOffset + (FrontVector * (InFront ? 1.0f : -1.0f) * StripsAdded * Spacing);
-            Created = CreateSpikeStrip(SpawnPosition);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(NodeOffset, NodeHeading, (InFront ? 1.0f : -1.0f) * StripsAdded * Spacing);
+            Created = CreateSpikeStrip(SpawnPosition, RotatedNodeHeading);
             if (Created)
             {
                 StripsAdded++;
             }
-        } while (Created && StripsAdded < 5);
+        } while (Created && StripsAdded < 6);
     }
-    private bool CreateSpikeStrip(Vector3 Position)
+    private bool CreateSpikeStrip(Vector3 position, float heading)
     {
-        if(NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(Position.X, Position.Y, Position.Z, out float GroundZ, true, false))
+        position = new Vector3(position.X, position.Y, position.Z + 3f);
+        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
         {
-            Position = new Vector3(Position.X, Position.Y, GroundZ);
+            position = new Vector3(position.X, position.Y, GroundZ);
         }
-        Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", Position, VehicleHeading);
+        Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", position, heading);
+        SpikeStrip.IsPersistent = true;
         CreatedProps.Add(SpikeStrip);
         return SpikeStrip.Exists();
     }
-
-
 }
 

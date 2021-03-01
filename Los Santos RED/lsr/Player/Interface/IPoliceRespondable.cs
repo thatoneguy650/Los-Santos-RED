@@ -45,6 +45,8 @@ namespace LosSantosRED.lsr.Interface
         bool StarsRecentlyActive { get; }
         Violations Violations { get; }//not good comrade
         Vector3 Position { get; }
+        Ped Character { get; }
+
         void CheckInjured(PedExt myPed);
         void CheckMurdered(PedExt myPed);
         void Arrest();

@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -21,10 +22,13 @@ public class Dispatcher
     private readonly IZoneJurisdictions ZoneJurisdictions;
     private readonly IZones Zones;
     private uint GameTimeAttemptedDispatch;
+    private uint GameTimeAttemptedRoadblock;
     private uint GameTimeAttemptedRecall;
+    private uint GameTimeLastSpawnedRoadblock;
     private Blip Blip1;
     private Blip Blip2;
     private Blip Blip3;
+    private Roadblock Roadblock;
     public Dispatcher(IEntityProvideable world, IPoliceRespondable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, ICountyJurisdictions countyJurisdictions, IZoneJurisdictions zoneJurisdictions)
     {
         Player = player;
@@ -69,7 +73,9 @@ public class Dispatcher
     private float DistanceToDelete => Player.IsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 1000f;
     private bool HasNeedToDispatch => World.TotalSpawnedCops < SpawnedCopLimit;
+    private bool HasNeedToRoadblock => Player.WantedLevel >= 3 && Roadblock == null;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
+    private bool IsTimeToRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenSpawn;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn
     {
@@ -173,11 +179,25 @@ public class Dispatcher
             }
         }
     }
+    private int TimeBetweenRoadblocks
+    {
+        get
+        {
+            if (!Player.AnyPoliceRecentlySeenPlayer)
+            {
+                return 999999;
+            }
+            else
+            {
+                return ((5 - Player.WantedLevel) * 10000) + 70000;//90 seconds at level 3?, 70 at level 5? sounds okay?
+            }
+        }
+    }
     public void Dispatch()
     {
         if (IsTimeToDispatch && HasNeedToDispatch)
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Spawn",5);
+            EntryPoint.WriteToConsole($"DISPATCHER: Attempting Spawn", 5);
             int timesTried = 0;
             SpawnLocation spawnLocation = new SpawnLocation();
             do
@@ -192,8 +212,8 @@ public class Dispatcher
             if (spawnLocation.HasSpawns && IsValidSpawn(spawnLocation))
             {
                 Agency agency = GetRandomAgency(spawnLocation);
-                DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, World.PoliceHelicoptersCount <= 2, World.PoliceBoatsCount <= 1);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
-                if(VehicleType != null)
+                DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, World.PoliceHelicoptersCount <= 2, World.PoliceBoatsCount <= 1,true);//turned off for now as i work on the AI//World.PoliceHelicoptersCount < Settings.SettingsManager.Police.HelicopterLimit, World.PoliceBoatsCount < Settings.SettingsManager.Police.BoatLimit);
+                if (VehicleType != null)
                 {
                     DispatchableOfficer OfficerType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
                     if (OfficerType != null)
@@ -207,16 +227,20 @@ public class Dispatcher
                         }
                         catch (Exception ex)
                         {
-                            EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}",0);
+                            EntryPoint.WriteToConsole($"DISPATCHER: SpawnCop ERROR {ex.Message} : {ex.StackTrace}", 0);
                         }
                     }
                 }
             }
             else
             {
-                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {IsValidSpawn(spawnLocation)}",5);
+                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {IsValidSpawn(spawnLocation)}", 5);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
+        }
+        if (IsTimeToRoadblock && HasNeedToRoadblock)
+        {
+            SpawnRegularRoadblock();
         }
         SetVanilla(false);//need to turn off vanilla gta 5 dispatch services nearly every tick?
     }
@@ -243,10 +267,14 @@ public class Dispatcher
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
-                    
                     Delete(DeleteableCop);
-                    
                 }
+            }
+            if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
+            {
+                Roadblock.Dispose();
+                Roadblock = null;
+                EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
             }
             GameTimeAttemptedRecall = Game.GameTime;
         }
@@ -356,6 +384,21 @@ public class Dispatcher
         }
         return agency;
     }
+    private Agency GetRandomAgency(Vector3 spawnLocation)
+    {
+        Agency agency;
+        List<Agency> PossibleAgencies = GetAgencies(spawnLocation, Player.WantedLevel);
+        agency = PossibleAgencies.PickRandom();
+        if (agency == null)
+        {
+            agency = GetAgencies(spawnLocation, Player.WantedLevel).PickRandom();
+        }
+        if (agency == null)
+        {
+            //EntryPoint.WriteToConsole("Dispatcher could not find Agency To Spawn");
+        }
+        return agency;
+    }
     private bool IsValidSpawn(SpawnLocation spawnLocation)
     {
         if (spawnLocation.StreetPosition.DistanceTo2D(Game.LocalPlayer.Character) < ClosestSpawnToSuspectAllowed || World.AnyCopsNearPosition(spawnLocation.StreetPosition, ClosestSpawnToOtherPoliceAllowed))
@@ -408,5 +451,22 @@ public class Dispatcher
             return true;
         }
         return false;
+    }
+    private void SpawnRegularRoadblock()
+    {
+        Vector3 Position = Player.Character.GetOffsetPositionFront(400f);
+        Street ForwardStreet = Streets.GetStreet(Position);
+        if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
+        {
+            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
+            {
+                Agency ToSpawn = GetRandomAgency(CenterPosition);
+                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(Player.WantedLevel, false, false, false);
+                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, CenterPosition);
+                Roadblock.SpawnRoadblock();
+                GameTimeLastSpawnedRoadblock = Game.GameTime;
+                EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
+            }
+        }
     }
 }

@@ -239,22 +239,22 @@ public class Debug
     }
     private void SpawnRegularRoadblock()
     {
-        Vector3 Position = Player.Character.GetOffsetPositionFront(50f);
-        Street ForwardStreet = Streets.GetStreet(Position);
-        if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
-        {
-            EntryPoint.WriteToConsole("ROADBLOCK: Street Matches", 3);
-            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
-            {
-                Roadblock rb = new Roadblock(Player,"policet", CenterPosition);
-                rb.SpawnRoadblock();
-                EntryPoint.WriteToConsole("ROADBLOCK: Spawned", 3);
-            }
-        }
-        else
-        {
-            EntryPoint.WriteToConsole("ROADBLOCK: Street DOES NOT Matche", 3);
-        }
+        //Vector3 Position = Player.Character.GetOffsetPositionFront(50f);
+        //Street ForwardStreet = Streets.GetStreet(Position);
+        //if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
+        //{
+        //    EntryPoint.WriteToConsole("ROADBLOCK: Street Matches", 3);
+        //    if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
+        //    {
+        //        Roadblock rb = new Roadblock(Player, World, new Agency(),"policet", CenterPosition) ;
+        //        rb.SpawnRoadblock();
+        //        EntryPoint.WriteToConsole("ROADBLOCK: Spawned", 3);
+        //    }
+        //}
+        //else
+        //{
+        //    EntryPoint.WriteToConsole("ROADBLOCK: Street DOES NOT Matche", 3);
+        //}
 
     }
     private void SpawnRoadblock()

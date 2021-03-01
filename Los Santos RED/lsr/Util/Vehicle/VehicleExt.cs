@@ -385,6 +385,9 @@ namespace LSR.Vehicles
                 return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);
             }
         }
+
+        public bool WasSpawnedEmpty { get; set; } = false;
+
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);

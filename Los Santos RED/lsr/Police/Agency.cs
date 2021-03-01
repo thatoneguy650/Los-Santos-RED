@@ -115,11 +115,11 @@ public class Agency
         }
         return null;
     }
-    public DispatchableVehicle GetRandomVehicle(int WantedLevel, bool includeHelicopters, bool includeBoats)
+    public DispatchableVehicle GetRandomVehicle(int WantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles)
     {
         if (Vehicles != null && Vehicles.Any())
         {
-            List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && !x.IsHelicopter && !x.IsBoat).ToList();
+            List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && !x.IsHelicopter && !x.IsBoat && !x.IsMotorcycle).ToList();
             if (includeBoats)
             {
                 ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && x.IsBoat).ToList());
@@ -127,6 +127,10 @@ public class Agency
             if (includeHelicopters)
             {
                 ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && x.IsHelicopter).ToList());
+            }
+            if (includeMotorcycles)
+            {
+                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(WantedLevel) && x.IsMotorcycle).ToList());
             }
             int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(WantedLevel));
             int RandomPick = RandomItems.MyRand.Next(0, Total);

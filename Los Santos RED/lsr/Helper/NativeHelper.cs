@@ -128,6 +128,10 @@ namespace LosSantosRED.lsr.Helper
             Game.LocalPlayer.Model = characterModel;
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
+        public static Vector3 GetOffsetPosition(Vector3 Position, float heading, float Offset)
+        {
+            return Position + (new Vector3((float)Math.Cos(heading * Math.PI / 180), (float)Math.Sin(heading * Math.PI / 180), 0) * Offset);//Positon + Direction UnitVector From Heading, Times the Length
+        }
 
     }
 }

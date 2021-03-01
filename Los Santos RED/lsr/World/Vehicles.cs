@@ -81,7 +81,7 @@ public class Vehicles
     }
     private void RemoveAbandonedPoliceVehicles()
     {
-        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned))
+        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned && !x.WasSpawnedEmpty))
         {
             if (PoliceCar.Vehicle.IsEmpty)
             {
