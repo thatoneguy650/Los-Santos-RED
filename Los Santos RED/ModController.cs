@@ -96,7 +96,7 @@ namespace LosSantosRED.lsr
             Scanner = new Scanner(World, Player, WavAudio, Respawning, Settings);
             VanillaManager = new VanillaManager();
             Debug = new Debug(PlateTypes, World, Player, Scanner, Streets);
-            World.AddBlipsToMap();
+            World.AddBlipsToMap();//off for now as i do lots of restarts
             PedSwap.Setup();
             GameFiber.Yield();
             //SetupModTasks();
@@ -242,14 +242,14 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.CleanUpVehicles", World.CleanUpVehicles, 7,7),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7,8),
 
-                //new ModTask(500, "Scanner.Tick", Scanner.Tick, 8,3),
-                //new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 8,4),
-                //new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 8,5),
+                new ModTask(500, "Scanner.Tick", Scanner.Tick, 8,3),
+                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 8,4),
+                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 8,5),
 
-                ////New Tasking
-                //new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 9,0),
-                //new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 9,1),
-                //new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 9,2),
+                //New Tasking
+                new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 9,0),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 9,1),
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 9,2),
             };
         }
         private void StartDebugLogic()

@@ -16,7 +16,7 @@ namespace Mod
     public class World : IEntityLoggable, IEntityProvideable
     {
 
-        private List<Blip> CreatedBlips;
+        private List<Blip> CreatedBlips = new List<Blip>();
         private Pedestrians Pedestrians;
         private IPlacesOfInterest PlacesOfInterest;
         private Vehicles Vehicles;

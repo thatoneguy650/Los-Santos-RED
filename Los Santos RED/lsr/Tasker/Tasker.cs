@@ -142,7 +142,7 @@ public class Tasker
     }
     private void UpdateCurrentTask(PedExt Civilian)//this should be moved out?
     {
-        if (Civilian.DistanceToPlayer <= 50f)
+        if (Civilian.DistanceToPlayer <= 50f && Civilian.CanBeTasked)
         {
             if (Civilian.HasSeenPlayerCommitCrime && Civilian.WillCallPolice)
             {

@@ -110,7 +110,7 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        SpawnRoadblock();
+        SpawnRegularRoadblock();
 
 
         //VehicleMissionFlag++;
@@ -237,6 +237,26 @@ public class Debug
         }
         Rage.Debug.DrawArrowDebug(new Vector3(PedToDraw.Pedestrian.Position.X, PedToDraw.Pedestrian.Position.Y, PedToDraw.Pedestrian.Position.Z + 1f), Vector3.Zero, Rotator.Zero, 1f, Color);
     }
+    private void SpawnRegularRoadblock()
+    {
+        Vector3 Position = Player.Character.GetOffsetPositionFront(50f);
+        Street ForwardStreet = Streets.GetStreet(Position);
+        if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
+        {
+            EntryPoint.WriteToConsole("ROADBLOCK: Street Matches", 3);
+            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
+            {
+                Roadblock rb = new Roadblock(Player,"policet", CenterPosition);
+                rb.SpawnRoadblock();
+                EntryPoint.WriteToConsole("ROADBLOCK: Spawned", 3);
+            }
+        }
+        else
+        {
+            EntryPoint.WriteToConsole("ROADBLOCK: Street DOES NOT Matche", 3);
+        }
+
+    }
     private void SpawnRoadblock()
     {
 
@@ -244,17 +264,35 @@ public class Debug
         Vector3 Position = Player.Character.GetOffsetPositionFront(20f);
         if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
         {
-            float VehicleHeading = Heading - 90f;
-            EntryPoint.WriteToConsole($"ROADBLOCK: VehicleHeading {VehicleHeading}", 3);
-            Vector3 FrontVector = new Vector3((float)Math.Cos(Heading * Math.PI / 180), (float)Math.Sin(Heading * Math.PI / 180), 0);
-            Vector3 spawnpos = CenterPosition + FrontVector;
+
+
+            float VehicleHeading = Heading;// - 90f;
+            float AdaptedVehicleHeading = VehicleHeading;
+
+            if(VehicleHeading < 0)
+            {
+                AdaptedVehicleHeading += 360f;
+            }
+            EntryPoint.WriteToConsole($"ROADBLOCK: VehicleHeading {VehicleHeading} AdaptedVehicleHeading {AdaptedVehicleHeading}", 3);
+            Vector3 FrontVector = new Vector3((float)Math.Cos(VehicleHeading * Math.PI / 180), (float)Math.Sin(VehicleHeading * Math.PI / 180), 0);
+            Vector3 AdaptedFrontVector = new Vector3((float)Math.Cos(AdaptedVehicleHeading * Math.PI / 180), (float)Math.Sin(AdaptedVehicleHeading * Math.PI / 180), 0);
+
+
+            Vector3 spawnpos = CenterPosition + (FrontVector * 2f);
+            Vector3 AdapatedSpawnPos = CenterPosition + (AdaptedFrontVector * 2f);
             while (!Game.IsKeyDownRightNow(Keys.E))
             {
                 Game.DisplayHelp("Press E to delete roadblock");
 
-                Rage.Debug.DrawArrowDebug(spawnpos, spawnpos, Rotator.Zero, 1f, Color.White);        
-                Rage.Debug.DrawArrowDebug(CenterPosition, spawnpos, Rotator.Zero, 1f, Color.Red);
-                GameFiber.Sleep(25);
+
+                Rage.Debug.DrawArrowDebug(new Vector3(AdapatedSpawnPos.X, AdapatedSpawnPos.Y, AdapatedSpawnPos.Z + 1f), AdaptedFrontVector, Rotator.Zero, 1f, Color.Green);
+                Rage.Debug.DrawArrowDebug(new Vector3(CenterPosition.X, CenterPosition.Y, CenterPosition.Z + 1f), AdaptedFrontVector, Rotator.Zero, 1f, Color.Purple);
+
+
+
+                Rage.Debug.DrawArrowDebug(spawnpos, FrontVector, Rotator.Zero, 1f, Color.White);        
+                Rage.Debug.DrawArrowDebug(CenterPosition, FrontVector, Rotator.Zero, 1f, Color.Red);
+                GameFiber.Yield();
 
 
             }
