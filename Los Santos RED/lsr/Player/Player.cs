@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable
     {
         private CriminalHistory CriminalHistory;
         private DynamicActivity DynamicActivity;
@@ -29,6 +29,7 @@ namespace Mod
         private IEntityProvideable EntityProvider;
         private IWeapons Weapons;
         private IScenarios Scenarios;
+        private ICrimes Crimes;
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
         private uint GameTimeLastMoved;
@@ -46,11 +47,12 @@ namespace Mod
         private uint targettingHandle;
         private bool isActive = true;
         private uint GameTimeLastUpdatedLookedAtPed;
-        public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios)
+        public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes)
         {
             ModelName = modelName;
             IsMale = isMale;
             SuspectsName = suspectsName;
+            Crimes = crimes;
             if (currentMoney != 0)
             {
                 SetMoney(currentMoney);
@@ -68,7 +70,7 @@ namespace Mod
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones);
             WeaponDropping = new WeaponDropping(this, Weapons);
             Surrendering = new Surrendering(this);
-            Violations = new Violations(this, TimeControllable);
+            Violations = new Violations(this, TimeControllable, Crimes);
             Investigation = new Investigation(this);
             CriminalHistory = new CriminalHistory(this);
             PoliceResponse = new PoliceResponse(this);

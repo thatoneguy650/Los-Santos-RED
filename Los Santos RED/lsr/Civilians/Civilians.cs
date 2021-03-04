@@ -11,7 +11,6 @@ public class Civilians
 {
     private IEntityProvideable World;
     private IPoliceRespondable Player;
-
     public Civilians(IEntityProvideable world, IPoliceRespondable currentPlayer)
     {
         World = world;
@@ -40,15 +39,5 @@ public class Civilians
                 break;
             }
         }
-        //PedsUpdated = 0;
-        //foreach (PedExt ped in World.CivilianList.Where(x=> x.CurrentTask != null))
-        //{
-        //    ped.Update(Player, Vector3.Zero);
-        //    PedsUpdated++;
-        //    if (PedsUpdated > 3)//10//25
-        //    {
-        //        break;
-        //    }
-        //}
     }
 }

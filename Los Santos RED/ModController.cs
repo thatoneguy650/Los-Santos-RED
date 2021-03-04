@@ -14,6 +14,7 @@ namespace LosSantosRED.lsr
         private WavAudio WavAudio;
         private Civilians Civilians;
         private CountyJurisdictions CountyJurisdictions;
+        private Crimes Crimes;
         private Debug Debug;
         private Dispatcher Dispatcher;
         private Input Input;
@@ -82,7 +83,7 @@ namespace LosSantosRED.lsr
             World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups);
             World.Setup();
             
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes);
             Player.Setup();
 
             Input = new Input(Player, Settings);
@@ -159,6 +160,10 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
 
             Scenarios = new Scenarios();
+            GameFiber.Yield();
+
+            Crimes = new Crimes();
+            Crimes.ReadConfig();
             GameFiber.Yield();
         }
         private void SetupModTasks()

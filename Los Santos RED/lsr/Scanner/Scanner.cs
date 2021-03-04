@@ -928,36 +928,36 @@ namespace LosSantosRED.lsr
             SetupDispatches();
             DispatchLookup = new List<CrimeDispatch>
         {
-            new CrimeDispatch(CurrentPlayer.Violations.AttemptingSuicide,AttemptingSuicide),
-            new CrimeDispatch(CurrentPlayer.Violations.BrandishingWeapon,CarryingWeapon),
-            new CrimeDispatch(CurrentPlayer.Violations.ChangingPlates,TamperingWithVehicle),
-            new CrimeDispatch(CurrentPlayer.Violations.DrivingAgainstTraffic,RecklessDriving),
-            new CrimeDispatch(CurrentPlayer.Violations.DrivingOnPavement,RecklessDriving),
-            new CrimeDispatch(CurrentPlayer.Violations.FelonySpeeding,FelonySpeeding),
-            new CrimeDispatch(CurrentPlayer.Violations.FiringWeapon,ShotsFired),
-            new CrimeDispatch(CurrentPlayer.Violations.FiringWeaponNearPolice,ShotsFiredAtAnOfficer),
-            new CrimeDispatch(CurrentPlayer.Violations.GotInAirVehicleDuringChase,StealingAirVehicle),
-            new CrimeDispatch(CurrentPlayer.Violations.GrandTheftAuto,GrandTheftAuto),
-            new CrimeDispatch(CurrentPlayer.Violations.HitCarWithCar,VehicleHitAndRun),
-            new CrimeDispatch(CurrentPlayer.Violations.HitPedWithCar,PedHitAndRun),
-            new CrimeDispatch(CurrentPlayer.Violations.RunningARedLight,RunningARedLight),
-            new CrimeDispatch(CurrentPlayer.Violations.HurtingCivilians,CivilianInjury),
-            new CrimeDispatch(CurrentPlayer.Violations.HurtingPolice,AssaultingOfficer),
-            new CrimeDispatch(CurrentPlayer.Violations.KillingCivilians,CivilianDown),
-            new CrimeDispatch(CurrentPlayer.Violations.KillingPolice,OfficerDown),
-            new CrimeDispatch(CurrentPlayer.Violations.Mugging,Mugging),
-            new CrimeDispatch(CurrentPlayer.Violations.NonRoadworthyVehicle,SuspiciousVehicle),
-            new CrimeDispatch(CurrentPlayer.Violations.ResistingArrest,ResistingArrest),
-            new CrimeDispatch(CurrentPlayer.Violations.TrespessingOnGovtProperty,TrespassingOnGovernmentProperty),
-            new CrimeDispatch(CurrentPlayer.Violations.DrivingStolenVehicle,DrivingAtStolenVehicle),
-            new CrimeDispatch(CurrentPlayer.Violations.TerroristActivity,TerroristActivity),
-            new CrimeDispatch(CurrentPlayer.Violations.BrandishingCloseCombatWeapon,CarryingWeapon),
-            new CrimeDispatch(CurrentPlayer.Violations.SuspiciousActivity,SuspiciousActivity),
-            new CrimeDispatch(CurrentPlayer.Violations.DrunkDriving,DrunkDriving),
-            new CrimeDispatch(CurrentPlayer.Violations.Kidnapping,Kidnapping),
-            new CrimeDispatch(CurrentPlayer.Violations.PublicIntoxication,PublicIntoxication),
+            new CrimeDispatch("AttemptingSuicide",AttemptingSuicide),
+            new CrimeDispatch("BrandishingWeapon",CarryingWeapon),
+            new CrimeDispatch("ChangingPlates",TamperingWithVehicle),
+            new CrimeDispatch("DrivingAgainstTraffic",RecklessDriving),
+            new CrimeDispatch("DrivingOnPavement",RecklessDriving),
+            new CrimeDispatch("FelonySpeeding",FelonySpeeding),
+            new CrimeDispatch("FiringWeapon",ShotsFired),
+            new CrimeDispatch("FiringWeaponNearPolice",ShotsFiredAtAnOfficer),
+            new CrimeDispatch("GotInAirVehicleDuringChase",StealingAirVehicle),
+            new CrimeDispatch("GrandTheftAuto",GrandTheftAuto),
+            new CrimeDispatch("HitCarWithCar",VehicleHitAndRun),
+            new CrimeDispatch("HitPedWithCar",PedHitAndRun),
+            new CrimeDispatch("RunningARedLight",RunningARedLight),
+            new CrimeDispatch("HurtingCivilians",CivilianInjury),
+            new CrimeDispatch("HurtingPolice",AssaultingOfficer),
+            new CrimeDispatch("KillingCivilians",CivilianDown),
+            new CrimeDispatch("KillingPolice",OfficerDown),
+            new CrimeDispatch("Mugging",Mugging),
+            new CrimeDispatch("NonRoadworthyVehicle",SuspiciousVehicle),
+            new CrimeDispatch("ResistingArrest",ResistingArrest),
+            new CrimeDispatch("TrespessingOnGovtProperty",TrespassingOnGovernmentProperty),
+            new CrimeDispatch("DrivingStolenVehicle",DrivingAtStolenVehicle),
+            new CrimeDispatch("TerroristActivity",TerroristActivity),
+            new CrimeDispatch("BrandishingCloseCombatWeapon",CarryingWeapon),
+            new CrimeDispatch("SuspiciousActivity",SuspiciousActivity),
+            new CrimeDispatch("DrunkDriving",DrunkDriving),
+            new CrimeDispatch("Kidnapping",Kidnapping),
+            new CrimeDispatch("PublicIntoxication",PublicIntoxication),
 
-            new CrimeDispatch(CurrentPlayer.Violations.InsultingOfficer,OfficerNeedsAssistance),
+            new CrimeDispatch("InsultingOfficer",OfficerNeedsAssistance),
         };
             DispatchList = new List<Dispatch>
         {
@@ -1011,7 +1011,7 @@ namespace LosSantosRED.lsr
         }
         private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
         {
-            CrimeDispatch ToLookup = DispatchLookup.FirstOrDefault(x => x.Crime.Name == crimeAssociated.Name);
+            CrimeDispatch ToLookup = DispatchLookup.FirstOrDefault(x => x.CrimeID == crimeAssociated.ID);
             if (ToLookup != null && ToLookup.Dispatch != null)
             {
                 ToLookup.Dispatch.Priority = crimeAssociated.Priority;
@@ -1879,12 +1879,12 @@ namespace LosSantosRED.lsr
         }
         private class CrimeDispatch
         {
-            public CrimeDispatch(Crime crimeIdentified, Dispatch dispatchToPlay)
+            public CrimeDispatch(string crimeID, Dispatch dispatchToPlay)
             {
-                Crime = crimeIdentified;
+                CrimeID = crimeID;
                 Dispatch = dispatchToPlay;
             }
-            public Crime Crime { get; set; }
+            public string CrimeID { get; set; }
             public Dispatch Dispatch { get; set; }
         }
         private class Dispatch

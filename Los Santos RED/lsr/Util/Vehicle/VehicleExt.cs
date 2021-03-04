@@ -347,9 +347,9 @@ namespace LSR.Vehicles
                 }
                 return;
             }
-            if (MyVehicle.Liveries != null && MyVehicle.Liveries.Any())
+            if (MyVehicle.RequiredLiveries != null && MyVehicle.RequiredLiveries.Any())
             {
-                int NewLiveryNumber = MyVehicle.Liveries.PickRandom();
+                int NewLiveryNumber = MyVehicle.RequiredLiveries.PickRandom();
                 NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, NewLiveryNumber);
             }
             Vehicle.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);

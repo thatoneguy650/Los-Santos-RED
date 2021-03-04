@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 public class VanillaManager
 {
     private bool IsVanillaRespawnActive = true;
+    private bool IsVanillaDispatchActive = true;
     public VanillaManager()
     {
     }
@@ -18,6 +19,7 @@ public class VanillaManager
     public void Dispose()
     {
         ActivateVanillaRespawn();
+        ActivateVanillaDispatch();
     }
     public void Tick()
     {
@@ -25,9 +27,23 @@ public class VanillaManager
         {
             TerminateVanillaRespawnController();
         }
+        if (IsVanillaDispatchActive)
+        {
+            TerminateVanillaDispatch();
+        }
         TerminateVanillaRespawnScripts();
         TerminateVanillaHealthRecharge();
         TerminateVanillaAudio();
+    }
+    private void TerminateVanillaDispatch()
+    {
+        SetVanillaDispatch(false);
+        IsVanillaDispatchActive = false;
+    }
+    private void ActivateVanillaDispatch()
+    {
+        SetVanillaDispatch(true);
+        IsVanillaDispatchActive = true;
     }
     private void TerminateVanillaAudio()
     {
@@ -60,6 +76,18 @@ public class VanillaManager
         Game.StartNewScript("respawn_controller");
         Game.StartNewScript("selector");
         IsVanillaRespawnActive = true;
+    }
+    private void SetVanillaDispatch(bool Enabled)
+    {
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobile, Enabled);
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceHelicopter, Enabled);
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceVehicleRequest, Enabled);
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.SwatAutomobile, Enabled);
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.SwatHelicopter, Enabled);
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceRiders, Enabled);
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceRoadBlock, Enabled);
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobileWaitCruising, Enabled);
+        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobileWaitPulledOver, Enabled);
     }
 }
 

@@ -12,7 +12,7 @@ public class Dispatcher
 {
     private readonly IAgencies Agencies;
     private readonly ICountyJurisdictions CountyJurisdictions;
-    private readonly IPoliceRespondable Player;
+    private readonly IDispatchable Player;
     private readonly int LikelyHoodOfAnySpawn = 5;
     private readonly float MinimumDeleteDistance = 150f;//200f
     private readonly uint MinimumExistingTime = 20000;
@@ -25,11 +25,8 @@ public class Dispatcher
     private uint GameTimeAttemptedRoadblock;
     private uint GameTimeAttemptedRecall;
     private uint GameTimeLastSpawnedRoadblock;
-    private Blip Blip1;
-    private Blip Blip2;
-    private Blip Blip3;
     private Roadblock Roadblock;
-    public Dispatcher(IEntityProvideable world, IPoliceRespondable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, ICountyJurisdictions countyJurisdictions, IZoneJurisdictions zoneJurisdictions)
+    public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, ICountyJurisdictions countyJurisdictions, IZoneJurisdictions zoneJurisdictions)
     {
         Player = player;
         World = world;
@@ -39,34 +36,7 @@ public class Dispatcher
         Zones = zones;
         CountyJurisdictions = countyJurisdictions;
         ZoneJurisdictions = zoneJurisdictions;
-
-
-        Blip1 = new Blip(Vector3.Zero, 1f);
-        Blip1.Color = Color.Red;
-        Blip2 = new Blip(Vector3.Zero, 1f);
-        Blip1.Color = Color.Green;
-
-
-
     }
-    private enum VanillaDispatchType //Only for disabling
-    {
-        PoliceAutomobile = 1,
-        PoliceHelicopter = 2,
-        FireDepartment = 3,
-        SwatAutomobile = 4,
-        AmbulanceDepartment = 5,
-        PoliceRiders = 6,
-        PoliceVehicleRequest = 7,
-        PoliceRoadBlock = 8,
-        PoliceAutomobileWaitPulledOver = 9,
-        PoliceAutomobileWaitCruising = 10,
-        Gangs = 11,
-        SwatHelicopter = 12,
-        PoliceBoat = 13,
-        ArmyVehicle = 14,
-        BikerBackup = 15
-    };
     private float ClosestSpawnToOtherPoliceAllowed => Player.IsWanted ? 200f : 500f;
     private float ClosestSpawnToSuspectAllowed => Player.IsWanted ? 150f : 250f;
     private List<Cop> DeletableCops => World.PoliceList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
@@ -204,8 +174,6 @@ public class Dispatcher
             {
                 spawnLocation.InitialPosition = GetPositionAroundPlayer();
                 spawnLocation.GetClosestStreet();
-                Blip1.Position = spawnLocation.StreetPosition;
-                Blip2.Position = spawnLocation.InitialPosition;
                 timesTried++;
             }
             while (!spawnLocation.HasSpawns && !IsValidSpawn(spawnLocation) && timesTried < 10);
@@ -240,23 +208,13 @@ public class Dispatcher
         }
         if (IsTimeToRoadblock && HasNeedToRoadblock)
         {
-            SpawnRegularRoadblock();
+            //to be readd :(
+            //SpawnRegularRoadblock();
         }
-        SetVanilla(false);//need to turn off vanilla gta 5 dispatch services nearly every tick?
     }
     public void Dispose()
     {
 
-        if (Blip1.Exists())
-        {
-            Blip1.Delete();
-        }
-        if (Blip2.Exists())
-        {
-            Blip2.Delete();
-        }
-
-        SetVanilla(true);
     }
     public void Recall()
     {
@@ -354,9 +312,9 @@ public class Dispatcher
     private Vector3 GetPositionAroundPlayer()
     {
         Vector3 Position;
-        if (Player.WantedLevel > 0 && Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        if (Player.WantedLevel > 0 && Player.IsInVehicle)
         {
-            Position = Game.LocalPlayer.Character.GetOffsetPositionFront(250f);//350f
+            Position = Player.Character.GetOffsetPositionFront(250f);//350f
         }
         else if (Player.Investigation.IsActive)
         {
@@ -364,7 +322,7 @@ public class Dispatcher
         }
         else
         {
-            Position = Game.LocalPlayer.Character.Position;
+            Position = Player.Position;
         }
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
         return Position;
@@ -401,27 +359,15 @@ public class Dispatcher
     }
     private bool IsValidSpawn(SpawnLocation spawnLocation)
     {
-        if (spawnLocation.StreetPosition.DistanceTo2D(Game.LocalPlayer.Character) < ClosestSpawnToSuspectAllowed || World.AnyCopsNearPosition(spawnLocation.StreetPosition, ClosestSpawnToOtherPoliceAllowed))
+        if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < ClosestSpawnToSuspectAllowed || World.AnyCopsNearPosition(spawnLocation.StreetPosition, ClosestSpawnToOtherPoliceAllowed))
         {
             return false;
         }
-        else if (spawnLocation.InitialPosition.DistanceTo2D(Game.LocalPlayer.Character) < ClosestSpawnToSuspectAllowed || World.AnyCopsNearPosition(spawnLocation.InitialPosition, ClosestSpawnToOtherPoliceAllowed))
+        else if (spawnLocation.InitialPosition.DistanceTo2D(Player.Position) < ClosestSpawnToSuspectAllowed || World.AnyCopsNearPosition(spawnLocation.InitialPosition, ClosestSpawnToOtherPoliceAllowed))
         {
             return false;
         }
         return true;
-    }
-    private void SetVanilla(bool Enabled)
-    {
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobile, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceHelicopter, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceVehicleRequest, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.SwatAutomobile, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.SwatHelicopter, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceRiders, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceRoadBlock, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobileWaitCruising, Enabled);
-        NativeFunction.Natives.ENABLE_DISPATCH_SERVICE<bool>((int)VanillaDispatchType.PoliceAutomobileWaitPulledOver, Enabled);
     }
     private bool ShouldCopBeRecalled(Cop cop)
     {
@@ -452,21 +398,21 @@ public class Dispatcher
         }
         return false;
     }
-    private void SpawnRegularRoadblock()
-    {
-        Vector3 Position = Player.Character.GetOffsetPositionFront(400f);
-        Street ForwardStreet = Streets.GetStreet(Position);
-        if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
-        {
-            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
-            {
-                Agency ToSpawn = GetRandomAgency(CenterPosition);
-                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(Player.WantedLevel, false, false, false);
-                Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, CenterPosition);
-                Roadblock.SpawnRoadblock();
-                GameTimeLastSpawnedRoadblock = Game.GameTime;
-                EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
-            }
-        }
-    }
+    //private void SpawnRegularRoadblock()
+    //{
+    //    Vector3 Position = Player.Character.GetOffsetPositionFront(400f);
+    //    Street ForwardStreet = Streets.GetStreet(Position);
+    //    if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
+    //    {
+    //        if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
+    //        {
+    //            Agency ToSpawn = GetRandomAgency(CenterPosition);
+    //            DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(Player.WantedLevel, false, false, false);
+    //            Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, CenterPosition);
+    //            Roadblock.SpawnRoadblock();
+    //            GameTimeLastSpawnedRoadblock = Game.GameTime;
+    //            EntryPoint.WriteToConsole($"DISPATCHER: Spawned Roadblock {VehicleToUse.ModelName}", 3);
+    //        }
+    //    }
+    //}
 }

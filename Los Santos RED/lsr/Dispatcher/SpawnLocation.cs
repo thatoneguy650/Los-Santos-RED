@@ -17,54 +17,21 @@ public class SpawnLocation
     {
         InitialPosition = initialPosition;
     }
-    public bool HasSpawns
-    {
-        get
-        {
-            if (InitialPosition != Vector3.Zero && StreetPosition != Vector3.Zero)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-    }
+    public bool HasSpawns => InitialPosition != Vector3.Zero && StreetPosition != Vector3.Zero;
     public float Heading { get; set; }
     public Vector3 InitialPosition { get; set; } = Vector3.Zero;
-    public bool IsWater
-    {
-        get
-        {
-            if (NativeFunction.Natives.GET_WATER_HEIGHT<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
-            {
-                if (height >= 0.5f)//2f// has some water depth
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
     public Vector3 StreetPosition { get; set; } = Vector3.Zero;
-    public float WaterHeight
+    public float GetWaterHeight()
     {
-        get
+        if (NativeFunction.Natives.GET_WATER_HEIGHT<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
         {
-            if (NativeFunction.Natives.GET_WATER_HEIGHT<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
-            {
-                return height;
-            }
             return height;
         }
+        return height;
     }
     public void GetClosestStreet()
     {
-        Vector3 streetPosition;
-        float streetHeading;
-        NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out streetPosition, out streetHeading, 0, 3, 0);
+        NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out Vector3 streetPosition, out float streetHeading, 0, 3, 0);
         StreetPosition = streetPosition;
         Heading = streetHeading;
     }

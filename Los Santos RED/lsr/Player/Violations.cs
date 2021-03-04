@@ -14,40 +14,8 @@ namespace LosSantosRED.lsr
 
     public class Violations
     {
-        public readonly List<Crime> CrimeList = new List<Crime>();
-        public readonly Crime AimingWeaponAtPolice = new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, false, 4, 1, false);
-        public readonly Crime AttemptingSuicide = new Crime("AttemptingSuicide", "Attempting Suicide", 2, false, 12, 3);
-        public readonly Crime BrandishingCloseCombatWeapon = new Crime("BrandishingCloseCombatWeapon", "Brandishing Close Combat Weapon", 1, false, 20, 4, true, true, true);
-        public readonly Crime BrandishingHeavyWeapon = new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, 1, false, true, true);
-        public readonly Crime BrandishingWeapon = new Crime("BrandishingWeapon", "Brandishing Weapon", 2, false, 18, 3, true, true, true);
-        public readonly Crime ChangingPlates = new Crime("ChangingPlates", "Stealing License Plates", 1, false, 31, 4, true, true, false);       
-        public readonly Crime DrivingAgainstTraffic = new Crime("DrivingAgainstTraffic", "Driving Against Traffic", 1, false, 32, 4, false, false, false) { IsTrafficViolation = true };
-        public readonly Crime DrivingOnPavement = new Crime("DrivingOnPavement", "Driving On Pavement", 1, false, 33, 4, false, false, false) { IsTrafficViolation = true };
-        public readonly Crime DrivingStolenVehicle = new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, 5, false);
-        public readonly Crime DrunkDriving = new Crime("DrunkDriving", "Drunk Driving", 2, false, 30, 4, false, false, false);
-        public readonly Crime FelonySpeeding = new Crime("FelonySpeeding", "Speeding", 1, false, 37, 5, false, false, false) { IsTrafficViolation = true };
-        public readonly Crime FiringWeapon = new Crime("FiringWeapon", "Firing Weapon", 2, false, 9, 2, true, true, true) { CanReportBySound = true };
-        public readonly Crime FiringWeaponNearPolice = new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, 1, false) { CanReportBySound = true };
-        public readonly Crime GotInAirVehicleDuringChase = new Crime("GotInAirVehicleDuringChase", "Stealing an Air Vehicle", 3, false, 8, 2);
-        public readonly Crime GrandTheftAuto = new Crime("GrandTheftAuto", "Grand Theft Auto", 2, false, 16, 3, true, true, true);
-        public readonly Crime Harassment = new Crime("Harassment", "Harassment", 1, false, 41, 5, false);
-        public readonly Crime HitCarWithCar = new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, 4, true, true, true) { IsTrafficViolation = true };
-        public readonly Crime HitPedWithCar = new Crime("HitPedWithCar", "Pedestrian Hit and Run", 2, false, 15, 3, true, true, true) { IsTrafficViolation = true };
-        public readonly Crime HurtingCivilians = new Crime("HurtingCivilians", "Assaulting Civilians", 2, false, 14, 3, true, true, true);
-        public readonly Crime HurtingPolice = new Crime("HurtingPolice", "Assaulting Police", 3, false, 5, 1);
-        public readonly Crime InsultingOfficer = new Crime("InsultingOfficer", "Insulting a Police Officer", 1, false, 40, 5);
-        public readonly Crime Kidnapping = new Crime("Kidnapping", "Kidnapping", 2, false, 10, 2, false, false, false);
-        public readonly Crime KillingCivilians = new Crime("KillingCivilians", "Civilian Fatality", 2, false, 11, 2, true, true, true);
-        public readonly Crime KillingPolice = new Crime("KillingPolice", "Police Fatality", 3, true, 1, 1, false) { CanViolateWithoutPerception = true };
-        public readonly Crime Mugging = new Crime("Mugging", "Mugging", 2, false, 11, 2, true, true, true);
-        public readonly Crime NonRoadworthyVehicle = new Crime("NonRoadworthyVehicle", "NonRoadworthy Vehicle", 1, false, 34, 4, false, false, false) { IsTrafficViolation = true };
-        public readonly Crime PublicIntoxication = new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, 4, true, false, false);
-        public readonly Crime ResistingArrest = new Crime("ResistingArrest", "Resisting Arrest", 2, false, 19, 4, false) { CanViolateWithoutPerception = true };
-        public readonly Crime RunningARedLight = new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, 5, false, false, false) { IsTrafficViolation = true };
-        public readonly Crime SuspiciousActivity = new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, 5, false);
-        public readonly Crime TerroristActivity = new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, 1) { CanReportBySound = true };
-        public readonly Crime TrespessingOnGovtProperty = new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, 2, false) { CanViolateMultipleTimes = false };
-        private IViolateable CurrentPlayer;
+        private readonly List<Crime> CrimeList = new List<Crime>();
+        private IViolateable Player;
         private float CurrentSpeed;
         private uint GameTimeLastHurtCivilian;
         private uint GameTimeLastHurtCop;
@@ -60,27 +28,24 @@ namespace LosSantosRED.lsr
         private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
         private List<PedExt> PlayerKilledCops = new List<PedExt>();
         private ITimeReportable TimeReporter;
+        private ICrimes Crimes;
         private int TimeSincePlayerHitPed;
         private int TimeSincePlayerHitVehicle;
         private bool TreatAsCop;
         private bool VehicleIsSuspicious;
-        public Violations(IViolateable currentPlayer, ITimeReportable timeReporter)
+        private readonly List<Crime> CrimesViolating = new List<Crime>();
+        public Violations(IViolateable currentPlayer, ITimeReportable timeReporter, ICrimes crimes)
         {
             TimeReporter = timeReporter;
-            CurrentPlayer = currentPlayer;
-            CrimeList = new List<Crime>
-                {
-                    BrandishingCloseCombatWeapon,TerroristActivity,BrandishingHeavyWeapon, FiringWeapon, Mugging, AttemptingSuicide, ResistingArrest, KillingPolice, FiringWeaponNearPolice, AimingWeaponAtPolice, HurtingPolice,
-                TrespessingOnGovtProperty, GotInAirVehicleDuringChase, KillingCivilians, BrandishingWeapon,ChangingPlates, GrandTheftAuto, DrivingStolenVehicle, HurtingCivilians, SuspiciousActivity,DrivingAgainstTraffic,
-                DrivingOnPavement,NonRoadworthyVehicle,FelonySpeeding,RunningARedLight,HitPedWithCar,HitCarWithCar,DrunkDriving,Kidnapping,PublicIntoxication,InsultingOfficer
-                };
-
+            Player = currentPlayer;
+            Crimes = crimes;
+            CrimeList = Crimes.CrimeList;
         }
-        public List<Crime> CivilianReportableCrimesViolating => CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
+        public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReportedByCivilians).ToList();//CrimeList.Where(x => x.IsCurrentlyViolating && x.CanBeReportedByCivilians).ToList();
         public bool IsSpeeding { get; set; }
         public bool IsViolatingAnyTrafficLaws => HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || IsSpeeding || VehicleIsSuspicious;
-        public string LawsViolatingDisplay => string.Join(",", CrimeList.Where(x => x.IsCurrentlyViolating).Select(x => x.Name));
-        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) <= 9f);
+        public string LawsViolatingDisplay => string.Join(",", CrimesViolating.Select(x => x.Name));
+        public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= 9f);
         public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= 5000;
         public bool RecentlyHurtCop => GameTimeLastHurtCop != 0 && Game.GameTime - GameTimeLastHurtCop <= 5000;
         public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= 5000;
@@ -89,7 +54,7 @@ namespace LosSantosRED.lsr
         private bool HasBeenDrivingOnPavement => GameTimeStartedDrivingOnPavement != 0 && Game.GameTime - GameTimeStartedDrivingOnPavement >= 1000;
         private bool RecentlyHitPed => TimeSincePlayerHitPed > -1 && TimeSincePlayerHitPed <= 1000;
         private bool RecentlyHitVehicle => TimeSincePlayerHitVehicle > -1 && TimeSincePlayerHitVehicle <= 1000;
-        private bool ShouldCheckTrafficViolations => CurrentPlayer.IsInVehicle && (CurrentPlayer.IsInAutomobile || CurrentPlayer.IsOnMotorcycle) && !CurrentPlayer.RecentlyStartedPlaying;
+        private bool ShouldCheckTrafficViolations => Player.IsInVehicle && (Player.IsInAutomobile || Player.IsOnMotorcycle) && !Player.RecentlyStartedPlaying;
         public void AddInjured(PedExt myPed)
         {
             if (myPed.IsCop)
@@ -130,40 +95,105 @@ namespace LosSantosRED.lsr
             TimeSincePlayerHitPed = 0;
             TimeSincePlayerHitVehicle = 0;
             GameTimeStartedBrandishing = 0;
+            ResetViolations();
         }
         public void TrafficUpdate()
         {
-            if (CurrentPlayer.IsAliveAndFree && ShouldCheckTrafficViolations)
+            ResetTrafficViolations();
+            VehicleIsSuspicious = false;
+            TreatAsCop = false;
+            IsSpeeding = false;
+            IsRunningRedLight = false;
+            if (Player.IsAliveAndFree && ShouldCheckTrafficViolations)
             {
                 CheckTrafficViolations();
-            }
-            else
-            {
-                foreach (Crime Traffic in CrimeList.Where(x => x.IsTrafficViolation))
-                {
-                    Traffic.IsCurrentlyViolating = false;
-                }
-                VehicleIsSuspicious = false;
-                TreatAsCop = false;
-                IsSpeeding = false;
-                IsRunningRedLight = false;
             }
         }
         public void Update()
         {
-            if (CurrentPlayer.IsAliveAndFree)
-            {
-                CheckViolations();
-                FlagViolations();
-            }
-            else
+            ResetViolations();
+            if (Player.IsAliveAndFree)
             {
                 ResetViolations();
+                CheckViolations();
+                AddCrimes();
+            }
+        }
+        private void ResetViolations()
+        {
+            CrimesViolating.RemoveAll(x => !x.IsTrafficViolation);
+            //CrimeList.ForEach(x => x.IsCurrentlyViolating = false);
+        }
+        private void ResetTrafficViolations()
+        {
+            CrimesViolating.RemoveAll(x => x.IsTrafficViolation);
+            //foreach (Crime Traffic in CrimeList.Where(x => x.IsTrafficViolation))
+            //{
+            //    Traffic.IsCurrentlyViolating = false;
+            //}
+        }
+        private void CheckViolations()
+        {
+            CheckPedDamageCrimes();
+            CheckWeaponCrimes();
+            CheckTheftCrimes();
+            CheckOtherCrimes();
+        }
+        private void CheckPedDamageCrimes()
+        {
+            if (RecentlyKilledCop)
+            {
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "KillingPolice"));//.IsCurrentlyViolating = true;
+            }
+
+            if (RecentlyHurtCop)
+            {
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HurtingPolice"));//.IsCurrentlyViolating = true;
+            }
+
+            if (RecentlyKilledCivilian || NearCivilianMurderVictim)
+            {
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "KillingCivilians"));//.IsCurrentlyViolating = true;
+            }
+
+            if (RecentlyHurtCivilian)
+            {
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HurtingCivilians"));//.IsCurrentlyViolating = true;
+            }
+        }
+        private void CheckWeaponCrimes()
+        {
+            if (Player.RecentlyShot)
+            {
+                if (!(Player.Character.IsCurrentWeaponSilenced || Player.CurrentWeaponCategory == WeaponCategory.Melee))
+                {
+                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));//.IsCurrentlyViolating = true;
+                    if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceCanHearPlayer)
+                    {
+                        CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));//.IsCurrentlyViolating = true;
+                    }
+                }
+            }
+            if (CheckBrandishing() && Player.Character.Inventory.EquippedWeapon != null && !Player.IsInVehicle)
+            {
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "BrandishingWeapon"));//.IsCurrentlyViolating = true;
+                if (Player.CurrentWeapon != null && Player.CurrentWeapon.WeaponLevel >= 4)
+                {
+                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "TerroristActivity"));//.IsCurrentlyViolating = true;
+                }
+                if (Player.CurrentWeapon != null && Player.CurrentWeapon.WeaponLevel >= 3)
+                {
+                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "BrandishingHeavyWeapon"));//.IsCurrentlyViolating = true;
+                }
+                if (Player.CurrentWeapon != null && Player.CurrentWeapon.Category == WeaponCategory.Melee)
+                {
+                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "BrandishingCloseCombatWeapon"));//.IsCurrentlyViolating = true;
+                }
             }
         }
         private bool CheckBrandishing()
         {
-            if (CurrentPlayer.IsVisiblyArmed)
+            if (Player.IsVisiblyArmed)
             {
                 if (GameTimeStartedBrandishing == 0)
                 {
@@ -184,281 +214,168 @@ namespace LosSantosRED.lsr
                 return false;
             }
         }
-        private void CheckOtherCrimes()
-        {
-            if (CurrentPlayer.IsCommitingSuicide)
-            {
-                AttemptingSuicide.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                AttemptingSuicide.IsCurrentlyViolating = false;
-            }
-            if (CurrentPlayer.IsWanted && CurrentPlayer.CurrentLocation.CurrentZone.IsRestrictedDuringWanted)
-            {
-                TrespessingOnGovtProperty.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                TrespessingOnGovtProperty.IsCurrentlyViolating = false;
-            }
-            if (CurrentPlayer.Investigation.IsSuspicious)
-            {
-                SuspiciousActivity.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                SuspiciousActivity.IsCurrentlyViolating = false;
-            }
-            if (CurrentPlayer.IsWanted && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && CurrentPlayer.Character.Speed >= 2.0f && !CurrentPlayer.HandsAreUp && CurrentPlayer.PoliceResponse.HasBeenWantedFor >= 20000)
-            {
-                ResistingArrest.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                ResistingArrest.IsCurrentlyViolating = false;
-            }
-
-            if (CurrentPlayer.IsInVehicle && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists() && CurrentPlayer.CurrentVehicle.Vehicle.HasPassengers && CurrentPlayer.CurrentVehicle.Vehicle.Passengers.Any(x => x.Group != Game.LocalPlayer.Character.Group))
-            {
-                Kidnapping.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                Kidnapping.IsCurrentlyViolating = false;
-            }
-            if (CurrentPlayer.IsIntoxicated && CurrentPlayer.IntoxicatedIntensity >= 2.0f && !CurrentPlayer.IsInVehicle)
-            {
-                PublicIntoxication.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                PublicIntoxication.IsCurrentlyViolating = false;
-            }
-        }
-        private void CheckPedDamageCrimes()
-        {
-            if (RecentlyKilledCop)
-            {
-                KillingPolice.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                KillingPolice.IsCurrentlyViolating = false;
-            }
-
-            if (RecentlyHurtCop)
-            {
-                HurtingPolice.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                HurtingPolice.IsCurrentlyViolating = false;
-            }
-
-            if (RecentlyKilledCivilian || NearCivilianMurderVictim)
-            {
-                KillingCivilians.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                KillingCivilians.IsCurrentlyViolating = false;
-            }
-
-            if (RecentlyHurtCivilian)
-            {
-                HurtingCivilians.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                HurtingCivilians.IsCurrentlyViolating = false;
-            }
-        }
         private void CheckTheftCrimes()
         {
-            if (CurrentPlayer.IsWanted && CurrentPlayer.IsInVehicle && CurrentPlayer.IsInAirVehicle)
+            if (Player.IsWanted && Player.IsInVehicle && Player.IsInAirVehicle)
             {
-                GotInAirVehicleDuringChase.IsCurrentlyViolating = true;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "GotInAirVehicleDuringChase"));//.IsCurrentlyViolating = true;
             }
-            else
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen && Player.IsInVehicle)
             {
-                GotInAirVehicleDuringChase.IsCurrentlyViolating = false;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrivingStolenVehicle"));//.IsCurrentlyViolating = true;
             }
-            if (CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.CopsRecognizeAsStolen)
+            if (Player.IsHoldingUp)
             {
-                DrivingStolenVehicle.IsCurrentlyViolating = true;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "Mugging"));//.IsCurrentlyViolating = true;
             }
-            else
+            if (Player.IsBreakingIntoCar)
             {
-                DrivingStolenVehicle.IsCurrentlyViolating = false;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "GrandTheftAuto"));//.IsCurrentlyViolating = true;
             }
-            if (CurrentPlayer.IsHoldingUp)
+            if (Player.IsChangingLicensePlates)
             {
-                Mugging.IsCurrentlyViolating = true;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "ChangingPlates"));//.IsCurrentlyViolating = true;
             }
-            else
+        }
+        private void CheckOtherCrimes()
+        {
+            if (Player.IsCommitingSuicide)
             {
-                Mugging.IsCurrentlyViolating = false;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x=> x.ID == "AttemptingSuicide"));//.IsCurrentlyViolating = true;
             }
-            if (CurrentPlayer.IsBreakingIntoCar)
+            if (Player.IsWanted && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted)
             {
-                GrandTheftAuto.IsCurrentlyViolating = true;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "TrespessingOnGovtProperty"));//.IsCurrentlyViolating = true;
             }
-            else
+            if (Player.Investigation.IsSuspicious)
             {
-                GrandTheftAuto.IsCurrentlyViolating = false;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));//.IsCurrentlyViolating = true;
+            }
+            if (Player.IsWanted && Player.AnyPoliceSeenPlayerCurrentWanted && Player.Character.Speed >= 2.0f && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
+            {
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));//.IsCurrentlyViolating = true;
             }
 
-            if (CurrentPlayer.IsChangingLicensePlates)
+            if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.HasPassengers && Player.CurrentVehicle.Vehicle.Passengers.Any(x => x.Group != Game.LocalPlayer.Character.Group))
             {
-                ChangingPlates.IsCurrentlyViolating = true;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "Kidnapping"));//.IsCurrentlyViolating = true;
             }
-            else
+            if (Player.IsIntoxicated && Player.IntoxicatedIntensity >= 2.0f && !Player.IsInVehicle)
             {
-                ChangingPlates.IsCurrentlyViolating = false;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "PublicIntoxication"));//.IsCurrentlyViolating = true;
             }
         }
         private void CheckTrafficViolations()
         {
             UpdateTrafficStats();
-            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && CurrentPlayer.AnyHumansNear)//needed for non humans that are returned from this native
+            if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && Player.AnyHumansNear)//needed for non humans that are returned from this native
             {
-                HitPedWithCar.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                HitPedWithCar.IsCurrentlyViolating = false;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"));//.IsCurrentlyViolating = true;
             }
             if (RecentlyHitVehicle)
             {
-                HitCarWithCar.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                HitCarWithCar.IsCurrentlyViolating = false;
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HitCarWithCar"));//.IsCurrentlyViolating = true;
             }
             if (!TreatAsCop)
             {
-                if ((HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && CurrentPlayer.Character.CurrentVehicle.Speed >= 10f)))
+                if ((HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Player.Character.CurrentVehicle.Speed >= 10f)))
                 {
-                    DrivingAgainstTraffic.IsCurrentlyViolating = true;
+                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrivingAgainstTraffic"));//.IsCurrentlyViolating = true;
                 }
-                else
+                if ((HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Player.Character.CurrentVehicle.Speed >= 10f)))
                 {
-                    DrivingAgainstTraffic.IsCurrentlyViolating = false;
+                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrivingOnPavement"));//.IsCurrentlyViolating = true;
                 }
-                if ((HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && CurrentPlayer.Character.CurrentVehicle.Speed >= 10f)))
-                {
-                    DrivingOnPavement.IsCurrentlyViolating = true;
-                }
-                else
-                {
-                    DrivingOnPavement.IsCurrentlyViolating = false;
-                }
-
                 if (VehicleIsSuspicious)
                 {
-                    NonRoadworthyVehicle.IsCurrentlyViolating = true;
+                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "NonRoadworthyVehicle"));//.IsCurrentlyViolating = true;
                 }
-                else
-                {
-                    NonRoadworthyVehicle.IsCurrentlyViolating = false;
-                }
-
                 if (IsSpeeding)
                 {
-                    FelonySpeeding.IsCurrentlyViolating = true;
+                    CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "FelonySpeeding"));//.IsCurrentlyViolating = true;
                 }
-                else
+            }
+            if (Player.IsIntoxicated && Player.IntoxicatedIntensity >= 4.0f && CrimesViolating.Any())// DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
+            {
+                CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrunkDriving"));//.IsCurrentlyViolating = true;
+            }
+        }
+        private void UpdateTrafficStats()
+        {
+            VehicleIsSuspicious = false;
+            TreatAsCop = false;
+            IsSpeeding = false;
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                CurrentSpeed = Player.CurrentVehicle.Vehicle.Speed * 2.23694f;
+                if (!IsRoadWorthy(Player.CurrentVehicle.Vehicle) || IsDamaged(Player.CurrentVehicle.Vehicle))
                 {
-                    FelonySpeeding.IsCurrentlyViolating = false;
+                    VehicleIsSuspicious = true;
                 }
-                //if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.RunningRedLight)//Off for now
+                //if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.ExemptCode3 && CurrentPlayer.CurrentVehicle.Vehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.IsPoliceVehicle && CurrentPlayer.CurrentVehicle != null && !CurrentPlayer.CurrentVehicle.WasReportedStolen)
                 //{
-                //    //RunningARedLight.IsCurrentlyViolating = true;//turned off for now until i fix it
+                //    if (CurrentPlayer.CurrentVehicle.Vehicle.IsSirenOn && !World.AnyPoliceCanRecognizePlayer) //see thru ur disguise if ur too close
+                //    {
+                //        TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
+                //    }
                 //}
-                //else
+                IsRunningRedLight = false;
+                //foreach (PedExt Civilian in World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
                 //{
-                RunningARedLight.IsCurrentlyViolating = false;
+                //    Civilian.IsWaitingAtTrafficLight = false;
+                //    Civilian.IsFirstWaitingAtTrafficLight = false;
+                //    Civilian.PlaceCheckingInfront = Vector3.Zero;
+                //    if (Civilian.DistanceToPlayer <= 250f && Civilian.IsInVehicle)
+                //    {
+                //        if (Civilian.Pedestrian.IsInAnyVehicle(false) && Civilian.Pedestrian.CurrentVehicle != null)
+                //        {
+                //            Vehicle PedCar = Civilian.Pedestrian.CurrentVehicle;
+                //            if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", PedCar))
+                //            {
+                //                Civilian.IsWaitingAtTrafficLight = true;
+
+                //                if (Extensions.FacingSameOrOppositeDirection(Civilian.Pedestrian, Game.LocalPlayer.Character) && Game.LocalPlayer.Character.InFront(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 10f && Game.LocalPlayer.Character.Speed >= 3f)
+                //                {
+                //                    GameTimeLastRanRed = Game.GameTime;
+                //                    PlayerIsRunningRedLight = true;
+                //                }
+                //            }
+                //        }
+                //    }
                 //}
-            }
-            if (CurrentPlayer.IsIntoxicated && CurrentPlayer.IntoxicatedIntensity >= 4.0f && (DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
-            {
-                DrunkDriving.IsCurrentlyViolating = true;
-            }
-            else
-            {
-                DrunkDriving.IsCurrentlyViolating = false;
-            }
-        }
-        private void CheckViolations()
-        {
-            CheckPedDamageCrimes();
-            CheckWeaponCrimes();
-            CheckTheftCrimes();
-            CheckOtherCrimes();
-        }
-        private void CheckWeaponCrimes()
-        {
-            if (CurrentPlayer.RecentlyShot)
-            {
-                if (!(CurrentPlayer.Character.IsCurrentWeaponSilenced || CurrentPlayer.CurrentWeaponCategory == WeaponCategory.Melee))
+                if (Game.LocalPlayer.IsDrivingOnPavement && GameTimeStartedDrivingOnPavement == 0)
                 {
-                    FiringWeapon.IsCurrentlyViolating = true;
-                    if (CurrentPlayer.AnyPoliceRecentlySeenPlayer || CurrentPlayer.AnyPoliceCanHearPlayer)
-                    {
-                        FiringWeaponNearPolice.IsCurrentlyViolating = true;
-                    }
-                }
-            }
-            else
-            {
-                FiringWeapon.IsCurrentlyViolating = false;
-                FiringWeaponNearPolice.IsCurrentlyViolating = false;
-            }
-            if (CheckBrandishing() && CurrentPlayer.Character.Inventory.EquippedWeapon != null && !CurrentPlayer.IsInVehicle)
-            {
-                BrandishingWeapon.IsCurrentlyViolating = true;
-                if (CurrentPlayer.CurrentWeapon != null && CurrentPlayer.CurrentWeapon.WeaponLevel >= 4)
-                {
-                    TerroristActivity.IsCurrentlyViolating = true;
+                    GameTimeStartedDrivingOnPavement = Game.GameTime;
                 }
                 else
                 {
-                    TerroristActivity.IsCurrentlyViolating = false;
+                    GameTimeStartedDrivingOnPavement = 0;
                 }
-                if (CurrentPlayer.CurrentWeapon != null && CurrentPlayer.CurrentWeapon.WeaponLevel >= 3)
+                if (Game.LocalPlayer.IsDrivingAgainstTraffic && GameTimeStartedDrivingAgainstTraffic == 0)
                 {
-                    BrandishingHeavyWeapon.IsCurrentlyViolating = true;
+                    GameTimeStartedDrivingAgainstTraffic = Game.GameTime;
                 }
                 else
                 {
-                    BrandishingHeavyWeapon.IsCurrentlyViolating = false;
+                    GameTimeStartedDrivingAgainstTraffic = 0;
                 }
-                if (CurrentPlayer.CurrentWeapon != null && CurrentPlayer.CurrentWeapon.Category == WeaponCategory.Melee)
+                TimeSincePlayerHitPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
+                TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
+                float SpeedLimit = 60f;
+                if (Player.CurrentLocation.CurrentStreet != null)
                 {
-                    BrandishingCloseCombatWeapon.IsCurrentlyViolating = true;
+                    SpeedLimit = Player.CurrentLocation.CurrentStreet.SpeedLimit;
                 }
-                else
-                {
-                    BrandishingCloseCombatWeapon.IsCurrentlyViolating = false;
-                }
-            }
-            else
-            {
-                BrandishingCloseCombatWeapon.IsCurrentlyViolating = false;
-                BrandishingWeapon.IsCurrentlyViolating = false;
-                TerroristActivity.IsCurrentlyViolating = false;
-                BrandishingHeavyWeapon.IsCurrentlyViolating = false;
+                IsSpeeding = CurrentSpeed > SpeedLimit + 25f;
             }
         }
-        private void FlagViolations()
+        private void AddCrimes()
         {
-            foreach (Crime Violating in CrimeList.Where(x => x.IsCurrentlyViolating))
+            foreach (Crime Violating in CrimesViolating)
             {
-                if (CurrentPlayer.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && CurrentPlayer.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
+                if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
                 {
-                    CurrentPlayer.AddCrime(Violating, true, CurrentPlayer.Position, CurrentPlayer.CurrentSeenVehicle, CurrentPlayer.CurrentSeenWeapon, true);
+                    Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true);
                 }
             }
         }
@@ -544,79 +461,6 @@ namespace LosSantosRED.lsr
                 return false;
             }
             return true;
-        }
-        private void ResetViolations()
-        {
-            CrimeList.ForEach(x => x.IsCurrentlyViolating = false);
-        }
-        private void UpdateTrafficStats()
-        {
-            VehicleIsSuspicious = false;
-            TreatAsCop = false;
-            IsSpeeding = false;
-            if (CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists())
-            {
-                CurrentSpeed = CurrentPlayer.CurrentVehicle.Vehicle.Speed * 2.23694f;
-                if (!IsRoadWorthy(CurrentPlayer.CurrentVehicle.Vehicle) || IsDamaged(CurrentPlayer.CurrentVehicle.Vehicle))
-                {
-                    VehicleIsSuspicious = true;
-                }
-                //if (DataMart.Instance.Settings.SettingsManager.TrafficViolations.ExemptCode3 && CurrentPlayer.CurrentVehicle.Vehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.IsPoliceVehicle && CurrentPlayer.CurrentVehicle != null && !CurrentPlayer.CurrentVehicle.WasReportedStolen)
-                //{
-                //    if (CurrentPlayer.CurrentVehicle.Vehicle.IsSirenOn && !World.AnyPoliceCanRecognizePlayer) //see thru ur disguise if ur too close
-                //    {
-                //        TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
-                //    }
-                //}
-                IsRunningRedLight = false;
-                //foreach (PedExt Civilian in World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
-                //{
-                //    Civilian.IsWaitingAtTrafficLight = false;
-                //    Civilian.IsFirstWaitingAtTrafficLight = false;
-                //    Civilian.PlaceCheckingInfront = Vector3.Zero;
-                //    if (Civilian.DistanceToPlayer <= 250f && Civilian.IsInVehicle)
-                //    {
-                //        if (Civilian.Pedestrian.IsInAnyVehicle(false) && Civilian.Pedestrian.CurrentVehicle != null)
-                //        {
-                //            Vehicle PedCar = Civilian.Pedestrian.CurrentVehicle;
-                //            if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", PedCar))
-                //            {
-                //                Civilian.IsWaitingAtTrafficLight = true;
-
-                //                if (Extensions.FacingSameOrOppositeDirection(Civilian.Pedestrian, Game.LocalPlayer.Character) && Game.LocalPlayer.Character.InFront(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 10f && Game.LocalPlayer.Character.Speed >= 3f)
-                //                {
-                //                    GameTimeLastRanRed = Game.GameTime;
-                //                    PlayerIsRunningRedLight = true;
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-                if (Game.LocalPlayer.IsDrivingOnPavement && GameTimeStartedDrivingOnPavement == 0)
-                {
-                     GameTimeStartedDrivingOnPavement = Game.GameTime;
-                }
-                else
-                {
-                    GameTimeStartedDrivingOnPavement = 0;
-                }
-                if (Game.LocalPlayer.IsDrivingAgainstTraffic && GameTimeStartedDrivingAgainstTraffic == 0)
-                {
-                    GameTimeStartedDrivingAgainstTraffic = Game.GameTime;
-                }
-                else
-                {
-                    GameTimeStartedDrivingAgainstTraffic = 0;
-                }
-                TimeSincePlayerHitPed = Game.LocalPlayer.TimeSincePlayerLastHitAnyPed;
-                TimeSincePlayerHitVehicle = Game.LocalPlayer.TimeSincePlayerLastHitAnyVehicle;
-                float SpeedLimit = 60f;
-                if (CurrentPlayer.CurrentLocation.CurrentStreet != null)
-                {
-                    SpeedLimit = CurrentPlayer.CurrentLocation.CurrentStreet.SpeedLimit;
-                }
-                IsSpeeding = CurrentSpeed > SpeedLimit + 25f;
-            }
         }
     }
 }

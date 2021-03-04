@@ -46,34 +46,6 @@
             return AmbientSpawnChance;
         }
     }
-    public bool CanSpawnWanted
-    {
-        get
-        {
-            if (WantedSpawnChance > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-    public bool CanSpawnAmbient
-    {
-        get
-        {
-            if (AmbientSpawnChance > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
     public DispatchableOfficer()
     {
     }
