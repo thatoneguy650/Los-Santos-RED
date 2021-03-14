@@ -16,5 +16,7 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         bool IsInVehicle { get; }
         Ped Character { get; }
+        Locations.LocationData CurrentLocation { get; }
+        string DebugLine11 { get; set; }
     }
 }

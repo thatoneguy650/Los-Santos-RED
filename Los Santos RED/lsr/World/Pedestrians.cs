@@ -17,26 +17,30 @@ public class Pedestrians
     private int MinCopArmor = 0;
     private int MinCopHealth = 85;
     private IAgencies Agencies;
-    private IZoneJurisdictions ZoneJurisdictions;
+    private IJurisdictions Jurisdictions;
     private ISettingsProvideable Settings;
     private IZones Zones;
     private INameProvideable Names;
     private IPedGroups RelationshipGroups;
     private List<Entity> WorldPeds = new List<Entity>();
-    public Pedestrians(IAgencies agencies, IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups)
+    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups)
     {
         Agencies = agencies;
         Zones = zones;
-        ZoneJurisdictions = zoneJurisdictions;
+        Jurisdictions = jurisdictions;
         Settings = settings;
         Names = names;
         RelationshipGroups = relationshipGroups;
     }
+    public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
+    public List<Cop> Police { get; private set; } = new List<Cop>();
+    public List<EMT> EMTs { get; private set; } = new List<EMT>();
+    public List<Firefighter> Firefighters { get; private set; } = new List<Firefighter>();
     public bool AnyArmyUnitsSpawned
     {
         get
         {
-            return Police.Any(x => x.AssignedAgency.Initials == "ARMY" && x.WasModSpawned);
+            return Police.Any(x => x.AssignedAgency.ID == "ARMY" && x.WasModSpawned);
         }
     }
     public bool AnyCopsNearPlayer
@@ -57,11 +61,10 @@ public class Pedestrians
     {
         get
         {
-            return Police.Any(x => x.AssignedAgency.Initials == "NOOSE" && x.WasModSpawned);
+            return Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
         }
     }
-    public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
-    public List<Cop> Police { get; private set; } = new List<Cop>();
+
     public bool AnyPoliceShouldBustPlayer
     {
         get
@@ -69,13 +72,28 @@ public class Pedestrians
             return Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.ShouldBustPlayer);
         }
     }
-    public int TotalSpawnedCops
+    public int TotalSpawnedPolice
     {
         get
         {
             return Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
         }
     }
+    public int TotalSpawnedEMTs
+    {
+        get
+        {
+            return EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+        }
+    }
+    public int TotalSpawnedFirefighters
+    {
+        get
+        {
+            return Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+        }
+    }
+
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
     {
         if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
@@ -83,7 +101,7 @@ public class Pedestrians
         else
             return false;
     }
-    public void ClearPolice()
+    public void ClearSpawned()
     {
         foreach (Cop Cop in Police)
         {
@@ -93,32 +111,68 @@ public class Pedestrians
             }
         }
         Police.Clear();
+        foreach (EMT EMT in EMTs)
+        {
+            if (EMT.Pedestrian.Exists())
+            {
+                EMT.Pedestrian.Delete();
+            }
+        }
+        EMTs.Clear();
+        foreach (Firefighter Firefighter in Firefighters)
+        {
+            if (Firefighter.Pedestrian.Exists())
+            {
+                Firefighter.Pedestrian.Delete();
+            }
+        }
+        Firefighters.Clear();
     }
-    public int CountNearbyCops(Ped Pedestrian)
+    public int CountNearbyPolice(Ped Pedestrian)
     {
         return Police.Count(x => Pedestrian.Exists() && x.Pedestrian.Exists() && Pedestrian.Handle != x.Pedestrian.Handle && x.Pedestrian.DistanceTo2D(Pedestrian) >= 3f && x.Pedestrian.DistanceTo2D(Pedestrian) <= 50f);
     }
-    public PedExt GetCivilian(uint Handle)
+    public PedExt GetPedExt(uint Handle)
     {
-        PedExt CopPed = Police.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
-        if (CopPed != null)
+        PedExt pedExt = Police.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        if (pedExt != null)
         {
-            return CopPed;
+            return pedExt;
         }
-        else
+        pedExt = EMTs.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        if (pedExt != null)
         {
-            return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+            return pedExt;
         }
+        pedExt = Firefighters.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        if (pedExt != null)
+        {
+            return pedExt;
+        }
+        return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+ 
     }
     public void Prune()
     {
         Police.RemoveAll(x => x.CanRemove);
+        EMTs.RemoveAll(x => x.CanRemove);
+        Firefighters.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
         foreach (Cop Cop in Police.Where(x => x.Pedestrian.IsDead))
         {
             Cop.Pedestrian.IsPersistent = false;
         }
+        foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.IsDead))
+        {
+            EMT.Pedestrian.IsPersistent = false;
+        }
+        foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.IsDead))
+        {
+            Firefighter.Pedestrian.IsPersistent = false;
+        }
         Police.RemoveAll(x => x.CanRemove);
+        EMTs.RemoveAll(x => x.CanRemove);
+        Firefighters.RemoveAll(x => x.CanRemove);
         Civilians.RemoveAll(x => x.CanRemove);
     }
     public void Scan()
@@ -187,7 +241,7 @@ public class Pedestrians
             if (Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
-                myBlip.Color = AssignedAgency.AgencyColor;
+                myBlip.Color = AssignedAgency.Color;
                 myBlip.Scale = 0.6f;
                 //WorldLogger.AddEntity(myBlip);
             }
@@ -215,16 +269,16 @@ public class Pedestrians
                 if (ZoneName != "")
                 {
                     //EntryPoint.WriteToConsole(string.Format("GetAgencyFromPed! ZoneName {0}", ZoneName));
-                    if(ZoneJurisdictions == null)
+                    if(Jurisdictions == null)
                     {
                         //EntryPoint.WriteToConsole("GetAgencyFromPed! ZoneJurisdictions is null!!!!!");
                     }
-                    List<Agency> ZoneAgencies = ZoneJurisdictions.GetAgencies(ZoneName, WantedLevel);
+                    List<Agency> ZoneAgencies = Jurisdictions.GetAgencies(ZoneName, WantedLevel,ResponseType.LawEnforcement);
                     if (ZoneAgencies != null)
                     {
                         foreach (Agency ZoneAgency in ZoneAgencies)
                         {
-                            if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                            if (ModelMatchAgencies.Any(x => x.ID == ZoneAgency.ID))
                             {
                                 return ZoneAgency;
                             }

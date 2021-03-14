@@ -8,6 +8,6 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ICountyJurisdictions
     {
-        Agency GetRandomAgency(County county, int wantedLevel);
+        Agency GetRandomAgency(County county, int wantedLevel, ResponseType responseType);
     }
 }

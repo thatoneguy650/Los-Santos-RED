@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 public class SpawnTask
 {
-    private DispatchableOfficer OfficerType;
+    private DispatchablePerson PersonType;
     private Agency Agency;
     private bool AddBlip;
     private Vector3 InitialPosition;
@@ -17,17 +17,17 @@ public class SpawnTask
     private float Heading;
     private VehicleExt Vehicle;
     private DispatchableVehicle VehicleType;
-    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchableOfficer officerType, bool addBlip)
+    public SpawnTask(Agency agency, Vector3 initialPosition, Vector3 streetPosition, float heading, DispatchableVehicle vehicleType, DispatchablePerson officerType, bool addBlip)
     {
         Agency = agency;
-        OfficerType = officerType;
+        PersonType = officerType;
         VehicleType = vehicleType;
         AddBlip = addBlip;
         InitialPosition = initialPosition;
         StreetPosition = streetPosition;
         Heading = heading;
     }
-    public List<Cop> CreatedCops { get; private set; } = new List<Cop>();
+    public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
     private Vector3 Position
     {
@@ -54,19 +54,20 @@ public class SpawnTask
             Vehicle = CreateVehicle();
             if (Vehicle != null && Vehicle.Vehicle.Exists())
             {
-                if (OfficerType != null)
+                if (PersonType != null)
                 {
-                    Cop Cop = CreateCop();
-                    if (Cop != null && Cop.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                    PedExt Person = CreatePerson();
+                    if (Person != null && Person.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                     {
-                        Cop.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
+                        Person.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, -1);
+                        NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(Person.Pedestrian, Person.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);//temp here for ems and fire
                         int OccupantsToAdd = RandomItems.MyRand.Next(VehicleType.MinOccupants, VehicleType.MaxOccupants + 1) - 1;
                         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
                         {
-                            Cop PassengerCop = CreateCop();
-                            if (PassengerCop != null && PassengerCop.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
+                            PedExt Passenger = CreatePerson();
+                            if (Passenger != null && Passenger.Pedestrian.Exists() && Vehicle != null && Vehicle.Vehicle.Exists())
                             {
-                                PassengerCop.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, OccupantIndex - 1);
+                                Passenger.Pedestrian.WarpIntoVehicle(Vehicle.Vehicle, OccupantIndex - 1);
                             }
                         }
                     }
@@ -86,40 +87,54 @@ public class SpawnTask
             }
         }
     }
-    private Cop CreateCop()
+    private PedExt CreatePerson()
     {
-        Ped CopPed = new Ped(OfficerType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), Heading);
+        Ped ped = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), Heading);
         GameFiber.Yield();
-        if (CopPed.Exists())
-        {
-            NativeFunction.CallByName<bool>("SET_PED_AS_COP", CopPed, true);
-            CopPed.RandomizeVariation();
+        if (ped.Exists())
+        { 
+            ped.RandomizeVariation();
             if (VehicleType.IsMotorcycle)
             {
-                CopPed.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
-                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", CopPed, 4, 0, 0, 0);
+                ped.GiveHelmet(false, HelmetTypes.PoliceMotorcycleHelmet, 4096);
+                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 0, 0, 0);
             }
             else
             {
-                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", CopPed, 4, 1, 0, 0);
+                NativeFunction.CallByName<uint>("SET_PED_COMPONENT_VARIATION", ped, 4, 1, 0, 0);
             }
-            if (OfficerType.RequiredVariation != null)
+            if (PersonType.RequiredVariation != null)
             {
-                OfficerType.RequiredVariation.ReplacePedComponentVariation(CopPed);
+                PersonType.RequiredVariation.ReplacePedComponentVariation(ped);
             }
             GameFiber.Yield();
-            CopPed.IsPersistent = true;
-            Cop PrimaryCop = new Cop(CopPed, CopPed.Health, Agency, true);
-            PrimaryCop.IssueWeapons();
-            CopPed.IsPersistent = true;
-            if (AddBlip && CopPed.Exists())
+            ped.IsPersistent = true;
+            if (AddBlip && ped.Exists())
             {
-                Blip myBlip = CopPed.AttachBlip();
-                myBlip.Color = Agency.AgencyColor;
+                Blip myBlip = ped.AttachBlip();
+                myBlip.Color = Agency.Color;
                 myBlip.Scale = 0.6f;
             }
-            CreatedCops.Add(PrimaryCop);
-            return PrimaryCop;
+            PedExt Person = null;
+            if (Agency.ResponseType == ResponseType.LawEnforcement)
+            {
+                NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
+                Cop PrimaryCop = new Cop(ped, ped.Health, Agency, true);
+                PrimaryCop.IssueWeapons();
+                Person = PrimaryCop;
+            }
+            else if (Agency.ResponseType == ResponseType.EMS)
+            {
+                EMT PrimaryEmt = new EMT(ped, ped.Health, Agency, true);
+                Person = PrimaryEmt;
+            }
+            else if (Agency.ResponseType == ResponseType.Fire)
+            {
+                Firefighter PrimaryFirefighter = new Firefighter(ped, ped.Health, Agency, true);
+                Person = PrimaryFirefighter;
+            }
+            CreatedPeople.Add(Person);
+            return Person;
         }
         return null;
     }
@@ -134,8 +149,8 @@ public class SpawnTask
             if (copcar.Exists())
             {
                 copcar.IsPersistent = true;
-                CopVehicle.UpdateCopCarLivery(Agency);
-                CopVehicle.UpgradeCopCarPerformance();
+                CopVehicle.UpdateLivery(Agency);
+                CopVehicle.UpgradePerformance();
                 CreatedVehicles.Add(CopVehicle);
                 GameFiber.Yield();
                 return CopVehicle;

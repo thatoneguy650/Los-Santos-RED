@@ -319,6 +319,29 @@ namespace LosSantosRED.lsr.Player
             {
                 PropModelName = "ng_proc_cigarette01a";
             }
+
+
+
+            // TEMP CROPLA
+
+            //if (IsPot)
+            //{
+            //    PropModelName = "P_CS_Joint_01";
+            //}
+            //else
+            //{
+            //    PropModelName = "Prop_AMB_Ciggy_01";
+            //}
+
+            //HandBoneID = 28422;
+            //HandOffset = new Vector3(-0.8f, 0.0f, 0.0f);
+            //HandRotator = new Rotator(0.0f, 0.0f, 0.0f);
+
+
+            //MouthBoneID = 31086;
+            //MouthOffset = new Vector3(-0.02f, 0.13f, 0.0f);
+            //MouthRotator = new Rotator(0.0f, 0.0f, 0.0f);
+
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);

@@ -272,6 +272,7 @@ namespace Mod
         public string DebugLine8 => PoliceResponse.DebugText;
         public string DebugLine9 => Investigation.DebugText;
         public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
+        public string DebugLine11 { get; set; }
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
         {
             PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
@@ -645,7 +646,7 @@ namespace Mod
                 {
                     return;
                 }
-                VehicleExt MyCar = EntityProvider.GetVehicle(VehicleTryingToEnter);
+                VehicleExt MyCar = EntityProvider.GetVehicleExt(VehicleTryingToEnter);
                 if (MyCar != null)
                 {
                     VehicleGettingInto = MyCar;
@@ -691,7 +692,7 @@ namespace Mod
         {
             if (TargettingHandle != 0)
             {
-                CurrentTargetedPed = EntityProvider.GetCivilian(TargettingHandle);
+                CurrentTargetedPed = EntityProvider.GetPedExt(TargettingHandle);
                 if (!IsInteracting && CanHoldUpTargettedPed && CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged)
                 {
                     StartHoldUp();
@@ -794,7 +795,7 @@ namespace Mod
                 if (result.Hit && result.HitEntity is Ped)
                 {
                     // Rage.Debug.DrawArrowDebug(result.HitPosition, Game.LocalPlayer.Character.Direction, Rotator.Zero, 1f, Color.Green);
-                    CurrentLookedAtPed = EntityProvider.GetCivilian(result.HitEntity.Handle);
+                    CurrentLookedAtPed = EntityProvider.GetPedExt(result.HitEntity.Handle);
                 }
                 else
                 {

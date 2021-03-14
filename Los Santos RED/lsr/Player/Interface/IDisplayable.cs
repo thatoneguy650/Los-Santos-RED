@@ -40,5 +40,6 @@ namespace LosSantosRED.lsr.Interface
         string DebugLine8 { get; }
         string DebugLine9 { get; }
         string DebugLine10 { get; }
+        string DebugLine11 { get; }
     }
 }

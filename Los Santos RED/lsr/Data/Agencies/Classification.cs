@@ -13,4 +13,6 @@ public enum Classification
     Security = 4,
     Military = 5,
     Other = 6,
+    EMS = 7,
+    Fire = 8,
 }

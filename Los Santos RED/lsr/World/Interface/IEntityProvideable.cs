@@ -15,15 +15,18 @@ namespace LosSantosRED.lsr.Interface
         bool AnyArmyUnitsSpawned { get; }
         bool AnyNooseUnitsSpawned { get; }
         bool AnyHelicopterUnitsSpawned { get; }
-        PedExt GetCivilian(uint handle);
-        VehicleExt GetVehicle(Vehicle vehicleTryingToEnter);
-        void ClearPolice();
+        PedExt GetPedExt(uint handle);
+        VehicleExt GetVehicleExt(Vehicle vehicleTryingToEnter);
+        void ClearSpawned();
         int PoliceHelicoptersCount { get; }
         int PoliceBoatsCount { get; }
-        int TotalSpawnedCops { get; }
-        void AddEntity(Cop x);
+        int TotalSpawnedFirefighters { get; }
+        int TotalSpawnedEMTs { get; }
+        int TotalSpawnedPolice { get; }
+
+        void AddEntity(PedExt pedExt);
         void AddEntity(VehicleExt x);
         bool AnyCopsNearPosition(Vector3 initialPosition, float closestSpawnToOtherPoliceAllowed);
-        int CountNearbyCops(Ped pedestrian);
+        int CountNearbyPolice(Ped pedestrian);
     }
 }

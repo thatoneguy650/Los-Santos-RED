@@ -1,4 +1,4 @@
-﻿public class DispatchableOfficer
+﻿public class DispatchablePerson
 {
     public string ModelName { get; set; }
     public int AmbientSpawnChance { get; set; } = 0;
@@ -46,10 +46,10 @@
             return AmbientSpawnChance;
         }
     }
-    public DispatchableOfficer()
+    public DispatchablePerson()
     {
     }
-    public DispatchableOfficer(string _ModelName, int ambientSpawnChance, int wantedSpawnChance)
+    public DispatchablePerson(string _ModelName, int ambientSpawnChance, int wantedSpawnChance)
     {
         ModelName = _ModelName;
         AmbientSpawnChance = ambientSpawnChance;

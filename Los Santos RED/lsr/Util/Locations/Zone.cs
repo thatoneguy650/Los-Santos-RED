@@ -55,6 +55,6 @@ public class Zone
             return DisplayName + ", " + CountyName;
         }
     }
-    public string AssignedAgencyInitials { get; set; }
+    public string AssignedLEAgencyInitials { get; set; }
 
 }

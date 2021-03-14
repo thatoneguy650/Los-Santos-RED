@@ -23,11 +23,12 @@ public class Roadblock
     private Vector3 InitialPosition;
     private List<Vector3> SpawnPoints = new List<Vector3>();
     private List<Rage.Object> CreatedProps = new List<Rage.Object>();
-    private IPoliceRespondable Player;
+    private IDispatchable Player;
     private IEntityProvideable World;
     private Agency Agency;
+    private bool IsDisposed;
     private float RotatedNodeHeading => NodeHeading - 90f;
-    public Roadblock(IPoliceRespondable player, IEntityProvideable world,Agency agency, DispatchableVehicle vehicle, Vector3 initialPosition)
+    public Roadblock(IDispatchable player, IEntityProvideable world,Agency agency, DispatchableVehicle vehicle, Vector3 initialPosition)
     {
         Player = player;
         World = world;
@@ -40,6 +41,7 @@ public class Roadblock
     public Vector3 CenterPosition => NodeCenter;
     public void Dispose()
     {
+        IsDisposed = true;
         RemoveItems();
     }
     public void SpawnRoadblock()
@@ -96,7 +98,7 @@ public class Roadblock
                 AddSpikeStrips(false);
                 GameFiber.Sleep(2000);
                 uint GameTimeStarted = Game.GameTime;
-                while (Game.GameTime - GameTimeStarted <= 3000)
+                while (Game.GameTime - GameTimeStarted <= 3000 && !IsDisposed)
                 {
                     foreach (Vehicle Car in CreatedVehicles)
                     {
@@ -162,8 +164,10 @@ public class Roadblock
 
         SpawnTask spawnTask = new SpawnTask(Agency, position, position, heading, Vehicle, null, true);
         spawnTask.AttemptSpawn();
-        spawnTask.CreatedCops.ForEach(x => World.AddEntity(x));
+        spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
         spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
+        spawnTask.CreatedVehicles.ForEach(x => x.Vehicle.IsCollisionEnabled = true);
+        spawnTask.CreatedVehicles.ForEach(x => x.Vehicle.IsGravityDisabled = false);
         return spawnTask.CreatedVehicles.Any();
 
 
@@ -228,6 +232,8 @@ public class Roadblock
         }
         Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", position, heading);
         SpikeStrip.IsPersistent = true;
+        SpikeStrip.IsCollisionEnabled = true;
+        SpikeStrip.IsGravityDisabled = false;
         CreatedProps.Add(SpikeStrip);
         return SpikeStrip.Exists();
     }

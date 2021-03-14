@@ -24,13 +24,15 @@ public class Debug
     private Ped DebugPed;
     private IStreets Streets;
     private int VehicleMissionFlag = 1;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, Scanner scanner, IStreets streets)
+    private Dispatcher Dispatcher;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, Scanner scanner, IStreets streets, Dispatcher dispatcher)
     {
         PlateTypes = plateTypes;
         World = world;
         Player = targetable;
         Scanner = scanner;
         Streets = streets;
+        Dispatcher = dispatcher;
     }
     public void Update()
     {
@@ -110,7 +112,8 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        SpawnRegularRoadblock();
+        Dispatcher.SpawnRegularRoadblock();
+        //SpawnRegularRoadblock();
 
 
         //VehicleMissionFlag++;

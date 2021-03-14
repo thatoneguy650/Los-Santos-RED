@@ -38,7 +38,7 @@ public class CountyJurisdictions : ICountyJurisdictions
             Serialization.SerializeParams(CountyJurisdictionList, ConfigFileName);
         }
     }
-    public Agency GetRandomAgency(County county, int WantedLevel)//was zone, instead take county
+    public Agency GetRandomAgency(County county, int WantedLevel, ResponseType responseType)//was zone, instead take county
     {
         List<CountyJurisdiction> ToPickFrom = new List<CountyJurisdiction>();
         foreach (CountyJurisdiction countyJurisdiction in CountyJurisdictionList.Where(x => x.County == county))

@@ -1,12 +1,9 @@
-﻿using ExtensionsMethods;
-using LosSantosRED.lsr;
-using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 
@@ -14,20 +11,22 @@ public class Vehicles
 {
     private readonly float DistanceToScan = 200f;//450f
     private readonly List<VehicleExt> PoliceVehicles = new List<VehicleExt>();
+    private readonly List<VehicleExt> EMSVehicles = new List<VehicleExt>();
+    private readonly List<VehicleExt> FireVehicles = new List<VehicleExt>();
     private readonly List<VehicleExt> CivilianVehicles = new List<VehicleExt>();
     private IZones Zones;
     private IAgencies Agencies;
     private IPlateTypes PlateTypes;
-    private IZoneJurisdictions ZoneJurisdictions;
+    private IJurisdictions Jurisdictions;
     private ISettingsProvideable Settings;
     private Vehicle[] RageVehicles;
 
-    public Vehicles(IAgencies agencies,IZones zones, IZoneJurisdictions zoneJurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes)
+    public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
         Zones = zones;
         Agencies = agencies;
         PlateTypes = plateTypes;
-        ZoneJurisdictions = zoneJurisdictions;
+        Jurisdictions = jurisdictions;
         Settings = settings;
     }
     public int PoliceHelicoptersCount
@@ -44,11 +43,12 @@ public class Vehicles
             return PoliceVehicles.Count(x => x.Vehicle.Exists() && x.Vehicle.IsBoat);
         }
     }
-    public List<VehicleExt> CivilianVehicleList => CivilianVehicles;
     public void Prune()
     {
         CivilianVehicles.RemoveAll(x => !x.Vehicle.Exists());
         PoliceVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        EMSVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        FireVehicles.RemoveAll(x => !x.Vehicle.Exists());
     }
     public void Scan()
     {
@@ -56,9 +56,9 @@ public class Vehicles
     }
     public void CreateNew()
     {
-        foreach (Vehicle Veh in RageVehicles.Where(x => x.Exists()))
+        foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))
         {
-            AddToList(Veh);
+            AddToList(vehicle);
         }
     }
     public void CleanUp()
@@ -87,7 +87,6 @@ public class Vehicles
             {
                 if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                 {
-                    //EntryPoint.WriteToConsole($"Abandoned DELETE {PoliceCar.Vehicle.Handle}");
                     PoliceCar.Vehicle.Delete();
                 }
             }
@@ -103,84 +102,100 @@ public class Vehicles
             }
         }
     }
-    public void ClearPolice()
+    public void ClearSpawned()
     {
-        foreach (VehicleExt Veh in PoliceVehicles)
+        foreach (VehicleExt vehicleExt in PoliceVehicles)
         {
-            if (Veh.Vehicle.Exists())
+            if (vehicleExt.Vehicle.Exists())
             {
-                //EntryPoint.WriteToConsole($"ClearPolice DELETE {Veh.Vehicle.Handle}");
-                Veh.Vehicle.Delete();
+                vehicleExt.Vehicle.Delete();
             }
         }
         PoliceVehicles.Clear();
     }
-    public VehicleExt GetVehicle(Vehicle ToFind)
+    public VehicleExt GetVehicleExt(Vehicle vehicle)
     {
-        VehicleExt ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Handle == ToFind.Handle);
+        VehicleExt ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Handle == vehicle.Handle);
         if(ToReturn == null)
         {
-            ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == ToFind.Handle);
+            ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == vehicle.Handle);
         }
         return ToReturn;
     }
-    public void AddToList(Vehicle Veh)
+    public void AddToList(Vehicle vehicle)
     {
-        if (Veh.Exists())
+        if (vehicle.Exists())
         { 
-            if (Veh.IsPoliceVehicle)
+            if (vehicle.IsPoliceVehicle)
             {
-                if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
+                if (!PoliceVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
                 {
-                    VehicleExt Car = new VehicleExt(Veh);
-                    SetVehicleAgency(Car);
-                    Car.UpgradeCopCarPerformance();
+                    VehicleExt Car = new VehicleExt(vehicle);
+                    Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
+                    Car.UpgradePerformance();
                     PoliceVehicles.Add(Car);
                 }
             }
             else
             {
-                if (!CivilianVehicles.Any(x => x.Vehicle.Handle == Veh.Handle))
+                Agency FirstAgency = Agencies.GetAgencies(vehicle).FirstOrDefault();
+                if(FirstAgency != null)
                 {
-                    VehicleExt Car = new VehicleExt(Veh);
+                    if (FirstAgency.ResponseType == ResponseType.EMS)
+                    {
+                        if (!EMSVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                        {
+                            VehicleExt Car = new VehicleExt(vehicle);
+                            Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.EMS));
+                            EMSVehicles.Add(Car);
+                        }
+                    }
+                    else if (FirstAgency.ResponseType == ResponseType.Fire)
+                    {
+                        if (!FireVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                        {
+                            VehicleExt Car = new VehicleExt(vehicle);
+                            Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
+                            FireVehicles.Add(Car);
+                        }
+                    }
+                }
+                if (!CivilianVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                {
+                    VehicleExt Car = new VehicleExt(vehicle);
                     CivilianVehicles.Add(Car);
                 }
             }
         }
     }
-    public void AddToList(VehicleExt Car)
+    public void AddToList(VehicleExt vehicleExt)
     {
-        if (Car.Vehicle.Exists())
+        if (vehicleExt.Vehicle.Exists())
         {
-            if (Car.Vehicle.IsPoliceVehicle)
+            if (vehicleExt.Vehicle.IsPoliceVehicle)
             {
-                if (!PoliceVehicles.Any(x => x.Vehicle.Handle == Car.Vehicle.Handle))
+                if (!PoliceVehicles.Any(x => x.Vehicle.Handle == vehicleExt.Vehicle.Handle))
                 {
-                    SetVehicleAgency(Car);
-                    Car.UpgradeCopCarPerformance();
-                    PoliceVehicles.Add(Car);
+                    vehicleExt.UpdateLivery(GetAgency(vehicleExt.Vehicle, 0, ResponseType.LawEnforcement));
+                    vehicleExt.UpgradePerformance();
+                    PoliceVehicles.Add(vehicleExt);
                 }
             }
             else
             {
-                if (!CivilianVehicles.Any(x => x.Vehicle.Handle == Car.Vehicle.Handle))
+                if (!CivilianVehicles.Any(x => x.Vehicle.Handle == vehicleExt.Vehicle.Handle))
                 {
-                    CivilianVehicles.Add(Car);
+                    CivilianVehicles.Add(vehicleExt);
                 }
             }
         }
     }
-    public void SetVehicleAgency(VehicleExt Car)
+    public void UpdatePlate(VehicleExt vehicleExt)//this might need to come out of here.... along with the two bools
     {
-        Agency AssignedAgency = GetAgency(Car.Vehicle, 0);//might need to real wanted level here
-        Car.UpdateCopCarLivery(AssignedAgency);
-    }
-    public void UpdatePlate(VehicleExt Car)//this might need to come out of here.... along with the two bools
-    {
-        Car.HasUpdatedPlateType = true;
-        PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle));
-        string CurrentPlateNumber = Car.Vehicle.LicensePlate;
-        Zone CurrentZone = Zones.GetZone(Car.Vehicle.Position);
+        vehicleExt.HasUpdatedPlateType = true;
+        PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
+        string CurrentPlateNumber = vehicleExt.Vehicle.LicensePlate;
+        Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
 
 
         /*
@@ -199,19 +214,19 @@ public class Vehicles
                 string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                 if (NewPlateNumber != "")
                 {
-                    Car.Vehicle.LicensePlate = NewPlateNumber;
-                    Car.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                    Car.CarPlate.PlateNumber = NewPlateNumber;
+                    vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+                    vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                    vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
                 }
-                NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index);
-                Car.OriginalLicensePlate.PlateType = NewType.Index;
-                Car.CarPlate.PlateType = NewType.Index;
+                NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
+                vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+                vehicleExt.CarPlate.PlateType = NewType.Index;
                 // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
             }
         }
         else
         {
-            if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && Car.CanUpdatePlate)
+            if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
             {
                 PlateType NewType = PlateTypes.GetRandomPlateType();
                 if (NewType != null)
@@ -219,36 +234,34 @@ public class Vehicles
                     string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                     if (NewPlateNumber != "")
                     {
-                        Car.Vehicle.LicensePlate = NewPlateNumber;
-                        Car.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                        Car.CarPlate.PlateNumber = NewPlateNumber;
+                        vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+                        vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                        vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
                     }
-                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car.Vehicle, NewType.Index+1);
-                    Car.OriginalLicensePlate.PlateType = NewType.Index;
-                    Car.CarPlate.PlateType = NewType.Index;
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index+1);
+                    vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+                    vehicleExt.CarPlate.PlateType = NewType.Index;
                     // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
                 }
             }
         }
 
     }
-    public Agency GetAgency(Vehicle CopCar, int WantedLevel)
+    public Agency GetAgency(Vehicle vehicle, int wantedLevel, ResponseType responseType)
     {
         Agency ToReturn;
-        List<Agency> ModelMatchAgencies = Agencies.GetAgencies(CopCar);
+        List<Agency> ModelMatchAgencies = Agencies.GetAgencies(vehicle);
         if (ModelMatchAgencies.Count > 1)
         {
-            Zone ZoneFound = Zones.GetZone(CopCar.Position);
+            Zone ZoneFound = Zones.GetZone(vehicle.Position);
             if (ZoneFound != null && ZoneFound.InternalGameName != "UNK")
             {
-                //EntryPoint.WriteToConsole(string.Format("GetAgency ZoneFound.InternalGameName {0}", ZoneFound.InternalGameName));
-                List<Agency> ToGoThru = ZoneJurisdictions.GetAgencies(ZoneFound.InternalGameName, WantedLevel);
+                List<Agency> ToGoThru = Jurisdictions.GetAgencies(ZoneFound.InternalGameName, wantedLevel, responseType);
                 if (ToGoThru != null)
                 {
-                    //EntryPoint.WriteToConsole(string.Format("GetAgency Count {0}", ToGoThru.Count));
                     foreach (Agency ZoneAgency in ToGoThru)
                     {
-                        if (ModelMatchAgencies.Any(x => x.Initials == ZoneAgency.Initials))
+                        if (ModelMatchAgencies.Any(x => x.ID == ZoneAgency.ID))
                         {
                             return ZoneAgency;
                         }
@@ -259,9 +272,7 @@ public class Vehicles
         ToReturn = ModelMatchAgencies.FirstOrDefault();
         if (ToReturn == null)
         {
-            //EntryPoint.WriteToConsole(string.Format("GetAgencyFromPed! Couldnt get agency from {0} car deleting", CopCar.Model.Name));
-            //EntryPoint.WriteToConsole($"NoAgency DELETE {CopCar.Handle}");
-            CopCar.Delete();
+            vehicle.Delete();
         }
         return ToReturn;
     }

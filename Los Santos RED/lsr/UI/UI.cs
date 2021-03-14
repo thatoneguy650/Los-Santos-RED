@@ -28,14 +28,14 @@ public class UI
     private bool StartedBandagingEffect = false;
     private bool StartedBustedEffect = false;
     private bool StartedDeathEffect = false;
-    private IZoneJurisdictions ZoneJurisdictions;
+    private IJurisdictions Jurisdictions;
     private uint GameTimeLastBusted;
     private uint GameTimeLastDied;
-    public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IZoneJurisdictions zoneJurisdictions, IPedswappable pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable player, IWeapons weapons, RadioStations radioStations)
+    public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedswappable pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable player, IWeapons weapons, RadioStations radioStations)
     {
         Player = currentPlayer;
         Settings = settings;
-        ZoneJurisdictions = zoneJurisdictions;
+        Jurisdictions = jurisdictions;
         BigMessage = new BigMessageThread(true);
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest);
@@ -223,7 +223,7 @@ public class UI
         {
             return "";
         }
-        return Player.CurrentLocation.CurrentZone.FullDisplayName + " ~s~- " + Player.CurrentLocation.CurrentZone.AssignedAgencyInitials;
+        return Player.CurrentLocation.CurrentZone.FullDisplayName + " ~s~- " + Player.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
     }
     private void HideVanillaUI()
     {
@@ -315,6 +315,7 @@ public class UI
         DisplayTextOnScreen($"{Player.DebugLine8}", StartingPoint + 0.08f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         DisplayTextOnScreen($"{Player.DebugLine9}", StartingPoint + 0.09f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
         DisplayTextOnScreen($"{Player.DebugLine10}", StartingPoint + 0.10f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
+        DisplayTextOnScreen($"{Player.DebugLine11}", StartingPoint + 0.11f, 0f, 0.2f, Color.White, GTAFont.FontChaletComprimeCologne, GTATextJustification.Left);
     }
     private void Toggle(Menu toToggle)
     {

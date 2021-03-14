@@ -90,7 +90,7 @@ public class Respawning : IRespawning
         Respawn(true, true, true, true, true);
         GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
         SetPlayerAtLocation(PlaceToSpawn);
-        World.ClearPolice();
+        World.ClearSpawned();
         Game.LocalPlayer.Character.IsRagdoll = true;
         FadeIn();
         Game.LocalPlayer.Character.IsRagdoll = false;
@@ -105,7 +105,7 @@ public class Respawning : IRespawning
             PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
         }
         SetPlayerAtLocation(PlaceToSpawn);
-        World.ClearPolice();
+        World.ClearSpawned();
         FadeIn();
         SetHospitalFee(PlaceToSpawn.Name);
         GameTimeLastDischargedFromHospital = Game.GameTime;
@@ -122,7 +122,7 @@ public class Respawning : IRespawning
             PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
         }
         SetPlayerAtLocation(PoliceStation);
-        World.ClearPolice();
+        World.ClearSpawned();
         FadeIn();
         SetPoliceFee(PoliceStation.Name, BailFee);
         GameTimeLastSurrenderedToPolice = Game.GameTime;

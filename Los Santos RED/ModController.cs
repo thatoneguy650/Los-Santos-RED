@@ -13,7 +13,6 @@ namespace LosSantosRED.lsr
         private Agencies Agencies;
         private WavAudio WavAudio;
         private Civilians Civilians;
-        private CountyJurisdictions CountyJurisdictions;
         private Crimes Crimes;
         private Debug Debug;
         private Dispatcher Dispatcher;
@@ -39,7 +38,7 @@ namespace LosSantosRED.lsr
         private VehicleScannerAudio VehicleScannerAudio;
         private Weapons Weapons;
         private Mod.World World;
-        private ZoneJurisdictions ZoneJurisdictions;
+        private Jurisdictions Jurisdictions;
         private Zones Zones;
         private ZoneScannerAudio ZoneScannerAudio;
         private RadioStations RadioStations;
@@ -80,7 +79,7 @@ namespace LosSantosRED.lsr
             ReadDataFiles();
             WavAudio = new WavAudio();
             Time = new Mod.Time();
-            World = new Mod.World(Agencies, Zones, ZoneJurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups);
+            World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups);
             World.Setup();
             
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes);
@@ -92,11 +91,11 @@ namespace LosSantosRED.lsr
             Respawning = new Respawning(Time, World, Player, Weapons, PlacesOfInterest, Settings);
             PedSwap = new PedSwap(Time, Player, Settings, World);
             Tasker = new Tasker(World, Player, Weapons);
-            UI = new UI(Player, Settings, ZoneJurisdictions, PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
-            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, CountyJurisdictions, ZoneJurisdictions);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
+            Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
             Scanner = new Scanner(World, Player, WavAudio, Respawning, Settings);
             VanillaManager = new VanillaManager();
-            Debug = new Debug(PlateTypes, World, Player, Scanner, Streets);
+            Debug = new Debug(PlateTypes, World, Player, Scanner, Streets, Dispatcher);
             World.AddBlipsToMap();//off for now as i do lots of restarts
             PedSwap.Setup();
             GameFiber.Yield();
@@ -146,11 +145,8 @@ namespace LosSantosRED.lsr
             Agencies = new Agencies();
             Agencies.ReadConfig();
             GameFiber.Yield();
-            CountyJurisdictions = new CountyJurisdictions(Agencies);
-            CountyJurisdictions.ReadConfig();
-            GameFiber.Yield();
-            ZoneJurisdictions = new ZoneJurisdictions(Agencies);
-            ZoneJurisdictions.ReadConfig();
+            Jurisdictions = new Jurisdictions(Agencies);
+            Jurisdictions.ReadConfig();
             GameFiber.Yield();
             RadioStations = new RadioStations();
             RadioStations.ReadConfig();
@@ -218,9 +214,9 @@ namespace LosSantosRED.lsr
             {
 
                 //Required Run
-                new ModTask(0, "Time.Tick", Time.Tick, 0,0),
-                new ModTask(0, "Input.Tick", Input.Update, 1,0),
-                new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),
+                //new ModTask(100, "Time.Tick", Time.Tick, 0,0),//0
+                //new ModTask(100, "Input.Tick", Input.Update, 1,0),//0
+                new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//0
 
                 new ModTask(100, "Player.Update", Player.Update, 3,0),//25
 
@@ -247,14 +243,14 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.CleanUpVehicles", World.CleanUpVehicles, 7,7),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7,8),
 
-                new ModTask(500, "Scanner.Tick", Scanner.Tick, 8,3),
-                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 8,4),
-                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 8,5),
+                new ModTask(500, "Scanner.Tick", Scanner.Tick, 7,9),
+                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 7,10),
+                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 7,11),
 
                 //New Tasking
-                new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 9,0),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 9,1),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 9,2),
+                new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 7,12),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,13),
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14),
             };
         }
         private void StartDebugLogic()
@@ -325,7 +321,39 @@ namespace LosSantosRED.lsr
             }, "Run Game Logic");
             GameFiber.Yield();
         }
-        private void StartGameLogic()
+        //private void StartGameLogic()
+        //{
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        try
+        //        {
+        //            while (IsRunning)
+        //            {
+        //                ModTask ToRun = MyTickTasks.Where(x => x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+        //                if (ToRun != null)
+        //                {
+        //                    ToRun.Run();
+        //                    LastRanTask = ToRun.DebugName;
+        //                }
+        //                if (Game.FrameRate <= 60)
+        //                {
+        //                    EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}", 3);
+        //                    EntryPoint.WriteToConsole($"Ran: {LastRanTask}", 3);
+        //                }
+        //                GameFiber.Yield();
+        //            }
+                    
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace,0);
+        //            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+        //            Dispose();
+        //        }
+        //    }, "Run Game Logic");
+        //    GameFiber.Yield();
+        //}
+        private void StartGameLogicOld2()
         {
             GameFiber.StartNew(delegate
             {
@@ -338,9 +366,9 @@ namespace LosSantosRED.lsr
                         foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
                         {
                             if (RunGroup >= 2 && TickStopWatch.ElapsedMilliseconds >= 3)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
-                            {             
-                                EntryPoint.WriteToConsole($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation} FrameTime {Game.FrameTime}", 5);
-                                EntryPoint.WriteToConsole($"Ran: {string.Join(";", MyTickTasks.Where(x => x.RanThisTick == true && x.Interval > 0).Select(x => x.DebugName).ToList())}",5);
+                            {
+                                EntryPoint.WriteToConsole($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation} FrameTime {Game.FrameTime} FPS {Game.FrameRate}", 3);
+                                EntryPoint.WriteToConsole($"Ran: {string.Join(";", MyTickTasks.Where(x => x.RanThisTick == true && x.Interval > 0).Select(x => x.DebugName).ToList())}", 3);
                                 break;
                             }
 
@@ -355,13 +383,18 @@ namespace LosSantosRED.lsr
                             ModTask RunningBehind = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();//should also check if something has barely ran or
                             //foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
                             if (RunningBehind != null)
-                            {    
-                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}",5);
-                                RunningBehind.Run();
-                                LastRanTask = ToRun.DebugName;
-                                LastRanTaskLocation = "RunningBehind";
+                            {
+                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}", 3);
+                                //RunningBehind.Run();
+                                //LastRanTask = ToRun.DebugName;
+                                //LastRanTaskLocation = "RunningBehind";
                             }
                         }
+                        //if (Game.FrameRate <= 60)
+                        //{
+                        //    EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}", 3);
+                        //    EntryPoint.WriteToConsole($"Ran: {string.Join(";", MyTickTasks.Where(x => x.RanThisTick == true).Select(x => x.DebugName).ToList())}", 3);
+                        //}
                         MyTickTasks.ForEach(x => x.RanThisTick = false);
                         TickStopWatch.Reset();
                         GameFiber.Yield();
@@ -369,7 +402,7 @@ namespace LosSantosRED.lsr
                 }
                 catch (Exception e)
                 {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace,0);
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
                     Dispose();
                 }

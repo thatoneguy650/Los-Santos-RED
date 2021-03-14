@@ -12,6 +12,6 @@ namespace LosSantosRED.lsr.Interface
     {
         void AddEntity(VehicleExt vehicle);
         void AddEntity(Blip blip);
-        void AddEntity(Cop cop);
+        void AddEntity(PedExt pedExt);
     }
 }

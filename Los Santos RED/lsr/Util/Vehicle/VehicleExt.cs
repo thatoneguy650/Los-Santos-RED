@@ -320,7 +320,7 @@ namespace LSR.Vehicles
                 }
             }
         }
-        public void UpgradeCopCarPerformance()//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 
+        public void UpgradePerformance()//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 
         {
             if (Vehicle.Exists() && !Vehicle.IsHelicopter && Vehicle.IsPoliceVehicle)
             {
@@ -331,7 +331,7 @@ namespace LSR.Vehicles
                 NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 15) - 1, true);//Suspension
             }
         }
-        public void UpdateCopCarLivery(Agency AssignedAgency)
+        public void UpdateLivery(Agency AssignedAgency)
         {
             DispatchableVehicle MyVehicle = null;
             if (AssignedAgency != null && AssignedAgency.Vehicles != null && Vehicle.Exists())
