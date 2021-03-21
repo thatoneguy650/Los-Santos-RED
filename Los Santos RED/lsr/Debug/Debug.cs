@@ -151,8 +151,9 @@ public class Debug
 
             if (cop.Pedestrian.CurrentVehicle.Exists())
             {
-                int MissionType = NativeFunction.Natives.GET_ACTIVE_VEHICLE_MISSION_TYPE<int>(cop.Pedestrian.CurrentVehicle);
-                EntryPoint.WriteToConsole(cop.DebugString + $"MissionType {MissionType}", 4);
+                //int MissionType = NativeFunction.Natives.GET_ACTIVE_VEHICLE_MISSION_TYPE<int>(cop.Pedestrian.CurrentVehicle);
+                //EntryPoint.WriteToConsole(cop.DebugString + $"MissionType {MissionType}", 4);
+                EntryPoint.WriteToConsole(cop.DebugString + $" WasModSpawned: {cop.WasModSpawned}", 4);
             }
 
 

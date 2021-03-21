@@ -129,6 +129,7 @@
     <Compile Include="lsr\Data\Scanner\VehicleScannerAudio.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneScannerAudio.cs" />
     <Compile Include="lsr\Dispatcher\VanillaDispatchType.cs" />
+    <Compile Include="lsr\Old\ModController_Old.cs" />
     <Compile Include="lsr\Player\Activity\ScenarioActivity.cs" />
     <Compile Include="lsr\Player\Interface\IDispatchable.cs" />
     <Compile Include="lsr\Police\AssistManager.cs" />
@@ -247,7 +248,7 @@
     <Compile Include="lsr\Time\Time.cs" />
     <Compile Include="lsr\PedSwap\PedSwap.cs" />
     <Compile Include="lsr\Player\Respawning.cs" />
-    <Compile Include="lsr\Player\Activity\Surrendering.cs" />
+    <Compile Include="lsr\Player\Activity\SurrenderActivity.cs" />
     <Compile Include="lsr\Player\Activity\WeaponDropping.cs" />
     <Compile Include="lsr\Util\Crimes\Crime.cs" />
     <Compile Include="lsr\Util\Crimes\CrimeEvent.cs" />

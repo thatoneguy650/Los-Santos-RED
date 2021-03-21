@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LosSantosRED.lsr
 {
-    public class ModController
+    public class ModController_Old
     {
         private readonly Stopwatch TickStopWatch = new Stopwatch();
         private Agencies Agencies;
@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr
         private PedGroups RelationshipGroups;
         private VanillaManager VanillaManager;
         private Scenarios Scenarios;
-        public ModController()
+        public ModController_Old()
         {
         }
         public bool IsRunning { get; private set; }
@@ -100,7 +100,8 @@ namespace LosSantosRED.lsr
             World.AddBlipsToMap();//off for now as i do lots of restarts
             PedSwap.Setup();
             GameFiber.Yield();
-            SetupModTasks();
+            //SetupModTasks();
+            SetupModTasksAlt();
             GameFiber.Yield();
             StartGameLogic();
             GameFiber.Yield();
@@ -163,6 +164,52 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
         }
         private void SetupModTasks()
+        {
+            MyTickTasks = new List<ModTask>()
+            {
+
+                //Required Run
+                new ModTask(0, "Time.Tick", Time.Tick, 0,0),
+                new ModTask(0, "Input.Tick", Input.Update, 1,0),
+                new ModTask(0, "VanillaManager.Tick", VanillaManager.Tick, 2,0),
+
+
+                new ModTask(25, "Player.Update", Player.Update, 3,0),
+                new ModTask(100, "World.Police.Tick", Police.Update, 4,0),//is a big problem, need to fix performance, maybe split up?
+                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),//
+                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),//
+
+                //Can TimeOut
+                new ModTask(150, "Player.Investigations.Tick", Player.Investigation.Update, 6,0),
+
+                new ModTask(250, "World.Civilians.Tick", Civilians.Update, 7,0),//150
+                new ModTask(250, "World.Pedestrians.Prune", World.PrunePedestrians, 7,1),
+                new ModTask(1000, "World.Pedestrians.Scan", World.ScanForPedestrians, 7,2),
+                new ModTask(1000, "World.Pedestrians.CreateNewPedestrians", World.CreateNewPedestrians, 7,3),
+                new ModTask(250, "World.Vehicles.CleanLists", World.PruneVehicles, 7,4),
+                new ModTask(1000, "World.Vehicles.Scan", World.ScanForVehicles, 7,5),
+
+                new ModTask(500, "Player.Violations.TrafficUpdate", Player.TrafficViolationsUpdate, 8,0),
+                new ModTask(500, "Player.CurrentLocation.Update", Player.LocationUpdate, 8,1),
+                new ModTask(500, "Player.ArrestWarrant.Update",Player.ArrestWarrantUpdate, 8,2),
+                new ModTask(500, "World.Vehicles.Tick", World.CleanUpVehicles, 9,1),
+                new ModTask(150, "Player.SearchMode.UpdateWanted", Player.SearchModeUpdate, 11,0),
+                new ModTask(150, "Player.SearchMode.StopVanillaSearchMode", Player.StopVanillaSearchMode, 11,1),
+                new ModTask(500, "World.Scanner.Tick", Scanner.Tick, 12,0),
+                new ModTask(1000, "World.Vehicles.UpdatePlates", World.UpdateVehiclePlates, 13,0),
+
+                //VEHICLE STUFF HAS BEEN UPDATED SINCE< NEED TO ADD IT!!!! IF USE THIS AGAIN!!!
+                new ModTask(500, "World.Dispatch.DeleteChecking", Dispatcher.Recall, 15,0),
+                new ModTask(500, "World.Dispatch.SpawnChecking", Dispatcher.Dispatch, 15,1),
+
+
+                //New Tasking
+                new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdatePoliceTasks, 16,1),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilianTasks, 16,2),
+            };
+        }
+        private void SetupModTasksAlt()
         {
             MyTickTasks = new List<ModTask>()
             {
@@ -235,7 +282,7 @@ namespace LosSantosRED.lsr
                 }
             }, "Run Debug Logic");
         }
-        private void StartGameLogic()
+        private void StartGameLogicOLD()
         {
             GameFiber.StartNew(delegate
             {
@@ -244,31 +291,71 @@ namespace LosSantosRED.lsr
                     while (IsRunning)
                     {
                         TickStopWatch.Start();
+
+                        foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
+                        {
+                            if (RunGroup >= 3 && TickStopWatch.ElapsedMilliseconds >= 5)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            {
+                                EntryPoint.WriteToConsole($"GameLogic Tick took > 5 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation}",5);
+                                break;
+                            }
+
+                            ModTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+                            if (ToRun != null)
+                            {
+                                ToRun.Run();
+                                LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "Regular";
+                            }
+                            foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
+                            {
+
+                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length {RunningBehind.IntervalMissLength}",5);
+                                RunningBehind.Run();
+                                LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "RunningBehind";
+                            }
+                        }
+                        MyTickTasks.ForEach(x => x.RanThisTick = false);
+                        TickStopWatch.Reset();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace,0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Game Logic");
+            GameFiber.Yield();
+        }
+        private void StartGameLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
                         PrevLastRanTask = LastRanTask;
 
                         Time.Tick();
                         Input.Update();
                         VanillaManager.Tick();
                         Player.Update();
-
-                        if (TickStopWatch.ElapsedMilliseconds >= 2)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                        ModTask ToRun = MyTickTasks.Where(x => x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+                        if (ToRun != null)
                         {
-                            EntryPoint.WriteToConsole($"GameLogic Tick took > 2 ms", 3);
+                            ToRun.Run();
+                            LastRanTask = ToRun.DebugName;
                         }
-                        else
+                        if (Game.FrameRate <= 50)
                         {
-                            ModTask ToRun = MyTickTasks.Where(x => x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
-                            if (ToRun != null)
-                            {
-                                ToRun.Run();
-                                LastRanTask = ToRun.DebugName;
-                            }
-                            if (Game.FrameRate <= 50)
-                            {
-                                EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
-                            }
+                            EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}", 3);
+                            EntryPoint.WriteToConsole($"Ran: {LastRanTask}", 3);
+                            EntryPoint.WriteToConsole($"Ran Last Tick: {PrevLastRanTask}", 3);      
                         }
-                        TickStopWatch.Reset();
                         GameFiber.Yield();
                     }
 
@@ -276,6 +363,131 @@ namespace LosSantosRED.lsr
                 catch (Exception e)
                 {
                     EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Game Logic");
+            GameFiber.Yield();
+        }
+        private void StartGameLogicOld2()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        TickStopWatch.Start();
+
+                        foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
+                        {
+                            if (RunGroup >= 2 && TickStopWatch.ElapsedMilliseconds >= 3)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            {
+                                EntryPoint.WriteToConsole($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation} FrameTime {Game.FrameTime} FPS {Game.FrameRate}", 3);
+                                EntryPoint.WriteToConsole($"Ran: {string.Join(";", MyTickTasks.Where(x => x.RanThisTick == true && x.Interval > 0).Select(x => x.DebugName).ToList())}", 3);
+                                break;
+                            }
+
+                            ModTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+                            if (ToRun != null)
+                            {
+                                ToRun.Run();
+                                LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "Regular";
+                            }
+
+                            ModTask RunningBehind = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();//should also check if something has barely ran or
+                            //foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
+                            if (RunningBehind != null)
+                            {
+                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}", 3);
+                                //RunningBehind.Run();
+                                //LastRanTask = ToRun.DebugName;
+                                //LastRanTaskLocation = "RunningBehind";
+                            }
+                        }
+                        //if (Game.FrameRate <= 60)
+                        //{
+                        //    EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}", 3);
+                        //    EntryPoint.WriteToConsole($"Ran: {string.Join(";", MyTickTasks.Where(x => x.RanThisTick == true).Select(x => x.DebugName).ToList())}", 3);
+                        //}
+                        MyTickTasks.ForEach(x => x.RanThisTick = false);
+                        TickStopWatch.Reset();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Game Logic");
+            GameFiber.Yield();
+        }
+        private void StartGameLogic2()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        TickStopWatch.Start();
+
+                        foreach (int RunGroup in MyTickTasks.GroupBy(x => x.RunGroup).Select(x => x.First()).ToList().Select(x => x.RunGroup))
+                        {
+                            if (TickStopWatch.ElapsedMilliseconds >= 3)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                            {
+                                EntryPoint.WriteToConsole($"GameLogic Tick took > 3 ms ({TickStopWatch.ElapsedMilliseconds} ms), aborting, Last Ran {LastRanTask} in {LastRanTaskLocation} FrameTime {Game.FrameTime}",5);
+                                break;
+                            }
+
+                            if(RunGroup <= 2)
+                            {
+                                foreach(ModTask modTask in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun))
+                                {
+                                    modTask.Run();
+                                    LastRanTask = modTask.DebugName;
+                                    LastRanTaskLocation = "Regular";
+                                }
+                            }
+
+                            LastRunGroupRan = RunGroup;
+
+
+
+
+
+
+
+
+                            ModTask ToRun = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+                            if (ToRun != null)
+                            {
+                                ToRun.Run();
+                                LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "Regular";
+                            }
+
+                            ModTask RunningBehind = MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();//should also check if something has barely ran or
+                            //foreach (ModTask RunningBehind in MyTickTasks.Where(x => x.RunGroup == RunGroup && x.RunningBehind))
+                            if (RunningBehind != null)
+                            {
+                                EntryPoint.WriteToConsole($"RUNNING BEHIND FOR ({RunningBehind.DebugName} Time Since Run {Game.GameTime - RunningBehind.GameTimeLastRan} Miss Length{RunningBehind.IntervalMissLength}",5);
+                                RunningBehind.Run();
+                                LastRanTask = ToRun.DebugName;
+                                LastRanTaskLocation = "RunningBehind";
+                            }
+                        }
+                        MyTickTasks.ForEach(x => x.RanThisTick = false);
+                        TickStopWatch.Reset();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace,0);
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
                     Dispose();
                 }

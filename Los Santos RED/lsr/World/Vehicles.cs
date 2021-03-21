@@ -147,34 +147,36 @@ public class Vehicles
             }
             else
             {
-                //slow slow slow
-                //Agency FirstAgency = Agencies.GetAgencies(vehicle).FirstOrDefault();
-                //if(FirstAgency != null)
-                //{
-                //    if (FirstAgency.ResponseType == ResponseType.EMS)
-                //    {
-                //        if (!EMSVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
-                //        {
-                //            VehicleExt Car = new VehicleExt(vehicle);
-                //          //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.EMS));
-                //            EMSVehicles.Add(Car);
-                //            return true;
-                //        }
-                //    }
-                //    else if (FirstAgency.ResponseType == ResponseType.Fire)
-                //    {
-                //        if (!FireVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
-                //        {
-                //            VehicleExt Car = new VehicleExt(vehicle);
-                //          //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
-                //            FireVehicles.Add(Car);
-                //            return true;
-                //        }
-                //    }
-                //}
-                if (!CivilianVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                VehicleExt Car = new VehicleExt(vehicle);
+                if((VehicleClass)Car.ClassInt() == VehicleClass.Emergency)
                 {
-                    VehicleExt Car = new VehicleExt(vehicle);
+                    //this shit is slow as molasses, need a better way to screen em!
+                    Agency FirstAgency = Agencies.GetAgencies(vehicle).FirstOrDefault();
+                    if (FirstAgency != null)
+                    {
+                        if (FirstAgency.ResponseType == ResponseType.EMS)
+                        {
+                            if (!EMSVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                            {
+                                //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.EMS));
+                                EMSVehicles.Add(Car);
+                                return true;
+                            }
+                        }
+                        else if (FirstAgency.ResponseType == ResponseType.Fire)
+                        {
+                            if (!FireVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                            {
+                                //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
+                                FireVehicles.Add(Car);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                //slow slow slow
+                else if (!CivilianVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                {
                     CivilianVehicles.Add(Car);
                     return true;
                 }

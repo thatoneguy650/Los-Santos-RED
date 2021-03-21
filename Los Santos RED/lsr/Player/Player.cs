@@ -19,7 +19,7 @@ namespace Mod
         private CriminalHistory CriminalHistory;
         private DynamicActivity DynamicActivity;
         private SearchMode SearchMode;
-        private Surrendering Surrendering;
+        private SurrenderActivity Surrendering;
         private WeaponDropping WeaponDropping;
         private HealthState HealthState;
         private Inventory Inventory;
@@ -69,7 +69,7 @@ namespace Mod
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character));
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones);
             WeaponDropping = new WeaponDropping(this, Weapons);
-            Surrendering = new Surrendering(this);
+            Surrendering = new SurrenderActivity(this);
             Violations = new Violations(this, TimeControllable, Crimes);
             Investigation = new Investigation(this);
             CriminalHistory = new CriminalHistory(this);
@@ -564,6 +564,23 @@ namespace Mod
                 DynamicActivity.Continue();
             }
         }
+        public void StartSurrendering()
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new SmokingActivity(this, true);
+                DynamicActivity.Start();
+            }
+            else if (IsPerformingActivity && CanPerformActivities)
+            {
+                DynamicActivity.Continue();
+            }
+        }
         public void StopDynamicActivity()
         {
             if (IsPerformingActivity)
@@ -577,13 +594,13 @@ namespace Mod
         public void CheckMurdered(PedExt MyPed) => Violations.AddKilled(MyPed);
         public void DropWeapon() => WeaponDropping.DropWeapon();
         public void LocationUpdate() => CurrentLocation.Update();
-        public void LowerHands() => Surrendering.LowerHands();
-        public void RaiseHands() => Surrendering.RaiseHands();
+        public void LowerHands() => Surrendering.LowerHands();//needs to move
+        public void RaiseHands() => Surrendering.RaiseHands();//needs to move
         public void SearchModeUpdate() => SearchMode.UpdateWanted();
         public void StopVanillaSearchMode() => SearchMode.StopVanilla();
         public void StoreCriminalHistory() => CriminalHistory.StoreCriminalHistory(PoliceResponse);
         public void TrafficViolationsUpdate() => Violations.TrafficUpdate();
-        public void UnSetArrestedAnimation(Ped character) => Surrendering.UnSetArrestedAnimation(character);
+        public void UnSetArrestedAnimation(Ped character) => Surrendering.UnSetArrestedAnimation(character);//needs to move
         public void ViolationsUpdate() => Violations.Update();
         private void IsAimingChanged()
         {
@@ -620,7 +637,7 @@ namespace Mod
             BeingArrested = true;
             GameTimeLastBusted = Game.GameTime;
             HandsAreUp = false;
-            Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);
+            Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);//needs to move
             Game.LocalPlayer.HasControl = false;
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}",3);
         }
