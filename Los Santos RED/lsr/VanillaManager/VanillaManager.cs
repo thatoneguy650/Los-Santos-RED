@@ -27,10 +27,10 @@ public class VanillaManager
         {
             TerminateVanillaRespawnController();
         }
-        if (IsVanillaDispatchActive)
-        {
+        //if (IsVanillaDispatchActive)
+        //{
             TerminateVanillaDispatch();
-        }
+       // }
         TerminateVanillaRespawnScripts();
         TerminateVanillaHealthRecharge();
         TerminateVanillaAudio();

@@ -63,7 +63,7 @@ public class Vehicles
             {
                 VehiclesCreated++;
             }
-            if(VehiclesCreated >= 2)
+            if(VehiclesCreated >= 10)//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
             {
                 return;
             }
@@ -190,8 +190,8 @@ public class Vehicles
             {
                 if (!PoliceVehicles.Any(x => x.Vehicle.Handle == vehicleExt.Vehicle.Handle))
                 {
-                    vehicleExt.UpdateLivery(GetAgency(vehicleExt.Vehicle, 0, ResponseType.LawEnforcement));
-                    vehicleExt.UpgradePerformance();
+                    //vehicleExt.UpdateLivery(GetAgency(vehicleExt.Vehicle, 0, ResponseType.LawEnforcement));
+                    //vehicleExt.UpgradePerformance();
                     PoliceVehicles.Add(vehicleExt);
                 }
             }

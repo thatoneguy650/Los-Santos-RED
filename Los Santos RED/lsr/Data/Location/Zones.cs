@@ -30,7 +30,7 @@ public class Zones : IZones
     {
         Zone ListResult = null;
         string zoneName = "UNK";
-        ListResult = ZoneList.Where(x => x.Boundaries != null && IsPointInPolygon(new Vector2(ZonePosition.X, ZonePosition.Y), x.Boundaries)).FirstOrDefault();
+        //ListResult = ZoneList.Where(x => x.Boundaries != null && IsPointInPolygon(new Vector2(ZonePosition.X, ZonePosition.Y), x.Boundaries)).FirstOrDefault();
         if (ListResult == null)
         {
             zoneName = GetInternalZoneString(ZonePosition);

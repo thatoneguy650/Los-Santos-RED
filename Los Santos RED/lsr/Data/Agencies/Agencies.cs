@@ -12,6 +12,7 @@ public class Agencies : IAgencies
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Agencies.xml";
     private bool UseVanillaConfig = true;
     private List<Agency> AgenciesList;
+    private Agency DefaultAgency;
     public Agencies()
     {
 
@@ -298,7 +299,7 @@ public class Agencies : IAgencies
             new IssuableWeapon("weapon_pumpshotgun", new WeaponVariation()),
             new IssuableWeapon("weapon_pumpshotgun", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Flashlight" )})),
         };
-
+        DefaultAgency = new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, StandardCops, LSPDVehicles, "LS ", AllSidearms, AllLongGuns);
         AgenciesList = new List<Agency>
         {
             new Agency("~b~", "LSPD", "Los Santos Police Department", "Blue", Classification.Police, StandardCops, LSPDVehicles, "LS ",AllSidearms,AllLongGuns) { MaxWantedLevelSpawn = 3 },

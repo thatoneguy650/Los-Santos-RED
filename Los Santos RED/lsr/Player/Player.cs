@@ -667,12 +667,16 @@ namespace Mod
                         MyBreakIn.BreakIn();
                     }
                 }
+                else
+                {
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle ERROR VEHICLE NOT FOUND (ARE YOU SCANNING ENOUGH?)", 3);
+                }
             }
             else
             {
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}",3);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsHoldingEnter}",3);
         }
         private void IsInVehicleChanged()
         {
@@ -779,7 +783,7 @@ namespace Mod
         }
         private void UpdateLookedAtPed()
         {
-            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 750)
+            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 1000)//750
             {
 
 

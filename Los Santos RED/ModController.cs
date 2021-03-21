@@ -219,7 +219,7 @@ namespace LosSantosRED.lsr
                //new ModTask(100, "Input.Tick", Input.Update, 1,0),//0
              //   new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//0
 
-                new ModTask(100, "Player.Update", Player.Update, 3,0),//25
+               // new ModTask(100, "Player.Update", Player.Update, 3,0),//25
 
                 new ModTask(300, "World.Police.Tick", Police.Update, 3,1),//100
 
@@ -251,7 +251,15 @@ namespace LosSantosRED.lsr
                 //New Tasking
                 new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 7,12),
                 new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,13), //very bad performance, trying to limit counts
-               // new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14), //very bad performance, trying to limit counts
+            //NEED TO CHECK THE GETAGENCY THING FOR IT BEING SLOW?
+            //COULT BE CALLED BY LOTS OF THE SLOW STUFF
+            //PRUNE CHECKS AGENCY? slow? create vehicle? slow
+            //dispatcher? slow?
+
+            //change zone to be hawick, street to be whatever, agency to lspd and see if we get the weird slowness
+            //store the whole agency instead of looking it up all the time *in jurisdiction, maybe agency, etc.)
+            
             };
         }
         private void StartDebugLogic()
@@ -335,6 +343,7 @@ namespace LosSantosRED.lsr
                         Time.Tick();
                         Input.Update();
                         VanillaManager.Tick();
+                        Player.Update();
                         ModTask ToRun = MyTickTasks.Where(x => x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
                         if (ToRun != null)
                         {

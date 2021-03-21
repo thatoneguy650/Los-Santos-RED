@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr
 {
     public class Input
     {
+        private uint GameTimeLastPressedIndicators;
         private IInputable Player;
         private ISettingsProvideable Settings;
         public Input(IInputable player, ISettingsProvideable settings)
@@ -38,6 +39,7 @@ namespace LosSantosRED.lsr
         private bool IsPressingRightIndicator => Game.IsKeyDown(Keys.E) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingLeftIndicator => Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingHazards => Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow;
+        private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
         public void Update()
         {
             SurrenderCheck();
@@ -137,20 +139,23 @@ namespace LosSantosRED.lsr
                     NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 0, (int)GameControl.VehicleHotwireRight, 1.0f);
                 }
 
-                if (IsPressingHazards)
+                if (!RecentlyPressedIndicators)
                 {
-                    Player.CurrentVehicle.Indicators.ToggleHazards();
-                    GameFiber.Sleep(500);
-                }
-                if (IsPressingLeftIndicator)
-                {
-                    Player.CurrentVehicle.Indicators.ToggleLeft();
-                    GameFiber.Sleep(500);
-                }
-                if (IsPressingRightIndicator)
-                {
-                    Player.CurrentVehicle.Indicators.ToggleRight();
-                    GameFiber.Sleep(500);
+                    if (IsPressingHazards)
+                    {
+                        Player.CurrentVehicle.Indicators.ToggleHazards();
+                        GameTimeLastPressedIndicators = Game.GameTime;
+                    }
+                    if (IsPressingLeftIndicator)
+                    {
+                        Player.CurrentVehicle.Indicators.ToggleLeft();
+                        GameTimeLastPressedIndicators = Game.GameTime;
+                    }
+                    if (IsPressingRightIndicator)
+                    {
+                        Player.CurrentVehicle.Indicators.ToggleRight();
+                        GameTimeLastPressedIndicators = Game.GameTime;
+                    }
                 }
             }
         }

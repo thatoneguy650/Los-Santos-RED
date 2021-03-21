@@ -20,7 +20,7 @@ public class Surrendering
     }
 
     public bool IsCommitingSuicide { get; set; }
-    public bool CanSurrender => Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);
+    public bool CanSurrender => !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);
     //{
     //    get
     //    {
