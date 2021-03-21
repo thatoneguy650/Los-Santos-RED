@@ -17,6 +17,7 @@ namespace LosSantosRED.lsr
         private Debug Debug;
         private Dispatcher Dispatcher;
         private Input Input;
+        private string PrevLastRanTask;
         private string LastRanTask;
         private string LastRanTaskLocation;
         private int LastRunGroupRan;
@@ -214,9 +215,9 @@ namespace LosSantosRED.lsr
             {
 
                 //Required Run
-                //new ModTask(100, "Time.Tick", Time.Tick, 0,0),//0
-                //new ModTask(100, "Input.Tick", Input.Update, 1,0),//0
-                new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//0
+             //   new ModTask(100, "Time.Tick", Time.Tick, 0,0),//0
+               //new ModTask(100, "Input.Tick", Input.Update, 1,0),//0
+             //   new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//0
 
                 new ModTask(100, "Player.Update", Player.Update, 3,0),//25
 
@@ -239,7 +240,7 @@ namespace LosSantosRED.lsr
 
                 new ModTask(250, "World.PruneVehicles", World.PruneVehicles, 7,4),
                 new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 7,5),
-                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 7,6),
+                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 7,6), //very bad performance
                 new ModTask(500, "World.CleanUpVehicles", World.CleanUpVehicles, 7,7),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7,8),
 
@@ -249,8 +250,8 @@ namespace LosSantosRED.lsr
 
                 //New Tasking
                 new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 7,12),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,13),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,13), //very bad performance, trying to limit counts
+               // new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14), //very bad performance, trying to limit counts
             };
         }
         private void StartDebugLogic()
@@ -321,38 +322,44 @@ namespace LosSantosRED.lsr
             }, "Run Game Logic");
             GameFiber.Yield();
         }
-        //private void StartGameLogic()
-        //{
-        //    GameFiber.StartNew(delegate
-        //    {
-        //        try
-        //        {
-        //            while (IsRunning)
-        //            {
-        //                ModTask ToRun = MyTickTasks.Where(x => x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
-        //                if (ToRun != null)
-        //                {
-        //                    ToRun.Run();
-        //                    LastRanTask = ToRun.DebugName;
-        //                }
-        //                if (Game.FrameRate <= 60)
-        //                {
-        //                    EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}", 3);
-        //                    EntryPoint.WriteToConsole($"Ran: {LastRanTask}", 3);
-        //                }
-        //                GameFiber.Yield();
-        //            }
-                    
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace,0);
-        //            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
-        //            Dispose();
-        //        }
-        //    }, "Run Game Logic");
-        //    GameFiber.Yield();
-        //}
+        private void StartGameLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        PrevLastRanTask = LastRanTask;
+
+                        Time.Tick();
+                        Input.Update();
+                        VanillaManager.Tick();
+                        ModTask ToRun = MyTickTasks.Where(x => x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+                        if (ToRun != null)
+                        {
+                            ToRun.Run();
+                            LastRanTask = ToRun.DebugName;
+                        }
+                        if (Game.FrameRate <= 50)
+                        {
+                            EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}", 3);
+                            EntryPoint.WriteToConsole($"Ran: {LastRanTask}", 3);
+                            EntryPoint.WriteToConsole($"Ran Last Tick: {PrevLastRanTask}", 3);      
+                        }
+                        GameFiber.Yield();
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Game Logic");
+            GameFiber.Yield();
+        }
         private void StartGameLogicOld2()
         {
             GameFiber.StartNew(delegate

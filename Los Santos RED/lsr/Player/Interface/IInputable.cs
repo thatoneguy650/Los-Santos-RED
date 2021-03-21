@@ -22,6 +22,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsConversing { get; }
         List<ButtonPrompt> ButtonPrompts { get; }
         bool IsInteracting { get; }
+        bool IsAiming { get; }
+        bool IsMoving { get; }
+
         void RaiseHands();
         void LowerHands();
         void DropWeapon();

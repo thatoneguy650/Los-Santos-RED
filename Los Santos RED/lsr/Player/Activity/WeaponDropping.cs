@@ -33,16 +33,7 @@ public class WeaponDropping
                 return CurrentWeaponAmmo;
         }
     }
-    public bool CanDropWeapon
-    {
-        get
-        {
-            if (!DroppingWeapon && !Player.IsInVehicle && Player.IsVisiblyArmed)//was player one
-                return true;
-            else
-                return false;
-        }
-    }
+    public bool CanDropWeapon => !DroppingWeapon && !Player.IsInVehicle && Player.IsVisiblyArmed;
     public void DropWeapon()
     {
         DroppingWeapon = true;

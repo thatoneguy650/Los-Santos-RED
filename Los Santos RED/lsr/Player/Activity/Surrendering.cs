@@ -20,20 +20,20 @@ public class Surrendering
     }
 
     public bool IsCommitingSuicide { get; set; }
-    public bool CanSurrender
-    {
-        get
-        {
-            if (!Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+    public bool CanSurrender => Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);
+    //{
+    //    get
+    //    {
+    //        if (!Game.LocalPlayer.IsFreeAiming && (!Game.LocalPlayer.Character.IsInAnyVehicle(false) || Game.LocalPlayer.Character.CurrentVehicle.Speed < 2.5f))
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //}
     public void RaiseHands()
     {
         if (Game.LocalPlayer.Character.IsWearingHelmet)

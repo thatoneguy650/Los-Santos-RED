@@ -26,7 +26,7 @@ public class PedExt : IComplexTaskable
     private Entity Killer;
     private Entity LastHurtBy;
     private uint GameTimeLastExitedVehicle;
-
+    public uint GameTimeLastUpdatedTask { get; set; }
     public uint GameTimeLastUpdated { get; private set; }
     public ComplexTask CurrentTask { get; set; }
     public string DebugString => $"Handle: {Pedestrian.Handle} Distance {DistanceToPlayer} See {CanSeePlayer} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName} InVeh {IsInVehicle}";

@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,14 +58,14 @@ public class Tasker
     }
     public void UpdatePoliceTasks()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000))
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000).OrderBy(x=> x.GameTimeLastUpdatedTask).Take(4))
         {
             UpdateCurrentTask(Cop);
         }
     }
     public void UpdateCivilianTasks()
     {
-        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists()))
+        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastUpdatedTask).Take(2))
         {
             UpdateCurrentTask(Civilian);
         }
@@ -139,6 +140,7 @@ public class Tasker
                 Cop.CurrentTask.Start();
             }
         }
+        Cop.GameTimeLastUpdatedTask = Game.GameTime;
     }
     private void UpdateCurrentTask(PedExt Civilian)//this should be moved out?
     {
@@ -162,6 +164,7 @@ public class Tasker
                 }
             }
         }
+        Civilian.GameTimeLastUpdatedTask = Game.GameTime;
     }
 }
 

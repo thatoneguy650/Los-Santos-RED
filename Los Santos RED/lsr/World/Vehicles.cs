@@ -56,9 +56,17 @@ public class Vehicles
     }
     public void CreateNew()
     {
+        int VehiclesCreated = 0;
         foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))
         {
-            AddToList(vehicle);
+            if(AddToList(vehicle))
+            {
+                VehiclesCreated++;
+            }
+            if(VehiclesCreated >= 2)
+            {
+                return;
+            }
         }
     }
     public void CleanUp()
@@ -122,7 +130,7 @@ public class Vehicles
         }
         return ToReturn;
     }
-    public void AddToList(Vehicle vehicle)
+    public bool AddToList(Vehicle vehicle)
     {
         if (vehicle.Exists())
         { 
@@ -131,42 +139,48 @@ public class Vehicles
                 if (!PoliceVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
                 {
                     VehicleExt Car = new VehicleExt(vehicle);
-                    Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
-                    Car.UpgradePerformance();
+                    //Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
+                   // Car.UpgradePerformance();
                     PoliceVehicles.Add(Car);
+                    return true;
                 }
             }
             else
             {
-                Agency FirstAgency = Agencies.GetAgencies(vehicle).FirstOrDefault();
-                if(FirstAgency != null)
-                {
-                    if (FirstAgency.ResponseType == ResponseType.EMS)
-                    {
-                        if (!EMSVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
-                        {
-                            VehicleExt Car = new VehicleExt(vehicle);
-                            Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.EMS));
-                            EMSVehicles.Add(Car);
-                        }
-                    }
-                    else if (FirstAgency.ResponseType == ResponseType.Fire)
-                    {
-                        if (!FireVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
-                        {
-                            VehicleExt Car = new VehicleExt(vehicle);
-                            Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
-                            FireVehicles.Add(Car);
-                        }
-                    }
-                }
+                //slow slow slow
+                //Agency FirstAgency = Agencies.GetAgencies(vehicle).FirstOrDefault();
+                //if(FirstAgency != null)
+                //{
+                //    if (FirstAgency.ResponseType == ResponseType.EMS)
+                //    {
+                //        if (!EMSVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                //        {
+                //            VehicleExt Car = new VehicleExt(vehicle);
+                //          //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.EMS));
+                //            EMSVehicles.Add(Car);
+                //            return true;
+                //        }
+                //    }
+                //    else if (FirstAgency.ResponseType == ResponseType.Fire)
+                //    {
+                //        if (!FireVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                //        {
+                //            VehicleExt Car = new VehicleExt(vehicle);
+                //          //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
+                //            FireVehicles.Add(Car);
+                //            return true;
+                //        }
+                //    }
+                //}
                 if (!CivilianVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
                 {
                     VehicleExt Car = new VehicleExt(vehicle);
                     CivilianVehicles.Add(Car);
+                    return true;
                 }
             }
         }
+        return false;
     }
     public void AddToList(VehicleExt vehicleExt)
     {
