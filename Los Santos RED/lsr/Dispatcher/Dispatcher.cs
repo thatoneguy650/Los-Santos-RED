@@ -27,7 +27,9 @@ public class Dispatcher
     private uint GameTimeAttemptedDispatchFire;
     private uint GameTimeAttemptedDispatchRoadblock;
 
-    private uint GameTimeAttemptedRecall;
+    private uint GameTimeAttemptedRecallLE;
+    private uint GameTimeAttemptedRecallEMS;
+    private uint GameTimeAttemptedRecallFire;
     private uint GameTimeLastSpawnedRoadblock;
 
     private Roadblock Roadblock;
@@ -47,20 +49,21 @@ public class Dispatcher
     private float ClosestPoliceSpawnToOtherPoliceAllowed => Player.IsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => Player.IsWanted ? 150f : 250f;
     private List<Cop> DeletableCops => World.PoliceList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
+    private List<EMT> DeletableEMTs => World.EMTList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
+    private List<Firefighter> DeletableFIrefighters => World.FirefighterList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
     private float DistanceToDelete => Player.IsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 1000f;
-
     private bool HasNeedToDispatchLE => World.TotalSpawnedPolice < SpawnedCopLimit;
     private bool HasNeedToDispatchEMS => World.TotalSpawnedEMTs < 2;
     private bool HasNeedToDispatchFire => World.TotalSpawnedFirefighters < 2;
     private bool HasNeedToDispatchRoadblock => Player.WantedLevel >= 3 && Roadblock == null;
-
-    private bool IsTimeToDispatchLE => Game.GameTime - GameTimeAttemptedDispatchLE >= TimeBetweenSpawn;
-    private bool IsTimeToDispatchEMS => Game.GameTime - GameTimeAttemptedDispatchEMS >= TimeBetweenSpawn;
-    private bool IsTimeToDispatchFire => Game.GameTime - GameTimeAttemptedDispatchFire >= TimeBetweenSpawn;
-    private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenSpawn;
-
-    private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
+    private bool IsTimeToDispatchLE => Game.GameTime - GameTimeAttemptedDispatchLE >= TimeBetweenLESpawn;
+    private bool IsTimeToDispatchEMS => Game.GameTime - GameTimeAttemptedDispatchEMS >= 60000;
+    private bool IsTimeToDispatchFire => Game.GameTime - GameTimeAttemptedDispatchFire >= 60000;
+    private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenLESpawn;
+    private bool IsTimeToRecallLE => Game.GameTime - GameTimeAttemptedRecallLE >= TimeBetweenLESpawn;
+    private bool IsTimeToRecallEMS => Game.GameTime - GameTimeAttemptedRecallEMS >= TimeBetweenEMSSpawn;
+    private bool IsTimeToRecallFire => Game.GameTime - GameTimeAttemptedRecallFire >= TimeBetweenFireSpawn;//thes need to be classes!!!
     private float MaxDistanceToSpawn
     {
         get
@@ -149,7 +152,7 @@ public class Dispatcher
             }
         }
     }
-    private int TimeBetweenSpawn
+    private int TimeBetweenLESpawn
     {
         get
         {
@@ -163,6 +166,8 @@ public class Dispatcher
             }
         }
     }
+    private int TimeBetweenEMSSpawn => 60000;
+    private int TimeBetweenFireSpawn => 60000;
     private int TimeBetweenRoadblocks
     {
         get
@@ -198,7 +203,7 @@ public class Dispatcher
     }
     public void Recall()
     {
-        if (IsTimeToRecall)
+        if (IsTimeToRecallLE)
         {
             //EntryPoint.WriteToConsole($"DISPATCHER: Attempting Recall");
             foreach (Cop DeleteableCop in DeletableCops)
@@ -214,7 +219,33 @@ public class Dispatcher
                 Roadblock = null;
                 EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
             }
-            GameTimeAttemptedRecall = Game.GameTime;
+
+
+
+
+            GameTimeAttemptedRecallLE = Game.GameTime;
+        }
+        if(IsTimeToRecallEMS)
+        {
+            foreach (EMT emt in DeletableEMTs)
+            {
+                if (emt.DistanceToPlayer >= DistanceToDelete)
+                {
+                    Delete(emt);
+                }
+            }
+            GameTimeAttemptedRecallEMS = Game.GameTime;
+        }
+        if (IsTimeToRecallFire)
+        {
+            foreach (Firefighter firefighter in DeletableFIrefighters)
+            {
+                if (firefighter.DistanceToPlayer >= DistanceToDelete)
+                {
+                    Delete(firefighter);
+                }
+            }
+            GameTimeAttemptedRecallFire = Game.GameTime;
         }
     }
     private void DispatchLawEnforcement()
@@ -290,27 +321,30 @@ public class Dispatcher
             if (spawnLocation.HasSpawns && isValidSpawn)
             {
                 Agency agency = GetRandomAgency(spawnLocation, ResponseType.EMS);
-                LastAgencySpawned = agency;
-                EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn for {agency.ID}", 3);
-                DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
-                if (VehicleType != null)
+                if (agency != null)
                 {
-                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {VehicleType.ModelName}", 3);
-                    DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
-                    if (PersonType != null)
+                    LastAgencySpawned = agency;
+                    EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn for {agency.ID}", 3);
+                    DispatchableVehicle VehicleType = agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
+                    if (VehicleType != null)
                     {
-                        EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);
-                        try
+                        EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {VehicleType.ModelName}", 3);
+                        DispatchablePerson PersonType = agency.GetRandomPed(Player.WantedLevel, VehicleType.RequiredPassengerModels);
+                        if (PersonType != null)
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
-                            spawnTask.AttemptSpawn();
-                            spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
-                            spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
-                            HasDispatchedThisTick = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            EntryPoint.WriteToConsole($"DISPATCHER: Spawn EMS ERROR {ex.Message} : {ex.StackTrace}", 0);
+                            EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);
+                            try
+                            {
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                spawnTask.AttemptSpawn();
+                                spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
+                                spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));
+                                HasDispatchedThisTick = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                EntryPoint.WriteToConsole($"DISPATCHER: Spawn EMS ERROR {ex.Message} : {ex.StackTrace}", 0);
+                            }
                         }
                     }
                 }
@@ -370,7 +404,7 @@ public class Dispatcher
             GameTimeAttemptedDispatchFire = Game.GameTime;
         }
     }
-    private void Delete(Cop Cop)
+    private void Delete(PedExt Cop)
     {
         if (Cop != null && Cop.Pedestrian.Exists())
         {

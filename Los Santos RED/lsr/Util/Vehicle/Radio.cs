@@ -18,20 +18,7 @@ public class Radio
     {
         VehicleToMonitor = vehicleToMonitor;
     }
-    public bool CanChangeStation
-    {
-        get
-        {
-            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+    public bool CanChangeStation => Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn;
     public void Update(string DesiredStation)
     {
         if (DesiredStation != "NONE")

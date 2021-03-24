@@ -38,6 +38,8 @@ namespace Mod
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
         public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
         public List<Cop> PoliceList => Pedestrians.Police.Where(x => x.Pedestrian.Exists()).ToList();
+        public List<EMT> EMTList => Pedestrians.EMTs.Where(x => x.Pedestrian.Exists()).ToList();
+        public List<Firefighter> FirefighterList => Pedestrians.Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
         public int TotalSpawnedPolice => Pedestrians.TotalSpawnedPolice;
         public int TotalSpawnedFirefighters => Pedestrians.TotalSpawnedFirefighters;
         public int TotalSpawnedEMTs => Pedestrians.TotalSpawnedEMTs;

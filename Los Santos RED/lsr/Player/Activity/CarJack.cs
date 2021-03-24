@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -20,10 +21,13 @@ public class CarJack
     private int VictimScene;
     private bool WantToCancel;
     private WeaponInformation Weapon;
-    public CarJack(ICarStealable player, Vehicle VehicleToEnter, Ped DriverPed, PedExt DriverExt, int EntrySeat, WeaponInformation weapon)
+    private bool WasEngineOn;
+    private VehicleExt VehicleExt;
+    public CarJack(ICarStealable player, VehicleExt vehicle, Ped DriverPed, PedExt DriverExt, int EntrySeat, WeaponInformation weapon)
     {
         Player = player;
-        TargetVehicle = VehicleToEnter;
+        VehicleExt = vehicle;
+        TargetVehicle = VehicleExt.Vehicle;
         Driver = DriverPed;
         SeatTryingToEnter = EntrySeat;
         Weapon = weapon;
@@ -47,6 +51,11 @@ public class CarJack
     }
     public void StartCarJack()
     {
+        WasEngineOn = VehicleExt.Vehicle.IsEngineOn;
+        if (WasEngineOn)
+        {
+            VehicleExt.Engine.Toggle(true);
+        }
         if (CanArmedCarJack && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
         {
             ArmedCarJack();
@@ -205,7 +214,10 @@ public class CarJack
                 //    MyCar.Vehicle.IsEngineOn = true;
                 //   // MyCar.ToggleEngine(true);
                 //}
-
+                if (WasEngineOn)
+                {
+                    VehicleExt.Engine.Toggle(true);
+                }
                 if (TargetVehicle.Doors[0].IsValid())
                 {
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);

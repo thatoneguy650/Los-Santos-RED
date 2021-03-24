@@ -23,6 +23,8 @@ namespace LosSantosRED.lsr.Interface
         int TotalSpawnedFirefighters { get; }
         int TotalSpawnedEMTs { get; }
         int TotalSpawnedPolice { get; }
+        List<Firefighter> FirefighterList { get; }
+        List<EMT> EMTList { get; }
 
         void AddEntity(PedExt pedExt);
         void AddEntity(VehicleExt x);

@@ -96,7 +96,7 @@ namespace Mod
         public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f;
-        public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsInVehicle && !IsGettingIntoAVehicle && !IsAttemptingToSurrender && !IsMovingDynamically;
+        public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsInVehicle && !IsGettingIntoAVehicle  && !IsMovingDynamically;//&& !IsAttemptingToSurrender
         public bool CanSurrender => Surrendering.CanSurrender;
         public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit || Settings.SettingsManager.General.UndieLimit == 0;
         public Ped Character => Game.LocalPlayer.Character;
@@ -323,6 +323,7 @@ namespace Mod
             PoliceResponse.Dispose(); //same ^
             Interaction?.Dispose();
             isActive = false;
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
         }
         public void GiveMoney(int Amount)
@@ -411,6 +412,10 @@ namespace Mod
 
             CurrentModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+
+
             //this temp bullshit
             GameFiber.StartNew(delegate
             {
@@ -564,23 +569,6 @@ namespace Mod
                 DynamicActivity.Continue();
             }
         }
-        public void StartSurrendering()
-        {
-            if (!IsPerformingActivity && CanPerformActivities)
-            {
-                if (DynamicActivity != null)
-                {
-                    DynamicActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                DynamicActivity = new SmokingActivity(this, true);
-                DynamicActivity.Start();
-            }
-            else if (IsPerformingActivity && CanPerformActivities)
-            {
-                DynamicActivity.Continue();
-            }
-        }
         public void StopDynamicActivity()
         {
             if (IsPerformingActivity)
@@ -675,7 +663,7 @@ namespace Mod
                     }
                     else if (IsHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
                     {
-                        CarJack MyJack = new CarJack(this, VehicleTryingToEnter, VehicleTryingToEnter.Driver, EntityProvider.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == VehicleTryingToEnter.Driver.Handle), SeatTryingToEnter, CurrentWeapon);
+                        CarJack MyJack = new CarJack(this, MyCar, VehicleTryingToEnter.Driver, EntityProvider.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == VehicleTryingToEnter.Driver.Handle), SeatTryingToEnter, CurrentWeapon);
                         MyJack.StartCarJack();
                     }
                     else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7)

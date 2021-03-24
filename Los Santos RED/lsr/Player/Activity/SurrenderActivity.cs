@@ -27,6 +27,7 @@ public class SurrenderActivity : DynamicActivity
     }
     public void LowerHands()
     {
+        EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
         Player.HandsAreUp = false; // You put your hands down
         Game.LocalPlayer.Character.Tasks.Clear();
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
@@ -34,6 +35,7 @@ public class SurrenderActivity : DynamicActivity
     }
     public void RaiseHands()
     {
+        EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands", 3);
         if (Game.LocalPlayer.Character.IsWearingHelmet)
             Game.LocalPlayer.Character.RemoveHelmet(true);
 

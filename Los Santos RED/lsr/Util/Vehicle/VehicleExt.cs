@@ -19,6 +19,7 @@ namespace LSR.Vehicles
         public Vehicle Vehicle { get; set; } = null;
         public Radio Radio { get; set; }
         public Indicators Indicators { get; set; }
+        public Engine Engine { get; set; }
         public FuelTank FuelTank { get; set; }  
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
@@ -196,6 +197,7 @@ namespace LSR.Vehicles
             Radio = new Radio(this);
             Indicators = new Indicators(this);
             FuelTank = new FuelTank(this);
+            Engine = new Engine(this);
         }
         public VehicleExt(Vehicle vehicle,bool wasModSpawned) : this(vehicle)
         {
@@ -280,6 +282,7 @@ namespace LSR.Vehicles
         {
             if (IsCar)
             {
+                Engine.Update();
                 Radio.Update(DesiredStation);
                 Indicators.Update();
                 FuelTank.Update();

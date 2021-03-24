@@ -48,9 +48,13 @@ namespace LosSantosRED.lsr
                 if (IsInSearchMode)
                 {
                     if (GameTimeStartedSearchMode == 0)
+                    {
                         return 0;
+                    }
                     else
+                    {
                         return (Game.GameTime - GameTimeStartedSearchMode);
+                    }
                 }
                 else
                 {
@@ -74,20 +78,8 @@ namespace LosSantosRED.lsr
 
             }
         }
-        public uint CurrentSearchTime
-        {
-            get
-            {
-                return (uint)Player.WantedLevel * 30000;//30 seconds each
-            }
-        }
-        public uint CurrentActiveTime
-        {
-            get
-            {
-                return (uint)Player.WantedLevel * 30000;//30 seconds each
-            }
-        }
+        public uint CurrentSearchTime => (uint)Player.WantedLevel * 30000;//30 seconds each
+        public uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each
         public string SearchModeDebug => string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", IsInSearchMode, IsInActiveMode, TimeInSearchMode, TimeInActiveMode);
         public bool StarsRecentlyActive => GameTimeLastStarsNotGreyedOut != 0 && Game.GameTime - GameTimeLastStarsNotGreyedOut <= 1500;
         public bool StarsRecentlyGreyedOut => GameTimeLastStarsGreyedOut != 0 && Game.GameTime - GameTimeLastStarsGreyedOut <= 1500;
@@ -222,18 +214,7 @@ namespace LosSantosRED.lsr
                     return GhostCop;
                 }
             }
-            public bool CanCreateGhostCop
-            {
-                get
-                {
-                    if (GameTimeLastGhostCopCreated == 0)
-                        return true;
-                    else if (Game.GameTime - GameTimeLastGhostCopCreated >= 4000)
-                        return true;
-                    else
-                        return false;
-                }
-            }
+            public bool CanCreateGhostCop => GameTimeLastGhostCopCreated == 0 || Game.GameTime - GameTimeLastGhostCopCreated >= 4000;
             public StopVanillaSeachMode()
             {
                 CopModel.LoadAndWait();
@@ -242,9 +223,13 @@ namespace LosSantosRED.lsr
             public void Tick(bool IsWanted, bool TargetIsInVehicle)
             {
                 if (IsWanted)
+                {
                     StopSearchMode = true;
+                }
                 else
+                {
                     StopSearchMode = false;
+                }
 
 
                 if (PrevStopSearchMode != StopSearchMode)
@@ -253,11 +238,13 @@ namespace LosSantosRED.lsr
                 }
 
                 if (!StopSearchMode)
+                {
                     return;
-
+                }
                 if (!GhostCop.Exists())
                 {
                     CreateGhostCop();
+                    return;//new to split up the create and move/los call?
                 }
                 if (IsWanted)// && Police.AnyRecentlySeenPlayer)// Needed for the AI to keep the player in the wanted position
                 {
@@ -301,7 +288,9 @@ namespace LosSantosRED.lsr
             private void MoveGhostCopToOrigin()
             {
                 if (GhostCop != null)
+                {
                     GhostCop.Position = new Vector3(0f, 0f, 0f);
+                }
             }
             private void CreateGhostCop()
             {

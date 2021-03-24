@@ -32,6 +32,8 @@ namespace LosSantosRED.lsr
             Settings = settings;
         }
         private uint GameTimeStartedHoldingEnter;
+        private uint GameTimeLastPressedEngineToggle;
+
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsHoldingEnter => GameTimeStartedHoldingEnter != 0 && Game.GameTime - GameTimeStartedHoldingEnter >= 75;
         private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow;
@@ -40,6 +42,8 @@ namespace LosSantosRED.lsr
         private bool IsPressingLeftIndicator => Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingHazards => Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
+        public bool IsPressingEngineToggle => Game.IsKeyDown(Keys.X) && Game.IsShiftKeyDownRightNow;
+
         public void Update()
         {
             SurrenderCheck();
@@ -82,9 +86,9 @@ namespace LosSantosRED.lsr
         }
         private void SurrenderCheck()
         {
-            if (IsPressingSurrender && Player.CanSurrender)
+            if (IsPressingSurrender)
             {
-                if (!Player.HandsAreUp && !Player.IsBusted)
+                if (Player.CanSurrender)
                 {
                     Player.RaiseHands();
                 }
@@ -129,16 +133,14 @@ namespace LosSantosRED.lsr
         {
             if (Player.CurrentVehicle != null)
             {
-
-                if(Game.IsKeyDown(Keys.Left))
+                if(!RecentlyPressedIndicators)
                 {
-                    NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 0, (int)GameControl.VehicleHotwireLeft, 1.0f);
+                    if(IsPressingEngineToggle)
+                    {
+                        Player.CurrentVehicle.Engine.Toggle();
+                        GameTimeLastPressedEngineToggle = Game.GameTime;
+                    }
                 }
-                else if (Game.IsKeyDown(Keys.Right))
-                {
-                    NativeFunction.CallByHash<bool>(0xE8A25867FBA3B05E, 0, (int)GameControl.VehicleHotwireRight, 1.0f);
-                }
-
                 if (!RecentlyPressedIndicators)
                 {
                     if (IsPressingHazards)

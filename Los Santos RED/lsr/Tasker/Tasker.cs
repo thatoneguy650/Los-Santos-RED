@@ -19,46 +19,23 @@ public class Tasker
         Player = player;
         Weapons = weapons;
     }
-    public void RunTasks()
+    public void RunPoliceTasks()
     {
-        RunPoliceTasks();
-        RunCiviliansTasks();
-    }
-    private void RunPoliceTasks()
-    {
-        int PedsUpdated = 0;
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan))
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan).Take(2))
         {
-            if (PedsUpdated > 2)
-            {
-                return;
-            }
-            else
-            {
-                Cop.UpdateTask();
-                PedsUpdated++;
-            }
+            Cop.UpdateTask();
         }
     }
-    private void RunCiviliansTasks()
+    public void RunCiviliansTasks()
     {
-        int CivlianPedsUpdated = 0;
-        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan))
+        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan).Take(2))
         {
-            if (CivlianPedsUpdated > 2)
-            {
-                return;
-            }
-            else
-            {
-                Ped.UpdateTask();
-                CivlianPedsUpdated++;
-            }
+            Ped.UpdateTask();      
         }
     }
     public void UpdatePoliceTasks()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000).OrderBy(x=> x.GameTimeLastUpdatedTask).Take(4))
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000).OrderBy(x=> x.GameTimeLastUpdatedTask).Take(2))
         {
             UpdateCurrentTask(Cop);
         }

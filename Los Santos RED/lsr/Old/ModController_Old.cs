@@ -204,9 +204,10 @@ namespace LosSantosRED.lsr
 
 
                 //New Tasking
-                new ModTask(500, "NewTasking.Update", Tasker.RunTasks, 16,0),
-                new ModTask(500, "NewTasking.Update", Tasker.UpdatePoliceTasks, 16,1),
-                new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilianTasks, 16,2),
+                new ModTask(500, "NewTasking.Update", Tasker.RunPoliceTasks, 16,0),
+                new ModTask(500, "NewTasking.Update", Tasker.RunCiviliansTasks, 16,1),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdatePoliceTasks, 16,2),
+                new ModTask(500, "NewTasking.Update", Tasker.UpdateCivilianTasks, 16,3),
             };
         }
         private void SetupModTasksAlt()
@@ -249,9 +250,10 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 7,11),
 
                 //New Tasking
-                new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 7,12),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,13), //very bad performance, trying to limit counts
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.RunTasks", Tasker.RunPoliceTasks, 7,12),
+                new ModTask(500, "Tasker.RunTasks", Tasker.RunCiviliansTasks, 7,13),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,14), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,15), //very bad performance, trying to limit counts
             //NEED TO CHECK THE GETAGENCY THING FOR IT BEING SLOW?
             //COULT BE CALLED BY LOTS OF THE SLOW STUFF
             //PRUNE CHECKS AGENCY? slow? create vehicle? slow

@@ -202,9 +202,17 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 7,11),
 
                 //New Tasking
-                new ModTask(500, "Tasker.RunTasks", Tasker.RunTasks, 7,12),
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,13), //very bad performance, trying to limit counts
+                
+                
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,12), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 7,13),
                 new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 7,15),
+
+
+
+
+
             //NEED TO CHECK THE GETAGENCY THING FOR IT BEING SLOW?
             //COULT BE CALLED BY LOTS OF THE SLOW STUFF
             //PRUNE CHECKS AGENCY? slow? create vehicle? slow
