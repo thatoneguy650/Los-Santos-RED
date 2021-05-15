@@ -154,7 +154,7 @@ public class PedExt : IComplexTaskable
             {
                 return true;
             }
-            else if (Game.GameTime > GameTimeLastLOSCheck + LosUpdate + RandomItems.MyRand.Next(100))
+            else if (Game.GameTime > GameTimeLastLOSCheck + LosUpdate)
             {
                 return true;
             }

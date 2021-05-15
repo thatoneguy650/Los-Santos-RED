@@ -48,7 +48,7 @@ public class Dispatcher
     private DispatchParameters LawEnforcement = new DispatchParameters();
     private float ClosestPoliceSpawnToOtherPoliceAllowed => Player.IsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => Player.IsWanted ? 150f : 250f;
-    private List<Cop> DeletableCops => World.PoliceList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
+    private List<Cop> DeletableCops => World.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private List<EMT> DeletableEMTs => World.EMTList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
     private List<Firefighter> DeletableFIrefighters => World.FirefighterList.Where(x => x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime).ToList();
     private float DistanceToDelete => Player.IsWanted ? 600f : 1000f;
@@ -186,15 +186,15 @@ public class Dispatcher
     {
         HasDispatchedThisTick = false;
         DispatchLawEnforcement();
-        if(!HasDispatchedThisTick)//for now
-        {
-            DispatchEMS();
-        }
+        //if(!HasDispatchedThisTick)//for now
+        //{
+        //    DispatchEMS();
+        //}
         
-        if(!HasDispatchedThisTick)
-        {
-            DispatchFire();
-        }
+        //if(!HasDispatchedThisTick)
+        //{
+        //    DispatchFire();
+        //}
         
     }
     public void Dispose()
@@ -252,7 +252,7 @@ public class Dispatcher
     {
         if (IsTimeToDispatchLE && HasNeedToDispatchLE)
         {
-            EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn", 5);
+            EntryPoint.WriteToConsole($"DISPATCHER: Attempting LE Spawn", 3);
             int timesTried = 0;
             bool isValidSpawn = false;
             SpawnLocation spawnLocation = new SpawnLocation();
@@ -291,7 +291,7 @@ public class Dispatcher
             }
             else
             {
-                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn LE Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 5);
+                EntryPoint.WriteToConsole($"DISPATCHER: Attempting to Spawn LE Failed, Has Spawns {spawnLocation.HasSpawns} Is Valid {isValidSpawn}", 3);
             }
             GameTimeAttemptedDispatchLE = Game.GameTime;
         }
@@ -335,7 +335,7 @@ public class Dispatcher
                             EntryPoint.WriteToConsole($"DISPATCHER: Attempting EMS Spawn Vehicle {PersonType.ModelName}", 3);
                             try
                             {
-                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                                SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, false);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
                                 spawnTask.AttemptSpawn();
                                 spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
                                 spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));

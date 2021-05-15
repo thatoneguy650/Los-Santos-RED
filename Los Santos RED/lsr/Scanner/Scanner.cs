@@ -877,15 +877,16 @@ namespace LosSantosRED.lsr
 
                 if (!CurrentPlayer.IsBusted && !CurrentPlayer.IsDead && CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000)
                 {
-                    if (!SuspectEvaded.HasVeryRecentlyBeenPlayed && CurrentPlayer.TimeInSearchMode >= 20000)
-                    {
-                        AddToQueue(SuspectEvaded, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
-                    }
-                    else if (!LostVisual.HasVeryRecentlyBeenPlayed && CurrentPlayer.StarsRecentlyGreyedOut)// 45000 && !World.AnyCopsNearPlayer)
+                    //if (!SuspectEvaded.HasVeryRecentlyBeenPlayed && CurrentPlayer.TimeInSearchMode >= 20000 && CurrentPlayer.TimeInSearchMode >= 30000)
+                    //{
+                    //    AddToQueue(SuspectEvaded, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                    //}
+                    //else 
+                    if (!LostVisual.HasVeryRecentlyBeenPlayed && CurrentPlayer.StarsRecentlyGreyedOut)// 45000 && !World.AnyCopsNearPlayer)
                     {
                         AddToQueue(LostVisual, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                     }
-                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && CurrentPlayer.StarsRecentlyActive && CurrentPlayer.AnyPoliceRecentlySeenPlayer)
+                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && CurrentPlayer.StarsRecentlyActive)
                     {
                         AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
@@ -893,10 +894,10 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000 && CurrentPlayer.AnyPoliceRecentlySeenPlayer)
-                    {
-                        AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
-                    }
+                    //else if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !RecentlyAnnouncedDispatch && CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000 && CurrentPlayer.AnyPoliceRecentlySeenPlayer)
+                    //{
+                    //    AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                    //}
                 }
             }
             else

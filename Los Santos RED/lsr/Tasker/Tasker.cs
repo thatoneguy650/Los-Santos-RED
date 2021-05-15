@@ -21,28 +21,28 @@ public class Tasker
     }
     public void RunPoliceTasks()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan).Take(2))
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan).Take(5))//2
         {
             Cop.UpdateTask();
         }
     }
     public void RunCiviliansTasks()
     {
-        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan).Take(2))
+        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null).OrderBy(x => x.CurrentTask.GameTimeLastRan).Take(5))//2
         {
             Ped.UpdateTask();      
         }
     }
     public void UpdatePoliceTasks()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000).OrderBy(x=> x.GameTimeLastUpdatedTask).Take(2))
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000).OrderBy(x=> x.GameTimeLastUpdatedTask).Take(10))//2
         {
             UpdateCurrentTask(Cop);
         }
     }
     public void UpdateCivilianTasks()
     {
-        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastUpdatedTask).Take(2))
+        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2
         {
             UpdateCurrentTask(Civilian);
         }

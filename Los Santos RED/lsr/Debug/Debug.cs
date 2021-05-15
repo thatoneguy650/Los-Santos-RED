@@ -82,6 +82,27 @@ public class Debug
         //    DrawColoredArrowTaskStatus(cop);
         //    DrawColoredArrowAlertness(cop);
         //}
+        foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f))
+        {
+            Color Color = Color.Yellow;
+            if(ped.HasSeenPlayerCommitCrime)
+            {
+                Color = Color.Orange;
+            }
+            else if (ped.CanRecognizePlayer)
+            {
+                Color = Color.Green;
+            }
+            else if (ped.CanSeePlayer)
+            {
+                Color = Color.White;
+            }
+            else
+            {
+                Color = Color.Red;
+            }
+            Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f,0f,2f), Vector3.Zero, Rotator.Zero, 1f, Color);
+        }
     }
     private void DebugNumpad0()
     {

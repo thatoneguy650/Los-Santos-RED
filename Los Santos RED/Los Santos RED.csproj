@@ -133,7 +133,7 @@
     <Compile Include="lsr\Player\Activity\ScenarioActivity.cs" />
     <Compile Include="lsr\Player\Interface\IDispatchable.cs" />
     <Compile Include="lsr\Police\AssistManager.cs" />
-    <Compile Include="lsr\Police\Roadblock.cs" />
+    <Compile Include="lsr\Dispatcher\Roadblock.cs" />
     <Compile Include="lsr\Police\Voice.cs" />
     <Compile Include="lsr\Services\EMT.cs" />
     <Compile Include="lsr\Services\Firefighter.cs" />

@@ -22,6 +22,10 @@ namespace LosSantosRED.lsr
         private string LastRanTaskLocation;
         private int LastRunGroupRan;
         private List<ModTask> MyTickTasks;
+
+        private List<ModTask> CoreTasks;
+        private List<ModTask> SecondaryTasks;
+
         private Names Names;
         private PedSwap PedSwap;
         private PlacesOfInterest PlacesOfInterest;
@@ -164,64 +168,52 @@ namespace LosSantosRED.lsr
         }
         private void SetupModTasks()
         {
-            MyTickTasks = new List<ModTask>()
+            CoreTasks = new List<ModTask>()
             {
-
                 //Required Run
-             //   new ModTask(100, "Time.Tick", Time.Tick, 0,0),//0
-               //new ModTask(100, "Input.Tick", Input.Update, 1,0),//0
-             //   new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//0
+                new ModTask(100, "Time.Tick", Time.Tick, 0,0),
+                new ModTask(100, "Input.Tick", Input.Update, 1,0),
+                new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2,0),
 
-               // new ModTask(100, "Player.Update", Player.Update, 3,0),//25
+                new ModTask(100, "Player.Update", Player.Update, 3,0),
 
-                new ModTask(300, "World.Police.Tick", Police.Update, 3,1),//100
-
-                new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),
-                new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),
-
-                new ModTask(500, "Player.Investigation.Update", Player.Investigation.Update, 6,0),//150
-                new ModTask(250, "Player.SearchModeUpdate", Player.SearchModeUpdate, 6,1),//150
-                new ModTask(150, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 6,2),
-                new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 6,3),
-                new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6,4),
-                new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 6,5),
-
-                new ModTask(250, "Civilians.Update", Civilians.Update, 7,0),
-                new ModTask(250, "World.PrunePedestrians", World.PrunePedestrians, 7,1),
-                new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 7,2),
-                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 7,3),
-
-                new ModTask(250, "World.PruneVehicles", World.PruneVehicles, 7,4),
-                new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 7,5),
-                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 7,6), //very bad performance
-                new ModTask(500, "World.CleanUpVehicles", World.CleanUpVehicles, 7,7),
-                new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7,8),
-
-                new ModTask(500, "Scanner.Tick", Scanner.Tick, 7,9),
-                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 7,10),
-                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 7,11),
-
-                //New Tasking
+                new ModTask(300, "Police.Update", Police.Update, 4,1),
                 
-                
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,12), //very bad performance, trying to limit counts
-                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 7,13),
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14), //very bad performance, trying to limit counts
-                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 7,15),
 
-
-
-
-
-            //NEED TO CHECK THE GETAGENCY THING FOR IT BEING SLOW?
-            //COULT BE CALLED BY LOTS OF THE SLOW STUFF
-            //PRUNE CHECKS AGENCY? slow? create vehicle? slow
-            //dispatcher? slow?
-
-            //change zone to be hawick, street to be whatever, agency to lspd and see if we get the weird slowness
-            //store the whole agency instead of looking it up all the time *in jurisdiction, maybe agency, etc.)
-            
             };
+            SecondaryTasks = new List<ModTask>()
+            {
+                new ModTask(500, "Player.Violations.Update", Player.ViolationsUpdate, 10,0),
+                new ModTask(500, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 11,1),
+
+                new ModTask(500, "Player.Investigation.Update", Player.Investigation.Update, 12,0),//150
+                new ModTask(500, "Player.SearchModeUpdate", Player.SearchModeUpdate, 13,1),//150
+                new ModTask(500, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 14,2),//150
+                new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 15,3),
+                new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 16,4),
+                new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 17,5),
+
+                new ModTask(250, "Civilians.Update", Civilians.Update, 18,0),
+                new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 19,1),
+                new ModTask(500, "World.ScanForPedestrians", World.ScanForPedestrians, 20,2),
+                new ModTask(500, "World.CreateNewPedestrians", World.CreateNewPedestrians, 21,3),
+
+                new ModTask(500, "World.PruneVehicles", World.PruneVehicles, 22,4),
+                new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 23,5),
+                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 24,6), //very bad performance
+                new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 25,7),
+                new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 26,8),
+
+                new ModTask(500, "Scanner.Tick", Scanner.Tick, 27,9),
+                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 28,10),
+                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 29,11),
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 30,12), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 31,13),
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 32,14), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 33,15),
+
+            };
+            
         }
         private void StartDebugLogic()
         {
@@ -249,37 +241,46 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
+                    bool RunCore = true;
+                    int CurrentSecondaryTask = 10;
                     while (IsRunning)
                     {
-                        TickStopWatch.Start();
-                        PrevLastRanTask = LastRanTask;
 
-                        Time.Tick();
-                        Input.Update();
-                        VanillaManager.Tick();
-                        Player.Update();
-
-                        if (TickStopWatch.ElapsedMilliseconds >= 2)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+                        if (CurrentSecondaryTask > 33)
                         {
-                            EntryPoint.WriteToConsole($"GameLogic Tick took > 2 ms", 3);
+                            CurrentSecondaryTask = 10;
+                        }
+                        PrevLastRanTask = LastRanTask;
+                        if (RunCore)
+                        {
+                            List<string> TaskList = new List<string>();
+                            foreach (ModTask coreTask in CoreTasks.Where(x => x.ShouldRun))
+                            {
+                                coreTask.Run();
+                                TaskList.Add(coreTask.DebugName);
+                            }
+                            LastRanTask = string.Join(",", TaskList);
+                            RunCore = false;
                         }
                         else
-                        {
-                            ModTask ToRun = MyTickTasks.Where(x => x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+                        { 
+                            ModTask ToRun = SecondaryTasks.Where(x => x.ShouldRun && x.RunGroup == CurrentSecondaryTask).FirstOrDefault();//should also check if something has barely ran or
                             if (ToRun != null)
                             {
+                                LastRanTask = ToRun.DebugName + $"TimeBetweenRuns: {Game.GameTime - ToRun.GameTimeLastRan}";
                                 ToRun.Run();
-                                LastRanTask = ToRun.DebugName;
+                                
                             }
-                            if (Game.FrameRate <= 50)
-                            {
-                                EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
-                            }
+                            CurrentSecondaryTask++;
+                            RunCore = true;             
                         }
-                        TickStopWatch.Reset();
+
+                        if (!Game.IsPaused)
+                        {
+                            EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
+                        }
                         GameFiber.Yield();
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -363,3 +364,115 @@ namespace LosSantosRED.lsr
         }
     }
 }
+
+
+//MyTickTasks = new List<ModTask>()
+//{
+
+//    //Required Run
+// //   new ModTask(100, "Time.Tick", Time.Tick, 0,0),//0
+//   //new ModTask(100, "Input.Tick", Input.Update, 1,0),//0
+// //   new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2,0),//0
+
+//   // new ModTask(100, "Player.Update", Player.Update, 3,0),//25
+
+//   // new ModTask(300, "World.Police.Tick", Police.Update, 3,1),//100
+
+//    new ModTask(200, "Player.Violations.Update", Player.ViolationsUpdate, 5,0),
+//    new ModTask(200, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 5,1),
+
+//    new ModTask(500, "Player.Investigation.Update", Player.Investigation.Update, 6,0),//150
+//    new ModTask(250, "Player.SearchModeUpdate", Player.SearchModeUpdate, 6,1),//150
+//    new ModTask(150, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 6,2),
+//    new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 6,3),
+//    new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6,4),
+//    new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 6,5),
+
+//    new ModTask(250, "Civilians.Update", Civilians.Update, 7,0),
+//    new ModTask(250, "World.PrunePedestrians", World.PrunePedestrians, 7,1),
+//    new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 7,2),
+//    new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 7,3),
+
+//    new ModTask(250, "World.PruneVehicles", World.PruneVehicles, 7,4),
+//    new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 7,5),
+//    new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 7,6), //very bad performance
+//    new ModTask(500, "World.CleanUpVehicles", World.CleanUpVehicles, 7,7),
+//    new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7,8),
+
+//    new ModTask(500, "Scanner.Tick", Scanner.Tick, 7,9),
+//    new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 7,10),
+//    new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 7,11),
+
+//    //New Tasking
+
+
+//    new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 7,12), //very bad performance, trying to limit counts
+//    new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 7,13),
+//    new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 7,14), //very bad performance, trying to limit counts
+//    new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 7,15),
+
+
+
+
+
+////NEED TO CHECK THE GETAGENCY THING FOR IT BEING SLOW?
+////COULT BE CALLED BY LOTS OF THE SLOW STUFF
+////PRUNE CHECKS AGENCY? slow? create vehicle? slow
+////dispatcher? slow?
+
+////change zone to be hawick, street to be whatever, agency to lspd and see if we get the weird slowness
+////store the whole agency instead of looking it up all the time *in jurisdiction, maybe agency, etc.)
+
+//};
+
+//private void StartGameLogic()
+//{
+//    bool RunOthers = false;
+//    GameFiber.StartNew(delegate
+//    {
+//        try
+//        {
+//            while (IsRunning)
+//            {
+//                TickStopWatch.Start();
+//                PrevLastRanTask = LastRanTask;
+
+
+//                Time.Tick();
+//                Input.Update();
+//                VanillaManager.Tick();
+//                Player.Update();
+//                RunOthers = true;
+
+//                if (TickStopWatch.ElapsedMilliseconds >= 2)//16//Abort processing, we are running over time? might not work with any yields?, still do the most important ones
+//                {
+//                    EntryPoint.WriteToConsole($"GameLogic Tick took > 2 ms", 3);
+//                }
+//                else
+//                {
+//                    ModTask ToRun = MyTickTasks.Where(x => x.ShouldRun).OrderBy(x => x.MissedInterval ? 0 : 1).OrderBy(x => x.GameTimeLastRan).OrderBy(x => x.RunOrder).FirstOrDefault();//should also check if something has barely ran or
+//                    if (ToRun != null)
+//                    {
+//                        ToRun.Run();
+//                        LastRanTask = ToRun.DebugName;
+//                    }
+//                    if (Game.FrameRate <= 50)
+//                    {
+//                        EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
+//                    }
+
+//                }
+//                TickStopWatch.Reset();
+//                GameFiber.Yield();
+//            }
+
+//        }
+//        catch (Exception e)
+//        {
+//            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+//            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+//            Dispose();
+//        }
+//    }, "Run Game Logic");
+//    GameFiber.Yield();
+//}

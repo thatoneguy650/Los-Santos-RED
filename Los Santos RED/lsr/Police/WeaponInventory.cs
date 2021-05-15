@@ -17,6 +17,7 @@ public class WeaponInventory
     private IssuableWeapon LongGun;
     private IssuableWeapon Sidearm;
     private bool HasHeavyWeaponOnPerson;
+    private int DesiredAccuracy => IsSetLessLethal ? 30 : 10;
 
     public WeaponInventory(Cop cop)
     {
@@ -71,6 +72,7 @@ public class WeaponInventory
                     //NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//for idle,
                 }
             }
+            Cop.Pedestrian.Accuracy = DesiredAccuracy;
         }
     }
     private void SetPistol()

@@ -238,13 +238,13 @@ public class Pedestrians
         {
             Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
             myCop.IssueWeapons();
-            if (Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
-            {
-                Blip myBlip = Pedestrian.AttachBlip();
-                myBlip.Color = AssignedAgency.Color;
-                myBlip.Scale = 0.6f;
-                //WorldLogger.AddEntity(myBlip);
-            }
+            //if (Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+            //{
+            //    Blip myBlip = Pedestrian.AttachBlip();
+            //    myBlip.Color = AssignedAgency.Color;
+            //    myBlip.Scale = 0.6f;
+            //    //WorldLogger.AddEntity(myBlip);
+            //}
             SetCopStats(Pedestrian);
             Police.Add(myCop);
         }
