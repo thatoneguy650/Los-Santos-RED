@@ -120,19 +120,19 @@ public class Dispatcher
         {
             if (Player.Investigation.IsActive)
             {
-                return 9;//6
+                return 6;// 9;//6
             }
             if (Player.WantedLevel == 0)
             {
-                return 8;//5
+                return 5;// 8;//5
             }
             else if (Player.WantedLevel == 1)
             {
-                return 10;//7
+                return 7;// 10;//7
             }
             else if (Player.WantedLevel == 2)
             {
-                return 12;//10
+                return 10;// 12;//10
             }
             else if (Player.WantedLevel == 3)
             {

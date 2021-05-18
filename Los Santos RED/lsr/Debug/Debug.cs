@@ -85,7 +85,11 @@ public class Debug
         foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f))
         {
             Color Color = Color.Yellow;
-            if(ped.HasSeenPlayerCommitCrime)
+            if(ped.CurrentTask != null)
+            {
+                Color = Color.Black;
+            }
+            else if(ped.HasSeenPlayerCommitCrime)
             {
                 Color = Color.Orange;
             }
