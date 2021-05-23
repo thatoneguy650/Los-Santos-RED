@@ -15,14 +15,12 @@ namespace LosSantosRED.lsr
     public class CriminalHistory
     {
         private List<PoliceResponse> RapSheetList = new List<PoliceResponse>();
-        private uint GameTimeLastAppliedWantedStats;
         private IPoliceRespondable Player;
         public CriminalHistory(IPoliceRespondable currentPlayer)
         {
             Player = currentPlayer;
         }
         public int LastWantedMaxLevel => LastResponse == null ? 0 : LastResponse.ObservedMaxWantedLevel;
-        public bool RecentlyAppliedWantedStats => GameTimeLastAppliedWantedStats != 0 && Game.GameTime - GameTimeLastAppliedWantedStats <= 5000;
         public float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * 400f : 400f;
         private bool HasHistory => RapSheetList.Any();
         private PoliceResponse LastResponse => RapSheetList.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
@@ -64,17 +62,13 @@ namespace LosSantosRED.lsr
         {
             if (CriminalHistory != null)
             {
-                //if (Player.WantedLevel < CriminalHistory.ObservedMaxWantedLevel)
-                //{
-                //    Player.PoliceResponse.SetWantedLevel(CriminalHistory.ObservedMaxWantedLevel, "Applying old Wanted stats", true);
-                //}
                 RapSheetList.Remove(CriminalHistory);
                 foreach(CrimeEvent crime in CriminalHistory.CrimesObserved)
                 {
                     Player.AddCrime(crime.AssociatedCrime, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true);
                 }
-                //Player.PoliceResponse = CriminalHistory;
-                GameTimeLastAppliedWantedStats = Game.GameTime;
+                Player.OnAppliedWantedStats();
+                //GameTimeLastAppliedWantedStats = Game.GameTime;
                 EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS", 3);
             }
         }

@@ -16,8 +16,8 @@ namespace LosSantosRED.lsr.Interface
         void SetPlayerToLastWeapon();
         bool IsCarJacking { get; set; }
         bool IsMoveControlPressed { get; }
-
         void SetUnarmed();
         void ShootAt(Vector3 targetCoordinate);
+        Ped Character { get; }
     }
 }

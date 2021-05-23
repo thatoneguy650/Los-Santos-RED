@@ -7,88 +7,73 @@ using System;
 //lots more refactoring please
 public class CarJack
 {
-    private string Dictionary;
-    private Ped Driver;
+    private Vehicle TargetVehicle;
+    private PedExt Driver;
+    private ICarStealable Player;
+    private WeaponInformation Weapon;
+    private VehicleExt VehicleExt;
+    private string DriverAnimation;
+    private int DriverScene;
+    private string PlayerAnimation;
+    private int PlayerScene;
     private Vector3 DriverSeatCoordinates;
     private uint GameTimeLastTriedCarJacking;
-    private string PerpAnimation;
-    private ICarStealable Player;
-    private int PlayerScene;
     private int SeatTryingToEnter;
-    private Vehicle TargetVehicle;
-    private PedExt Victim;
-    private string VictimAnimation;
-    private int VictimScene;
+    private string Dictionary;
     private bool WantToCancel;
-    private WeaponInformation Weapon;
-    private bool WasEngineOn;
-    private VehicleExt VehicleExt;
-    public CarJack(ICarStealable player, VehicleExt vehicle, Ped DriverPed, PedExt DriverExt, int EntrySeat, WeaponInformation weapon)
+    public CarJack(ICarStealable player, VehicleExt vehicle, PedExt driver, int EntrySeat, WeaponInformation weapon)
     {
         Player = player;
         VehicleExt = vehicle;
         TargetVehicle = VehicleExt.Vehicle;
-        Driver = DriverPed;
         SeatTryingToEnter = EntrySeat;
         Weapon = weapon;
+        Driver = driver;
     }
-    private bool CanArmedCarJack
+    public void Start()
     {
-        get
+        if (CanArmedCarJack() && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
         {
-            if (SeatTryingToEnter != -1)
-                return false;
-
-            if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
-            {
-                if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
-                {
-                    return false;//Closer to passenger side, animations dont work
-                }
-            }
-            return true;
-        }
-    }
-    public void StartCarJack()
-    {
-        WasEngineOn = VehicleExt.Vehicle.IsEngineOn;
-        if (WasEngineOn)
-        {
-            VehicleExt.Engine.Toggle(true);
-        }
-        if (CanArmedCarJack && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
-        {
+            EntryPoint.WriteToConsole($"CARJACK EVENT: Armed Start", 3);
             ArmedCarJack();
         }
         else
         {
+            EntryPoint.WriteToConsole($"CARJACK EVENT: Unarmed Start", 3);
             UnarmedCarJack();
         }
     }
     private void ArmedCarJack()
     {
-        if (Victim != null)
-            Victim.CanBeTasked = false;
+        if (Driver != null)
+        {
+            Driver.CanBeTasked = false;
+        }
+        EntryPoint.WriteToConsole($"CARJACK EVENT: Armed: Victim.CanBeTasked: {Driver.CanBeTasked}, Handle: {Driver.Pedestrian.Handle}", 3);
         try
         {
             GameFiber CarJackPedWithWeapon = GameFiber.StartNew(delegate
             {
                 if (!SetupCarJack())
                 {
-                    if (Victim != null)
-                        Victim.CanBeTasked = true;
+                    if (Driver != null)
+                    {
+                        Driver.CanBeTasked = true;
+                    }
                     return;
                 }
                 if (!CarJackAnimation())
                 {
-                    if (Victim != null)
-                        Victim.CanBeTasked = true;
+                    if (Driver != null)
+                    {
+                        Driver.CanBeTasked = true;
+                    }
                     return;
                 }
 
                 FinishCarJack();
-                if (Victim != null)
-                    Victim.CanBeTasked = true;
+                if (Driver != null)
+                    Driver.CanBeTasked = true;
 
                 //CameraManager.RestoreGameplayerCamera();
             }, "CarJackPedWithWeapon");
@@ -120,7 +105,7 @@ public class CarJack
                 WantToCancel = true;
                 break;
             }
-            if (!NativeFunction.CallByName<bool>("IS_SYNCHRONIZED_SCENE_RUNNING", VictimScene))
+            if (!NativeFunction.CallByName<bool>("IS_SYNCHRONIZED_SCENE_RUNNING", DriverScene))
             {
                 WantToCancel = true;
                 break;
@@ -138,12 +123,12 @@ public class CarJack
             }
             if (Player.IsVisiblyArmed && Game.IsControlPressed(2, GameControl.Attack))//Game.LocalPlayer.Character.IsConsideredArmed()
             {
-                Vector3 TargetCoordinate = Driver.GetBonePosition(PedBoneId.Head);
+                Vector3 TargetCoordinate = Driver.Pedestrian.GetBonePosition(PedBoneId.Head);
                 Player.ShootAt(TargetCoordinate);
 
                 if (ScenePhase <= 0.35f)
                 {
-                    Driver.WarpIntoVehicle(TargetVehicle, -1);
+                    Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
                     Game.LocalPlayer.Character.Tasks.Clear();
                     NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, true);
                     break;
@@ -153,7 +138,7 @@ public class CarJack
             {
                 if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) <= 0.4f)
                 {
-                    Driver.WarpIntoVehicle(TargetVehicle, -1);
+                    Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
                     Game.LocalPlayer.Character.Tasks.Clear();
                     NativeFunction.CallByName<bool>("SET_PLAYER_FORCED_AIM", Game.LocalPlayer.Character, true);
                     break;
@@ -175,9 +160,9 @@ public class CarJack
         if (Player.IsDead)
         {
             Player.IsCarJacking = false;
-            if (Victim != null)
+            if (Driver != null)
             {
-                Victim.CanBeTasked = true;
+                Driver.CanBeTasked = true;
             }
             return false;
         }
@@ -188,10 +173,10 @@ public class CarJack
         float FinalScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
         if (FinalScenePhase <= 0.4f)
         {
-            if (WantToCancel || Driver.IsDead)
+            if (WantToCancel || Driver.Pedestrian.IsDead)
             {
-                Driver.BlockPermanentEvents = false;
-                Driver.WarpIntoVehicle(TargetVehicle, -1);
+                Driver.Pedestrian.BlockPermanentEvents = false;
+                Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
                 Game.LocalPlayer.Character.Tasks.Clear();
             }
         }
@@ -199,8 +184,8 @@ public class CarJack
         {
             if (WantToCancel && FinalScenePhase <= 0.6f)
             {
-                Driver.BlockPermanentEvents = false;
-                Driver.WarpIntoVehicle(TargetVehicle, -1);
+                Driver.Pedestrian.BlockPermanentEvents = false;
+                Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
                 Game.LocalPlayer.Character.Tasks.Clear();
             }
             else
@@ -214,10 +199,8 @@ public class CarJack
                 //    MyCar.Vehicle.IsEngineOn = true;
                 //   // MyCar.ToggleEngine(true);
                 //}
-                if (WasEngineOn)
-                {
-                    VehicleExt.Engine.Toggle(true);
-                }
+
+                VehicleExt.Engine.Toggle(true);
                 if (TargetVehicle.Doors[0].IsValid())
                 {
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
@@ -225,9 +208,9 @@ public class CarJack
             }
         }
 
-        if (Victim != null)
+        if (Driver != null)
         {
-            Victim.CanBeTasked = true;
+            Driver.CanBeTasked = true;
         }
 
         if (WantToCancel)
@@ -237,21 +220,23 @@ public class CarJack
         }
 
         if (TargetVehicle.Doors[0].IsValid())
+        {
             NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
+        }
 
-        if (Driver.IsInAnyVehicle(false))
+        if (Driver.Pedestrian.IsInAnyVehicle(false))
         {
             //EntryPoint.WriteToConsole("CarjackAnimation Driver In Vehicle");
         }
         else
         {
             //EntryPoint.WriteToConsole("CarjackAnimation Driver Out of Vehicle");
-            if (Driver.IsAlive)
+            if (Driver.Pedestrian.IsAlive)
             {
-                Driver.Tasks.ClearImmediately();
-                Driver.Tasks.Flee(Game.LocalPlayer.Character, 500f, 0);
-                Driver.IsRagdoll = false;
-                Driver.BlockPermanentEvents = false;
+                Driver.Pedestrian.Tasks.ClearImmediately();
+                Driver.Pedestrian.Tasks.Flee(Game.LocalPlayer.Character, 500f, 0);
+                Driver.Pedestrian.IsRagdoll = false;
+                Driver.Pedestrian.BlockPermanentEvents = false;
             }
         }
         GameFiber.Sleep(5000);
@@ -287,7 +272,9 @@ public class CarJack
     private bool GetCarjackingAnimations()
     {
         if (Weapon == null || (!Weapon.IsTwoHanded && !Weapon.IsOneHanded))
+        {
             return false;
+        }
 
         int intVehicleClass = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", TargetVehicle);
         VehicleClass VehicleClass = (VehicleClass)intVehicleClass;
@@ -303,22 +290,23 @@ public class CarJack
 
         float? GroundZ = Rage.World.GetGroundZ(DriverSeatCoordinates, true, false);
         if (GroundZ == null)
+        {
             GroundZ = 0f;
+        }
         float DriverDistanceToGround = DriverSeatCoordinates.Z - (float)GroundZ;
-        //EntryPoint.WriteToConsole(string.Format("GetCarjackingAnimations VehicleClass {0},DriverSeatCoordinates: {1},GroundZ: {2}, PedHeight: {3}", VehicleClass, DriverSeatCoordinates, GroundZ, DriverDistanceToGround));
         if (VehicleClass == VehicleClass.Van && DriverDistanceToGround > 1.5f)
         {
             if (Weapon.IsTwoHanded)
             {
                 Dictionary = "veh@jacking@2h";
-                PerpAnimation = "van_perp_ds_a";
-                VictimAnimation = "van_victim_ds_a";
+                PlayerAnimation = "van_perp_ds_a";
+                DriverAnimation = "van_victim_ds_a";
             }
             else if (Weapon.IsOneHanded)
             {
                 Dictionary = "veh@jacking@1h";
-                PerpAnimation = "van_perp_ds_a";
-                VictimAnimation = "van_victim_ds_a";
+                PlayerAnimation = "van_perp_ds_a";
+                DriverAnimation = "van_victim_ds_a";
             }
         }
         else if (VehicleClass == VehicleClass.Helicopter)
@@ -326,14 +314,14 @@ public class CarJack
             if (Weapon.IsTwoHanded)
             {
                 Dictionary = "veh@jacking@2h";
-                PerpAnimation = "heli_perp_ds_a";
-                VictimAnimation = "heli_victim_ds_a";
+                PlayerAnimation = "heli_perp_ds_a";
+                DriverAnimation = "heli_victim_ds_a";
             }
             else if (Weapon.IsOneHanded)
             {
                 Dictionary = "veh@jacking@1h";
-                PerpAnimation = "heli_perp_ds_a";
-                VictimAnimation = "heli_victim_ds_a";
+                PlayerAnimation = "heli_perp_ds_a";
+                DriverAnimation = "heli_victim_ds_a";
             }
         }
         else if (VehicleClass == VehicleClass.Commercial)
@@ -341,14 +329,14 @@ public class CarJack
             if (Weapon.IsTwoHanded)
             {
                 Dictionary = "veh@jacking@2h";
-                PerpAnimation = "truck_perp_ds_a";
-                VictimAnimation = "truck_victim_ds_a";
+                PlayerAnimation = "truck_perp_ds_a";
+                DriverAnimation = "truck_victim_ds_a";
             }
             else if (Weapon.IsOneHanded)
             {
                 Dictionary = "veh@jacking@1h";
-                PerpAnimation = "truck_perp_ds_a";
-                VictimAnimation = "truck_victim_ds_a";
+                PlayerAnimation = "truck_perp_ds_a";
+                DriverAnimation = "truck_victim_ds_a";
             }
         }
         else if (DriverDistanceToGround > 2f)//1.75f
@@ -356,14 +344,14 @@ public class CarJack
             if (Weapon.IsTwoHanded)
             {
                 Dictionary = "veh@jacking@2h";
-                PerpAnimation = "truck_perp_ds_a";
-                VictimAnimation = "truck_victim_ds_a";
+                PlayerAnimation = "truck_perp_ds_a";
+                DriverAnimation = "truck_victim_ds_a";
             }
             else if (Weapon.IsOneHanded)
             {
                 Dictionary = "veh@jacking@1h";
-                PerpAnimation = "truck_perp_ds_a";
-                VictimAnimation = "truck_victim_ds_a";
+                PlayerAnimation = "truck_perp_ds_a";
+                DriverAnimation = "truck_victim_ds_a";
             }
         }
         else if (DriverDistanceToGround < 0.5f)
@@ -371,14 +359,14 @@ public class CarJack
             if (Weapon.IsTwoHanded)
             {
                 Dictionary = "veh@jacking@2h";
-                PerpAnimation = "low_perp_ds_a";
-                VictimAnimation = "low_victim_ds_a";
+                PlayerAnimation = "low_perp_ds_a";
+                DriverAnimation = "low_victim_ds_a";
             }
             else if (Weapon.IsOneHanded)
             {
                 Dictionary = "veh@jacking@1h";
-                PerpAnimation = "low_perp_ds_a";
-                VictimAnimation = "low_victim_ds_a";
+                PlayerAnimation = "low_perp_ds_a";
+                DriverAnimation = "low_victim_ds_a";
             }
         }
         else
@@ -386,29 +374,28 @@ public class CarJack
             if (Weapon.IsTwoHanded)
             {
                 Dictionary = "veh@jacking@2h";
-                PerpAnimation = "std_perp_ds_a";
-                VictimAnimation = "std_victim_ds_a";
+                PlayerAnimation = "std_perp_ds_a";
+                DriverAnimation = "std_victim_ds_a";
             }
             else if (Weapon.IsOneHanded)
             {
                 Dictionary = "veh@jacking@1h";
-                PerpAnimation = "std_perp_ds";
-                VictimAnimation = "std_victim_ds";
+                PlayerAnimation = "std_perp_ds";
+                DriverAnimation = "std_victim_ds";
             }
         }
         return true;
     }
-    private Vector3 GetEntryPosition() => NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);
     private bool SetupCarJack()
     {
         Player.SetPlayerToLastWeapon();
-        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
-        Driver.BlockPermanentEvents = true;
+        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver.Pedestrian, TargetVehicle, 27, -1);
+        Driver.Pedestrian.BlockPermanentEvents = true;
 
-        Vector3 GameEntryPosition = GetEntryPosition();
+        Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);//GET_ENTRY_POSITION
         float DesiredHeading = TargetVehicle.Heading - 90f;
-        int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver, 57597);//11816
-        DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver, BoneIndexSpine, 0f, 0f, 0f);
+        int BoneIndexSpine = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Driver.Pedestrian, 57597);//11816
+        DriverSeatCoordinates = NativeFunction.CallByName<Vector3>("GET_PED_BONE_COORDS", Driver.Pedestrian, BoneIndexSpine, 0f, 0f, 0f);
 
         GameTimeLastTriedCarJacking = Game.GameTime;
 
@@ -423,33 +410,57 @@ public class CarJack
         AnimationDictionary.RequestAnimationDictionay(Dictionary);
         Player.SetPlayerToLastWeapon();
 
-        if (!Driver.IsInAnyVehicle(false))
-            Driver.WarpIntoVehicle(TargetVehicle, -1);
+        if (!Driver.Pedestrian.IsInAnyVehicle(false))
+        {
+            Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);
+        }
 
-        float DriverHeading = Driver.Heading;
+        float DriverHeading = Driver.Pedestrian.Heading;
         PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", GameEntryPosition.X, GameEntryPosition.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, DesiredHeading, 2);//270f //old
         NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
-        NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, Dictionary, PerpAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
+        NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, Dictionary, PlayerAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
         NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
 
-        VictimScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverSeatCoordinates.X, DriverSeatCoordinates.Y, DriverSeatCoordinates.Z, 0.0f, 0.0f, DriverHeading, 2);//270f
-        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", VictimScene, false);
-        NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver, VictimScene, Dictionary, VictimAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
-        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", VictimScene, 0.0f);
+        DriverScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", DriverSeatCoordinates.X, DriverSeatCoordinates.Y, DriverSeatCoordinates.Z, 0.0f, 0.0f, DriverHeading, 2);//270f
+        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", DriverScene, false);
+        NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Driver.Pedestrian, DriverScene, Dictionary, DriverAnimation, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);
+        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", DriverScene, 0.0f);
 
+        return true;
+    }
+    private bool CanArmedCarJack()
+    {
+        if (SeatTryingToEnter != -1)
+        {
+            return false;
+        }
+        if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
+        {
+            if (Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_dside_f")) > Game.LocalPlayer.Character.DistanceTo2D(TargetVehicle.GetBonePosition("door_pside_f")))
+            {
+                return false;//Closer to passenger side, animations dont work
+            }
+        }
         return true;
     }
     private void UnarmedCarJack()
     {
         GameFiber CarJackPed = GameFiber.StartNew(delegate
         {
-            if (Victim != null)
-                Victim.CanBeTasked = false;
-
-            GameFiber.Sleep(4000);
-            if (Victim != null)
-                Victim.CanBeTasked = true;
-
+            if (Driver != null)
+            {
+                Driver.CanBeTasked = false;
+            }
+            uint GameTimeStarted = Game.GameTime;
+            while(!Player.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 4000)
+            {
+                GameFiber.Yield();
+            }
+            VehicleExt.Engine.Toggle(true);
+            if (Driver != null)
+            {
+                Driver.CanBeTasked = true;
+            }
             GameFiber.Sleep(4000);
         }, "CarJackPed");
     }

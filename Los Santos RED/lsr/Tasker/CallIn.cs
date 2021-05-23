@@ -25,7 +25,7 @@ public class CallIn : ComplexTask
         {
             int lol = 0;
             NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 50f, 7000);//100f
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 50f, 10000);//100f
             NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
             NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Game.LocalPlayer.Character, 100f, -1);
             NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
@@ -38,7 +38,7 @@ public class CallIn : ComplexTask
     public override void Update()
     {
         //EntryPoint.WriteToConsole($"TASKER: CallIn Update: {Ped.Pedestrian.Handle}");
-        if(Game.GameTime - GameTimeStartedCallIn >= 4000 && Ped.CrimesWitnessed.Any())
+        if(Game.GameTime - GameTimeStartedCallIn >= 10000 && Ped.CrimesWitnessed.Any())
         {
             ReportCrime();
         }
@@ -66,7 +66,7 @@ public class CallIn : ComplexTask
                 Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
             }
 
-            Ped.CrimesWitnessed.Clear();      
+            Ped.CrimesWitnessed.Clear();      ///>>??????????
         }
     }
 }

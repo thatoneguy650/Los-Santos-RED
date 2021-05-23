@@ -44,6 +44,6 @@ public class Cop : PedExt
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Speak(currentPlayer);
-        RadioIn(currentPlayer);
+        //RadioIn(currentPlayer);
     }
 }

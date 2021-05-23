@@ -32,17 +32,14 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         int MaxWantedLastLife { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; set; }
-        bool RecentlyAppliedWantedStats { get; }
         bool RecentlyBusted { get; }
-        bool RecentlyDied { get; }
         bool RecentlyStartedPlaying { get; }
         List<VehicleExt> ReportedStolenVehicles { get; }
         int WantedLevel { get; }
         uint TimeToRecognize { get; }
-        bool PoliceRecentlyNoticedVehicleChange { get; set; }
         uint TimeInSearchMode { get; }
-        bool StarsRecentlyGreyedOut { get; }
-        bool StarsRecentlyActive { get; }
+        //bool StarsRecentlyGreyedOut { get; }
+        //bool StarsRecentlyActive { get; }
         Violations Violations { get; }//not good comrade
         Vector3 Position { get; }
         Ped Character { get; }
@@ -52,5 +49,15 @@ namespace LosSantosRED.lsr.Interface
         void Arrest();
         void StoreCriminalHistory();
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription);
+        void ResetScanner();
+        void OnAppliedWantedStats();
+        void OnStarsActive();
+        void OnStarsGreyedOut();
+        void OnInvestigationExpire();
+        void OnRequestedBackUp();
+        void OnWeaponsFree();
+        void OnLethalForceAuthorized();
+        void OnPoliceNoticeVehicleChange();
+        void OnSuspectEluded();
     }
 }

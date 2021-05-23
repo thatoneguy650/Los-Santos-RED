@@ -82,7 +82,10 @@ public class Voice
             }
             else
             {
-                Cop.Pedestrian.PlayAmbientSpeech(IdleSpeech.PickRandom(), Cop.IsInVehicle);
+                if (!Cop.IsInVehicle)
+                {
+                    Cop.Pedestrian.PlayAmbientSpeech(IdleSpeech.PickRandom(), false);
+                }
             }
             GameTimeLastSpoke = Game.GameTime;
         }

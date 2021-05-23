@@ -23,9 +23,8 @@ public class Investigation
     public bool HaveDescription { get; private set; }
     public bool IsActive { get; private set; }
     public bool IsSuspicious => IsActive && NearInvestigationPosition && HaveDescription;
-    public bool LastInvestigationRecentlyExpired => GameTimeLastInvestigationExpired != 0 && Game.GameTime - GameTimeLastInvestigationExpired <= 5000;
     public Vector3 Position { get; private set; }
-    private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= 180000;
+    private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= 60000;//short for testing was 180000
     private bool NearInvestigationPosition => Position != Vector3.Zero && Game.LocalPlayer.Character.DistanceTo2D(Position) <= NearInvestigationDistance;
     public void Reset()
     {
@@ -81,6 +80,8 @@ public class Investigation
         {
             InvestigationBlip.Delete();
         }
+        Player.PoliceResponse.Reset();
+        Player.OnInvestigationExpire();
     }
     private void SetActive()
     {

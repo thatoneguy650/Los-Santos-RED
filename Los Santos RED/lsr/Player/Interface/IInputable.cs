@@ -9,7 +9,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IInputable
     {
-        bool IsHoldingEnter { get; set; }
+        bool IsNotHoldingEnter { get; set; }
         bool IsBusted { get; }
         bool CanSurrender { get; }
         bool HandsAreUp { get; set; }

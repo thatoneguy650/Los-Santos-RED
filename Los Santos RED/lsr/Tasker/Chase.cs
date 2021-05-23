@@ -164,7 +164,6 @@ public class Chase : ComplexTask
     }
     public override void Update()
     {
-
         if (Ped.Pedestrian.Exists() && ShouldUpdate)
         {
             if (Ped.Pedestrian.IsInAnyPoliceVehicle)
@@ -209,38 +208,46 @@ public class Chase : ComplexTask
     }
     private void ExecuteCurrentSubTask()
     {
+        
         if (CurrentTask == Task.CarJack)
         {
+            RunInterval = 200;
             SubTaskName = "CarJack";
             GoToPlayersCar();
         }
         else if (CurrentTask == Task.EnterVehicle)
         {
+            RunInterval = 200;
             SubTaskName = "EnterVehicle";
             EnterVehicle();
         }
         else if (CurrentTask == Task.ExitVehicle)
         {
+            RunInterval = 200;
             SubTaskName = "ExitVehicle";
             ExitVehicle();
         }
         else if (CurrentTask == Task.FootChase)
         {
+            RunInterval = 200;
             SubTaskName = "FootChase";
             FootChase();
         }
         else if (CurrentTask == Task.VehicleChase)
         {
+            RunInterval = 500;
             SubTaskName = "VehicleChase";
             VehicleChase();
         }
         else if (CurrentTask == Task.VehicleChasePed)
         {
+            RunInterval = 500;
             SubTaskName = "VehicleChasePed";
             VehicleChasePed();
         }
         else if (CurrentTask == Task.Nothing)
         {
+            RunInterval = 500;
             SubTaskName = "Nothing";
             VehicleChasePed();
         }
@@ -303,43 +310,14 @@ public class Chase : ComplexTask
         }
         Ped.Pedestrian.BlockPermanentEvents = true;
         Ped.Pedestrian.KeepTasks = true;
-        if(ShouldShoot && (CurrentSubTask != SubTask.Shoot || Ped.DistanceToPlayer >= 15f))
-        {
-            CurrentSubTask = SubTask.Shoot;
-            unsafe
-            {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            }
-        }
-        else if(!ShouldShoot && (CurrentSubTask != SubTask.Aim || Ped.DistanceToPlayer >= 15f))
-        {
-            CurrentSubTask = SubTask.Aim;
-            unsafe
-            {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, 4f, 20f);
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            }
-        }
-        //if (CurrentSubTask != SubTask.Shoot && ShouldShoot && Ped.DistanceToPlayer <= 7f)
+        //if(ShouldShoot && (CurrentSubTask != SubTask.Shoot || Ped.DistanceToPlayer >= 15f))
         //{
         //    CurrentSubTask = SubTask.Shoot;
         //    unsafe
         //    {
         //        int lol = 0;
         //        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
         //        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
         //        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
         //        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -347,13 +325,14 @@ public class Chase : ComplexTask
         //        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         //    }
         //}
-        //else if (CurrentSubTask != SubTask.Aim && !ShouldShoot && Ped.DistanceToPlayer <= 7f)
+        //else if(!ShouldShoot && (CurrentSubTask != SubTask.Aim || Ped.DistanceToPlayer >= 15f))
         //{
         //    CurrentSubTask = SubTask.Aim;
         //    unsafe
         //    {
         //        int lol = 0;
         //        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
         //        NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, 4f, 20f);
         //        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
         //        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -361,20 +340,48 @@ public class Chase : ComplexTask
         //        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         //    }
         //}
-        //else if (CurrentSubTask != SubTask.Goto && Ped.DistanceToPlayer >= 15f)
-        //{
-        //    CurrentSubTask = SubTask.Goto;
-        //    unsafe
-        //    {
-        //        int lol = 0;
-        //        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-        //        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-        //        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-        //        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-        //        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-        //        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-        //    }
-        //}
+        if (CurrentSubTask != SubTask.Shoot && ShouldShoot && Ped.DistanceToPlayer <= 7f)
+        {
+            CurrentSubTask = SubTask.Shoot;
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 4.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+        else if (CurrentSubTask != SubTask.Aim && !ShouldShoot && Ped.DistanceToPlayer <= 7f)
+        {
+            CurrentSubTask = SubTask.Aim;
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, 4f, 20f);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+        else if (CurrentSubTask != SubTask.Goto && Ped.DistanceToPlayer >= 15f)
+        {
+            CurrentSubTask = SubTask.Goto;
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
     }
     private void VehicleChase()
     {

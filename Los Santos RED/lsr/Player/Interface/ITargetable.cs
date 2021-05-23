@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         float ActiveDistance { get; }
         Investigation Investigation { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; }
+        bool IsNotWanted { get; }
 
         void AddCrime(Crime toReport, bool v1, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool v2);
     }

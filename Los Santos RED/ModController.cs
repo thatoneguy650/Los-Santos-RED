@@ -12,6 +12,7 @@ namespace LosSantosRED.lsr
         private readonly Stopwatch TickStopWatch = new Stopwatch();
         private Agencies Agencies;
         private WavAudio WavAudio;
+       // private Audio OldAudio;
         private Civilians Civilians;
         private Crimes Crimes;
         private Debug Debug;
@@ -19,18 +20,14 @@ namespace LosSantosRED.lsr
         private Input Input;
         private string PrevLastRanTask;
         private string LastRanTask;
-
         private List<ModTask> CoreTasks;
         private List<ModTask> SecondaryTasks;
-
         private Names Names;
         private PedSwap PedSwap;
         private PlacesOfInterest PlacesOfInterest;
         private PlateTypes PlateTypes;
         private Mod.Player Player;
         private Police Police;
-        private Respawning Respawning;
-        private Scanner Scanner;
         private Settings Settings;
         private Streets Streets;
         private StreetScannerAudio StreetScannerAudio;
@@ -69,7 +66,7 @@ namespace LosSantosRED.lsr
         {
             Player.Reset(true, true, true, true);
             Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
-            Scanner.Reset();
+            //Scanner.Reset();
         }
         public void Start()
         {
@@ -80,24 +77,27 @@ namespace LosSantosRED.lsr
             }
             ReadDataFiles();
             WavAudio = new WavAudio();
+            //OldAudio = new Audio();
             Time = new Mod.Time();
             World = new Mod.World(Agencies, Zones, Jurisdictions, Settings, PlacesOfInterest, PlateTypes, Names, RelationshipGroups);
             World.Setup();
             
-            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes);
+            Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest);
             Player.Setup();
 
             Input = new Input(Player, Settings);
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
-            Respawning = new Respawning(Time, World, Player, Weapons, PlacesOfInterest, Settings);
             PedSwap = new PedSwap(Time, Player, Settings, World);
             Tasker = new Tasker(World, Player, Weapons);
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Respawning, Player, Weapons, RadioStations);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Weapons, RadioStations);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
-            Scanner = new Scanner(World, Player, WavAudio, Respawning, Settings);
             VanillaManager = new VanillaManager();
-            Debug = new Debug(PlateTypes, World, Player, Scanner, Streets, Dispatcher);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones);
+
+
+
+
             World.AddBlipsToMap();//off for now as i do lots of restarts
             PedSwap.Setup();
             GameFiber.Yield();
@@ -106,6 +106,8 @@ namespace LosSantosRED.lsr
             StartGameLogic();
             GameFiber.Yield();
             StartMenuLogic();
+            GameFiber.Yield();
+            StartInputLogic();
             GameFiber.Yield();
             StartDebugLogic();
             GameFiber.Yield();
@@ -155,10 +157,8 @@ namespace LosSantosRED.lsr
             RelationshipGroups = new PedGroups();
             RelationshipGroups.ReadConfig();
             GameFiber.Yield();
-
             Scenarios = new Scenarios();
             GameFiber.Yield();
-
             Crimes = new Crimes();
             Crimes.ReadConfig();
             GameFiber.Yield();
@@ -169,7 +169,7 @@ namespace LosSantosRED.lsr
             {
                 //Required Run
                 new ModTask(0, "Time.Tick", Time.Tick, 0),
-                new ModTask(0, "Input.Tick", Input.Update, 1),//100
+               // new ModTask(0, "Input.Tick", Input.Update, 1),//100
                 new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2),
                 new ModTask(100, "Player.Update", Player.Update, 3),
                 new ModTask(300, "Police.Update", Police.Update, 4),
@@ -184,7 +184,7 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 5),
                 new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6),
                 new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
-                new ModTask(250, "Civilians.Update", Civilians.Update, 8),
+                new ModTask(500, "Civilians.Update", Civilians.Update, 8),//250
                 new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 9),
                 new ModTask(500, "World.ScanForPedestrians", World.ScanForPedestrians, 10),
                 new ModTask(500, "World.CreateNewPedestrians", World.CreateNewPedestrians, 11),
@@ -193,7 +193,7 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 14), //very bad performance
                 new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 15),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 16),
-                new ModTask(500, "Scanner.Tick", Scanner.Tick, 17),
+               // new ModTask(500, "Scanner.Tick", Scanner.Tick, 17),
                 new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 18),
                 new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 19),
                 new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 20), //very bad performance, trying to limit counts
@@ -245,7 +245,7 @@ namespace LosSantosRED.lsr
                             foreach (ModTask coreTask in CoreTasks.Where(x => x.ShouldRun))
                             {
                                 coreTask.Run();
-                                TaskList.Add(coreTask.DebugName);
+                                TaskList.Add(coreTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - coreTask.GameTimeLastRan}");
                             }
                             LastRanTask = string.Join(",", TaskList);
                             RunCore = false;
@@ -268,10 +268,10 @@ namespace LosSantosRED.lsr
                             }
                         }
 
-                        if (!Game.IsPaused && Game.FrameRate < 59)
-                        {
-                            EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
-                        }
+                        //if (!Game.IsPaused && Game.FrameRate < 55)
+                        //{
+                        //    EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
+                        //}
                         GameFiber.Yield();
                     }
                 }
@@ -303,6 +303,26 @@ namespace LosSantosRED.lsr
                     Dispose();
                 }
             }, "Run Menu/UI Logic");
+        }
+        private void StartInputLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (IsRunning)
+                    {
+                        Input.Update();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Input Logic");
         }
         private string GetName(string modelBeforeSpoof, string defaultName)
         {

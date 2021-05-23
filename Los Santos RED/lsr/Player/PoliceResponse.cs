@@ -36,6 +36,7 @@ namespace LosSantosRED.lsr
             DeadlyChase = 3,
             ArrestedWait = 4,
         }
+
         public string DebugText => $"Have Desc {PoliceHaveDescription} CurrentPoliceState {CurrentPoliceState} IsWeaponsFree {IsWeaponsFree}";
         public uint GameTimeWantedStarted { get; private set; }
         public uint HasBeenAtCurrentPoliceStateFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimePoliceStateStart;
@@ -213,6 +214,7 @@ namespace LosSantosRED.lsr
                     Reset();
                 }
             }
+
             GameTimeLastWantedEnded = Game.GameTime;
         }
         public void OnWantedLevelIncreased()
@@ -239,7 +241,8 @@ namespace LosSantosRED.lsr
             GameTimeWantedLevelStarted = 0;
             GameTimeWantedEnded = 0;
             CrimesObserved.Clear();
-            CrimesReported.Clear();   
+            CrimesReported.Clear();
+            Player.ResetScanner();
         }
         public void SetWantedLevel(int WantedLevel, string Reason, bool UpdateRecent)
         {
@@ -256,7 +259,7 @@ namespace LosSantosRED.lsr
                 {
                     GameTimeWantedLevelStarted = Game.GameTime;
                 }
-                EntryPoint.WriteToConsole($"Increase Wanted: {Reason}",3);
+                EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Reason: {Reason}",3);
             }
         }
         public void Update()
@@ -284,6 +287,7 @@ namespace LosSantosRED.lsr
                     {
                         GameTimeLastRequestedBackup = Game.GameTime;
                         SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
+                        Player.OnRequestedBackUp();
                     }
                     if (CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
                     {
@@ -296,11 +300,13 @@ namespace LosSantosRED.lsr
                         {
                             SetWantedLevel(5, "You killed too many cops 5 Stars", true);
                             IsWeaponsFree = true;
+                            Player.OnWeaponsFree();
                         }
                         else if (PoliceKilled >= 2 && Player.WantedLevel < 4)
                         {
                             SetWantedLevel(4, "You killed too many cops 4 Stars", true);
                             IsWeaponsFree = true;
+                            Player.OnWeaponsFree();
                         }
                     }
                 }
@@ -341,6 +347,10 @@ namespace LosSantosRED.lsr
             //EntryPoint.WriteToConsole(string.Format("PoliceState Changed to: {0} Was {1}", CurrentPoliceState, PrevPoliceState));
             GameTimePoliceStateStart = Game.GameTime;
             PrevPoliceState = CurrentPoliceState;
+            if(CurrentPoliceState == PoliceState.DeadlyChase)
+            {
+                Player.OnLethalForceAuthorized();
+            }
         }
         private void UpdateBlip()
         {

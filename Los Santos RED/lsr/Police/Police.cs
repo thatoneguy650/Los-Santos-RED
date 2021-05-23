@@ -7,7 +7,6 @@ namespace LosSantosRED.lsr
 {
     public class Police
     {
-        private uint GameTimePoliceNoticedVehicleChange;
         private IPoliceRespondable Player;
         private uint PoliceLastSeenVehicleHandle;
         private IEntityProvideable World;
@@ -16,7 +15,6 @@ namespace LosSantosRED.lsr
             World = world;
             Player = currentPlayer;
         }
-        private bool RecentlyNoticedVehicleChange => GameTimePoliceNoticedVehicleChange != 0 && Game.GameTime - GameTimePoliceNoticedVehicleChange <= 15000;
         public void Update()
         {
             UpdateCops();
@@ -76,7 +74,7 @@ namespace LosSantosRED.lsr
             {
                 if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)
                 {
-                    GameTimePoliceNoticedVehicleChange = Game.GameTime;
+                    Player.OnPoliceNoticeVehicleChange();
                 }
                 PoliceLastSeenVehicleHandle = Player.CurrentSeenVehicle.Vehicle.Handle;
             }
@@ -84,8 +82,7 @@ namespace LosSantosRED.lsr
             if (Player.AnyPoliceCanRecognizePlayer && Player.IsWanted && !Player.IsInSearchMode && Player.CurrentVehicle != null)
             {
                 Player.CurrentVehicle.UpdateDescription();
-            }
-            Player.PoliceRecentlyNoticedVehicleChange = RecentlyNoticedVehicleChange;
+            } 
         }
     }
 }

@@ -20,19 +20,19 @@ public class Debug
     private PlateTypes PlateTypes;
     private Mod.World World;
     private Mod.Player Player;
-    private Scanner Scanner;
     private Ped DebugPed;
     private IStreets Streets;
     private int VehicleMissionFlag = 1;
     private Dispatcher Dispatcher;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, Scanner scanner, IStreets streets, Dispatcher dispatcher)
+    private Zones Zones;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones)
     {
         PlateTypes = plateTypes;
         World = world;
         Player = targetable;
-        Scanner = scanner;
         Streets = streets;
         Dispatcher = dispatcher;
+        Zones = zones;
     }
     public void Update()
     {
@@ -82,31 +82,35 @@ public class Debug
         //    DrawColoredArrowTaskStatus(cop);
         //    DrawColoredArrowAlertness(cop);
         //}
-        foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f))
-        {
-            Color Color = Color.Yellow;
-            if(ped.CurrentTask != null)
-            {
-                Color = Color.Black;
-            }
-            else if(ped.HasSeenPlayerCommitCrime)
-            {
-                Color = Color.Orange;
-            }
-            else if (ped.CanRecognizePlayer)
-            {
-                Color = Color.Green;
-            }
-            else if (ped.CanSeePlayer)
-            {
-                Color = Color.White;
-            }
-            else
-            {
-                Color = Color.Red;
-            }
-            Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f,0f,2f), Vector3.Zero, Rotator.Zero, 1f, Color);
-        }
+        //foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f))
+        //{
+        //    Color Color = Color.Yellow;
+        //    if(!ped.CanBeTasked)
+        //    {
+        //        Color = Color.Purple;
+        //    }
+        //    else if(ped.CurrentTask != null)
+        //    {
+        //        Color = Color.Black;
+        //    }
+        //    else if(ped.HasSeenPlayerCommitCrime)
+        //    {
+        //        Color = Color.Orange;
+        //    }
+        //    else if (ped.CanRecognizePlayer)
+        //    {
+        //        Color = Color.Green;
+        //    }
+        //    else if (ped.CanSeePlayer)
+        //    {
+        //        Color = Color.White;
+        //    }
+        //    else
+        //    {
+        //        Color = Color.Red;
+        //    }
+        //    Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f,0f,2f), Vector3.Zero, Rotator.Zero, 1f, Color);
+       // }
     }
     private void DebugNumpad0()
     {
@@ -161,7 +165,32 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        SpawnInteractiveChaser(1f);
+
+
+
+        EntryPoint.WriteToConsole("-------------------------------",3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {Player.CurrentVehicle.Vehicle.Handle}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {Player.CurrentVehicle.IsStolen}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {Player.CurrentVehicle.WasReportedStolen}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {Player.CurrentVehicle.CopsRecognizeAsStolen}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {Player.CurrentVehicle.NeedsToBeReportedStolen}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {Player.CurrentVehicle.GameTimeToReportStolen}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {Player.CurrentVehicle.CarPlate.IsWanted}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {Player.CurrentVehicle.CarPlate.PlateNumber}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {Player.CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {Player.CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {Player.CurrentVehicle.HasOriginalPlate}", 3);
+        EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {Player.CurrentVehicle.HasBeenDescribedByDispatch}", 3);
+        EntryPoint.WriteToConsole("-------------------------------", 3);
+
+
+
+        //if(Player.CurrentVehicle != null)
+        //{
+        //    UpdatePlate(Player.CurrentVehicle);
+        //}
+
+        // SpawnInteractiveChaser(1f);
     }
     public void DebugNumpad8()
     {
@@ -201,6 +230,63 @@ public class Debug
         Game.TimeScale = 1f;
         NativeFunction.Natives.xB4EDDC19532BFB85();
         Game.DisplayNotification("Instant Action Deactivated");
+    }
+    public void UpdatePlate(VehicleExt vehicleExt)//this might need to come out of here.... along with the two bools
+    {
+        vehicleExt.HasUpdatedPlateType = true;
+        PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
+        string CurrentPlateNumber = vehicleExt.Vehicle.LicensePlate;
+        Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
+
+
+        /*
+         * 
+         *TEMP HERE UNTIL I DECIDE
+         * 
+         * 
+         * */
+        if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
+        {
+            PlateType NewType = PlateTypes.GetPlateType(CurrentZone.State);
+
+            if (NewType != null)
+            {
+                EntryPoint.WriteToConsole($"Zone State: {CurrentZone.State} Plate State {NewType.State} Index {NewType.Index} Index+1 {NewType.Index + 1}",3);
+                string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                if (NewPlateNumber != "")
+                {
+                    vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+                    vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                    vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
+                }
+                NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
+                vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+                vehicleExt.CarPlate.PlateType = NewType.Index;
+                EntryPoint.WriteToConsole(string.Format("Update Plater Updated {0} {1}", vehicleExt.Vehicle.Model.Name, NewType.Index),3);
+            }
+        }
+        else
+        {
+            if (RandomItems.RandomPercent(10) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
+            {
+                PlateType NewType = PlateTypes.GetRandomPlateType();
+                if (NewType != null)
+                {
+                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                    if (NewPlateNumber != "")
+                    {
+                        vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+                        vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                        vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
+                    }
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index + 1);
+                    vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+                    vehicleExt.CarPlate.PlateType = NewType.Index;
+                    EntryPoint.WriteToConsole(string.Format("UpdatePlate Updated {0} {1}", vehicleExt.Vehicle.Model.Name, NewType.Index),3);
+                }
+            }
+        }
+
     }
     private void DrawDebugArrowsOnPeds()
     {

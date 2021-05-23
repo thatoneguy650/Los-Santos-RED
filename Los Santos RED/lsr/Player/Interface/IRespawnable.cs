@@ -21,6 +21,5 @@ namespace LosSantosRED.lsr.Interface
         void UnSetArrestedAnimation(Ped character);
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory);
         void RaiseHands();
-       //void ResetModel();
     }
 }

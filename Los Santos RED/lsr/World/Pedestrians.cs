@@ -207,7 +207,7 @@ public class Pedestrians
     {
         SetCivilianStats(Pedestrian);
         bool WillFight = RandomItems.RandomPercent(5);
-        bool WillCallPolice = RandomItems.RandomPercent(80);
+        bool WillCallPolice = RandomItems.RandomPercent(70);
         bool IsGangMember = false;
         if (Pedestrian.Exists())
         {
@@ -229,7 +229,7 @@ public class Pedestrians
         //WillFight = true;
         //WillCallPolice = false;
         ////TEMP!
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, "None"/*Names.GetRandomName(Pedestrian.IsMale)*/, RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
     }
     private void AddCop(Ped Pedestrian)
     {

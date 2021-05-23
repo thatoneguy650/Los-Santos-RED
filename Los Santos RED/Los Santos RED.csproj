@@ -129,9 +129,10 @@
     <Compile Include="lsr\Data\Scanner\VehicleScannerAudio.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneScannerAudio.cs" />
     <Compile Include="lsr\Dispatcher\VanillaDispatchType.cs" />
-    <Compile Include="lsr\Old\ModController_Old.cs" />
     <Compile Include="lsr\Player\Activity\ScenarioActivity.cs" />
+    <Compile Include="lsr\Player\ChaseResult.cs" />
     <Compile Include="lsr\Player\Interface\IDispatchable.cs" />
+    <Compile Include="lsr\Player\Scanner\Scanner.cs" />
     <Compile Include="lsr\Police\AssistManager.cs" />
     <Compile Include="lsr\Dispatcher\Roadblock.cs" />
     <Compile Include="lsr\Police\Voice.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="lsr\Tasker\CallIn.cs" />
     <Compile Include="lsr\Tasker\eChaseBehaviorFlag.cs" />
     <Compile Include="lsr\Tasker\Fight.cs" />
+    <Compile Include="lsr\Tasker\Flee.cs" />
     <Compile Include="lsr\Util\Peds\Scenario.cs" />
     <Compile Include="lsr\Util\Vehicle\Engine.cs" />
     <Compile Include="lsr\Util\Weapon\IssuableWeapon.cs" />
@@ -253,13 +255,12 @@
     <Compile Include="lsr\Player\Activity\WeaponDropping.cs" />
     <Compile Include="lsr\Util\Crimes\Crime.cs" />
     <Compile Include="lsr\Util\Crimes\CrimeEvent.cs" />
-    <Compile Include="lsr\Scanner\AudioSet.cs" />
+    <Compile Include="lsr\Player\Scanner\AudioSet.cs" />
     <Compile Include="lsr\Old\CountyJurisdictions.cs" />
     <Compile Include="lsr\Dispatcher\Dispatcher.cs" />
     <Compile Include="lsr\Player\Investigation.cs" />
     <Compile Include="lsr\Player\CriminalHistory.cs" />
-    <Compile Include="lsr\Scanner\Scanner.cs" />
-    <Compile Include="lsr\Scanner\CrimeSceneDescription.cs" />
+    <Compile Include="lsr\Player\Scanner\CrimeSceneDescription.cs" />
     <Compile Include="lsr\Player\SearchMode.cs" />
     <Compile Include="lsr\Player\PoliceResponse.cs" />
     <Compile Include="lsr\Police\ResponsePriority.cs" />

@@ -8,10 +8,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IRespawning//needs better name and to be moved
     {
-        bool RecentlyBribedPolice { get; }
         bool RecentlyRespawned { get; }
-        bool RecentlySurrenderedToPolice { get; }
-
         void RespawnAtGrave();
         void RespawnAtHospital(GameLocation currentSelectedHospitalLocation);
         void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory);

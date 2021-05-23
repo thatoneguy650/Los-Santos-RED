@@ -44,7 +44,14 @@ public class Tasker
     {
         foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists()))//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(20))//2//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2
         {
-            UpdateCurrentTask(Civilian);
+            if (Civilian.DistanceToPlayer <= 100f)
+            {
+                UpdateCurrentTask(Civilian);
+            }
+            else if (Civilian.CurrentTask != null)
+            {
+                Civilian.CurrentTask = null;
+            }
         }
     }
     private void UpdateCurrentTask(Cop Cop)//this should be moved out?
@@ -121,17 +128,37 @@ public class Tasker
     }
     private void UpdateCurrentTask(PedExt Civilian)//this should be moved out?
     {
-        if (Civilian.DistanceToPlayer <= 50f && Civilian.CanBeTasked)
+        if (Civilian.DistanceToPlayer <= 75f && Civilian.CanBeTasked)//50f
         {
-            if (Civilian.HasSeenPlayerCommitCrime && Civilian.WillCallPolice)
+            if (Civilian.HasSeenPlayerCommitCrime)
             {
-                if (Civilian.CurrentTask?.Name != "CallIn")
+                if (Civilian.WillCallPolice && Player.IsNotWanted && Civilian.CrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians))
                 {
-                    Civilian.CurrentTask = new CallIn(Civilian, Player); ;
-                    Civilian.CurrentTask.Start();
+                    if (Civilian.CurrentTask?.Name != "CallIn")
+                    {
+                        Civilian.CurrentTask = new CallIn(Civilian, Player);
+                        Civilian.CurrentTask.Start();
+                    }
+                }
+                else if (Civilian.WillFight && Player.IsNotWanted && Civilian.CrimesWitnessed.Any(x => x.AngersCivilians))
+                {
+                    if (Civilian.CurrentTask?.Name != "Fight")
+                    {
+                        WeaponInformation ToIssue = Civilian.IsGangMember ? Weapons.GetRandomRegularWeapon(WeaponCategory.Pistol) : Weapons.GetRandomRegularWeapon(WeaponCategory.Melee);
+                        Civilian.CurrentTask = new Fight(Civilian, Player, ToIssue); ;
+                        Civilian.CurrentTask.Start();
+                    }
+                }
+                else
+                {
+                    if (Civilian.CurrentTask?.Name != "Flee" && Civilian.CrimesWitnessed.Any(x => x.ScaresCivilians))
+                    {
+                        Civilian.CurrentTask = new Flee(Civilian, Player);
+                        Civilian.CurrentTask.Start();
+                    }
                 }
             }
-            else if ((Civilian.CrimesWitnessed.Any(x => x.AngersCivilians) || Civilian.IsFedUpWithPlayer) && Civilian.WillFight)
+            else if (Civilian.IsFedUpWithPlayer)
             {
                 if (Civilian.CurrentTask?.Name != "Fight")
                 {

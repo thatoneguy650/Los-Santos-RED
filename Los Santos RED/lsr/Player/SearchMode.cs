@@ -19,8 +19,6 @@ namespace LosSantosRED.lsr
         private bool PrevIsInActiveMode;
         private uint GameTimeStartedSearchMode;
         private uint GameTimeStartedActiveMode;
-        private uint GameTimeLastStarsGreyedOut;
-        private uint GameTimeLastStarsNotGreyedOut;
         private StopVanillaSeachMode StopSearchMode = new StopVanillaSeachMode();
 
         public SearchMode(IPoliceRespondable currentPlayer)
@@ -81,8 +79,6 @@ namespace LosSantosRED.lsr
         public uint CurrentSearchTime => (uint)Player.WantedLevel * 30000;//30 seconds each
         public uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each
         public string SearchModeDebug => string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", IsInSearchMode, IsInActiveMode, TimeInSearchMode, TimeInActiveMode);
-        public bool StarsRecentlyActive => GameTimeLastStarsNotGreyedOut != 0 && Game.GameTime - GameTimeLastStarsNotGreyedOut <= 1500;
-        public bool StarsRecentlyGreyedOut => GameTimeLastStarsGreyedOut != 0 && Game.GameTime - GameTimeLastStarsGreyedOut <= 1500;
         public bool IsSpotterCop(uint Handle)
         {
             if (StopSearchMode.SpotterCop != null && StopSearchMode.SpotterCop.Handle == Handle)
@@ -124,6 +120,7 @@ namespace LosSantosRED.lsr
                 {
                     IsInActiveMode = false;
                     IsInSearchMode = false;
+                    Player.OnSuspectEluded();
                 }
             }
             else
@@ -183,18 +180,17 @@ namespace LosSantosRED.lsr
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
             Player.PoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
-            //EntryPoint.WriteToConsole("SearchMode Stop Search Mode");
 
         }
         private void AreStarsGreyedOutChanged()
         {
             if (AreStarsGreyedOut)
             {
-                GameTimeLastStarsGreyedOut = Game.GameTime;
+                Player.OnStarsGreyedOut();
             }
             else
             {
-                GameTimeLastStarsNotGreyedOut = Game.GameTime;
+                Player.OnStarsActive();
             }
             //EntryPoint.WriteToConsole(string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
