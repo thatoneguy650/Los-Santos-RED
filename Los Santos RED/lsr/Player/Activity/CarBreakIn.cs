@@ -31,7 +31,8 @@ public class CarBreakIn
             WereWindowsIntact = NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle);
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
-                while(Game.LocalPlayer.Character.IsGettingIntoVehicle)
+                GameFiber.Yield();
+                while (Game.LocalPlayer.Character.IsGettingIntoVehicle)
                 {
                     if(!HasBrokenWindow && WereWindowsIntact && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle))
                     {

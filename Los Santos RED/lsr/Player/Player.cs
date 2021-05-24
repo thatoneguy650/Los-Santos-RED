@@ -97,7 +97,7 @@ namespace Mod
         public bool BeingArrested { get; private set; }
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
         public bool CanConverse => !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically;
-        public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;
+        public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;// && (Relationship)NativeFunction.Natives.GET_RELATIONSHIP_BETWEEN_PEDS<int>(CurrentLookedAtPed.Pedestrian, Character) != Relationship.Hate;//off for performance checking
         public bool CanDropWeapon => CanPerformActivities && WeaponDropping.CanDropWeapon;
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f;
         public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsInVehicle && !IsGettingIntoAVehicle  && !IsMovingDynamically;//&& !IsAttemptingToSurrender
@@ -152,6 +152,10 @@ namespace Mod
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCommitingSuicide { get; set; }
         public bool IsConversing { get; set; }
+
+
+
+
         public bool IsDead { get; private set; }
         public bool IsGettingIntoAVehicle
         {
@@ -261,16 +265,16 @@ namespace Mod
         public VehicleExt VehicleGettingInto { get; private set; }
         public float VehicleSpeed { get; private set; }//move or delete?
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
-        public string DebugLine1 => $"{Interaction?.DebugString}";
-        public string DebugLine2 => $"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
-        public string DebugLine3 => DynamicActivity?.DebugString;
-        public string DebugLine4 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} Target: {CurrentTargetedPed?.Pedestrian?.Handle} LookAt: {CurrentLookedAtPed?.Pedestrian?.Handle} NearScen {IsNearScenario}";
-        public string DebugLine5 => $"Obs {PoliceResponse.ObservedCrimesDisplay}";
-        public string DebugLine6 => $"Rep {PoliceResponse.ReportedCrimesDisplay}";
-        public string DebugLine7 => $"Vio {Violations.LawsViolatingDisplay}";
-        public string DebugLine8 => PoliceResponse.DebugText;
-        public string DebugLine9 => Investigation.DebugText;
-        public string DebugLine10 => $"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
+        public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically}";//$"{Interaction?.DebugString}";
+        public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";//$"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
+        public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";//DynamicActivity?.DebugString;
+        public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
+        public string DebugLine5 => "";//$"Obs {PoliceResponse.ObservedCrimesDisplay}";
+        public string DebugLine6 => "";//$"Rep {PoliceResponse.ReportedCrimesDisplay}";
+        public string DebugLine7 => "";//$"Vio {Violations.LawsViolatingDisplay}";
+        public string DebugLine8 => "";//PoliceResponse.DebugText;
+        public string DebugLine9 => "";//Investigation.DebugText;
+        public string DebugLine10 => "";//$"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
         public string DebugLine11 { get; set; }
         public bool RecentlyRespawned => Respawning.RecentlyRespawned;
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
@@ -438,13 +442,81 @@ namespace Mod
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
             GameTimeLastShot = Game.GameTime;
         }
+
+
+
+        private int UpdateState = 0;
+
+
         public void Update()
         {
             UpdateData();
             UpdateButtonPrompts();
-
-            Scanner.Tick();//for now
         }
+
+        private void UpdateData()
+        {
+            if (UpdateState == 0)
+            {
+                UpdateVehicleData();
+                UpdateState++;
+            }
+            else if (UpdateState == 1)
+            {
+                UpdateWeaponData();
+                UpdateState++;
+            }
+            else if (UpdateState == 2)
+            {
+                UpdateStateData();
+                UpdateState = 0;
+            }
+           
+            
+        }
+
+
+        private void UpdateButtonPrompts()
+        {
+            if (!IsInteracting && CanConverseWithLookedAtPed)
+            {
+                if (!ButtonPrompts.Any(x => x.Identifier == $"Talk {CurrentLookedAtPed.Pedestrian.Handle}"))
+                {
+                    ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
+                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Keys.E, 1));
+                }
+            }
+            else
+            {
+                ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
+            }
+            if (CanPerformActivities && IsNearScenario)//currently isnearscenario is turned off
+            {
+                if (!ButtonPrompts.Any(x => x.Identifier == $"StartScenario"))
+                {
+                    ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
+                    ButtonPrompts.Add(new ButtonPrompt($"{ClosestScenario?.Name}", "StartScenario", $"StartScenario", Keys.P, 2));
+                }
+            }
+            else
+            {
+                ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
         //Interactions
         public void StartConversation()
         {
@@ -585,6 +657,7 @@ namespace Mod
         public void CheckMurdered(PedExt MyPed) => Violations.AddKilled(MyPed);
         public void DropWeapon() => WeaponDropping.DropWeapon();
         public void LocationUpdate() => CurrentLocation.Update();
+        public void ScannerUpdate() => Scanner.Tick();
         public void LowerHands() => Surrendering.LowerHands();//needs to move
         public void RaiseHands() => Surrendering.RaiseHands();//needs to move
         public void SearchModeUpdate() => SearchMode.UpdateWanted();
@@ -763,36 +836,7 @@ namespace Mod
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle}",5);
         }
-        private void UpdateButtonPrompts()
-        {
-            if (!IsInteracting && CanConverseWithLookedAtPed)
-            {
-                if (!ButtonPrompts.Any(x => x.Identifier == $"Talk {CurrentLookedAtPed.Pedestrian.Handle}"))
-                {
-                    ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
-                    ButtonPrompts.Add(new ButtonPrompt($"Talk to {CurrentLookedAtPed.FormattedName}", "StartConversation", $"Talk {CurrentLookedAtPed.Pedestrian.Handle}", Keys.E, 1));
-                }
-            }
-            else
-            {
-                ButtonPrompts.RemoveAll(x => x.Group == "StartConversation");
-            }
-            if (CanPerformActivities && IsNearScenario)//currently isnearscenario is turned off
-            {
-                if (!ButtonPrompts.Any(x => x.Identifier == $"StartScenario"))
-                {
-                    ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
-                    ButtonPrompts.Add(new ButtonPrompt($"{ClosestScenario?.Name}", "StartScenario", $"StartScenario", Keys.P, 2));
-                }
-            }
-            else
-            {
-                ButtonPrompts.RemoveAll(x => x.Group == "StartScenario");
-            }
 
-
-
-        }
         private void UpdateCurrentVehicle()
         {
             bool IsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
@@ -830,12 +874,7 @@ namespace Mod
             isCurrentVehicleEngineOn = ToReturn.Vehicle.IsEngineOn;
             CurrentVehicle = ToReturn;
         }
-        private void UpdateData()
-        {
-            UpdateVehicleData();
-            UpdateWeaponData();
-            UpdateStateData();
-        }
+
         private void UpdateLookedAtPed()
         {
             if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 1000)//750
@@ -1114,20 +1153,27 @@ namespace Mod
             IsAiming = Game.LocalPlayer.IsFreeAiming;
             IsAimingInVehicle = IsInVehicle && IsAiming;
             UpdateVisiblyArmed();
-            WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;
-            CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
+            WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;       
             if (PlayerCurrentWeapon != null)
             {
                 CurrentWeaponHash = PlayerCurrentWeapon.Hash;
+                CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
             }
             else
             {
                 CurrentWeaponHash = 0;
+                CurrentWeapon = null;
             }
             if (CurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeaponHash)
             {
                 LastWeaponHash = PlayerCurrentWeapon.Hash;
             }
+
+
+            
+
+
+
             WeaponDropping.Update();
             UpdateTargetedPed();
             UpdateLookedAtPed();

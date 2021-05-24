@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr
             Player = player;
             Settings = settings;
         }
-        private uint GameTimeStartedHoldingEnter;
+       // private uint GameTimeStartedHoldingEnter;
         private uint GameTimeLastPressedEngineToggle;
 
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
@@ -49,7 +49,7 @@ namespace LosSantosRED.lsr
             SurrenderCheck();
             WeaponDropCheck();
             VehicleCheck();
-            HoldingEnterCheck();
+            //HoldingEnterCheck();
             ButtonPromptCheck();
             ConversationCheck();
             ScenarioCheck();
@@ -70,20 +70,20 @@ namespace LosSantosRED.lsr
                 Player.StartScenario();
             }
         }
-        private void HoldingEnterCheck()
-        {
-            if (Game.IsControlPressed(2, GameControl.Enter))
-            {
-                if (GameTimeStartedHoldingEnter == 0)
-                {
-                    GameTimeStartedHoldingEnter = Game.GameTime;
-                }
-            }
-            else
-            {
-                GameTimeStartedHoldingEnter = 0;
-            }
-        }
+        //private void HoldingEnterCheck()
+        //{
+        //    if (Game.IsControlPressed(2, GameControl.Enter))
+        //    {
+        //        if (GameTimeStartedHoldingEnter == 0)
+        //        {
+        //            GameTimeStartedHoldingEnter = Game.GameTime;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        GameTimeStartedHoldingEnter = 0;
+        //    }
+        //}
         private void SurrenderCheck()
         {
             if (IsPressingSurrender)
@@ -105,6 +105,11 @@ namespace LosSantosRED.lsr
         {
             Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
             Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
+
+            if(Player.ButtonPrompts.Count > 10)
+            {
+                EntryPoint.WriteToConsole($"Excessive Button Prompts {Player.ButtonPrompts.Count}", 1);
+            }
             foreach (ButtonPrompt bp in Player.ButtonPrompts)
             {
                 if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)

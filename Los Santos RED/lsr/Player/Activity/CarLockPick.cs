@@ -63,6 +63,7 @@ public class CarLockPick
         {
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
+                GameFiber.Yield();
                 if (!SetupLockPick())
                 {
                     EntryPoint.WriteToConsole("PickLock Setup Failed",3);

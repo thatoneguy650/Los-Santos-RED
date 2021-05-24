@@ -206,19 +206,19 @@ public class Dispatcher
         if (IsTimeToRecallLE)
         {
             //EntryPoint.WriteToConsole($"DISPATCHER: Attempting Recall");
-            foreach (Cop DeleteableCop in DeletableCops)
+            foreach (Cop DeleteableCop in DeletableCops.Take(2))
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
                     Delete(DeleteableCop);
                 }
             }
-            if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
-            {
-                Roadblock.Dispose();
-                Roadblock = null;
-                EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
-            }
+            //if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
+            //{
+            //    Roadblock.Dispose();
+            //    Roadblock = null;
+            //    EntryPoint.WriteToConsole($"DISPATCHER: Deleted Roadblock", 3);
+            //}
 
 
 
@@ -558,11 +558,11 @@ public class Dispatcher
             //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Was Close");
             return true;
         }
-        else if (World.CountNearbyPolice(cop.Pedestrian) >= 3 && cop.TimeBehindPlayer >= 15000) //Got Close and Then got away
-        {
-            //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Behind Player Around Others");
-            return true;
-        }
+        //else if (World.CountNearbyPolice(cop.Pedestrian) >= 3 && cop.TimeBehindPlayer >= 15000) //Got Close and Then got away
+        //{
+        //    //EntryPoint.WriteToConsole($"DISPATCHER: Recalling Cop {cop.Pedestrian.Handle} Reason: Behind Player Around Others");
+        //    return true;
+        //}
         return false;
     }
     public void SpawnRegularRoadblock()//temp public

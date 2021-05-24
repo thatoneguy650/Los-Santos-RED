@@ -876,7 +876,7 @@ namespace LosSantosRED.lsr
             {
                 AddRapSheet(EventToPlay);
             }
-            if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null)
+            if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null && CurrentPlayer.CurrentVehicle != null)//temp current vehicle BS
             {
                //VehicleExt ActualCar =  World.GetVehicleExt(DispatchToPlay.LatestInformation.VehicleSeen.Vehicle);
                // ActualCar.WasReportedStolen = true;
@@ -905,7 +905,7 @@ namespace LosSantosRED.lsr
                 //EntryPoint.WriteToConsole("-------------------------------", 3);
 
 
-
+                //THIS NEED TO NOT BE CURRENT VEHICLE, BUT OTHERWISE THE LINK GETS MESSED UP?
 
                 CurrentPlayer.CurrentVehicle.WasReportedStolen = true;
                 CurrentPlayer.CurrentVehicle.OriginalLicensePlate.IsWanted = true;

@@ -54,6 +54,7 @@ public class CarJack
         {
             GameFiber CarJackPedWithWeapon = GameFiber.StartNew(delegate
             {
+                GameFiber.Yield();
                 if (!SetupCarJack())
                 {
                     if (Driver != null)
@@ -447,6 +448,7 @@ public class CarJack
     {
         GameFiber CarJackPed = GameFiber.StartNew(delegate
         {
+            GameFiber.Yield();
             if (Driver != null)
             {
                 Driver.CanBeTasked = false;
