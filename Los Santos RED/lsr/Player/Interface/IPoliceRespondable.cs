@@ -43,6 +43,7 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }//not good comrade
         Vector3 Position { get; }
         Ped Character { get; }
+        float SearchModePercentage { get; }
 
         void CheckInjured(PedExt myPed);
         void CheckMurdered(PedExt myPed);
@@ -51,8 +52,8 @@ namespace LosSantosRED.lsr.Interface
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription);
         void ResetScanner();
         void OnAppliedWantedStats();
-        void OnStarsActive();
-        void OnStarsGreyedOut();
+        void OnWantedActiveMode();
+        void OnWantedSearchMode();
         void OnInvestigationExpire();
         void OnRequestedBackUp();
         void OnWeaponsFree();

@@ -45,6 +45,13 @@ public class WavAudio : IAudioPlayable
         string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
         AudioDevice.SoundLocation = AudioFilePath;
         int l = SoundInfo.GetSoundLength(AudioFilePath);
+
+
+        if (l == 0)
+        {
+            EntryPoint.WriteToConsole($"WAVAudio: Sound Length (ms): {l}, {FileName}",3);
+            l = SoundInfo.GetSoundLength(AudioFilePath);
+        }
         IsAudioPlaying = true;
         Thread t2 = new Thread(delegate ()
         {

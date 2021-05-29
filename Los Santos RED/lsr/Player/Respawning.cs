@@ -39,7 +39,8 @@ public class Respawning : IRespawning
     }
    // public bool RecentlyBribedPolice => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastBribedPolice <= 10000;
     public bool RecentlyRespawned => GameTimeLastRespawned != 0 && Game.GameTime - GameTimeLastRespawned <= 1000;
-  //  public bool RecentlySurrenderedToPolice => GameTimeLastSurrenderedToPolice != 0 && Game.GameTime - GameTimeLastSurrenderedToPolice <= 5000;
+    public bool RecentlyResistedArrest => GameTimeLastResistedArrest != 0 && Game.GameTime - GameTimeLastResistedArrest <= 5000;
+    //  public bool RecentlySurrenderedToPolice => GameTimeLastSurrenderedToPolice != 0 && Game.GameTime - GameTimeLastSurrenderedToPolice <= 5000;
     public void BribePolice(int Amount)
     {
         if (CurrentPlayer.Money < Amount)

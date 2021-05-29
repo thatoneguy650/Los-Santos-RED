@@ -19,5 +19,7 @@ namespace LosSantosRED.lsr.Interface
         void SetUnarmed();
         void ShootAt(Vector3 targetCoordinate);
         Ped Character { get; }
+
+        void ToggleEngine(bool v);
     }
 }

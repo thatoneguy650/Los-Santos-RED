@@ -25,18 +25,7 @@ namespace LosSantosRED.lsr
         {
             Player = currentPlayer;
         }
-        public bool AreStarsGreyedOut
-        {
-            get => areStarsGreyedOut;
-            private set
-            {
-                if (areStarsGreyedOut != value)
-                {
-                    areStarsGreyedOut = value;
-                    AreStarsGreyedOutChanged();
-                }
-            }
-        }
+        public float SearchModePercentage => IsInSearchMode ? 1.0f - ((float)TimeInSearchMode / (float)CurrentSearchTime) : 0;
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
         public uint TimeInSearchMode
@@ -111,16 +100,17 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
-                    IsInActiveMode = false;
-                    IsInSearchMode = true;
-                }
-
-
-                if (IsInSearchMode && TimeInSearchMode >= CurrentSearchTime)
-                {
-                    IsInActiveMode = false;
-                    IsInSearchMode = false;
-                    Player.OnSuspectEluded();
+                    if (IsInSearchMode && TimeInSearchMode >= CurrentSearchTime)
+                    {
+                        IsInActiveMode = false;
+                        IsInSearchMode = false;
+                        Player.OnSuspectEluded();
+                    }
+                    else
+                    {
+                        IsInActiveMode = false;
+                        IsInSearchMode = true;
+                    }
                 }
             }
             else
@@ -159,6 +149,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = Game.GameTime;
             GameTimeStartedActiveMode = 0;
+            Player.OnWantedSearchMode();
             //EntryPoint.WriteToConsole("SearchMode Start Search Mode");
         }
         private void StartActiveMode()
@@ -169,6 +160,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedActiveMode = Game.GameTime;
             GameTimeStartedSearchMode = 0;
+            Player.OnWantedActiveMode();
             //EntryPoint.WriteToConsole("SearchMode Start Active Mode");
         }
         private void EndSearchMode()
@@ -181,18 +173,6 @@ namespace LosSantosRED.lsr
             GameTimeStartedActiveMode = 0;
             Player.PoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
 
-        }
-        private void AreStarsGreyedOutChanged()
-        {
-            if (AreStarsGreyedOut)
-            {
-                Player.OnStarsGreyedOut();
-            }
-            else
-            {
-                Player.OnStarsActive();
-            }
-            //EntryPoint.WriteToConsole(string.Format("AreStarsGreyedOut Changed to: {0}", AreStarsGreyedOut));
         }
         private class StopVanillaSeachMode
         {

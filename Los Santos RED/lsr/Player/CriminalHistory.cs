@@ -27,6 +27,7 @@ namespace LosSantosRED.lsr
         public void StoreCriminalHistory(PoliceResponse rapSheet)
         {
             RapSheetList.Add(rapSheet);
+            EntryPoint.WriteToConsole($" PLAYER EVENT: Criminal History Store", 3);
         }
         public void Update()
         {
@@ -47,12 +48,30 @@ namespace LosSantosRED.lsr
                         ApplyWantedStatsForPlate(Player.CurrentVehicle.CarPlate.PlateNumber);
                     }
                 }
-                RapSheetList.RemoveAll(x => x.HasBeenNotWantedFor >= 120000);
+               // RapSheetList.RemoveAll(x => x.HasBeenNotWantedFor >= 120000);
             }
         }
         public void Clear()
         {
             RapSheetList.Clear();
+            EntryPoint.WriteToConsole($" PLAYER EVENT: Criminal History Clear", 3);
+        }
+        public void PrintCriminalHistory()
+        {
+            foreach(PoliceResponse rs in RapSheetList)
+            {
+                EntryPoint.WriteToConsole("-------------------------------OBS", 3);
+               // EntryPoint.WriteToConsole($" RapSheet: Observed Max Wanted {rs.ObservedMaxWantedLevel}", 3);
+                foreach(CrimeEvent ab in rs.CrimesObserved)
+                {
+                    EntryPoint.WriteToConsole($" Observed Crime: {ab.AssociatedCrime.Name}", 3);
+                }
+                foreach (CrimeEvent ab in rs.CrimesReported)
+                {
+                    EntryPoint.WriteToConsole($" Reported Crime: {ab.AssociatedCrime.Name}", 3);
+                }
+                EntryPoint.WriteToConsole("-------------------------------REP", 3);
+            }
         }
         private void ApplyLastWantedStats()
         {
@@ -63,8 +82,9 @@ namespace LosSantosRED.lsr
             if (CriminalHistory != null)
             {
                 RapSheetList.Remove(CriminalHistory);
-                foreach(CrimeEvent crime in CriminalHistory.CrimesObserved)
+                foreach (CrimeEvent crime in CriminalHistory.CrimesObserved.OrderByDescending(x => x.AssociatedCrime.Priority))
                 {
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.AssociatedCrime.Name}", 3);
                     Player.AddCrime(crime.AssociatedCrime, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true);
                 }
                 Player.OnAppliedWantedStats();

@@ -49,6 +49,9 @@ namespace Mod
         private uint targettingHandle;
         private bool isActive = true;
         private uint GameTimeLastUpdatedLookedAtPed;
+
+
+        private string CurrentVehicleDebugString;
         public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
         {
             ModelName = modelName;
@@ -147,7 +150,7 @@ namespace Mod
         public bool IsAliveAndFree => !IsBusted && !IsDead;
         public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || Game.LocalPlayer.Character.IsJacking;
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !IsInVehicle && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));
+        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !RecentlyBusted && !RecentlyResistedArrest && !IsInVehicle && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically));
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
@@ -155,7 +158,7 @@ namespace Mod
         public bool IsConversing { get; set; }
 
 
-
+        public float SearchModePercentage => SearchMode.SearchModePercentage;
 
         public bool IsDead { get; private set; }
         public bool IsGettingIntoAVehicle
@@ -226,6 +229,7 @@ namespace Mod
         }
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public Vector3 Position => Game.LocalPlayer.Character.Position;
+        public bool RecentlyResistedArrest => Respawning.RecentlyResistedArrest;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;//10000
@@ -270,7 +274,7 @@ namespace Mod
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";//$"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";//DynamicActivity?.DebugString;
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
-        public string DebugLine5 => "";//$"Obs {PoliceResponse.ObservedCrimesDisplay}";
+        public string DebugLine5 => CurrentVehicleDebugString;
         public string DebugLine6 => "";//$"Rep {PoliceResponse.ReportedCrimesDisplay}";
         public string DebugLine7 => "";//$"Vio {Violations.LawsViolatingDisplay}";
         public string DebugLine8 => "";//PoliceResponse.DebugText;
@@ -443,9 +447,7 @@ namespace Mod
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
             GameTimeLastShot = Game.GameTime;
         }
-
-
-
+        public void ToggleEngine(bool DesiredStatus) => isCurrentVehicleEngineOn = true;//CurrentVehicle?.Engine.Toggle(DesiredStatus);
         private int UpdateState = 0;
 
 
@@ -678,11 +680,14 @@ namespace Mod
             Scanner.OnBribedPolice();
         }
         public void ResistArrest() => Respawning.ResistArrest();
+
+        public void PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
+
         //Events
         public void OnAppliedWantedStats() => Scanner.OnAppliedWantedStats();
         public void OnInvestigationExpire() => Scanner.OnInvestigationExpire();
-        public void OnStarsGreyedOut() => Scanner.OnStarsGreyedOut();
-        public void OnStarsActive() => Scanner.OnStarsActive();
+        public void OnWantedSearchMode() => Scanner.OnWantedSearchMode();
+        public void OnWantedActiveMode() => Scanner.OnWantedActiveMode();
         public void OnPoliceNoticeVehicleChange() => Scanner.OnPoliceNoticeVehicleChange();
         public void OnRequestedBackUp() => Scanner.OnRequestedBackUp();
         public void OnWeaponsFree() => Scanner.OnWeaponsFree();
@@ -1085,9 +1090,11 @@ namespace Mod
                     GameTimeLastMovedFast = 0;
                 }
                 IsStill = VehicleSpeed <= 0.1f;
+               // CurrentVehicleDebugString = $"LSREngineOn: {CurrentVehicle.Engine.IsRunning} GTAEngineOn: {CurrentVehicle.Vehicle.IsEngineOn}";
             }
             else
             {
+                CurrentVehicleDebugString = "";
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;
                 CurrentVehicle = null;

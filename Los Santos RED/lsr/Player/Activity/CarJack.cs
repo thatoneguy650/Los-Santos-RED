@@ -192,16 +192,20 @@ public class CarJack
             else
             {
                 Game.LocalPlayer.Character.WarpIntoVehicle(TargetVehicle, -1);
-                TargetVehicle.IsEngineOn = true;
+                //TargetVehicle.IsEngineOn = true;
                 ////This needs to be moved out of here!!!!, might need to add it back
-                //VehicleExt MyCar = World.GetVehicle(TargetVehicle);
+                //VehicleExt MyCar = ent.GetVehicle(TargetVehicle);
                 //if (MyCar != null && MyCar.Vehicle.Exists())
                 //{
                 //    MyCar.Vehicle.IsEngineOn = true;
-                //   // MyCar.ToggleEngine(true);
+                //    // MyCar.ToggleEngine(true);
                 //}
 
-                VehicleExt.Engine.Toggle(true);
+                //  VehicleExt.Engine.Toggle(true);
+
+                //      VehicleExt.Engine.Toggle(true);
+
+                Player.ToggleEngine(true);
                 if (TargetVehicle.Doors[0].IsValid())
                 {
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
@@ -454,11 +458,14 @@ public class CarJack
                 Driver.CanBeTasked = false;
             }
             uint GameTimeStarted = Game.GameTime;
-            while(!Player.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 4000)
+            while(!Player.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 5000)
             {
                 GameFiber.Yield();
             }
-            VehicleExt.Engine.Toggle(true);
+            if (Player.Character.IsInAnyVehicle(false))
+            {
+                VehicleExt.Engine.Toggle(true);
+            }
             if (Driver != null)
             {
                 Driver.CanBeTasked = true;

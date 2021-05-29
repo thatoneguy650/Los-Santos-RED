@@ -121,82 +121,13 @@ namespace LosSantosRED.lsr
             StreetAndZone = 5,
             Street = 6,
         }
-        public bool RecentlyAnnouncedDispatch
-        {
-            get
-            {
-                if (GameTimeLastAnnouncedDispatch == 0)
-                {
-                    return false;
-                }
-                if (Game.GameTime - GameTimeLastAnnouncedDispatch <= 25000)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        public bool RecentlyMentionedStreet
-        {
-            get
-            {
-                if (GameTimeLastMentionedStreet == 0)
-                {
-                    return false;
-                }
-                if (Game.GameTime - GameTimeLastMentionedStreet <= 10000)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        public bool RecentlyMentionedZone
-        {
-            get
-            {
-                if (GameTimeLastMentionedZone == 0)
-                {
-                    return false;
-                }
-                if (Game.GameTime - GameTimeLastMentionedZone <= 10000)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        public bool VeryRecentlyAnnouncedDispatch
-        {
-            get
-            {
-                if (GameTimeLastAnnouncedDispatch == 0)
-                {
-                    return false;
-                }
-                if (Game.GameTime - GameTimeLastAnnouncedDispatch <= 10000)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+        public bool RecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 25000;
+        public bool RecentlyMentionedStreet => GameTimeLastMentionedStreet != 0 && Game.GameTime - GameTimeLastMentionedStreet <= 10000;
+        public bool RecentlyMentionedZone => GameTimeLastMentionedZone != 0 && Game.GameTime - GameTimeLastMentionedZone <= 10000;
+        public bool VeryRecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 10000;
         public void Abort()
         {
             AudioPlayer.Abort();
-            // DispatchQueue.Clear();
             RemoveAllNotifications();
         }
         public void AnnounceCrime(Crime crimeAssociated, CrimeSceneDescription reportInformation)
@@ -338,7 +269,7 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnAppliedWantedStats", 3);
         }
-        public void OnStarsGreyedOut()
+        public void OnWantedSearchMode()
         {
             if (!LostVisual.HasVeryRecentlyBeenPlayed)
             {
@@ -346,7 +277,7 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsGreyedOut", 3);
         }
-        public void OnStarsActive()
+        public void OnWantedActiveMode()
         {
              if (!SuspectSpotted.HasVeryRecentlyBeenPlayed)
             {
@@ -392,6 +323,7 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnFoot", 3);
         }
+
         private void AddAudioSet(DispatchEvent dispatchEvent, AudioSet audioSet)
         {
             if (audioSet != null)
@@ -1805,6 +1737,7 @@ namespace LosSantosRED.lsr
                 Priority = 10,
                 LocationDescription = LocationSpecificity.HeadingAndStreet,
                 IncludeDrivingVehicle = true,
+                CanAlwaysInterrupt = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName },"a wanted felon on the loose"),
@@ -1816,6 +1749,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
+                CanAlwaysInterrupt = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName },"suspect evaded pursuing officers"),
@@ -1846,6 +1780,7 @@ namespace LosSantosRED.lsr
                 Name = "Lost Visual",
                 IsStatus = true,
                 IncludeReportedBy = false,
+                CanAlwaysInterrupt = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName },"all units stay in the area"),
@@ -1861,6 +1796,7 @@ namespace LosSantosRED.lsr
                 Name = "Resume Patrol",
                 IsStatus = true,
                 IncludeReportedBy = false,
+                CanAlwaysInterrupt = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { officer_begin_patrol.Beginpatrol.FileName },"begin patrol"),
@@ -1877,6 +1813,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
+                CanAlwaysInterrupt = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName },"all units ATL on suspects 20"),
@@ -1893,6 +1830,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
+                CanAlwaysInterrupt = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName },"all units ATL on suspects 20"),
@@ -1958,6 +1896,7 @@ namespace LosSantosRED.lsr
                 Name = "Suspect Changed Vehicle",
                 IsStatus = true,
                 IncludeDrivingVehicle = true,
+                CanAlwaysInterrupt = true,
                 LocationDescription = LocationSpecificity.StreetAndZone,
                 MainAudioSet = new List<AudioSet>()
             {
@@ -2002,6 +1941,7 @@ namespace LosSantosRED.lsr
                 Name = "Weapons Free",
                 IsStatus = true,
                 IncludeReportedBy = false,
+                CanAlwaysInterrupt = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { custom_wanted_level_line.Suspectisarmedanddangerousweaponsfree.FileName },"suspect is armed and dangerous, weapons free"),
@@ -2014,6 +1954,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 ResultsInLethalForce = true,
+                CanAlwaysInterrupt = true,
             };
         }
         private class CrimeDispatch

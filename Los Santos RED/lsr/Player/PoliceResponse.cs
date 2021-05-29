@@ -49,7 +49,7 @@ namespace LosSantosRED.lsr
         public Vector3 LastWantedCenterPosition { get; set; }
         public bool LethalForceAuthorized => CrimesObserved.Any(x => x.AssociatedCrime.ResultsInLethalForce);
         public string ObservedCrimesDisplay => string.Join(",", CrimesObserved.Select(x => x.AssociatedCrime.Name));
-        public int ObservedMaxWantedLevel => CrimesObserved.Max(x => x.AssociatedCrime.ResultingWantedLevel);
+        public int ObservedMaxWantedLevel => CrimesObserved == null ? -1 : CrimesObserved.Max(x => x.AssociatedCrime.ResultingWantedLevel);
         public Vector3 PlaceLastReportedCrime { get; private set; }
         public Vector3 PlaceWantedStarted { get; private set; }
         public bool PlayerSeenDuringCurrentWanted { get; set; }
@@ -369,6 +369,21 @@ namespace LosSantosRED.lsr
                 else
                 {
                     LastSeenLocationBlip.Position = Player.PlacePoliceLastSeenPlayer;
+                }
+
+
+                if(Player.IsInSearchMode)
+                {
+                    LastSeenLocationBlip.Color = Color.Orange;
+                    LastSeenLocationBlip.Alpha = 0.35f;
+                    LastSeenLocationBlip.Scale = Player.SearchModePercentage * 200f;
+                }
+                else
+                {
+                    LastSeenLocationBlip.Color = Color.Red;
+                    LastSeenLocationBlip.Alpha = 0.25f;
+                    LastSeenLocationBlip.Scale = 200f;
+
                 }
             }
             else
