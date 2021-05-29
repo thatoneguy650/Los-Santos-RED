@@ -41,7 +41,7 @@ public class SuicideActivity : DynamicActivity
     {
         Player.IsCommitingSuicide = true;
         Player.IsPerformingActivity = true;
-        if (Player.CurrentWeaponCategory == WeaponCategory.Pistol)//Shoot YOurself
+        if (Player.CurrentWeaponIsOneHanded)//Player.CurrentWeaponCategory == WeaponCategory.Pistol || CurrentWeaponIsOneHanded)//Shoot YOurself
         {
             Enter("pistol");
             IdlePistol();
@@ -68,6 +68,7 @@ public class SuicideActivity : DynamicActivity
         bool AddedPrompts = false;
         while (Player.CanPerformActivities && !IsCancelled && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene) < 1.0f)
         {
+            Player.SetUnarmed();
             ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene);
             if (ScenePhase >= 0.2f)
             {

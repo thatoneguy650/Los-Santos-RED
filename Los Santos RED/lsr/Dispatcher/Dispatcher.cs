@@ -263,7 +263,7 @@ public class Dispatcher
                 isValidSpawn = IsValidSpawn(spawnLocation);
                 timesTried++;
             }
-            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
+            while (!spawnLocation.HasSpawns && !isValidSpawn && timesTried < 1);//2//10
             if (spawnLocation.HasSpawns && isValidSpawn)
             {
                 Agency agency = GetRandomAgency(spawnLocation, ResponseType.LawEnforcement);

@@ -63,7 +63,7 @@ public class Vehicles
             {
                 VehiclesCreated++;
             }
-            if(VehiclesCreated >= 10)//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
+            if(VehiclesCreated >= 5)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
             {
                 return;
             }

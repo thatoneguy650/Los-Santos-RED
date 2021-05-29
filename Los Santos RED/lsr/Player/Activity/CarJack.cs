@@ -192,7 +192,7 @@ public class CarJack
             else
             {
                 Game.LocalPlayer.Character.WarpIntoVehicle(TargetVehicle, -1);
-
+                TargetVehicle.IsEngineOn = true;
                 ////This needs to be moved out of here!!!!, might need to add it back
                 //VehicleExt MyCar = World.GetVehicle(TargetVehicle);
                 //if (MyCar != null && MyCar.Vehicle.Exists())

@@ -113,6 +113,7 @@ namespace Mod
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
         public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
+        public bool CurrentWeaponIsOneHanded  { get; private set; }
         public WeaponHash CurrentWeaponHash { get; set; }//move or delete?
         public string CurrentModelName { get; set; }//should be private but needed?
         public PedVariation CurrentModelVariation { get; set; }//should be private but needed?
@@ -1156,13 +1157,23 @@ namespace Mod
             WeaponDescriptor PlayerCurrentWeapon = Game.LocalPlayer.Character.Inventory.EquippedWeapon;       
             if (PlayerCurrentWeapon != null)
             {
+                
                 CurrentWeaponHash = PlayerCurrentWeapon.Hash;
                 CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
             }
             else
             {
+                
                 CurrentWeaponHash = 0;
                 CurrentWeapon = null;
+            }
+            if(Game.LocalPlayer.Character.Inventory.EquippedWeaponObject != null)
+            {
+                CurrentWeaponIsOneHanded = Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Model.Dimensions.X <= 0.4f;
+            }
+            else
+            {
+                CurrentWeaponIsOneHanded = false;
             }
             if (CurrentWeaponHash != 0 && PlayerCurrentWeapon.Hash != LastWeaponHash)
             {

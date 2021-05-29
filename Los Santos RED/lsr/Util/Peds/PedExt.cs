@@ -52,6 +52,7 @@ public class PedExt : IComplexTaskable
     public bool IsConversing { get; set; }
     public bool HasSpokenWithPlayer { get; set; }
     public bool CanBeTasked { get; set; } = true;
+    public bool ShouldUpdateTask { get; set; } = true;
     public bool CanRecognizePlayer
     {
         get
@@ -164,6 +165,7 @@ public class PedExt : IComplexTaskable
             }
         }
     }
+    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= 1000;
     public bool NeedsUpdate
     {
         get

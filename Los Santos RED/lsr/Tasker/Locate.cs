@@ -107,7 +107,7 @@ public class Locate : ComplexTask
                 }
                 else if (Ped.IsInBoat)
                 {
-                    NativeFunction.Natives.TASK_BOAT_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, (int)VehicleDrivingFlags.Emergency, -1.0, 7);
+                    NativeFunction.Natives.TASK_BOAT_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, (int)VehicleDrivingFlags.Emergency, -1.0f, 7);
                 }
                 else
                 {
