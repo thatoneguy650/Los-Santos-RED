@@ -20,7 +20,7 @@ public class CallIn : ComplexTask
     public override void Start()
     {
         
-        //EntryPoint.WriteToConsole($"TASKER: CallIn Start: {Ped.Pedestrian.Handle}");
+        EntryPoint.WriteToConsole($"TASKER: CallIn Start: {Ped.Pedestrian.Handle}",3);
         unsafe
         {
             int lol = 0;
@@ -63,7 +63,7 @@ public class CallIn : ComplexTask
                 //EntryPoint.WriteToConsole($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} Crime {ToReport.ID}");
                 //Player.PoliceResponse.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
 
-                Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
+                Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f,true);
             }
 
             Ped.CrimesWitnessed.Clear();      ///>>??????????

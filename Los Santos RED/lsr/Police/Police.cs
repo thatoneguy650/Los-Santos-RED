@@ -47,21 +47,49 @@ namespace LosSantosRED.lsr
                 Player.AnyPoliceRecentlySeenPlayer = World.PoliceList.Any(x => x.SeenPlayerFor(17000));
             }
             Player.AnyPoliceCanRecognizePlayer = World.PoliceList.Any(x => x.TimeContinuoslySeenPlayer >= Player.TimeToRecognize || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
+
+
+
+
             if (!Player.AnyPoliceSeenPlayerCurrentWanted && Player.AnyPoliceRecentlySeenPlayer && Player.IsWanted)
             {
                 Player.AnyPoliceSeenPlayerCurrentWanted = true;
             }
-            if (Player.AnyPoliceRecentlySeenPlayer)
+            else
             {
-                if (!Player.AnyPoliceSeenPlayerCurrentWanted)
+                Player.AnyPoliceSeenPlayerCurrentWanted = false;
+            }
+
+
+
+
+            if(Player.IsWanted)
+            {
+                if (Player.IsInSearchMode)
                 {
-                    Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceWantedStarted;
+                   // Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
                 }
-                else if (!Player.IsInSearchMode)
+                else
                 {
                     Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
                 }
             }
+
+
+            //if (Player.AnyPoliceRecentlySeenPlayer)
+            //{
+            //    if (!Player.IsInSearchMode)
+            //    {
+            //        Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+            //    }
+            //}
+            //else
+            //{
+            //    if (!Player.AnyPoliceSeenPlayerCurrentWanted)
+            //    {
+            //        Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceWantedStarted;
+            //    }
+            //}
             //else
             //{
             //    if (Player.IsInSearchMode && Player.PoliceResponse.HasReportedCrimes && Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero)

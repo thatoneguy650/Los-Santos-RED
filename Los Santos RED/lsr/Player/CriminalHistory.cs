@@ -14,20 +14,22 @@ namespace LosSantosRED.lsr
 {
     public class CriminalHistory
     {
-        private List<PoliceResponse> RapSheetList = new List<PoliceResponse>();
+        private BOLO CurrentHistory;
         private IPoliceRespondable Player;
         public CriminalHistory(IPoliceRespondable currentPlayer)
         {
             Player = currentPlayer;
         }
-        public int LastWantedMaxLevel => LastResponse == null ? 0 : LastResponse.ObservedMaxWantedLevel;
-        public float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * 400f : 400f;
-        private bool HasHistory => RapSheetList.Any();
-        private PoliceResponse LastResponse => RapSheetList.Where(x => x.PlayerSeenDuringWanted).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault();
-        public void StoreCriminalHistory(PoliceResponse rapSheet)
+             private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
+        private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * 400f : 400f;
+        private bool HasHistory => CurrentHistory != null;
+        public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
-            RapSheetList.Add(rapSheet);
-            EntryPoint.WriteToConsole($" PLAYER EVENT: Criminal History Store", 3);
+            CurrentHistory = new BOLO(PlaceLastSeen,CrimesAssociated, CrimesAssociated.Max(x=> x.ResultingWantedLevel));
+        }
+        public void OnLostWanted()
+        {
+            //clear criminal history?
         }
         public void Update()
         {
@@ -39,62 +41,79 @@ namespace LosSantosRED.lsr
                     {
                         ApplyLastWantedStats();
                     }
-                    else if (Player.PoliceResponse.NearLastWanted(SearchRadius) && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)
+                    else if (IsNearLastSeenLocation() && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)//move the second one OUT
                     {
                         ApplyLastWantedStats();
                     }
                     else if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen)
                     {
-                        ApplyWantedStatsForPlate(Player.CurrentVehicle.CarPlate.PlateNumber);
+                        ApplyLastWantedStats();
+                        //ApplyWantedStatsForPlate(Player.CurrentVehicle.CarPlate.PlateNumber);
                     }
                 }
-               // RapSheetList.RemoveAll(x => x.HasBeenNotWantedFor >= 120000);
+               // RapSheetList.RemoveAll(x => x.HasBeenNotWantedFor >= 120000);...need to add back, but not for now
             }
         }
         public void Clear()
         {
-            RapSheetList.Clear();
+            CurrentHistory = null;
             EntryPoint.WriteToConsole($" PLAYER EVENT: Criminal History Clear", 3);
         }
         public void PrintCriminalHistory()
         {
-            foreach(PoliceResponse rs in RapSheetList)
+            if(CurrentHistory != null)
             {
-                EntryPoint.WriteToConsole("-------------------------------OBS", 3);
-               // EntryPoint.WriteToConsole($" RapSheet: Observed Max Wanted {rs.ObservedMaxWantedLevel}", 3);
-                foreach(CrimeEvent ab in rs.CrimesObserved)
+                EntryPoint.WriteToConsole("-------------------------------Criminal History Start", 3);
+                EntryPoint.WriteToConsole($"Wanted Level: {CurrentHistory.WantedLevel}", 3);
+                EntryPoint.WriteToConsole($"LastSeenLocation: {CurrentHistory.LastSeenLocation}", 3);
+                foreach(Crime crime in CurrentHistory.Crimes)
                 {
-                    EntryPoint.WriteToConsole($" Observed Crime: {ab.AssociatedCrime.Name}", 3);
+                    EntryPoint.WriteToConsole($" Crime: {crime.Name}, {crime.ResultingWantedLevel}", 3);
                 }
-                foreach (CrimeEvent ab in rs.CrimesReported)
-                {
-                    EntryPoint.WriteToConsole($" Reported Crime: {ab.AssociatedCrime.Name}", 3);
-                }
-                EntryPoint.WriteToConsole("-------------------------------REP", 3);
+                EntryPoint.WriteToConsole("-------------------------------Criminal History End", 3);
             }
+        }
+        private bool IsNearLastSeenLocation()
+        {
+            if(CurrentHistory != null && Player.Position.DistanceTo2D(CurrentHistory.LastSeenLocation) <= SearchRadius)
+            {
+                return true;
+            }
+            return false;
         }
         private void ApplyLastWantedStats()
         {
-            ApplyWantedStats(LastResponse);
-        }
-        private void ApplyWantedStats(PoliceResponse CriminalHistory)
-        {
-            if (CriminalHistory != null)
+            if(CurrentHistory != null)
             {
-                RapSheetList.Remove(CriminalHistory);
-                foreach (CrimeEvent crime in CriminalHistory.CrimesObserved.OrderByDescending(x => x.AssociatedCrime.Priority))
+                CurrentHistory = null;
+                foreach(Crime crime in CurrentHistory.Crimes)
                 {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.AssociatedCrime.Name}", 3);
-                    Player.AddCrime(crime.AssociatedCrime, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true);
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.Name}", 3);
+                    Player.AddCrime(crime, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true,false);
                 }
                 Player.OnAppliedWantedStats();
-                //GameTimeLastAppliedWantedStats = Game.GameTime;
-                EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS", 3);
             }
         }
-        private void ApplyWantedStatsForPlate(string PlateNumber)
+        //private void ApplyWantedStatsForPlate(string PlateNumber)
+        //{
+        //    //ApplyWantedStats(RapSheetList.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault());
+        //}
+        private class BOLO
         {
-            ApplyWantedStats(RapSheetList.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault());
+            public Vector3 LastSeenLocation { get; set; }
+            public List<Crime> Crimes = new List<Crime>();
+
+            public BOLO(Vector3 lastSeenLocation, List<Crime> crimes, int wantedLevel)
+            {
+                LastSeenLocation = lastSeenLocation;
+                Crimes = crimes;
+                WantedLevel = wantedLevel;
+            }
+
+            public int WantedLevel { get; set; }
         }
+
     }
+
+
 }

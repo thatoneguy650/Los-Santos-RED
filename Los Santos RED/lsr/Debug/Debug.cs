@@ -122,11 +122,11 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        Player.PoliceResponse.SetWantedLevel(0, "RESETTING DEBUG!", true);
+        Player.SetWantedLevel(0, "RESETTING DEBUG!", true);
     }
     private void DebugNumpad3()
     {
-        Player.PoliceResponse.SetWantedLevel(2, "SETTING DEBUG!", true);
+        Player.SetWantedLevel(2, "SETTING DEBUG!", true);
     }
     private void DebugNumpad4()
     {

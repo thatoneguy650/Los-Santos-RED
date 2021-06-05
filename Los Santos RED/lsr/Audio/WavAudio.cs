@@ -50,7 +50,20 @@ public class WavAudio : IAudioPlayable
         if (l == 0)
         {
             EntryPoint.WriteToConsole($"WAVAudio: Sound Length (ms): {l}, {FileName}",3);
-            l = SoundInfo.GetSoundLength(AudioFilePath);
+            for (int i = 1; i < 11; i++)
+            {
+                l = SoundInfo.GetSoundLength(AudioFilePath);
+                EntryPoint.WriteToConsole($"WAVAudio: Sound Length (attempt {i}) (ms): {l}, {FileName}", 3);
+                if(l > 0)
+                {
+                    break;
+                }
+            }
+
+
+
+            
+            
         }
         IsAudioPlaying = true;
         Thread t2 = new Thread(delegate ()

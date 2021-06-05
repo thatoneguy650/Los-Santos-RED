@@ -30,13 +30,10 @@ public static class EntryPoint
         Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Press F10 to Start");
         while (true)
         {
-            if (Game.IsKeyDown(Keys.F10))
+            if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10))
             {
-                if (ModController == null || !ModController.IsRunning)
-                {
-                    ModController = new ModController();
-                    ModController.Start();
-                }
+                ModController = new ModController();
+                ModController.Start(); 
             }
             GameFiber.Yield();
         }

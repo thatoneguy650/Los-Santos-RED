@@ -14,7 +14,6 @@ namespace LosSantosRED.lsr
     public class SearchMode
     {
         private IPoliceRespondable Player;
-        private bool areStarsGreyedOut;
         private bool PrevIsInSearchMode;
         private bool PrevIsInActiveMode;
         private uint GameTimeStartedSearchMode;
@@ -171,7 +170,7 @@ namespace LosSantosRED.lsr
             PrevIsInActiveMode = IsInActiveMode;
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
-            Player.PoliceResponse.SetWantedLevel(0, "Search Mode Timeout", true);
+            Player.SetWantedLevel(0, "Search Mode Timeout", true);
 
         }
         private class StopVanillaSeachMode

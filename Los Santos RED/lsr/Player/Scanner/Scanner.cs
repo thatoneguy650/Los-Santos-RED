@@ -299,7 +299,7 @@ namespace LosSantosRED.lsr
             //long teerm need to change how the wanted level is set maybe with the chase result flag
             GameFiber TempWait = GameFiber.StartNew(delegate
             {
-                GameFiber.Sleep(5000);
+                GameFiber.Sleep(1000);
                 if (!SuspectLost.HasRecentlyBeenPlayed)
                 {
                     AddToQueue(SuspectLost, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
@@ -921,24 +921,24 @@ namespace LosSantosRED.lsr
             }
             PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation);
         }
-        private void CheckCrimesToAnnounce()
-        {
-            foreach (CrimeEvent CE in CurrentPlayer.PoliceResponse.RecentlyOccuredCrimes)
-            {
-                AnnounceCrime(CE.AssociatedCrime, CE.CurrentInformation);
-            }
-            foreach (CrimeEvent CE in CurrentPlayer.PoliceResponse.RecentlyReportedCrimes)
-            {
-                AnnounceCrime(CE.AssociatedCrime, CE.CurrentInformation);
-            }
-        }
+        //private void CheckCrimesToAnnounce()
+        //{
+        //    foreach (CrimeEvent CE in CurrentPlayer.PoliceResponse.RecentlyOccuredCrimes)
+        //    {
+        //        AnnounceCrime(CE.AssociatedCrime, CE.CurrentInformation);
+        //    }
+        //    foreach (CrimeEvent CE in CurrentPlayer.PoliceResponse.RecentlyReportedCrimes)
+        //    {
+        //        AnnounceCrime(CE.AssociatedCrime, CE.CurrentInformation);
+        //    }
+        //}
         private void CheckDispatch()
         {
             if (CurrentPlayer.RecentlyStartedPlaying)
             {
                 return;//don't care right when you become a new person
             }
-            CheckCrimesToAnnounce();
+           // CheckCrimesToAnnounce();
             CheckStatusToAnnounce();
         }
         private void CheckStatusToAnnounce()
@@ -963,15 +963,19 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
+                    else if(CurrentPlayer.IsInSearchMode && LostVisual.HasRecentlyBeenPlayed)
+                    {
+                        AddToQueue(LostVisual, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                    }
                 }
             }
             else
-            {  
+            {
                 //NEED TO FIX THIS!!!!!!!!!!!!!!
-                //foreach (VehicleExt StolenCar in CurrentPlayer.ReportedStolenVehicles)
-                //{
-                //    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = StolenCar });
-                //}
+                foreach (VehicleExt StolenCar in CurrentPlayer.ReportedStolenVehicles)
+                {
+                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = StolenCar });
+                }
             }
         }
         private void DefaultConfig()

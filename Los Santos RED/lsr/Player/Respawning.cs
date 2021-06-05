@@ -72,7 +72,7 @@ public class Respawning : IRespawning
         if (CurrentPlayer.CanUndie)
         {
             Respawn(resetWanted, true, false, false, clearCriminalHistory);
-            CurrentPlayer.PoliceResponse.SetWantedLevel(CurrentPlayer.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
+            CurrentPlayer.SetWantedLevel(CurrentPlayer.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
             if (withInvicibility)
             {
                 Game.LocalPlayer.Character.IsInvincible = true;

@@ -80,7 +80,6 @@ public class Investigation
         {
             InvestigationBlip.Delete();
         }
-        Player.PoliceResponse.Reset();
         Player.OnInvestigationExpire();
     }
     private void SetActive()

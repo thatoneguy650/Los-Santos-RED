@@ -375,7 +375,7 @@ namespace LosSantosRED.lsr
             {
                 if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
                 {
-                    Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true);
+                    Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true, true);
                 }
             }
         }

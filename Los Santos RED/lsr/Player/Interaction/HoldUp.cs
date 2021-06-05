@@ -102,18 +102,21 @@ public class HoldUp : Interaction
     {
         Player.ButtonPrompts.RemoveAll(x => x.Group == "HoldUp");
         if (Target != null && Target.Pedestrian.Exists())
-        {
-            Target.Pedestrian.BlockPermanentEvents = false;
-            if (Target.WillFight)
-            {
-                Target.Pedestrian.Inventory.GiveNewWeapon("weapon_pistol", 60, true);
-                Target.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
-            }
-            else if (!ForcedCower)
-            {
-                Target.Pedestrian.Tasks.Flee(Player.Character, 100f, -1);
-            }
-            Target.CanBeTasked = true;
+        {         
+            //if (Target.WillFight)
+            //{
+            //    Target.Pedestrian.Inventory.GiveNewWeapon("weapon_pistol", 60, true);
+            //    Target.Pedestrian.Tasks.FightAgainst(Player.Character, -1);
+            //}
+            //else if (!ForcedCower)
+            //{
+            //    Target.Pedestrian.Tasks.Flee(Player.Character, 100f, -1);
+            //}
+            //else
+            //{
+                Target.Pedestrian.BlockPermanentEvents = false;
+                Target.CanBeTasked = true;
+           // }
         }
         Player.IsHoldingUp = false;
     }

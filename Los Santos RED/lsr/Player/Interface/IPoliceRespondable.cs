@@ -27,6 +27,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsVisiblyArmed { get; }
         bool IsDead { get; }
         bool IsInSearchMode { get; set; }
+
         bool IsInVehicle { get; }
         bool IsNotWanted { get; }
         bool IsWanted { get; }
@@ -48,8 +49,8 @@ namespace LosSantosRED.lsr.Interface
         void CheckInjured(PedExt myPed);
         void CheckMurdered(PedExt myPed);
         void Arrest();
-        void StoreCriminalHistory();
-        void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription);
+      //  void StoreCriminalHistory();
+        void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime);
         void ResetScanner();
         void OnAppliedWantedStats();
         void OnWantedActiveMode();
@@ -60,5 +61,7 @@ namespace LosSantosRED.lsr.Interface
         void OnLethalForceAuthorized();
         void OnPoliceNoticeVehicleChange();
         void OnSuspectEluded();
+        void OnWantedLevelChanged();
+        void SetWantedLevel(int resultingWantedLevel, string name, bool v);
     }
 }

@@ -49,9 +49,11 @@ namespace Mod
         private uint targettingHandle;
         private bool isActive = true;
         private uint GameTimeLastUpdatedLookedAtPed;
-
-
+        private int UpdateState = 0;
         private string CurrentVehicleDebugString;
+        private uint GameTimeLastSetWanted;
+
+        private uint GameTimeWantedLevelStarted;
         public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
         {
             ModelName = modelName;
@@ -156,10 +158,7 @@ namespace Mod
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCommitingSuicide { get; set; }
         public bool IsConversing { get; set; }
-
-
         public float SearchModePercentage => SearchMode.SearchModePercentage;
-
         public bool IsDead { get; private set; }
         public bool IsGettingIntoAVehicle
         {
@@ -233,6 +232,7 @@ namespace Mod
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;//10000
+        public bool RecentlySetWanted => GameTimeLastSetWanted != 0 && Game.GameTime - GameTimeLastSetWanted <= 5000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public string SuspectsName { get; private set; }
@@ -282,9 +282,13 @@ namespace Mod
         public string DebugLine10 => "";//$"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
         public string DebugLine11 { get; set; }
         public bool RecentlyRespawned => Respawning.RecentlyRespawned;
-        public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription)
+        public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime)
         {
             PoliceResponse.AddCrime(CrimeInstance, ByPolice, Location, VehicleObserved, WeaponObserved, HaveDescription);
+            if(AnnounceCrime)
+            {
+                Scanner.AnnounceCrime(CrimeInstance, new CrimeSceneDescription(!IsInVehicle, ByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed });
+            }
             if (!ByPolice && IsNotWanted)
             {
                 Investigation.Start();
@@ -415,7 +419,7 @@ namespace Mod
         }
         public void Setup()
         {
-            PoliceResponse.SetWantedLevel(0, "Initial", true);
+            SetWantedLevel(0, "Initial", true);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
             SetUnarmed();
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
@@ -448,15 +452,11 @@ namespace Mod
             GameTimeLastShot = Game.GameTime;
         }
         public void ToggleEngine(bool DesiredStatus) => isCurrentVehicleEngineOn = true;//CurrentVehicle?.Engine.Toggle(DesiredStatus);
-        private int UpdateState = 0;
-
-
         public void Update()
         {
             UpdateData();
             UpdateButtonPrompts();
         }
-
         private void UpdateData()
         {
             if (UpdateState == 0)
@@ -473,12 +473,8 @@ namespace Mod
             {
                 UpdateStateData();
                 UpdateState = 0;
-            }
-           
-            
+            }  
         }
-
-
         private void UpdateButtonPrompts()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)
@@ -509,17 +505,6 @@ namespace Mod
 
 
         }
-
-
-
-
-
-
-
-
-
-
-
         //Interactions
         public void StartConversation()
         {
@@ -665,7 +650,6 @@ namespace Mod
         public void RaiseHands() => Surrendering.RaiseHands();//needs to move
         public void SearchModeUpdate() => SearchMode.UpdateWanted();
         public void StopVanillaSearchMode() => SearchMode.StopVanilla();
-        public void StoreCriminalHistory() => CriminalHistory.StoreCriminalHistory(PoliceResponse);
         public void TrafficViolationsUpdate() => Violations.TrafficUpdate();
         public void UnSetArrestedAnimation(Ped character) => Surrendering.UnSetArrestedAnimation(character);//needs to move
         public void ViolationsUpdate() => Violations.Update();
@@ -680,19 +664,76 @@ namespace Mod
             Scanner.OnBribedPolice();
         }
         public void ResistArrest() => Respawning.ResistArrest();
-
         public void PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
-
         //Events
         public void OnAppliedWantedStats() => Scanner.OnAppliedWantedStats();
-        public void OnInvestigationExpire() => Scanner.OnInvestigationExpire();
+        public void OnInvestigationExpire()
+        {
+            PoliceResponse.Reset();
+            Scanner.OnInvestigationExpire();
+        }
         public void OnWantedSearchMode() => Scanner.OnWantedSearchMode();
         public void OnWantedActiveMode() => Scanner.OnWantedActiveMode();
         public void OnPoliceNoticeVehicleChange() => Scanner.OnPoliceNoticeVehicleChange();
         public void OnRequestedBackUp() => Scanner.OnRequestedBackUp();
         public void OnWeaponsFree() => Scanner.OnWeaponsFree();
         public void OnLethalForceAuthorized() => Scanner.OnLethalForceAuthorized();
-        public void OnSuspectEluded() => Scanner.OnSuspectEluded();
+        public void OnSuspectEluded()//runs before OnWantedLevelChanged
+        {
+            CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.Select(x=> x.AssociatedCrime).ToList(),PlacePoliceLastSeenPlayer);
+            Scanner.OnSuspectEluded();
+        }
+        public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
+        {
+            if (UpdateRecent)
+            {
+                GameTimeLastSetWanted = Game.GameTime;
+            }
+            if (WantedLevel < desiredWantedLevel || (desiredWantedLevel == 0 && WantedLevel != 0))
+            {
+                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
+                Game.LocalPlayer.WantedLevel = desiredWantedLevel;
+                if (desiredWantedLevel > 0)
+                {
+                    GameTimeWantedLevelStarted = Game.GameTime;
+                }
+                OnWantedLevelChanged();
+                EntryPoint.WriteToConsole($"Set Wanted: From {WantedLevel} to {desiredWantedLevel} Reason: {Reason}", 3);
+            }
+        }
+        public void OnWantedLevelChanged()//runs after OnSuspectEluded (If Applicable)
+        {
+            if (IsNotWanted && PreviousWantedLevel != 0)//Lost Wanted
+            {
+                CriminalHistory.OnLostWanted();
+                PoliceResponse.OnLostWanted();
+                EntityProvider.CivilianList.ForEach(x => x.CrimesWitnessed.Clear());
+            }
+            else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
+            {
+                if (!RecentlySetWanted)//only allow my process to set the wanted level
+                {
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 5);
+                    SetWantedLevel(0, "GAME AUTO SET WANTED", true);
+                    //Game.LocalPlayer.WantedLevel = 0;
+                }
+                else
+                {
+                    Investigation.Reset();
+                    PoliceResponse.OnBecameWanted();
+                }
+            }
+            else if(IsWanted && PreviousWantedLevel < WantedLevel)//Increased Wanted Level (can't decrease only remove for now.......)
+            {
+                PoliceResponse.OnWantedLevelIncreased();
+            }
+            else if (IsWanted && PreviousWantedLevel > WantedLevel)
+            {
+                //PoliceResponse.OnWantedLevelDecreased();
+            }
+            EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
+            PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
+        }
         private void IsAimingChanged()
         {
             if (IsAiming)
@@ -842,7 +883,7 @@ namespace Mod
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle}",5);
         }
-
+        //General Updates
         private void UpdateCurrentVehicle()
         {
             bool IsGettingIntoVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
@@ -880,7 +921,6 @@ namespace Mod
             isCurrentVehicleEngineOn = ToReturn.Vehicle.IsEngineOn;
             CurrentVehicle = ToReturn;
         }
-
         private void UpdateLookedAtPed()
         {
             if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 1000)//750
@@ -941,7 +981,6 @@ namespace Mod
         }
         private void UpdateStateData()
         {
-
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
             {
                 IsDeadChanged();
@@ -965,7 +1004,7 @@ namespace Mod
             }
             if (PreviousWantedLevel != Game.LocalPlayer.WantedLevel)
             {
-                WantedLevelChanged();
+                OnWantedLevelChanged();
             }
             if (CurrentLocation.CharacterToLocate.Handle != Game.LocalPlayer.Character.Handle)
             {
@@ -1196,33 +1235,5 @@ namespace Mod
             UpdateTargetedPed();
             UpdateLookedAtPed();
         }
-        private void WantedLevelChanged()
-        {
-            if (IsNotWanted && PreviousWantedLevel != 0)//removed
-            {
-                PoliceResponse.OnLostWanted();
-                EntityProvider.CivilianList.ForEach(x => x.CrimesWitnessed.Clear());
-            }
-            else if (IsWanted && PreviousWantedLevel == 0)//added
-            {
-                if (!PoliceResponse.RecentlySetWanted)//only allow my process to set the wanted level
-                {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING",5);
-                    Game.LocalPlayer.WantedLevel = 0;
-                }
-                else
-                {
-                    Investigation.Reset();
-                    PoliceResponse.OnBecameWanted();
-                }
-            }
-            else
-            {
-                PoliceResponse.OnWantedLevelIncreased();
-            }
-            PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
-        }
-
-
     }
 }

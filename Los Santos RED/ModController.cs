@@ -62,11 +62,10 @@ namespace LosSantosRED.lsr
                 Player.SetMoney(PedSwap.CurrentPedMoney);
             }
         }
-        public void NewPlayer(string modelName, bool isMale)
+        public void NewPlayer(string modelName, bool isMale)//gotta go
         {
             Player.Reset(true, true, true, true);
             Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
-            //Scanner.Reset();
         }
         public void Start()
         {
@@ -319,7 +318,7 @@ namespace LosSantosRED.lsr
                         //    }
                         //}
 
-                        if (!Game.IsPaused && Game.FrameRate < 50)
+                        if (!Game.IsPaused && Game.FrameRate < 40)
                         {
                             EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3); //EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
                         }
@@ -375,7 +374,7 @@ namespace LosSantosRED.lsr
                 }
             }, "Run Input Logic");
         }
-        private string GetName(string modelBeforeSpoof, string defaultName)
+        private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here
         {
             if (modelBeforeSpoof.ToLower() == "player_zero")
             {
