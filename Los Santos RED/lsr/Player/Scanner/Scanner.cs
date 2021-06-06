@@ -213,7 +213,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public void OnSuspectBusted()
+        public void OnPlayerBusted()
         {
             if (!SuspectArrested.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && CurrentPlayer.AnyPoliceCanSeePlayer)
             {
@@ -271,7 +271,7 @@ namespace LosSantosRED.lsr
         }
         public void OnWantedSearchMode()
         {
-            if (!LostVisual.HasVeryRecentlyBeenPlayed)
+            if (!LostVisual.HasRecentlyBeenPlayed)
             {
                 AddToQueue(LostVisual, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
             }
@@ -1400,6 +1400,7 @@ namespace LosSantosRED.lsr
             {
                 Name = "Civilian Down",
                 LocationDescription = LocationSpecificity.StreetAndZone,
+                CanBeReportedMultipleTimes = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_civilian_fatality.Acivilianfatality.FileName },"civilian fatality"),
@@ -1731,6 +1732,7 @@ namespace LosSantosRED.lsr
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.HeadingAndStreet,
                 IncludeDrivingVehicle = true,
+                CanAlwaysInterrupt = true,
             };
             WantedSuspectSpotted = new Dispatch()
             {
@@ -1754,6 +1756,7 @@ namespace LosSantosRED.lsr
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
                 CanAlwaysInterrupt = true,
+                CanAlwaysBeInterrupted = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName },"suspect evaded pursuing officers"),
@@ -1768,6 +1771,7 @@ namespace LosSantosRED.lsr
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
                 IncludeDrivingVehicle = false,
+                CanAlwaysBeInterrupted = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { suspect_is.SuspectIs.FileName, on_foot.Onfoot.FileName },"suspect is on foot"),
@@ -1785,6 +1789,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
+                CanAlwaysBeInterrupted = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName },"all units stay in the area"),

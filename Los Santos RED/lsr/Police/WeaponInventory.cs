@@ -38,24 +38,31 @@ public class WeaponInventory
     {
         if (ShouldAutoSetWeaponState)
         {
-            if (Cop.IsInVehicle && IsDeadlyChase)
+            if (WantedLevel == 0)
             {
-                HasHeavyWeaponOnPerson = true;
-            }
-            if (IsDeadlyChase)
-            {
-                if (Cop.IsInVehicle && WantedLevel < 4)
+                if (IsSetUnarmed)
                 {
-                    SetUnarmed();
-                }
-                else
-                {
-                    SetDeadly();
+                    SetDefault(IsSetLessLethal || IsSetUnarmed || IsSetDeadly);
                 }
             }
             else
             {
-                if (WantedLevel != 0)
+                if (IsDeadlyChase)
+                {
+                    if (Cop.IsInVehicle)
+                    {
+                        HasHeavyWeaponOnPerson = true;
+                        if(WantedLevel < 4)
+                        {
+                            SetUnarmed();
+                        }
+                    }
+                    else
+                    {
+                        SetDeadly();
+                    }
+                }
+                else
                 {
                     if (Cop.IsInVehicle)
                     {
@@ -66,18 +73,13 @@ public class WeaponInventory
                         SetLessLethal();
                     }
                 }
-                else
-                {
-                    SetPistol();
-                    //NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//for idle,
-                }
             }
             Cop.Pedestrian.Accuracy = DesiredAccuracy;
         }
     }
-    private void SetPistol()
+    private void SetDefault(bool setCurrent)
     {
-        if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && NeedsWeaponCheck)
+        if (NeedsWeaponCheck && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
             if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
@@ -88,7 +90,10 @@ public class WeaponInventory
                 Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, false);
                 Sidearm.ApplyVariation(Cop.Pedestrian);
             }
-            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, Sidearm.GetHash(), true);
+            if (setCurrent && Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
+            {
+                NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, 2725352035, true);
+            }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys       
             IsSetLessLethal = false;
@@ -99,7 +104,7 @@ public class WeaponInventory
     }
     private void SetDeadly()
     {
-        if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && (!IsSetDeadly || NeedsWeaponCheck))
+        if ((!IsSetDeadly || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
             if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(Sidearm.ModelName))
             {
@@ -130,7 +135,7 @@ public class WeaponInventory
     }
     private void SetLessLethal()
     {
-        if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && (!IsSetLessLethal || NeedsWeaponCheck))
+        if ((!IsSetLessLethal || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
             if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
@@ -151,7 +156,7 @@ public class WeaponInventory
     }
     private void SetUnarmed()
     {
-        if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive && (!IsSetUnarmed || NeedsWeaponCheck))
+        if ((!IsSetUnarmed || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
             if (Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
             {

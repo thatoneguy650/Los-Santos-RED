@@ -356,7 +356,7 @@ namespace LosSantosRED.lsr
                 {
                     LastSeenLocationBlip.Color = Color.Orange;
                     LastSeenLocationBlip.Alpha = 0.35f;
-                    LastSeenLocationBlip.Scale = Player.SearchModePercentage * 200f;
+                    LastSeenLocationBlip.Scale = 25f + ((1 - Player.SearchModePercentage) * 175f);
                 }
                 else
                 {

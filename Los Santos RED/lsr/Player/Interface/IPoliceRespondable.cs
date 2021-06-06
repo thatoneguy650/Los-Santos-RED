@@ -61,7 +61,6 @@ namespace LosSantosRED.lsr.Interface
         void OnLethalForceAuthorized();
         void OnPoliceNoticeVehicleChange();
         void OnSuspectEluded();
-        void OnWantedLevelChanged();
         void SetWantedLevel(int resultingWantedLevel, string name, bool v);
     }
 }

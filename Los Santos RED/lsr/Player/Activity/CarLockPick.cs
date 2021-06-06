@@ -66,11 +66,13 @@ public class CarLockPick
                 GameFiber.Yield();
                 if (!SetupLockPick())
                 {
+                    Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     EntryPoint.WriteToConsole("PickLock Setup Failed",3);
                     return;
                 }
                 if (!LockPickAnimation())
                 {
+                    Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     EntryPoint.WriteToConsole("PickLock Animation Failed",3);
                     return;
                 }
@@ -88,6 +90,11 @@ public class CarLockPick
         OriginalLockStatus = TargetVehicle.LockStatus;
         TargetVehicle.SetLock((VehicleLockStatus)3);//Attempt to lock most car doors
         Player.SetUnarmed();
+
+        if(TargetVehicle.LockStatus != (VehicleLockStatus)3)
+        {
+            return false;
+        }
 
         TargetVehicle.MustBeHotwired = true;
         uint GameTimeStartedStealing = Game.GameTime;
@@ -145,7 +152,7 @@ public class CarLockPick
         while (Game.GameTime - GameTimeStarted <= WaitTime)
         {
             GameFiber.Yield();
-            if (Player.IsMoveControlPressed)
+            if (Player.IsMoveControlPressed || TargetVehicle.Doors[DoorIndex].IsOpen)
             {
                 Continue = false;
                 break;
@@ -156,7 +163,9 @@ public class CarLockPick
         {
             Game.LocalPlayer.Character.Tasks.Clear();
             if (Screwdriver != null && Screwdriver.Exists())
+            {
                 Screwdriver.Delete();
+            }
             Player.IsLockPicking = false;
             TargetVehicle.LockStatus = OriginalLockStatus;
             return false;

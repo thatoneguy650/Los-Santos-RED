@@ -130,7 +130,7 @@
     <Compile Include="lsr\Data\Scanner\ZoneScannerAudio.cs" />
     <Compile Include="lsr\Dispatcher\VanillaDispatchType.cs" />
     <Compile Include="lsr\Player\Activity\ScenarioActivity.cs" />
-    <Compile Include="lsr\Player\ChaseResult.cs" />
+    <Compile Include="lsr\Player\ChaseStatus.cs" />
     <Compile Include="lsr\Player\Interface\IDispatchable.cs" />
     <Compile Include="lsr\Player\Scanner\Scanner.cs" />
     <Compile Include="lsr\Police\AssistManager.cs" />

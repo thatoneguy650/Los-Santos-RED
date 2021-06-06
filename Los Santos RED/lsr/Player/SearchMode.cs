@@ -20,6 +20,7 @@ namespace LosSantosRED.lsr
         private uint GameTimeStartedActiveMode;
         private StopVanillaSeachMode StopSearchMode = new StopVanillaSeachMode();
 
+        public bool IsActive { get; private set; } = true;
         public SearchMode(IPoliceRespondable currentPlayer)
         {
             Player = currentPlayer;
@@ -27,46 +28,11 @@ namespace LosSantosRED.lsr
         public float SearchModePercentage => IsInSearchMode ? 1.0f - ((float)TimeInSearchMode / (float)CurrentSearchTime) : 0;
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
-        public uint TimeInSearchMode
-        {
-            get
-            {
-                if (IsInSearchMode)
-                {
-                    if (GameTimeStartedSearchMode == 0)
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return (Game.GameTime - GameTimeStartedSearchMode);
-                    }
-                }
-                else
-                {
-                    return 0;
-                }
-
-            }
-        }
-        public uint TimeInActiveMode
-        {
-            get
-            {
-                if (IsInActiveMode)
-                {
-                    return (Game.GameTime - GameTimeStartedActiveMode);
-                }
-                else
-                {
-                    return 0;
-                }
-
-            }
-        }
+        public uint TimeInSearchMode => IsInSearchMode && GameTimeStartedSearchMode != 0 ? Game.GameTime - GameTimeStartedSearchMode : 0;
+        public uint TimeInActiveMode => IsInActiveMode ? Game.GameTime - GameTimeStartedActiveMode : 0;
         public uint CurrentSearchTime => (uint)Player.WantedLevel * 30000;//30 seconds each
         public uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each
-        public string SearchModeDebug => string.Format("IsInSearchMode {0} IsInActiveMode {1}, TimeInSearchMode {2}, TimeInActiveMode {3}", IsInSearchMode, IsInActiveMode, TimeInSearchMode, TimeInActiveMode);
+        public string SearchModeDebug => IsInSearchMode ? $"TimeInSearchMode: {TimeInSearchMode}, CurrentSearchTime: {CurrentSearchTime}" + $" SearchModePercentage: {SearchModePercentage}, DebugPos: {StopSearchMode.DebugPosition}" : $"TimeInActiveMode: {TimeInActiveMode}, CurrentActiveTime: {CurrentActiveTime}, DebugPos: {StopSearchMode.DebugPosition}";
         public bool IsSpotterCop(uint Handle)
         {
             if (StopSearchMode.SpotterCop != null && StopSearchMode.SpotterCop.Handle == Handle)
@@ -79,14 +45,26 @@ namespace LosSantosRED.lsr
             }
         }
         public void UpdateWanted()
-        {  
-            DetermineMode();
-            ToggleModes();
-            Player.IsInSearchMode = IsInSearchMode;
+        {
+
+            if (IsActive)
+            {
+                DetermineMode();
+                ToggleModes();
+                Player.IsInSearchMode = IsInSearchMode;
+            }
+        }
+        public void Dispose()
+        {
+            IsActive = false;
+            StopSearchMode.Dispose();
         }
         public void StopVanilla()
         {
-            StopSearchMode.Tick(Player.IsWanted,Player.IsInVehicle);
+            if(IsActive)
+            {
+                StopSearchMode.Tick(Player.IsWanted, Player.IsInVehicle);
+            } 
         }
         private void DetermineMode()
         {
@@ -149,7 +127,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedSearchMode = Game.GameTime;
             GameTimeStartedActiveMode = 0;
             Player.OnWantedSearchMode();
-            //EntryPoint.WriteToConsole("SearchMode Start Search Mode");
+            EntryPoint.WriteToConsole("SearchMode Start Search Mode",3);
         }
         private void StartActiveMode()
         {
@@ -160,7 +138,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedActiveMode = Game.GameTime;
             GameTimeStartedSearchMode = 0;
             Player.OnWantedActiveMode();
-            //EntryPoint.WriteToConsole("SearchMode Start Active Mode");
+            EntryPoint.WriteToConsole("SearchMode Start Active Mode",3);
         }
         private void EndSearchMode()
         {
@@ -171,7 +149,7 @@ namespace LosSantosRED.lsr
             GameTimeStartedSearchMode = 0;
             GameTimeStartedActiveMode = 0;
             Player.SetWantedLevel(0, "Search Mode Timeout", true);
-
+            EntryPoint.WriteToConsole("SearchMode End Search Mode", 3);
         }
         private class StopVanillaSeachMode
         {
@@ -195,6 +173,7 @@ namespace LosSantosRED.lsr
                 CopModel.LoadAndWait();
                 CopModel.LoadCollisionAndWait();
             }
+            public Vector3 DebugPosition => PositionSet;
             public void Tick(bool IsWanted, bool TargetIsInVehicle)
             {
                 if (IsWanted)
@@ -228,6 +207,14 @@ namespace LosSantosRED.lsr
                 else
                 {
                     MoveGhostCopToOrigin();
+                }
+            }
+            public void Dispose()
+            {
+                if(GhostCop.Exists())
+                {
+                    GhostCop.Delete();
+                    PositionSet = Vector3.Zero;
                 }
             }
             private void MoveGhostCopToPosition(bool TargetIsInVehicle)

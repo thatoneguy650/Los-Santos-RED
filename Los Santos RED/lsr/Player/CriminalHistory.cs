@@ -85,12 +85,12 @@ namespace LosSantosRED.lsr
         {
             if(CurrentHistory != null)
             {
-                CurrentHistory = null;
                 foreach(Crime crime in CurrentHistory.Crimes)
                 {
                     EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.Name}", 3);
                     Player.AddCrime(crime, true, Player.Position, Player.CurrentSeenVehicle, Player.CurrentSeenWeapon, true,false);
                 }
+                CurrentHistory = null;
                 Player.OnAppliedWantedStats();
             }
         }

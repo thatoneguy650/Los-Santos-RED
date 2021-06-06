@@ -21,7 +21,7 @@ public class Tasker
     }
     public void RunPoliceTasks()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.CurrentTask.GameTimeLastRan).Take(5))//5//2
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer)/*.OrderBy(x => x.CurrentTask.GameTimeLastRan)*/.Take(5))//5//2
         {
             Cop.UpdateTask();
         }
@@ -35,7 +35,7 @@ public class Tasker
     }
     public void UpdatePoliceTasks()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x=> x.GameTimeLastUpdatedTask).Take(5))//2
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x=> x.DistanceToPlayer)/*.OrderBy(x=> x.GameTimeLastUpdatedTask)*/.Take(5))//2
         {
             UpdateCurrentTask(Cop);
         }

@@ -28,7 +28,11 @@ public class Idle : ComplexTask
             {
                 return Task.Nothing;
             }
-            else if (Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.Tasks.CurrentTaskStatus != Rage.TaskStatus.InProgress && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
+            else if (Ped.DistanceToPlayer <= 75f && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)//(Ped.DistanceToPlayer <= 75f && Ped.Pedestrian.Tasks.CurrentTaskStatus != Rage.TaskStatus.InProgress && !Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.LastVehicle.Exists() && Ped.Pedestrian.LastVehicle.IsDriveable && Ped.Pedestrian.LastVehicle.FreeSeatsCount > 0)
+            {
+                return Task.GetInCar;
+            }
+            else if (CurrentTask == Task.GetInCar && !Ped.Pedestrian.IsInAnyVehicle(false))
             {
                 return Task.GetInCar;
             }
@@ -69,7 +73,6 @@ public class Idle : ComplexTask
             {
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
             }
-            
             // Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
             if (WasInVehicle && !Ped.Pedestrian.IsInAnyVehicle(false) && CurrentVehicle != null)
             {
@@ -119,8 +122,10 @@ public class Idle : ComplexTask
     }
     private void Wander(bool IsFirstRun)
     {
+        
         if (IsFirstRun)
         {
+            EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Start: {Ped.Pedestrian.Handle}", 3);
             NeedsUpdates = true;
             WanderTask();
         }
@@ -151,8 +156,10 @@ public class Idle : ComplexTask
     }
     private void GetInCar(bool IsFirstRun)
     {
+        
         if (IsFirstRun)
         {
+            EntryPoint.WriteToConsole($"COP EVENT: Get in Car Idle Start: {Ped.Pedestrian.Handle}", 3);
             NeedsUpdates = true;
             GetInCarTask();
         }
@@ -179,7 +186,8 @@ public class Idle : ComplexTask
     }
     private void Nothing(bool IsFirstRun)
     {
-        if(IsFirstRun)
+        EntryPoint.WriteToConsole($"COP EVENT: Nothing Idle Start: {Ped.Pedestrian.Handle}", 3);
+        if (IsFirstRun)
         {
             ClearTasks(false);
             GameTimeClearedIdle = Game.GameTime;

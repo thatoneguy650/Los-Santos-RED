@@ -23,15 +23,17 @@ namespace Mod
         private WeaponDropping WeaponDropping;
         private HealthState HealthState;
         private Inventory Inventory;
+        private Respawning Respawning;
+        private Scanner Scanner;
+
         private IRadioStations RadioStations;
         private ISettingsProvideable Settings;
         private ITimeControllable TimeControllable;
         private IEntityProvideable EntityProvider;
-        private Respawning Respawning;
-        private Scanner Scanner;
         private IWeapons Weapons;
         private IScenarios Scenarios;
         private ICrimes Crimes;
+
         private uint GameTimeLastBusted;
         private uint GameTimeLastDied;
         private uint GameTimeLastMoved;
@@ -50,10 +52,15 @@ namespace Mod
         private bool isActive = true;
         private uint GameTimeLastUpdatedLookedAtPed;
         private int UpdateState = 0;
-        private string CurrentVehicleDebugString;
-        private uint GameTimeLastSetWanted;
 
+
+
+        private uint GameTimeLastSetWanted;
         private uint GameTimeWantedLevelStarted;
+
+
+        private string CurrentVehicleDebugString;
+
         public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
         {
             ModelName = modelName;
@@ -133,7 +140,7 @@ namespace Mod
                 if (isAiming != value)
                 {
                     isAiming = value;
-                    IsAimingChanged();
+                    OnAiminChanged();
                 }
             }
         }
@@ -145,7 +152,7 @@ namespace Mod
                 if (isAimingInVehicle != value)
                 {
                     isAimingInVehicle = value;
-                    IsAimingInVehicleChanged();
+                    OnAimingInVehicleChanged();
                 }
             }
         }
@@ -168,7 +175,7 @@ namespace Mod
                 if (isGettingIntoVehicle != value)
                 {
                     isGettingIntoVehicle = value;
-                    IsGettingIntoVehicleChanged();
+                    OnGettingIntoAVehicleChanged();
                 }
             }
         }
@@ -190,7 +197,7 @@ namespace Mod
                 if (isInVehicle != value)
                 {
                     isInVehicle = value;
-                    IsInVehicleChanged();
+                    OnIsInVehicleChanged();
                 }
             }
         }
@@ -244,7 +251,7 @@ namespace Mod
                 if (targettingHandle != value)
                 {
                     targettingHandle = value;
-                    TargettingHandleChanged();
+                    OnTargettingHandleChanged();
                 }
             }
         }//move or delete?
@@ -275,10 +282,10 @@ namespace Mod
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";//DynamicActivity?.DebugString;
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
         public string DebugLine5 => CurrentVehicleDebugString;
-        public string DebugLine6 => "";//$"Rep {PoliceResponse.ReportedCrimesDisplay}";
-        public string DebugLine7 => "";//$"Vio {Violations.LawsViolatingDisplay}";
-        public string DebugLine8 => "";//PoliceResponse.DebugText;
-        public string DebugLine9 => "";//Investigation.DebugText;
+        public string DebugLine6 => SearchMode.SearchModeDebug;//$"Rep {PoliceResponse.ReportedCrimesDisplay}";
+        public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";//PoliceResponse.DebugText;
+        public string DebugLine8 => $"PlacePoliceLastSeenPlayer {PlacePoliceLastSeenPlayer}";//PoliceResponse.DebugText;
+        public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle}";//$"Vio {Violations.LawsViolatingDisplay}";"";//Investigation.DebugText;
         public string DebugLine10 => "";//$"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
         public string DebugLine11 { get; set; }
         public bool RecentlyRespawned => Respawning.RecentlyRespawned;
@@ -299,7 +306,7 @@ namespace Mod
             BeingArrested = true;
             if (!IsBusted)
             {
-                IsBustedChanged();
+                OnPlayerBusted();
             }
         }
         public void DisplayPlayerNotification()
@@ -335,6 +342,7 @@ namespace Mod
             Investigation.Dispose(); //remove blip
             PoliceResponse.Dispose(); //same ^
             Interaction?.Dispose();
+            SearchMode.Dispose();
             isActive = false;
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
@@ -372,7 +380,7 @@ namespace Mod
                 //NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
-
+                Scanner.Reset();
                 // ResetModel();
 
                 Update();
@@ -389,7 +397,7 @@ namespace Mod
             {
                 CriminalHistory.Clear();
             }
-            Scanner.Reset();
+            
         }
         public void SetDemographics(string modelName, bool isMale, string suspectsName, int money)
         {
@@ -408,6 +416,24 @@ namespace Mod
             {
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeaponHash, true);
                 //EntryPoint.WriteToConsole("SetPlayerToLastWeapon" + LastWeaponHash.ToString());
+            }
+        }
+        public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
+        {
+            if (UpdateRecent)
+            {
+                GameTimeLastSetWanted = Game.GameTime;
+            }
+            if (WantedLevel < desiredWantedLevel || (desiredWantedLevel == 0 && WantedLevel != 0))
+            {
+                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
+                Game.LocalPlayer.WantedLevel = desiredWantedLevel;
+                if (desiredWantedLevel > 0)
+                {
+                    GameTimeWantedLevelStarted = Game.GameTime;
+                }
+                OnWantedLevelChanged();
+                EntryPoint.WriteToConsole($"Set Wanted: From {WantedLevel} to {desiredWantedLevel} Reason: {Reason}", 3);
             }
         }
         public void SetUnarmed()
@@ -665,6 +691,9 @@ namespace Mod
         }
         public void ResistArrest() => Respawning.ResistArrest();
         public void PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
+
+
+
         //Events
         public void OnAppliedWantedStats() => Scanner.OnAppliedWantedStats();
         public void OnInvestigationExpire()
@@ -683,25 +712,7 @@ namespace Mod
             CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.Select(x=> x.AssociatedCrime).ToList(),PlacePoliceLastSeenPlayer);
             Scanner.OnSuspectEluded();
         }
-        public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
-        {
-            if (UpdateRecent)
-            {
-                GameTimeLastSetWanted = Game.GameTime;
-            }
-            if (WantedLevel < desiredWantedLevel || (desiredWantedLevel == 0 && WantedLevel != 0))
-            {
-                NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", desiredWantedLevel);
-                Game.LocalPlayer.WantedLevel = desiredWantedLevel;
-                if (desiredWantedLevel > 0)
-                {
-                    GameTimeWantedLevelStarted = Game.GameTime;
-                }
-                OnWantedLevelChanged();
-                EntryPoint.WriteToConsole($"Set Wanted: From {WantedLevel} to {desiredWantedLevel} Reason: {Reason}", 3);
-            }
-        }
-        public void OnWantedLevelChanged()//runs after OnSuspectEluded (If Applicable)
+        private void OnWantedLevelChanged()//runs after OnSuspectEluded (If Applicable)
         {
             if (IsNotWanted && PreviousWantedLevel != 0)//Lost Wanted
             {
@@ -734,7 +745,7 @@ namespace Mod
             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
-        private void IsAimingChanged()
+        private void OnAiminChanged()
         {
             if (IsAiming)
             {
@@ -744,7 +755,7 @@ namespace Mod
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsAiming Changed to: {IsAiming}",5);
         }
-        private void IsAimingInVehicleChanged()
+        private void OnAimingInVehicleChanged()
         {
             if (IsAimingInVehicle)
             {
@@ -762,7 +773,7 @@ namespace Mod
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsAimingInVehicle Changed to: {IsAimingInVehicle}",5);
         }
-        private void IsBustedChanged()
+        private void OnPlayerBusted()
         {
             DiedInVehicle = IsInVehicle;
             IsBusted = true;
@@ -771,10 +782,11 @@ namespace Mod
             HandsAreUp = false;
             Surrendering.SetArrestedAnimation(Game.LocalPlayer.Character, false, WantedLevel <= 2);//needs to move
             Game.LocalPlayer.HasControl = false;
-            Scanner.OnSuspectBusted();
+
+            Scanner.OnPlayerBusted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}",3);
         }
-        private void IsDeadChanged()
+        private void OnPlayerDied()
         {
             TimeControllable.PauseTime();
             DiedInVehicle = IsInVehicle;
@@ -787,7 +799,7 @@ namespace Mod
             Scanner.OnSuspectWasted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}",3);
         }
-        private void IsGettingIntoVehicleChanged()
+        private void OnGettingIntoAVehicleChanged()
         {
             if (IsGettingIntoAVehicle)
             {
@@ -832,7 +844,7 @@ namespace Mod
             isGettingIntoVehicle = IsGettingIntoAVehicle;
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}",3);
         }
-        private void IsInVehicleChanged()
+        private void OnIsInVehicleChanged()
         {
             if (IsInVehicle)
             {
@@ -867,7 +879,7 @@ namespace Mod
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}",3);
         }
-        private void TargettingHandleChanged()
+        private void OnTargettingHandleChanged()
         {
             if (TargettingHandle != 0)
             {
@@ -883,6 +895,7 @@ namespace Mod
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle}",5);
         }
+
         //General Updates
         private void UpdateCurrentVehicle()
         {
@@ -983,7 +996,7 @@ namespace Mod
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
             {
-                IsDeadChanged();
+                OnPlayerDied();
             }
             if (NativeFunction.CallByName<bool>("IS_PLAYER_BEING_ARRESTED", 0))
             {
@@ -996,7 +1009,7 @@ namespace Mod
             }
             if (BeingArrested && !IsBusted)
             {
-                IsBustedChanged();
+                OnPlayerBusted();
             }
             if (IsAliveAndFree && !Game.LocalPlayer.Character.IsDead)
             {

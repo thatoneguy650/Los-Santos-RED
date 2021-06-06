@@ -332,21 +332,7 @@ public class PedExt : IComplexTaskable
         }
 
     }
-    public bool SeenPlayerFor(int _Duration)
-    {
-        if (CanSeePlayer)
-        {
-            return true;
-        }
-        else if (Game.GameTime - GameTimeLastSeenPlayer <= _Duration)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    public bool SeenPlayerWithin(int msSince) => CanSeePlayer || Game.GameTime - GameTimeLastSeenPlayer <= msSince;
     public void Update(IPoliceRespondable playerToCheck,Vector3 placeLastSeen)
     {
         PlayerToCheck = playerToCheck;
@@ -354,7 +340,11 @@ public class PedExt : IComplexTaskable
         {
             if (NeedsUpdate)
             {
-                UpdateVehicleState();
+                if(IsCop)//for now i dont think i use any of that in a non cop person
+                {
+                    UpdateVehicleState();
+                }
+                
                 UpdateDistance(placeLastSeen);
                 UpdateLineOfSight();
                 UpdateCrimes(playerToCheck);
@@ -611,10 +601,6 @@ public class PedExt : IComplexTaskable
             IsInBoat = false;
         }
     }
-
-
-
-
     public List<Crime> CrimesWitnessed { get; private set; } = new List<Crime>();
     //public bool ShouldReportCrime
     //{

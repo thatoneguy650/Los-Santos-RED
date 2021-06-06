@@ -80,13 +80,13 @@ public class Voice
                     }
                 }
             }
-            else
-            {
-                if (!Cop.IsInVehicle)
-                {
-                    Cop.Pedestrian.PlayAmbientSpeech(IdleSpeech.PickRandom(), false);
-                }
-            }
+            //else
+            //{
+            //    if (!Cop.IsInVehicle)
+            //    {
+            //        Cop.Pedestrian.PlayAmbientSpeech(IdleSpeech.PickRandom(), false);
+            //    }
+            //}
             GameTimeLastSpoke = Game.GameTime;
         }
     }
