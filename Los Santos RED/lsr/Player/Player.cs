@@ -288,6 +288,7 @@ namespace Mod
         public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle}";//$"Vio {Violations.LawsViolatingDisplay}";"";//Investigation.DebugText;
         public string DebugLine10 => "";//$"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
         public string DebugLine11 { get; set; }
+        public Scanner DebugScanner => Scanner;//temp for testing with debug
         public bool RecentlyRespawned => Respawning.RecentlyRespawned;
         public void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime)
         {

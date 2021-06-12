@@ -13,6 +13,7 @@ public class MainMenu : Menu
     private IActionable Player;
     private UIMenuItem ShowStatus;
     private UIMenuListItem TakeoverRandomPed;
+    private UIMenuItem BecomeRandomPed;
     public MainMenu(MenuPool menuPool, IPedswappable pedSwap, IActionable player)
     {
         PedSwap = pedSwap;
@@ -57,8 +58,13 @@ public class MainMenu : Menu
         Main.OnListChange += OnListChange;
         Distances = new List<DistanceSelect> { new DistanceSelect("Closest", -1f), new DistanceSelect("20 M", 20f), new DistanceSelect("40 M", 40f), new DistanceSelect("100 M", 100f), new DistanceSelect("500 M", 500f), new DistanceSelect("Any", 1000f) };
         TakeoverRandomPed = new UIMenuListItem("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
+
+        BecomeRandomPed = new UIMenuItem("Become Random Pedestrian", "Becomes a random ped model.");
+
+
         ShowStatus = new UIMenuItem("Show Status", "Show the player status with a notification");
         Main.AddItem(TakeoverRandomPed);
+        Main.AddItem(BecomeRandomPed);
         Main.AddItem(ShowStatus);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -73,6 +79,10 @@ public class MainMenu : Menu
             {
                 PedSwap.TakeoverPed(SelectedTakeoverRadius, false, false, true);
             }
+        }
+        else if (selectedItem == BecomeRandomPed)
+        {
+            PedSwap.BecomeRandomPed(false);
         }
         else if (selectedItem == ShowStatus)
         {

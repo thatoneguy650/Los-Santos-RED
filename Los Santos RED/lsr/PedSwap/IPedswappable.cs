@@ -9,5 +9,6 @@ namespace LosSantosRED.lsr.Interface
     public interface IPedswappable
     {
         void TakeoverPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice);
+        void BecomeRandomPed(bool DeleteOld);
     }
 }

@@ -66,13 +66,14 @@ public class CarLockPick
                 GameFiber.Yield();
                 if (!SetupLockPick())
                 {
-                    Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+                    //if()
+                    //Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     EntryPoint.WriteToConsole("PickLock Setup Failed",3);
                     return;
                 }
                 if (!LockPickAnimation())
                 {
-                    Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
+                    //Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     EntryPoint.WriteToConsole("PickLock Animation Failed",3);
                     return;
                 }
@@ -93,6 +94,8 @@ public class CarLockPick
 
         if(TargetVehicle.LockStatus != (VehicleLockStatus)3)
         {
+            EntryPoint.WriteToConsole("SetupLockPick Failed, Could Not Set Lock Status to 3", 3);
+            Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
             return false;
         }
 

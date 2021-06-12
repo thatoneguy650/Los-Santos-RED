@@ -70,6 +70,36 @@ public class PedSwap : IPedswappable
             EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace,0);
         }
     }
+    public void BecomeRandomPed(bool DeleteOld)
+    {
+
+        try
+        {
+            Ped TargetPed = new Ped();
+            if (TargetPed == null)
+            {
+                return;
+            }
+            TargetPed.RandomizeVariation();
+            Vector3 MyPos = Game.LocalPlayer.Character.Position;
+            float MyHeading = Game.LocalPlayer.Character.Heading;
+            StoreTargetPedData(TargetPed);
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
+            Game.LocalPlayer.Character.Position = MyPos;
+            Game.LocalPlayer.Character.Heading = MyHeading;
+            PostTakeover(LastModelHash);
+            if(CurrentPed.Exists() && CurrentPed.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                CurrentPed.Delete();
+                EntryPoint.WriteToConsole("Become Ped Deleted CurrentPed", 3);
+            }
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
+
     public void Dispose()
     {
         Vehicle Car = Game.LocalPlayer.Character.CurrentVehicle;
@@ -353,6 +383,7 @@ public class PedSwap : IPedswappable
         //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
         //}
     }
+
     private class TakenOverPed
     {
         public TakenOverPed(Ped _Pedestrian, PoolHandle _OriginalHandle)

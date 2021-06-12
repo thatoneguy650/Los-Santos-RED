@@ -15,6 +15,7 @@ using System.Windows.Forms;
 
 public class Debug
 {
+    private Crimes Crimes;
     private int PlateIndex;
     private Vector3 StoredPosition;
     private PlateTypes PlateTypes;
@@ -25,7 +26,7 @@ public class Debug
     private int VehicleMissionFlag = 1;
     private Dispatcher Dispatcher;
     private Zones Zones;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones)
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -33,6 +34,7 @@ public class Debug
         Streets = streets;
         Dispatcher = dispatcher;
         Zones = zones;
+        Crimes = crimes;
     }
     public void Update()
     {
@@ -141,7 +143,18 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        Dispatcher.SpawnRegularRoadblock();
+        Player.DebugScanner.Reset();
+        if (RandomItems.RandomPercent(50))
+        {
+            Player.DebugScanner.OnWantedSearchMode();
+            EntryPoint.WriteToConsole("Announcing OnWantedSearchMode", 3);
+        }
+        else
+        {
+            Player.DebugScanner.OnAppliedWantedStats();
+            EntryPoint.WriteToConsole("Announcing OnAppliedWantedStats", 3);
+        }
+       // Dispatcher.SpawnRegularRoadblock();
         //SpawnRegularRoadblock();
 
 
@@ -157,7 +170,15 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        Player.PrintCriminalHistory();
+        Player.DebugScanner.Reset();
+        Crime ToAnnounce = Crimes.CrimeList.PickRandom();
+        if(ToAnnounce != null)
+        {
+            Player.DebugScanner.AnnounceCrime(ToAnnounce, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true));
+            EntryPoint.WriteToConsole($"Announcing {ToAnnounce.Name}", 3);
+        }
+
+        //Player.PrintCriminalHistory();
         //EntryPoint.WriteToConsole("-------------------------------", 3);
         //EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {Player.CriminalHistoryDebug.ToString()}", 3);
         //EntryPoint.WriteToConsole("-------------------------------", 3);
@@ -169,6 +190,8 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+        EntryPoint.WriteToConsole("SCANNER ABORT", 3);
+        Player.DebugScanner.Abort();
         //if(Game.LocalPlayer.Character.Inventory.EquippedWeaponObject != null && Player.CurrentWeapon != null)
         //{
         //    EntryPoint.WriteToConsole($" Weapon Dimensions: Model {Player.CurrentWeapon.ModelName}, CurrentWeaponIsOneHanded{Player.CurrentWeaponIsOneHanded}, X: {Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Model.Dimensions.X}, Y: {Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Model.Dimensions.Y}, Z: {Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Model.Dimensions.Z}", 3);

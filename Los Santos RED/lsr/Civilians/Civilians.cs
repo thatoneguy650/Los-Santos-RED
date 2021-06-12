@@ -34,10 +34,10 @@ public class Civilians
         {
             ped.Update(Player,Vector3.Zero);
             PedsUpdated++;
-            //if(PedsUpdated > 10)//3//10//25
-            //{
-            //    break;
-            //}
+            if (PedsUpdated > 5)//10)//3//10//25
+            {
+                break;
+            }
         }
     }
 }

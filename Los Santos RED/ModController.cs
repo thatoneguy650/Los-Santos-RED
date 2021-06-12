@@ -92,7 +92,7 @@ namespace LosSantosRED.lsr
             UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Weapons, RadioStations);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
             VanillaManager = new VanillaManager();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes);
 
 
 
