@@ -29,6 +29,8 @@ public class Vehicles
         Jurisdictions = jurisdictions;
         Settings = settings;
     }
+    public int PoliceVehiclesCount => PoliceVehicles.Count();
+    public int CivilianVehiclesCount => CivilianVehicles.Count();
     public int PoliceHelicoptersCount
     {
         get

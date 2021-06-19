@@ -25,7 +25,8 @@ namespace LosSantosRED.lsr.Interface
         int TotalSpawnedPolice { get; }
         List<Firefighter> FirefighterList { get; }
         List<EMT> EMTList { get; }
-
+        int PoliceVehicleCount { get; }
+        int CivilianVehicleCount { get; }
         void AddEntity(PedExt pedExt);
         void AddEntity(VehicleExt x);
         bool AnyCopsNearPosition(Vector3 initialPosition, float closestSpawnToOtherPoliceAllowed);

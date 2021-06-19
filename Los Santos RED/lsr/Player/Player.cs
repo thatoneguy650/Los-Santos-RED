@@ -51,7 +51,7 @@ namespace Mod
         private uint targettingHandle;
         private bool isActive = true;
         private uint GameTimeLastUpdatedLookedAtPed;
-        private int UpdateState = 0;
+        public int UpdateState = 0;
 
 
 
@@ -286,7 +286,7 @@ namespace Mod
         public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";//PoliceResponse.DebugText;
         public string DebugLine8 => $"PlacePoliceLastSeenPlayer {PlacePoliceLastSeenPlayer}";//PoliceResponse.DebugText;
         public string DebugLine9 => CurrentVehicle != null ? $"IsEngineRunning: {CurrentVehicle.Engine.IsRunning}" : $"NO VEHICLE" + $" IsGettingIntoAVehicle: {IsGettingIntoAVehicle}, IsInVehicle: {IsInVehicle}";//$"Vio {Violations.LawsViolatingDisplay}";"";//Investigation.DebugText;
-        public string DebugLine10 => "";//$"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
+        public string DebugLine10 => $"Cop#: {EntityProvider.PoliceList.Count()} CopCar#: {EntityProvider.PoliceVehicleCount} Civ#: {EntityProvider.CivilianList.Count()} CivCar:#: {EntityProvider.CivilianVehicleCount} Tracked#: {TrackedVehicles.Count}";//$"IsMoving {IsMoving} IsMovingFast {IsMovingFast} IsMovingDynam {IsMovingDynamically} RcntStrPly {RecentlyStartedPlaying}";
         public string DebugLine11 { get; set; }
         public Scanner DebugScanner => Scanner;//temp for testing with debug
         public bool RecentlyRespawned => Respawning.RecentlyRespawned;
@@ -300,6 +300,7 @@ namespace Mod
             if (!ByPolice && IsNotWanted)
             {
                 Investigation.Start();
+                
             }
         }
         public void Arrest()
@@ -482,7 +483,10 @@ namespace Mod
         public void Update()
         {
             UpdateData();
-            UpdateButtonPrompts();
+
+
+
+            //UpdateButtonPrompts();
         }
         private void UpdateData()
         {
@@ -993,7 +997,7 @@ namespace Mod
                 CurrentSpeedDisplay += "~n~" + CurrentVehicle.FuelTank.UIText;
             }
         }
-        private void UpdateStateData()
+        public void UpdateStateData()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
             {
@@ -1082,7 +1086,7 @@ namespace Mod
                 TargettingHandle = NativeHelper.GetTargettingHandle();
             }
         }
-        private void UpdateVehicleData()
+        public void UpdateVehicleData()
         {
             IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
             IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
@@ -1205,7 +1209,7 @@ namespace Mod
             }
 
         }
-        private void UpdateWeaponData()
+        public void UpdateWeaponData()
         {
             if (Game.LocalPlayer.Character.IsShooting)
             {

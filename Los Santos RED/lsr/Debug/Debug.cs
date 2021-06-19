@@ -26,7 +26,8 @@ public class Debug
     private int VehicleMissionFlag = 1;
     private Dispatcher Dispatcher;
     private Zones Zones;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes)
+    private ModController ModController;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -35,6 +36,7 @@ public class Debug
         Dispatcher = dispatcher;
         Zones = zones;
         Crimes = crimes;
+        ModController = modController;
     }
     public void Update()
     {
@@ -116,26 +118,34 @@ public class Debug
     }
     private void DebugNumpad0()
     {
-        MakeNonInvincible();
+        ModController.DebugCoreRunning = !ModController.DebugCoreRunning;
+        EntryPoint.WriteToConsole($"Core Tasks Running: {ModController.DebugCoreRunning}", 3);
+        //MakeNonInvincible();
     }
     private void DebugNumpad1()
     {
-        MakeInvincible();
+        ModController.DebugSecondaryRunning = !ModController.DebugSecondaryRunning;
+        EntryPoint.WriteToConsole($"Secondary Tasks Running: {ModController.DebugSecondaryRunning}", 3);
+        // MakeInvincible();
     }
     private void DebugNumpad2()
     {
-        Player.SetWantedLevel(0, "RESETTING DEBUG!", true);
+        ModController.DebugInputRunning = !ModController.DebugInputRunning;
+        EntryPoint.WriteToConsole($"Input Tasks Running: {ModController.DebugInputRunning}", 3);
+        //Player.SetWantedLevel(0, "RESETTING DEBUG!", true);
     }
     private void DebugNumpad3()
     {
-        Player.SetWantedLevel(2, "SETTING DEBUG!", true);
+        ModController.DebugUIRunning = !ModController.DebugUIRunning;
+        EntryPoint.WriteToConsole($"UI Tasks Running: {ModController.DebugUIRunning}", 3);
+        // Player.SetWantedLevel(2, "SETTING DEBUG!", true);
     }
     private void DebugNumpad4()
     {
-        if (DebugPed.Exists())
-        {
-            DebugPed.Delete();
-        }
+        //if (DebugPed.Exists())
+        //{
+        //    DebugPed.Delete();
+        //}
         //Vector3 Pos = Game.LocalPlayer.Character.GetOffsetPositionFront(3f);
         ////Cop = new Ped("s_m_y_cop_01", Game.LocalPlayer.Character.GetOffsetPositionFront(3f), Game.LocalPlayer.Character.Heading);
         //Cop = NativeFunction.Natives.CREATE_PED<Ped>(6, Game.GetHashKey("s_m_y_cop_01"), Pos.X, Pos.Y, Pos.Z, Game.LocalPlayer.Character.Heading, false, false);
@@ -143,17 +153,17 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        Player.DebugScanner.Reset();
-        if (RandomItems.RandomPercent(50))
-        {
-            Player.DebugScanner.OnWantedSearchMode();
-            EntryPoint.WriteToConsole("Announcing OnWantedSearchMode", 3);
-        }
-        else
-        {
-            Player.DebugScanner.OnAppliedWantedStats();
-            EntryPoint.WriteToConsole("Announcing OnAppliedWantedStats", 3);
-        }
+        //Player.DebugScanner.Reset();
+        //if (RandomItems.RandomPercent(50))
+        //{
+        //    Player.DebugScanner.OnWantedSearchMode();
+        //    EntryPoint.WriteToConsole("Announcing OnWantedSearchMode", 3);
+        //}
+        //else
+        //{
+        //    Player.DebugScanner.OnAppliedWantedStats();
+        //    EntryPoint.WriteToConsole("Announcing OnAppliedWantedStats", 3);
+        //}
        // Dispatcher.SpawnRegularRoadblock();
         //SpawnRegularRoadblock();
 

@@ -1,5 +1,4 @@
-﻿using LosSantosRED.lsr.Helper;
-using Rage;
+﻿using Rage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,10 +43,16 @@ namespace LosSantosRED.lsr
         private PedGroups RelationshipGroups;
         private VanillaManager VanillaManager;
         private Scenarios Scenarios;
+        private MovingAverage FPS;
+        private MovingAverage TimeMA;
         public ModController()
         {
         }
         public bool IsRunning { get; private set; }
+        public bool DebugCoreRunning { get; set; } = true;
+        public bool DebugSecondaryRunning { get; set; } = true;  
+        public bool DebugUIRunning { get; set; } = true;
+        public bool DebugInputRunning { get; set; } = true;     
         public void Dispose()
         {
             IsRunning = false;
@@ -92,7 +97,7 @@ namespace LosSantosRED.lsr
             UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Weapons, RadioStations);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
             VanillaManager = new VanillaManager();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this);
 
 
 
@@ -104,7 +109,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             StartGameLogic();
             GameFiber.Yield();
-            StartMenuLogic();
+            StartUILogic();
             GameFiber.Yield();
             StartInputLogic();
             GameFiber.Yield();
@@ -168,11 +173,17 @@ namespace LosSantosRED.lsr
             {
                 //Required Run
                 //new ModTask(0, "Time.Tick", Time.Tick, 0),
-               // new ModTask(0, "Input.Tick", Input.Update, 1),//100
+                // new ModTask(0, "Input.Tick", Input.Update, 1),//100
                 //new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2),
-                new ModTask(100, "Player.Update", Player.Update, 3),
+                  new ModTask(100, "Player.Update", Player.Update, 3),
                 //new ModTask(300, "Police.Update", Police.Update, 4),
-            };
+
+
+                //new ModTask(100, "Player.UpdateVehicleData", Player.UpdateVehicleData, 1),
+                //new ModTask(100, "Player.UpdateStateData", Player.UpdateStateData, 2),
+                //new ModTask(100, "Player.UpdateWeaponData", Player.UpdateWeaponData, 3),
+
+        };
             SecondaryTasks = new List<ModTask>()
             {
                 new ModTask(500, "Player.Violations.Update", Player.ViolationsUpdate, 0),
@@ -209,7 +220,9 @@ namespace LosSantosRED.lsr
                 new ModTask(300, "Police.Update", Police.Update, 26),
 
             };
-            
+
+            FPS = new MovingAverage();
+            TimeMA = new MovingAverage();
         }
         private void StartDebugLogic()
         {
@@ -242,86 +255,62 @@ namespace LosSantosRED.lsr
                     //int TimesRanSecondary = 0;
                     while (IsRunning)
                     {
-                        if (CurrentSecondaryTask > SecondaryTasks.Count)
+                        TickStopWatch.Start();
+                        if (DebugCoreRunning || DebugSecondaryRunning)
                         {
-                            CurrentSecondaryTask = 0;
-                        }
-                        PrevLastRanTask = LastRanTask;
-                        ModTask coreTask = CoreTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
-                        if (coreTask != null)
-                        {
-                            LastRanTask = coreTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - coreTask.GameTimeLastRan}";
-                            coreTask.Run();
-                        }
-                        else
-                        {
-                            ModTask firstSecondaryTask = SecondaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentSecondaryTask).FirstOrDefault();
-                            if(firstSecondaryTask != null)
+                            if (CurrentSecondaryTask > SecondaryTasks.Count)
                             {
-                                LastRanTask = firstSecondaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstSecondaryTask.GameTimeLastRan}";
-                                firstSecondaryTask.Run();
-                                CurrentSecondaryTask++;
+                                CurrentSecondaryTask = 0;
+                            }
+                            PrevLastRanTask = LastRanTask;
+                            ModTask coreTask = CoreTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
+                            if (coreTask != null && DebugCoreRunning)
+                            {
+                                LastRanTask = coreTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - coreTask.GameTimeLastRan}";
+                                coreTask.Run();
                             }
                             else
                             {
-                                ModTask alternateSecondaryTask = SecondaryTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
-                                if(alternateSecondaryTask != null)
+                                if (DebugSecondaryRunning)
                                 {
-                                    LastRanTask = alternateSecondaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateSecondaryTask.GameTimeLastRan}";
-                                    alternateSecondaryTask.Run();
-                                }
-                                else
-                                {
-                                    LastRanTask = "NONE";//nothing to run at all this tick, everything is on time
-                                }
+                                    ModTask firstSecondaryTask = SecondaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentSecondaryTask).FirstOrDefault();
+                                    if (firstSecondaryTask != null)
+                                    {
+                                        LastRanTask = firstSecondaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstSecondaryTask.GameTimeLastRan}";
+                                        firstSecondaryTask.Run();
+                                        CurrentSecondaryTask++;
+                                    }
+                                    else
+                                    {
+                                        ModTask alternateSecondaryTask = SecondaryTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
+                                        if (alternateSecondaryTask != null)
+                                        {
+                                            LastRanTask = alternateSecondaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateSecondaryTask.GameTimeLastRan}";
+                                            alternateSecondaryTask.Run();
+                                        }
+                                        else
+                                        {
+                                            LastRanTask = "NONE";//nothing to run at all this tick, everything is on time
+                                        }
 
+                                    }
+                                }
                             }
-                            //TimesRanSecondary++;
-                            //if (TimesRanSecondary >= 2)
-                            //{
-                            //    RunCore = true;
-                            //    TimesRanSecondary = 0;
-                            //}
                         }
-                        //if (CurrentSecondaryTask > SecondaryTasks.Count)
+                        //FPS.ComputeAverage(Game.FrameRate);
+                        //if (!Game.IsPaused && (Game.FrameRate < 55 || FPS.Average <= 59))
                         //{
-                        //    CurrentSecondaryTask = 0;
-                        //}
-                        //PrevLastRanTask = LastRanTask;
-                        //if (RunCore)
-                        //{
-                        //  //  Input.Update();
-                        //    List<string> TaskList = new List<string>();
-                        //    foreach (ModTask coreTask in CoreTasks.Where(x => x.ShouldRun).Take(1))
-                        //    {
-                        //        coreTask.Run();
-                        //        TaskList.Add(coreTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - coreTask.GameTimeLastRan}");
-                        //    }
-                        //    LastRanTask = string.Join(",", TaskList);
-                        //    RunCore = false;
-                        //}
-                        //else
-                        //{ 
-                        //    ModTask ToRun = SecondaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentSecondaryTask).FirstOrDefault();//should also check if something has barely ran or
-                        //    if (ToRun != null)
-                        //    {
-                        //        LastRanTask = ToRun.DebugName + $": TimeBetweenRuns: {Game.GameTime - ToRun.GameTimeLastRan}";
-                        //        ToRun.Run();
-
-                        //    }
-                        //    CurrentSecondaryTask++;
-                        //    TimesRanSecondary++;
-                        //    if (TimesRanSecondary >= 2)
-                        //    {
-                        //        RunCore = true;
-                        //        TimesRanSecondary = 0;
-                        //    }
+                        //    EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3); //EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
                         //}
 
-                        if (!Game.IsPaused && Game.FrameRate < 40)
+                        
+                        long ElapsedTime = TickStopWatch.ElapsedMilliseconds;
+                        TimeMA.ComputeAverage(ElapsedTime);
+                        if (!Game.IsPaused && ElapsedTime >= 3)
                         {
-                            EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3); //EntryPoint.WriteToConsole($"GameLogic Slow FrameTime {Game.FrameTime} FPS {Game.FrameRate}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
+                            EntryPoint.WriteToConsole($"GameLogic Long Time {ElapsedTime} Avg {TimeMA.Average}; Ran: {LastRanTask}, Ran Last Tick: {PrevLastRanTask}", 3);
                         }
+                        TickStopWatch.Reset();
                         GameFiber.Yield();
                     }
                 }
@@ -334,7 +323,7 @@ namespace LosSantosRED.lsr
             }, "Run Game Logic");
             GameFiber.Yield();
         }
-        private void StartMenuLogic()
+        private void StartUILogic()
         {
             GameFiber.StartNew(delegate
             {
@@ -342,7 +331,11 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        UI.Update();
+                        if(DebugUIRunning)
+                        {
+                            UI.Update();
+                        }
+                        
                         GameFiber.Yield();
                     }
                 }
@@ -352,7 +345,7 @@ namespace LosSantosRED.lsr
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
                     Dispose();
                 }
-            }, "Run Menu/UI Logic");
+            }, "Run UI Logic");
         }
         private void StartInputLogic()
         {
@@ -362,7 +355,10 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        Input.Update();
+                        if (DebugInputRunning)
+                        {
+                            Input.Update();
+                        }
                         GameFiber.Yield();
                     }
                 }
@@ -430,6 +426,30 @@ namespace LosSantosRED.lsr
                 TickToRun();
                 GameTimeLastRan = Game.GameTime;
                 RanThisTick = true;
+            }
+        }
+        private class MovingAverage
+        {
+            private Queue<float> samples = new Queue<float>();
+            private int windowSize = 16;
+            private float sampleAccumulator;
+            public float Average { get; private set; }
+
+            /// <summary>
+            /// Computes a new windowed average each time a new sample arrives
+            /// </summary>
+            /// <param name="newSample"></param>
+            public void ComputeAverage(float newSample)
+            {
+                sampleAccumulator += newSample;
+                samples.Enqueue(newSample);
+
+                if (samples.Count > windowSize)
+                {
+                    sampleAccumulator -= samples.Dequeue();
+                }
+
+                Average = sampleAccumulator / samples.Count;
             }
         }
     }
