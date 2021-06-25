@@ -196,21 +196,34 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
                 new ModTask(500, "Civilians.Update", Civilians.Update, 8),//250
                 new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 9),
-                new ModTask(500, "World.ScanForPedestrians", World.ScanForPedestrians, 10),
-                new ModTask(500, "World.CreateNewPedestrians", World.CreateNewPedestrians, 11),
+
+
+
+                new ModTask(500, "World.ScanForPedestrians", World.ScanForPedestrians, 10), //very bad performance
+                new ModTask(500, "World.CreateNewPedestrians", World.CreateNewPedestrians, 11), //very bad performance
+
+
+
                 new ModTask(500, "World.PruneVehicles", World.PruneVehicles, 12),
-                new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 13),
+
+
+
+
+                new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 13),  //very bad performance
                 new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 14), //very bad performance
+
+
+
                 new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 15),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 16),
                 new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 17),//500
                 new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 18),//500
 
                 new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 19),//500
-                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 20), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 20), //WAS very bad performance, trying to limit counts
                 new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 21),
 
-                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 22), //very bad performance, trying to limit counts
+                new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 22), //WAS very bad performance, trying to limit counts
                 new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 23),
 
                 new ModTask(1000, "VanillaManager.Tick", VanillaManager.Tick, 24),
@@ -266,7 +279,7 @@ namespace LosSantosRED.lsr
                             ModTask coreTask = CoreTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
                             if (coreTask != null && DebugCoreRunning)
                             {
-                                LastRanTask = coreTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - coreTask.GameTimeLastRan}";
+                                LastRanTask = coreTask.DebugName + "-" + Player.UpdateState + $": TimeBetweenRuns: {Game.GameTime - coreTask.GameTimeLastRan}";
                                 coreTask.Run();
                             }
                             else

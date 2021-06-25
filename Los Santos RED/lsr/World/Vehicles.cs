@@ -19,7 +19,7 @@ public class Vehicles
     private IPlateTypes PlateTypes;
     private IJurisdictions Jurisdictions;
     private ISettingsProvideable Settings;
-    private Vehicle[] RageVehicles;
+    private Entity[] RageVehicles;
 
     public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes)
     {
@@ -54,12 +54,12 @@ public class Vehicles
     }
     public void Scan()
     {
-        RageVehicles = Array.ConvertAll(Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles).Where(x => x is Vehicle && x.Exists()).ToArray(), x => (Vehicle)x);//250
+        RageVehicles = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, DistanceToScan, GetEntitiesFlags.ConsiderAllVehicles);
     }
     public void CreateNew()
     {
         int VehiclesCreated = 0;
-        foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))
+        foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
         {
             if(AddToList(vehicle))
             {
@@ -135,10 +135,11 @@ public class Vehicles
     public bool AddToList(Vehicle vehicle)
     {
         if (vehicle.Exists())
-        { 
+        {
+            uint localHandle = vehicle.Handle;
             if (vehicle.IsPoliceVehicle)
             {
-                if (!PoliceVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                if (!PoliceVehicles.Any(x => x.Handle == localHandle))
                 {
                     VehicleExt Car = new VehicleExt(vehicle);
                     //Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
@@ -158,7 +159,7 @@ public class Vehicles
                     {
                         if (FirstAgency.ResponseType == ResponseType.EMS)
                         {
-                            if (!EMSVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                            if (!EMSVehicles.Any(x => x.Handle == vehicle.Handle))
                             {
                                 //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.EMS));
                                 EMSVehicles.Add(Car);
@@ -167,7 +168,7 @@ public class Vehicles
                         }
                         else if (FirstAgency.ResponseType == ResponseType.Fire)
                         {
-                            if (!FireVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                            if (!FireVehicles.Any(x => x.Handle == localHandle))
                             {
                                 //  Car.UpdateLivery(GetAgency(Car.Vehicle, 0, ResponseType.LawEnforcement));
                                 FireVehicles.Add(Car);
@@ -177,7 +178,7 @@ public class Vehicles
                     }
                 }
                 //slow slow slow
-                else if (!CivilianVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
+                else if (!CivilianVehicles.Any(x => x.Handle == localHandle))
                 {
                     CivilianVehicles.Add(Car);
                     return true;

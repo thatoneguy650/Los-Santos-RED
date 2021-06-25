@@ -486,7 +486,7 @@ namespace Mod
 
 
 
-            //UpdateButtonPrompts();
+            UpdateButtonPrompts();
         }
         private void UpdateData()
         {

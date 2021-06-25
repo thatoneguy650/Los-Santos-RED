@@ -25,7 +25,7 @@ namespace LosSantosRED.lsr
         private bool HasHistory => CurrentHistory != null;
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
-            CurrentHistory = new BOLO(PlaceLastSeen,CrimesAssociated, CrimesAssociated.Max(x=> x.ResultingWantedLevel));
+            CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated.Max(x=> x.ResultingWantedLevel));
         }
         public void OnLostWanted()
         {

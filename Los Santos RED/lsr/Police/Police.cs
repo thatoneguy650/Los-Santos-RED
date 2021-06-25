@@ -21,6 +21,7 @@ namespace LosSantosRED.lsr
             UpdateRecognition();
             if (Player.IsBustable && World.PoliceList.Any(x => x.ShouldBustPlayer))
             {
+                GameFiber.Yield();
                 Player.Arrest();
             }
         }
@@ -32,6 +33,7 @@ namespace LosSantosRED.lsr
                 Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
                 Cop.UpdateSpeech(Player);
                 Cop.UpdateAssists(Player.IsWanted);
+                GameFiber.Yield();
             }
         }
         private void UpdateRecognition()

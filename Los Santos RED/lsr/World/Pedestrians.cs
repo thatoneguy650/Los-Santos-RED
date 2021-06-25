@@ -134,22 +134,22 @@ public class Pedestrians
     }
     public PedExt GetPedExt(uint Handle)
     {
-        PedExt pedExt = Police.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        PedExt pedExt = Police.FirstOrDefault(x => x.Handle == Handle);
         if (pedExt != null)
         {
             return pedExt;
         }
-        pedExt = EMTs.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        pedExt = EMTs.FirstOrDefault(x => x.Handle == Handle);
         if (pedExt != null)
         {
             return pedExt;
         }
-        pedExt = Firefighters.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        pedExt = Firefighters.FirstOrDefault(x => x.Handle == Handle);
         if (pedExt != null)
         {
             return pedExt;
         }
-        return Civilians.FirstOrDefault(x => x.Pedestrian.Handle == Handle);
+        return Civilians.FirstOrDefault(x => x.Handle == Handle);
  
     }
     public void Prune()
@@ -177,26 +177,28 @@ public class Pedestrians
     }
     public void Scan()
     {
+       // WorldPeds = Rage.World.EnumeratePeds();
         WorldPeds = Rage.World.GetEntities(Game.LocalPlayer.Character.Position, 125f, GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();    
     }
     public void CreateNew()
     {
-        foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.IsVisible))
+        foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.IsVisible))//take 20 is new
         {
+            uint localHandle = Pedestrian.Handle;
             if (Pedestrian.IsPoliceArmy())
             {
                 if (!Pedestrian.IsVisible)//trying to remove that call with this
                 {
                     continue;
                 }
-                if (!Police.Any(x => x.Pedestrian == Pedestrian))
+                if (!Police.Any(x => x.Handle == localHandle))
                 {
                     AddCop(Pedestrian);
                 }
             }
             else
             {
-                if (!Civilians.Any(x => x.Pedestrian.Handle == Pedestrian.Handle))
+                if (!Civilians.Any(x => x.Handle == localHandle))
                 {
                     AddCivilian(Pedestrian);
                 }
@@ -229,7 +231,8 @@ public class Pedestrians
         //WillFight = true;
         //WillCallPolice = false;
         ////TEMP!
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
+        /////Names.GetRandomName(Pedestrian.IsMale)
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, "John Doe", RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
     }
     private void AddCop(Ped Pedestrian)
     {

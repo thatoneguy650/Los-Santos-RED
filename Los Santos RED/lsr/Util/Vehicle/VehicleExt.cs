@@ -33,6 +33,7 @@ namespace LSR.Vehicles
         public bool WasReportedStolen { get; set; }
         public bool HasUpdatedPlateType { get; set; }
         public bool AreAllWindowsIntact { get; set; }
+        public uint Handle { get; private set; }
         private bool CanToggleEngine
         {
             get
@@ -189,6 +190,7 @@ namespace LSR.Vehicles
             Vehicle = vehicle;
             if (Vehicle.Exists())
             {
+                Handle = vehicle.Handle;
                 DescriptionColor = Vehicle.PrimaryColor;
                 CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
                 OriginalLicensePlate = CarPlate;
