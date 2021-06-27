@@ -28,9 +28,10 @@ public class Tasker
     }
     public void RunCiviliansTasks()
     {
-        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.CurrentTask.GameTimeLastRan).Take(5))//5//2
+        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.CurrentTask.GameTimeLastRan))//.Take(5))//5//2
         {
-            Ped.UpdateTask();      
+            Ped.UpdateTask();
+            GameFiber.Yield();
         }
     }
     public void UpdatePoliceTasks()
@@ -47,6 +48,7 @@ public class Tasker
             if (Civilian.DistanceToPlayer <= 100f)
             {
                 UpdateCurrentTask(Civilian);
+                GameFiber.Yield();
             }
             else if (Civilian.CurrentTask != null)
             {

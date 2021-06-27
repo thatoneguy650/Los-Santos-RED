@@ -116,11 +116,13 @@ public class CarLockPick
         if (!StartAnimation)
         {
             TargetVehicle.LockStatus = OriginalLockStatus;
+            EntryPoint.WriteToConsole("SetupLockPick Failed, Move Control Pressed", 3);
             return false;
         }
 
         if (TargetVehicle.LockStatus == (VehicleLockStatus)1)
         {
+            EntryPoint.WriteToConsole("SetupLockPick Failed, Lock Status = 1", 3);
             return false;
         }
 

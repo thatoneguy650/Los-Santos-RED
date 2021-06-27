@@ -696,7 +696,10 @@ namespace Mod
         }
         public void ResistArrest() => Respawning.ResistArrest();
         public void PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
-
+        public void DeleteTrackedVehicles()
+        {
+            TrackedVehicles.Clear();
+        }
 
 
         //Events
@@ -966,6 +969,9 @@ namespace Mod
 
                 //CurrentLookedAtPed = EntityProvider.CivilianList.Where(x => x.DistanceToPlayer <= 4f && !x.IsBehindPlayer).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
                 GameTimeLastUpdatedLookedAtPed = Game.GameTime;
+
+
+                GameFiber.Yield();
             }
         }
         private void UpdateSpeedDispay()

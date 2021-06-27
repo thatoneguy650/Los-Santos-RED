@@ -12,6 +12,8 @@ public class VanillaManager
 {
     private bool IsVanillaRespawnActive = true;
     private bool IsVanillaDispatchActive = true;
+    private uint GameTimeLastTerminatedVanillaDispatch;
+    private bool IsTimeToTerminatedVanillaDispatch => GameTimeLastTerminatedVanillaDispatch == 0 || Game.GameTime - GameTimeLastTerminatedVanillaDispatch >= 5000;
     public VanillaManager()
     {
     }
@@ -27,10 +29,10 @@ public class VanillaManager
         {
             TerminateVanillaRespawnController();
         }
-        //if (IsVanillaDispatchActive)
-        //{
+        if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
+        {
             TerminateVanillaDispatch();
-       // }
+        }
         TerminateVanillaRespawnScripts();
         TerminateVanillaHealthRecharge();
         TerminateVanillaAudio();
@@ -39,6 +41,7 @@ public class VanillaManager
     {
         SetVanillaDispatch(false);
         IsVanillaDispatchActive = false;
+        GameTimeLastTerminatedVanillaDispatch = Game.GameTime;
     }
     private void ActivateVanillaDispatch()
     {

@@ -19,9 +19,12 @@ public class Flee : ComplexTask
     }
     public override void Start()
     {
-        EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle}", 3);
-        Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
-        GameTimeLastRan = Game.GameTime;
+        if (Ped.Pedestrian.Exists())
+        {
+            EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle}", 3);
+            Ped.Pedestrian.Tasks.Flee(Target.Character, 100f, -1);
+            GameTimeLastRan = Game.GameTime;
+        }
     }
     public override void Update()
     {

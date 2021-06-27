@@ -142,6 +142,10 @@ public class Debug
     }
     private void DebugNumpad4()
     {
+        Player.DeleteTrackedVehicles();
+        EntryPoint.WriteToConsole($"Tracked Vehicles Clear", 3);
+
+
         //if (DebugPed.Exists())
         //{
         //    DebugPed.Delete();
