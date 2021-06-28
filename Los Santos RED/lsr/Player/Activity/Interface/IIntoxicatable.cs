@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace LosSantosRED.lsr.Interface
         Vector3 Position { get; }
         bool IsMoveControlPressed { get; }
         Scenario ClosestScenario { get; }
+        bool IsInVehicle { get; }
+        bool IsDriver { get; }
+        VehicleExt CurrentVehicle { get; }
 
         void SetUnarmed();
     }

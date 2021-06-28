@@ -21,6 +21,10 @@ public class Engine
     public Engine(VehicleExt vehicleToMonitor)
     {
         VehicleToMonitor = vehicleToMonitor;
+        if (vehicleToMonitor.Vehicle.Exists())
+        {
+            IsRunning = vehicleToMonitor.Vehicle.IsEngineOn;
+        }
     }
     public void Update()
     {

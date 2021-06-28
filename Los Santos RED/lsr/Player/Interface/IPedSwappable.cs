@@ -18,5 +18,6 @@ namespace LosSantosRED.lsr.Interface
 
         void SetUnarmed();
         void DisplayPlayerNotification();
+        void SetMoney(int currentPedMoney);
     }
 }

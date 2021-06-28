@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LSR.Vehicles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; }
         string AutoTuneStation { get; set; }
         bool CanPerformActivities { get; }
+        List<LicensePlate> SpareLicensePlates { get; }
 
         void StartSmokingPot();
         void StartSmoking();
@@ -22,7 +24,7 @@ namespace LosSantosRED.lsr.Interface
         void DisplayPlayerNotification();
         void GiveMoney(int v);
         void RemovePlate();
-        void ChangePlate();
+        void ChangePlate(int Index);
         void StopDynamicActivity();
     }
 }

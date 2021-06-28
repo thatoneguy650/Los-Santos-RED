@@ -47,7 +47,7 @@ namespace LosSantosRED.lsr
         private List<AudioSet> LethalForce;
         private Dispatch LethalForceAuthorized;
         private List<AudioSet> LicensePlateSet;
-        private Dispatch LostVisual;
+        private Dispatch RemainInArea;
         private Dispatch Mugging;
         private Dispatch NoFurtherUnitsNeeded;
         private List<uint> NotificationHandles = new List<uint>();
@@ -69,7 +69,6 @@ namespace LosSantosRED.lsr
         private Dispatch ResistingArrest;
         private Dispatch ResumePatrol;
         private Dispatch RunningARedLight;
-        private Dispatch SearchingForSuspect;
         private ISettingsProvideable Settings;
         private Dispatch ShotsFired;
         private Dispatch ShotsFiredAtAnOfficer;
@@ -82,7 +81,7 @@ namespace LosSantosRED.lsr
         private Dispatch SuspectEvaded;
         private Dispatch OnFoot;
         private Dispatch InVehicle;
-        private Dispatch SuspectLost;
+        private Dispatch AttemptToReacquireSuspect;
         private Dispatch SuspectSpotted;
         private Dispatch SuspectWasted;
         private Dispatch SuspiciousActivity;
@@ -271,9 +270,9 @@ namespace LosSantosRED.lsr
         }
         public void OnWantedSearchMode()
         {
-            if (!LostVisual.HasRecentlyBeenPlayed)
+            if (!SuspectEvaded.HasRecentlyBeenPlayed)
             {
-                AddToQueue(LostVisual, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                AddToQueue(SuspectEvaded, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsGreyedOut", 3);
         }
@@ -300,9 +299,9 @@ namespace LosSantosRED.lsr
             GameFiber TempWait = GameFiber.StartNew(delegate
             {
                 GameFiber.Sleep(1000);
-                if (!SuspectLost.HasRecentlyBeenPlayed)
+                if (!RemainInArea.HasRecentlyBeenPlayed)
                 {
-                    AddToQueue(SuspectLost, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                    AddToQueue(RemainInArea, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                 }
                 EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectEluded", 3);
             }, "PlayDispatchQueue");
@@ -323,7 +322,6 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnFoot", 3);
         }
-
         private void AddAudioSet(DispatchEvent dispatchEvent, AudioSet audioSet)
         {
             if (audioSet != null)
@@ -963,9 +961,9 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if(CurrentPlayer.IsInSearchMode && LostVisual.HasRecentlyBeenPlayed)
-                    {
-                        AddToQueue(LostVisual, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                    else if(!CurrentPlayer.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed)
+                    {   
+                         AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                     }
                 }
             }
@@ -1046,9 +1044,9 @@ namespace LosSantosRED.lsr
             ,RequestNOOSEUnits
             ,SuspectSpotted
             ,SuspectEvaded
-            ,LostVisual
+            ,RemainInArea
             ,ResumePatrol
-            ,SuspectLost
+            ,AttemptToReacquireSuspect
             ,NoFurtherUnitsNeeded
             ,SuspectArrested
             ,SuspectWasted
@@ -1060,7 +1058,6 @@ namespace LosSantosRED.lsr
             ,DrunkDriving
             ,Kidnapping
             ,PublicIntoxication
-            ,SearchingForSuspect
             ,OfficerNeedsAssistance
         };
         }
@@ -1070,7 +1067,6 @@ namespace LosSantosRED.lsr
             if (ToLookup != null && ToLookup.Dispatch != null)
             {
                 ToLookup.Dispatch.Priority = crimeAssociated.Priority;
-                ToLookup.Dispatch.PriorityGroup = crimeAssociated.PriorityGroup;
                 return ToLookup.Dispatch;
             }
             return null;
@@ -1749,20 +1745,7 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_wanted_felon_on_the_loose.Awantedfelonontheloose.FileName },"a wanted felon on the loose"),
             },
             };
-            SuspectEvaded = new Dispatch()
-            {
-                Name = "Suspect Evaded",
-                IsStatus = true,
-                IncludeReportedBy = false,
-                LocationDescription = LocationSpecificity.Zone,
-                CanAlwaysInterrupt = true,
-                CanAlwaysBeInterrupted = true,
-                MainAudioSet = new List<AudioSet>()
-            {
-                new AudioSet(new List<string>() { suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName },"suspect evaded pursuing officers"),
-                new AudioSet(new List<string>() { suspect_eluded_pt_1.OfficiersHaveLostVisualOnSuspect.FileName },"officers have lost visual on suspect"),
-            },
-            };
+
 
             OnFoot = new Dispatch()
             {
@@ -1783,72 +1766,7 @@ namespace LosSantosRED.lsr
 
         };
 
-            LostVisual = new Dispatch()
-            {
-                Name = "Lost Visual",
-                IsStatus = true,
-                IncludeReportedBy = false,
-                CanAlwaysInterrupt = true,
-                CanAlwaysBeInterrupted = true,
-                MainAudioSet = new List<AudioSet>()
-            {
-                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName },"all units stay in the area"),
-                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName },"all units remain on alert"),
 
-                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStandby.FileName },"all units standby"),
-                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName },"all units stay in the area"),
-                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName },"all un its remain on alert"),
-            },
-            };
-            ResumePatrol = new Dispatch()
-            {
-                Name = "Resume Patrol",
-                IsStatus = true,
-                IncludeReportedBy = false,
-                CanAlwaysInterrupt = true,
-                MainAudioSet = new List<AudioSet>()
-            {
-                new AudioSet(new List<string>() { officer_begin_patrol.Beginpatrol.FileName },"begin patrol"),
-                new AudioSet(new List<string>() { officer_begin_patrol.Beginbeat.FileName },"begin beat"),
-
-                new AudioSet(new List<string>() { officer_begin_patrol.Assigntopatrol.FileName },"assign to patrol"),
-                new AudioSet(new List<string>() { officer_begin_patrol.Proceedtopatrolarea.FileName },"proceed to patrol area"),
-                new AudioSet(new List<string>() { officer_begin_patrol.Proceedwithpatrol.FileName },"proceed with patrol"),
-            },
-            };
-            SuspectLost = new Dispatch()
-            {
-                Name = "Suspect Lost",
-                IsStatus = true,
-                IncludeReportedBy = false,
-                LocationDescription = LocationSpecificity.Zone,
-                CanAlwaysInterrupt = true,
-                MainAudioSet = new List<AudioSet>()
-            {
-                new AudioSet(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName },"all units ATL on suspects 20"),
-                new AudioSet(new List<string>() { attempt_to_find.Allunitsattempttoreacquire.FileName },"all units attempt to reacquire"),
-                new AudioSet(new List<string>() { attempt_to_find.Allunitsattempttoreacquirevisual.FileName },"all units attempt to reacquire visual"),
-                new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect.FileName },"remain in the area, ATL-20 on suspect"),
-                new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect1.FileName },"remain in the area, ATL-20 on suspect"),
-            },
-            };
-
-            SearchingForSuspect = new Dispatch()
-            {
-                Name = "Suspects Location Unknown",
-                IsStatus = true,
-                IncludeReportedBy = false,
-                LocationDescription = LocationSpecificity.Zone,
-                CanAlwaysInterrupt = true,
-                MainAudioSet = new List<AudioSet>()
-            {
-                new AudioSet(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName },"all units ATL on suspects 20"),
-                new AudioSet(new List<string>() { attempt_to_find.Allunitsattempttoreacquire.FileName },"all units attempt to reacquire"),
-                new AudioSet(new List<string>() { attempt_to_find.Allunitsattempttoreacquirevisual.FileName },"all units attempt to reacquire visual"),
-                new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect.FileName },"remain in the area, ATL-20 on suspect"),
-                new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect1.FileName },"remain in the area, ATL-20 on suspect"),
-            },
-            };
 
             NoFurtherUnitsNeeded = new Dispatch()
             {
@@ -1965,6 +1883,80 @@ namespace LosSantosRED.lsr
                 ResultsInLethalForce = true,
                 CanAlwaysInterrupt = true,
             };
+
+
+
+
+
+
+
+            //Status
+            SuspectEvaded = new Dispatch()
+            {
+                Name = "Suspect Evaded",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Zone,
+                CanAlwaysInterrupt = true,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName },"suspect evaded pursuing officers"),
+                new AudioSet(new List<string>() { suspect_eluded_pt_1.OfficiersHaveLostVisualOnSuspect.FileName },"officers have lost visual on suspect"),
+            },
+            };
+            RemainInArea = new Dispatch()
+            {
+                Name = "Remain in Area",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                CanAlwaysInterrupt = true,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName },"all units stay in the area"),
+                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName },"all units remain on alert"),
+
+              //  new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStandby.FileName },"all units standby"),
+                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName },"all units stay in the area"),
+                new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsRemainOnAlert.FileName },"all units remain on alert"),
+            },
+            };
+            AttemptToReacquireSuspect = new Dispatch()
+            {
+                Name = "Attempt To Reacquire",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                LocationDescription = LocationSpecificity.Zone,
+                CanAlwaysInterrupt = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName },"all units ATL on suspects 20"),
+                new AudioSet(new List<string>() { attempt_to_find.Allunitsattempttoreacquire.FileName },"all units attempt to reacquire"),
+                new AudioSet(new List<string>() { attempt_to_find.Allunitsattempttoreacquirevisual.FileName },"all units attempt to reacquire visual"),
+                new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect.FileName },"remain in the area, ATL-20 on suspect"),
+                new AudioSet(new List<string>() { attempt_to_find.RemainintheareaATL20onsuspect1.FileName },"remain in the area, ATL-20 on suspect"),
+            },
+            };
+
+            ResumePatrol = new Dispatch()
+            {
+                Name = "Resume Patrol",
+                IsStatus = true,
+                IncludeReportedBy = false,
+                CanAlwaysInterrupt = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { officer_begin_patrol.Beginpatrol.FileName },"begin patrol"),
+                new AudioSet(new List<string>() { officer_begin_patrol.Beginbeat.FileName },"begin beat"),
+
+                new AudioSet(new List<string>() { officer_begin_patrol.Assigntopatrol.FileName },"assign to patrol"),
+                new AudioSet(new List<string>() { officer_begin_patrol.Proceedtopatrolarea.FileName },"proceed to patrol area"),
+                new AudioSet(new List<string>() { officer_begin_patrol.Proceedwithpatrol.FileName },"proceed with patrol"),
+            },
+            };
+
+
         }
         private class CrimeDispatch
         {
@@ -2053,7 +2045,6 @@ namespace LosSantosRED.lsr
             public string NotificationTitle { get; set; } = "Police Scanner";
             public List<AudioSet> PreambleAudioSet { get; set; } = new List<AudioSet>();
             public int Priority { get; set; } = 99;
-            public int PriorityGroup { get; set; } = 99;
             public bool ResultsInLethalForce { get; set; }
             public List<AudioSet> SecondaryAudioSet { get; set; } = new List<AudioSet>();
             public int TimesPlayed { get; set; }

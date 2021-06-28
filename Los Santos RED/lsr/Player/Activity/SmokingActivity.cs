@@ -350,7 +350,7 @@ namespace LosSantosRED.lsr.Player
 
             if (IsPot)
             {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 60000, 60000, "drug_wobbly");//2.5,25000//smoking was new IntoxicatingEffect(Player, 0.5f, 25000, 60000, "Bloom");//1.2,25000
+                IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 10000, 200000, "drug_wobbly");//IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 60000, 60000, "drug_wobbly");
                 IntoxicatingEffect.Start();
             }
         }

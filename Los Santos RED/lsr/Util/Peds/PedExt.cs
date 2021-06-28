@@ -257,8 +257,8 @@ public class PedExt : IComplexTaskable
     }
     public VehicleExt VehicleLastSeenPlayerIn { get; set; }
     public WeaponInformation WeaponLastSeenPlayerWith { get; set; }
-    public bool WillCallPolice { get; private set; } = true;
-    public bool WillFight { get; private set; } = false;
+    public bool WillCallPolice { get; set; } = true;
+    public bool WillFight { get; set; } = false;
     public bool WithinWeaponsAudioRange { get; private set; } = false;
     private int DistanceUpdate
     {

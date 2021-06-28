@@ -191,21 +191,12 @@ public class CarJack
             }
             else
             {
+                bool preWasEngineOn = TargetVehicle.IsEngineOn;
+                EntryPoint.WriteToConsole($"CARJACK EVENT: PRE WARP TargetVehicle Engine On {TargetVehicle.IsEngineOn}", 3);
                 Game.LocalPlayer.Character.WarpIntoVehicle(TargetVehicle, -1);
-                //TargetVehicle.IsEngineOn = true;
-                ////This needs to be moved out of here!!!!, might need to add it back
-                //VehicleExt MyCar = ent.GetVehicle(TargetVehicle);
-                //if (MyCar != null && MyCar.Vehicle.Exists())
-                //{
-                //    MyCar.Vehicle.IsEngineOn = true;
-                //    // MyCar.ToggleEngine(true);
-                //}
-
-                //  VehicleExt.Engine.Toggle(true);
-
-                //      VehicleExt.Engine.Toggle(true);
-
-                Player.ToggleEngine(true);
+                EntryPoint.WriteToConsole($"CARJACK EVENT: POST WARP TargetVehicle Engine On {TargetVehicle.IsEngineOn}", 3);
+               // VehicleExt.Engine.Toggle(preWasEngineOn);
+                EntryPoint.WriteToConsole($"CARJACK EVENT: POST ENGINE TOGGLE TargetVehicle Engine On {TargetVehicle.IsEngineOn}", 3);
                 if (TargetVehicle.Doors[0].IsValid())
                 {
                     NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
@@ -223,7 +214,6 @@ public class CarJack
             Player.IsCarJacking = false;
             return false;
         }
-
         if (TargetVehicle.Doors[0].IsValid())
         {
             NativeFunction.CallByName<bool>("SET_VEHICLE_DOOR_CONTROL", TargetVehicle, 0, 4, 0f);
@@ -464,7 +454,7 @@ public class CarJack
             }
             if (Player.Character.IsInAnyVehicle(false))
             {
-                VehicleExt.Engine.Toggle(true);
+                //VehicleExt.Engine.Toggle(true);
             }
             if (Driver != null)
             {

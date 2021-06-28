@@ -183,6 +183,7 @@ namespace Mod
         public bool IsMoveControlPressed { get; set; }
         public bool IsHoldingUp { get; set; }
         public bool IsHotWiring { get; private set; }
+        public bool IsDriver { get; private set; }
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
         public bool IsIncapacitated => IsStunned || IsRagdoll;
@@ -277,7 +278,7 @@ namespace Mod
         public VehicleExt VehicleGettingInto { get; private set; }
         public float VehicleSpeed { get; private set; }//move or delete?
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
-        public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically}";//$"{Interaction?.DebugString}";
+        public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated}";//$"{Interaction?.DebugString}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";//$"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
         public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";//DynamicActivity?.DebugString;
         public string DebugLine4 => $"Obs: {PoliceResponse.ObservedCrimesDisplay}";
@@ -348,6 +349,9 @@ namespace Mod
             isActive = false;
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
+            MakeSober();
+            Game.LocalPlayer.WantedLevel = 0;
+            Game.TimeScale = 1f;
         }
         public void GiveMoney(int Amount)
         {
@@ -479,7 +483,6 @@ namespace Mod
             NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
             GameTimeLastShot = Game.GameTime;
         }
-        public void ToggleEngine(bool DesiredStatus) => isCurrentVehicleEngineOn = true;//CurrentVehicle?.Engine.Toggle(DesiredStatus);
         public void Update()
         {
             UpdateData();
@@ -536,6 +539,16 @@ namespace Mod
 
 
         }
+        private void MakeSober()
+        {
+            NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
+            NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+            NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
+            NativeFunction.Natives.x80C8B1846639BB19(0);
+            NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
+            //EntryPoint.WriteToConsole("Player Made Sober");
+        }
         //Interactions
         public void StartConversation()
         {
@@ -564,7 +577,7 @@ namespace Mod
             }
         }
         //Dynamic Activities
-        public void ChangePlate()
+        public void ChangePlate(int Index)
         {
             if (!IsPerformingActivity && CanPerformActivities)
             {
@@ -573,7 +586,7 @@ namespace Mod
                     DynamicActivity.Cancel();
                 }
                 IsPerformingActivity = true;
-                DynamicActivity = new PlateTheft(this, SpareLicensePlates[0]);
+                DynamicActivity = new PlateTheft(this, SpareLicensePlates[Index]);
                 DynamicActivity.Start();
             }
         }
@@ -727,12 +740,13 @@ namespace Mod
                 CriminalHistory.OnLostWanted();
                 PoliceResponse.OnLostWanted();
                 EntityProvider.CivilianList.ForEach(x => x.CrimesWitnessed.Clear());
+                EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
             }
             else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
             {
                 if (!RecentlySetWanted)//only allow my process to set the wanted level
                 {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 5);
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
                     SetWantedLevel(0, "GAME AUTO SET WANTED", true);
                     //Game.LocalPlayer.WantedLevel = 0;
                 }
@@ -740,15 +754,18 @@ namespace Mod
                 {
                     Investigation.Reset();
                     PoliceResponse.OnBecameWanted();
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }
             }
             else if(IsWanted && PreviousWantedLevel < WantedLevel)//Increased Wanted Level (can't decrease only remove for now.......)
             {
                 PoliceResponse.OnWantedLevelIncreased();
+                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
             }
             else if (IsWanted && PreviousWantedLevel > WantedLevel)
             {
                 //PoliceResponse.OnWantedLevelDecreased();
+                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
             }
             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
@@ -817,11 +834,18 @@ namespace Mod
                 {
                     return;
                 }
-                VehicleExt MyCar = EntityProvider.GetVehicleExt(VehicleTryingToEnter);
-                if (MyCar != null)
+                //VehicleExt MyCar = EntityProvider.GetVehicleExt(VehicleTryingToEnter);
+
+
+
+                //CurrentVehicle = MyCar;
+
+                UpdateCurrentVehicle();
+
+                if (CurrentVehicle != null)
                 {
-                    VehicleGettingInto = MyCar;
-                    MyCar.AttemptToLock();
+                    VehicleGettingInto = CurrentVehicle;
+                    CurrentVehicle.AttemptToLock();
                     if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
                     {
                         EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
@@ -831,7 +855,7 @@ namespace Mod
                     else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
                     {
                         EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
-                        CarJack MyJack = new CarJack(this, MyCar, EntityProvider.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == VehicleTryingToEnter.Driver.Handle), SeatTryingToEnter, CurrentWeapon);
+                        CarJack MyJack = new CarJack(this, CurrentVehicle, EntityProvider.CivilianList.FirstOrDefault(x => x.Pedestrian.Handle == VehicleTryingToEnter.Driver.Handle), SeatTryingToEnter, CurrentWeapon);
                         MyJack.Start();
                     }
                     else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7)
@@ -876,10 +900,10 @@ namespace Mod
             }
             else
             {
-                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
-                {
-                    CurrentVehicle.Vehicle.IsEngineOn = isCurrentVehicleEngineOn;
-                }
+                //if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
+                //{
+                //    CurrentVehicle.Vehicle.IsEngineOn = isCurrentVehicleEngineOn;
+                //}
                 if (IsWanted && AnyPoliceCanSeePlayer)
                 {
                     Scanner.OnGotOutOfVehicle();
@@ -938,8 +962,9 @@ namespace Mod
             {
                 ToReturn.SetAsEntered();
             }
-            ToReturn.Update(AutoTuneStation);
-            isCurrentVehicleEngineOn = ToReturn.Vehicle.IsEngineOn;
+            ToReturn.Update(AutoTuneStation);  
+            //isCurrentVehicleEngineOn = ToReturn.Vehicle.IsEngineOn;
+            //ToReturn.Engine.Toggle(isCurrentVehicleEngineOn);
             CurrentVehicle = ToReturn;
         }
         private void UpdateLookedAtPed()
@@ -1098,6 +1123,7 @@ namespace Mod
             IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
             if (IsInVehicle)
             {
+                IsDriver = Game.LocalPlayer.Character.SeatIndex == -1;
                 IsInAirVehicle = Game.LocalPlayer.Character.IsInAirVehicle;
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
@@ -1157,6 +1183,7 @@ namespace Mod
             }
             else
             {
+                IsDriver = false;
                 CurrentVehicleDebugString = "";
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;

@@ -305,7 +305,14 @@ public class Dispatcher
         //    //to be readd :(
         //    SpawnRegularRoadblock();
         //}
-        Player.DebugLine11 = $"Roadblock: {Roadblock != null}; LastAgencySpawned: {LastAgencySpawned.ID}";
+        if (LastAgencySpawned != null)
+        {
+            Player.DebugLine11 = $"Roadblock: {Roadblock != null}; LastAgencySpawned: {LastAgencySpawned.ID}";
+        }
+        else
+        {
+            Player.DebugLine11 = $"Roadblock: {Roadblock != null}";
+        }
     }
     private void DispatchEMS()
     {

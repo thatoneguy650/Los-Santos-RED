@@ -36,7 +36,7 @@ public class FuelTank
             if(VehicleExt.Vehicle.IsEngineOn)
             {
                 float CurrentLevel = VehicleExt.Vehicle.FuelLevel;
-                float AmountToSubtract = 0.001f + Game.LocalPlayer.Character.CurrentVehicle.Speed * 0.0001f;
+                float AmountToSubtract = 0.001f + VehicleExt.Vehicle.Speed * 0.0001f;
                 VehicleExt.Vehicle.FuelLevel = CurrentLevel - AmountToSubtract;
             }
             GameTimeLastCheckedFuel = Game.GameTime;

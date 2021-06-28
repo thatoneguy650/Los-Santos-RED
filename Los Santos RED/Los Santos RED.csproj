@@ -142,6 +142,7 @@
     <Compile Include="lsr\Tasker\eChaseBehaviorFlag.cs" />
     <Compile Include="lsr\Tasker\Fight.cs" />
     <Compile Include="lsr\Tasker\Flee.cs" />
+    <Compile Include="lsr\UI\Menu\SettingsMenu.cs" />
     <Compile Include="lsr\Util\Peds\Scenario.cs" />
     <Compile Include="lsr\Util\Vehicle\Engine.cs" />
     <Compile Include="lsr\Util\Weapon\IssuableWeapon.cs" />

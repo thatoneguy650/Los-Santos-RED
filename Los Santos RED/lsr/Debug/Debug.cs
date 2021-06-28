@@ -38,6 +38,13 @@ public class Debug
         Crimes = crimes;
         ModController = modController;
     }
+    public void Dispose()
+    {
+        if (DebugPed.Exists())
+        {
+            DebugPed.Delete();
+        }
+    }
     public void Update()
     {
         if (Game.IsKeyDown(Keys.NumPad0))
@@ -157,6 +164,11 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        SpawnCarjackTarget();
+
+
+
+
         //Player.DebugScanner.Reset();
         //if (RandomItems.RandomPercent(50))
         //{
@@ -168,7 +180,7 @@ public class Debug
         //    Player.DebugScanner.OnAppliedWantedStats();
         //    EntryPoint.WriteToConsole("Announcing OnAppliedWantedStats", 3);
         //}
-       // Dispatcher.SpawnRegularRoadblock();
+        // Dispatcher.SpawnRegularRoadblock();
         //SpawnRegularRoadblock();
 
 
@@ -263,21 +275,21 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        MakeSober();
-        TerminateMod();
+        //MakeSober();
+        //TerminateMod();
     }
-    private void TerminateMod()
-    {
-        if (DebugPed.Exists())
-        {
-            DebugPed.Delete();
-        }
-        EntryPoint.ModController.Dispose();
-        Game.LocalPlayer.WantedLevel = 0;
-        Game.TimeScale = 1f;
-        NativeFunction.Natives.xB4EDDC19532BFB85();
-        Game.DisplayNotification("Instant Action Deactivated");
-    }
+    //private void TerminateMod()
+    //{
+    //    if (DebugPed.Exists())
+    //    {
+    //        DebugPed.Delete();
+    //    }
+    //    EntryPoint.ModController.Dispose();
+    //    Game.LocalPlayer.WantedLevel = 0;
+    //    Game.TimeScale = 1f;
+    //    NativeFunction.Natives.xB4EDDC19532BFB85();
+    //    Game.DisplayNotification("Instant Action Deactivated");
+    //}
     public void UpdatePlate(VehicleExt vehicleExt)//this might need to come out of here.... along with the two bools
     {
         vehicleExt.HasUpdatedPlateType = true;
@@ -539,6 +551,32 @@ public class Debug
     //{
     //    return Vector3.Zero;
     //}
+    private void SpawnCarjackTarget()
+    {
+        Ped newped = new Ped("a_f_m_business_02", Game.LocalPlayer.Character.GetOffsetPositionFront(2f), Game.LocalPlayer.Character.Heading);
+        Vehicle car = new Vehicle("buffalo", Game.LocalPlayer.Character.GetOffsetPositionFront(5f), Game.LocalPlayer.Character.Heading);
+        if (newped.Exists() && car.Exists())
+        {
+            newped.WarpIntoVehicle(car, -1);
+            newped.BlockPermanentEvents = true;
+            car.IsEngineOn = true;
+            //PedExt CoolGuy = World.GetPedExt(newped.Handle);
+            //CoolGuy.CanBeTasked = false;
+            while (newped.Exists() && newped.IsAlive && !Game.IsKeyDownRightNow(Keys.E) && newped.DistanceTo2D(Game.LocalPlayer.Character) <= 50f)
+            {
+                Game.DisplayHelp("Press E to delete chaser");
+                GameFiber.Sleep(25);
+            }
+            if (newped.Exists())
+            {
+                newped.Delete();
+            }
+            if (car.Exists())
+            {
+                car.Delete();
+            }
+        }
+    }
     private void SpawnInteractiveChaser(float Distance)
     {
         Ped newped = new Ped("a_f_m_business_02", Game.LocalPlayer.Character.GetOffsetPositionFront(2f), Game.LocalPlayer.Character.Heading);

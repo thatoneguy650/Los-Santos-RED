@@ -43,7 +43,7 @@ public class Tasker
     }
     public void UpdateCivilianTasks()
     {
-        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 100f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.GameTimeLastUpdatedTask).Take(5))//2//10)//2
+        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 100f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
         {
             if (Civilian.DistanceToPlayer <= 100f)
             {

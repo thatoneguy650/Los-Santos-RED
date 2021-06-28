@@ -84,7 +84,7 @@ namespace LSR.Vehicles
         {
             get
             {
-                if (CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber)
+                if (CarPlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber)
                 {
                     return true;
                 }
@@ -104,7 +104,7 @@ namespace LSR.Vehicles
                 }
                 else
                 {
-                    if (CarPlate.IsWanted)
+                    if (CarPlate != null && CarPlate.IsWanted)
                     {
                         return true;
                     }

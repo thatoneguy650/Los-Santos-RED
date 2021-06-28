@@ -235,7 +235,7 @@ public class Menu_Old
         }
         else if (selectedItem == menuMainChangeLicensePlate)
         {
-            Player.ChangePlate();
+            Player.ChangePlate(0);
         }
         else if (selectedItem == menuMainRemoveLicensePlate)
         {

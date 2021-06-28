@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class ActionMenu : Menu
 {
     private UIMenu Actions;
-    private UIMenuItem ChangePlate;
+    private UIMenuListItem ChangePlate;
     private UIMenuItem Drink;
     private IActionable Player;
     private UIMenuItem RemovePlate;
@@ -75,7 +75,7 @@ public class ActionMenu : Menu
     private void CreateActionsMenu()
     {
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
-        ChangePlate = new UIMenuItem("Change Plate", "Change your license plate if you have spares.");
+        ChangePlate = new UIMenuListItem("Change Plate", "Change your license plate if you have spares.",Player.SpareLicensePlates);
         RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         Drink = new UIMenuItem("Drink", "Start Drinking");
         Smoke = new UIMenuItem("Smoke", "Start Smoking");
@@ -101,7 +101,7 @@ public class ActionMenu : Menu
         }
         else if (selectedItem == ChangePlate)
         {
-            Player.ChangePlate();
+            Player.ChangePlate(SelectedPlateIndex);
         }
         else if (selectedItem == RemovePlate)
         {

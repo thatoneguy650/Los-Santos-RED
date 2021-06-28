@@ -116,6 +116,10 @@ public class PedSwap : IPedswappable
         {
             Game.LocalPlayer.Character.WarpIntoVehicle(Car, SeatIndex);
         }
+        if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && CurrentPedMoney > 0)
+        {
+            Player.SetMoney(CurrentPedMoney);
+        }
     }
     private Ped FindPedToSwapWith(float Radius, bool Nearest)
     {
