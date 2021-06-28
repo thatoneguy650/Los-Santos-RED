@@ -6,7 +6,9 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IViolateable
     {
-        bool AnyHumansNear { get; }
+        bool AnyHumansNear { get; }/// <summary>
+        /// test
+        /// </summary>
         bool AnyPoliceCanHearPlayer { get; }
         bool AnyPoliceCanSeePlayer { get; }
         bool AnyPoliceRecentlySeenPlayer { get; }
