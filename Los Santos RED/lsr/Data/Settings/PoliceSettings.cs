@@ -9,7 +9,7 @@ public class PoliceSettings
     public bool SpawnPoliceK9 = true;
     public bool SpawnRandomPolice = true;
     public int SpawnAmbientPoliceLimit = 10;
-    public bool SpawnedAmbientPoliceHaveBlip = false;
+    public bool SpawnedAmbientPoliceHaveBlip = true;
     public bool WantedMusicDisable = true;
     public bool ShowPoliceRadarBlips = false;
     public bool IssuePoliceHeavyWeapons = true;

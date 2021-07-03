@@ -590,6 +590,19 @@ namespace Mod
                 DynamicActivity.Start();
             }
         }
+        public void ChangePlate(LicensePlate toChange)
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (DynamicActivity != null)
+                {
+                    DynamicActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                DynamicActivity = new PlateTheft(this, toChange);
+                DynamicActivity.Start();
+            }
+        }
         public void CommitSuicide()
         {
             if (!IsPerformingActivity && CanPerformActivities)
@@ -681,6 +694,7 @@ namespace Mod
             if (IsPerformingActivity)
             {
                 DynamicActivity?.Cancel();
+                IsPerformingActivity = false;
             }
         }
         //Delegates

@@ -20,6 +20,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
+            Player.IsPerformingActivity = false;
         }
         public override void Continue()
         {

@@ -209,7 +209,7 @@ public class Pedestrians
     {
         SetCivilianStats(Pedestrian);
         bool WillFight = RandomItems.RandomPercent(5);
-        bool WillCallPolice = RandomItems.RandomPercent(70);
+        bool WillCallPolice = RandomItems.RandomPercent(85);
         bool IsGangMember = false;
         if (Pedestrian.Exists())
         {

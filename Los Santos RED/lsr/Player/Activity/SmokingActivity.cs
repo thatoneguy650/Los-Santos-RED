@@ -42,6 +42,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
+            Player.IsPerformingActivity = false;
         }
         public override void Continue()
         {
@@ -350,7 +351,7 @@ namespace LosSantosRED.lsr.Player
 
             if (IsPot)
             {
-                IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 10000, 200000, "drug_wobbly");//IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 60000, 60000, "drug_wobbly");
+                IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 5000, 400000, "drug_wobbly");//IntoxicatingEffect = new IntoxicatingEffect(Player, 3.0f, 60000, 60000, "drug_wobbly");
                 IntoxicatingEffect.Start();
             }
         }

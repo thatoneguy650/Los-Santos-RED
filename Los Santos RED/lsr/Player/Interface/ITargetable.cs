@@ -26,6 +26,6 @@ namespace LosSantosRED.lsr.Interface
         Vector3 PlacePoliceLastSeenPlayer { get; }
         bool IsNotWanted { get; }
 
-        void AddCrime(Crime toReport, bool v1, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool v2, bool announceCrime);
+        void AddCrime(Crime CrimeInstance, bool ByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime);
     }
 }

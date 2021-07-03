@@ -267,35 +267,42 @@ namespace LosSantosRED.lsr
         }
         private void CheckTrafficViolations()
         {
+            bool isDrivingSuspiciously = false;
             UpdateTrafficStats();
             if (RecentlyHitPed && (RecentlyHurtCivilian || RecentlyHurtCop) && Player.AnyHumansNear)//needed for non humans that are returned from this native
             {
+                isDrivingSuspiciously = true;
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HitPedWithCar"));//.IsCurrentlyViolating = true;
             }
             if (RecentlyHitVehicle)
             {
+                isDrivingSuspiciously = true;
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "HitCarWithCar"));//.IsCurrentlyViolating = true;
             }
             if (!TreatAsCop)
             {
                 if ((HasBeenDrivingAgainstTraffic || (Game.LocalPlayer.IsDrivingAgainstTraffic && Player.Character.CurrentVehicle.Speed >= 10f)))
                 {
+                    isDrivingSuspiciously = true;
                     CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrivingAgainstTraffic"));//.IsCurrentlyViolating = true;
                 }
                 if ((HasBeenDrivingOnPavement || (Game.LocalPlayer.IsDrivingOnPavement && Player.Character.CurrentVehicle.Speed >= 10f)))
                 {
+                    isDrivingSuspiciously = true;
                     CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrivingOnPavement"));//.IsCurrentlyViolating = true;
                 }
                 if (VehicleIsSuspicious)
                 {
+                    isDrivingSuspiciously = true;
                     CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "NonRoadworthyVehicle"));//.IsCurrentlyViolating = true;
                 }
                 if (IsSpeeding)
                 {
+                    isDrivingSuspiciously = true;
                     CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "FelonySpeeding"));//.IsCurrentlyViolating = true;
                 }
             }
-            if (Player.IsIntoxicated && CrimesViolating.Any())// DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
+            if (Player.IsIntoxicated && isDrivingSuspiciously)// DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
             {
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "DrunkDriving"));//.IsCurrentlyViolating = true;
             }

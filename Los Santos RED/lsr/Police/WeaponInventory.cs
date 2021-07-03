@@ -14,6 +14,7 @@ public class WeaponInventory
     private bool IsSetDeadly;
     private bool IsSetLessLethal;
     private bool IsSetUnarmed;
+    private bool IsSetDefault;
     private IssuableWeapon LongGun;
     private IssuableWeapon Sidearm;
     private bool HasHeavyWeaponOnPerson;
@@ -40,10 +41,11 @@ public class WeaponInventory
         {
             if (WantedLevel == 0)
             {
-                if (IsSetUnarmed)
+                if (!IsSetDefault)
                 {
-                    SetDefault(IsSetLessLethal || IsSetUnarmed || IsSetDeadly);
+                    SetDefault();
                 }
+
             }
             else
             {
@@ -55,6 +57,10 @@ public class WeaponInventory
                         if(WantedLevel < 4)
                         {
                             SetUnarmed();
+                        }
+                        else
+                        {
+                            SetDeadly();
                         }
                     }
                     else
@@ -77,10 +83,11 @@ public class WeaponInventory
             Cop.Pedestrian.Accuracy = DesiredAccuracy;
         }
     }
-    private void SetDefault(bool setCurrent)
+    private void SetDefault()
     {
-        if (NeedsWeaponCheck && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
+        if ((!IsSetDefault || NeedsWeaponCheck) && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
         {
+            EntryPoint.WriteToConsole($"COP EVENT {Cop.Pedestrian.Handle}: SETTING DEFAULT WEAPON LOADOUT", 3);
             if (Cop.Pedestrian.Inventory != null && !Cop.Pedestrian.Inventory.Weapons.Contains(WeaponHash.StunGun))
             {
                 Cop.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.StunGun, 100, false);
@@ -90,15 +97,16 @@ public class WeaponInventory
                 Cop.Pedestrian.Inventory.GiveNewWeapon(Sidearm.ModelName, -1, false);
                 Sidearm.ApplyVariation(Cop.Pedestrian);
             }
-            if (setCurrent && Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
-            {
+            //if (setCurrent && Cop.Pedestrian.Inventory != null && Cop.Pedestrian.Inventory.EquippedWeapon != null)
+            //{
                 NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Cop.Pedestrian, 2725352035, true);
-            }
+           // }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", Cop.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", Cop.Pedestrian, 2, true);//can do drivebys       
             IsSetLessLethal = false;
             IsSetUnarmed = false;
             IsSetDeadly = false;
+            IsSetDefault = true;
             GameTimeLastWeaponCheck = Game.GameTime;
         }
     }
@@ -130,6 +138,7 @@ public class WeaponInventory
             IsSetLessLethal = false;
             IsSetUnarmed = false;
             IsSetDeadly = true;
+            IsSetDefault = false;
             GameTimeLastWeaponCheck = Game.GameTime;
         }
     }
@@ -151,6 +160,7 @@ public class WeaponInventory
             IsSetLessLethal = true;
             IsSetUnarmed = false;
             IsSetDeadly = false;
+            IsSetDefault = false;
             GameTimeLastWeaponCheck = Game.GameTime;
         }
     }
@@ -168,6 +178,7 @@ public class WeaponInventory
             IsSetLessLethal = false;
             IsSetUnarmed = true;
             IsSetDeadly = false;
+            IsSetDefault = false;
             GameTimeLastWeaponCheck = Game.GameTime;
         }
     }

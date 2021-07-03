@@ -26,5 +26,6 @@ namespace LosSantosRED.lsr.Interface
         void RemovePlate();
         void ChangePlate(int Index);
         void StopDynamicActivity();
+        void ChangePlate(LicensePlate selectedItem);
     }
 }

@@ -15,6 +15,7 @@ namespace LosSantosRED.lsr.Interface
         List<LicensePlate> SpareLicensePlates { get; }
         Ped Character { get; }
         bool IsMoveControlPressed { get; }
+        bool IsPerformingActivity { get; set; }
 
         void SetUnarmed();
     }

@@ -54,17 +54,21 @@ public class CallIn : ComplexTask
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsRagdoll)
         {
             Crime ToReport = Ped.CrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-            if(ToReport == null)
+            foreach(Crime toReport in Ped.CrimesWitnessed)
             {
-                //EntryPoint.WriteToConsole($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} NULL CRIME!!!!");
+                Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f, true);
             }
-            else
-            {
-                //EntryPoint.WriteToConsole($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} Crime {ToReport.ID}");
-                //Player.PoliceResponse.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
+            //if(ToReport == null)
+            //{
+            //    //EntryPoint.WriteToConsole($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} NULL CRIME!!!!");
+            //}
+            //else
+            //{
+            //    //EntryPoint.WriteToConsole($"TASKER: CallIn ReportCrime Handle {Ped.Pedestrian.Handle} Crime {ToReport.ID}");
+            //    //Player.PoliceResponse.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f);
 
-                Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f,true);
-            }
+            //    Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 20f,true);
+            //}
 
             Ped.CrimesWitnessed.Clear();      ///>>??????????
         }

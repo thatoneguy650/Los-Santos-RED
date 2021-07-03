@@ -25,5 +25,6 @@ namespace LosSantosRED.lsr.Interface
         float ClosestDistanceToPlayer { get; }
         Vector3 PositionLastSeenCrime { get; }
         bool IsCop { get; }
+        ComplexTask CurrentTask { get; }
     }
 }

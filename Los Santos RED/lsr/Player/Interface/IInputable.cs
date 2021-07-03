@@ -24,6 +24,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInteracting { get; }
         bool IsAiming { get; }
         bool IsMoving { get; }
+        bool IsPerformingActivity { get; set; }
 
         void RaiseHands();
         void LowerHands();

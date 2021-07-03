@@ -66,6 +66,7 @@ public class Idle : ComplexTask
                 CurrentVehicle = Ped.Pedestrian.CurrentVehicle;
                 seatIndex = Ped.Pedestrian.SeatIndex;
             }
+            Ped.Pedestrian.Tasks.Clear();
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
             Ped.Pedestrian.Tasks.Clear();
@@ -145,7 +146,17 @@ public class Idle : ComplexTask
             {
                 if (Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists())
                 {
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 15f, (int)VehicleDrivingFlags.Normal, 10f);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
                 }
             }
             else

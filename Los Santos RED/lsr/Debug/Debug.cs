@@ -196,13 +196,21 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        Player.DebugScanner.Reset();
-        Crime ToAnnounce = Crimes.CrimeList.PickRandom();
-        if(ToAnnounce != null)
+        EntryPoint.WriteToConsole("-------------------------------", 3);
+        foreach (LicensePlate lp in Player.SpareLicensePlates)
         {
-            Player.DebugScanner.AnnounceCrime(ToAnnounce, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true));
-            EntryPoint.WriteToConsole($"Announcing {ToAnnounce.Name}", 3);
+            
+            EntryPoint.WriteToConsole($" PlateNumber: {lp.PlateNumber} Wanted: {lp.IsWanted} Type: {lp.PlateType}", 3);
+            
         }
+        EntryPoint.WriteToConsole("-------------------------------", 3);
+        //Player.DebugScanner.Reset();
+        //Crime ToAnnounce = Crimes.CrimeList.PickRandom();
+        //if(ToAnnounce != null)
+        //{
+        //    Player.DebugScanner.AnnounceCrime(ToAnnounce, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position, true));
+        //    EntryPoint.WriteToConsole($"Announcing {ToAnnounce.Name}", 3);
+        //}
 
         //Player.PrintCriminalHistory();
         //EntryPoint.WriteToConsole("-------------------------------", 3);

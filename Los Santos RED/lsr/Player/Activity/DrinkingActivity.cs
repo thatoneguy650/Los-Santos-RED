@@ -25,6 +25,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
+            Player.IsPerformingActivity = false;
         }
         public override void Continue()
         {
@@ -143,7 +144,7 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
 
-            IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 10000, 200000, "Drunk");//IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 25000, 60000, "Drunk");
+            IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 5000, 400000, "Drunk");//IntoxicatingEffect = new IntoxicatingEffect(Player, 5.0f, 25000, 60000, "Drunk");
             IntoxicatingEffect.Start();
         }
     }

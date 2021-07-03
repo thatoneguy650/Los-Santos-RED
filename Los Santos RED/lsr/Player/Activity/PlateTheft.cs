@@ -45,6 +45,7 @@ public class PlateTheft : DynamicActivity
     public override void Cancel()
     {
         IsCancelled = true;
+        Player.IsPerformingActivity = false;
     }
     public override void Continue()
     {
@@ -52,12 +53,14 @@ public class PlateTheft : DynamicActivity
     }
     public override void Start()
     {
+        EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChangingPlate: {IsChangingPlate}", 3);
         Setup();
         if (ChangeSpot != Vector3.Zero)
         {
             GameFiber ChangeLicensePlateAnimation = GameFiber.StartNew(delegate
             {
                 Enter();
+                Player.IsPerformingActivity = false;
             }, "PlayDispatchQueue");
         }
     }
@@ -166,6 +169,7 @@ public class PlateTheft : DynamicActivity
             Player.SetUnarmed();
             if (!MovePedToCarPosition(TargetVehicle.Vehicle, Player.Character, TargetVehicle.Vehicle.Heading, ChangeSpot, true))
             {
+                Player.IsPerformingActivity = false;
                 return;
             }
             Player.IsChangingLicensePlates = true;
@@ -205,6 +209,7 @@ public class PlateTheft : DynamicActivity
             LicensePlateModel = null;
             ScrewdriverModel = null;
             Player.IsChangingLicensePlates = false;
+            Player.IsPerformingActivity = false;
         }
         catch (Exception e)
         {
@@ -216,18 +221,21 @@ public class PlateTheft : DynamicActivity
             LicensePlateModel = null;
             ScrewdriverModel = null;
             Player.IsChangingLicensePlates = false;
+            Player.IsPerformingActivity = false;
             //EntryPoint.WriteToConsole("ChangeLicensePlate" + e.Message + e.StackTrace);
         }
 
     }
     private void UpdateModelPlates(bool IsChanging)
     {
+        LicensePlate PlateToRemove = TargetVehicle.CarPlate;
         if (IsChanging)
         {
-            LicensePlate PlateToRemove = TargetVehicle.CarPlate;
+            EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChanging} PlateToAdd {PlateToAdd.PlateNumber}", 3);
             Player.SpareLicensePlates.Remove(PlateToAdd);// Menu.Instance.SelectedPlateIndex);//need to pass this in somehow???
             if (PlateToRemove != null)
             {
+                EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChanging} PlateToRemove {PlateToRemove.PlateNumber}", 3);
                 Player.SpareLicensePlates.Add(PlateToRemove);
             }
             TargetVehicle.CarPlate = PlateToAdd;
@@ -236,6 +244,7 @@ public class PlateTheft : DynamicActivity
         }
         else
         {
+            EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChanging} PlateToRemove {TargetVehicle.CarPlate}", 3);
             Player.SpareLicensePlates.Add(TargetVehicle.CarPlate);
             TargetVehicle.CarPlate = null;
             TargetVehicle.Vehicle.LicensePlate = "        ";

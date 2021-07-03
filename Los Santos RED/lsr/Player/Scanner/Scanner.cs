@@ -961,7 +961,7 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if(!CurrentPlayer.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed)
+                    else if(!CurrentPlayer.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasVeryRecentlyBeenPlayed)
                     {   
                          AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                     }
@@ -1760,11 +1760,8 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { suspect_is.SuspectIs.FileName, on_foot.Onfoot.FileName },"suspect is on foot"),
                 new AudioSet(new List<string>() { suspect_is.SuspectIs.FileName, on_foot.Onfoot1.FileName },"suspect is on on foot"),
             },
-
-
-
-
         };
+
 
 
 

@@ -30,6 +30,7 @@ public class SurrenderActivity : DynamicActivity
         EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
         Player.HandsAreUp = false; // You put your hands down
         Game.LocalPlayer.Character.Tasks.Clear();
+        Player.IsPerformingActivity = false;
         if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
             Game.LocalPlayer.Character.CurrentVehicle.IsDriveable = true;
     }

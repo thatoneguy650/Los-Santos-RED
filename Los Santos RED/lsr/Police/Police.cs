@@ -112,120 +112,124 @@ namespace LosSantosRED.lsr
                 }
                 
             }
-            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
-        }
-        private void UpdateRecognition_Old()
-        {
-            bool anyPoliceCanSeePlayer = false;
-            bool anyPoliceCanHearPlayer = false;
-            bool anyPoliceCanRecognizePlayer = false;
-            bool anyPoliceRecentlySeenPlayer = false;
-            foreach (Cop cop in World.PoliceList)
-            {
-                if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
-                {
-                    if (cop.CanSeePlayer)
-                    {
-                        anyPoliceCanSeePlayer = true;
-                        anyPoliceCanHearPlayer = true;
-
-                    }
-                    else if (cop.WithinWeaponsAudioRange)
-                    {
-                        anyPoliceCanHearPlayer = true;
-                    }
-                    if (cop.TimeContinuoslySeenPlayer >= Player.TimeToRecognize || (cop.CanSeePlayer && cop.DistanceToPlayer <= 20f) || (cop.DistanceToPlayer <= 7f && cop.DistanceToPlayer > 0.01f))
-                    {
-                        anyPoliceCanRecognizePlayer = true;
-                    }
-                }
-
-                if (anyPoliceCanSeePlayer && anyPoliceCanHearPlayer && anyPoliceCanRecognizePlayer)
-                {
-                    return;
-                }
-            }
-
-            Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
-            Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
-            Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
-            Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
-
-
-            /// OLD \/
-
-            Player.AnyPoliceCanSeePlayer = World.PoliceList.Any(x => x.CanSeePlayer);
-            Player.AnyPoliceCanHearPlayer = World.PoliceList.Any(x => x.WithinWeaponsAudioRange);
-            if (Player.AnyPoliceCanSeePlayer)
-            {
-                Player.AnyPoliceRecentlySeenPlayer = true;
-            }
-            else
-            {
-                Player.AnyPoliceRecentlySeenPlayer = World.PoliceList.Any(x => x.SeenPlayerWithin(17000));
-            }
-            Player.AnyPoliceCanRecognizePlayer = World.PoliceList.Any(x => x.TimeContinuoslySeenPlayer >= Player.TimeToRecognize || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
-
-            if (!Player.AnyPoliceSeenPlayerCurrentWanted && Player.AnyPoliceRecentlySeenPlayer && Player.IsWanted)
-            {
-                Player.AnyPoliceSeenPlayerCurrentWanted = true;
-            }
             else
             {
                 Player.AnyPoliceSeenPlayerCurrentWanted = false;
             }
-
-
-
-
-            if (Player.IsWanted)
-            {
-                if (Player.IsInSearchMode)
-                {
-                    // Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
-                }
-                else
-                {
-                    Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
-                }
-            }
-
-
-            //if (Player.AnyPoliceRecentlySeenPlayer)
-            //{
-            //    if (!Player.IsInSearchMode)
-            //    {
-            //        Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
-            //    }
-            //}
-            //else
-            //{
-            //    if (!Player.AnyPoliceSeenPlayerCurrentWanted)
-            //    {
-            //        Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceWantedStarted;
-            //    }
-            //}
-            //else
-            //{
-            //    if (Player.IsInSearchMode && Player.PoliceResponse.HasReportedCrimes && Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero)
-            //    {
-            //        Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
-            //    }
-            //}
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
-            if (Player.AnyPoliceCanSeePlayer && Player.IsWanted && !Player.IsInSearchMode && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
-            {
-                if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)
-                {
-                    Player.OnPoliceNoticeVehicleChange();
-                }
-                PoliceLastSeenVehicleHandle = Player.CurrentSeenVehicle.Vehicle.Handle;
-            }
-
-            if (Player.AnyPoliceCanRecognizePlayer && Player.IsWanted && !Player.IsInSearchMode && Player.CurrentVehicle != null)
-            {
-                Player.CurrentVehicle.UpdateDescription();
-            }
         }
+        //private void UpdateRecognition_Old()
+        //{
+        //    bool anyPoliceCanSeePlayer = false;
+        //    bool anyPoliceCanHearPlayer = false;
+        //    bool anyPoliceCanRecognizePlayer = false;
+        //    bool anyPoliceRecentlySeenPlayer = false;
+        //    foreach (Cop cop in World.PoliceList)
+        //    {
+        //        if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
+        //        {
+        //            if (cop.CanSeePlayer)
+        //            {
+        //                anyPoliceCanSeePlayer = true;
+        //                anyPoliceCanHearPlayer = true;
+
+        //            }
+        //            else if (cop.WithinWeaponsAudioRange)
+        //            {
+        //                anyPoliceCanHearPlayer = true;
+        //            }
+        //            if (cop.TimeContinuoslySeenPlayer >= Player.TimeToRecognize || (cop.CanSeePlayer && cop.DistanceToPlayer <= 20f) || (cop.DistanceToPlayer <= 7f && cop.DistanceToPlayer > 0.01f))
+        //            {
+        //                anyPoliceCanRecognizePlayer = true;
+        //            }
+        //        }
+
+        //        if (anyPoliceCanSeePlayer && anyPoliceCanHearPlayer && anyPoliceCanRecognizePlayer)
+        //        {
+        //            return;
+        //        }
+        //    }
+
+        //    Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
+        //    Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
+        //    Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
+        //    Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
+
+
+        //    /// OLD \/
+
+        //    Player.AnyPoliceCanSeePlayer = World.PoliceList.Any(x => x.CanSeePlayer);
+        //    Player.AnyPoliceCanHearPlayer = World.PoliceList.Any(x => x.WithinWeaponsAudioRange);
+        //    if (Player.AnyPoliceCanSeePlayer)
+        //    {
+        //        Player.AnyPoliceRecentlySeenPlayer = true;
+        //    }
+        //    else
+        //    {
+        //        Player.AnyPoliceRecentlySeenPlayer = World.PoliceList.Any(x => x.SeenPlayerWithin(17000));
+        //    }
+        //    Player.AnyPoliceCanRecognizePlayer = World.PoliceList.Any(x => x.TimeContinuoslySeenPlayer >= Player.TimeToRecognize || (x.CanSeePlayer && x.DistanceToPlayer <= 20f) || (x.DistanceToPlayer <= 7f && x.DistanceToPlayer > 0.01f));
+
+        //    if (!Player.AnyPoliceSeenPlayerCurrentWanted && Player.AnyPoliceRecentlySeenPlayer && Player.IsWanted)
+        //    {
+        //        Player.AnyPoliceSeenPlayerCurrentWanted = true;
+        //    }
+        //    else
+        //    {
+        //        Player.AnyPoliceSeenPlayerCurrentWanted = false;
+        //    }
+
+
+
+
+        //    if (Player.IsWanted)
+        //    {
+        //        if (Player.IsInSearchMode)
+        //        {
+        //            // Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
+        //        }
+        //        else
+        //        {
+        //            Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+        //        }
+        //    }
+
+
+        //    //if (Player.AnyPoliceRecentlySeenPlayer)
+        //    //{
+        //    //    if (!Player.IsInSearchMode)
+        //    //    {
+        //    //        Player.PlacePoliceLastSeenPlayer = Game.LocalPlayer.Character.Position;
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    //    if (!Player.AnyPoliceSeenPlayerCurrentWanted)
+        //    //    {
+        //    //        Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceWantedStarted;
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    //    if (Player.IsInSearchMode && Player.PoliceResponse.HasReportedCrimes && Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero)
+        //    //    {
+        //    //        Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
+        //    //    }
+        //    //}
+        //    NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
+        //    if (Player.AnyPoliceCanSeePlayer && Player.IsWanted && !Player.IsInSearchMode && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
+        //    {
+        //        if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)
+        //        {
+        //            Player.OnPoliceNoticeVehicleChange();
+        //        }
+        //        PoliceLastSeenVehicleHandle = Player.CurrentSeenVehicle.Vehicle.Handle;
+        //    }
+
+        //    if (Player.AnyPoliceCanRecognizePlayer && Player.IsWanted && !Player.IsInSearchMode && Player.CurrentVehicle != null)
+        //    {
+        //        Player.CurrentVehicle.UpdateDescription();
+        //    }
+        //}
     }
 }
