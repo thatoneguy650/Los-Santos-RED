@@ -11,12 +11,12 @@ public class DeathMenu : Menu
     private UIMenuListItem HospitalRespawn;
     private UIMenuListItem TakeoverRandomPed;
     private UIMenuItem Undie;
-    private IPedswappable PedSwap;
+    private IPedSwap PedSwap;
     private IPlacesOfInterest PlacesOfInterest;
     private IRespawning Respawning;
     private List<GameLocation> Hospitals;
     private List<DistanceSelect> Distances;
-    public DeathMenu(MenuPool menuPool, IPedswappable pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest)
+    public DeathMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest)
     {
         PedSwap = pedSwap;
         Respawning = respawning;

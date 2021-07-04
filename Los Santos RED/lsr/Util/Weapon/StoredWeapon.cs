@@ -7,18 +7,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class DroppedWeapon
+public class StoredWeapon
 {
-    public WeaponDescriptor Weapon { get; set; }
+    public uint WeaponHash { get; set; }
     public Vector3 CoordinatedDropped { get; set; }
     public WeaponVariation Variation { get; set; }
     public int Ammo { get; set; }
-    public DroppedWeapon(WeaponDescriptor _Weapon, Vector3 _CoordinatedDropped, WeaponVariation _Variation,int _Ammo)
+    public StoredWeapon(uint _WeaponHash, Vector3 _CoordinatedDropped, WeaponVariation _Variation,int _Ammo)
     {
-        Weapon = _Weapon;
+        WeaponHash = _WeaponHash;
         CoordinatedDropped = _CoordinatedDropped;
         Variation = _Variation;
         Ammo = _Ammo;
+    }
+
+    public StoredWeapon()
+    {
     }
 }
 

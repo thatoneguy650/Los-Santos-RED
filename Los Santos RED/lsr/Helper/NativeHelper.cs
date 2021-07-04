@@ -3,6 +3,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -127,6 +128,28 @@ namespace LosSantosRED.lsr.Helper
             characterModel.LoadCollisionAndWait();
             Game.LocalPlayer.Model = characterModel;
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
+        }
+        public static void SetAsMainPlayer()
+        {
+            // from bigbruh in discord, supplied the below, seems to work just fine
+            unsafe
+            {
+                var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
+                ulong SkinPtr = *((ulong*)(PedPtr + 0x20));
+                *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;//set as player_zero
+            }      
+        }
+        public static string GetKeyboardInput(string DefaultText)
+        {
+            NativeFunction.Natives.DISPLAY_ONSCREEN_KEYBOARD<bool>(true, "FMMC_KEY_TIP8", "", DefaultText, "", "", "", 255 + 1);
+            while (NativeFunction.Natives.UPDATE_ONSCREEN_KEYBOARD<int>() == 0)
+            {
+                GameFiber.Sleep(500);
+            }
+            string Value;
+            IntPtr ptr = NativeFunction.Natives.GET_ONSCREEN_KEYBOARD_RESULT<IntPtr>();
+            Value = Marshal.PtrToStringAnsi(ptr);
+            return Value;
         }
         public static Vector3 GetOffsetPosition(Vector3 Position, float heading, float Offset)
         {

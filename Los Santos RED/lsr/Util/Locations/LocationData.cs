@@ -30,13 +30,22 @@ namespace LosSantosRED.lsr.Locations
         public bool IsOffroad { get; private set; }
         public void Update()
         {
-            GetZone();
-            GetNode();
-            GetStreets();
+            if (CharacterToLocate.Exists())
+            {
+                GetZone();
+                GetNode();
+                GetStreets();
+            }
+            else
+            {
+                CurrentZone = null;
+                CurrentStreet = null;
+                CurrentCrossStreet = null;
+            }
         }
         private void GetZone()
         {
-            CurrentZone = Zones.GetZone(CharacterToLocate.Position);
+            CurrentZone = Zones.GetZone(CharacterToLocate.Position);    
         }
         private void GetNode()
         {

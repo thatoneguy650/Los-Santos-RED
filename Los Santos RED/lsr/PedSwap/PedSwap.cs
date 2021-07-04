@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PedSwap : IPedswappable
+public class PedSwap : IPedSwap
 {
     private ITimeControllable World;
     private IEntityProvideable Entities;
@@ -99,7 +99,6 @@ public class PedSwap : IPedswappable
             EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-
     public void Dispose()
     {
         Vehicle Car = Game.LocalPlayer.Character.CurrentVehicle;

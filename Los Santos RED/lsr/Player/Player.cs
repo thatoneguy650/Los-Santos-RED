@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Mod
 {
-    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning
+    public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable, ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable
     {
         private CriminalHistory CriminalHistory;
         private DynamicActivity DynamicActivity;
@@ -65,7 +65,7 @@ namespace Mod
         {
             ModelName = modelName;
             IsMale = isMale;
-            SuspectsName = suspectsName;
+            PlayerName = suspectsName;
             Crimes = crimes;
             if (currentMoney != 0)
             {
@@ -243,7 +243,7 @@ namespace Mod
         public bool RecentlySetWanted => GameTimeLastSetWanted != 0 && Game.GameTime - GameTimeLastSetWanted <= 5000;
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
-        public string SuspectsName { get; private set; }
+        public string PlayerName { get; private set; }
         public uint TargettingHandle
         {
             get => targettingHandle;
@@ -338,7 +338,7 @@ namespace Mod
                 NotifcationText += string.Format("~n~Plate: ~p~{0}~s~", CurrentVehicle.CarPlate.PlateNumber);
             }
 
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", SuspectsName), NotifcationText);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PlayerName), NotifcationText);
         }
         public void Dispose()
         {
@@ -405,11 +405,11 @@ namespace Mod
             }
             
         }
-        public void SetDemographics(string modelName, bool isMale, string suspectsName, int money)
+        public void SetDemographics(string modelName, bool isMale, string playerName, int money)
         {
             ModelName = modelName;
-            SuspectsName = suspectsName;
-            IsMale = IsMale;
+            PlayerName = playerName;
+            IsMale = isMale;
             SetMoney(money);
         }
         public void SetMoney(int Amount)

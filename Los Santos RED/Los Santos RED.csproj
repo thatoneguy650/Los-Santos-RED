@@ -104,19 +104,20 @@
     <Compile Include="lsr\Audio\SoundInfo.cs" />
     <Compile Include="lsr\Data\Agencies\Jurisdictions.cs" />
     <Compile Include="lsr\Data\Agencies\ResponseType.cs" />
+    <Compile Include="lsr\Data\Interface\IGameSaves.cs" />
     <Compile Include="lsr\Data\Interface\IJursidctions.cs" />
     <Compile Include="lsr\Data\Peds\Bones.cs" />
     <Compile Include="lsr\Data\Crimes.cs" />
     <Compile Include="lsr\Data\Interface\IAgencies.cs" />
+    <Compile Include="lsr\Data\Saves\GameSave.cs" />
+    <Compile Include="lsr\Data\Saves\GameSaves.cs" />
     <Compile Include="lsr\Dispatcher\DispatchParameters.cs" />
-    <Compile Include="lsr\Old\ICountyJurisdictions.cs" />
     <Compile Include="lsr\Data\Interface\ICrimes.cs" />
     <Compile Include="lsr\Data\Interface\INameProvideable.cs" />
     <Compile Include="lsr\Data\Interface\IPlateTypes.cs" />
     <Compile Include="lsr\Data\Interface\IRadioStations.cs" />
     <Compile Include="lsr\Data\Interface\IPedGroups.cs" />
     <Compile Include="lsr\Data\Interface\IScenarios.cs" />
-    <Compile Include="lsr\Old\IZoneJurisdictions.cs" />
     <Compile Include="lsr\Data\Interface\IPlacesOfInterest.cs" />
     <Compile Include="lsr\Data\Interface\IStreets.cs" />
     <Compile Include="lsr\Data\Interface\IZones.cs" />
@@ -129,9 +130,11 @@
     <Compile Include="lsr\Data\Scanner\VehicleScannerAudio.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneScannerAudio.cs" />
     <Compile Include="lsr\Dispatcher\VanillaDispatchType.cs" />
+    <Compile Include="lsr\PedSwap\IPedSwap.cs" />
     <Compile Include="lsr\Player\Activity\ScenarioActivity.cs" />
     <Compile Include="lsr\Player\ChaseStatus.cs" />
     <Compile Include="lsr\Player\Interface\IDispatchable.cs" />
+    <Compile Include="lsr\Player\Interface\ISaveable.cs" />
     <Compile Include="lsr\Player\Scanner\Scanner.cs" />
     <Compile Include="lsr\Police\AssistManager.cs" />
     <Compile Include="lsr\Dispatcher\Roadblock.cs" />
@@ -142,6 +145,8 @@
     <Compile Include="lsr\Tasker\eChaseBehaviorFlag.cs" />
     <Compile Include="lsr\Tasker\Fight.cs" />
     <Compile Include="lsr\Tasker\Flee.cs" />
+    <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
+    <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
     <Compile Include="lsr\UI\Menu\SettingsMenu.cs" />
     <Compile Include="lsr\Util\Peds\Scenario.cs" />
     <Compile Include="lsr\Util\Vehicle\Engine.cs" />
@@ -159,7 +164,6 @@
     <Compile Include="lsr\UI\Menu\DebugMenu.cs" />
     <Compile Include="lsr\UI\Menu\DistanceSelect.cs" />
     <Compile Include="lsr\UI\Menu\MainMenu.cs" />
-    <Compile Include="lsr\Old\MenuManager.cs" />
     <Compile Include="lsr\Input\ButtonPrompt.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation.cs" />
     <Compile Include="lsr\Player\Interaction\Interaction.cs" />
@@ -178,7 +182,6 @@
     <Compile Include="lsr\Helper\NativeHelper.cs" />
     <Compile Include="lsr\Helper\Serialization.cs" />
     <Compile Include="lsr\Audio\IAudioPlayable.cs" />
-    <Compile Include="lsr\PedSwap\IPedswappable.cs" />
     <Compile Include="lsr\Player\Activity\DynamicActivity.cs" />
     <Compile Include="lsr\Player\Activity\Interface\IActivityPerformable.cs" />
     <Compile Include="lsr\Player\Activity\Interface\IIntoxicatable.cs" />
@@ -198,8 +201,6 @@
     <Compile Include="lsr\Player\Interface\IViolateable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponDroppable.cs" />
     <Compile Include="lsr\Player\Interface\IRespawning.cs" />
-    <Compile Include="lsr\Old\IPoliceTasking_Old.cs" />
-    <Compile Include="lsr\Old\OldSmokingManager.cs" />
     <Compile Include="lsr\Spawner\SpawnTask.cs" />
     <Compile Include="lsr\Tasker\AIDynamic.cs" />
     <Compile Include="lsr\Tasker\Chase.cs" />
@@ -225,7 +226,6 @@
     <Compile Include="lsr\Util\Locations\MapBlip.cs" />
     <Compile Include="lsr\Util\Peds\BodyLocation.cs" />
     <Compile Include="lsr\Util\Peds\Bone.cs" />
-    <Compile Include="lsr\Old\ActivityOLD.cs" />
     <Compile Include="ModController.cs" />
     <Compile Include="lsr\Player\Player.cs" />
     <Compile Include="lsr\Util\Peds\PedConfigFlags.cs" />
@@ -244,10 +244,8 @@
     <Compile Include="lsr\Util\Locations\Street.cs" />
     <Compile Include="lsr\Util\Locations\ZoneJurisdiction.cs" />
     <Compile Include="lsr\Util\Peds\NameType.cs" />
-    <Compile Include="lsr\Old\Menu_Old.cs" />
     <Compile Include="lsr\UI\UI.cs" />
     <Compile Include="lsr\Civilians\Civilians.cs" />
-    <Compile Include="lsr\Old\Mugging.cs" />
     <Compile Include="lsr\World\Pedestrians.cs" />
     <Compile Include="lsr\Time\Time.cs" />
     <Compile Include="lsr\PedSwap\PedSwap.cs" />
@@ -257,7 +255,6 @@
     <Compile Include="lsr\Util\Crimes\Crime.cs" />
     <Compile Include="lsr\Util\Crimes\CrimeEvent.cs" />
     <Compile Include="lsr\Player\Scanner\AudioSet.cs" />
-    <Compile Include="lsr\Old\CountyJurisdictions.cs" />
     <Compile Include="lsr\Dispatcher\Dispatcher.cs" />
     <Compile Include="lsr\Player\Investigation.cs" />
     <Compile Include="lsr\Player\CriminalHistory.cs" />
@@ -280,11 +277,10 @@
     <Compile Include="lsr\Util\Weapon\WeaponVariation.cs" />
     <Compile Include="lsr\Util\Locations\Zone.cs" />
     <Compile Include="lsr\Data\Agencies\Agencies.cs" />
-    <Compile Include="lsr\Old\ZoneJurisdictions.cs" />
     <Compile Include="lsr\Data\Weapons.cs" />
     <Compile Include="lsr\Data\Peds\Names.cs" />
     <Compile Include="lsr\Data\Location\Streets.cs" />
-    <Compile Include="lsr\Util\Weapon\DroppedWeapon.cs" />
+    <Compile Include="lsr\Util\Weapon\StoredWeapon.cs" />
     <Compile Include="lsr\Util\Vehicle\VehicleExt.cs" />
     <Compile Include="lsr\Util\Vehicle\LicensePlate.cs" />
     <Compile Include="lsr\Police\Cop.cs" />
@@ -311,6 +307,8 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="lsr\Old\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

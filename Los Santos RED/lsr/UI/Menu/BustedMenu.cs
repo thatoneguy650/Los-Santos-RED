@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -19,13 +20,13 @@ public class BustedMenu : Menu
     private UIMenuListItem Surrender;
     private UIMenuListItem TakeoverRandomPed;
     private UIMenuItem menuBustedTalk;
-    private IPedswappable PedSwap;
+    private IPedSwap PedSwap;
     private IPlacesOfInterest PlacesOfInterest;
     private IRespawning Respawning;
     private float SelectedTakeoverRadius;
     private List<GameLocation> PoliceStations;
     private List<DistanceSelect> Distances;
-    public BustedMenu(MenuPool menuPool, IPedswappable pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest)
+    public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest)
     {
         PedSwap = pedSwap;
         Respawning = respawning;
@@ -73,18 +74,6 @@ public class BustedMenu : Menu
         Menu.OnItemSelect += OnItemSelect;
         Menu.OnListChange += OnListChange;
     }
-    private string GetKeyboardInput(string DefaultText)
-    {
-        NativeFunction.Natives.DISPLAY_ONSCREEN_KEYBOARD<bool>(true, "FMMC_KEY_TIP8", "", DefaultText, "", "", "", 255 + 1);
-        while (NativeFunction.Natives.UPDATE_ONSCREEN_KEYBOARD<int>() == 0)
-        {
-            GameFiber.Sleep(500);
-        }
-        string Value;
-        IntPtr ptr = NativeFunction.Natives.GET_ONSCREEN_KEYBOARD_RESULT<IntPtr>();
-        Value = Marshal.PtrToStringAnsi(ptr);
-        return Value;
-    }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == ResistArrest)
@@ -93,7 +82,7 @@ public class BustedMenu : Menu
         }
         else if (selectedItem == Bribe)
         {
-            if (int.TryParse(GetKeyboardInput(""), out int BribeAmount))
+            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int BribeAmount))
             {
                 Respawning.BribePolice(BribeAmount);
             }

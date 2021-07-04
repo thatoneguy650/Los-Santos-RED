@@ -31,7 +31,7 @@ public class UI
     private IJurisdictions Jurisdictions;
     private uint GameTimeLastBusted;
     private uint GameTimeLastDied;
-    public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedswappable pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable player, IWeapons weapons, RadioStations radioStations)
+    public UI(IDisplayable currentPlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable player, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves)
     {
         Player = currentPlayer;
         Settings = settings;
@@ -40,7 +40,7 @@ public class UI
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest);
-        MainMenu = new MainMenu(menuPool, pedSwap, player);
+        MainMenu = new MainMenu(menuPool, player, saveablePlayer, gameSaves, weapons, pedSwap);
         DebugMenu = new DebugMenu(menuPool, player, weapons, radioStations);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
     }

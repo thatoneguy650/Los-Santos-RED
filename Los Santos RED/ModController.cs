@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Data;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,6 +24,7 @@ namespace LosSantosRED.lsr
         private List<ModTask> CoreTasks;
         private List<ModTask> SecondaryTasks;
         private Names Names;
+        private GameSaves GameSaves;
         private PedSwap PedSwap;
         private PlacesOfInterest PlacesOfInterest;
         private PlateTypes PlateTypes;
@@ -71,6 +73,12 @@ namespace LosSantosRED.lsr
             Player.Reset(true, true, true, true);
             Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
         }
+        public Mod.Player NewPlayer(string modelName, bool isMale,string playerName, int moneyToSpawnWith)//gotta go
+        {
+            Player.Reset(true, true, true, true);
+            Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith);
+            return Player;
+        }
         public void Start()
         {
             IsRunning = true;
@@ -85,12 +93,20 @@ namespace LosSantosRED.lsr
             World.Setup();       
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest);
             Player.Setup();
+
+            GameSave CurrentSave = GameSaves.GetSave(Player);
+            if(CurrentSave != null)
+            {
+                CurrentSave.Load(Weapons);
+            }
+
+
             Input = new Input(Player, Settings);
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
             PedSwap = new PedSwap(Time, Player, Settings, World);
             Tasker = new Tasker(World, Player, Weapons);
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player, Weapons, RadioStations);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player,Player, Weapons, RadioStations, GameSaves);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
             VanillaManager = new VanillaManager();
             Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this);
@@ -159,6 +175,9 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Crimes = new Crimes();
             Crimes.ReadConfig();
+            GameFiber.Yield();
+            GameSaves = new GameSaves();
+            GameSaves.ReadConfig();
             GameFiber.Yield();
         }
         private void SetupModTasks()

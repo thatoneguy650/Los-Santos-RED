@@ -153,25 +153,25 @@ public class Respawning : IRespawning
     {
         //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
         //Make a list of my old guns
-        List<DroppedWeapon> MyOldGuns = new List<DroppedWeapon>();
+        List<StoredWeapon> MyOldGuns = new List<StoredWeapon>();
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
             WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
-            DroppedWeapon MyGun = new DroppedWeapon(Weapon, Vector3.Zero, DroppedGunVariation, Weapon.Ammo);
+            StoredWeapon MyGun = new StoredWeapon((uint)Weapon.Hash, Vector3.Zero, DroppedGunVariation, Weapon.Ammo);
             MyOldGuns.Add(MyGun);
         }
         //Totally clear our guns
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
         //Add out guns back with variations
-        foreach (DroppedWeapon MyNewGun in MyOldGuns)
+        foreach (StoredWeapon MyNewGun in MyOldGuns)
         {
-            WeaponInformation MyGTANewGun = Weapons.GetWeapon((ulong)MyNewGun.Weapon.Hash);
+            WeaponInformation MyGTANewGun = Weapons.GetWeapon((ulong)MyNewGun.WeaponHash);
             if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
             {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.Weapon.Hash, (short)MyNewGun.Ammo, false);
-                MyGTANewGun.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyNewGun.Weapon.Hash, MyNewGun.Variation);
-                NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.Weapon.Hash, MyNewGun.Ammo + 1);
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.WeaponHash, (short)MyNewGun.Ammo, false);
+                MyGTANewGun.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyNewGun.WeaponHash, MyNewGun.Variation);
+                NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.WeaponHash, MyNewGun.Ammo + 1);
             }
         }
     }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class WeaponDropping
 {
     private int CurrentWeaponAmmo;
-    private List<DroppedWeapon> DroppedWeapons = new List<DroppedWeapon>();
+    private List<StoredWeapon> DroppedWeapons = new List<StoredWeapon>();
     private bool DroppingWeapon;
     private IWeaponDroppable Player;
     private int PrevCountWeapons = 1;
@@ -42,7 +42,7 @@ public class WeaponDropping
             DropWeaponAnimation();
             NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
             WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-            DroppedWeapons.Add(new DroppedWeapon(Game.LocalPlayer.Character.Inventory.EquippedWeapon, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
+            DroppedWeapons.Add(new StoredWeapon((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
             NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
             if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
             {
@@ -83,19 +83,19 @@ public class WeaponDropping
         if (weaponCount > PrevCountWeapons) //Added Weapon
         {
             WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
-            foreach (DroppedWeapon MyOldGuns in DroppedWeapons)
+            foreach (StoredWeapon MyOldGuns in DroppedWeapons)
             {
-                if (PlayerWeapons.Contains(MyOldGuns.Weapon.Hash) && Game.LocalPlayer.Character.Position.DistanceTo2D(MyOldGuns.CoordinatedDropped) <= 2f)
+                if (PlayerWeapons.Contains(MyOldGuns.WeaponHash) && Game.LocalPlayer.Character.Position.DistanceTo2D(MyOldGuns.CoordinatedDropped) <= 2f)
                 {
-                    WeaponInformation Gun2 = Weapons.GetWeapon((uint)MyOldGuns.Weapon.Hash);
+                    WeaponInformation Gun2 = Weapons.GetWeapon((uint)MyOldGuns.WeaponHash);
                     if (Gun2 != null)
                     {
-                        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.Weapon.Hash, MyOldGuns.Variation);
+                        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Variation);
                     }
-                    NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyOldGuns.Weapon.Hash, MyOldGuns.Ammo + 1);
+                    NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Ammo + 1);
                 }
             }
-            DroppedWeapons.RemoveAll(x => PlayerWeapons.Contains(x.Weapon.Hash) && Game.LocalPlayer.Character.Position.DistanceTo2D(x.CoordinatedDropped) <= 2f);
+            DroppedWeapons.RemoveAll(x => PlayerWeapons.Contains(x.WeaponHash) && Game.LocalPlayer.Character.Position.DistanceTo2D(x.CoordinatedDropped) <= 2f);
         }
         PrevCountWeapons = weaponCount;
     }
