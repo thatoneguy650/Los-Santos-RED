@@ -66,8 +66,6 @@ public class CarLockPick
                 GameFiber.Yield();
                 if (!SetupLockPick())
                 {
-                    //if()
-                    //Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
                     EntryPoint.WriteToConsole("PickLock Setup Failed",3);
                     return;
                 }
@@ -94,7 +92,7 @@ public class CarLockPick
 
         if(TargetVehicle.LockStatus != (VehicleLockStatus)3)
         {
-            EntryPoint.WriteToConsole("SetupLockPick Failed, Could Not Set Lock Status to 3", 3);
+            EntryPoint.WriteToConsole($"SetupLockPick Failed, Could Not Set Lock Status to 3 Current Status {(int)TargetVehicle.LockStatus}", 3);//some IV pack cars fail even with the door open.....
             Player.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
             return false;
         }
@@ -189,7 +187,9 @@ public class CarLockPick
     {
         Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
         if (!Screwdriver.Exists())
+        {
             return null;
+        }
         int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);
         Screwdriver.AttachTo(Pedestrian, BoneIndexRightHand, new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f));
         return Screwdriver;
@@ -198,7 +198,9 @@ public class CarLockPick
     {
         Game.LocalPlayer.Character.Tasks.EnterVehicle(TargetVehicle, SeatTryingToEnter);
         if (Screwdriver != null && Screwdriver.Exists())
+        {
             Screwdriver.Delete();
+        }
 
         Player.IsLockPicking = false;
 

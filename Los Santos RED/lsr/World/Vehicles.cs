@@ -65,10 +65,11 @@ public class Vehicles
             {
                 VehiclesCreated++;
             }
-            if(VehiclesCreated >= 5)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
-            {
-                return;
-            }
+            //if(VehiclesCreated >= 5)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
+            //{
+            //    return;
+            //}
+          //  GameFiber.Yield();
         }
     }
     public void CleanUp()
@@ -98,6 +99,7 @@ public class Vehicles
                 if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                 {
                     PoliceCar.Vehicle.Delete();
+                    GameFiber.Yield();
                 }
             }
         }

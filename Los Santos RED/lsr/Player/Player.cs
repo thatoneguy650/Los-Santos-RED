@@ -104,7 +104,6 @@ namespace Mod
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
-        public bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         public string AutoTuneStation { get; set; } = "NONE";
         public bool BeingArrested { get; private set; }
         public List<ButtonPrompt> ButtonPrompts { get; private set; } = new List<ButtonPrompt>();
@@ -241,7 +240,7 @@ namespace Mod
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;//10000
         public bool RecentlySetWanted => GameTimeLastSetWanted != 0 && Game.GameTime - GameTimeLastSetWanted <= 5000;
-        public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen).ToList();
+        public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public string PlayerName { get; private set; }
         public uint TargettingHandle
@@ -411,6 +410,7 @@ namespace Mod
             PlayerName = playerName;
             IsMale = isMale;
             SetMoney(money);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.General.MainCharacterToAlias)}", 3);
         }
         public void SetMoney(int Amount)
         {
@@ -848,18 +848,15 @@ namespace Mod
                 {
                     return;
                 }
-                //VehicleExt MyCar = EntityProvider.GetVehicleExt(VehicleTryingToEnter);
-
-
-
-                //CurrentVehicle = MyCar;
-
                 UpdateCurrentVehicle();
-
                 if (CurrentVehicle != null)
                 {
                     VehicleGettingInto = CurrentVehicle;
-                    CurrentVehicle.AttemptToLock();
+                    if(!CurrentVehicle.HasBeenEnteredByPlayer)
+                    {
+                        CurrentVehicle.AttemptToLock();
+                    }
+                    
                     if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)//no driver && Unlocked
                     {
                         EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
@@ -914,10 +911,6 @@ namespace Mod
             }
             else
             {
-                //if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
-                //{
-                //    CurrentVehicle.Vehicle.IsEngineOn = isCurrentVehicleEngineOn;
-                //}
                 if (IsWanted && AnyPoliceCanSeePlayer)
                 {
                     Scanner.OnGotOutOfVehicle();
@@ -968,7 +961,7 @@ namespace Mod
             VehicleExt ToReturn = TrackedVehicles.Where(x => x.Vehicle.Handle == CurrVehicle.Handle).FirstOrDefault();
             if (ToReturn == null)
             {
-                VehicleExt MyNewCar = new VehicleExt(CurrVehicle, Game.GameTime);
+                VehicleExt MyNewCar = new VehicleExt(CurrVehicle);
                 TrackedVehicles.Add(MyNewCar);
                 ToReturn = MyNewCar;
             }

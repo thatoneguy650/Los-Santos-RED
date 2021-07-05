@@ -214,7 +214,7 @@ namespace LosSantosRED.lsr
         }
         public void OnPlayerBusted()
         {
-            if (!SuspectArrested.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && CurrentPlayer.AnyPoliceCanSeePlayer)
+            if (!SuspectArrested.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceCanSeePlayer)
             {
                 AddToQueue(SuspectArrested);
             }
@@ -222,7 +222,7 @@ namespace LosSantosRED.lsr
         }
         public void OnSuspectWasted()
         {
-            if (!SuspectWasted.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && CurrentPlayer.AnyPoliceRecentlySeenPlayer && CurrentPlayer.MaxWantedLastLife > 0)
+            if (!SuspectWasted.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceRecentlySeenPlayer && CurrentPlayer.MaxWantedLastLife > 0)
             {
                 AddToQueue(SuspectWasted);
             }
@@ -230,7 +230,7 @@ namespace LosSantosRED.lsr
         }
         public void OnRequestedBackUp()
         {
-            if (!RequestBackup.HasRecentlyBeenPlayed && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted)
+            if (!RequestBackup.HasRecentlyBeenPlayed)
             {
                 AddToQueue(RequestBackup, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
             }
@@ -941,7 +941,7 @@ namespace LosSantosRED.lsr
         }
         private void CheckStatusToAnnounce()
         {
-            if (CurrentPlayer.IsWanted && CurrentPlayer.AnyPoliceSeenPlayerCurrentWanted && CurrentPlayer.IsAliveAndFree)
+            if (CurrentPlayer.IsWanted && CurrentPlayer.IsAliveAndFree)
             {
                 if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
                 {
@@ -959,20 +959,22 @@ namespace LosSantosRED.lsr
                 {
                     if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && CurrentPlayer.AnyPoliceCanSeePlayer)
                     {
+                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
                         AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
-                    else if(!CurrentPlayer.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasVeryRecentlyBeenPlayed)
-                    {   
-                         AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                    else if(!CurrentPlayer.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
+                    {
+                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
+                        AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
                     }
                 }
             }
             else
             {
-                //NEED TO FIX THIS!!!!!!!!!!!!!!
                 foreach (VehicleExt StolenCar in CurrentPlayer.ReportedStolenVehicles)
                 {
-                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, CurrentPlayer.PlacePoliceLastSeenPlayer) { VehicleSeen = StolenCar });
+                    StolenCar.AddedToReportedStolenQueue = true;
+                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, false, StolenCar.PlaceOriginallyEntered) { VehicleSeen = StolenCar });
                 }
             }
         }
@@ -1666,7 +1668,7 @@ namespace LosSantosRED.lsr
             AnnounceStolenVehicle = new Dispatch()
             {
                 Name = "Stolen Vehicle Reported",
-                IsStatus = true,
+                
                 IncludeDrivingVehicle = true,
                 CanAlwaysBeInterrupted = true,
                 MarkVehicleAsStolen = true,

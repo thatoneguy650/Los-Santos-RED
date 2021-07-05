@@ -150,6 +150,7 @@
     <Compile Include="lsr\UI\Menu\SettingsMenu.cs" />
     <Compile Include="lsr\Util\Peds\Scenario.cs" />
     <Compile Include="lsr\Util\Vehicle\Engine.cs" />
+    <Compile Include="lsr\Util\Vehicle\SHVehicleLockStatus.cs" />
     <Compile Include="lsr\Util\Weapon\IssuableWeapon.cs" />
     <Compile Include="lsr\Util\Weapon\WeaponTypeGroup.cs" />
     <Compile Include="lsr\Dispatcher\SpawnLocation.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="lsr\Player\Activity\CarBreakIn.cs" />
     <Compile Include="lsr\Util\Vehicle\RadioStation.cs" />
     <Compile Include="lsr\VanillaManager\VanillaManager.cs" />
+    <Compile Include="lsr\World\Alex106ScenarioGroups.cs" />
     <Compile Include="lsr\World\Interface\IEntityProvideable.cs" />
     <Compile Include="lsr\Time\ITimeControllable.cs" />
     <Compile Include="lsr\World\Interface\IEntityLoggable.cs" />

@@ -155,6 +155,20 @@ namespace LosSantosRED.lsr.Helper
         {
             return Position + (new Vector3((float)Math.Cos(heading * Math.PI / 180), (float)Math.Sin(heading * Math.PI / 180), 0) * Offset);//Positon + Direction UnitVector From Heading, Times the Length
         }
+        public static void RequestIPL(string iplName)
+        {
+            if (!NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName))
+            {
+                NativeFunction.Natives.REQUEST_IPL(iplName);
+            }
+        }
+        public static void RemoveIPL(string iplName)
+        {
+            if (NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName))
+            {
+                NativeFunction.Natives.REMOVE_IPL(iplName);
+            }
+        }
 
     }
 }

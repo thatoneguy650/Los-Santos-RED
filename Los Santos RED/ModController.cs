@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace LosSantosRED.lsr
 {
@@ -73,11 +74,11 @@ namespace LosSantosRED.lsr
             Player.Reset(true, true, true, true);
             Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
         }
-        public Mod.Player NewPlayer(string modelName, bool isMale,string playerName, int moneyToSpawnWith)//gotta go
+        public void NewPlayer(string modelName, bool isMale,string playerName, int moneyToSpawnWith)//gotta go
         {
             Player.Reset(true, true, true, true);
             Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith);
-            return Player;
+            //return Player;
         }
         public void Start()
         {
@@ -94,11 +95,7 @@ namespace LosSantosRED.lsr
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, GetName(Game.LocalPlayer.Character.Model.Name, Names.GetRandomName(Game.LocalPlayer.Character.IsMale)), 0, World, Time, Streets, Zones, Settings, Weapons, RadioStations, Scenarios, Crimes, WavAudio, PlacesOfInterest);
             Player.Setup();
 
-            GameSave CurrentSave = GameSaves.GetSave(Player);
-            if(CurrentSave != null)
-            {
-                CurrentSave.Load(Weapons);
-            }
+
 
 
             Input = new Input(Player, Settings);
@@ -106,12 +103,21 @@ namespace LosSantosRED.lsr
             Civilians = new Civilians(World, Player);
             PedSwap = new PedSwap(Time, Player, Settings, World);
             Tasker = new Tasker(World, Player, Weapons);
-            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player,Player, Weapons, RadioStations, GameSaves);
+            UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player,Player, Weapons, RadioStations, GameSaves, World);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
             VanillaManager = new VanillaManager();
             Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this);
             World.AddBlipsToMap();
             PedSwap.Setup();
+
+
+
+            GameSave CurrentSave = GameSaves.GetSave(Player);
+            if (CurrentSave != null)
+            {
+                CurrentSave.Load(Weapons, PedSwap);
+            }
+
             GameFiber.Yield();
             SetupModTasks();
             GameFiber.Yield();
@@ -259,6 +265,19 @@ namespace LosSantosRED.lsr
                     while (IsRunning)
                     {
                         Debug.Update();
+                        if (Game.IsKeyDown(Keys.NumPad5))
+                        {
+                            EntryPoint.WriteToConsole("===================================", 3);
+                            foreach (ModTask modTask in CoreTasks)
+                            {
+                                EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
+                            }
+                            foreach (ModTask modTask in SecondaryTasks)
+                            {
+                                EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
+                            }
+                            EntryPoint.WriteToConsole("===================================", 3);
+                        }
                         GameFiber.Yield();
                     }
                 }
@@ -451,11 +470,13 @@ namespace LosSantosRED.lsr
                 TickToRun = _TickToRun;
                 RunOrder = _RunOrder;
             }
+            public MovingAverage AverageTimeBetweenRuns { get; set; } = new MovingAverage();
             public bool MissedInterval => Interval != 0 && Game.GameTime - GameTimeLastRan >= IntervalMissLength;
             public bool RunningBehind => Interval != 0 && Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2);
             public bool ShouldRun => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan > Interval;
             public void Run()
             {
+                AverageTimeBetweenRuns.ComputeAverage(Game.GameTime - GameTimeLastRan);
                 TickToRun();
                 GameTimeLastRan = Game.GameTime;
                 RanThisTick = true;

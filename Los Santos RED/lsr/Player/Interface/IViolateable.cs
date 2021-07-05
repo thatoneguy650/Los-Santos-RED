@@ -12,7 +12,6 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceCanHearPlayer { get; }
         bool AnyPoliceCanSeePlayer { get; }
         bool AnyPoliceRecentlySeenPlayer { get; }
-        bool AnyPoliceSeenPlayerCurrentWanted { get; }
         Ped Character { get; }
         PoliceResponse PoliceResponse { get; }
         Vector3 Position { get; }

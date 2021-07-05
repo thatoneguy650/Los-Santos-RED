@@ -15,11 +15,13 @@ public class SaveMenu : Menu
     private ISaveable Player;
     private IWeapons Weapons;
     private IGameSaves GameSaves;
-    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable player, IGameSaves gameSaves, IWeapons weapons)
+    private IPedSwap PedSwap;
+    public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable player, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap)
     {
         Player = player;
         GameSaves = gameSaves;
         Weapons = weapons;
+        PedSwap = pedSwap;
         Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
         CreateSavesMenu();
     }
@@ -60,7 +62,7 @@ public class SaveMenu : Menu
     {
         if (selectedItem == GameSaveMenuList)
         {
-            GameSaves.Load(GameSaveMenuList.SelectedItem,Weapons);
+            GameSaves.Load(GameSaveMenuList.SelectedItem,Weapons,PedSwap);
         }
         else if (selectedItem == SaveGameItem)
         {

@@ -94,9 +94,9 @@ public class VanillaManager
 
 
 
-        NativeFunction.Natives.SET_CREATE_RANDOM_COPS(Enabled);
-        NativeFunction.Natives.SET_CREATE_RANDOM_COPS_ON_SCENARIOS(Enabled);
-        NativeFunction.Natives.SET_CREATE_RANDOM_COPS_NOT_ON_SCENARIOS(Enabled);
+      //  NativeFunction.Natives.SET_CREATE_RANDOM_COPS(Enabled);
+       // NativeFunction.Natives.SET_CREATE_RANDOM_COPS_ON_SCENARIOS(Enabled);//off for now, want them to spawn in front of police stations, etc.
+       // NativeFunction.Natives.SET_CREATE_RANDOM_COPS_NOT_ON_SCENARIOS(Enabled);
         NativeFunction.Natives.SET_DISPATCH_COPS_FOR_PLAYER(Enabled);
 
     }

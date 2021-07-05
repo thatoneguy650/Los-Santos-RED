@@ -27,9 +27,13 @@ namespace LosSantosRED.lsr.Interface
         List<EMT> EMTList { get; }
         int PoliceVehicleCount { get; }
         int CivilianVehicleCount { get; }
+        bool IsMPMapLoaded { get; }
+
         void AddEntity(PedExt pedExt);
         void AddEntity(VehicleExt x);
         bool AnyCopsNearPosition(Vector3 initialPosition, float closestSpawnToOtherPoliceAllowed);
         int CountNearbyPolice(Ped pedestrian);
+        void LoadMPMap();
+        void LoadSPMap();
     }
 }

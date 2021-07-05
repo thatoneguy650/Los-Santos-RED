@@ -80,6 +80,9 @@ public class PedSwap : IPedSwap
             {
                 return;
             }
+            TargetPedModel = TargetPed.Model;
+            TargetPedModelName = TargetPed.Model.Name;
+            TargetPedIsMale = TargetPed.IsMale;
             TargetPed.RandomizeVariation();
             Vector3 MyPos = Game.LocalPlayer.Character.Position;
             float MyHeading = Game.LocalPlayer.Character.Heading;
@@ -88,11 +91,96 @@ public class PedSwap : IPedSwap
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
             PostTakeover(LastModelHash);
-            if(CurrentPed.Exists() && CurrentPed.Handle != Game.LocalPlayer.Character.Handle)
+            if (CurrentPed.Exists())//if (TargetPed.Exists())
             {
                 CurrentPed.Delete();
                 EntryPoint.WriteToConsole("Become Ped Deleted CurrentPed", 3);
             }
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("TakeoverPed! TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
+    public void BecomeSavedPed(string playerName, bool isMale, int money, string modelName, PedVariation variation)
+    {
+        try
+        {
+            Ped PedToBecome = new Ped(modelName,Game.LocalPlayer.Character.GetOffsetPositionFront(5f),Game.LocalPlayer.Character.Heading);
+            Ped ExistingPed = Game.LocalPlayer.Character;
+
+            if (PedToBecome == null)
+            {
+                return;
+            }
+
+            Vector3 MyPos = Game.LocalPlayer.Character.Position;
+            float MyHeading = Game.LocalPlayer.Character.Heading;
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, PedToBecome, false, false);
+            Game.LocalPlayer.Character.Position = MyPos;
+            Game.LocalPlayer.Character.Heading = MyHeading;
+
+            SetPlayerOffset();
+            NativeHelper.ChangeModel(Settings.SettingsManager.General.MainCharacterToAliasModelName);
+            NativeHelper.ChangeModel(modelName);
+            Ped PedBecame = Game.LocalPlayer.Character;
+            if (variation != null)
+            {
+                variation.ReplacePedComponentVariation(PedBecame);
+            }
+            else
+            {
+                PedBecame.RandomizeVariation();
+            }
+
+
+            if (ExistingPed.Exists())
+            {
+                ExistingPed.Delete();
+                EntryPoint.WriteToConsole("Become Saved Ped Deleted CurrentPed", 3);
+            }
+
+            EntryPoint.ModController.NewPlayer(modelName, isMale, playerName, money);
+            NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
+            NativeFunction.Natives.x80C8B1846639BB19(0);
+            NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
+            Game.TimeScale = 1f;
+            NativeFunction.Natives.xB4EDDC19532BFB85();
+            Game.HandleRespawn();
+            NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
+            NativeFunction.Natives.xC0AA53F866B3134D();
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
+            Player.DisplayPlayerNotification();
+
+
+
+
+
+            ////this temp bullshit
+            //GameFiber.StartNew(delegate
+            //{
+            //    uint GameTimeToStop = Game.GameTime + 5000;
+            //    while (Game.GameTime <= GameTimeToStop)
+            //    {
+            //        if(PedToBecome.Exists())
+            //        {
+            //            EntryPoint.WriteToConsole($"PedToBecome {PedToBecome.Handle} {PedToBecome.Position}", 3);
+            //        }
+            //        if (ExistingPed.Exists())
+            //        {
+            //            EntryPoint.WriteToConsole($"ExistingPed {ExistingPed.Handle} {ExistingPed.Position}", 3);
+            //        }
+            //        if (PedBecame.Exists())
+            //        {
+            //            EntryPoint.WriteToConsole($"PedBecame {PedBecame.Handle} {PedBecame.Position}", 3);
+            //        }
+
+
+                    
+            //        GameFiber.Sleep(1000);
+            //    }
+
+            //}, "IsShootingChecker");
         }
         catch (Exception e3)
         {

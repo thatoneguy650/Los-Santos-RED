@@ -115,7 +115,7 @@ public class Tasker
             }
             else
             {
-                if (Cop.CurrentTask?.Name != "Idle")
+                if (Cop.CurrentTask?.Name != "Idle" && Cop.WasModSpawned)
                 {
                     Cop.CurrentTask = new Idle(Cop, Player);
                     Cop.CurrentTask.Start();
@@ -124,7 +124,7 @@ public class Tasker
         }
         else
         {
-            if (Cop.CurrentTask?.Name != "Idle")
+            if (Cop.CurrentTask?.Name != "Idle" && Cop.WasModSpawned)
             {
                 Cop.CurrentTask = new Idle(Cop, Player);
                 Cop.CurrentTask.Start();

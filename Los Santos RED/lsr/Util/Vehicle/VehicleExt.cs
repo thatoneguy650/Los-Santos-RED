@@ -17,6 +17,7 @@ namespace LSR.Vehicles
         private uint GameTimeEntered = 0;
         private bool HasAttemptedToLock;
         public Vehicle Vehicle { get; set; } = null;
+        public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
         public Indicators Indicators { get; set; }
         public Engine Engine { get; set; }
@@ -34,28 +35,19 @@ namespace LSR.Vehicles
         public bool HasUpdatedPlateType { get; set; }
         public bool AreAllWindowsIntact { get; set; }
         public uint Handle { get; private set; }
-        private bool CanToggleEngine
-        {
-            get
-            {
-                if (Vehicle.Speed > 2f)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
+        public bool AddedToReportedStolenQueue { get; set; }
         public bool NeedsToBeReportedStolen
         {
             get
             {
-                if (!WasReportedStolen && Game.GameTime > GameTimeToReportStolen && GameTimeEntered > 0)
+                if (HasBeenEnteredByPlayer && IsStolen && !WasReportedStolen && Game.GameTime > GameTimeToReportStolen)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
             }
         }
         public uint GameTimeToReportStolen
@@ -63,37 +55,21 @@ namespace LSR.Vehicles
             get
             {
                 if (WasAlarmed && GameTimeEntered > 0)
-                    return GameTimeEntered + 100000;
+                {
+                    return GameTimeEntered + 60000;// was 100000, 60 second for testing
+                }
                 else if (GameTimeEntered > 0)
-                    return GameTimeEntered + 600000;
+                {
+                    return GameTimeEntered + 120000;//was 600000, 120 seconds for testing
+                }
                 else
+                {
                     return 0;
-            }
-        }
-        public bool ColorMatchesDescription
-        {
-            get
-            {
-                if (Vehicle.PrimaryColor == DescriptionColor)
-                    return true;
-                else
-                    return false;
-            }
-        }
-        public bool HasOriginalPlate
-        {
-            get
-            {
-                if (CarPlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
                 }
             }
         }
+        public bool ColorMatchesDescription => Vehicle.PrimaryColor == DescriptionColor;
+        public bool HasOriginalPlate => CarPlate != null && CarPlate.PlateNumber == OriginalLicensePlate.PlateNumber;
         public bool CopsRecognizeAsStolen
         {
             get
@@ -108,10 +84,10 @@ namespace LSR.Vehicles
                     {
                         return true;
                     }
-                    else if (WasReportedStolen && ColorMatchesDescription)
-                    {
-                        return true;
-                    }
+                    //else if (WasReportedStolen && ColorMatchesDescription)//turned off for now, if you have this you need to chnage the license plate AND the color (maybe good for hard mode, more realistic)
+                    //{
+                    //    return true;
+                    //}
                     else if (Vehicle.IsAlarmSounding)
                     {
                         return true;
@@ -167,23 +143,11 @@ namespace LSR.Vehicles
                 return false;
             }
         }
-        public bool HasBeenEnteredByPlayer
-        {
-            get
-            {
-                if(GameTimeEntered == 0)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
+        public bool HasBeenEnteredByPlayer => GameTimeEntered != 0;
         public VehicleExt(Vehicle vehicle, uint gameTimeEntered) : this(vehicle)
         {
             GameTimeEntered = gameTimeEntered;
+            PlaceOriginallyEntered = Vehicle.Position;
         }
         public VehicleExt(Vehicle vehicle)
         {
@@ -210,6 +174,7 @@ namespace LSR.Vehicles
             if (GameTimeEntered == 0)
             {
                 GameTimeEntered = Game.GameTime;
+                PlaceOriginallyEntered = Vehicle.Position;
             }
         }
         public Color VehicleColor()
@@ -390,9 +355,7 @@ namespace LSR.Vehicles
                 return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);
             }
         }
-
         public bool WasSpawnedEmpty { get; set; } = false;
-
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);

@@ -7,16 +7,16 @@ using System.Collections.Generic;
 public class SettingsMenu : Menu
 {
     private UIMenu Settings;
-    private UIMenuItem ListTemp;
+    private UIMenuItem MapToggle;
     private IActionable Player;
-    private UIMenuItem MenuTemp;
-    public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player)
+    private IEntityProvideable World;
+    public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, IEntityProvideable world)
     {
         Player = player;
+        World = world;
         Settings = menuPool.AddSubMenu(parentMenu, "Settings");
         CreateSettingsMenu();
     }
-    public int SelectedPlateIndex { get; set; }
 
     public override void Hide()
     {
@@ -29,6 +29,7 @@ public class SettingsMenu : Menu
     }
     public override void Toggle()
     {
+        Update();
         if (!Settings.Visible)
         {
             Settings.Visible = true;
@@ -40,20 +41,35 @@ public class SettingsMenu : Menu
     }
     public void Update()
     {
-
+        CreateSettingsMenu();
     }
     private void CreateSettingsMenu()
     {
-        MenuTemp = new UIMenuItem("Temp", "Settings Temp");
-        Settings.AddItem(MenuTemp);
+        Settings.Clear();
+        if(World.IsMPMapLoaded)
+        {
+            MapToggle = new UIMenuItem("Load SP Map", "Load the SP Map (Default)");
+        }
+        else
+        {
+            MapToggle = new UIMenuItem("Load MP Map", "Load the MP Map (For More Interiors)");
+        }
+        Settings.AddItem(MapToggle);
         Settings.OnItemSelect += OnActionItemSelect;
         Settings.OnListChange += OnListChange;
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (selectedItem == MenuTemp)
+        if (selectedItem == MapToggle)
         {
-            Player.CommitSuicide();
+            if(World.IsMPMapLoaded)
+            {
+                World.LoadSPMap();
+            }
+            else
+            {
+                World.LoadMPMap();
+            }
         }
         Settings.Visible = false;
     }

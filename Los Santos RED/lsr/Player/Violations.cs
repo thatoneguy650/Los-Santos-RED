@@ -251,7 +251,7 @@ namespace LosSantosRED.lsr
             {
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "SuspiciousActivity"));//.IsCurrentlyViolating = true;
             }
-            if (Player.IsWanted && Player.AnyPoliceSeenPlayerCurrentWanted && Player.Character.Speed >= 2.0f && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
+            if (Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.Character.Speed >= 2.0f && !Player.HandsAreUp && Player.PoliceResponse.HasBeenWantedFor >= 20000)
             {
                 CrimesViolating.Add(CrimeList.FirstOrDefault(x => x.ID == "ResistingArrest"));//.IsCurrentlyViolating = true;
             }

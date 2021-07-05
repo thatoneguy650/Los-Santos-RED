@@ -77,15 +77,6 @@ namespace LosSantosRED.lsr
             Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
             if(Player.IsWanted)
             {
-                if (!Player.AnyPoliceSeenPlayerCurrentWanted && Player.AnyPoliceRecentlySeenPlayer)
-                {
-                    Player.AnyPoliceSeenPlayerCurrentWanted = true;
-                }
-                else
-                {
-                    Player.AnyPoliceSeenPlayerCurrentWanted = false;
-                }
-
                 if (Player.AnyPoliceRecentlySeenPlayer)
                 {
                     Player.PlacePoliceLastSeenPlayer = Player.Position;
@@ -111,10 +102,6 @@ namespace LosSantosRED.lsr
                     Player.CurrentVehicle.UpdateDescription();
                 }
                 
-            }
-            else
-            {
-                Player.AnyPoliceSeenPlayerCurrentWanted = false;
             }
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
         }

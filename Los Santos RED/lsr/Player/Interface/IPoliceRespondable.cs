@@ -12,7 +12,6 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceCanRecognizePlayer { get; set; }
         bool AnyPoliceCanSeePlayer { get; set; }
         bool AnyPoliceRecentlySeenPlayer { get; set; }
-        bool AnyPoliceSeenPlayerCurrentWanted { get; set; }
         LocationData CurrentLocation { get; set; }
         PoliceResponse PoliceResponse { get;  }//should not be
         VehicleExt CurrentSeenVehicle { get; }

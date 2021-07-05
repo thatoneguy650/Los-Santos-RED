@@ -15,13 +15,14 @@ namespace Mod
 {
     public class World : IEntityLoggable, IEntityProvideable
     {
-
+        
         private List<Blip> CreatedBlips = new List<Blip>();
         private Pedestrians Pedestrians;
         private IPlacesOfInterest PlacesOfInterest;
         private Vehicles Vehicles;
         private IZones Zones;
         private IJurisdictions Jurisdictions;
+        private Alex106ScenarioGroups Alex106ScenarioGroups;
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups)
         {
             PlacesOfInterest = placesOfInterest;
@@ -35,6 +36,7 @@ namespace Mod
         public bool AnyHelicopterUnitsSpawned => Pedestrians.AnyHelicopterUnitsSpawned;
         public bool AnyNooseUnitsSpawned => Pedestrians.AnyNooseUnitsSpawned;
         public List<PedExt> CivilianList => Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).ToList();
+        public bool IsMPMapLoaded { get; private set; }
         public int PoliceBoatsCount => Vehicles.PoliceBoatsCount;
         public int PoliceHelicoptersCount => Vehicles.PoliceHelicoptersCount;
         public int PoliceVehicleCount => Vehicles.PoliceVehiclesCount;
@@ -50,7 +52,10 @@ namespace Mod
             foreach (Zone zone in Zones.ZoneList)
             {
                 zone.AssignedLEAgencyInitials = Jurisdictions.GetMainAgency(zone.InternalGameName,ResponseType.LawEnforcement)?.ColorInitials;
+                GameFiber.Yield();
             }
+            Alex106ScenarioGroups = new Alex106ScenarioGroups();
+            Alex106ScenarioGroups.Setup();
         }
         public void AddBlipsToMap()
         {
@@ -59,6 +64,7 @@ namespace Mod
             {
                 MapBlip myBlip = new MapBlip(MyLocation.LocationPosition, MyLocation.Name, MyLocation.Type);
                 myBlip.AddToMap();
+                GameFiber.Yield();
             }
         }
         public void AddEntity(Blip myBlip) => CreatedBlips.Add(myBlip);
@@ -89,7 +95,7 @@ namespace Mod
         {
             RemoveBlips();
             ClearSpawned();
-
+            Alex106ScenarioGroups.Dispose();
         }
         public PedExt GetPedExt(uint handle) => Pedestrians.GetPedExt(handle);
         public VehicleExt GetVehicleExt(Vehicle vehicle) => Vehicles.GetVehicleExt(vehicle);
@@ -100,7 +106,9 @@ namespace Mod
             foreach (Blip MyBlip in CreatedBlips)
             {
                 if (MyBlip.Exists())
+                {
                     MyBlip.Delete();
+                }
             }
         }
         public void ScanForPedestrians() => Pedestrians.Scan();
@@ -109,5 +117,24 @@ namespace Mod
         public void CreateNewVehicles() => Vehicles.CreateNew();
         public void UpdateVehiclePlates() => Vehicles.UpdatePlates();
         public void CleanUpVehicles() => Vehicles.CleanUp();
+        public void LoadMPMap()
+        {
+            if (!IsMPMapLoaded)
+            {
+                NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(1);
+                NativeFunction.Natives.x0888C3502DBBEEF5();// ON_ENTER_MP();
+                IsMPMapLoaded = true;
+            }
+        }
+        public void LoadSPMap()
+        {
+            if (IsMPMapLoaded)
+            {
+                NativeFunction.Natives.SET_INSTANCE_PRIORITY_MODE(0);
+                NativeFunction.Natives.xD7C10C4A637992C9();// ON_ENTER_SP();
+                IsMPMapLoaded = false;
+            }
+        }
+        
     }
 }

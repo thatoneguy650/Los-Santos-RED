@@ -164,7 +164,12 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        SpawnCarjackTarget();
+
+
+
+
+
+       // SpawnCarjackTarget();
 
 
 
@@ -224,13 +229,17 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        EntryPoint.WriteToConsole("SCANNER ABORT", 3);
-        Player.DebugScanner.Abort();
+        //EntryPoint.WriteToConsole("SCANNER ABORT", 3);
+        //Player.DebugScanner.Abort();
         //if(Game.LocalPlayer.Character.Inventory.EquippedWeaponObject != null && Player.CurrentWeapon != null)
         //{
         //    EntryPoint.WriteToConsole($" Weapon Dimensions: Model {Player.CurrentWeapon.ModelName}, CurrentWeaponIsOneHanded{Player.CurrentWeaponIsOneHanded}, X: {Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Model.Dimensions.X}, Y: {Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Model.Dimensions.Y}, Z: {Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Model.Dimensions.Z}", 3);
 
         //}
+        EntryPoint.WriteToConsole("-------------------------------", 3);
+        EntryPoint.WriteToConsole($" IsWanted: {Player.IsWanted} IsAliveAndFree: {Player.IsAliveAndFree}", 3);
+        EntryPoint.WriteToConsole($" HasBeenWantedFor: {Player.PoliceResponse.HasBeenWantedFor} AnyPoliceRecentlySeenPlayer: {Player.AnyPoliceRecentlySeenPlayer}", 3);
+        EntryPoint.WriteToConsole("-------------------------------", 3);
 
 
         if (Player.CurrentVehicle != null)

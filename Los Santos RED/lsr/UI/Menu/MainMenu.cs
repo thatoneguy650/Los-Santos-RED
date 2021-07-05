@@ -15,13 +15,13 @@ public class MainMenu : Menu
     private IActionable Player;
     private UIMenuItem ShowStatus;
     private UIMenuItem UnloadMod;
-    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap)
+    public MainMenu(MenuPool menuPool, IActionable player,ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world)
     {
         Player = player;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         menuPool.Add(Main);
-        SettingsMenu = new SettingsMenu(menuPool, Main, Player);
-        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons);
+        SettingsMenu = new SettingsMenu(menuPool, Main, Player, world);
+        SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player);
         CreateMainMenu();

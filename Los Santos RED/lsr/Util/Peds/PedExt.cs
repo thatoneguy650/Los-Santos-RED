@@ -338,7 +338,7 @@ public class PedExt : IComplexTaskable
     public void Update(IPoliceRespondable playerToCheck,Vector3 placeLastSeen)
     {
         PlayerToCheck = playerToCheck;
-        if (Pedestrian.IsAlive)
+        if (Pedestrian.Exists() && Pedestrian.IsAlive)
         {
             if (NeedsUpdate)
             {
