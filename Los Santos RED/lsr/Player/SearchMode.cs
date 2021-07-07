@@ -160,6 +160,8 @@ namespace LosSantosRED.lsr
             private Ped GhostCop;
             private uint GameTimeLastGhostCopCreated;
             private bool StopSearchMode;
+
+            private bool hasGamefiberRunning;
             public Ped SpotterCop
             {
                 get
@@ -221,34 +223,91 @@ namespace LosSantosRED.lsr
             {
                 if (GhostCop.Exists())
                 {
-                    Entity ToCheck = TargetIsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
-                    if (!NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck))
+                    if (!hasGamefiberRunning)
                     {
-                        if (TargetIsInVehicle)
+                        GameFiber.StartNew(delegate
                         {
-                            CurrentOffset = new List<Vector3>() { new Vector3(6f, 0f, 1f), new Vector3(3f, 0f, 1f), new Vector3(-3f, 0f, 1f) }.PickRandom();
-                        }
-                        else
-                        {
-                            CurrentOffset = new List<Vector3>() { new Vector3(0f, 6f, 1f), new Vector3(6f, 0f, 1f), new Vector3(0f, -6f, 1f)
-                                                        , new Vector3(0f, -3f, 1f), new Vector3(0f, 3f, 1f), new Vector3(3f, 0f, 1f)
-                                                        , new Vector3(-3f, 0f, 1f) , new Vector3(-3f, 3f, 1f), new Vector3(-3f, -3f, 1f)
+                            hasGamefiberRunning = true;
+                            while (hasGamefiberRunning)
+                            {
+                                Entity ToCheck = TargetIsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
+                                if (!NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck))
+                                {
+                                    if (TargetIsInVehicle)
+                                    {
+                                        CurrentOffset = new List<Vector3>() { new Vector3(9f, 0f, 2f), new Vector3(6f, 0f, 2f), new Vector3(-6f, 0f, 2f) }.PickRandom();
+                                    }
+                                    else
+                                    {
+                                        CurrentOffset = new List<Vector3>() { new Vector3(0f, 9f, 2f), new Vector3(9f, 0f, 2f), new Vector3(0f, -9f, 2f)
+                                                        , new Vector3(0f, -6f, 2f), new Vector3(0f, 6f, 2f), new Vector3(6f, 0f, 2f)
+                                                        , new Vector3(-6f, 0f, 2f) , new Vector3(-6f, 6f, 1f), new Vector3(-6f, -6f, 2f)
 
 
-                                                        }.PickRandom();
-                        }
-                        //EntryPoint.WriteToConsole(string.Format("MoveGhostCopToPosition! CurrentOffset {0}", CurrentOffset));
+                                                            }.PickRandom();
+                                    }
+                                }
+                                Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
+                                PositionSet = DesiredPosition;
+                                GhostCop.Position = PositionSet;
+
+                                Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
+                                GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+                                GameFiber.Sleep(100);
+                            }
+                        }, "Run Ghost Cop");
+
                     }
-                    Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
-                    PositionSet = DesiredPosition;
-                    GhostCop.Position = PositionSet;
 
-                    Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
-                    GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+
+
+
+
+
+
+                   // Entity ToCheck = TargetIsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
+                   // if (!NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck))
+                   // {
+                   //     if (TargetIsInVehicle)
+                   //     {
+                   //         CurrentOffset = new List<Vector3>() { new Vector3(9f, 0f, 2f), new Vector3(6f, 0f, 2f), new Vector3(-6f, 0f, 2f) }.PickRandom();
+                   //     }
+                   //     else
+                   //     {
+                   //         CurrentOffset = new List<Vector3>() { new Vector3(0f, 9f, 2f), new Vector3(9f, 0f, 2f), new Vector3(0f, -9f, 2f)
+                   //                                     , new Vector3(0f, -6f, 2f), new Vector3(0f, 6f, 2f), new Vector3(6f, 0f, 2f)
+                   //                                     , new Vector3(-6f, 0f, 2f) , new Vector3(-6f, 6f, 1f), new Vector3(-6f, -6f, 2f)
+
+
+                   //                                     }.PickRandom();
+                   //     }
+                   //     //if (TargetIsInVehicle)
+                   //     //{
+                   //     //    CurrentOffset = new List<Vector3>() { new Vector3(6f, 0f, 1f), new Vector3(3f, 0f, 1f), new Vector3(-3f, 0f, 1f) }.PickRandom();
+                   //     //}
+                   //     //else
+                   //     //{
+                   //     //    CurrentOffset = new List<Vector3>() { new Vector3(0f, 6f, 1f), new Vector3(6f, 0f, 1f), new Vector3(0f, -6f, 1f)
+                   //     //                                , new Vector3(0f, -3f, 1f), new Vector3(0f, 3f, 1f), new Vector3(3f, 0f, 1f)
+                   //     //                                , new Vector3(-3f, 0f, 1f) , new Vector3(-3f, 3f, 1f), new Vector3(-3f, -3f, 1f)
+
+
+                   //     //                                }.PickRandom();
+                   //     //}
+                   //     //EntryPoint.WriteToConsole(string.Format("MoveGhostCopToPosition! CurrentOffset {0}", CurrentOffset));
+                   // }
+                   // Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
+                   // PositionSet = DesiredPosition;
+                   //// GhostCop.Position = PositionSet;
+                   // GhostCop.AttachTo(Game.LocalPlayer.Character, Game.LocalPlayer.Character.GetBoneIndex(PedBoneId.Head), DesiredPosition, Rotator.Zero);
+
+                   // Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
+                   // GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
                 }
             }
             private void MoveGhostCopToOrigin()
             {
+                hasGamefiberRunning = false;
                 if (GhostCop != null)
                 {
                     GhostCop.Position = new Vector3(0f, 0f, 0f);
@@ -263,7 +322,9 @@ namespace LosSantosRED.lsr
                     GhostCop.BlockPermanentEvents = false;
                     GhostCop.IsPersistent = true;
                     GhostCop.IsCollisionEnabled = false;
-                    GhostCop.IsVisible = false;
+                    GhostCop.MaxHealth = 1;
+                    GhostCop.IsInvincible = true;
+                   // GhostCop.IsVisible = false;
 
                     Blip myBlip = GhostCop.GetAttachedBlip();
                     if (myBlip != null)

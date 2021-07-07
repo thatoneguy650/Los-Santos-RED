@@ -21,34 +21,60 @@ public class Tasker
     }
     public void RunPoliceTasks()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer)/*.OrderBy(x => x.CurrentTask.GameTimeLastRan)*/.Take(5))//5//2
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))
         {
+            int pedsUpdated = 0;
             Cop.UpdateTask();
+            pedsUpdated++;
+            if (pedsUpdated > 4)
+            {
+                pedsUpdated = 0;
+                GameFiber.Yield();
+            }
         }
     }
     public void RunCiviliansTasks()
     {
-        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.CurrentTask.GameTimeLastRan))//.Take(5))//5//2
+        int pedsUpdated = 0;
+        foreach (PedExt Ped in PedProvider.CivilianList.Where(x => x.CurrentTask != null && x.CurrentTask.ShouldUpdate).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.CurrentTask.GameTimeLastRan))
         {
             Ped.UpdateTask();
-            GameFiber.Yield();
+            pedsUpdated++;
+            if (pedsUpdated > 4)
+            {
+                pedsUpdated = 0;
+                GameFiber.Yield();
+            }
         }
     }
     public void UpdatePoliceTasks()
     {
-        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x=> x.DistanceToPlayer)/*.OrderBy(x=> x.GameTimeLastUpdatedTask)*/.Take(5))//2
+        int pedsUpdated = 0;
+        foreach (Cop Cop in PedProvider.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.NeedsTaskAssignmentCheck).OrderBy(x=> x.DistanceToPlayer))
         {
             UpdateCurrentTask(Cop);
+            pedsUpdated++;
+            if (pedsUpdated > 4)
+            {
+                pedsUpdated = 0;
+                GameFiber.Yield();
+            }
         }
     }
     public void UpdateCivilianTasks()
     {
-        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 100f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
+        int pedsUpdated = 0;
+        foreach (PedExt Civilian in PedProvider.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 75f && x.NeedsTaskAssignmentCheck).OrderBy(x => x.DistanceToPlayer))//.OrderBy(x => x.GameTimeLastUpdatedTask).Take(10))//2//10)//2
         {
-            if (Civilian.DistanceToPlayer <= 100f)
+            if (Civilian.DistanceToPlayer <= 75f)
             {
                 UpdateCurrentTask(Civilian);
-                GameFiber.Yield();
+                pedsUpdated++;
+                if (pedsUpdated > 4)
+                {
+                    pedsUpdated = 0;
+                    GameFiber.Yield();
+                }
             }
             else if (Civilian.CurrentTask != null)
             {

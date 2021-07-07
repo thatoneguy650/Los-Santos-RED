@@ -190,19 +190,9 @@ namespace LosSantosRED.lsr
         {
             CoreTasks = new List<ModTask>()
             {
-                //Required Run
-                //new ModTask(0, "Time.Tick", Time.Tick, 0),
-                // new ModTask(0, "Input.Tick", Input.Update, 1),//100
-                //new ModTask(100, "VanillaManager.Tick", VanillaManager.Tick, 2),
                   new ModTask(100, "Player.Update", Player.Update, 3),
-                //new ModTask(300, "Police.Update", Police.Update, 4),
 
-
-                //new ModTask(100, "Player.UpdateVehicleData", Player.UpdateVehicleData, 1),
-                //new ModTask(100, "Player.UpdateStateData", Player.UpdateStateData, 2),
-                //new ModTask(100, "Player.UpdateWeaponData", Player.UpdateWeaponData, 3),
-
-        };
+            };
             SecondaryTasks = new List<ModTask>()
             {
                 new ModTask(500, "Player.Violations.Update", Player.ViolationsUpdate, 0),
@@ -218,12 +208,12 @@ namespace LosSantosRED.lsr
 
 
 
-                new ModTask(500, "World.ScanForPedestrians", World.ScanForPedestrians, 10), //very bad performance
-                new ModTask(500, "World.CreateNewPedestrians", World.CreateNewPedestrians, 11), //very bad performance
+                new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 10), //very bad performance//500
+                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 11), //very bad performance//500
 
 
 
-                new ModTask(500, "World.PruneVehicles", World.PruneVehicles, 12),
+                new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 12),//500
 
 
 
@@ -249,7 +239,7 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "Time.Tick", Time.Tick, 25),
 
 
-                new ModTask(300, "Police.Update", Police.Update, 26),//added yields
+                new ModTask(500, "Police.Update", Police.Update, 26),//added yields//cant get 300 ms updates in here anyways
 
             };
 

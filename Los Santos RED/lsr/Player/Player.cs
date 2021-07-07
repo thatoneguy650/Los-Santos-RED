@@ -728,7 +728,6 @@ namespace Mod
             TrackedVehicles.Clear();
         }
 
-
         //Events
         public void OnAppliedWantedStats() => Scanner.OnAppliedWantedStats();
         public void OnInvestigationExpire()
@@ -891,23 +890,23 @@ namespace Mod
         {
             if (IsInVehicle)
             {
-                if (CurrentVehicle != null)
-                {
-                    EntryPoint.WriteToConsole("-------------------------------", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {CurrentVehicle.Vehicle.Handle}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {CurrentVehicle.IsStolen}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {CurrentVehicle.WasReportedStolen}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {CurrentVehicle.CopsRecognizeAsStolen}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {CurrentVehicle.NeedsToBeReportedStolen}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {CurrentVehicle.GameTimeToReportStolen}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {CurrentVehicle.CarPlate.IsWanted}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {CurrentVehicle.CarPlate.PlateNumber}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {CurrentVehicle.HasOriginalPlate}", 3);
-                    EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {CurrentVehicle.HasBeenDescribedByDispatch}", 3);
-                    EntryPoint.WriteToConsole("-------------------------------", 3);
-                }
+                //if (CurrentVehicle != null)
+                //{
+                //    EntryPoint.WriteToConsole("-------------------------------", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {CurrentVehicle.Vehicle.Handle}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {CurrentVehicle.IsStolen}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {CurrentVehicle.WasReportedStolen}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {CurrentVehicle.CopsRecognizeAsStolen}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {CurrentVehicle.NeedsToBeReportedStolen}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {CurrentVehicle.GameTimeToReportStolen}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {CurrentVehicle.CarPlate.IsWanted}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {CurrentVehicle.CarPlate.PlateNumber}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {CurrentVehicle.HasOriginalPlate}", 3);
+                //    EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {CurrentVehicle.HasBeenDescribedByDispatch}", 3);
+                //    EntryPoint.WriteToConsole("-------------------------------", 3);
+                //}
             }
             else
             {
@@ -943,36 +942,39 @@ namespace Mod
             if (!IsInVehicle && !IsGettingIntoVehicle)
             {
                 CurrentVehicle = null;
+                return;
             }
-            Vehicle CurrVehicle = null;
+            Vehicle vehicle;
             if (IsGettingIntoVehicle)
             {
-                CurrVehicle = Game.LocalPlayer.Character.VehicleTryingToEnter;
+                vehicle = Game.LocalPlayer.Character.VehicleTryingToEnter;
             }
             else
             {
-                CurrVehicle = Game.LocalPlayer.Character.CurrentVehicle;
+                vehicle = Game.LocalPlayer.Character.CurrentVehicle;
             }
-            if (!CurrVehicle.Exists())
+            if (!vehicle.Exists())
             {
                 CurrentVehicle = null;
                 return;
             }
-            VehicleExt ToReturn = TrackedVehicles.Where(x => x.Vehicle.Handle == CurrVehicle.Handle).FirstOrDefault();
-            if (ToReturn == null)
+            VehicleExt existingVehicleExt = EntityProvider.GetVehicleExt(vehicle);
+            if (existingVehicleExt == null)
             {
-                VehicleExt MyNewCar = new VehicleExt(CurrVehicle);
-                TrackedVehicles.Add(MyNewCar);
-                ToReturn = MyNewCar;
+                VehicleExt createdVehicleExt = new VehicleExt(vehicle);
+                TrackedVehicles.Add(createdVehicleExt);
+                existingVehicleExt = createdVehicleExt;
             }
-            if (IsInVehicle)
+            if(!TrackedVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
             {
-                ToReturn.SetAsEntered();
+                TrackedVehicles.Add(existingVehicleExt);
             }
-            ToReturn.Update(AutoTuneStation);  
-            //isCurrentVehicleEngineOn = ToReturn.Vehicle.IsEngineOn;
-            //ToReturn.Engine.Toggle(isCurrentVehicleEngineOn);
-            CurrentVehicle = ToReturn;
+            if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
+            {
+                existingVehicleExt.SetAsEntered();
+            }
+            existingVehicleExt.Update(AutoTuneStation); 
+            CurrentVehicle = existingVehicleExt;
         }
         private void UpdateLookedAtPed()
         {

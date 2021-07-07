@@ -64,7 +64,6 @@ public class Pedestrians
             return Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
         }
     }
-
     public bool AnyPoliceShouldBustPlayer
     {
         get
@@ -93,7 +92,6 @@ public class Pedestrians
             return Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
         }
     }
-
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
     {
         if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
@@ -182,15 +180,11 @@ public class Pedestrians
     }
     public void CreateNew()
     {
-        foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.IsVisible))//take 20 is new
+        foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1))//take 20 is new
         {
             uint localHandle = Pedestrian.Handle;
             if (Pedestrian.IsPoliceArmy())
             {
-                if (!Pedestrian.IsVisible)//trying to remove that call with this
-                {
-                    continue;
-                }
                 if (!Police.Any(x => x.Handle == localHandle))
                 {
                     AddCop(Pedestrian);
@@ -203,7 +197,6 @@ public class Pedestrians
                     AddCivilian(Pedestrian);
                 }
             }
-            //GameFiber.Yield();
         }
     }
     private void AddCivilian(Ped Pedestrian)
@@ -226,14 +219,7 @@ public class Pedestrians
                 WillCallPolice = false;
             }
         }
-
-
-        ////TEMP!!!
-        //WillFight = true;
-        //WillCallPolice = false;
-        ////TEMP!
-        /////Names.GetRandomName(Pedestrian.IsMale)
-        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, "John Doe", RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
+        Civilians.Add(new PedExt(Pedestrian, WillFight, WillCallPolice, IsGangMember, Names.GetRandomName(Pedestrian.IsMale), RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name)));
     }
     private void AddCop(Ped Pedestrian)
     {

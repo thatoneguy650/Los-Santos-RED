@@ -137,20 +137,91 @@ public class Debug
     }
     private void DebugNumpad2()
     {
-        ModController.DebugInputRunning = !ModController.DebugInputRunning;
-        EntryPoint.WriteToConsole($"Input Tasks Running: {ModController.DebugInputRunning}", 3);
-        //Player.SetWantedLevel(0, "RESETTING DEBUG!", true);
+       // ModController.DebugInputRunning = !ModController.DebugInputRunning;
+      //  EntryPoint.WriteToConsole($"Input Tasks Running: {ModController.DebugInputRunning}", 3);
+        Player.SetWantedLevel(0, "RESETTING DEBUG!", true);
     }
     private void DebugNumpad3()
     {
-        ModController.DebugUIRunning = !ModController.DebugUIRunning;
-        EntryPoint.WriteToConsole($"UI Tasks Running: {ModController.DebugUIRunning}", 3);
-        // Player.SetWantedLevel(2, "SETTING DEBUG!", true);
+       // ModController.DebugUIRunning = !ModController.DebugUIRunning;
+        //EntryPoint.WriteToConsole($"UI Tasks Running: {ModController.DebugUIRunning}", 3);
+         Player.SetWantedLevel(2, "SETTING DEBUG!", true);
     }
     private void DebugNumpad4()
     {
-        Player.DeleteTrackedVehicles();
-        EntryPoint.WriteToConsole($"Tracked Vehicles Clear", 3);
+        Model CopModel = new Model("s_m_y_cop_01");
+        Ped GhostCop = new Ped(CopModel, new Vector3(0f, 0f, 0f), 0f);
+       
+        if (GhostCop.Exists())
+        {
+            GhostCop.BlockPermanentEvents = false;
+            GhostCop.IsPersistent = true;
+            GhostCop.IsCollisionEnabled = false;
+            GhostCop.MaxHealth = 1;
+            GhostCop.IsInvincible = true;
+            // GhostCop.IsVisible = false;
+
+            Blip myBlip = GhostCop.GetAttachedBlip();
+            if (myBlip != null)
+                myBlip.Delete();
+            GhostCop.VisionRange = 100f;
+            GhostCop.HearingRange = 100f;
+            GhostCop.CanRagdoll = false;
+            const ulong SetPedMute = 0x7A73D05A607734C7;
+            NativeFunction.CallByHash<uint>(SetPedMute, GhostCop);
+            NativeFunction.CallByName<bool>("STOP_PED_SPEAKING", GhostCop, true);
+            NativeFunction.CallByName<uint>("SET_PED_CONFIG_FLAG", GhostCop, 69, true);
+            NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", GhostCop, (uint)2725352035, true); //Unequip weapon so you don't get shot
+            NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", GhostCop, false);
+            NativeFunction.CallByName<uint>("SET_PED_MOVE_RATE_OVERRIDE", GhostCop, 0f);
+        }
+
+        Vector3 CurrentOffset;
+        if (Game.LocalPlayer.Character.IsInAnyVehicle(false))
+        {
+            CurrentOffset = new List<Vector3>() { new Vector3(9f, 0f, 2f), new Vector3(6f, 0f, 2f), new Vector3(-6f, 0f, 2f) }.PickRandom();
+        }
+        else
+        {
+            CurrentOffset = new List<Vector3>() { new Vector3(0f, 9f, 2f), new Vector3(9f, 0f, 2f), new Vector3(0f, -9f, 2f)
+                                                        , new Vector3(0f, -6f, 2f), new Vector3(0f, 6f, 2f), new Vector3(6f, 0f, 2f)
+                                                        , new Vector3(-6f, 0f, 2f) , new Vector3(-6f, 6f, 1f), new Vector3(-6f, -6f, 2f)
+
+
+                                                        }.PickRandom();
+        }
+
+        Vector3 DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
+        GhostCop.Position = DesiredPosition;
+        // GhostCop.AttachTo(Game.LocalPlayer.Character, Game.LocalPlayer.Character.GetBoneIndex(PedBoneId.Head), Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head), Rotator.Zero);
+
+        Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
+        GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+
+
+        while (GhostCop.Exists() && GhostCop.IsAlive && !Game.IsKeyDownRightNow(Keys.E))
+        {
+
+            DesiredPosition = Game.LocalPlayer.Character.GetOffsetPosition(CurrentOffset);
+            GhostCop.Position = DesiredPosition;
+            Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
+            GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
+            Entity ToCheck = Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
+            bool canSee = NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck);
+            Game.DisplayHelp($"Press E to delete ghost cop canSee {canSee} {GhostCop.Position}");
+
+            GameFiber.Sleep(25);
+        }
+        if (GhostCop.Exists())
+        {
+            GhostCop.Delete();
+        }
+
+
+
+
+        // Player.DeleteTrackedVehicles();
+        // EntryPoint.WriteToConsole($"Tracked Vehicles Clear", 3);
 
 
         //if (DebugPed.Exists())

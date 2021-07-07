@@ -42,6 +42,7 @@ namespace LosSantosRED.lsr
         private bool IsPressingLeftIndicator => Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingHazards => Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
+        private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;
         public bool IsPressingEngineToggle => Game.IsKeyDown(Keys.X) && Game.IsShiftKeyDownRightNow;
 
         public void Update()
@@ -138,7 +139,7 @@ namespace LosSantosRED.lsr
         {
             if (Player.CurrentVehicle != null)
             {
-                if(!RecentlyPressedIndicators)
+                if(!RecentlyPressedEngineToggle)
                 {
                     if(IsPressingEngineToggle)
                     {
