@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class SettingsMenu : Menu
 {
     private UIMenu Settings;
+    private UIMenuItem ReloadSettingsFromFile;
     private UIMenuItem MapToggle;
     private IActionable Player;
     private IEntityProvideable World;
@@ -54,7 +55,12 @@ public class SettingsMenu : Menu
         {
             MapToggle = new UIMenuItem("Load MP Map", "Load the MP Map (For More Interiors)");
         }
+        ReloadSettingsFromFile = new UIMenuItem("Reload Settings", "Reloads the Settings XML");
         Settings.AddItem(MapToggle);
+
+        Settings.AddItem(ReloadSettingsFromFile);
+
+
         Settings.OnItemSelect += OnActionItemSelect;
         Settings.OnListChange += OnListChange;
     }
@@ -70,6 +76,10 @@ public class SettingsMenu : Menu
             {
                 World.LoadMPMap();
             }
+        }
+        else if (selectedItem == ReloadSettingsFromFile)
+        {
+            EntryPoint.ModController.ReloadSettingsFromFile();
         }
         Settings.Visible = false;
     }

@@ -314,7 +314,6 @@ namespace LosSantosRED.lsr
             IsSpeeding = false;
             if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
             {
-                CurrentSpeed = Player.CurrentVehicle.Vehicle.Speed * 2.23694f;
                 if (!IsRoadWorthy(Player.CurrentVehicle.Vehicle) || IsDamaged(Player.CurrentVehicle.Vehicle))
                 {
                     VehicleIsSuspicious = true;
@@ -371,9 +370,9 @@ namespace LosSantosRED.lsr
                 float SpeedLimit = 60f;
                 if (Player.CurrentLocation.CurrentStreet != null)
                 {
-                    SpeedLimit = Player.CurrentLocation.CurrentStreet.SpeedLimit;
+                    SpeedLimit = Player.CurrentLocation.CurrentStreet.SpeedLimitMPH;
                 }
-                IsSpeeding = CurrentSpeed > SpeedLimit + 25f;
+                IsSpeeding = Player.VehicleSpeedMPH > SpeedLimit + 25f;
             }
         }
         private void AddCrimes()

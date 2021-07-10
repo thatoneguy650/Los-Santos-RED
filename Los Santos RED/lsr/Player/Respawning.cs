@@ -37,20 +37,27 @@ public class Respawning : IRespawning
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
     }
-   // public bool RecentlyBribedPolice => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastBribedPolice <= 10000;
-    public bool RecentlyRespawned => GameTimeLastRespawned != 0 && Game.GameTime - GameTimeLastRespawned <= 1000;
-    public bool RecentlyResistedArrest => GameTimeLastResistedArrest != 0 && Game.GameTime - GameTimeLastResistedArrest <= 5000;
-    //  public bool RecentlySurrenderedToPolice => GameTimeLastSurrenderedToPolice != 0 && Game.GameTime - GameTimeLastSurrenderedToPolice <= 5000;
+    public bool RecentlyRespawned => GameTimeLastRespawned != 0 && Game.GameTime - GameTimeLastRespawned <= Settings.SettingsManager.RespawnSettings.RecentlyRespawnedTime;
+    public bool RecentlyResistedArrest => GameTimeLastResistedArrest != 0 && Game.GameTime - GameTimeLastResistedArrest <= Settings.SettingsManager.RespawnSettings.RecentlyResistedArrestTime;
+    public bool CanUndie => Settings.SettingsManager.RespawnSettings.AllowUndie && (TimesDied < Settings.SettingsManager.RespawnSettings.UndieLimit || Settings.SettingsManager.RespawnSettings.UndieLimit == 0);
+    public int TimesDied { get; private set; }
+    public void Reset()
+    {
+        TimesDied = 0;
+    }
     public void BribePolice(int Amount)
     {
         if (CurrentPlayer.Money < Amount)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
         }
-        else if (Amount < (CurrentPlayer.WantedLevel * Settings.SettingsManager.Police.PoliceBribeWantedLevelScale))
+        else if (Amount < (CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", string.Format("Thats it? ${0}?", Amount));
-            CurrentPlayer.GiveMoney(-1 * Amount);
+            if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
+            {
+                CurrentPlayer.GiveMoney(-1 * Amount);
+            }
         }
         else
         {
@@ -58,8 +65,6 @@ public class Respawning : IRespawning
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "Officer Friendly", "Expedited Service Fee", "Thanks for the cash, now beat it.");
             CurrentPlayer.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
-
-            //CurrentPlayer.ResetModel();//will fix the police thing, need a better way tho
         }
     }
     public void ResistArrest()
@@ -69,16 +74,16 @@ public class Respawning : IRespawning
     }
     public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory)
     {
-        if (CurrentPlayer.CanUndie)
+        if (CanUndie)
         {
             Respawn(resetWanted, true, false, false, clearCriminalHistory);
             CurrentPlayer.SetWantedLevel(CurrentPlayer.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
-            if (withInvicibility)
+            if (withInvicibility & Settings.SettingsManager.RespawnSettings.InvincibilityOnRespawn)
             {
                 Game.LocalPlayer.Character.IsInvincible = true;
                 GameFiber.StartNew(delegate
                 {
-                    GameFiber.Sleep(5000);
+                    GameFiber.Sleep(Settings.SettingsManager.RespawnSettings.RespawnInvincibilityTime);
                     Game.LocalPlayer.Character.IsInvincible = false;
                 });
             }
@@ -88,7 +93,7 @@ public class Respawning : IRespawning
     public void RespawnAtGrave()
     {
         FadeOut();
-        Respawn(true, true, true, true, true);
+        Respawn(true, true, true, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath, true);
         GameLocation PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Grave);
         SetPlayerAtLocation(PlaceToSpawn);
         World.ClearSpawned();
@@ -99,25 +104,38 @@ public class Respawning : IRespawning
     }
     public void RespawnAtHospital(GameLocation PlaceToSpawn)
     {
-        FadeOut();
-        Respawn(true, true, true, true, true);
-        if (PlaceToSpawn == null)
+        if (Settings.SettingsManager.RespawnSettings.AllowRandomGraveRespawn && RandomItems.RandomPercent(Settings.SettingsManager.RespawnSettings.RandomGraveRespawnPercentage))
         {
-            PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
+            RespawnAtGrave();
         }
-        SetPlayerAtLocation(PlaceToSpawn);
-        World.ClearSpawned();
-        FadeIn();
-        SetHospitalFee(PlaceToSpawn.Name);
-        GameTimeLastDischargedFromHospital = Game.GameTime;
+        else
+        {
+            FadeOut();
+            Respawn(true, true, true, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath, true);
+            if (PlaceToSpawn == null)
+            {
+                PlaceToSpawn = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Hospital);
+            }
+            SetPlayerAtLocation(PlaceToSpawn);
+            World.ClearSpawned();
+            FadeIn();
+            if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
+            {
+                SetHospitalFee(PlaceToSpawn.Name);
+            }
+            GameTimeLastDischargedFromHospital = Game.GameTime;
+        }
     }
     public void SurrenderToPolice(GameLocation PoliceStation)
     {
         FadeOut();
-        CheckWeapons();
-        BailFee = CurrentPlayer.MaxWantedLastLife * Settings.SettingsManager.Police.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
+        {
+            CheckWeapons();
+        }
+        BailFee = CurrentPlayer.MaxWantedLastLife * Settings.SettingsManager.RespawnSettings.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         CurrentPlayer.RaiseHands();
-        ResetPlayer(true, true, false, true, true);
+        ResetPlayer(true, true, false, Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender, true);
         if (PoliceStation == null)
         {
             PoliceStation = PlacesOfInterest.GetClosestLocation(Game.LocalPlayer.Character.Position, LocationType.Police);
@@ -125,7 +143,10 @@ public class Respawning : IRespawning
         SetPlayerAtLocation(PoliceStation);
         World.ClearSpawned();
         FadeIn();
-        SetPoliceFee(PoliceStation.Name, BailFee);
+        if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
+        {
+            SetPoliceFee(PoliceStation.Name, BailFee);
+        }
         GameTimeLastSurrenderedToPolice = Game.GameTime;
     }
     private void CheckWeapons()
@@ -136,8 +157,8 @@ public class Respawning : IRespawning
         //}
         //else
         //{
-            Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-        //}
+                Game.LocalPlayer.Character.Inventory.Weapons.Clear();//ResetPlayer is also doing this already......, if you add the above need to stop that from clearing everything anyways (this was that old bug lol)
+        //}      
     }
     private void FadeIn()
     {
@@ -221,7 +242,7 @@ public class Respawning : IRespawning
     {
         if (!resetTimesDied)
         {
-            ++CurrentPlayer.TimesDied;
+            ++TimesDied;
         }
         NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//"NETWORK_REQUEST_CONTROL_OF_ENTITY" 
         NativeFunction.Natives.xC0AA53F866B3134D();//_RESET_LOCALPLAYER_STATE
@@ -240,7 +261,7 @@ public class Respawning : IRespawning
     }
     private void SetHospitalFee(string HospitalName)
     {
-        int HospitalFee = Settings.SettingsManager.Police.HospitalFee * (1 + CurrentPlayer.MaxWantedLastLife);
+        int HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalFee * (1 + CurrentPlayer.MaxWantedLastLife);
         int CurrentCash = CurrentPlayer.Money;
         int TotalNeededPayment = HospitalFee + HospitalBillPastDue;
         int TodaysPayment;

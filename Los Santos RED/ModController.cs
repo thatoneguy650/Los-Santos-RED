@@ -98,12 +98,13 @@ namespace LosSantosRED.lsr
 
 
 
-            Input = new Input(Player, Settings);
+            //Input = new Input(Player, Settings);//input was up here in case anything gets real weird......
             Police = new Police(World, Player);
             Civilians = new Civilians(World, Player);
             PedSwap = new PedSwap(Time, Player, Settings, World);
             Tasker = new Tasker(World, Player, Weapons);
             UI = new UI(Player, Settings, Jurisdictions, PedSwap, PlacesOfInterest, Player, Player,Player, Weapons, RadioStations, GameSaves, World);
+            Input = new Input(Player, Settings,UI);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
             VanillaManager = new VanillaManager();
             Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this);
@@ -132,6 +133,10 @@ namespace LosSantosRED.lsr
             StartDebugLogic();
             GameFiber.Yield();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~v0.1 ~n~By ~g~Greskrendtregk ~n~~s~Has Loaded Successfully");
+        }
+        public void ReloadSettingsFromFile()
+        {
+            Settings.ReadConfig();
         }
         private void ReadDataFiles()
         {
@@ -199,7 +204,7 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
                 new ModTask(500, "Player.Investigation.Update", Player.Investigation.Update, 2),//150
                 new ModTask(500, "Player.SearchModeUpdate", Player.SearchModeUpdate, 3),//150
-                new ModTask(500, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 4),//150
+                new ModTask(750, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 4),//500
                 new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 5),
                 new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6),
                 new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
@@ -299,10 +304,10 @@ namespace LosSantosRED.lsr
                             } 
                         }
                         FPS.ComputeAverage(Game.FrameRate);
-                        //if (!Game.IsPaused && (Game.FrameRate < 55 || FPS.Average <= 58))
-                        //{
-                        //    EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} - {LastRanSecondaryTask}, Ran Last Tick: {PrevLastRanCoreTask} - {LastRanSecondaryTask}", 3);
-                        //}
+                        if (!Game.IsPaused && (Game.FrameRate < 55 || FPS.Average <= 58))
+                        {
+                            EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} - {LastRanSecondaryTask}, Ran Last Tick: {PrevLastRanCoreTask} - {LastRanSecondaryTask}", 3);
+                        }
                         TickStopWatch.Reset();
                         GameFiber.Yield();
                     }

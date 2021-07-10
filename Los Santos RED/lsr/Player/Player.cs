@@ -52,13 +52,8 @@ namespace Mod
         private bool isActive = true;
         private uint GameTimeLastUpdatedLookedAtPed;
         public int UpdateState = 0;
-
-
-
         private uint GameTimeLastSetWanted;
         private uint GameTimeWantedLevelStarted;
-
-
         private string CurrentVehicleDebugString;
 
         public Player(string modelName, bool isMale, string suspectsName, int currentMoney, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes, IAudioPlayable audio, IPlacesOfInterest placesOfInterest)
@@ -113,13 +108,12 @@ namespace Mod
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 7f;
         public bool CanPerformActivities => !IsMovingFast && !IsIncapacitated && !IsDead && !IsBusted && !IsInVehicle && !IsGettingIntoAVehicle  && !IsMovingDynamically;//&& !IsAttemptingToSurrender
         public bool CanSurrender => Surrendering.CanSurrender;
-        public bool CanUndie => TimesDied < Settings.SettingsManager.General.UndieLimit || Settings.SettingsManager.General.UndieLimit == 0;
         public Ped Character => Game.LocalPlayer.Character;
         public LocationData CurrentLocation { get; set; }
         public PedExt CurrentLookedAtPed { get; private set; }
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public WeaponInformation CurrentSeenWeapon => !IsInVehicle ? CurrentWeapon : null;
-        public string CurrentSpeedDisplay { get; private set; }
+    //    public string CurrentSpeedDisplay { get; private set; }
         public PedExt CurrentTargetedPed { get; private set; }
         public VehicleExt CurrentVehicle { get; private set; }
         public WeaponInformation CurrentWeapon { get; private set; }
@@ -256,19 +250,18 @@ namespace Mod
             }
         }//move or delete?
         public uint TimeInSearchMode => SearchMode.TimeInSearchMode;
-        public int TimesDied { get; set; }
         public uint TimeToRecognize
         {
             get
             {
-                uint Time = 2000;
+                uint Time = Settings.SettingsManager.PlayerSettings.Recognize_BaseTime;
                 if (TimeControllable.IsNight)
                 {
-                    Time += 3500;
+                    Time += Settings.SettingsManager.PlayerSettings.Recognize_NightPenalty;
                 }
                 else if (IsInVehicle)
                 {
-                    Time += 750;
+                    Time += Settings.SettingsManager.PlayerSettings.Recognize_VehiclePenalty;
                 }
                 return Time;
             }
@@ -276,6 +269,8 @@ namespace Mod
         public List<VehicleExt> TrackedVehicles { get; private set; } = new List<VehicleExt>();
         public VehicleExt VehicleGettingInto { get; private set; }
         public float VehicleSpeed { get; private set; }//move or delete?
+        public float VehicleSpeedKMH => VehicleSpeed * 3.6f;
+        public float VehicleSpeedMPH => VehicleSpeed * 2.23694f;
         public int WantedLevel => Game.LocalPlayer.WantedLevel;
         public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated}";//$"{Interaction?.DebugString}";
         public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";//$"WantedFor {PoliceResponse.HasBeenWantedFor} NotWantedFor {PoliceResponse.HasBeenNotWantedFor} CurrentWantedFor {PoliceResponse.HasBeenAtCurrentWantedLevelFor}";
@@ -382,17 +377,14 @@ namespace Mod
                 PoliceResponse.Reset();
                 Investigation.Reset();
                 Violations.Reset();
-                //NativeFunction.CallByName<bool>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
                 MaxWantedLastLife = 0;
                 GameTimeStartedPlaying = Game.GameTime;
                 Scanner.Reset();
-                // ResetModel();
-
                 Update();
             }
             if (resetTimesDied)
             {
-                TimesDied = 0;
+                Respawning.Reset();
             }
             if (clearWeapons)
             {
@@ -401,8 +393,7 @@ namespace Mod
             if (clearCriminalHistory)
             {
                 CriminalHistory.Clear();
-            }
-            
+            }       
         }
         public void SetDemographics(string modelName, bool isMale, string playerName, int money)
         {
@@ -452,17 +443,14 @@ namespace Mod
         public void Setup()
         {
             SetWantedLevel(0, "Initial", true);
-            // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
             SetUnarmed();
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
-
             CurrentModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
-
-            NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
-
-
-            //this temp bullshit
+            if (Settings.SettingsManager.PlayerSettings.DisableAutoEngineStart)
+            {
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+            }
             GameFiber.StartNew(delegate
             {
                 while (isActive)
@@ -475,8 +463,10 @@ namespace Mod
                 }
 
             }, "IsShootingChecker");
-            AutoTuneStation = "RADIO_19_USER";
-
+            if (Settings.SettingsManager.PlayerSettings.KeepRadioStationAutoTuned)
+            {
+                AutoTuneStation = Settings.SettingsManager.PlayerSettings.AutoTuneRadioStation;// "RADIO_19_USER";
+            }
         }
         public void ShootAt(Vector3 TargetCoordinate)
         {
@@ -486,9 +476,6 @@ namespace Mod
         public void Update()
         {
             UpdateData();
-
-
-
             UpdateButtonPrompts();
         }
         private void UpdateData()
@@ -544,9 +531,12 @@ namespace Mod
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
             NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-            NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
-            NativeFunction.Natives.x80C8B1846639BB19(0);
-            NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
+            if (Settings.SettingsManager.UI.AllowScreenEffectReset)//this should be moved methinks
+            {
+                NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
+                NativeFunction.Natives.x80C8B1846639BB19(0);
+                NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
+            }
             //EntryPoint.WriteToConsole("Player Made Sober");
         }
         //Interactions
@@ -1008,35 +998,34 @@ namespace Mod
                 GameFiber.Yield();
             }
         }
-        private void UpdateSpeedDispay()
-        {
-            if (CurrentVehicle != null)//was game.localpalyer.character.isinanyvehicle(false)
-            {
-                CurrentSpeedDisplay = "";
-                float VehicleSpeedMPH = VehicleSpeed * 2.23694f;
-                if (!Game.LocalPlayer.Character.CurrentVehicle.IsEngineOn)
-                {
-                    CurrentSpeedDisplay = "ENGINE OFF";
-                }
-                else
-                {
-                    string ColorPrefx = "~s~";
-                    if (IsSpeeding)
-                    {
-                        ColorPrefx = "~r~";
-                    }
-                    if (CurrentLocation.CurrentStreet != null)
-                    {
-                        CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH ({CurrentLocation.CurrentStreet.SpeedLimit})";
-                    }
-                }
-                if (IsViolatingAnyTrafficLaws)
-                {
-                    CurrentSpeedDisplay += " !";
-                }
-                CurrentSpeedDisplay += "~n~" + CurrentVehicle.FuelTank.UIText;
-            }
-        }
+        //private void UpdateSpeedDispay()
+        //{
+        //    if (CurrentVehicle != null)//was game.localpalyer.character.isinanyvehicle(false)
+        //    {
+        //        CurrentSpeedDisplay = "";
+        //        if (!CurrentVehicle.Engine.IsRunning)
+        //        {
+        //            CurrentSpeedDisplay = "ENGINE OFF";
+        //        }
+        //        else
+        //        {
+        //            string ColorPrefx = "~s~";
+        //            if (IsSpeeding)
+        //            {
+        //                ColorPrefx = "~r~";
+        //            }
+        //            if (CurrentLocation.CurrentStreet != null)
+        //            {
+        //                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH ({CurrentLocation.CurrentStreet.SpeedLimitMPH})";
+        //            }
+        //        }
+        //        if (IsViolatingAnyTrafficLaws)
+        //        {
+        //            CurrentSpeedDisplay += " !";
+        //        }
+        //        CurrentSpeedDisplay += "~n~" + CurrentVehicle.FuelTank.UIText;
+        //    }
+        //}
         public void UpdateStateData()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -1139,7 +1128,7 @@ namespace Mod
                 UpdateCurrentVehicle();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.MustBeHotwired;
                 VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
-                UpdateSpeedDispay();
+              //  UpdateSpeedDispay();
                 if (isHotwiring != IsHotWiring)
                 {
                     if (IsHotWiring)
@@ -1197,7 +1186,7 @@ namespace Mod
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;
                 CurrentVehicle = null;
-                CurrentSpeedDisplay = "";
+               // CurrentSpeedDisplay = "";
                 float PlayerSpeed = Game.LocalPlayer.Character.Speed;
                 if (PlayerSpeed >= 0.1f)
                 {

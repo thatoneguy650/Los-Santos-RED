@@ -36,10 +36,11 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; }
         bool CanConverseWithLookedAtPed { get; }
         List<ButtonPrompt> ButtonPrompts { get; }
-        string CurrentSpeedDisplay { get; }
         string DebugLine8 { get; }
         string DebugLine9 { get; }
         string DebugLine10 { get; }
         string DebugLine11 { get; }
+        float VehicleSpeedMPH { get; }
+        float VehicleSpeedKMH { get; }
     }
 }

@@ -72,14 +72,7 @@ public class DeathMenu : Menu
         }
         if (selectedItem == HospitalRespawn)
         {
-            if (RandomItems.RandomPercent(90))//turned off for testing
-            {
-                Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
-            }
-            else
-            {
-                Respawning.RespawnAtGrave();
-            }
+            Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
         }
         else if (selectedItem == TakeoverRandomPed)
         {

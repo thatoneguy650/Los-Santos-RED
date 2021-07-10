@@ -111,7 +111,7 @@ namespace LosSantosRED.lsr.Locations
 
             if (CurrentStreet == null)
             {
-                CurrentStreet = new Street("Calle Sin Nombre", 60f);
+                CurrentStreet = new Street("Calle Sin Nombre", 60f, "MPH");
             }
         }
     }

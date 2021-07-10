@@ -26,16 +26,18 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastPressedIndicators;
         private IInputable Player;
         private ISettingsProvideable Settings;
-        public Input(IInputable player, ISettingsProvideable settings)
+        private IMenuProvideable MenuProvider;
+        public Input(IInputable player, ISettingsProvideable settings, IMenuProvideable menuProvider)
         {
             Player = player;
             Settings = settings;
+            MenuProvider = menuProvider;
         }
-       // private uint GameTimeStartedHoldingEnter;
         private uint GameTimeLastPressedEngineToggle;
-
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
-        private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);//GameTimeStartedHoldingEnter != 0 && Game.GameTime - GameTimeStartedHoldingEnter >= 75;
+        private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);
+        public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeyBinding.MenuKey);
+        public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeyBinding.DebugMenuKey);
         private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow;
         private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
         private bool IsPressingRightIndicator => Game.IsKeyDown(Keys.E) && Game.IsShiftKeyDownRightNow;
@@ -44,18 +46,17 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;
         public bool IsPressingEngineToggle => Game.IsKeyDown(Keys.X) && Game.IsShiftKeyDownRightNow;
-
         public void Update()
         {
             SurrenderCheck();
             WeaponDropCheck();
             VehicleCheck();
-            //HoldingEnterCheck();
             ButtonPromptCheck();
             ConversationCheck();
             ScenarioCheck();
             Player.IsNotHoldingEnter = IsNotHoldingEnter;
             Player.IsMoveControlPressed = IsMoveControlPressed;
+            MenuCheck();
         }
         private void ConversationCheck()
         {
@@ -71,20 +72,6 @@ namespace LosSantosRED.lsr
                 Player.StartScenario();
             }
         }
-        //private void HoldingEnterCheck()
-        //{
-        //    if (Game.IsControlPressed(2, GameControl.Enter))
-        //    {
-        //        if (GameTimeStartedHoldingEnter == 0)
-        //        {
-        //            GameTimeStartedHoldingEnter = Game.GameTime;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        GameTimeStartedHoldingEnter = 0;
-        //    }
-        //}
         private void SurrenderCheck()
         {
             if (IsPressingSurrender)
@@ -167,7 +154,17 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        
+        private void MenuCheck()
+        {
+            if (IsPressingMenuKey)
+            {
+                MenuProvider.ToggleMenu();
+            }
+            else if (IsPressingDebugMenuKey)
+            {
+                MenuProvider.ToggleDebugMenu();
+            }
+        }
 
     }
 }

@@ -186,8 +186,6 @@ namespace LosSantosRED.lsr
                 {
                     StopSearchMode = false;
                 }
-
-
                 if (PrevStopSearchMode != StopSearchMode)
                 {
                     PrevStopSearchMode = StopSearchMode;
@@ -324,7 +322,7 @@ namespace LosSantosRED.lsr
                     GhostCop.IsCollisionEnabled = false;
                     GhostCop.MaxHealth = 1;
                     GhostCop.IsInvincible = true;
-                   // GhostCop.IsVisible = false;
+                    GhostCop.IsVisible = false;
 
                     Blip myBlip = GhostCop.GetAttachedBlip();
                     if (myBlip != null)

@@ -11,9 +11,11 @@ using System.Xml.Serialization;
 [Serializable()]
 public class SettingsManager
 {
-    public GeneralSettings General = new GeneralSettings();
-    public UISettings UI = new UISettings();
-    public KeySettings KeyBinding = new KeySettings();
-    public TrafficSettings TrafficViolations = new TrafficSettings();
-    public PoliceSettings Police = new PoliceSettings();
+    public GeneralSettings General { get; set; } = new GeneralSettings();
+    public UISettings UI { get; set; } = new UISettings();
+    public KeySettings KeyBinding { get; set; } = new KeySettings();
+    public TrafficSettings TrafficViolations { get; set; } = new TrafficSettings();
+    public PoliceSettings Police { get; set; } = new PoliceSettings();
+    public RespawnSettings RespawnSettings { get; set; } = new RespawnSettings();
+    public PlayerSettings PlayerSettings { get; set; } = new PlayerSettings();
 }

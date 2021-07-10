@@ -13,9 +13,9 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         int MaxWantedLastLife { get; set; }
         int WantedLevel { get; }
-        int TimesDied { get; set; }
+      //  int TimesDied { get; set; }
         bool DiedInVehicle { get; }
-        bool CanUndie { get; }
+      //  bool CanUndie { get; }
 
         void GiveMoney(int v);
         void UnSetArrestedAnimation(Ped character);

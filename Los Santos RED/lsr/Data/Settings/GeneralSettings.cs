@@ -6,19 +6,12 @@ using System.Threading.Tasks;
 
 public class GeneralSettings
 {
-    public bool AliasPedAsMainCharacter = true;
-    public string MainCharacterToAlias = "Michael";
-    public bool Keanu = true;
-    public int UndieLimit = 0;
-    public bool Debug = false;
-    public bool PedTakeoverSetRandomMoney = true;
-    public int PedTakeoverRandomMoneyMin = 500;
-    public int PedTakeoverRandomMoneyMax = 5000;
-    public bool AlwaysShowCash = true;
-    public bool Logging = true;
-    public bool AllowDeathMenus = true;
-    public bool AlwaysShowRadar = true;
-    public bool AlwaysShowHUD = true;
+    public string MainCharacterToAlias { get; set; } = "Michael";
+
+    public bool PedTakeoverSetRandomMoney { get; set; } = true;
+    public int PedTakeoverRandomMoneyMin { get; set; } = 500;
+    public int PedTakeoverRandomMoneyMax { get; set; } = 5000;
+
     public string MainCharacterToAliasModelName
     {
         get

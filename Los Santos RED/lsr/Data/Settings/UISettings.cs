@@ -6,27 +6,37 @@ using System.Threading.Tasks;
 
 public class UISettings
 {
-    public bool Enabled = true;
-
-    public float PlayerStatusPositionX = 0.12f;
-    public float PlayerStatusPositionY = 0.98f;
-    public float PlayerStatusScale = 0.4f;
-    public int PlayerStatusJustificationID = 2;
-
-    public float VehicleStatusPositionX = 0.7f;
-    public float VehicleStatusPositionY = 0.98f;
-    public float VehicleStatusScale = 0.4f;
-    public int VehicleStatusJustificationID = 2;
-
-    public float StreetPositionX = 0.87f;// 0.93f;
-    public float StreetPositionY = 0.98f;
-    public float StreetScale = 0.5f;
-    public int StreetJustificationID = 2;
-
-    public float ZonePositionX = 0.90f;// 0.96f;
-    public float ZonePositionY = 0.98f;
-    public float ZoneScale = 0.5f;
-    public int ZoneJustificationID = 2;
+    public bool UIEnabled { get; set; } = true;
+    public float VehicleStatusPositionX { get; set; } = 0.7f;
+    public float VehicleStatusPositionY { get; set; } = 0.98f;
+    public float VehicleStatusScale { get; set; } = 0.4f;
+    public int VehicleStatusJustificationID { get; set; } = 2;
+    public float StreetPositionX { get; set; } = 0.87f;
+    public float StreetPositionY { get; set; } = 0.98f;
+    public float StreetScale { get; set; } = 0.5f;
+    public int StreetJustificationID { get; set; } = 2;
+    public float ZonePositionX { get; set; } = 0.90f;
+    public float ZonePositionY { get; set; } = 0.98f;
+    public float ZoneScale { get; set; } = 0.5f;
+    public int ZoneJustificationID { get; set; } = 2;
+    public bool AlwaysShowCash { get; set; } = true;
+    public bool AlwaysShowRadar { get; set; } = true;
+    public bool AlwaysShowHUD { get; set; } = true;
+    public bool ShowDebug { get; set; } = true;
+    public bool ShowVanillaVehicleUI { get; set; } = false;
+    public bool ShowVanillaAreaUI { get; set; } = false;
+    public bool ShowSpeedDisplay { get; set; } = true;
+    public bool ShowZoneDisplay { get; set; } = true;
+    public bool ShowStreetDisplay { get; set; } = true;
+    public bool SetBustedEffect { get; set; } = true;
+    public bool PlayWastedSounds { get; set; } = true;
+    public bool DisplayBustedMessage { get; set; } = true;
+    public bool SetDeathEffect { get; set; } = true;
+    public bool DisplayWastedMessage { get; set; } = true;
+    public string WastedMessageText { get; set; } = "WASTED";
+    public string BustedMessageText { get; set; } = "BUSTED";
+    public bool AllowScreenEffectReset { get; set; } = true;
+    public string SpeedDisplayUnits { get; set; } = "MPH";
 
     public UISettings()
     {
