@@ -122,15 +122,10 @@ namespace LosSantosRED.lsr
         private void ResetViolations()
         {
             CrimesViolating.RemoveAll(x => !x.IsTrafficViolation);
-            //CrimeList.ForEach(x => x.IsCurrentlyViolating = false);
         }
         private void ResetTrafficViolations()
         {
             CrimesViolating.RemoveAll(x => x.IsTrafficViolation);
-            //foreach (Crime Traffic in CrimeList.Where(x => x.IsTrafficViolation))
-            //{
-            //    Traffic.IsCurrentlyViolating = false;
-            //}
         }
         private void CheckViolations()
         {

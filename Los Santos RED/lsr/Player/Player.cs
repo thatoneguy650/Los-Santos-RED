@@ -222,7 +222,7 @@ namespace Mod
                 int CurrentCash;
                 unsafe
                 {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", NativeHelper.CashHash(Settings.SettingsManager.General.MainCharacterToAlias), &CurrentCash, -1);
+                    NativeFunction.CallByName<int>("STAT_GET_INT", NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.MainCharacterToAlias), &CurrentCash, -1);
                 }
                 return CurrentCash;
             }
@@ -350,7 +350,7 @@ namespace Mod
         public void GiveMoney(int Amount)
         {
             int CurrentCash;
-            uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.General.MainCharacterToAlias);
+            uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.MainCharacterToAlias);
             unsafe
             {
                 NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
@@ -401,11 +401,11 @@ namespace Mod
             PlayerName = playerName;
             IsMale = isMale;
             SetMoney(money);
-            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.General.MainCharacterToAlias)}", 3);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.MainCharacterToAlias)}", 3);
         }
         public void SetMoney(int Amount)
         {
-            NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.General.MainCharacterToAlias), Amount, 1);
+            NativeFunction.CallByName<int>("STAT_SET_INT", NativeHelper.CashHash(Settings.SettingsManager.GeneralSettings.MainCharacterToAlias), Amount, 1);
         }
         public void SetPlayerToLastWeapon()
         {
@@ -531,7 +531,7 @@ namespace Mod
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
             NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-            if (Settings.SettingsManager.UI.AllowScreenEffectReset)//this should be moved methinks
+            if (Settings.SettingsManager.UISettings.AllowScreenEffectReset)//this should be moved methinks
             {
                 NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
                 NativeFunction.Natives.x80C8B1846639BB19(0);

@@ -121,7 +121,7 @@ public class PedSwap : IPedSwap
             Game.LocalPlayer.Character.Heading = MyHeading;
 
             SetPlayerOffset();
-            NativeHelper.ChangeModel(Settings.SettingsManager.General.MainCharacterToAliasModelName);
+            NativeHelper.ChangeModel(Settings.SettingsManager.GeneralSettings.MainCharacterToAliasModelName);
             NativeHelper.ChangeModel(modelName);
             Ped PedBecame = Game.LocalPlayer.Character;
             if (variation != null)
@@ -203,7 +203,7 @@ public class PedSwap : IPedSwap
         {
             Game.LocalPlayer.Character.WarpIntoVehicle(Car, SeatIndex);
         }
-        if (Settings.SettingsManager.General.PedTakeoverSetRandomMoney && CurrentPedMoney > 0)
+        if (Settings.SettingsManager.GeneralSettings.PedTakeoverSetRandomMoney && CurrentPedMoney > 0)
         {
             Player.SetMoney(CurrentPedMoney);
         }
@@ -323,7 +323,7 @@ public class PedSwap : IPedSwap
         if (!TargetPedAlreadyTakenOver)
         {
             SetPlayerOffset();
-            NativeHelper.ChangeModel(Settings.SettingsManager.General.MainCharacterToAliasModelName);
+            NativeHelper.ChangeModel(Settings.SettingsManager.GeneralSettings.MainCharacterToAliasModelName);
             NativeHelper.ChangeModel(ModelToChange);
         }
 
@@ -453,15 +453,15 @@ public class PedSwap : IPedSwap
         UInt64 Second = GTA.Read<UInt64>(Player + SECOND_OFFSET);
         UInt64 Third = GTA.Read<UInt64>(Second + THIRD_OFFSET);
 
-        if (Settings.SettingsManager.General.MainCharacterToAlias == "Michael")
+        if (Settings.SettingsManager.GeneralSettings.MainCharacterToAlias == "Michael")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 225514697, new int[] { THIRD_OFFSET });
         }
-        else if (Settings.SettingsManager.General.MainCharacterToAlias == "Franklin")
+        else if (Settings.SettingsManager.GeneralSettings.MainCharacterToAlias == "Franklin")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2602752943, new int[] { THIRD_OFFSET });
         }
-        else if (Settings.SettingsManager.General.MainCharacterToAlias == "Trevor")
+        else if (Settings.SettingsManager.GeneralSettings.MainCharacterToAlias == "Trevor")
         {
             GTA.Write<uint>(Player + SECOND_OFFSET, 2608926626, new int[] { THIRD_OFFSET });
         }

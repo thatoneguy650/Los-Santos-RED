@@ -22,7 +22,7 @@ public class MainMenu : Menu
         Settings = settings;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         menuPool.Add(Main);
-        SettingsMenu = new SettingsMenu(menuPool, Main, Player, world);
+        SettingsMenu = new SettingsMenu(menuPool, Main, Player, world, Settings);
         SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap);
         PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
         ActionMenu = new ActionMenu(menuPool, Main, Player);

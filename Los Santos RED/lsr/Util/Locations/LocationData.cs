@@ -85,6 +85,7 @@ namespace LosSantosRED.lsr.Locations
                     StreetName = Marshal.PtrToStringAnsi(ptr);
                 }
                 CurrentStreetName = StreetName;
+                GameFiber.Yield();
             }
             else
             {
@@ -100,6 +101,7 @@ namespace LosSantosRED.lsr.Locations
                     CrossStreetName = Marshal.PtrToStringAnsi(ptr);
                 }
                 CurrentCrossStreetName = CrossStreetName;
+                GameFiber.Yield();
             }
             else
             {
@@ -108,6 +110,7 @@ namespace LosSantosRED.lsr.Locations
 
             CurrentStreet = Streets.GetStreet(CurrentStreetName);
             CurrentCrossStreet = Streets.GetStreet(CurrentCrossStreetName);
+            GameFiber.Yield();
 
             if (CurrentStreet == null)
             {

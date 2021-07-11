@@ -280,7 +280,7 @@ public class Dispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, OfficerType, Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip);
                             spawnTask.AttemptSpawn();
                             GameFiber.Yield();
                             spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
@@ -396,7 +396,7 @@ public class Dispatcher
                     {
                         try
                         {
-                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+                            SpawnTask spawnTask = new SpawnTask(agency, spawnLocation.InitialPosition, spawnLocation.StreetPosition, spawnLocation.Heading, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip);
                             spawnTask.AttemptSpawn();
                             spawnTask.CreatedPeople.ForEach(x => World.AddEntity(x));
                             spawnTask.CreatedVehicles.ForEach(x => World.AddEntity(x));

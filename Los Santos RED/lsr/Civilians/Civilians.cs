@@ -36,6 +36,7 @@ public class Civilians
             PedsUpdated++;
             if (PedsUpdated > 5)//10)//3//10//25
             {
+                //GameFiber.Yield();
                 break;
             }
         }

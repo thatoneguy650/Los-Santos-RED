@@ -27,12 +27,15 @@ namespace LosSantosRED.lsr
         }
         private void UpdateCops()
         {
-            foreach (Cop Cop in World.PoliceList.OrderBy(x=> x.GameTimeLastUpdated).Take(5))//THIS TAKE 5 and order by is new, maybe dont need to updated to cops so frequently? maybe i do well see
+            foreach (Cop Cop in World.PoliceList)//THIS TAKE 5 and order by is new, maybe dont need to updated to cops so frequently? maybe i do well see
             {
-                Cop.Update(Player, Player.PlacePoliceLastSeenPlayer);
-                Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
-                Cop.UpdateSpeech(Player);
-                Cop.UpdateAssists(Player.IsWanted);
+                if (Cop.Pedestrian.Exists())
+                {
+                    Cop.Update(Player, Player.PlacePoliceLastSeenPlayer);
+                    Cop.UpdateLoadout(Player.PoliceResponse.IsDeadlyChase, Player.WantedLevel);
+                    Cop.UpdateSpeech(Player);
+                    Cop.UpdateAssists(Player.IsWanted);
+                }
                 GameFiber.Yield();
             }
         }

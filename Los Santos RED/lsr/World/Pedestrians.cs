@@ -228,7 +228,7 @@ public class Pedestrians
         {
             Cop myCop = new Cop(Pedestrian, Pedestrian.Health, AssignedAgency, false);
             myCop.IssueWeapons();
-            if (Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
+            if (Settings.SettingsManager.PoliceSettings.SpawnedAmbientPoliceHaveBlip && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = AssignedAgency.Color;
@@ -299,9 +299,9 @@ public class Pedestrians
     }
     private void SetCopStats(Ped Pedestrian)
     {
-        if (Settings.SettingsManager.Police.OverridePoliceAccuracy)
+        if (Settings.SettingsManager.PoliceSettings.OverridePoliceAccuracy)
         {
-            Pedestrian.Accuracy = Settings.SettingsManager.Police.PoliceGeneralAccuracy;
+            Pedestrian.Accuracy = Settings.SettingsManager.PoliceSettings.PoliceGeneralAccuracy;
         }
         int DesiredHealth = RandomItems.MyRand.Next(MinCopHealth, MaxCopHealth) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(MinCopArmor, MaxCopArmor);

@@ -150,7 +150,7 @@
     <Compile Include="lsr\UI\IMenuProvideable.cs" />
     <Compile Include="lsr\UI\Menu\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\SaveMenu.cs" />
-    <Compile Include="lsr\UI\Menu\SettingsMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Settings\SettingsMenu.cs" />
     <Compile Include="lsr\Util\Peds\Scenario.cs" />
     <Compile Include="lsr\Util\Vehicle\Engine.cs" />
     <Compile Include="lsr\Util\Vehicle\SHVehicleLockStatus.cs" />
@@ -271,7 +271,6 @@
     <Compile Include="lsr\Data\Settings\KeySettings.cs" />
     <Compile Include="lsr\Data\Settings\PoliceSettings.cs" />
     <Compile Include="lsr\Data\Settings\Settings.cs" />
-    <Compile Include="lsr\Data\Settings\TrafficSettings.cs" />
     <Compile Include="lsr\Data\Settings\UISettings.cs" />
     <Compile Include="lsr\Util\Vehicle\PlateType.cs" />
     <Compile Include="lsr\World\Vehicles.cs" />

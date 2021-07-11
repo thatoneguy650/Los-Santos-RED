@@ -289,14 +289,14 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        EntryPoint.WriteToConsole("-------------------------------", 3);
+        EntryPoint.WriteToConsole("Player Plate List START -------------------------------", 3);
         foreach (LicensePlate lp in Player.SpareLicensePlates)
         {
             
             EntryPoint.WriteToConsole($" PlateNumber: {lp.PlateNumber} Wanted: {lp.IsWanted} Type: {lp.PlateType}", 3);
             
         }
-        EntryPoint.WriteToConsole("-------------------------------", 3);
+        EntryPoint.WriteToConsole("Player Plate List END-------------------------------", 3);
         //Player.DebugScanner.Reset();
         //Crime ToAnnounce = Crimes.CrimeList.PickRandom();
         //if(ToAnnounce != null)

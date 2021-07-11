@@ -72,7 +72,7 @@ namespace LosSantosRED.lsr
         public void NewPlayer(string modelName, bool isMale)//gotta go
         {
             Player.Reset(true, true, true, true);
-            Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.General.PedTakeoverRandomMoneyMin, Settings.SettingsManager.General.PedTakeoverRandomMoneyMax));
+            Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.GeneralSettings.PedTakeoverRandomMoneyMin, Settings.SettingsManager.GeneralSettings.PedTakeoverRandomMoneyMax));
         }
         public void NewPlayer(string modelName, bool isMale,string playerName, int moneyToSpawnWith)//gotta go
         {
@@ -137,6 +137,10 @@ namespace LosSantosRED.lsr
         public void ReloadSettingsFromFile()
         {
             Settings.ReadConfig();
+        }
+        public void SaveSettingsToFile()
+        {
+            Settings.SerializeAllSettings();
         }
         private void ReadDataFiles()
         {

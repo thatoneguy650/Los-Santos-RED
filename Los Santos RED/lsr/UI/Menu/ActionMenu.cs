@@ -75,16 +75,16 @@ public class ActionMenu : Menu
         {
             StopConsuming.Enabled = false;
         }
-        
 
-        //EntryPoint.WriteToConsole("ACTION MENU!-------------------------------", 3);
-        //foreach (LicensePlate lp in ChangePlate.Items)
-        //{
 
-        //    EntryPoint.WriteToConsole($" PlateNumber: {lp.PlateNumber} Wanted: {lp.IsWanted} Type: {lp.PlateType}", 3);
+        EntryPoint.WriteToConsole("ACTION MENU!-------------------------------", 3);
+        foreach (LicensePlate lp in ChangePlate.Items)
+        {
 
-        //}
-        //EntryPoint.WriteToConsole("ACTION MENU!-------------------------------", 3);
+            EntryPoint.WriteToConsole($" PlateNumber: {lp.PlateNumber} Wanted: {lp.IsWanted} Type: {lp.PlateType}", 3);
+
+        }
+        EntryPoint.WriteToConsole("ACTION MENU!-------------------------------", 3);
     }
     private void CreateActionsMenu()
     {

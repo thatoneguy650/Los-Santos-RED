@@ -75,9 +75,6 @@ namespace LosSantosRED.lsr
         private Dispatch StealingAirVehicle;
         private StreetScannerAudio StreetScannerAudio;
         private Dispatch SuspectArrested;
-
-
-
         private Dispatch SuspectEvaded;
         private Dispatch OnFoot;
         private Dispatch InVehicle;
@@ -177,7 +174,7 @@ namespace LosSantosRED.lsr
         }
         public void Tick()
         {
-            if (Settings.SettingsManager.Police.DispatchAudio)
+            if (Settings.SettingsManager.PoliceSettings.DispatchAudio)
             {
 
                 CheckDispatch();
@@ -321,6 +318,233 @@ namespace LosSantosRED.lsr
                 AddToQueue(OnFoot);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnFoot", 3);
+        }
+        private void CheckDispatch()
+        {
+            if (CurrentPlayer.RecentlyStartedPlaying)
+            {
+                return;//don't care right when you become a new person
+            }
+            // CheckCrimesToAnnounce();
+            CheckStatusToAnnounce();
+        }
+        private void CheckStatusToAnnounce()
+        {
+            if (CurrentPlayer.IsWanted && CurrentPlayer.IsAliveAndFree)
+            {
+                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
+                {
+                    AddToQueue(RequestMilitaryUnits);
+                }
+                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
+                {
+                    AddToQueue(RequestNOOSEUnits);
+                }
+                if (!ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
+                {
+                    AddToQueue(RequestAirSupport);
+                }
+                if (CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000)
+                {
+                    if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && CurrentPlayer.AnyPoliceCanSeePlayer)
+                    {
+                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
+                        AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                    }
+                    else if (!CurrentPlayer.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
+                    {
+                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
+                        AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                    }
+                }
+            }
+            else
+            {
+                foreach (VehicleExt StolenCar in CurrentPlayer.ReportedStolenVehicles)
+                {
+                    StolenCar.AddedToReportedStolenQueue = true;
+                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, false, StolenCar.PlaceOriginallyEntered) { VehicleSeen = StolenCar });
+                }
+            }
+        }
+        private void BuildDispatch(Dispatch DispatchToPlay)
+        {
+
+            EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle}", 3);
+
+            DispatchEvent EventToPlay = new DispatchEvent();
+            if (DispatchToPlay.HasPreamble)
+            {
+                EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
+                AddAudioSet(EventToPlay, DispatchToPlay.PreambleAudioSet.PickRandom());
+                EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+            }
+            EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
+            EventToPlay.NotificationTitle = DispatchToPlay.NotificationTitle;
+            if (DispatchToPlay.IsStatus)
+            {
+                EventToPlay.NotificationSubtitle = "~g~Status";
+            }
+            else if (DispatchToPlay.LatestInformation.SeenByOfficers)
+            {
+                EventToPlay.NotificationSubtitle = "~r~Crime Observed";
+            }
+            else
+            {
+                EventToPlay.NotificationSubtitle = "~o~Crime Reported";
+            }
+            EventToPlay.NotificationText = DispatchToPlay.NotificationText;
+            if (DispatchToPlay.IncludeAttentionAllUnits)
+            {
+                AddAudioSet(EventToPlay, AttentionAllUnits.PickRandom());
+            }
+            if (DispatchToPlay.IncludeReportedBy)
+            {
+                if (DispatchToPlay.LatestInformation.SeenByOfficers)
+                {
+                    AddAudioSet(EventToPlay, OfficersReport.PickRandom());
+                }
+                else
+                {
+                    AddAudioSet(EventToPlay, CiviliansReport.PickRandom());
+                }
+            }
+            if (DispatchToPlay.LatestInformation.InstancesObserved > 1 && DispatchToPlay.MainMultiAudioSet.Any())
+            {
+                AddAudioSet(EventToPlay, DispatchToPlay.MainMultiAudioSet.PickRandom());
+            }
+            else
+            {
+                AddAudioSet(EventToPlay, DispatchToPlay.MainAudioSet.PickRandom());
+            }
+            if (DispatchToPlay.SecondaryAudioSet.Any())
+            {
+                AddAudioSet(EventToPlay, DispatchToPlay.SecondaryAudioSet.PickRandom());
+            }
+            if (DispatchToPlay.IncludeDrivingVehicle)
+            {
+                AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen, !DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.IncludeLicensePlate);
+                GameFiber.Yield();
+            }
+            if (DispatchToPlay.IncludeRapSheet)
+            {
+                AddRapSheet(EventToPlay);
+            }
+            if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null && CurrentPlayer.CurrentVehicle != null)//temp current vehicle BS
+            {
+                //VehicleExt ActualCar =  World.GetVehicleExt(DispatchToPlay.LatestInformation.VehicleSeen.Vehicle);
+                // ActualCar.WasReportedStolen = true;
+                // ActualCar.OriginalLicensePlate.IsWanted = true;
+                // if (ActualCar.OriginalLicensePlate.PlateNumber == ActualCar.CarPlate.PlateNumber)
+                // {
+                //     ActualCar.CarPlate.IsWanted = true;
+                //     //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen Current Plate");
+                // }
+
+
+
+                //EntryPoint.WriteToConsole("-------------------------------", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {ActualCar.Vehicle.Handle}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {ActualCar.IsStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {ActualCar.WasReportedStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {ActualCar.CopsRecognizeAsStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {ActualCar.NeedsToBeReportedStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {ActualCar.GameTimeToReportStolen}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {ActualCar.CarPlate.IsWanted}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {ActualCar.CarPlate.PlateNumber}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {ActualCar.OriginalLicensePlate.IsWanted}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {ActualCar.OriginalLicensePlate.PlateNumber}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {ActualCar.HasOriginalPlate}", 3);
+                //EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {ActualCar.HasBeenDescribedByDispatch}", 3);
+                //EntryPoint.WriteToConsole("-------------------------------", 3);
+
+
+                //THIS NEED TO NOT BE CURRENT VEHICLE, BUT OTHERWISE THE LINK GETS MESSED UP?
+
+                CurrentPlayer.CurrentVehicle.WasReportedStolen = true;
+                CurrentPlayer.CurrentVehicle.OriginalLicensePlate.IsWanted = true;
+                if (CurrentPlayer.CurrentVehicle.OriginalLicensePlate.PlateNumber == CurrentPlayer.CurrentVehicle.CarPlate.PlateNumber)
+                {
+                    CurrentPlayer.CurrentVehicle.CarPlate.IsWanted = true;
+                }
+
+                EntryPoint.WriteToConsole("-------------------------------", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {CurrentPlayer.CurrentVehicle.Vehicle.Handle}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {CurrentPlayer.CurrentVehicle.IsStolen}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {CurrentPlayer.CurrentVehicle.WasReportedStolen}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {CurrentPlayer.CurrentVehicle.CopsRecognizeAsStolen}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {CurrentPlayer.CurrentVehicle.NeedsToBeReportedStolen}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {CurrentPlayer.CurrentVehicle.GameTimeToReportStolen}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {CurrentPlayer.CurrentVehicle.CarPlate.IsWanted}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {CurrentPlayer.CurrentVehicle.CarPlate.PlateNumber}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {CurrentPlayer.CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {CurrentPlayer.CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {CurrentPlayer.CurrentVehicle.HasOriginalPlate}", 3);
+                EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch}", 3);
+                EntryPoint.WriteToConsole("-------------------------------", 3);
+
+                //DispatchToPlay.LatestInformation.VehicleSeen.WasReportedStolen = true;
+                //DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.IsWanted = true;
+                //if (DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.PlateNumber == DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.PlateNumber)
+                //{
+                //    DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.IsWanted = true;
+                //    //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen Current Plate");
+                //}
+                //else
+                //{
+                //    //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen");
+                //}
+
+
+                EntryPoint.WriteToConsole($"SCANNER EVENT: Marked Vehicle as Stolen", 3);
+
+
+
+            }
+            if (DispatchToPlay.IncludeCarryingWeapon && (DispatchToPlay.LatestInformation.WeaponSeen != null || DispatchToPlay.Name == "Carrying Weapon"))
+            {
+                AddWeaponDescription(EventToPlay, DispatchToPlay.LatestInformation.WeaponSeen);
+                GameFiber.Yield();
+            }
+            if (DispatchToPlay.ResultsInLethalForce && !LethalForceAuthorized.HasBeenPlayedThisWanted && DispatchToPlay.Name != LethalForceAuthorized.Name)
+            {
+                AddLethalForce(EventToPlay);
+            }
+            if (CurrentPlayer.PoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
+            {
+                AddWeaponsFree(EventToPlay);
+            }
+            if (World.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
+            {
+                AddRequestAirSupport(EventToPlay);
+            }
+            if (DispatchToPlay.IncludeDrivingSpeed && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists())
+            {
+                AddSpeed(EventToPlay, CurrentPlayer.CurrentVehicle.Vehicle.Speed);
+                GameFiber.Yield();
+            }
+            if (DispatchToPlay.LocationDescription != LocationSpecificity.Nothing)
+            {
+                AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
+                GameFiber.Yield();
+            }
+            if (CurrentPlayer.Investigation.HaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
+            {
+                AddHaveDescription(EventToPlay);
+            }
+            EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+            EventToPlay.Subtitles = FirstCharToUpper(EventToPlay.Subtitles);
+            EventToPlay.Priority = DispatchToPlay.Priority;
+            DispatchToPlay.SetPlayed();
+            if (DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.Priority < HighestOfficerReportedPriority)
+            {
+                HighestOfficerReportedPriority = DispatchToPlay.Priority;
+            }
+            else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus && DispatchToPlay.Priority < HighestCivilianReportedPriority)
+            {
+                HighestCivilianReportedPriority = DispatchToPlay.Priority;
+            }
+            PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation);
         }
         private void AddAudioSet(DispatchEvent dispatchEvent, AudioSet audioSet)
         {
@@ -744,239 +968,162 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void BuildDispatch(Dispatch DispatchToPlay)
+        private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
         {
-
-            EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle}", 3);
-
-            DispatchEvent EventToPlay = new DispatchEvent();
-            if (DispatchToPlay.HasPreamble)
+            CrimeDispatch ToLookup = DispatchLookup.FirstOrDefault(x => x.CrimeID == crimeAssociated.ID);
+            if (ToLookup != null && ToLookup.Dispatch != null)
             {
-                EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
-                AddAudioSet(EventToPlay, DispatchToPlay.PreambleAudioSet.PickRandom());
-                EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
+                ToLookup.Dispatch.Priority = crimeAssociated.Priority;
+                return ToLookup.Dispatch;
             }
-            EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
-            EventToPlay.NotificationTitle = DispatchToPlay.NotificationTitle;
-            if (DispatchToPlay.IsStatus)
-            {
-                EventToPlay.NotificationSubtitle = "~g~Status";
-            }
-            else if (DispatchToPlay.LatestInformation.SeenByOfficers)
-            {
-                EventToPlay.NotificationSubtitle = "~r~Crime Observed";
-            }
-            else
-            {
-                EventToPlay.NotificationSubtitle = "~o~Crime Reported";
-            }
-            EventToPlay.NotificationText = DispatchToPlay.NotificationText;
-            if (DispatchToPlay.IncludeAttentionAllUnits)
-            {
-                AddAudioSet(EventToPlay, AttentionAllUnits.PickRandom());
-            }
-            if (DispatchToPlay.IncludeReportedBy)
-            {
-                if (DispatchToPlay.LatestInformation.SeenByOfficers)
-                {
-                    AddAudioSet(EventToPlay, OfficersReport.PickRandom());
-                }
-                else
-                {
-                    AddAudioSet(EventToPlay, CiviliansReport.PickRandom());
-                }
-            }
-            if (DispatchToPlay.LatestInformation.InstancesObserved > 1 && DispatchToPlay.MainMultiAudioSet.Any())
-            {
-                AddAudioSet(EventToPlay, DispatchToPlay.MainMultiAudioSet.PickRandom());
-            }
-            else
-            {
-                AddAudioSet(EventToPlay, DispatchToPlay.MainAudioSet.PickRandom());
-            }
-            if (DispatchToPlay.SecondaryAudioSet.Any())
-            {
-                AddAudioSet(EventToPlay, DispatchToPlay.SecondaryAudioSet.PickRandom());
-            }
-            if (DispatchToPlay.IncludeDrivingVehicle)
-            {
-                AddVehicleDescription(EventToPlay, DispatchToPlay.LatestInformation.VehicleSeen, !DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.IncludeLicensePlate);
-            }
-            if (DispatchToPlay.IncludeRapSheet)
-            {
-                AddRapSheet(EventToPlay);
-            }
-            if (DispatchToPlay.MarkVehicleAsStolen && DispatchToPlay.LatestInformation != null && DispatchToPlay.LatestInformation.VehicleSeen != null && CurrentPlayer.CurrentVehicle != null)//temp current vehicle BS
-            {
-               //VehicleExt ActualCar =  World.GetVehicleExt(DispatchToPlay.LatestInformation.VehicleSeen.Vehicle);
-               // ActualCar.WasReportedStolen = true;
-               // ActualCar.OriginalLicensePlate.IsWanted = true;
-               // if (ActualCar.OriginalLicensePlate.PlateNumber == ActualCar.CarPlate.PlateNumber)
-               // {
-               //     ActualCar.CarPlate.IsWanted = true;
-               //     //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen Current Plate");
-               // }
-
-
-
-                //EntryPoint.WriteToConsole("-------------------------------", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {ActualCar.Vehicle.Handle}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {ActualCar.IsStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {ActualCar.WasReportedStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {ActualCar.CopsRecognizeAsStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {ActualCar.NeedsToBeReportedStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {ActualCar.GameTimeToReportStolen}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {ActualCar.CarPlate.IsWanted}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {ActualCar.CarPlate.PlateNumber}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {ActualCar.OriginalLicensePlate.IsWanted}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {ActualCar.OriginalLicensePlate.PlateNumber}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {ActualCar.HasOriginalPlate}", 3);
-                //EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {ActualCar.HasBeenDescribedByDispatch}", 3);
-                //EntryPoint.WriteToConsole("-------------------------------", 3);
-
-
-                //THIS NEED TO NOT BE CURRENT VEHICLE, BUT OTHERWISE THE LINK GETS MESSED UP?
-
-                CurrentPlayer.CurrentVehicle.WasReportedStolen = true;
-                CurrentPlayer.CurrentVehicle.OriginalLicensePlate.IsWanted = true;
-                if (CurrentPlayer.CurrentVehicle.OriginalLicensePlate.PlateNumber == CurrentPlayer.CurrentVehicle.CarPlate.PlateNumber)
-                {
-                    CurrentPlayer.CurrentVehicle.CarPlate.IsWanted = true;
-                }
-
-                EntryPoint.WriteToConsole("-------------------------------", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.Vehicle.Handle: {CurrentPlayer.CurrentVehicle.Vehicle.Handle}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.IsStolen: {CurrentPlayer.CurrentVehicle.IsStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.WasReportedStolen: {CurrentPlayer.CurrentVehicle.WasReportedStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.CopsRecognizeAsStolen: {CurrentPlayer.CurrentVehicle.CopsRecognizeAsStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.NeedsToBeReportedStolen: {CurrentPlayer.CurrentVehicle.NeedsToBeReportedStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.GameTimeToReportStolen: {CurrentPlayer.CurrentVehicle.GameTimeToReportStolen}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.IsWanted: {CurrentPlayer.CurrentVehicle.CarPlate.IsWanted}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.CarPlate.PlateNumber: {CurrentPlayer.CurrentVehicle.CarPlate.PlateNumber}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.IsWanted: {CurrentPlayer.CurrentVehicle.OriginalLicensePlate.IsWanted}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.OriginalLicensePlate.PlateNumber: {CurrentPlayer.CurrentVehicle.OriginalLicensePlate.PlateNumber}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.HasOriginalPlate: {CurrentPlayer.CurrentVehicle.HasOriginalPlate}", 3);
-                EntryPoint.WriteToConsole($" CurrentVehicle.HasBeenDescribedByDispatch: {CurrentPlayer.CurrentVehicle.HasBeenDescribedByDispatch}", 3);
-                EntryPoint.WriteToConsole("-------------------------------", 3);
-
-                //DispatchToPlay.LatestInformation.VehicleSeen.WasReportedStolen = true;
-                //DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.IsWanted = true;
-                //if (DispatchToPlay.LatestInformation.VehicleSeen.OriginalLicensePlate.PlateNumber == DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.PlateNumber)
-                //{
-                //    DispatchToPlay.LatestInformation.VehicleSeen.CarPlate.IsWanted = true;
-                //    //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen Current Plate");
-                //}
-                //else
-                //{
-                //    //EntryPoint.WriteToConsole("ScannerScript MarkedAsStolen");
-                //}
-
-
-                EntryPoint.WriteToConsole($"SCANNER EVENT: Marked Vehicle as Stolen",3);
-
-
-
-            }
-            if (DispatchToPlay.IncludeCarryingWeapon && (DispatchToPlay.LatestInformation.WeaponSeen != null || DispatchToPlay.Name == "Carrying Weapon"))
-            {
-                AddWeaponDescription(EventToPlay, DispatchToPlay.LatestInformation.WeaponSeen);
-            }
-            if (DispatchToPlay.ResultsInLethalForce && !LethalForceAuthorized.HasBeenPlayedThisWanted && DispatchToPlay.Name != LethalForceAuthorized.Name)
-            {
-                AddLethalForce(EventToPlay);
-            }
-            if (CurrentPlayer.PoliceResponse.IsWeaponsFree && !WeaponsFree.HasBeenPlayedThisWanted && DispatchToPlay.Name != WeaponsFree.Name)
-            {
-                AddWeaponsFree(EventToPlay);
-            }
-            if (World.AnyHelicopterUnitsSpawned && !RequestAirSupport.HasBeenPlayedThisWanted && DispatchToPlay.Name != RequestAirSupport.Name)
-            {
-                AddRequestAirSupport(EventToPlay);
-            }
-            if (DispatchToPlay.IncludeDrivingSpeed && CurrentPlayer.CurrentVehicle != null && CurrentPlayer.CurrentVehicle.Vehicle.Exists())
-            {
-                AddSpeed(EventToPlay, CurrentPlayer.CurrentVehicle.Vehicle.Speed);
-            }
-            if (DispatchToPlay.LocationDescription != LocationSpecificity.Nothing)
-            {
-                AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
-            }
-            if (CurrentPlayer.Investigation.HaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
-            {
-                AddHaveDescription(EventToPlay);
-            }
-            EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
-            EventToPlay.Subtitles = FirstCharToUpper(EventToPlay.Subtitles);
-            EventToPlay.Priority = DispatchToPlay.Priority;
-            DispatchToPlay.SetPlayed();
-            if (DispatchToPlay.LatestInformation.SeenByOfficers && DispatchToPlay.Priority < HighestOfficerReportedPriority)
-            {
-                HighestOfficerReportedPriority = DispatchToPlay.Priority;
-            }
-            else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus && DispatchToPlay.Priority < HighestCivilianReportedPriority)
-            {
-                HighestCivilianReportedPriority = DispatchToPlay.Priority;
-            }
-            PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation);
+            return null;
         }
-        //private void CheckCrimesToAnnounce()
-        //{
-        //    foreach (CrimeEvent CE in CurrentPlayer.PoliceResponse.RecentlyOccuredCrimes)
-        //    {
-        //        AnnounceCrime(CE.AssociatedCrime, CE.CurrentInformation);
-        //    }
-        //    foreach (CrimeEvent CE in CurrentPlayer.PoliceResponse.RecentlyReportedCrimes)
-        //    {
-        //        AnnounceCrime(CE.AssociatedCrime, CE.CurrentInformation);
-        //    }
-        //}
-        private void CheckDispatch()
+        private string FirstCharToUpper(string input)
         {
-            if (CurrentPlayer.RecentlyStartedPlaying)
+            switch (input)
             {
-                return;//don't care right when you become a new person
+                case null: throw new ArgumentNullException(nameof(input));
+                case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
+                default: return input.First().ToString().ToUpper() + input.Substring(1);
             }
-           // CheckCrimesToAnnounce();
-            CheckStatusToAnnounce();
         }
-        private void CheckStatusToAnnounce()
+        private string GetSimpleCompassHeading(float Heading)
         {
-            if (CurrentPlayer.IsWanted && CurrentPlayer.IsAliveAndFree)
+            //float Heading = Game.LocalPlayer.Character.Heading;
+            string Abbreviation;
+
+            //yeah could be simpler, whatever idk computers are fast
+            if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+            else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
+            else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
+            else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
+            else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
+            else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
+            else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
+            else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
+            else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
+            else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
+            else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
+            else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
+            else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
+            else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
+            else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
+            else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
+            else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
+            else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
+            else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
+            else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
+            else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
+            else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
+            else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
+            else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
+            else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
+            else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
+            else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
+            else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
+            else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
+            else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
+            else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
+            else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
+            else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
+            else { Abbreviation = ""; }
+
+            return Abbreviation;
+        }
+        private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription MyDispatch)
+        {
+            //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
+            if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-                if (!RequestMilitaryUnits.HasBeenPlayedThisWanted && World.AnyArmyUnitsSpawned)
+                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                AbortedAudio = true;
+                Abort();
+            }
+
+            if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && !CurrentlyPlayingCallIn.SeenByOfficers && MyDispatch.SeenByOfficers)
+            {
+                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                AbortedAudio = true;
+                Abort();
+            }
+
+            GameFiber PlayAudioList = GameFiber.StartNew(delegate
+            {
+                if (AbortedAudio)
                 {
-                    AddToQueue(RequestMilitaryUnits);
+                    //EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
+                    AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.PoliceSettings.DispatchAudioVolume);
+                    AbortedAudio = false;
+                    GameFiber.Sleep(1000);
                 }
-                if (!RequestNOOSEUnits.HasBeenPlayedThisWanted && World.AnyNooseUnitsSpawned)
+
+                while (AudioPlayer.IsAudioPlaying)
                 {
-                    AddToQueue(RequestNOOSEUnits);
+                    GameFiber.Yield();
                 }
-                if (!ReportedRequestAirSupport && !RequestAirSupport.HasBeenPlayedThisWanted && World.AnyHelicopterUnitsSpawned)
+
+                if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.PoliceSettings.DispatchNotifications)
                 {
-                    AddToQueue(RequestAirSupport);
+                    RemoveAllNotifications();
+                    NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
                 }
-                if (CurrentPlayer.PoliceResponse.HasBeenWantedFor > 25000)
+
+                //EntryPoint.WriteToConsole(string.Format("ScannerScript! Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
+                CurrentlyPlaying = MyAudioEvent;
+                CurrentlyPlayingCallIn = MyDispatch;
+
+                foreach (string audioname in MyAudioEvent.SoundsToPlay)
                 {
-                    if (!SuspectSpotted.HasVeryRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && CurrentPlayer.AnyPoliceCanSeePlayer)
+                    //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}");
+                    AudioPlayer.Play(audioname, Settings.SettingsManager.PoliceSettings.DispatchAudioVolume);
+
+                    while (AudioPlayer.IsAudioPlaying)
                     {
-                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
-                        AddToQueue(SuspectSpotted, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                        if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.PoliceSettings.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                        {
+                            Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
+                            GameTimeLastDisplayedSubtitle = Game.GameTime;
+                        }
+                        GameTimeLastAnnouncedDispatch = Game.GameTime;
+                        if (MyAudioEvent.HasStreetAudio)
+                        {
+                            GameTimeLastMentionedStreet = Game.GameTime;
+                        }
+                        if (MyAudioEvent.HasZoneAudio)
+                        {
+                            GameTimeLastMentionedZone = Game.GameTime;
+                        }
+                        GameFiber.Yield();
+                        if (AbortedAudio)
+                        {
+                            EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                            break;
+                        }
                     }
-                    else if(!CurrentPlayer.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
+                    if (AbortedAudio)
                     {
-                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
-                        AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, CurrentPlayer.PlacePoliceLastSeenPlayer));
+                        EntryPoint.WriteToConsole($"AbortedAudio2", 5);
+                        break;
                     }
                 }
-            }
-            else
-            {
-                foreach (VehicleExt StolenCar in CurrentPlayer.ReportedStolenVehicles)
+                if (AbortedAudio)
                 {
-                    StolenCar.AddedToReportedStolenQueue = true;
-                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!CurrentPlayer.IsInVehicle, false, StolenCar.PlaceOriginallyEntered) { VehicleSeen = StolenCar });
+                    AbortedAudio = false;
                 }
+                CurrentlyPlaying = null;
+                if (MyDispatch.VehicleSeen != null)
+                {
+                    MyDispatch.VehicleSeen.HasBeenDescribedByDispatch = true;
+                }
+            }, "PlayAudioList");
+        }
+        private void RemoveAllNotifications()
+        {
+            foreach (uint handles in NotificationHandles)
+            {
+                Game.RemoveNotification(handles);
             }
+            NotificationHandles.Clear();
         }
         private void DefaultConfig()
         {
@@ -1062,163 +1209,6 @@ namespace LosSantosRED.lsr
             ,PublicIntoxication
             ,OfficerNeedsAssistance
         };
-        }
-        private Dispatch DetermineDispatchFromCrime(Crime crimeAssociated)
-        {
-            CrimeDispatch ToLookup = DispatchLookup.FirstOrDefault(x => x.CrimeID == crimeAssociated.ID);
-            if (ToLookup != null && ToLookup.Dispatch != null)
-            {
-                ToLookup.Dispatch.Priority = crimeAssociated.Priority;
-                return ToLookup.Dispatch;
-            }
-            return null;
-        }
-        private string FirstCharToUpper(string input)
-        {
-            switch (input)
-            {
-                case null: throw new ArgumentNullException(nameof(input));
-                case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
-                default: return input.First().ToString().ToUpper() + input.Substring(1);
-            }
-        }
-        private string GetSimpleCompassHeading(float Heading)
-        {
-            //float Heading = Game.LocalPlayer.Character.Heading;
-            string Abbreviation;
-
-            //yeah could be simpler, whatever idk computers are fast
-            if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-            else if (Heading >= 5.625f && Heading <= 16.875f) { Abbreviation = "N"; }
-            else if (Heading >= 16.875f && Heading <= 28.125f) { Abbreviation = "N"; }
-            else if (Heading >= 28.125f && Heading <= 39.375f) { Abbreviation = "N"; }
-            else if (Heading >= 39.375f && Heading <= 50.625f) { Abbreviation = "N"; }
-            else if (Heading >= 50.625f && Heading <= 61.875f) { Abbreviation = "N"; }
-            else if (Heading >= 61.875f && Heading <= 73.125f) { Abbreviation = "E"; }
-            else if (Heading >= 73.125f && Heading <= 84.375f) { Abbreviation = "E"; }
-            else if (Heading >= 84.375f && Heading <= 95.625f) { Abbreviation = "E"; }
-            else if (Heading >= 95.625f && Heading <= 106.875f) { Abbreviation = "E"; }
-            else if (Heading >= 106.875f && Heading <= 118.125f) { Abbreviation = "E"; }
-            else if (Heading >= 118.125f && Heading <= 129.375f) { Abbreviation = "S"; }
-            else if (Heading >= 129.375f && Heading <= 140.625f) { Abbreviation = "S"; }
-            else if (Heading >= 140.625f && Heading <= 151.875f) { Abbreviation = "S"; }
-            else if (Heading >= 151.875f && Heading <= 163.125f) { Abbreviation = "S"; }
-            else if (Heading >= 163.125f && Heading <= 174.375f) { Abbreviation = "S"; }
-            else if (Heading >= 174.375f && Heading <= 185.625f) { Abbreviation = "S"; }
-            else if (Heading >= 185.625f && Heading <= 196.875f) { Abbreviation = "S"; }
-            else if (Heading >= 196.875f && Heading <= 208.125f) { Abbreviation = "S"; }
-            else if (Heading >= 208.125f && Heading <= 219.375f) { Abbreviation = "S"; }
-            else if (Heading >= 219.375f && Heading <= 230.625f) { Abbreviation = "S"; }
-            else if (Heading >= 230.625f && Heading <= 241.875f) { Abbreviation = "S"; }
-            else if (Heading >= 241.875f && Heading <= 253.125f) { Abbreviation = "W"; }
-            else if (Heading >= 253.125f && Heading <= 264.375f) { Abbreviation = "W"; }
-            else if (Heading >= 264.375f && Heading <= 275.625f) { Abbreviation = "W"; }
-            else if (Heading >= 275.625f && Heading <= 286.875f) { Abbreviation = "W"; }
-            else if (Heading >= 286.875f && Heading <= 298.125f) { Abbreviation = "W"; }
-            else if (Heading >= 298.125f && Heading <= 309.375f) { Abbreviation = "N"; }
-            else if (Heading >= 309.375f && Heading <= 320.625f) { Abbreviation = "N"; }
-            else if (Heading >= 320.625f && Heading <= 331.875f) { Abbreviation = "N"; }
-            else if (Heading >= 331.875f && Heading <= 343.125f) { Abbreviation = "N"; }
-            else if (Heading >= 343.125f && Heading <= 354.375f) { Abbreviation = "N"; }
-            else if (Heading >= 354.375f || Heading <= 5.625f) { Abbreviation = "N"; }
-            else { Abbreviation = ""; }
-
-            return Abbreviation;
-        }
-        private void PlayDispatch(DispatchEvent MyAudioEvent, CrimeSceneDescription MyDispatch)
-        {
-            //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
-            if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
-            {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
-                AbortedAudio = true;
-                Abort();
-            }
-
-            if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && !CurrentlyPlayingCallIn.SeenByOfficers && MyDispatch.SeenByOfficers)
-            {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
-                AbortedAudio = true;
-                Abort();
-            }
-
-            GameFiber PlayAudioList = GameFiber.StartNew(delegate
-            {
-                if (AbortedAudio)
-                {
-                    //EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}");
-                    AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.Police.DispatchAudioVolume);
-                    AbortedAudio = false;
-                    GameFiber.Sleep(1000);
-                }
-
-                while (AudioPlayer.IsAudioPlaying)
-                {
-                    GameFiber.Yield();
-                }
-
-                if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.Police.DispatchNotifications)
-                {
-                    RemoveAllNotifications();
-                    NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
-                }
-
-                //EntryPoint.WriteToConsole(string.Format("ScannerScript! Name: {0}, MyAudioEvent.Priority: {1}", MyAudioEvent.NotificationText, MyAudioEvent.Priority));
-                CurrentlyPlaying = MyAudioEvent;
-                CurrentlyPlayingCallIn = MyDispatch;
-
-                foreach (string audioname in MyAudioEvent.SoundsToPlay)
-                {
-                    //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname}");
-                    AudioPlayer.Play(audioname, Settings.SettingsManager.Police.DispatchAudioVolume);
-
-                    while (AudioPlayer.IsAudioPlaying)
-                    {
-                        if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.Police.DispatchSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
-                        {
-                            Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
-                            GameTimeLastDisplayedSubtitle = Game.GameTime;
-                        }
-                        GameTimeLastAnnouncedDispatch = Game.GameTime;
-                        if (MyAudioEvent.HasStreetAudio)
-                        {
-                            GameTimeLastMentionedStreet = Game.GameTime;
-                        }
-                        if (MyAudioEvent.HasZoneAudio)
-                        {
-                            GameTimeLastMentionedZone = Game.GameTime;
-                        }
-                        GameFiber.Yield();
-                        if (AbortedAudio)
-                        {
-                            EntryPoint.WriteToConsole($"AbortedAudio1", 5);
-                            break;
-                        }
-                    }
-                    if (AbortedAudio)
-                    {
-                        EntryPoint.WriteToConsole($"AbortedAudio2", 5);
-                        break;
-                    }
-                }
-                if (AbortedAudio)
-                {
-                    AbortedAudio = false;
-                }
-                CurrentlyPlaying = null;
-                if (MyDispatch.VehicleSeen != null)
-                {
-                    MyDispatch.VehicleSeen.HasBeenDescribedByDispatch = true;
-                }
-            }, "PlayAudioList");
-        }
-        private void RemoveAllNotifications()
-        {
-            foreach (uint handles in NotificationHandles)
-            {
-                Game.RemoveNotification(handles);
-            }
-            NotificationHandles.Clear();
         }
         private void SetupDispatches()
         {

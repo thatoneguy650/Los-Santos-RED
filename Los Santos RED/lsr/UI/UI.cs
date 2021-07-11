@@ -177,17 +177,17 @@ public class UI : IMenuProvideable
     }
     private void ForceVanillaUI()
     {
-        if (Settings.SettingsManager.UI.AlwaysShowHUD)
+        if (Settings.SettingsManager.UISettings.AlwaysShowHUD)
         {
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
 
-        if (Settings.SettingsManager.UI.AlwaysShowRadar)
+        if (Settings.SettingsManager.UISettings.AlwaysShowRadar)
         {
             NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
         }
 
-        if (Settings.SettingsManager.Police.ShowPoliceRadarBlips)
+        if (Settings.SettingsManager.PoliceSettings.ShowPoliceRadarBlips)
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
         }
@@ -196,38 +196,38 @@ public class UI : IMenuProvideable
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
 
-        if (Settings.SettingsManager.UI.AlwaysShowCash)
+        if (Settings.SettingsManager.UISettings.AlwaysShowCash)
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
         }
     }
     private void DrawUI()
     {
-        if (Settings.SettingsManager.UI.UIEnabled && DisplayablePlayer.IsAliveAndFree)
+        if (Settings.SettingsManager.UISettings.UIEnabled && DisplayablePlayer.IsAliveAndFree)
         {
-            if (Settings.SettingsManager.UI.ShowDebug)
+            if (Settings.SettingsManager.UISettings.ShowDebug)
             {
                 ShowDebugUI();
             }
-            if (!Settings.SettingsManager.UI.ShowVanillaAreaUI)
+            if (!Settings.SettingsManager.UISettings.ShowVanillaAreaUI)
             {
                 HideVanillaAreaUI();
             }
-            if (!Settings.SettingsManager.UI.ShowVanillaVehicleUI)
+            if (!Settings.SettingsManager.UISettings.ShowVanillaVehicleUI)
             {
                 HideVanillaVehicleUI();
             }
-            if (Settings.SettingsManager.UI.ShowSpeedDisplay)
+            if (Settings.SettingsManager.UISettings.ShowSpeedDisplay)
             {
-                DisplayTextOnScreen(GetSpeedDisplay(), Settings.SettingsManager.UI.VehicleStatusPositionX, Settings.SettingsManager.UI.VehicleStatusPositionY, Settings.SettingsManager.UI.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UI.VehicleStatusJustificationID);
+                DisplayTextOnScreen(GetSpeedDisplay(), Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID);
             }
-            if (Settings.SettingsManager.UI.ShowZoneDisplay)
+            if (Settings.SettingsManager.UISettings.ShowZoneDisplay)
             {
-                DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UI.ZonePositionX, Settings.SettingsManager.UI.ZonePositionY, Settings.SettingsManager.UI.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.ZoneJustificationID);
+                DisplayTextOnScreen(GetZoneDisplay(), Settings.SettingsManager.UISettings.ZonePositionX, Settings.SettingsManager.UISettings.ZonePositionY, Settings.SettingsManager.UISettings.ZoneScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UISettings.ZoneJustificationID);
             }
-            if (Settings.SettingsManager.UI.ShowStreetDisplay)
+            if (Settings.SettingsManager.UISettings.ShowStreetDisplay)
             {
-                DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UI.StreetPositionX, Settings.SettingsManager.UI.StreetPositionY, Settings.SettingsManager.UI.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UI.StreetJustificationID);
+                DisplayTextOnScreen(GetStreetDisplay(), Settings.SettingsManager.UISettings.StreetPositionX, Settings.SettingsManager.UISettings.StreetPositionY, Settings.SettingsManager.UISettings.StreetScale, Color.White, GTAFont.FontHouseScript, (GTATextJustification)Settings.SettingsManager.UISettings.StreetJustificationID);
             }
         }
     }
@@ -250,11 +250,11 @@ public class UI : IMenuProvideable
                 }
                 if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
                 {
-                    if (Settings.SettingsManager.UI.SpeedDisplayUnits == "MPH")
+                    if (Settings.SettingsManager.UISettings.SpeedDisplayUnits == "MPH")
                     {
                         CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} ~s~MPH ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)})";
                     }
-                    else if(Settings.SettingsManager.UI.SpeedDisplayUnits == "KM/H")
+                    else if(Settings.SettingsManager.UISettings.SpeedDisplayUnits == "KM/H")
                     {
                         CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} ~s~KM/H ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)})";
                     }
@@ -316,18 +316,18 @@ public class UI : IMenuProvideable
             {
                 GameTimeLastDied = Game.GameTime;
                 
-                if (Settings.SettingsManager.UI.SetDeathEffect)
+                if (Settings.SettingsManager.UISettings.SetDeathEffect)
                 {
                     NativeFunction.Natives.x80C8B1846639BB19(1);
                     NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPIn", 0, 0);
                 }
-                if (Settings.SettingsManager.UI.PlayWastedSounds)
+                if (Settings.SettingsManager.UISettings.PlayWastedSounds)
                 {
                     NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "Bed", "WastedSounds", true);
                 }
-                if (Settings.SettingsManager.UI.DisplayWastedMessage)
+                if (Settings.SettingsManager.UISettings.DisplayWastedMessage)
                 {
-                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UI.WastedMessageText, "", HudColor.Black, HudColor.RedDark, 2000);
+                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UISettings.WastedMessageText, "", HudColor.Black, HudColor.RedDark, 2000);
                 }
                 StartedDeathEffect = true;
             }
@@ -342,18 +342,18 @@ public class UI : IMenuProvideable
             if (!StartedBustedEffect)
             {
                 GameTimeLastBusted = Game.GameTime;
-                if (Settings.SettingsManager.UI.SetBustedEffect)
+                if (Settings.SettingsManager.UISettings.SetBustedEffect)
                 {
                     NativeFunction.Natives.x80C8B1846639BB19(1);
                     NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);
                 }
-                if (Settings.SettingsManager.UI.PlayWastedSounds)
+                if (Settings.SettingsManager.UISettings.PlayWastedSounds)
                 {
                     NativeFunction.CallByName<bool>("PLAY_SOUND_FRONTEND", -1, "TextHit", "WastedSounds", true);
                 }
-                if (Settings.SettingsManager.UI.DisplayBustedMessage)
+                if (Settings.SettingsManager.UISettings.DisplayBustedMessage)
                 {
-                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UI.BustedMessageText, "", HudColor.Black, HudColor.Blue, 2000);
+                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UISettings.BustedMessageText, "", HudColor.Black, HudColor.Blue, 2000);
                 }
                 StartedBustedEffect = true;
             }
@@ -369,7 +369,7 @@ public class UI : IMenuProvideable
             GameTimeLastBusted = 0;
             StartedBustedEffect = false;
             StartedDeathEffect = false;
-            if (Settings.SettingsManager.UI.AllowScreenEffectReset)
+            if (Settings.SettingsManager.UISettings.AllowScreenEffectReset)
             {
                 NativeFunction.Natives.xB4EDDC19532BFB85();
                 NativeFunction.Natives.x80C8B1846639BB19(0);

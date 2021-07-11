@@ -36,10 +36,10 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastPressedEngineToggle;
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);
-        public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeyBinding.MenuKey);
-        public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeyBinding.DebugMenuKey);
-        private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow;
-        private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeyBinding.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
+        public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
+        public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
+        private bool IsPressingSurrender => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.SurrenderKey) && Game.IsShiftKeyDownRightNow && !Game.IsControlKeyDownRightNow;
+        private bool IsPressingDropWeapon => Game.IsKeyDownRightNow(Settings.SettingsManager.KeySettings.DropWeaponKey) && !Game.IsControlKeyDownRightNow;
         private bool IsPressingRightIndicator => Game.IsKeyDown(Keys.E) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingLeftIndicator => Game.IsKeyDown(Keys.Q) && Game.IsShiftKeyDownRightNow;
         private bool IsPressingHazards => Game.IsKeyDown(Keys.Space) && Game.IsShiftKeyDownRightNow;
@@ -91,8 +91,9 @@ namespace LosSantosRED.lsr
         }
         private void ButtonPromptCheck()
         {
-            Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
-            Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking!
+           // Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
+            Game.DisableControlAction(0, GameControl.Context, true);//dont mess up my other talking! needed for stores?
+            
 
             if(Player.ButtonPrompts.Count > 10)
             {
