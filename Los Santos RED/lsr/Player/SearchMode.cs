@@ -226,7 +226,7 @@ namespace LosSantosRED.lsr
                         GameFiber.StartNew(delegate
                         {
                             hasGamefiberRunning = true;
-                            while (hasGamefiberRunning)
+                            while (hasGamefiberRunning && GhostCop.Exists())
                             {
                                 Entity ToCheck = TargetIsInVehicle && Game.LocalPlayer.Character.CurrentVehicle.Exists() ? (Entity)Game.LocalPlayer.Character.CurrentVehicle : (Entity)Game.LocalPlayer.Character;
                                 if (!NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", GhostCop, ToCheck))
@@ -252,6 +252,10 @@ namespace LosSantosRED.lsr
                                 Vector3 Resultant = Vector3.Subtract(Game.LocalPlayer.Character.Position, GhostCop.Position);
                                 GhostCop.Heading = NativeFunction.CallByName<float>("GET_HEADING_FROM_VECTOR_2D", Resultant.X, Resultant.Y);
                                 GameFiber.Sleep(100);
+                            }
+                            if(!GhostCop.Exists())
+                            {
+                                hasGamefiberRunning = false;
                             }
                         }, "Run Ghost Cop");
 

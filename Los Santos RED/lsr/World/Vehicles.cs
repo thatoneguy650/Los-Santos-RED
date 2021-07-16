@@ -65,11 +65,11 @@ public class Vehicles
             {
                 VehiclesCreated++;
             }
-            //if(VehiclesCreated >= 5)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
-            //{
-            //    return;
-            //}
-          //  GameFiber.Yield();
+            if (VehiclesCreated > 4)//10//2, at two it keeps missing vehicles im trying to enter, even 4 is too little?
+            {
+                VehiclesCreated = 0;
+                GameFiber.Yield();
+            }
         }
     }
     public void CleanUp()
@@ -84,9 +84,10 @@ public class Vehicles
         {
             UpdatePlate(MyCar);
             VehiclesUpdated++;
-            if (VehiclesUpdated > 5)
+            if (VehiclesUpdated > 4)
             {
-                break;
+                VehiclesUpdated = 0;
+                GameFiber.Yield();
             }
         }
     }

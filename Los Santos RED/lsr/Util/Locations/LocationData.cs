@@ -33,8 +33,11 @@ namespace LosSantosRED.lsr.Locations
             if (CharacterToLocate.Exists())
             {
                 GetZone();
+                GameFiber.Yield();
                 GetNode();
+                GameFiber.Yield();
                 GetStreets();
+                GameFiber.Yield();
             }
             else
             {

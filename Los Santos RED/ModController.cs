@@ -20,10 +20,13 @@ namespace LosSantosRED.lsr
         private Input Input;
         private string LastRanCoreTask;
         private string LastRanSecondaryTask;
+        private string LastRanTertiaryTask;
         private string PrevLastRanCoreTask;
         private string PrevLastRanSecondaryTask;
+        private string PrevLastRanTertiaryTask;
         private List<ModTask> CoreTasks;
         private List<ModTask> SecondaryTasks;
+        private List<ModTask> TertiaryTasks;
         private Names Names;
         private GameSaves GameSaves;
         private PedSwap PedSwap;
@@ -126,6 +129,8 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             StartSecondaryLogic();
             GameFiber.Yield();
+            StartTertiaryLogic();
+            GameFiber.Yield();
             StartUILogic();
             GameFiber.Yield();
             StartInputLogic();
@@ -208,48 +213,61 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
                 new ModTask(500, "Player.Investigation.Update", Player.Investigation.Update, 2),//150
                 new ModTask(500, "Player.SearchModeUpdate", Player.SearchModeUpdate, 3),//150
-                new ModTask(750, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 4),//500
+                new ModTask(500, "Player.StopVanillaSearchMode", Player.StopVanillaSearchMode, 4),//500
                 new ModTask(500, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 5),
                 new ModTask(500, "Player.LocationUpdate", Player.LocationUpdate, 6),
                 new ModTask(500, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 7),
                 new ModTask(500, "Civilians.Update", Civilians.Update, 8),//250
-                new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 9),
+                //new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 9),
+
+                //new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 10), //very bad performance//500
+                //new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 11), //very bad performance//500
+
+                //new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 12),//500
+
+                //new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 13),  //very bad performance
+                //new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 14), //very bad performance
+
+                //new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 15),
+                //new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 16),
+                //new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 17),//500
+                //new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 18),//500
+
+                //new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 19),//500//added yields
 
 
+                //new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 9), //WAS very bad performance, trying to limit counts
+                //new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 10),
 
-                new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 10), //very bad performance//500
-                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 11), //very bad performance//500
+                //new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 11), //WAS very bad performance, trying to limit counts//added yields
+                //new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 12),//added yields
 
-
-
-                new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 12),//500
-
-
-
-
-                new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 13),  //very bad performance
-                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 14), //very bad performance
+                new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 13),//1000
+                new ModTask(1000, "Time.Tick", Time.Tick, 14),
 
 
+                new ModTask(500, "Police.Update", Police.Update, 15),//added yields//cant get 300 ms updates in here anyways
 
-                new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 15),
-                new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 16),
-                new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 17),//500
-                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 18),//500
+            };
 
-                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 19),//500//added yields
+            TertiaryTasks = new List<ModTask>()
+            {
+              
+                new ModTask(1000, "World.PrunePedestrians", World.PrunePedestrians, 0),
+                new ModTask(1000, "World.ScanForPedestrians", World.ScanForPedestrians, 1), //very bad performance//500
+                new ModTask(1000, "World.CreateNewPedestrians", World.CreateNewPedestrians, 2), //very bad performance//500
+                new ModTask(1000, "World.PruneVehicles", World.PruneVehicles, 3),//500
+                new ModTask(1000, "World.ScanForVehicles", World.ScanForVehicles, 4),  //very bad performance
+                new ModTask(1000, "World.CreateNewVehicles", World.CreateNewVehicles, 5), //very bad performance
+                new ModTask(1000, "World.CleanUpVehicles", World.CleanUpVehicles, 6),
+                new ModTask(1000, "World.UpdateVehiclePlates", World.UpdateVehiclePlates, 7),
+                new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 8),//500
+                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 9),//500
+                new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 10),//500//added yields
                 new ModTask(500, "Tasker.UpdatePoliceTasks", Tasker.UpdatePoliceTasks, 20), //WAS very bad performance, trying to limit counts
                 new ModTask(500, "Tasker.RunPoliceTasks", Tasker.RunPoliceTasks, 21),
-
                 new ModTask(500, "Tasker.UpdateCivilianTasks", Tasker.UpdateCivilianTasks, 22), //WAS very bad performance, trying to limit counts//added yields
                 new ModTask(500, "Tasker.RunCiviliansTasks", Tasker.RunCiviliansTasks, 23),//added yields
-
-                new ModTask(2000, "VanillaManager.Tick", VanillaManager.Tick, 24),//1000
-                new ModTask(1000, "Time.Tick", Time.Tick, 25),
-
-
-                new ModTask(500, "Police.Update", Police.Update, 26),//added yields//cant get 300 ms updates in here anyways
-
             };
 
             FPS = new MovingAverage();
@@ -266,12 +284,18 @@ namespace LosSantosRED.lsr
                         Debug.Update();
                         if (Game.IsKeyDown(Keys.NumPad5))
                         {
-                            EntryPoint.WriteToConsole("===================================", 3);
+                            EntryPoint.WriteToConsole("=================================== CORE", 3);
                             foreach (ModTask modTask in CoreTasks)
                             {
                                 EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
                             }
+                            EntryPoint.WriteToConsole("=================================== SECONDARY", 3);
                             foreach (ModTask modTask in SecondaryTasks)
+                            {
+                                EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
+                            }
+                            EntryPoint.WriteToConsole("=================================== TERTIARY", 3);
+                            foreach (ModTask modTask in TertiaryTasks)
                             {
                                 EntryPoint.WriteToConsole($" Name: {modTask.DebugName} Interval: {modTask.Interval} AverageTBR: {modTask.AverageTimeBetweenRuns.Average}", 3);
                             }
@@ -308,9 +332,9 @@ namespace LosSantosRED.lsr
                             } 
                         }
                         FPS.ComputeAverage(Game.FrameRate);
-                        if (!Game.IsPaused && (Game.FrameRate < 55 || FPS.Average <= 58))
+                        if (!Game.IsPaused && (Game.FrameRate < 45 || FPS.Average <= 55))
                         {
-                            EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} - {LastRanSecondaryTask}, Ran Last Tick: {PrevLastRanCoreTask} - {LastRanSecondaryTask}", 3);
+                            EntryPoint.WriteToConsole($"GameLogic Low FPS {Game.FrameRate} Avg {FPS.Average}; Ran: {LastRanCoreTask} & {LastRanSecondaryTask} & {LastRanTertiaryTask}, Ran Last Tick: {PrevLastRanCoreTask} & {LastRanSecondaryTask} & {PrevLastRanTertiaryTask}", 3);
                         }
                         TickStopWatch.Reset();
                         GameFiber.Yield();
@@ -361,6 +385,55 @@ namespace LosSantosRED.lsr
                                     LastRanSecondaryTask = "NONE";//nothing to run at all this tick, everything is on time
                                 }
                             }      
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
+                    Dispose();
+                }
+            }, "Run Secondary Logic");
+            GameFiber.Yield();
+        }
+        private void StartTertiaryLogic()
+        {
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    int CurrentTertiaryTask = 0;
+                    while (IsRunning)
+                    {
+                        if (DebugSecondaryRunning)
+                        {
+                            if (CurrentTertiaryTask > TertiaryTasks.Count)
+                            {
+                                CurrentTertiaryTask = 0;
+                            }
+                            PrevLastRanTertiaryTask = LastRanTertiaryTask;
+                            ModTask firstTertiary = TertiaryTasks.Where(x => x.ShouldRun && x.RunOrder == CurrentTertiaryTask).FirstOrDefault();
+                            if (firstTertiary != null)
+                            {
+                                LastRanTertiaryTask = firstTertiary.DebugName + $": TimeBetweenRuns: {Game.GameTime - firstTertiary.GameTimeLastRan}";
+                                firstTertiary.Run();
+                                CurrentTertiaryTask++;
+                            }
+                            else
+                            {
+                                ModTask alternateTertiaryTask = TertiaryTasks.Where(x => x.ShouldRun).OrderBy(x => x.GameTimeLastRan).FirstOrDefault();
+                                if (alternateTertiaryTask != null)
+                                {
+                                    LastRanTertiaryTask = alternateTertiaryTask.DebugName + $": TimeBetweenRuns: {Game.GameTime - alternateTertiaryTask.GameTimeLastRan}";
+                                    alternateTertiaryTask.Run();
+                                }
+                                else
+                                {
+                                    LastRanTertiaryTask = "NONE";//nothing to run at all this tick, everything is on time
+                                }
+                            }
                         }
                         GameFiber.Yield();
                     }

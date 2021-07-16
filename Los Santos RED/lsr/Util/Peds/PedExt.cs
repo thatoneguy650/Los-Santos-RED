@@ -270,7 +270,7 @@ public class PedExt : IComplexTaskable
             }
             else
             {
-                return 750;//500
+                return 500;// 750;//500
             }
         }
     }

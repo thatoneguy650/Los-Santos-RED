@@ -1126,6 +1126,7 @@ namespace Mod
                 IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
                 IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
                 UpdateCurrentVehicle();
+                GameFiber.Yield();
                 IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.MustBeHotwired;
                 VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
               //  UpdateSpeedDispay();
@@ -1255,6 +1256,7 @@ namespace Mod
                 
                 CurrentWeaponHash = PlayerCurrentWeapon.Hash;
                 CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
+                GameFiber.Yield();
             }
             else
             {
@@ -1282,7 +1284,9 @@ namespace Mod
 
             WeaponDropping.Update();
             UpdateTargetedPed();
+            GameFiber.Yield();
             UpdateLookedAtPed();
+            GameFiber.Yield();
         }
     }
 }
