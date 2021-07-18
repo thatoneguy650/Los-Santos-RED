@@ -11,6 +11,14 @@ public class UISettings
     public float VehicleStatusPositionY { get; set; } = 0.98f;
     public float VehicleStatusScale { get; set; } = 0.4f;
     public int VehicleStatusJustificationID { get; set; } = 2;
+
+
+    public float PlayerStatusPositionX { get; set; } = 0.6f;
+    public float PlayerStatusPositionY { get; set; } = 0.98f;
+    public float PlayerStatusScale { get; set; } = 0.4f;
+    public int PlayerStatusJustificationID { get; set; } = 2;
+
+
     public float StreetPositionX { get; set; } = 0.87f;
     public float StreetPositionY { get; set; } = 0.98f;
     public float StreetScale { get; set; } = 0.5f;
@@ -28,6 +36,7 @@ public class UISettings
     public bool ShowSpeedDisplay { get; set; } = true;
     public bool ShowZoneDisplay { get; set; } = true;
     public bool ShowStreetDisplay { get; set; } = true;
+    public bool ShowPlayerDisplay { get; set; } = true;
     public bool SetBustedEffect { get; set; } = true;
     public bool PlayWastedSounds { get; set; } = true;
     public bool DisplayBustedMessage { get; set; } = true;
@@ -37,6 +46,7 @@ public class UISettings
     public string BustedMessageText { get; set; } = "BUSTED";
     public bool AllowScreenEffectReset { get; set; } = true;
     public string SpeedDisplayUnits { get; set; } = "MPH";
+
 
     public UISettings()
     {

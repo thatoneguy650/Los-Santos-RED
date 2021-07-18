@@ -206,11 +206,12 @@ public class Dispatcher
         if (IsTimeToRecallLE)
         {
             //EntryPoint.WriteToConsole($"DISPATCHER: Attempting Recall");
-            foreach (Cop DeleteableCop in DeletableCops.Take(2))
+            foreach (Cop DeleteableCop in DeletableCops)//.Take(2))
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
                     Delete(DeleteableCop);
+                    GameFiber.Yield();
                 }
             }
             //if (Roadblock != null && Player.Position.DistanceTo2D(Roadblock.CenterPosition) >= 550f)
@@ -232,6 +233,7 @@ public class Dispatcher
                 if (emt.DistanceToPlayer >= DistanceToDelete)
                 {
                     Delete(emt);
+                    GameFiber.Yield();
                 }
             }
             GameTimeAttemptedRecallEMS = Game.GameTime;
@@ -243,6 +245,7 @@ public class Dispatcher
                 if (firefighter.DistanceToPlayer >= DistanceToDelete)
                 {
                     Delete(firefighter);
+                    GameFiber.Yield();
                 }
             }
             GameTimeAttemptedRecallFire = Game.GameTime;

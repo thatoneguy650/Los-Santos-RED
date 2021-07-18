@@ -25,6 +25,8 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     private UIMenu PoliceSettingsIUMenu;
     private UIMenu RespawnSettingsIUMenu;
     private UIMenu UISettingsIUMenu;
+    private UIMenu DebugSettingsIUMenu;
+
     public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, IEntityProvideable world, ISettingsProvideable settingsProvideable)
     {
         MenuPool = menuPool;
@@ -85,6 +87,9 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         PoliceSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Police Settings");
         RespawnSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Respawn Settings");
         UISettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "UI Settings");
+
+        DebugSettingsIUMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Debug Settings");
+
         EntryPoint.WriteToConsole($"CreateSettingSubMenu START", 3);
         CreateSettingSubMenu(typeof(PlayerSettings).GetProperties(), SettingsProvider.SettingsManager.PlayerSettings, PlayerSettingsIUMenu);
         CreateSettingSubMenu(typeof(GeneralSettings).GetProperties(), SettingsProvider.SettingsManager.GeneralSettings, GeneralSettingsIUMenu);
@@ -93,6 +98,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         CreateSettingSubMenu(typeof(RespawnSettings).GetProperties(), SettingsProvider.SettingsManager.RespawnSettings, RespawnSettingsIUMenu);
         CreateSettingSubMenu(typeof(UISettings).GetProperties(), SettingsProvider.SettingsManager.UISettings, UISettingsIUMenu);
 
+        CreateSettingSubMenu(typeof(DebugSettings).GetProperties(), SettingsProvider.SettingsManager.DebugSettings, DebugSettingsIUMenu);
         EntryPoint.WriteToConsole($"CreateSettingSubMenu END", 3);
 
         SettingsUIMenu.OnItemSelect += OnActionItemSelect;
@@ -104,6 +110,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         PoliceSettingsIUMenu.OnItemSelect += OnPoliceSettingsSelect;
         RespawnSettingsIUMenu.OnItemSelect += OnRespawnSettingsSelect;
         UISettingsIUMenu.OnItemSelect += OnUISettingsSelect;
+        DebugSettingsIUMenu.OnItemSelect += OnDebugSettingsSelect;
 
         PlayerSettingsIUMenu.OnCheckboxChange += OnCheckboxChange;
         GeneralSettingsIUMenu.OnCheckboxChange += OnCheckboxChange;
@@ -111,6 +118,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         PoliceSettingsIUMenu.OnCheckboxChange += OnCheckboxChange;
         RespawnSettingsIUMenu.OnCheckboxChange += OnCheckboxChange;
         UISettingsIUMenu.OnCheckboxChange += OnCheckboxChange;
+        DebugSettingsIUMenu.OnCheckboxChange += OnCheckboxChange;
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -186,6 +194,11 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         UpdateSettings(sender, selectedItem, index, typeof(UISettings).GetProperties(), SettingsProvider.SettingsManager.UISettings);
         SettingsUIMenu.Visible = false;
     }
+    private void OnDebugSettingsSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    {
+        UpdateSettings(sender, selectedItem, index, typeof(DebugSettings).GetProperties(), SettingsProvider.SettingsManager.DebugSettings);
+        SettingsUIMenu.Visible = false;
+    }
     private void OnCheckboxChange(UIMenu sender, UIMenuCheckboxItem checkbox, bool Checked)
     {
         if (sender == UISettingsIUMenu)
@@ -223,6 +236,12 @@ public class SettingsMenu : Menu//needs lots of cleanup still
             PropertyInfo[] MyFields = typeof(RespawnSettings).GetProperties();
             PropertyInfo MySetting = MyFields.Where(x => x.Name == checkbox.Text).FirstOrDefault();
             MySetting.SetValue(SettingsProvider.SettingsManager.RespawnSettings, Checked);
+        }
+        else if (sender == DebugSettingsIUMenu)
+        {
+            PropertyInfo[] MyFields = typeof(DebugSettings).GetProperties();
+            PropertyInfo MySetting = MyFields.Where(x => x.Name == checkbox.Text).FirstOrDefault();
+            MySetting.SetValue(SettingsProvider.SettingsManager.DebugSettings, Checked);
         }
     }
     private void UpdateSettings(UIMenu sender, UIMenuItem selectedItem, int index, PropertyInfo[] MyProperties, object ToSet)

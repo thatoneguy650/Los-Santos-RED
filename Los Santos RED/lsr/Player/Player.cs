@@ -212,6 +212,7 @@ namespace Mod
         public bool IsViolatingAnyTrafficLaws => Violations.IsViolatingAnyTrafficLaws;
         public bool IsVisiblyArmed { get; private set; }
         public bool IsWanted => Game.LocalPlayer.WantedLevel > 0;
+        public bool HasCriminalHistory => CriminalHistory.HasHistory;
         public WeaponHash LastWeaponHash { get; set; }
         public int MaxWantedLastLife { get; set; }
         public string ModelName { get; set; }

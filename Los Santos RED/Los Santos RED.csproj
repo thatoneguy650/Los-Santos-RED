@@ -111,6 +111,7 @@
     <Compile Include="lsr\Data\Interface\IAgencies.cs" />
     <Compile Include="lsr\Data\Saves\GameSave.cs" />
     <Compile Include="lsr\Data\Saves\GameSaves.cs" />
+    <Compile Include="lsr\Data\Settings\DebugSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerSettings.cs" />
     <Compile Include="lsr\Data\Settings\RespawnSettings.cs" />
     <Compile Include="lsr\Dispatcher\DispatchParameters.cs" />

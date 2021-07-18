@@ -42,5 +42,7 @@ namespace LosSantosRED.lsr.Interface
         string DebugLine11 { get; }
         float VehicleSpeedMPH { get; }
         float VehicleSpeedKMH { get; }
+        Investigation Investigation { get; }
+        bool HasCriminalHistory { get; }
     }
 }

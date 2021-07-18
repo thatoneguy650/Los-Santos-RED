@@ -27,7 +27,8 @@ public class Debug
     private Dispatcher Dispatcher;
     private Zones Zones;
     private ModController ModController;
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController)
+    private Settings Settings;
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -37,6 +38,7 @@ public class Debug
         Zones = zones;
         Crimes = crimes;
         ModController = modController;
+        Settings = settings;
     }
     public void Dispose()
     {
@@ -88,39 +90,45 @@ public class Debug
             DebugNumpad9();
         }
 
-        //foreach(Cop cop in World.PoliceList.Where(x=> x.Pedestrian.Exists()))
-        //{
-        //    DrawColoredArrowTaskStatus(cop);
-        //    DrawColoredArrowAlertness(cop);
-        //}
-        foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 45f))
+        if (Settings.SettingsManager.DebugSettings.ShowPoliceTaskArrows)
         {
-            Color Color = Color.Yellow;
-            if (!ped.CanBeTasked)
+            foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
             {
-                Color = Color.Purple;
+                DrawColoredArrowTaskStatus(cop);
+                DrawColoredArrowAlertness(cop);
             }
-            else if (ped.CurrentTask != null)
+        }
+        if (Settings.SettingsManager.DebugSettings.ShowCivilianTaskArrows)
+        {
+            foreach (PedExt ped in World.CivilianList.Where(x => x.Pedestrian.Exists() && x.DistanceToPlayer <= 45f))
             {
-                Color = Color.Black;
+                Color Color = Color.Yellow;
+                if (!ped.CanBeTasked)
+                {
+                    Color = Color.Purple;
+                }
+                else if (ped.CurrentTask != null)
+                {
+                    Color = Color.Black;
+                }
+                else if (ped.HasSeenPlayerCommitCrime)
+                {
+                    Color = Color.Orange;
+                }
+                else if (ped.CanRecognizePlayer)
+                {
+                    Color = Color.Green;
+                }
+                else if (ped.CanSeePlayer)
+                {
+                    Color = Color.White;
+                }
+                else
+                {
+                    Color = Color.Red;
+                }
+                Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
             }
-            else if (ped.HasSeenPlayerCommitCrime)
-            {
-                Color = Color.Orange;
-            }
-            else if (ped.CanRecognizePlayer)
-            {
-                Color = Color.Green;
-            }
-            else if (ped.CanSeePlayer)
-            {
-                Color = Color.White;
-            }
-            else
-            {
-                Color = Color.Red;
-            }
-            Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color);
         }
     }
     private void DebugNumpad0()

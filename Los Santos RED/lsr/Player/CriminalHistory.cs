@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr
         }
              private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
         private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * 400f : 400f;
-        private bool HasHistory => CurrentHistory != null;
+        public bool HasHistory => CurrentHistory != null;
         public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
         {
             CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated.Max(x=> x.ResultingWantedLevel));
@@ -48,10 +48,13 @@ namespace LosSantosRED.lsr
                     else if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen)
                     {
                         ApplyLastWantedStats();
-                        //ApplyWantedStatsForPlate(Player.CurrentVehicle.CarPlate.PlateNumber);
                     }
                 }
-               // RapSheetList.RemoveAll(x => x.HasBeenNotWantedFor >= 120000);...need to add back, but not for now
+                if(HasHistory && Player.PoliceResponse.HasBeenNotWantedFor >= 120000)
+                {
+                    Clear();
+                    EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired", 3);
+                }
             }
         }
         public void Clear()
@@ -94,10 +97,6 @@ namespace LosSantosRED.lsr
                 Player.OnAppliedWantedStats();
             }
         }
-        //private void ApplyWantedStatsForPlate(string PlateNumber)
-        //{
-        //    //ApplyWantedStats(RapSheetList.Where(x => x.PlayerSeenDuringWanted && x.WantedPlates.Any(y => y.PlateNumber == PlateNumber)).OrderByDescending(x => x.GameTimeWantedEnded).OrderByDescending(x => x.GameTimeWantedStarted).FirstOrDefault());
-        //}
         private class BOLO
         {
             public Vector3 LastSeenLocation { get; set; }

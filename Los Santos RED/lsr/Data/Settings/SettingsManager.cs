@@ -17,4 +17,5 @@ public class SettingsManager
     public PoliceSettings PoliceSettings { get; set; } = new PoliceSettings();
     public RespawnSettings RespawnSettings { get; set; } = new RespawnSettings();
     public PlayerSettings PlayerSettings { get; set; } = new PlayerSettings();
+    public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 }

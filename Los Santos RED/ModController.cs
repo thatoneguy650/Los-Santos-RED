@@ -110,7 +110,7 @@ namespace LosSantosRED.lsr
             Input = new Input(Player, Settings,UI);
             Dispatcher = new Dispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions);
             VanillaManager = new VanillaManager();
-            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this);
+            Debug = new Debug(PlateTypes, World, Player, Streets, Dispatcher,Zones,Crimes,this,Settings);
             World.AddBlipsToMap();
             PedSwap.Setup();
 

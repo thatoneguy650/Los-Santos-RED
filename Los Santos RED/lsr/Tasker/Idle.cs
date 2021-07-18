@@ -128,6 +128,7 @@ public class Idle : ComplexTask
         {
             EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Start: {Ped.Pedestrian.Handle}", 3);
             NeedsUpdates = true;
+            ClearTasks(true);
             WanderTask();
         }
         else if (Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)

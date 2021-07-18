@@ -217,6 +217,10 @@ public class UI : IMenuProvideable
             {
                 HideVanillaVehicleUI();
             }
+            if (Settings.SettingsManager.UISettings.ShowPlayerDisplay)
+            {
+                DisplayTextOnScreen(GetPlayerDisplay(), Settings.SettingsManager.UISettings.PlayerStatusPositionX, Settings.SettingsManager.UISettings.PlayerStatusPositionY, Settings.SettingsManager.UISettings.PlayerStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.PlayerStatusJustificationID);
+            }
             if (Settings.SettingsManager.UISettings.ShowSpeedDisplay)
             {
                 DisplayTextOnScreen(GetSpeedDisplay(), Settings.SettingsManager.UISettings.VehicleStatusPositionX, Settings.SettingsManager.UISettings.VehicleStatusPositionY, Settings.SettingsManager.UISettings.VehicleStatusScale, Color.White, GTAFont.FontChaletComprimeCologne, (GTATextJustification)Settings.SettingsManager.UISettings.VehicleStatusJustificationID);
@@ -284,6 +288,26 @@ public class UI : IMenuProvideable
             StreetDisplay += $" at {DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} ~s~";
         }
         return StreetDisplay;
+    }
+    private string GetPlayerDisplay()
+    {
+        string PlayerDisplay = "";
+        if (DisplayablePlayer.Investigation != null && DisplayablePlayer.Investigation.IsActive)
+        {   
+            if(DisplayablePlayer.Investigation.IsSuspicious)
+            {
+                PlayerDisplay += $"~r~ Active Investigation~s~";
+            }
+            else
+            {
+                PlayerDisplay += $"~o~ Active Investigation~s~";
+            }
+        }
+        else if (DisplayablePlayer.HasCriminalHistory)
+        {
+            PlayerDisplay += $"~y~ BOLO Issued~s~";
+        }
+        return PlayerDisplay;
     }
     private string GetZoneDisplay()
     {
