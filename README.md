@@ -73,8 +73,9 @@
 - [alloc8tor](https://github.com/alloc8or)
 - [pongo1231](https://github.com/pongo1231)
 - [Eddlm](https://github.com/Eddlm)
-- [RAGE Plugin Hook Team](https://ragepluginhook.net/About.aspx)
 - [Foxunitone](https://www.gta5-mods.com/users/Foxunitone)
+- [RAGE Plugin Hook Team](https://ragepluginhook.net/About.aspx)
+- [GTA Forums](https://gtaforums.com/)
 
 ## Contact
 - For any questions, feedback, or assistance:
