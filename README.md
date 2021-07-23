@@ -74,6 +74,7 @@
 - [pongo1231](https://github.com/pongo1231)
 - [Eddlm](https://github.com/Eddlm)
 - [RAGE Plugin Hook Team](https://ragepluginhook.net/About.aspx)
+- [Foxunitone](https://www.gta5-mods.com/users/Foxunitone)
 
 ## Contact
 - For any questions, feedback, or assistance:
